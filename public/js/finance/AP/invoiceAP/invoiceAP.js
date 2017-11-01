@@ -211,13 +211,13 @@ $(document).ready(function () {
 		let recstatus = selrowData("#jqGrid").apacthdr_recstatus;
 			if(recstatus=='OPEN'){
 				$('#but_cancel_jq,#but_post_jq').show();
-				$('#but_reopen_jq').hide();
+				
 			}else if(recstatus=="POSTED"){
-				$('#but_reopen_jq,#but_post_jq').hide();
+				$('#but_post_jq').hide();
 				$('#but_cancel_jq').show();
 			}else if (recstatus == "CANCELLED"){
 				$('#but_cancel_jq,#but_post_jq').hide();
-				$('#but_reopen_jq').show();
+				
 			}
 
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
@@ -233,7 +233,7 @@ $(document).ready(function () {
 			$("#jqGridPager td[title='Edit Selected Row']").click();
 		},
 		gridComplete: function () {
-			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			$('#but_cancel_jq,#but_post_jq').hide();
 			if (oper == 'add' || oper == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
@@ -334,8 +334,8 @@ $(document).ready(function () {
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
-		saveParam.oper = 'posted';
+	$("#but_cancel_jq,#but_post_jq").click(function(){
+		saveParam.oper = $(this).data('oper');
 		let obj={
 			auditno:selrowData('#jqGrid').apacthdr_auditno,
 			_token:$('#_token').val(),
@@ -858,7 +858,7 @@ $(document).ready(function () {
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
 		colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
-		shrinkToFit: false,
+		shrinkToFit: true,
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,

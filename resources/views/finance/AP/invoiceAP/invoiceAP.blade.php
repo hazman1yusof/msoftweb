@@ -42,7 +42,6 @@
 	            </div> -->
 
 				<div id="div_for_but_post" class="col-md-3 col-md-offset-9" style="text-align: end;">
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 				</div>
@@ -195,6 +194,9 @@
 					<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;display: none;'>Save</button>
 
 				</form>
+				<div class="panel-body">
+				<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+			</div>
 			</div>
 		</div>
 			

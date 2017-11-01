@@ -210,7 +210,7 @@
 
 					  			<label class="col-md-2 control-label" for="delordhd_deliverydate">Delivery Date</label>  
 						  			<div class="col-md-2">
-									<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" >
+									<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 						  		</div>
 							</div>
 

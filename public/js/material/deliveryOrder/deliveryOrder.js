@@ -77,6 +77,7 @@ $(document).ready(function () {
 				// dialog_reqdept.check(errorField);
 				// dialog_srcdocno.check(errorField);
 			}if(oper!='view'){
+				backdated.set_backdate($('#delordhd_prdept').val());
 				dialog_authorise.on();
 				dialog_prdept.on();
 				dialog_suppcode.on();
@@ -135,7 +136,7 @@ $(document).ready(function () {
 			table_name:'material.sequence',
 			table_id:'idno',
 			filterCol:['trantype'],
-			filterVal:['GRN'],
+			filterVal:['DO'],
 		}
 
 		this.getdata = function(){
@@ -160,6 +161,10 @@ $(document).ready(function () {
 			});
 		}
 	}
+
+	$('#delordhd_trandate').on('change',function(){
+		$('#delordhd_deliverydate').val($(this).val());
+	});
 
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
@@ -1393,8 +1398,10 @@ $(document).ready(function () {
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Unit',name:'sector'},
-				],
+			],
 			ondblClickRow: function () {
+				let data = selrowData('#'+dialog_prdept.gridname);
+				backdated.set_backdate(data.deptcode);
 			}
 		},{
 			title:"Select Transaction Department",
@@ -1551,8 +1558,6 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector'},
 			],
 			ondblClickRow:function(){
-				let data = selrowData('#'+dialog_deldept.gridname);
-				backdated.set_backdate(data.deptcode);
 			}
 		},{
 			title:"Select Receiver Department",

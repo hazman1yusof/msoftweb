@@ -41,11 +41,11 @@ use Carbon\Carbon;
             ")
         );
 
-        DB::update("update table_temp_a set subamount = 0-subamount where trantype = 'GRT'");
+        DB::update("update table_temp_a set totamount = 0-totamount where trantype = 'GRT'");
 
         $table = DB::select("
                     SELECT table_temp_a.delordno as delordno,
-                        SUM(table_temp_a.subamount) as amount,
+                        SUM(table_temp_a.totamount) as amount,
                         max(delordhd.docno) as docno,
                         max(delordhd.deliverydate) as deliverydate,
                         max(delordhd.srcdocno) as srcdocno,
@@ -227,17 +227,33 @@ use Carbon\Carbon;
                 'upddate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
 
-          //  if($request->)
-            //if count apactdtl > 0, update delordhd
-            //SELECT * FROM delordhd WHERE compcode = '9A' AND suppcode = 'A1C001' AND delordno = 'A00001' AND recstatus = 'POSTED'
-            //update all above invoiceno = apacthdr.document
-
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
             return response('Error'.$e, 500);
         }
+    }
+
+    public function cancel(Request $request){
+        $apacthdr = DB::table('finance.apacthdr')
+                        ->where('idno','=',$request->idno)
+                        ->where('compcode','=',session('compcode'));
+
+        $apacthdr
+            ->update([
+                'upduser' => session('username'),
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                'recstatus' => 'CANCELLED' 
+            ]);
+
+        DB::table('finance.apactdtl')
+            ->where('source','=',$apacthdr->first()->source)
+            ->where('trantype','=',$apacthdr->first()->trantype)
+            ->where('auditno','=',$apacthdr->first()->auditno)
+            ->where('compcode','=',session('compcode'))
+            ->delete();
+           
     }
 
     public function gltran($idno){

@@ -559,12 +559,12 @@ $(document).ready(function () {
 		url:'/util/get_table_default',
 		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode', 'dodt.pouom', 'dodt.suppcode','dodt.trandate',
 		'dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.qtyreturned','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 
-		'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks'],
-		table_name:['material.delorddt AS dodt','material.productmaster AS p'],
+		'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks','t.rate',],
+		table_name:['material.delorddt AS dodt','material.productmaster AS p','hisdb.taxmast AS t'],
 		table_id:'lineno_',
-		join_type:['LEFT JOIN'],
-		join_onCol:['dodt.itemcode'],
-		join_onVal:['p.itemcode'],
+		join_type:['LEFT JOIN','LEFT JOIN'],
+		join_onCol:['dodt.itemcode','dodt.taxcode'],
+		join_onVal:['p.itemcode','t.taxcode'],
 		filterCol:['dodt.recno','dodt.compcode','dodt.recstatus'],
 		filterVal:['','session.compcode','<>.DELETE']
 	};
@@ -703,7 +703,7 @@ $(document).ready(function () {
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
+			{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:false,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: { readonly: "readonly",
                     dataInit: function (element) {
@@ -1073,14 +1073,13 @@ $(document).ready(function () {
 	$("#jqGrid2_iladd, #jqGrid2_iledit").click(function(){
 		unsaved = false;
 		$("#jqGridPager2Delete").hide();
-		dialog_pricecode.on();//start binding event on jqgrid2
-		dialog_itemcode.on();
-		dialog_uomcode.on();
-		dialog_pouom.on();
-		dialog_taxcode.on();
+		// dialog_pricecode.on();//start binding event on jqgrid2
+		// dialog_itemcode.on();
+		// dialog_uomcode.on();
+		// dialog_pouom.on();
+		// dialog_taxcode.on();
 		
-		$("input[name='gstpercent']").val('0')//reset gst to 0
-
+		$("input[name='gstpercent']").val($("#jqGrid2 input[name='rate']").val())//reset gst to 0
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
@@ -1690,6 +1689,11 @@ $(document).ready(function () {
 		},'urlParam'
 	);
 	dialog_taxcode.makedialog(false);
+
+	function cari_gstpercent(id){
+		let data = $('#jqGrid2').jqGrid ('getRowData', id);
+		$("#jqGrid2 #"+id+"_pouom_gstpercent").val(data.rate);
+	}
 
 	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();
