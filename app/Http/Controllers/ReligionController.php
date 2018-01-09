@@ -19,8 +19,14 @@ class ReligionController extends Controller
     }
 
     public function table(Request $request)
-    {
-        $religion = religion::paginate($request->rows);
+    {   
+
+        if(!empty($request->searchCol)){
+            $religion = religion::where($request->searchCol[0],'like',$request->searchVal[0])
+                            ->paginate($request->rows);
+        }else{
+            $religion = religion::paginate($request->rows);
+        }
 
         $responce = new stdClass();
         $responce->page = $religion->currentPage();
