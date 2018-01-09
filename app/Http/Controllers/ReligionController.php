@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\religion;
 use Illuminate\Http\Request;
 use stdClass;
+use DB;
 
 class ReligionController extends Controller
 {   
@@ -38,7 +39,67 @@ class ReligionController extends Controller
     }
 
     public function form(Request $request)
-    {
-        
+    {   
+        switch($request->oper){
+            case 'add':
+                return $this->add($request);
+            case 'edit':
+                return $this->edit($request);
+            case 'del':
+                return $this->del($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function add(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            religion::create([
+                
+                
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+    }
+
+    public function edit(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $religion = religion::find($request->idno);
+            $religion->update($request->all());
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return $religion;
+    }
+
+    public function del(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $religion = religion::find($request->idno);
+            $religion->update($request->input());
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return $religion;
     }
 }

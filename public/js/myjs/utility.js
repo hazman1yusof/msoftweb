@@ -207,8 +207,8 @@ function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,searchForm,obj){
 	}
 	$('.ui-dialog-buttonset button[role=button]').prop('disabled',true);
 	saveParam.oper=oper;
-
-	$.post( "../../../../assets/php/entry.php?"+$.param(saveParam), $( form ).serialize()+'&'+$.param(obj) , function( data ) {
+	
+	$.post( saveParam.url+'?'+$.param(saveParam), $( form ).serialize()+'&'+$.param(obj) , function( data ) {
 		
 	}).fail(function(data) {
 		errorText(dialog.substr(1),data.responseText);
@@ -439,6 +439,28 @@ function dateFormatter(cellvalue, options, rowObject){
 
 function dateUNFormatter(cellvalue, options, rowObject){
 	return moment(cellvalue, "DD/MM/YYYY").format("YYYY-MM-DD");
+}
+
+////////////////////formatter status////////////////////////////////////////
+function formatterstatus(cellvalue, option, rowObject) {
+	if (cellvalue == 'A') {
+		return 'Active';
+	}
+
+	if (cellvalue == 'D') {
+		return 'Deactive';
+	}
+}
+
+////////////////////unformatter status////////////////////////////////////////
+function unformatstatus(cellvalue, option, rowObject) {
+	if (cellvalue == 'Active') {
+		return 'Active';
+	}
+
+	if (cellvalue == 'Deactive') {
+		return 'Deactive';
+	}
 }
 
 function jqgrid_label_align_right(grid){
@@ -748,7 +770,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 
 /////////////////////////////////compid and ipaddress at cookies//////////////////////
 function getcompid(callback){
-	$.get( "../../../../assets/php//lib/my/getcompid.php" , function( data ) {
+	$.get( "util/getcompid" , function( data ) {
 			
 	},'json').done(function(data) {
 		if(!$.isEmptyObject(data)){
@@ -780,19 +802,10 @@ function set_compid_from_storage(lastcompid,lastip,compid,ip){
 
 //////////////////////////////////padding dekat sysparam -IV-ZERO////////////////////
 function getpadlen(callback){
-	var param = {
-		action: 'get_value_default',
-		field: ['pvalue1'],
-		table_name: ['sysdb.sysparam'],
-		table_id: 'sysno',
-		filterCol: ['source','trantype'],
-		filterVal: ['IV','ZERO'],
-	}
-
-	$.get( "../../../../assets/php/entry.php?"+$.param(param) , function( data ) {
+	$.get( "util/getpadlen", function( data ) {
 			
 	},'json').done(function(data) {
-		if(!$.isEmptyObject(data.rows[0])){
+		if(!$.isEmptyObject(data[0])){
 			callback(data);
 		}
 	});
@@ -802,7 +815,7 @@ function checkPadExist(){
 	var msoftweb_padzero = localStorage.getItem('msoftweb_padzero');
 	if(!msoftweb_padzero){
 		getpadlen(function(data){
-			localStorage.setItem('msoftweb_padzero', data.rows[0].pvalue1);
+			localStorage.setItem('msoftweb_padzero', data[0].pvalue1);
 		});
 	}
 }

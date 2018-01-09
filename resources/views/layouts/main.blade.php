@@ -156,7 +156,7 @@
  	</style>	
     <title>@yield('title')</title>
 </head>
-<body>
+<body style="display:none">
 
 	 
 	<!-------------------------------- Search + table ---------------------------->

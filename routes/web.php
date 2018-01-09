@@ -16,7 +16,12 @@ Route::get('/login','SessionController@create')->name('login');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');
 
+
+/// Utility function ///
+Route::get('/util/getcompid','UtilController@getcompid');
+Route::get('/util/getpadlen','UtilController@getpadlen');
+
 //// Religion setup page ///
 Route::get('/religion','ReligionController@show');
 Route::get('/religion/table','ReligionController@table');
-Route::get('/religion/form','ReligionController@form');
+Route::post('/religion/form','ReligionController@form');

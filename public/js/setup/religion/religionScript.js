@@ -4,6 +4,8 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
 $(document).ready(function () {
+
+	$("body").show();
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -85,7 +87,6 @@ $(document).ready(function () {
 			close: function (event, ui) {
 				parent_close_disabled(false);
 				emptyFormdata(errorField, '#formdata');
-				$('.alert').detach();
 				$("#formdata a").off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", butt1);
@@ -112,7 +113,6 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 5, hidden: true },
-
 			{
 				label: 'Code', name: 'Code', width: 10, classes: 'wrap', canSearch: true, checked: true, editable: true,
 				editrules: { required: true },
@@ -122,6 +122,11 @@ $(document).ready(function () {
 				label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, editable: true,
 				editrules: { required: true },
 				editoptions: { maxlength: 100 },
+			},{
+				label: 'Record Status', name: 'recstatus', width: 80, formatter: formatterstatus, unformat: unformatstatus,
+				cellattr: function (rowid, cellvalue) {
+					return (cellvalue == 'Deactive') ? 'class="alert alert-danger"' : ''
+				},
 			},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
@@ -129,12 +134,7 @@ $(document).ready(function () {
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-			{
-				label: 'Record Status', name: 'recstatus', width: 80, formatter: formatterstatus, unformat: unformat,
-				cellattr: function (rowid, cellvalue) {
-					return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : ''
-				},
-			}
+			
 		],
 		autowidth: true,
 		multiSort: true,
@@ -155,32 +155,7 @@ $(document).ready(function () {
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 		},
 
-
 	});
-
-	////////////////////formatter status////////////////////////////////////////
-	function formatterstatus(cellvalue, option, rowObject) {
-		if (cellvalue == 'A') {
-			return 'Active';
-		}
-
-		if (cellvalue == 'D') {
-			return 'Deactive';
-		}
-
-	}
-
-	////////////////////unformatter status////////////////////////////////////////
-	function unformat(cellvalue, option, rowObject) {
-		if (cellvalue == 'Active') {
-			return 'Active';
-		}
-
-		if (cellvalue == 'Deactive') {
-			return 'Deactive';
-		}
-
-	}
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
@@ -233,15 +208,11 @@ $(document).ready(function () {
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-
 	populateSelect('#jqGrid', '#searchForm');
 	searchClick('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	// addParamField('#jqGrid', true, urlParam);
 	refreshGrid('#jqGrid',urlParam);
-
-	addParamField('#jqGrid', false, saveParam, ['idno']);
 
 
 });

@@ -6,6 +6,9 @@
 
     <div id="dialogForm" title="Add Form" >
 		<form class='form-horizontal' style='width:99%' id='formdata'>
+			{{ csrf_field() }}
+			<input type="hidden" name="idno">
+			
 			<div class="form-group">
 	        	<label class="col-md-2 control-label" for="Code">Code</label>  
 	              <div class="col-md-3">
