@@ -97,13 +97,13 @@ function addParamField(grid,needRefresh,param,except){
 
 function refreshGrid(grid,urlParam,oper){
 	if(oper == 'add'){
-		$(grid).jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(urlParam)}).trigger('reloadGrid', [{page:1}]);
+		$(grid).jqGrid('setGridParam',{datatype:'json',url:urlParam.url+'?'+$.param(urlParam)}).trigger('reloadGrid', [{page:1}]);
 	}else if(oper == 'edit' || oper == 'del'){
-		$(grid).jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(urlParam)}).trigger('reloadGrid', [{current:true}]);
+		$(grid).jqGrid('setGridParam',{datatype:'json',url:urlParam.url+'?'+$.param(urlParam)}).trigger('reloadGrid', [{current:true}]);
 	}else if(oper == 'kosongkan'){
 		$(grid).jqGrid('setGridParam',{datatype:'local'}).trigger('reloadGrid');
 	}else{
-		$(grid).jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(urlParam)}).trigger('reloadGrid');
+		$(grid).jqGrid('setGridParam',{datatype:'json',url:urlParam.url+'?'+$.param(urlParam)}).trigger('reloadGrid');
 	}
 }
 

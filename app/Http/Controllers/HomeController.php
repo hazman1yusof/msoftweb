@@ -9,7 +9,6 @@ use DB;
 class HomeController extends Controller
 {   
     var $_x=-2;
-    var $_class='main';
     var $_menu_str = "";
     var $_arr = array();
 
@@ -39,14 +38,13 @@ class HomeController extends Controller
                     ->orderBy('b.lineno', 'asc');
 
         foreach ($query->get() as $key=>$value){
-            $this->_class='main';
-            $this->create_sub_menu($value,$this->_x,$this->_class,$company);
+            $this->create_sub_menu($value,$this->_x,'main');
         }
 
         return $this->_menu_str;
     }
 
-    public function create_sub_menu($rowX,$x,$class,$compcode){
+    public function create_sub_menu($rowX,$x,$class){
         $user = Auth::user();
         $groupid = $user->groupid;
         $company = $user->compcode;
@@ -81,7 +79,7 @@ class HomeController extends Controller
 
                 foreach ($query->get() as $key=>$value){
                     $this->_class='notmain';
-                    $this->create_sub_menu($value,$this->_x,$this->_class,$company);
+                    $this->create_sub_menu($value,$this->_x,$this->_class);
                 }
                 
                 $this->_menu_str .= "</ul></li>";

@@ -16,7 +16,7 @@ Route::get('/login','SessionController@create')->name('login');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');
 
-Route::get('/religion',function(){
-	return view('setup.religion.religion');
-});
-
+//// Religion setup page ///
+Route::get('/religion','ReligionController@show');
+Route::get('/religion/table','ReligionController@table');
+Route::get('/religion/form','ReligionController@form');

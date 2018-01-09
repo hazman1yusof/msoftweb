@@ -55,7 +55,6 @@ $(document).ready(function () {
 			autoOpen: false,
 			open: function (event, ui) {
 				parent_close_disabled(true);
-				toggleFormData('#jqGrid', '#formdata');
 				switch (oper) {
 					case state = 'add':
 						$(this).dialog("option", "title", "Add");
@@ -81,7 +80,6 @@ $(document).ready(function () {
 				}
 				if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
-						//dialog_dept.handler(errorField);
 					}
 			},
 			close: function (event, ui) {
@@ -100,20 +98,14 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		field: '',
-		table_name: 'hisdb.religion',
-		table_id: 'Code',
-		sort_idno: true
+		url: '/religion/table',
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
-		field: '',
-		oper: oper,
-		table_name: 'hisdb.religion',
-		table_id: 'Code',
-		saveip:'true'
+		url: '/religion/form',
+		oper: oper
 	};
 
 	$("#jqGrid").jqGrid({
@@ -242,12 +234,13 @@ $(document).ready(function () {
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 
-	toogleSearch('#sbut1', '#searchForm', 'on');
 	populateSelect('#jqGrid', '#searchForm');
 	searchClick('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
+	// addParamField('#jqGrid', true, urlParam);
+	refreshGrid('#jqGrid',urlParam);
+
 	addParamField('#jqGrid', false, saveParam, ['idno']);
 
 
