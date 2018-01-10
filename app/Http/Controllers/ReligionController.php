@@ -45,22 +45,25 @@ class ReligionController extends Controller
             $religion ->paginate($request->rows);
 
         }else{
-
-            $pieces = explode(",", $request->sidx);
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            $religion = new religion;
             if(count($pieces)==1){
-                $religion = religion::orderBy($request->sidx, $request->sord);
+                $religion = $religion->orderBy($request->sidx, $request->sord);
             }else{
-                echo 'lebey dari satu';
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $religion = $religion->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
             }
-
-            $religion = $religion->paginate($request->rows);
+            $paginate = $religion->paginate($request->rows);
         }
 
         $responce = new stdClass();
-        $responce->page = $religion->currentPage();
-        $responce->total = $religion->lastPage();
-        $responce->records = $religion->total();
-        $responce->rows = $religion->items();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $religion->toSql();
 
         return json_encode($responce);
     }
