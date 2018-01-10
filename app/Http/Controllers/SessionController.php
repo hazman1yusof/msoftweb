@@ -21,13 +21,15 @@ class SessionController extends Controller
     	return view('init.login',compact("company"));
     }
 
-    public function store(){
+    public function store(Request $request){
     	$user = User::where('username',request('username'))
     				->where('password',request('password'))
     				->where('compcode',request('cmb_companies'))
     				->first();
     	if($user){
     		Auth::login($user);
+            $request->session()->put('compcode', request('cmb_companies'));
+            $request->session()->put('username', request('username'));
     		return redirect()->home();
     	}else{
     		return back();

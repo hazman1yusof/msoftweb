@@ -6,12 +6,22 @@ use App\religion;
 use Illuminate\Http\Request;
 use stdClass;
 use DB;
+use Auth;
 
 class ReligionController extends Controller
 {   
+    var $username;
+    var $compcode;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->username = session('username');
+        $this->compcdoe = session('compcode');
+    }
+
+    public function duplicate($check){
+        return religion::where('Code','=',$check)->count();
     }
 
     public function show(Request $request)
@@ -21,7 +31,10 @@ class ReligionController extends Controller
 
     public function table(Request $request)
     {   
-
+        $pieces = explode(",", $request->sidx);
+        if(count($pieces)==1){
+        }else{
+        }
         if(!empty($request->searchCol)){
             $religion = religion::where($request->searchCol[0],'like',$request->searchVal[0])
                             ->paginate($request->rows);
@@ -54,19 +67,28 @@ class ReligionController extends Controller
 
     public function add(Request $request){
 
-        DB::beginTransaction();
+        if($this->duplicate($request->Code)){
+            return response('duplicate', 500);
+        }
 
         try {
 
-            religion::create([
-                
-                
+            $religion = new religion;
+            $religion->insert([
+                'Code' => $request->Code,
+                'Description' => $request->Description,
+                'recstatus' => 'A',
+                'adduser' => session('username'),
+                'lastcomputerid' => $request->lastcomputerid,
+                'lastipaddress' => $request->lastipaddress,
             ]);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
         }
+
+        return $religion;
     }
 
     public function edit(Request $request){
@@ -76,7 +98,14 @@ class ReligionController extends Controller
         try {
 
             $religion = religion::find($request->idno);
-            $religion->update($request->all());
+            $religion->update([
+                'Code' => $request->Code,
+                'Description' => $request->Description,
+                'recstatus' => 'A',
+                'upduser' => session('username'),
+                'lastcomputerid' => $request->lastcomputerid,
+                'lastipaddress' => $request->lastipaddress,
+            ]);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -93,7 +122,11 @@ class ReligionController extends Controller
         try {
 
             $religion = religion::find($request->idno);
-            $religion->update($request->input());
+            $religion->update([
+                'recstatus' => 'D',
+                'deluser' => $this->username,
+                'deldate' => 'NOW'
+            ]);
 
             DB::commit();
         } catch (\Exception $e) {
