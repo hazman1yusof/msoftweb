@@ -31,15 +31,29 @@ class ReligionController extends Controller
 
     public function table(Request $request)
     {   
-        $pieces = explode(",", $request->sidx);
-        if(count($pieces)==1){
-        }else{
-        }
+        
         if(!empty($request->searchCol)){
-            $religion = religion::where($request->searchCol[0],'like',$request->searchVal[0])
-                            ->paginate($request->rows);
+            $religion = religion::where($request->searchCol[0],'like',$request->searchVal[0]);
+
+            $pieces = explode(",", $request->sidx);
+            if(count($pieces)==1){
+                $religion->orderBy($request->sidx, $request->sord);
+            }else{
+                echo 'lebey dari satu';
+            }
+
+            $religion ->paginate($request->rows);
+
         }else{
-            $religion = religion::paginate($request->rows);
+
+            $pieces = explode(",", $request->sidx);
+            if(count($pieces)==1){
+                $religion = religion::orderBy($request->sidx, $request->sord);
+            }else{
+                echo 'lebey dari satu';
+            }
+
+            $religion = $religion->paginate($request->rows);
         }
 
         $responce = new stdClass();

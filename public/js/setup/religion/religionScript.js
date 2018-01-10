@@ -143,6 +143,8 @@ $(document).ready(function () {
 		width: 900,
 		height: 350,
 		rowNum: 30,
+		sortname: 'idno',
+		sortorder: 'desc',
 		pager: "#jqGridPager",
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			$("#jqGridPager td[title='Edit Selected Row']").click();
