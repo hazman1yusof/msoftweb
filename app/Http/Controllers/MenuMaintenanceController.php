@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\religion;
 use Illuminate\Http\Request;
-use stdClass;
-use DB;
-use Auth;
-use Carbon\Carbon;
+use App\Menu_maintenance;
 
-class ReligionController extends Controller
-{   
-
-    public function __construct()
+class MenuMaintenanceController extends Controller
+{
+     public function __construct()
     {
         $this->middleware('auth');
     }

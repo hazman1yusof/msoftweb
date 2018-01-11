@@ -1,8 +1,10 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body>
-	 
+@extends('layouts.main')
+
+@section('title', 'Menu Maintenance')
+
+
+@section('dialogform')
+
 	<!-------------------------------- table ---------------------->
 	<div class="well" style="margin: 10px;padding-top: 0px"><h4>Menu Navigation:</h4>
 		<div id='btngroup' class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -90,17 +92,9 @@
                 
 			</form>
 		</div>
-	
-	<!-- JS Implementing Plugins -->
+@endsection
 
-	<!-- JS Customization -->
 
-	<!-- JS Page Level -->
-	<script src="menu_maintenance.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-
-<script>
-		
-</script>
-</body>
-</html>
+@section('scripts')
+	<script src="js/setup/menu_maintenance/menu_maintenance.js"></script>
+@endsection

@@ -21,6 +21,13 @@ Route::get('/logout','SessionController@destroy')->name('logout');
 Route::get('/util/getcompid','UtilController@getcompid');
 Route::get('/util/getpadlen','UtilController@getpadlen');
 
+
+//// menu mainatenance page ///
+Route::get('/menu_maintenance','MenuMaintenanceController@show');
+Route::get('/menu_maintenance/table','MenuMaintenanceController@table');
+Route::post('/menu_maintenance/form','MenuMaintenanceController@form');
+
+
 //// Religion setup page ///
 Route::get('/religion','ReligionController@show');
 Route::get('/religion/table','ReligionController@table');
