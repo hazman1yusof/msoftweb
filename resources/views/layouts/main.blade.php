@@ -158,19 +158,8 @@
 </head>
 <body style="display:none">
 
-	 
-	<!-------------------------------- Search + table ---------------------------->
 
-	@include('layouts.default_search_and_table')
-
-	<!-------------------------------- End Search + table ------------------------>
-
-
-	<!-------------------------------- Dialog Form ------------------------------>
-
-	@yield('dialogform')
-
-	<!-------------------------------- End Dialog Form -------------------------->
+	@yield('body')
 
 	@yield('scripts')
 	<!-- <script src="religionScript.js"></script> example yielded scripts-->

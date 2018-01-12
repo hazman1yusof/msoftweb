@@ -2,8 +2,7 @@
 
 @section('title', 'Menu Maintenance')
 
-
-@section('dialogform')
+@section('body')
 
 	<!-------------------------------- table ---------------------->
 	<div class="well" style="margin: 10px;padding-top: 0px"><h4>Menu Navigation:</h4>

@@ -1,7 +1,7 @@
 
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
-		$("body").show();
+		var editedRow=0;
 
 		$(document).ready(function () {
 			/////////////////////////validation//////////////////////////
@@ -92,16 +92,20 @@
 
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
-				action: 'get_table_default',
-				url: '/menu_maintenance/table',
+				action:'get_table_default',
+				field:'',
+				table_name:'sysdb.programtab',
+				table_id:'idno',
 				filterCol:['programmenu'],
 				filterVal:['main']
 			}
 
 			var saveParam={
-				action: 'save_table_default',
-				url: '/menu_maintenance/form',
-				oper: oper
+				action:'menu_maintenance_save',
+				field:'',
+				oper: oper,
+				table_name:'sysdb.programtab',
+				table_id:'idno'
 			};
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -215,7 +219,7 @@
 			//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-			refreshGrid('#jqGrid',urlParam);
+			addParamField('#jqGrid',true,urlParam);
 
 
 			function resetwhereatID(){

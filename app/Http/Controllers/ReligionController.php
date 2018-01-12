@@ -12,13 +12,16 @@ use Carbon\Carbon;
 class ReligionController extends Controller
 {   
 
+    var $table;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->table = new religion;
     }
 
     public function duplicate($check){
-        return religion::where('Code','=',$check)->count();
+        return $this->table->where('Code','=',$check)->count();
     }
 
     public function show(Request $request)
@@ -29,38 +32,40 @@ class ReligionController extends Controller
     public function table(Request $request)
     {   
         
+        $pieces = explode(", ", $request->sidx .' '. $request->sord);
+        $table = $this->table;
+
+        /////////where/////////
+
+
+        
+        /////////searching/////////
         if(!empty($request->searchCol)){
-            $religion = religion::where($request->searchCol[0],'like',$request->searchVal[0]);
-
-            $pieces = explode(",", $request->sidx);
-            if(count($pieces)==1){
-                $religion->orderBy($request->sidx, $request->sord);
-            }else{
-                echo 'lebey dari satu';
+            foreach ($request->searchCol as $key => $value) {
+                $table = $table->orWhere($request->searchCol[$key],'like',$request->searchVal[$key]);
             }
+         }
 
-            $religion ->paginate($request->rows);
-
+        //////////ordering/////////
+        if(count($pieces)==1){
+            $table = $table->orderBy($request->sidx, $request->sord);
         }else{
-            $pieces = explode(", ", $request->sidx .' '. $request->sord);
-            $religion = new religion;
-            if(count($pieces)==1){
-                $religion = $religion->orderBy($request->sidx, $request->sord);
-            }else{
-                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
-                    $pieces_inside = explode(" ", $pieces[$i]);
-                    $religion = $religion->orderBy($pieces_inside[0], $pieces_inside[1]);
-                }
+            for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                $pieces_inside = explode(" ", $pieces[$i]);
+                $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
             }
-            $paginate = $religion->paginate($request->rows);
         }
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
         $responce->records = $paginate->total();
         $responce->rows = $paginate->items();
-        $responce->sql = $religion->toSql();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
     }
@@ -87,8 +92,7 @@ class ReligionController extends Controller
 
         try {
 
-            $religion = new religion;
-            $religion->insert([
+            $this->table->insert([
                 'compcode' => session('compcdoe'),
                 'Code' => $request->Code,
                 'Description' => $request->Description,
@@ -104,7 +108,6 @@ class ReligionController extends Controller
             DB::rollback();
         }
 
-        return $religion;
     }
 
     public function edit(Request $request){
@@ -113,8 +116,8 @@ class ReligionController extends Controller
 
         try {
 
-            $religion = religion::find($request->idno);
-            $religion->update([
+            $table = $this->table->find($request->idno);
+            $table->update([
                 'compcode' => session('compcdoe'),
                 'Code' => $request->Code,
                 'Description' => $request->Description,
@@ -130,7 +133,6 @@ class ReligionController extends Controller
             DB::rollback();
         }
 
-        return $religion;
     }
 
     public function del(Request $request){
@@ -139,10 +141,10 @@ class ReligionController extends Controller
 
         try {
 
-            $religion = religion::find($request->idno);
-            $religion->update([
+            $table = $this->table->find($request->idno);
+            $table->update([
                 'recstatus' => 'D',
-                'deluser' => $this->username,
+                'deluser' => session('username'),
                 'deldate' => Carbon::now(),
             ]);
 
@@ -151,6 +153,5 @@ class ReligionController extends Controller
             DB::rollback();
         }
 
-        return $religion;
     }
 }
