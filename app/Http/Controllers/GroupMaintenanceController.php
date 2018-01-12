@@ -9,9 +9,8 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 
-class MenuMaintenanceController extends Controller
-{   
-
+class GroupMaintenanceController extends Controller
+{
     var $table;
     var $duplicateCode;
 
@@ -28,11 +27,12 @@ class MenuMaintenanceController extends Controller
 
     public function show(Request $request)
     {   
-        return view('setup.menu_maintenance.menu_maintenance');
+        return view('setup.group_maintenance.group_maintenance');
     }
 
     public function table(Request $request)
     {   
+        $pieces = explode(", ", $request->sidx .' '. $request->sord);
         $table = $this->table;
 
         /////////where/////////
@@ -46,15 +46,12 @@ class MenuMaintenanceController extends Controller
          }
 
         //////////ordering/////////
-        if(!empty($request->sidx)){
-            $pieces = explode(", ", $request->sidx .' '. $request->sord);
-            if(count($pieces)==1){
-                $table = $table->orderBy($request->sidx, $request->sord);
-            }else{
-                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
-                    $pieces_inside = explode(" ", $pieces[$i]);
-                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
-                }
+        if(count($pieces)==1){
+            $table = $table->orderBy($request->sidx, $request->sord);
+        }else{
+            for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                $pieces_inside = explode(" ", $pieces[$i]);
+                $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
             }
         }
 

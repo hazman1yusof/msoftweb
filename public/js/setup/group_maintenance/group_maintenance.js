@@ -1,7 +1,7 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow = 0;
+		$("body").show();
 
 $(document).ready(function () {
 	/////////////////////////validation//////////////////////////
@@ -104,6 +104,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
+		url:'/util/get_table_default',
 		field: '',
 		table_name: 'sysdb.groups',
 		table_id: 'groupid'
@@ -111,6 +112,7 @@ $(document).ready(function () {
 
 	var saveParam = {
 		action: 'save_table_default',
+		action: '/util/save_table_default',
 		field: '',
 		oper: oper,
 		table_name: 'sysdb.groups',

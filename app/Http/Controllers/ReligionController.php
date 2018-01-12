@@ -31,8 +31,6 @@ class ReligionController extends Controller
 
     public function table(Request $request)
     {   
-        
-        $pieces = explode(", ", $request->sidx .' '. $request->sord);
         $table = $this->table;
 
         /////////where/////////
@@ -47,12 +45,15 @@ class ReligionController extends Controller
          }
 
         //////////ordering/////////
-        if(count($pieces)==1){
-            $table = $table->orderBy($request->sidx, $request->sord);
-        }else{
-            for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
-                $pieces_inside = explode(" ", $pieces[$i]);
-                $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+        if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
             }
         }
 

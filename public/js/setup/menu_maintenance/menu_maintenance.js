@@ -230,9 +230,11 @@
 							field:['lineno','programname'],
 							table_name:'sysdb.programtab',
 							filterCol:['programmenu'],
-							filterVal:[arraybtngrp[arraybtngrp.length-1]]
+							filterVal:[arraybtngrp[arraybtngrp.length-1]],
+							sortby:'lineno',
+							sortorder:'asc'
 						}
-					$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+					$.get( "/util/getter?"+$.param(param), function( data ) {
 						
 					},'json').done(function(data) {
 						if(!$.isEmptyObject(data.rows)){

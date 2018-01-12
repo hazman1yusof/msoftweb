@@ -16,17 +16,21 @@ Route::get('/login','SessionController@create')->name('login');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');
 
-
 /// Utility function ///
 Route::get('/util/getcompid','UtilController@getcompid');
 Route::get('/util/getpadlen','UtilController@getpadlen');
-
+Route::get('/util/getter','UtilController@getter');
+Route::get('/util/get_table_default','UtilController@get_table_default');
 
 //// menu mainatenance page ///
 Route::get('/menu_maintenance','MenuMaintenanceController@show');
 Route::get('/menu_maintenance/table','MenuMaintenanceController@table');
 Route::post('/menu_maintenance/form','MenuMaintenanceController@form');
 
+//// group mainatenance page ///
+Route::get('/group_maintenance','GroupMaintenanceController@show');
+Route::get('/group_maintenance/table','GroupMaintenanceController@table');
+Route::post('/group_maintenance/form','GroupMaintenanceController@form');
 
 //// Religion setup page ///
 Route::get('/religion','ReligionController@show');

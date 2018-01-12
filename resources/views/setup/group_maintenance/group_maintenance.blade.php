@@ -1,7 +1,9 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body>
+@extends('layouts.main')
+
+@section('title', 'Menu Maintenance')
+
+@section('body')
+
 	 
 	<!-------------------------------- table ---------------------->
 	<div class="panel panel-default" style="margin: 10px; padding: 5px">
@@ -16,10 +18,14 @@
 		<div id="grp_main" class="tab-pane fade in active">
 
 			<div class='row'>
-		    	<div id="jqGrid_grpmaintenance_c" class='col-md-12' style="padding:0 0 15px 0">
-		            <table id="jqGrid_grpmaintenance" class="table table-striped"></table>
-		            <div id="jqGridPager_grpmaintenance"></div>
-		        </div>
+				<div class="panel panel-default">
+		    	<div class="panel-body">
+			    	<div id="jqGrid_grpmaintenance_c" class='col-md-12' style="padding:0 0 15px 0">
+			            <table id="jqGrid_grpmaintenance" class="table table-striped"></table>
+			            <div id="jqGridPager_grpmaintenance"></div>
+			        </div>
+			    </div>
+			    </div>
 		    </div>
 
 		</div>
@@ -35,10 +41,14 @@
 			</div>
 
 			<div class='row'>
-		    	<div id="jqGrid_grpaccess_c" class='col-md-12' style="padding:0 0 15px 0">
-		            <table id="jqGrid_grpaccess" class="table table-striped"></table>
-		            <div id="jqGridPager_grpaccess"></div>
-		        </div>
+				<div class="panel panel-default">
+		    	<div class="panel-body">
+			    	<div id="jqGrid_grpaccess_c" class='col-md-12' style="padding:0 0 15px 0">
+			            <table id="jqGrid_grpaccess" class="table table-striped"></table>
+			            <div id="jqGridPager_grpaccess"></div>
+			        </div>
+			    </div>
+			    </div>
 		    </div>
 
 		</div>
@@ -49,7 +59,7 @@
 		
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%;' id='formdata'>
-
+				{{ csrf_field() }}
 				<div class="well form-group" grpmaintenance style="margin-left: 0px">
 				  <label class="control-label" for="groupid">Group ID</label> 
 				  	<input id="groupid" name="groupid" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
@@ -76,17 +86,11 @@
                 
 			</form>
 		</div>
-	
-	<!-- JS Implementing Plugins -->
 
-	<!-- JS Customization -->
 
-	<!-- JS Page Level -->
-	<script src="group_maintenance.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
+@endsection
 
-<script>
-		
-</script>
-</body>
-</html>
+
+@section('scripts')
+	<script src="js/setup/group_maintenance/group_maintenance.js"></script>
+@endsection

@@ -15,13 +15,13 @@
 
 
 	<div class='row'>
-    	  <div class="panel panel-default">
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
+    	<div class="panel panel-default">
+    		<div class="panel-body">
+    			<div class='col-md-12' style="padding:0 0 15px 0">
+    				<table id="jqGrid" class="table table-striped"></table>
+    					<div id="jqGridPager"></div>
+				</div>
+    		</div>
 		</div>
     </div>
 	<!-------------------------------- table ------------------>
@@ -29,7 +29,7 @@
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%;' id='formdata'>
 				<div class="well form-inline" style="margin-left: 0px">
-
+					{{ csrf_field() }}
 				  <label class="control-label">Item Type
 				  	<select class="form-control" id='programtype' name='programtype'>
 				  		<option value='P'>Program</option>
