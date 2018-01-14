@@ -9,7 +9,7 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 
-class ReligionController extends Controller
+class ReligionController extends defaultController
 {   
 
     var $table;
@@ -87,6 +87,8 @@ class ReligionController extends Controller
 
     public function add(Request $request){
 
+        DB::beginTransaction();
+
         if($this->duplicate($request->Code)){
             return response('duplicate', 500);
         }
@@ -94,7 +96,7 @@ class ReligionController extends Controller
         try {
 
             $this->table->insert([
-                'compcode' => session('compcdoe'),
+                'compcode' => session('compcode'),
                 'Code' => $request->Code,
                 'Description' => $request->Description,
                 'recstatus' => 'A',
@@ -119,7 +121,7 @@ class ReligionController extends Controller
 
             $table = $this->table->find($request->idno);
             $table->update([
-                'compcode' => session('compcdoe'),
+                'compcode' => session('compcode'),
                 'Code' => $request->Code,
                 'Description' => $request->Description,
                 'recstatus' => 'A',

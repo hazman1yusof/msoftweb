@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Menu Maintenance')
+@section('title', 'Group Maintenance')
 
 @section('body')
 
@@ -60,6 +60,8 @@
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%;' id='formdata'>
 				{{ csrf_field() }}
+				<input id="idno" name="idno" type="hidden">
+
 				<div class="well form-group" grpmaintenance style="margin-left: 0px">
 				  <label class="control-label" for="groupid">Group ID</label> 
 				  	<input id="groupid" name="groupid" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>

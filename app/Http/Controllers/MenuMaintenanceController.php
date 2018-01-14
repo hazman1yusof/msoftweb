@@ -198,7 +198,9 @@ class MenuMaintenanceController extends Controller
 						->get();
 
 				foreach ($get_dalam as $key_dalam => $value_dalam) {
-						DB::raw("INSERT INTO sysdb.groupacc (compcode,groupid,programmenu,lineno,canrun,yesall) SELECT '".session('compcode')."','".$get1->groupid."','".$request->programmenu."',lineno,1,0 FROM sysdb.programtab where compcode='".session('compcode')."' and programid=".$request->programid."' and programmenu='".$request->programmenu."'");
+					$raw = DB::raw("INSERT INTO sysdb.groupacc (compcode,groupid,programmenu,lineno,canrun,yesall) SELECT '".session('compcode')."','".$value_dalam->groupid."','".$request->programmenu."',lineno,1,0 FROM sysdb.programtab where compcode='".session('compcode')."' and programid='".$request->programid."' and programmenu='".$request->programmenu."'");
+
+					DB::insert($raw);
 				}
 			}
 

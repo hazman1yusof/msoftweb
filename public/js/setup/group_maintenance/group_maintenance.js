@@ -37,10 +37,10 @@ $(document).ready(function () {
 				} else {
 					saveFormdata("#jqGrid_grpaccess", "#dialogForm", "#formdata", oper, saveParam2, urlParam2, null,
 						{
-							yesallold: selrowData('#jqGrid_grpaccess').groupacc_yesall,
-							canrunold: selrowData('#jqGrid_grpaccess').groupacc_canrun,
-							programid: selrowData('#jqGrid_grpaccess').programtab_programid,
-							lineno: selrowData('#jqGrid_grpaccess').programtab_lineno,
+							yesallold: selrowData('#jqGrid_grpaccess').yesall,
+							canrunold: selrowData('#jqGrid_grpaccess').canrun,
+							programid: selrowData('#jqGrid_grpaccess').programid,
+							lineno: selrowData('#jqGrid_grpaccess').lineno,
 							groupid: selrowData('#jqGrid_grpmaintenance').groupid,
 							programmenu: arraybtngrp[arraybtngrp.length - 1]
 						});
@@ -105,15 +105,14 @@ $(document).ready(function () {
 	var urlParam = {
 		action: 'get_table_default',
 		url:'/util/get_table_default',
-		field: '',
 		table_name: 'sysdb.groups',
 		table_id: 'groupid'
 	}
 
 	var saveParam = {
-		action: 'save_table_default',
-		action: '/util/save_table_default',
-		field: '',
+		action: 'grpmaintenance_save',
+		field: ['groupid','description'],
+		url: '/group_maintenance/form',
 		oper: oper,
 		table_name: 'sysdb.groups',
 		table_id: 'groupid'
@@ -127,6 +126,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Group Id', name: 'groupid', width: 100 },
 			{ label: 'Description', name: 'description', width: 300 },
+			{ label: 'idno', name: 'idno', width: 50, hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -196,27 +196,27 @@ $(document).ready(function () {
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid_grpmaintenance', true, urlParam);
-	addParamField('#jqGrid_grpmaintenance', false, saveParam);
+	refreshGrid('#jqGrid_grpmaintenance',urlParam);
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam2 = {
 		action: 'get_table_default',
-		field: '',
+		url: '/util/get_table_default',
 		table_name: ['sysdb.programtab', 'sysdb.groupacc'],
-		table_id: 'programtab_idno',
+		field:['programtab.lineno','programtab.programname','programtab.programtype','programtab.programid','groupacc.canrun','groupacc.yesall','programtab.idno'],
 		join_type: ['LEFT JOIN'],
 		join_onCol: ['programtab.programmenu'],
 		join_onVal: ['groupacc.programmenu'],
-		join_filterCol: [['programtab.lineno', 'programtab.compcode', 'groupacc.groupid']],
-		join_filterVal: [['skip.groupacc.lineno', 'skip.groupacc.compcode', '']],
-		fixPost: true,
+		join_filterCol: [['programtab.lineno on =', 'programtab.compcode on =', 'groupacc.groupid where =']],
+		join_filterVal: [['groupacc.lineno', 'groupacc.compcode', '']],
 		filterCol: ['programtab.programmenu'],
-		filterVal: ['main']
+		filterVal: ['main'],
+		sortby: ['programtab.lineno asc']
 	}
 
 	var saveParam2 = {
-		action: 'group_maintenance_save',
+		action: 'grpaccess_save',
+		url: '/group_maintenance/form',
 		field: '',
 		oper: oper,
 		table_name: 'sysdb.programtab',
@@ -229,13 +229,13 @@ $(document).ready(function () {
 	$("#jqGrid_grpaccess").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'Line No', name: 'programtab_lineno', width: 50, hidden: true },
-			{ label: 'Program Name', name: 'programtab_programname', width: 200 },
-			{ label: 'Program Type', name: 'programtab_programtype', width: 50, formatter: programtype, unformat: de_programtype },
-			{ label: 'Program Id', name: 'programtab_programid', width: 100 },
-			{ label: 'Can Run', name: 'groupacc_canrun', formatter: zero_one, width: 50 },
-			{ label: 'Yes all', name: 'groupacc_yesall', formatter: zero_one, width: 50 },
-			{ label: 'idno', name: 'programtab_idno', width: 50, hidden: true },
+			{ label: 'Line No', name: 'lineno', width: 50, hidden: true },
+			{ label: 'Program Name', name: 'programname', width: 200 },
+			{ label: 'Program Type', name: 'programtype', width: 50, formatter: programtype, unformat: de_programtype },
+			{ label: 'Program Id', name: 'programid', width: 100 },
+			{ label: 'Can Run', name: 'canrun', formatter: zero_one, width: 50 },
+			{ label: 'Yes all', name: 'yesall', formatter: zero_one, width: 50 },
+			{ label: 'idno', name: 'idno', width: 50, hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -244,11 +244,9 @@ $(document).ready(function () {
 		width: 900,
 		height: 250,
 		rowNum: 30,
-		sortname: 'programtab_lineno',
-		sortorder: 'asc',
 		pager: "#jqGridPager_grpaccess",
 		ondblClickRow: function (rowid, iRow, iCol, e) {
-			if ($("#jqGrid_grpaccess").jqGrid('getRowData', rowid).programtab_programtype != 'P') {
+			if ($("#jqGrid_grpaccess").jqGrid('getRowData', rowid).programtype != 'P') {
 				apenddbtngroup($("#jqGrid_grpaccess").jqGrid('getRowData', rowid));
 			} else {
 				$("#jqGridPager_grpaccess td[title='Edit Selected Row']").click();
@@ -289,8 +287,7 @@ $(document).ready(function () {
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid_grpaccess', false, urlParam2);
-	addParamField('#jqGrid_grpaccess', false, saveParam2);
+	refreshGrid('#jqGrid_grpaccess',urlParam2);
 
 	show_grpaccess(false);
 	enable_grpaccessPill(false);
@@ -332,11 +329,11 @@ $(document).ready(function () {
 
 	var arraybtngrp = ['main'];
 	function apenddbtngroup(rowdata) {
-		urlParam2.filterVal[0] = rowdata.programtab_programid;
-		$("<div class='btn-group' role='group'><button type='button' class='btn btn-default' programid='" + rowdata.programtab_programid + "'>" + rowdata.programtab_programname + "</button></div>").hide().appendTo('#btngroup').fadeIn(500);
+		urlParam2.filterVal[0] = rowdata.programid;
+		$("<div class='btn-group' role='group'><button type='button' class='btn btn-default' programid='" + rowdata.programid + "'>" + rowdata.programname + "</button></div>").hide().appendTo('#btngroup').fadeIn(500);
 
-		$("button[programid = '" + rowdata.programtab_programid + "']").on("click", gotobreadcrumb);
-		arraybtngrp.push(rowdata.programtab_programid);
+		$("button[programid = '" + rowdata.programid + "']").on("click", gotobreadcrumb);
+		arraybtngrp.push(rowdata.programid);
 
 		refreshGrid("#jqGrid_grpaccess", urlParam2);
 	}

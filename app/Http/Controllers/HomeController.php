@@ -87,7 +87,7 @@ class HomeController extends Controller
             }
             else
             {   
-                $this->_menu_str .= "<li><a style='padding-left:".$this->tab($this->_x)."' title='".$rowX->programname."' class='clickable' programid='".$rowX->programid."' targetURL='page/".$rowX->url."'><span class='lilabel'>".$rowX->programname."</span></a></li>"; 
+                $this->_menu_str .= "<li><a style='padding-left:".$this->tab($this->_x)."' title='".$rowX->programname."' class='clickable' programid='".$rowX->programid."' targetURL='".$rowX->url."'><span class='lilabel'>".$rowX->programname."</span></a></li>"; 
             }
 
             $this->_x = $this->_x-1;

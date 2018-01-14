@@ -231,10 +231,9 @@
 							table_name:'sysdb.programtab',
 							filterCol:['programmenu'],
 							filterVal:[arraybtngrp[arraybtngrp.length-1]],
-							sortby:'lineno',
-							sortorder:'asc'
+							sortby: ['lineno asc']
 						}
-					$.get( "/util/getter?"+$.param(param), function( data ) {
+					$.get( "/util/get_value_default?"+$.param(param), function( data ) {
 						
 					},'json').done(function(data) {
 						if(!$.isEmptyObject(data.rows)){

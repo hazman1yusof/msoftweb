@@ -19,7 +19,7 @@ Route::get('/logout','SessionController@destroy')->name('logout');
 /// Utility function ///
 Route::get('/util/getcompid','UtilController@getcompid');
 Route::get('/util/getpadlen','UtilController@getpadlen');
-Route::get('/util/getter','UtilController@getter');
+Route::get('/util/get_value_default','UtilController@get_value_default');
 Route::get('/util/get_table_default','UtilController@get_table_default');
 
 //// menu mainatenance page ///

@@ -5,32 +5,29 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use stdClass;
 use DB;
-use App\sysparam;
+use Auth;
+use Carbon\Carbon;
 
-class UtilController extends Controller
-{
-    //
-    public function __construct(){
-        $this->middleware('auth');
+abstract class defaultController extends Controller{
+
+    public function default_duplicate($table,$duplicateCode,$duplicateValue){
+        return DB::table($table)->where($duplicateCode,'=',$duplicateValue)->count();
     }
 
-    public function getcompid(){
-    	$responce = new stdClass();
-		$responce->ipaddress =  $_SERVER['REMOTE_ADDR'];
-		$responce->computerid = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-
-		return json_encode($responce);
+    public function defaultSetter(Request $request){
+    	switch($request->oper){
+            case 'add':
+                return $this->defaultAdd($request);
+            case 'edit':
+                return $this->defaultEdit($request);
+            case 'del':
+                return $this->defaultDel($request);
+            default:
+                return 'error happen..';
+        }
     }
 
-    public function getpadlen(){
-
-        return sysparam::select('pvalue1')
-            ->where('source','=','IV')
-            ->where('trantype','=','ZERO')
-            ->get();
-    }
-
-    public function getter(Request $request){
+    public function defaultGetter(Request $request){
 
         //////////make table/////////////
         if(is_array($request->table_name)){
@@ -133,5 +130,84 @@ class UtilController extends Controller
         $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
+    }
+
+    public function defaultAdd(Request $request){
+
+        DB::beginTransaction();
+
+        $table = DB::table($request->table_name);
+
+        $array_insert = [
+        	'compcode' => session('compcode'),
+            'adduser' => session('username'),
+            'adddate' => Carbon::now(),
+            'recstatus' => 'A'
+        ];
+
+        foreach ($request->field as $key => $value) {
+        	$array_insert[$value] = $request[$value];
+        }
+
+        try {
+
+            $table->insert($array_insert);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+    }
+
+    public function defaultEdit(Request $request){
+
+        DB::beginTransaction();
+
+        $table = DB::table($request->table_name);
+
+        $array_update = [
+        	'compcode' => session('compcode'),
+            'upduser' => session('username'),
+            'upddate' => Carbon::now(),
+            'recstatus' => 'A'
+        ];
+
+        foreach ($request->field as $key => $value) {
+        	$array_update[$value] = $request[$value];
+        }
+
+        try {
+
+            $table = $table->where('idno','=',$request->idno);
+            $table->update($array_update);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+    }
+
+    public function defaultDel(Request $request){
+
+        DB::beginTransaction();
+
+        $table = DB::table($request->table_name);
+
+        try {
+
+            $table = $table->where('idno','=',$request->idno);
+            $table->update([
+                'deluser' => session('username'),
+                'deldate' => Carbon::now(),
+                'recstatus' => 'D',
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
     }
 }

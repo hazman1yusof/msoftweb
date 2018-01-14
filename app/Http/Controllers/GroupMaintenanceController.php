@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\programtab;
+use App\groupacc;
 use Illuminate\Http\Request;
 use stdClass;
 use DB;
 use Auth;
 use Carbon\Carbon;
 
-class GroupMaintenanceController extends Controller
+class GroupMaintenanceController extends defaultController
 {
     var $table;
     var $duplicateCode;
@@ -17,7 +17,7 @@ class GroupMaintenanceController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->table = new programtab;
+        $this->table = new groupacc;
         $this->duplicateCode = "programid";
     }
 
@@ -73,11 +73,23 @@ class GroupMaintenanceController extends Controller
     {   
         switch($request->oper){
             case 'add':
-                return $this->add($request);
+            	if($request->action == "grpmaintenance_save"){
+            		return $this->defaultAdd($request);
+            	}else{
+                	return $this->add($request);
+            	}
             case 'edit':
-                return $this->edit($request);
+            	if($request->action == "grpmaintenance_save"){
+            		return $this->defaultEdit($request);
+            	}else{
+                	return $this->add($request);
+            	}
             case 'del':
-                return $this->del($request);
+            	if($request->action == "grpmaintenance_save"){
+            		return $this->defaultDel($request);
+            	}else{
+                	return $this->add($request);
+            	}
             default:
                 return 'error happen..';
         }
@@ -86,117 +98,60 @@ class GroupMaintenanceController extends Controller
     public function add(Request $request){
         DB::beginTransaction();
 
-        if($this->duplicate($request->programid)){
-            return response('duplicate', 500);
-        }
+		$canrun=$request->canrun;
+		$yesall=$request->yesall;
+		$canrunold=$request->canrunold;
+		$yesallold=$request->yesallold;
+	    $groupid=$request->groupid;
+	    $programid=$request->programid;
+	    $programmenu=$request->programmenu;
+	    $lineno=$request->lineno;
+
 
         try {
-        	$at_where = $request->whereat;
 
-			if($at_where=='after'){
+        	if($canrun=="Yes" && $canrunold=="No"){//insert into groupacc
 
-				//step1 increase lineno at programtab by 1 -> yang ni line no after jer
-				DB::table('sysdb.programtab')
-					->where('compcode', '=', session('compcode'))
-					->where('programmenu', '=', $request->programmenu)
-					->where('lineno', '>', $request->idAfter)
-					->increment('lineno',1);
+        		$raw = DB::raw("INSERT INTO sysdb.groupacc (compcode,groupid,programmenu,lineno,canrun) VALUES ('".session('compcode')."', '{$groupid}', '{$programmenu}', '{$lineno}','1')");
 
-				//step2 increase lineno at groupacc by 1 also -> yang ni line no after jer
-				DB::table('sysdb.groupacc')
-					->where('compcode', '=', session('compcode'))
-					->where('programmenu', '=', $request->programmenu)
-					->where('lineno', '>', $request->idAfter)
-					->increment('lineno',1);
+				DB::insert($raw);
 
-				//insert to programtab by its approprite lineno
-				DB::table('sysdb.programtab')
-					->insert([
-						'compcode' => session('compcode'),
-						'programmenu' => $request->programmenu,
-						'lineno' => $request->idAfter + 1,
-						'programname' => $request->programname,
-						'programid' => $request->programid,
-						'programtype' => $request->programtype,
-						'url' => $request->url,
-						'remarks' => $request->remarks,
-						'condition1' => $request->condition1,
-						'condition2' => $request->condition2,
-						'adduser' => session('username'),
-						'adddate' => Carbon::now()
-					]);
+				if($yesall=="Yes" && $yesallold=="No"){//update groupacc and insert child
 
-			}else if($at_where=='first'){
-				//step1 increase lineno at programtab by 1 -> yang ni suma sekali
-				DB::table('sysdb.programtab')
-					->where('compcode', '=', session('compcode'))
-					->where('programmenu', '=', $request->programmenu)
-					->increment('lineno',1);
+					$sql2 =  DB::raw("UPDATE sysdb.groupacc SET yesall=1 WHERE lineno='{$lineno}' and groupid='{$groupid}' and programmenu='{$programmenu}' and compcode='".session('compcode')."'");
+					$sql3 =  DB::raw("INSERT INTO sysdb.groupacc (compcode,groupid,programmenu,lineno,canrun) SELECT compcode,'{$groupid}',programmenu,lineno,'1' FROM sysdb.programtab WHERE programmenu='{$programid}' AND compcode='".session('compcode')."'");
 
-				//step2 increase lineno at groupacc by 1 also -> yang ni suma sekali
-				DB::table('sysdb.groupacc')
-					->where('compcode', '=', session('compcode'))
-					->where('programmenu', '=', $request->programmenu)
-					->increment('lineno',1);
-
-				//insert to programtab by its approprite lineno
-				DB::table('sysdb.programtab')
-					->insert([
-						'compcode' => session('compcode'),
-						'programmenu' => $request->programmenu,
-						'lineno' => 1,
-						'programname' => $request->programname,
-						'programid' => $request->programid,
-						'programtype' => $request->programtype,
-						'url' => $request->url,
-						'remarks' => $request->remarks,
-						'condition1' => $request->condition1,
-						'condition2' => $request->condition2,
-						'adduser' => session('username'),
-						'adddate' => Carbon::now()
-					]);
-
-			}else if($at_where=='last'){
-
-				//get the last lineno
-				$maxlineno = DB::table('sysdb.programtab')->max('lineno') + 1;
-
-				//insert into programtab
-				DB::table('sysdb.programtab')
-					->insert([
-						'compcode' => session('compcode'),
-						'programmenu' => $request->programmenu,
-						'lineno' => $maxlineno,
-						'programname' => $request->programname,
-						'programid' => $request->programid,
-						'programtype' => $request->programtype,
-						'url' => $request->url,
-						'remarks' => $request->remarks,
-						'condition1' => $request->condition1,
-						'condition2' => $request->condition2,
-						'adduser' => session('username'),
-						'adddate' => Carbon::now()
-					]);
-			}
-
-
-			$get1 = DB::table('sysdb.programtab')
-						->where('compcode','=', session('compcode'))
-						->where('programid','=', $request->programmenu)
-						->get();
-
-			foreach ($get1 as $key => $value) {
-				
-				$get_dalam = DB::table('sysdb.groupacc')
-						->where('compcode','=', session('compcode'))
-						->where('programmenu','=', $value->programmenu)
-						->where('lineno','=', $value->lineno)
-						->where('yesall','=', 1)
-						->get();
-
-				foreach ($get_dalam as $key_dalam => $value_dalam) {
-						DB::raw("INSERT INTO sysdb.groupacc (compcode,groupid,programmenu,lineno,canrun,yesall) SELECT '".session('compcode')."','".$get1->groupid."','".$request->programmenu."',lineno,1,0 FROM sysdb.programtab where compcode='".session('compcode')."' and programid=".$request->programid."' and programmenu='".$request->programmenu."'");
+					DB::update($sql2);
+					DB::insert($sql3);
 				}
+
+			}else if($canrun=="Yes" && $canrunold=="Yes"){//check yesall
+
+				if($yesall=="Yes" && $yesallold=="No"){//update groupacc and insert child
+
+					$sql1 = DB::raw("UPDATE sysdb.groupacc SET yesall=1 WHERE lineno='{$lineno}' and groupid='{$groupid}' and programmenu='{$programmenu}' and compcode='".session('compcode')."'");
+					$sql2 = DB::raw("INSERT INTO sysdb.groupacc(compcode,groupid,programmenu,lineno,canrun) SELECT compcode,'{$groupid}',programmenu,lineno,'1' FROM sysdb.programtab WHERE programmenu='{$programid}' AND compcode='".session('compcode')."'");
+
+					DB::update($sql1);
+					DB::insert($sql2);
+
+				}else if($yesall=="No" && $yesallold=="Yes"){//update from groupacc
+
+					$sql1 = DB::raw("UPDATE sysdb.groupacc SET yesall=0 WHERE lineno='{$lineno}' and groupid='{$groupid}' and programmenu='{$programmenu}' and compcode='".session('compcode')."'");
+					$sql2 = DB::raw("DELETE FROM sysdb.groupacc WHERE groupid='{$groupid}' and programmenu='{$programid}' and compcode='".session('compcode')."'");
+
+					DB::update($sql1);
+					DB::delete($sql2);
+
+				}
+
+			}else if($canrun=="No" && $canrunold=="Yes"){//delete from groupacc
+
+				$sql1 = DB::raw("DELETE FROM sysdb.groupacc WHERE lineno='{$lineno}' and groupid='{$groupid}' and programmenu='{$programmenu}' and compcode='".session('compcode')."'");
+				$sql2 = DB::raw("DELETE FROM sysdb.groupacc WHERE groupid='{$groupid}' and programmenu='{$programid}' and compcode='".session('compcode')."'");
+
+				DB::delete($sql1);
+				DB::delete($sql2);
 			}
 
             DB::commit();
@@ -212,18 +167,6 @@ class GroupMaintenanceController extends Controller
 
         try {
 
-			DB::table('sysdb.programtab')
-				->where('compcode', '=',  session('compcode'))
-				->where('programid', '=',  $request->programid)
-				->update([
-					'programname' => $request->programname,
-					'condition1' => $request->condition1,
-					'condition2' => $request->condition2,
-					'remarks' => $request->remarks,
-					'url' => $request->url
-				]);
-
-            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
         }
@@ -235,39 +178,6 @@ class GroupMaintenanceController extends Controller
         DB::beginTransaction();
 
         try {
-
-			$child=DB::table('sysdb.programtab')->where('programmenu', '=', $request->programid)->count();
-
-			if($child!="0"){
-
-				//update delete id jd lineno=0 ; nak elak child jd orphen
-				$raw = DB::raw('UPDATE sysdb.programtab,(SELECT max(lineno)+1 as maxline FROM sysdb.programtab WHERE programmenu="" and compcode="'.session('compcode').'")subq SET programmenu="" , lineno=subq.maxline WHERE lineno="'.$request->lineno.'" and programmenu="'.$request->programmenu.'" and programid="'.$request->programid.'" and compcode="'.session('compcode').'"');
-				DB::update($raw);
-
-				$raw = DB::raw('DELETE FROM sysdb.groupacc WHERE lineno='.$request->lineno.' and programmenu="'.$request->programmenu.'"  and compcode="'.session('compcode').'"');
-				DB::delete($raw);
-
-				$raw = DB::raw('UPDATE sysdb.programtab SET lineno = lineno - 1 WHERE compcode="'.session('compcode').'" and programmenu="'.$request->programmenu.'" and lineno > '.$request->lineno.' order by lineno');
-				DB::update($raw);
-
-				$raw = DB::raw('UPDATE sysdb.groupacc SET lineno = lineno - 1 WHERE compcode="'.session('compcode').'" and programmenu="'.$request->programmenu.'" and lineno > '.$request->lineno.' order by lineno');
-				DB::update($raw);
-
-			}else{
-
-				$raw = DB::raw('DELETE FROM sysdb.programtab WHERE lineno="'.$request->lineno.'" and programmenu="'.$request->programmenu.'" and programid="'.$request->programid.'" and compcode="'.session('compcode').'"');
-				DB::delete($raw);
-
-				$raw = DB::raw('DELETE FROM sysdb.groupacc WHERE lineno="'.$request->lineno.'" and programmenu="'.$request->programmenu.'"  and compcode="'.session('compcode').'"');
-				DB::delete($raw);
-
-				$raw = DB::raw('UPDATE sysdb.programtab SET lineno = lineno - 1 WHERE compcode="'.session('compcode').'" and programmenu="'.$request->programmenu.'" and lineno > '.$request->lineno.' order by lineno');
-				DB::update($raw);
-
-				$raw = DB::raw('UPDATE sysdb.groupacc SET lineno = lineno - 1 WHERE compcode="'.session('compcode').'" and programmenu="'.$request->programmenu.'" and lineno > '.$request->lineno.' order by lineno');
-				DB::update($raw);
-				
-			}
 
             DB::commit();
         } catch (\Exception $e) {
