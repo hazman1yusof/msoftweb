@@ -167,7 +167,7 @@ $(document).ready(function () {
 					var r= confirm("Data will be permanently deleted, continue?");
 					if(r==true)saveFormdata("#jqGrid","#dialogForm","#formdata",'del_hard',saveParam,urlParam,null,{'username':selRowId});
 				}else{
-					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'username':selRowId});
+					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'id':selrowData('#jqGrid').id});
 				}
 			}	
 		},
@@ -215,7 +215,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Transaction Department",
 			open: function(){
-				
+				dialog_txndept.urlParam.filterCol=['recstatus'],
+				dialog_txndept.urlParam.filterVal=['A']
 			}
 		},'urlParam'
 	);

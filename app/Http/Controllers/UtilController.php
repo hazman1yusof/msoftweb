@@ -85,6 +85,15 @@ class UtilController extends Controller
             }
         }
 
+        /////////searching 2/////////
+        if(!empty($request->searchCol2)){
+            $table = $table->Where(function($query) use ($request){
+                foreach ($request->searchCol2 as $key => $value) {
+                    $query = $query->orWhere($request->searchCol2[$key],'like',$request->searchVal2[$key]);
+                }
+            });
+        }
+
         //////////ordering/////////
         if(!empty($request->sortby)){
             foreach ($request->sortby as $key => $value) {

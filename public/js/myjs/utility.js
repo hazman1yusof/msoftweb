@@ -533,7 +533,7 @@ function setactdate(target){
 	}
 }
 
-function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'){
+function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default',needTab='notab'){
 	this.unique=unique;
 	this.gridname="othergrid_"+unique;
 	this.dialogname="otherdialog_"+unique;
@@ -556,9 +556,12 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 		filterCol:[],filterVal:[],
 		searchCol2:null,searchCol2:null,searchCol:null,searchCol:null
 	};
+	this.needTab=needTab;
 	this.on = function(){
 		this.eventstat='on';
-		$(this.textfield).on('keydown',{data:this},onTab);
+		if(this.needTab=='tab'){
+			$(this.textfield).on('keydown',{data:this},onTab);
+		}
 		$(this.textfield+" ~ a").on('click',{data:this},onClick);
 		$("#Dtext_"+unique).on('keyup',{data:this},onChange);
 		$("#Dcol_"+unique).on('change',{data:this},onChange);
@@ -566,28 +569,33 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 	}
 	this.off = function(){
 		this.eventstat='off';
-		$(this.textfield).off('keydown',onTab);
+		if(this.needTab=='tab'){
+			$(this.textfield).off('keydown',onTab);
+		}
 		$(this.textfield+" ~ a").off('click',onClick);
 		$("#Dtext_"+unique).off('keyup',onChange);
 		$("#Dcol_"+unique).off('change',onChange);
 		$(this.textfield).off('blur',onBlur);
 	}
-	this.makedialog = function(on=true){
+	this.makedialog = function(on=false){
 		$("html").append(this.otherdialog);
 		makejqgrid(this);
 		makedialog(this);
 		othDialog_radio(this);
 		if(on){
 			this.eventstat='on';
-			$(this.textfield).on('keydown',{data:this},onTab);
+			if(this.needTab=='tab'){
+				$(this.textfield).on('keydown',{data:this},onTab);
+			}
 			$(this.textfield+" ~ a").on('click',{data:this},onClick);
 			$("#Dtext_"+unique).on('keyup',{data:this},onChange);
 			$("#Dcol_"+unique).on('change',{data:this},onChange);
-			$(this.textfield).on('blur',{data:this,errorField:errorField},onBlur);	
+			$(this.textfield).on('blur',{data:this,errorField:errorField},onBlur);
 		}
 	}
 
 	function onClick(event){
+		renull_search(event.data.data);
 		$("#"+event.data.data.dialogname).dialog( "open" );
 		refreshGrid("#"+event.data.data.gridname,event.data.data.urlParam);
 	}
@@ -685,7 +693,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 				if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow();
 			},
 			ondblClickRow: function(rowid, iRow, iCol, e){
-				$(obj.textfield).val(rowid);
+				$(obj.textfield).val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
 				$(obj.textfield).parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
 				$(obj.textfield).focus();
 				if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();

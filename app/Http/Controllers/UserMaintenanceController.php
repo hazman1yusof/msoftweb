@@ -22,7 +22,7 @@ class UserMaintenanceController extends defaultController
     }
 
     public function duplicate($check){
-        return $this->table->where('Code','=',$check)->count();
+        return $this->table->where($this->duplicateCode,'=',$check)->count();
     }
 
     public function show(Request $request)
@@ -90,7 +90,7 @@ class UserMaintenanceController extends defaultController
 
         DB::beginTransaction();
 
-        if($this->duplicate($this->duplicateCode)){
+        if($this->duplicate($request->username)){
             return response('duplicate', 500);
         }
 
