@@ -134,4 +134,22 @@ class UtilController extends Controller
 
         return json_encode($responce);
     }
+
+    public function input_check(Request $request){
+        $table = $this->getter($request);
+
+        if($table->count()>0){
+            $msg = "success";
+        }else{
+            $msg = "fail";
+        }
+
+        $responce = new stdClass();
+        $responce->value = $table->first()->{$request->field[1]};
+        $responce->msg = $msg;
+        $responce->row = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
+    }
 }

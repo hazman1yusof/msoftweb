@@ -1,7 +1,7 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow=0;
+$("body").show();
 
 $(document).ready(function () {
 	/////////////////////////validation//////////////////////////
@@ -23,10 +23,6 @@ $(document).ready(function () {
 		},
 	};
 	//////////////////////////////////////////////////////////////
-
-
-	////////////////////object for dialog handler//////////////////
-	dialog_dept=new makeDialog('sysdb.groups','#groupid',['groupid','description'], 'Group ID');
 
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
@@ -71,16 +67,17 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				dialog_dept.handler(errorField);
+				dialog_txndept.on();
 			}
 			if(oper!='add'){
-				dialog_dept.check(errorField);
+				dialog_txndept.check(errorField);
 			}
 		},
 		close: function( event, ui ) {
 			emptyFormdata(errorField,'#formdata');
-			$('.alert').detach();
-			$("#formdata a").off();
+
+			dialog_txndept.off();
+
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
 			}
@@ -91,18 +88,13 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
-		action:'get_table_default',
-		field:'',
-		table_name:'sysdb.users',
-		table_id:'username'
+		action:'user_maintenance',
+		url:'/user_maintenance/table'
 	}
 
 	var saveParam={
 		action:'save_table_default',
-		field:'',
-		oper: oper,
-		table_name:'sysdb.users',
-		table_id:'username'
+		url:'/user_maintenance/form'
 	};
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -118,7 +110,8 @@ $(document).ready(function () {
             {label:'Cashier',name:'cashier',formatter:yes_no,unformat:de_yes_no,width:60},   
             {label:'Price View',name:'priceview',formatter:yes_no,unformat:de_yes_no,width:70},   
             {label:'programmenu',name:'programmenu',width:50,hidden:true},
-            {label:'password',name:'password',width:50,hidden:true}  
+            {label:'password',name:'password',width:50,hidden:true},
+            {label:'id',name:'id',width:50,hidden:true}  
 		],
 		autowidth:true,
         multiSort: true,
@@ -211,7 +204,21 @@ $(document).ready(function () {
 	searchClick('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam);
+	refreshGrid('#jqGrid',urlParam);
+
+	var dialog_txndept = new ordialog(
+		'groups','sysdb.groups','#groupid',errorField,
+		{	colModel:[
+				{label:'Group ID',name:'groupid',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				]
+		},{
+			title:"Select Transaction Department",
+			open: function(){
+				
+			}
+		},'urlParam'
+	);
+	dialog_txndept.makedialog();
 
 });

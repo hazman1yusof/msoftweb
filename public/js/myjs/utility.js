@@ -549,6 +549,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 	this.urlParam={
 		from:unique,
 		action:'get_table_default',
+		url:'/util/get_table_default',
 		table_name:table,
 		field:getfield(jqgrid_.colModel),
 		table_id:getfield(jqgrid_.colModel)[0],
@@ -718,6 +719,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 		}else{
 			param=Object.assign({},this.urlParam);
 			param.action="get_value_default";
+			param.url='/util/get_value_default';
 			param.field=[code_,desc_];
 			let index=jQuery.inArray(code_,param.filterCol);
 			if(index == -1){
@@ -728,7 +730,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 			}
 		}
 
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 
 		},'json').done(function(data) {
 			let fail=true,code,desc;

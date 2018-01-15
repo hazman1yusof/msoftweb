@@ -21,6 +21,7 @@ Route::get('/util/getcompid','UtilController@getcompid');
 Route::get('/util/getpadlen','UtilController@getpadlen');
 Route::get('/util/get_value_default','UtilController@get_value_default');
 Route::get('/util/get_table_default','UtilController@get_table_default');
+Route::get('/util/input_check','UtilController@input_check'); //jgn guna
 
 //// menu mainatenance page ///
 Route::get('/menu_maintenance','MenuMaintenanceController@show');
@@ -31,6 +32,11 @@ Route::post('/menu_maintenance/form','MenuMaintenanceController@form');
 Route::get('/group_maintenance','GroupMaintenanceController@show');
 Route::get('/group_maintenance/table','GroupMaintenanceController@table');
 Route::post('/group_maintenance/form','GroupMaintenanceController@form');
+
+//// user mainatenance page ///
+Route::get('/user_maintenance','UserMaintenanceController@show');
+Route::get('/user_maintenance/table','UserMaintenanceController@table');
+Route::post('/user_maintenance/form','UserMaintenanceController@form');
 
 //// Religion setup page ///
 Route::get('/religion','ReligionController@show');

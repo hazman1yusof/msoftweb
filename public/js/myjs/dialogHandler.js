@@ -57,7 +57,7 @@
 					paramD.field=cols;
 					paramD.table_id=cols[0];
 					
-					$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
+					$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'/util/get_table_default?'+$.param(paramD)}).trigger('reloadGrid');
 					$('#Dtext').val('');$('#Dcol').html('');
 					
 					$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
@@ -77,8 +77,14 @@
 			
 			function checkInput(errorField){
 				var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
-				var param={action:'input_check',table:table,field:field,value:value};
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+				var param={
+					action:'input_check',
+					table_name:table,
+					field:field,
+					filterCol: [field[0]],
+					filterVal: [value]
+				};
+				$.get( "/util/input_check?"+$.param(param), function( data ) {
 					
 				},'json').done(function(data) {
 					if(data.msg=='success'){
@@ -87,7 +93,7 @@
 						}
 						$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
 						$( id ).removeClass( "error" ).addClass( "valid" );
-						$( id ).parent().siblings( ".help-block" ).html(data.row[field[1]]);
+						$( id ).parent().siblings( ".help-block" ).html(data.value);
 					}else if(data.msg=='fail'){
 						$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
 						$( id ).removeClass( "valid" ).addClass( "error" );
