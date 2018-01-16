@@ -1,7 +1,6 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow = 0;
 
 $(document).ready(function () {
 	$("body").show();
@@ -99,6 +98,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
+		url: '/util/get_table_default',
 		field: '',
 		table_name: 'hisdb.racecode',
 		table_id: 'Code',
@@ -108,6 +108,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
+		url: '/race/form',
 		field: '',
 		oper: oper,
 		table_name: 'hisdb.racecode',
@@ -146,6 +147,8 @@ $(document).ready(function () {
 		],
 		autowidth: true,
 		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
@@ -207,7 +210,7 @@ $(document).ready(function () {
 				return emptyFormdata(errorField, '#formdata');
 				//return emptyFormdata('#formdata');
 			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'Code': selRowId });
+				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'idno': selrowData('#jqGrid').idno });
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -248,5 +251,5 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['idno']);
+	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus']);
 });

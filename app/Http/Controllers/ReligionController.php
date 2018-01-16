@@ -108,6 +108,7 @@ class ReligionController extends defaultController
 
             DB::commit();
         } catch (\Exception $e) {
+            return response('Error', 500);
             DB::rollback();
         }
 
@@ -133,6 +134,7 @@ class ReligionController extends defaultController
 
             DB::commit();
         } catch (\Exception $e) {
+            return response('Error', 500);
             DB::rollback();
         }
 
@@ -153,6 +155,7 @@ class ReligionController extends defaultController
 
             DB::commit();
         } catch (\Exception $e) {
+            return response('Error', 500);
             DB::rollback();
         }
 

@@ -42,3 +42,9 @@ Route::post('/user_maintenance/form','UserMaintenanceController@form');
 Route::get('/religion','ReligionController@show');
 Route::get('/religion/table','ReligionController@table');
 Route::post('/religion/form','ReligionController@form');
+
+//// Religion setup page ///
+Route::get('/race','RaceController@show');
+Route::get('/race/table','RaceController@table');
+Route::post('/race/form','RaceController@form');
+

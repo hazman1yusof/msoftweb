@@ -153,9 +153,16 @@ abstract class defaultController extends Controller{
 
             $table->insert($array_insert);
 
+            $responce = new stdClass();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            echo json_encode($responce);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+
+            return response('Error'.$e, 500);
         }
 
     }
@@ -182,9 +189,16 @@ abstract class defaultController extends Controller{
             $table = $table->where('idno','=',$request->idno);
             $table->update($array_update);
 
+            $responce = new stdClass();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            echo json_encode($responce);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+
+            return response('Error'.$e, 500);
         }
 
     }
@@ -204,9 +218,16 @@ abstract class defaultController extends Controller{
                 'recstatus' => 'D',
             ]);
 
+            $responce = new stdClass();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            echo json_encode($responce);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            
+            return response('Error'.$e, 500);
         }
 
     }
