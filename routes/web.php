@@ -53,3 +53,8 @@ Route::get('/salutation','SalutationController@show');
 Route::get('/salutation/table','SalutationController@table');
 Route::post('/salutation/form','SalutationController@form');
 
+//// relationship setup page ///
+Route::get('/relationship','RelationshipController@show');
+Route::get('/relationship/table','RelationshipController@table');
+Route::post('/relationship/form','RelationshipController@form');
+

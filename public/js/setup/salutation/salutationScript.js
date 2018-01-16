@@ -101,8 +101,7 @@
 				url:"/util/get_table_default",
 				field:'',
 				table_name:'hisdb.title',
-				table_id:'Code',
-				sort_idno: true
+				table_id:'Code'
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -112,8 +111,7 @@
 				field:'',
 				oper:oper,
 				table_name:'hisdb.title',
-				table_id:'Code',
-				saveip:'true'
+				table_id:'Code'
 			};
 			
 			$("#jqGrid").jqGrid({
