@@ -1,9 +1,9 @@
 
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
-		var editedRow=0;
 
 		$(document).ready(function () {
+			$("body").show();
 			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
@@ -85,7 +85,7 @@
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
+					//$('.alert').detach();
 					$("#formdata a").off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
@@ -98,6 +98,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:"/util/get_table_default",
 				field:'',
 				table_name:'hisdb.title',
 				table_id:'Code',
@@ -107,6 +108,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:"/salutation/form",
 				field:'',
 				oper:oper,
 				table_name:'hisdb.title',
@@ -140,6 +142,8 @@
 				autowidth:true,
                 multiSort: true,
 				viewrecords: true,
+				sortname: 'idno',
+				sortorder: 'desc',
 				loadonce:false,
 				width: 900,
 				height: 350,
@@ -200,7 +204,7 @@
 						alert('Please select row');
 						return emptyFormdata('#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'Code':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selrowData('#jqGrid').idno});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -241,6 +245,6 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno']);
+			addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','recstatus']);
 		});
 		

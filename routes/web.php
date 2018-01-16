@@ -43,8 +43,13 @@ Route::get('/religion','ReligionController@show');
 Route::get('/religion/table','ReligionController@table');
 Route::post('/religion/form','ReligionController@form');
 
-//// Religion setup page ///
+//// Race setup page ///
 Route::get('/race','RaceController@show');
 Route::get('/race/table','RaceController@table');
 Route::post('/race/form','RaceController@form');
+
+//// Salutation setup page ///
+Route::get('/salutation','SalutationController@show');
+Route::get('/salutation/table','SalutationController@table');
+Route::post('/salutation/form','SalutationController@form');
 
