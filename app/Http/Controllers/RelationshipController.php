@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class RelationshipController extends defaultController
 {   
 
+	var $contoh;
     var $table;
     var $duplicateCode;
 
