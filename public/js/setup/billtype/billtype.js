@@ -257,7 +257,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#formdata');
 			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'billtype': selRowId });
+				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'idno': selrowData('#jqGrid').idno });
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -292,7 +292,6 @@ $(document).ready(function () {
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 
-	//toogleSearch('#sbut1','#searchForm','on');
 	populateSelect('#jqGrid', '#searchForm');
 	searchClick('#jqGrid', '#searchForm', urlParam);
 
@@ -304,7 +303,21 @@ $(document).ready(function () {
 	////////////// billtysvc //////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	dialog_ChgGroup = new makeDialog('hisdb.chggroup', "#Fsvc :input[name='svc_chggroup']", ['grpcode', 'description'], 'Chg. Group');
+	var dialog_ChgGroup = new ordialog(
+		'chggroup','hisdb.chggroup',"#Fsvc :input[name='svc_chggroup']",errorField,
+		{	colModel:[
+				{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				]
+		},{
+			title:"Select Charge Group",
+			open: function(){
+				dialog_ChgGroup.urlParam.filterCol=[],
+				dialog_ChgGroup.urlParam.filterVal=[]
+			}
+		},'urlParam'
+	);
+	dialog_ChgGroup.makedialog();
 
 	var buttsvc1 = [{
 		text: "Save", click: function () {
@@ -356,10 +369,10 @@ $(document).ready(function () {
 						break;
 				}
 				if (oper_svc == 'add') {
-					dialog_ChgGroup.handler(errorField);
+					dialog_ChgGroup.on();
 				}
 				if (oper_svc == 'edit' && $('#jqGriditem').jqGrid('getGridParam', 'reccount') < 1) {
-					dialog_ChgGroup.handler(errorField);
+					dialog_ChgGroup.on();
 
 				}
 				if (oper_svc == 'edit' && $('#jqGriditem').jqGrid('getGridParam', 'reccount') >= 1) {
@@ -378,7 +391,8 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#Fsvc');
 				$('#Fsvc .alert').detach();
 				//$('.alert').detach();
-				$("#Fsvc a").off();
+				dialog_ChgGroup.off();
+				// $("#Fsvc a").off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", buttsvc1);
 				}
@@ -404,6 +418,7 @@ $(document).ready(function () {
 
 	var saveParam_svc = {
 		action: 'save_table_default',
+		url:'/billtype/form',
 		field: '',
 		oper: oper_svc,
 		table_name: 'hisdb.billtysvc',
