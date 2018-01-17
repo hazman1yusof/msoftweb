@@ -27,6 +27,35 @@ abstract class defaultController extends Controller{
         }
     }
 
+    public function fixPost(array $column,$rep){//turn underscore to dot
+        $temp=[];
+        foreach($column as $value){
+            $pos = strpos($value, "_");
+            if ($pos !== false) {
+                $newstring = substr_replace($value, ".", $pos, strlen("."));
+                $newstring = $newstring.' AS '.$value;
+                array_push($temp,$newstring);
+            }
+        }   
+        return $temp;
+    }
+
+                // $this->post = $this->fixPost($this->post,'_',true);
+    public function fixPost2(array $column,$rep,$isPost){
+        $temp=[];
+        if(!$isPost){
+            foreach($column as $value){
+                array_push($temp, substr(strstr($value, $rep),1));
+            }   
+        }else{
+            foreach($column as $key => $value){
+                $newkey = substr(strstr($key, $rep),1);
+                $temp[$newkey] = $value;
+            }
+        }
+        return $temp;
+    }
+
     public function defaultGetter(Request $request){
 
         //////////make table/////////////
@@ -38,7 +67,11 @@ abstract class defaultController extends Controller{
 
         ///////////select field////////
         if(!empty($request->field)){
-            $table = $table->select($request->field);
+            if(!empty($request->fixPost)){
+                $table = $table->select($this->fixPost($request->field,"_"));
+            }else{
+                $table = $table->select($request->field);
+            }
         }
 
         //////////join//////////
@@ -71,7 +104,12 @@ abstract class defaultController extends Controller{
         //////////where//////////
         if(!empty($request->filterCol)){
             foreach ($request->filterCol as $key => $value) {
-                $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                $pieces = explode(".", $request->filterVal[$key], 2);
+                if($pieces[0] == 'session'){
+                    $table = $table->where($request->filterCol[$key],'=',session('compcode'));
+                }else{
+                    $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                }
             }
         }
 
@@ -80,6 +118,15 @@ abstract class defaultController extends Controller{
             foreach ($request->searchCol as $key => $value) {
                 $table = $table->orWhere($request->searchCol[$key],'like',$request->searchVal[$key]);
             }
+        }
+
+        /////////searching 2/////////
+        if(!empty($request->searchCol2)){
+            $table = $table->Where(function($query) use ($request){
+                foreach ($request->searchCol2 as $key => $value) {
+                    $query = $query->orWhere($request->searchCol2[$key],'like',$request->searchVal2[$key]);
+                }
+            });
         }
 
         //////////ordering/////////
@@ -105,7 +152,7 @@ abstract class defaultController extends Controller{
     }
 
     public function get_table_default(Request $request){
-        $table = $this->getter($request);
+        $table = $this->defaultGetter($request);
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -122,7 +169,7 @@ abstract class defaultController extends Controller{
     }
 
     public function get_value_default(Request $request){
-        $table = $this->getter($request);
+        $table = $this->defaultGetter($request);
 
         $responce = new stdClass();
         $responce->rows = $table->get();

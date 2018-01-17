@@ -58,3 +58,8 @@ Route::get('/relationship','RelationshipController@show');
 Route::get('/relationship/table','RelationshipController@table');
 Route::post('/relationship/form','RelationshipController@form');
 
+//// billtype setup page ///
+Route::get('/billtype','BilltypeController@show');
+Route::get('/billtype/table','BilltypeController@table');
+Route::post('/billtype/form','BilltypeController@form');
+

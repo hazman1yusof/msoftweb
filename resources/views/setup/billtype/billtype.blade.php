@@ -1,20 +1,18 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body style="display:none">
+@extends('layouts.main')
+
+@section('title', 'Race Setup')
+
+@section('body')
 	 
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
-				<div class="ScolClass">
+				<div class="ScolClass" style="padding:0 0 0 15px">
 						<div name='Scol'>Search By : </div>
 				</div>
 				<div class="StextClass">
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-					<div style="position:absolute;bottom:0;right:0;">
-						<!--<label class="checkbox-inline"><input type="checkbox" value=""><b> Repeat add</b></label>-->
-					</div>
 				</div>
 			 </fieldset> 
 		</form>
@@ -51,6 +49,8 @@
 		
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%' id='formdata'>
+				{{ csrf_field() }}
+				<input type="hidden" name="idno">
 
 				<div class="prevnext btn-group pull-right">
 				</div>
@@ -173,6 +173,8 @@
 		<!----------------------------------Bill Type Service Form -------------------->
 		<div id="Dsvc" title="Bill Type Service" >
         	<form class='form-horizontal' style='width:99%' id='Fsvc'>
+				{{ csrf_field() }}
+				<input type="hidden" name="svc_idno">
 
         		<div class="prevnext btn-group pull-right">
 				</div>
@@ -306,6 +308,8 @@
 		<!----------------------------------Bill Type Item Form -------------------->
 		<div id="Ditem" title="Bill Type Item" >
         	<form class='form-horizontal' style='width:99%' id='Fitem'>
+				{{ csrf_field() }}
+				<input type="hidden" name="i_idno">
 
         		<div class="prevnext btn-group pull-right">
 				</div>
@@ -421,21 +425,11 @@
         </div>
         <!--------------------------------END Bill Type Item Form ------------------>
 
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
+@endsection
+
+
+@section('scripts')
+
+	<script src="js/setup/billtype/billtype.js"></script>
 	
-	<!-- JS Implementing Plugins -->
-
-	<!-- JS Customization -->
-
-	<!-- JS Page Level -->
-	<script src="billtype.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<!--<script src="../../../../assets/js/dialogHandler.js"></script> -->
-
-<script>
-		
-</script>
-</body>
-</html>
+@endsection

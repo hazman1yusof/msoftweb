@@ -1,9 +1,9 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-$("body").show();
 
 $(document).ready(function () {
+$("body").show();
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {

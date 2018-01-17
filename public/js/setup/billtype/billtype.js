@@ -1,11 +1,10 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow = 0;
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']", "input[name='svc_lastcomputerid']", "input[name='svc_lastipaddress']", "input[name='svc_computerid']", "input[name='svc_ipaddress']", "input[name='i_lastcomputerid']", "input[name='i_lastipaddress']", "input[name='i_computerid']", "input[name='i_ipaddress']");
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']","input[name='computerid']","input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		modules: 'sanitize',
@@ -110,20 +109,22 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
+		url: '/util/get_table_default',
 		field: '',
 		table_name: 'hisdb.billtymst',
 		table_id: 'billtype',
-		sort_idno: true,
+		filterCol: ['compcode'],
+		filterVal: ['session.compcode'],
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
+		url: '/billtype/form',
 		field: '',
 		oper: oper,
 		table_name: 'hisdb.billtymst',
-		table_id: 'billtype',
-		saveip:'true'
+		table_id: 'billtype'
 	};
 
 	//////////////////////////start grid/////////////////////////////////////////////////////////
@@ -158,6 +159,8 @@ $(document).ready(function () {
 		autowidth: true,
 		viewrecords: true,
 		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
 		loadonce: false,
 		width: 900,
 		height: 100,
@@ -295,7 +298,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate', 'ipaddress', 'computerid']);
+	addParamField('#jqGrid', false, saveParam, ['idno','recstatus','adduser','adddate','upduser','upddate']);
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////// billtysvc //////////////////////////////////////////////////////////////////////////////////////
@@ -386,9 +389,10 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url SVC/////////////////////////////////////////////////
 	var urlParam_svc = {
 		action: 'get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		fixPost: 'true',//replace underscore with dot
-		table_name: ['hisdb.billtysvc svc', 'hisdb.billtymst m', 'hisdb.chggroup cc'],
+		table_name: ['hisdb.billtysvc AS svc', 'hisdb.billtymst AS m', 'hisdb.chggroup AS cc'],
 		table_id: 'svc_chggroup',
 		join_type: ['JOIN', 'JOIN'],
 		join_onCol: ['svc.billtype', 'cc.grpcode'],
@@ -543,8 +547,6 @@ $(document).ready(function () {
 			oper_svc = 'edit';
 			selRowId = $("#jqGridsvc").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", selRowId, 'edit');
-
-
 		},
 		position: "first",
 		title: "Edit Selected Row",
@@ -609,7 +611,6 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
-				//inputCtrl("#Ditem","#Fitem",oper_item);
 				parent_close_disabled(true);
 				switch (oper_item) {
 					case state = 'add':
@@ -664,9 +665,10 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url Item/////////////////////////////////////////////////
 	var urlParam_item = {
 		action: 'get_table_default',
+		url: '/util/get_table_default',
 		field: '',
 		fixPost: 'true',//replace underscore with dot
-		table_name: ['hisdb.billtyitem i', 'hisdb.billtysvc svc', 'hisdb.chggroup c'],
+		table_name: ['hisdb.billtyitem AS i', 'hisdb.billtysvc AS svc', 'hisdb.chggroup AS c'],
 		table_id: 'i_chgcode',
 		join_type: ['JOIN', 'JOIN'],
 		join_onCol: ['i.chggroup', 'c.grpcode'],
