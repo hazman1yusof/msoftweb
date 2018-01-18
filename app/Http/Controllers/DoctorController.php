@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class SexController extends extends defaultController
+class DoctorController extends defaultController
 {   
 
     var $table;
@@ -13,12 +13,12 @@ class SexController extends extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "statuscode";
+        $this->duplicateCode = "Code";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.doctorstatus.doctorstatus');
+        return view('setup.doctor.doctor');
     }
 
     public function form(Request $request)

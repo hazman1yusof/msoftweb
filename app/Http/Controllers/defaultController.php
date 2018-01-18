@@ -189,7 +189,7 @@ abstract class defaultController extends Controller{
     }
 
     public function defaultAdd(Request $request){
-        
+
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
             $idno = substr(strstr($request->table_id,'_'),1);

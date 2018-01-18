@@ -153,6 +153,7 @@
 		html{
 			height:100%;
 		}
+		@yield('style')
  	</style>	
     <title>@yield('title')</title>
 </head>

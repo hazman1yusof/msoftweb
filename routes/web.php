@@ -107,3 +107,13 @@ Route::post('/speciality/form','SpecialityController@form');
 Route::get('/area','AreaController@show');
 Route::get('/area/table','AreaController@table');
 Route::post('/area/form','AreaController@form');
+
+//// Compcode setup page ///
+Route::get('/compcode','CompcodeController@show');
+Route::get('/compcode/table','CompcodeController@table');
+Route::post('/compcode/form','CompcodeController@form');
+
+//// Doctor setup page ///
+Route::get('/doctor','DoctorController@show');
+Route::get('/doctor/table','DoctorController@table');
+Route::post('/doctor/form','DoctorController@form');

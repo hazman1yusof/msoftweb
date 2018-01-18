@@ -1,9 +1,9 @@
 
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
-		var editedRow=0;
 
 		$(document).ready(function () {
+			$("body").show();
 			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
@@ -25,14 +25,6 @@
 			};
 
 			//////////////////////////////////////////////////////////////
-
-
-			////////////////////object for dialog handler//////////////////
-			dialog_doctype=new makeDialog('hisdb.docstatus','#doctype',['statuscode','description'],'Doctor Type');
-			dialog_department=new makeDialog('finance.costcenter','#department',['costcode','description'], 'Department');
-			dialog_speciality=new makeDialog('hisdb.speciality','#specialitycode',['specialitycode','description'], 'Speciality Code');
-			dialog_discipline=new makeDialog('hisdb.discipline','#disciplinecode',['code','description'], 'Discipline Code');
-			dialog_creditor=new makeDialog('material.supplier','#creditorcode',['SuppCode','Name'], 'Creditor');
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -85,11 +77,11 @@
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
-						dialog_doctype.handler(errorField);
-						dialog_department.handler(errorField);
-						dialog_speciality.handler(errorField);
-						dialog_discipline.handler(errorField);
-						dialog_creditor.handler(errorField);
+						dialog_doctype.on();
+						dialog_department.on();
+						dialog_speciality.on();
+						dialog_discipline.on();
+						dialog_creditor.on();
 					}
 					if(oper!='add'){
 						dialog_doctype.check(errorField);
@@ -102,8 +94,12 @@
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
-					$("#formdata a").off();
+					$('#formdata .alert').detach();
+					dialog_doctype.off();
+					dialog_department.off();
+					dialog_speciality.off();
+					dialog_discipline.off();
+					dialog_creditor.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -115,6 +111,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'/util/get_table_default',
 				field: '',
 				table_name:'hisdb.doctor',
 				table_id:'doctorcode',
@@ -124,6 +121,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'doctor_save',
+				url:'/doctor/form',
 				field:'',
 				oper:oper,
 				table_name:'hisdb.doctor',
@@ -176,6 +174,8 @@
 				autowidth:true,
                 multiSort: true,
 				viewrecords: true,
+				sortname:'idno',
+				sortorder:'desc',
 				loadonce:false,
 				width: 900,
 				height: 350,
@@ -237,7 +237,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'doctorcode':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{ 'idno': selrowData('#jqGrid').idno });
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -280,6 +280,96 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['depamt']);
+			addParamField('#jqGrid',false,saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
+
+
+			////////////////////object for dialog handler//////////////////
+			// dialog_doctype=new makeDialog('hisdb.docstatus','#doctype',['statuscode','description'],'Doctor Type');
+			// dialog_department=new makeDialog('finance.costcenter','#department',['costcode','description'], 'Department');
+			// dialog_speciality=new makeDialog('hisdb.speciality','#specialitycode',['specialitycode','description'], 'Speciality Code');
+			// dialog_discipline=new makeDialog('hisdb.discipline','#disciplinecode',['code','description'], 'Discipline Code');
+			// dialog_creditor=new makeDialog('material.supplier','#creditorcode',['SuppCode','Name'], 'Creditor');
+
+			var dialog_doctype = new ordialog(
+				'docstatus','hisdb.docstatus','#doctype',errorField,
+				{	colModel:[
+						{label:'Status Code',name:'statuscode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Doctor Type",
+					open: function(){
+						dialog_doctype.urlParam.filterCol=['recstatus'],
+						dialog_doctype.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_doctype.makedialog();
+
+			var dialog_department = new ordialog(
+				'costcenter','finance.costcenter','#department',errorField,
+				{	colModel:[
+						{label:'Cost Code',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Department",
+					open: function(){
+						dialog_department.urlParam.filterCol=['recstatus'],
+						dialog_department.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_department.makedialog();
+
+
+			var dialog_speciality = new ordialog(
+				'speciality','hisdb.speciality','#specialitycode',errorField,
+				{	colModel:[
+						{label:'Speciality Code',name:'specialitycode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Speciality",
+					open: function(){
+						dialog_speciality.urlParam.filterCol=['recstatus'],
+						dialog_speciality.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_speciality.makedialog();
+			
+			var dialog_discipline = new ordialog(
+				'discipline','hisdb.discipline','#disciplinecode',errorField,
+				{	colModel:[
+						{label:'Discipline Code',name:'code',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Discipline",
+					open: function(){
+						dialog_discipline.urlParam.filterCol=['recstatus'],
+						dialog_discipline.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_discipline.makedialog();
+			
+			var dialog_creditor = new ordialog(
+				'supplier','material.supplier','#creditorcode',errorField,
+				{	colModel:[
+						{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Supplier Name',name:'Name',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Transaction Department",
+					open: function(){
+						dialog_creditor.urlParam.filterCol=['recstatus'],
+						dialog_creditor.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_creditor.makedialog();
+
 		});
 		
