@@ -1,37 +1,15 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body style="display:none">
-	 
-	<!-------------------------------- Search + table ---------------------->
-	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%'>
-			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-				</div>
-			 </fieldset> 
-		</form>
-    	<div class="panel panel-default">
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
-		</div>
+@extends('layouts.main')
 
-    </div>
-	<!-------------------------------- End Search + table ------------------>
-		
+@section('title', 'Race Setup')
+
+@section('body')
+
+	@include('layouts.default_search_and_table')
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%' id='formdata'>
 
-				<div class="prevnext btn-group pull-right">
-				</div>
+			{{ csrf_field() }}
+			<input type="hidden" name="idno">
 
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="areacode">Area Code</label>  
@@ -98,21 +76,11 @@
 			</form>
 		</div>
 
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
+@endsection
+
+
+@section('scripts')
+
+	<script src="js/setup/area/area.js"></script>
 	
-	<!-- JS Implementing Plugins -->
-
-	<!-- JS Customization -->
-
-	<!-- JS Page Level -->
-	<script src="area.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<script src="../../../../assets/js/dialogHandler.js"></script>
-
-<script>
-		
-</script>
-</body>
-</html>
+@endsection

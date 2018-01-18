@@ -1,51 +1,28 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body>
+@extends('layouts.main')
 
-	 
-	<!-------------------------------- Search + table ---------------------->
-	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%'>
-			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-				</div>
-			 </fieldset> 
-		</form>
-		
-    	<div class="panel panel-default">
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
-		</div>
+@section('title', 'Discipline Setup')
 
-    </div>
-	<!-------------------------------- End Search + table ------------------>
+@section('body')
 
+	@include('layouts.default_search_and_table')
 		
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%' id='formdata'>
 
-				<div class="prevnext btn-group pull-right"></div>
-			
+			{{ csrf_field() }}
+			<input type="hidden" name="idno">
+
 				<div class="form-group">
-                	<label class="col-md-2 control-label" for="bloodcode">Code</label>  
+                	<label class="col-md-2 control-label" for="code">Discipline Code</label>  
                       <div class="col-md-3">
-                      <input id="bloodcode" name="bloodcode" type="text" maxlength="10" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                      <input id="code" name="code" type="text" maxlength="10" class="form-control input-sm" data-validation="required" frozeOnEdit>
                       </div>
 				</div>
                 
                 <div class="form-group">
-                	<label class="col-md-2 control-label" for="Description">Description</label>  
+                	<label class="col-md-2 control-label" for="description">Description</label>  
                       <div class="col-md-8">
-                      <input id="Description" name="Description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
                       </div>
 				</div>
                 
@@ -91,25 +68,15 @@
 								<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit rdonly>
 						  	</div>
 				</div>    
-
+                
             </form>
 		</div>
 
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
+@endsection
+
+
+@section('scripts')
+
+	<script src="js/setup/discipline/disciplineScript.js"></script>
 	
-	<!-- JS Implementing Plugins -->
-
-	<!-- JS Customization -->
-
-	<!-- JS Page Level -->
-	<script src="bloodGroupScript.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<script src="../../../../assets/js/dialogHandler.js"></script>
-
-<script>
-		
-</script>
-</body>
-</html>
+@endsection

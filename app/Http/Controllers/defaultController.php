@@ -27,7 +27,7 @@ abstract class defaultController extends Controller{
         }
     }
 
-    public function fixPost(array $column,$rep){//turn underscore to dot
+    public function fixPost(array $column,$rep){ // ni nak replace underscore jadi dot pastu letak AS original post field
         $temp=[];
         foreach($column as $value){
             $pos = strpos($value, "_");
@@ -40,19 +40,22 @@ abstract class defaultController extends Controller{
         return $temp;
     }
 
-                // $this->post = $this->fixPost($this->post,'_',true);
-    public function fixPost2(array $column,$rep,$isPost){
+    public function fixPost2(array $column){ // ni nak buang lagsung underscore
         $temp=[];
-        if(!$isPost){
-            foreach($column as $value){
-                array_push($temp, substr(strstr($value, $rep),1));
-            }   
-        }else{
-            foreach($column as $key => $value){
-                $newkey = substr(strstr($key, $rep),1);
-                $temp[$newkey] = $value;
+        foreach($column as $value){
+            array_push($temp, substr(strstr($value,'_'),1));
+        }   
+        return $temp;
+    }
+
+    public function fixPost3(array $column){ // ni nak replace underscore jadi dot
+        $temp=[];
+        foreach($column as $value){
+            $pos = strpos($value, "_");
+            if ($pos !== false) {
+                array_push($temp, substr_replace($value, ".", $pos, strlen(".")));
             }
-        }
+        }   
         return $temp;
     }
 
@@ -101,6 +104,28 @@ abstract class defaultController extends Controller{
             }
         }
 
+        /////////searching/////////
+        if(!empty($request->searchCol)){
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol);
+            }else{
+                $searchCol_array = $request->searchCol;
+            }
+
+            foreach ($searchCol_array as $key => $value) {
+                $table = $table->orWhere($searchCol_array[$key],'like',$request->searchVal[$key]);
+            }
+        }
+
+        /////////searching 2///////// ni search utk ordialog
+        if(!empty($request->searchCol2)){
+            $table = $table->Where(function($query) use ($request){
+                foreach ($request->searchCol2 as $key => $value) {
+                    $query = $query->orWhere($request->searchCol2[$key],'like',$request->searchVal2[$key]);
+                }
+            });
+        }
+
         //////////where//////////
         if(!empty($request->filterCol)){
             foreach ($request->filterCol as $key => $value) {
@@ -111,22 +136,6 @@ abstract class defaultController extends Controller{
                     $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
                 }
             }
-        }
-
-        /////////searching/////////
-        if(!empty($request->searchCol)){
-            foreach ($request->searchCol as $key => $value) {
-                $table = $table->orWhere($request->searchCol[$key],'like',$request->searchVal[$key]);
-            }
-        }
-
-        /////////searching 2/////////
-        if(!empty($request->searchCol2)){
-            $table = $table->Where(function($query) use ($request){
-                foreach ($request->searchCol2 as $key => $value) {
-                    $query = $query->orWhere($request->searchCol2[$key],'like',$request->searchVal2[$key]);
-                }
-            });
         }
 
         //////////ordering/////////
@@ -180,6 +189,22 @@ abstract class defaultController extends Controller{
     }
 
     public function defaultAdd(Request $request){
+        
+        if(!empty($request->fixPost)){
+            $field = $this->fixPost2($request->field);
+            $idno = substr(strstr($request->table_id,'_'),1);
+        }else{
+            $field = $request->field;
+            $idno = $request->table_id;
+        }
+
+        if($this->default_duplicate( ///check duplicate
+            $request->table_name,
+            $idno,
+            $request[$request->table_id]
+        )){
+            return response('duplicate', 500);
+        };
 
         DB::beginTransaction();
 
@@ -192,8 +217,8 @@ abstract class defaultController extends Controller{
             'recstatus' => 'A'
         ];
 
-        foreach ($request->field as $key => $value) {
-        	$array_insert[$value] = $request[$value];
+        foreach ($field as $key => $value) {
+            $array_insert[$value] = $request[$request->field[$key]];
         }
 
         try {
@@ -227,13 +252,36 @@ abstract class defaultController extends Controller{
             'recstatus' => 'A'
         ];
 
-        foreach ($request->field as $key => $value) {
-        	$array_update[$value] = $request[$value];
+        if(!empty($request->fixPost)){
+            $field = $this->fixPost2($request->field);
+            $idno = $request[$request->idnoUse];
+        }else{
+            $field = $request->field;
+            $idno = $request->idno;
+        }
+
+        foreach ($field as $key => $value) {
+        	$array_update[$value] = $request[$request->field[$key]];
         }
 
         try {
 
-            $table = $table->where('idno','=',$request->idno);
+
+            //////////where//////////
+            $table = $table->where('idno','=',$idno);
+
+
+            if(!empty($request->filterCol)){ ///this are not suppose to be used, we already have unique idno
+                foreach ($request->filterCol as $key => $value) {
+                    $pieces = explode(".", $request->filterVal[$key], 2);
+                    if($pieces[0] == 'session'){
+                        $table = $table->where($request->filterCol[$key],'=',session('compcode'));
+                    }else{
+                        $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                    }
+                }
+            }
+
             $table->update($array_update);
 
             $responce = new stdClass();

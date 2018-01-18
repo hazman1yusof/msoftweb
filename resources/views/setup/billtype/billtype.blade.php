@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Race Setup')
+@section('title', 'Bill Type Setup')
 
 @section('body')
 	 
@@ -310,9 +310,6 @@
         	<form class='form-horizontal' style='width:99%' id='Fitem'>
 				{{ csrf_field() }}
 				<input type="hidden" name="i_idno">
-
-        		<div class="prevnext btn-group pull-right">
-				</div>
 
 				<input id="billtype" name="i_billtype" type="hidden" class="form-control input-sm">
 

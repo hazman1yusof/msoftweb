@@ -1,9 +1,9 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow = 0;
 
 $(document).ready(function () {
+	$("body").show();
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -56,7 +56,6 @@ $(document).ready(function () {
 			autoOpen: false,
 			open: function (event, ui) {
 				parent_close_disabled(true);
-				toggleFormData('#jqGrid', '#formdata');
 				switch (oper) {
 					case state = 'add':
 						$(this).dialog("option", "title", "Add");
@@ -88,7 +87,7 @@ $(document).ready(function () {
 			close: function (event, ui) {
 				parent_close_disabled(false);
 				emptyFormdata(errorField, '#formdata');
-				$('.alert').detach();
+				// $('.alert').detach();
 				$("#formdata a").off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", butt1);
@@ -101,6 +100,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
+		url: '/util/get_table_default',
 		field: '',
 		table_name: 'hisdb.bloodgroup',
 		table_id: 'bloodcode',
@@ -110,6 +110,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
+		url: '/bloodGroup/form',
 		field: '',
 		oper: oper,
 		table_name: 'hisdb.bloodgroup',
@@ -141,6 +142,8 @@ $(document).ready(function () {
 		],
 		autowidth: true,
 		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
@@ -203,7 +206,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#formdata');
 			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'bloodcode': selRowId });
+				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null,  { 'idno': selrowData('#jqGrid').idno });
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -245,5 +248,5 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
 	addParamField('#jqGrid', false, saveParam);
-	addParamField('#jqGrid', false, saveParam, ['idno']);
+	addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 });

@@ -1,7 +1,6 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow = 0;
 
 $(document).ready(function () {
 	$("body").show();
@@ -99,6 +98,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
+		url: '/util/get_table_default',
 		field: '',
 		table_name: 'hisdb.areacode',
 		table_id: 'areacode',
@@ -108,6 +108,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
+		url: '/area/form',
 		field: '',
 		oper: oper,
 		table_name: 'hisdb.areacode',
@@ -137,6 +138,8 @@ $(document).ready(function () {
 		],
 		autowidth: true,
 		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
@@ -191,7 +194,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#formdata');
 			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'areacode': selRowId });
+				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null,  { 'idno': selrowData('#jqGrid').idno });
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -231,5 +234,5 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['idno']);
+	addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 });

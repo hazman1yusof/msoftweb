@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class RelationshipController extends defaultController
+class AreaController extends defaultController
 {   
 
     var $table;
@@ -13,12 +13,12 @@ class RelationshipController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "RelationShipCode";
+        $this->duplicateCode = "bloodcode";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.relationship.relationship');
+        return view('setup.area.area');
     }
 
     public function form(Request $request)

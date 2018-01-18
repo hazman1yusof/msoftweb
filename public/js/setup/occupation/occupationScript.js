@@ -1,9 +1,9 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow = 0;
 
 $(document).ready(function () {
+	$("body").show();
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -98,6 +98,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
+		url: '/util/get_table_default',
 		field: '',
 		table_name: 'hisdb.occupation',
 		table_id: 'occupcode',
@@ -107,6 +108,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
+		url: '/occupation/form',
 		field: '',
 		oper: oper,
 		table_name: 'hisdb.occupation',
@@ -143,6 +145,8 @@ $(document).ready(function () {
 		],
 		autowidth: true,
 		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
@@ -200,7 +204,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#formdata');
 			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'occupcode': selRowId });
+				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'idno': selrowData('#jqGrid').idno });
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -241,5 +245,5 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['idno']);
+	addParamField('#jqGrid',false,saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 });

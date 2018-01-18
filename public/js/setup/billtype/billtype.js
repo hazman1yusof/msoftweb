@@ -423,7 +423,8 @@ $(document).ready(function () {
 		oper: oper_svc,
 		table_name: 'hisdb.billtysvc',
 		fixPost: 'true',//throw out dot in the field name
-		table_id: 'svc_chggroup',
+		table_id: 'svc_chggroup',//ni utk tgk duplicate
+		idnoUse: 'svc_idno',
 		filterCol: ['billtype'],
 		filterVal: [''],
 		saveip:'true'
@@ -436,8 +437,8 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Bill Type', name: 'svc_billtype', width: 50, hidden: true },
 			{ label: 'Description', name: 'm_description', width: 90, hidden: true },
-			{ label: 'Chg. Group', name: 'svc_chggroup', width: 50, classes: 'wrap', canSearch: true, checked: true },
-			{ label: 'Description', name: 'cc_description', width: 90, classes: 'wrap', },
+			{ label: 'Chg. Group', name: 'svc_chggroup', width: 50, classes: 'wrap', canSearch: true },
+			{ label: 'Description', name: 'cc_description', width: 90, classes: 'wrap', canSearch: true , checked: true},
 			{ label: 'Price', name: 'svc_price', width: 90, classes: 'wrap', checked: true },
 			{ label: 'Amount', name: 'svc_amount', width: 90, classes: 'wrap', },
 			{ label: 'Percentage', name: 'svc_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
@@ -537,7 +538,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#Fsvc');
 			} else {
-				saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", 'del', saveParam_svc, urlParam_svc, null, { 'svc_chggroup': selRowId });
+				saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", 'del', saveParam_svc, urlParam_svc, null, { 'idno': selrowData('#jqGridsvc').svc_idno });
 				//saveFormdata("#jqGridsvc","#Dsvc","#Fsvc",'del',saveParam_svc,{'svc_chggroup':selRowId});
 			}
 		},
@@ -589,7 +590,7 @@ $(document).ready(function () {
 
 	addParamField('#jqGridsvc', false, urlParam_svc);
 	//addParamField('#jqGridsvc',false,saveParam_svc,['cc_description','m_description','svc_discrate',"svc_recstatus"]);
-	addParamField('#jqGridsvc', false, saveParam_svc, ['cc_description', 'm_description', 'svc_discrate', 'svc_idno', 'svc_adduser', 'svc_adddate', 'svc_computerid', 'svc_ipaddress']);
+	addParamField('#jqGridsvc', false, saveParam_svc, ['cc_description', 'm_description', 'svc_discrate', 'svc_idno', 'svc_adduser', 'svc_adddate', 'svc_adduser', 'svc_upduser', 'svc_upddate', 'svc_recstatus']);
 
 	//populateSelect('#jqGridsvc');
 	populateSelect('#jqGridsvc', '#searchForm2');
@@ -601,7 +602,21 @@ $(document).ready(function () {
 	////////////// billtype Item //////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	dialog_chgcode = new makeDialog('hisdb.chgmast', "#Fitem :input[name*='i_chgcode']", ['chgcode', 'description'], 'Chg. Code');
+	var dialog_chgcode = new ordialog(
+		'chgmast','hisdb.chgmast',"#Fitem :input[name*='i_chgcode']",errorField,
+		{	colModel:[
+				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				]
+		},{
+			title:"Select Charge Code",
+			open: function(){
+				dialog_chgcode.urlParam.filterCol=['chggroup'],
+				dialog_chgcode.urlParam.filterVal=[$("#Fitem :input[name*='i_chggroup']").val()]
+			}
+		},'urlParam'
+	);
+	dialog_chgcode.makedialog();
 
 	var buttitem1 = [{
 		text: "Save", click: function () {
@@ -653,7 +668,7 @@ $(document).ready(function () {
 						break;
 				}
 				if (oper_item == 'add') {
-					dialog_chgcode.handler(errorField);
+					dialog_chgcode.on();
 				}
 				if (oper_item != 'add') {
 					dialog_chgcode.check(errorField);
@@ -670,7 +685,7 @@ $(document).ready(function () {
 				parent_close_disabled(false);
 				$('#Fitem .alert').detach();
 				//$('.alert').detach();
-				$("#Fitem a").off();
+				dialog_chgcode.off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", buttitem1);
 				}
@@ -695,11 +710,13 @@ $(document).ready(function () {
 
 	var saveParam_item = {
 		action: 'save_table_default',
+		url: '/billtype/form',
 		field: '',
 		oper: oper_item,
 		table_name: 'hisdb.billtyitem ',
 		fixPost: 'true',//throw out dot in the field name
 		table_id: 'i_chgcode',
+		idnoUse: 'i_idno',
 		filterCol: ['billtype'],
 		filterVal: [''],
 		saveip:'true'
@@ -787,7 +804,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#Fitem');
 			} else {
-				saveFormdata("#jqGriditem", "#Ditem", "#Fitem", 'del', saveParam_item, urlParam_item, null, { 'i_chgcode': selRowId });
+				saveFormdata("#jqGriditem", "#Ditem", "#Fitem", 'del', saveParam_item, urlParam_item, null, { 'idno': selrowData('#jqGriditem').i_idno });
 				//saveFormdata("#jqGriditem","#Ditem","#Fitem",'del',saveParam_item,{"chgcode":selRowId});
 			}
 		},
@@ -834,7 +851,7 @@ $(document).ready(function () {
 	});
 
 	addParamField('#jqGriditem', false, urlParam_item);
-	addParamField('#jqGriditem', false, saveParam_item, ["c_description", "i_discrate", "i_idno",'i_adduser', 'i_adddate', 'i_computerid', 'i_ipaddress']);
+	addParamField('#jqGriditem', false, saveParam_item, ["c_description", "i_discrate", "i_idno",'i_adduser', 'i_adddate', 'i_upduser', 'i_upddate', 'i_recstatus']);
 
 	//populateSelect('#jqGriditem');
 	populateSelect('#jqGriditem', '#searchForm3');
@@ -848,163 +865,4 @@ $(document).ready(function () {
 	/////////////////Pager Hide/////////////////////////////////////////////////////////////////////////////////////////
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
-
-	///////////////////////////////start->dialogHandler part////////////////////////////////////////////
-	function makeDialog(table, id, cols, title) {
-		this.table = table;
-		this.id = id;
-		this.cols = cols;
-		this.title = title;
-		this.handler = dialogHandler;
-		this.check = checkInput;
-	}
-
-	$("#dialog").dialog({
-		autoOpen: false,
-		width: 7 / 10 * $(window).width(),
-		modal: true,
-		open: function () {
-			$("#gridDialog").jqGrid('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth - $("#gridDialog_c")[0].offsetLeft));
-
-			//$("#Fitem :input[name*='chggroup']").val(selrowData('#jqGridsvc').svc_chggroup);
-			//if(selText=="#Fitem :input[name*='i_chgcode']"){
-			if (selText == "#Fitem :input[name*='i_chgcode']") {
-				//paramD.filterCol=selrowData("#jqGridsvc").svc_chggroup; 
-				//console.log(selrowData.svc_chggroup);
-			} else {
-				paramD.filterCol = null;
-				paramD.filterVal = null;
-			}
-		},
-		close: function (event, ui) {
-			paramD.searchCol = null;
-			paramD.searchVal = null;
-		},
-	});
-
-	var selText, Dtable, Dcols;
-	$("#gridDialog").jqGrid({
-		datatype: "local",
-		colModel: [
-			{ label: 'Code', name: 'code', width: 200, classes: 'pointer', canSearch: true, checked: true },
-			{ label: 'Description', name: 'desc', width: 400, canSearch: true, classes: 'pointer' },
-			//{ label: 'chggroup', name: 'chggroup', width: 400,  classes: 'pointer'},
-		],
-		width: 500,
-		autowidth: true,
-		viewrecords: true,
-		loadonce: false,
-		multiSort: true,
-		rowNum: 30,
-		pager: "#gridDialogPager",
-		ondblClickRow: function (rowid, iRow, iCol, e) {
-			var data = $("#gridDialog").jqGrid('getRowData', rowid);
-			$("#gridDialog").jqGrid("clearGridData", true);
-			$("#dialog").dialog("close");
-			$(selText).val(rowid);
-			$(selText).focus();
-			$(selText).parent().next().html(data['desc']);
-		},
-
-	});
-
-	var paramD = {
-		action: 'get_table_default',
-		table_name: '',
-		field: '',
-		table_id: '',
-		filter: '',
-	};
-
-	function dialogHandler(errorField) {
-		var table = this.table, id = this.id, cols = this.cols, title = this.title, self = this;
-		$(id + " ~ a").on("click", function () {
-			selText = id, Dtable = table, Dcols = cols,
-				$("#gridDialog").jqGrid("clearGridData", true);
-			$("#dialog").dialog("open");
-			$("#dialog").dialog("option", "title", title);
-			paramD.table_name = table;
-			paramD.field = cols;
-			paramD.table_id = cols[0];
-			/*if(selText=="#Fitem :input[name*='i_chgcode']"){
-				paramD.filterVal[0]=rowData['svc_chggroup']; 
-			}*/
-			if (selText == "#Fitem :input[name*='i_chgcode']") {
-				paramD.filterCol = ['chggroup'];
-				paramD.filterVal = [$("#Fitem :input[name*='i_chggroup']").val()];
-				//paramD.filterVal[0]=rowData['svc_chggroup']; 
-			}
-			else {
-				paramD.filterVal = null;
-			}
-			//paramD.filterVal[0]=rowData['chggroup']; 
-
-			$("#gridDialog").jqGrid('setGridParam', { datatype: 'json', url: '../../../../assets/php/entry.php?' + $.param(paramD) }).trigger('reloadGrid');
-			$('#Dtext').val(''); $('#Dcol').html('');
-
-			$.each($("#gridDialog").jqGrid('getGridParam', 'colModel'), function (index, value) {
-				if (value['canSearch']) {
-					if (value['checked']) {
-						$("#Dcol").append("<label class='radio-inline'><input type='radio' name='dcolr' value='" + cols[index] + "' checked>" + value['label'] + "</input></label>");
-					} else {
-						$("#Dcol").append("<label class='radio-inline'><input type='radio' name='dcolr' value='" + cols[index] + "' >" + value['label'] + "</input></label>");
-					}
-				}
-			});
-		});
-		$(id).on("blur", function () {
-			self.check(errorField);
-		});
-	}
-
-	function checkInput(errorField) {
-		var table = this.table, id = this.id, field = this.cols, value = $(this.id).val()
-		var param = { action: 'input_check', table: table, field: field, value: value };
-		$.get("../../../../assets/php/entry.php?" + $.param(param), function (data) {
-
-		}, 'json').done(function (data) {
-			if (data.msg == 'success') {
-				if ($.inArray(id, errorField) !== -1) {
-					errorField.splice($.inArray(id, errorField), 1);
-				}
-				$(id).parent().removeClass("has-error").addClass("has-success");
-				$(id).removeClass("error").addClass("valid");
-				$(id).parent().siblings(".help-block").html(data.row[field[1]]);
-			} else if (data.msg == 'fail') {
-				$(id).parent().removeClass("has-success").addClass("has-error");
-				$(id).removeClass("valid").addClass("error");
-				$(id).parent().siblings(".help-block").html("Invalid Code ( " + field[0] + " )");
-				if ($.inArray(id, errorField) === -1) {
-					errorField.push(id);
-				}
-			}
-		});
-	}
-
-	$('#Dtext').keyup(function () {
-		delay(function () {
-			Dsearch($('#Dtext').val(), $('#checkForm input:radio[name=dcolr]:checked').val());
-		}, 500);
-	});
-
-	$('#Dcol').change(function () {
-		Dsearch($('#Dtext').val(), $('#checkForm input:radio[name=dcolr]:checked').val());
-	});
-
-	function Dsearch(Dtext, Dcol) {
-		paramD.searchCol = null;
-		paramD.searchVal = null;
-		Dtext = Dtext.trim();
-		if (Dtext != '') {
-			var split = Dtext.split(" "), searchCol = [], searchVal = [];
-			$.each(split, function (index, value) {
-				searchCol.push(Dcol);
-				searchVal.push('%' + value + '%');
-			});
-			paramD.searchCol = searchCol;
-			paramD.searchVal = searchVal;
-		}
-		refreshGrid("#gridDialog", paramD);
-	}
-	///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
 });

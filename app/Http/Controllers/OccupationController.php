@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class RelationshipController extends defaultController
+class OccupationController extends defaultController
 {   
 
     var $table;
@@ -13,12 +13,12 @@ class RelationshipController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "RelationShipCode";
+        $this->duplicateCode = "occupcode";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.relationship.relationship');
+        return view('setup.occupation.occupation');
     }
 
     public function form(Request $request)

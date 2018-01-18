@@ -63,3 +63,47 @@ Route::get('/billtype','BilltypeController@show');
 Route::get('/billtype/table','BilltypeController@table');
 Route::post('/billtype/form','BilltypeController@form');
 
+//// marital setup page ///
+Route::get('/marital','MaritalController@show');
+Route::get('/marital/table','MaritalController@table');
+Route::post('/marital/form','MaritalController@form');
+
+//// bloodgroup setup page ///
+Route::get('/bloodGroup','BloodGroupController@show');
+Route::get('/bloodGroup/table','BloodGroupController@table');
+Route::post('/bloodGroup/form','BloodGroupController@form');
+
+//// citizen setup page ///
+Route::get('/citizen','CitizenController@show');
+Route::get('/citizen/table','CitizenController@table');
+Route::post('/citizen/form','CitizenController@form');
+
+//// discipline setup page ///
+Route::get('/discipline','DisciplineController@show');
+Route::get('/discipline/table','DisciplineController@table');
+Route::post('/discipline/form','DisciplineController@form');
+
+//// doctorStatus setup page ///
+Route::get('/doctorStatus','DoctorStatusController@show');
+Route::get('/doctorStatus/table','DoctorStatusController@table');
+Route::post('/doctorStatus/form','DoctorStatusController@form');
+
+//// language setup page ///
+Route::get('/language','LanguageController@show');
+Route::get('/language/table','LanguageController@table');
+Route::post('/language/form','LanguageController@form');
+
+//// Occupation setup page ///
+Route::get('/occupation','OccupationController@show');
+Route::get('/occupation/table','OccupationController@table');
+Route::post('/occupation/form','OccupationController@form');
+
+//// speciality setup page ///
+Route::get('/speciality','SpecialityController@show');
+Route::get('/speciality/table','SpecialityController@table');
+Route::post('/speciality/form','SpecialityController@form');
+
+//// Occupation setup page ///
+Route::get('/area','AreaController@show');
+Route::get('/area/table','AreaController@table');
+Route::post('/area/form','AreaController@form');
