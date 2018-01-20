@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
-class RelationshipController extends defaultController
+class SpecialityController extends defaultController
 {   
 
     var $table;
@@ -13,12 +14,12 @@ class RelationshipController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "RelationShipCode";
+        $this->duplicateCode = "Code";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.relationship.relationship');
+        return view('setup.speciality.speciality');
     }
 
     public function form(Request $request)

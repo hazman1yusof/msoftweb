@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
-class CitizenController extends defaultController
+class DoctorController extends defaultController
 {   
 
     var $table;
@@ -18,7 +19,7 @@ class CitizenController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('setup.citizen.citizen');
+        return view('setup.doctor.doctor');
     }
 
     public function form(Request $request)

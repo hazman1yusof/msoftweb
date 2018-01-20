@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
-class LanguageController  extends defaultController
+class RaceController extends defaultController
 {   
 
     var $table;
@@ -18,7 +19,7 @@ class LanguageController  extends defaultController
 
     public function show(Request $request)
     {   
-        return view('setup.language.language');
+        return view('setup.race.race');
     }
 
     public function form(Request $request)

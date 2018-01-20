@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
-class SalutationController extends defaultController
+class BilltypeController extends defaultController
 {   
 
     var $table;
@@ -18,11 +19,11 @@ class SalutationController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('setup.salutation.salutation');
+        return view('setup.billtype.billtype');
     }
 
     public function form(Request $request)
-    {   
+    {  
         switch($request->oper){
             case 'add':
                 return $this->defaultAdd($request);

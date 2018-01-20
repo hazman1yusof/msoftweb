@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
-class BloodGroupController extends defaultController
+class LanguageController  extends defaultController
 {   
 
     var $table;
@@ -13,12 +14,12 @@ class BloodGroupController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "bloodcode";
+        $this->duplicateCode = "Code";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.bloodGroup.bloodGroup');
+        return view('setup.language.language');
     }
 
     public function form(Request $request)

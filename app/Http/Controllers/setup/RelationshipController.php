@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
-class OccupationController extends defaultController
+class RelationshipController extends defaultController
 {   
 
     var $table;
@@ -13,12 +14,12 @@ class OccupationController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "occupcode";
+        $this->duplicateCode = "RelationShipCode";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.occupation.occupation');
+        return view('setup.relationship.relationship');
     }
 
     public function form(Request $request)

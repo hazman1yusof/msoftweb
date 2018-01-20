@@ -1,75 +1,37 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<style>
-	#gridAllo_c input[type='text'][rowid]{
-		height: 30%;
-		padding: 4px 12px 4px 12px;
-	}
-	#alloText{width:9%;}#alloText{width:60%;}#alloCol{width: 30%;}
-	#alloCol, #alloText{
-		display: inline-block;
-		height: 70%;
-		padding: 4px 12px 4px 12px;
-	}
-	#alloSearch{
-		border-style: solid;
-		border-width: 0px 1px 1px 1px;
-		padding-top: 5px;
-		padding-bottom: 5px;
-		border-radius: 0px 0px 5px 5px;
-		background-color: #f8f8f8;
-		border-color: #e7e7e7;
-	}
-</style>
-<body style="display:none">
+@extends('layouts.main')
 
-	<div id="tilldet" title="Select Till">
-		<form class='form-horizontal' style='width:99%' id='formTillDet' autocomplete="off">
-			<div class="form-group">
-				<label class="col-md-2 control-label" for="dept">Cashier</label>  
-				<div class="col-md-10">
-					<input id="cashier" name="cashier" type="text" class="form-control input-sm" readonly="readonly" value="<?php echo $_SESSION['username'];?>">
-				</div>
-			</div>	
-			
-			<div class="form-group">
-				<label class="col-md-2 control-label" for="effectdate">Till</label>  
-				<div class="col-md-10">
-				  <div class='input-group'>
-					<input id="tilldetTillcode" name="tilldetTillcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" disabled>
-					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-				  </div>
-				  <span class="help-block"></span>
+@section('title', 'Receipt Setup')
+
+@section('body')
+
+	
+
+<!-------------------------------- Search + table ---------------------->
+<div class='row'>
+	<form id="searchForm" class="formclass" style='width:99%'>
+		<fieldset>
+			<div class="ScolClass" style="padding:0 0 0 15px">
+				<div name='Scol'>Search By : </div>
+			</div>
+			<div class="StextClass">
+				<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+				<div class=Stext2 id='allocate'>
+					<a href="#" class="btn-sm allobtn" role="button">Allocate</a>
 				</div>
 			</div>
-		</form>
-	</div>
-<!-------------------------------- Search + table ---------------------->
-		<form id="searchForm" class="formclass" style='width:99%' autocomplete="off">
-			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase col-md-5">
-					<div class=Stext2 id='allocate'>
-						<a href="#" class="btn-sm allobtn" role="button">Allocate</a>
-					</div>
-				</div>
-			 </fieldset>
- 		</form>
-    	<div class="panel panel-default">
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
+		 </fieldset> 
+	</form>
+	
+	  <div class="panel panel-default">
+		<div class="panel-body">
+			<div class='col-md-12' style="padding:0 0 15px 0">
+				<table id="jqGrid" class="table table-striped"></table>
+					<div id="jqGridPager"></div>
+			</div>
 		</div>
-
-    </div>
-	<!-------------------------------- End Search + table ------------------>
+	</div>
+</div>
+<!-------------------------------- End Search + table ------------------>
 		
 <div id="dialogForm" title="Add Form" >
 	<form style='width:99%' id='formdata' autocomplete="off">
@@ -432,86 +394,15 @@
 		</div>
 </div>
 
-<div id="allocateDialog" title="Create Allocation">
-	<form id='formallo'>
-		<div class='col-md-9'>
-			<div class="col-md-6">
-				<label class="control-label">Documnet Type</label>
-				<input id="AlloDtype" type="text" class="form-control input-sm" readonly>
-			</div>
+	@include('layouts.till_part')
 
-			<div class="col-md-6">
-				<label class="control-label">Documnet No.</label>
-				<input id="AlloDno" type="text" class="form-control input-sm" readonly>
-			</div>
+	@include('layouts.allocate_part')
 
-			<div class="col-md-12">
-				<label class="control-label">Debtor</label>
-				<input id="AlloDebtor" type="text" class="form-control input-sm" readonly>
-				<span class="help-block" id="AlloDebtor2"></span>
-			</div>
+@endsection
 
-			<div class="col-md-12">
-				<label class="control-label">Payer</label>
-				<input id="AlloPayer" type="text" class="form-control input-sm" readonly>
-				<span class="help-block" id="AlloPayer2"></span>
-			</div>
 
-			<div class="col-md-6">
-				<label class="control-label">Document Amount</label>
-				<input id="AlloAmt" type="text" class="form-control input-sm" readonly>
-			</div>
+@section('scripts')
 
-			<div class="col-md-6">
-				<label class="control-label">Document O/S</label>
-				<input id="AlloOutamt" type="text" class="form-control input-sm" readonly>
-			</div>
-		</div>
-
-		<div class='col-md-3'>
-			
-				<div class="col-md-12"><hr>
-					<label class="control-label">Balance after allocate</label>
-					<input id="AlloBalance" type="text" class="form-control input-sm" readonly>
-				</div>
-
-				<div class="col-md-12">
-					<label class="control-label">Total allocate</label>
-					<input id="AlloTotal" type="text" class="form-control input-sm" readonly><hr>
-				</div>
-		</div>
-	</form>
-
-	<div class='col-md-12' id='gridAllo_c' style="padding:0">
-		<hr>
-        <table id="gridAllo" class="table table-striped"></table>
-        <div id="pagerAllo"></div>
-    </div>
-
-	<div class="col-md-10 col-md-offset-1" id="alloSearch">
-		<label class="control-label" id='alloLabel'>Search</label>
-		<input id="alloText" type="text" class="form-control input-sm">
-		<select class="form-control" id="alloCol">
-			<option value="invno" >invoice no</option>
-			<option value="auditno" >auditno</option>
-			<option value="mrn" >mrn</option>
-			<option value="recptno" >docno</option>
-			<option value="newic" >newic</option>
-			<option value="staffid" >staffid</option>
-			<option value="batchno" >batchno</option>
-		</select>
-	</div>
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
-
-<script src="receipt.js"></script>
-<script src="../../../../assets/js/utility.js"></script>
-<script src="../../../../assets/plugins/numeral.min.js"></script>
-<script src="../../../../assets/plugins/moment.js"></script>
-
-<script>
-		
-</script>
-</body>
-</html>
+	<script src="js/finance/AR/receipt/receipt.js"></script>
+	
+@endsection

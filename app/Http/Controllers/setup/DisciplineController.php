@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
-class RaceController extends defaultController
+class DisciplineController extends defaultController
 {   
 
     var $table;
@@ -18,22 +19,13 @@ class RaceController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('setup.race.race');
+        return view('setup.discipline.discipline');
     }
 
     public function form(Request $request)
     {   
         switch($request->oper){
             case 'add':
-
-            	if($this->default_duplicate( ///check duplicate
-            		$request->table_name,
-            		$request->table_id,
-            		$request->Code
-            	)){
-            		return response('duplicate', 500);
-            	};
-
                 return $this->defaultAdd($request);
             case 'edit':
                 return $this->defaultEdit($request);

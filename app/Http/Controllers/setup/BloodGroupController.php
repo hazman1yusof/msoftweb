@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
-class BilltypeController extends defaultController
+class BloodGroupController extends defaultController
 {   
 
     var $table;
@@ -13,16 +14,16 @@ class BilltypeController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "Code";
+        $this->duplicateCode = "bloodcode";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.billtype.billtype');
+        return view('setup.bloodGroup.bloodGroup');
     }
 
     public function form(Request $request)
-    {  
+    {   
         switch($request->oper){
             case 'add':
                 return $this->defaultAdd($request);

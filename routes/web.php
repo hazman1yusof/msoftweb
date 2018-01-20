@@ -24,96 +24,101 @@ Route::get('/util/get_table_default','UtilController@get_table_default');
 Route::get('/util/input_check','UtilController@input_check'); //jgn guna
 
 //// menu mainatenance page ///
-Route::get('/menu_maintenance','MenuMaintenanceController@show');
-Route::get('/menu_maintenance/table','MenuMaintenanceController@table');
-Route::post('/menu_maintenance/form','MenuMaintenanceController@form');
+Route::get('/menu_maintenance','setup\MenuMaintenanceController@show');
+Route::get('/menu_maintenance/table','setup\MenuMaintenanceController@table');
+Route::post('/menu_maintenance/form','setup\MenuMaintenanceController@form');
 
 //// group mainatenance page ///
-Route::get('/group_maintenance','GroupMaintenanceController@show');
-Route::get('/group_maintenance/table','GroupMaintenanceController@table');
-Route::post('/group_maintenance/form','GroupMaintenanceController@form');
+Route::get('/group_maintenance','setup\GroupMaintenanceController@show');
+Route::get('/group_maintenance/table','setup\GroupMaintenanceController@table');
+Route::post('/group_maintenance/form','setup\GroupMaintenanceController@form');
 
 //// user mainatenance page ///
-Route::get('/user_maintenance','UserMaintenanceController@show');
-Route::get('/user_maintenance/table','UserMaintenanceController@table');
-Route::post('/user_maintenance/form','UserMaintenanceController@form');
+Route::get('/user_maintenance','setup\UserMaintenanceController@show');
+Route::get('/user_maintenance/table','setup\UserMaintenanceController@table');
+Route::post('/user_maintenance/form','setup\UserMaintenanceController@form');
 
 //// Religion setup page ///
-Route::get('/religion','ReligionController@show');
-Route::get('/religion/table','ReligionController@table');
-Route::post('/religion/form','ReligionController@form');
+Route::get('/religion','setup\ReligionController@show');
+Route::get('/religion/table','setup\ReligionController@table');
+Route::post('/religion/form','setup\ReligionController@form');
 
 //// Race setup page ///
-Route::get('/race','RaceController@show');
-Route::get('/race/table','RaceController@table');
-Route::post('/race/form','RaceController@form');
+Route::get('/race','setup\RaceController@show');
+Route::get('/race/table','setup\RaceController@table');
+Route::post('/race/form','setup\RaceController@form');
 
 //// Salutation setup page ///
-Route::get('/salutation','SalutationController@show');
-Route::get('/salutation/table','SalutationController@table');
-Route::post('/salutation/form','SalutationController@form');
+Route::get('/salutation','setup\SalutationController@show');
+Route::get('/salutation/table','setup\SalutationController@table');
+Route::post('/salutation/form','setup\SalutationController@form');
 
 //// relationship setup page ///
-Route::get('/relationship','RelationshipController@show');
-Route::get('/relationship/table','RelationshipController@table');
-Route::post('/relationship/form','RelationshipController@form');
+Route::get('/relationship','setup\RelationshipController@show');
+Route::get('/relationship/table','setup\RelationshipController@table');
+Route::post('/relationship/form','setup\RelationshipController@form');
 
 //// billtype setup page ///
-Route::get('/billtype','BilltypeController@show');
-Route::get('/billtype/table','BilltypeController@table');
-Route::post('/billtype/form','BilltypeController@form');
+Route::get('/billtype','setup\BilltypeController@show');
+Route::get('/billtype/table','setup\BilltypeController@table');
+Route::post('/billtype/form','setup\BilltypeController@form');
 
 //// marital setup page ///
-Route::get('/marital','MaritalController@show');
-Route::get('/marital/table','MaritalController@table');
-Route::post('/marital/form','MaritalController@form');
+Route::get('/marital','setup\MaritalController@show');
+Route::get('/marital/table','setup\MaritalController@table');
+Route::post('/marital/form','setup\MaritalController@form');
 
 //// bloodgroup setup page ///
-Route::get('/bloodGroup','BloodGroupController@show');
-Route::get('/bloodGroup/table','BloodGroupController@table');
-Route::post('/bloodGroup/form','BloodGroupController@form');
+Route::get('/bloodGroup','setup\BloodGroupController@show');
+Route::get('/bloodGroup/table','setup\BloodGroupController@table');
+Route::post('/bloodGroup/form','setup\BloodGroupController@form');
 
 //// citizen setup page ///
-Route::get('/citizen','CitizenController@show');
-Route::get('/citizen/table','CitizenController@table');
-Route::post('/citizen/form','CitizenController@form');
+Route::get('/citizen','setup\CitizenController@show');
+Route::get('/citizen/table','setup\CitizenController@table');
+Route::post('/citizen/form','setup\CitizenController@form');
 
 //// discipline setup page ///
-Route::get('/discipline','DisciplineController@show');
-Route::get('/discipline/table','DisciplineController@table');
-Route::post('/discipline/form','DisciplineController@form');
+Route::get('/discipline','setup\DisciplineController@show');
+Route::get('/discipline/table','setup\DisciplineController@table');
+Route::post('/discipline/form','setup\DisciplineController@form');
 
 //// doctorStatus setup page ///
-Route::get('/doctorStatus','DoctorStatusController@show');
-Route::get('/doctorStatus/table','DoctorStatusController@table');
-Route::post('/doctorStatus/form','DoctorStatusController@form');
+Route::get('/doctorStatus','setup\DoctorStatusController@show');
+Route::get('/doctorStatus/table','setup\DoctorStatusController@table');
+Route::post('/doctorStatus/form','setup\DoctorStatusController@form');
 
 //// language setup page ///
-Route::get('/language','LanguageController@show');
-Route::get('/language/table','LanguageController@table');
-Route::post('/language/form','LanguageController@form');
+Route::get('/language','setup\LanguageController@show');
+Route::get('/language/table','setup\LanguageController@table');
+Route::post('/language/form','setup\LanguageController@form');
 
 //// Occupation setup page ///
-Route::get('/occupation','OccupationController@show');
-Route::get('/occupation/table','OccupationController@table');
-Route::post('/occupation/form','OccupationController@form');
+Route::get('/occupation','setup\OccupationController@show');
+Route::get('/occupation/table','setup\OccupationController@table');
+Route::post('/occupation/form','setup\OccupationController@form');
 
 //// speciality setup page ///
-Route::get('/speciality','SpecialityController@show');
-Route::get('/speciality/table','SpecialityController@table');
-Route::post('/speciality/form','SpecialityController@form');
+Route::get('/speciality','setup\SpecialityController@show');
+Route::get('/speciality/table','setup\SpecialityController@table');
+Route::post('/speciality/form','setup\SpecialityController@form');
 
 //// Occupation setup page ///
-Route::get('/area','AreaController@show');
-Route::get('/area/table','AreaController@table');
-Route::post('/area/form','AreaController@form');
+Route::get('/area','setup\AreaController@show');
+Route::get('/area/table','setup\AreaController@table');
+Route::post('/area/form','setup\AreaController@form');
 
 //// Compcode setup page ///
-Route::get('/compcode','CompcodeController@show');
-Route::get('/compcode/table','CompcodeController@table');
-Route::post('/compcode/form','CompcodeController@form');
+Route::get('/compcode','setup\CompcodeController@show');
+Route::get('/compcode/table','setup\CompcodeController@table');
+Route::post('/compcode/form','setup\CompcodeController@form');
 
 //// Doctor setup page ///
-Route::get('/doctor','DoctorController@show');
-Route::get('/doctor/table','DoctorController@table');
-Route::post('/doctor/form','DoctorController@form');
+Route::get('/doctor','setup\DoctorController@show');
+Route::get('/doctor/table','setup\DoctorController@table');
+Route::post('/doctor/form','setup\DoctorController@form');
+
+//// Doctor setup page ///
+Route::get('/receipt','finance\ReceiptController@show');
+Route::get('/receipt/table','finance\ReceiptController@table');
+Route::post('/receipt/form','finance\ReceiptController@form');

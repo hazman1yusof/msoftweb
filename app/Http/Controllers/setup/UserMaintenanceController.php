@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 use Auth;

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllerssetup;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
-class MaritalController extends defaultController
+class SexController extends extends defaultController
 {   
 
     var $table;
@@ -13,12 +14,12 @@ class MaritalController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "code";
+        $this->duplicateCode = "statuscode";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.marital.marital');
+        return view('setup.doctorstatus.doctorstatus');
     }
 
     public function form(Request $request)

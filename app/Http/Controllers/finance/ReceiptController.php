@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AreaController extends defaultController
+class ReceiptController extends defaultController
 {   
 
     var $table;
@@ -13,12 +13,12 @@ class AreaController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "bloodcode";
+        $this->duplicateCode = "Code";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.area.area');
+        return view('setup.race.race');
     }
 
     public function form(Request $request)
@@ -35,3 +35,4 @@ class AreaController extends defaultController
         }
     }
 }
+

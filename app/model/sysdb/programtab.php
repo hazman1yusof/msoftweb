@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\model\sysdb;
 
 use Illuminate\Database\Eloquent\Model;
+use App\defaultModel;
 
 class programtab extends defaultModel
 {

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\serup;
 
 use Illuminate\Http\Request;
 use stdClass;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use App\Http\Controllers\defaultController;
 
 
 class CompcodeController extends defaultController

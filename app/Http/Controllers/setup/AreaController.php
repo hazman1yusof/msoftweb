@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
-class SpecialityController extends defaultController
+class AreaController extends defaultController
 {   
 
     var $table;
@@ -13,12 +14,12 @@ class SpecialityController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "Code";
+        $this->duplicateCode = "bloodcode";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.speciality.speciality');
+        return view('setup.area.area');
     }
 
     public function form(Request $request)
