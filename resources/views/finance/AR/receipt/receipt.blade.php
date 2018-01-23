@@ -402,7 +402,9 @@
 
 
 @section('scripts')
+	
 
+	<script src="js/myjs/AR/receipt/receipt.js"></script>
 	<script src="js/finance/AR/receipt/receipt.js"></script>
 	
 @endsection

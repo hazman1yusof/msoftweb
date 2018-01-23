@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\finance;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\defaultController;
 
 class ReceiptController extends defaultController
 {   
@@ -19,7 +18,7 @@ class ReceiptController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('finance.AR.receipt.receipt');
+        return view('finance.AR.receipt');
     }
 
     public function form(Request $request)

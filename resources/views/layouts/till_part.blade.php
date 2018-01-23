@@ -3,7 +3,7 @@
 		<div class="form-group">
 			<label class="col-md-2 control-label" for="dept">Cashier</label>  
 			<div class="col-md-10">
-				<input id="cashier" name="cashier" type="text" class="form-control input-sm" readonly="readonly" value="<?php echo $_SESSION['username'];?>">
+				<input id="cashier" name="cashier" type="text" class="form-control input-sm" readonly="readonly" value="{{Session::get('username')}}">
 			</div>
 		</div>	
 		

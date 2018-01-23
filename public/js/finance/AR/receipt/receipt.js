@@ -21,43 +21,6 @@ var tabform="#f_tab-cash";
 				$("#formdata input[name='dbacthdr_dracc']").val(data.rows[0].glaccno);
 			});
 	}
-
-	function currencymode(arraycurrency){
-		this.array = arraycurrency;
-		this.formatOn = function(){
-			$.each(this.array, function( index, value ) {
-				$(value).val(numeral($(value).val()).format('0,0.00'));
-			});
-		}
-		this.formatOnBlur = function(){
-			$.each(this.array, function( index, value ) {
-				currencyBlur(value);
-			});
-		}
-		this.formatOff = function(){
-			$.each(this.array, function( index, value ) {
-				$(value).val(currencyRealval(value));
-			});
-		}
-
-		this.check0value = function(errorField){
-			$.each(this.array, function( index, value ) {
-				if($(value).val()=='0' || $(value).val()=='0.00'){
-					$(value).val('');
-				}
-			});
-		}
-
-		function currencyBlur(v){
-			$(v).on( "blur", function(){
-				$(v).val(numeral($(v).val()).format('0,0.00'));
-			});
-		}
-
-		function currencyRealval(v){
-			return numeral().unformat($(v).val());
-		}
-	}
 	
 	function setDateToNow(){
 		console.log(moment().format('YYYY-MM-DD'));
@@ -74,65 +37,6 @@ var tabform="#f_tab-cash";
 	function enabledPill(){
 		$('.nav li').removeClass('disabled');
 		$('.nav li').find('a').attr("data-toggle","tab");
-	}
-
-	function updateTillUsage(){
-		var param={action:'save_table_default_arr',array:
-			[{	oper:'add',
-				table_name:'debtor.tilldetl',
-				field:['cashier','tillcode','opendate','opentime','tillno'],
-				table_id:'sysno',
-				sysparam:{source:'AR',trantype:'TN',useOn:'tillno'},
-			},{	oper:'edit',
-				table_name:'debtor.till',
-				field:['tillstatus'],
-				table_id:'tillcode',
-			}],
-		};
-		$.post( "../../../../assets/php/entry.php?"+$.param(param),
-			{cashier:$('#cashier').val(),tillcode:$('#tilldetTillcode').val(),opendate:'NOW()',opentime:'NOW()',tillstatus:'O'}, 
-			function( data ) {
-				
-			}
-		).fail(function(data) {
-			alert('Error');
-		}).success(function(data){
-			checkIfTillOpen();
-			$( "#tilldet" ).dialog('close');
-		});
-	}
-	
-	var def_tillcode,def_tillno;
-	function checkIfTillOpen(){
-		var param={
-			action:'get_value_default',
-			field:['tilldetl.tillcode','till.lastrcnumber','till.dept','tilldetl.tillno','tilldetl.opendate','tilldetl.opentime','tilldetl.closedate','tilldetl.closetime','tilldetl.cashier','department.sector','department.region'],
-			table_name:['debtor.till','debtor.tilldetl','sysdb.department'],
-			join_type:['LEFT JOIN','LEFT JOIN'],
-			join_onCol:['till.tillcode','till.dept'],
-			join_onVal:['tilldetl.tillcode','department.deptcode'],
-			filterCol:['cashier','closedate'],
-			filterVal:['session.username','IS NULL']
-		}
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.rows)){
-				def_tillcode = data.rows[0].tillcode;
-				def_tillno = data.rows[0].tillno;
-				urlParam.filterVal = [data.rows[0].tillno];
-				refreshGrid('#jqGrid',urlParam);
-				$("#formdata input[name='dbacthdr_tillcode']").val(data.rows[0].tillcode);
-				$("#formdata input[name='dbacthdr_lastrcnumber']").val(parseInt(data.rows[0].lastrcnumber) + 1);
-				$("#formdata input[name='dbacthdr_recptno']").val(data.rows[0].tillcode+"-"+pad('000000000',parseInt(data.rows[0].lastrcnumber) + 1,true));
-				$("#formdata input[name='dbacthdr_tillno']").val(data.rows[0].tillno);
-				$("#formdata input[name='dbacthdr_units']").val(data.rows[0].sector);
-
-				$( "#tilldet" ).dialog('close');
-			}else{
-				dialog_till.handler([]);
-			}
-		});
 	}
 
 	function getLastrcnumber(){//lastrcnummber for till or receipt number
@@ -289,121 +193,13 @@ var tabform="#f_tab-cash";
 
 	var actdateObj = new setactdate(["input[name='dbacthdr_entrydate']"]);
 	actdateObj.getdata().set();
-	function setactdate(target){
-		this.actdateopen=[];
-		this.lowestdate,this.highestdate;
-		this.target=target;
-		this.param={
-			action:'get_value_default',
-			field: ['*'],
-			table_name:'sysdb.period',
-			table_id:'idno'
-		}
 
-		this.getdata = function(){
-			var self=this;
-			$.get( "../../../../assets/php/entry.php?"+$.param(this.param), function( data ) {
-				
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data.rows)){
-					self.lowestdate = data.rows[0]["datefr1"];
-					self.highestdate = data.rows[data.rows.length-1]["dateto12"];
-					data.rows.forEach(function(element){
-						$.each(element, function( index, value ) {
-							if(index.match('periodstatus') && value == 'O'){
-								self.actdateopen.push({
-									from:element["datefr"+index.match(/\d+/)[0]],
-									to:element["dateto"+index.match(/\d+/)[0]]
-								})
-							}
-						});
-					});
-				}
-			});
-
-			$.get( "../../../../assets/php/entry.php?"+$.param({
-				action:'get_value_default',
-				field:['pvalue1'],
-				table_name:'sysdb.sysparam',
-				filterCol:['source','trantype'],
-				filterVal:['AR','paydate']
-			}), function( data ) {
-				
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data)){
-					var max = moment();
-					var min = (moment().date()>data.rows[0].pvalue1)? moment().date(1):moment().date(1).subtract(1, 'months');
-
-					$("input[name='dbacthdr_entrydate']").attr("max",max.format("YYYY-MM-DD"));
-					$("input[name='dbacthdr_entrydate']").attr("min",min.format("YYYY-MM-DD"));
-				}
-			});
-
-			return this;
-		}
-
-		this.set = function(){
-			this.target.forEach(function(element){
-				$(element).on('change',validate_actdate);
-			});
-		}
-
-		function validate_actdate(obj){
-			var permission = false;
-			actdateObj.actdateopen.forEach(function(element){
-			 	if(moment(obj.target.value).isBetween(element.from,element.to)) {
-					permission=true
-				}else{
-					(permission)?permission=true:permission=false;
-				}
-			});
-			if(!moment(obj.target.value).isBetween(actdateObj.lowestdate,actdateObj.highestdate)){
-				bootbox.alert('Date not in accounting period setup');
-				$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
-			}else if(!permission){
-				bootbox.alert('Accounting Period Has been Closed');
-				$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
-			}
-		}
-	}
 	////////////////////////////end transaction minimum date////////////////////////////////
 
 	dialog_till=new makeDialog('debtor.till','#tilldetTillcode',['tillcode','description','tillstatus'], 'Select Till');
 	dialog_dbmast=new makeDialog('debtor.debtormast','#dbacthdr_payercode',['debtorcode','name','debtortype','actdebccode','actdebglacc'], 'Payer code');
 	dialog_dbtype=new makeDialog('debtor.debtortype','#dbacthdr_debtortype',['debtortycode','description'], 'debtortycode');
 	dialog_episode=new makeDialog('hisdb.patmast','#dbacthdr_mrn',['mrn','name','episno','newic'], 'Select Episode list');
-	
-
-	////////////////////////////////////////till checking at start of program supposedly///////////////////
-	$( "#tilldet" ).dialog({
-		autoOpen: true,
-		width: 5/10 * $(window).width(),
-		modal: true,
-		open: function() { 
-			checkIfTillOpen();
-			$(this).parent().find(".ui-dialog-titlebar-close").hide();                       
-		},
-		buttons: [
-			{
-				text:'Open Till',
-				disabled: true,
-				id: "tilldetCheck",
-				click:function(){
-					updateTillUsage();
-				}
-			},{
-				text:'Reset',
-				click:function(){
-					emptyFormdata([],'#formTillDet');
-					$( "#tilldetCheck" ).button( "option", "disabled", true );
-				}
-			},
-		],
-		closeOnEscape: false,
-	});
-
-	//////////////////////////////////////////End till checking/////////////////////////
-
 
 	$( "#divMrnEpisode" ).hide();
 	amountchgOn(true);
