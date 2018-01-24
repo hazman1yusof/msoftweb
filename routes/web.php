@@ -58,3 +58,8 @@ Route::get('/relationship','RelationshipController@show');
 Route::get('/relationship/table','RelationshipController@table');
 Route::post('/relationship/form','RelationshipController@form');
 
+//// doctor_maintenance setup page ///
+Route::get('/doctor_maintenance','DoctorMaintenanceController@show');
+Route::get('/doctor_maintenance/table','DoctorMaintenanceController@table');
+Route::post('/doctor_maintenance/form','DoctorMaintenanceController@form');
+
