@@ -58,6 +58,7 @@ Route::get('/relationship','setup\RelationshipController@show');
 Route::get('/relationship/table','setup\RelationshipController@table');
 Route::post('/relationship/form','setup\RelationshipController@form');
 
+<<<<<<< HEAD
 //// billtype setup page ///
 Route::get('/billtype','setup\BilltypeController@show');
 Route::get('/billtype/table','setup\BilltypeController@table');
@@ -122,3 +123,10 @@ Route::post('/doctor/form','setup\DoctorController@form');
 Route::get('/receipt','finance\ReceiptController@show');
 Route::get('/receipt/table','finance\ReceiptController@table');
 Route::post('/receipt/form','finance\ReceiptController@form');
+=======
+//// doctor_maintenance setup page ///
+Route::get('/doctor_maintenance','DoctorMaintenanceController@show');
+Route::get('/doctor_maintenance/table','DoctorMaintenanceController@table');
+Route::post('/doctor_maintenance/form','DoctorMaintenanceController@form');
+
+>>>>>>> branch---lina
