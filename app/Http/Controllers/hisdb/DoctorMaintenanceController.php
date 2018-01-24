@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\hisdb;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 
 
 class DoctorMaintenanceController extends defaultController

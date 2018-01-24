@@ -4,11 +4,13 @@
 
 @section('body')
 
-     <a class='pull-right pointer text-primary' id='PHBtn'><span class='fa fa-calendar fa-lg '></span> Public Holiday </a>
+   
+
+	@include('layouts.default_search_and_table')
+	 <a class='pull-right pointer text-primary' id='PHBtn'><span class='fa fa-calendar fa-lg '></span> Public Holiday </a>
     <a class='pull-right pointer text-primary' id='ALBtn'><span class='fa fa-calendar fa-lg '></span> Leave &nbsp;&nbsp;</a>
     <a class='pull-right pointer text-primary' id='TSBtn'><span class='fa fa-clock-o fa-lg '></span> Time Session&nbsp;&nbsp; </a>
-		<br><br><br>
-	@include('layouts.default_search_and_table')
+	<br><br><br>
     
 	 <div id="TSBox" title="Time Session" style="display:none">
     <ul>

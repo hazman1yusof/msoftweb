@@ -125,7 +125,7 @@ Route::get('/receipt/table','finance\ReceiptController@table');
 Route::post('/receipt/form','finance\ReceiptController@form');
 
 //// doctor_maintenance setup page ///
-Route::get('/doctor_maintenance','DoctorMaintenanceController@show');
-Route::get('/doctor_maintenance/table','DoctorMaintenanceController@table');
-Route::post('/doctor_maintenance/form','DoctorMaintenanceController@form');
+Route::get('/doctor_maintenance','hisdb\DoctorMaintenanceController@show');
+Route::get('/doctor_maintenance/table','hisdb\DoctorMaintenanceController@table');
+Route::post('/doctor_maintenance/form','hisdb\DoctorMaintenanceController@form');
 
