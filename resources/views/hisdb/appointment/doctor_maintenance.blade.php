@@ -12,6 +12,18 @@
 				<div class="StextClass">
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
 				</div>
+				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
+				  <button type="button" class="btn btn-default" id='PHBtn'>
+				  	<span class='fa fa-calendar fa-lg '></span> Public Holiday
+				  </button>
+				  <button type="button" class="btn btn-default" id='ALBtn'>
+				  	<span class='fa fa-calendar fa-lg '></span> Leave
+				  </button>
+				  <button type="button" class="btn btn-default" id='TSBtn'>
+				  	<span class='fa fa-clock-o fa-lg '></span> Time Session
+				  </button>
+				</div>
+				
 			 </fieldset> 
 		</form>
 		
@@ -24,26 +36,7 @@
 			</div>
 		</div>
 
-<<<<<<< HEAD
-		<a class='pull-right pointer text-primary' id='PHBtn'>
-	     	<span class='fa fa-calendar fa-lg '></span> Public Holiday 
-	    </a>
-	    <a class='pull-right pointer text-primary' id='ALBtn'>
-	    	<span class='fa fa-calendar fa-lg '></span> Leave &nbsp;&nbsp;
-	    </a>
-	    <a class='pull-right pointer text-primary' id='TSBtn'>
-	    	<span class='fa fa-clock-o fa-lg '></span> Time Session&nbsp;&nbsp; 
-	    </a>
 	</div>
-=======
-   
-
-	@include('layouts.default_search_and_table')
-	 <a class='pull-right pointer text-primary' id='PHBtn'><span class='fa fa-calendar fa-lg '></span> Public Holiday </a>
-    <a class='pull-right pointer text-primary' id='ALBtn'><span class='fa fa-calendar fa-lg '></span> Leave &nbsp;&nbsp;</a>
-    <a class='pull-right pointer text-primary' id='TSBtn'><span class='fa fa-clock-o fa-lg '></span> Time Session&nbsp;&nbsp; </a>
-	<br><br><br>
->>>>>>> ca86fb1193c3e0e609c2ea06b681f887d9cd6211
     
 	 <div id="TSBox" title="Time Session" style="display:none">
     <ul>
