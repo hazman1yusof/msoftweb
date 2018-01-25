@@ -261,8 +261,8 @@
 				table_name:'hisdb.apptresrc',
 				table_id:'idno',
 				sort_idno:true,
-				// filterCol:['TYPE'],
-				// filterVal:[ $('#Type').val()]
+				filterCol:['TYPE'],
+				filterVal:[ $('#Type').val()]
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////

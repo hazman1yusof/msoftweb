@@ -4,6 +4,7 @@
 
 @section('body')
 	<div class='row'>
+		<input id="Type" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
 				<div class="ScolClass" style="padding:0 0 0 15px">
@@ -199,6 +200,7 @@
 
 		<!-- 	<hr> -->
 			<form class='form-horizontal' style='width:89%' id='phformdata'>
+			{{ csrf_field() }}
 			<input id="resourcecode" name="resourcecode" type="hidden">
 			<input id="idno" name="idno" type="hidden">
 			<input id="YEAR" name="YEAR" type="hidden"  value="<?php echo date("Y") ?>">
@@ -270,6 +272,7 @@
 
 			<!-- <hr> -->
 			<form class='form-horizontal' style='width:89%' id='alformdata'>
+			{{ csrf_field() }}
 			<input id="resourcecode" name="resourcecode" type="hidden">
 			<input id="idno" name="idno"type="hidden">
 			<input id="YEAR" name="YEAR" type="hidden"  value="<?php echo date("Y") ?>">
