@@ -129,3 +129,8 @@ Route::get('/doctor_maintenance','hisdb\DoctorMaintenanceController@show');
 Route::get('/doctor_maintenance/table','hisdb\DoctorMaintenanceController@table');
 Route::post('/doctor_maintenance/form','hisdb\DoctorMaintenanceController@form');
 
+//// doctor_maintenance setup page ///
+Route::get('/apptrsc','hisdb\AppointmentController@show');
+Route::get('/apptrsc/table','hisdb\AppointmentController@table');
+Route::post('/apptrsc/form','hisdb\AppointmentController@form');
+
