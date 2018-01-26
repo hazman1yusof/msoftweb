@@ -8,7 +8,6 @@ use App\Http\Controllers\defaultController;
 class AppointmentController extends defaultController
 {   
 
-	var $test;
     var $table;
     var $duplicateCode;
 
