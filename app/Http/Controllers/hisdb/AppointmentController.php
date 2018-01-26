@@ -4,6 +4,7 @@ namespace App\Http\Controllers\hisdb;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use DB;
 
 class AppointmentController extends defaultController
 {   
@@ -34,5 +35,12 @@ class AppointmentController extends defaultController
             default:
                 return 'error happen..';
         }
+    }
+
+    public function getEvent(Request $request){
+        $select = DB::table('hisdb.apptbook')->where('doctor','=',$request->drrsc)->get();
+        return $select;
+        // $sql = "SELECT id, title, start, end, color FROM events WHERE doctor='$drrsc'";
+        return "asdasd";
     }
 }

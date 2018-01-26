@@ -133,4 +133,5 @@ Route::post('/doctor_maintenance/form','hisdb\DoctorMaintenanceController@form')
 Route::get('/apptrsc','hisdb\AppointmentController@show');
 Route::get('/apptrsc/table','hisdb\AppointmentController@table');
 Route::post('/apptrsc/form','hisdb\AppointmentController@form');
+Route::get('/apptrsc/getEvent','hisdb\AppointmentController@getEvent');
 
