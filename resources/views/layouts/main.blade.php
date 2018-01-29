@@ -148,10 +148,40 @@
 		.allobtn:hover{
 			background: rgba(51, 122, 183, 0.3);
 			outline: none;
-			
 		}
 		html{
 			height:100%;
+		}
+		.data_info{
+			text-align: center;
+			color: #286090;
+			background: #d9edf7;
+			width: 400px;
+			height: 120px;
+		    margin: 0px !important;
+		    padding: 5px !important;
+		    border-top-left-radius: 30px;
+		    position: absolute;
+		    bottom: 0px;
+		    right: 0px;
+		    cursor: pointer;
+		    display: block;
+		}
+		.click_row{
+			width:15%;
+			display: inline-block;
+			padding:0 5px 1px 0;
+			background: beige;
+	    	margin: 5px;
+	    	border-radius: 5px;
+	    	text-align: center;
+		    cursor: pointer;
+		}
+		.click_row:hover{
+			opacity: 0.7;
+		}
+		.help-block{
+			margin: 0 !important;
 		}
 		@yield('style')
  	</style>	

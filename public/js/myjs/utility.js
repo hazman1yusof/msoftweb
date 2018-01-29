@@ -478,6 +478,7 @@ function setactdate(target){
 	this.target=target;
 	this.param={
 		action:'get_value_default',
+		url:"/util/get_value_default",
 		field: ['*'],
 		table_name:'sysdb.period',
 		table_id:'idno'
@@ -485,7 +486,7 @@ function setactdate(target){
 
 	this.getdata = function(){
 		var self=this;
-		$.get( "../../../../assets/php/entry.php?"+$.param(this.param), function( data ) {
+		$.get( this.param.url+"?"+$.param(this.param), function( data ) {
 			
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
@@ -601,7 +602,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 	}
 
 	function onBlur(event){
-		event.data.data.check(event.data.errorField);
+		if(event.data.data.checkstat!='none'){
+			event.data.data.check(event.data.errorField);
+		}
 	}
 
 	function onTab(event){
@@ -718,8 +721,14 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 
 	function checkInput(errorField,urlParamID=0,desc=1){///can choose code and desc used, usually field number 0 and 1
 		var table=this.urlParam.table_name,id=this.textfield,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this;
-		let code_ = this.urlParam.field[urlParamID];
-		let desc_ = this.urlParam.field[desc];
+		if(param.fixPost == 'true'){
+			code_ = this.urlParam.field[urlParamID];
+			desc_ = this.urlParam.field[desc];
+			code_ = code_.replaceAt(code_.search("_"),'.');
+		}else{
+			code_ = this.urlParam.field[urlParamID];
+			desc_ = this.urlParam.field[desc];
+		}
 
 		if(this.checkstat=='default'){
 			param={action:'input_check',table:table,field:field,value:value};
@@ -731,6 +740,14 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 			param.field=[code_,desc_];
 			let index=jQuery.inArray(code_,param.filterCol);
 			if(index == -1){
+				if(param.fixPost == 'true'){
+					code_ = code_.replaceAt(code_.search("_"),'.');
+				}
+				// param.filterCol = param.filterCol.filter(function(el,index){
+				// 	if(el == code_){param.filterVal.splice(index,1);return false}
+				// 	return true;
+				// })
+
 				param.filterCol.push(code_);
 				param.filterVal.push(value);
 			}else{
@@ -776,6 +793,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 			}
 		});
 	}
+}
+
+String.prototype.replaceAt=function(index, replacement) {
+    return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
 }
 
 /////////////////////////////////compid and ipaddress at cookies//////////////////////

@@ -27,7 +27,7 @@ abstract class defaultController extends Controller{
         }
     }
 
-    public function fixPost(array $column,$rep){ // ni nak replace underscore jadi dot pastu letak AS original post field
+    public function fixPost(array $column,$rep){ // ni nak replace underscore jadi dot pastu letak AS original(yang ada underscore)
         $temp=[];
         foreach($column as $value){
             $pos = strpos($value, "_");
@@ -132,6 +132,8 @@ abstract class defaultController extends Controller{
                 $pieces = explode(".", $request->filterVal[$key], 2);
                 if($pieces[0] == 'session'){
                     $table = $table->where($request->filterCol[$key],'=',session('compcode'));
+                }else if($pieces[0] == '<>'){
+                    $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
                 }else{
                     $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
                 }
