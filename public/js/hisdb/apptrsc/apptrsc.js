@@ -80,7 +80,7 @@ $(document).ready(function () {
 			},
 		}, 'urlParam'
 	);
-	dialog_doctor.makedialog();
+	dialog_doctor.makedialog(true);
 
 	var dialog_case = new ordialog(
 		'case', 'hisdb.casetype', "#dialogForm input[name='case']", errorField,
@@ -99,7 +99,7 @@ $(document).ready(function () {
 			},
 		}, 'urlParam'
 	);
-	dialog_case.makedialog();
+	dialog_case.makedialog(true);
 
 	var dialog_mrn = new ordialog(
 		'mrn', 'hisdb.pat_mast', "#dialogForm input[name='mrn']", errorField,
@@ -122,7 +122,7 @@ $(document).ready(function () {
 			},
 		}, 'urlParam'
 	);
-	dialog_mrn.makedialog();
+	dialog_mrn.makedialog(true);
 
 	$("body").show();
 		var d = new Date();
@@ -255,13 +255,13 @@ $(document).ready(function () {
 });
 
 $('#submit').click(function(){
-	$.post("addEvent.php", $("#addForm").serialize(), function (data) {
+	$.post("apptrsc/addEvent", $("#addForm").serialize(), function (data) {
 	}).fail(function (data) {
 		//////////////////errorText(dialog,data.responseText);
 	}).done(function (data) {
 		$("#dialogForm").dialog('close');
 		var events = {
-						url: "getEvent.php",
+						url: "apptrsc/getEvent",
 						type: 'POST',
 						data: {
 							drrsc: $('#resourcecode').val()

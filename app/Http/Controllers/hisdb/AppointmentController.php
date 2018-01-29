@@ -38,9 +38,15 @@ class AppointmentController extends defaultController
     }
 
     public function getEvent(Request $request){
-        $select = DB::table('hisdb.apptbook')->where('doctor','=',$request->drrsc)->get();
-        return $select;
+        // $select = DB::table('hisdb.apptbook')->where('doctor','=',$request->drrsc)->get();
+        // return $select;
         // $sql = "SELECT id, title, start, end, color FROM events WHERE doctor='$drrsc'";
         return "asdasd";
     }
+
+    public function addEvent(Request $request){
+        Log::info($request);
+        // $insert = DB::table('hisdb.apptbook')->where('doctor','=',$request->drrsc)->get();
+    }
+
 }
