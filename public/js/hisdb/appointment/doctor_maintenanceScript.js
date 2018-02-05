@@ -359,6 +359,7 @@
 				table_id:'idno',
 				filterCol:['doctorcode'],
 				filterVal:[$('#resourcecode').val()],
+				// filterVal:[''],
 			}
 
 			var saveParamtime={
@@ -379,7 +380,6 @@
 					{label: 'Day', name: 'days', classes: 'wrap'},
 					{label: 'Start Time', name: 'timefr1', classes: 'wrap'},
 					{label: 'End Time', name: 'timeto1', classes: 'wrap'},
-					// {label: '', name: '', classes: 'wrap'},
 					{label: 'Start Time', name: 'timefr2', classes: 'wrap'},
 					{label: 'End Time', name: 'timeto2', classes: 'wrap'}
 					],
@@ -395,6 +395,7 @@
 				pager: "#gridtimepager",
 				onSelectRow:function(rowid, selected){
 					$('#resourcecode').val(selrowData('#jqGrid').resourcecode);
+					$('#doctorcode').val(selrowData('#jqGrid').doctorcode);
 					$('#description').val(selrowData('#jqGrid').description);
 					
 				},
@@ -418,16 +419,7 @@
 	        
             ]	
             });
-           // $("#gridtime").jqGrid('setFrozenColumns');
-
-         //   $("#gridtime").jqGrid('setGroupHeaders', {
-         //    useColSpanStyle: false, 
-         //    groupHeaders:[
-	        // {startColumnName: 'timefr2', numberOfColumns: 4, titleText: 'Evening Session'}
-	        
-         //    ]	
-         //    });
-         //   $("#gridtime").jqGrid('setFrozenColumns');
+        
 
 
 $("#gridtime").jqGrid('navGrid', '#gridtimepager', {
@@ -558,6 +550,7 @@ $("#gridph").jqGrid('navGrid', '#gridphpager', {
 		},
 	});
 
+           
                                // gridleave //
 			$("#ALBox").dialog({
             	autoOpen : false, 
@@ -661,7 +654,7 @@ $("#gridleave").jqGrid('navGrid', '#gridleavepager', {
 		},
 	});
    
-  
+ 
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 			
 			toogleSearch('#sbut1','#searchForm','on');
@@ -674,31 +667,8 @@ $("#gridleave").jqGrid('navGrid', '#gridleavepager', {
 			addParamField('#gridph',true,urlParamph);
 			addParamField('#gridleave',true,urlParamleave);
 				///////////////////////////////////utk dropdown tran dept/////////////////////////////////////////
-	// YEAR(urlParam)
-	// function YEAR(urlParam) {
-	// 	var param = {
-	// 		action: 'get_value_default',
-	// 		field: ['YEAR'],
-	// 		table_name: 'hisdb.apptph',
-	// 		filterCol: ['YEAR'],
-	// 		filterVal: ['']
-	// 	}
-	// 	$.get("../../../../assets/php/entry.php?" + $.param(param), function (data) {
+	 
 
-	// 	}, 'json').done(function (data) {
-	// 		if (!$.isEmptyObject(data)) {
-	// 			$.each(data.rows, function (index, value) {
-	// 				if (value.YEAR.toUpperCase() == $("#YEAR").val().toUpperCase()) {
-	// 					$("#searchForm [id=YEAR]").append("<option selected value='" + value.YEAR + "'>" + value.YEAR + "</option>");
-	// 				} else {
-	// 					$("#searchForm [id=YEAR]").append(" <option value='" + value.YEAR + "'>" + value.YEAR + "</option>");
-	// 				}
-	// 			});
-	// 		}
-	// 	});
-	// }
-	
-	// $('#YEAR').on('change', searchChange);
 			
 		});
 		

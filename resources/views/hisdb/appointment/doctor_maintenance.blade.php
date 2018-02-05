@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Doctor Maintenance Setup')
+@section('title', 'Doctor Maintenance ')
 
 @section('body')
 	<div class='row'>
@@ -14,15 +14,18 @@
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
 				</div>
 				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
-				  <button type="button" class="btn btn-default" id='PHBtn'>
-				  	<span class='fa fa-calendar fa-lg '></span> Public Holiday
-				  </button>
-				  <button type="button" class="btn btn-default" id='ALBtn'>
-				  	<span class='fa fa-calendar fa-lg '></span> Leave
-				  </button>
-				  <button type="button" class="btn btn-default" id='TSBtn'>
+				 
+				    <button type="button" class="btn btn-default" id='TSBtn'>
 				  	<span class='fa fa-clock-o fa-lg '></span> Time Session
 				  </button>
+				   <button type="button" class="btn btn-default" id='ALBtn'>
+				  	<span class='fa fa-calendar fa-lg '></span> Leave
+				  </button>
+				   <button type="button" class="btn btn-default" id='PHBtn'>
+				  	<span class='fa fa-calendar fa-lg '></span> Public Holiday
+				  </button>
+				 
+				
 				</div>
 				
 			 </fieldset> 
@@ -40,7 +43,7 @@
 	</div>
     
 	 <div id="TSBox" title="Time Session" style="display:none">
-    <ul>
+    <ul>    
 			<b>DOCTOR CODE : </b><span name='resourcecode' ></span> <br><br>
 			<b>DOCTOR NAME: </b><span name='description' ></span>
 			
@@ -59,14 +62,20 @@
 		</ul>
         
 			<fieldset>
-				
+				 <div class="col-md-2">
+			  	<label class="control-label" for="YEAR">Year</label>  
+			  	<select id='YEAR' name='YEAR' class="form-control input-sm"></select>
+              </div>
+			  <div class="col-md-1">
+				<button type="button" id="search" class="btn btn-primary" style="position:absolute;top:17px">Search</button>
+              </div>
 					
-					<div class="col-md-2">
+					<!-- <div class="col-md-2">
 			  		<label class="control-label" for="YEAR">Year:</label> 
 						<select id='YEAR' class="form-control input-sm">
 				      		<option value="All" selected>ALL</option>
 						</select>
-				</div>
+				</div> -->
 				
 				
 			 </fieldset> 
@@ -95,23 +104,12 @@
 			
 			<form class='form-horizontal' style='width:89%' >
 			<div class="prevnext btn-group pull-right"></div>
-			
-			<!-- <div class="form-group">
-				<label class="col-md-2 control-label" for="resourcecode">Resource Code</label>
-				<div class="col-md-2">
-					<input id="resourcecode" name="resourcecode" type="text" class="form-control input-sm" frozeOnEdit>
-				</div>
-				<label class="col-md-3 control-label" for="description">Description</label>
-				<div class="col-md-4">
-					<input type="text" name="description" id="description" class="form-control input-sm" frozeOnEdit>
-				</div>
-			</div>
- -->
+		
 			</form>
 
-			<!-- <hr> -->
 			<form class='form-horizontal' style='width:89%' id='tsformdata'>
 			<input id="resourcecode" name="resourcecode" type="hidden">
+			<input id="doctorcode" name="doctorcode" type="hidden">
 			<input id="idno" name="idno"  type="hidden">
 			{{ csrf_field() }}
 				<div class="form-group">
@@ -126,7 +124,7 @@
 					<!-- <div class="col-md-2"> -->
 					<label class="col-md-2 control-label" for="days">Day</label>  
 					<div class="col-md-2">
-					  	<select id="days" name="days" class="form-control input-sm">
+					  	<select id="days" name="days" class="form-control input-sm"  >
 					      <option value="MONDAY">MONDAY</option>
 					      <option value="TUESDAY">TUESDAY</option>
 					      <option value="WEDNESDAY">WEDNESDAY</option>
@@ -181,23 +179,7 @@
 
             
 <div id="phdialogForm" title="Transfer Form">
-			
-			<!-- <form class='form-horizontal' style='width:89%' >
-			<div class="prevnext btn-group pull-right"></div>
-			
-			<div class="form-group">
-				<label class="col-md-2 control-label" for="resourcecode">Resource Code</label>
-				<div class="col-md-2">
-					<input id="resourcecode" name="resourcecode" type="text" class="form-control input-sm" frozeOnEdit>
-				</div>
-				<label class="col-md-3 control-label" for="description">Description</label>
-				<div class="col-md-4">
-					<input type="text" name="description" id="description" class="form-control input-sm" frozeOnEdit>
-				</div>
-			</div>
-
-			</form> -->
-
+		
 		<!-- 	<hr> -->
 			<form class='form-horizontal' style='width:89%' id='phformdata'>
 			{{ csrf_field() }}
