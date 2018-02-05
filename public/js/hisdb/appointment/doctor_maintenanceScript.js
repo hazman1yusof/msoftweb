@@ -290,7 +290,8 @@
 
 					 // $('#doctorcode').val(selrowData('#jqGrid').resourcecode);
 					// $('#description').val(selrowData('#jqGrid').description);
-
+					
+					$('#doctorcode').val(selrowData('#jqGrid').resourcecode);
 					urlParamtime.filterVal[0] = selrowData('#jqGrid').resourcecode;
 					urlParamleave.filterVal[0] = selrowData('#jqGrid').resourcecode;
 
@@ -368,7 +369,8 @@
 				field:['doctorcode','days','timefr1','timeto1','timefr2','timeto2'],
 				oper:oper,
 				table_name:'hisdb.apptsession',
-				table_id:'idno'
+				table_id:'idno',
+				noduplicate:true,
 				
 			};
 

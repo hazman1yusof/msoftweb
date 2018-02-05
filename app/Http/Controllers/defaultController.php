@@ -200,7 +200,7 @@ abstract class defaultController extends Controller{
             $idno = $request->table_id;
         }
 
-        if($this->default_duplicate( ///check duplicate
+        if(empty($request->noduplicate) && $this->default_duplicate( ///check duplicate
             $request->table_name,
             $idno,
             $request[$request->table_id]
