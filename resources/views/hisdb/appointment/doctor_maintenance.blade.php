@@ -56,27 +56,24 @@
 	</div>
 
 	<div id="PHBox" title="Public Holiday" style="display:none">	
-      <ul>
+     <!--  <ul>
 			<b>DOCTOR CODE : </b><span name='resourcecode' ></span> <br><br>
 			<b>DOCTOR NAME: </b><span name='description' ></span>
-		</ul>
+		</ul> -->
         
 			<fieldset>
-				 <div class="col-md-2">
-			  	<label class="control-label" for="YEAR">Year</label>  
-			  	<select id='YEAR' name='YEAR' class="form-control input-sm"></select>
-              </div>
-			  <div class="col-md-1">
-				<button type="button" id="search" class="btn btn-primary" style="position:absolute;top:17px">Search</button>
-              </div>
+				<form id="searchForm1" class="formclass" style='width:99%'>
+			<fieldset>
+				<div class="ScolClass">
+						<div name='Scol'>Search By : </div> 
+						
+				</div>
+				<div class="StextClass">
+					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
 					
-					<!-- <div class="col-md-2">
-			  		<label class="control-label" for="YEAR">Year:</label> 
-						<select id='YEAR' class="form-control input-sm">
-				      		<option value="All" selected>ALL</option>
-						</select>
-				</div> -->
-				
+				</div>
+			 </fieldset> 
+		</form>
 				
 			 </fieldset> 
 		
@@ -196,7 +193,7 @@
 					<label class="col-md-2 control-label" for="datefr">From</label>
 					<div class="col-md-2">
 						<div class='input-group'>
-							<input type="date" name="datefr" id="datefr" class="form-control input-sm" data-validation="required" value="<?php echo date("d-m-Y"); ?>">
+							<input type="date" name="datefr" id="datefr" class="form-control input-sm" value="<?php echo date("d-m-Y"); ?>" data-validation="required" >
 							
 						</div>
 						

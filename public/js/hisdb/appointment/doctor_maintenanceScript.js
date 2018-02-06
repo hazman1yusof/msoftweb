@@ -24,6 +24,18 @@
 				},
 			};
 			var Type = $('#Type').val();
+
+			 if(Type =='DOC') {
+             $('#TSBtn').show();
+             $('#ALBtn').show();
+             $('#PHBtn').show();
+              }
+             else {
+             $('#TSBtn').hide();
+             $('#ALBtn').show();
+             $('#PHBtn').show();
+             }
+
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var tsbtn=[{
 				text: "Save",click: function() {
@@ -290,7 +302,7 @@
 
 					 // $('#doctorcode').val(selrowData('#jqGrid').resourcecode);
 					// $('#description').val(selrowData('#jqGrid').description);
-					
+
 					$('#doctorcode').val(selrowData('#jqGrid').resourcecode);
 					urlParamtime.filterVal[0] = selrowData('#jqGrid').resourcecode;
 					urlParamleave.filterVal[0] = selrowData('#jqGrid').resourcecode;
@@ -302,6 +314,7 @@
 					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
 				gridComplete: function(){ 
+
 					if(oper == 'add'){
 						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 					}
@@ -487,7 +500,7 @@ $("#gridtime").jqGrid('navGrid', '#gridtimepager', {
 				datatype: "local",
 				colModel: [
 					{label: 'idno', name: 'idno', classes: 'wrap',hidden:true},
-					{label: 'Year', name: 'YEAR', classes: 'wrap',hidden:true},
+					{label: 'Year', name: 'YEAR', classes: 'wrap',hidden:true,canSearch:true,checked:true},
 					{label: 'From', name: 'datefr', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'To', name: 'dateto', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'Remark', name: 'remark', classes: 'wrap'},
@@ -662,6 +675,10 @@ $("#gridleave").jqGrid('navGrid', '#gridleavepager', {
 			toogleSearch('#sbut1','#searchForm','on');
 			populateSelect('#jqGrid','#searchForm');
 			searchClick('#jqGrid','#searchForm',urlParam);
+
+			toogleSearch('#sbut1','#searchForm1','on');
+			populateSelect('#gridph','#searchForm1');
+			searchClick('#gridph','#searchForm1',urlParamph);
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
