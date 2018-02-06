@@ -38,7 +38,8 @@
 		<div id="dialogForm" title="Add Form">
 			<div class="panel panel-info">
 				<div class="panel-heading">Appointment Header</div>
-					<form action="addEvent.php" method="post" class="form-horizontal" style="width: 99%" id="addForm" >
+					<form action={{url('apptrsc/addEvent')}} method="post" class="form-horizontal" style="width: 99%" id="addForm" >
+					{{csrf_field()}}
 						<div class="panel-body" style="position: relative;" >
 							<div class="form-group">
 								<label for="Title" class="col-md-2 control-label">Title</label>
@@ -139,7 +140,8 @@
 		<div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		  <div class="modal-dialog" role="document">
 			<div class="modal-content">
-			<form class="form-horizontal" method="POST" action="editEventTitle.php">
+			<form class="form-horizontal" method="post" action={{url('apptrsc/editEvent')}} id="editForm">
+			{{csrf_field()}}
 			  <div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Edit Event</h4>
@@ -169,7 +171,7 @@
 				    <div class="form-group"> 
 						<div class="col-sm-offset-2 col-sm-10">
 						  <div class="checkbox">
-							<label class="text-danger"><input type="checkbox"  name="delete"> Delete event</label>
+							<label class="text-danger"><input type="checkbox" name="delete"> Delete event</label>
 						  </div>
 						</div>
 					</div>
@@ -180,7 +182,7 @@
 			  </div>
 			  <div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-primary">Save changes</button>
+				<button id="submitEdit" type="button" class="btn btn-primary">Save changes</button>
 			  </div>
 			</form>
 			</div>

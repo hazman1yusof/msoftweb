@@ -64,11 +64,12 @@ $(document).ready(function () {
 	dialog_name.makedialog(true);
 	
 	var dialog_doctor = new ordialog(
-		'doctor', 'hisdb.apptresrc', "#dialogForm input[name='doctor']", errorField,
+		'doctor', ['hisdb.apptresrc AS a','hisdb.doctor AS d'], "#dialogForm input[name='doctor']", errorField,
 		{
 			colModel: [
-				{ label: 'Resource Code', name: 'resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Interval', name: 'd_interval', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 			]
 		},
 		{
@@ -143,43 +144,28 @@ $(document).ready(function () {
 	        myCustomButton: {
 	            text: 'Add',
 	            click: function() {
-                // var temp = $('#resourcecode').val();
-				
-								// $('#ModalAdd #doctor').val(temp);
-								
-								// $('#ModalAdd #start').datetimepicker({
-									// 	format: 'YYYY-MM-DD HH:mm:ss'
-									// }).val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-									
-									// $('#ModalAdd #end').datetimepicker({
-										// 	format: 'YYYY-MM-DD HH:mm:ss'
-										// }).val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
-										
-										// $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-										// $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
 
 								 var temp = $('#resourcecode').val();
 								
 								 var start = $(".fc-myCustomButton-button").data( "start");
-								 var end = $(".fc-myCustomButton-button").data( "end");
+								 var end = $(".fc-myCustomButton-button").data("end");
 
 									$('#dialogForm #doctor').val(temp);
 									
 									$('#dialogForm #start').datetimepicker({
 											format: 'YYYY-MM-DD HH:mm:ss',
 											stepping: 15
-										}).val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
+										});
 									
 								$('#dialogForm #end').datetimepicker({
 										format: 'YYYY-MM-DD HH:mm:ss',
 										stepping: 15
-									}).val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
+									});
 									
 									$('#dialogForm #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-									$('#dialogForm #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
+									$('#dialogForm #end').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
 									
 									$("#dialogForm").dialog("open");
-									// $('#ModalAdd').modal('show');
             }
         }
     },
@@ -197,7 +183,7 @@ $(document).ready(function () {
 		},
 		eventRender: function(event, element) {
 			element.bind('dblclick', function() {
-				$('#ModalEdit #id').val(event.id);
+				$('#ModalEdit #id').val(event.idno);
 				$('#ModalEdit #title').val(event.title);
 				$('#ModalEdit #color').val(event.color);
 				$('#ModalEdit').modal('show');
@@ -262,7 +248,28 @@ $('#submit').click(function(){
 		$("#dialogForm").dialog('close');
 		var events = {
 						url: "apptrsc/getEvent",
-						type: 'POST',
+						type: 'GET',
+						data: {
+							drrsc: $('#resourcecode').val()
+						}
+					}
+			
+		$('#calendar').fullCalendar( 'removeEventSource', events);
+		$('#calendar').fullCalendar( 'addEventSource', events);         
+		$('#calendar').fullCalendar( 'refetchEvents' );
+	});
+});
+
+$('#submitEdit').click(function(){
+	$.post("apptrsc/editEvent", $("#editForm").serialize(), function (data) {
+	}).fail(function (data) {
+		//////////////////errorText(dialog,data.responseText);
+	}).done(function (data) {
+		$("#ModalEdit").modal('hide');
+		
+		var events = {
+						url: "apptrsc/getEvent",
+						type: 'GET',
 						data: {
 							drrsc: $('#resourcecode').val()
 						}
