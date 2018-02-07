@@ -438,24 +438,29 @@
 			$("#TSBox").dialog({
             	autoOpen : false, 
             	modal : true,
-				width: 8/10 * $(window).width(),
+				width: 6/10 * $(window).width(),
 				open: function(){
-					$("#jqGrid2").jqGrid("clearGridData", true);
-					['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'].forEach(function(elem,id) {
-						$("#gridtime").jqGrid('addRowData', id,
-							{
-								idno:id,
-								doctorcode:$('#doctorcode').val(),
-								days:elem,
-								timefr1:'',
-								timeto1:'',
-								timefr2:'',
-								timeto2:'',
-							}
-						);
-					});
-					addParamField("#gridtime",false,urlParamtime);
+					if(parseInt(selrowData('#jqGrid').countsession)==0){
+						['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'].forEach(function(elem,id) {
+							$("#gridtime").jqGrid('addRowData', id,
+								{
+									idno:id,
+									doctorcode:$('#doctorcode').val(),
+									days:elem,
+									timefr1:'',
+									timeto1:'',
+									timefr2:'',
+									timeto2:'',
+								}
+							);
+						});
+					}else{
+						addParamField("#gridtime",true,urlParamtime);
+					}
 					$("#gridtime").jqGrid ('setGridWidth', Math.floor($("#gridtime_c")[0].offsetWidth-$("#gridtime_c")[0].offsetLeft));
+				},
+				close:function(){
+					$("#gridtime").jqGrid("clearGridData", true);
 				}
             });
 
@@ -483,23 +488,76 @@
 				
 			};
 
+			function timefr1CustomEdit(val,opt){
+				val = (val=="undefined"||val=="")? "08:00" : val;	
+				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
+			}
+
+			function timeto1CustomEdit(val,opt){  	
+				val = (val=="undefined"||val=="")? "12:00" : val;	
+				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
+			}
+
+			function timefr2CustomEdit(val,opt){  	
+				val = (val=="undefined"||val=="")? "13:00" : val;	
+				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
+			}
+
+			function timeto2CustomEdit(val,opt){  	
+				val = (val=="undefined"||val=="")? "18:00" : val;	
+				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
+			}
+
+			function galGridCustomValue (elem, operation, value){
+				if(operation == 'get') {
+					return $(elem).find("input").val();
+				} 
+				else if(operation == 'set') {
+					$('input',elem).val(value);
+				}
+			}
+
             $("#gridtime").jqGrid({
 				datatype: "local",
 				colModel: [
 					{label: 'idno', name: 'idno', classes: 'wrap',hidden:true},
 					{label: 'Resource Code', name: 'doctorcode', classes: 'wrap',hidden:true},
 					{label: 'Day', name: 'days', classes: 'wrap'},
-					{label: 'Start Time', name: 'timefr1', classes: 'wrap'},
-					{label: 'End Time', name: 'timeto1', classes: 'wrap'},
-					{label: 'Start Time', name: 'timefr2', classes: 'wrap'},
-					{label: 'End Time', name: 'timeto2', classes: 'wrap'}
-					],
+					{label: 'Start Time', name: 'timefr1', classes: 'wrap', editable:true,
+						edittype:'custom',	editoptions:
+						    {  
+						    	custom_element:timefr1CustomEdit,
+						        custom_value:galGridCustomValue 	
+						    },
+					},
+					{label: 'End Time', name: 'timeto1', classes: 'wrap', editable:true,
+						edittype:'custom',	editoptions:
+						    {  
+						        custom_element:timeto1CustomEdit,
+						        custom_value:galGridCustomValue 	
+						    },
+					},
+					{label: 'Start Time', name: 'timefr2', classes: 'wrap', editable:true,
+						edittype:'custom',	editoptions:
+						    {  
+						        custom_element:timefr2CustomEdit,
+						        custom_value:galGridCustomValue 	
+						    },
+					},
+					{label: 'End Time', name: 'timeto2', classes: 'wrap', editable:true,
+						edittype:'custom',	editoptions:
+						    {  
+						        custom_element:timeto2CustomEdit,
+						        custom_value:galGridCustomValue 	
+						    },
+					}
+				],
 					
 				autowidth:true,
 				viewrecords: true,
 				loadonce:false,
 				width: 200,
-				height: 200,
+				height: 380,
 				rowNum: 300,
 				sortname:'idno',
 		        sortorder:'asc',
@@ -514,51 +572,32 @@
 					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
 				gridComplete: function(){ 
-					if(oper == 'add'){
-						$("#gridtime").setSelection($("#gridtime").getDataIDs()[0]);
-					}
-
-					$('#'+$("#gridtime").jqGrid ('getGridParam', 'selrow')).focus();
+					var $this = $(this), rows = this.rows, l = rows.length, i, row;
+				    for (i = 0; i < l; i++) {
+				        row = rows[i];
+				        if ($.inArray('jqgrow', row.className.split(' ')) >= 0) {
+				            $this.jqGrid('editRow', row.id, true);
+				        }
+				    }
 				},
 			});
 
 			$("#gridtime").jqGrid('setGroupHeaders', {
-            useColSpanStyle: true, 
-            groupHeaders:[
-	        {startColumnName: 'timefr1', numberOfColumns: 2, titleText: 'Morning Session'},
-	        {startColumnName: 'timefr2', numberOfColumns: 4, titleText: 'Evening Session'}
-	        
-            ]	
+	            useColSpanStyle: true, 
+	            groupHeaders:[
+			        {startColumnName: 'timefr1', numberOfColumns: 2, titleText: 'Morning Session'},
+			        {startColumnName: 'timefr2', numberOfColumns: 4, titleText: 'Evening Session'}
+	            ]	
             });
-        
+
+			$("#gridtime").jqGrid('navGrid', '#gridtimepager', {
+				view: false, edit: false, add: false, del: false, search: false, refresh:false,
+				beforeRefresh: function () {
+					refreshGrid("#gridtime", urlParamtime, oper);
+				},
+			});
 
 
-$("#gridtime").jqGrid('navGrid', '#gridtimepager', {
-		view: false, edit: false, add: false, del: false, search: false,
-		beforeRefresh: function () {
-			refreshGrid("#gridtime", urlParamtime, oper);
-		},
-}).jqGrid('navButtonAdd', "#gridtimepager", {
-		caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
-		buttonicon: "glyphicon glyphicon-edit",
-		title: "Edit Selected Row",
-		onClickButton: function () {
-			oper = 'edit';
-			selRowId = $("#gridtime").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#gridtime", "#tsdialogForm", "#tsformdata", selRowId, 'edit');
-			refreshGrid("#gridtime", urlParamtime);
-		},
-
-}).jqGrid('navButtonAdd', "#gridtimepager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-plus",
-		id: 'glyphicon-plus',
-		title: "Add New Row",
-		onClickButton: function () {
-			oper = 'add';
-			$("#tsdialogForm").dialog("open");
-		},
-	});
 			// gridph //
 			$("#PHBox").dialog({
             	autoOpen : false, 
@@ -600,8 +639,7 @@ $("#gridtime").jqGrid('navGrid', '#gridtimepager', {
 					{label: 'From', name: 'datefr', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'To', name: 'dateto', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'Remark', name: 'remark', classes: 'wrap'},
-					
-					],
+				],
 					
 				autowidth:true,
 				viewrecords: true,
@@ -632,37 +670,37 @@ $("#gridtime").jqGrid('navGrid', '#gridtimepager', {
 
 			
 
-$("#gridph").jqGrid('navGrid', '#gridphpager', {
-		view: false, edit: false, add: false, del: false, search: false,
-		beforeRefresh: function () {
-			refreshGrid("#gridph", urlParamph, oper);
-		},
-}).jqGrid('navButtonAdd', "#gridphpager", {
-		caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
-		buttonicon: "glyphicon glyphicon-edit",
-		title: "Edit Selected Row",
-		onClickButton: function () {
-			oper = 'edit';
-			selRowId = $("#gridph").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#gridph", "#phdialogForm", "#phformdata", selRowId, 'edit');
-			$("#phformdata :input[name='YEAR']").val($("#YEAR").val());
-			refreshGrid("#gridph", urlParamph);
-		},
+		$("#gridph").jqGrid('navGrid', '#gridphpager', {
+				view: false, edit: false, add: false, del: false, search: false,
+				beforeRefresh: function () {
+					refreshGrid("#gridph", urlParamph, oper);
+				},
+			}).jqGrid('navButtonAdd', "#gridphpager", {
+					caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
+					buttonicon: "glyphicon glyphicon-edit",
+					title: "Edit Selected Row",
+					onClickButton: function () {
+						oper = 'edit';
+						selRowId = $("#gridph").jqGrid('getGridParam', 'selrow');
+						populateFormdata("#gridph", "#phdialogForm", "#phformdata", selRowId, 'edit');
+						$("#phformdata :input[name='YEAR']").val($("#YEAR").val());
+						refreshGrid("#gridph", urlParamph);
+					},
 
-}).jqGrid('navButtonAdd', "#gridphpager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-plus",
-		id: 'glyphicon-plus',
-		title: "Add New Row",
-		onClickButton: function () {
-			oper = 'add';
-			$("#phdialogForm").dialog("open");
-			$("#phformdata :input[name='YEAR']").val($("#YEAR").val());
-		},
-	});
+			}).jqGrid('navButtonAdd', "#gridphpager", {
+					caption: "", cursor: "pointer", position: "first",
+					buttonicon: "glyphicon glyphicon-plus",
+					id: 'glyphicon-plus',
+					title: "Add New Row",
+					onClickButton: function () {
+						oper = 'add';
+						$("#phdialogForm").dialog("open");
+						$("#phformdata :input[name='YEAR']").val($("#YEAR").val());
+					},
+			});
 
            
-                               // gridleave //
+            // gridleave //
 			$("#ALBox").dialog({
             	autoOpen : false, 
             	modal : true,
@@ -736,34 +774,34 @@ $("#gridph").jqGrid('navGrid', '#gridphpager', {
 
 			
 
-$("#gridleave").jqGrid('navGrid', '#gridleavepager', {
-		view: false, edit: false, add: false, del: false, search: false,
-		beforeRefresh: function () {
-			refreshGrid("#gridleave", urlParamleave, oper);
-		},
-}).jqGrid('navButtonAdd', "#gridleavepager", {
-		caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
-		buttonicon: "glyphicon glyphicon-edit",
-		title: "Edit Selected Row",
-		onClickButton: function () {
-			oper = 'edit';
-			selRowId = $("#gridleave").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#gridleave", "#aldialogForm", "#alformdata", selRowId, 'edit');
-			$("#alformdata :input[name='YEAR']").val($("#YEAR").val());
-			refreshGrid("#gridleave", urlParamleave);
-		},
+			$("#gridleave").jqGrid('navGrid', '#gridleavepager', {
+					view: false, edit: false, add: false, del: false, search: false,
+					beforeRefresh: function () {
+						refreshGrid("#gridleave", urlParamleave, oper);
+					},
+				}).jqGrid('navButtonAdd', "#gridleavepager", {
+						caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
+						buttonicon: "glyphicon glyphicon-edit",
+						title: "Edit Selected Row",
+						onClickButton: function () {
+							oper = 'edit';
+							selRowId = $("#gridleave").jqGrid('getGridParam', 'selrow');
+							populateFormdata("#gridleave", "#aldialogForm", "#alformdata", selRowId, 'edit');
+							$("#alformdata :input[name='YEAR']").val($("#YEAR").val());
+							refreshGrid("#gridleave", urlParamleave);
+						},
 
-}).jqGrid('navButtonAdd', "#gridleavepager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-plus",
-		id: 'glyphicon-plus',
-		title: "Add New Row",
-		onClickButton: function () {
-			oper = 'add';
-			$("#aldialogForm").dialog("open");
-			$("#alformdata :input[name='YEAR']").val($("#YEAR").val());
-		},
-	});
+				}).jqGrid('navButtonAdd', "#gridleavepager", {
+						caption: "", cursor: "pointer", position: "first",
+						buttonicon: "glyphicon glyphicon-plus",
+						id: 'glyphicon-plus',
+						title: "Add New Row",
+						onClickButton: function () {
+							oper = 'add';
+							$("#aldialogForm").dialog("open");
+							$("#alformdata :input[name='YEAR']").val($("#YEAR").val());
+						},
+				});
    
  
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
