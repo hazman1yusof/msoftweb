@@ -24,6 +24,18 @@
 				},
 			};
 			var Type = $('#Type').val();
+
+			 if(Type =='DOC') {
+             $('#TSBtn').show();
+             $('#ALBtn').show();
+             $('#PHBtn').show();
+              }
+             else {
+             $('#TSBtn').hide();
+             $('#ALBtn').show();
+             $('#PHBtn').show();
+             }
+
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var tsbtn=[{
 				text: "Save",click: function() {
@@ -291,6 +303,7 @@
 					 // $('#doctorcode').val(selrowData('#jqGrid').resourcecode);
 					// $('#description').val(selrowData('#jqGrid').description);
 
+					$('#doctorcode').val(selrowData('#jqGrid').resourcecode);
 					urlParamtime.filterVal[0] = selrowData('#jqGrid').resourcecode;
 					urlParamleave.filterVal[0] = selrowData('#jqGrid').resourcecode;
 
@@ -301,6 +314,7 @@
 					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
 				gridComplete: function(){ 
+
 					if(oper == 'add'){
 						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 					}
@@ -359,6 +373,7 @@
 				table_id:'idno',
 				filterCol:['doctorcode'],
 				filterVal:[$('#resourcecode').val()],
+				// filterVal:[''],
 			}
 
 			var saveParamtime={
@@ -367,7 +382,8 @@
 				field:['doctorcode','days','timefr1','timeto1','timefr2','timeto2'],
 				oper:oper,
 				table_name:'hisdb.apptsession',
-				table_id:'idno'
+				table_id:'idno',
+				noduplicate:true,
 				
 			};
 
@@ -379,7 +395,6 @@
 					{label: 'Day', name: 'days', classes: 'wrap'},
 					{label: 'Start Time', name: 'timefr1', classes: 'wrap'},
 					{label: 'End Time', name: 'timeto1', classes: 'wrap'},
-					// {label: '', name: '', classes: 'wrap'},
 					{label: 'Start Time', name: 'timefr2', classes: 'wrap'},
 					{label: 'End Time', name: 'timeto2', classes: 'wrap'}
 					],
@@ -395,6 +410,7 @@
 				pager: "#gridtimepager",
 				onSelectRow:function(rowid, selected){
 					$('#resourcecode').val(selrowData('#jqGrid').resourcecode);
+					$('#doctorcode').val(selrowData('#jqGrid').doctorcode);
 					$('#description').val(selrowData('#jqGrid').description);
 					
 				},
@@ -418,16 +434,7 @@
 	        
             ]	
             });
-           // $("#gridtime").jqGrid('setFrozenColumns');
-
-         //   $("#gridtime").jqGrid('setGroupHeaders', {
-         //    useColSpanStyle: false, 
-         //    groupHeaders:[
-	        // {startColumnName: 'timefr2', numberOfColumns: 4, titleText: 'Evening Session'}
-	        
-         //    ]	
-         //    });
-         //   $("#gridtime").jqGrid('setFrozenColumns');
+        
 
 
 $("#gridtime").jqGrid('navGrid', '#gridtimepager', {
@@ -493,7 +500,7 @@ $("#gridtime").jqGrid('navGrid', '#gridtimepager', {
 				datatype: "local",
 				colModel: [
 					{label: 'idno', name: 'idno', classes: 'wrap',hidden:true},
-					{label: 'Year', name: 'YEAR', classes: 'wrap',hidden:true},
+					{label: 'Year', name: 'YEAR', classes: 'wrap',hidden:true,canSearch:true,checked:true},
 					{label: 'From', name: 'datefr', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'To', name: 'dateto', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'Remark', name: 'remark', classes: 'wrap'},
@@ -558,6 +565,7 @@ $("#gridph").jqGrid('navGrid', '#gridphpager', {
 		},
 	});
 
+           
                                // gridleave //
 			$("#ALBox").dialog({
             	autoOpen : false, 
@@ -661,12 +669,16 @@ $("#gridleave").jqGrid('navGrid', '#gridleavepager', {
 		},
 	});
    
-  
+ 
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 			
 			toogleSearch('#sbut1','#searchForm','on');
 			populateSelect('#jqGrid','#searchForm');
 			searchClick('#jqGrid','#searchForm',urlParam);
+
+			toogleSearch('#sbut1','#searchForm1','on');
+			populateSelect('#gridph','#searchForm1');
+			searchClick('#gridph','#searchForm1',urlParamph);
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
@@ -674,31 +686,8 @@ $("#gridleave").jqGrid('navGrid', '#gridleavepager', {
 			addParamField('#gridph',true,urlParamph);
 			addParamField('#gridleave',true,urlParamleave);
 				///////////////////////////////////utk dropdown tran dept/////////////////////////////////////////
-	// YEAR(urlParam)
-	// function YEAR(urlParam) {
-	// 	var param = {
-	// 		action: 'get_value_default',
-	// 		field: ['YEAR'],
-	// 		table_name: 'hisdb.apptph',
-	// 		filterCol: ['YEAR'],
-	// 		filterVal: ['']
-	// 	}
-	// 	$.get("../../../../assets/php/entry.php?" + $.param(param), function (data) {
+	 
 
-	// 	}, 'json').done(function (data) {
-	// 		if (!$.isEmptyObject(data)) {
-	// 			$.each(data.rows, function (index, value) {
-	// 				if (value.YEAR.toUpperCase() == $("#YEAR").val().toUpperCase()) {
-	// 					$("#searchForm [id=YEAR]").append("<option selected value='" + value.YEAR + "'>" + value.YEAR + "</option>");
-	// 				} else {
-	// 					$("#searchForm [id=YEAR]").append(" <option value='" + value.YEAR + "'>" + value.YEAR + "</option>");
-	// 				}
-	// 			});
-	// 		}
-	// 	});
-	// }
-	
-	// $('#YEAR').on('change', searchChange);
 			
 		});
 		
