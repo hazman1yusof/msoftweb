@@ -145,3 +145,10 @@ Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
 Route::post('/deliveryOrder/form','material\DeliveryOrderController@form');
 Route::get('/deliveryOrder/form','material\DeliveryOrderController@form');
 
+//// appointment resource setup page ///
+Route::get('/apptrsc','hisdb\AppointmentController@show');
+Route::get('/apptrsc/table','hisdb\AppointmentController@table');
+Route::post('/apptrsc/form','hisdb\AppointmentController@form');
+Route::get('/apptrsc/getEvent','hisdb\AppointmentController@getEvent');
+Route::post('/apptrsc/addEvent','hisdb\AppointmentController@addEvent');
+Route::post('/apptrsc/editEvent','hisdb\AppointmentController@editEvent');
