@@ -349,7 +349,6 @@ function formatDate(someDate){
 	var mm = pad('00', someDate.getMonth() + 1, true);
 	var y = someDate.getFullYear();
 
-	console.log(y + '-'+ mm + '-'+ dd);
 	return y + '-'+ mm + '-'+ dd;
 }
 

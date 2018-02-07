@@ -25,17 +25,16 @@
 			};
 			var Type = $('#Type').val();
 
-			 if(Type =='DOC') {
-             $('#TSBtn').show();
-             $('#ALBtn').show();
-             $('#PHBtn').show();
-           
-              }
-             else {
-             $('#TSBtn').hide();
-             $('#ALBtn').show();
-             $('#PHBtn').show();
-             }
+			if(Type =='DOC') {
+	             $('#TSBtn').show();
+	             $('#ALBtn').show();
+	             $('#PHBtn').show();
+	           
+	        }else {
+	             $('#TSBtn').hide();
+	             $('#ALBtn').show();
+	             $('#PHBtn').show();
+            }
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var tsbtn=[{
@@ -334,6 +333,9 @@
 				filterCol:['TYPE'],
 				filterVal:[ $('#Type').val()]
 			}
+			if(Type =='DOC'){
+				urlParam.url = "/doctor_maintenance/table";
+			}
             var saveParam={
 				action:'save_table_default',
 				url:"/doctor_maintenance/form",
@@ -353,6 +355,7 @@
 					{ label: 'Resource code', name: 'resourcecode', width: 40, classes: 'wrap', canSearch: true, checked:true},						
 				    { label: 'Description', name: 'description', width: 40, classes: 'wrap', canSearch: true},
 				    { label: 'Type', name: 'TYPE', width: 40, classes: 'wrap', hidden:true},
+				    { label: 'session', name: 'countsession', width: 40, classes: 'wrap', hidden:true},
 				],
 				autowidth:true,
                 multiSort: true,
@@ -430,8 +433,6 @@
 			});
 
 
-
-
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 
 			$("#TSBox").dialog({
@@ -439,20 +440,23 @@
             	modal : true,
 				width: 8/10 * $(window).width(),
 				open: function(){
-					addParamField("#gridtime",true,urlParamtime);
+					$("#jqGrid2").jqGrid("clearGridData", true);
+					['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'].forEach(function(elem,id) {
+						$("#gridtime").jqGrid('addRowData', id,
+							{
+								idno:id,
+								doctorcode:$('#doctorcode').val(),
+								days:elem,
+								timefr1:'',
+								timeto1:'',
+								timefr2:'',
+								timeto2:'',
+							}
+						);
+					});
+					addParamField("#gridtime",false,urlParamtime);
 					$("#gridtime").jqGrid ('setGridWidth', Math.floor($("#gridtime_c")[0].offsetWidth-$("#gridtime_c")[0].offsetLeft));
-
-				}, 
-
-    //         	buttons: [{
-				// 	text: "Add",click: function() {
-				// 		// $(this).dialog('close');
-				// 		$(this).dialog('close');
-				// 		oper='edit';
-	   //  				selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-				// 		populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
-				// 	}
-				// }]
+				}
             });
 
           
