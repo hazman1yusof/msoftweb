@@ -43,16 +43,16 @@
 	</div>
     
 	 <div id="TSBox" title="Time Session" style="display:none">
-    <ul>    
+    	<ul>    
 			<b>DOCTOR CODE : </b><span name='resourcecode' ></span> <br><br>
 			<b>DOCTOR NAME: </b><span name='description' ></span>
-			
-		</ul>	
-
-		<div id='gridtime_c' style="padding:15px 0 0 0">
+		</ul>
+		<div id='gridtime_c' style="padding:15px 0 15px 0">
             <table id="gridtime" class="table table-striped"></table>
             <div id="gridtimepager"></div>
         </div>
+	 	
+		<button type="button" class="btn btn-primary pull-right" id="tsbutton"><span class='fa fa-save fa-lg '></span> Save Session </button>
 	</div>
 
 	<div id="PHBox" title="Public Holiday" style="display:none">	

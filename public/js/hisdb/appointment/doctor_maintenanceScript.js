@@ -517,6 +517,19 @@
 				}
 			}
 
+			$("#tsbutton").click(function(){
+				var rowsArray=[];
+				$("#gridtime").getDataIDs().forEach(function(elem,id) {
+					let objRow = $("#gridtime").jqGrid ('getRowData', elem);
+					objRow.timefr1 = $("#"+elem+"_timefr1").val();
+					objRow.timeto1 = $("#"+elem+"_timeto1").val();
+					objRow.timefr2 = $("#"+elem+"_timefr2").val();
+					objRow.timeto2 = $("#"+elem+"_timeto2").val();
+					rowsArray.push(objRow);
+				});
+				console.log(rowsArray);
+			});
+
             $("#gridtime").jqGrid({
 				datatype: "local",
 				colModel: [
