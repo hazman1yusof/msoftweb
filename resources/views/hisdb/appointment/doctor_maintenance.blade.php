@@ -114,12 +114,9 @@
 				
 			</div>
 
-					<!-- <label class="col-md-2 control-label" for="days">Day</label>
-					<div class="col-md-2">
-						<input type="text" name="days" id="days" class="form-control input-sm"  frozeOnEdit data-validation="required">
-					</div> -->
-					<!-- <div class="col-md-2"> -->
-					<label class="col-md-2 control-label" for="days">Day</label>  
+
+
+					<!-- <label class="col-md-2 control-label" for="days">Day</label>  
 					<div class="col-md-2">
 					  	<select id="days" name="days" class="form-control input-sm"  >
 					      <option value="MONDAY">MONDAY</option>
@@ -130,7 +127,34 @@
 					      <option value="SATURDAY">SATURDAY</option>
 					      <option value="SUNDAY">SUNDAY</option>
 					    </select>
-					    </div>
+					    </div> -->
+
+
+					    <div class="form-group">
+				  <label class="col-md-2 control-label" for="days">Days</label>  
+				  <div class="col-md-8">
+				    <table>
+                             	<tr>
+                             
+                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Monday' >Monday</label></td>
+                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Tuesday' >Tuesday</label></td>
+                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Wednesday'>Wednesday</label></td>
+								</tr>
+							
+				 			<tr>
+                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Thursday'>Thursday</label></td>
+                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Friday'>Friday</label></td>
+                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Saturday'>Saturday</label></td>
+							</tr>
+                            
+                            <tr>
+				 			
+                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Sunday'>Sunday</label></td>
+                             
+                               </tr>
+                               </table>				
+                </div>
+				</div>
 				</div>
 
 				<div class="form-group">
@@ -175,7 +199,7 @@
 	</div>
 
             
-<div id="phdialogForm" title="Transfer Form">
+      <div id="phdialogForm" title="Transfer Form">
 		
 		<!-- 	<hr> -->
 			<form class='form-horizontal' style='width:89%' id='phformdata'>
@@ -218,38 +242,12 @@
 						  			</div>
 				</div>
 				</div>
-                	
-                   <!--  <label class="col-md-2 control-label" for="remark">Remark</label>
-					<div class="col-md-2">
-						<div class='input-group'>
-							<textarea rows="5" name="remark" id="remark" class="form-control input-sm" data-validation="required"></textarea>
-							
-							
-						</div>
-						
-					</div> -->
+                
 			</form>
 		</div>
           
           <div id="aldialogForm" title="Transfer Form">
-			
-			<!-- <form class='form-horizontal' style='width:89%' >
-			<div class="prevnext btn-group pull-right"></div>
-			
-			<div class="form-group">
-				<label class="col-md-2 control-label" for="resourcecode">Resource Code</label>
-				<div class="col-md-2">
-					<input id="resourcecode" name="resourcecode" type="text" class="form-control input-sm" frozeOnEdit>
-				</div>
-				<label class="col-md-3 control-label" for="description">Description</label>
-				<div class="col-md-4">
-					<input type="text" name="description" id="description" class="form-control input-sm" frozeOnEdit>
-				</div>
-			</div>
-
-			</form> -->
-
-			<!-- <hr> -->
+		
 			<form class='form-horizontal' style='width:89%' id='alformdata'>
 			{{ csrf_field() }}
 			<input id="resourcecode" name="resourcecode" type="hidden">
@@ -294,6 +292,54 @@
 				</div>
 			</form>
 		</div>
+
+		  <div id="resourceAddform" title="Add Resource Form">
+		
+			<form class='form-horizontal' style='width:89%' id='resourceformdata'>
+			{{ csrf_field() }}
+			<!-- <input id="resourcecode" name="resourcecode" type="hidden"> -->
+			<!-- <input id="idno" name="idno" type="hidden"> -->
+			<input id="YEAR" name="YEAR" type="hidden"  value="<?php echo date("Y") ?>">
+				<div class="form-group">
+				<div class="form-group">
+				
+			</div>
+                   <div class="form-group">
+					<label class="col-md-2 control-label" for="resourcecode">Resource Code</label>
+					<div class="col-md-2">
+						<div class='input-group'>
+							<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm" data-validation="required" >
+							
+						</div>
+						
+					</div>
+					<label class="col-md-2 control-label" for="description">Description</label>
+					<div class="col-md-2">
+						<input type="text" name="description" id="description" class="form-control input-sm"   data-validation="required"  >
+					</div>
+				</div>
+				</div>
+                  <div class="form-group">
+				<!-- <div class="form-group">
+				
+			</div> -->
+	
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="TYPE">Type</label>
+					<div class="col-md-2">
+						<div class='input-group'>
+							<input type="text" name="TYPE" id="TYPE" class="form-control input-sm"   data-validation="required"  >
+							
+							
+						</div>
+						
+					</div>
+				</div>
+				</div>
+			</form>
+		</div>
+
 
 	@endsection
 
