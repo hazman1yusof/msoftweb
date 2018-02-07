@@ -33,18 +33,29 @@ $(document).ready(function () {
 	}
 
 	var dialog_name = new ordialog(
-        'resourcecode', 'hisdb.apptresrc', '#resourcecode', errorField,
+				'resourcecode', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='resourcecode']", errorField,
+			
+				
         {
             colModel: [
-                { label: 'Resource Code', name: 'resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-                { label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+                { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+								{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+								{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', canSearch: true, or_search: true },
             ]
         }, {
             title: "Select Doctor",
             open: function () {
-                var test = $('#Class2').val();
-                dialog_name.urlParam.filterCol = ['TYPE'];
-                dialog_name.urlParam.filterVal = [test];
+                var rsc = $('#Class2').val();
+								dialog_name.urlParam.join_type = ['LEFT JOIN'];
+								dialog_name.urlParam.join_onCol = ['a.resourcecode'];
+								dialog_name.urlParam.join_onVal = ['d.doctorcode'];
+								dialog_name.urlParam.join_filterCol = [['a.compcode on =']];
+								dialog_name.urlParam.join_filterVal = [['d.compcode']];
+								dialog_name.urlParam.fixPost='true';
+								dialog_name.urlParam.filterCol = ['a.TYPE'];
+								dialog_name.urlParam.filterVal = [rsc];
+								let data = selrowData('#' + dialog_name.gridname);
+								$("#addForm input[name='interval']").val(data['d_intervaltime']);
 			},
 			close: function () {
 				var events = {
@@ -64,12 +75,12 @@ $(document).ready(function () {
 	dialog_name.makedialog(true);
 	
 	var dialog_doctor = new ordialog(
-		'doctor', ['hisdb.apptresrc AS a','hisdb.doctor AS d'], "#dialogForm input[name='doctor']", errorField,
+		'doctor', ['hisdb.apptresrc a','hisdb.doctor d'], "#dialogForm input[name='doctor']", errorField,
 		{
 			colModel: [
-				{ label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Interval', name: 'd_interval', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Resource Code', name: 'a.resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'Description', name: 'a.description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Interval', name: 'd.interval', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 			]
 		},
 		{
