@@ -296,46 +296,21 @@
 		  <div id="resourceAddform" title="Add Resource Form">
 		
 			<form class='form-horizontal' style='width:89%' id='resourceformdata'>
-			{{ csrf_field() }}
-			<!-- <input id="resourcecode" name="resourcecode" type="hidden"> -->
-			<!-- <input id="idno" name="idno" type="hidden"> -->
-			<input id="YEAR" name="YEAR" type="hidden"  value="<?php echo date("Y") ?>">
-				<div class="form-group">
-				<div class="form-group">
-				
-			</div>
-                   <div class="form-group">
-					<label class="col-md-2 control-label" for="resourcecode">Resource Code</label>
-					<div class="col-md-2">
-						<div class='input-group'>
+				{{ csrf_field() }}
+				<input id="idno" name="idno" type="hidden">
+
+				<input id="TYPE" name="TYPE" type="hidden"  value="RSC">
+
+	            <div class="form-group">
+					<label class="col-md-3 control-label" for="resourcecode">Resource Code</label>
+					<div class="col-md-3">
 							<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm" data-validation="required" >
-							
-						</div>
-						
 					</div>
+
 					<label class="col-md-2 control-label" for="description">Description</label>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<input type="text" name="description" id="description" class="form-control input-sm"   data-validation="required"  >
 					</div>
-				</div>
-				</div>
-                  <div class="form-group">
-				<!-- <div class="form-group">
-				
-			</div> -->
-	
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="TYPE">Type</label>
-					<div class="col-md-2">
-						<div class='input-group'>
-							<input type="text" name="TYPE" id="TYPE" class="form-control input-sm"   data-validation="required"  >
-							
-							
-						</div>
-						
-					</div>
-				</div>
 				</div>
 			</form>
 		</div>

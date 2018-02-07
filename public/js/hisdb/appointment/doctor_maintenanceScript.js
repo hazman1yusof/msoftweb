@@ -83,8 +83,7 @@
              var rscbtn=[{
 				text: "Save",click: function() {
 					if( $('#resourceformdata').isValid({requiredFields: ''}, conf, true) ) {
-						 saveFormdata("#jgrid","#resourceAddform","#resourceformdata",oper,saveParam,urlParam,null,{resourcecode:selrowData('#jqGrid').resourcecode});
-						
+						 saveFormdata("#jqGrid","#resourceAddform","#resourceformdata",oper,saveParam,urlParam,null);
 					}
 				}
 			},{
@@ -281,7 +280,7 @@
 			  var oper;
 			$("#resourceAddform")
 			  .dialog({ 
-				width: 9/10 * $(window).width(),
+				width: 5/10 * $(window).width(),
 				modal: true,
 				autoOpen: false,
 				open: function( event, ui ) {
@@ -328,7 +327,7 @@
 			var urlParam={
 				action:'get_table_default',
 				url: '/util/get_table_default',
-				field:"['resourcecode','description','TYPE']",
+				field:['resourcecode','description','TYPE'],
 				table_name:'hisdb.apptresrc',
 				table_id:'idno',
 				sort_idno:true,
@@ -338,11 +337,10 @@
             var saveParam={
 				action:'save_table_default',
 				url:"/doctor_maintenance/form",
-				field:"['resourcecode','description','TYPE']",
+				field:['resourcecode','description','TYPE'],
 				oper:oper,
 				table_name:'hisdb.apptresrc',
-				table_id:'idno',
-				// noduplicate:true,
+				table_id:'resourcecode'
 				
 			};
 			/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -351,13 +349,10 @@
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
-                    {label: 'idno', name: 'idno', hidden: true},
+                    { label: 'idno', name: 'idno', hidden: true},
 					{ label: 'Resource code', name: 'resourcecode', width: 40, classes: 'wrap', canSearch: true, checked:true},						
 				    { label: 'Description', name: 'description', width: 40, classes: 'wrap', canSearch: true},
 				    { label: 'Type', name: 'TYPE', width: 40, classes: 'wrap', hidden:true},
-					
-
-					
 				],
 				autowidth:true,
                 multiSort: true,
@@ -380,7 +375,11 @@
 
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#jqGridPager td[title='Edit Selected Row']").click();
+
+					if(Type !='DOC'){
+						$("#jqGridPager td[title='Edit Selected Row']").click();
+					}
+
 				},
 				gridComplete: function(){ 
 					if(oper == 'add'){
@@ -389,7 +388,10 @@
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 
-					
+					if(Type =='DOC'){
+						$("#pg_jqGridPager td[title='Add New Row']").hide();
+						$("#pg_jqGridPager td[title='Edit Selected Row']").hide();
+					}
 				},
 			});
 
@@ -406,15 +408,26 @@
 			// });
 
 			}).jqGrid('navButtonAdd', "#jqGridPager", {
-		    caption: "", cursor: "pointer", position: "first",
-		    buttonicon: "glyphicon glyphicon-plus",
-		    id: 'glyphicon-plus',
-		    title: "Add New Row",
-		    onClickButton: function () {
-			oper = 'add';
-			 $("#resourceAddform").dialog("open");
-		},
-	});
+				caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
+				buttonicon: "glyphicon glyphicon-edit",
+				title: "Edit Selected Row",
+				onClickButton: function () {
+					oper = 'edit';
+					selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+					populateFormdata("#jqGrid", "#resourceAddform", "#resourceformdata", selRowId, 'edit');
+					refreshGrid("#jqGrid", urlParam);
+				},
+
+			}).jqGrid('navButtonAdd', "#jqGridPager", {
+			    caption: "", cursor: "pointer", position: "first",
+			    buttonicon: "glyphicon glyphicon-plus",
+			    id: 'glyphicon-plus',
+			    title: "Add New Row",
+			    onClickButton: function () {
+					oper = 'add';
+					$("#resourceAddform").dialog("open");
+				},
+			});
 
 
 
