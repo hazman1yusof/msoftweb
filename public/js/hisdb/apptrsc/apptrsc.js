@@ -45,7 +45,7 @@ $(document).ready(function () {
         }, {
             title: "Select Doctor",
             open: function () {
-                var rsc = $('#Class2').val();
+                var type = $('#Class2').val();
 								dialog_name.urlParam.join_type = ['LEFT JOIN'];
 								dialog_name.urlParam.join_onCol = ['a.resourcecode'];
 								dialog_name.urlParam.join_onVal = ['d.doctorcode'];
@@ -53,7 +53,7 @@ $(document).ready(function () {
 								dialog_name.urlParam.join_filterVal = [['d.compcode']];
 								dialog_name.urlParam.fixPost='true';
 								dialog_name.urlParam.filterCol = ['a.TYPE'];
-								dialog_name.urlParam.filterVal = [rsc];
+								dialog_name.urlParam.filterVal = [type];
 								let data = selrowData('#' + dialog_name.gridname);
 								$("#addForm input[name='interval']").val(data['d_intervaltime']);
 			},
@@ -173,8 +173,8 @@ $(document).ready(function () {
 										stepping: 15
 									});
 									
-									$('#dialogForm #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-									$('#dialogForm #end').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
+									// $('#dialogForm #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
+									// $('#dialogForm #end').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
 									
 									$("#dialogForm").dialog("open");
             }
