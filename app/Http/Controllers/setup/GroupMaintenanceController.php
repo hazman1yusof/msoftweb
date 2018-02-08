@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\setup;
 
-use App\groupacc;
+use App\model\sysdb\groupacc;
 use App\Http\Controllers\defaultController;
 use Illuminate\Http\Request;
 use stdClass;

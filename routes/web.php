@@ -129,6 +129,22 @@ Route::get('/doctor_maintenance','hisdb\DoctorMaintenanceController@show');
 Route::get('/doctor_maintenance/table','hisdb\DoctorMaintenanceController@table');
 Route::post('/doctor_maintenance/form','hisdb\DoctorMaintenanceController@form');
 
+//// appointment page ///
+Route::get('/apptrsc','hisdb\AppointmentController@show');
+Route::get('/apptrsc/table','hisdb\AppointmentController@table');
+Route::post('/apptrsc/form','hisdb\AppointmentController@form');
+
+//// purchase Order setup page ///
+Route::get('/purchaseOrder','material\PurchaseOrderController@show');
+Route::get('/purchaseOrder/table','material\PurchaseOrderController@table');
+Route::post('/purchaseOrder/form','material\PurchaseOrderController@form');
+
+//// delivery Order setup page ///
+Route::get('/deliveryOrder','material\DeliveryOrderController@show');
+Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
+Route::post('/deliveryOrder/form','material\DeliveryOrderController@form');
+Route::get('/deliveryOrder/form','material\DeliveryOrderController@form');
+
 //// appointment resource setup page ///
 Route::get('/apptrsc','hisdb\AppointmentController@show');
 Route::get('/apptrsc/table','hisdb\AppointmentController@table');

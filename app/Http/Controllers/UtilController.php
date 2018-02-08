@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use stdClass;
 use DB;
-use App\sysparam;
+use App\model\sysdb\sysparam;
 
 class UtilController extends defaultController
 {

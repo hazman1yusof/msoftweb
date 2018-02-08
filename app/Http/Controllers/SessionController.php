@@ -30,6 +30,7 @@ class SessionController extends Controller
     		Auth::login($user);
             $request->session()->put('compcode', request('cmb_companies'));
             $request->session()->put('username', request('username'));
+            $request->session()->put('deptcode', $user->deptcode);
     		return redirect()->home();
     	}else{
     		return back();
