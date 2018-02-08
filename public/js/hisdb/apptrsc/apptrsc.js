@@ -33,24 +33,25 @@ $(document).ready(function () {
 	}
 
 	var dialog_name = new ordialog(
-				'resourcecode', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='resourcecode']", errorField,
+				'resourcecode', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d', 'hisdb.apptsession AS s'], "input[name='resourcecode']", errorField,
 			
 				
         {
             colModel: [
-                { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-								{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-								{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+                { label: 'Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+								{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+								{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', canSearch: false, or_search: true },
+								{ label: 'Time From 1', name: 's_timefr1', width: 400, classes: 'pointer', canSearch: false, or_search: true },
             ]
         }, {
-            title: "Select Doctor",
+            title: "Select " + ($("#Scol").val()),
             open: function () {
                 var type = $('#Class2').val();
-								dialog_name.urlParam.join_type = ['LEFT JOIN'];
+								dialog_name.urlParam.join_type = ['LEFT JOIN', 'LEFT JOIN'];
 								dialog_name.urlParam.join_onCol = ['a.resourcecode'];
 								dialog_name.urlParam.join_onVal = ['d.doctorcode'];
-								dialog_name.urlParam.join_filterCol = [['a.compcode on =']];
-								dialog_name.urlParam.join_filterVal = [['d.compcode']];
+								dialog_name.urlParam.join_filterCol = [['a.compcode on =','a.compcode on =']];
+								dialog_name.urlParam.join_filterVal = [['d.compcode','s.compcode']];
 								dialog_name.urlParam.fixPost='true';
 								dialog_name.urlParam.filterCol = ['a.TYPE'];
 								dialog_name.urlParam.filterVal = [type];
@@ -290,4 +291,5 @@ $('#submitEdit').click(function(){
 		$('#calendar').fullCalendar( 'addEventSource', events);         
 		$('#calendar').fullCalendar( 'refetchEvents' );
 	});
+
 });
