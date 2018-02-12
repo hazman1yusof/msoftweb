@@ -42,21 +42,24 @@ $(document).ready(function () {
 								{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 								{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', canSearch: false, or_search: true },
 								{ label: 'Time From 1', name: 's_timefr1', width: 400, classes: 'pointer', canSearch: false, or_search: true },
+								{ label: 'Time To 1', name: 's_timeto1', width: 400, classes: 'pointer', canSearch: false, or_search: true },
+								
             ]
         }, {
             title: "Select " + ($("#Scol").val()),
             open: function () {
                 var type = $('#Class2').val();
 								dialog_name.urlParam.join_type = ['LEFT JOIN', 'LEFT JOIN'];
-								dialog_name.urlParam.join_onCol = ['a.resourcecode'];
-								dialog_name.urlParam.join_onVal = ['d.doctorcode'];
-								dialog_name.urlParam.join_filterCol = [['a.compcode on =','a.compcode on =']];
+								dialog_name.urlParam.join_onCol = ['a.resourcecode','a.resourcecode'];
+								dialog_name.urlParam.join_onVal = ['d.doctorcode','s.doctorcode'];
+								dialog_name.urlParam.join_filterCol = [['a.compcode on =']];
 								dialog_name.urlParam.join_filterVal = [['d.compcode','s.compcode']];
 								dialog_name.urlParam.fixPost='true';
 								dialog_name.urlParam.filterCol = ['a.TYPE'];
 								dialog_name.urlParam.filterVal = [type];
 								let data = selrowData('#' + dialog_name.gridname);
-								$("#addForm input[name='interval']").val(data['d_intervaltime']);
+								$(".fc-myCustomButton-button").data("interval", data['d_intervaltime']);
+								// $("#addForm input[name='interval']").val(data['d_intervaltime']);
 			},
 			close: function () {
 				var events = {
@@ -161,6 +164,8 @@ $(document).ready(function () {
 								
 								 var start = $(".fc-myCustomButton-button").data( "start");
 								 var end = $(".fc-myCustomButton-button").data("end");
+								 var interval = $(".fc-myCustomButton-button").data("interval");
+								 console.log(interval);
 
 									$('#dialogForm #doctor').val(temp);
 									
