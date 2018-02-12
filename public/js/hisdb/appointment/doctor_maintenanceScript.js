@@ -333,6 +333,7 @@
 				filterCol:['TYPE'],
 				filterVal:[ $('#Type').val()]
 			}
+
 			if(Type =='DOC'){
 				urlParam.url = "/doctor_maintenance/table";
 			}
@@ -534,12 +535,7 @@
 		
 				}).success(function(data){
 					$("#TSBox").dialog('close');
-					// if(grid!=null){
-					// 	refreshGrid(grid,urlParam,oper);
-					// 	$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
-					// 	$(dialog).dialog('close');
-					// 	// addmore($(searchForm+' .StextClass input[type=checkbox]').is(':checked'),grid,oper);
-					// }
+					refreshGrid("#jqGrid",urlParam);
 				});
 			});
 
@@ -841,7 +837,8 @@
 			searchClick('#gridph','#searchForm1',urlParamph);
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-			addParamField('#jqGrid',true,urlParam);
+			// addParamField('#jqGrid',true,urlParam);
+			refreshGrid("#jqGrid",urlParam);
 			addParamField('#gridtime',true,urlParamtime);
 			addParamField('#gridph',true,urlParamph);
 			addParamField('#gridleave',true,urlParamleave);
