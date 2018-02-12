@@ -435,12 +435,14 @@
 
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 
+			var TSoper = 'add';
 			$("#TSBox").dialog({
             	autoOpen : false, 
             	modal : true,
 				width: 6/10 * $(window).width(),
 				open: function(){
 					if(parseInt(selrowData('#jqGrid').countsession)==0){
+						TSoper = 'add';
 						['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'].forEach(function(elem,id) {
 							$("#gridtime").jqGrid('addRowData', id,
 								{
@@ -455,6 +457,7 @@
 							);
 						});
 					}else{
+						TSoper = 'edit';
 						addParamField("#gridtime",true,urlParamtime);
 					}
 					$("#gridtime").jqGrid ('setGridWidth', Math.floor($("#gridtime_c")[0].offsetWidth-$("#gridtime_c")[0].offsetLeft));
@@ -527,7 +530,17 @@
 					objRow.timeto2 = $("#"+elem+"_timeto2").val();
 					rowsArray.push(objRow);
 				});
-				console.log(rowsArray);
+				$.post( "/doctor_maintenance/save_session", {rowsArray:rowsArray,_token:$('#csrf_token').val(),oper:TSoper} , function( data ) {
+		
+				}).success(function(data){
+					$("#TSBox").dialog('close');
+					// if(grid!=null){
+					// 	refreshGrid(grid,urlParam,oper);
+					// 	$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
+					// 	$(dialog).dialog('close');
+					// 	// addmore($(searchForm+' .StextClass input[type=checkbox]').is(':checked'),grid,oper);
+					// }
+				});
 			});
 
             $("#gridtime").jqGrid({

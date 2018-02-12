@@ -10,6 +10,10 @@ use Carbon\Carbon;
 
 abstract class defaultController extends Controller{
 
+    public function __construct(){
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+    }
+
     public function default_duplicate($table,$duplicateCode,$duplicateValue){
         return DB::table($table)->where($duplicateCode,'=',$duplicateValue)->count();
     }

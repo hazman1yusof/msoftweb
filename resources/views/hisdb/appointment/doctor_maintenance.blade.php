@@ -85,11 +85,11 @@
 	
 
 	<div id="ALBox" title="Annual Leave" style="display:none">
-    <ul>
+    	<ul>
 			<b>DOCTOR CODE : </b><span name='resourcecode' ></span> <br><br>
 			<b>DOCTOR NAME: </b><span name='description' ></span>
-			
-		</ul>	
+		</ul>
+		<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 
 		<div id='gridleave_c' style="padding:15px 0 0 0">
             <table id="gridleave" class="table table-striped"></table>
