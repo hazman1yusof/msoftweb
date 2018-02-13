@@ -19,7 +19,7 @@
 				  	<span class='fa fa-clock-o fa-lg '></span> Time Session
 				  </button>
 				   <button type="button" class="btn btn-default" id='ALBtn'>
-				  	<span class='fa fa-calendar fa-lg '></span> Leave
+				  	<span class='fa fa-calendar fa-lg '></span> Leave/Unavailable
 				  </button>
 				   <button type="button" class="btn btn-default" id='PHBtn'>
 				  	<span class='fa fa-calendar fa-lg '></span> Public Holiday

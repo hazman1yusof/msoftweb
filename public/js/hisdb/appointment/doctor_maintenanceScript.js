@@ -353,7 +353,7 @@
 				datatype: "local",
 				 colModel: [
                     { label: 'idno', name: 'idno', hidden: true},
-					{ label: 'Resource code', name: 'resourcecode', width: 40, classes: 'wrap', canSearch: true, checked:true},						
+					{ label: 'Code', name: 'resourcecode', width: 40, classes: 'wrap', canSearch: true, checked:true},						
 				    { label: 'Description', name: 'description', width: 40, classes: 'wrap', canSearch: true},
 				    { label: 'Type', name: 'TYPE', width: 40, classes: 'wrap', hidden:true},
 				    { label: 'session', name: 'countsession', width: 40, classes: 'wrap', hidden:true},
@@ -591,7 +591,7 @@
 					
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#jqGridPager td[title='Edit Selected Row']").click();
+					// $("#jqGridPager td[title='Edit Selected Row']").click();
 				},
 				gridComplete: function(){ 
 					var $this = $(this), rows = this.rows, l = rows.length, i, row;
@@ -679,7 +679,7 @@
 					
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#jqGridPager td[title='Edit Selected Row']").click();
+					$("#gridphpager td[title='Edit Selected Row']").click();
 				},
 				gridComplete: function(){ 
 					if(oper == 'add'){
@@ -783,7 +783,7 @@
 					
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#jqGridPager td[title='Edit Selected Row']").click();
+					$("#gridleavepager td[title='Edit Selected Row']").click();
 				},
 				gridComplete: function(){ 
 					if(oper == 'add'){
