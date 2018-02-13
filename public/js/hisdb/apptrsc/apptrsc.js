@@ -341,4 +341,5 @@ $('#submitEdit').click(function(){
 		$('#calendar').fullCalendar( 'addEventSource', events);         
 		$('#calendar').fullCalendar( 'refetchEvents' );
 	});
+
 });
