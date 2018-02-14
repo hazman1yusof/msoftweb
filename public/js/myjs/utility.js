@@ -529,7 +529,6 @@ function setactdate(target){
 			$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
 		} //Accounting Period Has been Closed
 			//Date not in accounting period setup
-		
 	}
 }
 
@@ -695,12 +694,14 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 				if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow();
 			},
 			ondblClickRow: function(rowid, iRow, iCol, e){
+				$(obj.textfield).off('blur',onBlur);
 				$(obj.textfield).val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
 				$(obj.textfield).parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
 				$(obj.textfield).focus();
 				if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 				$("#"+obj.dialogname).dialog( "close" );
 				$("#"+obj.gridname).jqGrid("clearGridData", true);
+				$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
 			},
 		});
 		addParamField("#"+obj.gridname,false,obj.urlParam);

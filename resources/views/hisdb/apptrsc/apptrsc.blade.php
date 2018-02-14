@@ -44,19 +44,13 @@
 							<div class="form-group">
 								<label for="Title" class="col-md-2 control-label">Title</label>
 								<div class="col-md-3">
-									<div class="input-group">
 										<input type="text" class="form-control input-sm" id="title" name="title" placeholder="Title of appointment" data-validation="required" >
-									</div>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="Doctor" class="col-md-2 control-label">Doctor</label>
 								<div class="col-md-3">
-									<div class="input-group">
-										<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" data-validation="required">	
-										<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class='help-block'></span>
+									<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" data-validation="required" disabled>
 								</div>								
 							</div>
 							<div class="form-group">
@@ -75,25 +69,22 @@
 							<div class="form-group">
 								<label for="start" class="col-md-2 control-label">Start Date</label>
 								<div class="col-md-2">
-									<input type="text" class="form-control input-sm" placeholder="Start Date" id="start" name="start" data-validation="required">	
+									<input type="date" class="form-control input-sm" placeholder="Start Date" id="apptdatefr_day" name="apptdatefr_day" data-validation="required" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}">	
 								</div>
 								<label for="end" class="col-md-2 control-label">End Date</label>
 								<div class="col-md-2">
-									<input type="text" class="form-control input-sm" placeholder="End Date" id="end" name="end" data-validation="required">	
+									<input type="date" class="form-control input-sm" placeholder="End Date" id="apptdateto_day" name="apptdateto_day" data-validation="required" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}">	
 								</div>
-								<!-- <label for="color" class="col-md-2 control-label">Color</label>
+							</div>
+							<div class="form-group">
+								<label for="start" class="col-md-2 control-label">Start Time</label>
 								<div class="col-md-2">
-									<select name="color" id="color" class="form-control input-sm">
-										<option value="">Choose</option>
-										<option style="color:#0071c5;" value="#0071c5">&#9724; Dark blue</option>
-										<option style="color:#40E0D0;" value="#40E0D0">&#9724; Turquoise</option>
-										<option style="color:#008000;" value="#008000">&#9724; Green</option>						  
-										<option style="color:#FFD700;" value="#FFD700">&#9724; Yellow</option>
-										<option style="color:#FF8C00;" value="#FF8C00">&#9724; Orange</option>
-										<option style="color:#FF0000;" value="#FF0000">&#9724; Red</option>
-										<option style="color:#000;" value="#000">&#9724; Black</option>
-									</select>
-								</div> -->
+									<select name="apptdatefr_time" id="apptdatefr_time" class="form-control input-sm"></select>
+								</div>
+								<label for="end" class="col-md-2 control-label">End Time</label>
+								<div class="col-md-2">
+									<select name="apptdateto_time" id="apptdateto_time" class="form-control input-sm"></select>
+								</div>
 							</div>
 							<div class="form-group">
 								<label for="telno" class="col-md-2 control-label">Tel No</label>
