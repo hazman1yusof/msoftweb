@@ -1,43 +1,11 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<style>
-	.data_info{
-		text-align: center;
-		color: #286090;
-		background: #d9edf7;
-		width: 400px;
-		height: 120px;
-	    margin: 0px !important;
-	    padding: 5px !important;
-	    border-top-left-radius: 30px;
-	    position: absolute;
-	    bottom: 0px;
-	    right: 0px;
-	    cursor: pointer;
-	    display: block;
-	}
-	.click_row{
-		width:15%;
-		display: inline-block;
-		padding:0 5px 1px 0;
-		background: beige;
-    	margin: 5px;
-    	border-radius: 5px;
-    	text-align: center;
-	    cursor: pointer;
-	}
-	.click_row:hover{
-		opacity: 0.7;
-	}
-	.help-block{
-		margin: 0 !important;
-	}
-</style>
-<body style="display:none">
+@extends('layouts.main')
 
-	<input id="x" name="x" type="hidden" value="<?php echo $_SESSION['deptcode'];?>">
-	<input id="scope" name="scope" type="hidden" value="<?php echo $_GET['scope'];?>">
+@section('title', 'Purchase Order')
+
+@section('body')
+
+	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
+	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
@@ -96,12 +64,17 @@
 			 </fieldset> 
 		</form>
 
-    	<div class='col-md-12' style="padding:0 0 15px 0">
-            <table id="jqGrid" class="table table-striped"></table>
-            <div id="jqGridPager"></div>
-        </div>
+    	<div class="panel panel-default">
+		    	<div class="panel-heading">Purchase Order DataEntry Header</div>
+		    		<div class="panel-body">
+		    			<div class='col-md-12' style="padding:0 0 15px 0">
+            				<table id="jqGrid" class="table table-striped"></table>
+            					<div id="jqGridPager"></div>
+        				</div>
+		    		</div>
+		</div>
 
-         <div class='col-md-12' style="padding:0px">
+        
         	<div class='click_row'>
         		<label class="control-label">Purchase Order No</label>
         		<span id="ponodepan" style="display: block;">&nbsp</span>
@@ -110,12 +83,17 @@
 				<label class="control-label">Purchase Dept</label>
         		<span id="prdeptdepan" style="display: block;">&nbsp</span>
         	</div>
-	    </div>
+	   
 
-        <div class='col-md-12' style="padding:0 0 15px 0">
-	        <table id="jqGrid3" class="table table-striped"></table>
-	        <div id="jqGridPager3"></div>
-	    </div>
+         <div class="panel panel-default">
+		    	<div class="panel-heading">Purchase Order DataEntry Detail</div>
+		    		<div class="panel-body">
+		    			<div class='col-md-12' style="padding:0 0 15px 0">
+	            			<table id="jqGrid3" class="table table-striped"></table>
+	            			<div id="jqGridPager3"></div>
+	    				</div>
+		    		</div>
+		</div>
     </div>
 	<!-------------------------------- End Search + table ------------------>
 		
@@ -127,10 +105,13 @@
 				</div>
 					<div class="panel-body" style="position: relative;">
 						<form class='form-horizontal' style='width:99%' id='formdata'>
+						{{ csrf_field() }}
 							<input id="source" name="source" type="hidden">
 							<input id="idno" name="idno" type="hidden">
 							<input id="crdbfl" name="crdbfl" type="hidden">
 							<input id="isstype" name="isstype" type="hidden">
+							<input id="referral" name="referral" type="hidden">
+							<input id="purordhd_delordno" name="purordhd_delordno" type="hidden">
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="purordhd_prdept">Purchase Department</label>
@@ -164,25 +145,30 @@
 								  </div>
 
 
-                                     <label class="col-md-2  control-label" for="purordhd_reqdept">Req Dept</label>  
+                                    <!--  <label class="col-md-2  control-label" for="purordhd_reqdept">Req Dept</label>  
 						  			<div class="col-md-2">
 										<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="11" class="form-control input-sm" frozeOnEdit hideOne rdonly >
-						  			</div>
+						  			</div>-->
 
-								 <!--   <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
+								   <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
 								 <div class="col-md-2">
 									<div class='input-group'>
-										<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required" rdonly>
+										<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm"  >
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
 								</div> 
-							-->
+							
 
-                                     <label class="col-md-2  control-label" for="purordhd_purreqno">Req No</label>  
-						  			<div class="col-md-2">
-										<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="11" class="form-control input-sm" >
-						  			</div>
+                                       <label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 
+								 <div class="col-md-2">
+									  <div class='input-group'>
+										<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm" >
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									  </div>
+									 
+								  </div>
+
 
 							</div>
 
@@ -211,22 +197,29 @@
                             
 							</div>
 							<hr/>
+
+							<!-- min="<?php $date// =  date('Y-m-d', strtotime("-5 days")); // it shows 5 days before today. -->
+//echo $date;?>" max="<?php //echo date('Y-m-d');?>"-->
 							
-                            
+                           <!-- <input id="backday" name="backday" class="form-control input-sm">-->
+
                             <div class="form-group">
                             <label class="col-md-2 control-label" for="purordhd_purdate">PO Date</label>  
 						  			<div class="col-md-2">
-									<input id="purordhd_purdate" name="purordhd_purdate" type="date" maxlength="10" class="form-control input-sm">
+									<input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" 
+									min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+										max="<?php echo date('Y-m-d');?>"  
+										data-validation="required">
 						  		</div>
                              
                              <label class="col-md-2 control-label" for="purordhd_expecteddate">Expected Date</label>  
 						  			<div class="col-md-2">
-									<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required">
+									<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" data-validation="required">
 						  		</div>
 
 						  		<label class="col-md-2 control-label" for="termdays">Payment Terms</label>  
 						  			<div class="col-md-2"> 
-						  			<input id="purordhd_termdays" name="purordhd_termdays" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+						  			<input id="purordhd_termdays" name="purordhd_termdays" type="text" class="form-control input-sm" data-validation="number" frozeOnEdit hideOne value="30">
 						  		</div>
                             </div>
 
@@ -262,10 +255,11 @@
 										<input id="purordhd_totamount" name="purordhd_totamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
 						  			</div>
 
-						  		<label class="col-md-2 control-label" for="TaxClaimable">Tax Claim</label>  
+
+						  		<label class="col-md-2 control-label" for="purordhd_taxclaimable">Tax Claim</label>  
 							  <div class="col-md-2">
-								<label class="radio-inline"><input type="radio" name="TaxClaimable" value='Claimable' checked>Yes</label><br>
-								<label class="radio-inline"><input type="radio" name="TaxClaimable"  value='Non-Claimable'>No</label>
+								<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" value='Claimable'>Yes</label><br>
+								<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required"  value='Non-Claimable'>No</label>
 							  </div> 
 
 							   <div class="form-group">
@@ -281,22 +275,22 @@
 
 					    	<div class="form-group data_info">
 						    	<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purreqhd_upduser">Last Entered By</label>  
-						  			<input id="purreqhd_upduser" name="purreqhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="purordhd_upduser">Last Entered By</label>  
+						  			<input id="purordhd_upduser" name="purordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purreqhd_upddate">Last Entered Date</label>
-						  			<input id="purreqhd_upddate" name="purreqhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="purordhd_upddate">Last Entered Date</label>
+						  			<input id="purordhd_upddate" name="purordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 					    		<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purreqhd_authpersonid">Authorized By</label>  
-						  			<input id="purreqhd_authpersonid" name="purreqhd_authpersonid" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="purordhd_authpersonid">Authorized By</label>  
+						  			<input id="purordhd_authpersonid" name="purordhd_authpersonid" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purreqhd_authdate">Authorized Date</label>
-						  			<input id="purreqhd_authdate" name="purreqhd_authdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="purordhd_authdate">Authorized Date</label>
+						  			<input id="purordhd_authdate" name="purordhd_authdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 							</div>
 					</form>
@@ -317,6 +311,8 @@
 					</div>
 
 					<input id="gstpercent" name="gstpercent" type="hidden">
+					<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
+					<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'>
 					<div class="panel-body">
 						<div class="noti"><ol></ol>
 						</div>
@@ -332,20 +328,14 @@
 			  </div>
 			</div>
 		</div>
-	<!-- JS Implementing Plugins -->
+@endsection
 
-	<!-- JS Customization -->
 
-	<!-- JS Page Level -->
-	<script src="purOrder2.js"></script>
-	<!--<script src="pdfgen.js"></script>-->
-	<script src="../../../../assets/js/utility.js"></script>
-	<!--<script src="../../../../assets/plugins/pdfmake/pdfmake.min.js"></script>-->
-	<!--<script src="../../../../assets/plugins/pdfmake/vfs_fonts.js"></script>-->
-	 <script src="../../../../assets/js/dialogHandler.js"></script> 
+@section('scripts')
 
-<script>
-		
-</script>
-</body>
-</html>
+	<script src="js/material/purchaseOrder/purchaseOrder.js"></script>
+	<script src="js/material/purchaseOrder/pdfgen.js"></script>
+	<script src="plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="plugins/pdfmake/vfs_fonts.js"></script>
+	
+@endsection

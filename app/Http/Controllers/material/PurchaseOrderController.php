@@ -4,6 +4,9 @@ namespace App\Http\Controllers\material;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use stdClass;
+use DB;
+use Carbon\Carbon;
 
 class PurchaseOrderController extends defaultController
 {   
@@ -19,7 +22,7 @@ class PurchaseOrderController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.purchaseOrder.purOrder');
+        return view('material.purchaseOrder.purchaseOrder');
     }
 
     public function form(Request $request)
