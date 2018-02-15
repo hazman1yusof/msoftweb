@@ -33,6 +33,7 @@ class DoctorController extends defaultController
                         'compcode' => session('compcode'),
                         'resourcecode' => $request->doctorcode,
                         'description' => $request->doctorname,
+                        'TYPE' => 'DOC',
                         'recstatus' => 'A',
                         'adduser' => session('username'),
                         'adddate' => now()
