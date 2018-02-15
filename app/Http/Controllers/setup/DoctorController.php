@@ -5,6 +5,7 @@ namespace App\Http\Controllers\setup;
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
+use Carbon\Carbon;
 
 class DoctorController extends defaultController
 {   
@@ -52,6 +53,16 @@ class DoctorController extends defaultController
                 }
                 return $this->defaultEdit($request);
             case 'del':
+                $got = DB::table('hisdb.apptresrc')->where('resourcecode','=',$request->doctorcode)->first();
+                if($got != null){
+                    DB::table('hisdb.apptresrc')
+                        ->where('resourcecode','=',$request->doctorcode)
+                        ->update([
+                            'deluser' => session('username'),
+                            'deldate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'recstatus' => 'D'
+                        ]);
+                }
                 return $this->defaultDel($request);
             default:
                 return 'error happen..';
