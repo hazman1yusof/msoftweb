@@ -50,7 +50,7 @@
 							<div class="form-group">
 								<label for="Doctor" class="col-md-2 control-label">Doctor</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" data-validation="required" disabled>
+									<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" data-validation="required" readonly>
 								</div>								
 							</div>
 							<div class="form-group">
@@ -131,7 +131,7 @@
 		<div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		  <div class="modal-dialog" role="document">
 			<div class="modal-content">
-			<form class="form-horizontal" method="post" action={{url('apptrsc/editEvent')}} id="editForm">
+			<form class="form-horizontal" method="post" action="{{url('apptrsc/editEvent')}}" id="editForm">
 			{{csrf_field()}}
 			  <div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

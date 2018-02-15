@@ -244,6 +244,7 @@ $(document).ready(function () {
 	            text: 'Add',
 	            click: function() {
 	            	
+	            	oper='add';
 	            	session_field.ready().set();
 
 					var temp = $('#resourcecode').val();
@@ -337,47 +338,48 @@ $(document).ready(function () {
 			}
 		});
 	}
+
+	$('#submitEdit').click(function(){
+		$.post("apptrsc/editEvent", $("#editForm").serialize(), function (data) {
+		}).fail(function (data) {
+			//////////////////errorText(dialog,data.responseText);
+		}).done(function (data) {
+			$("#ModalEdit").modal('hide');
+			
+			var events = {
+							url: "apptrsc/getEvent",
+							type: 'GET',
+							data: {
+								drrsc: $('#resourcecode').val()
+							}
+						}
+				
+			$('#calendar').fullCalendar( 'removeEventSource', events);
+			$('#calendar').fullCalendar( 'addEventSource', events);
+			$('#calendar').fullCalendar( 'refetchEvents' );
+		});
+	});
+
+	$('#submit').click(function(){
+		$.post("apptrsc/addEvent", $("#addForm").serialize(), function (data) {
+		}).fail(function (data) {
+			//////////////////errorText(dialog,data.responseText);
+		}).done(function (data) {
+			$("#dialogForm").dialog('close');
+			var events = {
+							url: "apptrsc/getEvent",
+							type: 'GET',
+							data: {
+								drrsc: $('#resourcecode').val()
+							}
+						}
+				
+			$('#calendar').fullCalendar( 'removeEventSource', events);
+			$('#calendar').fullCalendar( 'addEventSource', events);         
+			$('#calendar').fullCalendar( 'refetchEvents' );
+		});
+	});
 	
 });
 
-$('#submit').click(function(){
-	$.post("apptrsc/addEvent", $("#addForm").serialize(), function (data) {
-	}).fail(function (data) {
-		//////////////////errorText(dialog,data.responseText);
-	}).done(function (data) {
-		$("#dialogForm").dialog('close');
-		var events = {
-						url: "apptrsc/getEvent",
-						type: 'GET',
-						data: {
-							drrsc: $('#resourcecode').val()
-						}
-					}
-			
-		$('#calendar').fullCalendar( 'removeEventSource', events);
-		$('#calendar').fullCalendar( 'addEventSource', events);         
-		$('#calendar').fullCalendar( 'refetchEvents' );
-	});
-});
 
-$('#submitEdit').click(function(){
-	$.post("apptrsc/editEvent", $("#editForm").serialize(), function (data) {
-	}).fail(function (data) {
-		//////////////////errorText(dialog,data.responseText);
-	}).done(function (data) {
-		$("#ModalEdit").modal('hide');
-		
-		var events = {
-						url: "apptrsc/getEvent",
-						type: 'GET',
-						data: {
-							drrsc: $('#resourcecode').val()
-						}
-					}
-			
-		$('#calendar').fullCalendar( 'removeEventSource', events);
-		$('#calendar').fullCalendar( 'addEventSource', events);         
-		$('#calendar').fullCalendar( 'refetchEvents' );
-	});
-
-});
