@@ -39,6 +39,17 @@ class DoctorController extends defaultController
                 }
                 return $this->defaultAdd($request);
             case 'edit':
+                $got = DB::table('hisdb.apptresrc')->where('resourcecode','=',$request->doctorcode)->first();
+                if($request->appointment == '1' && $got == null){
+                    DB::table('hisdb.apptresrc')->insert([
+                        'compcode' => session('compcode'),
+                        'resourcecode' => $request->doctorcode,
+                        'description' => $request->doctorname,
+                        'recstatus' => 'A',
+                        'adduser' => session('username'),
+                        'adddate' => now()
+                    ]);
+                }
                 return $this->defaultEdit($request);
             case 'del':
                 return $this->defaultDel($request);

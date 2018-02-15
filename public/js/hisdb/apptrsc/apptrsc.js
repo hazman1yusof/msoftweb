@@ -39,7 +39,7 @@ $(document).ready(function () {
             colModel: [
                 { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
             ],
             ondblClickRow: function () {
 				$('.fc-myCustomButton-button').show();
@@ -283,11 +283,28 @@ $(document).ready(function () {
 			$(".fc-myCustomButton-button").data( "end", end );
 		},
 		eventRender: function(event, element) {
+			console.log(element);
 			element.bind('dblclick', function() {
-				$('#ModalEdit #id').val(event.idno);
-				$('#ModalEdit #title').val(event.title);
-				$('#ModalEdit #color').val(event.color);
-				$('#ModalEdit').modal('show');
+				oper = 'edit';
+
+				$("#dialogForm").dialog('open');
+				$("#addForm input").each(function(){
+					var input=$(this);
+					input.val(event[$(this).name]);
+				});
+				// $.each(rowData, function( index, value ) {
+				// 	var input=$(form+" [name='"+index+"']");
+				// 	if(input.is("[type=radio]")){
+				// 		$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+				// 	}else{
+				// 		input.val(value);
+				// 	}
+				// });
+
+				// $('#ModalEdit #id').val(event.idno);
+				// $('#ModalEdit #title').val(event.title);
+				// $('#ModalEdit #color').val(event.color);
+				// $('#ModalEdit').modal('show');
 			});
 		},
 		eventDrop: function(event, delta, revertFunc) { // si changement de position
@@ -344,6 +361,7 @@ $(document).ready(function () {
 		}).fail(function (data) {
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function (data) {
+			emptyFormdata(errorField,"#addForm");
 			$("#ModalEdit").modal('hide');
 			
 			var events = {
@@ -360,24 +378,27 @@ $(document).ready(function () {
 		});
 	});
 
+	var oper = 'add';
 	$('#submit').click(function(){
-		$.post("apptrsc/addEvent", $("#addForm").serialize(), function (data) {
-		}).fail(function (data) {
-			//////////////////errorText(dialog,data.responseText);
-		}).done(function (data) {
-			$("#dialogForm").dialog('close');
-			var events = {
-							url: "apptrsc/getEvent",
-							type: 'GET',
-							data: {
-								drrsc: $('#resourcecode').val()
+		if( $('#editForm').isValid({requiredFields: ''}, conf, true) ) {
+			$.post("apptrsc/addEvent?oper="+oper, $("#addForm").serialize(), function (data) {
+			}).fail(function (data) {
+				//////////////////errorText(dialog,data.responseText);
+			}).done(function (data) {
+				$("#dialogForm").dialog('close');
+				var events = {
+								url: "apptrsc/getEvent",
+								type: 'GET',
+								data: {
+									drrsc: $('#resourcecode').val()
+								}
 							}
-						}
-				
-			$('#calendar').fullCalendar( 'removeEventSource', events);
-			$('#calendar').fullCalendar( 'addEventSource', events);         
-			$('#calendar').fullCalendar( 'refetchEvents' );
-		});
+					
+				$('#calendar').fullCalendar( 'removeEventSource', events);
+				$('#calendar').fullCalendar( 'addEventSource', events);         
+				$('#calendar').fullCalendar( 'refetchEvents' );
+			});
+		}
 	});
 	
 });
