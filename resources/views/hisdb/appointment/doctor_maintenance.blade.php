@@ -19,7 +19,7 @@
 				  	<span class='fa fa-clock-o fa-lg '></span> Time Session
 				  </button>
 				   <button type="button" class="btn btn-default" id='ALBtn'>
-				  	<span class='fa fa-calendar fa-lg '></span> Leave/Unavailable
+				  	<span class='fa fa-calendar fa-lg '></span> 
 				  </button>
 				   <button type="button" class="btn btn-default" id='PHBtn'>
 				  	<span class='fa fa-calendar fa-lg '></span> Public Holiday
@@ -114,47 +114,6 @@
 				
 			</div>
 
-
-
-					<!-- <label class="col-md-2 control-label" for="days">Day</label>  
-					<div class="col-md-2">
-					  	<select id="days" name="days" class="form-control input-sm"  >
-					      <option value="MONDAY">MONDAY</option>
-					      <option value="TUESDAY">TUESDAY</option>
-					      <option value="WEDNESDAY">WEDNESDAY</option>
-					      <option value="THURSDAY">THURSDAY</option>
-					      <option value="FRIDAY">FRIDAY</option>
-					      <option value="SATURDAY">SATURDAY</option>
-					      <option value="SUNDAY">SUNDAY</option>
-					    </select>
-					    </div> -->
-
-
-					    <div class="form-group">
-				  <label class="col-md-2 control-label" for="days">Days</label>  
-				  <div class="col-md-8">
-				    <table>
-                             	<tr>
-                             
-                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Monday' >Monday</label></td>
-                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Tuesday' >Tuesday</label></td>
-                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Wednesday'>Wednesday</label></td>
-								</tr>
-							
-				 			<tr>
-                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Thursday'>Thursday</label></td>
-                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Friday'>Friday</label></td>
-                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Saturday'>Saturday</label></td>
-							</tr>
-                            
-                            <tr>
-				 			
-                                <td><label class="radio-inline"><input type="checkbox" name="days" value='Sunday'>Sunday</label></td>
-                             
-                               </tr>
-                               </table>				
-                </div>
-				</div>
 				</div>
 
 				<div class="form-group">
@@ -211,30 +170,34 @@
 				<!-- <div class="form-group">
 				
 			</div> -->
-	         
+	        
 
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="datefr">From</label>
 					<div class="col-md-2">
 						<div class='input-group'>
-							<input type="date" name="datefr" id="datefr" class="form-control input-sm" value="<?php echo date("d-m-Y"); ?>" data-validation="required" >
-							
+							<input id="datefr" name="datefr" type="date"  value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}"  maxlength="10" class="form-control input-sm" 
+										data-validation="required">		
+						  <span class="input-group-addon">
+                                    <span class="glyphicon-calendar glyphicon"></span>
+                                </span>						
 						</div>
 						
 					</div>
 					<label class="col-md-2 control-label" for="dateto">To</label>
 					<div class="col-md-2">
-						<input type="date" name="dateto" id="dateto" class="form-control input-sm"   data-validation="required" value="<?php echo date("d-m-Y"); ?>" >
+					<div class='input-group'>
+						<input id="dateto"" name="dateto" type="date"  value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
+                     <span class="input-group-addon">
+                                    <span class="glyphicon-calendar glyphicon"></span>
+                                </span>						
+						</div>
 					</div>
 				</div>
 				</div>
 
 				<div class="form-group">
-				<!-- <div class="form-group">
-				
-			</div> -->
-	
-
+			
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="remark">Remark</label>   
 						  			<div class="col-md-5">
@@ -251,24 +214,32 @@
 			<form class='form-horizontal' style='width:89%' id='alformdata'>
 			{{ csrf_field() }}
 			<input id="resourcecode" name="resourcecode" type="hidden">
-			<input id="idno" name="idno"type="hidden">
+			<input id="idno" name="idno" type="hidden">
 			<input id="YEAR" name="YEAR" type="hidden"  value="<?php echo date("Y") ?>">
 				<div class="form-group">
 				<div class="form-group">
 				
 			</div>
-                   <div class="form-group">
+                	<div class="form-group">
 					<label class="col-md-2 control-label" for="datefr">From</label>
 					<div class="col-md-2">
 						<div class='input-group'>
-							<input type="date" name="datefr" id="datefr" class="form-control input-sm" data-validation="required" value="<?php echo date("d-m-Y"); ?>">
-							
+							<input id="datefr" name="datefr" type="text"  value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}"  maxlength="10" class="form-control input-sm" 
+										data-validation="required">		
+						  <span class="input-group-addon">
+                                    <span class="glyphicon-calendar glyphicon"></span>
+                                </span>						
 						</div>
 						
 					</div>
 					<label class="col-md-2 control-label" for="dateto">To</label>
 					<div class="col-md-2">
-						<input type="date" name="dateto" id="dateto" class="form-control input-sm"   data-validation="required" value="<?php echo date("d-m-Y"); ?>" >
+					<div class='input-group'>
+						<input id="dateto"" name="dateto" type="text"  value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
+                     <span class="input-group-addon">
+                                    <span class="glyphicon-calendar glyphicon"></span>
+                                </span>						
+						</div>
 					</div>
 				</div>
 				</div>
@@ -279,15 +250,10 @@
 	
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="remark">Remark</label>
-					<div class="col-md-2">
-						<div class='input-group'>
-							<textarea rows="5" name="remark" id="remark" class="form-control input-sm" data-validation="required"></textarea>
-							
-							
-						</div>
-						
-					</div>
+					<label class="col-md-2 control-label" for="remark">Remark</label>   
+						  			<div class="col-md-5">
+						  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm" ></textarea>
+						  			</div>
 				</div>
 				</div>
 			</form>
@@ -322,5 +288,6 @@
 @section('scripts')
 
 	<script src="js/hisdb/appointment/doctor_maintenanceScript.js"></script>
+
 	
 @endsection

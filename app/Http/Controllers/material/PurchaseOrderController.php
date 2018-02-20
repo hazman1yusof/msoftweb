@@ -10,14 +10,9 @@ use Carbon\Carbon;
 
 class PurchaseOrderController extends defaultController
 {   
-
-    var $table;
-    var $duplicateCode;
-
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "Code";
     }
 
     public function show(Request $request)
