@@ -541,15 +541,12 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{
-				label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable: true,
-				editrules: { required: true, custom: true, custom_func: cust_rules },
-				formatter: showdetail,
-				edittype: 'custom', editoptions:
-				{
-					custom_element: itemcodeCustomEdit,
-					custom_value: galGridCustomValue
-				},
+				{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+						edittype:'custom',	editoptions:
+						    {  custom_element:itemcodeCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
 			},
 			{ label: 'Item Description', name: 'description', width: 220, classes: 'wrap', editable: true, editoptions: { readonly: "readonly" } },
 			
@@ -895,6 +892,7 @@ $(document).ready(function () {
 		function showdetail(cellvalue, options, rowObject){
 		var field,table;
 		switch(options.colModel.name){
+			// case 'itemcode':field=['itemcode','description'];table="material.product";break;
 			case 'uomcode':field=['uomcode','description'];table="material.uom";break;
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom"; break;
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";break;
@@ -1531,21 +1529,22 @@ var dialog_deldept = new ordialog(
 
 
 	var dialog_itemcode = new ordialog(
-		'itemcode', ['material.stockloc AS s', 'material.product AS p','hisdb.taxmast AS t', 'material.uom AS u'], "#jqGrid2 input[name='itemcode']", errorField,
-		{
-			colModel:
+		'itemcode',['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u'],"#jqGrid2 input[name='itemcode']",errorField,
+		{	colModel:
 			[
-				{ label: 'Item Code', name: 's_itemcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'p_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Quantity On Hand', name: 's_qtyonhand', width: 100, classes: 'pointer', },
-				{ label: 'UOM Code', name: 's_uomcode', width: 100, classes: 'pointer' },
-				{ label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-				{ label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
-				{ label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
+				{label:'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
+				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
+				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
+				//{label:'Max Quantity',name:'s.maxqty',width:100,classes:'pointer'},
+				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
+				{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 
+				
 			],
-			ondblClickRow: function () {
-				let data = selrowData('#' + dialog_itemcode.gridname);
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_itemcode.gridname);
 				$("#jqGrid2 input[name='itemcode']").val(data['s_itemcode']);
 				$("#jqGrid2 input[name='description']").val(data['p_description']);
 				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
@@ -1553,22 +1552,19 @@ var dialog_deldept = new ordialog(
 				$("#jqGrid2 input[name='rate']").val(data['t_rate']);
 				$("#convfactor_uom").val(data['u_convfactor']);
 				
-				//$('#gstpercent').val(data['t.rate']);
-
-				//dialog_uomcode.check(errorField);
-				getQOHPrDept(true);
+				//getQOHPrDept(true);
 			}
-		}, {
-			title: "Select Item For Stock Request",
-			open: function () {
-				// dialog_itemcode.urlParam.table_id = "none_";
-				// dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode'];
-				// dialog_itemcode.urlParam.filterVal = ['session.company', moment($('#purordhd_purdate').val()).year(), $('#purordhd_deldept').val()];
-				// dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
-				// dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
-				// dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
-				// dialog_itemcode.urlParam.join_filterCol = [['s.compcode','s.uomcode'],[]];
-				// dialog_itemcode.urlParam.join_filterVal = [['skip.p.compcode','skip.p.uomcode'],[]];
+		},{
+			title:"Select Item For Stock Transaction",
+			open:function(){
+				/*dialog_itemcode.urlParam.table_id="none_";
+				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode'];
+				dialog_itemcode.urlParam.filterVal=['session.company', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val()];
+				dialog_itemcode.urlParam.join_type=['LEFT JOIN', 'LEFT JOIN', 'LEFT JOIN'];
+				dialog_itemcode.urlParam.join_onCol=['s.itemcode','p.taxcode','u.uomcode'];
+				dialog_itemcode.urlParam.join_onVal=['p.itemcode','t.taxcode','s.uomcode'];
+				dialog_itemcode.urlParam.join_filterCol = [['s.compcode','s.uomcode'],[]];
+				dialog_itemcode.urlParam.join_filterVal = [['skip.p.compcode','skip.p.uomcode'],[]];*/
 				dialog_itemcode.urlParam.fixPost="true";
 				dialog_itemcode.urlParam.table_id = "none_";
 				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode'];
@@ -1578,8 +1574,14 @@ var dialog_deldept = new ordialog(
 				dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
 				dialog_itemcode.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
 				dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
+			},
+			close: function(){
+				$(dialog_itemcode.textfield)			//lepas close dialog focus on next textfield 
+					.closest('td')						//utk dialog dalam jqgrid jer
+					.next()
+					.find("input[type=text]").focus();
 			}
-		}
+		},'none'//urlParam means check() using urlParam not check_input
 	);
 	dialog_itemcode.makedialog(false);
 	//false means not binding event on jqgrid2 yet, after jqgrid2 add, event will be bind

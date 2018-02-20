@@ -27,13 +27,13 @@
 
 			if(Type =='DOC') {
 	             $('#TSBtn').show();
-	             $('#ALBtn').show();
+	             $("#ALBtn").html('<span class = "fa fa-calendar fa-lg"></span> Leave').show();
 	             $('#PHBtn').show();
 
 	           
 	        }else {
 	             $('#TSBtn').hide();
-	             $('#ALBtn').show();
+	             $("#ALBtn").html('<span class = "fa fa-calendar fa-lg"></span> Unavailable').show();
 	             $('#PHBtn').show();
             }
 
@@ -58,6 +58,7 @@
 						 saveFormdata("#gridph","#phdialogForm","#phformdata",oper,saveParamph,urlParamph,null,{resourcecode:selrowData('#jqGrid').resourcecode});
 						
 					}
+					// checkDate();
 				}
 			},{
 				text: "Cancel",click: function() {
@@ -186,7 +187,7 @@
 			  var oper;
 			$("#phdialogForm")
 			  .dialog({ 
-				width: 9/10 * $(window).width(),
+				width: 8/10 * $(window).width(),
 				modal: true,
 				autoOpen: false,
 				open: function( event, ui ) {
@@ -234,7 +235,7 @@
 			  var oper;
 			$("#aldialogForm")
 			  .dialog({ 
-				width: 9/10 * $(window).width(),
+				width: 8/10 * $(window).width(),
 				modal: true,
 				autoOpen: false,
 				open: function( event, ui ) {
@@ -280,7 +281,7 @@
 			  var oper;
 			$("#resourceAddform")
 			  .dialog({ 
-				width: 5/10 * $(window).width(),
+				width: 8/10 * $(window).width(),
 				modal: true,
 				autoOpen: false,
 				open: function( event, ui ) {
@@ -494,22 +495,22 @@
 			};
 
 			function timefr1CustomEdit(val,opt){
-				val = (val=="undefined"||val=="")? "08:00" : val;	
+				val = (val=="undefined"||val=="")? "00:00" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
 			function timeto1CustomEdit(val,opt){  	
-				val = (val=="undefined"||val=="")? "12:00" : val;	
+				val = (val=="undefined"||val=="")? "00:00" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
 			function timefr2CustomEdit(val,opt){  	
-				val = (val=="undefined"||val=="")? "13:00" : val;	
+				val = (val=="undefined"||val=="")? "00:00" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
 			function timeto2CustomEdit(val,opt){  	
-				val = (val=="undefined"||val=="")? "18:00" : val;	
+				val = (val=="undefined"||val=="")? "00:00" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
@@ -826,7 +827,8 @@
 						},
 				});
    
- 
+
+
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 			
 			toogleSearch('#sbut1','#searchForm','on');
@@ -843,9 +845,29 @@
 			addParamField('#gridtime',true,urlParamtime);
 			addParamField('#gridph',true,urlParamph);
 			addParamField('#gridleave',true,urlParamleave);
-				///////////////////////////////////utk dropdown tran dept/////////////////////////////////////////
-	 
+			 
+			 /////////////////// FUNCTION DATE /////////////////////////////////////////////////////////////////////
 
+		    $(function () {
+            $('#datefr,#dateto').datetimepicker({
+            	format: 'YYYY-MM-DD',
+                useCurrent: false,
+                minDate: moment()
+            });
+            $('#datefr').datetimepicker().on('dp.change', function (e) {
+                var incrementDay = moment(new Date(e.date));
+                incrementDay.add(1, 'days');
+                $('#dateto').data('DateTimePicker').minDate(incrementDay);
+                $(this).data("DateTimePicker").hide();
+            });
+
+            $('#dateto').datetimepicker().on('dp.change', function (e) {
+                var decrementDay = moment(new Date(e.date));
+                decrementDay.subtract(1, 'days');
+                $('#datefr').data('DateTimePicker').maxDate(decrementDay);
+                 $(this).data("DateTimePicker").hide();
+            });
+      });
 			
 		});
 		
