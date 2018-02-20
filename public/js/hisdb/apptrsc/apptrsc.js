@@ -24,6 +24,9 @@ $(document).ready(function () {
 		},
 	};
 
+	$("body").show();
+	var d = new Date();
+
 	var Class2 = $('#Class2').val();
 
 	if(Class2 == 'DOC'){
@@ -78,6 +81,7 @@ $(document).ready(function () {
 				dialog_name.urlParam.filterVal = [type];
 			},
 			close: function () {
+				arr_event = [];
 				var events = {
 					url: "apptrsc/getEvent",
 					type: 'GET',
@@ -85,7 +89,6 @@ $(document).ready(function () {
 						drrsc: $('#resourcecode').val()
 					}
 				}
-		
 				$('#calendar').fullCalendar( 'removeEventSource', events);
 				$('#calendar').fullCalendar( 'addEventSource', events);
 				$('#calendar').fullCalendar( 'refetchEvents' );
@@ -105,7 +108,6 @@ $(document).ready(function () {
 		{
 			title: "Select Case",
 			open: function () {
-				// var test = $('#Class2').val();
 				dialog_case.urlParam.filterCol = ['compcode'];
 				dialog_case.urlParam.filterVal = ['9A'];
 			},
@@ -117,7 +119,7 @@ $(document).ready(function () {
 		'mrn', 'hisdb.pat_mast', "#dialogForm input[name='mrn']", errorField,
 		{
 			colModel: [
-				{	label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', canSearch: true, or_search: true },
+				{	label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', formatter: padzero, unformat: unpadzero, canSearch: true, or_search: true },
 				{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 			],
 			ondblClickRow: function () {
@@ -129,7 +131,6 @@ $(document).ready(function () {
 		{
 			title: "Select Case",
 			open: function () {
-				// var test = $('#Class2').val();
 				dialog_mrn.urlParam.filterCol = ['compcode'];
 				dialog_mrn.urlParam.filterVal = ['9A'];
 			},
@@ -137,8 +138,6 @@ $(document).ready(function () {
 	);
 	dialog_mrn.makedialog(true);
 
-	$("body").show();
-	var d = new Date();
 
 	$("#dialogForm").dialog({
 		autoOpen: false,
@@ -147,6 +146,71 @@ $(document).ready(function () {
 	});
 
 	var session_field = new session_field();
+
+	$("#start_time_dialog").dialog({
+    	autoOpen : false, 
+    	modal : true,
+		width: 8/10 * $(window).width(),
+		open: function(){
+			$("#grid_start_time").jqGrid ('setGridWidth', Math.floor($("#grid_start_time_c")[0].offsetWidth-$("#grid_start_time_c")[0].offsetLeft));
+		},
+		close:function(){
+		}
+    });
+
+    $("#end_time_dialog").dialog({
+    	autoOpen : false, 
+    	modal : true,
+		width: 8/10 * $(window).width(),
+		open: function(){
+			$("#grid_end_time").jqGrid ('setGridWidth', Math.floor($("#grid_end_time_c")[0].offsetWidth-$("#grid_end_time_c")[0].offsetLeft));
+		},
+		close:function(){
+		}
+    });
+
+	$("#start_time ~ a").click(function(){
+		$("#start_time_dialog").dialog("open");
+	});
+
+	$("#end_time ~ a").click(function(){
+		$("#end_time_dialog").dialog("open");
+	});
+
+	$("#grid_start_time").jqGrid({
+		datatype: "local",
+		colModel: [
+            { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
+            { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
+            { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
+        ],
+		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
+		pager: "#grid_start_time_pager",
+		onSelectRow:function(rowid, selected){
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$('#start_time').val(rowid);
+			$("#start_time_dialog").dialog('close');
+		},
+	});
+
+	$("#grid_end_time").jqGrid({
+		datatype: "local",
+		colModel: [
+            { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
+            { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
+            { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
+        ],
+		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
+		pager: "#grid_end_time_pager",
+		onSelectRow:function(rowid, selected){
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$('#end_time').val(rowid);
+			$("#end_time_dialog").dialog('close');
+		},
+	});
+
 	function session_field(){
 		this.apptsession;
 		this.interval;
@@ -160,29 +224,31 @@ $(document).ready(function () {
 		this.fr_2_obj;
 		this.fr1_1_start;
 		this.fr1_2_start;
+		this.events=[];
+
+		this.addEvent = function(event){
+			this.events.push(event);
+		}
 
 		this.addSessionInterval = function(interval,apptsession){
 			this.apptsession = apptsession;
 			this.interval = interval;
-			this.interval_hour = interval.split(":")[0];
-			this.interval_minute = interval.split(":")[1];
 
 			return this;
 		}
 
 		this.clear = function(){
-			$("#apptdatefr_time").find('option').remove();
-			$("#apptdateto_time").find('option').remove();
-
+			$("#grid_start_time").jqGrid("clearGridData", true);
+			$("#grid_end_time").jqGrid("clearGridData", true);
 			return this;
 		}
 
 		this.ready = function(){
 			this.date_fr_1 = $('#apptdatefr_day').val();
-			this.date_fr_2 = $('#apptdateto_day').val();
+			this.date_fr_2 = $('#apptdatefr_day').val();
 			this.day_fr_1 = moment(this.date_fr_1).format('dddd').toUpperCase();
 			this.day_fr_2 = moment(this.date_fr_2).format('dddd').toUpperCase();
-			let day_fr_1 = this.day_fr_1; 
+			let day_fr_1 = this.day_fr_1;
 			let day_fr_2 = this.day_fr_2;
 			this.fr_1_obj = this.apptsession.filter(function( obj ) {return obj.days == day_fr_1;});
 			this.fr_2_obj = this.apptsession.filter(function( obj ) {return obj.days == day_fr_2;});
@@ -193,39 +259,78 @@ $(document).ready(function () {
 		}
 
 		this.set = function(){
-			var fr1_1_start = this.fr1_1_start, date_fr_1 = this.date_fr_1, fr_1_obj = this.fr_1_obj, interval_hour= this.interval_hour,interval_minute = this.interval_minute, fr1_2_start = this.fr1_2_start, date_fr_2 = this.date_fr_2, fr_2_obj = this.fr_2_obj;
+			var fr1_1_start = this.fr1_1_start, date_fr_1 = this.date_fr_1, fr_1_obj = this.fr_1_obj, interval= this.interval, fr1_2_start = this.fr1_2_start, date_fr_2 = this.date_fr_2, fr_2_obj = this.fr_2_obj, events = this.events;
 
 			while(!fr1_1_start.isSameOrAfter(date_fr_1+" "+fr_1_obj[0].timeto1)){
     			let time_use = fr1_1_start.format("HH:mm:SS");
-    			$("#apptdatefr_time").append("<option value='"+time_use+"'>"+time_use+"</option>");
-    			fr1_1_start = fr1_1_start.add(interval_hour, 'hours');
-    			fr1_1_start = fr1_1_start.add(interval_minute, 'minutes');
+    			let objuse = {time:time_use,pat_name:'',remarks:''}
+
+    			events.forEach(function(elem,id){
+					if(fr1_1_start.isBetween(elem.start.local(),elem.end.local(), null, '[]')){
+	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+','+elem.pat_name;
+	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+','+elem.remarks;
+					}
+    			});
+
+    			$("#grid_start_time").jqGrid('addRowData', time_use,objuse);
+
+    			fr1_1_start = fr1_1_start.add(interval, 'minutes');
         	}
 
         	fr1_1_start = moment(date_fr_1+" "+fr_1_obj[0].timefr2);
 
-        	while(!fr1_1_start.isSameOrAfter(date_fr_1+" "+fr_1_obj[0].timeto2)){
-    			let time_use = fr1_1_start.format("HH:mm:SS");
-    			$("#apptdatefr_time").append("<option value='"+time_use+"'>"+time_use+"</option>");
-    			fr1_1_start = fr1_1_start.add(interval_hour, 'hours');
-    			fr1_1_start = fr1_1_start.add(interval_minute, 'minutes');
+        	while(!fr1_1_start.isSameOrAfter(moment(date_fr_1+" "+fr_1_obj[0].timeto2).add(interval, 'minutes'))){
+        		let time_use = fr1_1_start.format("HH:mm:SS");
+    			let objuse = {time:time_use,pat_name:'',remarks:''}
+
+    			events.forEach(function(elem,id){
+					if(fr1_1_start.isBetween(elem.start.local(),elem.end.local(), null, '[]')){
+	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+','+elem.pat_name;
+	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+','+elem.remarks;
+					}
+    			});
+
+    			$("#grid_start_time").jqGrid('addRowData', time_use,objuse);
+
+    			fr1_1_start = fr1_1_start.add(interval, 'minutes');
         	}
+
+        	fr1_2_start = fr1_2_start.add(interval, 'minutes');
 
         	while(!fr1_2_start.isSameOrAfter(date_fr_2+" "+fr_2_obj[0].timeto1)){
-    			let time_use = fr1_2_start.format("HH:mm:SS");
-    			$("#apptdateto_time").append("<option value='"+time_use+"'>"+time_use+"</option>");
-    			fr1_2_start = fr1_2_start.add(interval_hour, 'hours');
-    			fr1_2_start = fr1_2_start.add(interval_minute, 'minutes');
+    			let time_use = fr1_2_start.subtract(1, 'minutes').format("HH:mm:SS");
+    			let objuse = {time:time_use,pat_name:'',remarks:''}
+
+    			events.forEach(function(elem,id){
+					if(fr1_2_start.isBetween(elem.start.local(),elem.end.local(), null, '[]')){
+	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+','+elem.pat_name;
+	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+','+elem.remarks;
+					}
+    			});
+
+    			$("#grid_end_time").jqGrid('addRowData', time_use,objuse);
+
+    			fr1_2_start = fr1_2_start.add(1, 'minutes').add(interval, 'minutes');
         	}
 
-        	fr1_2_start = moment(date_fr_2+" "+fr_2_obj[0].timefr2);
+        	fr1_2_start = moment(date_fr_2+" "+fr_2_obj[0].timefr2).add(interval, 'minutes');
 
         	while(!fr1_2_start.isSameOrAfter(date_fr_2+" "+fr_2_obj[0].timeto2)){
-    			let time_use = fr1_2_start.format("HH:mm:SS");
-    			$("#apptdateto_time").append("<option value='"+time_use+"'>"+time_use+"</option>");
-    			fr1_2_start = fr1_2_start.add(interval_hour, 'hours');
-    			fr1_2_start = fr1_2_start.add(interval_minute, 'minutes');
+        		let time_use = fr1_2_start.subtract(1, 'minutes').format("HH:mm:SS");
+    			let objuse = {time:time_use,pat_name:'',remarks:''}
+
+    			events.forEach(function(elem,id){
+					if(fr1_2_start.isBetween(elem.start.local(),elem.end.local(), null, '[]')){
+	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+','+elem.pat_name;
+	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+','+elem.remarks;
+					}
+    			});
+
+    			$("#grid_end_time").jqGrid('addRowData', time_use,objuse);
+
+    			fr1_2_start = fr1_2_start.add(1, 'minutes').add(interval, 'minutes');
         	}
+
 		}
 	}
 
@@ -233,6 +338,7 @@ $(document).ready(function () {
 		session_field.clear().ready().set();
 	});
 	
+	var arr_event=[];
 	$('#calendar').fullCalendar({
 		header: {
 			left: 'prev,next today myCustomButton',
@@ -243,34 +349,22 @@ $(document).ready(function () {
 	        myCustomButton: {
 	            text: 'Add',
 	            click: function() {
-	            	
 	            	oper='add';
-	            	session_field.ready().set();
-
 					var temp = $('#resourcecode').val();
 					var start = $(".fc-myCustomButton-button").data( "start");
 					var end = $(".fc-myCustomButton-button").data("end");
 
 					$('#dialogForm #doctor').val(temp);
-					
-					$('#dialogForm #start').datetimepicker({
-						format: 'YYYY-MM-DD HH:mm:ss',
-						stepping: 15
-					});
-						
-					$('#dialogForm #end').datetimepicker({
-						format: 'YYYY-MM-DD HH:mm:ss',
-						stepping: 15
-					});
-						
-					// $('#dialogForm #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-					// $('#dialogForm #end').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
+
+					$('#apptdatefr_day').val(moment(start).format('YYYY-MM-DD'));
+					$('#apptdateto_day').val(moment(start).format('YYYY-MM-DD'));
+
+	            	session_field.clear().ready().set();
 					
 					$("#dialogForm").dialog("open");
             	}
         	}
     	},
-		// defaultDate: '2016-01-12',
 		defaultDate: d,
 		navLinks: true, // can click day/week names to navigate views
 		editable: true,
@@ -278,12 +372,12 @@ $(document).ready(function () {
 		selectable: true,
 		selectHelper: true,
 		select: function(start, end) {
-			$('#calendar').fullCalendar('changeView', 'agendaDay', moment(start).format('YYYY-MM-DD'));
+			// $('#calendar').fullCalendar('changeView', 'agendaDay', moment(start).format('YYYY-MM-DD'));
 			$(".fc-myCustomButton-button").data( "start", start );
 			$(".fc-myCustomButton-button").data( "end", end );
 		},
 		eventRender: function(event, element) {
-			console.log(element);
+			session_field.addEvent(event);
 			element.bind('dblclick', function() {
 				oper = 'edit';
 
@@ -343,10 +437,10 @@ $(document).ready(function () {
 		Event[2] = end;
 		
 		$.ajax({
-		 url: 'editEventDate.php',
-		 type: "POST",
-		 data: {Event:Event},
-		 success: function(rep) {
+			url: 'editEventDate.php',
+			type: "POST",
+			data: {Event:Event},
+			success: function(rep) {
 				if(rep == 'OK'){
 					// alert('Saved');
 				}else{
@@ -355,29 +449,7 @@ $(document).ready(function () {
 			}
 		});
 	}
-
-	$('#submitEdit').click(function(){
-		$.post("apptrsc/editEvent", $("#editForm").serialize(), function (data) {
-		}).fail(function (data) {
-			//////////////////errorText(dialog,data.responseText);
-		}).done(function (data) {
-			emptyFormdata(errorField,"#addForm");
-			$("#ModalEdit").modal('hide');
-			
-			var events = {
-							url: "apptrsc/getEvent",
-							type: 'GET',
-							data: {
-								drrsc: $('#resourcecode').val()
-							}
-						}
-				
-			$('#calendar').fullCalendar( 'removeEventSource', events);
-			$('#calendar').fullCalendar( 'addEventSource', events);
-			$('#calendar').fullCalendar( 'refetchEvents' );
-		});
-	});
-
+	
 	var oper = 'add';
 	$('#submit').click(function(){
 		if( $('#editForm').isValid({requiredFields: ''}, conf, true) ) {

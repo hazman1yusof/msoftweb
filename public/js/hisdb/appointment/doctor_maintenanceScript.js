@@ -441,7 +441,7 @@
 			$("#TSBox").dialog({
             	autoOpen : false, 
             	modal : true,
-				width: 6/10 * $(window).width(),
+				width: 8/10 * $(window).width(),
 				open: function(){
 					if(parseInt(selrowData('#jqGrid').countsession)==0){
 						TSoper = 'add';
