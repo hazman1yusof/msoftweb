@@ -38,7 +38,11 @@ class AppointmentController extends defaultController
     }
 
     public function getEvent(Request $request){
-        $select = DB::table('hisdb.apptbook')->where('loccode','=',$request->drrsc)->get();
+        $select = DB::table('hisdb.apptbook')
+                    ->where('loccode','=',$request->drrsc)
+                    ->whereBetween('start', [$request->start, $request->end])
+                    ->get();
+                    
         return $select;
     }
 

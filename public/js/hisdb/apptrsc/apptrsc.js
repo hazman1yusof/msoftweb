@@ -35,7 +35,6 @@ $(document).ready(function () {
 		$('#Scol').val('Resource')
 	}
 
-	var apptsession = null, interval = null;
 	var dialog_name = new ordialog(
 		'resourcecode', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='resourcecode']", errorField,
         {
@@ -44,14 +43,12 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
             ],
-            ondblClickRow: function () {
-				$('.fc-myCustomButton-button').show();
+            onSelectRow: function (rowid, selected) {
 				let data = selrowData('#' + dialog_name.gridname);
-				interval = data['d_intervaltime'];
 
-				var param ={
-					action:"get_value_default",
-					url:'/util/get_value_default',
+				var session_param ={
+					action:"get_table_default",
+					url:'/util/get_table_default',
 					field:'*',
 					table_name:'hisdb.apptsession',
 					table_id:'idno',
@@ -59,17 +56,34 @@ $(document).ready(function () {
 					filterVal:[data['a_resourcecode']]
 				};
 
-				$.get("/util/get_value_default", param, function (data) {
-				},'json').done(function (data) {
-					if(!$.isEmptyObject(data.rows)){
-						apptsession = data.rows;
-						session_field.addSessionInterval(interval,apptsession);
+				refreshGrid("#grid_session",session_param);
+            },
+            ondblClickRow: function () {
+				let data = selrowData('#' + dialog_name.gridname);
+				let interval = data['d_intervaltime'];
+				let apptsession = $("#grid_session").jqGrid('getRowData');
+				$('.fc-myCustomButton-button').show();
+
+				session_field.addSessionInterval(interval,apptsession);
+
+				var events = {
+					url: "apptrsc/getEvent",
+					type: 'GET',
+					data: {
+						drrsc: $('#resourcecode').val()
 					}
-				});
+				}
+				$('#calendar').fullCalendar( 'removeEventSource', events);
+				$('#calendar').fullCalendar( 'addEventSource', events);
 			}
         },{
             title: "Select Doctor",
             open: function () {
+
+				$("#"+dialog_name.gridname).jqGrid ('setGridHeight',100);
+
+				$("#grid_session").jqGrid ('setGridWidth', Math.floor($("#grid_session_c")[0].offsetWidth-$("#grid_session_c")[0].offsetLeft));
+
                 var type = $('#Class2').val();
 				dialog_name.urlParam.join_type = ['LEFT JOIN'];
 				dialog_name.urlParam.join_onCol = ['a.resourcecode'];
@@ -81,21 +95,35 @@ $(document).ready(function () {
 				dialog_name.urlParam.filterVal = [type];
 			},
 			close: function () {
-				arr_event = [];
-				var events = {
-					url: "apptrsc/getEvent",
-					type: 'GET',
-					data: {
-						drrsc: $('#resourcecode').val()
-					}
-				}
-				$('#calendar').fullCalendar( 'removeEventSource', events);
-				$('#calendar').fullCalendar( 'addEventSource', events);
-				$('#calendar').fullCalendar( 'refetchEvents' );
+				
 			}
         }, 'urlParam'
     );
 	dialog_name.makedialog(true);
+
+	$("#"+dialog_name.dialogname+" .panel-body").append(`
+		<div id='grid_session_c' class='col-xs-12' align='center' style='padding-top:10px;'>
+			<table id='grid_session' class='table table-striped'></table>
+			<div id='grid_session_pager'></div>
+		</div>
+		`);
+
+	$("#grid_session").jqGrid({
+		datatype: "local",
+		colModel: [
+            { label: 'Day', name: 'days', width: 80, classes: 'pointer' },
+            { label: 'From Morning', name: 'timefr1', width: 100, classes: 'pointer' },
+            { label: 'To Morning', name: 'timeto1', width: 100, classes: 'pointer' },
+            { label: 'From Evening', name: 'timefr2', width: 100, classes: 'pointer' },
+            { label: 'To Evening', name: 'timeto2', width: 100, classes: 'pointer' },
+        ],
+		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
+		pager: "#grid_session_pager",
+		onSelectRow:function(rowid, selected){
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+		},
+	});
 
 	var dialog_case = new ordialog(
 		'case', 'hisdb.casetype', "#dialogForm input[name='case']", errorField,
@@ -158,23 +186,8 @@ $(document).ready(function () {
 		}
     });
 
-    $("#end_time_dialog").dialog({
-    	autoOpen : false, 
-    	modal : true,
-		width: 8/10 * $(window).width(),
-		open: function(){
-			$("#grid_end_time").jqGrid ('setGridWidth', Math.floor($("#grid_end_time_c")[0].offsetWidth-$("#grid_end_time_c")[0].offsetLeft));
-		},
-		close:function(){
-		}
-    });
-
 	$("#start_time ~ a").click(function(){
 		$("#start_time_dialog").dialog("open");
-	});
-
-	$("#end_time ~ a").click(function(){
-		$("#end_time_dialog").dialog("open");
 	});
 
 	$("#grid_start_time").jqGrid({
@@ -190,24 +203,8 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$('#start_time').val(rowid);
+			$('#end_time').val(moment($('#apptdatefr_day').val()+" "+rowid).subtract(1, 'minutes').format("HH:mm:SS"));
 			$("#start_time_dialog").dialog('close');
-		},
-	});
-
-	$("#grid_end_time").jqGrid({
-		datatype: "local",
-		colModel: [
-            { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
-            { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
-            { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
-        ],
-		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
-		pager: "#grid_end_time_pager",
-		onSelectRow:function(rowid, selected){
-		},
-		ondblClickRow: function(rowid, iRow, iCol, e){
-			$('#end_time').val(rowid);
-			$("#end_time_dialog").dialog('close');
 		},
 	});
 
@@ -226,10 +223,6 @@ $(document).ready(function () {
 		this.fr1_2_start;
 		this.events=[];
 
-		this.addEvent = function(event){
-			this.events.push(event);
-		}
-
 		this.addSessionInterval = function(interval,apptsession){
 			this.apptsession = apptsession;
 			this.interval = interval;
@@ -244,6 +237,7 @@ $(document).ready(function () {
 		}
 
 		this.ready = function(){
+			console.log($('#calendar').fullCalendar( 'clientEvents'));
 			this.date_fr_1 = $('#apptdatefr_day').val();
 			this.date_fr_2 = $('#apptdatefr_day').val();
 			this.day_fr_1 = moment(this.date_fr_1).format('dddd').toUpperCase();
@@ -266,6 +260,7 @@ $(document).ready(function () {
     			let objuse = {time:time_use,pat_name:'',remarks:''}
 
     			events.forEach(function(elem,id){
+					console.log(elem);
 					if(fr1_1_start.isBetween(elem.start.local(),elem.end.local(), null, '[]')){
 	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+','+elem.pat_name;
 	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+','+elem.remarks;
@@ -294,43 +289,6 @@ $(document).ready(function () {
 
     			fr1_1_start = fr1_1_start.add(interval, 'minutes');
         	}
-
-        	fr1_2_start = fr1_2_start.add(interval, 'minutes');
-
-        	while(!fr1_2_start.isSameOrAfter(date_fr_2+" "+fr_2_obj[0].timeto1)){
-    			let time_use = fr1_2_start.subtract(1, 'minutes').format("HH:mm:SS");
-    			let objuse = {time:time_use,pat_name:'',remarks:''}
-
-    			events.forEach(function(elem,id){
-					if(fr1_2_start.isBetween(elem.start.local(),elem.end.local(), null, '[]')){
-	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+','+elem.pat_name;
-	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+','+elem.remarks;
-					}
-    			});
-
-    			$("#grid_end_time").jqGrid('addRowData', time_use,objuse);
-
-    			fr1_2_start = fr1_2_start.add(1, 'minutes').add(interval, 'minutes');
-        	}
-
-        	fr1_2_start = moment(date_fr_2+" "+fr_2_obj[0].timefr2).add(interval, 'minutes');
-
-        	while(!fr1_2_start.isSameOrAfter(date_fr_2+" "+fr_2_obj[0].timeto2)){
-        		let time_use = fr1_2_start.subtract(1, 'minutes').format("HH:mm:SS");
-    			let objuse = {time:time_use,pat_name:'',remarks:''}
-
-    			events.forEach(function(elem,id){
-					if(fr1_2_start.isBetween(elem.start.local(),elem.end.local(), null, '[]')){
-	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+','+elem.pat_name;
-	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+','+elem.remarks;
-					}
-    			});
-
-    			$("#grid_end_time").jqGrid('addRowData', time_use,objuse);
-
-    			fr1_2_start = fr1_2_start.add(1, 'minutes').add(interval, 'minutes');
-        	}
-
 		}
 	}
 
@@ -338,7 +296,6 @@ $(document).ready(function () {
 		session_field.clear().ready().set();
 	});
 	
-	var arr_event=[];
 	$('#calendar').fullCalendar({
 		header: {
 			left: 'prev,next today myCustomButton',
@@ -376,8 +333,11 @@ $(document).ready(function () {
 			$(".fc-myCustomButton-button").data( "start", start );
 			$(".fc-myCustomButton-button").data( "end", end );
 		},
+		eventAfterRender: function( event, element, view ) { 
+			console.log(event);
+		},
 		eventRender: function(event, element) {
-			session_field.addEvent(event);
+			console.log(event);
 			element.bind('dblclick', function() {
 				oper = 'edit';
 
@@ -385,7 +345,7 @@ $(document).ready(function () {
 				$("#addForm input").each(function(){
 					var input=$(this);
 					input.val(event[$(this).name]);
-				});
+			});
 				// $.each(rowData, function( index, value ) {
 				// 	var input=$(form+" [name='"+index+"']");
 				// 	if(input.is("[type=radio]")){
@@ -415,7 +375,7 @@ $(document).ready(function () {
 			url:'apptrsc/getEvent',
 			type:'GET',
 			data:{
-				drrsc:''
+				drrsc:'',
 			}
 		}
 	});
@@ -467,8 +427,7 @@ $(document).ready(function () {
 							}
 					
 				$('#calendar').fullCalendar( 'removeEventSource', events);
-				$('#calendar').fullCalendar( 'addEventSource', events);         
-				$('#calendar').fullCalendar( 'refetchEvents' );
+				$('#calendar').fullCalendar( 'addEventSource', events); 
 			});
 		}
 	});

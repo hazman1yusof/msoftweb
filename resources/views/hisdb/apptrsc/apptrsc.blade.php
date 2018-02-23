@@ -67,13 +67,12 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="start" class="col-md-2 control-label">Start Date</label>
+								<label for="start" class="col-md-2 control-label">Appt Date</label>
 								<div class="col-md-2">
 									<input type="date" class="form-control input-sm" placeholder="Start Date" id="apptdatefr_day" name="apptdatefr_day" data-validation="required" value="">	
 								</div>
-							</div>
-							<div class="form-group">
-								<label for="start" class="col-md-2 control-label">Start Time</label>
+
+								<label for="start" class="col-md-2 control-label">Appt Time</label>
 								<div class="col-md-2">
 									<div class="input-group">
 										<input type="text" class="form-control input-sm" placeholder="Start Time" id="start_time" name="start_time" maxlength="12" data-validation="required">
@@ -81,14 +80,7 @@
 									</div>
 									<span class='help-block'></span>
 								</div>
-								<label for="end" class="col-md-2 control-label">End Time</label>
-								<div class="col-md-2">
-									<div class="input-group">
-										<input type="text" class="form-control input-sm" placeholder="End Time" id="end_time" name="end_time" maxlength="12" data-validation="required">
-										<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class='help-block'></span>
-								</div>
+								<input type="text" id="end_time" name="end_time">
 							</div>
 							<div class="form-group">
 								<label for="telno" class="col-md-2 control-label">Tel No</label>
@@ -136,13 +128,6 @@
 		<div id='grid_start_time_c' style="padding:15px 0 15px 0">
             <table id="grid_start_time" class="table table-striped"></table>
             <div id="grid_start_time_pager"></div>
-        </div>
-	</div>
-
-	<div id="end_time_dialog" title="Pick End Time">
-		<div id='grid_end_time_c' style="padding:15px 0 15px 0">
-            <table id="grid_end_time" class="table table-striped"></table>
-            <div id="grid_end_time_pager"></div>
         </div>
 	</div>
 

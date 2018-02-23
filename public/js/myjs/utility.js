@@ -691,7 +691,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 			autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
 			pager: "#"+obj.gridname+"Pager",
 			onSelectRow:function(rowid, selected){
-				if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow();
+				if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow(rowid, selected);
 			},
 			ondblClickRow: function(rowid, iRow, iCol, e){
 				$(obj.textfield).off('blur',onBlur);
