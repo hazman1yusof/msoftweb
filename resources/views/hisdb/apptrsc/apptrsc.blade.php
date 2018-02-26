@@ -40,13 +40,8 @@
 				<div class="panel-heading">Appointment Header</div>
 					<form action={{url('apptrsc/addEvent')}} method="post" class="form-horizontal" style="width: 99%" id="addForm" >
 					{{csrf_field()}}
+					<input type="hidden" name="idno" id="idno">
 						<div class="panel-body" style="position: relative;" >
-							<div class="form-group">
-								<label for="Title" class="col-md-2 control-label">Title</label>
-								<div class="col-md-3">
-										<input type="text" class="form-control input-sm" id="title" name="title" placeholder="Title of appointment" data-validation="required" >
-								</div>
-							</div>
 							<div class="form-group">
 								<label for="Doctor" class="col-md-2 control-label">Doctor</label>
 								<div class="col-md-3">
@@ -69,7 +64,7 @@
 							<div class="form-group">
 								<label for="start" class="col-md-2 control-label">Appt Date</label>
 								<div class="col-md-2">
-									<input type="date" class="form-control input-sm" placeholder="Start Date" id="apptdatefr_day" name="apptdatefr_day" data-validation="required" value="">	
+									<input type="date" class="form-control input-sm" placeholder="Start Date" id="apptdatefr_day" name="apptdatefr_day" data-validation="required" readonly>	
 								</div>
 
 								<label for="start" class="col-md-2 control-label">Appt Time</label>
@@ -80,7 +75,7 @@
 									</div>
 									<span class='help-block'></span>
 								</div>
-								<input type="text" id="end_time" name="end_time">
+								<input type="hidden" id="end_time" name="end_time">
 							</div>
 							<div class="form-group">
 								<label for="telno" class="col-md-2 control-label">Tel No</label>

@@ -58,24 +58,7 @@ $(document).ready(function () {
 
 				refreshGrid("#grid_session",session_param);
             },
-            ondblClickRow: function () {
-				let data = selrowData('#' + dialog_name.gridname);
-				let interval = data['d_intervaltime'];
-				let apptsession = $("#grid_session").jqGrid('getRowData');
-				$('.fc-myCustomButton-button').show();
-
-				session_field.addSessionInterval(interval,apptsession);
-
-				var events = {
-					url: "apptrsc/getEvent",
-					type: 'GET',
-					data: {
-						drrsc: $('#resourcecode').val()
-					}
-				}
-				$('#calendar').fullCalendar( 'removeEventSource', events);
-				$('#calendar').fullCalendar( 'addEventSource', events);
-			}
+            ondblClickRow_off:'off',
         },{
             title: "Select Doctor",
             open: function () {
@@ -102,11 +85,41 @@ $(document).ready(function () {
 	dialog_name.makedialog(true);
 
 	$("#"+dialog_name.dialogname+" .panel-body").append(`
+		<button type='button' id='selecting_doctor' class="btn btn-primary" style="margin-top:10px; margin-left:15px">Select This Doctor</button>
 		<div id='grid_session_c' class='col-xs-12' align='center' style='padding-top:10px;'>
 			<table id='grid_session' class='table table-striped'></table>
 			<div id='grid_session_pager'></div>
 		</div>
 		`);
+
+	$('#selecting_doctor').click(function(){
+		$(dialog_name.textfield).off('blur',onBlur);
+		$(dialog_name.textfield).val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
+		$(dialog_name.textfield).parent().next().html(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[1]]);
+
+		let data = selrowData('#' + dialog_name.gridname);
+		let interval = data['d_intervaltime'];
+		let apptsession = $("#grid_session").jqGrid('getRowData');
+		$('.fc-myCustomButton-button').show();
+
+		session_field.addSessionInterval(interval,apptsession);
+
+		var events = {
+			url: "apptrsc/getEvent",
+			type: 'GET',
+			data: {
+				drrsc: $('#resourcecode').val()
+			}
+		}
+		$('#calendar').fullCalendar( 'removeEventSource', events);
+		$('#calendar').fullCalendar( 'addEventSource', events);
+
+
+		$(dialog_name.textfield).focus();
+		$("#"+dialog_name.dialogname).dialog( "close" );
+		$("#"+dialog_name.gridname).jqGrid("clearGridData", true);
+		$(dialog_name.textfield).on('blur',{data:dialog_name,errorField:errorField},onBlur);
+	});
 
 	$("#grid_session").jqGrid({
 		datatype: "local",
@@ -170,7 +183,10 @@ $(document).ready(function () {
 	$("#dialogForm").dialog({
 		autoOpen: false,
 		width: 9.5 / 10 * $(window).width(),
-		modal: true
+		modal: true,
+		close: function( event, ui ){
+			emptyFormdata(errorField,'#addForm');
+		}		
 	});
 
 	var session_field = new session_field();
@@ -203,7 +219,7 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$('#start_time').val(rowid);
-			$('#end_time').val(moment($('#apptdatefr_day').val()+" "+rowid).subtract(1, 'minutes').format("HH:mm:SS"));
+			$('#end_time').val(moment($('#apptdatefr_day').val()+" "+rowid).add(session_field.interval, 'minutes').subtract(1, 'minutes').format("HH:mm:SS"));
 			$("#start_time_dialog").dialog('close');
 		},
 	});
@@ -211,22 +227,15 @@ $(document).ready(function () {
 	function session_field(){
 		this.apptsession;
 		this.interval;
-		this.interval_hour;
-		this.interval_minute;
-		this.date_fr_1;
-		this.date_fr_2;
-		this.day_fr_1;
-		this.day_fr_2;
-		this.fr_1_obj;
-		this.fr_2_obj;
-		this.fr1_1_start;
-		this.fr1_2_start;
+		this.date_fr;
+		this.day_fr;
+		this.fr_obj;
+		this.fr_start;
 		this.events=[];
 
 		this.addSessionInterval = function(interval,apptsession){
 			this.apptsession = apptsession;
 			this.interval = interval;
-
 			return this;
 		}
 
@@ -237,57 +246,53 @@ $(document).ready(function () {
 		}
 
 		this.ready = function(){
-			console.log($('#calendar').fullCalendar( 'clientEvents'));
-			this.date_fr_1 = $('#apptdatefr_day').val();
-			this.date_fr_2 = $('#apptdatefr_day').val();
-			this.day_fr_1 = moment(this.date_fr_1).format('dddd').toUpperCase();
-			this.day_fr_2 = moment(this.date_fr_2).format('dddd').toUpperCase();
-			let day_fr_1 = this.day_fr_1;
-			let day_fr_2 = this.day_fr_2;
-			this.fr_1_obj = this.apptsession.filter(function( obj ) {return obj.days == day_fr_1;});
-			this.fr_2_obj = this.apptsession.filter(function( obj ) {return obj.days == day_fr_2;});
-			this.fr1_1_start = moment(this.date_fr_1+" "+this.fr_1_obj[0].timefr1);
-			this.fr1_2_start = moment(this.date_fr_2+" "+this.fr_2_obj[0].timefr1);
+			this.events =  $('#calendar').fullCalendar( 'clientEvents');
+			console.log(this.events);
+
+			this.date_fr = $('#apptdatefr_day').val();
+			this.day_fr = moment(this.date_fr).format('dddd').toUpperCase();
+			let day_fr = this.day_fr;
+			this.fr_obj = this.apptsession.filter(function( obj ) {
+				return obj.days == day_fr;
+			});
+			this.fr_start = moment(this.date_fr+" "+this.fr_obj[0].timefr1);
 
 			return this;
 		}
 
 		this.set = function(){
-			var fr1_1_start = this.fr1_1_start, date_fr_1 = this.date_fr_1, fr_1_obj = this.fr_1_obj, interval= this.interval, fr1_2_start = this.fr1_2_start, date_fr_2 = this.date_fr_2, fr_2_obj = this.fr_2_obj, events = this.events;
+			var fr_start = this.fr_start, date_fr = this.date_fr, fr_obj = this.fr_obj, interval= this.interval, events = this.events;
 
-			while(!fr1_1_start.isSameOrAfter(date_fr_1+" "+fr_1_obj[0].timeto1)){
-    			let time_use = fr1_1_start.format("HH:mm:SS");
+			while(!fr_start.isSameOrAfter(date_fr+" "+fr_obj[0].timeto1)){
+    			let time_use = fr_start.format("HH:mm:SS");
     			let objuse = {time:time_use,pat_name:'',remarks:''}
 
     			events.forEach(function(elem,id){
-					console.log(elem);
-					if(fr1_1_start.isBetween(elem.start.local(),elem.end.local(), null, '[]')){
-	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+','+elem.pat_name;
-	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+','+elem.remarks;
+					if(elem.start.isSame(fr_start)){
+	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+', '+elem.pat_name;
+	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+', '+elem.remarks;
 					}
     			});
 
     			$("#grid_start_time").jqGrid('addRowData', time_use,objuse);
-
-    			fr1_1_start = fr1_1_start.add(interval, 'minutes');
+    			fr_start.add(interval, 'minutes');
         	}
 
-        	fr1_1_start = moment(date_fr_1+" "+fr_1_obj[0].timefr2);
+        	fr_start = moment(date_fr+" "+fr_obj[0].timefr2);
 
-        	while(!fr1_1_start.isSameOrAfter(moment(date_fr_1+" "+fr_1_obj[0].timeto2).add(interval, 'minutes'))){
-        		let time_use = fr1_1_start.format("HH:mm:SS");
+        	while(!fr_start.isSameOrAfter(moment(date_fr+" "+fr_obj[0].timeto2).add(interval, 'minutes'))){
+        		let time_use = fr_start.format("HH:mm:SS");
     			let objuse = {time:time_use,pat_name:'',remarks:''}
 
     			events.forEach(function(elem,id){
-					if(fr1_1_start.isBetween(elem.start.local(),elem.end.local(), null, '[]')){
+					if(elem.start.isSame(fr_start)){
 	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+','+elem.pat_name;
 	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+','+elem.remarks;
 					}
     			});
 
     			$("#grid_start_time").jqGrid('addRowData', time_use,objuse);
-
-    			fr1_1_start = fr1_1_start.add(interval, 'minutes');
+    			fr_start = fr_start.add(interval, 'minutes');
         	}
 		}
 	}
@@ -308,13 +313,10 @@ $(document).ready(function () {
 	            click: function() {
 	            	oper='add';
 					var temp = $('#resourcecode').val();
-					var start = $(".fc-myCustomButton-button").data( "start");
-					var end = $(".fc-myCustomButton-button").data("end");
+					var start = $(".fc-myCustomButton-button").data("start");
 
 					$('#dialogForm #doctor').val(temp);
-
 					$('#apptdatefr_day').val(moment(start).format('YYYY-MM-DD'));
-					$('#apptdateto_day').val(moment(start).format('YYYY-MM-DD'));
 
 	            	session_field.clear().ready().set();
 					
@@ -328,45 +330,34 @@ $(document).ready(function () {
 		eventLimit: true, // allow "more" link when too many events
 		selectable: true,
 		selectHelper: true,
+		timezone: 'local',
 		select: function(start, end) {
-			// $('#calendar').fullCalendar('changeView', 'agendaDay', moment(start).format('YYYY-MM-DD'));
 			$(".fc-myCustomButton-button").data( "start", start );
-			$(".fc-myCustomButton-button").data( "end", end );
-		},
-		eventAfterRender: function( event, element, view ) { 
-			console.log(event);
 		},
 		eventRender: function(event, element) {
-			console.log(event);
 			element.bind('dblclick', function() {
 				oper = 'edit';
-
+				$('#doctor').val(event.loccode);
+				$('#mrn').val(event.mrn);
+				$('#patname').val(event.pat_name);
+				$('#apptdatefr_day').val(event.start.format('YYYY-MM-DD'));
+				$('#start_time').val(event.start.format('HH:mm:ss'));
+				$('#end_time').val(event.end.format('HH:mm:ss'));
+				$('#telno').val(event.telno);
+				$('#telhp').val(event.telhp);
+				$('#case').val(event.case_code);
+				$('#remarks').val(event.remarks);
+				$('#status').val(event.apptstatus);
+				$('#idno').val(event.idno);
 				$("#dialogForm").dialog('open');
-				$("#addForm input").each(function(){
-					var input=$(this);
-					input.val(event[$(this).name]);
-			});
-				// $.each(rowData, function( index, value ) {
-				// 	var input=$(form+" [name='"+index+"']");
-				// 	if(input.is("[type=radio]")){
-				// 		$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-				// 	}else{
-				// 		input.val(value);
-				// 	}
-				// });
-
-				// $('#ModalEdit #id').val(event.idno);
-				// $('#ModalEdit #title').val(event.title);
-				// $('#ModalEdit #color').val(event.color);
-				// $('#ModalEdit').modal('show');
 			});
 		},
-		eventDrop: function(event, delta, revertFunc) { // si changement de position
+		eventDrop: function(event, delta, revertFunc) {
 
 			edit(event);
 
 		},
-		eventResize: function(event,dayDelta,minuteDelta,revertFunc) { // si changement de longueur
+		eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
 
 			edit(event);
 
@@ -412,20 +403,27 @@ $(document).ready(function () {
 	
 	var oper = 'add';
 	$('#submit').click(function(){
-		if( $('#editForm').isValid({requiredFields: ''}, conf, true) ) {
-			$.post("apptrsc/addEvent?oper="+oper, $("#addForm").serialize(), function (data) {
+		var url = "apptrsc/addEvent";
+		if(oper == 'add'){
+			url = "apptrsc/addEvent";
+		}else{
+			url = "apptrsc/editEvent";
+		}
+
+		if( $('#addForm').isValid({requiredFields: ''}, conf, true) ) {
+			$.post(url, $("#addForm").serialize(), function (data) {
 			}).fail(function (data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function (data) {
 				$("#dialogForm").dialog('close');
 				var events = {
-								url: "apptrsc/getEvent",
-								type: 'GET',
-								data: {
-									drrsc: $('#resourcecode').val()
-								}
-							}
-					
+					url: "apptrsc/getEvent",
+					type: 'GET',
+					data: {
+						drrsc: $('#resourcecode').val()
+					}
+				}
+
 				$('#calendar').fullCalendar( 'removeEventSource', events);
 				$('#calendar').fullCalendar( 'addEventSource', events); 
 			});

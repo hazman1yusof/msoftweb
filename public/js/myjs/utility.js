@@ -694,14 +694,16 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 				if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow(rowid, selected);
 			},
 			ondblClickRow: function(rowid, iRow, iCol, e){
-				$(obj.textfield).off('blur',onBlur);
-				$(obj.textfield).val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
-				$(obj.textfield).parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
-				$(obj.textfield).focus();
-				if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
-				$("#"+obj.dialogname).dialog( "close" );
-				$("#"+obj.gridname).jqGrid("clearGridData", true);
-				$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
+				if(!obj.jqgrid_.hasOwnProperty('ondblClickRow_off')){
+					$(obj.textfield).off('blur',onBlur);
+					$(obj.textfield).val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
+					$(obj.textfield).parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
+					$(obj.textfield).focus();
+					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
+					$("#"+obj.dialogname).dialog( "close" );
+					$("#"+obj.gridname).jqGrid("clearGridData", true);
+					$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
+				}
 			},
 		});
 		addParamField("#"+obj.gridname,false,obj.urlParam);
@@ -793,6 +795,24 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 			}
 		});
 	}
+}
+
+function onBlur(event){
+	if(event.data.data.checkstat!='none'){
+		event.data.data.check(event.data.errorField);
+	}
+}
+
+function getfield(field,or_search){
+	var fieldReturn = [];
+	field.forEach(function(element){
+		if(or_search){
+			if(element.or_search)fieldReturn.push(element.name);
+		}else{
+			fieldReturn.push(element.name);
+		}
+	});
+	return fieldReturn;
 }
 
 String.prototype.replaceAt=function(index, replacement) {
