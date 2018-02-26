@@ -7,7 +7,7 @@
 	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 
-	<!-------------------------------- Search + table ---------------------->
+	<!--***************************** Search + table ******************-->
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
@@ -106,10 +106,7 @@
 					<div class="panel-body" style="position: relative;">
 						<form class='form-horizontal' style='width:99%' id='formdata'>
 						{{ csrf_field() }}
-							<input id="source" name="source" type="hidden">
-							<input id="idno" name="idno" type="hidden">
-							<input id="crdbfl" name="crdbfl" type="hidden">
-							<input id="isstype" name="isstype" type="hidden">
+							<input id="purordhd_idno" name="purordhd_idno" type="hidden">
 							<input id="referral" name="referral" type="hidden">
 							<input id="purordhd_delordno" name="purordhd_delordno" type="hidden">
 
@@ -203,18 +200,20 @@
 							
                            <!-- <input id="backday" name="backday" class="form-control input-sm">-->
 
+
                             <div class="form-group">
                             <label class="col-md-2 control-label" for="purordhd_purdate">PO Date</label>  
 						  			<div class="col-md-2">
-									<input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" 
+						  			 <input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" 
 									min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
 										max="<?php echo date('Y-m-d');?>"  
-										data-validation="required">
+										data-validation="required"> 
+								
 						  		</div>
                              
                              <label class="col-md-2 control-label" for="purordhd_expecteddate">Expected Date</label>  
 						  			<div class="col-md-2">
-									<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" data-validation="required">
+									<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required">
 						  		</div>
 
 						  		<label class="col-md-2 control-label" for="termdays">Payment Terms</label>  

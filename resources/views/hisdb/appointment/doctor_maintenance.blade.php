@@ -46,7 +46,33 @@
     	<ul>    
 			<b>DOCTOR CODE : </b><span name='resourcecode' ></span> <br><br>
 			<b>DOCTOR NAME: </b><span name='description' ></span>
+           
 		</ul>
+         
+				<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>Start Time</th>
+						<th>End Time</th>
+						<th>Start Time</th>
+						<th>End Time</th>
+						<th></th>
+						
+					</tr>
+					<tr>
+						<th><input type="time" name="timefr1" id="user_input" class="form-control input-sm" data-validation="required"></th>
+						<th><input type="time" name="timeto1" id="timeto1" class="form-control input-sm" data-validation="required"></th>
+						<th><input type="time" name="timefr2" id="timefr2" class="form-control input-sm" data-validation="required"></th>
+						<th><input type="time" name="timeto2" id="timeto2" class="form-control input-sm" data-validation="required"></th>
+						<th><center><button type="button" class="btn btn-default" id='allTimeBtn'>All</center></th>
+						
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+				</table>
+				 <p><span id='display'></span></p>
+
 		<div id='gridtime_c' style="padding:15px 0 15px 0">
             <table id="gridtime" class="table table-striped"></table>
             <div id="gridtimepager"></div>

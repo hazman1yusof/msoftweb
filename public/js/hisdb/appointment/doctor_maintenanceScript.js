@@ -139,6 +139,10 @@
             	}
             });
 
+          $("#allTimeBtn").click(function(){
+             document.getElementById('display').innerHTML = document.getElementById("user_input").value;
+         });
+
 			var oper;
 			$("#tsdialogForm")
 			  .dialog({ 
@@ -845,6 +849,7 @@
 			addParamField('#gridtime',true,urlParamtime);
 			addParamField('#gridph',true,urlParamph);
 			addParamField('#gridleave',true,urlParamleave);
+
 			 
 			 /////////////////// FUNCTION DATE /////////////////////////////////////////////////////////////////////
 
@@ -868,6 +873,6 @@
                  $(this).data("DateTimePicker").hide();
             });
       });
-			
+		  
 		});
 		

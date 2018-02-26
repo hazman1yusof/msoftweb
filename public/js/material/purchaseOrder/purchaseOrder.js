@@ -131,7 +131,8 @@ $(document).ready(function () {
 		fixPost: 'true',
 		oper: oper,
 		table_name: 'material.purordhd',
-		table_id: 'recno',
+		table_id: 'purordhd_recno',
+
 	};
 
     function padzero(cellvalue, options, rowObject){
@@ -334,15 +335,16 @@ $(document).ready(function () {
 	});
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
-	function saveHeader(form, selfoper, saveParam, obj) {
-		if (obj == null) {
-			obj = {};
+function saveHeader(form,selfoper,saveParam,obj){
+		if(obj==null){
+			obj={};
 		}
-		saveParam.oper = selfoper;
+		saveParam.oper=selfoper;
 
-		$.post("../../../../assets/php/entry.php?" + $.param(saveParam), $(form).serialize() + '&' + $.param(obj), function (data) {
-			unsaved = false;
+		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
+		unsaved = false;
 			hideatdialogForm(false);
+
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
 				addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
@@ -350,11 +352,12 @@ $(document).ready(function () {
 			////////////// $('#jqGrid2_iladd').click();
 
 			if (selfoper == 'add') {
-				$('#jqGrid2_iladd').click();
+				// $('#jqGrid2_iladd').click();
 				oper = 'edit';//sekali dia add terus jadi edit lepas tu
 				$('#purordhd_recno').val(data.recno);
 				$('#purordhd_purordno').val(data.purordno);
 				$('#purordhd_idno').val(data.idno);//just save idno for edit later
+				$('#purordhd_totamount').val(data.totalAmount);
 
 				urlParam2.filterVal[0] = data.recno;
 			/*	urlParam2.join_filterCol = [['ivt.uomcode', 's.deptcode', 's.year'], []];
@@ -808,6 +811,7 @@ $(document).ready(function () {
 			$('#purordhd_totamount').val(response.responseText);
 			$('#purordhd_subamount').val(response.responseText);
 			if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+			linenotoedit = null;
 			refreshGrid('#jqGrid2', urlParam2, 'add');
 			$("#jqGridPager2Delete").show();
 		},
@@ -822,6 +826,7 @@ $(document).ready(function () {
 					purreqno: $('#purordhd_purreqno').val(),
 					suppcode: $('#purordhd_suppcode').val(),
 					purdate: $('#purordhd_purdate').val(),
+					amount:selrowData('#jqGrid2').amount,
 					remarks:selrowData('#jqGrid2').remarks//bug will happen later because we use selected row
 				});
 
@@ -997,8 +1002,9 @@ $(document).ready(function () {
 		dialog_credcode.off();
 		dialog_deldept.off();
 		//dialog_crecode.off();
-		if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
-			saveHeader("#formdata", oper, saveParam);
+	if($('#formdata').isValid({requiredFields:''},conf,true)){
+			saveHeader("#formdata",oper,saveParam);
+			unsaved = false;
 		} else {
 			mycurrency.formatOn();
 			dialog_prdept.on();
