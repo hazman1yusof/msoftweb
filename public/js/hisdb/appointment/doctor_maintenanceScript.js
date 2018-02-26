@@ -854,25 +854,24 @@
 			 /////////////////// FUNCTION DATE /////////////////////////////////////////////////////////////////////
 
 		    $(function () {
-            $('#datefr,#dateto').datetimepicker({
-            	format: 'YYYY-MM-DD',
-                useCurrent: false,
-                minDate: moment()
-            });
-            $('#datefr').datetimepicker().on('dp.change', function (e) {
-                var incrementDay = moment(new Date(e.date));
-                incrementDay.add(1, 'days');
-                $('#dateto').data('DateTimePicker').minDate(incrementDay);
-                $(this).data("DateTimePicker").hide();
-            });
+	            $('#datefr,#dateto').datetimepicker({
+	            	format: 'YYYY-MM-DD',
+	                useCurrent: false,
+	                minDate: moment()
+	            });
+	            $('#datefr').datetimepicker().on('dp.change', function (e) {
+	                var incrementDay = moment(new Date(e.date));
+	                incrementDay.add(1, 'days');
+	                $('#dateto').data('DateTimePicker').minDate(incrementDay);
+	                $(this).data("DateTimePicker").hide();
+	            });
 
-            $('#dateto').datetimepicker().on('dp.change', function (e) {
-                var decrementDay = moment(new Date(e.date));
-                decrementDay.subtract(1, 'days');
-                $('#datefr').data('DateTimePicker').maxDate(decrementDay);
-                 $(this).data("DateTimePicker").hide();
-            });
-      });
-		  
-		});
+	            $('#dateto').datetimepicker().on('dp.change', function (e) {
+	                var decrementDay = moment(new Date(e.date));
+	                decrementDay.subtract(1, 'days');
+	                $('#datefr').data('DateTimePicker').maxDate(decrementDay);
+	                 $(this).data("DateTimePicker").hide();
+	            });
+	      });
+	});
 		

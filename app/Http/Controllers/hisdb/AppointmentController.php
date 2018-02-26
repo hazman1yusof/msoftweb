@@ -49,12 +49,12 @@ class AppointmentController extends defaultController
     public function addEvent(Request $request){
         
         DB::table('hisdb.apptbook')->insert([
-            'title'       => $request->title,
+            'title'       => $request->patname,
             'loccode'     => $request->doctor,
             'mrn'         => $request->mrn,
             'pat_name'    => $request->patname,
-            'start'  => $request->apptdatefr_day.' '.$request->start_time,
-            'end'  => $request->apptdatefr_day.' '.$request->end_time,
+            'start'       => $request->apptdatefr_day.' '.$request->start_time,
+            'end'         => $request->apptdatefr_day.' '.$request->end_time,
             'telno'       => $request->telno,
             'apptstatus'  => $request->status,
             'telhp'       => $request->telhp,
@@ -69,18 +69,18 @@ class AppointmentController extends defaultController
         DB::table('hisdb.apptbook')
             ->where('idno','=',$request->idno)
             ->update([
-            'title'       => $request->title,
-            'loccode'     => $request->doctor,
-            'mrn'         => $request->mrn,
-            'pat_name'    => $request->patname,
-            'start'  => $request->apptdatefr_day.' '.$request->start_time,
-            'end'  => $request->apptdatefr_day.' '.$request->end_time,
-            'telno'       => $request->telno,
-            'apptstatus'  => $request->status,
-            'telhp'       => $request->telhp,
-            'case_code'   => $request->case,
-            'remarks'     => $request->remarks,
-        ]);
+                'title'       => $request->patname,
+                'loccode'     => $request->doctor,
+                'mrn'         => $request->mrn,
+                'pat_name'    => $request->patname,
+                'start'       => $request->apptdatefr_day.' '.$request->start_time,
+                'end'         => $request->apptdatefr_day.' '.$request->end_time,
+                'telno'       => $request->telno,
+                'apptstatus'  => $request->status,
+                'telhp'       => $request->telhp,
+                'case_code'   => $request->case,
+                'remarks'     => $request->remarks,
+            ]);
 
         // dd()
         // if(isset($request->delete) && isset($request->id)){
