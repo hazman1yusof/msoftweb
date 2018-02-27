@@ -140,7 +140,12 @@
             });
 
           $("#allTimeBtn").click(function(){
-             document.getElementById('display').innerHTML = document.getElementById("user_input").value;
+          	// var allTimeBtn = $("#time1").val();
+          	$("#gridtime :input[name='timefr1']").val($("#time1").val());
+          	$("#gridtime :input[name='timeto1']").val($("#time2").val());
+          	$("#gridtime :input[name='timefr2']").val($("#time3").val());
+          	$("#gridtime :input[name='timeto2']").val($("#time4").val());
+            
          });
 
 			var oper;
