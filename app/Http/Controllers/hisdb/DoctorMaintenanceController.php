@@ -61,20 +61,21 @@ class DoctorMaintenanceController extends defaultController
     public function save_session(Request $request){
         if($request->oper == 'add'){
             foreach ($request->rowsArray as $key => $value) {
-                DB::table('hisdb.apptsession')->insert([
-                    'compcode' => session('compcode'),
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now(),
-                    'recstatus' => 'A',
-
-                    'doctorcode' => $value['doctorcode'],
-                    'days' => $value['days'],
-                    'timefr1' => $value['timefr1'],
-                    'timeto1' => $value['timeto1'],
-                    'timefr2' => $value['timefr2'],
-                    'timeto2' => $value['timeto2'],
-                ]);
-        }
+                if($value['recstatus']=='True'){
+                    DB::table('hisdb.apptsession')->insert([
+                        'compcode' => session('compcode'),
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now(),
+                        'recstatus' => 'A',
+                        'doctorcode' => $value['doctorcode'],
+                        'days' => $value['days'],
+                        'timefr1' => $value['timefr1'],
+                        'timeto1' => $value['timeto1'],
+                        'timefr2' => $value['timefr2'],
+                        'timeto2' => $value['timeto2'],
+                    ]);
+                }
+            }
         }else{
             foreach ($request->rowsArray as $key => $value) {
                 DB::table('hisdb.apptsession')
@@ -85,7 +86,6 @@ class DoctorMaintenanceController extends defaultController
                         'upduser' => session('username'),
                         'upddate' => Carbon::now(),
                         'recstatus' => 'A',
-
                         'timefr1' => $value['timefr1'],
                         'timeto1' => $value['timeto1'],
                         'timefr2' => $value['timefr2'],

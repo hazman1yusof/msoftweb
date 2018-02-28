@@ -104,15 +104,32 @@ $(document).ready(function () {
 
 		session_field.addSessionInterval(interval,apptsession);
 
-		var events = {
+		var event_apptbook = {
+			id: 'apptbook',
 			url: "apptrsc/getEvent",
 			type: 'GET',
 			data: {
+				type: 'apptbook',
 				drrsc: $('#resourcecode').val()
 			}
 		}
-		$('#calendar').fullCalendar( 'removeEventSource', events);
-		$('#calendar').fullCalendar( 'addEventSource', events);
+
+		var event_appt_leave = {
+			id: 'appt_leave',
+			url: "apptrsc/getEvent",
+			type: 'GET',
+			data: {
+				type: 'appt_leave',
+				drrsc: $('#resourcecode').val()
+			},
+			color: 'red', 
+        	textColor: 'black' 
+		}
+
+		$('#calendar').fullCalendar( 'removeEventSource', 'apptbook');
+		$('#calendar').fullCalendar( 'removeEventSource', 'appt_leave');
+		$('#calendar').fullCalendar( 'addEventSource', event_apptbook);
+		$('#calendar').fullCalendar( 'addEventSource', event_appt_leave);
 
 
 		$(dialog_name.textfield).focus();
@@ -235,6 +252,28 @@ $(document).ready(function () {
 
 		this.addSessionInterval = function(interval,apptsession){
 			this.apptsession = apptsession;
+
+			let temp_bussHour=[];
+			this.apptsession.forEach(function( obj ) {
+				var temp_obj = {dow:[],start:obj.timefr1,end:obj.timeto2};
+				switch(obj.days) {
+					case "SUNDAY": temp_obj.dow.push(0); break;
+					case "MONDAY":  temp_obj.dow.push(1); break;
+					case "TUESDAY": temp_obj.dow.push(2); break;
+					case "WEDNESDAY": temp_obj.dow.push(3); break;
+					case "THURSDAY": temp_obj.dow.push(4); break;
+					case "FRIDAY": temp_obj.dow.push(5); break;
+					case "SATURDAY": temp_obj.dow.push(6); break;
+				}
+
+				temp_bussHour.push(temp_obj);
+			});
+
+			///tukar business hour
+			$('#calendar').fullCalendar('option', {
+			   	businessHours: temp_bussHour
+			});
+
 			this.interval = interval;
 			return this;
 		}
@@ -331,84 +370,71 @@ $(document).ready(function () {
 		selectable: true,
 		selectHelper: true,
 		timezone: 'local',
-		select: function(start, end) {
+		select: function(start, end, allDay) {
 			$(".fc-myCustomButton-button").data( "start", start );
+			$('#calendar').fullCalendar( 'clientEvents');
+
+			// if(start.isBefore(moment())) {
+			// 	$(".fc-myCustomButton-button").hide();
+		 //        $('#calendar').fullCalendar('unselect');
+		 //        return false;
+		 //    }else{
+			// 	$(".fc-myCustomButton-button").show();
+		 //    }
 		},
 		eventRender: function(event, element) {
-			element.bind('dblclick', function() {
-				oper = 'edit';
-				$('#doctor').val(event.loccode);
-				$('#mrn').val(event.mrn);
-				$('#patname').val(event.pat_name);
-				$('#apptdatefr_day').val(event.start.format('YYYY-MM-DD'));
-				$('#start_time').val(event.start.format('HH:mm:ss'));
-				$('#end_time').val(event.end.format('HH:mm:ss'));
-				$('#telno').val(event.telno);
-				$('#telhp').val(event.telhp);
-				$('#case').val(event.case_code);
-				$('#remarks').val(event.remarks);
-				$('#status').val(event.apptstatus);
-				$('#idno').val(event.idno);
-				$("#dialogForm").dialog('open');
-			});
+			if(event.source.id == "apptbook"){
+				element.bind('dblclick', function() {
+					oper = 'edit';
+					$('#doctor').val(event.loccode);
+					$('#mrn').val(event.mrn);
+					$('#patname').val(event.pat_name);
+					$('#apptdatefr_day').val(event.start.format('YYYY-MM-DD'));
+					$('#start_time').val(event.start.format('HH:mm:ss'));
+					$('#end_time').val(event.end.format('HH:mm:ss'));
+					$('#telno').val(event.telno);
+					$('#telhp').val(event.telhp);
+					$('#case').val(event.case_code);
+					$('#remarks').val(event.remarks);
+					$('#status').val(event.apptstatus);
+					$('#idno').val(event.idno);
+					$("#dialogForm").dialog('open');
+				});
+			}
+			if(event.source.rendering == 'background'){
+		        element.append("YOUR HTML CODE");
+		    }
 		},
 		eventDrop: function(event, delta, revertFunc) {
-
-			edit(event);
-
 		},
 		eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
-
-			edit(event);
-
 		},
-		events: {
-			url:'apptrsc/getEvent',
-			type:'GET',
-			data:{
-				drrsc:'',
+		selectConstraint :"businessHours",
+		eventSources: [
+	        {	
+	        	id:'apptbook'
+			},
+			{	
+				id:'appt_ph',
+				url:'apptrsc/getEvent',
+				type:'GET',
+				data:{
+					type:'appt_ph'
+				},
+				color: 'yellow', 
+            	textColor: 'black',
+            	rendering: 'background'
+			},
+			{	
+				id:'appt_leave'
 			}
-		}
+	    ]
 	});
 	$('.fc-myCustomButton-button').hide();
 	
-	function edit(event){
-		start = event.start.format('YYYY-MM-DD HH:mm:ss');
-		if(event.end){
-			end = event.end.format('YYYY-MM-DD HH:mm:ss');
-		}else{
-			end = start;
-		}
-		
-		id =  event.id;
-		
-		Event = [];
-		Event[0] = id;
-		Event[1] = start;
-		Event[2] = end;
-		
-		$.ajax({
-			url: 'editEventDate.php',
-			type: "POST",
-			data: {Event:Event},
-			success: function(rep) {
-				if(rep == 'OK'){
-					// alert('Saved');
-				}else{
-					alert('Could not be saved. try again.'); 
-				}
-			}
-		});
-	}
-	
 	var oper = 'add';
 	$('#submit').click(function(){
-		var url = "apptrsc/addEvent";
-		if(oper == 'add'){
-			url = "apptrsc/addEvent";
-		}else{
-			url = "apptrsc/editEvent";
-		}
+		var url = (oper == 'add')?"apptrsc/addEvent":"apptrsc/editEvent";
 
 		if( $('#addForm').isValid({requiredFields: ''}, conf, true) ) {
 			$.post(url, $("#addForm").serialize(), function (data) {
@@ -417,14 +443,16 @@ $(document).ready(function () {
 			}).done(function (data) {
 				$("#dialogForm").dialog('close');
 				var events = {
+	        		id:'apptbook',
 					url: "apptrsc/getEvent",
 					type: 'GET',
 					data: {
+						type:'apptbook',
 						drrsc: $('#resourcecode').val()
 					}
 				}
 
-				$('#calendar').fullCalendar( 'removeEventSource', events);
+				$('#calendar').fullCalendar( 'removeEventSource', 'apptbook');
 				$('#calendar').fullCalendar( 'addEventSource', events); 
 			});
 		}

@@ -38,16 +38,42 @@ class AppointmentController extends defaultController
     }
 
     public function getEvent(Request $request){
-        $select = DB::table('hisdb.apptbook')
+        switch ($request->type) {
+            case 'apptbook':
+
+                $select = DB::table('hisdb.apptbook')
                     ->where('loccode','=',$request->drrsc)
                     ->whereBetween('start', [$request->start, $request->end])
                     ->get();
+
+                break;
+            case 'appt_ph':
+
+                 $select = DB::table('hisdb.apptph')
+                    ->select('datefr as start','dateto as end','remark as title')
+                    ->whereBetween('datefr', [$request->start, $request->end])
+                    ->get();
+
+                break;
+            case 'appt_leave':
+
+                 $select = DB::table('hisdb.apptleave')
+                    ->select('datefr as start','dateto as end','remark as title')
+                    ->where('resourcecode','=',$request->drrsc)
+                    ->whereBetween('datefr', [$request->start, $request->end])
+                    ->get();
+
+                break;
+            default:
+                return [];
+                break;
+        }
                     
         return $select;
     }
 
     public function addEvent(Request $request){
-        
+
         DB::table('hisdb.apptbook')->insert([
             'title'       => $request->patname,
             'loccode'     => $request->doctor,

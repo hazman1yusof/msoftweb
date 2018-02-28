@@ -465,7 +465,7 @@
 									timeto1:'',
 									timefr2:'',
 									timeto2:'',
-									recstatus:'',
+									recstatus:'True',
 								}
 							);
 						});
@@ -479,7 +479,6 @@
 					$("#gridtime").jqGrid("clearGridData", true);
 				}
             });
-
           
 
             var urlParamtime = {
