@@ -74,7 +74,7 @@ class DoctorMaintenanceController extends defaultController
                     'timefr2' => $value['timefr2'],
                     'timeto2' => $value['timeto2'],
                 ]);
-            }
+        }
         }else{
             foreach ($request->rowsArray as $key => $value) {
                 DB::table('hisdb.apptsession')

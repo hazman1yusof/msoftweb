@@ -71,22 +71,7 @@
 		        <td><input type="time" name="timefr2" id="time3" class="form-control input-sm" data-validation="required" value="00:00"></td>
 		        <td><input type="time" name="timeto2" id="time4" class="form-control input-sm" data-validation="required" value="00:00"></td>
 	            </tr>
-				<!-- 	<tr>
-						<th>Start Time</th>
-						<th>End Time</th>
-						<th>Start Time</th>
-						<th>End Time</th>
-						<th></th>
-						
-					</tr>
-					<tr>
-						<th><input type="time" name="timefr1" id="time1" class="form-control input-sm" data-validation="required" value="00:00"></th>
-						<th><input type="time" name="timeto1" id="time2" class="form-control input-sm" data-validation="required" value="00:00"></th>
-						<th><input type="time" name="timefr2" id="time3" class="form-control input-sm" data-validation="required" value="00:00"></th>
-						<th><input type="time" name="timeto2" id="time4" class="form-control input-sm" data-validation="required" value="00:00"></th>
-						<th><center><button type="button"  class="btn btn-primary btn-rounded btn-sm my-0" id='allTimeBtn'>Apply to All</center></th>
-						
-					</tr> -->
+			
 				</thead>
 				<tbody>
 				</tbody>
@@ -127,7 +112,7 @@
             <table id="gridph" class="table table-striped"></table>
             <div id="gridphpager"></div>
         </div>
-</div>
+    </div>
 	
 
 	<div id="ALBox" title="Annual Leave" style="display:none">
@@ -197,6 +182,7 @@
 						</div>
 						
 					</div>
+					
 				</div>
 	
 			</form>

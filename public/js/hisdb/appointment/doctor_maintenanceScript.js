@@ -465,6 +465,7 @@
 									timeto1:'',
 									timefr2:'',
 									timeto2:'',
+									recstatus:'',
 								}
 							);
 						});
@@ -531,6 +532,14 @@
 					$('input',elem).val(value);
 				}
 			}
+			// function checkbox (cellvalue, option, rowObject) {
+			// 	if(cellvalue == 'True') {
+			// 		return 'Active';
+			// 	} else if(cellvalue == 'False') {
+			// 		return 'Deactive';
+			// 	}
+			// }
+
 
 			$("#tsbutton").click(function(){
 				var rowsArray=[];
@@ -583,7 +592,15 @@
 						        custom_element:timeto2CustomEdit,
 						        custom_value:galGridCustomValue 	
 						    },
+					},
+					{label:'Status',name: 'recstatus', edittype:'checkbox',formatter:'checkbox',editable:true, 
+					editoptions:
+					{
+                           value:'True:False',
+                           defaultValue:'False'
+					},
 					}
+				
 				],
 					
 				autowidth:true,
@@ -619,7 +636,8 @@
 	            useColSpanStyle: true, 
 	            groupHeaders:[
 			        {startColumnName: 'timefr1', numberOfColumns: 2, titleText: 'Morning Session'},
-			        {startColumnName: 'timefr2', numberOfColumns: 4, titleText: 'Evening Session'}
+			        {startColumnName: 'timefr2', numberOfColumns: 2, titleText: 'Evening Session'}
+  
 	            ]	
             });
 
