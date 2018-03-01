@@ -29,7 +29,10 @@ class DoctorMaintenanceController extends defaultController
 
     public function table(Request $request)
     {   
-        $paginate = DB::table('hisdb.apptresrc')->select('resourcecode','description','TYPE')->paginate(30);
+        $paginate = DB::table('hisdb.apptresrc')
+        			->select('resourcecode','description','TYPE')
+        			->where('TYPE','=','DOC')
+        			->paginate(30);
         $apptres = $paginate->items();
         foreach ($apptres as $key => $value) {
             $value->countsession = DB::table('hisdb.apptsession')->where('doctorcode','=',$value->resourcecode)->count();
