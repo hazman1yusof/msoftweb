@@ -23,8 +23,6 @@ $(document).ready(function () {
 			}
 		},
 	};
-
-	$("body").show();
 	var d = new Date();
 
 	var Class2 = $('#Class2').val();
@@ -122,8 +120,8 @@ $(document).ready(function () {
 				type: 'appt_leave',
 				drrsc: $('#resourcecode').val()
 			},
-			color: 'red', 
-        	textColor: 'black' 
+			color: '#e27370',
+        	rendering: 'background'
 		}
 
 		$('#calendar').fullCalendar( 'removeEventSource', 'apptbook');
@@ -286,7 +284,6 @@ $(document).ready(function () {
 
 		this.ready = function(){
 			this.events =  $('#calendar').fullCalendar( 'clientEvents');
-			console.log(this.events);
 
 			this.date_fr = $('#apptdatefr_day').val();
 			this.day_fr = moment(this.date_fr).format('dddd').toUpperCase();
@@ -344,13 +341,14 @@ $(document).ready(function () {
 		header: {
 			left: 'prev,next today myCustomButton',
 			center: 'title',
-			right: 'month,agendaWeek,agendaDay'
+			right: 'month'
 		},
 		customButtons: {
 	        myCustomButton: {
 	            text: 'Add',
 	            click: function() {
 	            	oper='add';
+
 					var temp = $('#resourcecode').val();
 					var start = $(".fc-myCustomButton-button").data("start");
 
@@ -364,23 +362,27 @@ $(document).ready(function () {
         	}
     	},
 		defaultDate: d,
-		navLinks: true, // can click day/week names to navigate views
 		editable: true,
 		eventLimit: true, // allow "more" link when too many events
 		selectable: true,
 		selectHelper: true,
 		timezone: 'local',
-		select: function(start, end, allDay) {
+		select: function(start, end, jsEvent, view, resource) {
 			$(".fc-myCustomButton-button").data( "start", start );
-			$('#calendar').fullCalendar( 'clientEvents');
+			var events = $('#calendar').fullCalendar( 'clientEvents');
+			$(".fc-myCustomButton-button").show();
+			events.forEach(function(elem,id){
+				if(elem.allDay){
+					let elem_end = (elem.end==null)?elem.start:elem.end;
+					if(start.isBetween(elem.start,elem_end, null, '[)')){
+						$(".fc-myCustomButton-button").hide();
+					}
+				}
+			});
+			if(!start.isSameOrAfter(moment().subtract(1, 'days'))){
+				$(".fc-myCustomButton-button").hide();
+			}
 
-			// if(start.isBefore(moment())) {
-			// 	$(".fc-myCustomButton-button").hide();
-		 //        $('#calendar').fullCalendar('unselect');
-		 //        return false;
-		 //    }else{
-			// 	$(".fc-myCustomButton-button").show();
-		 //    }
 		},
 		eventRender: function(event, element) {
 			if(event.source.id == "apptbook"){
@@ -402,14 +404,14 @@ $(document).ready(function () {
 				});
 			}
 			if(event.source.rendering == 'background'){
-		        element.append("YOUR HTML CODE");
+		        element.append(event.title);
 		    }
 		},
 		eventDrop: function(event, delta, revertFunc) {
 		},
 		eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
 		},
-		selectConstraint :"businessHours",
+		selectConstraint : "businessHours",
 		eventSources: [
 	        {	
 	        	id:'apptbook'
