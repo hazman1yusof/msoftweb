@@ -1,5 +1,13 @@
 @extends('layouts.main')
 
+@section('style')
+
+.fc-bgevent{
+	opacity: .8;
+}
+
+@endsection
+
 @section('title', 'Appointment')
 
 @section('body')
@@ -46,7 +54,7 @@
 								<label for="Doctor" class="col-md-2 control-label">Doctor</label>
 								<div class="col-md-3">
 									<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" data-validation="required" readonly>
-								</div>								
+								</div>
 							</div>
 							<div class="form-group">
 								<label for="title" class="col-md-2 control-label">MRN</label>
