@@ -31,7 +31,7 @@ class DoctorMaintenanceController extends defaultController
     {   
         $paginate = DB::table('hisdb.apptresrc')
         			->select('resourcecode','description','TYPE')
-        			->where('TYPE','=','DOC')
+        			->where('TYPE','=',$request->filterVal[0])
         			->paginate(30);
         $apptres = $paginate->items();
         foreach ($apptres as $key => $value) {
