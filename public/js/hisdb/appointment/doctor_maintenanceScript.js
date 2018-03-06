@@ -103,7 +103,7 @@
 			  $("#TSBtn").click(function(){
             	var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
             	if(!selRowId){
-            		alert('Please select doctor');
+            		alert('Please select row');
             	}else{
 	            	$("span[name='resourcecode']").text(selrowData('#jqGrid').resourcecode);
 	            	$("span[name='description']").text(selrowData('#jqGrid').description);
@@ -117,7 +117,7 @@
 			   $("#PHBtn").click(function(){
             	var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
             	if(!selRowId){
-            		alert('Please select doctor');
+            		alert('Please select row');
             	}else{
 	            	$("span[name='resourcecode']").text(selrowData('#jqGrid').resourcecode);
 	            	$("span[name='description']").text(selrowData('#jqGrid').description);
@@ -129,7 +129,7 @@
 			     $("#ALBtn").click(function(){
             	var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
             	if(!selRowId){
-            		alert('Please select doctor');
+            		alert('Please select row');
             	}else{
 	            	$("span[name='resourcecode']").text(selrowData('#jqGrid').resourcecode);
 	            	$("span[name='description']").text(selrowData('#jqGrid').description);
@@ -504,22 +504,22 @@
 			};
 
 			function timefr1CustomEdit(val,opt){
-				val = (val=="undefined"||val=="")? "00:00" : val;	
+				val = (val=="undefined"||val=="")? "--:--" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
 			function timeto1CustomEdit(val,opt){  	
-				val = (val=="undefined"||val=="")? "00:00" : val;	
+				val = (val=="undefined"||val=="")? "--:--" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
 			function timefr2CustomEdit(val,opt){  	
-				val = (val=="undefined"||val=="")? "00:00" : val;	
+				val = (val=="undefined"||val=="")? "--:--" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
 			function timeto2CustomEdit(val,opt){  	
-				val = (val=="undefined"||val=="")? "00:00" : val;	
+				val = (val=="undefined"||val=="")? "--:--" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
@@ -531,15 +531,7 @@
 					$('input',elem).val(value);
 				}
 			}
-			// function checkbox (cellvalue, option, rowObject) {
-			// 	if(cellvalue == 'True') {
-			// 		return 'Active';
-			// 	} else if(cellvalue == 'False') {
-			// 		return 'Deactive';
-			// 	}
-			// }
-
-
+			
 			$("#tsbutton").click(function(){
 				var rowsArray=[];
 				$("#gridtime").getDataIDs().forEach(function(elem,id) {

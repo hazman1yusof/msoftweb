@@ -66,10 +66,10 @@
 	            </tr>
 
 	            <tr>
-		        <td><input type="time" name="timefr1" id="time1" class="form-control input-sm" data-validation="required" value="00:00"></td>
-		        <td><input type="time" name="timeto1" id="time2" class="form-control input-sm" data-validation="required" value="00:00"></td>
-		        <td><input type="time" name="timefr2" id="time3" class="form-control input-sm" data-validation="required" value="00:00"></td>
-		        <td><input type="time" name="timeto2" id="time4" class="form-control input-sm" data-validation="required" value="00:00"></td>
+		        <td><input type="time" name="timefr1" id="time1" class="form-control input-sm" data-validation="required" value="08:00"></td>
+		        <td><input type="time" name="timeto1" id="time2" class="form-control input-sm" data-validation="required" value="12:00"></td>
+		        <td><input type="time" name="timefr2" id="time3" class="form-control input-sm" data-validation="required" value="14:00"></td>
+		        <td><input type="time" name="timeto2" id="time4" class="form-control input-sm" data-validation="required" value="17:00"></td>
 	            </tr>
 			
 				</thead>
@@ -208,7 +208,7 @@
 					<label class="col-md-2 control-label" for="datefr">From</label>
 					<div class="col-md-2">
 						<div class='input-group'>
-							<input id="datefr" name="datefr" type="date"  value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}"  maxlength="10" class="form-control input-sm" 
+							<input id="datefr" name="datefr" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}"  maxlength="10" class="form-control input-sm" 
 										data-validation="required">		
 						  <span class="input-group-addon">
                                     <span class="glyphicon-calendar glyphicon"></span>
@@ -219,7 +219,7 @@
 					<label class="col-md-2 control-label" for="dateto">To</label>
 					<div class="col-md-2">
 					<div class='input-group'>
-						<input id="dateto"" name="dateto" type="date"  value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
+						<input id="dateto"" name="dateto" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
                      <span class="input-group-addon">
                                     <span class="glyphicon-calendar glyphicon"></span>
                                 </span>						
@@ -256,7 +256,7 @@
 					<label class="col-md-2 control-label" for="datefr">From</label>
 					<div class="col-md-2">
 						<div class='input-group'>
-							<input id="datefr" name="datefr" type="text"  value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}"  maxlength="10" class="form-control input-sm" 
+							<input id="datefr" name="datefr" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}"  maxlength="10" class="form-control input-sm" 
 										data-validation="required">		
 						  <span class="input-group-addon">
                                     <span class="glyphicon-calendar glyphicon"></span>
@@ -267,7 +267,7 @@
 					<label class="col-md-2 control-label" for="dateto">To</label>
 					<div class="col-md-2">
 					<div class='input-group'>
-						<input id="dateto"" name="dateto" type="text"  value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
+						<input id="dateto"" name="dateto" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
                      <span class="input-group-addon">
                                     <span class="glyphicon-calendar glyphicon"></span>
                                 </span>						

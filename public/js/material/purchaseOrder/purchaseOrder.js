@@ -1240,12 +1240,12 @@ function saveHeader(form,selfoper,saveParam,obj){
 			if($.inArray(id,errorField)!==-1){
 				errorField.splice($.inArray(id,errorField), 1);
 			}
-			$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-			$( id ).removeClass( "error" ).addClass( "valid" );
+			// $( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+			// $( id ).removeClass( "error" ).addClass( "valid" );
 			$('.noti').find("li[data-errorid='"+name+"']").detach();
 		} else {
-			$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-			$( id ).removeClass( "valid" ).addClass( "error" );
+			// $( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+			// $( id ).removeClass( "valid" ).addClass( "error" );
 			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
 			if($.inArray(id,errorField)===-1){
 				errorField.push( id );

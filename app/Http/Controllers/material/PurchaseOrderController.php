@@ -43,7 +43,7 @@ class PurchaseOrderController extends defaultController
             $idno = $request->table_id;
         }
 
-        $purOrd_no = $this->purOrd_no('PO',$request->purordhd_prdept);
+        $purordno = $this->purOrd_no('PO',$request->purordhd_prdept);
         $recno = $this->recno('PUR','PO');
         $purreqno = $this->purreqno($request->purordhd_purreqno);
 
@@ -54,7 +54,8 @@ class PurchaseOrderController extends defaultController
 
         $array_insert = [
             'recno' => $recno,
-            'purordno' => $purOrd_no,
+            'purordno' => $purordno,
+            'purreqno' => $purreqno,
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now(),
@@ -86,7 +87,7 @@ class PurchaseOrderController extends defaultController
             }
 
             $responce = new stdClass();
-            $responce->purordno = $purOrd_no;
+            $responce->purordno = $purordno;
             $responce->recno = $recno;
             $responce->idno = $idno;
             $responce->totalAmount = $totalAmount;
@@ -112,10 +113,9 @@ class PurchaseOrderController extends defaultController
         }
 
         $purreqno = DB::table('material.purordhd')
-                    ->select('purordno')
+                    ->select('purreqno')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$request->purordhd_recno)->first();
-
        
        if($purreqno->purreqno == $request->purordhd_purreqno){
             // ni edit macam biasa, nothing special
@@ -156,7 +156,7 @@ class PurchaseOrderController extends defaultController
                 //1. update po.delordno lama jadi 0, kalu do yang dulu pon copy existing po 
                 if($purreqno->purreqno != '0'){
                     DB::table('material.purreqhd')
-                    ->where('purordno','=', $purreqno->purreqno)->where('compcode','=',session('compcode'))
+                    ->where('purreqno','=', $purreqno->purreqno)->where('compcode','=',session('compcode'))
                     ->update(['purordno' => '0']);
                 }
 
@@ -189,8 +189,8 @@ class PurchaseOrderController extends defaultController
 
                     ////dekat pr header sana, save balik purordno dkt situ
                     DB::table('material.purreqhd')
-                        ->where('purordno','=',$purreqno)->where('compcode','=',session('compcode'))
-                        ->update(['purordno' => $purordno]);
+                        ->where('purreqno','=',$purreqno)->where('compcode','=',session('compcode'))
+                        ->update(['purordno' => $purordno]);  
                 }
 
                 $responce = new stdClass();
@@ -224,7 +224,7 @@ class PurchaseOrderController extends defaultController
         return $pvalue1->pvalue1;
     }
 
-      public function purOrd_no($source,$trantype){
+      public function purordno($source,$trantype){
         $seqno = DB::table('material.sequence')
                 ->select('seqno')
                 ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
@@ -258,9 +258,9 @@ class PurchaseOrderController extends defaultController
                 ->where('recstatus', '<>', 'DELETE')
                 ->get();
 
-        foreach ($po_dt as $key => $value) {
+        foreach ($pr_dt as $key => $value) {
             ///1. insert detail we get from existing purchase request
-            $table = DB::table("material.purreqdt");
+            $table = DB::table("material.purorddt");
             $table->insert([
                 'compcode' => session('compcode'), 
                 'recno' => $recno, 
@@ -282,14 +282,14 @@ class PurchaseOrderController extends defaultController
             ]);
         }
         ///2. calculate total amount from detail erlier
-        $amount = DB::table('material.purreqdt')
+        $amount = DB::table('material.purorddt')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$recno)
                     ->where('recstatus','<>','DELETE')
                     ->sum('amount');
 
         ///3. then update to header
-        $table = DB::table('material.purreqdt')
+        $table = DB::table('material.purorddt')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$recno);
         $table->update([
