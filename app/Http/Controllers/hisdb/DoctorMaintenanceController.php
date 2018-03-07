@@ -64,19 +64,39 @@ class DoctorMaintenanceController extends defaultController
     public function save_session(Request $request){
         if($request->oper == 'add'){
             foreach ($request->rowsArray as $key => $value) {
-                if($value['recstatus']=='True'){
+                if($value['status']=='True'){
                     DB::table('hisdb.apptsession')->insert([
                         'compcode' => session('compcode'),
                         'adduser' => session('username'),
                         'adddate' => Carbon::now(),
-                        'recstatus' => 'A',
+                        'recstatus' =>'A',
                         'doctorcode' => $value['doctorcode'],
                         'days' => $value['days'],
                         'timefr1' => $value['timefr1'],
                         'timeto1' => $value['timeto1'],
                         'timefr2' => $value['timefr2'],
                         'timeto2' => $value['timeto2'],
+                        'status' => $value['status'],
+
                     ]);
+                }
+                else{
+                if($value['status']=='False'){
+                  DB::table('hisdb.apptsession')->insert([
+                        'compcode' => session('compcode'),
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now(),
+                        'recstatus' =>'A',
+                        'doctorcode' => $value['doctorcode'],
+                        'days' => $value['days'],
+                        'timefr1' => $value['timefr1'],
+                        'timeto1' => $value['timeto1'],
+                        'timefr2' => $value['timefr2'],
+                        'timeto2' => $value['timeto2'],
+                        'status' => $value['status'],
+
+                    ]);
+}
                 }
             }
         }else{
@@ -93,6 +113,7 @@ class DoctorMaintenanceController extends defaultController
                         'timeto1' => $value['timeto1'],
                         'timefr2' => $value['timefr2'],
                         'timeto2' => $value['timeto2'],
+                        'status' => $value['status'],
                     ]);
             }
         }

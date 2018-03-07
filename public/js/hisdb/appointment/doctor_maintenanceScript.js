@@ -465,7 +465,7 @@
 									timeto1:'',
 									timefr2:'',
 									timeto2:'',
-									recstatus:'True',
+									status:'False',
 								}
 							);
 						});
@@ -484,7 +484,7 @@
             var urlParamtime = {
 				action:'get_table_default',
 				url: '/util/get_table_default',
-				field:"['doctorcode','days','timefr1','timeto1','timefr2','timeto2']",
+				field:"['doctorcode','days','timefr1','timeto1','timefr2','timeto2','status']",
 				table_name:'hisdb.apptsession',
 				table_id:'idno',
 				filterCol:['doctorcode'],
@@ -495,7 +495,7 @@
 			var saveParamtime={
 				action:'save_table_default',
 				url:"/doctor_maintenance/form",
-				field:['doctorcode','days','timefr1','timeto1','timefr2','timeto2'],
+				field:['doctorcode','days','timefr1','timeto1','timefr2','timeto2','status'],
 				oper:oper,
 				table_name:'hisdb.apptsession',
 				table_id:'idno',
@@ -504,22 +504,22 @@
 			};
 
 			function timefr1CustomEdit(val,opt){
-				val = (val=="undefined"||val=="")? "--:--" : val;	
+				// val = (val=="undefined"||val=="")? "--:--" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
 			function timeto1CustomEdit(val,opt){  	
-				val = (val=="undefined"||val=="")? "--:--" : val;	
+				// val = (val=="undefined"||val=="")? "--:--" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
 			function timefr2CustomEdit(val,opt){  	
-				val = (val=="undefined"||val=="")? "--:--" : val;	
+				// val = (val=="undefined"||val=="")? "--:--" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
 			function timeto2CustomEdit(val,opt){  	
-				val = (val=="undefined"||val=="")? "--:--" : val;	
+				// val = (val=="undefined"||val=="")? "--:--" : val;	
 				return $('<input type="time" class="form-control input-sm" value="'+val+'" >');
 			}
 
@@ -584,7 +584,7 @@
 						        custom_value:galGridCustomValue 	
 						    },
 					},
-					{label:'Status',name: 'recstatus', edittype:'checkbox',formatter:'checkbox',editable:true, 
+					{label:'Status',name: 'status', edittype:'checkbox',formatter:'checkbox',editable:true, 
 					editoptions:
 					{
                            value:'True:False',
@@ -875,7 +875,7 @@
 	            });
 	            $('#datefr').datetimepicker().on('dp.change', function (e) {
 	                var incrementDay = moment(new Date(e.date));
-	                incrementDay.add(1, 'days');
+	                incrementDay.add(0, 'days');
 	                $('#dateto').data('DateTimePicker').minDate(incrementDay);
 	                $(this).data("DateTimePicker").hide();
 	            });
