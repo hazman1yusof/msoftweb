@@ -92,7 +92,16 @@ class AppointmentController extends defaultController
 
     public function editEvent(Request $request){
 
-        DB::table('hisdb.apptbook')
+        if(!empty($request->event_drop)){
+            DB::table('hisdb.apptbook')
+            ->where('idno','=',$request->idno)
+            ->update([
+                'start'       => $request->start,
+                'end'         => $request->end
+            ]);
+            
+        }else{
+            DB::table('hisdb.apptbook')
             ->where('idno','=',$request->idno)
             ->update([
                 'title'       => $request->patname,
@@ -107,11 +116,9 @@ class AppointmentController extends defaultController
                 'case_code'   => $request->case,
                 'remarks'     => $request->remarks,
             ]);
+        }
 
-        // dd()
-        // if(isset($request->delete) && isset($request->id)){
-        //     DB::table('hisdb.apptbook')->where('idno','=',$request->id)->delete();
-        // }
+        
 
     }
 

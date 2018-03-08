@@ -11,6 +11,8 @@
 @section('title', 'Appointment')
 
 @section('body')
+	<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+	
 	<div class='row'>
 		<input id="Class2" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
 		<form id="searchForm" class="formclass" style='width:99%'>

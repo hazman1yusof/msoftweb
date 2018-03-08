@@ -50,8 +50,8 @@ $(document).ready(function () {
 					field:'*',
 					table_name:'hisdb.apptsession',
 					table_id:'idno',
-					filterCol:['doctorcode'],
-					filterVal:[data['a_resourcecode']]
+					filterCol:['doctorcode','status'],
+					filterVal:[data['a_resourcecode'],'True']
 				};
 
 				refreshGrid("#grid_session",session_param);
@@ -341,7 +341,7 @@ $(document).ready(function () {
 		header: {
 			left: 'prev,next today myCustomButton',
 			center: 'title',
-			right: 'month'
+			right: 'month,agendaWeek,agendaDay'
 		},
 		customButtons: {
 	        myCustomButton: {
@@ -362,6 +362,12 @@ $(document).ready(function () {
         	}
     	},
 		defaultDate: d,
+		navLinks: true,
+  		viewRender: function(view, element) { 
+  			// if(view.name=='agendaDay'){
+  			// 	$('#calendar').fullCalendar('gotoDate', $(".fc-myCustomButton-button").data("start"));
+  			// } 
+  		},
 		editable: true,
 		eventLimit: true, // allow "more" link when too many events
 		selectable: true,
@@ -404,17 +410,49 @@ $(document).ready(function () {
 				});
 			}
 			if(event.source.rendering == 'background'){
-		        element.append(event.title);
-		    }
+				element.append(event.title);
+			}
 		},
+		timeFormat: 'h(:mm)a',
 		eventDrop: function(event, delta, revertFunc) {
+			var param={
+				'event_drop':'event_drop',
+				'idno':event.idno,
+				'start':event.start.format("YYYY-MM-DD HH:mm:SS"),
+				'end':event.start.clone().add(session_field.interval, 'minutes').format("YYYY-MM-DD HH:mm:SS"),
+				'_token': $('#token').val()
+			};
+
+			$.post("apptrsc/editEvent",param, function (data) {
+
+			}).fail(function (data) {
+				//////////////////errorText(dialog,data.responseText);
+			}).done(function (data) {
+				
+			});
 		},
 		eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
+			var param={
+				'event_drop':'event_drop',
+				'idno':event.idno,
+				'start':event.start.format("YYYY-MM-DD HH:mm:SS"),
+				'end':event.start.clone().add(session_field.interval, 'minutes').format("YYYY-MM-DD HH:mm:SS"),
+				'_token': $('#token').val()
+			};
+
+			$.post("apptrsc/editEvent",param, function (data) {
+
+			}).fail(function (data) {
+				//////////////////errorText(dialog,data.responseText);
+			}).done(function (data) {
+				
+			});
 		},
+		displayEventTime:true,
 		selectConstraint : "businessHours",
 		eventSources: [
-	        {	
-	        	id:'apptbook'
+			{	
+				id:'apptbook'
 			},
 			{	
 				id:'appt_ph',
@@ -433,6 +471,17 @@ $(document).ready(function () {
 	    ]
 	});
 	$('.fc-myCustomButton-button').hide();
+
+	$('.fc-agendaDay-button.fc-button.fc-state-default.fc-corner-right').click(function(){
+		if($(".fc-myCustomButton-button").data("start")!=null){
+			$('#calendar').fullCalendar(
+					'changeView', 
+					'agendaDay', 
+					$(".fc-myCustomButton-button").data("start").format('YYYY-MM-DD')
+			);
+		}
+		
+	});
 	
 	var oper = 'add';
 	$('#submit').click(function(){

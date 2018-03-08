@@ -61,8 +61,7 @@ class DoctorController extends defaultController
                         ->where('start','>',Carbon::now('Asia/Kuala_Lumpur'))
                         ->get();
                 ///check kalau interval time dia lain, kena susnkan balik apptbook
-                ///$old_doctor->intervaltime != $request->intervaltime && 
-                if($apptbook!=null){
+                if($old_doctor->intervaltime != $request->intervaltime && $apptbook!=null){
                     $old_intervaltime = $old_doctor->intervaltime;
                     $intervaltime = $request->intervaltime;
 
@@ -71,47 +70,36 @@ class DoctorController extends defaultController
                         ->get();
 
                     foreach ($apptbook as $key => $obj) {
-                        print_r($obj);
                         $carbon_time = Carbon::parse($obj->start);
-                        print_r($carbon_time);
                         $dayOfWeek = $carbon_time->dayOfWeek;
                         switch ($dayOfWeek) {
                             case '0':
                                 $session = $this->getFilterSession($apptsession,'SUNDAY');
+                                $this->reconfigureSession($session,$carbon_time,$intervaltime,$obj);
                                 break;
                             case '1':
                                 $session = $this->getFilterSession($apptsession,'MONDAY');
+                                $this->reconfigureSession($session,$carbon_time,$intervaltime,$obj);
                                 break;
                             case '2':
                                 $session = $this->getFilterSession($apptsession,'TUESDAY');
-
-                                $fr_start = Carbon::parse($carbon_time->toDateString().' '.$session->timefr1);
-                                $fr_to = Carbon::parse($carbon_time->toDateString().' '.$session->timeto1);
-
-                                
-                                $fr_start->subMinutes($intervaltime);
-                                while($fr_start->lte($fr_to)) {
-                                    print_r($fr_start);
-                                    $first = $fr_start;
-                                    $second = $fr_start->addMinutes($intervaltime);
-                                    if($carbon_time->lte($second))
-                                    {
-                                        echo $carbon_time.' lagi kecik dari '.$second;
-                                    }
-                                }
-
+                                $this->reconfigureSession($session,$carbon_time,$intervaltime,$obj);
                                 break;
                             case '3':
                                 $session = $this->getFilterSession($apptsession,'WEDNESDAY');
+                                $this->reconfigureSession($session,$carbon_time,$intervaltime,$obj);
                                 break;
                             case '4':
                                 $session = $this->getFilterSession($apptsession,'THURSDAY');
+                                $this->reconfigureSession($session,$carbon_time,$intervaltime,$obj);
                                 break;
                             case '5':
                                 $session = $this->getFilterSession($apptsession,'FRIDAY');
+                                $this->reconfigureSession($session,$carbon_time,$intervaltime,$obj);
                                 break;
                             case '6':
                                 $session = $this->getFilterSession($apptsession,'SATURDAY');
+                                $this->reconfigureSession($session,$carbon_time,$intervaltime,$obj);
                                 break;
                         }
                     }                    
@@ -140,6 +128,25 @@ class DoctorController extends defaultController
             if($value->days == $days){
                 return $value;
             }
+        }
+    }
+
+    public function reconfigureSession($session,$carbon_time,$intervaltime,$obj){
+        $fr_start = Carbon::parse($carbon_time->toDateString().' '.$session->timefr1);
+        $fr_to = Carbon::parse($carbon_time->toDateString().' '.$session->timeto1);
+
+        while($fr_start->lte($fr_to)) {
+            $first = $fr_start;
+            $second = $fr_start->copy()->addMinutes($intervaltime);
+            if($carbon_time->gte($first) && $carbon_time->lte($second)){
+                DB::table('hisdb.apptbook')
+                ->where('idno','=',$obj->idno)
+                ->update([
+                    'start' => $first,
+                    'end' => $second
+                ]);
+            }
+            $fr_start->addMinutes($intervaltime);
         }
     }
 }
