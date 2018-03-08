@@ -31,9 +31,17 @@ class DoctorMaintenanceController extends defaultController
     {   
         $paginate = DB::table('hisdb.apptresrc')
         			->select('resourcecode','description','TYPE')
-        			->where('TYPE','=',$request->filterVal[0])
-        			->paginate(30);
+        			->where('TYPE','=',$request->filterVal[0]);
+
+        if(!empty($request->searchCol)){
+            $paginate = $paginate->where($request->searchCol[0],'like',$request->searchVal[0]);
+        }
+
+
+        $paginate = $paginate->paginate(30);
+
         $apptres = $paginate->items();
+
         foreach ($apptres as $key => $value) {
             $value->countsession = DB::table('hisdb.apptsession')->where('doctorcode','=',$value->resourcecode)->count();
         }
