@@ -145,7 +145,7 @@
           	$("#gridtime :input[name='timeto1']").val($("#time2").val());
           	$("#gridtime :input[name='timefr2']").val($("#time3").val());
           	$("#gridtime :input[name='timeto2']").val($("#time4").val());
-            
+          	$("#gridtime :input[name='status']").prop('checked', true);
          });
 
 			var oper;
@@ -656,7 +656,7 @@
             var urlParamph = {
 				action:'get_table_default',
 				url: '/util/get_table_default',
-				field:"['YEAR','datefr','dateto','remark']",
+				field:"['YEAR','datefr','dateto','remark','backgroundcolor']",
 				table_name:'hisdb.apptph',
 				table_id:'idno',
 				// filterCol:['YEAR'],
@@ -666,7 +666,7 @@
 			var saveParamph={
 				action:'save_table_default',
 				url:"/doctor_maintenance/form",
-				field:['YEAR','datefr','dateto','remark'],
+				field:['YEAR','datefr','dateto','remark','backgroundcolor'],
 				oper:oper,
 				table_name:'hisdb.apptph',
 				table_id:'idno'
@@ -681,6 +681,7 @@
 					{label: 'From', name: 'datefr', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'To', name: 'dateto', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'Remark', name: 'remark', classes: 'wrap'},
+					{label: 'Color', name: 'backgroundcolor', classes: 'wrap',hidden:true},
 				],
 					
 				autowidth:true,
@@ -870,7 +871,7 @@
 		    $(function () {
 	            $('#datefr,#dateto').datetimepicker({
 	            	format: 'YYYY-MM-DD',
-	                useCurrent: false,
+	                useCurrent: true,
 	                minDate: moment()
 	            });
 	            $('#datefr').datetimepicker().on('dp.change', function (e) {
