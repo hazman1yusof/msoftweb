@@ -4,7 +4,7 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
-
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -140,10 +140,10 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
             { label: 'Day', name: 'days', width: 80, classes: 'pointer' },
-            { label: 'From Morning', name: 'timefr1', width: 100, classes: 'pointer' },
-            { label: 'To Morning', name: 'timeto1', width: 100, classes: 'pointer' },
-            { label: 'From Evening', name: 'timefr2', width: 100, classes: 'pointer' },
-            { label: 'To Evening', name: 'timeto2', width: 100, classes: 'pointer' },
+            { label: 'From Morning', name: 'timefr1', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter},
+            { label: 'To Morning', name: 'timeto1', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
+            { label: 'From Evening', name: 'timefr2', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
+            { label: 'To Evening', name: 'timeto2', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
         ],
 		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
 		pager: "#grid_session_pager",
@@ -177,10 +177,14 @@ $(document).ready(function () {
 			colModel: [
 				{	label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', formatter: padzero, unformat: unpadzero, canSearch: true, or_search: true },
 				{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_mrn.gridname);
 				$("#addForm input[name='patname']").val(data['Name']);
+				$("#addForm input[name='telh']").val(data['telh']);
+				$("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_mrn.textfield).parent().next().text(" ");
 			}
 		},
@@ -197,10 +201,14 @@ $(document).ready(function () {
 
 	$("#dialogForm").dialog({
 		autoOpen: false,
-		width: 9.5 / 10 * $(window).width(),
+		width: 8 / 10 * $(window).width(),
 		modal: true,
+		open: function(event,ui){
+			set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
+		},
 		close: function( event, ui ){
 			emptyFormdata(errorField,'#addForm');
+			$('#delete_but').hide();
 		}		
 	});
 
@@ -407,6 +415,10 @@ $(document).ready(function () {
 					$('#status').val(event.apptstatus);
 					$('#idno').val(event.idno);
 					$("#dialogForm").dialog('open');
+					$('#lastuser').val(event.lastuser);
+					$('#lastupdate').val(event.lastupdate);
+
+					$('#delete_but').show();
 				});
 			}
 			if(event.source.rendering == 'background'){
@@ -493,20 +505,19 @@ $(document).ready(function () {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function (data) {
 				$("#dialogForm").dialog('close');
-				var events = {
-	        		id:'apptbook',
-					url: "apptrsc/getEvent",
-					type: 'GET',
-					data: {
-						type:'apptbook',
-						drrsc: $('#resourcecode').val()
-					}
-				}
-
-				$('#calendar').fullCalendar( 'removeEventSource', 'apptbook');
-				$('#calendar').fullCalendar( 'addEventSource', events); 
+				$('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
 			});
 		}
+	});
+
+	$('#delete_but').click(function(){
+		$.post("apptrsc/delEvent", $("#addForm").serialize(), function (data) {
+		}).fail(function (data) {
+			//////////////////errorText(dialog,data.responseText);
+		}).done(function (data) {
+			$("#dialogForm").dialog('close');
+			$('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
+		});
 	});
 	
 });

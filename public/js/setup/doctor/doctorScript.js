@@ -58,6 +58,7 @@
 						case state = 'add':
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
+							$('#intervaltime').val(20);
 							rdonly("#formdata");
 							hideOne("#formdata");
 							break;

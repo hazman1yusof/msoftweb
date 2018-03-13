@@ -5,6 +5,7 @@ namespace App\Http\Controllers\hisdb;
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
+use Carbon\Carbon;
 
 class AppointmentController extends defaultController
 {   
@@ -43,6 +44,7 @@ class AppointmentController extends defaultController
 
                 $select = DB::table('hisdb.apptbook')
                     ->where('loccode','=',$request->drrsc)
+                    ->where('recstatus','=',"A")
                     ->whereBetween('start', [$request->start, $request->end])
                     ->get();
 
@@ -75,17 +77,22 @@ class AppointmentController extends defaultController
     public function addEvent(Request $request){
 
         DB::table('hisdb.apptbook')->insert([
-            'title'       => $request->patname,
+            'title'       => $request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
             'loccode'     => $request->doctor,
             'mrn'         => $request->mrn,
             'pat_name'    => $request->patname,
             'start'       => $request->apptdatefr_day.' '.$request->start_time,
             'end'         => $request->apptdatefr_day.' '.$request->end_time,
-            'telno'       => $request->telno,
+            'telno'       => $request->telh,
             'apptstatus'  => $request->status,
             'telhp'       => $request->telhp,
             'case_code'   => $request->case,
             'remarks'     => $request->remarks,
+            'recstatus'   => 'A',
+            'adduser'     => session('username'),
+            'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
+            'lastuser'    => session('username'),
+            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
         ]);
         
     }
@@ -104,22 +111,33 @@ class AppointmentController extends defaultController
             DB::table('hisdb.apptbook')
             ->where('idno','=',$request->idno)
             ->update([
-                'title'       => $request->patname,
+                'title'       => $request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
                 'loccode'     => $request->doctor,
                 'mrn'         => $request->mrn,
                 'pat_name'    => $request->patname,
                 'start'       => $request->apptdatefr_day.' '.$request->start_time,
                 'end'         => $request->apptdatefr_day.' '.$request->end_time,
-                'telno'       => $request->telno,
+                'telno'       => $request->telh,
                 'apptstatus'  => $request->status,
+                'recstatus'   => 'A',
                 'telhp'       => $request->telhp,
                 'case_code'   => $request->case,
                 'remarks'     => $request->remarks,
+                'lastuser'    => session('username'),
+                'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
             ]);
         }
+    }
 
-        
+    public function delEvent(Request $request){
 
+            DB::table('hisdb.apptbook')
+            ->where('idno','=',$request->idno)
+            ->update([
+                'recstatus'   => 'D',
+                'deluser'     => session('username'),
+                'deldate'     => Carbon::now("Asia/Kuala_Lumpur")
+            ]);
     }
 
 }

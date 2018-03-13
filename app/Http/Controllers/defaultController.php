@@ -219,7 +219,7 @@ abstract class defaultController extends Controller{
         $array_insert = [
         	'compcode' => session('compcode'),
             'adduser' => session('username'),
-            'adddate' => Carbon::now(),
+            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'A'
         ];
 
@@ -254,7 +254,7 @@ abstract class defaultController extends Controller{
         $array_update = [
         	'compcode' => session('compcode'),
             'upduser' => session('username'),
-            'upddate' => Carbon::now(),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'A'
         ];
 
@@ -315,7 +315,7 @@ abstract class defaultController extends Controller{
             $table = $table->where('idno','=',$request->idno);
             $table->update([
                 'deluser' => session('username'),
-                'deldate' => Carbon::now(),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'D',
             ]);
 

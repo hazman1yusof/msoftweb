@@ -440,6 +440,14 @@ function dateUNFormatter(cellvalue, options, rowObject){
 	return moment(cellvalue, "DD/MM/YYYY").format("YYYY-MM-DD");
 }
 
+function timeFormatter(cellvalue, options, rowObject){
+	return moment(cellvalue, 'HH:mm:ss').format("hh:mm A");
+}
+
+function timeUNFormatter(cellvalue, options, rowObject){
+	return moment(cellvalue, "hh:mm A").format('HH:mm:ss');
+}
+
 ////////////////////formatter status////////////////////////////////////////
 function formatterstatus(cellvalue, option, rowObject) {
 	if (cellvalue == 'A') {

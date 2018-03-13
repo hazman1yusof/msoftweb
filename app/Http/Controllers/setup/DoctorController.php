@@ -58,6 +58,7 @@ class DoctorController extends defaultController
                 $old_doctor = DB::table('hisdb.doctor')->where('idno','=',$request->idno)->first();
                 $apptbook = DB::table('hisdb.apptbook')
                         ->where('loccode','=',$request->doctorcode)
+                        ->where('recstatus','=',"A")
                         ->where('start','>',Carbon::now('Asia/Kuala_Lumpur'))
                         ->get();
                 ///check kalau interval time dia lain, kena susnkan balik apptbook
