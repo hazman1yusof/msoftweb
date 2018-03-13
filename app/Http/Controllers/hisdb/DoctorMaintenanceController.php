@@ -87,24 +87,23 @@ class DoctorMaintenanceController extends defaultController
                         'status' => $value['status'],
 
                     ]);
-                }
-                else{
-                if($value['status']=='False'){
-                  DB::table('hisdb.apptsession')->insert([
-                        'compcode' => session('compcode'),
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now(),
-                        'recstatus' =>'A',
-                        'doctorcode' => $value['doctorcode'],
-                        'days' => $value['days'],
-                        'timefr1' => $value['timefr1'],
-                        'timeto1' => $value['timeto1'],
-                        'timefr2' => $value['timefr2'],
-                        'timeto2' => $value['timeto2'],
-                        'status' => $value['status'],
+                }else{
+                    if($value['status']=='False'){
+                      DB::table('hisdb.apptsession')->insert([
+                            'compcode' => session('compcode'),
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now(),
+                            'recstatus' =>'A',
+                            'doctorcode' => $value['doctorcode'],
+                            'days' => $value['days'],
+                            'timefr1' => $value['timefr1'],
+                            'timeto1' => $value['timeto1'],
+                            'timefr2' => $value['timefr2'],
+                            'timeto2' => $value['timeto2'],
+                            'status' => $value['status'],
 
-                    ]);
-}
+                        ]);
+                    }
                 }
             }
         }else{
