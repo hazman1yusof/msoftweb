@@ -871,7 +871,7 @@
 		    $(function () {
 	            $('#datefr,#dateto').datetimepicker({
 	            	format: 'YYYY-MM-DD',
-	                useCurrent: true,
+	                useCurrent: false,
 	                minDate: moment()
 	            });
 	            $('#datefr').datetimepicker().on('dp.change', function (e) {
