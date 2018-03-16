@@ -541,6 +541,7 @@ $(document).ready(function () {
             { label: 'Rowid', name: 'rowid', width: 80, hidden: true },
             { label: 'idno', name: 'idno', width: 80, hidden: true },
             { label: 'start', name: 'start', width: 80, hidden: true },
+            { label: 'new_start', name: 'new_start', width: 80, hidden: true },
             { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
             { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
             { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
@@ -563,6 +564,7 @@ $(document).ready(function () {
             { label: 'Rowid', name: 'rowid', width: 80, hidden: true },
             { label: 'idno', name: 'idno', width: 80, hidden: true },
             { label: 'start', name: 'start', width: 80, hidden: true },
+            { label: 'new_start', name: 'new_start', width: 80, hidden: true },
             { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
             { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
             { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
@@ -733,18 +735,18 @@ $(document).ready(function () {
 		}
 
 		this.add_addedEvent = function(events){
-			//cari kalu event tu dah ada ke blom, kalu undefined maksudnya xde lg, mesti kena xde
-			//var obj = this.addedEvents.find(function (obj) { return obj.unique == events.unique; });
 
-			//cari rowid unik dah adake blom, mesti kena xde, pastu cari pat_name ade kex, mesti kena ada
 			if(!($(this.grid).jqGrid('getDataIDs').includes(events.unique)) && events.pat_name != ''){
 
-				//delete row kosong yang sama time
     			var rowtodel = $(this.grid).jqGrid('getRowData').find(function(obj){
     				return (events.time == obj.time && obj.pat_name == "");
     			});
 
-				//this.addedEvents.push(events);
+    			let seldate = moment($('#td_date_to').val(),'MM-DD-YYYY').format("YYYY-MM-DD");
+    			let new_start = seldate+" "+events.time;
+
+    			events.new_start = new_start;
+    			console.log(events);
 				$(this.grid).jqGrid('delRowData', rowtodel.unique);
     			$(this.grid).jqGrid('addRowData', events.unique, events);
 
@@ -757,10 +759,8 @@ $(document).ready(function () {
 
 			if(($(this.grid).jqGrid('getDataIDs').includes(events.unique)) && events.pat_name != ''){
 
-				//masukkan row yang kosong
-    			var rowtoadd = {unique:events.unique,rowid:events.rowid,start:events.start,time:events.time,pat_name:'',remarks:''};
+    			var rowtoadd = {idno:'none',unique:events.unique+' -sub',rowid:events.rowid,new_start:'',start:events.start,time:events.time,pat_name:'',remarks:''};
 
-				//this.addedEvents.push(events);
 				$(this.grid).jqGrid('delRowData', events.unique);
     			$(this.grid).jqGrid('addRowData', rowtoadd.unique, rowtoadd);
 
@@ -797,7 +797,7 @@ $(document).ready(function () {
 
 			while(!fr_start.isSameOrAfter(date_fr+" "+fr_obj[0].timeto1)){
     			let time_use = fr_start.format("HH:mm:SS");
-    			let objuse = {unique:this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),idno:'none',rowid:this.rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),time:time_use,pat_name:'',remarks:''}
+    			let objuse = {unique:this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),idno:'none',rowid:this.rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),new_start:'',time:time_use,pat_name:'',remarks:''}
 
     			events.forEach(function(elem,id){
 					if(fr_start.isSame(elem.start)){
@@ -817,7 +817,7 @@ $(document).ready(function () {
 
         	while(!fr_start.isSameOrAfter(moment(date_fr+" "+fr_obj[0].timeto2).add(interval, 'minutes'))){
         		let time_use = fr_start.format("HH:mm:SS");
-    			let objuse = {unique:this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),idno:'none',rowid:this.rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),time:time_use,pat_name:'',remarks:''}
+    			let objuse = {unique:this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),idno:'none',rowid:this.rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),new_start:'',time:time_use,pat_name:'',remarks:''}
 
     			events.forEach(function(elem,id){
 					if(fr_start.isSame(elem.start)){
