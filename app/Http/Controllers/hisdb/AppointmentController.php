@@ -66,6 +66,15 @@ class AppointmentController extends defaultController
                     ->get();
 
                 break;
+            case 'apptbook_1':
+
+                $select = DB::table('hisdb.apptbook')
+                    ->where('loccode','=',$request->drrsc)
+                    ->where('recstatus','=',"A")
+                    ->whereBetween('start', [$request->start, $request->end])
+                    ->get();
+
+                break;
             default:
                 return [];
                 break;

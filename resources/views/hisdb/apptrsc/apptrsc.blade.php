@@ -15,26 +15,37 @@
 	
 	<div class='row'>
 		<input id="Class2" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
-		<form id="searchForm" class="formclass" style='width:99%'>
-			<fieldset>
-				<div class='col-md-12' style='padding: 0 0 5px 0;'>
-					<div class='form-group'>
-						<div class='col-md-2'>
-							<label class="control-label" for="Scol">Search By : </label>
-							<input class="form-control input-sm" id="Scol" type="text" readonly>
-						</div>
-						<div class='col-md-3'>
-							<label class="control-label" for="resourcecode">&nbsp</label>
-							<div class='input-group'>
-								<input class="form-control input-sm" id="resourcecode" name="resourcecode" type="text" maxlength="12" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>								
+		<div id="divform" class="formclass" style='width:99%;padding-bottom: 40px'>
+			<form id="searchForm" >
+				<fieldset>
+					<div class='col-md-12' style='padding: 0 0 5px 0;'>
+						<div class='form-group'>
+							<div class='col-md-2'>
+								<label class="control-label" for="Scol">Search By : </label>
+								<input class="form-control input-sm" id="Scol" type="text" readonly>
 							</div>
-							<span class='help-block'></span>
+							<div class='col-md-3'>
+								<label class="control-label" for="resourcecode">&nbsp</label>
+								<div class='input-group'>
+									<input class="form-control input-sm" id="resourcecode" name="resourcecode" type="text" maxlength="12" data-validation="required" readonly>
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>								
+								</div>
+								<span class='help-block'></span>
+							</div>
 						</div>
 					</div>
-				</div>
-			 </fieldset> 
-		</form>
+				 </fieldset>
+			</form>
+
+			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
+				<button type="button" class="btn btn-default" id='transfer_doctor_but'>
+					<span class='fa fa-user-md fa-lg'></span> Transfer Doctor
+				</button>
+				<button type="button" class="btn btn-default" id='transfer_date_but'>
+					<span class='fa fa-calendar fa-lg'></span> Transfer Date
+				</button>
+			</div>
+		</div>
 
 		<div class="panel panel-default">
     		<div class="panel-body">
@@ -157,6 +168,53 @@
             <table id="grid_start_time" class="table table-striped"></table>
             <div id="grid_start_time_pager"></div>
         </div>
+	</div>
+
+	<div id="transfer_date" title="Transfer appointment to different date">
+
+		<div class="row">
+        	<div class="col-md-7">
+        		<form class="form-inline">
+        			<label>Date From</label>
+	        		<input type="text" class="form-control input-sm" id="td_date_from">
+        		</form>
+        	</div>
+        </div>
+
+		<div id='grid_transfer_date_from_c' style="padding:0px 0 15px 0">
+            <table id="grid_transfer_date_from" class="table table-striped"></table>
+            <div id="grid_transfer_date_from_pager"></div>
+        </div>
+
+        <div class="row">
+        	<div class="col-md-7">
+        		<form class="form-inline">
+        			<label>Transfer Date</label>
+	        		<input type="text" class="form-control input-sm" id="td_date_to">
+        		</form>
+        	</div>
+	        <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
+				<button type="button" class="btn btn-default" id='td_but_down'>
+					<span class='fa fa-arrow-circle-down fa-lg'></span> Down
+				</button>
+				<button type="button" class="btn btn-default" id='td_but_up'>
+					<span class='fa fa-arrow-circle-up fa-lg'></span> Up
+				</button>				
+			</div>
+        </div>
+
+        <div id='grid_transfer_date_to_c' style="padding:0px 0 10px 0">
+            <table id="grid_transfer_date_to" class="table table-striped"></table>
+            <div id="grid_transfer_date_to_pager"></div>
+        </div>
+
+        <button type="button" class="btn btn-sm btn-primary" id="td_save">
+        	Save Changes <span class='fa fa-save fa-lg'></span>
+        </button>
+	</div>
+
+	<div id="transfer_doctor" title="Transfer appointment to different doctor">
+		
 	</div>
 
 	@endsection

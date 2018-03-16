@@ -21,6 +21,10 @@
 				$('button[role=button][title=Close]').prop('disabled',false);
 			}
 		}
+		function changeParentTitle(title){
+			var iframe = $('iframe[programid=apptrsc]');
+			iframe.dialog( "option", "title", title );
+		}
 	</script>
 
     <title>Medicsoft Enterprise Edition</title>

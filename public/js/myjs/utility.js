@@ -179,6 +179,12 @@ function parent_close_disabled(isClose){
 	}
 }
 
+function parent_change_title(title){
+	if (window.frameElement) {
+		parent.changeParentTitle(title);
+	}
+}
+
 function selrowData(grid){
 	selrow = $(grid).jqGrid ('getGridParam', 'selrow');
 	return $(grid).jqGrid ('getRowData', selrow);

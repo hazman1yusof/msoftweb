@@ -100,6 +100,8 @@ $(document).ready(function () {
 		let apptsession = $("#grid_session").jqGrid('getRowData');
 		$('.fc-myCustomButton-button').show();
 
+		td_from.addSessionInterval(interval,apptsession);
+		td_to.addSessionInterval(interval,apptsession);
 		session_field.addSessionInterval(interval,apptsession);
 
 		var event_apptbook = {
@@ -129,6 +131,7 @@ $(document).ready(function () {
 		$('#calendar').fullCalendar( 'addEventSource', event_apptbook);
 		$('#calendar').fullCalendar( 'addEventSource', event_appt_leave);
 
+		parent_change_title('Doctor Appointment of '+data['a_description']);
 
 		$(dialog_name.textfield).focus();
 		$("#"+dialog_name.dialogname).dialog( "close" );
@@ -286,7 +289,6 @@ $(document).ready(function () {
 
 		this.clear = function(){
 			$("#grid_start_time").jqGrid("clearGridData", true);
-			$("#grid_end_time").jqGrid("clearGridData", true);
 			return this;
 		}
 
@@ -519,7 +521,319 @@ $(document).ready(function () {
 			$('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
 		});
 	});
+
+	$('#transfer_doctor_but').click(function(){
+		if($("input[name='resourcecode']").val()!=''){
+			$("#transfer_doctor").dialog("open");
+		}
+	});
 	
+	$('#transfer_date_but').click(function(){
+		if($("input[name='resourcecode']").val()!=''){
+			$("#transfer_date").dialog("open");
+		}
+	});
+
+	$("#grid_transfer_date_from").jqGrid({
+		datatype: "local",
+		colModel: [
+            { label: 'unique', name: 'unique', width: 80, hidden: true },
+            { label: 'Rowid', name: 'rowid', width: 80, hidden: true },
+            { label: 'idno', name: 'idno', width: 80, hidden: true },
+            { label: 'start', name: 'start', width: 80, hidden: true },
+            { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
+            { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
+            { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
+        ],
+		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:50,
+		sortname: 'time',
+		sortorder: 'asc',
+		pager: "#grid_transfer_date_from_pager",
+		onSelectRow:function(rowid, selected){
+			$("#td_but_down").data('addedEvent',selrowData("#grid_transfer_date_from"));
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+		},
+	});
+
+	$("#grid_transfer_date_to").jqGrid({
+		datatype: "local",
+		colModel: [
+            { label: 'unique', name: 'unique', width: 80, hidden: true },
+            { label: 'Rowid', name: 'rowid', width: 80, hidden: true },
+            { label: 'idno', name: 'idno', width: 80, hidden: true },
+            { label: 'start', name: 'start', width: 80, hidden: true },
+            { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
+            { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
+            { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
+        ],
+		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:50,
+		sortname: 'time',
+		sortorder: 'asc',
+		pager: "#grid_transfer_date_to_pager",
+		onSelectRow:function(rowid, selected){
+			$("#td_but_up").data('addedEvent',selrowData("#grid_transfer_date_to"));
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+		},
+	});
+
+	$("#transfer_date").dialog({
+		autoOpen: false,
+		width: 8 / 10 * $(window).width(),
+		modal: true,
+		open: function(event,ui){
+			$("#grid_transfer_date_from").jqGrid ('setGridWidth', Math.floor($("#grid_transfer_date_from_c")[0].offsetWidth-$("#grid_transfer_date_from_c")[0].offsetLeft));
+
+			$("#grid_transfer_date_to").jqGrid ('setGridWidth', Math.floor($("#grid_transfer_date_to_c")[0].offsetWidth-$("#grid_transfer_date_to_c")[0].offsetLeft));
+		},
+		close: function( event, ui ){
+
+		}		
+	});
+
+	$("#transfer_doctor").dialog({
+		autoOpen: false,
+		width: 8 / 10 * $(window).width(),
+		modal: true,
+		open: function(event,ui){
+
+		},
+		close: function( event, ui ){
+
+		}
+	});
+
+	$("#td_date_from").datepicker({
+        beforeShowDay: function(date){
+        	return [td_from.hadDay.includes(date.getDay())];
+        },
+        onSelect: function(date){
+        	let sel_date = moment($('#td_date_from').val(),'MM-DD-YYYY').format("YYYY-MM-DD");
+
+			let param = {
+				type: 'apptbook',
+				start: sel_date+' 00:00:00',
+				end: sel_date+' 23:59:59',
+				drrsc: $('#resourcecode').val()
+			}
+
+			$.get( "apptrsc/getEvent"+"?"+$.param(param), function( data ) {
+			
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data)){
+					td_from.clear().init(sel_date,data).set();
+				}else{
+					td_from.clear().init(sel_date).set();
+				}
+			});
+        }
+	});
+
+	$("#td_date_to").datepicker({
+		beforeShowDay: function(date){
+        	return [td_from.hadDay.includes(date.getDay())];
+        },
+        onSelect: function(date){
+        	let sel_date = moment($('#td_date_to').val(),'MM-DD-YYYY').format("YYYY-MM-DD");
+
+			let param = {
+				type: 'apptbook',
+				start: sel_date+' 00:00:00',
+				end: sel_date+' 23:59:59',
+				drrsc: $('#resourcecode').val()
+			}
+
+			$.get( "apptrsc/getEvent"+"?"+$.param(param), function( data ) {
+			
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data)){
+					td_to.clear().init(sel_date,data).set();
+				}else{
+					td_to.clear().init(sel_date).set();
+				}
+			});
+        }
+	});
+
+	$("#td_but_down").click(function(){
+		if(!$("#grid_transfer_date_from").jqGrid('getGridParam', 'selrow')){
+			alert('Please select row');
+		}else{
+			if($('#td_date_to').val() != '' && $('#td_date_from').val() != ''){
+				td_to.add_addedEvent($(this).data('addedEvent'));
+				td_from.sub_addedEvent($(this).data('addedEvent'));
+			}else{
+				alert('please select date first');
+			}
+		}
+	});
+
+	$("#td_but_up").click(function(){
+		if(!$("#grid_transfer_date_to").jqGrid('getGridParam', 'selrow')){
+			alert('Please select row');
+		}else{
+			if($('#td_date_to').val() != '' && $('#td_date_from').val() != ''){
+				td_from.add_addedEvent($(this).data('addedEvent'));
+				td_to.sub_addedEvent($(this).data('addedEvent'));
+			}else{
+				alert('please select date first');
+			}
+		}
+	});
+
+	$('#td_save').click(function(){
+
+		var arraytd = $("#grid_transfer_date_to").jqGrid ('getGridParam').data.filter(function( obj ) {
+			return obj.idno != "none";
+		});
+
+
+
+		console.log(arraytd);
+		var obj = {
+			data:'transfer'
+		}
+
+		// $.post("apptrsc/addEvent?type=transfer", obj, function (data) {
+		// }).fail(function (data) {
+		// 	//////////////////errorText(dialog,data.responseText);
+		// }).done(function (data) {
+		// 	// $("#dialogForm").dialog('close');
+		// 	// $('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
+		// });
+
+	});
+
+	var td_from = new td_grid("#grid_transfer_date_from");
+	var td_to = new td_grid("#grid_transfer_date_to");
+
+	function td_grid(grid){
+		this.apptsession,this.interval,this.date_fr,this.day_fr,this.fr_obj,this.fr_start,this.events,this.hadDay,this.grid=grid,this.addedEvents=[],this.rowid=0;
+
+		this.addSessionInterval = function(interval,apptsession){
+			this.apptsession = apptsession;
+			this.interval = interval;
+
+			var hadDay = [];
+			this.apptsession.forEach(function( obj ) {
+				switch(obj.days) {
+					case "SUNDAY": hadDay.push(0); break;
+					case "MONDAY":  hadDay.push(1); break;
+					case "TUESDAY": hadDay.push(2); break;
+					case "WEDNESDAY": hadDay.push(3); break;
+					case "THURSDAY": hadDay.push(4); break;
+					case "FRIDAY": hadDay.push(5); break;
+					case "SATURDAY": hadDay.push(6); break;
+				}
+			});
+			this.hadDay = hadDay;
+
+			return this;
+		}
+
+		this.add_addedEvent = function(events){
+			//cari kalu event tu dah ada ke blom, kalu undefined maksudnya xde lg, mesti kena xde
+			//var obj = this.addedEvents.find(function (obj) { return obj.unique == events.unique; });
+
+			//cari rowid unik dah adake blom, mesti kena xde, pastu cari pat_name ade kex, mesti kena ada
+			if(!($(this.grid).jqGrid('getDataIDs').includes(events.unique)) && events.pat_name != ''){
+
+				//delete row kosong yang sama time
+    			var rowtodel = $(this.grid).jqGrid('getRowData').find(function(obj){
+    				return (events.time == obj.time && obj.pat_name == "");
+    			});
+
+				//this.addedEvents.push(events);
+				$(this.grid).jqGrid('delRowData', rowtodel.unique);
+    			$(this.grid).jqGrid('addRowData', events.unique, events);
+
+    			$(this.grid).jqGrid('setGridParam',{sortname:'time'}).trigger('reloadGrid');
+			}
+
+		}
+
+		this.sub_addedEvent = function(events){
+
+			if(($(this.grid).jqGrid('getDataIDs').includes(events.unique)) && events.pat_name != ''){
+
+				//masukkan row yang kosong
+    			var rowtoadd = {unique:events.unique,rowid:events.rowid,start:events.start,time:events.time,pat_name:'',remarks:''};
+
+				//this.addedEvents.push(events);
+				$(this.grid).jqGrid('delRowData', events.unique);
+    			$(this.grid).jqGrid('addRowData', rowtoadd.unique, rowtoadd);
+
+    			$(this.grid).jqGrid('setGridParam',{sortname:'time'}).trigger('reloadGrid');
+			}
+
+		}
+
+		this.clear = function(){
+			this.rowid = 0;
+			//this.addedEvents = [];
+			$(this.grid).jqGrid("clearGridData", true);
+			return this;
+		}
+
+		this.init = function(date_fr,events = []){
+			this.events = events;
+
+			this.date_fr = date_fr;
+			this.day_fr = moment(this.date_fr).format('dddd').toUpperCase();
+			let day_fr = this.day_fr;
+
+			this.fr_obj = this.apptsession.filter(function( obj ) {
+				return obj.days == day_fr;
+			});
+
+			this.fr_start = moment(this.date_fr+" "+this.fr_obj[0].timefr1);
+
+			return this;
+		}
+
+		this.set = function(){
+			var fr_start = this.fr_start, date_fr = this.date_fr, fr_obj = this.fr_obj, interval= this.interval, events = this.events;
+
+			while(!fr_start.isSameOrAfter(date_fr+" "+fr_obj[0].timeto1)){
+    			let time_use = fr_start.format("HH:mm:SS");
+    			let objuse = {unique:this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),idno:'none',rowid:this.rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),time:time_use,pat_name:'',remarks:''}
+
+    			events.forEach(function(elem,id){
+					if(fr_start.isSame(elem.start)){
+	    				objuse.idno=elem.idno;
+	    				objuse.pat_name=elem.pat_name;
+	    				objuse.remarks=elem.remarks;
+					}
+    			});
+
+    			//shit happen unique actually means rowid
+    			$(this.grid).jqGrid('addRowData', this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"), objuse);
+    			fr_start.add(interval, 'minutes');
+    			this.rowid++;
+        	}
+
+        	fr_start = moment(date_fr+" "+fr_obj[0].timefr2);
+
+        	while(!fr_start.isSameOrAfter(moment(date_fr+" "+fr_obj[0].timeto2).add(interval, 'minutes'))){
+        		let time_use = fr_start.format("HH:mm:SS");
+    			let objuse = {unique:this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),idno:'none',rowid:this.rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),time:time_use,pat_name:'',remarks:''}
+
+    			events.forEach(function(elem,id){
+					if(fr_start.isSame(elem.start)){
+	    				objuse.idno=elem.idno;
+	    				objuse.pat_name=elem.pat_name;
+	    				objuse.remarks=elem.remarks;
+					}
+    			});
+
+    			$(this.grid).jqGrid('addRowData', this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"), objuse);
+    			fr_start = fr_start.add(interval, 'minutes');
+    			this.rowid++;
+        	}
+		}
+	}
+
 });
 
 
