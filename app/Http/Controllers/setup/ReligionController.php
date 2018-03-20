@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\setup;
 
-use App\religion;
+use App\model\sysdb\religion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use stdClass;

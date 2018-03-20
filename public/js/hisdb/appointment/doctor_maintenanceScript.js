@@ -658,7 +658,7 @@
 				url: '/util/get_table_default',
 				field:"['YEAR','datefr','dateto','remark','backgroundcolor']",
 				table_name:'hisdb.apptph',
-				table_id:'idno',
+				table_id:'idno'
 				// filterCol:['YEAR'],
 				// filterVal:[ ''],
 			}
@@ -669,8 +669,8 @@
 				field:['YEAR','datefr','dateto','remark','backgroundcolor'],
 				oper:oper,
 				table_name:'hisdb.apptph',
-				table_id:'idno'
-				
+				table_id:'idno',
+				noduplicate:true,
 			};
 
             $("#gridph").jqGrid({
@@ -772,8 +772,8 @@
 				field:['YEAR','datefr','dateto','remark','resourcecode'],
 				oper:oper,
 				table_name:'hisdb.apptleave',
-				table_id:'idno'
-				
+				table_id:'idno',
+				noduplicate:true,
 			};
 
             $("#gridleave").jqGrid({

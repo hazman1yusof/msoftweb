@@ -211,6 +211,17 @@ $(document).ready(function () {
 				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
             ],
             ondblClickRow: function () {
+				let data = selrowData('#' + dialog_name.gridname);
+				
+            	var session_param ={
+					action:"get_value_default",
+					url:'/util/get_table_default',
+					field:'*',
+					table_name:'hisdb.apptsession',
+					table_id:'idno',
+					filterCol:['doctorcode','status'],
+					filterVal:[data['a_resourcecode'],'True']
+				};
 			}
         },{
             title: "Select Doctor",
