@@ -168,8 +168,8 @@ $(document).ready(function () {
 		{
 			title: "Select Case",
 			open: function () {
-				dialog_case.urlParam.filterCol = ['compcode'];
-				dialog_case.urlParam.filterVal = ['9A'];
+				dialog_case.urlParam.filterCol = ['grpcasetype','compcode'];
+				dialog_case.urlParam.filterVal = ['REGISTER','9A'];
 			},
 		}, 'urlParam'
 	);
@@ -212,7 +212,7 @@ $(document).ready(function () {
             ],
             ondblClickRow: function () {
 				let data = selrowData('#' + dialog_name.gridname);
-				
+
             	var session_param ={
 					action:"get_value_default",
 					url:'/util/get_table_default',
