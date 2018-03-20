@@ -94,6 +94,7 @@ $(document).ready(function () {
 		$(dialog_name.textfield).off('blur',onBlur);
 		$(dialog_name.textfield).val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
 		$(dialog_name.textfield).parent().next().html(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[1]]);
+		$('#transfer_doctor_from').val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
 
 		let data = selrowData('#' + dialog_name.gridname);
 		let interval = data['d_intervaltime'];
@@ -200,6 +201,33 @@ $(document).ready(function () {
 		}, 'urlParam'
 	);
 	dialog_mrn.makedialog(true);
+
+	var dialog_doctor = new ordialog(
+		'dialog_doctor', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='transfer_doctor']", errorField,
+        {
+            colModel: [
+                { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
+            ],
+            ondblClickRow: function () {
+			}
+        },{
+            title: "Select Doctor",
+            open: function () {
+                var type = $('#Class2').val();
+				dialog_doctor.urlParam.join_type = ['LEFT JOIN'];
+				dialog_doctor.urlParam.join_onCol = ['a.resourcecode'];
+				dialog_doctor.urlParam.join_onVal = ['d.doctorcode'];
+				dialog_doctor.urlParam.join_filterCol = [['a.compcode on =']];
+				dialog_doctor.urlParam.join_filterVal = [['d.compcode']];
+				dialog_doctor.urlParam.fixPost='true';
+				dialog_doctor.urlParam.filterCol = ['a.TYPE'];
+				dialog_doctor.urlParam.filterVal = [type];
+			}
+        }, 'urlParam'
+    );
+	dialog_doctor.makedialog(true);
 
 
 	$("#dialogForm").dialog({
@@ -540,12 +568,14 @@ $(document).ready(function () {
 	});
 
 	$('#transfer_doctor_but').click(function(){
+		$("#transfer_doctor_div").show();
 		if($("input[name='resourcecode']").val()!=''){
-			$("#transfer_doctor").dialog("open");
+			$("#transfer_date").dialog("open");
 		}
 	});
 	
 	$('#transfer_date_but').click(function(){
+		$("#transfer_doctor_div").hide();
 		if($("input[name='resourcecode']").val()!=''){
 			$("#transfer_date").dialog("open");
 		}
@@ -611,21 +641,11 @@ $(document).ready(function () {
 			$("#grid_transfer_date_to").jqGrid ('setGridWidth', Math.floor($("#grid_transfer_date_to_c")[0].offsetWidth-$("#grid_transfer_date_to_c")[0].offsetLeft));
 		},
 		close: function( event, ui ){
-
-		}		
-	});
-
-	$("#transfer_doctor").dialog({
-		autoOpen: false,
-		width: 8 / 10 * $(window).width(),
-		modal: true,
-		open: function(event,ui){
-
-		},
-		close: function( event, ui ){
-			td_to.clear();
+			$('#td_date_from').val('');
+			$('#td_date_to').val('');
 			td_from.clear();
-		}
+			td_to.clear();
+		}		
 	});
 
 	$("#td_date_from").datepicker({
@@ -877,5 +897,3 @@ $(document).ready(function () {
 	}
 
 });
-
-

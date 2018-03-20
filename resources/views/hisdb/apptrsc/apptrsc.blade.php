@@ -173,10 +173,11 @@
 	<div id="transfer_date" title="Transfer appointment to different date">
 
 		<div class="row">
-        	<div class="col-md-7">
+        	<div class="col-md-7" style="padding:0px">
         		<form class="form-inline">
         			<label>Date From</label>
-	        		<input type="text" class="form-control input-sm" id="td_date_from">
+	        		<input type="text" class="form-control input-sm" id="td_date_from" placeholder="Date From">
+					<input type="text" class="form-control input-sm" id="transfer_doctor_from" readonly>
         		</form>
         	</div>
         </div>
@@ -187,10 +188,17 @@
         </div>
 
         <div class="row">
-        	<div class="col-md-7">
+        	<div class="col-md-7 pull-left" style="padding:0px">
         		<form class="form-inline">
         			<label>Transfer Date</label>
-	        		<input type="text" class="form-control input-sm" id="td_date_to">
+	        		<input type="text" class="form-control input-sm" placeholder="Transfer Date" id="td_date_to">
+	        		<span id="transfer_doctor_div">
+		        		<label for="Doctor">Doctor</label>
+						<div class="input-group">
+							<input type="text" class="form-control input-sm" placeholder="Transfer Doctor" id="transfer_doctor" name="transfer_doctor" readonly>	
+							<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+						</div>
+					</span>
         		</form>
         	</div>
 	        <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
@@ -211,10 +219,6 @@
         <button type="button" class="btn btn-sm btn-primary" id="td_save">
         	Save Changes <span class='fa fa-save fa-lg'></span>
         </button>
-	</div>
-
-	<div id="transfer_doctor" title="Transfer appointment to different doctor">
-		
 	</div>
 
 	@endsection
