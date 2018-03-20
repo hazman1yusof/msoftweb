@@ -208,6 +208,7 @@ $(document).ready(function () {
 		modal: true,
 		open: function(event,ui){
 			set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
+			session_field.clear().ready().set();
 		},
 		close: function( event, ui ){
 			emptyFormdata(errorField,'#addForm');
@@ -235,6 +236,7 @@ $(document).ready(function () {
 	$("#grid_start_time").jqGrid({
 		datatype: "local",
 		colModel: [
+            { label: 'timehidden', name: 'timehidden', width: 80, hidden: true },
             { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
             { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
             { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
@@ -244,8 +246,9 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$('#start_time').val(rowid);
-			$('#end_time').val(moment($('#apptdatefr_day').val()+" "+rowid).add(session_field.interval, 'minutes').subtract(1, 'minutes').format("HH:mm:SS"));
+			let time = selrowData("#grid_start_time").timehidden;
+			$('#start_time').val(time);
+			$('#end_time').val(moment($('#apptdatefr_day').val()+" "+time).add(session_field.interval, 'minutes').format("HH:mm:SS"));
 			$("#start_time_dialog").dialog('close');
 		},
 	});
@@ -278,7 +281,6 @@ $(document).ready(function () {
 				temp_bussHour.push(temp_obj);
 			});
 
-			///tukar business hour
 			$('#calendar').fullCalendar('option', {
 			   	businessHours: temp_bussHour
 			});
@@ -309,18 +311,27 @@ $(document).ready(function () {
 		this.set = function(){
 			var fr_start = this.fr_start, date_fr = this.date_fr, fr_obj = this.fr_obj, interval= this.interval, events = this.events;
 
+			var rowid = 0;
 			while(!fr_start.isSameOrAfter(date_fr+" "+fr_obj[0].timeto1)){
     			let time_use = fr_start.format("HH:mm:SS");
-    			let objuse = {time:time_use,pat_name:'',remarks:''}
+    			let objuse = {timehidden:time_use,time:time_use,pat_name:'',remarks:''}
 
     			events.forEach(function(elem,id){
 					if(elem.start.isSame(fr_start)){
-	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+', '+elem.pat_name;
-	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+', '+elem.remarks;
+						if(objuse.pat_name!=''){
+							rowid = rowid+1;
+    						$("#grid_start_time").jqGrid('addRowData', rowid,{
+    							timehidden:time_use,time:time_use+' <span class="label label-danger">Overlap</span>',remarks:elem.remarks,pat_name:elem.pat_name
+    						});
+						}else{
+							objuse.pat_name=elem.pat_name;
+	    					objuse.remarks=elem.remarks;
+						}
 					}
     			});
 
-    			$("#grid_start_time").jqGrid('addRowData', time_use,objuse);
+				rowid = rowid+1;
+    			$("#grid_start_time").jqGrid('addRowData', rowid,objuse);
     			fr_start.add(interval, 'minutes');
         	}
 
@@ -328,16 +339,24 @@ $(document).ready(function () {
 
         	while(!fr_start.isSameOrAfter(moment(date_fr+" "+fr_obj[0].timeto2).add(interval, 'minutes'))){
         		let time_use = fr_start.format("HH:mm:SS");
-    			let objuse = {time:time_use,pat_name:'',remarks:''}
+    			let objuse = {timehidden:time_use,time:time_use,pat_name:'',remarks:''}
 
     			events.forEach(function(elem,id){
 					if(elem.start.isSame(fr_start)){
-	    				objuse.pat_name=(objuse.pat_name=='')?elem.pat_name:objuse.pat_name+','+elem.pat_name;
-	    				objuse.remarks=(objuse.remarks=='')?elem.remarks:objuse.remarks+','+elem.remarks;
+						if(objuse.pat_name!=''){
+							rowid = rowid+1;
+    						$("#grid_start_time").jqGrid('addRowData', rowid,{
+    							timehidden:time_use,time:time_use+' <span class="label label-danger">Overlap</span>',remarks:elem.remarks,pat_name:elem.pat_name
+    						});
+						}else{
+							objuse.pat_name=elem.pat_name;
+	    					objuse.remarks=elem.remarks;
+						}
 					}
     			});
 
-    			$("#grid_start_time").jqGrid('addRowData', time_use,objuse);
+				rowid = rowid+1;
+    			$("#grid_start_time").jqGrid('addRowData', rowid,objuse);
     			fr_start = fr_start.add(interval, 'minutes');
         	}
 		}
@@ -364,8 +383,6 @@ $(document).ready(function () {
 
 					$('#dialogForm #doctor').val(temp);
 					$('#apptdatefr_day').val(moment(start).format('YYYY-MM-DD'));
-
-	            	session_field.clear().ready().set();
 					
 					$("#dialogForm").dialog("open");
             	}
@@ -416,11 +433,12 @@ $(document).ready(function () {
 					$('#remarks').val(event.remarks);
 					$('#status').val(event.apptstatus);
 					$('#idno').val(event.idno);
-					$("#dialogForm").dialog('open');
 					$('#lastuser').val(event.lastuser);
 					$('#lastupdate').val(event.lastupdate);
 
 					$('#delete_but').show();
+
+					$("#dialogForm").dialog('open');
 				});
 			}
 			if(event.source.rendering == 'background'){
@@ -474,8 +492,7 @@ $(document).ready(function () {
 				type:'GET',
 				data:{
 					type:'appt_ph'
-				},
-				color: 'yellow', 
+				}, 
             	textColor: 'black',
             	rendering: 'background'
 			},
@@ -542,6 +559,8 @@ $(document).ready(function () {
             { label: 'idno', name: 'idno', width: 80, hidden: true },
             { label: 'start', name: 'start', width: 80, hidden: true },
             { label: 'new_start', name: 'new_start', width: 80, hidden: true },
+            { label: 'new_end', name: 'new_start', width: 80, hidden: true },
+            { label: 'time_hidden', name: 'time_hidden', width: 80, hidden: true },
             { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
             { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
             { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
@@ -565,6 +584,8 @@ $(document).ready(function () {
             { label: 'idno', name: 'idno', width: 80, hidden: true },
             { label: 'start', name: 'start', width: 80, hidden: true },
             { label: 'new_start', name: 'new_start', width: 80, hidden: true },
+            { label: 'new_end', name: 'new_end', width: 80, hidden: true },
+            { label: 'time_hidden', name: 'time_hidden', width: 80, hidden: true },
             { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
             { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
             { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
@@ -602,16 +623,18 @@ $(document).ready(function () {
 
 		},
 		close: function( event, ui ){
-
+			td_to.clear();
+			td_from.clear();
 		}
 	});
 
 	$("#td_date_from").datepicker({
+		dateFormat: 'dd-mm-yy',
         beforeShowDay: function(date){
         	return [td_from.hadDay.includes(date.getDay())];
         },
         onSelect: function(date){
-        	let sel_date = moment($('#td_date_from').val(),'MM-DD-YYYY').format("YYYY-MM-DD");
+        	let sel_date = moment($('#td_date_from').val(),'DD-MM-YYYY').format("YYYY-MM-DD");
 
 			let param = {
 				type: 'apptbook',
@@ -633,11 +656,12 @@ $(document).ready(function () {
 	});
 
 	$("#td_date_to").datepicker({
+		dateFormat: 'dd-mm-yy',
 		beforeShowDay: function(date){
         	return [td_from.hadDay.includes(date.getDay())];
         },
         onSelect: function(date){
-        	let sel_date = moment($('#td_date_to').val(),'MM-DD-YYYY').format("YYYY-MM-DD");
+        	let sel_date = moment($('#td_date_to').val(),'DD-MM-YYYY').format("YYYY-MM-DD");
 
 			let param = {
 				type: 'apptbook',
@@ -687,23 +711,21 @@ $(document).ready(function () {
 	$('#td_save').click(function(){
 
 		var arraytd = $("#grid_transfer_date_to").jqGrid ('getGridParam').data.filter(function( obj ) {
-			return obj.idno != "none";
+			return obj.new_start != "";
 		});
 
-
-
-		console.log(arraytd);
 		var obj = {
-			data:'transfer'
+			"_token": $('#token').val(),
+			"arraytd":arraytd
 		}
 
-		// $.post("apptrsc/addEvent?type=transfer", obj, function (data) {
-		// }).fail(function (data) {
-		// 	//////////////////errorText(dialog,data.responseText);
-		// }).done(function (data) {
-		// 	// $("#dialogForm").dialog('close');
-		// 	// $('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
-		// });
+		$.post("apptrsc/editEvent?type=transfer", obj, function (data) {
+		}).fail(function (data) {
+			//////////////////errorText(dialog,data.responseText);
+		}).done(function (data) {
+			$("#transfer_date").dialog('close');
+			$('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
+		});
 
 	});
 
@@ -711,7 +733,7 @@ $(document).ready(function () {
 	var td_to = new td_grid("#grid_transfer_date_to");
 
 	function td_grid(grid){
-		this.apptsession,this.interval,this.date_fr,this.day_fr,this.fr_obj,this.fr_start,this.events,this.hadDay,this.grid=grid,this.addedEvents=[],this.rowid=0;
+		this.apptsession,this.interval,this.date_fr,this.day_fr,this.fr_obj,this.fr_start,this.events,this.hadDay,this.grid=grid,this.addedEvents=[];
 
 		this.addSessionInterval = function(interval,apptsession){
 			this.apptsession = apptsession;
@@ -734,44 +756,49 @@ $(document).ready(function () {
 			return this;
 		}
 
+		//selalunya apa yang berlaku dkt bawah
 		this.add_addedEvent = function(events){
 
 			if(!($(this.grid).jqGrid('getDataIDs').includes(events.unique)) && events.pat_name != ''){
 
-    			var rowtodel = $(this.grid).jqGrid('getRowData').find(function(obj){
-    				return (events.time == obj.time && obj.pat_name == "");
-    			});
+				var rowtodel = $(this.grid).jqGrid('getRowData').find(function(obj){
+					return (events.time_hidden == obj.time_hidden && obj.pat_name == "");
+				});
+				console.log(rowtodel);
 
-    			let seldate = moment($('#td_date_to').val(),'MM-DD-YYYY').format("YYYY-MM-DD");
-    			let new_start = seldate+" "+events.time;
+				var seldate = moment($('#td_date_to').val()+" "+events.time_hidden,'DD-MM-YYYY HH:mm:SS');
+				let new_start = seldate.format('YYYY-MM-DD HH:mm:SS');
 
-    			events.new_start = new_start;
-    			console.log(events);
-				$(this.grid).jqGrid('delRowData', rowtodel.unique);
-    			$(this.grid).jqGrid('addRowData', events.unique, events);
+				seldate.add(this.interval, 'minutes');
+				let new_end = seldate.format('YYYY-MM-DD HH:mm:SS');
 
-    			$(this.grid).jqGrid('setGridParam',{sortname:'time'}).trigger('reloadGrid');
+				events.new_start = new_start;
+				events.new_end = new_end;
+
+				if(rowtodel != undefined)$(this.grid).jqGrid('delRowData', rowtodel.unique);
+				$(this.grid).jqGrid('addRowData', events.unique, events);
+				$(this.grid).jqGrid('setGridParam',{sortname:'time'}).trigger('reloadGrid');
 			}
 
 		}
 
+		//selalunyer apa yg berlaku dkt atas
 		this.sub_addedEvent = function(events){
 
 			if(($(this.grid).jqGrid('getDataIDs').includes(events.unique)) && events.pat_name != ''){
 
-    			var rowtoadd = {idno:'none',unique:events.unique+' -sub',rowid:events.rowid,new_start:'',start:events.start,time:events.time,pat_name:'',remarks:''};
+				var rowtoadd = {idno:'none',unique:events.unique+' -sub',rowid:events.rowid,new_start:'',start:events.start,time:events.time,time_hidden:events.time_hidden,pat_name:'',remarks:''};
 
 				$(this.grid).jqGrid('delRowData', events.unique);
-    			$(this.grid).jqGrid('addRowData', rowtoadd.unique, rowtoadd);
-
-    			$(this.grid).jqGrid('setGridParam',{sortname:'time'}).trigger('reloadGrid');
+				if(events.time.indexOf("span") == -1){
+					$(this.grid).jqGrid('addRowData', rowtoadd.unique, rowtoadd);
+				}
+				$(this.grid).jqGrid('setGridParam',{sortname:'time'}).trigger('reloadGrid');
 			}
 
 		}
 
 		this.clear = function(){
-			this.rowid = 0;
-			//this.addedEvents = [];
 			$(this.grid).jqGrid("clearGridData", true);
 			return this;
 		}
@@ -793,43 +820,58 @@ $(document).ready(function () {
 		}
 
 		this.set = function(){
-			var fr_start = this.fr_start, date_fr = this.date_fr, fr_obj = this.fr_obj, interval= this.interval, events = this.events;
+			var fr_start = this.fr_start, date_fr = this.date_fr, fr_obj = this.fr_obj, interval= this.interval, events = this.events, grid = this.grid, rowid = 0;
 
 			while(!fr_start.isSameOrAfter(date_fr+" "+fr_obj[0].timeto1)){
     			let time_use = fr_start.format("HH:mm:SS");
-    			let objuse = {unique:this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),idno:'none',rowid:this.rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),new_start:'',time:time_use,pat_name:'',remarks:''}
+    			let objuse = {idno:'none',start:fr_start.format("YYYY-MM-DD HH:mm:SS"),new_start:'',new_end:'',time_hidden:time_use,time:time_use,pat_name:'',remarks:''}
 
     			events.forEach(function(elem,id){
-					if(fr_start.isSame(elem.start)){
-	    				objuse.idno=elem.idno;
-	    				objuse.pat_name=elem.pat_name;
-	    				objuse.remarks=elem.remarks;
+    				if(fr_start.isSame(elem.start)){
+						if(objuse.pat_name!=''){
+    						$(grid).jqGrid('addRowData',rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),{unique:rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),rowid:rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),new_start:'',new_end:'',time_hidden:time_use,time:time_use+' <span class="label label-danger">Overlap</span>',idno:elem.idno,remarks:elem.remarks,pat_name:elem.pat_name
+    						});
+    						rowid++;
+						}else{
+	    					objuse.idno=elem.idno;
+							objuse.pat_name=elem.pat_name;
+	    					objuse.remarks=elem.remarks;
+						}
 					}
     			});
 
-    			//shit happen unique actually means rowid
-    			$(this.grid).jqGrid('addRowData', this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"), objuse);
+    			objuse.unique = rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS");
+    			objuse.rowid = rowid;
+    			$(grid).jqGrid('addRowData', rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"), objuse);
     			fr_start.add(interval, 'minutes');
-    			this.rowid++;
+    			rowid++;
         	}
 
         	fr_start = moment(date_fr+" "+fr_obj[0].timefr2);
 
         	while(!fr_start.isSameOrAfter(moment(date_fr+" "+fr_obj[0].timeto2).add(interval, 'minutes'))){
         		let time_use = fr_start.format("HH:mm:SS");
-    			let objuse = {unique:this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),idno:'none',rowid:this.rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),new_start:'',time:time_use,pat_name:'',remarks:''}
+    			let objuse = {unique:rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),idno:'none',rowid:rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),new_start:'',new_end:'',time_hidden:time_use,time:time_use,pat_name:'',remarks:''}
 
     			events.forEach(function(elem,id){
-					if(fr_start.isSame(elem.start)){
-	    				objuse.idno=elem.idno;
-	    				objuse.pat_name=elem.pat_name;
-	    				objuse.remarks=elem.remarks;
+    				if(fr_start.isSame(elem.start)){
+						if(objuse.pat_name!=''){
+    						$(grid).jqGrid('addRowData',rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),{unique:rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"),rowid:rowid,start:fr_start.format("YYYY-MM-DD HH:mm:SS"),new_start:'',new_end:'',time_hidden:time_use,time:time_use+' <span class="label label-danger">Overlap</span>',idno:elem.idno,remarks:elem.remarks,pat_name:elem.pat_name
+    						});
+    						rowid++;
+						}else{
+							objuse.unique=rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS");
+							objuse.rowid=rowid;
+	    					objuse.idno=elem.idno;
+							objuse.pat_name=elem.pat_name;
+	    					objuse.remarks=elem.remarks;
+						}
 					}
     			});
 
-    			$(this.grid).jqGrid('addRowData', this.rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"), objuse);
+    			$(grid).jqGrid('addRowData', rowid+'-'+fr_start.format("YYYY-MM-DD HH:mm:SS"), objuse);
     			fr_start = fr_start.add(interval, 'minutes');
-    			this.rowid++;
+    			rowid++;
         	}
 		}
 	}

@@ -51,10 +51,16 @@ class AppointmentController extends defaultController
                 break;
             case 'appt_ph':
 
-                 $select = DB::table('hisdb.apptph')
-                    ->select('datefr as start','dateto as end','remark as title')
-                    ->whereBetween('datefr', [$request->start, $request->end])
-                    ->get();
+                $select = DB::table('hisdb.apptph')
+                   ->select('datefr as start','dateto as end','backgroundcolor as color','remark as title')
+                   ->whereBetween('datefr', [$request->start, $request->end])
+                   ->get();
+
+                foreach ($select as $key => $value) {
+                    $value->textColor = 'white';
+                    $value->rendering = 'background';
+                }
+
 
                 break;
             case 'appt_leave':
@@ -116,6 +122,17 @@ class AppointmentController extends defaultController
                 'end'         => $request->end
             ]);
             
+        }else if(!empty($request->type) && $request->type=='transfer'){
+
+            foreach ($request->arraytd as $key => $value) {
+                DB::table('hisdb.apptbook')
+                ->where('idno','=',$value['idno'])
+                ->update([
+                    'start'       => $value['new_start'],
+                    'end'         => $value['new_end']
+                ]);
+            }
+
         }else{
             DB::table('hisdb.apptbook')
             ->where('idno','=',$request->idno)
@@ -135,6 +152,7 @@ class AppointmentController extends defaultController
                 'lastuser'    => session('username'),
                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
             ]);
+
         }
     }
 
