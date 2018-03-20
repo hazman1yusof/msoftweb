@@ -73,13 +73,13 @@
 								<label for="title" class="col-md-2 control-label">MRN</label>
 								<div class="col-md-4">
 									<div class="input-group">
-										<input type="text" class="form-control input-sm" placeholder="MRN No" id="mrn" name="mrn" maxlength="12" data-validation="required" readonly>
+										<input type="text" class="form-control input-sm" placeholder="MRN No" id="mrn" name="mrn" maxlength="12" readonly>
 										<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class='help-block'></span>
 								</div>
 								<div class="col-md-4">
-									<input type="text" class="form-control input-sm" placeholder="" id="patname" name="patname">
+									<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
 								</div>
 							</div>
 							<div class="form-group">
