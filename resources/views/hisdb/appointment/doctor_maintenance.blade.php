@@ -196,7 +196,7 @@
 			<form class='form-horizontal' style='width:89%' id='phformdata'>
 			{{ csrf_field() }}
 			<input id="resourcecode" name="resourcecode" type="hidden">
-			<input id="idno" name="idno" type="hidden">
+			<input type="hidden" name="idno">
 			<input id="YEAR" name="YEAR" type="hidden"  value="<?php echo date("Y") ?>">
 				<div class="form-group">
 				<!-- <div class="form-group">

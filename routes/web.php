@@ -156,3 +156,9 @@ Route::get('/pat_mast','hisdb\PatmastController@show');
 Route::get('/pat_mast/get_entry','hisdb\PatmastController@get_entry');
 Route::post('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
 Route::post('/pat_mast/save_patient','hisdb\PatmastController@save_patient');
+
+//// Emergency setup page ///
+Route::get('/emergency','hisdb\EmergencyController@show');
+Route::get('/emergency/table','hisdb\EmergencyController@table');
+Route::post('/emergency/form','hisdb\EmergencyController@form');
+
