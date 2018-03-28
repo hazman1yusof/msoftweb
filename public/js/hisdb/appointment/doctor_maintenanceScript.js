@@ -55,7 +55,7 @@
 			var phbtn=[{
 				text: "Save",click: function() {
 					if( $('#phformdata').isValid({requiredFields: ''}, conf, true) ) {
-						 saveFormdata("#gridph","#phdialogForm","#phformdata",oper,saveParamph,urlParamph,null,{resourcecode:selrowData('#jqGrid').resourcecode});
+						 saveFormdata("#gridph","#phdialogForm","#phformdata",oper,saveParamph,urlParamph);
 						
 					}
 					// checkDate();
@@ -115,16 +115,16 @@
             });
 
 			   $("#PHBtn").click(function(){
-            	var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-            	if(!selRowId){
-            		alert('Please select row');
-            	}else{
-	            	$("span[name='resourcecode']").text(selrowData('#jqGrid').resourcecode);
-	            	$("span[name='description']").text(selrowData('#jqGrid').description);
+            	// var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+            	// if(!selRowId){
+            	// 	alert('Please select row');
+            	// }else{
+	            // 	$("span[name='resourcecode']").text(selrowData('#jqGrid').resourcecode);
+	            // 	$("span[name='description']").text(selrowData('#jqGrid').description);
 					
             		// urlParamph.filterVal[] = selrowData('#jqGrid').idno;
 					$("#PHBox").dialog("open");
-            	}
+            	// }
             });
 			     $("#ALBtn").click(function(){
             	var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
@@ -444,7 +444,24 @@
 				},
 			});
 
+	////////////////////////////formatter//////////////////////////////////////////////////////////
+	function formatter(cellvalue, options, rowObject) {
+		if (cellvalue == 'A') {
+			return "Active";
+		}
+		if (cellvalue == 'D') {
+			return "Deactive";
+		}
+	}
 
+	function unformat(cellvalue, options) {
+		if (cellvalue == 'Active') {
+			return "Active";
+		}
+		if (cellvalue == 'Deactive') {
+			return "Deactive";
+		}
+	}
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 
 			var TSoper = 'add';
@@ -658,9 +675,10 @@
 				url: '/util/get_table_default',
 				field:"['YEAR','datefr','dateto','remark','backgroundcolor']",
 				table_name:'hisdb.apptph',
-				table_id:'idno'
-				// filterCol:['YEAR'],
-				// filterVal:[ ''],
+				table_id:'idno',
+				filterCol:['recstatus'],
+				filterVal:['A'],
+				
 			}
 
 			var saveParamph={
@@ -680,8 +698,10 @@
 					{label: 'Year', name: 'YEAR', classes: 'wrap',hidden:true,canSearch:true,checked:true},
 					{label: 'From', name: 'datefr', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'To', name: 'dateto', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
-					{label: 'Remark', name: 'remark', classes: 'wrap'},
+					{label: 'Remark', name: 'remark', classes: 'wrap',},
 					{label: 'Color', name: 'backgroundcolor', classes: 'wrap',hidden:true},
+					{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap',hidden:true,cellattr: function(rowid, cellvalue){
+						return cellvalue == 'D' ? ' class="alert alert-danger"' : ''},},	
 				],
 					
 				autowidth:true,
@@ -697,17 +717,28 @@
 					$('#resourcecode').val(selrowData('#jqGrid').resourcecode);
 					$('#description').val(selrowData('#jqGrid').description);
 
+
 					
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
 					$("#gridphpager td[title='Edit Selected Row']").click();
 				},
-				gridComplete: function(){ 
+				gridComplete: function(iRow){ 
+					// $("#gridph").jqGrid('setCell',"1","remark","",{'background-color':'yellow'});
+					   var rows = $("#gridph").getDataIDs(); 
+                       for (var i = 0; i < rows.length; i++)
+                       {
+                      var backgroundcolor =$("#gridph").getCell(rows[i],"backgroundcolor");
+            
+                     $("#gridph").jqGrid('setRowData',rows[i],false, {background:backgroundcolor});            
+        
+    }
 					if(oper == 'add'){
 						$("#gridph").setSelection($("#gridph").getDataIDs()[0]);
 					}
 
 					$('#'+$("#gridph").jqGrid ('getGridParam', 'selrow')).focus();
+
 				},
 			});
 
@@ -718,6 +749,20 @@
 				beforeRefresh: function () {
 					refreshGrid("#gridph", urlParamph, oper);
 				},
+			}).jqGrid('navButtonAdd',"#gridphpager",{
+				caption:"",cursor: "pointer",position: "first", 
+				buttonicon:"glyphicon glyphicon-trash",
+				title:"Delete Selected Row",
+				onClickButton: function(){
+					oper = 'del';
+			        selRowId = $("#gridph").jqGrid('getGridParam', 'selrow');
+			        if (!selRowId) {
+				    alert('Please select row');
+				    return emptyFormdata(errorField, '#phformdata');
+			} else {
+				    saveFormdata("#gridph", "#phdialogForm", "#phformdata", 'del', saveParamph, urlParamph, null,  { 'idno': selrowData('#gridph').idno });
+			}
+		},
 			}).jqGrid('navButtonAdd', "#gridphpager", {
 					caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
 					buttonicon: "glyphicon glyphicon-edit",
@@ -762,8 +807,8 @@
 				field:"['YEAR','datefr','dateto','remark','resourcecode']",
 				table_name:'hisdb.apptleave',
 				table_id:'idno',
-				filterCol:['resourcecode'],
-				filterVal:[''],
+				filterCol:['resourcecode','recstatus'],
+				filterVal:['','A'],
 			}
 
 			var saveParamleave={
@@ -822,6 +867,20 @@
 					beforeRefresh: function () {
 						refreshGrid("#gridleave", urlParamleave, oper);
 					},
+				}).jqGrid('navButtonAdd',"#gridleavepager",{
+				caption:"",cursor: "pointer",position: "first", 
+				buttonicon:"glyphicon glyphicon-trash",
+				title:"Delete Selected Row",
+				onClickButton: function(){
+				    oper = 'del';
+			        selRowId = $("#gridleave").jqGrid('getGridParam', 'selrow');
+			        if (!selRowId) {
+				    alert('Please select row');
+				    return emptyFormdata(errorField, '#alformdata');
+			       } else {
+				    saveFormdata("#gridleave", "#alformdata", "#alformdata", 'del', saveParamleave, urlParamleave, null,  { 'idno': selrowData('#gridleave').idno });
+			}
+		},
 				}).jqGrid('navButtonAdd', "#gridleavepager", {
 						caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
 						buttonicon: "glyphicon glyphicon-edit",
@@ -884,7 +943,7 @@
 	            $('#dateto').datetimepicker().on('dp.change', function (e) {
 	                var decrementDay = moment();
 	                decrementDay.subtract(0, 'days');
-	                $('#datefr').data('DateTimePicker').maxDate(decrementDay);
+	                // $('#datefr').data('DateTimePicker').maxDate(decrementDay);
 	                 $(this).data("DateTimePicker").hide();
 	            });
 	      });

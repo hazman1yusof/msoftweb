@@ -149,3 +149,8 @@ Route::get('/apptrsc/getEvent','hisdb\AppointmentController@getEvent');
 Route::post('/apptrsc/addEvent','hisdb\AppointmentController@addEvent');
 Route::post('/apptrsc/editEvent','hisdb\AppointmentController@editEvent');
 Route::post('/apptrsc/delEvent','hisdb\AppointmentController@delEvent');
+
+//// Emergency setup page ///
+Route::get('/emergency','hisdb\EmergencyController@show');
+Route::get('/emergency/table','hisdb\EmergencyController@table');
+Route::post('/emergency/form','hisdb\EmergencyController@form');
