@@ -30,7 +30,7 @@ var Global = function () {
 				act = "get_all_company";
 				break;
 			case "grtr_relation":
-				act = "get_all_relationship";
+				act = "get_patient_relationship";
 				break;
 			case "epis_dept":
 				act = "get_reg_dept";
@@ -50,7 +50,7 @@ var Global = function () {
 		}
 		
 		selecter = $('#tbl_item_select').DataTable( {
-				"ajax": "../../../../assets/php/entry_hisdb.php?action=" + act,
+				"ajax": "pat_mast/get_entry?action=" + act,
 				"lengthChange": false,
 				"info": false,
 				"pagingType" : "numbers",

@@ -24,7 +24,6 @@
 	<script type="text/ecmascript" src="plugins/velocity.min.js"></script>
 	<script type="text/ecmascript" src="plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
-	
 	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="plugins/jquery-ui-1.12.1/jquery-ui.min.css">
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
@@ -32,6 +31,7 @@
 	<link rel="stylesheet" href="plugins/font-awesome-4.4.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="plugins/fullcalendar-3.7.0/fullcalendar.min.css">
 	<link rel="stylesheet" href="plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+	@yield('css')
 	
     <style>
     	body{

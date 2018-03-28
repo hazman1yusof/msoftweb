@@ -8,8 +8,8 @@ $(document).ready(function () {
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
-			requiredFields: ''
-		},
+            requiredFields: ''
+        },
 	});
 	
 	var errorField=[];
@@ -179,7 +179,7 @@ $(document).ready(function () {
 		'mrn', 'hisdb.pat_mast', "#dialogForm input[name='mrn']", errorField,
 		{
 			colModel: [
-				{	label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', formatter: padzero, unformat: unpadzero, canSearch: true, or_search: true },
+				{	label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
 				{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				{	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
@@ -428,11 +428,25 @@ $(document).ready(function () {
         	}
     	},
 		defaultDate: d,
-		navLinks: true,
-  		viewRender: function(view, element) { 
-  			// if(view.name=='agendaDay'){
-  			// 	$('#calendar').fullCalendar('gotoDate', $(".fc-myCustomButton-button").data("start"));
-  			// } 
+		navLinks: false,
+  		viewRender: function(view, element) {
+  			let start = view.start;
+  			if(view.name == 'agendaDay'){
+  				$(".fc-myCustomButton-button").data( "start", start );
+  				var events = $('#calendar').fullCalendar( 'clientEvents');
+				$(".fc-myCustomButton-button").show();
+				events.forEach(function(elem,id){
+					if(elem.allDay){
+						let elem_end = (elem.end==null)?elem.start:elem.end;
+						if(start.isBetween(elem.start,elem_end, null, '[)')){
+							$(".fc-myCustomButton-button").hide();
+						}
+					}
+				});
+				if(!start.isSameOrAfter(moment().subtract(1, 'days'))){
+					$(".fc-myCustomButton-button").hide();
+				}
+  			}
   		},
 		editable: true,
 		eventLimit: true, // allow "more" link when too many events
@@ -440,6 +454,7 @@ $(document).ready(function () {
 		selectHelper: true,
 		timezone: 'local',
 		select: function(start, end, jsEvent, view, resource) {
+			$('#calendar').fullCalendar( 'gotoDate', start )
 			$(".fc-myCustomButton-button").data( "start", start );
 			var events = $('#calendar').fullCalendar( 'clientEvents');
 			$(".fc-myCustomButton-button").show();
@@ -541,17 +556,6 @@ $(document).ready(function () {
 	    ]
 	});
 	$('.fc-myCustomButton-button').hide();
-
-	$('.fc-agendaDay-button.fc-button.fc-state-default.fc-corner-right').click(function(){
-		if($(".fc-myCustomButton-button").data("start")!=null){
-			$('#calendar').fullCalendar(
-					'changeView', 
-					'agendaDay', 
-					$(".fc-myCustomButton-button").data("start").format('YYYY-MM-DD')
-			);
-		}
-		
-	});
 	
 	var oper = 'add';
 	$('#submit').click(function(){

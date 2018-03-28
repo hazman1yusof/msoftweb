@@ -21,12 +21,14 @@ $(document).ready(function() {
     }//utk buang label error lepas close dialog modal
 
     $('#txt_pat_newic').blur(function(){
-        let newrplc = $(this).val().replace(/-/g, "");
-        $(this).val(newrplc);//untuk buang hyphen lepas tulis i/c
-        let first6dig = $(this).val().substring(0,6);
-        let dobval = turntoappropriatetime(first6dig)
-        $("#txt_pat_dob").val(dobval);//utk auto letak dob lepas tulis i/c
-        $('#txt_pat_age').val(gettheage(dobval));
+        if($(this).val() != ''){
+            let newrplc = $(this).val().replace(/-/g, "");
+            $(this).val(newrplc);//untuk buang hyphen lepas tulis i/c
+            let first6dig = $(this).val().substring(0,6);
+            let dobval = turntoappropriatetime(first6dig)
+            $("#txt_pat_dob").val(dobval);//utk auto letak dob lepas tulis i/c
+            $('#txt_pat_age').val(gettheage(dobval));
+        }
     })
 
     function turntoappropriatetime(moments){
@@ -50,13 +52,35 @@ $(document).ready(function() {
 		ajaxSettings: {
 			cache: false
 		},
+        searchSettings: {
+            delay: 350,
+            characters: 2
+        },
         post: function ()
         {
+            Stext = $('.search-field').val();
+            Scol = $('#Scol').val();
+
+            if(Stext.trim() != ''){
+
+                var split = Stext.split(" "),_searchCol=[],_searchVal=[];
+                $.each(split, function( index, value ) {
+                    _searchCol.push(Scol);
+                    _searchVal.push('%'+value+'%');
+                });
+
+            }
+
             return {
-                Scol: $('#Scol').val()
+                page: $("#grid-command-buttons").bootgrid("getCurrentPage"),
+                searchCol:_searchCol,
+                searchVal:_searchVal,
+                table_name:'hisdb.pat_mast',
+                field:'*',
+                _token: $('#csrf_token').val(),
             };
         },
-        url: "../../../../assets/php/entry_hisdb.php?action=get_patient_list&listtype="+$("#listtype").val(),
+        url: "pat_mast/post_entry?action=get_patient_list&listtype="+$("#listtype").val(),
         formatters: {
             "col_add": function (column,row) {
                 return "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
@@ -175,18 +199,19 @@ $(document).ready(function() {
     populatecombo1();
 
     function loadlist(selobj,url,nameattr,descattr){
-        // $(selobj).empty();
+        $(selobj).empty();
         $.getJSON(url,{},function(data)
         {
-            $.each(data, function(i,obj)
-            {
-                if (nameattr == "doctorcode") console.log(obj[nameattr]);
-
+            $.each(data.data, function(i,obj)
+            {   
+                if(url == `pat_mast/get_entry?action=get_patient_idtype`){
+                    
+                }
                 $(selobj).append(
                     $('<option></option>')
-                        .val(obj[nameattr])
-                        // .html(obj[descattr]));
-                .html(obj[nameattr] + ' - ' + obj[descattr] ));
+                        .val(obj['code'])
+                        .html(obj['code'] + ' - ' + obj['description'] )
+                );
             });
         });
     }
@@ -194,8 +219,9 @@ $(document).ready(function() {
     function loadlistEmpty(selobj,url,nameattr,descattr){
         $(selobj).empty();
         $.getJSON(url,{},function(data)
-        {
-            $.each(data, function(i,obj)
+        {   
+            console.log(data);
+            $.each(data.data, function(i,obj)
             {
                 $(selobj).append(
                     $('<option></option>')
@@ -219,13 +245,13 @@ $(document).ready(function() {
         this.citizencode={code:'Code',desc:'Description'};
         this.areacode={code:'code',desc:'description'};
         this.load_desc = function(){
-            var urlTitle = '../../../../assets/php/entry_hisdb.php?action=get_patient_title';
+            var urlTitle = 'pat_mast/get_entry?action=get_patient_title';
             load_for_desc(this,'titlecode',urlTitle);
 
-            var urlcitizen = '../../../../assets/php/entry_hisdb.php?action=get_patient_citizen';
+            var urlcitizen = 'pat_mast/get_entry?action=get_patient_citizen';
             load_for_desc(this,'citizencode',urlcitizen);
 
-            var urlareacode = '../../../../assets/php/entry_hisdb.php?action=get_patient_areacode';
+            var urlareacode = 'pat_mast/get_entry?action=get_patient_areacode';
             load_for_desc(this,'areacode',urlareacode);
         }
 
@@ -258,75 +284,75 @@ $(document).ready(function() {
     }
 
     function populatecombo1(){
-        // var urlTitle = '../../../../assets/php/entry_hisdb.php?action=get_patient_title';
-        // loadlist($('select#titlecode').get(0),urlTitle,'Code','Description');
-        var urlType = '../../../../assets/php/entry_hisdb.php?action=get_patient_idtype';
+        var urlType = 'pat_mast/get_entry?action=get_patient_idtype';
         loadlist($('select#cmb_pat_idtype').get(0),urlType,'Code','Description');
-        var urloccupation = '../../../../assets/php/entry_hisdb.php?action=get_patient_occupation';
+
+        var urloccupation = 'pat_mast/get_entry?action=get_patient_occupation';
         loadlist($('select#occupcode').get(0),urloccupation,'occupcode','description');
-        // var urlareacode = '../../../../assets/php/entry_hisdb.php?action=get_patient_areacode';
-        // loadlist($('select#areacode').get(0),urlareacode,'areacode','description');
-        var urlsex = '../../../../assets/php/entry_hisdb.php?action=get_patient_sex';
+
+        var urlsex = 'pat_mast/get_entry?action=get_patient_sex';
         loadlist($('select#cmb_pat_sex').get(0),urlsex,'code','description');
-        // var urlcitizen = '../../../../assets/php/entry_hisdb.php?action=get_patient_citizen';
-        // loadlist($('select#citizencode').get(0),urlcitizen,'Code','Description');
-        var urlrace = '../../../../assets/php/entry_hisdb.php?action=get_patient_race';
+
+        var urlrace = 'pat_mast/get_entry?action=get_patient_race';
         loadlist($('select#cmb_pat_racecode').get(0),urlrace,'Code','Description');
-        var urlreligion = '../../../../assets/php/entry_hisdb.php?action=get_patient_religioncode';
+
+        var urlreligion = 'pat_mast/get_entry?action=get_patient_religioncode';
         loadlist($('select#cmb_pat_religion').get(0),urlreligion,'Code','Description');
-        var urlmarital = '../../../../assets/php/entry_hisdb.php?action=get_patient_urlmarital';
-        loadlist($('select#maritalcode').get(0),urlmarital,'Code','Description');
-        var urllanguagecode = '../../../../assets/php/entry_hisdb.php?action=get_patient_language';
+
+        // var urlmarital = 'pat_mast/get_entry?action=get_patient_urlmarital';
+        // loadlist($('select#maritalcode').get(0),urlmarital,'Code','Description');
+
+        var urllanguagecode = 'pat_mast/get_entry?action=get_patient_language';
         loadlist($('select#cmb_pat_langcode').get(0),urllanguagecode,'Code','Description');
-        var urlrelationship = '../../../../assets/php/entry_hisdb.php?action=get_patient_relationship';
-        loadlist($('select#relatecode').get(0),urlrelationship,'RelationShipCode','Description');
-        var urlactive = '../../../../assets/php/entry_hisdb.php?action=get_patient_active';
-        loadlist($('select#active').get(0),urlactive,'RelationShipCode','Description');
-        var urlconfidential = '../../../../assets/php/entry_hisdb.php?action=get_patient_urlconfidential';
-        loadlist($('select#confidential').get(0),urlactive,'RelationShipCode','Description');
-        var urlmrfolder = '../../../../assets/php/entry_hisdb.php?action=get_patient_mrfolder';
-        loadlist($('select#mrfolder').get(0),urlmrfolder,'RelationShipCode','Description');
 
+        // var urlrelationship = 'pat_mast/get_entry?action=get_patient_relationship';
+        // loadlist($('select#relatecode').get(0),urlrelationship,'RelationShipCode','Description');
 
-        var urlpatientcat = '../../../../assets/php/entry_hisdb.php?action=get_patient_patientcat';
-        loadlist($('select#patientcat').get(0),urlpatientcat,'RelationShipCode','Description');
+        // var urlactive = 'pat_mast/get_entry?action=get_patient_active';
+        // loadlist($('select#active').get(0),urlactive,'RelationShipCode','Description');
 
+        // var urlconfidential = 'pat_mast/get_entry?action=get_patient_urlconfidential';
+        // loadlist($('select#confidential').get(0),urlactive,'RelationShipCode','Description');
+
+        // var urlmrfolder = 'pat_mast/get_entry?action=get_patient_mrfolder';
+        // loadlist($('select#mrfolder').get(0),urlmrfolder,'RelationShipCode','Description');
+
+        // var urlpatientcat = 'pat_mast/get_entry?action=get_patient_patientcat';
+        // loadlist($('select#patientcat').get(0),urlpatientcat,'RelationShipCode','Description');
 
         populatecombo2();
     }
 
     function populatecombo2(){
-        var urlReg = '../../../../assets/php/entry_hisdb.php?action=get_reg_dept';
-        loadlist($('select#cmb_epis_dept').get(0),urlReg,'deptcode','description');
+        // var urlReg = 'pat_mast/get_entry?action=get_reg_dept';
+        // loadlist($('select#cmb_epis_dept').get(0),urlReg,'deptcode','description');
 
-        var urlReg = '../../../../assets/php/entry_hisdb.php?action=get_reg_source';
-        loadlist($('select#cmb_epis_source').get(0),urlReg,'admsrccode','description');
+        // var urlReg = 'pat_mast/get_entry?action=get_reg_source';
+        // loadlist($('select#cmb_epis_source').get(0),urlReg,'admsrccode','description');
 
-        var urlReg = '../../../../assets/php/entry_hisdb.php?action=get_reg_case';
-        loadlist($('select#cmb_epis_case').get(0),urlReg,'case_code','description');
+        // var urlReg = 'pat_mast/get_entry?action=get_reg_case';
+        // loadlist($('select#cmb_epis_case').get(0),urlReg,'case_code','description');
 
-        // var urlReg = '../../../../assets/php/entry_hisdb.php?action=get_reg_doctor';
-        // loadlist($('#cmb_epis_doctor').get(0),urlReg,'doctorcode','doctorname');
+        // var urlReg = 'pat_mast/get_entry?action=get_reg_fin';
+        // loadlist($('select#cmb_epis_fin').get(0),urlReg,'debtortycode','description');
 
-        var urlReg = '../../../../assets/php/entry_hisdb.php?action=get_reg_fin';
-        loadlist($('select#cmb_epis_fin').get(0),urlReg,'debtortycode','description');
-
-        // var urlReg = '../../../../assets/php/entry_hisdb.php?action=get_reg_pay(1)';
-        // loadlist($('select#cmb_epis_pay_mode').get(0),urlReg,'Code','Description');
-		
-		var urlRel = '../../../../assets/php/entry_hisdb.php?action=get_all_relationship';
+		var urlRel = 'pat_mast/get_entry?action=get_patient_relationship';
         loadlist($('select#cmb_grtr_relation').get(0),urlRel,'relationshipcode','description');
     }
 
     $("#txt_pat_dob").blur(function(){
-       $('#txt_pat_age').val(gettheage($(this).val())); 
+       $('#txt_pat_age').val(gettheage($(this).val()));
+       $("#txt_pat_dob-error").detach();
     })
 
     function gettheage(dob){
-        var day = new Date();
-        var dob = new Date(dob);
-        var age_val =  day.getFullYear() - dob.getFullYear();
-        return age_val;
+        if(dob != ''){
+            var day = new Date();
+            var dob = new Date(dob);
+            var age_val =  day.getFullYear() - dob.getFullYear();
+            return age_val;
+        }
+        return null;
     }
 
     function populate_patient_episode (episode,rowid) {
@@ -510,22 +536,22 @@ $(document).ready(function() {
 
     function save_patient(oper,idno,mrn="nothing"){
         var saveParam={
-            action:'save_table_default',
+            action:'save_patient',
             field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno'],
             oper:oper,
             table_name:'hisdb.pat_mast',
             table_id:'idno',
             sysparam:null
-        };
+        },_token = $('#csrf_token').val();
 
         if(oper=='add'){
             saveParam.sysparam = {source:'HIS',trantype:'MRN',useOn:'MRN'};
         }
-        var postobj = (mrn!="nothing")?{idno:idno,MRN:mrn}:{idno:idno};//kalu ada mrn, maksudnya dia dari merging duplicate 
+        var postobj = (mrn!="nothing")?{_token:_token,idno:idno,MRN:mrn}:{_token:_token,idno:idno};//kalu ada mrn, maksudnya dia dari merging duplicate 
 
-        $.post( "../../../../assets/php/entry_hisdb.php?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
+        $.post( "/pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
             
-        }).fail(function(data) {
+        },'json').fail(function(data) {
             alert('there is an error');
         }).success(function(data){
             $('#mdl_patient_info').modal('hide');
@@ -550,10 +576,10 @@ $(document).ready(function() {
             searchCol:['Newic'],searchVal:['%'+patnewic+'%']
         };
 
-        $.get( "../../../../assets/php/entry_hisdb.php?"+$.param(param), function( data ) {
+        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
 
         },'json').done(function(data) {
-            if(!$.isEmptyObject(data.rows)){
+            if(data.rows.length > 0){
                 let current_pat = {
                     merge: null,
                     MRN: "N/A",

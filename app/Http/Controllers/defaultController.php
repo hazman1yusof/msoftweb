@@ -332,4 +332,21 @@ abstract class defaultController extends Controller{
         }
 
     }
+
+    public function defaultSysparam($source,$trantype){
+
+        //1. get pvalue 1
+        $pvalue1 = DB::table('sysdb.sysparam')->select('pvalue1')
+        ->where('source', '=', $source)
+        ->where('trantype', '=', $trantype)->first();
+        //2. add 1 into the value
+        $pvalue1 = intval($pvalue1->pvalue1) + 1;
+
+        //3. update the value
+        DB::table('sysdb.sysparam')->where('source', '=', $source)->where('trantype', '=', $trantype)
+        ->update(array('pvalue1' => $pvalue1));
+
+        //4. return pvalue1
+        return $pvalue1;
+    }
 }

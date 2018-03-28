@@ -91,8 +91,9 @@ class AppointmentController extends defaultController
 
     public function addEvent(Request $request){
 
+        $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
         DB::table('hisdb.apptbook')->insert([
-            'title'       => $request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
+            'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
             'loccode'     => $request->doctor,
             'mrn'         => $request->mrn,
             'pat_name'    => $request->patname,
@@ -134,10 +135,11 @@ class AppointmentController extends defaultController
             }
 
         }else{
+            $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
             DB::table('hisdb.apptbook')
             ->where('idno','=',$request->idno)
             ->update([
-                'title'       => $request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
+                'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
                 'loccode'     => $request->doctor,
                 'mrn'         => $request->mrn,
                 'pat_name'    => $request->patname,

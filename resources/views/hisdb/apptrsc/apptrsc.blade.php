@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@section('css')
+	<link rel="stylesheet" href="plugins/datatables/css/jquery.dataTables.css">
+@endsection
+
 @section('style')
 
 .fc-bgevent{
@@ -81,6 +85,7 @@
 								<div class="col-md-4">
 									<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
 								</div>
+								<button type='button' id='select_biodata' class="btn btn-sm btn-primary">Biodata</button>
 							</div>
 							<div class="form-group">
 								<label for="start" class="col-md-2 control-label">Appt Date</label>
@@ -101,7 +106,7 @@
 							<div class="form-group">
 								<label for="telh" class="col-md-2 control-label">Tel No</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="Telephone No" id="telh" name="telh">	
+									<input type="text" class="form-control input-sm" placeholder="Telephone No" id="telh" name="telh" data-validation="required" data-validation-optional-if-answered="telhp">	
 								</div>
 								<label for="status" class="col-md-2 control-label">Status</label>
 								<div class="col-md-3">
@@ -114,7 +119,7 @@
 							<div class="form-group">
 								<label for="telhp" class="col-md-2 control-label">Tel Hp</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="Telephone Hp" id="telhp" name="telhp" data-validation="required">	
+									<input type="text" class="form-control input-sm" placeholder="Telephone Hp" id="telhp" name="telhp" data-validation="required" data-validation-optional-if-answered="telh">	
 								</div>
 								<label for="Doctor" class="col-md-2 control-label">Case</label>
 								<div class="col-md-3">
@@ -221,10 +226,19 @@
         </button>
 	</div>
 
+
+	@include('hisdb.pat_mgmt.mdl_patient')
+
 	@endsection
 
 @section('scripts')
+	
+	<script type="text/javascript" src="plugins/datatables/js/jquery.datatables.min.js"></script>
+	<script type="text/javascript" src="plugins/jquery-validator/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="plugins/jquery-validator/additional-methods.min.js"></script>
 
+	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
+	<script type="text/javascript" src="js/myjs/global.js"></script>
 	<script src="js/hisdb/apptrsc/apptrsc.js"></script>
 	
 @endsection

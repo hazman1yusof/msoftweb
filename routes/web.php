@@ -21,6 +21,7 @@ Route::get('/util/getcompid','UtilController@getcompid');
 Route::get('/util/getpadlen','UtilController@getpadlen');
 Route::get('/util/get_value_default','UtilController@get_value_default');
 Route::get('/util/get_table_default','UtilController@get_table_default');
+Route::get('/util/save_table_default','UtilController@defaultSetter');
 Route::get('/util/input_check','UtilController@input_check'); //jgn guna
 
 //// menu mainatenance page ///
@@ -149,3 +150,9 @@ Route::get('/apptrsc/getEvent','hisdb\AppointmentController@getEvent');
 Route::post('/apptrsc/addEvent','hisdb\AppointmentController@addEvent');
 Route::post('/apptrsc/editEvent','hisdb\AppointmentController@editEvent');
 Route::post('/apptrsc/delEvent','hisdb\AppointmentController@delEvent');
+
+//// pat_mast registration ////
+Route::get('/pat_mast','hisdb\PatmastController@show');
+Route::get('/pat_mast/get_entry','hisdb\PatmastController@get_entry');
+Route::post('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
+Route::post('/pat_mast/save_patient','hisdb\PatmastController@save_patient');
