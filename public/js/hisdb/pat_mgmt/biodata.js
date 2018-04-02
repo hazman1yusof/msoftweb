@@ -188,4 +188,146 @@ $(document).ready(function() {
         }
 			//populate_payer_guarantee_info(d); tgk balik nanti
     }
+
+    $('#mdl_patient_info').on('hidden.bs.modal', function (e) {
+        destoryallerror();
+        $(this)
+            .find("input,textarea,select")
+            .val('')
+            .end()
+            .find("input[type=checkbox], input[type=radio]")
+            .prop("checked", "")
+            .end(); //this for clearing input after hide modal
+    });
+
+    $( "#biodata_but").click(function() {
+    	populatecombo1();
+        $('#mdl_patient_info').modal({backdrop: "static"});
+        $("#btn_register_patient").data("oper","add");
+        var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
+        $('#first_visit_date').val(first_visit_val);
+        var last_visit_val =moment(new Date()).format('DD/MM/YYYY');
+        $('#last_visit_date').val(last_visit_val);
+        $('#episno').val('1');
+        //patient_empty();
+    });
+	
+	$('#btn_register_patient').click(function(){
+        if($('#frm_patient_info').valid()){
+            if($(this).data('oper') == 'add'){
+                check_existing_patient();
+            }else{
+                save_patient($(this).data('oper'),$(this).data('idno'));
+            }
+        }
+    });
+
+    $('#btn_reg_proceed').click(function(){
+        var checkedbox = $("#tbl_existing_record input[type='checkbox']:checked");
+        if(checkedbox.closest("td").next().length>0){
+            let mrn = checkedbox.data("mrn");
+            let idno = checkedbox.data("idno");
+            save_patient('edit',idno,mrn);
+        }else{
+            save_patient('add');
+        }
+    });
+
+    function save_patient(oper,idno,mrn="nothing"){
+        var saveParam={
+            action:'save_patient',
+            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno'],
+            oper:oper,
+            table_name:'hisdb.pat_mast',
+            table_id:'idno',
+            sysparam:null
+        },_token = $('#csrf_token').val();
+
+        if(oper=='add'){
+            saveParam.sysparam = {source:'HIS',trantype:'MRN',useOn:'MRN'};
+        }
+        var postobj = (mrn!="nothing")?{_token:_token,idno:idno,MRN:mrn}:{_token:_token,idno:idno};//kalu ada mrn, maksudnya dia dari merging duplicate 
+
+        $.post( "/pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
+            
+        },'json').fail(function(data) {
+            alert('there is an error');
+        }).success(function(data){
+            $('#mdl_patient_info').modal('hide');
+            $('#mdl_existing_record').modal('hide');
+        });
+    }
+	
+	function check_existing_patient(){
+		var patname = $("#txt_pat_name").val();
+		var patdob = moment($("#txt_pat_dob").val(), 'DD/MM/Y').format('Y-MM-DD');
+		var patnewic = $("#txt_pat_newic").val();
+		var patoldic = $("#txt_pat_oldic").val();
+		var patidno = $("#txt_pat_idno").val();
+
+        var param={
+            action:'get_value_default',
+            field:['MRN as merge','MRN','Name','Newic','Oldic','idnumber','DOB','idno'],
+            table_name:'hisdb.pat_mast',
+            table_id:'_none',
+            filterCol:['compcode'],filterVal:['session.company'],
+            searchCol:['Newic'],searchVal:['%'+patnewic+'%']
+        };
+
+        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+
+        },'json').done(function(data) {
+            if(data.rows.length > 0){
+                let current_pat = {
+                    merge: null,
+                    MRN: "N/A",
+                    Name: $("#txt_pat_name").val(),
+                    Newic: $("#txt_pat_newic").val(),
+                    Oldic: $("#txt_pat_oldic").val(),
+                    idnumber: $("#txt_pat_idno").val(),
+                    DOB: $("#txt_pat_dob").val(),
+                    idno: "N/A"
+                };
+                data.rows.unshift(current_pat);
+                tbl_exist_rec.clear();
+                tbl_exist_rec.rows.add(data.rows).draw();
+                $('#mdl_existing_record').modal('show');
+            }else{
+                save_patient('add');
+            }
+        }).error(function(data){
+            alert('there is an error on check existing patient!');
+        });
+	}
+
+    var tbl_exist_rec = $('#tbl_existing_record').DataTable( {
+        "lengthChange": false,"info": false,"pagingType" : "numbers", "ordering": false,
+        "search": {"smart": true, },
+        "columns": [
+                    {'data' : 'merge'},
+                    {'data' : 'MRN'}, 
+                    {'data' : 'Name' },
+                    {'data' : 'Newic'}, 
+                    {'data' : 'Oldic' },
+                    {'data' : 'idnumber'}, 
+                    {'data' : 'DOB' },
+                    {'data' : "idno"},
+                   ],
+        columnDefs: [{
+            targets:   0,
+            'render': function (data, type, full, meta){
+                if(data==null){
+                    return "<small>Merge this</br>with?</small>"
+                }else{
+                    return '<input type="checkbox" name="chk_' + data + '" id="chk_' + data + '" data-mrn="' + data + '" data-idno="' + full.idno + '">';
+                }
+             }
+        }],
+        select: {
+            style:    'os',
+            selector: 'td:first-child'
+        },
+    });
+
+
 });

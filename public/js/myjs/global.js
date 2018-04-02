@@ -1,7 +1,8 @@
 var Global = function () {
 
 	function pop_item_select(type)
-	{
+	{	
+		console.log(type)
 		var act = "";
 		var selecter = null;
 		var item = null;

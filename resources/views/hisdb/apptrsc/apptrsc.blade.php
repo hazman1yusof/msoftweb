@@ -15,7 +15,7 @@
 @section('title', 'Appointment')
 
 @section('body')
-	<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 	
 	<div class='row'>
 		<input id="Class2" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
@@ -42,6 +42,9 @@
 			</form>
 
 			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
+				<button type="button" class="btn btn-default" id='biodata_but'>
+					<span class='fa fa-user fa-lg'></span> Biodata
+				</button>
 				<button type="button" class="btn btn-default" id='transfer_doctor_but'>
 					<span class='fa fa-user-md fa-lg'></span> Transfer Doctor
 				</button>
@@ -228,6 +231,7 @@
 
 
 	@include('hisdb.pat_mgmt.mdl_patient')
+	@include('hisdb.pat_mgmt.itemselector')
 
 	@endsection
 
@@ -239,6 +243,7 @@
 
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
+	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
 	<script src="js/hisdb/apptrsc/apptrsc.js"></script>
 	
 @endsection

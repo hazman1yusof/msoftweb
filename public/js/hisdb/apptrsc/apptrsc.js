@@ -506,7 +506,7 @@ $(document).ready(function () {
 				'idno':event.idno,
 				'start':event.start.format("YYYY-MM-DD HH:mm:SS"),
 				'end':event.start.clone().add(session_field.interval, 'minutes').format("YYYY-MM-DD HH:mm:SS"),
-				'_token': $('#token').val()
+				'_token': $('#csrf_token').val()
 			};
 
 			$.post("apptrsc/editEvent",param, function (data) {
@@ -523,7 +523,7 @@ $(document).ready(function () {
 				'idno':event.idno,
 				'start':event.start.format("YYYY-MM-DD HH:mm:SS"),
 				'end':event.start.clone().add(session_field.interval, 'minutes').format("YYYY-MM-DD HH:mm:SS"),
-				'_token': $('#token').val()
+				'_token': $('#csrf_token').val()
 			};
 
 			$.post("apptrsc/editEvent",param, function (data) {
@@ -750,7 +750,7 @@ $(document).ready(function () {
 		});
 
 		var obj = {
-			"_token": $('#token').val(),
+			"_token": $('#csrf_token').val(),
 			"arraytd":arraytd
 		}
 
