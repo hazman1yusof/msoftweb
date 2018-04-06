@@ -47,8 +47,7 @@ $(document).ready(function () {
 	  $("#regBtn").click(function(){
             	var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					$("#registerform").dialog("open");
-					
-            	
+
             });
 
 	var oper;
@@ -105,13 +104,16 @@ $(document).ready(function () {
 	var urlParam = {
 		action: 'get_table_default',
 		url: '/util/get_table_default',
-		field: '',
-		table_name: 'hisdb.pat_mast',
-		table_id: 'MRN',
-		sort_idno: true
+		fixPost: 'true',
+		field: ['q.queueno', 'q.MRN', 'q.Episno','p.Name'],
+		table_name: ['hisdb.queue AS q','hisdb.pat_mast AS p'],
+		join_type: ['LEFT JOIN'],
+		join_onCol: ['q.MRN'],
+		join_onVal: ['p.MRN'],
+		
 	}
 
-	/////////////////////parameter for saving url////////////////////////////////////////////////
+	///////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
 		url: '/race/form',
@@ -125,25 +127,25 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'idno', name: 'idno', width: 5, hidden: true },
-
+			{ label: 'compcode', name: 'q_compcode', width: 5, hidden: true },
 			{
-				label: 'MRN', name: 'MRN', width: 10, classes: 'wrap', canSearch: true, checked: true, editable: true,
+				label: 'MRN', name: 'q_MRN', width: 20, classes: 'wrap', canSearch: true, checked: true, editable: true,
 				editrules: { required: true },
 				editoptions: { maxlength: 2 },
 			},
-			{ label: 'Episode No', name: 'Episno', width: 20 ,classes: 'wrap' },
-			{
-				label: 'Name', name: 'Name', classes: 'wrap', canSearch: true, width: 80, editable: true,
-				editrules: { required: true },
-				editoptions: { maxlength: 100 },
-			},
+			{ label: 'Episode No', name: 'q_Episno', width: 20 ,classes: 'wrap' },
+			{ label: 'Queue No', name: 'q_queueno', width: 20 ,classes: 'wrap' },
+			{ label: 'Time', name: 'q_reg_time', width: 20 ,classes: 'wrap' },
+			{ label: 'Name', name: 'p_Name', width: 20 ,classes: 'wrap' },
+			// { label: 'Payer', name: 'q_', width: 20 ,classes: 'wrap' },
+			{ label: 'Doctor', name: 'q_admdoctor', width: 20 ,classes: 'wrap' },
+			{ label: 'Status', name: 'p_recstatus', width: 20 ,classes: 'wrap' },
 
 		],
 		autowidth: true,
 		multiSort: true,
-		sortname: 'idno',
-		sortorder: 'desc',
+		// sortname: 'queueno',
+		// sortorder: 'desc',
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
@@ -235,16 +237,6 @@ $(document).ready(function () {
 			$("#dialogForm").dialog("open");
 		},
 	});
-        $(function () {
-	            $('#date').datepicker({
-	            	format: 'YYYY-MM-DD',
-	                useCurrent: false,
-	                showAlways: true,
-	                
-	                // minDate: moment()
-	            });
-	         
-	      });
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
@@ -256,4 +248,11 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus']);
+
+	 $(function () {
+	          $('#mydate').glDatePicker({
+	          	showAlways: true,
+	           });
+
+	      });
 });

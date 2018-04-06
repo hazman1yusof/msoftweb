@@ -1,10 +1,14 @@
 @extends('layouts.main')
-
+@section('css')
+	 <link href="plugins/glDatePicker/styles/glDatePicker.default.css" rel="stylesheet" type="text/css">
+@endsection
 @section('title', 'Emergency Department')
 
 @section('body')
 <style type = "text/css">
-.ui-datepicker { font-size:16pt !important}
+
+
+/*width:400px; height:250px; position:absolute;top:30px;left:0px;z-index:1000;font-size: 28px;*/
 </style>
 
 	<div class='row'>
@@ -19,9 +23,7 @@
 				</div>
 				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
 				 
-				    <button type="button" class="btn btn-default" id='regBtn'>
-				  	<span class='fa fa-user fa-lg '></span> Register
-				  </button>
+				    <button id="regBtn" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
 				</div>
 				
 			 </fieldset> 
@@ -30,17 +32,18 @@
 		<div class="panel panel-default">
           <div class="panel-body">
             <div class='col-md-4'>
-               <div id="date"></div>
-              <!--   <input type="text" class="form-control input-sm" placeholder="Start Date" id="date" name="date" data-validation="required">	 -->
+               <div id="mydate" gldp-id="mydate"></div>
+                 <div gldp-el="mydate" style="width:400px; height:300px; position:static;top:30px;left:0px;z-index:1000;font-size: 28px;"></div>
                 </div>
                 <div class='col-md-8' style="padding:0 0 15px 0">
 					<table id="jqGrid" class="table table-striped"></table>
 						<div id="jqGridPager"></div>
 				</div>
          </div>
-
 		</div>
-	
+		<!--   <input type="text" id="mydate" gldp-id="mydate">
+          <div gldp-el="mydate" style="width:400px; height:250px; position:absolute;top:30px;left:0px;z-index:1000;font-size: 28px;"></div>
+                </div> -->
 	</div>
 
 	<div id="registerform" title="Register Form">
@@ -147,11 +150,14 @@
 	</form>		
 	</div>
 
+ 
 @endsection
 
 
 @section('scripts')
 
 	<script src="js/hisdb/emergency/emergency.js"></script>
-	
+	<!-- <script type="text/javascript" src="plugins/glDatePicker/glDatePicker.min.js"></script> -->
+	<script type="text/javascript" src="plugins/glDatePicker/glDatePicker.js"></script>
+	<script type="text/javascript" src="plugins/glDatePicker/glDatePicker.min.js"></script>
 @endsection
