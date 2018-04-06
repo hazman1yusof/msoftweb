@@ -927,7 +927,6 @@
 			 
 			 /////////////////// FUNCTION DATE /////////////////////////////////////////////////////////////////////
 
-		    $(function () {
 	            $('#datefr,#dateto').datetimepicker({
 	            	format: 'YYYY-MM-DD',
 	                useCurrent: false,
@@ -946,7 +945,6 @@
 	                // $('#datefr').data('DateTimePicker').maxDate(decrementDay);
 	                 $(this).data("DateTimePicker").hide();
 	            });
-	      });
 
 		$('#save_color_leave').click(function(){
 			var bg_leave = $('#bg_leave').val();

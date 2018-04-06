@@ -10,6 +10,24 @@
 	opacity: .8;
 }
 
+.fc-event {
+    position: relative;
+    display: block;
+    font-size: .85em;
+    line-height: 1.3;
+    border-radius: 3px;
+    border: 1px solid #3a87ad;
+}
+
+.fc-event .selected {
+    position: relative;
+    display: block;
+    font-size: .85em;
+    line-height: 1.3;
+    border-radius: 3px;
+    border: 1px solid #3a87ad;
+}
+
 @endsection
 
 @section('title', 'Appointment')
