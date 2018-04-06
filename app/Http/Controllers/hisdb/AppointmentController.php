@@ -21,7 +21,11 @@ class AppointmentController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('hisdb.apptrsc.apptrsc');
+        $ALCOLOR = DB::table('sysdb.sysparam')
+                    ->where('source','=','HIS')
+                    ->where('trantype','=','ALCOLOR')
+                    ->first();
+        return view('hisdb.apptrsc.apptrsc',compact('ALCOLOR'));
     }
 
     public function form(Request $request)

@@ -16,6 +16,7 @@
 
 @section('body')
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
+	<input type="hidden" name="ALCOLOR" id="ALCOLOR" value="{{ $ALCOLOR->pvalue1 }}">
 	
 	<div class='row'>
 		<input id="Class2" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
@@ -236,7 +237,7 @@
 	@endsection
 
 @section('scripts')
-	
+
 	<script type="text/javascript" src="plugins/datatables/js/jquery.datatables.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/additional-methods.min.js"></script>
@@ -245,5 +246,5 @@
 	<script type="text/javascript" src="js/myjs/global.js"></script>
 	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
 	<script src="js/hisdb/apptrsc/apptrsc.js"></script>
-	
+
 @endsection

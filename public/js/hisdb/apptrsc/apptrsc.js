@@ -123,7 +123,7 @@ $(document).ready(function () {
 				type: 'appt_leave',
 				drrsc: $('#resourcecode').val()
 			},
-			color: '#e27370',
+			color: $('#ALCOLOR').val(),
         	rendering: 'background'
 		}
 

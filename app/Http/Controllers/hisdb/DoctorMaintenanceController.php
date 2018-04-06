@@ -125,4 +125,11 @@ class DoctorMaintenanceController extends defaultController
             }
         }
     }
+
+    public function save_bgleave(Request $request){
+        DB::table('sysdb.sysparam')
+            ->where('source','=','HIS')
+            ->where('trantype','=','ALCOLOR')
+            ->update(['pvalue1' => $request->bg_leave]);
+    }
 }

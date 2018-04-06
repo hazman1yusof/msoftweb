@@ -796,7 +796,7 @@
 				open: function(){
 					addParamField("#gridleave",true,urlParamleave);
 					$("#gridleave").jqGrid ('setGridWidth', Math.floor($("#gridleave_c")[0].offsetWidth-$("#gridleave_c")[0].offsetLeft));
-
+					load_bg_leave();
 				}, 
 
             });
@@ -947,5 +947,34 @@
 	                 $(this).data("DateTimePicker").hide();
 	            });
 	      });
+
+		$('#save_color_leave').click(function(){
+			var bg_leave = $('#bg_leave').val();
+			$.post( "/doctor_maintenance/save_bgleave", {bg_leave:bg_leave,_token:$('#csrf_token').val()} , function( data ) {
+		
+			}).success(function(data){
+
+			});
+		});
+
+		function load_bg_leave(){
+			var urlParam={
+				action:'get_table_default',
+				url: '/util/get_value_default',
+				field:['pvalue1'],
+				table_name:'sysdb.sysparam',
+				filterCol:['source','trantype'],
+				filterVal:['HIS','ALCOLOR']
+			}
+
+			$.get( "util/get_value_default"+"?"+$.param(urlParam), function( data ) {
+			
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data.rows)){
+					$('#bg_leave').val(data.rows[0].pvalue1);
+				}
+			});
+		}
+
 	});
 		

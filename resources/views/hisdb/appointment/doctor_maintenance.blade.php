@@ -116,14 +116,21 @@
 	
 
 	<div id="ALBox" title="Annual Leave" style="display:none">
-    	<ul>
-			<b>DOCTOR CODE : </b><span name='resourcecode' ></span> <br><br>
-			<b>DOCTOR NAME: </b><span name='description' ></span>
-		</ul>
-		<div class="row">
-			<label class="col-md-2 control-label" for="backgroundcolor">Choose Color</label>   
+		<div class="row" style="padding:0">
+			<label class="col-md-2 control-label">DOCTOR CODE</label>
+			<span name='resourcecode' ></span>
+		</div>
+		<div class="row" style="padding:0">
+			<label class="col-md-2 control-label">DOCTOR NAME</label>
+			<span name='description' ></span>
+		</div>
+		<div class="row" style="padding:0">
+			<label class="col-md-2 control-label" for="bg_leave">LEAVE COLOR</label>   
   			<div class="col-md-2">
-  				<input type='color' id='backgroundcolor' name='backgroundcolor' class="form-control input-sm" value="#ff0000">
+  				<input type='color' id='bg_leave' name='bg_leave' class="form-control input-sm" value="#ff0000">
+  			</div>
+  			<div class="col-md-2">
+  				<button type="button" id="save_color_leave" class="btn btn-primary btn-sm">Save Color</button>
   			</div>
 		</div>
 		<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
