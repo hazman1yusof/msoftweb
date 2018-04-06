@@ -120,6 +120,12 @@
 			<b>DOCTOR CODE : </b><span name='resourcecode' ></span> <br><br>
 			<b>DOCTOR NAME: </b><span name='description' ></span>
 		</ul>
+		<div class="row">
+			<label class="col-md-2 control-label" for="backgroundcolor">Choose Color</label>   
+  			<div class="col-md-2">
+  				<input type='color' id='backgroundcolor' name='backgroundcolor' class="form-control input-sm" value="#ff0000">
+  			</div>
+		</div>
 		<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 
 		<div id='gridleave_c' style="padding:15px 0 0 0">
@@ -220,10 +226,10 @@
 					<div class="col-md-2">
 					<div class='input-group'>
 						<input id="dateto"" name="dateto" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
-                     <span class="input-group-addon">
-                                    <span class="glyphicon-calendar glyphicon"></span>
-                                </span>						
-						</div>
+	                    <span class="input-group-addon">
+	                        <span class="glyphicon-calendar glyphicon"></span>
+	                    </span>						
+					</div>
 					</div>
 				</div>
 				</div>
@@ -232,19 +238,19 @@
 			
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="remark">Remark</label>   
-						  			<div class="col-md-5">
-						  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm" data-validation="required" ></textarea>
-						  			</div>
+		  			<div class="col-md-5">
+		  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm" data-validation="required" ></textarea>
+		  			</div>
 				</div>
 				</div>
 				<div class="form-group">
 			
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="backgroundcolor">Choose Color</label>   
-						  			<div class="col-md-2">
-						  				<input type='color' id='backgroundcolor' name='backgroundcolor' class="form-control input-sm" value="#ff0000">
-						  			</div>
-				</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="backgroundcolor">Choose Color</label>   
+			  			<div class="col-md-2">
+			  				<input type='color' id='backgroundcolor' name='backgroundcolor' class="form-control input-sm" value="#ff0000">
+			  			</div>
+					</div>
 				</div>
                 
 			</form>
@@ -277,9 +283,9 @@
 					<div class="col-md-2">
 					<div class='input-group'>
 						<input id="dateto"" name="dateto" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
-                     <span class="input-group-addon">
-                                    <span class="glyphicon-calendar glyphicon"></span>
-                                </span>						
+                    <span class="input-group-addon">
+                        <span class="glyphicon-calendar glyphicon"></span>
+                    </span>						
 						</div>
 					</div>
 				</div>
@@ -292,9 +298,9 @@
 
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="remark">Remark</label>   
-						  			<div class="col-md-5">
-						  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm" ></textarea>
-						  			</div>
+		  			<div class="col-md-5">
+		  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm" ></textarea>
+		  			</div>
 				</div>
 				</div>
 			</form>
@@ -311,7 +317,7 @@
 	            <div class="form-group">
 					<label class="col-md-3 control-label" for="resourcecode">Resource Code</label>
 					<div class="col-md-3">
-							<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm" data-validation="required" >
+						<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm" data-validation="required" >
 					</div>
 
 					<label class="col-md-2 control-label" for="description">Description</label>
