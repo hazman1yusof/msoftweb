@@ -127,6 +127,7 @@
 		<div class="row" style="padding:0">
 			<label class="col-md-2 control-label" for="bg_leave">LEAVE COLOR</label>   
   			<div class="col-md-2">
+  				<span class='fa fa-paint-brush fa-lg '></span>
   				<input type='color' id='bg_leave' name='bg_leave' class="form-control input-sm" value="#ff0000">
   			</div>
   			<div class="col-md-2">

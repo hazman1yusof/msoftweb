@@ -249,10 +249,9 @@ $(document).ready(function () {
 	addParamField('#jqGrid', true, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus']);
 
-	 $(function () {
-	          $('#mydate').glDatePicker({
-	          	showAlways: true,
-	           });
+	$('#mydate').glDatePicker({
+		zIndex: 0,
+		showAlways: true,
+	});
 
-	      });
 });
