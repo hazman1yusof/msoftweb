@@ -105,11 +105,13 @@ $(document).ready(function () {
 		action: 'get_table_default',
 		url: '/util/get_table_default',
 		fixPost: 'true',
-		field: ['q.queueno', 'q.MRN', 'q.Episno','p.Name'],
-		table_name: ['hisdb.queue AS q','hisdb.pat_mast AS p'],
+		field: ['e.MRN', 'e.Episno','p.Name','p.Newic'],
+		table_name: ['hisdb.episode AS e','hisdb.pat_mast AS p'],
 		join_type: ['LEFT JOIN'],
-		join_onCol: ['q.MRN'],
+		join_onCol: ['e.MRN'],
 		join_onVal: ['p.MRN'],
+		filterCol:['e.reg_date'],
+	    filterVal:[ moment($('#reg_date').val()).year(),]
 		
 	}
 
@@ -127,25 +129,24 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'compcode', name: 'q_compcode', width: 5, hidden: true },
+			{ label: 'compcode', name: 'e_compcode', width: 5, hidden: true },
 			{
-				label: 'MRN', name: 'q_MRN', width: 20, classes: 'wrap', canSearch: true, checked: true, editable: true,
+				label: 'MRN', name: 'e_MRN', width: 20, classes: 'wrap', canSearch: true, checked: true, editable: true,
 				editrules: { required: true },
 				editoptions: { maxlength: 2 },
 			},
-			{ label: 'Episode No', name: 'q_Episno', width: 20 ,classes: 'wrap' },
-			{ label: 'Queue No', name: 'q_queueno', width: 20 ,classes: 'wrap' },
-			{ label: 'Time', name: 'q_reg_time', width: 20 ,classes: 'wrap' },
+			{ label: 'Episode No', name: 'e_Episno', width: 20 ,classes: 'wrap' },
+			{ label: 'MyKad No', name: 'p_Newic', width: 20 ,classes: 'wrap' },
+			{ label: 'Time', name: 'e_reg_time', width: 20 ,classes: 'wrap' },
+			{ label: 'Date', name: 'e_reg_date', width: 20 ,classes: 'wrap' },
 			{ label: 'Name', name: 'p_Name', width: 20 ,classes: 'wrap' },
 			// { label: 'Payer', name: 'q_', width: 20 ,classes: 'wrap' },
-			{ label: 'Doctor', name: 'q_admdoctor', width: 20 ,classes: 'wrap' },
-			{ label: 'Status', name: 'p_recstatus', width: 20 ,classes: 'wrap' },
+			{ label: 'Doctor', name: 'e_admdoctor', width: 20 ,classes: 'wrap' },
+			{ label: 'Status', name: 'e_episstatus', width: 20 ,classes: 'wrap' },
 
 		],
 		autowidth: true,
 		multiSort: true,
-		// sortname: 'queueno',
-		// sortorder: 'desc',
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
@@ -249,9 +250,12 @@ $(document).ready(function () {
 	addParamField('#jqGrid', true, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus']);
 
+	$("#pg_jqGridPager table").hide();
+
 	$('#mydate').glDatePicker({
 		zIndex: 0,
 		showAlways: true,
+
 	});
 
 });

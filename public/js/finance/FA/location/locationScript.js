@@ -96,6 +96,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url: '/util/get_table_default',
 				field:'',
 				table_name:'sysdb.location',
 				table_id:'loccode'
@@ -104,6 +105,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:"/location/form",
 				field:'',
 				oper:oper,
 				table_name:'sysdb.location',
@@ -119,7 +121,7 @@
 					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true},
 					{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatter, cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
-					{label: 'id', name: 'id', width:10, hidden: true},
+					{label: 'id', name: 'idno', width:10, hidden: true},
 
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -130,7 +132,7 @@
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
-				sortname: 'id',
+				sortname: 'idno',
 				sortorder: 'desc',
 				width: 900,
 				height: 350,
