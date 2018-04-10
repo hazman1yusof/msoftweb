@@ -49,6 +49,7 @@
 
 	<div id="registerform" title="Register Form">
 	<form class='form-horizontal' style='width:89%' id='registerformdata'>
+	<input id="code" name="code" type="hidden" value="{{Session::get('code')}}">
 			{{ csrf_field() }}
 		<div class="form-group">
 		<label for="title" class="col-md-2 control-label">MRN</label>
@@ -64,88 +65,94 @@
 		</div>
 		</div>	
         <div class="form-group">
-          <label class="col-md-2 control-label" for="resourcecode">D.O.B</label>
+          <label class="col-md-2 control-label" for="DOB">D.O.B</label>
 					<div class="col-md-2">
-							<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm" data-validation="required" >
+							<input type="text" name="DOB" id="DOB" class="form-control input-sm" data-validation="required" >
 					</div>
-		  <label class="col-md-1 control-label" for="resourcecode">New I.C</label>
+		  <label class="col-md-1 control-label" for="Newic">New I.C</label>
 					<div class="col-md-2">
-							<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm" data-validation="required" >
+							<input type="text" name="Newic" id="Newic" class="form-control input-sm" data-validation="required" >
 					</div>		
-		   <label class="col-md-1 control-label" for="resourcecode">Old I.C</label>
+		   <label class="col-md-1 control-label" for="Oldic">Old I.C</label>
 					<div class="col-md-2">
-							<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm" data-validation="required" >
+							<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" data-validation="required" >
 					</div>				
         </div>
         <div class="form-group">
-          <label class="col-md-2 control-label" for="resourcecode">Sex</label>
+          <label class="col-md-2 control-label" for="sex">Sex</label>
 					<div class="col-md-2">
-							<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm" data-validation="required" >
+							<select id='sex' class="form-control input-sm">
+							 <option value="pleasechoose" selected>Please Choose</option>
+				      		 <option value="M">Male</option>
+					         <option value="F">Female</option>
+					         <option value="U">Unisex</option>
+						    </select>
 					</div>
         </div>
+
         <div class="form-group">
 		<label for="title" class="col-md-2 control-label">Race</label>
 	        <div class="col-md-2">
 			<div class="input-group">
-			<input type="text" class="form-control input-sm" placeholder="Race" id="mrn" name="mrn" maxlength="12" readonly>
+			<input type="text" class="form-control input-sm" placeholder="Race" id="race" name="race" maxlength="12" readonly>
 			<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 			</div>
 			<span class='help-block'></span>
 			</div>
               <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description" name="description">
 		</div>
 		</div>
 		 <div class="form-group">
 		<label for="title" class="col-md-2 control-label">Financial Class</label>
 	        <div class="col-md-2">
 			<div class="input-group">
-			<input type="text" class="form-control input-sm" id="mrn" name="mrn" maxlength="12" readonly>
+			<input type="text" class="form-control input-sm" placeholder="Finanncial Class" id="financeclass" name="financeclass" maxlength="12" readonly>
 			<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 			</div>
 			<span class='help-block'></span>
 			</div>
               <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="fName" name="fName">
 		</div>
 		</div>	
 		 <div class="form-group">
 		<label for="title" class="col-md-2 control-label">Payer</label>
 	        <div class="col-md-2">
 			<div class="input-group">
-			<input type="text" class="form-control input-sm"  id="mrn" name="mrn" maxlength="12" readonly>
+			<input type="text" class="form-control input-sm" placeholder="Payer" id="payer" name="payer" maxlength="12" readonly>
 			<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 			</div>
 			<span class='help-block'></span>
 			</div>
               <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="payername" name="payername">
 		</div>
 		</div>	
 		 <div class="form-group">
 		<label for="title" class="col-md-2 control-label">Bill Type</label>
 	        <div class="col-md-2">
 			<div class="input-group">
-			<input type="text" class="form-control input-sm" id="mrn" name="mrn" maxlength="12" readonly>
+			<input type="text" class="form-control input-sm" placeholder="BillType" id="billtype" name="billtype" maxlength="12" readonly>
 			<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 			</div>
 			<span class='help-block'></span>
 			</div>
               <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description" name="description">
 		</div>
 		</div>	
 		 <div class="form-group">
 		<label for="title" class="col-md-2 control-label">Doctor</label>
 	        <div class="col-md-2">
 			<div class="input-group">
-			<input type="text" class="form-control input-sm" id="mrn" name="mrn" maxlength="12" readonly>
+			<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" readonly>
 			<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 			</div>
 			<span class='help-block'></span>
 			</div>
               <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="docname" name="docname">
 		</div>
 		</div>		
 	</form>		
