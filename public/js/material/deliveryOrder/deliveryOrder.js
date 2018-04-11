@@ -353,7 +353,7 @@ $(document).ready(function () {
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
 		saveParam.oper = $(this).data("oper");
-		let obj={recno:selrowData('#jqGrid').delordhd_recno};
+		let obj={recno:selrowData('#jqGrid').delordhd_recno,_token:$('#_token').val()};
 		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
@@ -531,7 +531,7 @@ $(document).ready(function () {
 	}
 	
 	function searchChange(){
-		var arrtemp = ['skip.supplier.CompCode',  $('#Status option:selected').val(), $('#trandept option:selected').val()];
+		var arrtemp = ['session.compcode',  $('#Status option:selected').val(), $('#trandept option:selected').val()];
 		var filter = arrtemp.reduce(function(a,b,c){
 			if(b=='All'){
 				return a;
@@ -552,7 +552,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtytag','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks'],
+		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtytag','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks'],
 		table_name:['material.delorddt AS dodt','material.productmaster AS p'],
 		table_id:'lineno_',
 		join_type:['LEFT JOIN'],
@@ -566,7 +566,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "../../../../assets/php/entry.php?action=delOrdDetail_save",
+		editurl: "/deliveryOrderDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
@@ -742,9 +742,7 @@ $(document).ready(function () {
 			{ label: 'Batch No', name: 'batchno', width: 75, classes: 'wrap', editable:true,
 					maxlength: 30,
 			},
-		
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
-			
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
 			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
 		],
@@ -760,7 +758,6 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(){
-			console.log(addmore_jqgrid2.more);
 			if(addmore_jqgrid2.more == true)$('#jqGrid2_iladd').click();
 			addmore_jqgrid2.more = false; //only addmore after save inline
 		},
@@ -858,6 +855,9 @@ $(document).ready(function () {
 	//var addmore_jqgrid2=false // if addmore is true, add after refresh jqgrid2
 	var myEditOptions = {
         keys: true,
+        extraparam:{
+		    "_token": $("#_token").val()
+        },
         oneditfunc: function (rowid) {
         	//console.log(rowid);
         	linenotoedit = rowid;
@@ -874,7 +874,7 @@ $(document).ready(function () {
         }, 
         beforeSaveRow: function(options, rowid) {
         	mycurrency2.formatOff();
-			let editurl = "../../../../assets/php/entry.php?"+
+			let editurl = "/deliveryOrderDetail/form?"+
 				$.param({
 					action: 'delOrdDetail_save',
 					docno:$('#delordhd_docno').val(),
@@ -900,8 +900,8 @@ $(document).ready(function () {
 		restoreAfterSelect: false,
 		addParams: { 
 			addRowParams: myEditOptions
-			},
-			editParams: myEditOptions
+		},
+		editParams: myEditOptions
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "jqGridPager2Delete",
 		caption:"",cursor: "pointer",position: "last", 
@@ -923,7 +923,7 @@ $(document).ready(function () {
 								recno: $('#delordhd_recno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 				    		}
-				    		$.post( "../../../../assets/php/entry.php?"+$.param(param),{oper:'del'}, function( data ){
+				    		$.post( "/deliveryOrderDetail/form"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
@@ -1397,7 +1397,7 @@ $(document).ready(function () {
 					filterVal: [data['h.recno'], 'session.company', '<>.DELETE']
 				};
 
-				$.get("../../../../assets/php/entry.php?" + $.param(urlParam2), function (data) {
+				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {

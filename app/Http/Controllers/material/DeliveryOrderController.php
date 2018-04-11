@@ -32,6 +32,10 @@ class DeliveryOrderController extends defaultController
                 return $this->edit($request);
             case 'del':
                 return $this->del($request);
+            case 'posted':
+                return $this->posted($request);
+            case 'cancel':
+                return $this->cancel($request);
             default:
                 return 'error happen..';
         }
@@ -60,7 +64,7 @@ class DeliveryOrderController extends defaultController
             'recno' => $recno,
             'compcode' => session('compcode'),
             'adduser' => session('username'),
-            'adddate' => Carbon::now(),
+            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'OPEN'
         ];
 
@@ -126,7 +130,7 @@ class DeliveryOrderController extends defaultController
             $array_update = [
                 'compcode' => session('compcode'),
                 'upduser' => session('username'),
-                'upddate' => Carbon::now()
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
             ];
 
             foreach ($field as $key => $value) {
@@ -169,7 +173,7 @@ class DeliveryOrderController extends defaultController
                 $array_update = [
                     'compcode' => session('compcode'),
                     'upduser' => session('username'),
-                    'upddate' => Carbon::now()
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ];
 
                 foreach ($field as $key => $value) {
@@ -211,6 +215,230 @@ class DeliveryOrderController extends defaultController
 
     }
 
+    public function posted(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            //--- 1. copy delordhd masuk dalam ivtxnhd ---//
+
+                //1. amik dari delordhd
+            $delordhd_obj = DB::table('material.delordhd')
+                ->select('compcode', 'recno', 'delordno', 'deldept', 'trantype', 'docno', 'srcdocno', 'suppcode', 'trandate', 'trantime', 'deliverydate', 'checkpersonid', 'adduser', 'remarks', 'recstatus')
+                ->where('recno', '=', $request->recno)
+                ->where('compcode', '=' ,session('compcode'))
+                ->first();
+
+                //2. pastu letak dkt ivtxnhd
+            DB::table('material.ivtxnhd')
+                ->insert([
+                    'compcode'=>$delordhd_obj->compcode, 
+                    'recno'=>$delordhd_obj->recno, 
+                    'reference'=>$delordhd_obj->delordno, 
+                    'source'=>'IV', 
+                    'txndept'=>$delordhd_obj->deldept, 
+                    'trantype'=>$delordhd_obj->trantype, 
+                    'docno'=>$delordhd_obj->docno, 
+                    'srcdocno'=>$delordhd_obj->srcdocno, 
+                    'sndrcv'=>$delordhd_obj->suppcode, 
+                    'sndrcvtype'=>'Supplier', 
+                    'trandate'=>$delordhd_obj->trandate, 
+                    'trantime'=>$delordhd_obj->trantime, 
+                    'datesupret'=>$delordhd_obj->deliverydate, 
+                    'respersonid'=>$delordhd_obj->checkpersonid, 
+                    'recstatus'=>$delordhd_obj->recstatus, 
+                    'adduser'=>$delordhd_obj->adduser, 
+                    'adddate'=>Carbon::now("Asia/Kuala_Lumpur"),
+                    'remarks'=>$delordhd_obj->remarks
+                ]);
+
+            //--- 2. loop delorddt untuk masuk dalam ivtxndt ---//
+
+                //1.amik productcat dari table product
+            $productcat_obj = DB::table('material.delorddt')
+                ->select('product.productcat')
+                ->join('material.product', function($join) use ($request){
+                    $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
+                    $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
+                })
+                ->where('delorddt.compcode','=',session('compcode'))
+                ->where('product.groupcode','=','Stock')
+                ->where('delorddt.recno','=',$request->recno)
+                ->first();
+            $productcat = $productcat_obj->productcat;
+
+            $delorddt_obj = DB::table('material.delorddt')
+                ->where('delorddt.compcode','=',session('compcode'))
+                ->where('delorddt.recno','=',$request->recno)
+                ->where('delorddt.recstatus','!=','DELETE')
+                ->get();
+
+                //2. start looping untuk delorddt
+            foreach ($delorddt_obj as $value) {
+
+                //3. dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
+                $convfactorPOUOM_obj = DB::table('material.delorddt')
+                    ->select('uom.convfactor')
+                    ->join('material.uom','delorddt.pouom','=','uom.uomcode')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('delorddt.recno','=',$request->recno)
+                    ->where('delorddt.lineno_','=',$value->lineno_)
+                    ->first();
+                $convfactorPOUOM = $convfactorPOUOM_obj->convfactor;
+
+                $convfactorUOM_obj = DB::table('material.delorddt')
+                    ->select('uom.convfactor')
+                    ->join('material.uom','delorddt.uomcode','=','uom.uomcode')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('delorddt.recno','=',$request->recno)
+                    ->where('delorddt.lineno_','=',$value->lineno_)
+                    ->first();
+                $convfactorUOM = $convfactorUOM_obj->convfactor;
+
+                $txnqty = $value->qtydelivered * ($convfactorPOUOM / $convfactorUOM);
+                $netprice = $value->netunitprice * ($convfactorUOM / $convfactorPOUOM);
+
+                //4. start insert dalam ivtxndt
+                DB::table('material.ivtxndt')
+                    ->insert([
+                        'compcode' => $value->compcode, 
+                        'recno' => $value->recno, 
+                        'lineno_' => $value->lineno_, 
+                        'itemcode' => $value->itemcode, 
+                        'uomcode' => $value->uomcode, 
+                        'txnqty' => $txnqty, 
+                        'netprice' => $netprice, 
+                        'adduser' => $value->adduser, 
+                        'adddate' => $value->adddate, 
+                        'upduser' => $value->upduser, 
+                        'upddate' => $value->upddate, 
+                        'productcat' => $productcat, 
+                        'draccno' => $value->draccno, 
+                        'drccode' => $value->drccode, 
+                        'craccno' => $value->craccno, 
+                        'crccode' => $value->crccode, 
+                        'expdate' => $value->expdate, 
+                        'remarks' => $value->remarks, 
+                        'qtyonhand' => 0, 
+                        'batchno' => $value->batchno, 
+                        'amount' => $value->amount, 
+                        'trandate' => $value->trandate, 
+                        'deptcode' => $value->deldept, 
+                        'gstamount' => $value->amtslstax, 
+                        'totamount' => $value->totamount
+                    ]);
+
+            //--- 3. posting stockloc ---///
+                //1. amik stockloc
+                $stockloc_obj = DB::table('material.StockLoc')
+                    ->where('StockLoc.CompCode','=',session('compcode'))
+                    ->where('StockLoc.DeptCode','=',$value->deldept)
+                    ->where('StockLoc.ItemCode','=',$value->itemcode)
+                    ->where('StockLoc.Year','=', $this->toYear($value->trandate))
+                    ->where('StockLoc.UomCode','=',$value->uomcode)
+                    ->first();
+
+                //2.kalu ada stockloc, update 
+                if(count($stockloc_obj)){
+
+                //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
+                    $stockloc_arr = (array)$stockloc_obj;
+                    $month = $this->toMonth($value->trandate);
+                    $QtyOnHand = $stockloc_obj->qtyonhand + $txnqty; 
+                    $NetMvQty = $stockloc_arr['netmvqty'.$month] + $txnqty;
+                    $NetMvVal = $stockloc_arr['netmvval'.$month] + ($netprice * $txnqty);
+
+                    DB::table('material.StockLoc')
+                        ->where('StockLoc.CompCode','=',session('compcode'))
+                        ->where('StockLoc.DeptCode','=',$value->deldept)
+                        ->where('StockLoc.ItemCode','=',$value->itemcode)
+                        ->where('StockLoc.Year','=', $this->toYear($value->trandate))
+                        ->where('StockLoc.UomCode','=',$value->uomcode)
+                        ->update([
+                            'QtyOnHand' => $QtyOnHand,
+                            'NetMvQty'.$month = $NetMvQty, 
+                            'NetMvVal'.$month = $NetMvVal
+                        ]);
+
+                }else{
+                //3.kalu xde stockloc, create stockloc baru
+
+                }
+
+            //--- 4. posting stock enquiry ---//
+                //1. amik Stock Expiry
+                $stockexp_obj = DB::table('material.stockexp')
+                    ->where('stockexp.compcode','=',session('compcode'))
+                    ->where('stockexp.deptcode','=',$value->deldept)
+                    ->where('stockexp.itemcode','=',$value->itemcode)
+                    ->where('stockexp.expdate','=',$value->expdate)
+                    ->where('stockexp.year','=', $this->toYear($value->trandate))
+                    ->where('stockexp.uomcode','=',$value->uomcode)
+                    ->where('stockexp.batchno','=',$value->batchno)
+                    ->where('stockexp.lasttt','=','GRN')
+                    ->first();
+
+                //2.kalu ada Stock Expiry, update 
+                if(count($stockloc_obj)){
+                    $BalQty = $stockexp_obj->balqty + $txnqty; 
+
+                    DB::table('material.stockexp')
+                        ->where('stockexp.compcode','=',session('compcode'))
+                        ->where('stockexp.deptcode','=',$value->deldept)
+                        ->where('stockexp.itemcode','=',$value->itemcode)
+                        ->where('stockexp.expdate','=',$value->expdate)
+                        ->where('stockexp.year','=', $this->toYear($value->trandate))
+                        ->where('stockexp.uomcode','=',$value->uomcode)
+                        ->where('stockexp.batchno','=',$value->batchno)
+                        ->where('stockexp.lasttt','=','GRN')
+                        ->update([
+                            'balqty' => $BalQty
+                        ]);
+
+                }else{
+                //3.kalu xde Stock Expiry, buat baru
+                    $BalQty = $txnqty;
+
+                    DB::table('material.stockexp')
+                        ->insert([
+                            'compcode' => session('compcode'), 
+                            'deptcode' => $value->deldept, 
+                            'itemcode' => $value->itemcode, 
+                            'uomcode' => $value->uomcode, 
+                            'expdate' => $value->expdate, 
+                            'batchno' => $value->batchno, 
+                            'balqty' => $BalQty, 
+                            'adduser' => $value->adduser, 
+                            'adddate' => $value->adddate, 
+                            'upduser' => $value->upduser, 
+                            'upddate' => $value->upddate, 
+                            'lasttt' => 'GRN', 
+                            'year' => $this->toYear($value->trandate)
+                        ]);
+                }
+
+            }
+
+
+
+
+            //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
+
+            //--- 7. posting GL ---//
+
+            // DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function cancel(Request $request){
+
+    }
+
     public function request_no($trantype,$dept){
         $seqno = DB::table('material.sequence')
                 ->select('seqno')
@@ -248,6 +476,16 @@ class DeliveryOrderController extends defaultController
         return !empty($pvalue1);
     }
 
+    public function toYear($date){
+        $carbon = new Carbon\Carbon($date);
+        return $carbon->year;
+    }
+
+    public function toMonth($date){
+        $carbon = new Carbon\Carbon($date);
+        return $carbon->month;
+    }
+
     public function save_dt_from_othr_po($refer_recno,$recno){
         $po_dt = DB::table('material.purorddt')
                 ->select('compcode, recno, lineno_, pricecode, itemcode, uomcode, qtyorder, qtydelivered, unitprice, taxcode,perdisc,amtdisc, amtslstax,amount,recstatus,remarks')
@@ -276,12 +514,12 @@ class DeliveryOrderController extends defaultController
                 'amtslstax' => $value->amtslstax, 
                 'amount' => $value->amount, 
                 'adduser' => session('username'), 
-                'adddate' => Carbon::now(), 
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                 'recstatus' => 'A', 
                 'remarks' => $value->remarks
             ]);
         }
-        ///2. calculate total amount from detail eralier
+        ///2. calculate total amount from detail earlier
         $amount = DB::table('material.delorddt')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$recno)

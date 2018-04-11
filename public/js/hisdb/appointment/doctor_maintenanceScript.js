@@ -943,7 +943,7 @@
 	                var decrementDay = moment();
 	                decrementDay.subtract(0, 'days');
 	                // $('#datefr').data('DateTimePicker').maxDate(decrementDay);
-	                 $(this).data("DateTimePicker").hide();
+	                $(this).data("DateTimePicker").hide();
 	            });
 
 		$('#save_color_leave').click(function(){
