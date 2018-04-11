@@ -419,9 +419,6 @@ class DeliveryOrderController extends defaultController
 
             }
 
-
-
-
             //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
 
             //--- 7. posting GL ---//
