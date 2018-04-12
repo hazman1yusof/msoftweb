@@ -166,33 +166,33 @@ $(document).ready(function () {
 
 	});
     
- //    var dialog_mrn = new ordialog(
-	// 	'mrn', 'hisdb.pat_mast', "#registerform input[name='mrn']", errorField,
-	// 	{
-	// 		colModel: [
-	// 			{	label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
-	// 			{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-	// 			{	label: 'Newic', name: 'Newic', width: 200, classes: 'pointer',hidden:true},
-	// 			{	label: 'DOB', name: 'DOB', width: 200, classes: 'pointer',hidden:true},
-	// 			{	label: 'Oldic', name: 'Oldic', width: 200, classes: 'pointer',hidden:true},
-	// 		],
-	// 		ondblClickRow: function () {
-	// 			let data = selrowData('#' + dialog_mrn.gridname);
-	// 			$("#registerform input[name='patname']").val(data['Name']);
-	// 			$("#registerform input[name='Newic']").val(data['Newic']);
-	// 			$("#registerform input[name='DOB']").val(data['DOB']);
-	// 			$("#registerform input[name='Oldic']").val(data['Oldic']);
-	// 		}
-	// 	},
-	// 	{
-	// 		title: "Select MRN",
-	// 		open: function () {
-	// 			dialog_mrn.urlParam.filterCol = ['compcode'];
-	// 			dialog_mrn.urlParam.filterVal = ['9A'];
-	// 		},
-	// 	}, 'urlParam'
-	// );
-	// dialog_mrn.makedialog(true);
+    var dialog_mrn = new ordialog(
+		'mrn', 'hisdb.pat_mast', "#registerform input[name='mrn']", errorField,
+		{
+			colModel: [
+				{	label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
+				{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{	label: 'Newic', name: 'Newic', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'DOB', name: 'DOB', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'Oldic', name: 'Oldic', width: 200, classes: 'pointer',hidden:true},
+			],
+			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_mrn.gridname);
+				$("#registerform input[name='patname']").val(data['Name']);
+				$("#registerform input[name='Newic']").val(data['Newic']);
+				$("#registerform input[name='DOB']").val(data['DOB']);
+				$("#registerform input[name='Oldic']").val(data['Oldic']);
+			}
+		},
+		{
+			title: "Select MRN",
+			open: function () {
+				dialog_mrn.urlParam.filterCol = ['compcode'];
+				dialog_mrn.urlParam.filterVal = ['9A'];
+			},
+		}, 'urlParam'
+	);
+	dialog_mrn.makedialog(true);
 
 	var dialog_race = new ordialog(
 		'race', 'hisdb.racecode', "#registerform input[name='race']", errorField,
