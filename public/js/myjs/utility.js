@@ -546,7 +546,7 @@ function setactdate(target){
 	}
 }
 
-function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default',needTab='notab'){
+function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default',dcolrType='radio',needTab='notab'){
 	this.unique=unique;
 	this.gridname="othergrid_"+unique;
 	this.dialogname="otherdialog_"+unique;
@@ -570,6 +570,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 		searchCol2:null,searchCol2:null,searchCol:null,searchCol:null
 	};
 	this.needTab=needTab;
+	this.dcolrType=dcolrType;
 	this.on = function(){
 		this.eventstat='on';
 		if(this.needTab=='tab'){
@@ -594,7 +595,11 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 		$("html").append(this.otherdialog);
 		makejqgrid(this);
 		makedialog(this);
-		othDialog_radio(this);
+		if(this.dcolrType == 'radio'){
+			othDialog_radio(this);
+		}else{
+			othDialog_dropdown(this);
+		}
 		if(on){
 			this.eventstat='on';
 			if(this.needTab=='tab'){
@@ -645,7 +650,11 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 		obj = event.data.data;
 		renull_search(obj);
 		let Dtext=$("#Dtext_"+obj.unique).val().trim();
-		let Dcol=$("#Dcol_"+obj.unique+" input:radio[name=dcolr]:checked").val();
+		if(obj.dcolrType == 'radio'){
+			var Dcol=$("#Dcol_"+obj.unique+" input:radio[name=dcolr]:checked").val();
+		}else{
+			var Dcol=$("#Dcol_"+obj.unique+" select[name=dcolr]").val();
+		}
 		let split = Dtext.split(" "),searchCol=[],searchVal=[];
 		$.each(split, function( index, value ) {
 			searchCol.push(Dcol);
@@ -673,6 +682,18 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 					$("#Dcol_"+unique+"").append("<label class='radio-inline'><input type='radio' name='dcolr' value='"+value['name']+"' checked>"+value['label']+"</input></label>" );
 				}else{
 					$("#Dcol_"+unique+"").append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+value['name']+"' >"+value['label']+"</input></label>" );
+				}
+			}
+		});
+	}
+
+	function othDialog_dropdown(obj){
+		$("#Dcol_"+unique+"").append("<select name='dcolr' class='form-control input-sm' style='margin-right:10px;min-width:150px'></select>");
+		$.each($("#"+obj.gridname).jqGrid('getGridParam','colModel'), function( index, value ) {
+			if(value['canSearch']){
+				if(value['checked']){$("#Dcol_"+unique+" select[name=dcolr]").append( "<option value='"+value['name']+"' selected>"+value['label']+"</option>" );
+				}else{
+					$("#Dcol_"+unique+" select[name=dcolr]").append( "<option value='"+value['name']+"'>"+value['label']+"</option>" );
 				}
 			}
 		});
@@ -782,7 +803,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 					fail=true;code=field[0];
 				}
 			}else{
-				if(!$.isEmptyObject(data.rows)){
+				if(data.rows.length>0){
 					fail=false;
 					desc_ =(desc_.indexOf('.') !== -1)?desc_.split('.')[1]:desc_;
 					desc=data.rows[0][desc_];

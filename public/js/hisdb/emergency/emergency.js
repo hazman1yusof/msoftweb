@@ -28,8 +28,8 @@ $(document).ready(function () {
 
 	var butt1 = [{
 		text: "Save", click: function () {
-			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", oper, saveParam, urlParam);
+			if ($('#registerformdata').isValid({ requiredFields: '' }, conf, true)) {
+				saveFormdata("#jqGrid", "#registerform", "#registerformdata", oper, saveParam, urlParam);
 			}
 		}
 	}, {
@@ -50,7 +50,7 @@ $(document).ready(function () {
 
             });
 
-	var oper;
+	var oper='add';
 	$("#registerform")
 		.dialog({
 			width: 9 / 10 * $(window).width(),
@@ -91,7 +91,7 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#registerformdata');
 				//$('.alert').detach();
 				$('#registerformdata .alert').detach();
-				$("#registerformdata a").off();
+				// $("#registerformdata a").off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", butt1);
 				}
@@ -118,12 +118,9 @@ $(document).ready(function () {
 	///////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
-		url: '/race/form',
+		url: '/emergency/form',
 		field: '',
 		oper: oper,
-		table_name: 'hisdb.racecode',
-		table_id: 'Code',
-		saveip:'true'
 	};
 
 	$("#jqGrid").jqGrid({
@@ -166,46 +163,47 @@ $(document).ready(function () {
 
 	});
     
- //    var dialog_mrn = new ordialog(
-	// 	'mrn', 'hisdb.pat_mast', "#registerform input[name='mrn']", errorField,
-	// 	{
-	// 		colModel: [
-	// 			{	label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
-	// 			{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-	// 			{	label: 'Newic', name: 'Newic', width: 200, classes: 'pointer',hidden:true},
-	// 			{	label: 'DOB', name: 'DOB', width: 200, classes: 'pointer',hidden:true},
-	// 			{	label: 'Oldic', name: 'Oldic', width: 200, classes: 'pointer',hidden:true},
-	// 		],
-	// 		ondblClickRow: function () {
-	// 			let data = selrowData('#' + dialog_mrn.gridname);
-	// 			$("#registerform input[name='patname']").val(data['Name']);
-	// 			$("#registerform input[name='Newic']").val(data['Newic']);
-	// 			$("#registerform input[name='DOB']").val(data['DOB']);
-	// 			$("#registerform input[name='Oldic']").val(data['Oldic']);
-	// 		}
-	// 	},
-	// 	{
-	// 		title: "Select MRN",
-	// 		open: function () {
-	// 			dialog_mrn.urlParam.filterCol = ['compcode'];
-	// 			dialog_mrn.urlParam.filterVal = ['9A'];
-	// 		},
-	// 	}, 'urlParam'
-	// );
-	// dialog_mrn.makedialog(true);
+    var dialog_mrn = new ordialog(
+		'mrn', 'hisdb.pat_mast', "#registerform input[name='mrn']", errorField,
+		{
+			colModel: [
+				{	label: 'MRN', name: 'MRN', width: 50, classes: 'pointer', formatter: padzero, unformat: unpadzero, canSearch: true, or_search: true },
+				{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{	label: 'Newic', name: 'Newic', width: 100, classes: 'pointer', canSearch: true},
+				{	label: 'DOB', name: 'DOB', width: 50, classes: 'pointer', canSearch: true},
+				{	label: 'CardID', name: 'idnumber', width: 50, classes: 'pointer', canSearch: true},
+				{	label: 'Oldic', name: 'Oldic', width: 200, classes: 'pointer',hidden:true},
+			],
+			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_mrn.gridname);
+				$("#registerform input[name='patname']").val(data['Name']);
+				$("#registerform input[name='Newic']").val(data['Newic']);
+				$("#registerform input[name='DOB']").val(data['DOB']);
+				$("#registerform input[name='Oldic']").val(data['Oldic']);
+			}
+		},
+		{
+			title: "Select MRN",
+			open: function () {
+				dialog_mrn.urlParam.filterCol = ['compcode'];
+				dialog_mrn.urlParam.filterVal = ['9A'];
+			},
+		}, 'none','dropdown'
+	);
+	dialog_mrn.makedialog(true);
 
 	var dialog_race = new ordialog(
 		'race', 'hisdb.racecode', "#registerform input[name='race']", errorField,
 		{
 			colModel: [
-				{	label: 'Race', name: 'code', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
+				{	label: 'Race', name: 'code', width: 100, classes: 'pointer', canSearch: true, or_search: true },
 				{	label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				// {	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_race.gridname);
-				$("#registerform input[name='description']").val(data['description']);
+				$("#registerform input[name='description_race']").val(data['description']);
 				// $("#addForm input[name='telh']").val(data['telh']);
 				// $("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_race.textfield).parent().next().text(" ");
@@ -225,7 +223,7 @@ $(document).ready(function () {
 		'financeclass', 'debtor.debtortype', "#registerform input[name='financeclass']", errorField,
 		{
 			colModel: [
-				{	label: 'Debtor', name: 'debtortycode', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
+				{	label: 'Debtor', name: 'debtortycode', width: 100, classes: 'pointer', canSearch: true, or_search: true },
 				{	label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				// {	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
@@ -252,14 +250,15 @@ $(document).ready(function () {
 		'payer', 'debtor.debtormast', "#registerform input[name='payer']", errorField,
 		{
 			colModel: [
-				{	label: 'Debtor Code', name: 'debtorcode', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
+				{	label: 'Debtor Code', name: 'debtorcode', width: 100, classes: 'pointer', canSearch: true, or_search: true },
 				{	label: 'Debtor Name', name: 'name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				// {	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'debtortype', name: 'debtortype', width: 200, classes: 'pointer',hidden:true},
 				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_payer.gridname);
 				$("#registerform input[name='payername']").val(data['name']);
+				$("#registerform input[name='paytype']").val(data['debtortype']);
 				// $("#addForm input[name='telh']").val(data['telh']);
 				// $("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_payer.textfield).parent().next().text(" ");
@@ -279,14 +278,14 @@ $(document).ready(function () {
 		'billtype', 'hisdb.billtymst', "#registerform input[name='billtype']", errorField,
 		{
 			colModel: [
-				{	label: 'Bill Type', name: 'billtype', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
+				{	label: 'Bill Type', name: 'billtype', width: 100, classes: 'pointer', canSearch: true, or_search: true },
 				{	label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				// {	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_billtype.gridname);
-				$("#registerform input[name='description']").val(data['description']);
+				$("#registerform input[name='description_bt']").val(data['description']);
 				// $("#addForm input[name='telh']").val(data['telh']);
 				// $("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_billtype.textfield).parent().next().text(" ");
@@ -306,7 +305,7 @@ $(document).ready(function () {
 		'doctor', 'hisdb.doctor', "#registerform input[name='doctor']", errorField,
 		{
 			colModel: [
-				{	label: 'Doctor Code', name: 'doctorcode', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
+				{	label: 'Doctor Code', name: 'doctorcode', width: 100, classes: 'pointer', canSearch: true, or_search: true },
 				{	label: 'Name', name: 'doctorname', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				// {	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
@@ -440,7 +439,9 @@ $(document).ready(function () {
 	$('#mydate').glDatePicker({
 		zIndex: 0,
 		showAlways: true,
-
+		onClick: function(target, cell, date, data) {
+	        
+	    }
 	});
 
 });
