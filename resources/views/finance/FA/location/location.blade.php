@@ -1,8 +1,8 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body style="display:none">
-	 
+@extends('layouts.main')
+
+@section('title', 'Location ')
+
+@section('body')
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%'>
@@ -33,7 +33,8 @@
 
 				<div class="prevnext btn-group pull-right">
 				</div>
-
+				<input id="idno" name="idno"  type="hidden">
+                {{ csrf_field() }}
 				<div class="form-group">
             		<label class="col-md-3 control-label" for="loccode">Location Code</label>  
                       <div class="col-md-2">
@@ -81,21 +82,12 @@
 			</form>
 		</div>
 
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
+	@endsection
+
+
+@section('scripts')
+
+	<script src="js/finance/FA/location/locationScript.js"></script>
+
 	
-	<!-- JS Implementing Plugins -->
-
-	<!-- JS Customization -->
-
-	<!-- JS Page Level -->
-	<script src="location.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<script src="../../../../assets/js/dialogHandler.js"></script>
-
-<script>
-		
-</script>
-</body>
-</html>
+@endsection
