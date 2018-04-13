@@ -1,8 +1,8 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body>
-	 
+@extends('layouts.main')
+
+@section('title', 'Asset Type ')
+
+@section('body')
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%'>
@@ -33,7 +33,7 @@
 
 				<div class="prevnext btn-group pull-right">
 				</div>
-
+ {{ csrf_field() }}
 				<div class="form-group">
             		<label class="col-md-3 control-label" for="assettype">Asset Type</label>  
                       <div class="col-md-2">
@@ -82,21 +82,12 @@
 			</form>
 		</div>
 
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
+	@endsection
+
+
+@section('scripts')
+
+	<script src="js/finance/FA/assettype/assettypeScript.js"></script>
+
 	
-	<!-- JS Implementing Plugins -->
-
-	<!-- JS Customization -->
-
-	<!-- JS Page Level -->
-	<script src="assettypes.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<script src="../../../../assets/js/dialogHandler.js"></script>
-
-<script>
-		
-</script>
-</body>
-</html>
+@endsection

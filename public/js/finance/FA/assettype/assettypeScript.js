@@ -93,6 +93,8 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url: '/util/get_table_default',
+				
 				field:'',
 				table_name:'finance.fatype', ////////////////////
 				table_id:'assettype'					////////////////////
@@ -100,7 +102,8 @@
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
-				action:'save_table_default',
+                action:'save_table_default',
+                url:"/assettype/form",
 				field:'',
 				oper:oper,
 				table_name:'finance.fatype',  ////////////////////

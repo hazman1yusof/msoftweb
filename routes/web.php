@@ -173,3 +173,9 @@ Route::post('/emergency/form','hisdb\EmergencyController@form');
 Route::get('/location','finance\LocationController@show');
 Route::get('/location/table','finance\LocationController@table');
 Route::post('/location/form','finance\LocationController@form');
+
+//// Fixed Asset assettype setup page ///
+Route::get('/assettype','finance\assettypeController@show');
+Route::get('/assettype/table','finance\assettypeController@table');
+Route::post('/assettype/form','finance\assettypeController@form');
+
