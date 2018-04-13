@@ -142,6 +142,7 @@ Route::get('/deliveryOrder','material\DeliveryOrderController@show');
 Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
 Route::post('/deliveryOrder/form','material\DeliveryOrderController@form');
 Route::get('/deliveryOrder/form','material\DeliveryOrderController@form');
+Route::post('/deliveryOrderDetail/form','material\DeliveryOrderDetailController@form');
 
 //// appointment resource setup page ///
 Route::get('/apptrsc','hisdb\AppointmentController@show');
@@ -151,6 +152,11 @@ Route::get('/apptrsc/getEvent','hisdb\AppointmentController@getEvent');
 Route::post('/apptrsc/addEvent','hisdb\AppointmentController@addEvent');
 Route::post('/apptrsc/editEvent','hisdb\AppointmentController@editEvent');
 Route::post('/apptrsc/delEvent','hisdb\AppointmentController@delEvent');
+
+//// debtortype ////
+Route::get('/debtortype','finance\debtortypeController@show');
+Route::get('/debtortype/table','finance\debtortypeController@table');
+Route::post('/debtortype/form','finance\debtortypeController@form');
 
 //// pat_mast registration ////
 Route::get('/pat_mast','hisdb\PatmastController@show');

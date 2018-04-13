@@ -1,9 +1,9 @@
 
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
-		var editedRow=0;
 
 		$(document).ready(function () {
+			$("body").show();
 			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
@@ -23,14 +23,6 @@
 					}
 				},
 			};
-			//////////////////////////////////////////////////////////////
-
-
-			////////////////////object for dialog handler//////////////////
-			dialog_costcode=new makeDialog('finance.costcenter','#actdebccode',['costcode','description'],'Actual Cost');
-			dialog_glaccount=new makeDialog('finance.glmasref','#actdebglacc',['glaccno','description'], 'Actual Account');
-			dialog_depccode=new makeDialog('finance.costcenter','#depccode',['costcode','description'], 'Deposit Cost');
-			dialog_depglacc=new makeDialog('finance.glmasref','#depglacc',['glaccno','description'], 'Deposit Account');
 
 
 			////////////////////////////////////start dialog///////////////////////////////////////
@@ -83,10 +75,10 @@
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-						dialog_costcode.handler(errorField);
-						dialog_glaccount.handler(errorField);
-						dialog_depccode.handler(errorField);
-						dialog_depglacc.handler(errorField);
+						dialog_costcode.on();
+						dialog_glaccount.on();
+						dialog_depccode.on();
+						dialog_depglacc.on();
 					}
 					if(oper!='add'){
 						toggleFormData('#jqGrid','#formdata');
@@ -99,8 +91,11 @@
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
-					$("#formdata a").off();
+					$('#formdata .alert').detach();
+					dialog_costcode.off();
+					dialog_glaccount.off();
+					dialog_depccode.off();
+					dialog_depglacc.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -112,6 +107,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'/util/get_table_default',
 				field: '',
 				table_name:'debtor.debtortype',
 				table_id:'debtortycode',
@@ -121,6 +117,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'/debtortype/form',
 				field:'',
 				oper:oper,
 				table_name:'debtor.debtortype',
@@ -252,6 +249,77 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress']);
+			addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
+
+
+			// dialog_costcode=new makeDialog('finance.costcenter','#actdebccode',['costcode','description'],'Actual Cost');
+			// dialog_glaccount=new makeDialog('finance.glmasref','#actdebglacc',['glaccno','description'], 'Actual Account');
+			// dialog_depccode=new makeDialog('finance.costcenter','#depccode',['costcode','description'], 'Deposit Cost');
+			// dialog_depglacc=new makeDialog('finance.glmasref','#depglacc',['glaccno','description'], 'Deposit Account');
+
+			var dialog_costcode = new ordialog(
+				'actdebccode','finance.costcenter','#actdebccode',errorField,
+				{	colModel:[
+						{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Actual Cost",
+					open: function(){
+						dialog_costcode.urlParam.filterCol=['recstatus'],
+						dialog_costcode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_costcode.makedialog();
+
+			var dialog_glaccount = new ordialog(
+				'actdebglacc','finance.glmasref','#actdebglacc',errorField,
+				{	colModel:[
+						{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Actual Account",
+					open: function(){
+						dialog_glaccount.urlParam.filterCol=['recstatus'],
+						dialog_glaccount.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glaccount.makedialog();
+
+			var dialog_depccode = new ordialog(
+				'depccode','finance.costcenter','#depccode',errorField,
+				{	colModel:[
+						{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Deposit Cost",
+					open: function(){
+						dialog_depccode.urlParam.filterCol=['recstatus'],
+						dialog_depccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_depccode.makedialog();
+
+			var dialog_depglacc = new ordialog(
+				'doctype','finance.glmasref','#depglacc',errorField,
+				{	colModel:[
+						{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Deposit Account",
+					open: function(){
+						dialog_depglacc.urlParam.filterCol=['recstatus'],
+						dialog_depglacc.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_depglacc.makedialog();
+
 		});
 		
