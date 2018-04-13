@@ -214,6 +214,7 @@ $(document).ready(function () {
 				$("#registerform input[name='Newic']").val(data['Newic']);
 				$("#registerform input[name='DOB']").val(data['DOB']);
 				$("#registerform input[name='Oldic']").val(data['Oldic']);
+				$(dialog_race.textfield).parent().next().text(" ");
 			}
 		},
 		{
@@ -249,7 +250,7 @@ $(document).ready(function () {
 				dialog_race.urlParam.filterCol = ['compcode'];
 				dialog_race.urlParam.filterVal = ['9A'];
 			},
-		}, 'urlParam'
+		}, 'none'
 	);
 	dialog_race.makedialog(true);
 
@@ -276,7 +277,7 @@ $(document).ready(function () {
 				dialog_financeclass.urlParam.filterCol = ['compcode'];
 				dialog_financeclass.urlParam.filterVal = ['9A'];
 			},
-		}, 'urlParam'
+		}, 'none'
 	);
 	dialog_financeclass.makedialog(true);
 
@@ -304,7 +305,7 @@ $(document).ready(function () {
 				dialog_payer.urlParam.filterCol = ['compcode'];
 				dialog_payer.urlParam.filterVal = ['9A'];
 			},
-		}, 'urlParam'
+		}, 'none'
 	);
 	dialog_payer.makedialog(true);
 
@@ -331,7 +332,7 @@ $(document).ready(function () {
 				dialog_billtype.urlParam.filterCol = ['compcode'];
 				dialog_billtype.urlParam.filterVal = ['9A'];
 			},
-		}, 'urlParam'
+		}, 'none'
 	);
 	dialog_billtype.makedialog(true);
 
@@ -358,7 +359,7 @@ $(document).ready(function () {
 				dialog_doctor.urlParam.filterCol = ['compcode'];
 				dialog_doctor.urlParam.filterVal = ['9A'];
 			},
-		}, 'urlParam'
+		}, 'none'
 	);
 	dialog_doctor.makedialog(true);
 	////////////////////formatter status////////////////////////////////////////

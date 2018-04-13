@@ -153,6 +153,11 @@ Route::post('/apptrsc/addEvent','hisdb\AppointmentController@addEvent');
 Route::post('/apptrsc/editEvent','hisdb\AppointmentController@editEvent');
 Route::post('/apptrsc/delEvent','hisdb\AppointmentController@delEvent');
 
+//// debtortype ////
+Route::get('/debtortype','finance\debtortypeController@show');
+Route::get('/debtortype/table','finance\debtortypeController@table');
+Route::post('/debtortype/form','finance\debtortypeController@form');
+
 //// pat_mast registration ////
 Route::get('/pat_mast','hisdb\PatmastController@show');
 Route::get('/pat_mast/get_entry','hisdb\PatmastController@get_entry');
