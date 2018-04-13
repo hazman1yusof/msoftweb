@@ -12,6 +12,16 @@ $(document).ready(function () {
 		},
 	});
 
+
+	var gldatepicker = $('#mydate').glDatePicker({
+		zIndex: 0,
+		showAlways: true,
+		onClick: function(target, cell, date, data) {
+			urlParam.filterVal[0] = moment(date).format('YYYY-MM-DD');
+			refreshGrid("#jqGrid", urlParam);
+	    }
+	}).glDatePicker(true);
+
 	var errorField = [];
 	conf = {
 		onValidate: function ($form) {
@@ -25,6 +35,40 @@ $(document).ready(function () {
 		},
 	};
 	//////////////////////////////////////////////////////////////
+
+	$('#Newic').blur(function(){
+        if($(this).val() != ''){
+            let newrplc = $(this).val().replace(/-/g, "");
+            $(this).val(newrplc);//untuk buang hyphen lepas tulis i/c
+            let first6dig = $(this).val().substring(0,6);
+            let lastdig = $(this).val().substr(-1, 1);
+            let dobval = turntoappropriatetime(first6dig);
+            var gender = turntoappropriategender(lastdig)? 'F':'M';
+            $("#DOB").val(dobval);//utk auto letak dob lepas tulis i/c\
+            $("#sex").val(gender);//utk auto letak gender lepas tulis i/c\
+        }
+    })
+
+    function turntoappropriategender(digit){
+    	if(digit % 2 === 0){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+
+    function turntoappropriatetime(moments){
+        let year = moments.substring(0,2);
+        let month = moments.substring(2,4);
+        let day = moments.substring(4,6);
+        let yearnow = String(moment().get('year')).substring(2,4);
+        if(parseInt(yearnow)<=parseInt(year)){
+            year = "19".concat(year);
+        }else{
+            year = "20".concat(year);
+        }
+        return moment(year+month+day, "YYYYMMDD").format("YYYY-MM-DD");
+    }
 
 	var butt1 = [{
 		text: "Save", click: function () {
@@ -110,8 +154,8 @@ $(document).ready(function () {
 		join_type: ['LEFT JOIN'],
 		join_onCol: ['e.MRN'],
 		join_onVal: ['p.MRN'],
-		// filterCol:['e.reg_date'],
-	 //    filterVal:[ moment($('#reg_date').val()).year(),]
+		filterCol:['e.reg_date'],
+	    filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD')]
 		
 	}
 
@@ -127,16 +171,12 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'e_compcode', width: 5, hidden: true },
-			{
-				label: 'MRN', name: 'e_MRN', width: 20, classes: 'wrap', canSearch: true, checked: true, editable: true,
-				editrules: { required: true },
-				editoptions: { maxlength: 2 },
-			},
-			{ label: 'Episode No', name: 'e_Episno', width: 20 ,classes: 'wrap' },
+			{ label: 'MRN', name: 'e_MRN', width: 20, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true, checked: true,  },
+			{ label: 'Episode No', name: 'e_Episno', width: 20 ,canSearch: true,classes: 'wrap' },
 			{ label: 'MyKad No', name: 'p_Newic', width: 20 ,classes: 'wrap' },
-			{ label: 'Time', name: 'e_reg_time', width: 20 ,classes: 'wrap' },
-			{ label: 'Date', name: 'e_reg_date', width: 20 ,classes: 'wrap' },
-			{ label: 'Name', name: 'p_Name', width: 20 ,classes: 'wrap' },
+			{ label: 'Registered Time', name: 'e_reg_time', width: 20 ,classes: 'wrap' },
+			{ label: 'Registered Date', name: 'e_reg_date', width: 20 ,classes: 'wrap' },
+			{ label: 'Name', name: 'p_Name', width: 20 ,canSearch: true,classes: 'wrap' },
 			// { label: 'Payer', name: 'q_', width: 20 ,classes: 'wrap' },
 			{ label: 'Doctor', name: 'e_admdoctor', width: 20 ,classes: 'wrap' },
 			{ label: 'Status', name: 'e_episstatus', width: 20 ,classes: 'wrap' },
@@ -151,14 +191,8 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		ondblClickRow: function (rowid, iRow, iCol, e) {
-			$("#jqGridPager td[title='Edit Selected Row']").click();
 		},
 		gridComplete: function () {
-			if (oper == 'add') {
-				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			}
-
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 		},
 
 	});
@@ -380,47 +414,6 @@ $(document).ready(function () {
 		beforeRefresh: function () {
 			refreshGrid("#jqGrid", urlParam);
 		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-trash",
-		title: "Delete Selected Row",
-		onClickButton: function () {
-			oper = 'del';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			if (!selRowId) {
-				alert('Please select row');
-				return emptyFormdata(errorField, '#formdata');
-				//return emptyFormdata('#formdata');
-			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'idno': selrowData('#jqGrid').idno });
-			}
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-info-sign",
-		title: "View Selected Row",
-		onClickButton: function () {
-			oper = 'view';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-edit",
-		title: "Edit Selected Row",
-		onClickButton: function () {
-			oper = 'edit';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-plus",
-		title: "Add New Row",
-		onClickButton: function () {
-			oper = 'add';
-			$("#dialogForm").dialog("open");
-		},
 	});
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
@@ -433,15 +426,5 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus']);
-
-	$("#pg_jqGridPager table").hide();
-
-	$('#mydate').glDatePicker({
-		zIndex: 0,
-		showAlways: true,
-		onClick: function(target, cell, date, data) {
-	        
-	    }
-	});
 
 });

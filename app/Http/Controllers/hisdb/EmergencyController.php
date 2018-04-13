@@ -104,7 +104,7 @@ class EmergencyController extends defaultController
                     'AdmSrcCode' => "WIN",
                     'Case_Code'  => "MED",
                     'PyrMode' => "CASH",   
-                    'Pay_type' => $request->paytype,
+                    'Pay_type' => $request->financeclass,
                     'BillType' => $request->billtype,
                     'AdmDoctor' => $request->doctor, 
                     'CompCode' => session('compcode'),  
@@ -118,7 +118,7 @@ class EmergencyController extends defaultController
                 ]);
 
             ///--- 3. buat debtormaster
-            if($request->paytype == 'PT'){
+            if($request->financeclass == 'PT'){
                 $debtortype_data = DB::table('debtor.debtortype')
                     ->where('compcode','=',session('compcode'))
                     ->where('DebtorTyCode','=','PR')
@@ -161,7 +161,7 @@ class EmergencyController extends defaultController
                 ->where('Episno','=',$patmast_data->Episno + 1)
                 ->first();
 
-            if(!count($debtormast_data)){
+            if(!count($epispayer_data)){
                 //kalu xjumpa epispayer, buat baru
                 DB::table('hisdb.epispayer')
                 ->insert([
@@ -171,8 +171,8 @@ class EmergencyController extends defaultController
                     'EpisTyCode' => "OP",
                     'LineNo' => '1',
                     'BillType' => $request->billtype,
-                    'PayerCode' => $request->payer,
-                    'Pay_Type' => $request->paytype,
+                    'PayerCode' => $request->payername,
+                    'Pay_Type' => $request->financeclass,
                     'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'AddUser' => session('username'),
                     'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -184,14 +184,14 @@ class EmergencyController extends defaultController
             DB::table('hisdb.apptbook')
                 ->insert([
                     'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'ApptDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'apptdateto' => Carbon::now("Asia/Kuala_Lumpur"),
                     'AddUser' => session('username'),    
                     'CompCode' => session('compcode'),
                     'Location' => 'ED',
                     'LocCode' => 'ED',
-                    'ApptNo' => '',
-                    'MRN' => $patmast_data->MRN,
-                    'ApptTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
+                    'ApptNo' => '0',
+                    'MRN' => $patmast_data->MRN
+                    // 'ApptTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
                 ]);
 
             ///---6. buat docalloc
@@ -213,6 +213,7 @@ class EmergencyController extends defaultController
                         'Adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'AddUser' => session('username'),
                         'Epistycode' => 'OP',
+                        'DoctorCode' => $request->doctor,
                         'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'LastUser' => session('username'),
                         'ASDate' => Carbon::now("Asia/Kuala_Lumpur"),
