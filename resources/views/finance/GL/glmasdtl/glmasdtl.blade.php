@@ -1,10 +1,8 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body>
+@extends('layouts.main')
 
+@section('title', 'Debtor Type')
 
-<style>
+@section('style')
 	.num{
 		width:20px;
 	}
@@ -54,7 +52,10 @@
 	.bg-info{
 		background-color: white;
 	}
-</style>
+@endsection
+
+@section('body')
+
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
 		<div class='col-md-12' style="padding:0 0 15px 0;">
@@ -77,13 +78,13 @@
              </div>
 		</div>
 
-    <div class="panel panel-default">
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
+    	<div class="panel panel-default">
+    		<div class="panel-body">
+    			<div class='col-md-12' style="padding:0 0 15px 0">
+    				<table id="jqGrid" class="table table-striped"></table>
+    					<div id="jqGridPager"></div>
+				</div>
+    		</div>
 		</div>
 
 
@@ -185,23 +186,13 @@
 	<div id="dialogForm" title="Viewing Detail"></div>
 
 
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
+
+	@endsection
+
+
+@section('scripts')
+
+	<script src="js/finance/GL/glmasdtl/glmasdtl.js"></script>
+
 	
-	<!-- JS Implementing Plugins -->
-
-	<!-- JS Customization -->
-
-	<!-- JS Page Level -->
-	<script src="glmasdtl.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<script src="../../../../assets/js/dialogHandler.js"></script>
-	<script src="../../../../assets/plugins/datatables/js/jquery.datatables.min.js"></script>
-	
-
-<script>
-		
-</script>
-</body>
-</html>
+@endsection

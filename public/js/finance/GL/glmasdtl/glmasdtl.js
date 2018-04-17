@@ -11,8 +11,23 @@
 			//////////////////////////////////////////////////////////////
 
 			////////////////////object for dialog handler//////////////////
-			dialog_dept=new makeDialog('finance.glmasref','#glaccount',['glaccno','description'], 'GL Account');
-			dialog_dept.handler(errorField);
+
+			var dialog_dept = new ordialog(
+				'doctype','finance.glmasref','#glaccount',errorField,
+				{	colModel:[
+						{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select GL Account",
+					open: function(){
+						dialog_dept.urlParam.filterCol=['recstatus'],
+						dialog_dept.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_dept.makedialog();
+			dialog_glaccount.on();
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			$("#dialogForm").dialog({ 
@@ -37,6 +52,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'/util/get_table_default',
 				field:'',
 				table_id:'costcode',
 				table_name:['finance.glmasdtl','finance.costcenter'],
@@ -250,6 +266,7 @@
 			function getdatadr(fetchall,start,limit){
 				var param={
 							action:'get_value_default',
+							url:'/util/get_value_default',
 							field:['NULL as open','source','trantype','auditno','postdate','description','reference','cracc as acccode','amount as dramount','NULL as cramount'],
 							table_name:'finance.gltran',
 							table_id:'auditno',
@@ -266,7 +283,7 @@
 					param.start=start;
 					param.rows=limit;
 				}
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+				$.get( "/util/get_value_default?"+$.param(param), function( data ) {
 						
 				},'json').done(function(data) {
 					mymodal.hide();
