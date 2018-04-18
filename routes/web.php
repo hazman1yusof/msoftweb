@@ -207,4 +207,10 @@ Route::get('/period','finance\PeriodController@show');
 Route::get('/period/table','finance\PeriodController@table');
 Route::post('/period/form','finance\PeriodController@form');
 
+//// Debtor Master setup ///
+Route::get('/debtorMaster','finance\DebtorMasterController@show');
+Route::get('/debtorMaster/table','finance\DebtorMasterController@table');
+Route::post('/debtorMaster/form','finance\DebtorMasterController@form');
+
+
 

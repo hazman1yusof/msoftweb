@@ -4,6 +4,7 @@
 		var editedRow=0;
 
 		$(document).ready(function () {
+			$("body").show();
 			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
@@ -28,10 +29,64 @@
 			//////////////////////////////////////////////////////////////
 
 			////////////////////object for dialog handler//////////////////
-			dialog_debtortype=new makeDialog('debtor.debtortype','#debtortype',['debtortycode','description','actdebccode', 'actdebglacc','depccode','depglacc'],'Financial Class');
-			dialog_billtype=new makeDialog('hisdb.billtymst','#billtype',['billtype','description'], 'Bill Type IP');
-			dialog_billtypeop=new makeDialog('hisdb.billtymst','#billtypeop',['billtype','description'], 'Bill Type OP');
+			var dialog_debtortype = new ordialog(
+				'debtortype','debtor.debtortype','#debtortype',errorField,
+				{	colModel:[
+						{label:'Code',name:'debtortycode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'actdebccode',name:'actdebccode',hidden:true},
+						{label:'actdebglacc',name:'actdebglacc',hidden:true},
+						{label:'depccode',name:'depccode',hidden:true},
+						{label:'depglacc',name:'depglacc',hidden:true},
+					],
+					ondblClickRow: function(){
+						var dataobj = selrowData('#'+dialog_debtortype.gridname);
+						$('#actdebccode').val(dataobj['actdebccode']);
+						$('#actdebglacc').val(dataobj['actdebglacc']);
+						$('#depccode').val(dataobj['depccode']);
+						$('#depglacc').val(dataobj['depglacc']);
+					}
+				},{
+					title:"Select Financial Class",
+					open: function(){
+						dialog_debtortype.urlParam.filterCol=['recstatus'],
+						dialog_debtortype.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_debtortype.makedialog();
 
+			var dialog_billtype = new ordialog(
+				'billtype','hisdb.billtymst','#billtype',errorField,
+				{	colModel:[
+						{label:'Code',name:'billtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					]
+				},{
+					title:"Select Bill Type IP",
+					open: function(){
+						dialog_billtype.urlParam.filterCol=['recstatus'],
+						dialog_billtype.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_billtype.makedialog();
+
+			var dialog_billtypeop = new ordialog(
+				'billtypeop','hisdb.billtymst','#billtypeop',errorField,
+				{	colModel:[
+						{label:'Code',name:'billtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					]
+				},{
+					title:"Select Bill Type OP",
+					open: function(){
+						dialog_billtypeop.urlParam.filterCol=['recstatus'],
+						dialog_billtypeop.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_billtypeop.makedialog();
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -84,14 +139,11 @@
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-
-						dialog_debtortype.offHandler();
-						dialog_debtortype.handler(errorField);
-						dialog_billtype.handler(errorField);
-						dialog_billtypeop.handler(errorField);
+						dialog_debtortype.on();
+						dialog_billtype.on();
+						dialog_billtypeop.on();
 					}
 					if(oper!='add'){
-						dialog_debtortype.offHandler();
 						dialog_debtortype.check(errorField);
 						dialog_billtype.check(errorField);
 						dialog_billtypeop.check(errorField);
@@ -101,7 +153,9 @@
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
 					$('#formdata .alert').detach();
-					$("#formdata a").off();
+					dialog_debtortype.off();
+					dialog_billtype.off();
+					dialog_billtypeop.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -113,6 +167,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'debtor.debtormast',
 				table_id:'debtorcode',
@@ -122,6 +177,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'debtorMaster/form',
 				field:'',
 				oper:oper,
 				table_name:'debtor.debtormast',
@@ -281,151 +337,6 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['depamt','idno', 'computerid', 'ipaddress']);
-
-			///////////////////////////////start->dialogHandler part/////////////////////////////////////////////
-			function makeDialog(table,id,cols,title){
-				this.table=table;
-				this.id=id;
-				this.cols=cols;
-				this.title=title;
-				this.handler=dialogHandler;
-				this.offHandler=function(){
-					$( this.id+" ~ a" ).off();
-				}
-				this.check=checkInput;
-				this.updateField=function(table,id,cols,title){
-					this.table=table;
-					this.id=id;
-					this.cols=cols;
-					this.title=title;
-					console.log(this);
-				}
-			}
-			$( "#dialog" ).dialog({
-				autoOpen: false,
-				width: 7/10 * $(window).width(),
-				modal: true,
-				open: function(){
-					$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
-				},
-				close: function( event, ui ){
-					paramD.searchCol=null;
-					paramD.searchVal=null;
-				},
-			});
-
-			var selText,Dtable,Dcols;
-			$("#gridDialog").jqGrid({
-				datatype: "local",
-				colModel: [
-					{ label: 'Code', name: 'code', width: 40,  classes: 'pointer', canSearch:true,checked:true}, 
-					{ label: 'Description', name: 'desc', width: 70, canSearch:true, classes: 'pointer'},
-					{ label: 'Debtor CCode', name: 'actdebccode', classes: 'pointer', hidden: true},
-					{ label: 'Debtor Acct', name: 'actdebglacc', classes: 'pointer', hidden: true},
-					{ label: 'Deposit CCode', name: 'depccode', classes: 'pointer', hidden: true},
-					{ label: 'Deposit Acct', name: 'depglacc', classes: 'pointer', hidden: true},
-				],
-				width: 680,
-				viewrecords: true,
-				loadonce: false,
-                multiSort: true,
-				rowNum: 30,
-				pager: "#gridDialogPager",
-				ondblClickRow: function(rowid, iRow, iCol, e){
-					var data=$("#gridDialog").jqGrid ('getRowData', rowid);
-					$("#gridDialog").jqGrid("clearGridData", true);
-					$("#dialog").dialog( "close" );
-					if(selText=='debtortype' ){
-						$('#actdebccode').val(data['actdebccode']);
-						$('#actdebglacc').val(data['actdebglacc']);
-						$('#depccode').val(data['depccode']);
-						$('#depglacc').val(data['depglacc']);
-					}
-					$(selText).val(rowid);
-					$(selText).focus();
-					$(selText).parent().next().html(data['desc']);
-				},
-				
-			});
-
-
-			var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:''};
-			function dialogHandler(errorField){
-				var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
-				$( id+" ~ a" ).on( "click", function() {
-					selText=id,Dtable=table,Dcols=cols,
-					$( "#dialog" ).dialog( "open" );
-					$( "#dialog" ).dialog( "option", "title", title );
-					paramD.table_name=table;
-					paramD.field=cols;
-					paramD.table_id=cols[0];
-					
-					$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
-					$('#Dtext').val('');$('#Dcol').html('');
-					
-					$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
-						if(value['canSearch']){
-							if(value['checked']){
-								$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
-							}else{
-								$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
-							}
-						}
-					});
-				});
-				$(id).on("blur", function(){
-					self.check(errorField);
-				});
-			}
-			
-			function checkInput(errorField){
-				var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
-				var param={action:'input_check',table:table,field:field,value:value};
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-					
-				},'json').done(function(data) {
-					if(data.msg=='success'){
-						if($.inArray(id,errorField)!==-1){
-							errorField.splice($.inArray(id,errorField), 1);
-						}
-						$( id ).parent().siblings( ".help-block" ).html(data.row[field[1]]);
-					}else if(data.msg=='fail'){
-						$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-						$( id ).removeClass( "valid" ).addClass( "error" );
-						$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+field[0]+" )");
-						if($.inArray(id,errorField)===-1){
-							errorField.push(id);
-						}
-					}
-				});
-			}
-			
-			$('#Dtext').keyup(function() {
-				delay(function(){
-					Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-				}, 500 );
-			});
-			
-			$('#Dcol').change(function(){
-				Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-			});
-			
-			function Dsearch(Dtext,Dcol){
-				paramD.searchCol=null;
-				paramD.searchVal=null;
-				Dtext=Dtext.trim();
-				if(Dtext != ''){
-					var split = Dtext.split(" "),searchCol=[],searchVal=[];
-					$.each(split, function( index, value ) {
-						searchCol.push(Dcol);
-						searchVal.push('%'+value+'%');
-					});
-					paramD.searchCol=searchCol;
-					paramD.searchVal=searchVal;
-				}
-				refreshGrid("#gridDialog",paramD);
-			}
-			///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
+			addParamField('#jqGrid',false,saveParam,['depamt','idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
 		});
 		
