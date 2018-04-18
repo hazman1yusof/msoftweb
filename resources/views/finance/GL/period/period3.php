@@ -1,20 +1,11 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body style="display:none">
-	 
-	<!-------------------------------- Search + table ---------------------->
+@extends('layouts.main')
+
+@section('title', 'GL Enquiry')
+
+
+@section('body')
 	<div class='row'>
-		<!--<form id="searchForm" class="formclass" style='width:99%'>
-			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-				</div>
-			 </fieldset> 
-		</form>  min="<?php //echo date("Y-m-d"); ?>"-->
+
     	<div class='col-md-5'>
             <table id="jqGrid" class="table table-striped"></table>
             <div id="jqGridPager"></div>
@@ -247,26 +238,8 @@
 			</form>
 		</div>
     </div>
-	<!-------------------------------- End Search + table   value="<?php //echo date("Y"); ?>" ------------------>
+@endsection
 
-	
-		
-
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
-	
-	<!-- JS Implementing Plugins -->
-
-	<!-- JS Customization -->
-
-	<!-- JS Page Level -->
-	<script src="period3.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<script src="../../../../assets/js/dialogHandler.js"></script>
-
-<script>
-		
-</script>
-</body>
-</html>
+@section('scripts')
+	<script src="js/finance/GL/period/period3.js"></script>
+@endsection

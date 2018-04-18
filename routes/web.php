@@ -24,6 +24,9 @@ Route::get('/util/get_table_default','UtilController@get_table_default');
 Route::get('/util/save_table_default','UtilController@defaultSetter');
 Route::get('/util/input_check','UtilController@input_check'); //jgn guna
 
+/// announcement thingy ///
+Route::get('/announcement/generate','setup\AnnouncementController@generate');
+
 //// menu mainatenance page ///
 Route::get('/menu_maintenance','setup\MenuMaintenanceController@show');
 Route::get('/menu_maintenance/table','setup\MenuMaintenanceController@table');
@@ -178,4 +181,25 @@ Route::post('/location/form','finance\LocationController@form');
 Route::get('/assettype','finance\assettypeController@show');
 Route::get('/assettype/table','finance\assettypeController@table');
 Route::post('/assettype/form','finance\assettypeController@form');
+
+//// GL Enquiry ///
+Route::get('/glenquiry','finance\GlenquiryController@show');
+Route::get('/glenquiry/table','finance\GlenquiryController@table');
+Route::post('/glenquiry/form','finance\GlenquiryController@form');
+
+//// Department setup ///
+Route::get('/department','finance\DepartmentController@show');
+Route::get('/department/table','finance\DepartmentController@table');
+Route::post('/department/form','finance\DepartmentController@form');
+
+//// costcenter setup ///
+Route::get('/costcenter','finance\CostcenterController@show');
+Route::get('/costcenter/table','finance\CostcenterController@table');
+Route::post('/costcenter/form','finance\CostcenterController@form');
+
+//// GlMaster setup ///
+Route::get('/glmaster','finance\GlmasterController@show');
+Route::get('/glmaster/table','finance\GlmasterController@table');
+Route::post('/glmaster/form','finance\GlmasterController@form');
+
 

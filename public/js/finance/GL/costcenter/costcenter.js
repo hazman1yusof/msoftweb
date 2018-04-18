@@ -98,6 +98,7 @@
 
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
+				url:'util/get_table_default',
 				action:'get_table_default',
 				field:'',
 				table_name:'finance.costcenter',
@@ -108,6 +109,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url: '/costcenter/form',
 				field:'',
 				oper:oper,
 				table_name:'finance.costcenter',
@@ -231,7 +233,7 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress']);
+			addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
 
 		});
 		

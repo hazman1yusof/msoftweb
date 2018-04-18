@@ -28,11 +28,54 @@
 			//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-			////////////////////object for dialog handler//////////////////
-			
-			dialog_costcode=new makeDialog('finance.costcenter','#costcode',['costcode','description'], 'Cost Center');
-			dialog_sector=new makeDialog('sysdb.sector','#sector',['sectorcode','description'], 'Sector');
-			dialog_region=new makeDialog('sysdb.region','#region',['regioncode','description'], 'Region');
+			////////////////////object for dialog handler//////////////////\
+			var dialog_costcode = new ordialog(
+				'costcode','finance.costcenter','#costcode',errorField,
+				{	colModel:[
+						{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						]
+				},{
+					title:"Select Cost Center",
+					open: function(){
+						dialog_costcode.urlParam.filterCol=['recstatus'],
+						dialog_costcode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_costcode.makedialog();
+
+			var dialog_sector = new ordialog(
+				'sector','sysdb.sector','#sector',errorField,
+				{	colModel:[
+						{label:'Code',name:'sectorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						]
+				},{
+					title:"Select Sector",
+					open: function(){
+						dialog_sector.urlParam.filterCol=['regioncode','recstatus'],
+						dialog_sector.urlParam.filterVal=[$("#formdata :input[name='region']").val(),'A']
+					}
+				},'urlParam'
+			);
+			dialog_sector.makedialog();
+
+			var dialog_region = new ordialog(
+				'region','sysdb.region','#region',errorField,
+				{	colModel:[
+						{label:'Code',name:'regioncode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						]
+				},{
+					title:"Select Region",
+					open: function(){
+						dialog_region.urlParam.filterCol=['recstatus'],
+						dialog_region.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_region.makedialog();
 			
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -84,9 +127,9 @@
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-						dialog_costcode.handler(errorField);
-						dialog_sector.handler(errorField);
-						dialog_region.handler(errorField);
+						dialog_costcode.on();
+						dialog_sector.on();
+						dialog_region.on();
 					}
 					if(oper!='add'){
 						dialog_costcode.check(errorField);
@@ -99,7 +142,9 @@
 					emptyFormdata(errorField,'#formdata');
 					//$('.alert').detach();
 					$('#formdata .alert').detach();
-					$("#formdata a").off();
+					dialog_costcode.off();
+					dialog_sector.off();
+					dialog_region.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -111,6 +156,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'sysdb.department',
 				table_id:'deptcode',
@@ -120,6 +166,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url: '/deparment/form',
 				field:'',
 				oper:oper,
 				table_name:'sysdb.department',

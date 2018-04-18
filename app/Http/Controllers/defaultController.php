@@ -186,6 +186,10 @@ abstract class defaultController extends Controller{
     public function get_value_default(Request $request){
         $table = $this->defaultGetter($request);
 
+        //limit and offset
+        if(!empty($request->offset))$table = $table->offset($request->offset);
+        if(!empty($request->limit))$table = $table->limit($request->limit);
+
         $responce = new stdClass();
         $responce->rows = $table->get();
         $responce->sql = $table->toSql();

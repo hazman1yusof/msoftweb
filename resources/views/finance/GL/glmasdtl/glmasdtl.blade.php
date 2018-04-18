@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Debtor Type')
+@section('title', 'GL Enquiry')
 
 @section('style')
 	.num{
@@ -88,7 +88,8 @@
 		</div>
 
 
-		<div class='row'>
+		<div class='panel panel-default'>
+		<div class='panel-body'>
 			<div class='col-xs-3'>
 				<table class="table table-hover" id='TableGlmasdtl'>
 				<thead>
@@ -180,6 +181,7 @@
 				</table>
 			</div>
 		</div>
+		</div>
     </div>
 	<!-------------------------------- End Search + table ------------------>
 
@@ -193,6 +195,6 @@
 @section('scripts')
 
 	<script src="js/finance/GL/glmasdtl/glmasdtl.js"></script>
-
+	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 	
 @endsection

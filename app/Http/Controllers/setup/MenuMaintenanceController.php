@@ -34,30 +34,7 @@ class MenuMaintenanceController extends Controller
 
     public function table(Request $request)
     {   
-        $table = $this->table;
-
-        /////////where/////////
-        $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
-
-        /////////searching/////////
-        if(!empty($request->searchCol)){
-            foreach ($request->searchCol as $key => $value) {
-                $table = $table->orWhere($request->searchCol[$key],'like',$request->searchVal[$key]);
-            }
-         }
-
-        //////////ordering/////////
-        if(!empty($request->sidx)){
-            $pieces = explode(", ", $request->sidx .' '. $request->sord);
-            if(count($pieces)==1){
-                $table = $table->orderBy($request->sidx, $request->sord);
-            }else{
-                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
-                    $pieces_inside = explode(" ", $pieces[$i]);
-                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
-                }
-            }
-        }
+    	$table = $this->leftjoinGetter($request);
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -71,6 +48,108 @@ class MenuMaintenanceController extends Controller
         $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
+    }
+
+    public function leftjoinGetter(Request $request)
+    {   
+        //////////make table/////////////
+        if(is_array($request->table_name)){
+            $table =  DB::table($request->table_name[0]);
+        }else{
+            $table =  DB::table($request->table_name);
+        }
+
+        ///////////select field////////
+        if(!empty($request->field)){
+            if(!empty($request->fixPost)){
+                $table = $table->select($this->fixPost($request->field,"_"));
+            }else{
+                $table = $table->select($request->field);
+            }
+        }
+
+        //////////join//////////
+        if(!empty($request->join_onCol)){
+            foreach ($request->join_onCol as $key => $value) {
+
+                if(empty($request->join_filterCol)){ //ni nak check kalu ada AND lepas JOIN ON
+
+                    $table = $table->join($request->table_name[$key+1], $request->join_onCol[$key], '=', $request->join_onVal[$key]);
+                }else{
+
+                    $table = $table->leftJoin($request->table_name[$key+1], function($join) use ($request,$key){
+                        $join = $join->on($request->join_onCol[$key], '=', $request->join_onVal[$key]);
+                        
+                        foreach ($request->join_filterCol as $key2 => $value2) {
+                            foreach ($value2 as $key3 => $value3) {
+                                $pieces = explode(' ', $value3);
+                                if($pieces[1] == 'on'){
+                                    $join = $join->on($pieces[0],$pieces[2],$request->join_filterVal[$key2][$key3]);
+                                }else{
+                                    $join = $join->where($pieces[0],$pieces[2],$request->join_filterVal[$key2][$key3]);
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        /////////searching/////////
+        if(!empty($request->searchCol)){
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol);
+            }else{
+                $searchCol_array = $request->searchCol;
+            }
+
+            foreach ($searchCol_array as $key => $value) {
+                $table = $table->orWhere($searchCol_array[$key],'like',$request->searchVal[$key]);
+            }
+        }
+
+        /////////searching 2///////// ni search utk ordialog
+        if(!empty($request->searchCol2)){
+            $table = $table->Where(function($query) use ($request){
+                foreach ($request->searchCol2 as $key => $value) {
+                    $query = $query->orWhere($request->searchCol2[$key],'like',$request->searchVal2[$key]);
+                }
+            });
+        }
+
+        //////////where//////////
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $pieces = explode(".", $request->filterVal[$key], 2);
+                if($pieces[0] == 'session'){
+                    $table = $table->where($request->filterCol[$key],'=',session('compcode'));
+                }else if($pieces[0] == '<>'){
+                    $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
+                }else{
+                    $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                }
+            }
+        }
+
+        //////////ordering/////////
+        if(!empty($request->sortby)){
+            foreach ($request->sortby as $key => $value) {
+                $pieces = explode(" ", $request->sortby[$key]);
+                $table = $table->orderBy($pieces[0], $pieces[1]);
+            }
+        }else if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }
+
+        return $table;
     }
 
     public function form(Request $request)
@@ -182,7 +261,6 @@ class MenuMaintenanceController extends Controller
 						'adddate' => Carbon::now()
 					]);
 			}
-
 
 			$get1 = DB::table('sysdb.programtab')
 						->where('compcode','=', session('compcode'))

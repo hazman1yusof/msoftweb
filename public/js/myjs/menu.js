@@ -116,7 +116,13 @@ var Menu = function () {
     }
 	
 	function announce(){
-		$("#myCarousel").carousel({interval: 5000});
+		$.getJSON( "/announcement/generate", function(data){
+            
+			$("#announcement").append(data.res);
+
+        }).done(function() {
+			$("#myCarousel").carousel({interval: 5000});
+		});
 	}
 
 	function loadCard(){
