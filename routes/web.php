@@ -202,4 +202,9 @@ Route::get('/glmaster','finance\GlmasterController@show');
 Route::get('/glmaster/table','finance\GlmasterController@table');
 Route::post('/glmaster/form','finance\GlmasterController@form');
 
+//// period setup ///
+Route::get('/period','finance\PeriodController@show');
+Route::get('/period/table','finance\PeriodController@table');
+Route::post('/period/form','finance\PeriodController@form');
+
 

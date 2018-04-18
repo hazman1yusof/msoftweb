@@ -90,6 +90,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'sysdb.period',
 				table_id:'year',
@@ -99,6 +100,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'period/form',
 				field:'',
 				//skipduplicate: true,
 				oper:oper,
@@ -154,8 +156,8 @@
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
-				//sortname: 'year',
-        		//sortorder: "desc",
+				sortname: 'year',
+        		sortorder: "desc",
 				width: 900,
 				height: 350,
 				rowNum: 30,
@@ -166,6 +168,37 @@
 					selectYear();
 					$("#saveyear").hide();
 					$("#cancelyear").hide();
+					sdate.check();
+					$("#addPd thead tr").find("th:nth-child(5)").remove();
+					$('#addPd tbody tr#1').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#2').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#3').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#4').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#5').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#6').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#7').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#8').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#9').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#10').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#11').find('td:nth-child(5)').remove();
+					$('#addPd tbody tr#12').find('td:nth-child(5)').remove();
+					$("#jqGridPager_left").show();
+					$("#datefr1").removeClass( "valid success" );$("#dateto1").removeClass( "valid success" );
+					$("#datefr2").removeClass( "valid success" );$("#dateto2").removeClass( "valid success" );
+					$("#datefr3").removeClass( "valid success" );$("#dateto3").removeClass( "valid success" );
+					$("#datefr4").removeClass( "valid success" );$("#dateto4").removeClass( "valid success" );
+					$("#datefr5").removeClass( "valid success" );$("#dateto5").removeClass( "valid success" );
+					$("#datefr6").removeClass( "valid success" );$("#dateto6").removeClass( "valid success" );
+					$("#datefr7").removeClass( "valid success" );$("#dateto7").removeClass( "valid success" );
+					$("#datefr8").removeClass( "valid success" );$("#dateto8").removeClass( "valid success" );
+					$("#datefr9").removeClass( "valid success" );$("#dateto9").removeClass( "valid success" );
+					$("#datefr10").removeClass( "valid success" );$("#dateto10").removeClass( "valid success" );
+					$("#datefr11").removeClass( "valid success" );$("#dateto11").removeClass( "valid success" );
+					$("#datefr12").removeClass( "valid success" );$("#dateto12").removeClass( "valid success" );
+					$("#addPd tbody tr").find('td.has-success').removeClass( "has-success" );
+					$(".has-error").removeClass( "has-error" );
+					$("#year").removeClass( "error" ).removeAttr("style");;
+
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
 					$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -235,10 +268,11 @@
 					oper='add';
 					$("#year").focus();
 					$('#formdata select').prop("disabled",false);
-					$("#saveyear").show();
+					$("#saveyear").hide();
 					$("#cancelyear").show();
 					addYear();
 					hdate.check();
+					$("#jqGridPager_left").hide();
 				},
 			});
 
@@ -260,6 +294,18 @@
 			}
 
 			$('#saveyear').click(function(){
+				$("#datefr1").prop('disabled',false);$("#dateto1").prop('disabled',false);
+				$("#datefr2").prop('disabled',false);$("#dateto2").prop('disabled',false);
+				$("#datefr3").prop('disabled',false);$("#dateto3").prop('disabled',false);
+				$("#datefr4").prop('disabled',false);$("#dateto4").prop('disabled',false);
+				$("#datefr5").prop('disabled',false);$("#dateto5").prop('disabled',false);
+				$("#datefr6").prop('disabled',false);$("#dateto6").prop('disabled',false);
+				$("#datefr7").prop('disabled',false);$("#dateto7").prop('disabled',false);
+				$("#datefr8").prop('disabled',false);$("#dateto8").prop('disabled',false);
+				$("#datefr9").prop('disabled',false);$("#dateto9").prop('disabled',false);
+				$("#datefr10").prop('disabled',false);$("#dateto10").prop('disabled',false);
+				$("#datefr11").prop('disabled',false);$("#dateto11").prop('disabled',false);
+				$("#datefr12").prop('disabled',false);$("#dateto12").prop('disabled',false);
 				if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 					saveForm("#formdata",oper,saveParam,urlParam);
 					emptyFormdata(errorField,'#formdata');
@@ -268,7 +314,7 @@
 				}
 			});
 
-			$('#cancelyear').click(function(){			
+			$('#cancelyear').click(function(){
 				emptyFormdata(errorField,'#formdata');
 				datefr1.min=null; dateto1.min=null;
 				datefr2.min=null; dateto2.min=null;
@@ -283,16 +329,25 @@
 				datefr11.min=null; dateto11.min=null;
 				datefr12.min=null; dateto12.min=null;
 				hdate.check();
-			});
-
-			$('#r').click(function(){
-				location.reload()
+				$("#datefr1").prop('disabled',false);$("#dateto1").prop('disabled',false);
+				$("#datefr2").prop('disabled',false);$("#dateto2").prop('disabled',false);
+				$("#datefr3").prop('disabled',false);$("#dateto3").prop('disabled',false);
+				$("#datefr4").prop('disabled',false);$("#dateto4").prop('disabled',false);
+				$("#datefr5").prop('disabled',false);$("#dateto5").prop('disabled',false);
+				$("#datefr6").prop('disabled',false);$("#dateto6").prop('disabled',false);
+				$("#datefr7").prop('disabled',false);$("#dateto7").prop('disabled',false);
+				$("#datefr8").prop('disabled',false);$("#dateto8").prop('disabled',false);
+				$("#datefr9").prop('disabled',false);$("#dateto9").prop('disabled',false);
+				$("#datefr10").prop('disabled',false);$("#dateto10").prop('disabled',false);
+				$("#datefr11").prop('disabled',false);$("#dateto11").prop('disabled',false);
+				$("#datefr12").prop('disabled',false);$("#dateto12").prop('disabled',false);
+				$("#year").focus();
 			});
 
 			function saveForm(form,oper,saveParam,urlParam){
 				saveParam.oper=oper;
 				
-				$.post( "../../../../assets/php/entry.php?"+$.param(saveParam), $( form ).serialize() , function( data ) {
+				$.post( "period/form?"+$.param(saveParam), $( form ).serialize() , function( data ) {
 					
 				}).fail(function(data) {
 					errorText(dialog,data.responseText);
@@ -309,7 +364,7 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno']);
+			addParamField('#jqGrid',false,saveParam,['idno','adduser','upduser']);
 
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -322,7 +377,7 @@
 				this.hdt=hdt;
 				this.check = function(){
 					$.each(this.hdt, function( index, value ) {
-						$("#"+value).hide();
+						$("#td"+value).hide();
 					});
 				}
 			}
@@ -333,7 +388,7 @@
 				this.sdt=sdt;
 				this.check = function(){
 					$.each(this.sdt, function( index, value ) {
-						$("#"+value).show();
+						$("#td"+value).show();
 					});
 				}
 			}
@@ -358,13 +413,17 @@
 						noerror(datefr);noerror(dateto);
 						datefr.prop('disabled',true);
 						dateto.prop('disabled',true);
-						addSaveColumn($("#addPd tbody tr#"+(parseInt(row)+1)),parseInt(row)+1,false);
+						addSaveColumn($("#addPd tbody tr#td"+(parseInt(row)+1)),parseInt(row)+1,false);
 					}
 				});
 
 				$("#del"+row).on('click',function(){
+					var datefr=$("#datefr"+row);
+					var dateto=$("#dateto"+row);
+					
 					clearDate(row);
 					hideBelow(parseInt(row)+1);
+					t1(datefr);t1(dateto);
 				});
 			}
 
@@ -375,6 +434,16 @@
 			function noerror(obj){
 				obj.addClass( "success" ).removeClass( "error" );
 			}
+
+			function t1(obj){
+				obj.removeClass( "valid success" );
+				$("#addPd tbody tr").find('td.has-success').removeClass( "has-success" );
+				//obj.removeClass( "has-success" ).removeClass( "valid success" );
+			}
+
+			/*function rcs(obj){
+				obj.removeClass("success");
+			}*/
 
 			function hideBelow(index){
 				for(x=index;x<=12;x++){
@@ -390,145 +459,24 @@
 				$("#dateto"+row).val('');
 			}
 
-
 			function addSaveColumn(obj,row,isth){
-				$("#"+row).show();
+				$("#td"+row).show();
 				if(obj.children('.tdSave').length == 0 && row<=12){
-					if(isth)$("#addPd thead tr").append("<td><b>Action</b></td>");
+					if(isth)$("#addPd thead tr").append("<th>Action</th>");
 					obj.append("<td class='tdSave'><button id='save"+row+"' type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-ok'></span></button> <button type='button' class='btn btn-default btn-sm' id='del"+row+"'><span class='glyphicon glyphicon-remove'></span></button></td>");
 					addClickTrigger(row);
+				}
+				if(row==12){
+					$("#saveyear").show();
 				}
 			}
 
 			$("#year").keydown(function(e) {
 				var code = e.keyCode || e.which;
 					if (code == '9') { // -->for tab
-						addSaveColumn($("#addPd tbody tr#1"),'1',true);
+						addSaveColumn($("#addPd tbody tr#td1"),'1',true);
 					}
 			});
-
-
-
-			
-
-			///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-			/////////////////// FUNCTION TAB /////////////////////////////////////////////////////////////////////
-
-			/*$("#dateto1").keydown(function(e) {//<br> <span class='glyphicon glyphicon-remove'></span></td>
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#2").show();
-							$("#addPd tbody tr#2").append("<span class='11 glyphicon glyphicon-ok'></span> <br> <span class='glyphicon glyphicon-remove'></span>");
-						}, 1500 );
-					}
-			});
-
-			$("#dateto2").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#3").show();	
-							$("#addPd tbody tr#3").append("<td><span class='glyphicon glyphicon-ok'>   <span class='glyphicon glyphicon-remove'></td>");
-						}, 1500 );
-					}
-			});
-
-			$("#dateto3").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#4").show();
-							$("#addPd tbody tr#4").append("<td><span class='glyphicon glyphicon-ok'>   <span class='glyphicon glyphicon-remove'></td>");	
-						}, 1500 );
-					}
-			});
-
-			$("#dateto4").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#5").show();	
-							$("#addPd tbody tr#5").append("<td><span class='glyphicon glyphicon-ok'>   <span class='glyphicon glyphicon-remove'></td>");
-						}, 1500 );
-					}
-			});
-
-			$("#dateto5").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#6").show();	
-							$("#addPd tbody tr#6").append("<td><span class='glyphicon glyphicon-ok'>   <span class='glyphicon glyphicon-remove'></td>");
-						}, 1500 );
-					}
-			});
-
-			$("#dateto6").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#7").show();	
-							$("#addPd tbody tr#7").append("<td><span class='glyphicon glyphicon-ok'>   <span class='glyphicon glyphicon-remove'></td>");
-						}, 1500 );
-					}
-			});
-
-			$("#dateto7").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#8").show();	
-							$("#addPd tbody tr#8").append("<td><span class='glyphicon glyphicon-ok'>   <span class='glyphicon glyphicon-remove'></td>");
-						}, 1500 );
-					}
-			});
-
-			$("#dateto8").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#9").show();	
-							$("#addPd tbody tr#9").append("<td><span class='glyphicon glyphicon-ok'>   <span class='glyphicon glyphicon-remove'></td>");
-						}, 1500 );
-					}
-			});
-
-			$("#dateto9").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#10").show();	
-							$("#addPd tbody tr#10").append("<td><span class='glyphicon glyphicon-ok'>   <span class='glyphicon glyphicon-remove'></td>");
-						}, 1500 );
-					}
-			});
-
-			$("#dateto10").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#11").show();
-							$("#addPd tbody tr#11").append("<td><span class='glyphicon glyphicon-ok'>   <span class='glyphicon glyphicon-remove'></td>");	
-						}, 1500 );
-					}
-			});
-
-			$("#dateto11").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						delay(function(){
-							$("#12").show();
-							$("#addPd tbody tr#12").append("<td><span class='glyphicon glyphicon-ok'>   <span class='glyphicon glyphicon-remove'></td>");	
-						}, 1500 );
-					}
-			});*/
-
-			/*$("#picon1").on('click',function(){
-				alert("s");
-			});*/
 
 			///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -823,5 +771,4 @@
 			    datefr12.max = ndt12;
 			});
 
-});
-		
+});		
