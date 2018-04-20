@@ -94,6 +94,7 @@
 			var urlParam={
 				action: 'get_table_default',
 				url: '/menu_maintenance/table',
+				table_name: 'sysdb.programtab',
 				filterCol:['programmenu'],
 				filterVal:['main']
 			}
