@@ -158,7 +158,6 @@ $(document).ready(function () {
 	    filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD')]
 		
 	}
-
 	///////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
@@ -171,15 +170,15 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'e_compcode', width: 5, hidden: true },
-			{ label: 'MRN', name: 'e_MRN', width: 20, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true, checked: true,  },
-			{ label: 'Episode No', name: 'e_Episno', width: 20 ,canSearch: true,classes: 'wrap' },
-			{ label: 'MyKad No', name: 'p_Newic', width: 20 ,classes: 'wrap' },
-			{ label: 'Registered Time', name: 'e_reg_time', width: 20 ,classes: 'wrap' },
-			{ label: 'Registered Date', name: 'e_reg_date', width: 20 ,classes: 'wrap' },
-			{ label: 'Name', name: 'p_Name', width: 20 ,canSearch: true,classes: 'wrap' },
+			{ label: 'MRN', name: 'e_MRN', width: 10, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true, checked: true,  },
+			{ label: 'Episode No', name: 'e_Episno', width: 20 ,canSearch: true,classes: 'wrap',hidden:true },
+			{ label: 'IC No', name: 'p_Newic', width: 15 ,classes: 'wrap' },
+			{ label: 'Registered Date', name: 'e_reg_date', width: 10 ,classes: 'wrap' },
+			{ label: 'Registered Time', name: 'e_reg_time', width: 10 ,classes: 'wrap' },
+			{ label: 'Name', name: 'p_Name', width: 30 ,canSearch: true,classes: 'wrap' },
 			// { label: 'Payer', name: 'q_', width: 20 ,classes: 'wrap' },
 			{ label: 'Doctor', name: 'e_admdoctor', width: 20 ,classes: 'wrap' },
-			{ label: 'Status', name: 'e_episstatus', width: 20 ,classes: 'wrap' },
+			{ label: 'Status', name: 'e_episstatus', width: 10 ,classes: 'wrap' },
 
 		],
 		autowidth: true,

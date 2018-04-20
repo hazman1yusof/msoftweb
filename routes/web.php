@@ -24,6 +24,9 @@ Route::get('/util/get_table_default','UtilController@get_table_default');
 Route::get('/util/save_table_default','UtilController@defaultSetter');
 Route::get('/util/input_check','UtilController@input_check'); //jgn guna
 
+/// announcement thingy ///
+Route::get('/announcement/generate','setup\AnnouncementController@generate');
+
 //// menu mainatenance page ///
 Route::get('/menu_maintenance','setup\MenuMaintenanceController@show');
 Route::get('/menu_maintenance/table','setup\MenuMaintenanceController@table');
@@ -178,4 +181,51 @@ Route::post('/location/form','finance\LocationController@form');
 Route::get('/assettype','finance\assettypeController@show');
 Route::get('/assettype/table','finance\assettypeController@table');
 Route::post('/assettype/form','finance\assettypeController@form');
+
+//// GL Enquiry ///
+Route::get('/glenquiry','finance\GlenquiryController@show');
+Route::get('/glenquiry/table','finance\GlenquiryController@table');
+Route::post('/glenquiry/form','finance\GlenquiryController@form');
+
+//// Department setup ///
+Route::get('/department','finance\DepartmentController@show');
+Route::get('/department/table','finance\DepartmentController@table');
+Route::post('/department/form','finance\DepartmentController@form');
+
+//// costcenter setup ///
+Route::get('/costcenter','finance\CostcenterController@show');
+Route::get('/costcenter/table','finance\CostcenterController@table');
+Route::post('/costcenter/form','finance\CostcenterController@form');
+
+//// GlMaster setup ///
+Route::get('/glmaster','finance\GlmasterController@show');
+Route::get('/glmaster/table','finance\GlmasterController@table');
+Route::post('/glmaster/form','finance\GlmasterController@form');
+
+//// period setup ///
+Route::get('/period','finance\PeriodController@show');
+Route::get('/period/table','finance\PeriodController@table');
+Route::post('/period/form','finance\PeriodController@form');
+
+//// Debtor Master setup ///
+Route::get('/debtorMaster','finance\DebtorMasterController@show');
+Route::get('/debtorMaster/table','finance\DebtorMasterController@table');
+Route::post('/debtorMaster/form','finance\DebtorMasterController@form');
+
+//// Deposit Type setup ///
+Route::get('/depositType','finance\DepositTypeController@show');
+Route::get('/depositType/table','finance\DepositTypeController@table');
+Route::post('/depositType/form','finance\DepositTypeController@form');
+
+//// Payment Mode setup ///
+Route::get('/paymentMode','finance\PaymentModeController@show');
+Route::get('/paymentMode/table','finance\PaymentModeController@table');
+Route::post('/paymentMode/form','finance\PaymentModeController@form');
+
+//// category Mode setup ///
+Route::get('/categoryfin','finance\CategoryFinController@show');
+Route::get('/categoryfin/table','finance\CategoryFinController@table');
+Route::post('/categoryfin/form','finance\CategoryFinController@form');
+
+
 

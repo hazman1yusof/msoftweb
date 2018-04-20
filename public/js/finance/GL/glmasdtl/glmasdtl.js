@@ -4,6 +4,7 @@
 		var editedRow=0;
 
 		$(document).ready(function () {
+			$('body').show();
 			/////////////////////////validation//////////////////////////
 			var errorField=[];
 			var mymodal = new modal();
@@ -11,8 +12,23 @@
 			//////////////////////////////////////////////////////////////
 
 			////////////////////object for dialog handler//////////////////
-			dialog_dept=new makeDialog('finance.glmasref','#glaccount',['glaccno','description'], 'GL Account');
-			dialog_dept.handler(errorField);
+
+			var dialog_dept = new ordialog(
+				'doctype','finance.glmasref','#glaccount',errorField,
+				{	colModel:[
+						{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						]
+				},{
+					title:"Select GL Account",
+					open: function(){
+						dialog_dept.urlParam.filterCol=['recstatus'],
+						dialog_dept.urlParam.filterVal=['A']
+					}
+				},'urlParam','radio','tab'
+			);
+			dialog_dept.makedialog();
+			dialog_dept.on();
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			$("#dialogForm").dialog({ 
@@ -37,6 +53,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'/util/get_table_default',
 				field:'',
 				table_id:'costcode',
 				table_name:['finance.glmasdtl','finance.costcenter'],
@@ -250,7 +267,8 @@
 			function getdatadr(fetchall,start,limit){
 				var param={
 							action:'get_value_default',
-							field:['NULL as open','source','trantype','auditno','postdate','description','reference','cracc as acccode','amount as dramount','NULL as cramount'],
+							url:'/util/get_value_default',
+							field:['source','trantype','auditno','postdate','description','reference','cracc as acccode','amount as dramount'],
 							table_name:'finance.gltran',
 							table_id:'auditno',
 							filterCol:['drcostcode','dracc','year','period'],
@@ -260,13 +278,13 @@
 								$('#year').val(),
 								$("td[class='bg-primary']").attr('period')
 								],
-							sidx: 'NULL', sord:'asc'
+							sidx: 'postdate', sord:'desc'
 						}
 				if(!fetchall){
-					param.start=start;
-					param.rows=limit;
+					param.offset=start;
+					param.limit=limit;
 				}
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+				$.get( "/util/get_value_default?"+$.param(param), function( data ) {
 						
 				},'json').done(function(data) {
 					mymodal.hide();
@@ -275,6 +293,7 @@
 							obj.open="<i class='fa fa-folder-open-o fa-2x' </i>"
 							obj.postdate = moment(obj.postdate).format("DD-MM-YYYY");
 							obj.dramount = numeral(obj.dramount).format('0,0.00');
+							obj.cramount = numeral('0').format('0,0.00');
 						});
 						DataTable.rows.add(data.rows).draw();
 					}else{
@@ -286,7 +305,7 @@
 			function getdatacr(fetchall,start,limit){
 				var param={
 							action:'get_value_default',
-							field:['NULL as open','source','trantype','auditno','postdate','description','reference','dracc as acccode','amount as cramount','NULL as dramount'],
+							field:['source','trantype','auditno','postdate','description','reference','dracc as acccode','amount as cramount'],
 							table_name:'finance.gltran',
 							table_id:'auditno',
 							filterCol:['crcostcode','cracc','year','period'],
@@ -296,13 +315,13 @@
 								$('#year').val(),
 								$("td[class='bg-primary']").attr('period')
 								],
-							sidx: 'NULL', sord:'asc'
+							sidx: 'postdate', sord:'desc'
 						}
 				if(!fetchall){
-					param.start=start;
-					param.rows=limit;
+					param.offset=start;
+					param.limit=limit;
 				}
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+				$.get( "/util/get_value_default?"+$.param(param), function( data ) {
 						
 				},'json').done(function(data) {
 					mymodal.hide();
@@ -311,6 +330,7 @@
 							obj.open="<i class='fa fa-folder-open-o fa-2x' </i>"
 							obj.postdate = moment(obj.postdate).format("DD-MM-YYYY");
 							obj.cramount = numeral(obj.cramount).format('0,0.00');
+							obj.dramount = numeral('0').format('0,0.00');
 						});
 						DataTable.rows.add(data.rows).draw();
 					}else{
@@ -549,9 +569,10 @@
 					action:'get_value_default',
 					field: ['year'],
 					table_name:'sysdb.period',
-					table_id:'idno'
+					table_id:'idno',
+					sortby:['year desc']
 				}
-				$.get( "../../../../assets/php/entry.php?"+$.param(this.param), function( data ) {
+				$.get( "util/get_value_default?"+$.param(this.param), function( data ) {
 						
 				},'json').done(function(data) {
 					if(!$.isEmptyObject(data.rows)){

@@ -33,8 +33,6 @@ function toggleFormData(grid,formName,oper){
 		var ids = $(grid).jqGrid('getDataIDs');
 		if (ids.length < 2) return;
 
-			console.log(ids);
-
 		var index = $(grid).jqGrid('getInd', selrow);index++;
 		if (index > ids.length)index = 1;
 
@@ -49,7 +47,6 @@ function toggleFormData(grid,formName,oper){
 		if (ids.length < 2) return;
 
 		var index = $(grid).jqGrid('getInd', selrow);index--;
-		console.log(index);
 		if (index == 0)index = ids.length;
 
 			$(grid).jqGrid('setSelection', ids[index - 1]);
@@ -739,6 +736,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 					$("#"+obj.gridname).jqGrid("clearGridData", true);
 					$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
 				}
+				var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;
+				if($.inArray(idtopush,obj.errorField)!==-1){
+					obj.errorField.splice($.inArray(idtopush,obj.errorField), 1);
+				}
 			},
 		});
 		addParamField("#"+obj.gridname,false,obj.urlParam);
@@ -812,9 +813,13 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 				}
 			}
 
+			console.log(errorField)
+			var idtopush = (id.substring(0, 1) == '#')?id.substring(1):id;
+			console.log(idtopush)
+
 			if(!fail){
-				if($.inArray(id,errorField)!==-1 && typeof this.errorField == 'object'){
-					errorField.splice($.inArray(id,errorField), 1);
+				if($.inArray(idtopush,errorField)!==-1){
+					errorField.splice($.inArray(idtopush,errorField), 1);
 				}
 				$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
 				$( id ).removeClass( "error" ).addClass( "valid" );
@@ -824,10 +829,12 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
 				$( id ).removeClass( "valid" ).addClass( "error" );
 				$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+code+" )");
-				if($.inArray(id,errorField)===-1 && typeof this.errorField == 'object'){
-					errorField.push( id );
+				if($.inArray(idtopush,errorField)===-1){
+					errorField.push( idtopush );
 				}
 			}
+
+			console.log(errorField)
 		});
 	}
 }

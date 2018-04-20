@@ -1,9 +1,9 @@
 
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
-		var editedRow=0;
 
 		$(document).ready(function () {
+			$("body").show();
 			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
@@ -27,10 +27,39 @@
 
 
 			////////////////////object for dialog handler//////////////////
-			dialog_depccode=new makeDialog('finance.costcenter','#depccode',['costcode','description'], 'Deposit Cost');
-			dialog_depglacc=new makeDialog('finance.glmasref','#depglacc',['glaccno','description'], 'Deposit GL Account');
-			
 
+			var dialog_depccode = new ordialog(
+				'depccode','finance.costcenter','#depccode',errorField,
+				{	colModel:[
+						{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					]
+				},{
+					title:"Select Deposit Cost",
+					open: function(){
+						dialog_depccode.urlParam.filterCol=['recstatus'],
+						dialog_depccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_depccode.makedialog();
+
+
+			var dialog_depglacc = new ordialog(
+				'depglacc','finance.glmasref','#depglacc',errorField,
+				{	colModel:[
+						{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					]
+				},{
+					title:"Select Deposit GL Account",
+					open: function(){
+						dialog_depglacc.urlParam.filterCol=['recstatus'],
+						dialog_depglacc.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_depglacc.makedialog();
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -83,8 +112,8 @@
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-						dialog_depccode.handler(errorField);
-						dialog_depglacc.handler(errorField);
+						dialog_depccode.on();
+						dialog_depglacc.on();
 						
 					}
 					if(oper!='add'){
@@ -96,8 +125,9 @@
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
-					$("#formdata a").off();
+					$('#formdata .alert').detach();
+					dialog_depccode.off();
+					dialog_depglacc.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -109,6 +139,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'debtor.hdrtypmst',
 				table_id:'hdrtype',
@@ -118,6 +149,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'depositType/form',
 				field:'',
 				oper:oper,
 				table_name:'debtor.hdrtypmst',
@@ -228,7 +260,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'hdrtype':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -265,13 +297,12 @@
 			
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 			
-			toogleSearch('#sbut1','#searchForm','on');
 			populateSelect('#jqGrid','#searchForm');
 			searchClick('#jqGrid','#searchForm',urlParam);
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress']);
+			addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
 
 	
 		});
