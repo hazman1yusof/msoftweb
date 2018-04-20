@@ -125,12 +125,12 @@
 			<span name='description' ></span>
 		</div>
 		<div class="row" style="padding:0">
-			<label class="col-md-2 control-label" for="bg_leave">LEAVE COLOR</label>   
-  			<div class="col-md-2">
-  				<input type='color' id='bg_leave' name='bg_leave' class="form-control input-sm" value="#ff0000">
-  			</div>
-  			<div class="col-md-2">
-  				<button type="button" id="save_color_leave" class="btn btn-primary btn-sm">Save Color</button>
+			<label class="col-md-2 control-label" for="bg_leave">LEAVE COLOR</label>
+  			<div class="form-inline">
+  				<span style="font-size:3em;cursor: pointer;" id="colorpointer">
+					<i class="fa fa-magic"></i>
+				</span>
+  				<input type='color' id='bg_leave' name='bg_leave' class="form-control input-sm" value="#ff0000" style="width: 150px;">
   			</div>
 		</div>
 		<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">

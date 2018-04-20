@@ -212,5 +212,20 @@ Route::get('/debtorMaster','finance\DebtorMasterController@show');
 Route::get('/debtorMaster/table','finance\DebtorMasterController@table');
 Route::post('/debtorMaster/form','finance\DebtorMasterController@form');
 
+//// Deposit Type setup ///
+Route::get('/depositType','finance\DepositTypeController@show');
+Route::get('/depositType/table','finance\DepositTypeController@table');
+Route::post('/depositType/form','finance\DepositTypeController@form');
+
+//// Payment Mode setup ///
+Route::get('/paymentMode','finance\PaymentModeController@show');
+Route::get('/paymentMode/table','finance\PaymentModeController@table');
+Route::post('/paymentMode/form','finance\PaymentModeController@form');
+
+//// category Mode setup ///
+Route::get('/categoryfin','finance\CategoryFinController@show');
+Route::get('/categoryfin/table','finance\CategoryFinController@table');
+Route::post('/categoryfin/form','finance\CategoryFinController@form');
+
 
 

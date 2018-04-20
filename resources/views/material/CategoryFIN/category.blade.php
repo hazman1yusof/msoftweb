@@ -1,40 +1,18 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body style="display:none">
+@extends('layouts.main')
 
-	<input id="source2" name="source" type="hidden" value="<?php echo $_GET['source'];?>">
-	<input id="cattype2" name="cattype" type="hidden" value="<?php echo $_GET['cattype'];?>">
-	 
-	<!-------------------------------- Search + table ---------------------->
-	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%'>
-			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-				</div>
-			 </fieldset> 
-		</form>
-    	<div class="panel panel-default">
-		    <div class="panel-body">
-		    	<div class='col-md-12' style="padding:0 0 15px 0">
-            		<table id="jqGrid" class="table table-striped"></table>
-            			<div id="jqGridPager"></div>
-        		</div>
-		    </div>
-		</div>
-    </div>
-	<!-------------------------------- End Search + table ------------------>
+@section('title', 'Debtor Type')
+
+@section('body')
+
+	@include('layouts.default_search_and_table')
 		
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%' id='formdata'>
-
-
-				<input id="source2" name="source" type="hidden" value="<?php echo $_GET['source'];?>">	
-				<input id="cattype" name="cattype" type="hidden" value="<?php echo $_GET['cattype'];?>">	
+			
+				{{ csrf_field() }}
+				<input type="hidden" name="idno">
+				<input id="source2" name="source" type="hidden" value="{{$_GET['source']}}">	
+				<input id="cattype" name="cattype" type="hidden" value="{{$_GET['cattype']}}">	
 
 				<div class="prevnext btn-group pull-right">
 				</div>
@@ -130,17 +108,10 @@
 				</div>
 			</form>
 		</div>
-	
-	<!-- JS Implementing Plugins -->
+	@endsection
 
-	<!-- JS Customization -->
+@section('scripts')
 
-	<!-- JS Page Level -->
-	<script src="category.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
+	<script src="js/material/CategoryFIN/category.js"></script>
 
-<script>
-		
-</script>
-</body>
-</html>
+@endsection

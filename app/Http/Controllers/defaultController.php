@@ -353,4 +353,28 @@ abstract class defaultController extends Controller{
         //4. return pvalue1
         return $pvalue1;
     }
+
+    // public function defaultlineno($table,$lineno){
+    //     $lineno=$this->lineno;
+    //     $first=false;
+    //     $select = DB::table()
+
+    //     $prepare="SELECT COUNT({$lineno['useOn']}) AS count FROM {$this->table} WHERE compcode=? 
+    //         AND {$lineno['useOn']} = '{$lineno['useVal']}' ";
+
+    //     if(!empty($this->filterCol)){
+    //         $prepare.=$this->filter($first);
+    //     }
+    //     $arrayValue = [$this->compcode];
+    //     $arrayValue = (!empty($this->filterCol)) ? $this->arrayValueFilter($arrayValue) : $arrayValue;
+    //     /////////////////check sytax//////////////////////////////
+    //     //echo $prepare;print_r($arrayValue);
+    //     //echo $this->readableSyntax($prepare,$arrayValue);
+    //     //////////////////////////////////////////////////////////
+    //     $sth=$this->db->prepare($prepare);
+    //     if(!$sth->execute($arrayValue)){throw new Exception('error');}
+    //     $row = $sth->fetch(PDO::FETCH_ASSOC);
+
+    //     return intval($row['count']) + 1;
+    // }
 }

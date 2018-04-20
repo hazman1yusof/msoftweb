@@ -1,7 +1,8 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body style="display:none">
+@extends('layouts.main')
+
+@section('title', 'Debtor Type')
+
+@section('body')
 	 
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
@@ -18,6 +19,7 @@
 				</div>
 			 </fieldset> 
 		</form>
+
     	<div class="panel panel-default">
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
@@ -51,9 +53,9 @@
 
 	<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%' id='formdata'>
-				<div class="prevnext btn-group pull-right">
-				</div>
-
+			
+				{{ csrf_field() }}
+				<input type="hidden" name="idno">
 				<div class="form-group">
 				  		<label class="col-md-2 control-label" for="SuppCode">Supplier Code</label>  
                             <div class="col-md-2">
@@ -240,8 +242,9 @@
 
         <div id="Dsuppitems" title="Supplier Item" >
         	<form class='form-horizontal' style='width:99%' id='Fsuppitems'>
-        		<div class="prevnext btn-group pull-right">
-				</div>
+			
+				{{ csrf_field() }}
+				<input type="hidden" name="si_idno">
             
             	<input id="lineno_" name="si_lineno_" type="hidden" class="form-control input-sm">
                 <input id="suppcode" name="si_suppcode" type="hidden" class="form-control input-sm">
@@ -380,8 +383,9 @@
 
 		<div id="Dsuppbonus" title="Bonus Item" >
         	<form id="Fsuppbonus" class='form-horizontal' style='width:99%'>
-        		<div class="prevnext btn-group pull-right">
-				</div>
+			
+				{{ csrf_field() }}
+				<input type="hidden" name="sb_idno">
             
             <input name="sb_suppcode" type="hidden">
             <input name="sb_pricecode" type="hidden">
@@ -484,18 +488,10 @@
 				</div>    
             </form>
         </div>
+	@endsection
 
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
-	
-	<!-- JS Implementing Plugins -->
+@section('scripts')
 
-	<!-- JS Customization -->
+	<script src="js/material/supplier/supplier.js"></script>
 
-	<!-- JS Page Level -->
-	<script src="supplier.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<script src="../../../../assets/js/dialogHandler.js"></script>
-</body>
-</html>
+@endsection

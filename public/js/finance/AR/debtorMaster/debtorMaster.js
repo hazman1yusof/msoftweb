@@ -297,7 +297,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'debtorcode':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{

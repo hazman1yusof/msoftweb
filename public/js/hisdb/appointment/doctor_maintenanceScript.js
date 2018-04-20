@@ -946,14 +946,14 @@
 	                $(this).data("DateTimePicker").hide();
 	            });
 
-		$('#save_color_leave').click(function(){
+		function savecolor(){
 			var bg_leave = $('#bg_leave').val();
 			$.post( "/doctor_maintenance/save_bgleave", {bg_leave:bg_leave,_token:$('#csrf_token').val()} , function( data ) {
 		
 			}).success(function(data){
 
 			});
-		});
+		}
 
 		function load_bg_leave(){
 			var urlParam={
@@ -973,6 +973,16 @@
 				}
 			});
 		}
+
+		$("#colorpointer").click(function(){
+			$('#bg_leave').click();
+		});
+
+		$('#bg_leave').change(function(){
+			$('#colorpointer').css('color',$(this).val());
+			savecolor();
+		});
+		$("#bg_leave").hide();
 
 	});
 		
