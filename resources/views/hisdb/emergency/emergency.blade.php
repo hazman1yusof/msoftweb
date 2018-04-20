@@ -2,6 +2,28 @@
 
 @section('style')
 	.ui-dialog { z-index: 250 !important ;}
+
+	fieldset.scheduler-border {
+	    border: 1px groove #ddd !important;
+	    padding: 2px;
+	    -webkit-box-shadow:  0px 0px 0px 0px #000;
+	    box-shadow:  0px 0px 0px 0px #000;
+	}
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width:auto;
+        padding:0;
+        margin:0px;
+        border-bottom:none;
+    }
+    .scheduler-border button{
+    	margin:3px;
+	}
+
+
 @endsection
 
 @section('css')
@@ -10,15 +32,10 @@
 @section('title', 'Emergency Department')
 
 @section('body')
-<style type = "text/css">
-
-
-/*width:400px; height:250px; position:absolute;top:30px;left:0px;z-index:1000;font-size: 28px;*/
-</style>
 
 	<div class='row'>
 		<input id="Type" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
-		<form id="searchForm" class="formclass" style='width:99%'>
+		<form id="searchForm" class="formclass" style='width:99%;position: relative;'>
 			<fieldset>
 				<div class="ScolClass" style="padding:0 0 0 15px">
 					<div name='Scol'>Search By : </div>
@@ -26,7 +43,15 @@
 				<div class="StextClass">
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
 				</div>
-				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
+				<div style="position: absolute;top: 5px;right: 5px">
+					<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Legend</legend>
+						<button type="button" class="btn btn-sm btn-warning" style="">Current</button>
+						<button type="button" class="btn btn-sm btn-danger">Cancel</button>
+						<button type="button" class="btn btn-sm">Discharge</button>
+					</fieldset>
+				</div>
+				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px;padding-top: 10px" >
 				    <button id="regBtn" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
 				</div>
 				
