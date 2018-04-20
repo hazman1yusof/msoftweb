@@ -184,7 +184,7 @@ $(document).ready(function () {
 			{ label: 'Name', name: 'p_Name', width: 30 ,canSearch: true,classes: 'wrap' },
 			// { label: 'Payer', name: 'q_', width: 20 ,classes: 'wrap' },
 			{ label: 'Doctor', name: 'e_admdoctor', width: 20 ,classes: 'wrap' },
-			{ label: 'Status', name: 'e_episstatus', width: 10 ,classes: 'wrap' },
+			{ label: 'Status', name: 'e_episstatus', width: 10 ,classes: 'wrap',hidden:true },
 
 		],
 		autowidth: true,

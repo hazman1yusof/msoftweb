@@ -29,6 +29,7 @@
 				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
 				    <button id="regBtn" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
 				</div>
+				
 			 </fieldset> 
 		</form>
 
