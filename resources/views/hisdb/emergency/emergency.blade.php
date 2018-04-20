@@ -34,12 +34,10 @@
 
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<div class='col-md-4'>
+				<div class='col-md-4' id="colmd_outer">
 				   	<div id="mydate" gldp-id="mydate"></div>
-				    <div gldp-el="mydate" style="width:400px; height:300px; position:static;top:30px;left:0px;z-index:0;font-size: 28px;"></div>
+				    <div gldp-el="mydate" id="mydate_glpd" style="position:static;top:30px;left:0px;z-index:0;font-size: 28px;"></div>
 				</div>
-
-
 				<div class='col-md-8' style="padding:0 0 15px 0">
 					<table id="jqGrid" class="table table-striped"></table>
 					<div id="jqGridPager"></div>

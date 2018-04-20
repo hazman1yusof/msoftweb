@@ -979,7 +979,7 @@
 		});
 
 		$('#bg_leave').change(function(){
-			$('#colorpointer').css('color',$(this).val());
+			$('#imgid').css('border-bottom-color',$(this).val());
 			savecolor();
 		});
 		$("#bg_leave").hide();

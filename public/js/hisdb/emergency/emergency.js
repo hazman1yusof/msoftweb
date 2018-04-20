@@ -12,6 +12,12 @@ $(document).ready(function () {
 		},
 	});
 
+	function calanderposition(){
+		var width = Math.floor($("#colmd_outer")[0].offsetWidth - $("#colmd_outer")[0].offsetLeft);
+		$('#mydate_glpd').css('width',width);
+		$('#mydate_glpd').css('height',width);
+	}
+	calanderposition();
 
 	var gldatepicker = $('#mydate').glDatePicker({
 		zIndex: 0,

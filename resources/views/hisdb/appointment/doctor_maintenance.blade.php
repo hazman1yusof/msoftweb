@@ -128,7 +128,7 @@
 			<label class="col-md-2 control-label" for="bg_leave">LEAVE COLOR</label>
   			<div class="form-inline">
   				<span style="font-size:3em;cursor: pointer;" id="colorpointer">
-					<i class="fa fa-magic"></i>
+					<img src="img/paint.png" style="width:40px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
 				</span>
   				<input type='color' id='bg_leave' name='bg_leave' class="form-control input-sm" value="#ff0000" style="width: 150px;">
   			</div>
