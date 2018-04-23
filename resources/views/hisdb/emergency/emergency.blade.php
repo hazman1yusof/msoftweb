@@ -107,6 +107,12 @@
 			</div>			
         </div>
         <div class="form-group">
+            <label class="col-md-2 control-label" for="idnumber">Others No</label>
+			<div class="col-md-2">
+				<input type="idnumber" name="idnumber" id="idnumber" class="form-control input-sm" data-validation="required" >
+			</div>
+		</div>	
+        <div class="form-group">
           <label class="col-md-2 control-label" for="sex">Sex</label>
 					<div class="col-md-2">
 							<select id='sex' class="form-control input-sm">
@@ -128,7 +134,7 @@
 			<span class='help-block'></span>
 			</div>
               <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description" name="description_race">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description_race" name="description_race">
 		</div>
 		</div>
 		 <div class="form-group">

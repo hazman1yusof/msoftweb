@@ -162,7 +162,7 @@ $(document).ready(function () {
 		join_onVal: ['p.MRN'],
 		filterCol:['e.reg_date'],
 	    filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD')]
-		
+	   
 	}
 	///////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
@@ -203,30 +203,44 @@ $(document).ready(function () {
 	});
     
     var dialog_mrn = new ordialog(
-		'mrn', 'hisdb.pat_mast', "#registerform input[name='mrn']", errorField,
+		'mrn', ['hisdb.pat_mast AS pt','hisdb.racecode AS rc'], "#registerform input[name='mrn']", errorField,
 		{
 			colModel: [
-				{	label: 'MRN', name: 'MRN', width: 50, classes: 'pointer', formatter: padzero, unformat: unpadzero, canSearch: true, or_search: true },
-				{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{	label: 'Newic', name: 'Newic', width: 100, classes: 'pointer', canSearch: true},
-				{	label: 'DOB', name: 'DOB', width: 50, classes: 'pointer', canSearch: true},
-				{	label: 'CardID', name: 'idnumber', width: 50, classes: 'pointer', canSearch: true},
-				{	label: 'Oldic', name: 'Oldic', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'MRN', name: 'pt_MRN', width: 50, classes: 'pointer', formatter: padzero, unformat: unpadzero, canSearch: true, or_search: true },
+				{	label: 'Name', name: 'pt_Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{	label: 'Newic', name: 'pt_Newic', width: 100, classes: 'pointer', canSearch: true},
+				{	label: 'DOB', name: 'pt_DOB', width: 50, classes: 'pointer', canSearch: true},
+				{	label: 'CardID', name: 'pt_idnumber', width: 50, classes: 'pointer', canSearch: true},
+				{	label: 'Oldic', name: 'pt_Oldic', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'RaceCode', name: 'pt_RaceCode', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'Description', name: 'rc_description', width: 200, classes: 'pointer',hidden:true},
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_mrn.gridname);
-				$("#registerform input[name='patname']").val(data['Name']);
-				$("#registerform input[name='Newic']").val(data['Newic']);
-				$("#registerform input[name='DOB']").val(data['DOB']);
-				$("#registerform input[name='Oldic']").val(data['Oldic']);
+				$("#registerform input[name='patname']").val(data['pt_Name']);
+				$("#registerform input[name='Newic']").val(data['pt_Newic']);
+				$("#registerform input[name='DOB']").val(data['pt_DOB']);
+				$("#registerform input[name='Oldic']").val(data['pt_Oldic']);
+				$("#registerform input[name='idnumber']").val(data['pt_idnumber']);
+				$("#registerform input[name='race']").val(data['pt_RaceCode']);
+				$("#registerform input[name='description_race']").val(data['rc_description']);
 				$(dialog_race.textfield).parent().next().text(" ");
 			}
 		},
 		{
 			title: "Select MRN",
 			open: function () {
-				dialog_mrn.urlParam.filterCol = ['compcode'];
+				dialog_mrn.urlParam.fixPost="true";
+				dialog_mrn.urlParam.table_id = "none_";
+				dialog_mrn.urlParam.filterCol = ['pt.compcode'];
 				dialog_mrn.urlParam.filterVal = ['9A'];
+				dialog_mrn.urlParam.join_type = ['LEFT JOIN'];
+				dialog_mrn.urlParam.join_onCol = ['pt.RaceCode'];
+				dialog_mrn.urlParam.join_onVal = ['rc.code'];
+				dialog_mrn.urlParam.join_filterCol = [['pt.compcode on ='],[]];
+				dialog_mrn.urlParam.join_filterVal = [['rc.compcode'],[]];
+
+			
 			},
 		}, 'none','dropdown'
 	);
@@ -265,16 +279,20 @@ $(document).ready(function () {
 			colModel: [
 				{	label: 'Debtor', name: 'debtortycode', width: 100, classes: 'pointer', canSearch: true, or_search: true },
 				{	label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				// {	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
-				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
 			ondblClickRow: function () {
+				if($("input[name=debtortycode]").val() == "PT"){
+				let data = selrowData('#' + dialog_payer.gridname);
+				$("#registerform input[name='payername']").val(data['description']);
+				$(dialog_payer.textfield).parent().next().text(" ");	
+
+			} 
+			    else{
 				let data = selrowData('#' + dialog_financeclass.gridname);
 				$("#registerform input[name='fName']").val(data['description']);
-				// $("#addForm input[name='telh']").val(data['telh']);
-				// $("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_financeclass.textfield).parent().next().text(" ");
 			}
+		}
 		},
 		{
 			title: "Select Financial Class",
