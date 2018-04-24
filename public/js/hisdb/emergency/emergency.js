@@ -156,12 +156,12 @@ $(document).ready(function () {
 		url: '/util/get_table_default',
 		fixPost: 'true',
 		field: ['e.MRN', 'e.Episno','p.Name','p.Newic'],
-		table_name: ['hisdb.episode AS e','hisdb.pat_mast AS p'],
-		join_type: ['LEFT JOIN'],
-		join_onCol: ['e.MRN'],
-		join_onVal: ['p.MRN'],
-		filterCol:['e.reg_date'],
-	    filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD')]
+		table_name: ['hisdb.apptbook AS a','hisdb.episode AS e','hisdb.pat_mast AS p','hisdb.doctor as d'],
+		join_type: ['INNER JOIN','INNER JOIN','INNER JOIN'],
+		join_onCol: ['a.episno','a.mrn','a.loccode'],
+		join_onVal: ['e.episno','p.mrn','d.doctorcode'],
+		filterCol:['a.apptdatefr'],
+	    filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD HH:mm:ss')]
 	   
 	}
 	///////////////////parameter for saving url////////////////////////////////////////////////

@@ -133,4 +133,37 @@ class DoctorMaintenanceController extends defaultController
             ->where('trantype','=','ALCOLOR')
             ->update(['pvalue1' => $request->bg_leave]);
     }
+
+    public function save_colorph(Request $request){
+        $check_exist = DB::table('hisdb.apptphcolor')
+            ->where('compcode','=',session('compcode'))
+            ->where('userid','=',session('username'))
+            ->where('phidno','=',$request->phidno)
+            ->first();
+
+        if(count($check_exist)){
+            DB::table('hisdb.apptphcolor')
+                ->where('compcode','=',session('compcode'))
+                ->where('userid','=',session('username'))
+                ->where('phidno','=',$request->phidno)
+                ->update([
+                    'color' => $request->color,
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                ]);
+
+        }else{
+            DB::table('hisdb.apptphcolor')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'color' => $request->color,
+                    'phidno' => $request->phidno,
+                    'userid' => session('username'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'A'
+                ]);
+        }
+    }
+
 }

@@ -70,16 +70,16 @@
                 <div class="form-group">
                 	<label class="control-label col-md-2">Annual Leave Color</label>
 				  	<div class="col-md-1">
-		  				<span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_ALcolor' data-column='ALcolor'>
-							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+		  				<span style="cursor: pointer;display:inline-block;border: 1px solid black;" class="colorpointer" id='pt_ALcolor' data-column='ALcolor'>
+							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
 						</span>
 		  				<input type='color' id='ALcolor' name='ALcolor' class="form-control input-sm bg_color" value="#ff0000" style="display: none;">
 				  	</div>
 
                 	<label class="control-label col-md-2">Discharge Pt. Color</label>
 				  	<div class="col-md-1">
-		  				<span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_DiscPTcolor' data-column='DiscPTcolor'>
-							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+		  				<span style="cursor: pointer;display:inline-block;border: 1px solid black;" class="colorpointer" id='pt_DiscPTcolor' data-column='DiscPTcolor'>
+							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
 						</span>
 		  				<input type='color' id='DiscPTcolor' name='DiscPTcolor' class="form-control input-sm bg_color" value="#ff0000" style="display: none;">
 				  	</div>
@@ -87,8 +87,8 @@
 
                 	<label class="control-label col-md-2">Cancel Pt. Color</label>
 				  	<div class="col-md-1">
-		  				<span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_CancelPTcolor' data-column='CancelPTcolor'>
-							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+		  				<span style="cursor: pointer;display:inline-block;border: 1px solid black;" class="colorpointer" id='pt_CancelPTcolor' data-column='CancelPTcolor'>
+							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
 						</span>
 		  				<input type='color' id='CancelPTcolor' name='CancelPTcolor' class="form-control input-sm bg_color" value="#ff0000" style="display: none;">
 				  	</div>
@@ -96,9 +96,12 @@
 
                 	<label class="control-label col-md-2">Current Pt. Color</label>
 				  	<div class="col-md-1">
-		  				<span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_CurrentPTcolor' data-column='CurrentPTcolor'>
-							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+		  				<span style="cursor: pointer;display:inline-block;border: 1px solid black;" class="colorpointer" id='pt_CurrentPTcolor' data-column='CurrentPTcolor'>
+							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
 						</span>
+		  				<!-- <span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_CurrentPTcolor' data-column='CurrentPTcolor'>
+							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+						</span> -->
 		  				<input type='color' id='CurrentPTcolor' name='CurrentPTcolor' class="form-control input-sm bg_color" value="#ff0000" style="display: none;">
 				  	</div>
 

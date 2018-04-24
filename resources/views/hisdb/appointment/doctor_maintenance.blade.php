@@ -243,23 +243,13 @@
 
 				<div class="form-group">
 			
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="remark">Remark</label>   
-		  			<div class="col-md-5">
-		  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm" data-validation="required" ></textarea>
-		  			</div>
-				</div>
-				</div>
-				<div class="form-group">
-			
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="backgroundcolor">Choose Color</label>   
-			  			<div class="col-md-2">
-			  				<input type='color' id='backgroundcolor' name='backgroundcolor' class="form-control input-sm" value="#ff0000">
+						<label class="col-md-2 control-label" for="remark">Remark</label>   
+			  			<div class="col-md-5">
+			  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm" data-validation="required" ></textarea>
 			  			</div>
 					</div>
 				</div>
-                
 			</form>
 		</div>
           

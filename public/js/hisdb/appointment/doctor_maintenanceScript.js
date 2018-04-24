@@ -673,10 +673,13 @@
             var urlParamph = {
 				action:'get_table_default',
 				url: '/util/get_table_default',
-				field:['idno','YEAR','datefr','dateto','remark','backgroundcolor','backgroundcolor as colorpicker'],
-				table_name:'hisdb.apptph',
+				field:['apptph.idno','apptph.YEAR','apptph.datefr','apptph.dateto','apptph.remark','apptphcolor.color as backgroundcolor','apptph.backgroundcolor as colorpicker'],
+				table_name:['hisdb.apptph','hisdb.apptphcolor'],
+				join_type:['LEFT JOIN'],
+				join_onCol:['apptph.idno'],
+				join_onVal:['apptphcolor.phidno'],
 				table_id:'idno',
-				filterCol:['recstatus'],
+				filterCol:['apptph.recstatus'],
 				filterVal:['A'],
 				
 			}
@@ -684,7 +687,7 @@
 			var saveParamph={
 				action:'save_table_default',
 				url:"/doctor_maintenance/form",
-				field:['YEAR','datefr','dateto','remark','backgroundcolor'],
+				field:['YEAR','datefr','dateto','remark'],
 				oper:oper,
 				table_name:'hisdb.apptph',
 				table_id:'idno',
@@ -722,13 +725,14 @@
 				},
 				gridComplete: function(iRow){ 
 					// $("#gridph").jqGrid('setCell',"1","remark","",{'background-color':'yellow'});
+					setColor();
 
-					var rows = $("#gridph").getDataIDs(); 
-                	for (var i = 0; i < rows.length; i++)
-                   	{
-                  		var backgroundcolor =$("#gridph").getCell(rows[i],"backgroundcolor");
-                 		$("#gridph").jqGrid('setRowData',rows[i],false, {background:backgroundcolor});
-					}
+					// var rows = $("#gridph").getDataIDs(); 
+     //            	for (var i = 0; i < rows.length; i++)
+     //               	{
+     //              		var backgroundcolor =$("#gridph").getCell(rows[i],"backgroundcolor");
+     //             		$("#gridph").jqGrid('setRowData',rows[i],false, {background:backgroundcolor});
+					// }
 
 					if(oper == 'add'){
 						$("#gridph").setSelection($("#gridph").getDataIDs()[0]);
@@ -743,22 +747,59 @@
 
 					$('.bg_color').change(function(){
 						var idno = $(this).data('column');
-						$('#pt_'+idno+' img').css('border-bottom-color',$(this).val());
+						var color = $(this).val();
+						$('#pt_'+idno).css('background-color',color);
+						save_colorph(color,idno);
 					});
 				},
 			});
 
+			function setColor(){
+				$('.bg_color').each(function(){
+					var idno = $(this).data('column');
+					$('#pt_'+idno).css('background-color',$(this).val());
+				});
+			}
+
 			function formatterColorpicker(cellvalue, options, rowObject){
 				var idno = rowObject.idno;
-
-				return `<span style="font-size:1em;cursor: pointer;" class="colorpointer" id="pt_`+idno+`" data-column="`+idno+`">
-							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+				var color = rowObject.backgroundcolor;
+				return `
+		  				<span style="cursor: pointer;display:inline-block;border: 1px solid black;" class="colorpointer" id='pt_`+idno+`' data-column='`+idno+`'>
+							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
 						</span>
-						  <input type='color' id='dp_`+idno+`' data-column="`+idno+`" class="form-control input-sm bg_color" value="#ff0000" style="display: none;">`;
+		  				<input type='color' id='dp_`+idno+`' data-column="`+idno+`" class="form-control input-sm bg_color" value="`+color+`" style="display: none;">
+		  				`;
 			}
 
 			function unformatColorpicker(cellvalue, options, rowObject){
 				return null;
+			}
+
+			function save_colorph(color,idno){
+				$.post( "/doctor_maintenance/save_colorph", {color:color,_token:$('#csrf_token').val(),phidno:idno} , function( data ) {
+				}).success(function(data){
+
+				});
+			}
+
+			function load_bg_leave(){
+				var urlParam={
+					action:'get_table_default',
+					url: '/util/get_value_default',
+					field:['pvalue1'],
+					table_name:'sysdb.sysparam',
+					filterCol:['source','trantype'],
+					filterVal:['HIS','ALCOLOR']
+				}
+
+				$.get( "util/get_value_default"+"?"+$.param(urlParam), function( data ) {
+				
+				},'json').done(function(data) {
+					if(!$.isEmptyObject(data.rows)){
+						$('#bg_leave').val(data.rows[0].pvalue1);
+					}
+				});
 			}
 
 		

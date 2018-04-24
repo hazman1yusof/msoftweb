@@ -34,7 +34,7 @@
 
 @section('body')
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
-	<input type="hidden" name="ALCOLOR" id="ALCOLOR" value="{{ $ALCOLOR->pvalue1 }}">
+	<input type="hidden" name="ALCOLOR" id="ALCOLOR" value="{{ $ALCOLOR->ALcolor }}">
 	
 	<div class='row'>
 		<input id="Class2" name="Type" type="hidden" value="{{Request::get('TYPE')}}">

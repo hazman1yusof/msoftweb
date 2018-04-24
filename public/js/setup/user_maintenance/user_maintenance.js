@@ -282,14 +282,13 @@ $("body").show();
 
 	$('.bg_color').change(function(){
 		var column = $(this).attr('name');
-		$('#pt_'+column+' img').css('border-bottom-color',$(this).val());
+		$('#pt_'+column).css('background-color',$(this).val());
 	});
 
 	function setColor(){
 		$('.bg_color').each(function(){
 			var column = $(this).attr('name');
-			console.log($(this).val());
-			$('#pt_'+column+' img').css('border-bottom-color',$(this).val());
+			$('#pt_'+column).css('background-color',$(this).val());
 		});
 	}
 

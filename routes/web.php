@@ -134,6 +134,7 @@ Route::get('/doctor_maintenance/table','hisdb\DoctorMaintenanceController@table'
 Route::post('/doctor_maintenance/form','hisdb\DoctorMaintenanceController@form');
 Route::post('/doctor_maintenance/save_session','hisdb\DoctorMaintenanceController@save_session');
 Route::post('/doctor_maintenance/save_bgleave','hisdb\DoctorMaintenanceController@save_bgleave');
+Route::post('/doctor_maintenance/save_colorph','hisdb\DoctorMaintenanceController@save_colorph');
 
 //// purchase Order setup page ///
 Route::get('/purchaseOrder','material\PurchaseOrderController@show');
