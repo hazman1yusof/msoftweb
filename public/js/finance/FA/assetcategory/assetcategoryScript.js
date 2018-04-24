@@ -176,6 +176,7 @@ $.jgrid.defaults.responsive = true;
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url: '/util/get_table_default',
 				field:'',
 				table_name:'finance.facode',
 				table_id:'assetcode',
@@ -186,7 +187,6 @@ $.jgrid.defaults.responsive = true;
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
-				url: '/util/get_table_default',
 				field:'',
 				oper:oper,
 				table_name:'finance.facode',
