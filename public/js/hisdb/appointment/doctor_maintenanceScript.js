@@ -700,7 +700,7 @@
 					{label: 'To', name: 'dateto', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'Remark', name: 'remark', classes: 'wrap',},
 					{label: 'Color', name: 'backgroundcolor', classes: 'wrap',hidden:true},
-					{label: 'colorpicker', name: 'colorpicker', classes: 'wrap'},	
+					{label: 'colorpicker', name: 'colorpicker', classes: 'wrap', formatter: formatterColorpicker, unformat: unformatColorpicker},	
 				],
 					
 				autowidth:true,
@@ -741,7 +741,16 @@
 				},
 			});
 
-			
+			function formatterColorpicker(cellvalue, options, rowObject){
+				return "<span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_ALcolor' data-column='ALcolor'>
+											<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+										</span>
+						  				<input type='color' id='ALcolor' name='ALcolor' class="form-control input-sm bg_color" value="#ff0000" style="display: none;">";
+			}
+
+			function unformatColorpicker(cellvalue, options, rowObject){
+				return null;
+			}
 
 		$("#gridph").jqGrid('navGrid', '#gridphpager', {
 				view: false, edit: false, add: false, del: false, search: false,
