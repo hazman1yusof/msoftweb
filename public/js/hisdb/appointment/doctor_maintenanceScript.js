@@ -700,7 +700,7 @@
 					{label: 'To', name: 'dateto', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'Remark', name: 'remark', classes: 'wrap',},
 					{label: 'Color', name: 'backgroundcolor', classes: 'wrap',hidden:true},
-					{label: 'colorpicker', name: 'colorpicker', classes: 'wrap', formatter: formatterColorpicker, unformat: unformatColorpicker},	
+					{label: 'colorpicker', name: 'colorpicker', width: 50, classes: 'wrap', formatter: formatterColorpicker, unformat: unformatColorpicker},	
 				],
 					
 				autowidth:true,
@@ -715,8 +715,6 @@
 				onSelectRow:function(rowid, selected){
 					$('#resourcecode').val(selrowData('#jqGrid').resourcecode);
 					$('#description').val(selrowData('#jqGrid').description);
-
-
 					
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
@@ -738,19 +736,32 @@
 
 					$('#'+$("#gridph").jqGrid ('getGridParam', 'selrow')).focus();
 
+					$(".colorpointer").click(function(){
+						var idno = $(this).data('column');
+						$('#dp_'+idno).click();
+					});
+
+					$('.bg_color').change(function(){
+						var idno = $(this).data('column');
+						$('#pt_'+idno+' img').css('border-bottom-color',$(this).val());
+					});
 				},
 			});
 
 			function formatterColorpicker(cellvalue, options, rowObject){
-				return "<span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_ALcolor' data-column='ALcolor'>
-											<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
-										</span>
-						  				<input type='color' id='ALcolor' name='ALcolor' class="form-control input-sm bg_color" value="#ff0000" style="display: none;">";
+				var idno = rowObject.idno;
+
+				return `<span style="font-size:1em;cursor: pointer;" class="colorpointer" id="pt_`+idno+`" data-column="`+idno+`">
+							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+						</span>
+						  <input type='color' id='dp_`+idno+`' data-column="`+idno+`" class="form-control input-sm bg_color" value="#ff0000" style="display: none;">`;
 			}
 
 			function unformatColorpicker(cellvalue, options, rowObject){
 				return null;
 			}
+
+		
 
 		$("#gridph").jqGrid('navGrid', '#gridphpager', {
 				view: false, edit: false, add: false, del: false, search: false,
