@@ -61,6 +61,7 @@ class EmergencyController extends defaultController
                         'Oldic' => $request->Oldic,
                         'Name' => $request->patname,
                         'DOB' => $request->DOB,
+                        'ID_Type'  => $request->ID_Type,
                         'Sex'  => $request->sex,
                         'RaceCode'  => $request->race,
                         'Confidential'  => 'yes',

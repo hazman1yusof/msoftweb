@@ -81,7 +81,23 @@ $(document).ready(function () {
 			if ($('#registerformdata').isValid({ requiredFields: '' }, conf, true)) {
 				saveFormdata("#jqGrid", "#registerform", "#registerformdata", oper, saveParam, urlParam);
 			}
-		}
+
+			 var Newic = $('#Newic');
+             var Oldic = $('#Oldic');
+
+            if(Newic.val() == '' && Oldic.val() == '') {
+            alert('Fill out new ic or old ic fields');
+            }
+    //         else if(Newic.val() == '') {
+    //         alert('Oldic, please...');
+    //         }
+    //         else if(Oldic.val() == '') {
+    //         alert('Newic, please...');      
+    //         }
+    //         else {
+    //         alert('Yay!');
+    // }   
+   }
 	}, {
 		text: "Cancel", click: function () {
 			$(this).dialog('close');
@@ -201,7 +217,7 @@ $(document).ready(function () {
 		},
 
 	});
-    
+   
     var dialog_mrn = new ordialog(
 		'mrn', ['hisdb.pat_mast AS pt','hisdb.racecode AS rc'], "#registerform input[name='mrn']", errorField,
 		{
@@ -217,6 +233,7 @@ $(document).ready(function () {
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_mrn.gridname);
+				$("#registerform input[name='MRN']").val(data['pt_MRN']);
 				$("#registerform input[name='patname']").val(data['pt_Name']);
 				$("#registerform input[name='Newic']").val(data['pt_Newic']);
 				$("#registerform input[name='DOB']").val(data['pt_DOB']);
@@ -408,30 +425,23 @@ $(document).ready(function () {
 		}
 
 	}
- //    sex(urlParam)
-	// function sex(urlParam) {
-	// 	var param = {
-	// 		action: 'get_value_default',
-	// 		url: '/util/get_value_default',
-	// 		field: ['code'],
-	// 		table_name: 'hisdb.sex',
-	// 		// filterCol: ['sysno'],
-	// 		// filterVal: ['1']
-	// 	}
-	// 	$.get( param.url+"?"+$.param(param), function( data ) {
+//  $("#registerform").submit(function() {
+//     var Newic = $('#Newic');
+//     var Oldic = $('#Oldic');
 
-	// 	},'json').done(function(data) {
-	// 		if(!$.isEmptyObject(data)){
-	// 			$.each(data.rows, function(index, value ) {
-	// 				if(value.code.toUpperCase()== $("#code").val().toUpperCase()){
-	// 					$( "#searchForm [id=sex]" ).append("<option selected value='"+value.code+"'>"+value.code+"</option>");
-	// 				}else{
-	// 					$( "#searchForm [id=sex]" ).append(" <option value='"+value.code+"'>"+value.code+"</option>");
-	// 				}
-	// 			});
-	// 		}
-	// 	});
-	// }
+//     if(Newic.val() == '' && Oldic.val() == '') {
+//         alert('Fill out both fields');
+//     }
+//     else if(Newic.val() == '') {
+//         alert('Email, please...');
+//     }
+//     else if(Oldic.val() == '') {
+//         alert('Phone, please...');      
+//     }
+//     else {
+//         alert('Yay!');
+//     }   
+// });
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,

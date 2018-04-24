@@ -111,6 +111,19 @@
 			<div class="col-md-2">
 				<input type="idnumber" name="idnumber" id="idnumber" class="form-control input-sm" data-validation="required" >
 			</div>
+			<label class="col-md-1 control-label" for="ID_Type">ID_Type</label>
+			    <div class="col-md-2">
+							<select id='ID_Type' class="form-control input-sm">
+							 <option value="pleasechoose" selected>Please Choose</option>
+				      		 <option value="None">None</option>
+					         <option value="Father">Father</option>
+					         <option value="Mother">Mother</option>
+					         <option value="Relative">Relative</option>
+					         <option value="Passport">Passport</option>
+					         <option value="Police">Police</option>
+					         <option value="Army">Army</option>
+						    </select>
+				</div>
 		</div>	
         <div class="form-group">
           <label class="col-md-2 control-label" for="sex">Sex</label>
