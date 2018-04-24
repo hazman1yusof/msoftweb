@@ -68,16 +68,19 @@ $("body").show();
 			}
 			if(oper!='view'){
 				dialog_txndept.on();
+				dialog_deptcode.on();
 			}
 			if(oper!='add'){
 				setColor();
 				dialog_txndept.check(errorField);
+				dialog_deptcode.check(errorField);
 			}
 		},
 		close: function( event, ui ) {
 			emptyFormdata(errorField,'#formdata');
 
 			dialog_txndept.off();
+			dialog_deptcode.off();
 
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
@@ -227,6 +230,22 @@ $("body").show();
 	);
 	dialog_txndept.makedialog();
 
+	var dialog_deptcode = new ordialog(
+		'deptcode','sysdb.department','#deptcode',errorField,
+		{	colModel:[
+				{label:'Department ID',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				]
+		},{
+			title:"Select Transaction Department",
+			open: function(){
+				dialog_deptcode.urlParam.filterCol=['recstatus'],
+				dialog_deptcode.urlParam.filterVal=['A']
+			}
+		},'urlParam'
+	);
+	dialog_deptcode.makedialog();
+
 
 	// function savecolor(){
 	// 	var bg_leave = $('#bg_leave').val();
@@ -269,6 +288,7 @@ $("body").show();
 	function setColor(){
 		$('.bg_color').each(function(){
 			var column = $(this).attr('name');
+			console.log($(this).val());
 			$('#pt_'+column+' img').css('border-bottom-color',$(this).val());
 		});
 	}

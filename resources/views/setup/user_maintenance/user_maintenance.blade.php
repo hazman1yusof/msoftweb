@@ -57,9 +57,13 @@
 				  </div>
 
 				  <label class="col-md-2 control-label" for="deptcode">Department</label>  
-				  <div class="col-md-4">
-				  <input id="url" name="deptcode" type="deptcode" class="form-control input-sm" data-validation="required">
-				  </div>
+					<div class="col-md-4">
+					  <div class='input-group'>
+						<input id="deptcode" name="deptcode" type="text" class="form-control input-sm" data-validation="required">
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  </div>
+					  <span class="help-block"></span>
+					</div>
 
                 </div>
 

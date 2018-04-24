@@ -813,9 +813,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 				}
 			}
 
-			console.log(errorField)
 			var idtopush = (id.substring(0, 1) == '#')?id.substring(1):id;
-			console.log(idtopush)
 
 			if(!fail){
 				if($.inArray(idtopush,errorField)!==-1){
@@ -834,7 +832,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 				}
 			}
 
-			console.log(errorField)
 		});
 	}
 }
