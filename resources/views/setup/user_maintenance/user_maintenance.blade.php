@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@section('style')
+
+@endsection
+
 @section('title', 'User Maintenance')
 
 @section('body')
@@ -58,6 +62,44 @@
 				  </div>
 
                 </div>
+
+                <div class="form-group">
+                	<label class="control-label col-md-2">Annual Leave Color</label>
+				  	<div class="col-md-1">
+		  				<span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_ALcolor' data-column='ALcolor'>
+							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+						</span>
+		  				<input type='color' id='ALcolor' name='ALcolor' class="form-control input-sm bg_color" value="#ff0000" style="display: none;">
+				  	</div>
+
+                	<label class="control-label col-md-2">Discharge Pt. Color</label>
+				  	<div class="col-md-1">
+		  				<span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_DiscPTcolor' data-column='DiscPTcolor'>
+							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+						</span>
+		  				<input type='color' id='DiscPTcolor' name='DiscPTcolor' class="form-control input-sm bg_color" value="#ff0000" style="display: none;">
+				  	</div>
+
+
+                	<label class="control-label col-md-2">Cancel Pt. Color</label>
+				  	<div class="col-md-1">
+		  				<span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_CancelPTcolor' data-column='CancelPTcolor'>
+							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+						</span>
+		  				<input type='color' id='CancelPTcolor' name='CancelPTcolor' class="form-control input-sm bg_color" value="#ff0000" style="display: none;">
+				  	</div>
+
+
+                	<label class="control-label col-md-2">Current Pt. Color</label>
+				  	<div class="col-md-1">
+		  				<span style="font-size:2em;cursor: pointer;" class="colorpointer" id='pt_CurrentPTcolor' data-column='CurrentPTcolor'>
+							<img src="img/paint.png" style="width:30px;border-bottom:solid;border-bottom-width:5px" alt="..." id="imgid">
+						</span>
+		  				<input type='color' id='CurrentPTcolor' name='CurrentPTcolor' class="form-control input-sm bg_color" value="#ff0000" style="display: none;">
+				  	</div>
+
+				</div>
+
                 <div class="form-inline">
                  <label class="control-label col-md-2">Cashier</label>
 				  	<select class="form-control col-md-4" id='cashier' name='cashier'>
@@ -70,7 +112,7 @@
 				  		<option value='1'>Yes</option>
 				  		<option value='0'>No</option>
 				  	</select>
-				 </div>
+				</div>
                 
 			</form>
 		</div>

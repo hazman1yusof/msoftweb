@@ -70,6 +70,7 @@ $("body").show();
 				dialog_txndept.on();
 			}
 			if(oper!='add'){
+				setColor();
 				dialog_txndept.check(errorField);
 			}
 		},
@@ -111,7 +112,11 @@ $("body").show();
             {label:'Price View',name:'priceview',formatter:yes_no,unformat:de_yes_no,width:70},   
             {label:'programmenu',name:'programmenu',width:50,hidden:true},
             {label:'password',name:'password',width:50,hidden:true},
-            {label:'id',name:'id',width:50,hidden:true}  
+            {label:'id',name:'id',width:50,hidden:true},
+            {label:'ALcolor',name:'ALcolor',hidden:true},
+            {label:'DiscPTcolor',name:'DiscPTcolor',hidden:true},
+            {label:'CancelPTcolor',name:'CancelPTcolor',hidden:true},
+            {label:'CurrentPTcolor',name:'CurrentPTcolor',hidden:true},
 		],
 		autowidth:true,
         multiSort: true,
@@ -221,5 +226,51 @@ $("body").show();
 		},'urlParam'
 	);
 	dialog_txndept.makedialog();
+
+
+	// function savecolor(){
+	// 	var bg_leave = $('#bg_leave').val();
+	// 	$.post( "/user_maintenance/save_color", {bg_leave:bg_leave,_token:$('#csrf_token').val()} , function( data ) {
+	
+	// 	}).success(function(data){
+
+	// 	});
+	// }
+
+	// function load_bg_leave(){
+	// 	var urlParam={
+	// 		action:'get_table_default',
+	// 		url: '/util/get_value_default',
+	// 		field:['pvalue1'],
+	// 		table_name:'sysdb.sysparam',
+	// 		filterCol:['source','trantype'],
+	// 		filterVal:['HIS','ALCOLOR']
+	// 	}
+
+	// 	$.get( "util/get_value_default"+"?"+$.param(urlParam), function( data ) {
+		
+	// 	},'json').done(function(data) {
+	// 		if(!$.isEmptyObject(data.rows)){
+	// 			$('#bg_leave').val(data.rows[0].pvalue1);
+	// 		}
+	// 	});
+	// }
+
+	$(".colorpointer").click(function(){
+		var column = $(this).data('column');
+		$('#'+column).click();
+	});
+
+	$('.bg_color').change(function(){
+		var column = $(this).attr('name');
+		$('#pt_'+column+' img').css('border-bottom-color',$(this).val());
+	});
+
+	function setColor(){
+		$('.bg_color').each(function(){
+			var column = $(this).attr('name');
+			$('#pt_'+column+' img').css('border-bottom-color',$(this).val());
+		});
+	}
 
 });

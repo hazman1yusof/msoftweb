@@ -663,7 +663,7 @@
             	modal : true,
 				width: 8/10 * $(window).width(),
 				open: function(){
-					addParamField("#gridph",true,urlParamph);
+					// addParamField("#gridph",true,urlParamph);
 					$("#gridph").jqGrid ('setGridWidth', Math.floor($("#gridph_c")[0].offsetWidth-$("#gridph_c")[0].offsetLeft));
 
 				}, 
@@ -673,7 +673,7 @@
             var urlParamph = {
 				action:'get_table_default',
 				url: '/util/get_table_default',
-				field:"['YEAR','datefr','dateto','remark','backgroundcolor']",
+				field:['idno','YEAR','datefr','dateto','remark','backgroundcolor','backgroundcolor as colorpicker'],
 				table_name:'hisdb.apptph',
 				table_id:'idno',
 				filterCol:['recstatus'],
@@ -700,8 +700,7 @@
 					{label: 'To', name: 'dateto', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 					{label: 'Remark', name: 'remark', classes: 'wrap',},
 					{label: 'Color', name: 'backgroundcolor', classes: 'wrap',hidden:true},
-					{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap',hidden:true,cellattr: function(rowid, cellvalue){
-						return cellvalue == 'D' ? ' class="alert alert-danger"' : ''},},	
+					{label: 'colorpicker', name: 'colorpicker', classes: 'wrap'},	
 				],
 					
 				autowidth:true,
@@ -725,14 +724,14 @@
 				},
 				gridComplete: function(iRow){ 
 					// $("#gridph").jqGrid('setCell',"1","remark","",{'background-color':'yellow'});
-					   var rows = $("#gridph").getDataIDs(); 
-                       for (var i = 0; i < rows.length; i++)
-                       {
-                      var backgroundcolor =$("#gridph").getCell(rows[i],"backgroundcolor");
-            
-                     $("#gridph").jqGrid('setRowData',rows[i],false, {background:backgroundcolor});            
-        
-    }
+
+					var rows = $("#gridph").getDataIDs(); 
+                	for (var i = 0; i < rows.length; i++)
+                   	{
+                  		var backgroundcolor =$("#gridph").getCell(rows[i],"backgroundcolor");
+                 		$("#gridph").jqGrid('setRowData',rows[i],false, {background:backgroundcolor});
+					}
+
 					if(oper == 'add'){
 						$("#gridph").setSelection($("#gridph").getDataIDs()[0]);
 					}
@@ -830,8 +829,7 @@
 					{label: 'Date To', name: 'dateto', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 					{label: 'Remark', name: 'remark', classes: 'wrap'},
 					{label: 'resourcecode', name: 'resourcecode', classes: 'wrap',hidden:true},
-					
-					],
+				],
 					
 				autowidth:true,
 				viewrecords: true,
@@ -877,10 +875,10 @@
 			        if (!selRowId) {
 				    alert('Please select row');
 				    return emptyFormdata(errorField, '#alformdata');
-			       } else {
-				    saveFormdata("#gridleave", "#alformdata", "#alformdata", 'del', saveParamleave, urlParamleave, null,  { 'idno': selrowData('#gridleave').idno });
-			}
-		},
+			       	} else {
+				    	saveFormdata("#gridleave", "#alformdata", "#alformdata", 'del', saveParamleave, urlParamleave, null,  { 'idno': selrowData('#gridleave').idno });
+					}
+				},
 				}).jqGrid('navButtonAdd', "#gridleavepager", {
 						caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
 						buttonicon: "glyphicon glyphicon-edit",
@@ -921,7 +919,8 @@
 			// addParamField('#jqGrid',true,urlParam);
 			refreshGrid("#jqGrid",urlParam);
 			addParamField('#gridtime',true,urlParamtime);
-			addParamField('#gridph',true,urlParamph);
+			// addParamField('#gridph',true,urlParamph);
+			refreshGrid("#gridph",urlParamph);
 			addParamField('#gridleave',true,urlParamleave);
 
 			 

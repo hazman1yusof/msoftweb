@@ -96,7 +96,7 @@ class UserMaintenanceController extends defaultController
         }
 
         try {
-
+            
             $this->table->insert([
                 'username' => $request->username,
                 'name' => $request->name,
@@ -105,6 +105,10 @@ class UserMaintenanceController extends defaultController
                 'priceview' => $request->priceview,
                 'programmenu' => $request->programmenu,
                 'password' => $request->password,
+                'ALcolor' => $request->ALcolor,
+                'DiscPTcolor' => $request->DiscPTcolor,
+                'CancelPTcolor' => $request->CancelPTcolor,
+                'CurrentPTcolor' => $request->CurrentPTcolor,
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now(),
@@ -133,6 +137,10 @@ class UserMaintenanceController extends defaultController
                 'priceview' => $request->priceview,
                 'programmenu' => $request->programmenu,
                 'password' => $request->password,
+                'ALcolor' => $request->ALcolor,
+                'DiscPTcolor' => $request->DiscPTcolor,
+                'CancelPTcolor' => $request->CancelPTcolor,
+                'CurrentPTcolor' => $request->CurrentPTcolor,
                 'compcode' => session('compcode'),
                 'upduser' => session('username'),
                 'upddate' => Carbon::now(),
@@ -164,5 +172,13 @@ class UserMaintenanceController extends defaultController
             DB::rollback();
         }
 
+    }
+
+    public function save_color(Request $request){
+        DB::table('sysdb.sysparam')
+            ->where('compcode','=',session('compcode'))
+            ->where('source','=','HIS')
+            ->where('trantype','=','ALCOLOR')
+            ->update(['pvalue1' => $request->bg_leave]);
     }
 }
