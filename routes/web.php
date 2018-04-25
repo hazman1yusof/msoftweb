@@ -148,6 +148,13 @@ Route::post('/deliveryOrder/form','material\DeliveryOrderController@form');
 Route::get('/deliveryOrder/form','material\DeliveryOrderController@form');
 Route::post('/deliveryOrderDetail/form','material\DeliveryOrderDetailController@form');
 
+//// good Return setup page ///
+Route::get('/goodReturn','material\GoodReturnController@show');
+Route::get('/goodReturn/table','material\GoodReturnController@table');
+Route::post('/goodReturn/form','material\GoodReturnController@form');
+Route::get('/goodReturn/form','material\GoodReturnController@form');
+Route::post('/goodReturnDetail/form','material\GoodReturnDetailController@form');
+
 //// appointment resource setup page ///
 Route::get('/apptrsc','hisdb\AppointmentController@show');
 Route::get('/apptrsc/table','hisdb\AppointmentController@table');
@@ -230,6 +237,7 @@ Route::post('/paymentMode/form','finance\PaymentModeController@form');
 Route::get('/categoryfin','finance\CategoryFinController@show');
 Route::get('/categoryfin/table','finance\CategoryFinController@table');
 Route::post('/categoryfin/form','finance\CategoryFinController@form');
+
 
 
 
