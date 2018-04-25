@@ -356,9 +356,8 @@ $(document).ready(function () {
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
 		saveParam.oper = $(this).data("oper");
-		console.log(saveParam);
-		let obj={recno:selrowData('#jqGrid').delordhd_recno};
-		$.post("../../../../assets/php/entry.php?" + $.param(saveParam),obj,function (data) {
+		let obj={recno:selrowData('#jqGrid').delordhd_recno,_token:$('#_token').val()};
+		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
 			alert(data.responseText);
@@ -374,7 +373,7 @@ $(document).ready(function () {
 		}
 		saveParam.oper=selfoper;
 
-		$.post( "../../../../assets/php/entry.php?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
+		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 		unsaved = false;
 			hideatdialogForm(false);
 
@@ -428,21 +427,22 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////populate data for dropdown tran dept/////////////////////////////
-	trandept(urlParam)
-	function trandept(urlParam){
+		trandept();
+	function trandept(){
 		var param={
 			action:'get_value_default',
+			url: '/util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
 			filterCol:['storedept'],
 			filterVal:['1']
 		}
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 			
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data)){
 				$.each(data.rows, function(index, value ) {
-					if(value.deptcode.toUpperCase()== $("#x").val().toUpperCase()){
+					if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
 						$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
 					}else{
 						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
@@ -451,7 +451,6 @@ $(document).ready(function () {
 			}
 		});
 	}
-
 	////////////////////////////changing status and trandept trigger search/////////////////////////
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
@@ -551,6 +550,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
+		url:'/util/get_table_default',
 		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode', 'dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.qtyreturned','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','NULL AS remarks_button','dodt.remarks'],
 		table_name:['material.delorddt dodt','material.productmaster p'],
 		table_id:'lineno_',
@@ -565,7 +565,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "../../../../assets/php/entry.php?action=goodReturn_detail_save",
+		editurl: "/goodReturnDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
@@ -1362,21 +1362,21 @@ $(document).ready(function () {
 	dialog_prdept.makedialog();
 
 	var dialog_docno = new ordialog(
-		'srcdocno',['material.delordhd h'],'#delordhd_srcdocno',errorField,
+		'srcdocno',['material.delordhd AS h'],'#delordhd_srcdocno',errorField,
 		{	colModel:[
-				{label:'GRN NO',name:'h.docno',width:200,classes:'pointer',canSearch:true,or_search:true,formatter: padzero},
-				{label:'Purchase Department',name:'h.prdept',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-				{label:'Supplier Code',name:'h.suppcode',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'delordno',name:'h.delordno',width:400,classes:'pointer', hidden:true},
-				{label:'Request Department',name:'h.reqdept',width:400,classes:'pointer', hidden:true},
-				{label:'recno',name:'h.recno',width:400,classes:'pointer', hidden:true},
-				{label:'Delivery Department',name:'h.deldept',width:400,classes:'pointer', hidden:true},
-				{label:'Record Status',name:'h.recstatus',width:400,classes:'pointer', hidden:true},
-				{label:'Amount Discount',name:'h.amtdisc',width:400,classes:'pointer', hidden:true},
-				{label:'Sub Amount',name:'h.subamount',width:400,classes:'pointer', hidden:true},
-				{label:'Per Disc',name:'h.perdisc',width:400,classes:'pointer', hidden:true},
-				{label:'Remarks',name:'h.remarks',width:400,classes:'pointer', hidden:true},
-				{label:'Total Amount',name:'h.totamount',width:400,classes:'pointer'},
+				{label:'GRN NO',name:'h_docno',width:200,classes:'pointer',canSearch:true,or_search:true,formatter: padzero},
+				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'delordno',name:'h_delordno',width:400,classes:'pointer', hidden:true},
+				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
+				{label:'recno',name:'h_recno',width:400,classes:'pointer', hidden:true},
+				{label:'Delivery Department',name:'h_deldept',width:400,classes:'pointer', hidden:true},
+				{label:'Record Status',name:'h_recstatus',width:400,classes:'pointer', hidden:true},
+				{label:'Amount Discount',name:'h_amtdisc',width:400,classes:'pointer', hidden:true},
+				{label:'Sub Amount',name:'h_subamount',width:400,classes:'pointer', hidden:true},
+				{label:'Per Disc',name:'h_perdisc',width:400,classes:'pointer', hidden:true},
+				{label:'Remarks',name:'h_remarks',width:400,classes:'pointer', hidden:true},
+				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer'},
 				
 				
 				],
@@ -1403,6 +1403,7 @@ $(document).ready(function () {
 
 				var urlParam2 = {
 					action: 'get_value_default',
+					url: '/util/get_value_default',
 					field: ['dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode','dodt.pouom',
 					'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.unitprice', 'dodt.taxcode', 
 					'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax', 'dodt.amount','dodt.expdate','dodt.batchno','NULL AS remarks_button','dodt.remarks',
@@ -1416,7 +1417,7 @@ $(document).ready(function () {
 					filterVal: [data['h.recno'], 'session.company', '<>.DELETE']
 				};
 
-				$.get("../../../../assets/php/entry.php?" + $.param(urlParam2), function (data) {
+				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {

@@ -329,8 +329,8 @@
 
 @section('scripts')
 
-	<script src="js/material/Good Return/goodReturn.js"></script>
-	<script src="js/material/Good Return/pdfgen.js"></script>
+	<script src="js/material/goodReturn/goodReturn.js"></script>
+	<script src="js/material/goodReturn/pdfgen.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	
