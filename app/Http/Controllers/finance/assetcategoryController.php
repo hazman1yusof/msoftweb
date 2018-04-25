@@ -14,7 +14,7 @@ class assetcategoryController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "assetcategory";
+        $this->duplicateCode = "assetcode";
     }
 
     public function show(Request $request)

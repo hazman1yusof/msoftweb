@@ -182,7 +182,10 @@ Route::post('/location/form','finance\LocationController@form');
 Route::get('/assettype','finance\assettypeController@show');
 Route::get('/assettype/table','finance\assettypeController@table');
 Route::post('/assettype/form','finance\assettypeController@form');
-
+ 
+Route::get('/assetcategory','finance\assetcategoryController@show');
+Route::get('/assetcategory/table','finance\assetcategoryController@table');
+Route::post('/assetcategory/form','finance\assetcategoryController@form');
 //// GL Enquiry ///
 Route::get('/glenquiry','finance\GlenquiryController@show');
 Route::get('/glenquiry/table','finance\GlenquiryController@table');

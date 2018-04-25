@@ -33,6 +33,7 @@
 			<form class='form-horizontal' style='width:99%' id='formdata'>
 
 				<div class="prevnext btn-group pull-right">
+				{{ csrf_field() }}
 				</div>
 
 				<div class="form-group">
@@ -233,7 +234,7 @@
 
 @section('scripts')
 
-	<script src="js/finance/FA/assettype/assetcategoryScript.js"></script>
+	<script src="js/finance/FA/assetcategory/assetcategoryScript.js"></script>
 
 	
 @endsection

@@ -90,7 +90,23 @@ $(document).ready(function () {
 			if ($('#registerformdata').isValid({ requiredFields: '' }, conf, true)) {
 				saveFormdata("#jqGrid", "#registerform", "#registerformdata", oper, saveParam, urlParam);
 			}
-		}
+
+			 var Newic = $('#Newic');
+             var Oldic = $('#Oldic');
+
+            if(Newic.val() == '' && Oldic.val() == '') {
+            alert('Fill out new ic or old ic fields');
+            }
+    //         else if(Newic.val() == '') {
+    //         alert('Oldic, please...');
+    //         }
+    //         else if(Oldic.val() == '') {
+    //         alert('Newic, please...');      
+    //         }
+    //         else {
+    //         alert('Yay!');
+    // }   
+   }
 	}, {
 		text: "Cancel", click: function () {
 			$(this).dialog('close');
@@ -213,7 +229,7 @@ $(document).ready(function () {
 		},
 
 	});
-    
+   
     var dialog_mrn = new ordialog(
 		'mrn', ['hisdb.pat_mast AS pt','hisdb.racecode AS rc'], "#registerform input[name='mrn']", errorField,
 		{
@@ -229,6 +245,7 @@ $(document).ready(function () {
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_mrn.gridname);
+				$("#registerform input[name='MRN']").val(data['pt_MRN']);
 				$("#registerform input[name='patname']").val(data['pt_Name']);
 				$("#registerform input[name='Newic']").val(data['pt_Newic']);
 				$("#registerform input[name='DOB']").val(data['pt_DOB']);
@@ -434,7 +451,7 @@ $(document).ready(function () {
 		}
 
 	}
-
+	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
