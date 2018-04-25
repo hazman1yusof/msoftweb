@@ -22,7 +22,12 @@ class EmergencyController extends defaultController
 
     public function show(Request $request)
     {   
-       return view('hisdb.emergency.emergency');
+        $color = DB::table('sysdb.users')
+            ->where('username','=',session('username'))
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+       return view('hisdb.emergency.emergency',compact('color'));
     }
 
     public function form(Request $request)
@@ -34,6 +39,8 @@ class EmergencyController extends defaultController
                 return $this->defaultEdit($request);
             case 'del':
                 return $this->defaultDel($request);
+            case 'savecolor':
+                return $this->savecolor($request);
             default:
                 return 'error happen..';
         }
@@ -46,10 +53,13 @@ class EmergencyController extends defaultController
         try {
             ///--- 1. check kalu MRN ada ke tak
 
-            if($request->mrn != ""){
+            $mrn = ltrim($request->mrn, '0');
+            $payer = ltrim($request->payer, '0'); 
+
+            if($mrn != ""){
                 //1.kalu ada cari
                 $patmast_obj = DB::table('hisdb.pat_mast')
-                    ->where('mrn','=',$request->mrn)
+                    ->where('mrn','=',$mrn)
                     ->where('compcode','=',session('compcode'));
             }else{
                 //2.kalu xde buat baru lepas tambah sysparam
@@ -141,14 +151,14 @@ class EmergencyController extends defaultController
                             'Address2' => $patmast_data->Address2,
                             'Address3' => $patmast_data->Address3,
                             'DebtorType' => "PR",
-                            'DepCCode'  => $debtortype_data->DepCCode,
-                            'DepGlAcc' => $debtortype_data->DepGlAcc,
+                            'DepCCode'  => $debtortype_data->depccode,
+                            'DepGlAcc' => $debtortype_data->depglacc,
                             'BillType' => "IP",
                             'BillTypeOP' => "OP",
-                            'ActDebCCode' => $debtortype_data->ActDebCCode,
-                            'ActDebGlAcc' => $debtortype_data->ActDebGlAcc,
-                            'LastUser' => session('username'),
-                            'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'ActDebCCode' => $debtortype_data->actdebccode,
+                            'ActDebGlAcc' => $debtortype_data->actdebglacc,
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'RecStatus' => "A"
                         ]);
                 }
@@ -171,7 +181,7 @@ class EmergencyController extends defaultController
                     'EpisTyCode' => "OP",
                     'LineNo' => '1',
                     'BillType' => $request->billtype,
-                    'PayerCode' => $request->payername,
+                    'PayerCode' => $payer,
                     'Pay_Type' => $request->financeclass,
                     'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'AddUser' => session('username'),
@@ -184,13 +194,19 @@ class EmergencyController extends defaultController
             DB::table('hisdb.apptbook')
                 ->insert([
                     'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'apptdateto' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'apptdatefr' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'AddUser' => session('username'),    
                     'CompCode' => session('compcode'),
                     'Location' => 'ED',
-                    'LocCode' => 'ED',
+                    'LocCode' => $request->doctor,
                     'ApptNo' => '0',
-                    'MRN' => $patmast_data->MRN
+                    'episno' => $patmast_data->Episno + 1,
+                    'MRN' => $patmast_data->MRN,
+                    'pat_name' => $patmast_data->Name,
+                    'icnum' => $patmast_data->Newic,
+                    'apptstatus' => 'Attend',
+                    'telno' => $patmast_data->telh,
+                    'telhp' => $patmast_data->telhp
                     // 'ApptTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
                 ]);
 
@@ -228,5 +244,14 @@ class EmergencyController extends defaultController
 
             return response('Error'.$e, 500);
         }
+    }
+
+    public function savecolor(Request $request){
+        DB::table('sysdb.users')
+        ->where('username','=',session('username'))
+        ->where('compcode','=',session('compcode'))
+        ->update([
+            $request->columncolor => $request->color 
+        ]);
     }
 }

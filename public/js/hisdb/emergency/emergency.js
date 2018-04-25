@@ -7,9 +7,10 @@ $(document).ready(function () {
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
+		modules : 'logic',
 		language: {
 			requiredFields: ''
-		},
+		}
 	});
 
 	function calanderposition(){
@@ -30,16 +31,24 @@ $(document).ready(function () {
 
 	var errorField = [];
 	conf = {
+		language: {
+			requiredFields: 'You have not answered all required fields'
+		},
 		onValidate: function ($form) {
 			if (errorField.length > 0) {
 				return {
 					element: $(errorField[0]),
 					//element : $('#'+errorField[0]),
-					message: ' '
+					message: ''
 				}
 			}
 		},
 	};
+
+	$('input').on('beforeValidation', function(value, lang, config) {
+
+    });
+
 	//////////////////////////////////////////////////////////////
 
 	$('#Newic').blur(function(){
@@ -103,7 +112,7 @@ $(document).ready(function () {
 	var oper='add';
 	$("#registerform")
 		.dialog({
-			width: 9 / 10 * $(window).width(),
+			width: 8 / 10 * $(window).width(),
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
@@ -151,6 +160,8 @@ $(document).ready(function () {
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
+		
+
 	var urlParam = {
 		action: 'get_table_default',
 		url: '/util/get_table_default',
@@ -160,10 +171,12 @@ $(document).ready(function () {
 		join_type: ['INNER JOIN','INNER JOIN','INNER JOIN'],
 		join_onCol: ['a.episno','a.mrn','a.loccode'],
 		join_onVal: ['e.episno','p.mrn','d.doctorcode'],
-		filterCol:['a.apptdatefr'],
-	    filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD HH:mm:ss')]
-	   
+		join_filterCol: [['e.mrn on =']],
+		join_filterVal: [['a.mrn']],
+		filterCol:['a.apptdatefr','a.type'],
+	 	filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD HH:mm:ss'),'ED']
 	}
+
 	///////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
@@ -183,9 +196,8 @@ $(document).ready(function () {
 			{ label: 'Registered Time', name: 'e_reg_time', width: 15 ,classes: 'wrap' },
 			{ label: 'Name', name: 'p_Name', width: 30 ,canSearch: true,classes: 'wrap' },
 			// { label: 'Payer', name: 'q_', width: 20 ,classes: 'wrap' },
-			{ label: 'Doctor', name: 'e_admdoctor', width: 20 ,classes: 'wrap' },
+			{ label: 'Doctor', name: 'd_doctorname', width: 20 ,classes: 'wrap' },
 			{ label: 'Status', name: 'e_episstatus', width: 10 ,classes: 'wrap',hidden:true },
-
 		],
 		autowidth: true,
 		multiSort: true,
@@ -206,7 +218,7 @@ $(document).ready(function () {
 		'mrn', ['hisdb.pat_mast AS pt','hisdb.racecode AS rc'], "#registerform input[name='mrn']", errorField,
 		{
 			colModel: [
-				{	label: 'MRN', name: 'pt_MRN', width: 50, classes: 'pointer', formatter: padzero, unformat: unpadzero, canSearch: true, or_search: true },
+				{	label: 'MRN', name: 'pt_MRN', width: 50, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
 				{	label: 'Name', name: 'pt_Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{	label: 'Newic', name: 'pt_Newic', width: 100, classes: 'pointer', canSearch: true},
 				{	label: 'DOB', name: 'pt_DOB', width: 50, classes: 'pointer', canSearch: true},
@@ -239,8 +251,6 @@ $(document).ready(function () {
 				dialog_mrn.urlParam.join_onVal = ['rc.code'];
 				dialog_mrn.urlParam.join_filterCol = [['pt.compcode on ='],[]];
 				dialog_mrn.urlParam.join_filterVal = [['rc.compcode'],[]];
-
-			
 			},
 		}, 'none','dropdown'
 	);
@@ -281,18 +291,17 @@ $(document).ready(function () {
 				{	label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 			],
 			ondblClickRow: function () {
-				if($("input[name=debtortycode]").val() == "PT"){
-				let data = selrowData('#' + dialog_payer.gridname);
-				$("#registerform input[name='payername']").val(data['description']);
-				$(dialog_payer.textfield).parent().next().text(" ");	
-
-			} 
-			    else{
 				let data = selrowData('#' + dialog_financeclass.gridname);
-				$("#registerform input[name='fName']").val(data['description']);
+				if(data['debtortycode'] == "PT"){
+					$("#payername").val($('#patname').val());
+					$("#payer").val($('#mrn').val());
+					$("#registerform input[name='fName']").val(data['description']);
+				}else{
+					let data = selrowData('#' + dialog_financeclass.gridname);
+					$("#registerform input[name='fName']").val(data['description']);
+				}
 				$(dialog_financeclass.textfield).parent().next().text(" ");
 			}
-		}
 		},
 		{
 			title: "Select Financial Class",
@@ -311,6 +320,7 @@ $(document).ready(function () {
 				{	label: 'Debtor Code', name: 'debtorcode', width: 100, classes: 'pointer', canSearch: true, or_search: true },
 				{	label: 'Debtor Name', name: 'name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{	label: 'debtortype', name: 'debtortype', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'recstatus', name: 'recstatus', width: 200, classes: 'pointer',hidden:true},
 				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
 			ondblClickRow: function () {
@@ -320,13 +330,29 @@ $(document).ready(function () {
 				// $("#addForm input[name='telh']").val(data['telh']);
 				// $("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_payer.textfield).parent().next().text(" ");
+
+				if(data['recstatus'] == 'suspend'){
+					var dialog = bootbox.dialog({
+					    message: '<h2 class="text-center">Selected Payer are suspended</h2>',
+					    className: 'alertmodal'
+					});
+				}
 			}
 		},
 		{
-			title: "Select Financial Class",
+			title: "Select Payer",
 			open: function () {
-				dialog_payer.urlParam.filterCol = ['compcode'];
-				dialog_payer.urlParam.filterVal = ['9A'];
+				var financeclass = $('#financeclass').val();
+				if( financeclass == 'PT'){
+					dialog_payer.urlParam.filterCol = ['debtortype','compcode'];
+					dialog_payer.urlParam.filterVal = ['PT','9A'];
+				}else if( financeclass == 'CORP'){
+					dialog_payer.urlParam.filterCol = ['debtortype','compcode'];
+					dialog_payer.urlParam.filterVal = ['CORP','9A'];
+				}else{
+					dialog_payer.urlParam.filterCol = ['compcode'];
+					dialog_payer.urlParam.filterVal = ['9A'];
+				}
 			},
 		}, 'none'
 	);
@@ -408,30 +434,7 @@ $(document).ready(function () {
 		}
 
 	}
- //    sex(urlParam)
-	// function sex(urlParam) {
-	// 	var param = {
-	// 		action: 'get_value_default',
-	// 		url: '/util/get_value_default',
-	// 		field: ['code'],
-	// 		table_name: 'hisdb.sex',
-	// 		// filterCol: ['sysno'],
-	// 		// filterVal: ['1']
-	// 	}
-	// 	$.get( param.url+"?"+$.param(param), function( data ) {
 
-	// 	},'json').done(function(data) {
-	// 		if(!$.isEmptyObject(data)){
-	// 			$.each(data.rows, function(index, value ) {
-	// 				if(value.code.toUpperCase()== $("#code").val().toUpperCase()){
-	// 					$( "#searchForm [id=sex]" ).append("<option selected value='"+value.code+"'>"+value.code+"</option>");
-	// 				}else{
-	// 					$( "#searchForm [id=sex]" ).append(" <option value='"+value.code+"'>"+value.code+"</option>");
-	// 				}
-	// 			});
-	// 		}
-	// 	});
-	// }
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -450,5 +453,45 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus']);
+
+	//////////////////////////// background color//////////////////////////////
+	$(".colorpointer").click(function(){
+		var column = $(this).data('color');
+		$('#'+column).click();
+	});
+
+	$('.bg_color').change(function(){
+		var columncolor = $(this).attr('name');
+		$('#btn_'+columncolor).css('background-color',$(this).val());
+		savecolor(columncolor,$(this).val());
+	});
+
+	setColor();
+	function setColor(){
+		$('.bg_color').each(function(){
+			var column = $(this).attr('name');
+			$('#btn_'+column).css('background-color',$(this).val());
+		});
+	}
+
+	function savecolor(columncolor,color){
+		$.post( "/emergency/form",{oper:'savecolor',columncolor:columncolor,color:color,_token:$('#csrf_token').val()} , function( data ) {
+	
+		}).success(function(data){
+
+		});
+	}
+	////////////////////////////////////////////////////////////////////////
+
+	$('#patname').blur(function(){
+		var value = $(this).val();
+		if(value == 'unknown'){
+			$('#mrn').val('00000000');
+			$('#financeclass').val('PR');
+			$('#fName').val('PERSON RESPONSIBLE');
+			$('#payer').val('00000000');
+			$('#payername').val('unknown');
+		}
+	});
 
 });

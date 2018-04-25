@@ -23,6 +23,16 @@
     	margin:3px;
 	}
 
+	.alertmodal{
+		margin-top: 150px;
+	}
+
+	.alertmodal .modal-body{
+		background-color:red;
+		color:white;
+		border-radius:5px;
+	}
+
 
 @endsection
 
@@ -33,6 +43,7 @@
 
 @section('body')
 
+	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 	<div class='row'>
 		<input id="Type" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
 		<form id="searchForm" class="formclass" style='width:99%;position: relative;'>
@@ -46,9 +57,23 @@
 				<div style="position: absolute;top: 5px;right: 5px">
 					<fieldset class="scheduler-border">
 					<legend class="scheduler-border">Legend</legend>
-						<button type="button" class="btn btn-sm btn-warning" style="">Current</button>
-						<button type="button" class="btn btn-sm btn-danger">Cancel</button>
-						<button type="button" class="btn btn-sm">Discharge</button>
+		  				
+		  				<input type='color' id='CurrentPTcolor' name='CurrentPTcolor' class="form-control input-sm bg_color" value="{{$color->CurrentPTcolor}}" style="display: none;">
+		  				<input type='color' id='CancelPTcolor' name='CancelPTcolor' class="form-control input-sm bg_color" value="{{$color->CancelPTcolor}}" style="display: none;">
+		  				<input type='color' id='DiscPTcolor' name='DiscPTcolor' class="form-control input-sm bg_color" value="{{$color->DiscPTcolor}}" style="display: none;">
+
+						<button type="button" class="btn btn-sm colorpointer" style="padding: 1px" data-color='CurrentPTcolor' id='btn_CurrentPTcolor'>
+							Current
+							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
+						</button>
+						<button type="button" class="btn btn-sm colorpointer" style="padding: 1px" data-color='CancelPTcolor' id='btn_CancelPTcolor'>
+							Cancel
+							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
+						</button>
+						<button type="button" class="btn btn-sm colorpointer" style="padding: 1px" data-color='DiscPTcolor' id='btn_DiscPTcolor'>
+							Discharge
+							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
+						</button>
 					</fieldset>
 				</div>
 				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px;padding-top: 10px" >
@@ -76,7 +101,7 @@
 	</div>
 
 	<div id="registerform" title="Register Form">
-	<form class='form-horizontal' style='width:89%' id='registerformdata'>
+	<form class='form-horizontal' style='width:99%' id='registerformdata'>
 		<input id="code" name="code" type="hidden" value="{{Session::get('code')}}">
 		{{ csrf_field() }}
 		<div class="form-group">
@@ -93,103 +118,129 @@
 			</div>
 		</div>	
         <div class="form-group">
-		    <label class="col-md-2 control-label" for="Newic">New I.C</label>
+        	<label class="col-md-2 control-label" for="idtype">ID Type</label>
 			<div class="col-md-2">
-				<input type="text" name="Newic" id="Newic" class="form-control input-sm" data-validation="required" >
-			</div>		
+					<select id='idtype' class="form-control input-sm">
+						<option value="none" selected>None</option>
+						<option value="Father">Father</option>
+						<option value="Mother">Mother</option>
+						<option value="Relative">Relative</option>
+						<option value="Passport">Passport</option>
+						<option value="Police">Police</option>
+						<option value="Army">Army</option>
+				    </select>
+			</div>
+
+		    <label class="col-md-1 control-label" for="Newic">New I.C</label>
+			<div class="col-md-2">
+				<input type="text" name="Newic" id="Newic" class="form-control input-sm" data-validation="required" data-validation-optional-if-answered="Oldic">
+			</div>	
+
 		   	<label class="col-md-1 control-label" for="Oldic">Old I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" data-validation="required" >
+				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" data-validation-optional-if-answered="Newic">
 			</div>	
-        	<label class="col-md-1 control-label" for="DOB">D.O.B</label>
+
+        </div>
+        <div class="form-group">
+        	<label class="col-md-2 control-label" for="DOB">D.O.B</label>
 			<div class="col-md-2">
 				<input type="date" name="DOB" id="DOB" class="form-control input-sm" data-validation="required" >
-			</div>			
-        </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="idnumber">Others No</label>
-			<div class="col-md-2">
-				<input type="idnumber" name="idnumber" id="idnumber" class="form-control input-sm" data-validation="required" >
 			</div>
-		</div>	
-        <div class="form-group">
-          <label class="col-md-2 control-label" for="sex">Sex</label>
-					<div class="col-md-2">
-							<select id='sex' class="form-control input-sm">
-							 <option value="pleasechoose" selected>Please Choose</option>
-				      		 <option value="M">Male</option>
-					         <option value="F">Female</option>
-					         <option value="U">Unisex</option>
-						    </select>
-					</div>
-        </div>
+
+            <label class="col-md-1 control-label" for="idnumber">Others No</label>
+			<div class="col-md-2">
+				<input type="idnumber" name="idnumber" id="idnumber" class="form-control input-sm" >
+			</div>
+
+          	<label class="col-md-1 control-label" for="sex">Sex</label>
+			<div class="col-md-2">
+				<select id='sex' class="form-control input-sm">
+				 <option value="pleasechoose" selected>Please Choose</option>
+	      		 <option value="M">Male</option>
+		         <option value="F">Female</option>
+		         <option value="U">Unisex</option>
+			    </select>
+			</div>
+		</div>
 
         <div class="form-group">
-		<label for="title" class="col-md-2 control-label">Race</label>
+			<label for="title" class="col-md-2 control-label">Race</label>
 	        <div class="col-md-2">
-			<div class="input-group">
-			<input type="text" class="form-control input-sm" placeholder="Race" id="race" name="race" maxlength="12" rdonly>
-			<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+				<div class="input-group">
+				<input type="text" class="form-control input-sm" placeholder="Race" id="race" name="race" maxlength="12" rdonly>
+				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+				</div>
+				<span class='help-block'></span>
 			</div>
-			<span class='help-block'></span>
-			</div>
-              <div class="col-md-4">
+
+            <div class="col-md-4">
 				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description_race" name="description_race">
+			</div>
 		</div>
-		</div>
-		 <div class="form-group">
-		<label for="title" class="col-md-2 control-label">Financial Class</label>
+
+		<hr>
+
+		<div class="form-group">
+
+			<label for="title" class="col-md-2 control-label">Financial Class</label>
 	        <div class="col-md-2">
-			<div class="input-group">
-			<input type="text" class="form-control input-sm" placeholder="Finanncial Class" id="financeclass" name="financeclass" maxlength="12" rdonly>
-			<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+				<div class="input-group">
+				<input type="text" class="form-control input-sm" placeholder="Finanncial Class" id="financeclass" name="financeclass" maxlength="12" rdonly>
+				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+				</div>
+				<span class='help-block'></span>
 			</div>
-			<span class='help-block'></span>
-			</div>
-              <div class="col-md-4">
+
+             <div class="col-md-4">
 				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="fName" name="fName">
+			</div>
+
 		</div>
-		</div>	
-		 <div class="form-group">
-		<label for="title" class="col-md-2 control-label">Payer</label>
-	        <div class="col-md-2">
-			<div class="input-group">
-			<input type="text" class="form-control input-sm" placeholder="Payer" id="payer" name="payer" maxlength="12" rdonly>
-			<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+
+		<div class="form-group">
+			<label for="title" class="col-md-2 control-label">Payer</label>
+		    <div class="col-md-2">
+				<div class="input-group">
+				<input type="text" class="form-control input-sm" placeholder="Payer" id="payer" name="payer" maxlength="12" rdonly>
+				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+				</div>
+				<span class='help-block'></span>
 			</div>
-			<span class='help-block'></span>
-			</div>
-              <div class="col-md-4">
+            <div class="col-md-4">
 				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="payername" name="payername">
-			<input type="hidden" name="paytype" id="paytype">
+				<input type="hidden" name="paytype" id="paytype">
+			</div>
 		</div>
-		</div>	
-		 <div class="form-group">
-		<label for="title" class="col-md-2 control-label">Bill Type</label>
+
+		<div class="form-group">
+			<label for="title" class="col-md-2 control-label">Bill Type</label>
 	        <div class="col-md-2">
-			<div class="input-group">
-			<input type="text" class="form-control input-sm" placeholder="BillType" id="billtype" name="billtype" maxlength="12" rdonly>
-			<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+				<div class="input-group">
+				<input type="text" class="form-control input-sm" placeholder="BillType" id="billtype" name="billtype" maxlength="12" rdonly>
+				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+				</div>
+				<span class='help-block'></span>
 			</div>
-			<span class='help-block'></span>
-			</div>
-              <div class="col-md-4">
+            <div class="col-md-4">
 				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description" name="description_bt">
+			</div>
 		</div>
-		</div>	
-		 <div class="form-group">
-		<label for="title" class="col-md-2 control-label">Doctor</label>
+
+		<div class="form-group">
+			<label for="title" class="col-md-2 control-label">Doctor</label>
 	        <div class="col-md-2">
-			<div class="input-group">
-			<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" rdonly>
-			<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+				<div class="input-group">
+				<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" rdonly>
+				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+				</div>
+				<span class='help-block'></span>
 			</div>
-			<span class='help-block'></span>
-			</div>
-              <div class="col-md-4">
+            <div class="col-md-4">
 				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="docname" name="docname">
+			</div>
 		</div>
-		</div>		
+
 	</form>		
 	</div>
 

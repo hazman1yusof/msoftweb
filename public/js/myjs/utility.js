@@ -1,6 +1,11 @@
 
 
 ///////////////////////start utility function/////////////////////////////////////////////////////////
+$('input').on('beforeValidation', function(value, lang, config) {
+	$(this).attr('data-validation-error-msg', ' ');
+	// $(this).attr('data-validation-skipped', 1);
+});
+
 function toogleSearch(butID,formID,statenow){
 	this.state=false;
 	$(butID+' i').attr('class','fa fa-chevron-down');
@@ -708,6 +713,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 			open: function(){
 				$("#"+obj.gridname).jqGrid ('setGridWidth', Math.floor($("#"+obj.gridname+"_c")[0].offsetWidth-$("#"+obj.gridname+"_c")[0].offsetLeft));
 				if(obj.dialog_.hasOwnProperty('open'))obj.dialog_.open();
+
+				$("#Dtext_"+unique).focus();
+
 			},
 			close: function( event, ui ){
 				$("#Dtext_"+unique).val('');

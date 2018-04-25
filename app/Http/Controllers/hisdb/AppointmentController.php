@@ -56,9 +56,11 @@ class AppointmentController extends defaultController
             case 'appt_ph':
 
                 $select = DB::table('hisdb.apptph')
-                   ->select('datefr as start','dateto as end','backgroundcolor as color','remark as title')
-                   ->whereBetween('datefr', [$request->start, $request->end])
-                   ->get();
+                    ->select('apptph.datefr as start','apptph.dateto as end','apptphcolor.color as color','apptph.remark as title')
+                    ->leftJoin('hisdb.apptphcolor', 'apptph.idno', '=', 'apptphcolor.phidno')
+                    ->where('apptphcolor.userid', '=' , session('username'))
+                    ->whereBetween('datefr', [$request->start, $request->end])
+                    ->get();
 
                 foreach ($select as $key => $value) {
                     $value->textColor = 'white';
