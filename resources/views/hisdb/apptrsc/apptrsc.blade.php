@@ -263,6 +263,8 @@
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
 	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
+
+	
 	<script src="js/hisdb/apptrsc/apptrsc.js"></script>
 
 @endsection

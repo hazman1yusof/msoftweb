@@ -24,6 +24,7 @@ class PatmastController extends defaultController
     }
 
     public function save_patient(Request $request){
+        DB::connection()->enableQueryLog();
         switch ($request->oper) {
             case 'add':
                 $this->_add($request);
@@ -75,6 +76,13 @@ class PatmastController extends defaultController
         $responce = new stdClass();
 
         switch ($request->action) {
+            case 'get_pat':
+                $data = DB::table('hisdb.pat_mast')
+                        ->where('mrn','=',$request->mrn)
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+                break;
+
             case 'get_patient_occupation':
                 $data = DB::table('hisdb.occupation')
                         ->select('occupcode as code','description')
@@ -264,9 +272,10 @@ class PatmastController extends defaultController
             $table = $table->where('idno','=',$request->idno);
             $table->update($array_update);
 
+            $queries = DB::getQueryLog();
+
             $responce = new stdClass();
-            $responce->sql = $table->toSql();
-            $responce->sql_bind = $table->getBindings();
+            $responce->sql = $queries;
             echo json_encode($responce);
 
             DB::commit();

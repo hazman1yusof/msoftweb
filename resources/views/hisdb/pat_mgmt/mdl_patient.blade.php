@@ -8,7 +8,7 @@
                     <div class="form-group has-error">
                         <div class="col-sm-3">
                             <small  for="mrn">PATIENT REGISTRATION (MRN)</small>
-                            <input class="form-control " name="MRN" id="mrn" placeholder="" type="text" readonly>
+                            <input class="form-control " name="MRN" id="txt_pat_mrn" placeholder="" type="text" readonly>
                             <!--                                    <small class="help-block text-center">REGISTRATION MRN</small>-->
                         </div>
 <!--                        <div class="col-sm-3">-->
@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-sm-3">
                             <small for="episno">EPISODE NO</small>
-                            <input class="form-control" name="episno" id="episno" placeholder="" type="text" readonly></div>
+                            <input class="form-control" name="episno" id="txt_pat_episno" placeholder="" type="text" readonly></div>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -53,9 +53,6 @@
 												<div class="row">
 													<div class="col-md-3">
 														<small for="titlecode">Title</small>
-														<!--select id="titlecode" name="titlecode" class="form-control has-error">
-															<option value="">- Select Title -</option>
-														</select-->
 														<div class="input-group">
 															<input type="text" class="form-control" name="txt_pat_title" id="txt_pat_title">
 															<input type="hidden" name="TitleCode" id="hid_pat_title" value="" />

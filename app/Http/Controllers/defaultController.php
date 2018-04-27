@@ -119,15 +119,12 @@ abstract class defaultController extends Controller{
 
                         $table = $table->join($request->table_name[$key+1], function($join) use ($request,$key){
                             $join = $join->on($request->join_onCol[$key], '=', $request->join_onVal[$key]);
-                            
-                            foreach ($request->join_filterCol as $key2 => $value2) {
-                                foreach ($value2 as $key3 => $value3) {
-                                    $pieces = explode(' ', $value3);
-                                    if($pieces[1] == 'on'){
-                                        $join = $join->on($pieces[0],$pieces[2],$request->join_filterVal[$key2][$key3]);
-                                    }else{
-                                        $join = $join->where($pieces[0],$pieces[2],$request->join_filterVal[$key2][$key3]);
-                                    }
+                            foreach ($request->join_filterCol[$key] as $key2 => $value2) {
+                                $pieces = explode(' ', $value2);
+                                if($pieces[1] == 'on'){
+                                    $join = $join->on($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
+                                }else{
+                                    $join = $join->where($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
                                 }
                             }
                         });
