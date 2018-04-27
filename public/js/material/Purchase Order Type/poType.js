@@ -99,6 +99,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'material.potype',
 				table_id:'potype',
@@ -108,6 +109,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'potype/form',
 				field:'',
 				oper:oper,
 				table_name:'material.potype',
@@ -191,7 +193,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'potype':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -231,6 +233,6 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno','adduser', 'adddate', 'computerid', 'ipaddress']);
+			addParamField('#jqGrid',false,saveParam,['idno','adduser', 'adddate', 'computerid', 'ipaddress','recstatus']);
 		});
 		

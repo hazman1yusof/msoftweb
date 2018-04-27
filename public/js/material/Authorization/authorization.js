@@ -86,9 +86,8 @@
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					//$('.alert').detach();
 					$('#formdata .alert').detach();
-					$("#formdata a").off();
+					dialog_authorid.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -100,6 +99,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'material.authorise',
 				table_id:'authorid',
@@ -109,6 +109,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'authorization/form',
 				field:'',
 				oper:oper,
 				table_name:'material.authorise',
@@ -194,7 +195,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'authorid':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -234,7 +235,7 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno','computerid', 'ipaddress', 'adduser', 'adddate']);
+			addParamField('#jqGrid',false,saveParam,['idno','computerid', 'ipaddress', 'adduser', 'adddate', 'upddate', 'upduser', 'recstatus']);
 
 			////////////////////////////////////////////////////ordialog////////////////////////////////////////
 
@@ -255,33 +256,11 @@
 				},{
 					title:"Select Author ID",
 					open: function(){
-						
+						dialog_authorid.urlParam.filterCol=['recstatus'],
+						dialog_authorid.urlParam.filterVal=['A']
 					}
-				}
+				},'urlParam'
 			);
 			dialog_authorid.makedialog();
-
-
-
-						/*function getDataValue(){
-				$("#formdata :input[name='name']").val(name);
-				$("#formdata :input[name='password']").val(password).attr('type','password');	
-				$("#formdata :input[name='deptcode']").val(deptcode);
-
-			}
-
-			$('#dialog').on('dblclick',function(){
-				getDataValue();
-				$("#Save").focus();
-			});
-
-			$("#authorid").keydown(function(e) {
-				var code = e.keyCode || e.which;
-					if (code == '9') { // -->for tab
-						$("#formdata :input[name='name']").val($('#name').val());
-						$("#formdata :input[name='password']").val($('#password').val()).attr('type','password');	
-						$("#formdata :input[name='deptcode']").val($('#deptcode').val());
-					}
-			});*/
 });
 		

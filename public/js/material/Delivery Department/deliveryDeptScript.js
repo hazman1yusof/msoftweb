@@ -1,7 +1,5 @@
-
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
-		var editedRow=0;
 
 		$(document).ready(function () {
 			$("body").show();
@@ -29,7 +27,23 @@
 
 
 			////////////////////object for dialog handler//////////////////
-			dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description'], 'Delivery Store');
+			var dialog_deptcode = new ordialog(
+				'deptcode','sysdb.department','#deptcode',errorField,
+				{	colModel:[
+						{label:'Department Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						],
+					ondblClickRow:function(){
+					}	
+				},{
+					title:"Select Delivery Store",
+					open: function(){
+						dialog_deptcode.urlParam.filterCol=['recstatus'],
+						dialog_deptcode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_deptcode.makedialog();
 
 			//////to hide department dialog handler during edit/////////////
 
@@ -92,7 +106,7 @@
 
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
-						dialog_deptcode.handler(errorField);
+						dialog_deptcode.on();
 						
 					}
 					if(oper!='add'){
@@ -103,8 +117,8 @@
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
-					$("#formdata a").off();
+					$('#formdata .alert').detach();
+					dialog_deptcode.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -116,6 +130,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'material.deldept',
 				table_id:'deptcode',
@@ -125,6 +140,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'deliveryDept/form',
 				field:'',
 				oper:oper,
 				table_name:'material.deldept',
@@ -227,7 +243,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'deptcode':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -268,6 +284,6 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno', 'adduser', 'adddate', 'computerid', 'ipaddress']);
+			addParamField('#jqGrid',false,saveParam,['idno', 'adduser', 'adddate', 'computerid', 'ipaddress','recstatus']);
 		});
 		

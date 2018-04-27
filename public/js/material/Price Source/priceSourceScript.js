@@ -57,7 +57,6 @@
 				autoOpen: false,
 				open: function( event, ui ) {
 					parent_close_disabled(true);
-					toggleFormData('#jqGrid','#formdata');
 					switch(oper) {
 						case state = 'add':
 							$( this ).dialog( "option", "title", "Add" );
@@ -80,15 +79,14 @@
 							break;
 					}
 					if (oper != 'view') {
-					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 					}
 					
 				},
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
-					$("#formdata a").off();
+					$('#formdata .alert').detach();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -100,6 +98,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'material.pricesource',
 				table_id:'pricecode',
@@ -109,6 +108,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'priceSource/form',
 				field:'',
 				oper:oper,
 				table_name:'material.pricesource',
@@ -205,7 +205,7 @@
 						alert('Please select row');
 						emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'pricecode':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -246,6 +246,6 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno']);
+			addParamField('#jqGrid',false,saveParam,['idno','computerid', 'ipaddress', 'adduser', 'adddate', 'upddate', 'upduser', 'recstatus']);
 		});
 		
