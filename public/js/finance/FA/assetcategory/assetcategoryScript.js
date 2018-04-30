@@ -64,24 +64,24 @@ $.jgrid.defaults.responsive = true;
 			});
 			*/	
 			////////////////////object for dialog handler//////////////////
-			dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');
+			// dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');
 
-			dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description','costcode'], 'Department');
+			// dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description','costcode'], 'Department');
 
-			dialog_glassetccode=new makeDialog('finance.costcenter','#glassetccode',['costcode','description'], 'Asset');
-			dialog_glasset=new makeDialog('finance.glmasref','#glasset',['glaccno','description'], 'Asset');
+			// dialog_glassetccode=new makeDialog('finance.costcenter','#glassetccode',['costcode','description'], 'Asset');
+			// dialog_glasset=new makeDialog('finance.glmasref','#glasset',['glaccno','description'], 'Asset');
 
-			dialog_gldepccode=new makeDialog('finance.costcenter','#gldepccode',['costcode','description'], 'Depreciation');
-			dialog_gldep=new makeDialog('finance.glmasref','#gldep',['glaccno','description'], 'Depreciation');
+			// dialog_gldepccode=new makeDialog('finance.costcenter','#gldepccode',['costcode','description'], 'Depreciation');
+			// dialog_gldep=new makeDialog('finance.glmasref','#gldep',['glaccno','description'], 'Depreciation');
 
-			dialog_glprovccode=new makeDialog('finance.costcenter','#glprovccode',['costcode','description'], 'Provision for Depr');
-			dialog_glprovdep=new makeDialog('finance.glmasref','#glprovdep',['glaccno','description'], 'Provision for Depr');
+			// dialog_glprovccode=new makeDialog('finance.costcenter','#glprovccode',['costcode','description'], 'Provision for Depr');
+			// dialog_glprovdep=new makeDialog('finance.glmasref','#glprovdep',['glaccno','description'], 'Provision for Depr');
 
-			dialog_glglossccode=new makeDialog('finance.costcenter','#glglossccode',['costcode','description'], 'Gain');
-			dialog_glgainloss=new makeDialog('finance.glmasref','#glgainloss',['glaccno','description'], 'Gain');
+			// dialog_glglossccode=new makeDialog('finance.costcenter','#glglossccode',['costcode','description'], 'Gain');
+			// dialog_glgainloss=new makeDialog('finance.glmasref','#glgainloss',['glaccno','description'], 'Gain');
 
-			dialog_glrevccode=new makeDialog('finance.costcenter','#glrevccode',['costcode','description'], 'Loss');
-			dialog_glrevaluation=new makeDialog('finance.glmasref','#glrevaluation',['glaccno','description'], 'Loss');
+			// dialog_glrevccode=new makeDialog('finance.costcenter','#glrevccode',['costcode','description'], 'Loss');
+			// dialog_glrevaluation=new makeDialog('finance.glmasref','#glrevaluation',['glaccno','description'], 'Loss');
 
 
 			////////////////////////////////////start dialog///////////////////////////////////////
@@ -111,17 +111,18 @@ $.jgrid.defaults.responsive = true;
 				autoOpen: false,
 				open: function( event, ui ) {
 					parent_close_disabled(true);
+					toggleFormData('#jqGrid','#formdata');
 					switch(oper) {
 						case state = 'add':
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
-							rdonly('#formdata');
+							rdonly("#formdata");
+							hideOne("#formdata");
 							break;
 						case state = 'edit':
 							$( this ).dialog( "option", "title", "Edit" );
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
-							rdonly('#formdata');
 							break;
 						case state = 'view':
 							$( this ).dialog( "option", "title", "View" );
@@ -129,47 +130,27 @@ $.jgrid.defaults.responsive = true;
 							$(this).dialog("option", "buttons",butt2);
 							break;
 						} if(oper!='view'){
-							set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-							
-							dialog_assettype.handler(errorField);
-							dialog_deptcode.handler(errorField);
-							dialog_glassetccode.handler(errorField);
-							dialog_glasset.handler(errorField);
-							dialog_gldepccode.handler(errorField);
-							dialog_gldep.handler(errorField);
-							dialog_glprovccode.handler(errorField);
-							dialog_glprovdep.handler(errorField);
-							dialog_glglossccode.handler(errorField);
-							dialog_glgainloss.handler(errorField);
-							dialog_glrevccode.handler(errorField);
-							dialog_glrevaluation.handler(errorField);
+							dialog_assettype.on();
 
 						} if(oper!='add'){
-							toggleFormData('#jqGrid','#formdata');
+							// toggleFormData('#jqGrid','#formdata');
+							dialog_assettype.check(errorField);
 							
-							dialog_assettype.handler(errorField);
-							dialog_deptcode.handler(errorField);
-							dialog_glassetccode.handler(errorField);
-							dialog_glasset.handler(errorField);
-							dialog_gldepccode.handler(errorField);
-							dialog_glprovccode.handler(errorField);
-							dialog_glprovdep.handler(errorField);
-							dialog_glglossccode.handler(errorField);
-							dialog_glgainloss.handler(errorField);
-							dialog_glrevccode.handler(errorField);
-							dialog_glrevaluation.handler(errorField);
+							
 						}
 				},
 				close: function( event, ui ) {
 					parent_close_disabled(false);
-					$('.alert').detach();
-					$("#formdata a").off();
+					emptyFormdata(errorField,'#formdata');
+					$('#formdata .alert').detach();
+					dialog_assettype.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
 				},
 				buttons :butt1,
 			  });
+
 
 			////////////////////////////////////////end dialog///////////////////////////////////////////
 
@@ -303,136 +284,21 @@ $.jgrid.defaults.responsive = true;
 			addParamField('#jqGrid',true,urlParam);
 			addParamField('#jqGrid',false,saveParam);
 
-			///////////////////////////////start->dialogHandler part////////////////////////////////////////////
-			function makeDialog(table,id,cols,title){
-				this.table=table;
-				this.id=id;
-				this.cols=cols;
-				this.title=title;
-				this.handler=dialogHandler;
-				this.check=checkInput;
-			}
 
-			$( "#dialog" ).dialog({
-				autoOpen: false,
-				width: 7/10 * $(window).width(),
-				modal: true,
-				open: function(){
-					$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
-				},
-				close: function( event, ui ){
-					paramD.searchCol=null;
-					paramD.searchVal=null;
-				},
-			});
-
-			var selText,Dtable,Dcols;
-			$("#gridDialog").jqGrid({
-				datatype: "local",
-				colModel: [
-					{ label: 'Code', name: 'code', width: 200,  classes: 'pointer', canSearch:true,checked:true}, 
-					{ label: 'Description', name: 'desc', width: 400, canSearch:true, classes: 'pointer'},
-					{ label: 'holder1', name: 'holder1',  hidden:true},
-				],
-				width: 500,
-				autowidth: true,
-				viewrecords: true,
-				loadonce: false,
-                multiSort: true,
-				rowNum: 30,
-				pager: "#gridDialogPager",
-				ondblClickRow: function(rowid, iRow, iCol, e){
-					var data=$("#gridDialog").jqGrid ('getRowData', rowid);
-					$("#gridDialog").jqGrid("clearGridData", true);
-					$("#dialog").dialog( "close" );
-					$(selText).val(rowid);
-					$(selText).focus();
-					$(selText).parent().next().html(data['desc']);
-					if(selText == '#deptcode'){
-						$('#glassetccode, #gldepccode, #glprovccode, #glglossccode, #glrevccode').val(data.holder1)
+			  var dialog_assettype = new ordialog(
+				'assettype','finance.fatype','#assettype',errorField,
+				{	colModel:[
+						{label:'Asset Type',name:'assettype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Asset Type",
+					open: function(){
+						dialog_assettype.urlParam.filterCol=['recstatus'],
+						dialog_assettype.urlParam.filterVal=['A']
 					}
-				},
-				
-			});
+				},'urlParam'
+			);
+			dialog_assettype.makedialog();
 
-			var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:''};
-			function dialogHandler(errorField){
-				var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
-				$( id+" ~ a" ).on( "click", function() {
-					selText=id,Dtable=table,Dcols=cols,
-					$( "#dialog" ).dialog( "open" );
-					$( "#dialog" ).dialog( "option", "title", title );
-					paramD.table_name=table;
-					paramD.field=cols;
-					paramD.table_id=cols[0];
-					
-					$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
-					$('#Dtext').val('');$('#Dcol').html('');
-					
-					$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
-						if(value['canSearch']){
-							if(value['checked']){
-								$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
-							}else{
-								$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
-							}
-						}
-					});
-				});
-				$(id).on("blur", function(){
-					self.check(errorField);
-				});
-			}
-			
-			function checkInput(errorField){
-				var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
-				var param={action:'input_check',table:table,field:field,value:value};
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-					
-				},'json').done(function(data) {
-					if(data.msg=='success'){
-						if($.inArray(id,errorField)!==-1){
-							errorField.splice($.inArray(id,errorField), 1);
-						}
-						$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-						$( id ).removeClass( "error" ).addClass( "valid" );
-						$( id ).parent().siblings( ".help-block" ).html(data.row[field[1]]);
-					}else if(data.msg=='fail'){
-						$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-						$( id ).removeClass( "valid" ).addClass( "error" );
-						$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+field[0]+" )");
-						if($.inArray(id,errorField)===-1){
-							errorField.push(id);
-						}
-					}
-				});
-			}
-			
-			$('#Dtext').keyup(function() {
-				delay(function(){
-					Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-				}, 500 );
-			});
-			
-			$('#Dcol').change(function(){
-				Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-			});
-			
-			function Dsearch(Dtext,Dcol){
-				paramD.searchCol=null;
-				paramD.searchVal=null;
-				Dtext=Dtext.trim();
-				if(Dtext != ''){
-					var split = Dtext.split(" "),searchCol=[],searchVal=[];
-					$.each(split, function( index, value ) {
-						searchCol.push(Dcol);
-						searchVal.push('%'+value+'%');
-					});
-					paramD.searchCol=searchCol;
-					paramD.searchVal=searchVal;
-				}
-				refreshGrid("#gridDialog",paramD);
-			}
-			///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
-			
 		});

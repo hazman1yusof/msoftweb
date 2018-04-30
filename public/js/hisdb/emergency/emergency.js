@@ -90,7 +90,23 @@ $(document).ready(function () {
 			if ($('#registerformdata').isValid({ requiredFields: '' }, conf, true)) {
 				saveFormdata("#jqGrid", "#registerform", "#registerformdata", oper, saveParam, urlParam);
 			}
-		}
+
+			 var Newic = $('#Newic');
+             var Oldic = $('#Oldic');
+
+            if(Newic.val() == '' && Oldic.val() == '') {
+            alert('Fill out new ic or old ic fields');
+            }
+    //         else if(Newic.val() == '') {
+    //         alert('Oldic, please...');
+    //         }
+    //         else if(Oldic.val() == '') {
+    //         alert('Newic, please...');      
+    //         }
+    //         else {
+    //         alert('Yay!');
+    // }   
+   }
 	}, {
 		text: "Cancel", click: function () {
 			$(this).dialog('close');
@@ -171,8 +187,8 @@ $(document).ready(function () {
 		join_type: ['INNER JOIN','INNER JOIN','INNER JOIN'],
 		join_onCol: ['a.episno','a.mrn','a.loccode'],
 		join_onVal: ['e.episno','p.mrn','d.doctorcode'],
-		join_filterCol: [['e.mrn on =','e.compcode on ='],['p.compcode on ='],['d.compcode on =']],
-		join_filterVal: [['a.mrn','a.compcode'],['a.compcode'],['a.compcode']],
+		join_filterCol: [['e.mrn on =']],
+		join_filterVal: [['a.mrn']],
 		filterCol:['a.apptdatefr','a.type'],
 	 	filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD HH:mm:ss'),'ED']
 	}
@@ -189,7 +205,6 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'e_compcode', width: 5, hidden: true },
-			{ label: 'patmast_idno', name: 'p_idno', width: 5, hidden: true },
 			{ label: 'MRN', name: 'e_MRN', width: 10, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true, checked: true,  },
 			{ label: 'Episode No', name: 'e_Episno', width: 20 ,canSearch: true,classes: 'wrap',hidden:true },
 			{ label: 'IC No', name: 'p_Newic', width: 15 ,classes: 'wrap' },
@@ -209,12 +224,6 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		ondblClickRow: function (rowid, iRow, iCol, e) {
-		},
-		onSelectRow:function(rowid,status,e){
-			var data=selrowData('#jqGrid');
-			$('#span_biodata_label').text(' Biodata MRN: '+data.e_MRN);
-			$('#biodata_but_emergency').data('mrn',data.e_MRN);
-			$('#btn_register_patient').data('idno',data.p_idno);
 		},
 		gridComplete: function () {
 		},
@@ -322,21 +331,21 @@ $(document).ready(function () {
 	dialog_financeclass.makedialog(true);
 
 	var dialog_payer = new ordialog(
-		'payer', ['debtor.debtormast','debtor.debtortype'], "#registerform input[name='payer']", errorField,
+		'payer', 'debtor.debtormast', "#registerform input[name='payer']", errorField,
 		{
 			colModel: [
-				{	label: 'Debtor Code', name: 'debtormast.debtorcode', width: 100, classes: 'pointer', canSearch: true, or_search: true },
-				{	label: 'Debtor Name', name: 'debtormast.name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{	label: 'debtortype', name: 'debtortype.debtortycode', width: 100, classes: 'pointer'},
-				{	label: 'debtortype_name', name: 'debtortype.description', width: 100, classes: 'pointer',hidden:true},
-				{	label: 'recstatus', name: 'debtormast.recstatus', width: 100, classes: 'pointer'},
+				{	label: 'Debtor Code', name: 'debtorcode', width: 100, classes: 'pointer', canSearch: true, or_search: true },
+				{	label: 'Debtor Name', name: 'name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{	label: 'debtortype', name: 'debtortype', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'recstatus', name: 'recstatus', width: 200, classes: 'pointer',hidden:true},
+				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_payer.gridname);
 				$("#registerform input[name='payername']").val(data['name']);
 				$("#registerform input[name='paytype']").val(data['debtortype']);
-				$("#financeclass").val(data['debtortype']);
-				$("#fName").val(data['telhp']);
+				// $("#addForm input[name='telh']").val(data['telh']);
+				// $("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_payer.textfield).parent().next().text(" ");
 
 				if(data['recstatus'] == 'suspend'){
@@ -351,12 +360,16 @@ $(document).ready(function () {
 			title: "Select Payer",
 			open: function () {
 				var financeclass = $('#financeclass').val();
-				
-				dialog_payer.urlParam.join_type = ['LEFT JOIN'];
-				dialog_payer.urlParam.join_onCol = ['debtormast.debtortype'];
-				dialog_payer.urlParam.join_onVal = ['debtortype.debtortycode'];
-				dialog_payer.urlParam.filterCol = ['debtormast.compcode'];
-				dialog_payer.urlParam.filterVal = ['debtormast.9A'];
+				if( financeclass == 'PT'){
+					dialog_payer.urlParam.filterCol = ['debtortype','compcode'];
+					dialog_payer.urlParam.filterVal = ['PT','9A'];
+				}else if( financeclass == 'CORP'){
+					dialog_payer.urlParam.filterCol = ['debtortype','compcode'];
+					dialog_payer.urlParam.filterVal = ['CORP','9A'];
+				}else{
+					dialog_payer.urlParam.filterCol = ['compcode'];
+					dialog_payer.urlParam.filterVal = ['9A'];
+				}
 			},
 		}, 'none'
 	);
@@ -438,7 +451,7 @@ $(document).ready(function () {
 		}
 
 	}
-
+	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -493,40 +506,9 @@ $(document).ready(function () {
 			$('#mrn').val('00000000');
 			$('#financeclass').val('PR');
 			$('#fName').val('PERSON RESPONSIBLE');
-			$('#payer').val('CA');
-			$('#payername').val('CASH');
+			$('#payer').val('00000000');
+			$('#payername').val('unknown');
 		}
 	});
-
-    populatecombo1();
-
-    $("#biodata_but_emergency").click(function(){
-    	var mrn = $(this).data('mrn');
-    	get_biodata(mrn);
-        $('#mdl_patient_info').modal({backdrop: "static"});
-        $("#btn_register_patient").data("oper","edit");
-    });
-
-	function get_biodata(mrn){
-		$.getJSON('pat_mast/get_entry?action=get_pat',{mrn:mrn},function(data)
-        {
-            populate_pat_mast(data.data);
-        });
-	}
-
-	function populate_pat_mast(data){
-		var form = '#frm_patient_info';
-		$.each(data, function( index, value ) {
-			var input=$(form+" [name='"+index+"']");
-			if(input.is("[type=radio]")){
-				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-			}else{
-				input.val(value);
-			}
-		});
-
-        desc_show.write_desc();
-       	$('#txt_pat_age').val(gettheage($('#txt_pat_dob').val()));
-	}
 
 });
