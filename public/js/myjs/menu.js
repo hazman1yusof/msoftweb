@@ -47,7 +47,7 @@ var Menu = function () {
 			  .dialog({ 
 				title : obj.attr('title'),
 				position: { my: "left bottom", at: "left+300px bottom"},
-				width: 9.3/10 * $(window).width(),
+				width: 9.2/10 * $(window).width(),
 				height: $(window).height() - 50,
 				close: function( event, ui ) {
 					deleteDialog(obj.attr('programid'));

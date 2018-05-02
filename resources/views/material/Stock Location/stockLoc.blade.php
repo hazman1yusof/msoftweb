@@ -1,12 +1,12 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body style="display:none">
+@extends('layouts.main')
 
-	<input id="Class2" name="Class" type="hidden" value="<?php echo $_GET['Class'];?>">
-	 
-	<!-------------------------------- Search + table ---------------------->
+@section('title', 'Stock Location Enquiry')
+
+@section('body')
+
 	<div class='row'>
+
+		<input id="Class2" name="Class" type="hidden" value="{{ $_GET['Class'] }}">
 
 		<form class='form-horizontal' style='width:99%' id='formdataSearch'>
 		<!-- <div class='col-md-12' style="padding:0 0 15px 0;"> -->
@@ -54,14 +54,13 @@
 		
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%' id='formdata'>
-
-				<div class="prevnext btn-group pull-right">
-				</div>
+				
+				{{ csrf_field() }}
 				<input id="idno" name="idno" type="hidden">
 				<input id="itemcode" name="itemcode" type="hidden">
 				<input id="uomcode" name="uomcode" type="hidden">
 				<input id="qtyonhand" name="qtyonhand" type="hidden" value="0.00">
-				<input id="year" name="year" type="hidden"  value="<?php echo date("Y") ?>">
+				<input id="year" name="year" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
 				
 
 
@@ -179,21 +178,10 @@
 			</form>
 		</div>
 
-<!-- 	<?php 
-		// include_once('../../../../footer.php'); 
-	?> -->
-	
-	<!-- JS Implementing Plugins -->
+	@endsection
 
-	<!-- JS Customization -->
+@section('scripts')
 
-	<!-- JS Page Level -->
-	<script src="stockLoc.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<!-- <script src="../../../../assets/js/dialogHandler.js"></script> -->
+	<script src="js/material/Stock Location/stockLoc.js"></script>
 
-<script>
-		
-</script>
-</body>
-</html>
+@endsection

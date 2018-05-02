@@ -1,661 +1,974 @@
 
-		$.jgrid.defaults.responsive = true;
-		$.jgrid.defaults.styleUI = 'Bootstrap';
-		var editedRow=0;
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
+var editedRow=0;
 
-		$(document).ready(function () {
-			/////////////////////////validation//////////////////////////
-			$.validate({
-				modules : 'sanitize',
-				language : {
-					requiredFields: ''
+$(document).ready(function () {
+	$("body").show();
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+	/////////////////////////validation//////////////////////////
+	$.validate({
+		modules : 'sanitize',
+		language : {
+			requiredFields: ''
+		},
+	});
+	
+	var errorField=[];
+	conf = {
+		onValidate : function($form) {
+			if(errorField.length>0){
+				return {
+					element : $(errorField[0]),
+					message : ' '
 				}
-			});
-			
-			var errorField=[];
-			conf = {
-				onValidate : function($form) {
-					if(errorField.length>0){
-						return {
-							element : $(errorField[0]),
-							message : ' '
-						}
-					}
-				},
-			};
+			}
+		},
+	};
 
-			//////////////////////////////////////////////////////////////
-			/*var getUrlParameter = function getUrlParameter(sParam) {
-			    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-			        sURLVariables = sPageURL.split('&'),
-			        sParameterName,
-			        i;
+	/////////////////////////////////////////////////////////Get GROUPCODE AND Class /////////////////////////////
+	var gc2 = $('#groupcode2').val();
+	var Class2 = $('#Class2').val();
 
-					    for (i = 0; i < sURLVariables.length; i++) {
-					        sParameterName = sURLVariables[i].split('=');
+	/////////////////////////////////////////////////////////object for dialog handler//////////////////
+	var dialog_itemcode = new ordialog(
+		'itemcodesearch','material.productmaster','#itemcodesearch',errorField,
+		{	colModel:[
+				{label:'Dept Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'groupcode',name:'groupcode',hidden:true},
+				{label:'productcat',name:'productcat',hidden:true},
+				{label:'Class',name:'Class',hidden:true},
+			],
+			ondblClickRow:function(){
+				data = selrowData('#'+dialog_itemcode.gridname);
+				productcat=data.productcat;
+				groupcode=data.groupcode;
+				description=data.description;
+				Class=data.Class;
+			}	
+		},{
+			title:"Select Item Code",
+			open: function(){
 
-					        if (sParameterName[0] === sParam) {
-					            return sParameterName[1] === undefined ? true : sParameterName[1];
-					        } else{
-					        	return sParameterName[0] === undefined ? true : sParameterName[0];
-					        }
-					    }
-			};
-
-			$.get("#formdata", '#jqGrid', function() {				
-					var gc = getUrlParameter('groupcode');
-					alert(gc);
-					console.log(gc);
-
-					urlParam.table_name='material.product';
-					urlParam.table_id='itemcode';
-					//urlParam.field=['itemcode','description','groupcode'];
-					urlParam.filterCol=['groupcode'];
-					urlParam.filterVal=[$('#groupcode2').val()];
-					refreshGrid('#jqgrid',urlParam);
-
-						if(gc.toLowerCase() == 'Stock'.toLowerCase()) {
-								$("#formdata :input[id='groupcodeAsset']").hide();
-								$(":radio[id='groupcodeAsset']").parent('label').hide();
-								$("#formdata :input[id='groupcodeOther']").hide();
-								$(":radio[id='groupcodeOther']").parent('label').hide();
-						} else if(gc.toLowerCase() == 'Asset'.toLowerCase()) {
-								$("#formdata :input[id='groupcodeStock']").hide();
-								$(":radio[id='groupcodeStock']").parent('label').hide();
-								$("#formdata :input[id='groupcodeOther']").hide();
-								$(":radio[id='groupcodeOther']").parent('label').hide();
-						} else if(gc.toLowerCase() == 'Other'.toLowerCase()) {
-								$("#formdata :input[id='groupcodeStock']").hide();
-								$(":radio[id='groupcodeStock']").parent('label').hide();
-								$("#formdata :input[id='groupcodeAsset']").hide();
-								$(":radio[id='groupcodeAsset']").parent('label').hide();
-						} else  {
-							urlParam.table_name='material.product';
-							urlParam.table_id='itemcode';
-							urlParam.field=['itemcode','description','groupcode'];
-							urlParam.filterCol=null;
-							urlParam.filterVal=null;
-							refreshGrid('#jqGrid',urlParam);
-							console.log(urlParam);
-
-						}
-			});*/
-
-			$.get("#formdata", "#jqGrid", function() {
 				var gc2 = $('#groupcode2').val();
-				//alert(gc2);
+				var Class2 = $('#Class2').val();
+				dialog_itemcode.urlParam.filterCol = ['groupcode', 'Class','recstatus'];
+				dialog_itemcode.urlParam.filterVal = [ gc2, Class2,'A'];
 
-						if(gc2.toLowerCase() == 'Stock'.toLowerCase()) {
-								$("#formdata :input[id='groupcodeAsset']").hide();
-								$(":radio[id='groupcodeAsset']").parent('label').hide();
-								$("#formdata :input[id='groupcodeOther']").hide();
-								$(":radio[id='groupcodeOther']").parent('label').hide();
-								$("#groupcodeStock").prop("checked", true);
-								dialog_cat=new makeDialog('material.category','#productcat',['catcode','description'], 'Category');
-						} else if(gc2.toLowerCase() == 'Asset'.toLowerCase()) {
-								$(":radio[id='groupcodeStock']").parent('label').hide();
-								$("#formdata :input[id='groupcodeOther']").hide();
-								$(":radio[id='groupcodeOther']").parent('label').hide();
-								$("#groupcodeAsset").prop("checked", true);
-								dialog_cat=new makeDialog('finance.facode','#productcat',['assetcode','description'], 'Category');
-						} else if(gc2.toLowerCase() == 'Other'.toLowerCase()) {
-								$("#formdata :input[id='groupcodeStock']").hide();
-								$(":radio[id='groupcodeStock']").parent('label').hide();
-								$("#formdata :input[id='groupcodeAsset']").hide();
-								$(":radio[id='groupcodeAsset']").parent('label').hide();
-								$("#groupcodeOther").prop("checked", true);
-								dialog_cat=new makeDialog('material.category','#productcat',['catcode','description'], 'Category');
-						} else {
-							//$('#formdata :input[hideOne]').hide();
-							//alert("fff");
-							urlParam.table_name='material.product';
-							urlParam.table_id='itemcode';
-							urlParam.field=['itemcode','description','groupcode'];
-							urlParam.filterCol=null;
-							urlParam.filterVal=null;
-							refreshGrid('#jqGrid',urlParam);
-							//alert("cs");
-							console.log(urlParam);
-
-						}
-
-			});
-
-			/*
-			if(gc == null){
-				var urlParam={
-				action:'get_table_default',
-				field:'',
-				table_name:'material.product',
-				table_id:'itemcode',
-				filterCol:['groupcode'],
-				filterVal:[$('#groupcode2').val()]
-			}}
-			else{
-				var urlParam={
-				action:'get_table_default',
-				field:'',
-				table_name:'material.product',
-				table_id:'itemcode',
-				filterCol:['groupcode'],
-				filterVal:[$('#groupcode2').val()]
 			}
+		},'urlParam'
+	);
+	dialog_itemcode.makedialog();
+
+	var dialog_uomcode = new ordialog(
+		'uomcodesearch','material.uom','#uomcodesearch',errorField,
+		{	colModel:[
+				{label:'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			ondblClickRow:function(){
+			}	
+		},{
+			title:"Select UOM Code",
+			open: function(){
+				dialog_uomcode.urlParam.filterCol = ['recstatus'];
+				dialog_uomcode.urlParam.filterVal = [ 'A'];	
 			}
-
-			*/
-
-
-
-
-			////////////////////object for dialog handler//////////////////
-			dialog_uomcode=new makeDialog('material.uom','#uomcode',['uomcode','description'], 'UOM Code');
-			dialog_pouom=new makeDialog('material.uom','#pouom',['uomcode','description'], 'UOM Code');
-			dialog_suppcode=new makeDialog('material.supplier','#suppcode',['SuppCode','Name'] , 'Supplier Code');
-			dialog_mstore=new makeDialog('sysdb.department','#mstore',['deptcode','description'], 'Main Store');
-			dialog_subcategory=new makeDialog('material.subcategory','#subcatcode',['subcatcode','description'], 'Sub Category');
+		},'urlParam'
+	);
+	dialog_uomcode.makedialog();
 
 
-			////////////////////////////////////start dialog///////////////////////////////////////
-			var butt1=[{
-				text: "Save",click: function() {
-					
-					//////////////////////////////itemtype/////////////////////////////////////
-					var itemtype = $("input[name=itemtype]:checked").val();
-					//alert(itemtype);
-				    if(!itemtype){
-				     	$("label[for=itemtype]").css('color', 'red');
-				     	$(":radio[name='itemtype']").parent('label').css('color', 'red');
-					}
-					else{
-						$("label[for=itemtype]").css('color', '#444444');
-						$(":radio[name='itemtype']").parent('label').css('color', '#444444');
-					}
+	var dialog_pouom = new ordialog(
+		'pouom','material.uom','#pouom',errorField,
+		{	colModel:[
+				{label:'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			ondblClickRow:function(){
+			}	
+		},{
+			title:"Select PO UOM",
+			open: function(){
+				dialog_pouom.urlParam.filterCol = ['recstatus'];
+				dialog_pouom.urlParam.filterVal = [ 'A'];	
+			}
+		},'urlParam'
+	);
+	dialog_pouom.makedialog();
 
-					//////////////////////////////reuse/////////////////////////////////////
-					var reuse = $("input[name=reuse]:checked").val();
-				    if(!reuse){
-				        $("label[for=reuse]").css('color', 'red');
-				     	$(":radio[name='reuse']").parent('label').css('color', 'red');
-					}else{
-						$("label[for=reuse]").css('color', '#444444');
-						$(":radio[name='reuse']").parent('label').css('color', '#444444');
-					}
+	var dialog_suppcode = new ordialog(
+		'suppcode','material.supplier','#suppcode',errorField,
+		{	colModel:[
+				{label:'Supplier Code',name:'SuppCode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			ondblClickRow:function(){
+			}	
+		},{
+			title:"Select Supplier Code",
+			open: function(){
+				dialog_suppcode.urlParam.filterCol = ['recstatus'];
+				dialog_suppcode.urlParam.filterVal = [ 'A'];	
+			}
+		},'urlParam'
+	);
+	dialog_suppcode.makedialog();
 
-					//////////////////////////////rpkitem/////////////////////////////////////
+	var dialog_mstore = new ordialog(
+		'mstore','sysdb.department','#mstore',errorField,
+		{	colModel:[
+				{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			ondblClickRow:function(){
+			}	
+		},{
+			title:"Select Main Store",
+			open: function(){
+				dialog_mstore.urlParam.filterCol = ['mainstore','recstatus'];
+				dialog_mstore.urlParam.filterVal = ['1','A'];	
+			}
+		},'urlParam'
+	);
+	dialog_mstore.makedialog();
 
-				     var rpkitem = $("input[name=rpkitem]:checked").val();
-				     if(!rpkitem){
-				        $("label[for=rpkitem]").css('color', 'red');
-				     	$(":radio[name='rpkitem']").parent('label').css('color', 'red');
-					}else{
-						$("label[for=rpkitem]").css('color', '#444444');
-						$(":radio[name='rpkitem']").parent('label').css('color', '#444444');
-					}
+	var dialog_subcategory = new ordialog(
+		'subcatcode','material.subcategory','#subcatcode',errorField,
+		{	colModel:[
+				{label:'Dept Code',name:'subcatcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			ondblClickRow:function(){
+			}	
+		},{
+			title:"Select Sub Category",
+			open: function(){
+				dialog_subcategory.urlParam.filterCol = ['recstatus'];
+				dialog_subcategory.urlParam.filterVal = [ 'A'];	
+			}
+		},'urlParam'
+	);
+	dialog_subcategory.makedialog();
 
-					//////////////////////////////tagging/////////////////////////////////////
-				     var tagging = $("input[name=tagging]:checked").val();
-				     if(!tagging){
-				        $("label[for=tagging]").css('color', 'red');
-				     	$(":radio[name='tagging']").parent('label').css('color', 'red');
-					}else{
-						$("label[for=tagging]").css('color', '#444444');
-						$(":radio[name='tagging']").parent('label').css('color', '#444444');
-					}
+	var dialog_taxCode = new ordialog(
+		'TaxCode','hisdb.taxmast','#TaxCode',errorField,
+		{	colModel:[
+				{label:'Tax Code',name:'taxcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			ondblClickRow:function(){
+			}	
+		},{
+			title:"Select Tax Code",
+			open: function(){
+				dialog_taxCode.urlParam.filterCol=['recstatus','taxtype'];
+				dialog_taxCode.urlParam.filterVal=['A','Input'];
+			}
+		},'urlParam'
+	);
+	dialog_taxCode.makedialog();
 
-					//////////////////////////////expdtflg/////////////////////////////////////
-				     var expdtflg = $("input[name=expdtflg]:checked").val();
-				     if(!expdtflg){
-				        $("label[for=expdtflg]").css('color', 'red');
-				     	$(":radio[name='expdtflg']").parent('label').css('color', 'red');
-					}else{
-						$("label[for=expdtflg]").css('color', '#444444');
-						$(":radio[name='expdtflg']").parent('label').css('color', '#444444');
-					}
+	////////////////////////////////////start dialog////////////////////////////////////////////////////
 
-					//////////////////////////////chgflag/////////////////////////////////////
-				     var chgflag = $("input[name=chgflag]:checked").val();
-				     if(!chgflag){
-				         $("label[for=chgflag]").css('color', 'red');
-				     	$(":radio[name='chgflag']").parent('label').css('color', 'red');
-					}else{
-						$("label[for=chgflag]").css('color', '#444444');
-						$(":radio[name='chgflag']").parent('label').css('color', '#444444');
-					}
+	var butt1=[{
+		id: "Save",
+		text: "Save",click: function() {
+			radbuts.check();
+			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
+				urlParam.filterCol=['groupcode', 'Class'];
+				urlParam.filterVal=[$('#groupcode2').val(), $('#Class2').val()];
+				refreshGrid('#jqGrid',urlParam);
+			}
+		}
+	},{
+		id: "Cancel",
+		text: "Cancel",click: function() {
+			emptyFormdata(errorField,'#formdataSearch');
+			emptyFormdata(errorField,'#formdata');
+			forCancelAndExit();
+			$("#itemcodesearch").focus();
+		}
+	}];
 
-				     ////////////////////////////////////////////////////////////////////////
+	var butt2=[{
+		text: "Close",click: function() {
+			$(this).dialog('close');
+		}
+	}];
 
-					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
-					}
-				}
-			},{
-				text: "Cancel",click: function() {
-					$(this).dialog('close');
-				}
-			}];
+	var oper;
+	$("#dialogForm")
+	  .dialog({ 
+		width: 9/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			parent_close_disabled(true);
+			switch(oper) {
+				case state = 'add':
+					$( this ).dialog( "option", "title", "Add" );
+					enableForm('#formdata');
+					hideOne('#formdata');
+					rdonly("#dialogForm");
+					readonlyRTTrue();
+					whenAdd();
+					$("#Cancel").hide();
+					break;
+				case state = 'edit':
+					$( this ).dialog( "option", "title", "Edit" );
+					enableForm('#formdata');
+					frozeOnEdit("#dialogForm");
+					//rdonly("#dialogForm");
+					whenEdit();
+					getgcforAdd();
+					$("#Cancel").hide();
+					break;
+				case state = 'view':
+					$( this ).dialog( "option", "title", "View" );
+					disableForm('#formdata');
+					$('#formdata :input[hideOne]').show();
+					$(this).dialog("option", "buttons",butt2);
+					whenEdit();
+					$("#Cancel").hide();
+					hiderad.check();
+					break;
+			}
+			if(oper!='view'){
+				set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+				dialog_itemcode.on();
+				dialog_uomcode.on();
+				dialog_pouom.on();
+				dialog_suppcode.on();
+				dialog_mstore.on();
+				dialog_subcategory.on();
+				dialog_taxCode.on();
+			}if(oper!='add'){
+				dialog_pouom.check(errorField);
+				dialog_suppcode.check(errorField);
+				dialog_mstore.check(errorField);
+				dialog_subcategory.check(errorField);
+				dialog_taxCode.check(errorField);		 
+			}if(oper == 'add') {
+				dialog_pouom.off();
+				dialog_suppcode.off();
+				dialog_mstore.off();
+				dialog_subcategory.off();
+				dialog_taxCode.off();
+			}
+		},
+		close: function( event, ui ) {
+			parent_close_disabled(false);
+			emptyFormdata(errorField,'#formdata');
+			emptyFormdata(errorField,'#formdataSearch');
+			emptyFormdata(errorField,'#formdata');
 
-			var butt2=[{
-				text: "Close",click: function() {
-					$(this).dialog('close');
-				}
-			}];
+			urlParam.filterCol=['groupcode', 'Class'];
+			urlParam.filterVal=[$('#groupcode2').val(), $('#Class2').val()];
+			refreshGrid('#jqGrid',urlParam);
 
-			var oper;
-			$("#dialogForm")
-			  .dialog({ 
-				width: 9/10 * $(window).width(),
-				modal: true,
-				autoOpen: false,
-				open: function( event, ui ) {
-					switch(oper) {
-						case state = 'add':
-							$( this ).dialog( "option", "title", "Add" );
-							getgcforAdd();
-							enableForm('#formdata');
-							break;
-						case state = 'edit':
-							$( this ).dialog( "option", "title", "Edit" );
-							enableForm('#formdata');
-							frozeOnEdit("#dialogForm");
-							break;
-						case state = 'view':
-							$( this ).dialog( "option", "title", "View" );
-							disableForm('#formdata');
-							$(this).dialog("option", "buttons",butt2);
-							break;
-						} if(oper!='view'){
-							dialog_uomcode.handler(errorField);
-							dialog_pouom.handler(errorField);
-							dialog_suppcode.handler(errorField);
-							dialog_mstore.handler(errorField);
-							dialog_cat.handler(errorField);
-							dialog_subcategory.handler(errorField);
-						} if(oper!='add'){
-							toggleFormData('#jqGrid','#formdata');
-							dialog_uomcode.check(errorField);
-							dialog_pouom.check(errorField);
-							dialog_suppcode.check(errorField);
-							dialog_mstore.check(errorField);
-							dialog_cat.check(errorField);
-							dialog_subcategory.check(errorField);
-						}
-				},
-				close: function( event, ui ) {
+			dialog_pouom.off();
+			dialog_suppcode.off();
+			dialog_mstore.off();
+			dialog_subcategory.off();
+			dialog_taxCode.off();
+
+			$('#formdata .alert').detach();
+			$("#formdata a").off();
+			if(oper=='view'){
+				$(this).dialog("option", "buttons",butt1);
+			}
+			
+			forCancelAndExit();
+		},
+		buttons :butt1,
+	  });
+	////////////////////////////////////////end dialog///////////////////////////////////////////
+
+	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
+	var urlParam={
+		action:'get_table_default',
+		url:'util/get_table_default',
+		table_name:'material.product',
+		field:'',
+		table_id:'idno',
+		sort_idno:true,
+		filterCol:['groupcode', 'Class'],
+		filterVal:[$('#groupcode2').val(), $('#Class2').val()]
+	}
+
+	/////////////////////parameter for saving url////////////////////////////////////////////////
+	var saveParam={
+		action:'save_table_default',
+		url:'product/form',
+		noduplicate:true,
+		field:'',
+		oper:oper,
+		table_name:'material.product',
+		table_id:'idno',
+		saveip:'true'
+	};
+	
+	$("#jqGrid").jqGrid({
+		datatype: "local",
+		 colModel: [
+			{ label: 'Item Code', name: 'itemcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, checked: true},
+			{ label: 'Item Description', name: 'description', width: 80, sorttype: 'text', classes: 'wrap', canSearch: true  },
+			{ label: 'Uom Code', name: 'uomcode', width: 30, sorttype: 'text', classes: 'wrap'  },
+			{ label: 'Group Code', name: 'groupcode', width: 30, sorttype: 'text', classes: 'wrap'  },
+			{ label: 'Class', name: 'Class', width: 40, sorttype: 'text', classes: 'wrap', hidden:true   },
+			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap'  },
+			{ label: 'Supplier Code', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap'  },
+			{ label: 'avgcost', name: 'avgcost', width: 50, hidden:true },
+			{ label: 'actavgcost', name: 'actavgcost', width: 50, hidden:true },
+			{ label: 'currprice', name: 'currprice', width: 40, hidden:true },
+			{ label: 'Qty On Hand', name: 'qtyonhand', width: 40, classes: 'wrap',hidden:true},
+			{ label: 'bonqty', name: 'bonqty', width: 50, hidden:true },
+			{ label: 'rpkitem', name: 'rpkitem', width: 50, hidden:true },
+			{ label: 'minqty', name: 'minqty', width: 50, hidden:true },
+			{ label: 'maxqty', name: 'maxqty', width: 50, hidden:true },
+			{ label: 'reordlevel', name: 'reordlevel', width: 50, hidden:true },
+			{ label: 'reordqty', name: 'reordqty', width: 50, hidden:true },
+			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatter, unformat:unformat,  cellattr: function(rowid, cellvalue)
+			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{ label: 'chgflag', name: 'chgflag', width: 50, hidden:true },
+			{ label: 'subcatcode', name: 'subcatcode', width: 50, hidden:true },
+			{ label: 'expdtflg', name: 'expdtflg', width: 50, hidden:true },
+			{ label: 'mstore', name: 'mstore', width: 50, hidden:true },
+			{ label: 'costmargin', name: 'costmargin', width: 50, hidden:true },
+			{ label: 'pouom', name: 'pouom', width: 50, hidden:true },
+			{ label: 'reuse', name: 'reuse', width: 50, hidden:true },
+			{ label: 'Tax Code', name: 'TaxCode', width: 50, hidden:true },
+			{ label: 'trqty', name: 'trqty', width: 50, hidden:true },
+			{ label: 'deactivedate', name: 'deactivedate', width: 50, hidden:true },
+			{ label: 'tagging', name: 'tagging', width: 50, hidden:true },
+			{ label: 'itemtype', name: 'itemtype', width: 50, hidden:true },
+			{ label: 'generic', name: 'generic', width: 50, hidden:true },
+			{ label: 'idno', name: 'idno', hidden: true},
+			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
+		],
+		autowidth:true,
+        multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		sortname: 'idno',
+		sortorder: 'desc',
+		width: 900,
+		height: 350,
+		rowNum: 30,
+		pager: "#jqGridPager",
+		onSelectRow:function(rowid, selected){
+			var jg=$("#jqGrid").jqGrid('getRowData',rowid);
+			idno=rowid;
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridPager td[title='Edit Selected Row']").click();
+		},
+		gridComplete: function(){
+			if(oper == 'add'){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}
+			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+
+			if(searched){
+				populateFormdata("#jqGrid","#dialogForm","#formdata", idno,'view');
+				searched = false;
+
+				if($("#jqGrid").getGridParam("reccount") >= 1){
+					$("#Save").hide();
+					alert("Data Already Exist");
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
-					$("#formdata a").off();
-					textcolourradio();
-					if(oper=='view'){
-						$(this).dialog("option", "buttons",butt1);
-					}
-				},
-				buttons :butt1,
-			  });
-
-			////////////////////////////////////////end dialog///////////////////////////////////////////
-
-			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
-			var urlParam={
-				action:'get_table_default',
-				field:'',
-				table_name:'material.product',
-				table_id:'itemcode',
-				sort_idno:true,
-				filterCol:['groupcode'],
-				filterVal:[$('#groupcode2').val()]
-			}
-
-			/////////////////////parameter for saving url////////////////////////////////////////////////
-			var saveParam={
-				action:'save_table_default',
-				field:'',
-				oper:oper,
-				table_name:'material.product',
-				table_id:'itemcode'
-			};
-			
-			$("#jqGrid").jqGrid({
-				datatype: "local",
-				 colModel: [
-					//{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
-					{ label: 'Item Code', name: 'itemcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, checked: true},
-					{ label: 'Item Description', name: 'description', width: 80, sorttype: 'text', classes: 'wrap', canSearch: true  },
-					{ label: 'Uom Code', name: 'uomcode', width: 40, sorttype: 'text', classes: 'wrap'  },
-					{ label: 'Group Code', name: 'groupcode', width: 40, sorttype: 'text', classes: 'wrap'  },
-					{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap'  },
-					{ label: 'Supplier Code', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap'  },
-					{ label: 'avgcost', name: 'avgcost', width: 50, hidden:true },
-					{ label: 'actavgcost', name: 'actavgcost', width: 50, hidden:true },
-					{ label: 'currprice', name: 'currprice', width: 50, hidden:true },
-					{ label: 'qtyonhand', name: 'qtyonhand', width: 50, hidden:true },
-					{ label: 'bonqty', name: 'bonqty', width: 50, hidden:true },
-					{ label: 'rpkitem', name: 'rpkitem', width: 50, hidden:true },
-					{ label: 'minqty', name: 'minqty', width: 50, hidden:true },
-					{ label: 'maxqty', name: 'maxqty', width: 50, hidden:true },
-					{ label: 'reordlevel', name: 'reordlevel', width: 50, hidden:true },
-					{ label: 'reordqty', name: 'reordqty', width: 50, hidden:true },
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatter, unformat:unformat,  cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
-					{ label: 'chgflag', name: 'chgflag', width: 50, hidden:true },
-					{ label: 'subcatcode', name: 'subcatcode', width: 50, hidden:true },
-					{ label: 'expdtflg', name: 'expdtflg', width: 50, hidden:true },
-					{ label: 'mstore', name: 'mstore', width: 50, hidden:true },
-					{ label: 'costmargin', name: 'costmargin', width: 50, hidden:true },
-					{ label: 'pouom', name: 'pouom', width: 50, hidden:true },
-					{ label: 'reuse', name: 'reuse', width: 50, hidden:true },
-					{ label: 'trqty', name: 'trqty', width: 50, hidden:true },
-					{ label: 'deactivedate', name: 'deactivedate', width: 50, hidden:true },
-					{ label: 'tagging', name: 'tagging', width: 50, hidden:true },
-					{ label: 'itemtype', name: 'itemtype', width: 50, hidden:true },
-					{ label: 'generic', name: 'generic', width: 50, hidden:true },
-				],
-				autowidth:true,
-                multiSort: true,
-				viewrecords: true,
-				loadonce:false,
-				width: 900,
-				height: 350,
-				rowNum: 30,
-				pager: "#jqGridPager",
-				ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#jqGridPager td[title='Edit Selected Row']").click();
-				},
-				gridComplete: function(){
-					if(oper == 'add'){
-						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-					}
-
-					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
-				},
-				
-			});
-
-			////////////////////////////formatter//////////////////////////////////////////////////////////
-			function formatter(cellvalue, options, rowObject){
-				if(cellvalue == 'A'){
-					return "Active";
-				}
-				if(cellvalue == 'D') { 
-					return "Deactive";
-				}
-			}
-
-			function  unformat(cellvalue, options){
-				if(cellvalue == 'Active'){
-					return "A";
-				}
-				if(cellvalue == 'Deactive') { 
-					return "D";
-				}
-			}
-
-			function getgcforAdd() {
-				var gc2 = $('#groupcode2').val();
-				if (gc2.toLowerCase() == 'Stock'.toLowerCase()) {
-					$("#groupcodeStock").prop("checked", true);
-				} else if(gc2.toLowerCase() == 'Asset'.toLowerCase()) {
-					$("#groupcodeAsset").prop("checked", true);
-				} else if(gc2.toLowerCase() == 'Other'.toLowerCase()) {
-					$("#groupcodeOther").prop("checked", true);
-				}
-
-			}
-
-			function textcolourradio() {
-				$("label[for=itemtype]").css('color', '#444444');
-				$(":radio[name='itemtype']").parent('label').css('color', '#444444');
-				$("label[for=reuse]").css('color', '#444444');
-				$(":radio[name='reuse']").parent('label').css('color', '#444444');
-				$("label[for=rpkitem]").css('color', '#444444');
-				$(":radio[name='rpkitem']").parent('label').css('color', '#444444');
-				$("label[for=tagging]").css('color', '#444444');
-				$(":radio[name='tagging']").parent('label').css('color', '#444444');
-				$("label[for=expdtflg]").css('color', '#444444');
-				$(":radio[name='expdtflg']").parent('label').css('color', '#444444');
-				$("label[for=chgflag]").css('color', '#444444');
-				$(":radio[name='chgflag']").parent('label').css('color', '#444444');
-			}
-			
-
-			/*$('#subcatcode').on('click',  function(){
-				//subcatcode = $('#subcatcode').val();
-				//alert(subcatcode);
-				if( !$('#subcatcode').val()) {
-					alert("vs");
-					$('#subcatcode').parent().siblings( ".help-block" ).hide();
-					$('#subcatcode').parent().removeClass( "has-error" );
-					$('#subcatcode').removeClass( "error" );
+					forCancelAndExit();
+					//$("#itemcodesearch").focus();
+					//readonlyRTTrue();
+					//dialog_mstore.offHandler();
 				}
 				
-			});*/
-			
+				if($("#jqGrid").getGridParam("reccount") < 1){
+					readonlyRTFalse();
+					$("#Save").show();
+					$('#formdata input[name=productcat]').prop("readonly",true);
+					$('#formdata input[name=lastcomputerid]').prop("readonly",true);
+					$('#formdata input[name=lastipaddress]').prop("readonly",true);
+					$('#formdata input[name=computerid]').prop("readonly",true);
+					$('#formdata input[name=ipaddress]').prop("readonly",true);
+					$('#itemcodesearch').prop("readonly",true);
+					$('#uomcodesearch').prop("readonly",true);
 
-
-			/////////////////////////start grid pager/////////////////////////////////////////////////////////
-			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
-				view:false,edit:false,add:false,del:false,search:false,
-				beforeRefresh: function(){
-					refreshGrid("#jqGrid",urlParam);
-				},
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first", 
-				buttonicon:"glyphicon glyphicon-trash",
-				title:"Delete Selected Row",
-				onClickButton: function(){
-					oper='del';
-					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					if(!selRowId){
-						alert('Please select row');
-						return emptyFormdata(errorField,'#formdata');
-					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'itemcode':selRowId});
-					}
-				},
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first", 
-				buttonicon:"glyphicon glyphicon-info-sign",
-				title:"View Selected Row",  
-				onClickButton: function(){
-					oper='view';
-					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
-				},
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first",  
-				buttonicon:"glyphicon glyphicon-edit",
-				title:"Edit Selected Row",  
-				onClickButton: function(){
-					oper='edit';
-					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
-				}, 
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first",  
-				buttonicon:"glyphicon glyphicon-plus", 
-				title:"Add New Row", 
-				onClickButton: function(){
-					oper='add';
-					$( "#dialogForm" ).dialog( "open" );
-				},
-			});
-
-			//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-
-			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-			//toogleSearch('#sbut1','#searchForm','on');
-			populateSelect('#jqGrid','#searchForm');
-			searchClick('#jqGrid','#searchForm',urlParam);
-
-			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam);
-
-			///////////////////////////////start->dialogHandler part/////////////////////////////////////////////
-			//$("label[for='groupcode']").hide();
-	//		$("groupcodeStock").hide();
-
-			function makeDialog(table,id,cols,title){
-				this.table=table;
-				this.id=id;
-				this.cols=cols;
-				this.title=title;
-				this.handler=dialogHandler;
-				this.check=checkInput;
-			}
-
-			$( "#dialog" ).dialog({
-				autoOpen: false,
-				width: 7/10 * $(window).width(),
-				modal: true,
-				open: function(){
-					$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
-					if(selText=='#mstore'){
-						paramD.filterCol=['mainstore'];
-						paramD.filterVal=['1'];
-					}else if(selText=='#productcat') {
-						var gc2 = $('#groupcode2').val();
-						if(gc2.toLowerCase() == 'Stock'.toLowerCase()){
-							paramD.filterCol=['cattype', 'source'];
-							paramD.filterVal=['Stock', 'PO'];
-						}else if(gc2.toLowerCase() == 'Other'.toLowerCase()) {
-							paramD.filterCol=['cattype', 'source'];
-							paramD.filterVal=['Other', 'PO'];
-						}else{
-						paramD.filterCol=null;
-						paramD.filterVal=null;
-					}
-					}else{
-						paramD.filterCol=null;
-						paramD.filterVal=null;
-					}
-				},
-				close: function( event, ui ){
-					paramD.searchCol=null;
-					paramD.searchVal=null;
-				},
-			});
-
-			var selText,Dtable,Dcols;
-			$("#gridDialog").jqGrid({
-				datatype: "local",
-				colModel: [
-					{ label: 'Code', name: 'code', width: 200,  classes: 'pointer', canSearch:true,checked:true}, 
-					{ label: 'Description', name: 'desc', width: 400, canSearch:true, classes: 'pointer'},
-				],
-				width: 500,
-				viewrecords: true,
-				loadonce: false,
-                multiSort: true,
-				rowNum: 30,
-				pager: "#gridDialogPager",
-				ondblClickRow: function(rowid, iRow, iCol, e){
-					var data=$("#gridDialog").jqGrid ('getRowData', rowid);
-					$("#gridDialog").jqGrid("clearGridData", true);
-					$("#dialog").dialog( "close" );
-					$(selText).val(rowid);
-					$(selText).focus();
-					$(selText).parent().next().html(data['desc']);
-				},
-				
-			});
-
-			var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:''};
-			function dialogHandler(errorField){
-				var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
-				$( id+" ~ a" ).on( "click", function() {
-					selText=id,Dtable=table,Dcols=cols,
-					$("#gridDialog").jqGrid("clearGridData", true);
-					$( "#dialog" ).dialog( "open" );
-					$( "#dialog" ).dialog( "option", "title", title );
-					paramD.table_name=table;
-					paramD.field=cols;
-					paramD.table_id=cols[0];
-					
-					$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
-					$('#Dtext').val('');$('#Dcol').html('');
-					
-					$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
-						if(value['canSearch']){
-							if(value['checked']){
-								$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
-							}else{
-								$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
-							}
-						}
-					});
-				});
-				$(id).on("blur", function(){
-					self.check(errorField);
-				});
-			}
-			
-			function checkInput(errorField){
-				var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
-				var param={action:'input_check',table:table,field:field,value:value};
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-					
-				},'json').done(function(data) {
-					if(data.msg=='success'){
-						if($.inArray(id,errorField)!==-1){
-							errorField.splice($.inArray(id,errorField), 1);
-						}
-						$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-						$( id ).removeClass( "error" ).addClass( "valid" );
-						$( id ).parent().siblings( ".help-block" ).html(data.row[field[1]]);
-						$( id ).parent().siblings( ".help-block" ).show();
-					}else if(data.msg=='fail'){
-						if((id == '#subcatcode') && ($('#subcatcode').val()== "")) {
-								$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
-								$( id ).removeClass( "valid" ).removeClass( "error" );
-								$( id ).parent().siblings( ".help-block" ).hide();
-						}else if((id == '#mstore') && ($('#mstore').val()== "")) {
-								$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
-								$( id ).removeClass( "valid" ).removeClass( "error" );
-								$( id ).parent().siblings( ".help-block" ).hide();
-						}else if((id == '#pouom') && ($('#pouom').val()== "")) {
-								$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
-								$( id ).removeClass( "valid" ).removeClass( "error" );
-								$( id ).parent().siblings( ".help-block" ).hide();
-						}else if((id == '#suppcode') && ($('#suppcode').val()== "")) {
-								$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
-								$( id ).removeClass( "valid" ).removeClass( "error" );
-								$( id ).parent().siblings( ".help-block" ).hide();
-						}else{
-							$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-							$( id ).removeClass( "valid" ).addClass( "error" );
-							$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+field[0]+" )");
-							if($.inArray(id,errorField)===-1){
-								errorField.push(id);
-							}
-						}
-					}
-				});
-			}
-			
-			$('#Dtext').keyup(function() {
-				delay(function(){
-					Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-				}, 500 );
-			});
-			
-			$('#Dcol').change(function(){
-				Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-			});
-			
-			function Dsearch(Dtext,Dcol){
-				paramD.searchCol=null;
-				paramD.searchVal=null;
-				Dtext=Dtext.trim();
-				if(Dtext != ''){
-					var split = Dtext.split(" "),searchCol=[],searchVal=[];
-					$.each(split, function( index, value ) {
-						searchCol.push(Dcol);
-						searchVal.push('%'+value+'%');
-					});
-					paramD.searchCol=searchCol;
-					paramD.searchVal=searchVal;
+					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+					getgcforAdd();
 				}
-				refreshGrid("#gridDialog",paramD);
 			}
-			///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
-		});
+		},
+		
+	});
+
+	////////////////////////////formatter//////////////////////////////////////////////////////////
+	function formatter(cellvalue, options, rowObject){
+		if(cellvalue == 'A'){
+			return "Active";
+		}
+		if(cellvalue == 'D') { 
+			return "Deactive";
+		}
+	}
+
+	function  unformat(cellvalue, options){
+		if(cellvalue == 'Active'){
+			return "Active";
+		}
+		if(cellvalue == 'Deactive') { 
+			return "Deactive";
+		}
+	}
+
+	function readonlyRTTrue(){
+		$('#formdata input[rdonly]').prop("readonly",true);
+		$('#formdata  input[type=radio]').prop("disabled",true);
+	}
+
+	function readonlyRTFalse(){
+		$('#formdata input[rdonly]').prop("readonly",false);
+		$('#formdata  input[type=radio]').prop("disabled",false);
+	}
+
+	function whenAdd() {
+		$('#formdataSearch').show();
+		$("#Save").hide();
+
+		$("#formdata label[for=itemcode]").hide();
+		$("#itemcode_parent").hide();
+		$("#formdata label[for=description]").hide();
+		$("#description_parent").hide();
+		$("#formdata label[for=uomcode]").hide();
+		$("#uomcode_parent").hide();
+	}
+
+	function whenEdit() {
+		$('#formdataSearch').hide();
+		$("#Save").show();
+
+		$("#formdata label[for=itemcode]").show();
+		$("#itemcode_parent").show();
+		$("#formdata label[for=description]").show();
+		$("#description_parent").show();
+		$("#formdata label[for=uomcode]").show();
+		$("#uomcode_parent").show();
+	}
+
+	function checkradiobutton(radiobuttons){
+		this.radiobuttons=radiobuttons;
+		this.check = function(){
+			$.each(this.radiobuttons, function( index, value ) {
+				var checked = $("input[name="+value+"]:checked").val();
+				//alert(itemtype);
+			    if(!checked){
+			     	$("label[for="+value+"]").css('color', 'red');
+			     	$(":radio[name='"+value+"']").parent('label').css('color', 'red');
+				}else{
+					$("label[for="+value+"]").css('color', '#444444');
+					$(":radio[name='"+value+"']").parent('label').css('color', '#444444');
+				}
+			});
+		}
+	}
+
+	var radbuts=new checkradiobutton(['itemtype','reuse','rpkitem','tagging','expdtflg','chgflag']);
+
+	function textcolourradio(textcolour){
+		this.textcolour=textcolour;
+		this.check = function(){
+			$.each(this.textcolour, function( index, value ) {
+				$("label[for="+value+"]").css('color', '#444444');
+				$(":radio[name="+value+"]").parent('label').css('color', '#444444');
+			});
+		}
+	}
+
+	var textCol=new textcolourradio(['itemtype','reuse','rpkitem','tagging','expdtflg','chgflag']);
+
+	function hideradio(hideradioButton){
+		this.hideradioButton=hideradioButton;
+		this.check = function(){
+			$.each(this.hideradioButton, function( index, value ) {
+				//console.log(value);
+				$(":radio[name="+value+"]:not(:checked)").hide();
+				$(":radio[name="+value+"]:not(:checked)").parent('label').hide();
+			});
+		}
+	}
+
+	var hiderad=new hideradio(['groupcode','Class']);
+
+
+	var searched = false,productcat,groupcode,description,Class;
+	$("#searchBut").click(function(){
+		$("#generic").focus();
+		if( $('#formdataSearch').isValid({requiredFields: ''}, conf, true) ) {
+			emptyFormdata(errorField,'#formdata');
+			$('#formdataSearch input[rdonly]').prop("readonly",true);
+			$("#searchBut").prop("disabled",true);
+
+			dialog_itemcode.off();
+			dialog_uomcode.off();
+
+			dialog_pouom.on();
+			dialog_suppcode.on();
+			dialog_mstore.on();
+			dialog_subcategory.on();
+			dialog_taxCode.on();
+
+			urlParam.filterCol = ['itemcode','uomcode'];
+			urlParam.filterVal = [$('#itemcodesearch').val(),$('#uomcodesearch').val()];
+			
+			searched = true;
+
+			refreshGrid('#jqGrid',urlParam);
+
+			$("#formdata :input[name='itemcode']").val($("#itemcodesearch").val());
+			$("#formdata :input[name='uomcode']").val($("#uomcodesearch").val());
+
+			$("#formdata :input[name='description']").val(description);
+			$("#formdata :input[name='productcat']").val(productcat);
+			
+			$("#formdata [name=groupcode][value='"+groupcode+"']").prop('checked', true);
+			$("#formdata [name=Class][value='"+Class+"']").prop('checked', true);
+		}
+	});
+
+	$("#cancelBut").click(function(){
+		emptyFormdata(errorField,'#formdataSearch');
+		emptyFormdata(errorField,'#formdata');
+		forCancelAndExit();
+		$("#itemcodesearch").focus();
+	});
+
+	function getgcforAdd() {
+		$("#formdata [name=groupcode][value='"+gc2+"']").prop('checked', true);
+		$("#formdata [name=Class][value='"+Class2+"']").prop('checked', true);
+		hiderad.check();
+
+	}
+
+	function forCancelAndExit(){
+		$('#formdataSearch input[rdonly]').prop("readonly",false);
+		readonlyRTTrue();
+		$("#searchBut").prop("disabled",false);
+		dialog_itemcode.on();
+		dialog_uomcode.on();
+		textCol.check();
+	}
+
+	/////////////////////////start grid pager/////////////////////////////////////////////////////////
+	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
+		view:false,edit:false,add:false,del:false,search:false,
+		beforeRefresh: function(){
+			refreshGrid("#jqGrid",urlParam);
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager",{
+		caption:"",cursor: "pointer",position: "first", 
+		buttonicon:"glyphicon glyphicon-trash",
+		title:"Delete Selected Row",
+		onClickButton: function(){
+			oper='del';
+			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+			if(!selRowId){
+				alert('Please select row');
+				return emptyFormdata(errorField,'#formdata');
+			}else{
+				saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'idno':selRowId});
+			}
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager",{
+		caption:"",cursor: "pointer",position: "first", 
+		id:"glyphicon-info-sign",
+		buttonicon:"glyphicon glyphicon-info-sign",
+		title:"View Selected Row",  
+		onClickButton: function(){
+			oper='view';
+			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager",{
+		caption:"",cursor: "pointer",position: "first",  
+		buttonicon:"glyphicon glyphicon-edit",
+		title:"Edit Selected Row",  
+		onClickButton: function(){
+			oper='edit';
+			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+			$('#formdataSearch').hide();
+			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+		}, 
+	}).jqGrid('navButtonAdd',"#jqGridPager",{
+		caption:"",cursor: "pointer",position: "first",  
+		buttonicon:"glyphicon glyphicon-plus", 
+		title:"Add New Row", 
+		onClickButton: function(){
+			oper='add';
+			$( "#dialogForm" ).dialog( "open" );
+		},
+	});
+
+	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+
+	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
+	toogleSearch('#sbut1','#searchForm','on');
+	populateSelect('#jqGrid','#searchForm');
+	searchClick('#jqGrid','#searchForm',urlParam);
+
+	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
+	addParamField('#jqGrid',true,urlParam);
+	addParamField('#jqGrid',false,saveParam,['idno', 'adduser', 'adddate', 'upduser', 'upddate', 'recstatus', 'computerid', 'ipaddress']);
+
+	////////////////////////////////////////////////////////addNewProduct ///////////////////////////////
+	var adpsaveParam={
+		action:'save_table_default',
+		url:'product/form',
+		field:['itemcode','description','groupcode', 'productcat', 'Class', 'computerid', 'ipaddress'],
+		oper:'add',
+		table_name:'material.productmaster',
+		table_id:'itemcode',
+		saveip:'true'
+	};
+
+	var addNew=[{
+		id: 'addnp',
+		text: "Add New",click: function() {
+			$("#addNewProductDialog" ).dialog( "open" );
+
+			$("#adpFormdata [name=groupcode][value='"+gc2+"']").prop('checked', true);
+			$("#adpFormdata [name=Class][value='"+Class2+"']").prop('checked', true);
+			$('#adpFormdata [type=radio]:not(:checked)').hide();
+			$('#adpFormdata [type=radio]:not(:checked)').parent('label').hide();
+
+			if(gc2=="Stock"){
+				var dialog_cat = new ordialog(
+					'productcatAddNew','material.category','#productcatAddNew',errorField,
+					{	colModel:[
+							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						],
+						ondblClickRow:function(){
+						}	
+					},{
+						title:"Select Product Category",
+						open: function(){
+							var gc2 = $('#groupcode2').val();
+							dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus'];
+							dialog_cat.urlParam.filterVal=['Stock', 'PO', 'A'];
+						}
+					},'urlParam'
+				);
+				dialog_cat.makedialog();
+				dialog_cat.on();
+
+			} else if(gc2=="Asset") {
+				var dialog_cat = new ordialog(
+					'productcatAddNew','finance.facode','#productcatAddNew',errorField,
+					{	colModel:[
+							{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						],
+						ondblClickRow:function(){
+						}	
+					},{
+						title:"Select Product Category",
+						open: function(){
+							dialog_cat.urlParam.filterCol=['recstatus'];
+							dialog_cat.urlParam.filterVal=['A'];
+						}
+					},'urlParam'
+				);
+				dialog_cat.makedialog();
+				dialog_cat.on();
+
+			} else if(gc2=="Others") {
+				var dialog_cat = new ordialog(
+					'productcatAddNew','material.category','#productcatAddNew',errorField,
+					{	colModel:[
+							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						],
+						ondblClickRow:function(){
+						}	
+					},{
+						title:"Select Product Category",
+						open: function(){
+							dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus'];
+							dialog_cat.urlParam.filterVal=['Other', 'PO', 'A'];
+						}
+					},'urlParam'
+				);
+				dialog_cat.makedialog();
+				dialog_cat.on();
+			}
+		}
+	}];
+
+	$( "#"+dialog_itemcode.dialogname ).dialog( "option", "buttons", addNew);
+
+	var addNew2=[{
+		text: "Save",click: function() {
+			if( $('#adpFormdata').isValid({requiredFields: ''}, {}, true) ) {
+				saveFormdata("#"+dialog_itemcode.dialogname,"#addNewProductDialog","#adpFormdata",'add',adpsaveParam,dialog_itemcode.urlParam);
+			}
+		}
+	},{
+		text: "Cancel",click: function() {
+			$("#addNewProductDialog").dialog('close');
+		}
+	}];
+
+	$("#addNewProductDialog")
+		.dialog({
+		width: 6/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			rdonly("#addNewProductDialog");
+			set_compid_from_storage("input[name='computerid']", "input[name='ipaddress']");
+		},
+		close: function( event, ui ) {
+			emptyFormdata([],'#adpFormdata');
+			$('.alert').detach();
+			$("#adpFormdata a").off();
+		},
+		buttons :addNew2,
+	});
+	// ///////////////////////////////start->dialogHandler part////////////////////////////////////////////
+	// function makeDialog(table,id,cols,title){
+	// 	this.table=table;
+	// 	this.id=id;
+	// 	this.cols=cols;
+	// 	this.title=title;
+	// 	this.handler=dialogHandler;
+	// 	this.offHandler=function(){
+	// 		$( this.id+" ~ a" ).off();
+	// 	}
+	// 	this.check=checkInput;
+	// 	this.updateField=function(table,id,cols,title){
+	// 		this.table=table;
+	// 		this.id=id;
+	// 		this.cols=cols;
+	// 		this.title=title;
+	// 		//console.log(this);
+	// 	}
+	// }
+
+	// $("#dialog" ).dialog({
+	// 	autoOpen: false,
+	// 	width: 7/10 * $(window).width(),
+	// 	modal: true,
+	// 	open: function(){
+	// 		$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
+	// 		if(selText=='#mstore'){
+	// 			paramD.filterCol=['mainstore', 'recstatus'];
+	// 			paramD.filterVal=['1', 'A'];
+	// 		}else if(selText=='#itemcodesearch') {
+	// 			var gc2 = $('#groupcode2').val();
+	// 			var Class2 = $('#Class2').val();
+	// 				paramD.filterCol=['groupcode', 'Class', 'recstatus'];
+	// 				paramD.filterVal=[gc2, Class2, 'A'];
+	// 		}else if(selText=='#productcatAddNew') {
+	// 			var gc2 = $('#groupcode2').val();
+	// 			if(gc2.toLowerCase() == 'Stock'.toLowerCase()){
+	// 				paramD.filterCol=['cattype', 'source', 'recstatus'];
+	// 				paramD.filterVal=['Stock', 'PO', 'A'];
+	// 			}else if(gc2.toLowerCase() == 'Others'.toLowerCase()) {
+	// 				paramD.filterCol=['cattype', 'source', 'recstatus'];
+	// 				paramD.filterVal=['Other', 'PO', 'A'];
+	// 			}else{
+	// 			paramD.filterCol=['recstatus'];
+	// 			paramD.filterVal=['A'];
+	// 			}
+	// 		}else if(selText == "#TaxCode"){
+	// 			paramD.filterCol=['recstatus','taxtype'];
+	// 			paramD.filterVal=['A','Input'];
+	// 		}else{
+	// 			paramD.filterCol=['recstatus'];
+	// 			paramD.filterVal=['A'];
+	// 		}
+	// 	},
+	// 	close: function( event, ui ){
+	// 		paramD.searchCol=null;
+	// 		paramD.searchVal=null;
+	// 	},
+	// 	buttons :addNew,
+	// });
+
+	// var selText,Dtable,Dcols;
+	// $("#gridDialog").jqGrid({
+	// 	datatype: "local",
+	// 	colModel: [
+	// 		{ label: 'Code', name: 'code', width: 30,  classes: 'pointer', canSearch:true,checked:true, classes: 'wrap'},
+	// 		{ label: 'Description', name: 'description', width: 70, canSearch:true, classes: 'pointer', classes: 'wrap'},
+	// 		{ label: 'Group Code', name: 'groupcode', width: 30, classes: 'pointer', classes: 'wrap'},
+	// 		{ label: 'Product Category', name: 'productcat', width: 30, classes: 'pointer', classes: 'wrap'},
+	// 		{ label: 'Class', name: 'Class', width: 40, classes: 'pointer', classes: 'wrap'},
+	// 	],
+	// 	width: 450,
+	// 	viewrecords: true,
+	// 	loadonce: false,
+ //        multiSort: true,
+	// 	rowNum: 30,
+	// 	shrinkToFit: true,
+	// 	pager: "#gridDialogPager",
+	// 	ondblClickRow: function(rowid, iRow, iCol, e){
+	// 		var data=$("#gridDialog").jqGrid ('getRowData', rowid);
+	// 		$("#gridDialog").jqGrid("clearGridData", true);
+	// 		$("#dialog").dialog( "close" );
+	// 		$(selText).val(rowid);
+	// 		$(selText).focus();
+	// 		$(selText).parent().next().html(data['description']);
+
+	// 		if(selText=="#itemcodesearch"){
+	// 			productcat=data.productcat;
+	// 			groupcode=data.groupcode;
+	// 			description=data.description;
+	// 			Class=data.Class;
+	// 		} 
+	// 	},
+		
+	// });
+
+	
+
+	// var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:'',
+	// 	sort_idno:true};
+	// function dialogHandler(errorField){
+	// 	var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
+	// 	$( id+" ~ a" ).on( "click", function() {
+	// 		selText=id,Dtable=table,Dcols=cols,
+	// 		$("#gridDialog").jqGrid("clearGridData", true);
+
+	// 		if(selText == "#itemcodesearch"){
+	// 			$("#addnp").show();
+	// 			$("#gridDialog").jqGrid('showCol', 'groupcode');
+	// 			$("#gridDialog").jqGrid('showCol', 'productcat');
+	// 			$("#gridDialog").jqGrid('showCol', 'Class');
+	// 		}else{
+	// 			$("#addnp").hide();
+	// 			$("#gridDialog").jqGrid('hideCol', 'groupcode');
+	// 			$("#gridDialog").jqGrid('hideCol', 'productcat');
+	// 			$("#gridDialog").jqGrid('hideCol', 'Class');
+	// 		}
+
+	// 		$("#dialog").dialog( "open" );
+	// 		$("#dialog").dialog( "option", "title", title );
+
+
+	// 		paramD.table_name=table;
+	// 		paramD.field=cols;
+	// 		paramD.table_id=cols[0];
+			
+	// 		$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
+	// 		$('#Dtext').val('');$('#Dcol').html('');
+			
+	// 		$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
+	// 			if(value['canSearch']){
+	// 				if(value['checked']){
+	// 					$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
+	// 				}else{
+	// 					$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
+	// 				}
+	// 			}
+	// 		});
+	// 	});
+	// 	$(id).on("blur", function(){
+	// 		self.check(errorField);
+	// 	});
+	// }
+	
+	// function checkInput(errorField){
+	// 	var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
+	// 	var param={action:'input_check',table:table,field:field,value:value};
+	// 	$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+
+	// 	},'json').done(function(data) {
+	// 		if(data.msg=='success'){
+	// 			if(id== "#itemcodesearch") {
+	// 				//console.log("success");
+	// 				dialog_uomcode.handler(errorField);
+	// 				//$("#uomcodesearch_parent").show();
+	// 			}
+	// 			if(!searched && id=="#itemcodesearch"){
+	// 				productcat=data.row.productcat;
+	// 				groupcode=data.row.groupcode;
+	// 				description=data.row.description;
+	// 				Class=data.row.Class;
+	// 			}
+	// 			if($.inArray(id,errorField)!==-1){
+	// 				errorField.splice($.inArray(id,errorField), 1);
+	// 			}
+	// 			$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+	// 			$( id ).removeClass( "error" ).addClass( "valid" );
+	// 			$( id ).parent().siblings( ".help-block" ).html(data.row[field[1]]);
+	// 			$( id ).parent().siblings( ".help-block" ).show();
+	// 		}else if(data.msg=='fail'){
+	// 			if((id == '#subcatcode') && ($('#subcatcode').val()== "")) {
+	// 					$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
+	// 					$( id ).removeClass( "valid" ).removeClass( "error" );
+	// 					$( id ).parent().siblings( ".help-block" ).hide();
+	// 			}else if((id == '#mstore') && ($('#mstore').val()== "")) {
+	// 					$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
+	// 					$( id ).removeClass( "valid" ).removeClass( "error" );
+	// 					$( id ).parent().siblings( ".help-block" ).hide();
+	// 			}else if((id == '#pouom') && ($('#pouom').val()== "")) {
+	// 					$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
+	// 					$( id ).removeClass( "valid" ).removeClass( "error" );
+	// 					$( id ).parent().siblings( ".help-block" ).hide();
+	// 			}else if((id == '#suppcode') && ($('#suppcode').val()== "")) {
+	// 					$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
+	// 					$( id ).removeClass( "valid" ).removeClass( "error" );
+	// 					$( id ).parent().siblings( ".help-block" ).hide();
+	// 			}else{
+	// 				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+	// 				$( id ).removeClass( "valid" ).addClass( "error" );
+	// 				$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+field[0]+" )");
+	// 				if($.inArray(id,errorField)===-1){
+	// 					errorField.push(id);
+	// 				}
+	// 			}
+
+	// 			if(id== "#itemcodesearch") {
+	// 				//console.log("fail");
+	// 				dialog_uomcode.offHandler();
+	// 				//$("#uomcodesearch_parent").hide();
+	// 			}
+	// 		}
+	// 	});
+	// }
+	
+	// $('#Dtext').keyup(function() {
+	// 	delay(function(){
+	// 		Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
+	// 	}, 500 );
+	// });
+	
+	// $('#Dcol').change(function(){
+	// 	Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
+	// });
+	
+	// function Dsearch(Dtext,Dcol){
+	// 	paramD.searchCol=null;
+	// 	paramD.searchVal=null;
+	// 	Dtext=Dtext.trim();
+	// 	if(Dtext != ''){
+	// 		var split = Dtext.split(" "),searchCol=[],searchVal=[];
+	// 		$.each(split, function( index, value ) {
+	// 			searchCol.push(Dcol);
+	// 			searchVal.push('%'+value+'%');
+	// 		});
+	// 		paramD.searchCol=searchCol;
+	// 		paramD.searchVal=searchVal;
+	// 	}
+	// 	refreshGrid("#gridDialog",paramD);
+	// }
+	///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
+
+});

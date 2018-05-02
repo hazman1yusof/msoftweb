@@ -1,7 +1,6 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow = 0;
 
 $(document).ready(function () {
 	$("body").show();
@@ -108,7 +107,7 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#formdata');
 				//$('.alert').detach();
 				$('#formdata .alert').detach();
-				$("#formdata a").off();
+				dialog_deptcode.off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", butt1);
 				}
@@ -120,6 +119,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
+		url:'util/get_table_default',
 		table_name: 'material.stockloc',
 		field: '',
 		table_id: 'idno',
@@ -131,6 +131,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
+		url:'stockloc/form',
 		field: '',
 		oper: oper,
 		table_name: 'material.stockloc',
@@ -171,6 +172,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce: false,
+		sortname: 'idno',
+		sortorder: 'desc',
 		width: 900,
 		height: 350,
 		rowNum: 30,
@@ -225,7 +228,6 @@ $(document).ready(function () {
 
 	$("input[name=stocktxntype]:radio").on('change click', function () {
 		stocktxntype = $("input[name=stocktxntype]:checked").val();
-		console.log(stocktxntype)
 
 		if (stocktxntype == 'TR') {
 			$("#TRDS").prop("checked", true);
@@ -322,7 +324,7 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', false, urlParam);
 	//addParamField('#jqGrid',false,saveParam);
-	addParamField('#jqGrid', false, saveParam, ['idno', 'adduser', 'adddate', 'computerid', 'ipaddress']);
+	addParamField('#jqGrid', false, saveParam, ['idno', 'adduser', 'adddate', 'upduser', 'upddate', 'recstatus', 'computerid', 'ipaddress']);
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 
@@ -333,11 +335,11 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Uom Code',name:'uomcode',width:100,classes:'pointer'},
 				{label:'Class',name:'Class',width:400,classes:'pointer',hidden:true},
-				],
-				ondblClickRow:function(){
+			],
+			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
 				$("#uomcodeS").val(data['uomcode']);
-				}
+			}
 		},{
 			title:"Select Item",
 			open: function(){
@@ -362,35 +364,39 @@ $(document).ready(function () {
 		},'urlParam'
 	);
 	dialog_itemcode.makedialog();
+	dialog_itemcode.on();
+
 
 	var dialog_uomcode = new ordialog(
-		'uomcodeS', ['material.product p', 'material.uom u'], "#uomcodeS", errorField,
+		'uomcodeS', ['material.product as p', 'material.uom as u'], "#uomcodeS", errorField,
 		{
 			colModel:
 			[
-				{ label: 'UOM code', name: 'p.uomcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'u.description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'UOM code', name: 'p_uomcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'Description', name: 'u_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_uomcode.gridname);
-				$("#uomcodeS").val(data['p.uomcode']);
+				$("#uomcodeS").val(data['p_uomcode']);
 			}
 
 		}, {
 			title: "Select Uom",
 			open: function () {
+				dialog_uomcode.urlParam.fixPost = true;
 				dialog_uomcode.urlParam.table_id = "uomcode";
 				dialog_uomcode.urlParam.filterCol = ['p.itemcode'];
 				dialog_uomcode.urlParam.filterVal = [$("#itemcodeS").val()];
 				dialog_uomcode.urlParam.join_type = ['LEFT JOIN'];
 				dialog_uomcode.urlParam.join_onCol = ['p.uomcode'];
 				dialog_uomcode.urlParam.join_onVal = ['u.uomcode'];
-				dialog_uomcode.urlParam.join_filterCol = [['p.compcode']];
-				dialog_uomcode.urlParam.join_filterVal = [['skip.u.compcode']];
+				dialog_uomcode.urlParam.join_filterCol = [['p.compcode on =']];
+				dialog_uomcode.urlParam.join_filterVal = [['u.compcode']];
 			},
 		}, 'urlParam'
 	);
 	dialog_uomcode.makedialog();
+	dialog_uomcode.on();
 
 	var dialog_deptcode = new ordialog(
 		'deptcode','sysdb.department','#deptcode',errorField,

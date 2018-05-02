@@ -1,31 +1,13 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body style="display:none">
+@extends('layouts.main')
 
-	<input id="groupcode2" name="groupcode" type="hidden" value="<?php echo $_GET['groupcode'];?>">
-	 
-	<!-------------------------------- Search + table ---------------------->
-	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%'>
-			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-				</div>
-			 </fieldset> 
-		</form>
-    	<div class='col-md-12' style="padding:0 0 15px 0">
-            <table id="jqGrid" class="table table-striped"></table>
-            <div id="jqGridPager"></div>
-        </div>
-    </div>  
+@section('title', 'Stock Location Enquiry')
 
-	<!-------------------------------- End Search + table ------------------>
+@section('body')
 
+	@include('layouts.default_search_and_table')
 
+	<input id="Class2" name="Class" type="hidden" value="{{ $_GET['Class'] }}">
+	<input id="groupcode2" name="groupcode" type="hidden" value="{{ $_GET['groupcode'] }}">
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='col-md-12'>
@@ -36,7 +18,7 @@
 						<div class="col-md-4">
 						  	<label class="control-label" for="itemcode">Item Code</label>  
 				  			<div class='input-group'>
-								<input id="itemcodesearch" name="itemcode" type="text" class="form-control input-sm" data-validation="required" rdonly/>
+								<input id="itemcodesearch" name="itemcode" type="text" class="form-control input-sm" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 				  			</div>
 								<span class="help-block"></span>
@@ -44,8 +26,8 @@
 						  
 						<div class="col-md-4">
 						  	<label class="control-label" for="uomcode">UOM Code</label>  
-				  				<div class='input-group'>
-									<input id="uomcodesearch" name="uomcode" type="text" class="form-control input-sm" data-validation="required" rdonly/>
+				  				<div class='input-group' id="uomcodesearch_parent">
+									<input id="uomcodesearch" name="uomcode" type="text" class="form-control input-sm" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 				  				</div>
 									<span class="help-block"></span>
@@ -53,6 +35,7 @@
 
 						<div class="col-md-1">
 							<button type="button" id="searchBut" class="btn btn-primary" style="position:absolute;top:23px">Create</button>
+							<button type="button" id="cancelBut" class="btn btn-primary" style="position:absolute;top:23px;left:90px">Cancel</button>
 			            </div>
 					</form>
 				</div>
@@ -66,6 +49,7 @@
 					<form id='formdata' class='form-horizontal' style='width:99%'>
 						<input id="idno" name="idno" type="hidden">
 
+						{{ csrf_field() }}
 						<div class="form-group">
 						  	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
 						  		<div class="col-md-2" id="itemcode_parent">
@@ -145,12 +129,22 @@
 					  					<span class="help-block"></span>
 				  				</div>
               			</div>
+
+              			<div class="form-group">
+						  	<label class="col-md-2 control-label" for="TaxCode">Tax Code</label>  
+						  		<div class="col-md-3">
+							  		<div class='input-group'>
+										<input id="TaxCode" name="TaxCode" type="text" class="form-control input-sm" data-validation="required" rdonly>
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  		</div>
+							  			<span class="help-block"></span>
+						  		</div>
+              			</div>
                 
                  		<div class="form-group">
                   			<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-				  				<div class="col-md-3">
-									<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
-									<label class="radio-inline"><input type="radio" name="recstatus" value='D'>Deactive</label>
+				  				<div class="col-md-2">
+									<input id="recstatus" name="recstatus" type="text" class="form-control input-sm" frozeOnEdit hideOne>
                	 
 				  				</div>
 
@@ -159,6 +153,8 @@
 									<div class="col-md-3">
 										<label class="radio-inline"><input type="radio" name="Class" value='Pharmacy'>Pharmacy</label>
 										<label class="radio-inline"><input type="radio" name="Class" value='Non-Pharmacy'>Non-Pharmacy</label>
+										<label class="radio-inline"><input type="radio" name="Class" value='Others'>Others</label>
+										<label class="radio-inline"><input type="radio" name="Class" value='Asset'>Asset</label>
 									</div>
 							</div> 
 						</div>
@@ -187,6 +183,14 @@
 						  		<div class="col-md-2">
 						  			<input id="reordqty" name="reordqty" type="text" maxlength="11" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0" rdonly>
 						  		</div>
+						</div>
+
+						<div class="form-group">
+                  			<label class="col-md-3 control-label" for="qtyonhand">Qty On Hand</label>  
+				  				<div class="col-md-2">
+									<input id="qtyonhand" name="qtyonhand" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+               	 
+				  				</div> 
 						</div>
                 
                 		<hr>
@@ -230,15 +234,34 @@
 									<label class="radio-inline"><input type="radio" name="itemtype" value='Poison'>Poison</label>
 						  		</div>
 						</div>
+
+						  <div class="form-group">
+					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
+						<div class="col-md-3">
+						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
+						</div>
+
+					<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
+						<div class="col-md-3">
+							<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
+						  	</div>
+				</div>    
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
+						<div class="col-md-3">
+						  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
+						</div>
+
+					<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
+						<div class="col-md-3">
+							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
+						  	</div>
+				</div>  
 					</form>
 				</div>
 			</div>
 		</div>
-
-
-		<!--<br><br><br><br><br>-->
-
-		
 	</div>
 
 
@@ -246,8 +269,7 @@
 		<div id="addNewProductDialog" title="Add New Product" >
 			<form class='form-horizontal' style='width:99%' id='adpFormdata'>
 
-				<div class="prevnext btn-group pull-right">
-				</div>
+				{{ csrf_field() }}
 
 				<div class="form-group">
                 	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
@@ -285,33 +307,32 @@
 				<div class="form-group">
                 	<label class="col-md-2 control-label" for="Class">Class</label>  
 						<div class="col-md-5">
-							<label class="radio-inline"><input type="radio" name="Class" value='Pharmacy'>Pharmacy</label>
-							<label class="radio-inline"><input type="radio" name="Class" value='Non-Pharmacy'>Non-Pharmacy</label>
+							<label class="radio-inline"><input type="radio" name="Class" id="p" value='Pharmacy'>Pharmacy</label>
+							<label class="radio-inline"><input type="radio" name="Class" id="np" value='Non-Pharmacy'>Non-Pharmacy</label>
+							<label class="radio-inline"><input type="radio" name="Class" id="o" value='Others'>Others</label>
+							<label class="radio-inline"><input type="radio" name="Class" id="a" value='Asset'>Asset</label>
 						</div>
-				</div> 
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
+						<div class="col-md-2">
+						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						</div>
+
+					<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
+					  	<div class="col-md-2">
+							<input id="ipaddress" name="ipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
+					  	</div>
+				</div>  
 
 			</form>
 		</div>
-	
 
-		
-		
+	@endsection
 
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
-	
-	<!-- JS Implementing Plugins -->
+@section('scripts')
 
-	<!-- JS Customization -->
+	<script src="js/material/product/product.js"></script>
 
-	<!-- JS Page Level -->
-	<script src="product3.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<!--<script src="../../../../assets/js/dialogHandler.js"></script>-->
-
-<script>
-		
-</script>
-</body>
-</html>
+@endsection

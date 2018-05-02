@@ -304,4 +304,14 @@ Route::get('/itemEnquiry','material\ItemEnquiryController@show');
 Route::get('/itemEnquiry/table','material\ItemEnquiryController@table');
 Route::post('/itemEnquiry/form','material\ItemEnquiryController@form');
 
+//// Stock Location ///
+Route::get('/stockloc','material\StocklocController@show');
+Route::get('/stockloc/table','material\StocklocController@table');
+Route::post('/stockloc/form','material\StocklocController@form');\
+
+//// Product ///
+Route::get('/product','material\ProductController@show');
+Route::get('/product/table','material\ProductController@table');
+Route::post('/product/form','material\ProductController@form');
+
 

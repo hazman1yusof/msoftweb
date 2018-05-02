@@ -270,7 +270,7 @@
 				// 	$( ".lilabel" ).velocity("fadeOut", { duration: 0 })
 	   //      	});
 	        	$( ".lilabel" ).hide();
-	        	$( ".navmenu" ).animate({ width:"7%" }, 'fast' ,"linear", function() {
+	        	$( ".navmenu" ).animate({ width:"8%" }, 'fast' ,"linear", function() {
 	        		$( ".lilabel" ).hide();
 	        	});
 			}

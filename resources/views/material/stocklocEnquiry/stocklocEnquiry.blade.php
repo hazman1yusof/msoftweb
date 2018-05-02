@@ -1,11 +1,13 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body>
+@extends('layouts.main')
 
-<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+@section('title', 'Stock Location Enquiry')
+
+@section('body')
+
 
 	<div class='row'>
+		<input id="getYear" name="getYear" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
+
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
 				<div class='col-md-12' style="padding:0 0 15px 0;">
@@ -54,7 +56,7 @@
 		    </thead>
 
 		    <tbody>
-			    <tr id="1">
+			    <tr id="details_tr1">
 			    	<th scope="row">Opening</th>
 		      		<td>
 		      			<input id="openbalqty" name="openbalqty" type="text"class="form-control input-sm" readonly="readonly">
@@ -64,7 +66,7 @@
 		      		</td>
 			    </tr>
 
-			   	<tr id="2">
+			   	<tr id="details_tr2">
 			      	<th scope="row">Jan</th>
 			  		<td>
 		      			<input id="netmvqty1" name="netmvqty1" type="text"class="form-control input-sm" readonly="readonly">
@@ -74,7 +76,7 @@
 		      		</td>
 			    </tr>
 
-			  	<tr id="3">
+			  	<tr id="details_tr3">
 			      	<th scope="row">Feb</th>
 		      		<td>
 		      			<input id="netmvqty2" name="netmvqty2" type="text" class="form-control input-sm" readonly="readonly">
@@ -84,7 +86,7 @@
 		      		</td>
 			    </tr>
 
-			    <tr id="4">
+			    <tr id="details_tr4">
 			      	<th scope="row">Mar</th>
 		      		<td>
 		      			<input id="netmvqty3" name="netmvqty3" type="text" class="form-control input-sm" readonly="readonly">
@@ -94,7 +96,7 @@
 		      		</td>
 			    </tr>
 
-			    <tr id="5">
+			    <tr id="details_tr5">
 			      	<th scope="row">Apr</th>
 		      		<td>
 		      			<input id="netmvqty4" name="netmvqty4" type="text" class="form-control input-sm" readonly="readonly">
@@ -104,7 +106,7 @@
 		      		</td>
 			    </tr>
 
-			    <tr id="6">
+			    <tr id="details_tr6">
 			      	<th scope="row">May</th>
 		     		<td>
 		      			<input id="netmvqty5" name="netmvqty5" type="text" class="form-control input-sm" readonly="readonly">
@@ -114,7 +116,7 @@
 		      		</td>
 			    </tr>
 
-			    <tr id="7">
+			    <tr id="details_tr7">
 			      	<th scope="row">June</th>
 		      		<td>
 		      			<input id="netmvqty6" name="netmvqty6" type="text" class="form-control input-sm" readonly="readonly">
@@ -134,7 +136,7 @@
 
 				
 			
-		<table id="details" class ="table table-bordered" >
+					<table id="details" class ="table table-bordered" >
 
 	                	<thead>
 					      <tr>
@@ -148,7 +150,7 @@
 					    <tbody>
 						   
 
-						    <tr id="8">
+						    <tr id="details_tr8">
 						      	<th scope="row">Jul</th>
 						      		<td>
 						      			<input id="netmvqty7" name="netmvqty7" type="text" class="form-control input-sm" readonly="readonly">
@@ -159,7 +161,7 @@
 						      		
 						    </tr>
 
-						    <tr id="9">
+						    <tr id="details_tr9">
 						      	<th scope="row">Aug</th>
 						      		<td>
 						      			<input id="netmvqty8" name="netmvqty8" type="text" class="form-control input-sm" readonly="readonly">
@@ -170,7 +172,7 @@
 						      		
 						    </tr>
 
-						    <tr id="10">
+						    <tr id="details_tr10">
 						      	<th scope="row">Sept</th>
 						      		<td>
 						      			<input id="netmvqty9" name="netmvqty9" type="text" class="form-control input-sm" readonly="readonly">
@@ -181,7 +183,7 @@
 						      		
 						    </tr>
 
-						    <tr id="11">
+						    <tr id="details_tr11">
 						      	<th scope="row">Oct</th>
 						      		<td>
 						      			<input id="netmvqty10" name="netmvqty10" type="text" class="form-control input-sm" readonly="readonly">
@@ -192,7 +194,7 @@
 						      		
 						    </tr>
 
-						    <tr id="12">
+						    <tr id="details_tr12">
 						      	<th scope="row">Nov</th>
 						      		<td>
 						      			<input id="netmvqty11" name="netmvqty11" type="text" class="form-control input-sm" readonly="readonly">
@@ -203,7 +205,7 @@
 						      		
 						    </tr>
 
-						     <tr id="13">
+						     <tr id="details_tr13">
 						      	<th scope="row">Dec</th>
 						      		<td>
 						      			<input id="netmvqty12" name="netmvqty12" type="text" class="form-control input-sm" readonly="readonly">
@@ -214,7 +216,7 @@
 						      		
 						    </tr>
 
-						    <tr id="14">
+						    <tr id="details_tr14">
 						      	<th scope="row">Accum</th>
 						      		<td>
 						      			<input id="accumqty" name="accumqty" type="text" class="form-control input-sm" readonly="readonly">
@@ -231,31 +233,10 @@
 	                </table>
     </div>
 
-		
-  <!---  <div class='row'>
-		<form id="searchForm3" class="formclass" style='width:99%'>
-			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-				</div>
-			 </fieldset> 
-		</form>
-    	<div class='col-md-12' style="padding:0 0 15px 0">
-            <table id="itemExpiry" class="table table-striped"></table>
-            <div id="jqGridPager3"></div>
-        </div>
-    </div> 
------->
+	@endsection
 
-	<?php 
-		include_once('../../../../footer.php');
-	?>
-	<script src="stocklocEnquiry.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<script src="../../../../assets/js/dialogHandler.js"></script>
+@section('scripts')
 
-</body>
-</html>
+	<script src="js/material/stocklocEnquiry/stocklocEnquiry.js"></script>
+
+@endsection
