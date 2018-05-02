@@ -1,8 +1,9 @@
 $.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
-		var editedRow=0;
 
 		$(document).ready(function () {
+			$("body").show();
+			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
 				language : {
@@ -15,7 +16,7 @@ $.jgrid.defaults.responsive = true;
 				onValidate : function($form) {
 					if(errorField.length>0){
 						return {
-							element : $(errorField[0]),
+							element : $('#'+errorField[0]),
 							message : ' '
 						}
 					}
@@ -59,26 +60,40 @@ $.jgrid.defaults.responsive = true;
 
 			});
 			*/	
-			////////////////////object for dialog handler//////////////////
-			dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');
+			// ////////////////////object for dialog handler//////////////////
+			// dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');
 
-			dialog_deptcode=new makeDialog('hisdb.department','#deptcode',['deptcode','description'], 'Department');
+			// dialog_deptcode=new makeDialog('hisdb.department','#deptcode',['deptcode','description'], 'Department');
 
-			dialog_glassetccode=new makeDialog('finance.costcenter','#glassetccode',['costcode','description'], 'Asset');
-			dialog_glasset=new makeDialog('finance.glmasref','#glasset',['glaccount','description'], 'Asset');
+			// dialog_glassetccode=new makeDialog('finance.costcenter','#glassetccode',['costcode','description'], 'Asset');
+			// dialog_glasset=new makeDialog('finance.glmasref','#glasset',['glaccount','description'], 'Asset');
 
-			dialog_gldepccode=new makeDialog('finance.costcenter','#gldepccode',['costcode','description'], 'Depreciation');
-			dialog_gldep=new makeDialog('finance.glmasref','#gldep',['glaccount','description'], 'Depreciation');
+			// dialog_gldepccode=new makeDialog('finance.costcenter','#gldepccode',['costcode','description'], 'Depreciation');
+			// dialog_gldep=new makeDialog('finance.glmasref','#gldep',['glaccount','description'], 'Depreciation');
 
-			dialog_glprovccode=new makeDialog('finance.costcenter','#glprovccode',['costcode','description'], 'Provision for Depr');
-			dialog_glprovdep=new makeDialog('finance.glmasref','#glprovdep',['glaccount','description'], 'Provision for Depr');
+			// dialog_glprovccode=new makeDialog('finance.costcenter','#glprovccode',['costcode','description'], 'Provision for Depr');
+			// dialog_glprovdep=new makeDialog('finance.glmasref','#glprovdep',['glaccount','description'], 'Provision for Depr');
 
-			dialog_glglossccode=new makeDialog('finance.costcenter','#glglossccode',['costcode','description'], 'Gain');
-			dialog_glgainloss=new makeDialog('finance.glmasref','#glgainloss',['glaccount','description'], 'Gain');
+			// dialog_glglossccode=new makeDialog('finance.costcenter','#glglossccode',['costcode','description'], 'Gain');
+			// dialog_glgainloss=new makeDialog('finance.glmasref','#glgainloss',['glaccount','description'], 'Gain');
 
-			dialog_glrevccode=new makeDialog('finance.costcenter','#glrevccode',['costcode','description'], 'Loss');
-			dialog_glrevaluation=new makeDialog('finance.glmasref','#glrevaluation',['glaccount','description'], 'Loss');
-
+			// dialog_glrevccode=new makeDialog('finance.costcenter','#glrevccode',['costcode','description'], 'Loss');
+			// dialog_glrevaluation=new makeDialog('finance.glmasref','#glrevaluation',['glaccount','description'], 'Loss');
+            var dialog_assettype = new ordialog(
+				'assettype','finance.fatype','#assettype',errorField,
+				{	colModel:[
+						{label:'Asset Type',name:'assettype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						]
+				},{
+					title:"Select Asset Type",
+					open: function(){
+						dialog_assettype.urlParam.filterCol=['recstatus'],
+						dialog_assettype.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_assettype.makedialog();
 
 
 			////////////////////////////////////start dialog///////////////////////////////////////
@@ -107,10 +122,14 @@ $.jgrid.defaults.responsive = true;
 				modal: true,
 				autoOpen: false,
 				open: function( event, ui ) {
+					parent_close_disabled(true);
+					toggleFormData('#jqGrid','#formdata');
 					switch(oper) {
 						case state = 'add':
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
+							rdonly("#formdata");
+							hideOne("#formdata");
 							break;
 						case state = 'edit':
 							$( this ).dialog( "option", "title", "Edit" );
@@ -123,40 +142,20 @@ $.jgrid.defaults.responsive = true;
 							$(this).dialog("option", "buttons",butt2);
 							break;
 						} if(oper!='view'){
-							
-							dialog_assettype.handler(errorField);
-							dialog_deptcode.handler(errorField);
-							dialog_glassetccode.handler(errorField);
-							dialog_glasset.handler(errorField);
-							dialog_gldepccode.handler(errorField);
-							dialog_gldep.handler(errorField);
-							dialog_glprovccode.handler(errorField);
-							dialog_glprovdep.handler(errorField);
-							dialog_glglossccode.handler(errorField);
-							dialog_glgainloss.handler(errorField);
-							dialog_glrevccode.handler(errorField);
-							dialog_glrevaluation.handler(errorField);
+							dialog_assettype.on();
 
 						} if(oper!='add'){
-							toggleFormData('#jqGrid','#formdata');
+							// toggleFormData('#jqGrid','#formdata');
+							dialog_assettype.check(errorField);
 							
-							dialog_assettype.handler(errorField);
-							dialog_deptcode.handler(errorField);
-							dialog_glassetccode.handler(errorField);
-							dialog_glasset.handler(errorField);
-							dialog_gldepccode.handler(errorField);
-							dialog_glprovccode.handler(errorField);
-							dialog_glprovdep.handler(errorField);
-							dialog_glglossccode.handler(errorField);
-							dialog_glgainloss.handler(errorField);
-							dialog_glrevccode.handler(errorField);
-							dialog_glrevaluation.handler(errorField);
+							
 						}
 				},
 				close: function( event, ui ) {
+					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
-					$("#formdata a").off();
+					$('#formdata .alert').detach();
+					dialog_assettype.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -169,16 +168,17 @@ $.jgrid.defaults.responsive = true;
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'/util/get_table_default',
 				field:'',
 				table_name:'finance.facode',
 				table_id:'assetcode',
-				filterCol:null,
-				filterVal:null,
+				sort_idno: true,
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'/assetcategory/form',
 				field:'',
 				oper:oper,
 				table_name:'finance.facode',
@@ -211,6 +211,8 @@ $.jgrid.defaults.responsive = true;
 				autowidth:true,
                 multiSort: true,
 				viewrecords: true,
+				sortname:'idno',
+				sortorder:'desc',
 				loadonce:false,
 				width: 900,
 				height: 350,
@@ -420,4 +422,5 @@ $.jgrid.defaults.responsive = true;
 				refreshGrid("#gridDialog",paramD);
 			}     */
 			///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
+			
 		});
