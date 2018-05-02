@@ -283,3 +283,25 @@ Route::post('/priceSource/form','material\PriceSourceController@form');
 Route::get('/suppgroup','material\SuppgroupController@show');
 Route::get('/suppgroup/table','material\SuppgroupController@table');
 Route::post('/suppgroup/form','material\SuppgroupController@form');
+
+//// Product Master setup ///
+Route::get('/productMaster','material\ProductMasterController@show');
+Route::get('/productMaster/table','material\ProductMasterController@table');
+Route::post('/productMaster/form','material\ProductMasterController@form');
+
+//// Supplier setup ///
+Route::get('/supplier','material\SupplierController@show');
+Route::get('/supplier/table','material\SupplierController@table');
+Route::post('/supplier/form','material\SupplierController@form');
+
+//// Stock Loc Enquiry ///
+Route::get('/stocklocEnquiry','material\StocklocEnquiryController@show');
+Route::get('/stocklocEnquiry/table','material\StocklocEnquiryController@table');
+Route::post('/stocklocEnquiry/form','material\StocklocEnquiryController@form');
+
+//// Item Enquiry ///
+Route::get('/itemEnquiry','material\ItemEnquiryController@show');
+Route::get('/itemEnquiry/table','material\ItemEnquiryController@table');
+Route::post('/itemEnquiry/form','material\ItemEnquiryController@form');
+
+

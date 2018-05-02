@@ -14,7 +14,7 @@ abstract class defaultController extends Controller{
         date_default_timezone_set('Asia/Kuala_Lumpur');
     }
 
-    public function default_duplicate($table,$duplicateCode,$duplicateValue){
+    public function default_duplicate($table,$duplicateCode,$duplicateValue){//guna table id, tak fixpost
         return DB::table($table)->where($duplicateCode,'=',$duplicateValue)->count();
     }
 
@@ -228,7 +228,7 @@ abstract class defaultController extends Controller{
 
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
-            $idno = substr(strstr($request->table_id,'_'),1);
+            $idno = $request[$request->idnoUse];
         }else{
             $field = $request->field;
             $idno = $request->table_id;
@@ -236,7 +236,7 @@ abstract class defaultController extends Controller{
 
         if(empty($request->noduplicate) && $this->default_duplicate( ///check duplicate
             $request->table_name,
-            $idno,
+            $request->table_id,
             $request[$request->table_id]
         )){
             return response('duplicate', 500);

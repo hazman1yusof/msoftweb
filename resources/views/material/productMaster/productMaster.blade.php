@@ -1,7 +1,8 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body style="display:none">
+@extends('layouts.main')
+
+@section('title', 'Product Master')
+
+@section('body')
 	 
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
@@ -38,18 +39,22 @@
              </div>
 		</div>
 
-    	<div class='col-md-12' style="padding:0 0 15px 0">
-            <table id="jqGrid" class="table table-striped"></table>
-            <div id="jqGridPager"></div>
-        </div>
+	  <div class="panel panel-default">
+		<div class="panel-body">
+	    	<div class='col-md-12' style="padding:0 0 15px 0">
+	            <table id="jqGrid" class="table table-striped"></table>
+	            <div id="jqGridPager"></div>
+	        </div>
+		</div>
+	   </div>
     </div>
 	<!-------------------------------- End Search + table ------------------>
 		
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%' id='formdata'>
 
-				<div class="prevnext btn-group pull-right">
-				</div>
+				{{ csrf_field() }}
+				<input type="hidden" name="idno">
 
 				<div class="form-group">
                 	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
@@ -152,22 +157,10 @@
 				</div>      
 			</form>
 		</div>
+	@endsection
 
-<!-- 	<?php 
-		// include_once('../../../../footer.php'); 
-	?> -->
-	
-	<!-- JS Implementing Plugins -->
+@section('scripts')
 
-	<!-- JS Customization -->
+	<script src="js/material/productMaster/productMaster.js"></script>
 
-	<!-- JS Page Level -->
-	<script src="productMaster.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<!--<script src="../../../../assets/js/dialogHandler.js"></script>-->
-
-<script>
-		
-</script>
-</body>
-</html>
+@endsection

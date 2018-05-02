@@ -1,11 +1,13 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body>
-<input id="Class2" name="Class" type="hidden" value="<?php echo $_GET['Class'];?>">
-<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+@extends('layouts.main')
+
+@section('title', 'Debtor Type')
+
+@section('body')
 
 	<div class='row'>
+		<input id="Class2" name="Class" type="hidden" value="{{ $_GET['Class'] }}">
+		<input id="getYear" name="getYear" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
+
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
 				<div class="ScolClass">
@@ -44,12 +46,10 @@
 
     </div>
 
-	<?php 
-		include_once('../../../../footer.php');
-	?>
-	<script src="itemInquiry.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<script src="../../../../assets/js/dialogHandler.js"></script>
+	@endsection
 
-</body>
-</html>
+@section('scripts')
+
+	<script src="js/material/itemInquiry/itemInquiry.js"></script>
+
+@endsection
