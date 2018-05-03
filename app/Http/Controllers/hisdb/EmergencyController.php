@@ -207,7 +207,7 @@ class EmergencyController extends defaultController
                     'icnum' => $patmast_data->Newic,
                     'apptstatus' => 'Attend',
                     'telno' => $patmast_data->telh,
-                    'telhp' => $patmast_data->telhp
+                    'telhp' => $patmast_data->telhp,
                     // 'ApptTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
                 ]);
 

@@ -95,7 +95,7 @@
 				    	<span class='fa fa-user fa-lg'></span> 
 				    	<span id="span_biodata_label"> Biodata </span>
 					</button> -->
-				    <button id="regBtn" type="button" class="btn btn-success " >
+				    <button id="regBtn" type="button" class="btn btn-default" >
 				    	<span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New
 				    </button>
 				</div>
@@ -188,14 +188,14 @@
 			<label for="title" class="col-md-2 control-label">Race</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="Race" id="race" name="race" maxlength="12" rdonly>
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="Race" id="race" name="race" maxlength="12" rdonly>
 				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
 
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description_race" name="description_race">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description_race" name="description_race" rdonly>
 			</div>
 		</div>
 
@@ -213,7 +213,7 @@
 			</div>
 
              <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="fName" name="fName">
+				<input type="text" class="form-control input-sm"  placeholder="" id="fName" name="fName">
 			</div>
 
 		</div>
@@ -228,7 +228,7 @@
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="payername" name="payername">
+				<input type="text" class="form-control input-sm"  placeholder="" id="payername" name="payername">
 				<input type="hidden" name="paytype" id="paytype">
 			</div>
 		</div>
@@ -243,7 +243,7 @@
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description" name="description_bt">
+				<input type="text" class="form-control input-sm"  placeholder="" id="description" name="description_bt">
 			</div>
 		</div>
 
@@ -257,7 +257,7 @@
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="docname" name="docname">
+				<input type="text" class="form-control input-sm"  placeholder="" id="docname" name="docname">
 			</div>
 		</div>
 
