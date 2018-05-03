@@ -187,8 +187,8 @@ $(document).ready(function () {
 		join_type: ['INNER JOIN','INNER JOIN','INNER JOIN'],
 		join_onCol: ['a.episno','a.mrn','a.loccode'],
 		join_onVal: ['e.episno','p.mrn','d.doctorcode'],
-		join_filterCol: [['e.mrn on =']],
-		join_filterVal: [['a.mrn']],
+		join_filterCol: [['e.mrn on =','e.compcode on ='],['p.compcode on ='],['d.compcode on =']],
+		join_filterVal: [['a.mrn','a.compcode'],['a.compcode'],['a.compcode']],
 		filterCol:['a.apptdatefr','a.type'],
 	 	filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD HH:mm:ss'),'ED']
 	}
