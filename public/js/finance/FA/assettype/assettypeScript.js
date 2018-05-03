@@ -213,12 +213,12 @@
 
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 			toogleSearch('#sbut1', '#searchForm', 'on');
-	populateSelect('#jqGrid', '#searchForm');
-	searchClick('#jqGrid', '#searchForm', urlParam);
+	        populateSelect('#jqGrid', '#searchForm');
+	        searchClick('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid',false,saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
+	        addParamField('#jqGrid', true, urlParam);
+	        addParamField('#jqGrid',false,saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
  
 		});
 		

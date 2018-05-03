@@ -88,10 +88,13 @@
 					</fieldset>
 				</div>
 				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px;padding-top: 25px" >
-				    <button id="biodata_but_emergency" type="button" class="btn btn-default" data-mrn='0'>
+				<button type="button" class="btn btn-default" id='biodata_but'>
+					<span class='fa fa-user fa-lg'></span> Biodata
+				</button>
+				    <!-- <button id="biodata_but_emergency" type="button" class="btn btn-default" data-mrn='0'>
 				    	<span class='fa fa-user fa-lg'></span> 
 				    	<span id="span_biodata_label"> Biodata </span>
-					</button>
+					</button> -->
 				    <button id="regBtn" type="button" class="btn btn-success " >
 				    	<span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New
 				    </button>
@@ -150,12 +153,12 @@
 
 		    <label class="col-md-1 control-label" for="Newic">New I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Newic" id="Newic" class="form-control input-sm">
+				<input type="text" name="Newic" id="Newic" class="form-control input-sm"  maxlength="14">
 			</div>	
 
 		   	<label class="col-md-1 control-label" for="Oldic">Old I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm">
+				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" maxlength="7">
 			</div>	
 
         </div>
