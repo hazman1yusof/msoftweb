@@ -86,10 +86,10 @@ class GoodReturnController extends defaultController
                 $srcdocno = $request->delordhd_srcdocno;
                 $delordno = $request->delordhd_delordno;
 
-                ////dekat po header sana, save balik delordno dkt situ
-                DB::table('material.purordhd')
+                /*////dekat do header sana, save balik delordno dkt situ
+                DB::table('material.delordno')
                 ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
-                ->update(['delordno' => $delordno]);
+                ->update(['delordno' => $delordno]);*/
             }
 
             $responce = new stdClass();
@@ -478,20 +478,20 @@ class GoodReturnController extends defaultController
                         'postdate' => $ivtxnhd_obj->trandate,
                         'year' => $yearperiod->year,
                         'period' => $yearperiod->period,
-                        'drcostcode' => $row_dept->pvalue1,
-                        'dracc' => $row_cat->pvalue2,
-                        'crcostcode' => $row_sysparam->costcode,
-                        'cracc' => $row_sysparam->stockacct,
+                        'drcostcode' => $row_sysparam->pvalue1,
+                        'dracc' => $row_sysparam->pvalue2,
+                        'crcostcode' => $row_dept->costcode,
+                        'cracc' => $row_cat->stockacct,
                         'amount' => $value->amount,
                         'idno' => $value->itemcode
                     ]);
 
                 //2. check glmastdtl utk debit, kalu ada update kalu xde create
-                if($this->isGltranExist($row_dept->pvalue1,$row_cat->pvalue2,$yearperiod->year,$yearperiod->period)){
+                if($this->isGltranExist($row_sysparam->pvalue1,$row_sysparam->pvalue2,$yearperiod->year,$yearperiod->period)){
                     DB::table('finance.glmasdtl')
                         ->where('compcode','=',session('compcode'))
-                        ->where('costcode','=',$row_dept->pvalue1)
-                        ->where('glaccount','=',$row_cat->pvalue2)
+                        ->where('costcode','=',$row_sysparam->pvalue1)
+                        ->where('glaccount','=',$row_sysparam->pvalue2)
                         ->where('year','=',$yearperiod->year)
                         ->update([
                             'upduser' => session('username'),
@@ -503,8 +503,8 @@ class GoodReturnController extends defaultController
                     DB::table('finance.glmasdtl')
                         ->insert([
                             'compcode' => session('compcode'),
-                            'costcode' => $row_dept->pvalue1,
-                            'glaccount' => $row_cat->pvalue2,
+                            'costcode' => $row_sysparam->pvalue1,
+                            'glaccount' => $row_sysparam->pvalue2,
                             'year' => $yearperiod->year,
                             'actamount'.$yearperiod->period => $value->amount,
                             'adduser' => session('username'),
@@ -514,11 +514,11 @@ class GoodReturnController extends defaultController
                 }
 
                 //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
-                if($this->isGltranExist($row_sysparam->costcode,$row_sysparam->stockacct,$yearperiod->year,$yearperiod->period)){
+                if($this->isGltranExist($row_dept->costcode,$row_cat->stockacct,$yearperiod->year,$yearperiod->period)){
                     DB::table('finance.glmasdtl')
                         ->where('compcode','=',session('compcode'))
-                        ->where('costcode','=',$row_sysparam->costcode)
-                        ->where('glaccount','=',$row_sysparam->stockacct)
+                        ->where('costcode','=',$row_dept->costcode)
+                        ->where('glaccount','=',$row_cat->stockacct)
                         ->where('year','=',$yearperiod->year)
                         ->update([
                             'upduser' => session('username'),
@@ -530,8 +530,8 @@ class GoodReturnController extends defaultController
                     DB::table('finance.glmasdtl')
                         ->insert([
                             'compcode' => session('compcode'),
-                            'costcode' => $row_sysparam->costcode,
-                            'glaccount' => $row_sysparam->stockacct,
+                            'costcode' => $row_dept->costcode,
+                            'glaccount' => $row_cat->stockacct,
                             'year' => $yearperiod->year,
                             'actamount'.$yearperiod->period => -$value->amount,
                             'adduser' => session('username'),
@@ -769,7 +769,9 @@ class GoodReturnController extends defaultController
 
     public function save_dt_from_othr_do($refer_recno,$recno){
         $do_dt = DB::table('material.delorddt')
-                ->select('compcode, recno, lineno_, pricecode, itemcode, uomcode, qtyorder, qtydelivered, unitprice, taxcode,perdisc,amtdisc, amtslstax,amount,recstatus,remarks')
+                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode','pouom',
+                    'suppcode','trandate','deldept','deliverydate','qtydelivered','unitprice', 'taxcode', 
+                    'perdisc', 'amtdisc', 'amtslstax', 'amount','expdate','batchno','rem_but','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
@@ -784,16 +786,23 @@ class GoodReturnController extends defaultController
                 'lineno_' => $value->lineno_, 
                 'pricecode' => $value->pricecode, 
                 'itemcode' => $value->itemcode, 
+                //'description' => $value->description,
                 'uomcode' => $value->uomcode, 
-                'qtytag' => 0, 
-                'qtyorder' => $value->qtyorder, 
-                'qtydelivered' => $value->qtydelivered, 
+                'pouom' =>$value->pouom,
+                'suppcode'=>$value->suppcode,
+                'trandate'=>$value->trandate,
+                'deldept'=>$value->deldept,
+                'deliverydate'=>$value->deliverydate,
+                'qtydelivered' => $value->qtydelivered,
                 'unitprice' => $value->unitprice, 
                 'taxcode' => $value->taxcode, 
                 'perdisc' => $value->perdisc, 
                 'amtdisc' => $value->amtdisc, 
                 'amtslstax' => $value->amtslstax, 
                 'amount' => $value->amount, 
+                'expdate'=>$value->expdate,
+                'batchno'=>$value->batchno,
+                'rem_but'=>$value->rem_but,
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                 'recstatus' => 'A', 
@@ -813,7 +822,7 @@ class GoodReturnController extends defaultController
                     ->where('recno','=',$recno);
         $table->update([
                 'totamount' => $amount, 
-                'subamount' => $amount
+                //'subamount' => $amount
             ]);
 
         return $amount;

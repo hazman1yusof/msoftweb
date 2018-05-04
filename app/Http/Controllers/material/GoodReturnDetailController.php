@@ -121,10 +121,7 @@ class GoodReturnDetailController extends defaultController
                     'trandate' => $request->trandate,
                     'deldept' => $request->deldept,
                     'deliverydate' => $request->deliverydate,
-                    'qtyorder' => $request->qtyorder,
-                    'qtydelivered' => $request->qtydelivered,
-                    'qtytag' => $request->qtytag,
-                    'unitprice' => $request->unitprice,
+                    'unitprice' => $request->unitprice, 
                     'taxcode' => $request->taxcode,
                     'perdisc' => $request->perdisc,
                     'amtdisc' => $request->amtdisc,
@@ -195,8 +192,7 @@ class GoodReturnDetailController extends defaultController
                     'pricecode' => $request->pricecode, 
                     'itemcode'=> $request->itemcode, 
                     'uomcode'=> $request->uomcode, 
-                    'pouom'=> $request->pouom, 
-                    'qtyorder'=> $request->qtyorder, 
+                    'pouom'=> $request->pouom,
                     'qtydelivered'=> $request->qtydelivered, 
                     'qtyreturned'=> $request->qtyreturned,
                     'unitprice'=> $request->unitprice,
@@ -224,14 +220,14 @@ class GoodReturnDetailController extends defaultController
             //calculate tot gst from detail
             $tot_gst = DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
+                ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amtslstax');
 
             ///3. update total amount to header
             DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
+                ->where('recno','=',$request->recno)
                 ->update([
                     'totamount' => $totalAmount, 
                     'subamount'=> $totalAmount, 

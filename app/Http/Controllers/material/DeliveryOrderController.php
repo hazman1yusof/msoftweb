@@ -760,11 +760,11 @@ class DeliveryOrderController extends defaultController
                     ->where('ivtxnhd.recno', '=', $request->recno)
                     ->update(['recstatus' => 'CANCELLED']);
 
-                DB::table('material.ivtxnhd')
-                    ->where('ivtxnhd.compcode', '=', session('compcode'))
-                    ->where('ivtxnhd.recno', '=', $request->recno)
+                DB::table('material.ivtxndt')
+                    ->where('ivtxndt.compcode', '=', session('compcode'))
+                    ->where('ivtxndt.recno', '=', $request->recno)
                     ->update([
-                        'netprice' => $value->netprice,
+                        'netprice' => $netprice,
                         'recstatus' =>'CANCELLED'
                     ]);    
 
@@ -926,17 +926,7 @@ class DeliveryOrderController extends defaultController
                             'recstatus' => 'A'
                         ]);
                 }else{
-                    DB::table('finance.glmasdtl')
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'costcode' => $row_dept->costcode,
-                            'glaccount' => $row_cat->stockacct,
-                            'year' => $yearperiod->year,
-                            'actamount'.$yearperiod->period => $value->amount,
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'recstatus' => 'A'
-                        ]);
+                    
                 }
 
                 //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
@@ -1101,10 +1091,14 @@ class DeliveryOrderController extends defaultController
                 ->where('costcode','=',$ccode)
                 ->where('glaccount','=',$glcode)
                 ->first();
-        $pvalue1 = (array)$pvalue1;
+        if(!count($pvalue1)){
+            return false;
+        }else{
+            $pvalue1 = (array)$pvalue1;
 
-        $this->gltranAmount = $pvalue1["actamount".$period];
-        return !empty($pvalue1);
+            $this->gltranAmount = $pvalue1["actamount".$period];
+            return true;
+        }
     }
 
     public function toYear($date){
