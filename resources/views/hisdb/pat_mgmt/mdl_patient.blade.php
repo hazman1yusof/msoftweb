@@ -2,6 +2,7 @@
 <div id="mdl_patient_info" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <form id="frm_patient_info" class="form-horizontal">
+			<input type="hidden" name="idno" id="txt_pat_idno">
             <div class="modal-content">
                 <div class="modal-header label-warning">
                     <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
@@ -88,8 +89,8 @@
 														<input class="form-control form-mandatory" name="Oldic" id="txt_pat_oldic" placeholder="" type="text">
 													</div>
 													<div class="col-md-3">
-														<small for="txt_pat_idno">Other (eg Passport Number)</small>
-														<input class="form-control form-mandatory" name="idnumber" id="txt_pat_idno" placeholder="" type="text">
+														<small for="txt_pat_idnumber">Other (eg Passport Number)</small>
+														<input class="form-control form-mandatory" name="idnumber" id="txt_pat_idnumber" placeholder="" type="text">
 													</div>												
 													
 												</div>
@@ -557,34 +558,34 @@
 							<div class="row"><br /></div>
 							<div class="row">
 								<div class="col-md-6">
-									<small for="txt_pat_name">Name</small>
+									<small for="Name">Name</small>
 									<input class="form-control has-error form-mandatory" name="Name" id="mykad_pat_name" placeholder="" type="text" required>
 								</div>
 								<div class="col-md-3">
-									<small for="cmb_pat_sex">DOB</small>
-										<input class="form-control has-error form-mandatory" name="Name" id="mykad_DOB" placeholder="" type="date" required>
+									<small for="DOB">DOB</small>
+										<input class="form-control has-error form-mandatory" name="DOB" id="mykad_DOB" placeholder="" type="date" required>
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_newic">Race</small>
+									<small for="race">Race</small>
 									<input class="form-control form-mandatory" name="Newic" id="mykad_race" placeholder="" type="text">
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-3">
-									<small for="txt_pat_newic">New IC (eg 690101086649)</small>
+									<small for="Newic">New IC (eg 690101086649)</small>
 									<input class="form-control form-mandatory" name="Newic" id="mykad_newic" placeholder="" type="text">
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_oldic">Old IC</small>
+									<small for="Oldic">Old IC</small>
 									<input class="form-control form-mandatory" name="Oldic" id="mykad_oldic" placeholder="" type="text">
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_idno">Religion</small>
-									<input class="form-control form-mandatory" name="idnumber" id="mykad_religion" placeholder="" type="text">
+									<small for="religion">Religion</small>
+									<input class="form-control form-mandatory" name="religion" id="mykad_religion" placeholder="" type="text">
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_newic">Gender</small>
-									<input class="form-control form-mandatory" name="Newic" id="mykad_gender" placeholder="" type="text">
+									<small for="Gender">Gender</small>
+									<input class="form-control form-mandatory" name="Gender" id="mykad_gender" placeholder="" type="text">
 								</div>
 							</div>
 							<div class="row">
@@ -598,15 +599,15 @@
 							</div>
 							<div class="row">
 								<div class="col-md-3">
-									<small for="txt_pat_idno">Postcode</small>
+									<small for="mykad_postcode">Postcode</small>
 									<input class="form-control form-mandatory" name="mykad_postcode" id="mykad_postcode" placeholder="" type="text">
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_idno">City</small>
+									<small for="mykad_city">City</small>
 									<input class="form-control form-mandatory" name="mykad_city" id="mykad_city" placeholder="" type="text">
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_newic">State</small>
+									<small for="mykad_state">State</small>
 									<input class="form-control form-mandatory" name="mykad_state" id="mykad_state" placeholder="" type="text">
 								</div>
 							</div>

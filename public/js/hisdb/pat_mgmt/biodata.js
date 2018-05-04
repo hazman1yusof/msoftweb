@@ -198,7 +198,7 @@
             .end(); //this for clearing input after hide modal
     });
 
-    $( "#biodata_but").click(function() {
+    $("#biodata_but").click(function() {
     	populatecombo1();
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","add");
@@ -209,18 +209,20 @@
         $('#episno').val('1');
         //patient_empty();
     });
-	
-	$('#btn_register_patient').click(function(){
+
+    function default_click_register(){
         if($('#frm_patient_info').valid()){
             if($(this).data('oper') == 'add'){
-                check_existing_patient();
+                check_existing_patient(save_patient,{action:'default',param:'add'});
             }else{
                 save_patient($(this).data('oper'),$(this).data('idno'));
             }
         }
-    });
+    }
+	
+	$('#btn_register_patient').on('click',default_click_register);
 
-    $('#btn_reg_proceed').click(function(){
+    function default_click_proceed(){
         var checkedbox = $("#tbl_existing_record input[type='checkbox']:checked");
         if(checkedbox.closest("td").next().length>0){
             let mrn = checkedbox.data("mrn");
@@ -229,7 +231,9 @@
         }else{
             save_patient('add');
         }
-    });
+    }
+
+    $('#btn_reg_proceed').on('click',default_click_proceed);
 
     function save_patient(oper,idno,mrn="nothing"){
         var saveParam={
@@ -256,7 +260,7 @@
         });
     }
 	
-	function check_existing_patient(){
+	function check_existing_patient(callback,obj_callback){
 		var patname = $("#txt_pat_name").val();
 		var patdob = moment($("#txt_pat_dob").val(), 'DD/MM/Y').format('Y-MM-DD');
 		var patnewic = $("#txt_pat_newic").val();
@@ -291,7 +295,14 @@
                 tbl_exist_rec.rows.add(data.rows).draw();
                 $('#mdl_existing_record').modal('show');
             }else{
-                save_patient('add');
+                if(obj_callback.action=='default'){
+                    callback(obj_callback.param);
+                }else if(obj_callback.action=='apptrsc'){
+                    let oper = obj_callback.param[0];
+                    let apptbook_idno = obj_callback.param[3];
+                    callback(oper,null,null,apptbook_idno);
+                }
+                
             }
         }).error(function(data){
             alert('there is an error on check existing patient!');
@@ -376,4 +387,40 @@
 
             return (retdata == undefined)? "N/A" : retdata[desc_];
         }
+    }
+
+    function populate_data_from_mrn(mrn){
+        var param={
+            action:'get_value_default',
+            field:"*",
+            table_name:'hisdb.pat_mast',
+            table_id:'_none',
+            filterCol:['compcode'],filterVal:['session.company'],
+            searchCol:['mrn'],searchVal:[mrn]
+        };
+
+        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+
+        },'json').done(function(data) {
+
+            if(data.rows.length > 0){
+                
+                $.each(data.rows[0], function( index, value ) {
+                    var input=$(form+" [name='"+index+"']");
+
+                    if(input.is("[type=radio]")){
+                        $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+                    }else{
+                        input.val(value);
+                    }
+                });
+
+            }else{
+                alert('MRN not found')
+            }
+
+        }).error(function(data){
+
+        });
+
     }

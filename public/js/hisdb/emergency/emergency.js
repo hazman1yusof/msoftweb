@@ -31,6 +31,7 @@ $(document).ready(function () {
 
 	var errorField = [];
 	conf = {
+		modules : 'logic',
 		language: {
 			requiredFields: 'You have not answered all required fields'
 		},
@@ -46,7 +47,9 @@ $(document).ready(function () {
 	};
 
 	$('input').on('beforeValidation', function(value, lang, config) {
-
+		if($(this).attr('data-validation-optional-if-answered')!=''){
+			console.log($(this).attr('data-validation-optional-if-answered'));
+		}
     });
 
 	//////////////////////////////////////////////////////////////

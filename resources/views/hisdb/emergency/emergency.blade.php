@@ -153,12 +153,12 @@
 
 		    <label class="col-md-1 control-label" for="Newic">New I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Newic" id="Newic" class="form-control input-sm"  maxlength="14">
+				<input type="text" name="Newic" id="Newic" class="form-control input-sm" maxlength="14" data-validation-optional-if-answered="Oldic" data-validation="required" >
 			</div>	
 
 		   	<label class="col-md-1 control-label" for="Oldic">Old I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" maxlength="7">
+				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" maxlength="7" data-validation-optional-if-answered="Newic" data-validation="required">
 			</div>	
 
         </div>

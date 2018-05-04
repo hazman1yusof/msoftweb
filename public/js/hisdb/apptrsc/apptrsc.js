@@ -7,6 +7,8 @@ $(document).ready(function () {
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
+		form : '#addForm',
+		modules : 'logic',
 		language : {
             requiredFields: ''
         },
@@ -14,6 +16,9 @@ $(document).ready(function () {
 	
 	var errorField=[];
 	conf = {
+		language: {
+			requiredFields: 'You have not answered all required fields'
+		},
 		onValidate : function($form) {
 			if(errorField.length>0){
 				return {
@@ -32,6 +37,10 @@ $(document).ready(function () {
 	}else{
 		$('#Scol').val('Resource')
 	}
+
+	$("td.fc-event-container a").click(function(){
+		console.log($(this));
+	});
 
 	var dialog_name = new ordialog(
 		'resourcecode', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='resourcecode']", errorField,
@@ -334,7 +343,7 @@ $(document).ready(function () {
 		}
 
 		this.ready = function(){
-			this.events =  $('#calendar').fullCalendar( 'clientEvents');
+			this.events =  $('#calendar').fullCalendar('clientEvents');
 
 			this.date_fr = $('#apptdatefr_day').val();
 			this.day_fr = moment(this.date_fr).format('dddd').toUpperCase();
@@ -433,7 +442,7 @@ $(document).ready(function () {
   			let start = view.start;
   			if(view.name == 'agendaDay'){
   				$(".fc-myCustomButton-button").data( "start", start );
-  				var events = $('#calendar').fullCalendar( 'clientEvents');
+  				var events = $('#calendar').fullCalendar('clientEvents');
 				$(".fc-myCustomButton-button").show();
 				events.forEach(function(elem,id){
 					if(elem.allDay){
@@ -493,6 +502,20 @@ $(document).ready(function () {
 					$('#delete_but').show();
 
 					$("#dialogForm").dialog('open');
+				});
+
+				element.on('click', function() {
+					$('td.fc-event-container a').removeClass('selected');
+					$(this).addClass('selected');
+					console.log(event.mrn);
+
+					if(event.mrn == null){
+						$('#biodata_but_apptrsc').data('oper','add');
+					}else{
+						$('#biodata_but_apptrsc').data('oper','edit');
+					}
+
+					$('#biodata_but_apptrsc').data('bio_from_calander',event);
 				});
 			}
 			if(event.source.rendering == 'background'){
@@ -910,5 +933,94 @@ $(document).ready(function () {
         	}
 		}
 	}
+
+	$('#btn_register_patient').off('click',default_click_register);
+	$('#btn_reg_proceed').off('click',default_click_proceed);
+
+	$("#biodata_but_apptrsc").click(function(){
+
+		var data = $(this).data('bio_from_calander');
+		var oper = $(this).data('oper');
+		populatecombo1();
+        $('#mdl_patient_info').modal({backdrop: "static"});
+        $("#btn_register_patient").data("oper",oper);
+
+		if(oper == 'add'){
+	        var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
+	        $('#first_visit_date').val(first_visit_val);
+	        var last_visit_val =moment(new Date()).format('DD/MM/YYYY');
+	        $('#last_visit_date').val(last_visit_val);
+	        $('#txt_pat_episno').val('1');
+	        $('#txt_pat_name').val(data.pat_name);
+			$('#txt_pat_telh').val(data.telno);
+			$('#txt_pat_telhp').val(data.telhp);
+		}else{
+			populate_data_from_mrn(data.mrn);
+		}
+
+	});
+
+	$('#btn_register_patient').on('click',function(){
+		var data = $("#biodata_but_apptrsc").data('bio_from_calander');
+        var apptbook_idno = data.idno;
+
+        if($('#frm_patient_info').valid()){
+            if($(this).data('oper') == 'add'){
+                check_existing_patient(save_patient_apptrsc,{
+                	"action":"apptrsc",
+                	"param":['add',null,null,apptbook_idno]
+                });
+            }else{
+	            let mrn =  $('#txt_pat_mrn').val();
+	            let idno =  $('#txt_pat_idno').val();
+                save_patient_apptrsc('edit',idno,mrn,apptbook_idno);
+            }
+        }
+    });
+
+    $('#btn_reg_proceed').on('click',function(){
+		var data = $("#biodata_but_apptrsc").data('bio_from_calander');
+        var apptbook_idno = data.idno;
+        var checkedbox = $("#tbl_existing_record input[type='checkbox']:checked");
+
+        if(checkedbox.closest("td").next().length>0){
+            let mrn = checkedbox.data("mrn");
+            let idno = checkedbox.data("idno");
+            save_patient_apptrsc('edit',idno,mrn,apptbook_idno);
+        }else{
+            save_patient_apptrsc('add',null,null,apptbook_idno);
+        }
+    });
+
+
+	
+
+ 	function save_patient_apptrsc(oper,idno,mrn="nothing",apptbook_idno){
+ 		var saveParam={
+            action:'save_patient',
+            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno'],
+            oper:oper,
+            table_name:'hisdb.pat_mast',
+            table_id:'idno',
+            sysparam:null
+        },_token = $('#csrf_token').val();
+
+        if(oper=='add'){
+            saveParam.sysparam = {source:'HIS',trantype:'MRN',useOn:'MRN'};
+            var postobj = {_token:_token,apptbook_idno:apptbook_idno};
+        }else if(oper == 'edit'){
+            var postobj = {_token:_token,idno:idno,apptbook_idno:apptbook_idno,MRN:mrn};
+        }
+
+        $.post( "/apptrsc/form?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
+            
+        },'json').fail(function(data) {
+            alert('there is an error');
+        }).success(function(data){
+            $('#mdl_patient_info').modal('hide');
+            $('#mdl_existing_record').modal('hide');
+			$('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
+        });
+ 	}
 
 });

@@ -28,6 +28,11 @@
     border: 1px solid #3a87ad;
 }
 
+td.fc-event-container a.selected{
+	background-color: dimgray !important;
+}
+
+
 @endsection
 
 @section('title', 'Appointment')
@@ -61,7 +66,7 @@
 			</form>
 
 			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
-				<button type="button" class="btn btn-default" id='biodata_but'>
+				<button type="button" class="btn btn-default" id='biodata_but_apptrsc' data-oper='add'>
 					<span class='fa fa-user fa-lg'></span> Biodata
 				</button>
 				<button type="button" class="btn btn-default" id='transfer_doctor_but'>
@@ -107,7 +112,6 @@
 								<div class="col-md-4">
 									<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
 								</div>
-								<button type='button' id='select_biodata' class="btn btn-sm btn-primary">Biodata</button>
 							</div>
 							<div class="form-group">
 								<label for="start" class="col-md-2 control-label">Appt Date</label>
@@ -128,7 +132,7 @@
 							<div class="form-group">
 								<label for="telh" class="col-md-2 control-label">Tel No</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="Telephone No" id="telh" name="telh" data-validation="required" data-validation-optional-if-answered="telhp">	
+									<input type="text" class="form-control input-sm" placeholder="Telephone No" id="telh" name="telh" data-validation-optional-if-answered="telhp" data-validation="required">	
 								</div>
 								<label for="status" class="col-md-2 control-label">Status</label>
 								<div class="col-md-3">
