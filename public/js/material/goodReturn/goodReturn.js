@@ -526,7 +526,9 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode', 'dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.qtyreturned','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','NULL AS rem_but','dodt.remarks'],
+		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode', 'dodt.pouom', 'dodt.suppcode','dodt.trandate',
+		'dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.qtyreturned','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax','dodt.netunitprice','dodt.totamount', 
+		'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks'],
 		table_name:['material.delorddt AS dodt','material.productmaster AS p'],
 		table_id:'lineno_',
 		join_type:['LEFT JOIN'],
@@ -1343,7 +1345,7 @@ $(document).ready(function () {
 					url: '/util/get_value_default',
 					field: ['dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode','dodt.pouom',
 					'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.unitprice', 'dodt.taxcode', 
-					'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax', 'dodt.amount','dodt.expdate','dodt.batchno','NULL AS remarks_button','dodt.remarks',
+					'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax', 'dodt.amount','dodt.expdate','dodt.batchno','dodt.rem_but AS remarks_button','dodt.remarks',
 					'dodt.recstatus', 't.rate'],
 					table_name: ['material.delorddt AS dodt','material.productmaster AS p', 'hisdb.taxmast AS t'],
 					table_id: 'lineno_',
@@ -1398,8 +1400,8 @@ $(document).ready(function () {
 			open: function(){
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_docno.urlParam.fixPost = "true";
-				dialog_docno.urlParam.filterCol = ['h.prdept','h.recstatus'];
-				dialog_docno.urlParam.filterVal = [$("#delordhd_prdept").val(),'POSTED'];
+				dialog_docno.urlParam.filterCol = ['h.prdept','h.recstatus', 'h.trantype'];
+				dialog_docno.urlParam.filterVal = [$("#delordhd_prdept").val(),'POSTED', 'GRN'];
 			}
 		},'none'
 	);
