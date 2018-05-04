@@ -1343,7 +1343,7 @@ $(document).ready(function () {
 					url: '/util/get_value_default',
 					field: ['dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode','dodt.pouom',
 					'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.unitprice', 'dodt.taxcode', 
-					'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax', 'dodt.amount','dodt.expdate','dodt.batchno','dodt.rem_but','dodt.remarks',
+					'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax', 'dodt.amount','dodt.expdate','dodt.batchno','NULL AS remarks_button','dodt.remarks',
 					'dodt.recstatus', 't.rate'],
 					table_name: ['material.delorddt AS dodt','material.productmaster AS p', 'hisdb.taxmast AS t'],
 					table_id: 'lineno_',
@@ -1381,7 +1381,7 @@ $(document).ready(function () {
 									totamount:0,
 									expdate:elem['expdate'],
 									batchno:elem['batchno'],
-									rem_but:null,
+									remarks_button:null,
 									remarks:elem['remarks'],
 								}
 							);
