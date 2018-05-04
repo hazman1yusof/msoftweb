@@ -67,7 +67,7 @@
 		</form>
 
         <div class="panel panel-default">
-		    	<div class="panel-heading">Good Return DataEntry Header</div>
+		    	<div class="panel-heading">Good Return Data Entry Header</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
             				<table id="jqGrid" class="table table-striped"></table>
@@ -86,7 +86,7 @@
         	</div>
 
 	    <div class="panel panel-default">
-		    	<div class="panel-heading">Good Return DataEntry Detail</div>
+		    	<div class="panel-heading">Good Return Data Entry Detail</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
 	            			<table id="jqGrid3" class="table table-striped"></table>

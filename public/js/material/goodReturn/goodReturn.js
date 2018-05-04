@@ -945,7 +945,7 @@ $(document).ready(function () {
 			case 'PO UOM': temp = $('#pouom'); break;
 			case 'Price Code':temp=$('#pricecode');break;
 			case 'Tax Code':temp=$('#taxcode');break;
-			case 'Quantity Delivered': temp = $("#jqGrid2 input[name='qtyreturned']"); 
+			case 'Quantity Returned': temp = $("#jqGrid2 input[name='qtyreturned']"); 
 				$("#jqGrid2 input[name='qtyreturned']").hasClass("error");
 				break;
 		}
@@ -1219,7 +1219,7 @@ $(document).ready(function () {
 		$("#jqGrid2").jqGrid('setRowData', linenotoedit ,{netunitprice:netunitprice});
 		
 
-		var id="#jqGrid2 input[name='qtyreturned']"
+		/*var id="#jqGrid2 input[name='qtyreturned']"
 		var fail_msg = "Quantity Delivered must be greater than 0"
 		var name = ">0quantitydelivered";
 		if (qtyreturned < qtydelivered) {
@@ -1236,7 +1236,7 @@ $(document).ready(function () {
 			if($.inArray(id,errorField)===-1){
 				errorField.push( id );
 			}
-		}
+		}*/
 
 		event.data.currency.formatOn();//change format to currency on each calculation
 

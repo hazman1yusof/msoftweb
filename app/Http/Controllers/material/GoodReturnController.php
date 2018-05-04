@@ -86,10 +86,10 @@ class GoodReturnController extends defaultController
                 $srcdocno = $request->delordhd_srcdocno;
                 $delordno = $request->delordhd_delordno;
 
-                ////dekat po header sana, save balik delordno dkt situ
-                DB::table('material.purordhd')
+                /*////dekat do header sana, save balik delordno dkt situ
+                DB::table('material.delordno')
                 ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
-                ->update(['delordno' => $delordno]);
+                ->update(['delordno' => $delordno]);*/
             }
 
             $responce = new stdClass();
@@ -769,7 +769,9 @@ class GoodReturnController extends defaultController
 
     public function save_dt_from_othr_do($refer_recno,$recno){
         $do_dt = DB::table('material.delorddt')
-                ->select('compcode, recno, lineno_, pricecode, itemcode, uomcode, qtyorder, qtydelivered, unitprice, taxcode,perdisc,amtdisc, amtslstax,amount,recstatus,remarks')
+                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode','pouom',
+                    'suppcode','trandate','deldept','deliverydate','qtydelivered','unitprice', 'taxcode', 
+                    'perdisc', 'amtdisc', 'amtslstax', 'amount','expdate','batchno','rem_but','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
@@ -784,16 +786,23 @@ class GoodReturnController extends defaultController
                 'lineno_' => $value->lineno_, 
                 'pricecode' => $value->pricecode, 
                 'itemcode' => $value->itemcode, 
+                //'description' => $value->description,
                 'uomcode' => $value->uomcode, 
-                'qtytag' => 0, 
-                'qtyorder' => $value->qtyorder, 
-                'qtydelivered' => $value->qtydelivered, 
+                'pouom' =>$value->pouom,
+                'suppcode'=>$value->suppcode,
+                'trandate'=>$value->trandate,
+                'deldept'=>$value->deldept,
+                'deliverydate'=>$value->deliverydate,
+                'qtydelivered' => $value->qtydelivered,
                 'unitprice' => $value->unitprice, 
                 'taxcode' => $value->taxcode, 
                 'perdisc' => $value->perdisc, 
                 'amtdisc' => $value->amtdisc, 
                 'amtslstax' => $value->amtslstax, 
                 'amount' => $value->amount, 
+                'expdate'=>$value->expdate,
+                'batchno'=>$value->batchno,
+                'rem_but'=>$value->rem_but,
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                 'recstatus' => 'A', 
@@ -813,7 +822,7 @@ class GoodReturnController extends defaultController
                     ->where('recno','=',$recno);
         $table->update([
                 'totamount' => $amount, 
-                'subamount' => $amount
+                //'subamount' => $amount
             ]);
 
         return $amount;
