@@ -8,7 +8,6 @@
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
-
 	 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
@@ -87,7 +86,7 @@
         	</div>
 
 	    <div class="panel panel-default">
-		    	<div class="panel-heading">Delivery Order DataEntry Detail</div>
+		    	<div class="panel-heading">Good Return DataEntry Detail</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
 	            			<table id="jqGrid3" class="table table-striped"></table>
@@ -106,10 +105,10 @@
 					</div>
 				<div class="panel-body" style="position: relative;">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
+							{{ csrf_field() }}
 							<input id="delordhd_trantype" name="delordhd_trantype" type="hidden" value='GRT'>
 							<input id="delordhd_idno" name="delordhd_idno" type="hidden">
 							<input id="referral" name="referral" type="hidden">
-							<input id="docno" name="docno" type="hidden">
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="delordhd_prdept">Purchase Department</label>	 
@@ -133,7 +132,7 @@
 						  			<input id="delordhd_srcdocno" name="delordhd_srcdocno" type="text" class="form-control input-sm">
 						  			<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 						  		</div>
-						  		</div>
+						  	</div>
 							</div>
 
 							<div class="form-group">
@@ -197,20 +196,20 @@
 						  	<hr/>
 
 						  	<div class="form-group">		
-						  		<label class="col-md-2 control-label" for="delordhd_trandate">Returned Date</label>  
+						  		<label class="col-md-2 control-label" for="delordhd_trandate">Received Date</label>  
 						  		<div class="col-md-2">
 									<input id="delordhd_trandate" name="delordhd_trandate" type="date" maxlength="10" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
 										max="<?php echo date('Y-m-d');?>">
 						  		</div>
 
-						  		<label class="col-md-2 control-label" for="delordhd_trantime">Time</label>  
+						  		<label class="col-md-2 control-label" for="delordhd_trantime">Received Time</label>  
 					  			<div class="col-md-2">
-									<input id="delordhd_trantime" name="delordhd_trantime" type="text" class="form-control input-sm" value="<?php date_default_timezone_set("Asia/Kuala_Lumpur");echo date("h:i a");?>">
+									<input id="delordhd_trantime" name="delordhd_trantime" type="time" class="form-control input-sm" value="<?php date_default_timezone_set("Asia/Kuala_Lumpur");echo date("h:i a");?>">
 					  			</div>
 
 					  			<label class="col-md-2 control-label" for="delordhd_deliverydate">Delivery Date</label>  
 						  			<div class="col-md-2">
-									<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" >
+									<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm"  value="<?php echo date("Y-m-d"); ?>" >
 						  		</div>
 							</div>
 
@@ -241,7 +240,7 @@
 				 				<label class="col-md-2 control-label" for="delordhd_taxclaimable">Tax Claim</label>  
 								  <div class="col-md-2">
 									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='Claimable'>Yes</label>
-									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='Non-Claimable'>No</label>
+									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='Non-Claimable' selected>No</label>
 								  </div>
 
 							  <label class="col-md-2 control-label" for="delordhd_recstatus">Record Status</label>  
@@ -296,11 +295,11 @@
 			
 			<div class='panel panel-info'>
 				<div class="panel-heading">Good Return Detail</div>
-				<input id="gstpercent" name="gstpercent" type="hidden">
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							<input id="gstpercent" name="gstpercent" type="hidden">
-							
+							<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
+							<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'>
 
 							<div id="jqGrid2_c" class='col-md-12'>
 								<table id="jqGrid2" class="table table-striped"></table>
@@ -308,9 +307,7 @@
 							</div>
 						</form>
 					</div>
-					<input id="gstpercent" name="gstpercent" type="hidden">
-							<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
-							<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'>
+
 					<div class="panel-body">
 						<div class="noti"><ol></ol>
 						</div>
