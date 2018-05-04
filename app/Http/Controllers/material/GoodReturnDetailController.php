@@ -227,7 +227,7 @@ class GoodReturnDetailController extends defaultController
             ///3. update total amount to header
             DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
+                ->where('recno','=',$request->recno)
                 ->update([
                     'totamount' => $totalAmount, 
                     'subamount'=> $totalAmount, 
