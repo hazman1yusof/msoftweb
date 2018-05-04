@@ -159,7 +159,7 @@ class GoodReturnController extends defaultController
             try{
                 // ni edit kalu copy utk do dari existing po
                 //1. update po.delordno lama jadi 0, kalu do yang dulu pon copy existing po 
-               /* if($srcdocno->srcdocno != '0'){
+                if($srcdocno->srcdocno != '0'){
                     DB::table('material.purordhd')
                     ->where('purordno','=', $srcdocno->srcdocno)->where('compcode','=',session('compcode'))
                     ->update(['delordno' => '0']);
@@ -208,7 +208,7 @@ class GoodReturnController extends defaultController
 
                 return response('Error'.$e, 500);
             }
-        }*/
+        }
 
     }
 
