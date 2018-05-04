@@ -33,12 +33,13 @@
 		border-radius:5px;
 	}
 
-
 @endsection
 
 @section('css')
+	<link rel="stylesheet" href="plugins/datatables/css/jquery.dataTables.css">
 	<link href="plugins/glDatePicker/styles/glDatePicker.default.css" rel="stylesheet" type="text/css">
 @endsection
+
 @section('title', 'Emergency Department')
 
 @section('body')
@@ -59,25 +60,44 @@
 					<legend class="scheduler-border">Legend</legend>
 		  				
 		  				<input type='color' id='CurrentPTcolor' name='CurrentPTcolor' class="form-control input-sm bg_color" value="{{$color->CurrentPTcolor}}" style="display: none;">
+
 		  				<input type='color' id='CancelPTcolor' name='CancelPTcolor' class="form-control input-sm bg_color" value="{{$color->CancelPTcolor}}" style="display: none;">
+
 		  				<input type='color' id='DiscPTcolor' name='DiscPTcolor' class="form-control input-sm bg_color" value="{{$color->DiscPTcolor}}" style="display: none;">
 
-						<button type="button" class="btn btn-sm colorpointer" style="padding: 1px" data-color='CurrentPTcolor' id='btn_CurrentPTcolor'>
-							Current
-							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
-						</button>
-						<button type="button" class="btn btn-sm colorpointer" style="padding: 1px" data-color='CancelPTcolor' id='btn_CancelPTcolor'>
-							Cancel
-							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
-						</button>
-						<button type="button" class="btn btn-sm colorpointer" style="padding: 1px" data-color='DiscPTcolor' id='btn_DiscPTcolor'>
-							Discharge
-							<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
-						</button>
+		  				<div class="btn-group btn-sm" role="group" style="padding:2px">
+							<button type="button" class="btn" style="margin-right:0px ">Current</button>
+							<button type="button" class="btn colorpointer" style="padding: 1px" data-color='CurrentPTcolor' id='btn_CurrentPTcolor'>
+								<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
+							</button>
+						</div>
+
+						<div class="btn-group btn-sm" role="group" style="padding:2px">
+							<button type="button" class="btn" style="margin-right:0px ">Cancel</button>
+							<button type="button" class="btn btn-sm colorpointer" style="padding: 1px" data-color='CancelPTcolor' id='btn_CancelPTcolor'>
+								<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
+							</button>
+						</div>
+
+						<div class="btn-group btn-sm" role="group" style="padding:2px">
+							<button type="button" class="btn" style="margin-right:0px ">Discharge</button>
+							<button type="button" class="btn btn-sm colorpointer" style="padding: 1px" data-color='DiscPTcolor' id='btn_DiscPTcolor'>
+								<img src="img/paint.png" style="width:30px" alt="..." id="imgid">
+							</button>
+						</div>
 					</fieldset>
 				</div>
-				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px;padding-top: 10px" >
-				    <button id="regBtn" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
+				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px;padding-top: 25px" >
+				<button type="button" class="btn btn-default" id='biodata_but'>
+					<span class='fa fa-user fa-lg'></span> Biodata
+				</button>
+				    <!-- <button id="biodata_but_emergency" type="button" class="btn btn-default" data-mrn='0'>
+				    	<span class='fa fa-user fa-lg'></span> 
+				    	<span id="span_biodata_label"> Biodata </span>
+					</button> -->
+				    <button id="regBtn" type="button" class="btn btn-default" >
+				    	<span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New
+				    </button>
 				</div>
 				
 			 </fieldset> 
@@ -133,19 +153,19 @@
 
 		    <label class="col-md-1 control-label" for="Newic">New I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Newic" id="Newic" class="form-control input-sm" data-validation="required" data-validation-optional-if-answered="Oldic">
+				<input type="text" name="Newic" id="Newic" class="form-control input-sm"  maxlength="14">
 			</div>	
 
 		   	<label class="col-md-1 control-label" for="Oldic">Old I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" data-validation-optional-if-answered="Newic">
+				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" maxlength="7">
 			</div>	
 
         </div>
         <div class="form-group">
         	<label class="col-md-2 control-label" for="DOB">D.O.B</label>
 			<div class="col-md-2">
-				<input type="date" name="DOB" id="DOB" class="form-control input-sm" data-validation="required" >
+				<input type="date" name="DOB" id="DOB" class="form-control input-sm">
 			</div>
 
             <label class="col-md-1 control-label" for="idnumber">Others No</label>
@@ -155,8 +175,8 @@
 
           	<label class="col-md-1 control-label" for="sex">Sex</label>
 			<div class="col-md-2">
-				<select id='sex' class="form-control input-sm">
-				 <option value="pleasechoose" selected>Please Choose</option>
+				<select id='sex' class="form-control input-sm" data-validation="required">
+				 <option value="" selected>Please Choose</option>
 	      		 <option value="M">Male</option>
 		         <option value="F">Female</option>
 		         <option value="U">Unisex</option>
@@ -168,14 +188,14 @@
 			<label for="title" class="col-md-2 control-label">Race</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="Race" id="race" name="race" maxlength="12" rdonly>
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="Race" id="race" name="race" maxlength="12" rdonly>
 				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
 
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description_race" name="description_race">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description_race" name="description_race" rdonly>
 			</div>
 		</div>
 
@@ -193,7 +213,7 @@
 			</div>
 
              <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="fName" name="fName">
+				<input type="text" class="form-control input-sm"  placeholder="" id="fName" name="fName">
 			</div>
 
 		</div>
@@ -208,7 +228,7 @@
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="payername" name="payername">
+				<input type="text" class="form-control input-sm"  placeholder="" id="payername" name="payername">
 				<input type="hidden" name="paytype" id="paytype">
 			</div>
 		</div>
@@ -223,7 +243,7 @@
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description" name="description_bt">
+				<input type="text" class="form-control input-sm"  placeholder="" id="description" name="description_bt">
 			</div>
 		</div>
 
@@ -237,21 +257,30 @@
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="docname" name="docname">
+				<input type="text" class="form-control input-sm"  placeholder="" id="docname" name="docname">
 			</div>
 		</div>
 
 	</form>		
 	</div>
 
+	@include('hisdb.pat_mgmt.mdl_patient')
+	@include('hisdb.pat_mgmt.itemselector')
  
 @endsection
 
-
 @section('scripts')
 
+	<script type="text/javascript" src="plugins/datatables/js/jquery.datatables.min.js"></script>
+	<script type="text/javascript" src="plugins/jquery-validator/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="plugins/jquery-validator/additional-methods.min.js"></script>
+
+	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
+	<script type="text/javascript" src="js/myjs/global.js"></script>
+	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
+
 	<script src="js/hisdb/emergency/emergency.js"></script>
-	<!-- <script type="text/javascript" src="plugins/glDatePicker/glDatePicker.min.js"></script> -->
 	<script type="text/javascript" src="plugins/glDatePicker/glDatePicker.js"></script>
 	<script type="text/javascript" src="plugins/glDatePicker/glDatePicker.min.js"></script>
+
 @endsection

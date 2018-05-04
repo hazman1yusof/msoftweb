@@ -241,9 +241,9 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			if(rowid != null) {
 				urlParam_suppitems.filterVal[0]=selrowData("#jqGrid").SuppCode; 
-				saveParam_suppitems.filterVal[0]=selrowData("#jqGrid").SuppCode; 
+				// saveParam_suppitems.filterVal[0]=selrowData("#jqGrid").SuppCode; 
 				urlParam_suppbonus.filterVal[1]=selrowData("#jqGrid").SuppCode;
-				saveParam_suppbonus.filterVal[0]=selrowData("#jqGrid").SuppCode;
+				// saveParam_suppbonus.filterVal[0]=selrowData("#jqGrid").SuppCode;
 				//$("#Fsuppitems :input[name='billtype']").val(selrowData("#jqGrid").billtype);
 				$("#Fsuppitems :input[name='si_suppcode']").val(selrowData("#jqGrid").SuppCode);
 				refreshGrid('#gridSuppitems',urlParam_suppitems);
@@ -503,9 +503,11 @@ $(document).ready(function () {
 		oper:oper_suppitems,
 		table_name:'material.suppitems',//for save_table_default, use only 1 table
 		fixPost:'true',//throw out dot in the field name
-		table_id:'si_lineno_',
-		filterCol:['suppcode'],
-		filterVal:[''],//suppcode set when click supplier grid
+		idnoUse:'si_idno',
+		table_id:'itemcode',
+		// noduplicate:true,
+		// filterCol:['suppcode'],
+		// filterVal:[''],//suppcode set when click supplier grid
 		lineno:{useOn:'lineno_'},
 		saveip:'true'
 	};
@@ -537,7 +539,6 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'si_adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'si_upduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'si_upddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'idno', name: 'si_idno', width: 90, hidden:true},
 			{ label: 'computerid', name: 'si_computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'si_ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'si_lastcomputerid', width: 90, hidden:true, classes: 'wrap'},
@@ -633,8 +634,6 @@ $(document).ready(function () {
 			oper_suppitems='edit';
 			selRowId = $("#gridSuppitems").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",selRowId,'edit');
-
-
 		}, 
 		position: "first", 
 		title:"Edit Selected Row", 
@@ -654,7 +653,7 @@ $(document).ready(function () {
 	});
 
 	addParamField('#gridSuppitems',false,urlParam_suppitems);
-	addParamField('#gridSuppitems',false,saveParam_suppitems,["p_description", "si_idno", "si_adduser", "si_adddate", "si_computerid", 'si_ipaddress']);
+	addParamField('#gridSuppitems',false,saveParam_suppitems,["p_description", "si_idno", "si_adduser", "si_adddate", "si_upduser", "si_upddate", "si_computerid", 'si_ipaddress', 'si_recstatus']);
 
 	populateSelect('#gridSuppitems','#searchForm2');
 	searchClick('#gridSuppitems','#searchForm2',urlParam_suppitems);
@@ -778,6 +777,9 @@ $(document).ready(function () {
 			parent_close_disabled(false);
 			//$('.alert').detach();
 			$('#Fsuppbonus .alert').detach();
+			dialog_bonpricecode.off();
+			dialog_bonitemcode.off();
+			dialog_bonuomcode.off();
 			$("#Fsuppbonus a").off();
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",buttbonus1);
@@ -791,7 +793,7 @@ $(document).ready(function () {
 		url:'util/get_table_default',
 		field:'',
 		fixPost:'true',//replace underscore with dot
-		table_name:['material.suppbonus sb','material.product p'],
+		table_name:['material.suppbonus as sb','material.product as p'],
 		table_id:'sb_lineno_',
 		join_type:['LEFT JOIN'],
 		join_onCol:['sb.bonitemcode'],
@@ -808,9 +810,10 @@ $(document).ready(function () {
 		oper:oper_suppitems,
 		table_name:'material.suppbonus',//for save_table_default, use only 1 table
 		fixPost:'true',//throw out dot in the field name
-		table_id:'sb_lineno_',
-		filterCol:['suppcode'],
-		filterVal:[''],//suppcode set when click supplier grid
+		idnoUse:'sb_idno',
+		// filterCol:['suppcode'],
+		// filterVal:[''],//suppcode set when click supplier grid
+		noduplicate:true,
 		lineno:{useOn:'lineno_'},
 		saveip:'true'
 	}
@@ -879,7 +882,6 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			if(rowid != null) {
 				rowData = $('#gridSuppBonus').jqGrid ('getRowData', rowid);
-				//console.log(rowData['svc.billtype']);
 			}
 		},
 	});
@@ -900,7 +902,6 @@ $(document).ready(function () {
 				return emptyFormdata(errorField,'#Fsuppbonus');
 			}else{
 				saveFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",'del',saveParam_suppbonus,urlParam_suppbonus,null,{'idno':selRowId});
-				//saveFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",'del',saveParam_suppbonus,{"chgcode":selRowId});
 			}
 		}, 
 		position: "first", 
@@ -941,7 +942,7 @@ $(document).ready(function () {
 	});
 
 	addParamField('#gridSuppBonus',false,urlParam_suppbonus);
-	addParamField('#gridSuppBonus',false,saveParam_suppbonus,["p_description", "sb_idno", "sb_adduser","sb_adddate", "sb_computerid", "sb_ipaddress"]);
+	addParamField('#gridSuppBonus',false,saveParam_suppbonus,["p_description", "sb_idno", "sb_adduser","sb_adddate", "sb_upduser","sb_upddate", "sb_computerid", "sb_ipaddress", "sb_recstatus"]);
 
 	populateSelect('#gridSuppBonus','#searchForm3');
 	searchClick('#gridSuppBonus','#searchForm3',urlParam_suppbonus);

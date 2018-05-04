@@ -62,7 +62,6 @@ Route::get('/relationship','setup\RelationshipController@show');
 Route::get('/relationship/table','setup\RelationshipController@table');
 Route::post('/relationship/form','setup\RelationshipController@form');
 
-
 //// billtype setup page ///
 Route::get('/billtype','setup\BilltypeController@show');
 Route::get('/billtype/table','setup\BilltypeController@table');
@@ -189,7 +188,8 @@ Route::post('/location/form','finance\LocationController@form');
 Route::get('/assettype','finance\assettypeController@show');
 Route::get('/assettype/table','finance\assettypeController@table');
 Route::post('/assettype/form','finance\assettypeController@form');
- 
+
+/// assetcategory ///
 Route::get('/assetcategory','finance\assetcategoryController@show');
 Route::get('/assetcategory/table','finance\assetcategoryController@table');
 Route::post('/assetcategory/form','finance\assetcategoryController@form');
@@ -234,11 +234,84 @@ Route::get('/paymentMode','finance\PaymentModeController@show');
 Route::get('/paymentMode/table','finance\PaymentModeController@table');
 Route::post('/paymentMode/form','finance\PaymentModeController@form');
 
-//// category Mode setup ///
+//// categoryFIN Mode setup ///
 Route::get('/categoryfin','finance\CategoryFinController@show');
 Route::get('/categoryfin/table','finance\CategoryFinController@table');
 Route::post('/categoryfin/form','finance\CategoryFinController@form');
 
+//// sequence material setup ///
+Route::get('/sequence','material\SequenceController@show');
+Route::get('/sequence/table','material\SequenceController@table');
+Route::post('/sequence/form','material\SequenceController@form');
 
+//// categoryINV material setup ///
+Route::get('/categoryinv','material\CategoryInvController@show');
+Route::get('/categoryinv/table','material\CategoryInvController@table');
+Route::post('/categoryinv/form','material\CategoryInvController@form');
+
+//// Delivery Department material setup ///
+Route::get('/deliveryDept','material\DeliveryDeptController@show');
+Route::get('/deliveryDept/table','material\DeliveryDeptController@table');
+Route::post('/deliveryDept/form','material\DeliveryDeptController@form');
+
+//// Transaction Type material setup ///
+Route::get('/tranType','material\TranTypeController@show');
+Route::get('/tranType/table','material\TranTypeController@table');
+Route::post('/tranType/form','material\TranTypeController@form');
+
+//// PO Type material setup ///
+Route::get('/potype','material\POTypeController@show');
+Route::get('/potype/table','material\POTypeController@table');
+Route::post('/potype/form','material\POTypeController@form');
+
+//// Authorization material setup ///
+Route::get('/authorization','material\AuthorizationController@show');
+Route::get('/authorization/table','material\AuthorizationController@table');
+Route::post('/authorization/form','material\AuthorizationController@form');
+
+//// UOM material setup ///
+Route::get('/uom','material\UomController@show');
+Route::get('/uom/table','material\UomController@table');
+Route::post('/uom/form','material\UomController@form');
+
+//// Price Source setup ///
+Route::get('/priceSource','material\PriceSourceController@show');
+Route::get('/priceSource/table','material\PriceSourceController@table');
+Route::post('/priceSource/form','material\PriceSourceController@form');
+
+//// Supplier Group setup ///
+Route::get('/suppgroup','material\SuppgroupController@show');
+Route::get('/suppgroup/table','material\SuppgroupController@table');
+Route::post('/suppgroup/form','material\SuppgroupController@form');
+
+//// Product Master setup ///
+Route::get('/productMaster','material\ProductMasterController@show');
+Route::get('/productMaster/table','material\ProductMasterController@table');
+Route::post('/productMaster/form','material\ProductMasterController@form');
+
+//// Supplier setup ///
+Route::get('/supplier','material\SupplierController@show');
+Route::get('/supplier/table','material\SupplierController@table');
+Route::post('/supplier/form','material\SupplierController@form');
+
+//// Stock Loc Enquiry ///
+Route::get('/stocklocEnquiry','material\StocklocEnquiryController@show');
+Route::get('/stocklocEnquiry/table','material\StocklocEnquiryController@table');
+Route::post('/stocklocEnquiry/form','material\StocklocEnquiryController@form');
+
+//// Item Enquiry ///
+Route::get('/itemEnquiry','material\ItemEnquiryController@show');
+Route::get('/itemEnquiry/table','material\ItemEnquiryController@table');
+Route::post('/itemEnquiry/form','material\ItemEnquiryController@form');
+
+//// Stock Location ///
+Route::get('/stockloc','material\StocklocController@show');
+Route::get('/stockloc/table','material\StocklocController@table');
+Route::post('/stockloc/form','material\StocklocController@form');\
+
+//// Product ///
+Route::get('/product','material\ProductController@show');
+Route::get('/product/table','material\ProductController@table');
+Route::post('/product/form','material\ProductController@form');
 
 

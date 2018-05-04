@@ -28,10 +28,77 @@
 
 
 			////////////////////object for dialog handler//////////////////
-			dialog_costcode=new makeDialog('finance.costcenter','#costcode',['costcode','description'], 'Cost Code');
-			dialog_glaccno=new makeDialog('finance.glmasref','#glaccno',['glaccno','description'], 'GL Account No');
-			dialog_advccode=new makeDialog('finance.costcenter','#advccode',['costcode','description'], 'Advance Cost Code');
-			dialog_advglaccno=new makeDialog('finance.glmasref','#advglaccno',['glaccno','description'], 'Advance Account No');
+			var dialog_costcode = new ordialog(
+				'costcode','finance.costcenter','#costcode',errorField,
+				{	colModel:[
+						{label:'Cost Code',name:'costcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						],
+					ondblClickRow:function(){
+					}	
+				},{
+					title:"Select Cost Code",
+					open: function(){
+						dialog_costcode.urlParam.filterCol=['recstatus'],
+						dialog_costcode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_costcode.makedialog();
+
+			var dialog_glaccno = new ordialog(
+				'glaccno','finance.glmasref','#glaccno',errorField,
+				{	colModel:[
+						{label:'Account No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						],
+					ondblClickRow:function(){
+					}	
+				},{
+					title:"Select GL Account No",
+					open: function(){
+						dialog_glaccno.urlParam.filterCol=['recstatus'],
+						dialog_glaccno.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glaccno.makedialog();
+
+			var dialog_advccode = new ordialog(
+				'advccode','finance.costcenter','#advccode',errorField,
+				{	colModel:[
+						{label:'Cost Code',name:'costcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						],
+					ondblClickRow:function(){
+					}	
+				},{
+					title:"Select Advance Cost Code",
+					open: function(){
+						dialog_advccode.urlParam.filterCol=['recstatus'],
+						dialog_advccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_advccode.makedialog();
+
+			var dialog_advglaccno = new ordialog(
+				'advglaccno','finance.glmasref','#advglaccno',errorField,
+				{	colModel:[
+						{label:'Account No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						],
+					ondblClickRow:function(){
+					}	
+				},{
+					title:"Select Advance Account No",
+					open: function(){
+						dialog_advglaccno.urlParam.filterCol=['recstatus'],
+						dialog_advglaccno.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_advglaccno.makedialog();
 		
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -83,10 +150,10 @@
 
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
-						dialog_costcode.handler(errorField);
-						dialog_glaccno.handler(errorField);
-						dialog_advccode.handler(errorField);
-						dialog_advglaccno.handler(errorField);
+						dialog_costcode.on();
+						dialog_glaccno.on();
+						dialog_advccode.on();
+						dialog_advglaccno.on();
 						
 					}
 					if(oper!='add'){
@@ -100,8 +167,11 @@
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
-					$("#formdata a").off();
+					$('#formdata .alert').detach();
+					dialog_costcode.off();
+					dialog_glaccno.off();
+					dialog_advccode.off();
+					dialog_advglaccno.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -113,6 +183,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'material.suppgroup',
 				table_id:'suppgroup',
@@ -122,6 +193,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'suppgroup/form',
 				field:'',
 				oper:oper,
 				table_name:'material.suppgroup',
@@ -234,7 +306,7 @@
 						alert('Please select row');
 						emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'suppgroup':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -275,6 +347,6 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno']);
+			addParamField('#jqGrid',false,saveParam,['idno','computerid', 'ipaddress', 'adduser', 'adddate', 'upddate', 'upduser', 'recstatus']);
 		});
 		

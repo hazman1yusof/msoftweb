@@ -82,7 +82,6 @@
 							frozeOnEdit("#dialogForm");
 							rdonly("#formdata");
 							$('#formdata :input[hideOne]').show();
-							whenEdit();
 							break;
 						case state = 'view':
 							mycurrency.formatOnBlur();
@@ -104,7 +103,7 @@
 					emptyFormdata(errorField,'#formdata');
 					//$('.alert').detach();
 					$('#formdata .alert').detach();
-					$("#formdata a").off();
+					dialog_category.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -116,6 +115,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'material.productmaster',
 				table_id:'itemcode',
@@ -125,6 +125,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'productMaster/form',
 				field:'',
 				oper:oper,
 				table_name:'material.productmaster',
@@ -326,7 +327,7 @@
 						alert('Please select row');
 						emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'itemcode':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -365,25 +366,6 @@
 				},
 			});
 
-			function whenEdit(){
-				console.log($("input[name=groupcode]").val());
-				// groupcode  = $("input[name=groupcode]").val();
-				// 	if(groupcode == "Asset"){
-				// 		// dialog_category.updateField('finance.facode','#productcat',['assetcode','description'], 'Category');
-				// 		// dialog_category.offHandler();
-				// 		// dialog_category.handler(errorField);
-				// 	} else if(groupcode == "Others") {
-				// 		// dialog_category.updateField('material.category','#productcat',['catcode','description'], 'Category');
-				// 		// dialog_category.offHandler();
-				// 		// dialog_category.handler(errorField);
-				// 	} else if(groupcode == "Stock") {
-				// 		dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-				// 		dialog_category.urlParam.filterVal=['Stock', 'PO', 'A'];
-				// 		dialog_category.off();
-				// 		dialog_category.on();
-				// 	}
-			}
-
 			//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
@@ -393,7 +375,7 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno','ipaddress','computerid', 'adddate', 'adduser']);
+			addParamField('#jqGrid',false,saveParam,['idno','adduser', 'adddate', 'upddate', 'upduser', 'computerid', 'ipaddress','recstatus']);
 
 
 			/////////////////////////////////////////////////////////ordialog//////////////////////////////

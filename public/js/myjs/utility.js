@@ -613,6 +613,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 			$(this.textfield).on('blur',{data:this,errorField:errorField},onBlur);
 		}
 	}
+	this.changeColModel = function(colModel){
+
+	}
 
 	function onClick(event){
 		renull_search(event.data.data);
@@ -742,6 +745,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 					$("#"+obj.dialogname).dialog( "close" );
 					$("#"+obj.gridname).jqGrid("clearGridData", true);
+					$(obj.textfield).parent().removeClass( "has-error" ).addClass( "has-success" );
+					$(obj.textfield).removeClass( "error" ).addClass( "valid" );
 					$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
 				}
 				var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;

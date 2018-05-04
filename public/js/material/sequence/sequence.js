@@ -89,7 +89,8 @@
 					emptyFormdata(errorField,'#formdata');
 					//$('.alert').detach();
 					$('#formdata .alert').detach();
-					$("#formdata a").off();
+					dialog_dept.off();
+					dialog_trantype.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -101,6 +102,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'material.sequence',
 				table_id:'idno',
@@ -110,6 +112,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'sequence/form',
 				field:'',
 				oper:oper,
 				table_name:'material.sequence',
@@ -240,8 +243,7 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno', 'ipaddress', 'computerid', 'adddate', 'adduser']);
-
+			addParamField('#jqGrid',false,saveParam,['idno', 'ipaddress', 'computerid', 'adddate', 'adduser','upduser','upddate']);
 
 			/////////////////////////////////////////////////////////object for dialog handler//////////////////
 			
@@ -257,9 +259,10 @@
 				},{
 					title:"Select Department",
 					open: function(){
-						
+						dialog_dept.urlParam.filterCol = ['recstatus'];
+						dialog_dept.urlParam.filterVal = ['A'];
 					}
-				}
+				}, 'urlParam'
 			);
 			dialog_dept.makedialog();
 
@@ -274,11 +277,11 @@
 				},{
 					title:"Select Transaction Type",
 					open: function(){
-						
+						dialog_trantype.urlParam.filterCol = ['recstatus'];
+						dialog_trantype.urlParam.filterVal = ['A'];
 					}
-				}
+				}, 'urlParam'
 			);
 			dialog_trantype.makedialog();
 
 });
-		

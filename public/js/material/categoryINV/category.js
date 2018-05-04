@@ -96,7 +96,12 @@
 					parent_close_disabled(false);
 					//$('.alert').detach();
 					$('#formdata .alert').detach();
-					$("#formdata a").off();
+					dialog_stockacct.off();
+					dialog_cosacct.off();
+					dialog_adjacct.off();
+					dialog_woffacct.off();
+					dialog_expacct.off();
+					dialog_loanacct.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -108,17 +113,19 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url:'util/get_table_default',
 				field:'',
 				table_name:'material.category',
 				table_id:'catcode',
 				filterCol:['source', 'cattype'],
-				filterVal:[$('#source2').val(), $('#cattype2').val()],
+				filterVal:[$('#source').val(), $('#cattype').val()],
 				sort_idno: true,
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:'categoryinv/form',
 				field:'',
 				oper:oper,
 				table_name:'material.category',
@@ -211,7 +218,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata", oper,saveParam,urlParam,null,{'catcode':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata", oper,saveParam,urlParam,null,{'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -251,7 +258,7 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress', 'adduser', 'adddate']);
+			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress', 'adduser', 'adddate', 'upduser', 'upddate', 'recstatus']);
 
 			////////////////////////////////////////////////////ordialog////////////////////////////////////////		
 			var dialog_stockacct = new ordialog(
@@ -265,9 +272,10 @@
 				},{
 					title:"Select Stock Account",
 					open: function(){
-						
+						dialog_stockacct.urlParam.filterCol=['recstatus'],
+						dialog_stockacct.urlParam.filterVal=['A']
 					}
-				}
+				},'urlParam'
 			);
 			dialog_stockacct.makedialog();
 
@@ -282,9 +290,10 @@
 				},{
 					title:"Select COS Account",
 					open: function(){
-						
+						dialog_cosacct.urlParam.filterCol=['recstatus'],
+						dialog_cosacct.urlParam.filterVal=['A']
 					}
-				}
+				},'urlParam'
 			);
 			dialog_cosacct.makedialog();
 
@@ -299,9 +308,10 @@
 				},{
 					title:"Select Adjusment Account",
 					open: function(){
-						
+						dialog_adjacct.urlParam.filterCol=['recstatus'],
+						dialog_adjacct.urlParam.filterVal=['A']
 					}
-				}
+				},'urlParam'
 			);
 			dialog_adjacct.makedialog();
 
@@ -316,9 +326,10 @@
 				},{
 					title:"Select Write Off Account",
 					open: function(){
-						
+						dialog_woffacct.urlParam.filterCol=['recstatus'],
+						dialog_woffacct.urlParam.filterVal=['A']
 					}
-				}
+				},'urlParam'
 			);
 			dialog_woffacct.makedialog();
 
@@ -333,9 +344,10 @@
 				},{
 					title:"Select Expenses Account",
 					open: function(){
-						
+						dialog_expacct.urlParam.filterCol=['recstatus'],
+						dialog_expacct.urlParam.filterVal=['A']
 					}
-				}
+				},'urlParam'
 			);
 			dialog_expacct.makedialog();
 
@@ -350,9 +362,10 @@
 				},{
 					title:"Select Loan Account",
 					open: function(){
-						
+						dialog_loanacct.urlParam.filterCol=['recstatus'],
+						dialog_loanacct.urlParam.filterVal=['A']
 					}
-				}
+				},'urlParam'
 			);
 			dialog_loanacct.makedialog();
 });

@@ -1,6 +1,4 @@
 
-$(document).ready(function() {
-
 	$('#frm_patient_info').validate({
         rules: {
             telh: {
@@ -329,5 +327,53 @@ $(document).ready(function() {
         },
     });
 
+    var desc_show = new loading_desc([
+        {code:'#hid_pat_citizen',desc:'#txt_pat_citizen',id:'citizencode'},
+        {code:'#hid_pat_area',desc:'#txt_pat_area',id:'areacode'},
+        {code:'#hid_pat_title',desc:'#txt_pat_title',id:'titlecode'}
+    ]);
+    desc_show.load_desc();
 
-});
+    function loading_desc(obj){
+        this.code_fields=obj;
+        this.titlecode={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.citizencode={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.areacode={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.load_desc = function(){
+            var urlTitle = 'pat_mast/get_entry?action=get_patient_title';
+            load_for_desc(this,'titlecode',urlTitle);
+
+            var urlcitizen = 'pat_mast/get_entry?action=get_patient_citizen';
+            load_for_desc(this,'citizencode',urlcitizen);
+
+            var urlareacode = 'pat_mast/get_entry?action=get_patient_areacode';
+            load_for_desc(this,'areacode',urlareacode);
+        }
+
+        function load_for_desc(selobj,id,url){
+            $.getJSON(url,{},function(data){
+                selobj[id].data = data.data;
+            });
+        }
+
+        this.write_desc = function(){
+            self=this;
+            obj.forEach(function(elem){
+                if($(elem.code).val().trim() != ""){
+                    $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id));
+                }
+            });
+        }
+
+        this.get_desc = function(search_code,id){
+            let code_ = this[id].code;
+            let desc_ = this[id].desc;
+            let retdata="N/A";
+
+            retdata = this[id].data.find(function(obj){
+                return obj[code_] == search_code;
+            });
+
+            return (retdata == undefined)? "N/A" : retdata[desc_];
+        }
+    }
