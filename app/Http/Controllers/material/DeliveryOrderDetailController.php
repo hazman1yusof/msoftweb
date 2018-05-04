@@ -222,14 +222,14 @@ class DeliveryOrderDetailController extends defaultController
             //calculate tot gst from detail
             $tot_gst = DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
+                ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amtslstax');
 
             ///3. update total amount to header
             DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
+                ->where('recno','=',$request->recno)
                 ->update([
                     'totamount' => $totalAmount, 
                     'subamount'=> $totalAmount, 
@@ -275,14 +275,14 @@ class DeliveryOrderDetailController extends defaultController
             //calculate tot gst from detail
             $tot_gst = DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
+                ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amtslstax');
 
             ///3. update total amount to header
             DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
+                ->where('recno','=',$request->recno)
                 ->update([
                     'totamount' => $totalAmount, 
                     'subamount'=> $totalAmount, 
