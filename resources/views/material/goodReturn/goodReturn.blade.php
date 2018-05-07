@@ -117,7 +117,6 @@
 									<input id="delordhd_prdept" name="delordhd_prdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
-									  <span class="help-block"></span>
 								  </div>
 
 						  		<label class="col-md-1 control-label" for="delordhd_docno">GRT No</label>  
@@ -142,7 +141,6 @@
 										<input id="delordhd_suppcode" name="delordhd_suppcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
-									  <span class="help-block"></span>
 								  </div>
 
 								<label class="col-md-1 control-label" for="delordhd_delordno">DO No</label>  
@@ -163,7 +161,6 @@
 										<input id="delordhd_deldept" name="delordhd_deldept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
-									  <span class="help-block"></span>
 								</div>
 
 								<label class="col-md-1 control-label" for="delordhd_credcode">Creditor</label>	  
@@ -172,7 +169,6 @@
 										<input id="delordhd_credcode" name="delordhd_credcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
-									  <span class="help-block"></span>
 								</div>
 
 								<label class="col-md-1 control-label" for="delordhd_invoiceno">Invoice No</label>  
@@ -188,7 +184,6 @@
 										<input id="delordhd_reqdept" name="delordhd_reqdept" type="text" maxlength="12" class="form-control input-sm" >
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
-									  <span class="help-block"></span>
 								</div>
 								</div>
 
@@ -258,7 +253,6 @@
 									<input id="delordhd_respersonid" name="delordhd_respersonid" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
-								  <span class="help-block"></span>
 							  </div> 
 							</div>
 

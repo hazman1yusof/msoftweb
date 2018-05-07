@@ -1057,7 +1057,7 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='itemcode']").on('blur', {currency: mycurrency2}, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='pouom']").on('select', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='qtyreturned']").on('blur',calculate_conversion_factor);
-		$("#jqGrid2 input[name='qtyreturned']").on('blur',calculate_quantity_returned);
+	//	$("#jqGrid2 input[name='qtyreturned']").on('blur',calculate_quantity_returned);
 		$("#jqGrid2 input[name='unitprice']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='amtdisc']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='taxcode']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
@@ -1185,7 +1185,7 @@ $(document).ready(function () {
 	}
 	///////////////////////////////////////////////////////////////////////////////
 
-	//////////////////////////////calculate qtyreturned /////////////////////
+	/*//////////////////////////////calculate qtyreturned /////////////////////
 	function calculate_quantity_returned(event){
         let qtyreturned = parseFloat($("#jqGrid2 input[name='qtyreturned']").val());
         let qtydelivered = parseFloat($("#jqGrid2 input[name='qtydelivered']").val());
@@ -1195,7 +1195,7 @@ $(document).ready(function () {
         $("input[name='qtyreturned']").val(qtyreturn);
 
         console.log(qtyreturn);
-	}
+	}*/
 	///////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////

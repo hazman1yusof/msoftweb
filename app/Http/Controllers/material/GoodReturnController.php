@@ -187,7 +187,7 @@ class GoodReturnController extends defaultController
                 $totalAmount = $request->delordhd_totamount;
                 //4. Update delorddt
                 if(!empty($request->referral)){
-                    $totalAmount = $this->save_dt_from_othr_po($request->referral,$request->delordhd_recno);
+                    $totalAmount = $this->save_dt_from_othr_do($request->referral,$request->delordhd_recno);
 
                     $srcdocno = $request->delordhd_srcdocno;
                     $delordno = $request->delordhd_delordno;
@@ -270,6 +270,7 @@ class GoodReturnController extends defaultController
             $delorddt_obj = DB::table('material.delorddt')
                 ->where('delorddt.compcode','=',session('compcode'))
                 ->where('delorddt.recno','=',$request->recno)
+                ->where('delorddt.qtyreturned','=',$request->qtyreturned)
                 ->where('delorddt.recstatus','!=','DELETE')
                 ->get();
 
@@ -295,7 +296,7 @@ class GoodReturnController extends defaultController
                     ->first();
                 $convfactorUOM = $convfactorUOM_obj->convfactor;
 
-                $txnqty = $value->qtydelivered * ($convfactorPOUOM / $convfactorUOM);
+                $txnqty = $value->qtyreturned * ($convfactorPOUOM / $convfactorUOM);
                 $netprice = $value->netunitprice * ($convfactorUOM / $convfactorPOUOM);
 
                 //4. start insert dalam ivtxndt
@@ -785,8 +786,7 @@ class GoodReturnController extends defaultController
                 'recno' => $recno, 
                 'lineno_' => $value->lineno_, 
                 'pricecode' => $value->pricecode, 
-                'itemcode' => $value->itemcode, 
-                //'description' => $value->description,
+                'itemcode' => $value->itemcode,
                 'uomcode' => $value->uomcode, 
                 'pouom' =>$value->pouom,
                 'suppcode'=>$value->suppcode,
