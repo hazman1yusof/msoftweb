@@ -25,7 +25,7 @@ class GoodReturnController extends defaultController
 
     public function form(Request $request)
     {   
-        // return $this->request_no('GRN','2FL');
+        DB::enableQueryLog();
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -270,7 +270,6 @@ class GoodReturnController extends defaultController
             $delorddt_obj = DB::table('material.delorddt')
                 ->where('delorddt.compcode','=',session('compcode'))
                 ->where('delorddt.recno','=',$request->recno)
-                ->where('delorddt.qtyreturned','=',$request->qtyreturned)
                 ->where('delorddt.recstatus','!=','DELETE')
                 ->get();
 
@@ -417,7 +416,7 @@ class GoodReturnController extends defaultController
                     $NewAmount = $netprice * $txnqty;
 
                     $newqtyonhand = $OldQtyOnHand - $txnqty;
-                    $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand + $txnqty);
+                    $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
 
                     // update qtyonhand, avgcost, currprice
                     $product_obj = DB::table('material.product')
@@ -677,7 +676,8 @@ class GoodReturnController extends defaultController
                     'recstatus' => 'POSTED' 
                 ]);
            
-            DB::commit();
+            dd(DB::getQueryLog());
+            // DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();

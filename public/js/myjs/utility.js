@@ -745,7 +745,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 					$("#"+obj.dialogname).dialog( "close" );
 					$("#"+obj.gridname).jqGrid("clearGridData", true);
-					$(obj.textfield).parent().removeClass( "has-error" ).addClass( "has-success" );
+					// $(obj.textfield).parent().removeClass( "has-error" ).addClass( "has-success" );
 					$(obj.textfield).removeClass( "error" ).addClass( "valid" );
 					$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
 				}
@@ -809,18 +809,21 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 		$.get( param.url+"?"+$.param(param), function( data ) {
 
 		},'json').done(function(data) {
-			let fail=true,code,desc;
+			let fail=true,code,desc2;
 			if(self.checkstat=='default'){
 				if(data.msg=='success'){
-					fail=false;desc=data.row[field[1]];
+					fail=false;desc2=data.rows[field[1]];
 				}else if(data.msg=='fail'){
 					fail=true;code=field[0];
 				}
 			}else{
 				if(data.rows.length>0){
 					fail=false;
-					desc_ =(desc_.indexOf('.') !== -1)?desc_.split('.')[1]:desc_;
-					desc=data.rows[0][desc_];
+					if(param.fixPost == 'true'){
+						desc2=data.rows[0][self.urlParam.field[desc].split('.')[1]];
+					}else{
+						desc2=data.rows[0][self.urlParam.field[desc]];
+					}
 				}else{
 					fail=true;code=code_;
 				}
@@ -828,23 +831,25 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 
 			var idtopush = (id.substring(0, 1) == '#')?id.substring(1):id;
 
-			if(!fail){
-				if($.inArray(idtopush,errorField)!==-1){
-					errorField.splice($.inArray(idtopush,errorField), 1);
-				}
-				$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-				$( id ).removeClass( "error" ).addClass( "valid" );
-				$( id ).parent().siblings( ".help-block" ).html(desc);
-				$( id ).parent().siblings( ".help-block" ).show();
-			}else{
-				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-				$( id ).removeClass( "valid" ).addClass( "error" );
-				$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+code+" )");
-				if($.inArray(idtopush,errorField)===-1){
-					errorField.push( idtopush );
+			if(typeof errorField != 'string'){
+				if(!fail){
+					if($.inArray(idtopush,errorField)!==-1){
+						errorField.splice($.inArray(idtopush,errorField), 1);
+					}
+					$( id ).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
+					$( id ).removeClass( "error" ).addClass( "valid" );
+					$( id ).parent().siblings( ".help-block" ).html(desc2);
+					$( id ).parent().siblings( ".help-block" ).show();
+				}else{
+					$( id ).parent().parent().removeClass( "has-success" ).addClass( "has-error" );
+					$( id ).removeClass( "valid" ).addClass( "error" );
+					$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+code+" )");
+					if($.inArray(idtopush,errorField)===-1){
+						errorField.push( idtopush );
+					}
 				}
 			}
-
+			
 		});
 	}
 }

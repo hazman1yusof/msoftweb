@@ -26,7 +26,7 @@
                         </div>
                         <div class="col-sm-3">
                             <small for="episno">EPISODE NO</small>
-                            <input class="form-control" name="episno" id="txt_pat_episno" placeholder="" type="text" readonly></div>
+                            <input class="form-control" name="Episno" id="txt_pat_episno" placeholder="" type="text" readonly></div>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -82,7 +82,7 @@
 													</div>
 													<div class="col-md-3">
 														<small for="txt_pat_newic">New IC (eg 690101086649)</small>
-														<input class="form-control form-mandatory" name="Newic" id="txt_pat_newic" placeholder="" type="text">
+														<input class="form-control form-mandatory" name="Newic" id="txt_pat_newic" placeholder="" type="text" required>
 													</div>
 													<div class="col-md-3">
 														<small for="txt_pat_oldic">Old IC</small>

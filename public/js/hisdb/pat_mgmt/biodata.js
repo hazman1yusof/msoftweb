@@ -238,7 +238,7 @@
     function save_patient(oper,idno,mrn="nothing"){
         var saveParam={
             action:'save_patient',
-            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno'],
+            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date'],
             oper:oper,
             table_name:'hisdb.pat_mast',
             table_id:'idno',
@@ -389,7 +389,7 @@
         }
     }
 
-    function populate_data_from_mrn(mrn){
+    function populate_data_from_mrn(mrn,form){
         var param={
             action:'get_value_default',
             field:"*",
@@ -413,6 +413,7 @@
                     }else{
                         input.val(value);
                     }
+                    desc_show.write_desc();
                 });
 
             }else{

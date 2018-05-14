@@ -31,6 +31,7 @@ class AppointmentController extends defaultController
 
     public function form(Request $request)
     {   
+        DB::enableQueryLog();
         switch($request->action){
             case 'add':
                 return $this->defaultAdd($request);
@@ -201,6 +202,10 @@ class AppointmentController extends defaultController
             $array_insert[$value] = $request[$request->field[$key]];
         }
 
+        $array_insert['first_visit_date'] = Carbon::createFromFormat('d/m/Y', $request->first_visit_date);
+        $array_insert['last_visit_date'] = Carbon::createFromFormat('d/m/Y', $request->last_visit_date);
+
+
         try {
 
             //1. save into pat_mast
@@ -255,6 +260,9 @@ class AppointmentController extends defaultController
         foreach ($request->field as $key => $value) {
             $array_update[$value] = $request[$request->field[$key]];
         }
+
+        array_pull($array_update, 'first_visit_date');
+        array_pull($array_update, 'last_visit_date');
 
         try {
 

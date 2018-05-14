@@ -110,7 +110,7 @@ td.fc-event-container a.selected{
 									<span class='help-block'></span>
 								</div>
 								<div class="col-md-4">
-									<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
+									<input type="text" class="form-control input-sm" data-validation="required" placeholder="Name" id="patname" name="patname">
 								</div>
 							</div>
 							<div class="form-group">

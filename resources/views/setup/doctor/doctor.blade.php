@@ -49,7 +49,7 @@
 						  <div class='input-group'>
 							<input id="doctype" name="doctype" type="text" class="form-control input-sm" data-validation="required"/>
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-						</div>
+							</div>
 						<span class="help-block"></span>
 						</div> 
 				</div>

@@ -507,7 +507,6 @@ $(document).ready(function () {
 				element.on('click', function() {
 					$('td.fc-event-container a').removeClass('selected');
 					$(this).addClass('selected');
-					console.log(event.mrn);
 
 					if(event.mrn == null){
 						$('#biodata_but_apptrsc').data('oper','add');
@@ -940,22 +939,29 @@ $(document).ready(function () {
 	$("#biodata_but_apptrsc").click(function(){
 
 		var data = $(this).data('bio_from_calander');
-		var oper = $(this).data('oper');
-		populatecombo1();
-        $('#mdl_patient_info').modal({backdrop: "static"});
-        $("#btn_register_patient").data("oper",oper);
 
-		if(oper == 'add'){
-	        var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
-	        $('#first_visit_date').val(first_visit_val);
-	        var last_visit_val =moment(new Date()).format('DD/MM/YYYY');
-	        $('#last_visit_date').val(last_visit_val);
-	        $('#txt_pat_episno').val('1');
-	        $('#txt_pat_name').val(data.pat_name);
-			$('#txt_pat_telh').val(data.telno);
-			$('#txt_pat_telhp').val(data.telhp);
+		if(data==undefined){
+			alert('no patient biodata selected');
 		}else{
-			populate_data_from_mrn(data.mrn);
+
+			var oper = $(this).data('oper');
+			populatecombo1();
+	        $('#mdl_patient_info').modal({backdrop: "static"});
+	        $("#btn_register_patient").data("oper",oper);
+
+			if(oper == 'add'){
+		        var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
+		        $('#first_visit_date').val(first_visit_val);
+		        var last_visit_val =moment(new Date()).format('DD/MM/YYYY');
+		        $('#last_visit_date').val(last_visit_val);
+		        $('#txt_pat_episno').val('1');
+		        $('#txt_pat_name').val(data.pat_name);
+				$('#txt_pat_telh').val(data.telno);
+				$('#txt_pat_telhp').val(data.telhp);
+			}else{
+				populate_data_from_mrn(data.mrn,"#frm_patient_info");
+			}
+
 		}
 
 	});
@@ -998,7 +1004,7 @@ $(document).ready(function () {
  	function save_patient_apptrsc(oper,idno,mrn="nothing",apptbook_idno){
  		var saveParam={
             action:'save_patient',
-            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno'],
+            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date'],
             oper:oper,
             table_name:'hisdb.pat_mast',
             table_id:'idno',

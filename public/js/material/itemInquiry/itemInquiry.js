@@ -160,9 +160,9 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['deptcode','stocktxntype','uomcode','qtyonhand','itemcode'],
+		field:['idno','deptcode','stocktxntype','uomcode','qtyonhand','openbalval','itemcode','netmvval1','netmvval2','netmvval3','netmvval4','netmvval5','netmvval6','netmvval7','netmvval8','netmvval9','netmvval10','netmvval11','netmvval12','computerid'],
 		table_name:'material.stockloc',
-		table_id:'itemcode',
+		table_id:'idno',
 		filterCol:['itemcode', 'uomcode','year'],
 		filterVal:['', '',$("#getYear").val()],
        
@@ -171,13 +171,26 @@ $(document).ready(function () {
 	$("#detail").jqGrid({
 		datatype: "local",
 		colModel: [
-			//{ label: 'idno', name: 'idno', width: 40, classes: 'wrap', hidden:true},
+			{ label: 'idno', name: 'idno', width: 40, classes: 'wrap', hidden:true},
 		 	{ label: 'Department Code', name: 'deptcode', width: 40, classes: 'wrap'},
 			{ label: 'Stock TrxType', name: 'stocktxntype', width: 40, classes: 'wrap'},
 			{ label: 'UOM Code', name: 'uomcode', width: 40, classes: 'wrap'},
 			{ label: 'Quantity on Hand', name: 'qtyonhand', width: 40, classes: 'wrap',align: 'right'},
 			{ label: 'itemcode', name: 'itemcode', width: 40, classes: 'wrap',hidden:true},
-			{ label: 'Stock Value', name: 'stockvalue', width: 40, classes: 'wrap'},
+			{ label: 'Stock Value', name: 'rackno', width: 40, classes: 'wrap', formatter: 'number', formatoptions: {decimalSeperator: '.',devimalPlaces:2,defaultValue: '0.0000'}},
+			{ label: 'openbalval', name: 'openbalval', hidden:true},
+			{ label: 'netmvval1', name: 'netmvval1', hidden:true},
+			{ label: 'netmvval2', name: 'netmvval2', hidden:true},
+			{ label: 'netmvval3', name: 'netmvval3', hidden:true},
+			{ label: 'netmvval4', name: 'netmvval4', hidden:true},
+			{ label: 'netmvval5', name: 'netmvval5', hidden:true},
+			{ label: 'netmvval6', name: 'netmvval6', hidden:true},
+			{ label: 'netmvval7', name: 'netmvval7', hidden:true},
+			{ label: 'netmvval8', name: 'netmvval8', hidden:true},
+			{ label: 'netmvval9', name: 'netmvval9', hidden:true},
+			{ label: 'netmvval10', name: 'netmvval10', hidden:true},
+			{ label: 'netmvval11', name: 'netmvval11', hidden:true},
+			{ label: 'netmvval12', name: 'netmvval12', hidden:true},
 			
 			//{ label: 'idno', name: 'idno', width: 30, classes: 'wrap', hidden:true},
 		],
@@ -190,16 +203,23 @@ $(document).ready(function () {
 		width: 700,
 		pager: "#jqGridPager2",
         
-        onSelectRow:function(rowid, selected){
-			var jg=$("#jqGrid").jqGrid('getRowData',rowid);
+        gridComplete:function(rowdata){
+        	var rowid= 0;
+        	$("#detail").jqGrid('getRowData').forEach(function(element){
+        		getStockvalue(rowid,element);
+        		rowid++;
+        	});
 
-			/*    urlParam3.filterVal[0]=selrowData("#jqGrid").itemcode; 
-				
-				urlParam3.filterVal[1]=selrowData("#jqGrid").uomcode;
-				urlParam3.filterVal[2]=selrowData("#jqGrid").deptcode;
-				refreshGrid('#itemExpiry',urlParam3); 
-				*/
 		},
+
+		onSelectRow:function(rowid,selected){
+			var jq=$('#detail').jqGrid('getRowData',rowid);
+			urlParam3.filterVal[0]=selrowData('#detail').itemcode;
+			urlParam3.filterVal[1]=selrowData('#detail').uomcode;
+			urlParam3.filterVal[2]=selrowData('#detail').deptcode;
+
+			refreshGrid('#itemExpiry',urlParam3);
+		}
 	});
       
 	
@@ -215,7 +235,7 @@ $(document).ready(function () {
 
 	 $("#detail").jqGrid('setLabel', 'qtyonhand', 'Quantity on Hand', {'text-align':'right'});
 	
-        var urlParam3={
+    var urlParam3={
 		action:'get_table_default',
 		url:'util/get_table_default',
 		field:['expdate','batchno','balqty','uomcode','itemcode','deptcode'],
@@ -224,8 +244,8 @@ $(document).ready(function () {
 		sort_itemcode:true,
 		/*filterCol:['itemcode', 'uomcode','deptcode'],
 		filterVal:['', '',''],*/
-		filterCol:['itemcode','year'],
-		filterVal:['',$("#getYear").val()],
+		filterCol:['itemcode','uomcode','deptcode'],
+		filterVal:['','',''],
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -234,7 +254,7 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
             //{label: 'idno', name: 'idno', hidden: true},
-			{ label: 'Expiry Date', name: 'expdate', width: 40, classes: 'wrap', canSearch: true, checked:true},						
+			{ label: 'Expiry Date', name: 'expdate', width: 40, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Batch No', name: 'batchno', width: 40, classes: 'wrap'},
 			{ label: 'Balance Quantity', name: 'balqty', width: 40, classes: 'wrap'},
 		
@@ -254,23 +274,24 @@ $(document).ready(function () {
 		},
 	});
 
-	function getStockvalue() {
-		var netmvqty1 = $("#netmvqty1").val();
-		var netmvqty2 = $("#netmvqty2").val();
-		var netmvqty3 = $("#netmvqty3").val();
-		var netmvqty4 = $("#netmvqty4").val();
-		var netmvqty5 = $("#netmvqty5").val();
-		var netmvqty6 = $("#netmvqty6").val();
-		var netmvqty7 = $("#netmvqty7").val();
-		var netmvqty8 = $("#netmvqty8").val();
-		var netmvqty9 = $("#netmvqty9").val();
-		var netmvqty10 = $("#netmvqt10").val();
-		var netmvqty11= $("#netmvqty11").val();
-		var netmvqty12 = $("#netmvqty12").val();
+	function getStockvalue(rowid,element) {
+		var openbalval = parseFloat(element.openbalval);
+		var netmvval1 = parseFloat(element.netmvval1);
+		var netmvval2 = parseFloat(element.netmvval2);
+		var netmvval3 = parseFloat(element.netmvval3);
+		var netmvval4 = parseFloat(element.netmvval4);
+		var netmvval5 = parseFloat(element.netmvval5);
+		var netmvval6 = parseFloat(element.netmvval6);
+		var netmvval7 = parseFloat(element.netmvval7);
+		var netmvval8 = parseFloat(element.netmvval8);
+		var netmvval9 = parseFloat(element.netmvval9);
+		var netmvval10 = parseFloat(element.netmvval10);
+		var netmvval11 = parseFloat(element.netmvval11);
+		var netmvval12 = parseFloat(element.netmvval12);
 
-		total = netmvqty1 + netmvqty2 + netmvqty3+ netmvqty4 + netmvqty5+ netmvqty6 + netmvqty7
-		+ netmvqty8 + netmvqty9+ netmvqty10 + netmvqty11+ netmvqty12;
-		$("#stockvalue").val(total.toFixed(2));
+		var total = openbalval + netmvval1 + netmvval2 + netmvval3 + netmvval4 + netmvval5 + netmvval6 + netmvval7 + netmvval8+ netmvval9 + netmvval10 + netmvval11 + netmvval12;
+		console.log(rowid);
+		$('#detail').jqGrid('setRowData', rowid, {rackno:total});
 	}
 	
 	/*$("#itemExpiry").jqGrid('navGrid','#jqGridPager',

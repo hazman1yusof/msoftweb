@@ -369,6 +369,7 @@ abstract class defaultController extends Controller{
         $pvalue1 = DB::table('sysdb.sysparam')->select('pvalue1')
         ->where('source', '=', $source)
         ->where('trantype', '=', $trantype)->first();
+        
         //2. add 1 into the value
         $pvalue1 = intval($pvalue1->pvalue1) + 1;
 

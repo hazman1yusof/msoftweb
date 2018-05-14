@@ -15,6 +15,7 @@ $(document).ready(function () {
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
+			console.log(errorField);
 			if(errorField.length>0){
 				return {
 					element : $(errorField[0]),
@@ -71,8 +72,8 @@ $(document).ready(function () {
 				dialog_suppcode.check(errorField);
 				dialog_credcode.check(errorField);
 				dialog_deldept.check(errorField);
-				dialog_reqdept.check(errorField);
-				dialog_docno.check(errorField);
+				dialog_reqdept.check('errorField');
+				dialog_docno.check('errorField');
 			}if(oper!='view'){
 				dialog_authorise.on();
 				dialog_prdept.on();
@@ -221,6 +222,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
+		sortname:'delordhd_idno',
+		sortorder:'desc',
 		width: 900,
 		height: 200,
 		rowNum: 30,
@@ -267,10 +270,10 @@ $(document).ready(function () {
 						$('#but_post_jq,#but_cancel_jq').hide();
 					}else{
 						$('#but_cancel_jq,#but_post_jq').show();
-						$('#but_reopen_jq').hide();
-						$("label[for=delordhd_reqdept]").hide();
-						$("#delordhd_reqdept_parent").hide();
-						$("#delordhd_reqdept").removeAttr('required');
+						// $('#but_reopen_jq').hide();
+						// $("label[for=delordhd_reqdept]").hide();
+						// $("#delordhd_reqdept_parent").hide();
+						// $("#delordhd_reqdept").removeAttr('required');
 					}
 					break;
 			}
@@ -1461,7 +1464,7 @@ $(document).ready(function () {
 	dialog_deldept.makedialog();
 
 	var dialog_reqdept = new ordialog(
-		'reqdept', 'sysdb.department', '#delordhd_reqdept', errorField,
+		'reqdept', 'sysdb.department', '#delordhd_reqdept', 'errorField',
 		{
 			colModel: [
 				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
@@ -1473,7 +1476,7 @@ $(document).ready(function () {
 				dialog_reqdept.urlParam.filterCol=['recstatus'];
 				dialog_reqdept.urlParam.filterVal=['A'];
 			}
-		},'urlParam'
+		},'none'
 	);
 	dialog_reqdept.makedialog();
 
