@@ -821,7 +821,6 @@ $(document).ready(function () {
 				var rowtodel = $(this.grid).jqGrid('getRowData').find(function(obj){
 					return (events.time_hidden == obj.time_hidden && obj.pat_name == "");
 				});
-				console.log(rowtodel);
 
 				var seldate = moment($('#td_date_to').val()+" "+events.time_hidden,'DD-MM-YYYY HH:mm:SS');
 				let new_start = seldate.format('YYYY-MM-DD HH:mm:SS');
@@ -932,7 +931,7 @@ $(document).ready(function () {
         	}
 		}
 	}
-
+	//////////////// start pasal biodata//////////////////////////
 	$('#btn_register_patient').off('click',default_click_register);
 	$('#btn_reg_proceed').off('click',default_click_proceed);
 
@@ -998,9 +997,6 @@ $(document).ready(function () {
         }
     });
 
-
-	
-
  	function save_patient_apptrsc(oper,idno,mrn="nothing",apptbook_idno){
  		var saveParam={
             action:'save_patient',
@@ -1028,5 +1024,5 @@ $(document).ready(function () {
 			$('#calendar').fullCalendar( 'refetchEventSources', 'apptbook' );
         });
  	}
-
+	//////////////////////end pasal biodata/////////////////////////
 });

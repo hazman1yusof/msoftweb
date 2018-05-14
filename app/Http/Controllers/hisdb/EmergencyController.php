@@ -32,15 +32,33 @@ class EmergencyController extends defaultController
 
     public function form(Request $request)
     {   
-        switch($request->oper){
-            case 'add':
-                return $this->add($request);
-            case 'edit':
-                return $this->defaultEdit($request);
-            case 'del':
-                return $this->defaultDel($request);
-            case 'savecolor':
-                return $this->savecolor($request);
+        DB::enableQueryLog();
+        switch($request->action){
+            case 'save_table_default':
+
+                switch($request->oper){
+                    case 'add':
+                        return $this->add($request);
+                    case 'edit':
+                        return $this->defaultEdit($request);
+                    case 'del':
+                        return $this->defaultDel($request);
+                    case 'savecolor':
+                        return $this->savecolor($request);
+                    default:
+                        return 'error happen..';
+                }
+            
+            case 'save_patient':
+
+                if($request->oper == 'add'){
+                    return false; 
+                }else if($request->oper == 'edit'){
+                    return $this->save_patient_edit($request);
+                }else{
+                    return false; 
+                }
+
             default:
                 return 'error happen..';
         }
@@ -83,7 +101,9 @@ class EmergencyController extends defaultController
                         'Lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'LastUser'  => session('username'),   
                         'AddDate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'AddUser'  => session('username') 
+                        'AddUser'  => session('username'),
+                        'first_visit_date' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'last_visit_date' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
 
                 $patmast_obj = DB::table('hisdb.pat_mast')
@@ -125,7 +145,8 @@ class EmergencyController extends defaultController
                     'Lastuser' => session('username'),  
                     'AddDate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),   
                     'AddUser' => session('username'),   
-                    'EDDept' => 'yes'
+                    'EDDept' => 'yes',
+                    'episstatus' => 'current'
                 ]);
 
             ///--- 3. buat debtormaster
@@ -208,6 +229,7 @@ class EmergencyController extends defaultController
                     'apptstatus' => 'Attend',
                     'telno' => $patmast_data->telh,
                     'telhp' => $patmast_data->telhp,
+                    'type' => 'ED'
                     // 'ApptTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
                 ]);
 
@@ -239,6 +261,12 @@ class EmergencyController extends defaultController
 
             }
 
+            $queries = DB::getQueryLog();
+
+            $responce = new stdClass();
+            $responce->sql = $queries;
+            echo json_encode($responce);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -254,5 +282,62 @@ class EmergencyController extends defaultController
         ->update([
             $request->columncolor => $request->color 
         ]);
+    }
+
+    public function save_patient_edit(Request $request){
+        DB::beginTransaction();
+
+        $table = DB::table('hisdb.pat_mast');
+
+        $array_update = [
+            'compcode' => session('compcode'),
+            'upduser' => session('username'),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'recstatus' => 'A'
+        ];
+
+        foreach ($request->field as $key => $value) {
+            $array_update[$value] = $request[$request->field[$key]];
+        }
+
+        array_pull($array_update, 'first_visit_date');
+        array_pull($array_update, 'last_visit_date');
+
+        try {
+
+            //////////where//////////
+            //1. edit pat_mast
+            $table = $table->where('idno','=',$request->idno);
+            $table->update($array_update);
+
+            //2. edit apptbook mrn, telh, telhp
+            $old_apptbook = DB::table('hisdb.apptbook')
+                ->where('idno','=',$request->apptbook_idno)
+                ->first();
+
+            $newtitle = $request->MRN.' - '.$request->Name.' - '.$request->telhp.' - ED';
+
+            DB::table('hisdb.apptbook')
+                ->where('idno','=',$request->apptbook_idno)
+                ->update([
+                    'icnum' => $request->Newic,
+                    'pat_name' => $request->Name,
+                    'title' => $newtitle,
+                    'telno' => $request->telh,
+                    'telhp' => $request->telhp
+                ]);
+
+            $queries = DB::getQueryLog();
+
+            $responce = new stdClass();
+            $responce->sql = $queries;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
     }
 }

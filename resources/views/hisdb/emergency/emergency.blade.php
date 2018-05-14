@@ -88,13 +88,9 @@
 					</fieldset>
 				</div>
 				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px;padding-top: 25px" >
-				<button type="button" class="btn btn-default" id='biodata_but'>
-					<span class='fa fa-user fa-lg'></span> Biodata
-				</button>
-				    <!-- <button id="biodata_but_emergency" type="button" class="btn btn-default" data-mrn='0'>
-				    	<span class='fa fa-user fa-lg'></span> 
-				    	<span id="span_biodata_label"> Biodata </span>
-					</button> -->
+					<button type="button" class="btn btn-default" id='biodata_but_emergency'>
+						<span class='fa fa-user fa-lg'></span> Biodata
+					</button>
 				    <button id="regBtn" type="button" class="btn btn-default" >
 				    	<span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New
 				    </button>
@@ -134,7 +130,7 @@
 				<span class='help-block'></span>
 			</div>
              <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="Name" id="patname" name="patname">
 			</div>
 		</div>	
         <div class="form-group">
@@ -153,12 +149,12 @@
 
 		    <label class="col-md-1 control-label" for="Newic">New I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Newic" id="Newic" class="form-control input-sm" maxlength="14" data-validation-optional-if-answered="Oldic" data-validation="required" >
+				<input type="text" name="Newic" id="Newic" class="form-control input-sm" maxlength="14" data-validation-optional-if-answered="Oldic" >
 			</div>	
 
 		   	<label class="col-md-1 control-label" for="Oldic">Old I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" maxlength="7" data-validation-optional-if-answered="Newic" data-validation="required">
+				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" maxlength="7" data-validation-optional-if-answered="Newic">
 			</div>	
 
         </div>
@@ -206,14 +202,14 @@
 			<label for="title" class="col-md-2 control-label">Financial Class</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="Finanncial Class" id="financeclass" name="financeclass" maxlength="12" rdonly>
-				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+					<input type="text" class="form-control input-sm" data-validation="required" placeholder="Finanncial Class" id="financeclass" name="financeclass" maxlength="12" rdonly>
+					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
 
              <div class="col-md-4">
-				<input type="text" class="form-control input-sm"  placeholder="" id="fName" name="fName">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="fName" name="fName">
 			</div>
 
 		</div>
@@ -222,13 +218,13 @@
 			<label for="title" class="col-md-2 control-label">Payer</label>
 		    <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="Payer" id="payer" name="payer" maxlength="12" rdonly>
-				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+					<input type="text" class="form-control input-sm" data-validation="required" placeholder="Payer" id="payer" name="payer" maxlength="12" rdonly>
+					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm"  placeholder="" id="payername" name="payername">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="payername" name="payername">
 				<input type="hidden" name="paytype" id="paytype">
 			</div>
 		</div>
@@ -237,13 +233,13 @@
 			<label for="title" class="col-md-2 control-label">Bill Type</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="BillType" id="billtype" name="billtype" maxlength="12" rdonly>
-				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+					<input type="text" class="form-control input-sm" data-validation="required" placeholder="BillType" id="billtype" name="billtype" maxlength="12" rdonly>
+					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm"  placeholder="" id="description" name="description_bt">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description" name="description_bt">
 			</div>
 		</div>
 
@@ -251,13 +247,13 @@
 			<label for="title" class="col-md-2 control-label">Doctor</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" rdonly>
-				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+					<input type="text" class="form-control input-sm" placeholder="Doctor" data-validation="required" id="doctor" name="doctor" maxlength="12" rdonly>
+					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm"  placeholder="" id="docname" name="docname">
+				<input type="text" class="form-control input-sm"  placeholder="Doctor Name" id="docname" name="docname" data-validation="required">
 			</div>
 		</div>
 

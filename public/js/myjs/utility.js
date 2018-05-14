@@ -694,6 +694,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 
 	function othDialog_dropdown(obj){
 		$("#Dcol_"+unique+"").append("<select name='dcolr' class='form-control input-sm' style='margin-right:10px;min-width:150px'></select>");
+		$("#Dtext_"+unique+"").parent().prepend("<b>&nbsp;</b>");
 		$.each($("#"+obj.gridname).jqGrid('getGridParam','colModel'), function( index, value ) {
 			if(value['canSearch']){
 				if(value['checked']){$("#Dcol_"+unique+" select[name=dcolr]").append( "<option value='"+value['name']+"' selected>"+value['label']+"</option>" );

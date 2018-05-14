@@ -904,8 +904,6 @@
 				onSelectRow:function(rowid, selected){
 					$('#resourcecode').val(selrowData('#jqGrid').resourcecode);
 					$('#description').val(selrowData('#jqGrid').description);
-
-					
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
 					$("#gridleavepager td[title='Edit Selected Row']").click();
