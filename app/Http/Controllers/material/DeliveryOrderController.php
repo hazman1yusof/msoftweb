@@ -857,7 +857,7 @@ class DeliveryOrderController extends defaultController
                     $NewAmount = $netprice * $txnqty;
 
                     $newqtyonhand = $OldQtyOnHand - $txnqty;
-                    $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand + $txnqty);
+                    $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
 
                     // update qtyonhand, avgcost, currprice
                     $product_obj = DB::table('material.product')

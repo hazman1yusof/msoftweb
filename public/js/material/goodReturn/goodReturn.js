@@ -126,7 +126,7 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['supplier.SuppCode'],
 		join_onVal:['delordhd.suppcode'],
-		filterCol:['trantype','prdept'],
+		filterCol:['delordhd.trantype','delordhd.prdept'],
 		filterVal:['GRT', $('#deptcode').val()],
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -509,7 +509,7 @@ $(document).ready(function () {
 	}
 	
 	function searchChange(){
-		var arrtemp = ['session.compcode',  $('#Status option:selected').val(), $('#trandept option:selected').val()];
+		var arrtemp = ['session.compcode',  $('#Status option:selected').val(), $('#trandept option:selected').val(),'GRT'];
 		var filter = arrtemp.reduce(function(a,b,c){
 			if(b=='All'){
 				return a;
@@ -518,7 +518,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		},{fct:['delordhd.compcode','delordhd.recstatus', 'delordhd.prdept','txndept'],fv:[],fc:[]});//tukar kat sini utk searching purreqhd.compcode','purreqhd.recstatus','purreqhd.prdept'
+		},{fct:['delordhd.compcode','delordhd.recstatus', 'delordhd.prdept','delordhd.trantype'],fv:[],fc:[]});//tukar kat sini utk searching purreqhd.compcode','purreqhd.recstatus','purreqhd.prdept'
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
