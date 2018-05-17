@@ -91,6 +91,9 @@
 					<button type="button" class="btn btn-default" id='biodata_but_emergency'>
 						<span class='fa fa-user fa-lg'></span> Biodata
 					</button>
+					<button type="button" class="btn btn-default" id='episode_but_emergency' data-oper='add'>
+						<span class='fa fa-h-square fa-lg'></span> Episode
+					</button>
 				    <button id="regBtn" type="button" class="btn btn-default" >
 				    	<span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New
 				    </button>
@@ -261,6 +264,7 @@
 	</div>
 
 	@include('hisdb.pat_mgmt.mdl_patient')
+	@include('hisdb.pat_mgmt.mdl_episode')
 	@include('hisdb.pat_mgmt.itemselector')
  
 @endsection
@@ -274,6 +278,7 @@
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
 	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
+	<script src="js/hisdb/pat_mgmt/episode.js"></script>
 
 	<script src="js/hisdb/emergency/emergency.js"></script>
 	<script type="text/javascript" src="plugins/glDatePicker/glDatePicker.js"></script>

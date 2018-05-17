@@ -9,6 +9,7 @@
             }
         }
     });	// patient form validation
+    
     function destoryallerror(){
         $('#frm_patient_info').find("label.error").detach();
     }//utk buang label error lepas close dialog modal

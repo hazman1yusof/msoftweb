@@ -515,6 +515,8 @@ $(document).ready(function () {
 					}
 
 					$('#biodata_but_apptrsc').data('bio_from_calander',event);
+					$('#episode_but_apptrsc').data('bio_from_calander',event);
+
 				});
 			}
 			if(event.source.rendering == 'background'){
@@ -789,7 +791,7 @@ $(document).ready(function () {
 	var td_from = new td_grid("#grid_transfer_date_from");
 	var td_to = new td_grid("#grid_transfer_date_to");
 
-	function td_grid(grid){
+	function td_grid(grid){ // ni semua untuk transfer doctor dgn date
 		this.apptsession,this.interval,this.date_fr,this.day_fr,this.fr_obj,this.fr_start,this.events,this.hadDay,this.grid=grid,this.addedEvents=[];
 
 		this.addSessionInterval = function(interval,apptsession){
@@ -1025,4 +1027,26 @@ $(document).ready(function () {
         });
  	}
 	//////////////////////end pasal biodata/////////////////////////
+
+	/////////////////start pasal episode//////////////////
+
+	$('#episode_but_apptrsc').click(function(){
+		var data = $(this).data('bio_from_calander');
+
+		if(data==undefined){
+			alert('no patient biodata selected');
+		}else{
+	        $('#editEpisode').modal({backdrop: "static"});
+	        $('#editEpisode').modal('show');
+		}
+
+		// populate_patient_episode("episode",$(this).data("rowId"));
+		// populate_episode_from_episno();
+  //       $('#editEpisode').modal({backdrop: "static"});
+  //       $('#btn_epis_payer').data('mrn',$(this).data("mrn"));
+
+  //       disableEpisode(true);
+
+	});
+
 });

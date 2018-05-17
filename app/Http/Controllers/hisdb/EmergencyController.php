@@ -20,6 +20,68 @@ class EmergencyController extends defaultController
         $this->duplicateCode = "MRN";
     }
 
+    public function table(Request $request)
+    {
+
+        $array_select = $this->fixPost($request->field,"_");
+        $array_select = array_merge($array_select, ['apptdatefr']);
+
+        $table = DB::table('hisdb.apptbook as a')
+            ->select($array_select)
+            ->join('hisdb.doctor as d', function($join) use ($request){
+                $join = $join->on('d.compcode','=','a.compcode');
+                $join = $join->on('d.doctorcode','=','a.loccode');
+            });
+
+        /////////searching/////////
+        if(!empty($request->searchCol)){
+            $searchCol_array = $this->fixPost3($request->searchCol);
+
+            foreach ($searchCol_array as $key => $value) {
+                $table = $table->orWhere($searchCol_array[$key],'like',$request->searchVal[$key]);
+            }
+        }
+
+        $apptdatefr = Carbon::createFromFormat('Y-m-d H', $request->apptdatefr." 00", 'Asia/Kuala_Lumpur');
+        $apptdatefr2 = $apptdatefr->copy()->addDays(1);
+
+        $table = $table->where('a.type','=','ED')
+            ->whereBetween('a.apptdatefr', [$apptdatefr, $apptdatefr2]);
+
+        if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+        $rows = $paginate->items();
+
+        foreach ($rows as $key => $value) {
+            $apptdatefr = Carbon::createFromFormat('Y-m-d H:i:s', $value->apptdatefr, 'Asia/Kuala_Lumpur');
+
+            $rows[$key]->reg_date = $apptdatefr->toDateString();
+            $rows[$key]->reg_time = $apptdatefr->toTimeString();
+        }
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $rows;
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
+    }
+
     public function show(Request $request)
     {   
         $color = DB::table('sysdb.users')
@@ -146,7 +208,7 @@ class EmergencyController extends defaultController
                     'AddDate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),   
                     'AddUser' => session('username'),   
                     'EDDept' => 'yes',
-                    'episstatus' => 'current'
+                    'episstatus' => ''
                 ]);
 
             ///--- 3. buat debtormaster
@@ -216,7 +278,7 @@ class EmergencyController extends defaultController
             DB::table('hisdb.apptbook')
                 ->insert([
                     'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'apptdatefr' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'apptdatefr' => Carbon::now("Asia/Kuala_Lumpur"),
                     'AddUser' => session('username'),    
                     'CompCode' => session('compcode'),
                     'Location' => 'ED',
@@ -260,6 +322,127 @@ class EmergencyController extends defaultController
                     ]);
 
             }
+            ///---7. generate queue
+                //cari queue utk source que dgn trantype epistycode
+            $queue_obj = DB::table('sysdb.sysparam')
+                ->where('source','=','QUE')
+                ->where('trantype','=','OP');
+                
+            $queue_data = $queue_obj->first();
+
+                //kalu xjumpe buat baru
+            if(!count($queue_data)){
+                DB::table('sysdb.sysparam')
+                    ->insert([
+                        'compcode' => '9A',
+                        'source' => 'QUE',
+                        'trantype' => 'OP',
+                        'description' => 'OP Queue No.',
+                        'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                    ]);
+
+                $queue_obj = DB::table('sysdb.sysparam')
+                    ->where('source','=','QUE')
+                    ->where('trantype','=','OP');
+
+                $queue_data = $queue_obj->first();
+            }
+
+                //ni start kosong balik bila hari baru
+            if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
+                $queue_obj
+                    ->update([
+                        'pvalue1' => 0,
+                        'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                    ]);
+            }
+
+                //tambah satu dkt queue sysparam
+            $current_pvalue1 = intval($queue_data->pvalue1);
+            $queue_obj
+                ->update([
+                    'pvalue1' => $current_pvalue1+1
+                ]);
+
+                //buat queue utk 'ALL'
+            $queueAll_obj=DB::table('hisdb.queue')
+                ->where('mrn','=',$patmast_data->MRN)
+                ->where('episno','=',$patmast_data->Episno + 1)
+                ->where('deptcode','=','ALL');
+
+            $queueAll_data=$queueAll_obj->first();
+
+            if(!count($queueAll_data)){
+                DB::table('hisdb.queue')
+                    ->insert([
+                        'AdmDoctor' => $request->doctor,
+                        'AttnDoctor' => $request->doctor,
+                        'BedType' => '',
+                        'Case_Code' => "MED",
+                        'CompCode' => session('compcode'),
+                        'Episno' => $patmast_data->Episno + 1,
+                        'EpisTyCode' => "OP",
+                        'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'Lastuser' => session('username'),
+                        'MRN' => $patmast_data->MRN,
+                        'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
+                        'Bed' => '',
+                        'Room' => '',
+                        'QueueNo' => $current_pvalue1+1,
+                        'Deptcode' => 'ALL',
+                        'DOB' => $patmast_data->DOB,
+                        'NAME' => $patmast_data->Name,
+                        'Newic' => $patmast_data->Newic,
+                        'Oldic' => $patmast_data->Oldic,
+                        'Sex' => $patmast_data->Sex,
+                        'Religion' => $patmast_data->Religion,
+                        'RaceCode' => $patmast_data->RaceCode,
+                        'EpisStatus' => '',
+                        'chggroup' => $request->billtype
+                    ]);
+            }
+
+                //buat queue utk 'specialist or doctor'
+            $queueSPEC_obj=DB::table('hisdb.queue')
+                ->where('mrn','=',$patmast_data->MRN)
+                ->where('episno','=',$patmast_data->Episno + 1)
+                ->where('deptcode','=','SPEC');
+
+            $queueSPEC_data=$queueSPEC_obj->first();
+
+            if(!count($queueSPEC_data)){
+                DB::table('hisdb.queue')
+                    ->insert([
+                        'AdmDoctor' => $request->doctor,
+                        'AttnDoctor' => $request->doctor,
+                        'BedType' => '',
+                        'Case_Code' => "MED",
+                        'CompCode' => session('compcode'),
+                        'Episno' => $patmast_data->Episno + 1,
+                        'EpisTyCode' => "OP",
+                        'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'Lastuser' => session('username'),
+                        'MRN' => $patmast_data->MRN,
+                        'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
+                        'Bed' => '',
+                        'Room' => '',
+                        'QueueNo' => $current_pvalue1+1,
+                        'Deptcode' => 'SPEC',
+                        'DOB' => $patmast_data->DOB,
+                        'NAME' => $patmast_data->Name,
+                        'Newic' => $patmast_data->Newic,
+                        'Oldic' => $patmast_data->Oldic,
+                        'Sex' => $patmast_data->Sex,
+                        'Religion' => $patmast_data->Religion,
+                        'RaceCode' => $patmast_data->RaceCode,
+                        'EpisStatus' => '',
+                        'chggroup' => $request->billtype
+                    ]);
+            }
 
             $queries = DB::getQueryLog();
 
@@ -271,7 +454,7 @@ class EmergencyController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response('Error DB rollback!'.$e, 500);
         }
     }
 

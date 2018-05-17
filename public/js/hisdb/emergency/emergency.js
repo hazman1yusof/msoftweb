@@ -27,7 +27,7 @@ $(document).ready(function () {
 		zIndex: 0,
 		showAlways: true,
 		onClick: function(target, cell, date, data) {
-			urlParam.filterVal[0] = moment(date).format('YYYY-MM-DD');
+			urlParam.apptdatefr = moment(date).format('YYYY-MM-DD');
 			refreshGrid("#jqGrid", urlParam);
 	    }
 	}).glDatePicker(true);
@@ -186,32 +186,9 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
-		fixPost: 'true',
-		field: ['e.MRN', 'e.Episno','p.Name','p.Newic'],
-		table_name: ['hisdb.apptbook AS a','hisdb.episode AS e','hisdb.doctor as d'],
-		join_type: ['INNER JOIN','INNER JOIN'],
-		join_onCol: ['a.episno','a.loccode'],
-		join_onVal: ['e.episno','d.doctorcode'],
-		join_filterCol: [['e.mrn on =','e.compcode on ='],['d.compcode on =']],
-		join_filterVal: [['a.mrn','a.compcode'],['a.compcode']],
-		filterCol:['a.apptdatefr','a.type'],
-	 	filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD HH:mm:ss'),'ED']
+		url: '/emergency/table',
+	 	apptdatefr:moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD')
 	}
-
-	// ni yang perlukan pat_mast
-		// action: 'get_table_default',
-		// url: '/util/get_table_default',
-		// fixPost: 'true',
-		// field: ['e.MRN', 'e.Episno','p.Name','p.Newic'],
-		// table_name: ['hisdb.apptbook AS a','hisdb.episode AS e','hisdb.pat_mast AS p','hisdb.doctor as d'],
-		// join_type: ['INNER JOIN','INNER JOIN','INNER JOIN'],
-		// join_onCol: ['a.episno','a.mrn','a.loccode'],
-		// join_onVal: ['e.episno','p.mrn','d.doctorcode'],
-		// join_filterCol: [['e.mrn on =','e.compcode on ='],['p.compcode on ='],['d.compcode on =']],
-		// join_filterVal: [['a.mrn','a.compcode'],['a.compcode'],['a.compcode']],
-		// filterCol:['a.apptdatefr','a.type'],
-	 	// filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD HH:mm:ss'),'ED']
 
 	///////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
@@ -225,16 +202,15 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'idno', name: 'a_idno', width: 5, hidden: true },
-			{ label: 'compcode', name: 'e_compcode', width: 5, hidden: true },
-			{ label: 'MRN', name: 'e_MRN', width: 10, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true, checked: true,  },
-			{ label: 'Epis. No', name: 'e_Episno', width: 10 ,canSearch: true,classes: 'wrap' },
-			{ label: 'IC No', name: 'a_icnum', width: 20 ,classes: 'wrap' },
-			{ label: 'Registered Date', name: 'e_reg_date', width: 15 ,classes: 'wrap' },
-			{ label: 'Registered Time', name: 'e_reg_time', width: 15 ,classes: 'wrap' },
+			{ label: 'compcode', name: 'a_compcode', width: 5, hidden: true },
+			{ label: 'MRN', name: 'a_mrn', width: 12, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true, checked: true,  },
+			{ label: 'Epis. No', name: 'a_Episno', width: 10 ,canSearch: true,classes: 'wrap' },
+			{ label: 'IC No', name: 'a_icnum', width: 18 ,classes: 'wrap' , hidden: true },
+			{ label: 'Registered Date', name: 'reg_date', width: 15 ,classes: 'wrap' },
+			{ label: 'Registered Time', name: 'reg_time', width: 15 ,classes: 'wrap' },
 			{ label: 'Name', name: 'a_pat_name', width: 30 ,canSearch: true,classes: 'wrap' },
-			// { label: 'Payer', name: 'q_', width: 20 ,classes: 'wrap' },
 			{ label: 'Doctor', name: 'd_doctorname', width: 20 ,classes: 'wrap' },
-			{ label: 'Status', name: 'e_episstatus', width: 10 ,classes: 'wrap',hidden:false },
+			{ label: 'Status', name: 'a_episstatus', width: 10 ,classes: 'wrap',hidden:true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -246,6 +222,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			$('#biodata_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
+			$('#episode_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 		},
@@ -258,8 +235,8 @@ $(document).ready(function () {
 		var rows = $("#jqGrid").getDataIDs();
 	    for (var i = 0; i < rows.length; i++){
 	    	let data = $("#jqGrid").jqGrid ('getRowData', rows[i]);
-	    	switch(data.e_episstatus){
-	    		case 'current':
+	    	switch(data.a_episstatus){
+	    		case '':
     				$("#jqGrid").jqGrid('setRowData',rows[i],false, {background:$('#CurrentPTcolor').val()});
 	    			break
 	    		case 'cancel':
@@ -512,8 +489,7 @@ $(document).ready(function () {
 	searchClick('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus']);
+	addParamField('#jqGrid', true, urlParam,['reg_date','reg_time']);
 
 	//////////////////////////// background color//////////////////////////////
 	$(".colorpointer").click(function(){
@@ -574,7 +550,7 @@ $(document).ready(function () {
 	        $('#mdl_patient_info').modal({backdrop: "static"});
 	        $("#btn_register_patient").data("oper",oper);
 
-			populate_data_from_mrn(data.e_MRN,"#frm_patient_info");
+			populate_data_from_mrn(data.a_mrn,"#frm_patient_info");
 		}
 
 	});
@@ -639,6 +615,46 @@ $(document).ready(function () {
         });
  	}
 	//////////////////////end pasal biodata/////////////////////////
+
+	/////////////////start pasal episode//////////////////
+
+	$('#episode_but_emergency').click(function(){
+		var data = $(this).data('bio_from_grid');
+
+		if(data==undefined){
+			alert('no patient selected');
+			return false;
+		}
+
+		var episode_param={
+			action:'get_value_default',
+			table_name:'hisdb.episode',
+			url:'util/get_value_default',
+			field:['*'],
+			filterCol:['compcode','mrn','episno','reg_date'],
+			filterVal:['session.compcode',data.a_mrn,data.a_Episno,moment().format('YYYY-MM-DD')]
+		}
+
+		var fail = true;
+		$.get( episode_param.url+"?"+$.param(episode_param), function( data ) {
+			
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data.rows[0])){
+				fail = false;
+				if(data.rows[0].epistycode!='OP'){
+					alert('This Patient was Registered as '+data.rows[0].epistycode);
+					fail = true;
+				}
+
+				if(!fail){
+					// populate_patient_episode(data.rows[0]);
+			        $('#editEpisode').modal({backdrop: "static"});
+			        $('#editEpisode').modal('show');
+				}
+			}
+		});
+
+	});
 
 
 });

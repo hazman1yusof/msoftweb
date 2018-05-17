@@ -46,7 +46,7 @@ var Menu = function () {
 			dialogObj.dialog=$("<iframe src='"+obj.attr('targetURL')+"' programid='"+obj.attr('programid')+"' ></iframe>")
 			  .dialog({ 
 				title : obj.attr('title'),
-				position: { my: "left bottom", at: "left+300px bottom"},
+				position: { my: "left bottom", at: "left+500px bottom"},
 				width: 9.2/10 * $(window).width(),
 				height: $(window).height() - 50,
 				close: function( event, ui ) {
@@ -74,13 +74,13 @@ var Menu = function () {
 		}
 		
 		var last;
-		$(".clickable").click(function(){
+		$("#myNavmenu a.clickable").click(function(){
 			if(cntrlIsPressed){
 				cntrlIsPressed=false;
 				window.open($(this).attr('targetURL'));
 			}else{
 				$( ".lilabel" ).hide();
-				$( ".navmenu" ).animate({ width:"7%" }, "fast");
+				$( "#myNavmenu" ).animate({ width:"7%" }, "fast");
 				window.scrollTo(0,0);
 				$(this).append( "<i class='fa fa-caret-right fa-lg'></i>" );
 				if(typeof last !== 'undefined' && $(this).attr('programid') != last.attr('programid')){

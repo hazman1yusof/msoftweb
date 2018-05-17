@@ -69,6 +69,9 @@ td.fc-event-container a.selected{
 				<button type="button" class="btn btn-default" id='biodata_but_apptrsc' data-oper='add'>
 					<span class='fa fa-user fa-lg'></span> Biodata
 				</button>
+				<button type="button" class="btn btn-default" id='episode_but_apptrsc' data-oper='add'>
+					<span class='fa fa-h-square fa-lg'></span> Episode
+				</button>
 				<button type="button" class="btn btn-default" id='transfer_doctor_but'>
 					<span class='fa fa-user-md fa-lg'></span> Transfer Doctor
 				</button>
@@ -254,6 +257,7 @@ td.fc-event-container a.selected{
 
 
 	@include('hisdb.pat_mgmt.mdl_patient')
+	@include('hisdb.pat_mgmt.mdl_episode')
 	@include('hisdb.pat_mgmt.itemselector')
 
 	@endsection
@@ -267,6 +271,7 @@ td.fc-event-container a.selected{
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
 	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
+	<script src="js/hisdb/pat_mgmt/episode.js"></script>
 
 	
 	<script src="js/hisdb/apptrsc/apptrsc.js"></script>

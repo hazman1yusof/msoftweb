@@ -125,7 +125,8 @@ class AppointmentController extends defaultController
             'adduser'     => session('username'),
             'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
             'lastuser'    => session('username'),
-            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
+            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+            'type'        => 'DOC'
         ]);
         
     }

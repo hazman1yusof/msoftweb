@@ -1,7 +1,7 @@
 <!-- Large modal -->
 <div id="editEpisode" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editEpisode" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
-        <form class="form-horizontal">
+        <form class="form-horizontal" id="episode_form">
             <div class="modal-content">
                 <div class="modal-header label-warning">
                     <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
