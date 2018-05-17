@@ -224,7 +224,7 @@ class EmergencyController extends defaultController
 
                 $debtormast_data = $debtormast_obj->first();
 
-                if(!count($debtormast_data)){
+                if(($debtormast_data)){
                     //kalu xjumpa debtormast, buat baru
                     DB::table('debtor.debtormast')
                         ->insert([
@@ -249,13 +249,12 @@ class EmergencyController extends defaultController
             }
 
             ///--- 4. epispayer
-            $epispayer_data = DB::table('hisdb.epispayer')
+            $epispayer_obj = DB::table('hisdb.epispayer')
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$patmast_data->MRN)
-                ->where('Episno','=',$patmast_data->Episno + 1)
-                ->first();
+                ->where('Episno','=',$patmast_data->Episno + 1);
 
-            if(!count($epispayer_data)){
+            if(!$epispayer_obj->exists()){
                 //kalu xjumpa epispayer, buat baru
                 DB::table('hisdb.epispayer')
                 ->insert([
@@ -296,14 +295,13 @@ class EmergencyController extends defaultController
                 ]);
 
             ///---6. buat docalloc
-            $docalloc_data=DB::table('hisdb.docalloc')
+            $docalloc_obj=DB::table('hisdb.docalloc')
                 ->where('compcode','=',session('compcode'))
                 ->where('Mrn','=',$patmast_data->MRN)
-                ->where('Episno','=',$patmast_data->Episno + 1)
-                ->first();
+                ->where('Episno','=',$patmast_data->Episno + 1);
 
 
-            if(!count($docalloc_data)){
+            if(!$docalloc_obj->exists()){
                 //kalu xde docalloc buat baru
                 DB::table('hisdb.docalloc')
                     ->insert([
@@ -327,11 +325,9 @@ class EmergencyController extends defaultController
             $queue_obj = DB::table('sysdb.sysparam')
                 ->where('source','=','QUE')
                 ->where('trantype','=','OP');
-                
-            $queue_data = $queue_obj->first();
 
                 //kalu xjumpe buat baru
-            if(!count($queue_data)){
+            if(!$queue_obj->exists()){
                 DB::table('sysdb.sysparam')
                     ->insert([
                         'compcode' => '9A',
@@ -344,9 +340,9 @@ class EmergencyController extends defaultController
                 $queue_obj = DB::table('sysdb.sysparam')
                     ->where('source','=','QUE')
                     ->where('trantype','=','OP');
-
-                $queue_data = $queue_obj->first();
             }
+
+            $queue_data = $queue_obj->first();
 
                 //ni start kosong balik bila hari baru
             if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
@@ -372,7 +368,7 @@ class EmergencyController extends defaultController
 
             $queueAll_data=$queueAll_obj->first();
 
-            if(!count($queueAll_data)){
+            if(!$queueAll_obj->exists()){
                 DB::table('hisdb.queue')
                     ->insert([
                         'AdmDoctor' => $request->doctor,
@@ -412,7 +408,7 @@ class EmergencyController extends defaultController
 
             $queueSPEC_data=$queueSPEC_obj->first();
 
-            if(!count($queueSPEC_data)){
+            if(!$queueSPEC_obj->exists()){
                 DB::table('hisdb.queue')
                     ->insert([
                         'AdmDoctor' => $request->doctor,
