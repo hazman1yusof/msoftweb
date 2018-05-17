@@ -676,8 +676,7 @@ class GoodReturnController extends defaultController
                     'recstatus' => 'POSTED' 
                 ]);
            
-            dd(DB::getQueryLog());
-            // DB::commit();
+            DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
