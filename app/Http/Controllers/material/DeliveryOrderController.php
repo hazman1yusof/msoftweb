@@ -25,6 +25,7 @@ class DeliveryOrderController extends defaultController
 
     public function form(Request $request)
     {   
+        DB::enableQueryLog();
         // return $this->request_no('GRN','2FL');
         switch($request->oper){
             case 'add':
@@ -693,8 +694,11 @@ class DeliveryOrderController extends defaultController
                 ->update([
                     'recstatus' => 'POSTED' 
                 ]);
-           
-            DB::commit();
+            
+
+            $queries = DB::getQueryLog();
+            dd($queries);
+            // DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
@@ -769,7 +773,7 @@ class DeliveryOrderController extends defaultController
                     ]);    
 
 
-            //--- 3. cancel to stockloc ---///
+                //--- 3. cancel to stockloc ---///
                 //1. amik stockloc
                 $stockloc_obj = DB::table('material.StockLoc')
                     ->where('StockLoc.CompCode','=',session('compcode'))
@@ -806,7 +810,7 @@ class DeliveryOrderController extends defaultController
 
                 }
 
-            //--- 4. cancel to stock enquiry ---//
+                //--- 4. cancel to stock enquiry ---//
                 //1. amik Stock Expiry
                 $stockexp_obj = DB::table('material.stockexp')
                     ->where('stockexp.compcode','=',session('compcode'))
@@ -1047,6 +1051,8 @@ class DeliveryOrderController extends defaultController
                 ->update([
                     'recstatus' => 'CANCELLED' 
                 ]);
+
+            // dd(DB::getQueryLog());
            
             DB::commit();
         
