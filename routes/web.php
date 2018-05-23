@@ -140,7 +140,7 @@ Route::get('/purchaseOrder','material\PurchaseOrderController@show');
 Route::get('/purchaseOrder/table','material\PurchaseOrderController@table');
 Route::post('/purchaseOrder/form','material\PurchaseOrderController@form');
 Route::get('/purchaseOrder/form','material\PurchaseOrderController@form');
-Route::post('/purchaseOrderDetail/form','material\PurchaseOrderController@form');
+Route::post('/purchaseOrderDetail/form','material\PurchaseOrderDetailController@form');
 
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');

@@ -572,7 +572,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "../../../../assets/php/entry.php?action=purOrder_detail_save",
+		editurl: "/purchaseOrderDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', editable: true, hidden: true },
@@ -864,13 +864,12 @@ function saveHeader(form,selfoper,saveParam,obj){
 		},
 		beforeSaveRow: function (options, rowid) {
 			mycurrency2.formatOff();
-			let editurl = "/deliveryOrderDetail/form?"+
+			let editurl = "/purchaseOrderDetail/form?"+
 				$.param({
 					action: 'purOrder_detail_save',
-					//docno:$('#delordhd_docno').val(),
 					recno: $('#purordhd_recno').val(),
-					reqdept: $('#purordhd_reqdept').val(),
-					purreqno: $('#purordhd_purreqno').val(),
+					// reqdept: $('#purordhd_reqdept').val(),
+					// purreqno: $('#purordhd_purreqno').val(),
 					suppcode: $('#purordhd_suppcode').val(),
 					purdate: $('#purordhd_purdate').val(),
 					amount:selrowData('#jqGrid2').amount,
@@ -987,18 +986,15 @@ function saveHeader(form,selfoper,saveParam,obj){
 		var temp;
 		switch (name) {
 			case 'Item Code': temp = $('#itemcode'); break;
-			case 'Uom Code': temp = $('#uomcode'); break;
+			case 'UOM Code': temp = $('#uomcode'); break;
 			case 'PO UOM': temp = $('#pouom'); break;
 			case 'Price Code': temp = $('#pricecode'); break;
 			case 'Tax Code': temp = $('#taxcode'); break;
-			// case 'Qty on Hand at Req To Dept': temp = $("#jqGrid2 input[name='reqmadeqtyonhand']"); 
-			// 	$("#jqGrid2 input[name='reqmadeqtyonhand']").hasClass("error");
-			// 	break;
 			case 'Quantity Ordered': temp = $("#jqGrid2 input[name='qtyorder']"); 
 				$("#jqGrid2 input[name='qtyorder']").hasClass("error");
 				break;
 		}
-		return (temp.parent().hasClass("has-error")) ? [false, "Please enter valid " + name + " value"] : [true, ''];
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 
 	}
 
