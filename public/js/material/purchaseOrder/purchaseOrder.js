@@ -558,7 +558,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 	var urlParam2 = {
 		action: 'get_table_default',
 		url:'/util/get_table_default',
-		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder', 'podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax', 'podt.amount','podt.rem_but AS remarks_button','podt.remarks', 't.rate'],
+		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder', 'podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 't.rate'],
 		table_name: ['material.purorddt AS podt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
 		table_id: 'lineno_',
 		join_type: ['LEFT JOIN', 'LEFT JOIN'],
@@ -724,6 +724,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 						}
 					},
 			},
+			{ label: 'netunitprice', name: 'netunitprice', width: 20, classes: 'wrap', hidden:true},
 			{
 				label: 'Total Line Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
@@ -873,7 +874,8 @@ function saveHeader(form,selfoper,saveParam,obj){
 					suppcode: $('#purordhd_suppcode').val(),
 					purdate: $('#purordhd_purdate').val(),
 					amount:selrowData('#jqGrid2').amount,
-					remarks:selrowData('#jqGrid2').remarks//bug will happen later because we use selected row
+					remarks:selrowData('#jqGrid2').remarks,
+					netunitprice:selrowData('#jqGrid2').netunitprice,//bug will happen later because we use selected row
 				});
 
 
@@ -1091,13 +1093,12 @@ function saveHeader(form,selfoper,saveParam,obj){
 		dialog_pouom.on();
 		dialog_taxcode.on();
 		dialog_pouom.on();
-		//$("input[name='rate']").val('0')//reset gst to 0
+		$("input[name='gstpercent']").val('0')//reset gst to 0
 
 
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
         $("#jqGrid2 input[name='qtyorder']").on('blur', { currency: mycurrency2 },calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='qtydelivered']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='qtyOutstand']").on('blur', { currency: mycurrency2 }, 
 			calculate_quantity_outstanding);
 		$("#jqGrid2 input[name='unitprice']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
@@ -1259,7 +1260,8 @@ function saveHeader(form,selfoper,saveParam,obj){
 	}
 */
 
-    function calculate_conversion_factor(event) {
+   /////////////calculate conv fac//////////////////////////////////
+	 function calculate_conversion_factor(event) {
 
 		console.log("balconv");
 
@@ -1294,7 +1296,6 @@ function saveHeader(form,selfoper,saveParam,obj){
 				errorField.push( id );
 			}
 		}
-
 		
 			
 		//event.data.currency.formatOn();//change format to currency on each calculation
@@ -1302,28 +1303,70 @@ function saveHeader(form,selfoper,saveParam,obj){
 	}
 
 
-
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
 	function calculate_line_totgst_and_totamt(event) {
 
+		// let qtyorder = parseFloat($("#jqGrid2 input[name='qtyorder']").val());
+		// let unitprice = parseFloat($("#jqGrid2 input[name='unitprice']").val());
+		// let amtdisc = parseFloat($("#jqGrid2 input[name='amtdisc']").val());
+		// let perdisc = parseFloat($("#jqGrid2 input[name='perdisc']").val());
+		// let rate = parseFloat($("#jqGrid2 input[name='rate']").val());
+
+  
+
+		// var amount = ((unitprice*qtyorder) - (amtdisc*qtyorder) );
+		// var getDis = amount - (amount*perdisc/100);
+		// var tot_gst = getDis * (rate / 100);
+		// var totalAmount = getDis + tot_gst;
+		
+		// $("input[name='tot_gst']").val(tot_gst);
+		// $("input[name='amount']").val(totalAmount);
+		// event.data.currency.formatOn();//change format to currency on each calculation
+       
 		let qtyorder = parseFloat($("#jqGrid2 input[name='qtyorder']").val());
 		let unitprice = parseFloat($("#jqGrid2 input[name='unitprice']").val());
 		let amtdisc = parseFloat($("#jqGrid2 input[name='amtdisc']").val());
 		let perdisc = parseFloat($("#jqGrid2 input[name='perdisc']").val());
-		let rate = parseFloat($("#jqGrid2 input[name='rate']").val());
+		let gstpercent=parseFloat($("input[name='gstpercent']").val());
 
-  
+		var totamtperUnit = ((unitprice*qtyorder) - (amtdisc*qtyorder));
+		var amount = totamtperUnit- (totamtperUnit*perdisc/100);
+		
+		var tot_gst = amount * (gstpercent / 100);
+		var totalAmount = amount + tot_gst;
 
-		var amount = ((unitprice*qtyorder) - (amtdisc*qtyorder) );
-		var getDis = amount - (amount*perdisc/100);
-		var tot_gst = getDis * (rate / 100);
-		var totalAmount = getDis + tot_gst;
+		var netunitprice = (unitprice-amtdisc);//?
 		
 		$("input[name='tot_gst']").val(tot_gst);
-		$("input[name='amount']").val(totalAmount);
+		$("input[name='totamount']").val(totalAmount);
+		$("#jqGrid2").jqGrid('setRowData', linenotoedit ,{amount:amount});
+		$("#jqGrid2").jqGrid('setRowData', linenotoedit ,{netunitprice:netunitprice});
+		
+
+		var id="#jqGrid2 input[name='qtyorder']"
+		var fail_msg = "Quantity Ordered must be greater than 0"
+		var name = ">0quantityordered";
+		if (qtyorder > 0) {
+			if($.inArray(id,errorField)!==-1){
+				errorField.splice($.inArray(id,errorField), 1);
+			}
+			$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+			$( id ).removeClass( "error" ).addClass( "valid" );
+			$('.noti').find("li[data-errorid='"+name+"']").detach();
+		} else {
+			$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+			$( id ).removeClass( "valid" ).addClass( "error" );
+			if(!$('.noti').find("li[data-errorid='"+name+"']").length)$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+			if($.inArray(id,errorField)===-1){
+				errorField.push( id );
+			}
+		}
+
 		event.data.currency.formatOn();//change format to currency on each calculation
 
 	}
+
+	
 	
 	function calculate_quantity_outstanding(event){
         let qtyorder = parseFloat($("#jqGrid2 input[name='qtyorder']").val());
@@ -1601,7 +1644,7 @@ var dialog_deldept = new ordialog(
 				$("#jqGrid2 input[name='taxcode']").val(data['p_TaxCode']);
 				$("#jqGrid2 input[name='rate']").val(data['t_rate']);
 				$("#convfactor_uom").val(data['u_convfactor']);
-				
+				$('#gstpercent').val(data['t_rate']);
 				//getQOHPrDept(true);
 			}
 		},{
@@ -1719,7 +1762,7 @@ var dialog_deldept = new ordialog(
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_taxcode.gridname);
 				$("#jqGrid2 input[name='rate']").val(data['rate']);
-				//$('#gstpercent').val(data['rate']);
+				$('#gstpercent').val(data['rate']);
 				$(dialog_taxcode.textfield).closest('td').next().has("input[type=text]").focus();
 			}
 		}, {
