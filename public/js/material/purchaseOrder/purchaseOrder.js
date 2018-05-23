@@ -110,8 +110,9 @@ $(document).ready(function () {
 	var urlParam = {
 		action: 'get_table_default',
 		url:'/util/get_table_default',
+		field:'',
 		fixPost: 'true',
-		field: ['purordhd.recno', 'purordhd.prdept', 'purordhd.purordno'],
+		// field: ['purordhd.recno', 'purordhd.prdept', 'purordhd.purordno'],
 		table_name: ['material.purordhd', 'material.supplier'],
 		table_id: 'purordhd_idno',
 		join_type: ['LEFT JOIN'],
@@ -212,8 +213,43 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
+			// switch($("#scope").val()){
+			// 	case "dataentry":
+			// 		break;
+			// 	case "cancel": 
+			// 		if(stat=='POSTED'){
+			// 			$('#but_cancel_jq').show();
+			// 			$('#but_post_jq,#but_reopen_jq').hide();
+			// 		}else if(stat=="CANCELLED"){
+			// 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			// 		}else{
+			// 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			// 		}
+			// 		break;
+			// 	case "all": 
+			// 		if(stat=='POSTED'){
+			// 			$('#but_reopen_jq').show();
+			// 			$('#but_post_jq,#but_cancel_jq').hide();
+			// 		}else if(stat=="CANCELLED"){
+			// 			$('#but_reopen_jq').show();
+			// 			$('#but_post_jq,#but_cancel_jq').hide();
+			// 		}else{
+			// 			$('#but_cancel_jq,#but_post_jq').show();
+			// 			$('#but_reopen_jq').hide();
+			// 		}
+			// 		break;
+			// }
 			switch($("#scope").val()){
 				case "dataentry":
+					if($('#purordhd_purordno')=='0' && $('#purordhd_purordno')=='null'){
+						$("label[for=purordhd_reqdept]").show();
+						$("#purordhd_reqdept_parent").show();
+						$("#purordhd_reqdept").attr('required',false);
+					}else{
+						$("label[for=purordhd_reqdept]").hide();
+						$("#purordhd_reqdept_parent").hide();
+						$("#purordhd_reqdept").removeAttr('required');
+					}
 					break;
 				case "cancel": 
 					if(stat=='POSTED'){
@@ -226,6 +262,15 @@ $(document).ready(function () {
 					}
 					break;
 				case "all": 
+					if($('#purordhd_purordno')=='0' && $('#purordhd_purordno')=='null'){
+							$("label[for=purordhd_reqdept]").show();
+							$("#purordhd_reqdept_parent").show();
+							$("#purordhd_reqdept").attr('required',true);
+						}else{
+							$("label[for=purordhd_reqdept]").hide();
+							$("#purordhd_reqdept_parent").hide();
+							$("#purordhd_reqdept").removeAttr('required');
+						}
 					if(stat=='POSTED'){
 						$('#but_reopen_jq').show();
 						$('#but_post_jq,#but_cancel_jq').hide();
@@ -304,8 +349,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['purordhd_adduser', 'purordhd_adddate', 'purordhd_idno', 'supplier_name']);
-
+	addParamField('#jqGrid', false, saveParam, ['purordhd_recno','purordhd_purordno','purordhd_adduser', 'purordhd_adddate','purordhd_adduser','purordhd_upddate','purordhd_deluser', 'purordhd_idno', 'supplier_name','purordhd_recstatus']);
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide) {
 		if (hide) {
@@ -369,7 +413,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 			hideatdialogForm(false);
 
 		}, 'json').fail(function (data) {
-			//alert(data.responseText);
+			alert(data.responseText);
 		}).done(function (data) {
 			//2nd successs?
 		});
@@ -393,18 +437,18 @@ function saveHeader(form,selfoper,saveParam,obj){
 		});
 	}
 	///////////////////////////////////utk dropdown tran dept/////////////////////////////////////////
-	trandept(urlParam)
-	function trandept(urlParam) {
-		var param = {
-			action: 'get_value_default',
+	trandept();
+	function trandept(){
+		var param={
+			action:'get_value_default',
 			url: '/util/get_value_default',
-			field: ['deptcode'],
-			table_name: 'sysdb.department',
-			filterCol: ['purdept'],
-			filterVal: ['1']
+			field:['deptcode'],
+			table_name:'sysdb.department',
+			filterCol:['storedept'],
+			filterVal:['1']
 		}
 		$.get( param.url+"?"+$.param(param), function( data ) {
-
+			
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data)){
 				$.each(data.rows, function(index, value ) {
@@ -492,7 +536,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 
 
 	function searchChange() {
-		var arrtemp = ['skip.supplier.CompCode', $('#Status option:selected').val(), $('#trandept option:selected').val()];
+		var arrtemp = ['session.compcode', $('#Status option:selected').val(), $('#trandept option:selected').val()];
 		var filter = arrtemp.reduce(function (a, b, c) {
 			if (b == 'All') {
 				return a;
@@ -801,6 +845,9 @@ function saveHeader(form,selfoper,saveParam,obj){
 	//var addmore_jqgrid2 = false // if addmore is true, add after refresh jqgrid2
 	var myEditOptions = {
 		keys: true,
+		 extraparam:{
+		    "_token": $("#_token").val()
+        },
 		oneditfunc: function (rowid) {
 
 			linenotoedit = rowid;
@@ -817,7 +864,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 		},
 		beforeSaveRow: function (options, rowid) {
 			mycurrency2.formatOff();
-			let editurl = "../../../../assets/php/entry.php?" +
+			let editurl = "/deliveryOrderDetail/form?"+
 				$.param({
 					action: 'purOrder_detail_save',
 					//docno:$('#delordhd_docno').val(),
@@ -869,7 +916,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 								recno: $('#purordhd_recno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 				    		}
-				    		$.post( "../../../../assets/php/entry.php?"+$.param(param),{oper:'del'}, function( data ){
+				    		$.post( "/purchaseOrderDetail/form"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
@@ -1076,40 +1123,40 @@ function saveHeader(form,selfoper,saveParam,obj){
 		});
 	});
 
-    function getQOHPrDept(){
-		var param={
-			func:'getQOHPrDept',
-			action:'get_value_default',
-			field:['qtyonhand'],
-			table_name:'material.stockloc'
-		}
+ //    function getQOHPrDept(){
+	// 	var param={
+	// 		func:'getQOHPrDept',
+	// 		action:'get_value_default',
+	// 		field:['qtyonhand'],
+	// 		table_name:'material.stockloc'
+	// 	}
 
-		param.filterCol = ['year','itemcode', 'deptcode','uomcode'];
-		param.filterVal = [moment($('#purdate').val()).year(), $("#jqGrid2 input[name='itemcode']").val(),$('#purordhd_deldept').val(), $("#jqGrid2 input[name='uomcode']").val()];
+	// 	param.filterCol = ['year','itemcode', 'deptcode','uomcode'];
+	// 	param.filterVal = [moment($('#purdate').val()).year(), $("#jqGrid2 input[name='itemcode']").val(),$('#purordhd_deldept').val(), $("#jqGrid2 input[name='uomcode']").val()];
 
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-			//$("#jqGrid2 input[name='recvqtyonhand']").val('');
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.rows) && data.rows[0].qtyonhand!=null){
-				//$("#jqGrid2 input[name='recvqtyonhand']").val(data.rows[0].qtyonhand);
-			}else if($("#purordhd_deldept").val()!=''){
-				bootbox.confirm({
-				    message: "No stock location at department code: "+$('#purordhd_deldept').val()+"... Proceed? ",
-				    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-				    },
-				    callback: function (result) {
-				    	if(!result){
-				    		$("#jqGrid2_ilcancel").click();
-				    	}else{
+	// 	$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+	// 		//$("#jqGrid2 input[name='recvqtyonhand']").val('');
+	// 	},'json').done(function(data) {
+	// 		if(!$.isEmptyObject(data.rows) && data.rows[0].qtyonhand!=null){
+	// 			//$("#jqGrid2 input[name='recvqtyonhand']").val(data.rows[0].qtyonhand);
+	// 		}else if($("#purordhd_deldept").val()!=''){
+	// 			bootbox.confirm({
+	// 			    message: "No stock location at department code: "+$('#purordhd_deldept').val()+"... Proceed? ",
+	// 			    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+	// 			    },
+	// 			    callback: function (result) {
+	// 			    	if(!result){
+	// 			    		$("#jqGrid2_ilcancel").click();
+	// 			    	}else{
 							
-				    	}
-				    }
-				});
-			}else{
+	// 			    	}
+	// 			    }
+	// 			});
+	// 		}else{
 				
-			}
-		});
-	}
+	// 		}
+	// 	});
+	// }
 
 	/////////////////////////////// test get days for backdated //////////////////////////////////////////////
 	// function backdated(){
@@ -1398,7 +1445,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 					filterVal: [data['h.recno'], 'session.company', '<>.DELETE']
 				};
 
-					$.get("../../../../assets/php/entry.php?" + $.param(urlParam2), function (data) {
+				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {
@@ -1451,9 +1498,10 @@ function saveHeader(form,selfoper,saveParam,obj){
 
 				
 			}
-		},'urlParam'
+		},'none'
 	);
 	dialog_purreqno.makedialog();
+	dialog_purreqno.urlParam.fixPost = "true";
 
 	var dialog_prdept = new ordialog(
 		'prdept','sysdb.department','#purordhd_prdept',errorField,
@@ -1497,7 +1545,7 @@ var dialog_deldept = new ordialog(
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
-				$("#delordhd_credcode").val(data['suppcode']);
+				$("#purordhd_credcode").val(data['suppcode']);
 			}
 		},{
 			title:"Select Transaction Type",

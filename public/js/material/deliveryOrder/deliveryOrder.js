@@ -874,7 +874,7 @@ $(document).ready(function () {
         }, 
         beforeSaveRow: function(options, rowid) {
         	mycurrency2.formatOff();
-			let editurl = "/deliveryOrderDetail/form?"+
+			let editurl = "/purchaseOrderDetail/form?"+
 				$.param({
 					action: 'delOrdDetail_save',
 					docno:$('#delordhd_docno').val(),
