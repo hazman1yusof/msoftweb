@@ -213,43 +213,8 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
-			// switch($("#scope").val()){
-			// 	case "dataentry":
-			// 		break;
-			// 	case "cancel": 
-			// 		if(stat=='POSTED'){
-			// 			$('#but_cancel_jq').show();
-			// 			$('#but_post_jq,#but_reopen_jq').hide();
-			// 		}else if(stat=="CANCELLED"){
-			// 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-			// 		}else{
-			// 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-			// 		}
-			// 		break;
-			// 	case "all": 
-			// 		if(stat=='POSTED'){
-			// 			$('#but_reopen_jq').show();
-			// 			$('#but_post_jq,#but_cancel_jq').hide();
-			// 		}else if(stat=="CANCELLED"){
-			// 			$('#but_reopen_jq').show();
-			// 			$('#but_post_jq,#but_cancel_jq').hide();
-			// 		}else{
-			// 			$('#but_cancel_jq,#but_post_jq').show();
-			// 			$('#but_reopen_jq').hide();
-			// 		}
-			// 		break;
-			// }
 			switch($("#scope").val()){
 				case "dataentry":
-					if($('#purordhd_purordno')=='0' && $('#purordhd_purordno')=='null'){
-						$("label[for=purordhd_reqdept]").show();
-						$("#purordhd_reqdept_parent").show();
-						$("#purordhd_reqdept").attr('required',false);
-					}else{
-						$("label[for=purordhd_reqdept]").hide();
-						$("#purordhd_reqdept_parent").hide();
-						$("#purordhd_reqdept").removeAttr('required');
-					}
 					break;
 				case "cancel": 
 					if(stat=='POSTED'){
@@ -262,15 +227,6 @@ $(document).ready(function () {
 					}
 					break;
 				case "all": 
-					if($('#purordhd_purordno')=='0' && $('#purordhd_purordno')=='null'){
-							$("label[for=purordhd_reqdept]").show();
-							$("#purordhd_reqdept_parent").show();
-							$("#purordhd_reqdept").attr('required',true);
-						}else{
-							$("label[for=purordhd_reqdept]").hide();
-							$("#purordhd_reqdept_parent").hide();
-							$("#purordhd_reqdept").removeAttr('required');
-						}
 					if(stat=='POSTED'){
 						$('#but_reopen_jq').show();
 						$('#but_post_jq,#but_cancel_jq').hide();
@@ -283,6 +239,50 @@ $(document).ready(function () {
 					}
 					break;
 			}
+			// switch($("#scope").val()){
+			// 	case "dataentry":
+			// 		if($('#purordhd_purordno')=='0' && $('#purordhd_purordno')=='null'){
+			// 			$("label[for=purordhd_reqdept]").show();
+			// 			$("#purordhd_reqdept_parent").show();
+			// 			$("#purordhd_reqdept").attr('required',false);
+			// 		}else{
+			// 			$("label[for=purordhd_reqdept]").hide();
+			// 			$("#purordhd_reqdept_parent").hide();
+			// 			$("#purordhd_reqdept").removeAttr('required');
+			// 		}
+			// 		break;
+			// 	case "cancel": 
+			// 		if(stat=='POSTED'){
+			// 			$('#but_cancel_jq').show();
+			// 			$('#but_post_jq,#but_reopen_jq').hide();
+			// 		}else if(stat=="CANCELLED"){
+			// 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			// 		}else{
+			// 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			// 		}
+			// 		break;
+			// 	case "all": 
+			// 		if($('#purordhd_purordno')=='0' && $('#purordhd_purordno')=='null'){
+			// 				$("label[for=purordhd_reqdept]").show();
+			// 				$("#purordhd_reqdept_parent").show();
+			// 				$("#purordhd_reqdept").attr('required',true);
+			// 			}else{
+			// 				$("label[for=purordhd_reqdept]").hide();
+			// 				$("#purordhd_reqdept_parent").hide();
+			// 				$("#purordhd_reqdept").removeAttr('required');
+			// 			}
+			// 		if(stat=='POSTED'){
+			// 			$('#but_reopen_jq').show();
+			// 			$('#but_post_jq,#but_cancel_jq').hide();
+			// 		}else if(stat=="CANCELLED"){
+			// 			$('#but_reopen_jq').show();
+			// 			$('#but_post_jq,#but_cancel_jq').hide();
+			// 		}else{
+			// 			$('#but_cancel_jq,#but_post_jq').show();
+			// 			$('#but_reopen_jq').hide();
+			// 		}
+			// 		break;
+			// }
 
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purordhd_recno;
 			$('#ponodepan').text(selrowData("#jqGrid").purordhd_purordno);//tukar kat depan tu

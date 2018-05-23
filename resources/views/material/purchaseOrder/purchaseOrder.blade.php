@@ -142,21 +142,22 @@
 									  <span class="help-block"></span>
 								  </div>
 
-
-                                    <!--  <label class="col-md-2  control-label" for="purordhd_reqdept">Req Dept</label>  
-						  			<div class="col-md-2">
-										<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="11" class="form-control input-sm" frozeOnEdit hideOne rdonly >
-						  			</div>-->
-
-								   <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
+								   <!-- <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
 								 <div class="col-md-2">
 									<div class='input-group'>
 										<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm"  >
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
-								</div> 
-							
+								</div>  -->
+							       <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
+								 <div class="col-md-2">
+									  <div class='input-group'>
+										<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm" >
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									  </div>
+									 
+								  </div>
 
                                        <label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 
 								 <div class="col-md-2">

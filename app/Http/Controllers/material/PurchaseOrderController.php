@@ -221,113 +221,17 @@ class PurchaseOrderController extends defaultController
         DB::beginTransaction();
 
         try{
-             //--- 1. copy purordhd masuk dalam delordhd ---//
 
-                //1. amik dari purordhd
-            $purordhd_obj = DB::table('material.purordhd')
-                ->where('recno', '=', $request->recno)
-                ->where('compcode', '=' ,session('compcode'))
-                ->first();
+            //     //1. amik dari purordhd
+            // $purordhd_obj = DB::table('material.purordhd')
+            //     ->where('recno', '=', $request->recno)
+            //     ->where('compcode', '=' ,session('compcode'))
+            //     ->first();
 
-                //2. pastu letak dkt delordhd
-            DB::table('material.delordhd')
-                ->insert([
-                    'compcode'=>$delordhd_obj->compcode, 
-                    'recno'=>$delordhd_obj->recno, 
-                    'reference'=>$delordhd_obj->delordno, 
-                    'source'=>'IV', 
-                    'txndept'=>$delordhd_obj->deldept, 
-                    'trantype'=>$delordhd_obj->trantype, 
-                    'docno'=>$delordhd_obj->docno, 
-                    'srcdocno'=>$delordhd_obj->srcdocno, 
-                    'sndrcv'=>$delordhd_obj->suppcode, 
-                    'sndrcvtype'=>'Supplier', 
-                    'trandate'=>$delordhd_obj->trandate, 
-                    'trantime'=>$delordhd_obj->trantime, 
-                    'datesupret'=>$delordhd_obj->deliverydate, 
-                    'respersonid'=>$delordhd_obj->checkpersonid, 
-                    'recstatus'=>$delordhd_obj->recstatus, 
-                    'adduser'=>$delordhd_obj->adduser, 
-                    'adddate'=>Carbon::now("Asia/Kuala_Lumpur"),
-                    'remarks'=>$delordhd_obj->remarks
-                ]);
-           //--- 2. loop purorddt untuk masuk dalam delorddt ---//
+              
+             //--- 2. change recstatus to posted ---//
+     
 
-                //1.amik productcat dari table product
-            $productcat_obj = DB::table('material.delorddt')
-                ->select('product.productcat')
-                ->join('material.product', function($join) use ($request){
-                    $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
-                    $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
-                })
-                ->where('delorddt.compcode','=',session('compcode'))
-                ->where('product.groupcode','=','Stock')
-                ->where('delorddt.recno','=',$request->recno)
-                ->first();
-            $productcat = $productcat_obj->productcat;
-
-            $delorddt_obj = DB::table('material.delorddt')
-                ->where('delorddt.compcode','=',session('compcode'))
-                ->where('delorddt.recno','=',$request->recno)
-                ->where('delorddt.recstatus','!=','DELETE')
-                ->get();
-
-                //2. start looping untuk delorddt
-            foreach ($delorddt_obj as $value) {
-
-         //3. dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
-                $convfactorPOUOM_obj = DB::table('material.delorddt')
-                    ->select('uom.convfactor')
-                    ->join('material.uom','delorddt.pouom','=','uom.uomcode')
-                    ->where('delorddt.compcode','=',session('compcode'))
-                    ->where('delorddt.recno','=',$request->recno)
-                    ->where('delorddt.lineno_','=',$value->lineno_)
-                    ->first();
-                $convfactorPOUOM = $convfactorPOUOM_obj->convfactor;
-
-                $convfactorUOM_obj = DB::table('material.delorddt')
-                    ->select('uom.convfactor')
-                    ->join('material.uom','delorddt.uomcode','=','uom.uomcode')
-                    ->where('delorddt.compcode','=',session('compcode'))
-                    ->where('delorddt.recno','=',$request->recno)
-                    ->where('delorddt.lineno_','=',$value->lineno_)
-                    ->first();
-                $convfactorUOM = $convfactorUOM_obj->convfactor;
-
-                $txnqty = $value->qtydelivered * ($convfactorPOUOM / $convfactorUOM);
-                $netprice = $value->netunitprice * ($convfactorUOM / $convfactorPOUOM);
-
-                  //4. start insert dalam ivtxndt
-                DB::table('material.ivtxndt')
-                    ->insert([
-                        'compcode' => $value->compcode, 
-                        'recno' => $value->recno, 
-                        'lineno_' => $value->lineno_, 
-                        'itemcode' => $value->itemcode, 
-                        'uomcode' => $value->uomcode, 
-                        'txnqty' => $txnqty, 
-                        'netprice' => $netprice, 
-                        'adduser' => $value->adduser, 
-                        'adddate' => $value->adddate, 
-                        'upduser' => $value->upduser, 
-                        'upddate' => $value->upddate, 
-                        'productcat' => $productcat, 
-                        'draccno' => $value->draccno, 
-                        'drccode' => $value->drccode, 
-                        'craccno' => $value->craccno, 
-                        'crccode' => $value->crccode, 
-                        'expdate' => $value->expdate, 
-                        'remarks' => $value->remarks, 
-                        'qtyonhand' => 0, 
-                        'batchno' => $value->batchno, 
-                        'amount' => $value->amount, 
-                        'trandate' => $value->trandate, 
-                        'deptcode' => $value->deldept, 
-                        'gstamount' => $value->amtslstax, 
-                        'totamount' => $value->totamount
-                    ]);
-    //--- 8. change recstatus to posted ---//
-} 
             DB::table('material.purordhd')
                 ->where('recno','=',$request->recno)
                 ->where('compcode','=',session('compcode'))
@@ -353,7 +257,7 @@ class PurchaseOrderController extends defaultController
             return response('Error'.$e, 500);
         }
     }       
-     
+         
     public function recno($source,$trantype){
         $pvalue1 = DB::table('sysdb.sysparam')
                 ->select('pvalue1')
