@@ -1060,7 +1060,7 @@ class DeliveryOrderController extends defaultController
 
             dump(DB::getQueryLog());
            
-            // DB::commit();
+            DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();

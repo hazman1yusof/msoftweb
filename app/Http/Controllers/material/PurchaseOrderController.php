@@ -270,14 +270,14 @@ class PurchaseOrderController extends defaultController
         return $pvalue1->pvalue1;
     }
 
-      public function purordno($trantype,$dept){
+    public function purordno($trantype,$dept){
         $seqno = DB::table('material.sequence')
                 ->select('seqno')
                 ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
 
         DB::table('material.sequence')
-        ->where('trantype','=',$trantype)->where('dept','=',$dept)
-        ->update(['seqno' => intval($seqno->seqno) + 1]);
+            ->where('trantype','=',$trantype)->where('dept','=',$dept)
+            ->update(['seqno' => intval($seqno->seqno) + 1]);
         
         return $seqno->seqno;
 

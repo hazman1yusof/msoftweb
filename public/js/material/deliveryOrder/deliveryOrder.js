@@ -95,7 +95,9 @@ $(document).ready(function () {
 			}
 		},
 		close: function( event, ui ) {
-			addmore_jqgrid2.state = false;//reset balik
+			addmore_jqgrid2.state = false;
+			addmore_jqgrid2.more = false;
+			//reset balik
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdata2');
@@ -221,6 +223,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
+		sortname:'delordhd_idno',
+		sortorder:'desc',
 		width: 900,
 		height: 200,
 		rowNum: 30,
@@ -531,7 +535,7 @@ $(document).ready(function () {
 	}
 	
 	function searchChange(){
-		var arrtemp = ['session.compcode',  $('#Status option:selected').val(), $('#trandept option:selected').val()];
+		var arrtemp = ['session.compcode',  $('#Status option:selected').val(), $('#trandept option:selected').val(),'GRN'];
 		var filter = arrtemp.reduce(function(a,b,c){
 			if(b=='All'){
 				return a;
@@ -540,7 +544,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		},{fct:['delordhd.compcode','delordhd.recstatus', 'delordhd.prdept','txndept'],fv:[],fc:[]});//tukar kat sini utk searching purreqhd.compcode','purreqhd.recstatus','purreqhd.prdept'
+		},{fct:['delordhd.compcode','delordhd.recstatus',  'delordhd.prdept','delordhd.trantype'],fv:[],fc:[]});//tukar kat sini utk searching purreqhd.compcode','purreqhd.recstatus','purreqhd.prdept'
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
@@ -562,7 +566,7 @@ $(document).ready(function () {
 		filterVal:['','session.company','<>.DELETE']
 	};
 
-	var addmore_jqgrid2={more:false,state:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
+	var addmore_jqgrid2={more:false,state:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu kosong
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
@@ -868,13 +872,14 @@ $(document).ready(function () {
            $('#delordhd_totamount').val(response.responseText);
            $('#delordhd_subamount').val(response.responseText);
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+        	//state true maksudnyer ada isi, tak kosong
         	linenotoedit = null;
         	refreshGrid('#jqGrid2',urlParam2,'add');
         	$("#jqGridPager2Delete").show();
         }, 
         beforeSaveRow: function(options, rowid) {
         	mycurrency2.formatOff();
-			let editurl = "/purchaseOrderDetail/form?"+
+			let editurl = "/deliveryOrderDetail/form?"+
 				$.param({
 					action: 'delOrdDetail_save',
 					docno:$('#delordhd_docno').val(),
@@ -1559,7 +1564,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='taxcode']").val(data['p_TaxCode']);
 				$("#jqGrid2 input[name='rate']").val(data['t_rate']);
 				$("#convfactor_uom").val(data['u_convfactor']);
-				
+				$('#gstpercent').val(data['t_rate']);
 				//getQOHPrDept(true);
 			}
 		},{
@@ -1589,7 +1594,7 @@ $(document).ready(function () {
 					.next()
 					.find("input[type=text]").focus();
 			}
-		},'none'//urlParam means check() using urlParam not check_input
+		},'none','radio','tab'//urlParam means check() using urlParam not check_input
 	);
 	dialog_itemcode.makedialog(false);
 	//false means not binding event on jqgrid2 yet, after jqgrid2 add, event will be bind
