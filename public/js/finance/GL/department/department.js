@@ -166,7 +166,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
-				url: '/deparment/form',
+				url: '/department/form',
 				field:'',
 				oper:oper,
 				table_name:'sysdb.department',
@@ -334,7 +334,7 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress']);
+			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress','adduser','adddate','upduser','upddate','recstatus']);
 
 			///////////////////////////////start->dialogHandler part////////////////////////////////////////////
 			function makeDialog(table,id,cols,title){
