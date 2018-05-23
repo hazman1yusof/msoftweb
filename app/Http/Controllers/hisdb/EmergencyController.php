@@ -442,9 +442,10 @@ class EmergencyController extends defaultController
 
             $queries = DB::getQueryLog();
 
-            $responce = new stdClass();
-            $responce->sql = $queries;
-            echo json_encode($responce);
+            // $responce = new stdClass();
+            // $responce->sql = $queries;
+            // echo json_encode($responce);
+            dump($queries);
 
             DB::commit();
         } catch (\Exception $e) {

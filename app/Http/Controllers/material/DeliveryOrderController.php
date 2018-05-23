@@ -697,8 +697,10 @@ class DeliveryOrderController extends defaultController
             
 
             $queries = DB::getQueryLog();
-            dd($queries);
-            // DB::commit();
+            dump($queries);
+
+
+            DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
@@ -852,6 +854,7 @@ class DeliveryOrderController extends defaultController
                     ->where('product.uomcode','=',$value->uomcode)
                     ->first();
 
+
                 if(count($product_obj)){ // kalu jumpa
                     $month = $this->toMonth($value->trandate);
                     $OldQtyOnHand = $product_obj->qtyonhand;
@@ -861,7 +864,11 @@ class DeliveryOrderController extends defaultController
                     $NewAmount = $netprice * $txnqty;
 
                     $newqtyonhand = $OldQtyOnHand - $txnqty;
-                    $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+                    if($newqtyonhand == 0){
+                        $newAvgCost = 0;
+                    }else{
+                        $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+                    }
 
                     // update qtyonhand, avgcost, currprice
                     $product_obj = DB::table('material.product')
@@ -911,7 +918,7 @@ class DeliveryOrderController extends defaultController
                 //1. delete gltran
                 DB::table('finance.gltran')
                     ->where('auditno','=', $request->recno)
-                    ->where('lineno_','=', $request->lineno_)
+                    ->where('lineno_','=', $value->lineno_)
                     ->where('source','=','IV')
                     ->where('trantype','=','GRN')
                     ->delete();
@@ -990,11 +997,10 @@ class DeliveryOrderController extends defaultController
                     //1. delete gltran utk GST
                         DB::table('finance.gltran')
                             ->where('auditno','=', $request->recno)
-                            ->where('lineno_','=', $request->lineno_)
+                            ->where('lineno_','=', $value->lineno_)
                             ->where('source','=','IV')
                             ->where('trantype','=','GST')
                             ->delete();
-
 
                     //2. check glmastdtl utk debit, kalu ada update kalu xde create
                     if($this->isGltranExist($drcostcode_,$dracc_,$yearperiod->year,$yearperiod->period)){
@@ -1052,9 +1058,9 @@ class DeliveryOrderController extends defaultController
                     'recstatus' => 'CANCELLED' 
                 ]);
 
-            // dd(DB::getQueryLog());
+            dump(DB::getQueryLog());
            
-            DB::commit();
+            // DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
