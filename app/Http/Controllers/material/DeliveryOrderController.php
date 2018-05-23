@@ -25,6 +25,7 @@ class DeliveryOrderController extends defaultController
 
     public function form(Request $request)
     {   
+        DB::enableQueryLog();
         // return $this->request_no('GRN','2FL');
         switch($request->oper){
             case 'add':
@@ -693,7 +694,12 @@ class DeliveryOrderController extends defaultController
                 ->update([
                     'recstatus' => 'POSTED' 
                 ]);
-           
+            
+
+            $queries = DB::getQueryLog();
+            dump($queries);
+
+
             DB::commit();
         
         } catch (\Exception $e) {
@@ -769,7 +775,7 @@ class DeliveryOrderController extends defaultController
                     ]);    
 
 
-            //--- 3. cancel to stockloc ---///
+                //--- 3. cancel to stockloc ---///
                 //1. amik stockloc
                 $stockloc_obj = DB::table('material.StockLoc')
                     ->where('StockLoc.CompCode','=',session('compcode'))
@@ -806,7 +812,7 @@ class DeliveryOrderController extends defaultController
 
                 }
 
-            //--- 4. cancel to stock enquiry ---//
+                //--- 4. cancel to stock enquiry ---//
                 //1. amik Stock Expiry
                 $stockexp_obj = DB::table('material.stockexp')
                     ->where('stockexp.compcode','=',session('compcode'))
@@ -848,6 +854,7 @@ class DeliveryOrderController extends defaultController
                     ->where('product.uomcode','=',$value->uomcode)
                     ->first();
 
+
                 if(count($product_obj)){ // kalu jumpa
                     $month = $this->toMonth($value->trandate);
                     $OldQtyOnHand = $product_obj->qtyonhand;
@@ -857,7 +864,11 @@ class DeliveryOrderController extends defaultController
                     $NewAmount = $netprice * $txnqty;
 
                     $newqtyonhand = $OldQtyOnHand - $txnqty;
-                    $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+                    if($newqtyonhand == 0){
+                        $newAvgCost = 0;
+                    }else{
+                        $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+                    }
 
                     // update qtyonhand, avgcost, currprice
                     $product_obj = DB::table('material.product')
@@ -907,7 +918,7 @@ class DeliveryOrderController extends defaultController
                 //1. delete gltran
                 DB::table('finance.gltran')
                     ->where('auditno','=', $request->recno)
-                    ->where('lineno_','=', $request->lineno_)
+                    ->where('lineno_','=', $value->lineno_)
                     ->where('source','=','IV')
                     ->where('trantype','=','GRN')
                     ->delete();
@@ -986,11 +997,10 @@ class DeliveryOrderController extends defaultController
                     //1. delete gltran utk GST
                         DB::table('finance.gltran')
                             ->where('auditno','=', $request->recno)
-                            ->where('lineno_','=', $request->lineno_)
+                            ->where('lineno_','=', $value->lineno_)
                             ->where('source','=','IV')
                             ->where('trantype','=','GST')
                             ->delete();
-
 
                     //2. check glmastdtl utk debit, kalu ada update kalu xde create
                     if($this->isGltranExist($drcostcode_,$dracc_,$yearperiod->year,$yearperiod->period)){
@@ -1047,8 +1057,10 @@ class DeliveryOrderController extends defaultController
                 ->update([
                     'recstatus' => 'CANCELLED' 
                 ]);
+
+            dump(DB::getQueryLog());
            
-            DB::commit();
+            // DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();

@@ -498,10 +498,103 @@
         */
     }
 
+
+    var desc_show_epi = new loading_desc_episode([
+        {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'epis_dept'},
+        {code:'#hid_epis_source',desc:'#txt_epis_source',id:'epis_source'},
+        {code:'#hid_epis_case',desc:'#txt_epis_case',id:'epis_case'},
+        {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'epis_doctor'},
+        {code:'#txt_epis_fin',desc:'#hid_epis_fin',id:'epis_fin'}
+    ]);
+    desc_show_epi.load_desc();
+
+    function loading_desc_episode(obj){
+        this.code_fields=obj;
+        this.epis_dept={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.epis_source={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.epis_case={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.epis_doctor={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.epis_fin={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.load_desc = function(){
+            load_for_desc(this,'epis_dept','pat_mast/get_entry?action=get_reg_dept');
+
+            load_for_desc(this,'epis_source','pat_mast/get_entry?action=get_reg_source');
+
+            load_for_desc(this,'epis_case','pat_mast/get_entry?action=get_reg_case');
+
+            load_for_desc(this,'epis_doctor','pat_mast/get_entry?action=get_reg_doctor');
+
+            load_for_desc(this,'epis_fin','pat_mast/get_entry?action=get_reg_fin');
+        }
+
+        function load_for_desc(selobj,id,url){
+            $.getJSON(url,{},function(data){
+                selobj[id].data = data.data;
+            });
+        }
+
+        this.write_desc = function(){
+            self=this;
+            obj.forEach(function(elem){
+                if($(elem.code).val().trim() != ""){
+                    $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id));
+                }
+            });
+        }
+
+        this.get_desc = function(search_code,id){
+            let code_ = this[id].code;
+            let desc_ = this[id].desc;
+            let retdata="N/A";
+
+            retdata = this[id].data.find(function(obj){
+                return obj[code_] == search_code;
+            });
+
+            return (retdata == undefined)? "N/A" : retdata[desc_];
+        }
+    }
+
     function click_episode_button() {
         populate_patient_episode("episode",$(this).data("rowId"));
         $('#editEpisode').modal({backdrop: "static"});
         $('#btn_epis_payer').data('mrn',$(this).data("mrn"));
 
         disableEpisode(true);
+    }
+
+    function populate_episode_by_mrn_episno(mrn,episno,form){
+        var param={
+            action:'get_value_default',
+            field:"*",
+            table_name:'hisdb.episode',
+            table_id:'_none',
+            filterCol:['compcode','mrn','episno'],filterVal:['session.company',mrn,episno]
+        };
+
+        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+
+        },'json').done(function(data) {
+
+            if(data.rows.length > 0){
+                
+                $.each(data.rows[0], function( index, value ) {
+                    var input=$(form+" [name='"+index+"']");
+
+                    if(input.is("[type=radio]")){
+                        $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+                    }else{
+                        input.val(value);
+                    }
+                });
+
+
+            }else{
+                alert('MRN not found')
+            }
+
+        }).error(function(data){
+
+        });
+
     }

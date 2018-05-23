@@ -620,39 +620,83 @@ $(document).ready(function () {
 
 	$('#episode_but_emergency').click(function(){
 		var data = $(this).data('bio_from_grid');
+		var form = '#episode_form';
 
 		if(data==undefined){
 			alert('no patient selected');
 			return false;
 		}
 
-		var episode_param={
-			action:'get_value_default',
-			table_name:'hisdb.episode',
-			url:'util/get_value_default',
-			field:['*'],
-			filterCol:['compcode','mrn','episno','reg_date'],
-			filterVal:['session.compcode',data.a_mrn,data.a_Episno,moment().format('YYYY-MM-DD')]
-		}
+		var param={
+            action:'get_value_default',
+            field:"*",
+            table_name:'hisdb.episode',
+            table_id:'_none',
+            filterCol:['compcode','mrn','episno'],filterVal:['session.company',data.a_mrn,data.a_Episno]
+        };
 
-		var fail = true;
-		$.get( episode_param.url+"?"+$.param(episode_param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.rows[0])){
-				fail = false;
+        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+
+        },'json').done(function(data) {
+
+            if(data.rows.length > 0){
+
+            	fail = false;
 				if(data.rows[0].epistycode!='OP'){
 					alert('This Patient was Registered as '+data.rows[0].epistycode);
 					fail = true;
 				}
 
-				if(!fail){
-					// populate_patient_episode(data.rows[0]);
+                if(!fail){ 
+                	$.each(data.rows[0], function( index, value ) {
+	                    var input=$(form+" [name='"+index+"']");
+
+	                    if(input.is("[type=radio]")){
+	                        $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+	                    }else{
+	                        input.val(value);
+	                    }
+	                    desc_show_epi.write_desc();
+	                });
 			        $('#editEpisode').modal({backdrop: "static"});
 			        $('#editEpisode').modal('show');
 				}
-			}
-		});
+               
+
+            }else{
+                alert('MRN not found')
+            }
+
+        }).error(function(data){
+
+        });
+		// var episode_param={
+		// 	action:'get_value_default',
+		// 	table_name:'hisdb.episode',
+		// 	url:'util/get_value_default',
+		// 	field:['*'],
+		// 	filterCol:['compcode','mrn','episno','reg_date'],
+		// 	filterVal:['session.compcode',data.a_mrn,data.a_Episno,moment().format('YYYY-MM-DD')]
+		// }
+
+		// var fail = true;
+		// $.get( episode_param.url+"?"+$.param(episode_param), function( data ) {
+			
+		// },'json').done(function(data) {
+		// 	if(!$.isEmptyObject(data.rows[0])){
+		// 		fail = false;
+		// 		if(data.rows[0].epistycode!='OP'){
+		// 			alert('This Patient was Registered as '+data.rows[0].epistycode);
+		// 			fail = true;
+		// 		}
+
+		// 		if(!fail){
+		// 			// populate_patient_episode(data.rows[0]);
+		// 	        $('#editEpisode').modal({backdrop: "static"});
+		// 	        $('#editEpisode').modal('show');
+		// 		}
+		// 	}
+		// });
 
 	});
 
