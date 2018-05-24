@@ -613,8 +613,6 @@ $(document).ready(function () {
 		 	{ label: 'trandate', name: 'trandate', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'deldept', name: 'deldept', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'deliverydate', name: 'deliverydate', width: 20, classes: 'wrap', hidden:true},
-		 	
-			
 			{ label: 'Quantity Order', name: 'qtyorder', width: 100, align: 'right', classes: 'wrap', editable:true,
 				editable: true, hidden:true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },

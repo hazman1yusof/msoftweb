@@ -5,7 +5,7 @@ namespace App\Http\Controllers\material;
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 
-class UomController extends defaultController
+class TranTypeController extends defaultController
 {   
 
     var $table;
@@ -19,7 +19,7 @@ class UomController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.UOM.UOM');
+        return view('material.Transaction Type.tranType');
     }
 
     public function form(Request $request)

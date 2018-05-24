@@ -195,11 +195,15 @@ $(document).ready(function () {
 			{ label: 'authdate', name: 'purordhd_authdate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Remark', name: 'purordhd_remarks', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Status', name: 'purordhd_recstatus', width: 10 },
+			{ label: 'postedby', name: 'purordhd_postedby', width: 40, hidden:'true'},
+			{ label: 'postdate', name: 'purordhd_postdate', width: 40, hidden:'true'},
 			{ label: 'taxclaimable', name: 'purordhd_taxclaimable', width: 40, hidden:'true'},
 			{ label: 'adduser', name: 'purordhd_adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'purordhd_adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'purordhd_upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'purordhd_upddate', width: 90, hidden: true },
+			{ label: 'reopenby', name: 'purordhd_reopenby', width: 40, hidden:'true'},
+			{ label: 'reopendate', name: 'purordhd_reopendate', width: 40, hidden:'true'},
 			{ label: 'idno', name: 'purordhd_idno', width: 90, hidden: true },
 
 		],
@@ -239,50 +243,6 @@ $(document).ready(function () {
 					}
 					break;
 			}
-			// switch($("#scope").val()){
-			// 	case "dataentry":
-			// 		if($('#purordhd_purordno')=='0' && $('#purordhd_purordno')=='null'){
-			// 			$("label[for=purordhd_reqdept]").show();
-			// 			$("#purordhd_reqdept_parent").show();
-			// 			$("#purordhd_reqdept").attr('required',false);
-			// 		}else{
-			// 			$("label[for=purordhd_reqdept]").hide();
-			// 			$("#purordhd_reqdept_parent").hide();
-			// 			$("#purordhd_reqdept").removeAttr('required');
-			// 		}
-			// 		break;
-			// 	case "cancel": 
-			// 		if(stat=='POSTED'){
-			// 			$('#but_cancel_jq').show();
-			// 			$('#but_post_jq,#but_reopen_jq').hide();
-			// 		}else if(stat=="CANCELLED"){
-			// 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-			// 		}else{
-			// 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-			// 		}
-			// 		break;
-			// 	case "all": 
-			// 		if($('#purordhd_purordno')=='0' && $('#purordhd_purordno')=='null'){
-			// 				$("label[for=purordhd_reqdept]").show();
-			// 				$("#purordhd_reqdept_parent").show();
-			// 				$("#purordhd_reqdept").attr('required',true);
-			// 			}else{
-			// 				$("label[for=purordhd_reqdept]").hide();
-			// 				$("#purordhd_reqdept_parent").hide();
-			// 				$("#purordhd_reqdept").removeAttr('required');
-			// 			}
-			// 		if(stat=='POSTED'){
-			// 			$('#but_reopen_jq').show();
-			// 			$('#but_post_jq,#but_cancel_jq').hide();
-			// 		}else if(stat=="CANCELLED"){
-			// 			$('#but_reopen_jq').show();
-			// 			$('#but_post_jq,#but_cancel_jq').hide();
-			// 		}else{
-			// 			$('#but_cancel_jq,#but_post_jq').show();
-			// 			$('#but_reopen_jq').hide();
-			// 		}
-			// 		break;
-			// }
 
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purordhd_recno;
 			$('#ponodepan').text(selrowData("#jqGrid").purordhd_purordno);//tukar kat depan tu
@@ -349,7 +309,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['purordhd_recno','purordhd_purordno','purordhd_adduser', 'purordhd_adddate','purordhd_adduser','purordhd_upddate','purordhd_deluser', 'purordhd_idno', 'supplier_name','purordhd_recstatus']);
+	addParamField('#jqGrid', false, saveParam, ['purordhd_recno','purordhd_purordno','purordhd_adduser', 'purordhd_adddate','purordhd_upddate','purordhd_deluser', 'purordhd_idno', 'supplier_name','purordhd_recstatus']);
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide) {
 		if (hide) {
@@ -368,8 +328,8 @@ $(document).ready(function () {
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
 		saveParam.oper = $(this).data("oper");
-		let obj={recno:selrowData('#jqGrid').purordhd_recno};
-		$.post("../../../../assets/php/entry.php?" + $.param(saveParam),obj, function (data) {
+		let obj={recno:selrowData('#jqGrid').purordhd_recno,_token:$('#_token').val()};
+		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
 			alert(data.responseText);
@@ -579,16 +539,14 @@ function saveHeader(form,selfoper,saveParam,obj){
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', editable: true, hidden: true },
 			{ label: 'suppcode', name: 'suppcode', width: 50, classes: 'wrap', editable: true, hidden: true },
 			{ label: 'purdate', name: 'purdate', width: 80, classes: 'wrap', editable: true, hidden: true },
-
-			
-				{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
+			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:pricecodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-				{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable:true,
+			{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
 						    {  custom_element:itemcodeCustomEdit,
@@ -596,7 +554,6 @@ function saveHeader(form,selfoper,saveParam,obj){
 						    },
 			},
 			{ label: 'Item Description', name: 'description', width: 220, classes: 'wrap', editable: true, editoptions: { readonly: "readonly" } },
-			
 			{ label: 'UOM Code', name: 'uomcode', width: 120, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -732,10 +689,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 			},
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
 			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap',hidden:true},
-			{ label: 'rate', name: 'rate', width: 60, classes: 'wrap',editable: true,hidden:true},
-
-
-			
+			{ label: 'rate', name: 'rate', width: 60, classes: 'wrap',editable: true,hidden:true},			
 		],
 		autowidth: false,
 		shrinkToFit: false,
@@ -846,7 +800,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 	//var addmore_jqgrid2 = false // if addmore is true, add after refresh jqgrid2
 	var myEditOptions = {
 		keys: true,
-		 extraparam:{
+		extraparam:{
 		    "_token": $("#_token").val()
         },
 		oneditfunc: function (rowid) {
@@ -875,7 +829,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 					purdate: $('#purordhd_purdate').val(),
 					amount:selrowData('#jqGrid2').amount,
 					remarks:selrowData('#jqGrid2').remarks,
-					netunitprice:selrowData('#jqGrid2').netunitprice,//bug will happen later because we use selected row
+					netunitprice:selrowData('#jqGrid2').netunitprice//bug will happen later because we use selected row
 				});
 
 
@@ -942,7 +896,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 	});
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
-		function showdetail(cellvalue, options, rowObject){
+	function showdetail(cellvalue, options, rowObject){
 		var field,table;
 		switch(options.colModel.name){
 			// case 'itemcode':field=['itemcode','description'];table="material.product";break;
@@ -1001,7 +955,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 	}
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
-		function itemcodeCustomEdit(val, opt) {
+	function itemcodeCustomEdit(val, opt) {
 			val = (val == "undefined") ? "" : val;
 		return $('<div class="input-group"><input id="itemcode" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
@@ -1397,7 +1351,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 	}
 
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
-		$("#jqGrid3").jqGrid({
+	$("#jqGrid3").jqGrid({
 		datatype: "local",
 		colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
 		shrinkToFit: false,
@@ -1558,7 +1512,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 	);
 	dialog_prdept.makedialog();
 
-var dialog_deldept = new ordialog(
+	var dialog_deldept = new ordialog(
 		'deldept','sysdb.department','#purordhd_deldept',errorField,
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
