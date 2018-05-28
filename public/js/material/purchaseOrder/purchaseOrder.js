@@ -518,12 +518,12 @@ function saveHeader(form,selfoper,saveParam,obj){
 	var urlParam2 = {
 		action: 'get_table_default',
 		url:'/util/get_table_default',
-		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder', 'podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 't.rate'],
-		table_name: ['material.purorddt AS podt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
+		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder', 'podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks'],
+		table_name: ['material.purorddt AS podt', 'material.productmaster AS p'],
 		table_id: 'lineno_',
-		join_type: ['LEFT JOIN', 'LEFT JOIN'],
-		join_onCol: ['podt.itemcode','podt.taxcode'],
-		join_onVal: ['p.itemcode', 't.taxcode'],
+		join_type: ['LEFT JOIN'],
+		join_onCol: ['podt.itemcode'],
+		join_onVal: ['p.itemcode'],
 		filterCol: ['podt.recno', 'podt.compcode', 'podt.recstatus'],
 		filterVal: ['', 'session.company', '<>.DELETE']
 	};
@@ -535,10 +535,10 @@ function saveHeader(form,selfoper,saveParam,obj){
 		editurl: "/purchaseOrderDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden: true },
-			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', editable: true, hidden: true },
+			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', editable: true, hidden: true },
-			{ label: 'suppcode', name: 'suppcode', width: 50, classes: 'wrap', editable: true, hidden: true },
-			{ label: 'purdate', name: 'purdate', width: 80, classes: 'wrap', editable: true, hidden: true },
+			{ label: 'suppcode', name: 'suppcode', width: 50, classes: 'wrap', hidden: true },
+			{ label: 'purdate', name: 'purdate', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -575,7 +575,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 				label: 'Quantity Ordered', name: 'qtyorder', width: 100, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true, custom: true, custom_func: cust_rules }, edittype: "text",
+				editrules: { required: true}, edittype: "text",
 						editoptions:{
 						maxlength: 12,
 						dataInit: function(element) {
@@ -688,8 +688,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 				editrules: { required: true }, editoptions: { readonly: "readonly" },
 			},
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
-			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap',hidden:true},
-			{ label: 'rate', name: 'rate', width: 60, classes: 'wrap',editable: true,hidden:true},			
+			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap',hidden:true}		
 		],
 		autowidth: false,
 		shrinkToFit: false,
@@ -836,7 +835,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 				});
 
 
-			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
+			// $("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 			//calculate_conversion_factor();	
 		},
 	};
@@ -985,6 +984,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 	}
 
 	function galGridCustomValue (elem, operation, value){
+		console.log(elem);
 		if(operation == 'get') {
 			return $(elem).find("input").val();
 		} 
@@ -1056,8 +1056,7 @@ function saveHeader(form,selfoper,saveParam,obj){
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
         $("#jqGrid2 input[name='qtyorder']").on('blur', { currency: mycurrency2 },calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='qtyOutstand']").on('blur', { currency: mycurrency2 }, 
-			calculate_quantity_outstanding);
+		$("#jqGrid2 input[name='qtyOutstand']").on('blur', { currency: mycurrency2 }, calculate_quantity_outstanding);
 		$("#jqGrid2 input[name='unitprice']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='amtdisc']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='taxcode']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);

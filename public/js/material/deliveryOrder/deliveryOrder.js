@@ -574,7 +574,6 @@ $(document).ready(function () {
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
-
 			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:true, hidden:true},
 			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
@@ -629,11 +628,10 @@ $(document).ready(function () {
 						}
 					},
 			},
-
 			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap', editable:true,
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules:{required: true,custom:true, custom_func:cust_rules},edittype:"text",
+				editrules:{required: true},edittype:"text",
 						editoptions:{
 						maxlength: 12,
 						dataInit: function(element) {
@@ -877,6 +875,9 @@ $(document).ready(function () {
         }, 
         beforeSaveRow: function(options, rowid) {
         	mycurrency2.formatOff();
+			let data = selrowData('#jqGrid2');
+			console.log(data);
+
 			let editurl = "/deliveryOrderDetail/form?"+
 				$.param({
 					action: 'delOrdDetail_save',
@@ -1034,6 +1035,7 @@ $(document).ready(function () {
 	}
 
 	function galGridCustomValue (elem, operation, value){
+		console.log(elem);
 		if(operation == 'get') {
 			return $(elem).find("input").val();
 		} 
