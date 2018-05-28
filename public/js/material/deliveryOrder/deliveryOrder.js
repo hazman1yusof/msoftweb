@@ -154,22 +154,22 @@ $(document).ready(function () {
 	}
 
 	function searchClick2(grid,form,urlParam){
-	$(form+' [name=Stext]').on( "keyup", function() {
-		delay(function(){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				$('#recnodepan').text("");//tukar kat depan tu
+				$('#prdeptdepan').text("");
+				refreshGrid("#jqGrid3",null,"kosongkan");
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
 			$('#recnodepan').text("");//tukar kat depan tu
 			$('#prdeptdepan').text("");
 			refreshGrid("#jqGrid3",null,"kosongkan");
-		}, 500 );
-	});
-
-	$(form+' [name=Scol]').on( "change", function() {
-		search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-		$('#recnodepan').text("");//tukar kat depan tu
-		$('#prdeptdepan').text("");
-		refreshGrid("#jqGrid3",null,"kosongkan");
-	});
-}
+		});
+	}
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
@@ -628,10 +628,11 @@ $(document).ready(function () {
 						}
 					},
 			},
+
 			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap', editable:true,
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules:{required: true},edittype:"text",
+				editrules:{required: true,custom:true, custom_func:cust_rules},edittype:"text",
 						editoptions:{
 						maxlength: 12,
 						dataInit: function(element) {
@@ -877,7 +878,7 @@ $(document).ready(function () {
         	mycurrency2.formatOff();
 			let data = selrowData('#jqGrid2');
 			console.log(data);
-
+			
 			let editurl = "/deliveryOrderDetail/form?"+
 				$.param({
 					action: 'delOrdDetail_save',
