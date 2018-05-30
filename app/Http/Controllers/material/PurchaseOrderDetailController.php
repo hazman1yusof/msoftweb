@@ -21,7 +21,7 @@ class PurchaseOrderDetailController extends defaultController
     {   
         switch($request->oper){
             case 'add':
-                dd('asd');
+                // dd('asd');
                 return $this->add($request);
             case 'edit':
                 return $this->edit($request);

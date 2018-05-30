@@ -532,7 +532,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/deliveryOrderDetail/form",
+		editurl: "/purchaseOrderDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
@@ -572,7 +572,7 @@ $(document).ready(function () {
 			},
 			{ label: 'suppcode', name: 'suppcode', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Quantity Order', name: 'qtyorder', width: 100, align: 'right', classes: 'wrap', editable:true,
-				editable: true, hidden:true,
+				editable: true, 
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules:{required: true},edittype:"text",
 						editoptions:{
@@ -588,7 +588,7 @@ $(document).ready(function () {
 					},
 			},
 			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap', editable:true,
-				editable: true,
+				editable: true, hidden:true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules:{required: true},edittype:"text",
 						editoptions:{
@@ -815,7 +815,7 @@ $(document).ready(function () {
 		beforeSaveRow: function (options, rowid) {
 			mycurrency2.formatOff();
 			let data = selrowData('#jqGrid2');
-			console.log(data);
+			// console.log(data);
 
 			let editurl = "/purchaseOrderDetail/form?"+
 				$.param({
@@ -1050,7 +1050,7 @@ $(document).ready(function () {
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
         $("#jqGrid2 input[name='qtyorder']").on('blur', { currency: mycurrency2 },calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='qtyOutstand']").on('blur', { currency: mycurrency2 }, calculate_quantity_outstanding);
+		// $("#jqGrid2 input[name='qtyOutstand']").on('blur', { currency: mycurrency2 }, calculate_quantity_outstanding);
 		$("#jqGrid2 input[name='unitprice']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='amtdisc']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='taxcode']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
@@ -1178,15 +1178,15 @@ $(document).ready(function () {
 
 	
 	
-	function calculate_quantity_outstanding(event){
-        let qtyorder = parseFloat($("#jqGrid2 input[name='qtyorder']").val());
-        let qtydelivered = parseFloat($("#jqGrid2 input[name='qtydelivered']").val());
+	// function calculate_quantity_outstanding(event){
+ //        let qtyorder = parseFloat($("#jqGrid2 input[name='qtyorder']").val());
+ //        let qtydelivered = parseFloat($("#jqGrid2 input[name='qtydelivered']").val());
 
-        var qtyOutstand = (qtyorder - qtydelivered);
+ //        var qtyOutstand = (qtyorder - qtydelivered);
 
-        $("input[name='qtyOutstand']").val(qtyOutstand);
+ //        $("input[name='qtyOutstand']").val(qtyOutstand);
 
-	}
+	// }
 
 	function searchClick2(grid,form,urlParam){
 		$(form+' [name=Stext]').on( "keyup", function() {
@@ -1512,7 +1512,7 @@ $(document).ready(function () {
 				dialog_uomcode.urlParam.fixPost="true";
 				dialog_uomcode.urlParam.table_id="none_";
 				dialog_uomcode.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcode.urlParam.filterVal=['session.company',$('#purordhd_deldept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#purordhd_purdate').val()).year()];
+				dialog_uomcode.urlParam.filterVal=['session.company',$('#purordhd_prdept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#purordhd_purdate').val()).year()];
 				dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
 				dialog_uomcode.urlParam.join_onCol=['s.uomcode'];
 				dialog_uomcode.urlParam.join_onVal=['u.uomcode'];
