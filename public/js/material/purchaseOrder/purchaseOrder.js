@@ -89,8 +89,9 @@ $(document).ready(function () {
 				}
 			},
 			close: function (event, ui) {
-				addmore_jqgrid2.state = false;//reset balik
-				parent_close_disabled(false);
+				addmore_jqgrid2.state = false;
+			    addmore_jqgrid2.more = false;
+			    //reset balik
 				emptyFormdata(errorField, '#formdata');
 				emptyFormdata(errorField, '#formdata2');
 				$('.alert').detach();
@@ -98,7 +99,7 @@ $(document).ready(function () {
 				//dialog_authorise.off();
 				//dialog_reqdept.off();
 				//dialog_prdept.off();
-				//dialog_suppcode.off();
+				dialog_suppcode.off();
 				//dialog_deldept.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
@@ -309,7 +310,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['purordhd_recno','purordhd_purordno','purordhd_adduser', 'purordhd_adddate','purordhd_upddate','purordhd_deluser', 'purordhd_idno', 'supplier_name','purordhd_recstatus']);
+	addParamField('#jqGrid', false, saveParam, ['purordhd_recno','purordhd_purordno','purordhd_adduser', 'purordhd_adddate','purordhd_upduser','purordhd_upddate','purordhd_deluser', 'purordhd_idno', 'supplier_name','purordhd_recstatus']);
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide) {
 		if (hide) {
