@@ -1153,7 +1153,7 @@ class DeliveryOrderController extends defaultController
 
     public function save_dt_from_othr_po($refer_recno,$recno){
         $po_dt = DB::table('material.purorddt')
-                ->select('compcode, recno, lineno_, pricecode, itemcode, uomcode, qtyorder, qtydelivered, unitprice, taxcode,perdisc,amtdisc, amtslstax,amount,recstatus,remarks')
+                ->select('compcode, recno, lineno_, pricecode, itemcode, uomcode, pouom, qtyorder, qtydelivered, unitprice, taxcode,perdisc,amtdisc, amtslstax, netunitprice, totamount, amount,rem_but, recstatus,remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
@@ -1168,8 +1168,8 @@ class DeliveryOrderController extends defaultController
                 'lineno_' => $value->lineno_, 
                 'pricecode' => $value->pricecode, 
                 'itemcode' => $value->itemcode, 
-                'uomcode' => $value->uomcode, 
-                'qtytag' => 0, 
+                'uomcode' => $value->uomcode,
+                'pouom' => $value->pouom,  
                 'qtyorder' => $value->qtyorder, 
                 'qtydelivered' => $value->qtydelivered, 
                 'unitprice' => $value->unitprice, 
@@ -1177,13 +1177,17 @@ class DeliveryOrderController extends defaultController
                 'perdisc' => $value->perdisc, 
                 'amtdisc' => $value->amtdisc, 
                 'amtslstax' => $value->amtslstax, 
+                'netunitprice' => $value->netunitprice,
+                'totamount' => $value->totamount,  
                 'amount' => $value->amount, 
+                'rem_but'=>$value->rem_but,
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                 'recstatus' => 'A', 
                 'remarks' => $value->remarks
             ]);
         }
+       
         ///2. calculate total amount from detail earlier
         $amount = DB::table('material.delorddt')
                     ->where('compcode','=',session('compcode'))
