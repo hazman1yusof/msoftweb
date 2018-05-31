@@ -89,9 +89,8 @@ $(document).ready(function () {
 				}
 			},
 			close: function (event, ui) {
-				addmore_jqgrid2.state = false;
-			    addmore_jqgrid2.more = false;
-			    //reset balik
+				addmore_jqgrid2.state = false;//reset balik
+				parent_close_disabled(false);
 				emptyFormdata(errorField, '#formdata');
 				emptyFormdata(errorField, '#formdata2');
 				$('.alert').detach();
@@ -99,7 +98,7 @@ $(document).ready(function () {
 				//dialog_authorise.off();
 				//dialog_reqdept.off();
 				//dialog_prdept.off();
-				dialog_suppcode.off();
+				//dialog_suppcode.off();
 				//dialog_deldept.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
@@ -310,7 +309,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['purordhd_recno','purordhd_purordno','purordhd_adduser', 'purordhd_adddate','purordhd_upduser','purordhd_upddate','purordhd_deluser', 'purordhd_idno', 'supplier_name','purordhd_recstatus']);
+	addParamField('#jqGrid', false, saveParam, ['purordhd_recno','purordhd_purordno','purordhd_adduser', 'purordhd_adddate','purordhd_upddate','purordhd_deluser', 'purordhd_idno', 'supplier_name','purordhd_recstatus']);
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide) {
 		if (hide) {
@@ -519,11 +518,7 @@ $(document).ready(function () {
 	var urlParam2 = {
 		action: 'get_table_default',
 		url:'/util/get_table_default',
-		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder',
-		 'podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount',
-		 'podt.rem_but AS remarks_button','podt.remarks', 't.rate'],
-		table_name: ['material.purorddt AS podt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
-		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder', 'podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks'],
+		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder', 'podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks'],
 		table_name: ['material.purorddt AS podt', 'material.productmaster AS p'],
 		table_id: 'lineno_',
 		join_type: ['LEFT JOIN'],
@@ -539,9 +534,11 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/purchaseOrderDetail/form",
 		colModel: [
-		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:true, hidden:true},
+			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden: true },
+			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', hidden: true },
+			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', editable: false, hidden: true },
+			{ label: 'suppcode', name: 'suppcode', width: 50, classes: 'wrap', hidden: true },
+			{ label: 'purdate', name: 'purdate', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -556,8 +553,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			
-			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
+			{ label: 'Item Description', name: 'description', width: 220, classes: 'wrap', editable: true, editoptions: { readonly: "readonly" } },
 			{ label: 'UOM Code', name: 'uomcode', width: 120, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -575,99 +571,97 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'suppcode', name: 'suppcode', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Quantity Order', name: 'qtyorder', width: 100, align: 'right', classes: 'wrap', editable:true,
-				editable: true, 
+			{
+				label: 'Quantity Ordered', name: 'qtyorder', width: 100, align: 'right', classes: 'wrap',
+				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules:{required: true},edittype:"text",
+				editrules: { required: true}, edittype: "text",
 						editoptions:{
 						maxlength: 12,
 						dataInit: function(element) {
 							element.style.textAlign = 'right';
 							$(element).keypress(function(e){
 								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-									return false;
+								//if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+								return false;
 								 }
 							});
 						}
 					},
 			},
-			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap', editable:true,
-				editable: true, hidden:true,
+			{
+				label: 'Quantity Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap',
+				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules:{required: true},edittype:"text",
-						editoptions:{
-						maxlength: 12,
-						dataInit: function(element) {
-							element.style.textAlign = 'right';
-							$(element).keypress(function(e){
-								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-									return false;
-								 }
-							});
-						}
-					},
+				editrules: { required: true }, editoptions: { readonly: "readonly"}
 			},
-			{ label: 'O/S Quantity', name: 'qtyOutstand', width: 100, align: 'right', classes: 'wrap', editable:true,	
-				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: false},editoptions:{readonly: "readonly"},
+			{
+				label: 'Quantity Outstanding', name: 'qtyOutstand', width: 130, align: 'right', classes: 'wrap',
+				editable: true,
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+				editrules: { required: true }, editoptions: { readonly: "readonly"}
 			},
-			{ label: 'Unit Price', name: 'unitprice', width: 90, align: 'right', classes: 'wrap', 
-				editable:true,
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-					editrules:{required: true},edittype:"text",
-						editoptions:{
-						maxlength: 12,
-						dataInit: function(element) {
-							element.style.textAlign = 'right';  
-							$(element).keypress(function(e){
-								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-									return false;
-								 }
-							});
-						}
-					},
+			{
+				label: 'Unit Price', name: 'unitprice', width: 90, align: 'right', classes: 'wrap',
+				editable: true,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				editrules: { required: true }, edittype: "text",
+				editoptions: {
+					maxlength: 12,
+					dataInit: function (element) {
+						element.style.textAlign = 'right';
+						$(element).keypress(function (e) {
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+								return false;
+							}
+						});
+					}
+				},
 			},
 			{ label: 'Tax Code', name: 'taxcode', width: 130, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:taxcodeCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
+				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+					edittype:'custom',	editoptions:
+					    {  custom_element:taxcodeCustomEdit,
+					       custom_value:galGridCustomValue 	
+					    },
 			},
-			{ label: 'Percentage Discount (%)', name: 'perdisc', width: 90, align: 'right', classes: 'wrap', 
-				editable:true,
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-					editrules:{required: true},edittype:"text",
-						editoptions:{
-						maxlength: 12,
-						dataInit: function(element) {
-							element.style.textAlign = 'right';  
-							$(element).keypress(function(e){
-								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-									return false;
-								 }
-							});
-						}
-					},
+			{
+				label: 'Percentage Discount', name: 'perdisc', width: 120, align: 'right', classes: 'wrap',
+				editable: true,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				editrules: { required: true }, edittype: "text",
+				editoptions: {
+					maxlength: 12,
+					dataInit: function (element) {
+						element.style.textAlign = 'right';
+						$(element).keypress(function (e) {
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+								return false;
+							}
+						});
+					}
+				},
 			},
-			{ label: 'Discount Per Unit', name: 'amtdisc', width: 90, align: 'right', classes: 'wrap', 
-				editable:true,
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-					editrules:{required: true},edittype:"text",
-						editoptions:{
-						maxlength: 12,
-						dataInit: function(element) {
-							element.style.textAlign = 'right';  
-							$(element).keypress(function(e){
-								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-									return false;
-								 }
-							});
-						}
-					},
+
+			{
+				label: 'Discount Per Unit', name: 'amtdisc', width: 100, align: 'right', classes: 'wrap',
+				editable: true,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				editrules: { required: true }, edittype: "text",
+				editoptions: {
+					maxlength: 12,
+					dataInit: function (element) {
+						element.style.textAlign = 'right';
+						$(element).keypress(function (e) {
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+								return false;
+							}
+						});
+					}
+				},
 			},
-			{ label: 'Total GST Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{
+				label: 'Total GST Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules:{required: true},edittype:"text",
 						editoptions:{
@@ -683,65 +677,65 @@ $(document).ready(function () {
 					},
 			},
 			{ label: 'netunitprice', name: 'netunitprice', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Total Line Amount', name: 'totamount', width: 100, align: 'right', classes: 'wrap', editable:true,
-				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: true},editoptions:{readonly: "readonly"},
+			{
+				label: 'Total Line Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap', editable: true,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				editrules: { required: true }, editoptions: { readonly: "readonly" },
 			},
-			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
-			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
+			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap',hidden:true}		
 		],
 		autowidth: false,
 		shrinkToFit: false,
 		multiSort: true,
 		viewrecords: true,
-		loadonce:false,
+		loadonce: false,
 		width: 1150,
 		height: 200,
 		rowNum: 30,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
-		loadComplete: function(){
+		loadComplete: function () {
 			if(addmore_jqgrid2.more == true)$('#jqGrid2_iladd').click();
 			addmore_jqgrid2.more = false; //only addmore after save inline
 		},
-		gridComplete: function(){
-			$( "#jqGrid2_ilcancel" ).off();
-			$( "#jqGrid2_ilcancel" ).on( "click", function(event) {
+		gridComplete: function () {
+			$("#jqGrid2_ilcancel").off();
+			$("#jqGrid2_ilcancel").on("click", function (event) {
 				event.preventDefault();
 				event.stopPropagation();
 				bootbox.confirm({
-				    message: "Are you sure want to cancel?",
-				    buttons: {
-				        confirm: { label: 'Yes',className: 'btn-success'},
-				        cancel: {label: 'No',className: 'btn-danger'}
+					message: "Are you sure want to cancel?",
+					buttons: {
+						confirm: { label: 'Yes', className: 'btn-success' },
+						cancel: { label: 'No', className: 'btn-danger' }
 					},
 					callback: function (result) {
 						if (result == true) {
 							$(".noti").empty();
 							$("#jqGrid2").jqGrid("clearGridData", true);
-							refreshGrid("#jqGrid2",urlParam2);
+							refreshGrid("#jqGrid2", urlParam2);
 						}
 						linenotoedit = null;
-				    }
+					}
 				});
 			});
-
+		
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
-				$("#remarks2").data('lineno_',$(this).data('lineno_'));
+				$("#remarks2").data('lineno',$(this).data('lineno'));
 				$("#remarks2").data('grid',"#jqGrid2");
 				$("#dialog_remarks").dialog( "open" );
 			});
 		},
 		afterShowForm: function (rowid) {
-		    $("#expdate").datepicker();
+			$("#expdate").datepicker();
 		},
-		beforeSubmit: function(postdata, rowid){ 
-			dialog_itemcode.check(errorField);//have function or not??
+		beforeSubmit: function (postdata, rowid) {
+			dialog_itemcode.check(errorField);
 			dialog_uomcode.check(errorField);
 			dialog_pouom.check(errorField);
-	 	}
+		}
 	});
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
@@ -820,7 +814,7 @@ $(document).ready(function () {
 		beforeSaveRow: function (options, rowid) {
 			mycurrency2.formatOff();
 			let data = selrowData('#jqGrid2');
-			// console.log(data);
+			console.log(data);
 
 			let editurl = "/purchaseOrderDetail/form?"+
 				$.param({
@@ -983,6 +977,7 @@ $(document).ready(function () {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<span class="fa fa-book">val</span>');
 	}
+
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
 			return $(elem).find("input").val();
@@ -1055,7 +1050,7 @@ $(document).ready(function () {
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
         $("#jqGrid2 input[name='qtyorder']").on('blur', { currency: mycurrency2 },calculate_line_totgst_and_totamt);
-		// $("#jqGrid2 input[name='qtyOutstand']").on('blur', { currency: mycurrency2 }, calculate_quantity_outstanding);
+		$("#jqGrid2 input[name='qtyOutstand']").on('blur', { currency: mycurrency2 }, calculate_quantity_outstanding);
 		$("#jqGrid2 input[name='unitprice']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='amtdisc']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='taxcode']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
@@ -1183,15 +1178,15 @@ $(document).ready(function () {
 
 	
 	
-	// function calculate_quantity_outstanding(event){
- //        let qtyorder = parseFloat($("#jqGrid2 input[name='qtyorder']").val());
- //        let qtydelivered = parseFloat($("#jqGrid2 input[name='qtydelivered']").val());
+	function calculate_quantity_outstanding(event){
+        let qtyorder = parseFloat($("#jqGrid2 input[name='qtyorder']").val());
+        let qtydelivered = parseFloat($("#jqGrid2 input[name='qtydelivered']").val());
 
- //        var qtyOutstand = (qtyorder - qtydelivered);
+        var qtyOutstand = (qtyorder - qtydelivered);
 
- //        $("input[name='qtyOutstand']").val(qtyOutstand);
+        $("input[name='qtyOutstand']").val(qtyOutstand);
 
-	// }
+	}
 
 	function searchClick2(grid,form,urlParam){
 		$(form+' [name=Stext]').on( "keyup", function() {
@@ -1517,7 +1512,7 @@ $(document).ready(function () {
 				dialog_uomcode.urlParam.fixPost="true";
 				dialog_uomcode.urlParam.table_id="none_";
 				dialog_uomcode.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcode.urlParam.filterVal=['session.company',$('#purordhd_prdept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#purordhd_purdate').val()).year()];
+				dialog_uomcode.urlParam.filterVal=['session.company',$('#purordhd_deldept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#purordhd_purdate').val()).year()];
 				dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
 				dialog_uomcode.urlParam.join_onCol=['s.uomcode'];
 				dialog_uomcode.urlParam.join_onVal=['u.uomcode'];

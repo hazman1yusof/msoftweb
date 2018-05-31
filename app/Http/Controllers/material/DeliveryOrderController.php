@@ -1153,7 +1153,7 @@ class DeliveryOrderController extends defaultController
 
     public function save_dt_from_othr_po($refer_recno,$recno){
         $po_dt = DB::table('material.purorddt')
-                ->select('compcode, recno, lineno_, pricecode, itemcode, uomcode, pouom, qtyorder, qtydelivered, unitprice, taxcode,perdisc,amtdisc, amtslstax, netunitprice, totamount, amount,rem_but, recstatus,remarks')
+                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'pouom', 'qtyorder', 'qtydelivered', 'unitprice', 'taxcode', 'perdisc','amtdisc', 'amtslstax', 'netunitprice', 'totamount', 'amount','rem_but', 'recstatus','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
@@ -1201,7 +1201,7 @@ class DeliveryOrderController extends defaultController
                     ->where('recno','=',$recno);
         $table->update([
                 'totamount' => $amount, 
-                'subamount' => $amount
+                //'subamount' => $amount
             ]);
 
         return $amount;
