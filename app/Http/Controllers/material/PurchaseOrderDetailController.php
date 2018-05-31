@@ -136,6 +136,8 @@ class PurchaseOrderDetailController extends defaultController
                     'itemcode' => $request->itemcode,
                     'uomcode' => $request->uomcode,
                     'pouom' => $request->pouom,
+                    'suppcode' => $request->suppcode,
+                    'purdate' => $request->purdate,
                     'qtyorder' => $request->qtyorder,
                     'qtydelivered' => $request->qtydelivered,
                     'unitprice' => $request->unitprice,

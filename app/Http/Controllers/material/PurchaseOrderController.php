@@ -34,6 +34,8 @@ class PurchaseOrderController extends defaultController
                 return $this->posted($request);
             case 'cancel':
                 return $this->cancel($request);
+            case 'reopen':
+                return $this->reopen($request);
             default:
                 return 'error happen..';
         }
@@ -222,16 +224,6 @@ class PurchaseOrderController extends defaultController
 
         try{
 
-            //     //1. amik dari purordhd
-            // $purordhd_obj = DB::table('material.purordhd')
-            //     ->where('recno', '=', $request->recno)
-            //     ->where('compcode', '=' ,session('compcode'))
-            //     ->first();
-
-              
-             //--- 2. change recstatus to posted ---//
-     
-
             DB::table('material.purordhd')
                 ->where('recno','=',$request->recno)
                 ->where('compcode','=',session('compcode'))
@@ -257,7 +249,67 @@ class PurchaseOrderController extends defaultController
             return response('Error'.$e, 500);
         }
     }       
-         
+    
+     public function reopen(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            DB::table('material.purordhd')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'reopenby' => session('username'),
+                    'reopendate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'OPEN' 
+                ]);
+
+            DB::table('material.purorddt')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'OPEN' 
+                ]);
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+    public function cancel(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            DB::table('material.purordhd')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'CANCELLED' 
+                ]);
+
+            DB::table('material.purorddt')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'CANCELLED' 
+                ]);
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }                      
     public function recno($source,$trantype){
         $pvalue1 = DB::table('sysdb.sysparam')
                 ->select('pvalue1')

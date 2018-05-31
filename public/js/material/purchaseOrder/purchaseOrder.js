@@ -218,6 +218,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
+			let delordno = selrowData("jqGrid").purordhd_delordno;
 			switch($("#scope").val()){
 				case "dataentry":
 					break;
@@ -231,10 +232,19 @@ $(document).ready(function () {
 						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 					}
 					break;
-				case "all": 
+				case "all":
+				  //  if((delordno !=='null') && (delordno !=='0') ){
+						// 	$('#but_cancel_jq').hide();
+						//     $('#but_post_jq').hide();
+						//     $('#but_reopen_jq').hide();
+						// }else{
+						// 	$('#but_reopen_jq').show();
+						//     $('#but_post_jq,#but_cancel_jq').hide();
+						// } 
 					if(stat=='POSTED'){
 						$('#but_reopen_jq').show();
 						$('#but_post_jq,#but_cancel_jq').hide();
+
 					}else if(stat=="CANCELLED"){
 						$('#but_reopen_jq').show();
 						$('#but_post_jq,#but_cancel_jq').hide();
