@@ -197,7 +197,8 @@
 						  	<div class="form-group">		
 						  		<label class="col-md-2 control-label" for="delordhd_trandate">Received Date</label>  
 						  		<div class="col-md-2">
-									<input id="delordhd_trandate" name="delordhd_trandate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" >
+									<input id="delordhd_trandate" name="delordhd_trandate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+										max="<?php echo date('Y-m-d');?>">
 						  		</div>
 
 						  		<label class="col-md-2 control-label" for="delordhd_trantime">Received Time</label>  

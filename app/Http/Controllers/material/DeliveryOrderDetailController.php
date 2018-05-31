@@ -130,7 +130,7 @@ class DeliveryOrderDetailController extends defaultController
                     'amtdisc' => $request->amtdisc,
                     'amtslstax' => $request->tot_gst,
                     'netunitprice' => $request->netunitprice,
-                    'qtydelivered' => $request->qtydelivered,
+                    /*'qtydelivered' => $request->qtydelivered,*/
                     'amount' => $request->amount,
                     'totamount' => $request->totamount,
                     'draccno' => $draccno,

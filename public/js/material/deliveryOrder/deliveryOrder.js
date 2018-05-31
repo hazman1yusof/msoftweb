@@ -54,6 +54,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly('#formdata');
 					$("#delordhd_prdept").val($("#x").val());
+					
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -176,7 +177,8 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
 			{ label: 'Record No', name: 'delordhd_recno', width: 12, classes: 'wrap', canSearch: true},
-			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 20, classes: 'wrap', canSearch:true},
+			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 18, classes: 'wrap', canSearch:true},
+			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 18, classes: 'wrap'},
 			{ label: 'Request Department', name: 'delordhd_reqdept', width: 18, canSearch: true, classes: 'wrap' },
 			{ label: 'GRN No', name: 'delordhd_docno', width: 15, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Received Date', name: 'delordhd_trandate', width: 20, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
@@ -188,7 +190,6 @@ $(document).ready(function () {
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 20, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 20, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'delordhd_recstatus', width: 20},
-			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 25, classes: 'wrap',hidden:true},
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 25, classes: 'wrap', hidden:true},
 			{ label: 'perdisc', name: 'delordhd_perdisc', width: 90, hidden:true, classes: 'wrap'},
@@ -368,33 +369,6 @@ $(document).ready(function () {
 	});
 	
 
-/*	/////////////////////////////////HIDE REQ DEPT////////////////////////////////////////////////////////////
-	function hideReqDept(){
-		var delordhd_srcdocno = $('#delordhd_srcdocno').val();
-		switch(delordhd_srcdocno){
-			case "0":
-			case "null":
-				showReqDept();
-				break;
-			default:
-				hideReqDept();
-				break;
-		}
-
-		function hideReqDept(){
-			$("label[for=delordhd_reqdept]").hide();
-			$("#delordhd_reqdept_parent").hide();
-			$("#delordhd_reqdept").removeAttr('required');
-		}
-
-		function showReqDept(){
-			$("label[for=delordhd_reqdept]").show();
-			$("#delordhd_reqdept_parent").show();
-			$("#delordhd_reqdept").attr('required',true);
-		}
-
-	}*/
-
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj){
 		if(obj==null){
@@ -479,6 +453,8 @@ $(document).ready(function () {
 			}
 		});
 	}
+
+	
 
 	////////////////////////////changing status and trandept trigger search/////////////////////////
 	$('#Scol').on('change', whenchangetodate);
@@ -1361,7 +1337,7 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'PO NO',name:'h_purordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer',canSearch:true,or_search:true},
-				//{label:'Supplier Name',name:'sp.supplier_name',width:400,classes:'pointer'},
+				{label:'delordno',name:'h_delordno',width:400,classes:'pointer', hidden:true},
 				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
 				{label:'recno',name:'h_recno',width:400,classes:'pointer', hidden:true},
 				{label:'Delivery Department',name:'h_deldept',width:400,classes:'pointer', hidden:true},
@@ -1376,31 +1352,35 @@ $(document).ready(function () {
 
 		ondblClickRow: function () {
 				let data = selrowData('#' + dialog_srcdocno.gridname);
-				$("#delordhd_srcdocno").val(data['h.purordno']);
-				$("#delordhd_suppcode").val(data['h.suppcode']);
-				$("#delordhd_credcode").val(data['h.suppcode']);
-				$("#delordhd_reqdept").val(data['h.reqdept']);
-				$("#delordhd_deldept").val(data['h.deldept']);
-				$("#delordhd_prdept").val(data['h.prdept']);
-				$("#delordhd_perdisc").val(data['h.perdisc']);
-				$("#delordhd_amtdisc").val(data['h.amtdisc']);
-				$("#delordhd_totamount").val(data['h.totamount']);
-				$("#delordhd_subamount").val(data['h.subamount']);
-				$("#delordhd_recstatus").val(data['h.recstatus']);
-				$("#delordhd_remarks").val(data['h.remarks']);
-				$('#referral').val(data['h.recno']);
+				$("#delordhd_srcdocno").val(data['h_purordno']);
+				$("#delordhd_suppcode").val(data['h_suppcode']);
+				$("#delordhd_credcode").val(data['h_suppcode']);
+				$("#delordhd_delordno").val(data['h_delordno']);
+				$("#delordhd_reqdept").val(data['h_reqdept']);
+				$("#delordhd_deldept").val(data['h_deldept']);
+				$("#delordhd_prdept").val(data['h_prdept']);
+				$("#delordhd_perdisc").val(data['h_perdisc']);
+				$("#delordhd_amtdisc").val(data['h_amtdisc']);
+				$("#delordhd_totamount").val(data['h_totamount']);
+				$("#delordhd_subamount").val(data['h_subamount']);
+				$("#delordhd_taxclaimable").val(data['h_taxclaimable']);
+				$("#delordhd_recstatus").val(data['h_recstatus']);
+				$("#delordhd_remarks").val(data['h_remarks']);
+				$('#referral').val(data['h_recno']);
 
 				var urlParam2 = {
 					action: 'get_value_default',
 					url: '/util/get_value_default',
-					field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.pricecode', 'podt.itemcode', 'p.description', 'podt.uomcode', 'podt.qtyorder','podt.qtydelivered','podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc', 'podt.amtslstax', 'podt.amount','NULL AS remarks_button','podt.remarks','podt.recstatus'],
-					table_name: ['material.purorddt podt', 'material.productmaster p', 'hisdb.taxmast t'],
+					field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder',
+							 'podt.qtydelivered','podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount',
+							 'podt.amount','podt.rem_but AS remarks_button','podt.remarks', 't.rate'],
+					table_name: ['material.purorddt AS podt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
 					table_id: 'lineno_',
 					join_type: ['LEFT JOIN', 'LEFT JOIN'],
 					join_onCol: ['podt.itemcode','podt.taxcode'],
 					join_onVal: ['p.itemcode','t.taxcode'],
 					filterCol: ['podt.recno', 'podt.compcode', 'podt.recstatus'],
-					filterVal: [data['h.recno'], 'session.company', '<>.DELETE']
+					filterVal: [data['h_recno'], 'session.company', '<>.DELETE']
 				};
 
 				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
@@ -1412,18 +1392,21 @@ $(document).ready(function () {
 									compcode:elem['compcode'],
 									recno:elem['recno'],
 									lineno_:elem['lineno_'],
+									suppcode:elem['suppcode'],
 									pricecode:elem['pricecode'],
 									itemcode:elem['itemcode'],
 									description:elem['description'],
 									uomcode:elem['uomcode'],
+									pouom:elem['pouom'],
 									qtyorder:elem['qtyorder'],
 									qtydelivered:0,
-									qtyOutstand:0,
 									unitprice:elem['unitprice'],
 									taxcode:elem['taxcode'],
 									perdisc:elem['perdisc'],
 									amtdisc:elem['amtdisc'],
 									tot_gst:0,
+									netunitprice:elem['netunitprice'],
+									totamount:elem['totamount'],
 									amount:elem['amount'],
 									remarks_button:null,
 									remarks:elem['remarks'],
@@ -1551,7 +1534,6 @@ $(document).ready(function () {
 				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
 				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
 				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-				//{label:'Max Quantity',name:'s.maxqty',width:100,classes:'pointer'},
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 				{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 
@@ -1571,14 +1553,6 @@ $(document).ready(function () {
 		},{
 			title:"Select Item For Stock Transaction",
 			open:function(){
-				/*dialog_itemcode.urlParam.table_id="none_";
-				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode'];
-				dialog_itemcode.urlParam.filterVal=['session.company', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val()];
-				dialog_itemcode.urlParam.join_type=['LEFT JOIN', 'LEFT JOIN', 'LEFT JOIN'];
-				dialog_itemcode.urlParam.join_onCol=['s.itemcode','p.taxcode','u.uomcode'];
-				dialog_itemcode.urlParam.join_onVal=['p.itemcode','t.taxcode','s.uomcode'];
-				dialog_itemcode.urlParam.join_filterCol = [['s.compcode','s.uomcode'],[]];
-				dialog_itemcode.urlParam.join_filterVal = [['skip.p.compcode','skip.p.uomcode'],[]];*/
 				dialog_itemcode.urlParam.fixPost="true";
 				dialog_itemcode.urlParam.table_id = "none_";
 				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode'];

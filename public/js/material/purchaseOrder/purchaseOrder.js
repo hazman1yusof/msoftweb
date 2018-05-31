@@ -529,6 +529,10 @@ $(document).ready(function () {
 	var urlParam2 = {
 		action: 'get_table_default',
 		url:'/util/get_table_default',
+		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder',
+		 'podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount',
+		 'podt.rem_but AS remarks_button','podt.remarks', 't.rate'],
+		table_name: ['material.purorddt AS podt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
 		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder', 'podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks'],
 		table_name: ['material.purorddt AS podt', 'material.productmaster AS p'],
 		table_id: 'lineno_',
