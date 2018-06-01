@@ -24,8 +24,6 @@ $(document).ready(function () {
 		},
 	};
 
-	
-
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#amount']);
 
@@ -48,7 +46,7 @@ $(document).ready(function () {
 			mycurrency.formatOnBlur();
 			switch(oper) {
 				case state = 'add':
-					$("#jqGrid2").jqGrid("clearGridData", true);
+					$("#jqGrid2").jqGrid("clearGridData", false);
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
@@ -113,9 +111,50 @@ $(document).ready(function () {
 			dialog_srcdocno.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
+			refreshGrid("#jqGrid2",null,"kosongkan");
 		},
 	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
+
+	var backdated = new func_backdated('#delordhd_deldept');
+	backdated.getdata();
+
+	function func_backdated(target){
+		this.sequence_data;
+		this.target=target;
+		this.param={
+			action:'get_value_default',
+			url:"/util/get_value_default",
+			field: ['*'],
+			table_name:'material.sequence',
+			table_id:'idno',
+			filterCol:['trantype'],
+			filterVal:['GRN'],
+		}
+
+		this.getdata = function(){
+			var self=this;
+			$.get( this.param.url+"?"+$.param(this.param), function( data ) {
+				
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data.rows)){
+					self.sequence_data = data.rows;
+				}
+			});
+			return this;
+		}
+
+		this.set_backdate = function(dept){
+			$.each(this.sequence_data, function( index, value ) {
+				if(value.dept == dept){
+					var backday =  value.backday;
+					var backdate = moment().subtract(backday, 'days').format('YYYY-MM-DD');
+					$('#delordhd_trandate').attr('min',backdate);
+				}
+			});
+		}
+	}
+
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 	var urlParam={
@@ -377,10 +416,16 @@ $(document).ready(function () {
 		saveParam.oper=selfoper;
 
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
-		unsaved = false;
+
+		},'json').fail(function (data) {
+			alert(data.responseText);
+		}).done(function (data) {
+			unsaved = false;
 			hideatdialogForm(false);
 
+			console.log($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1)
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
+				console.log('clicked');
 				addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
 			}
@@ -393,19 +438,15 @@ $(document).ready(function () {
 				$('#delordhd_totamount').val(data.totalAmount);
 
 				urlParam2.filterVal[0]=data.recno; 
-			/*	urlParam2.join_filterCol = [['ivt.uomcode', 's.deptcode','s.year'],[]];
+				/*	urlParam2.join_filterCol = [['ivt.uomcode', 's.deptcode','s.year'],[]];
 				urlParam2.join_filterVal = [['skip.s.uomcode',$('#txndept').val(),moment($("#trandate").val()).year()],[]];*/
 				//if ($('#delordhd_delordno')) {}
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
-			disableForm('#formdata');
-			hideatdialogForm(false);
 
-			},'json').fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
+			disableForm('#formdata');
+
 		});
 	}
 	
@@ -454,8 +495,6 @@ $(document).ready(function () {
 		});
 	}
 
-	
-
 	////////////////////////////changing status and trandept trigger search/////////////////////////
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
@@ -503,8 +542,6 @@ $(document).ready(function () {
 		}
 	);
 	supplierkatdepan.makedialog();
-
-
 	
 	function searchbydate() {
 		search('#jqGrid', $('#searchForm [name=Stext]').val(), $('#searchForm [name=Scol] option:selected').val(), urlParam);
@@ -542,7 +579,7 @@ $(document).ready(function () {
 		filterVal:['','session.company','<>.DELETE']
 	};
 
-	var addmore_jqgrid2={more:false,state:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu kosong
+	var addmore_jqgrid2={more:false,state:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu adds
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
@@ -735,6 +772,7 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(){
+			console.log(addmore_jqgrid2);
 			if(addmore_jqgrid2.more == true)$('#jqGrid2_iladd').click();
 			addmore_jqgrid2.more = false; //only addmore after save inline
 		},
@@ -816,7 +854,6 @@ $(document).ready(function () {
 		open: function( event, ui ) {
 			let lineno_use = ($('#remarks2').data('lineno_')!='undefined')?$('#remarks2').data('lineno_'):linenotoedit;
 			$('#remarks2').val($($('#remarks2').data('grid')).jqGrid ('getRowData', lineno_use).remarks);
-			console.log(linenotoedit);
 			if(linenotoedit == lineno_use){
 				$("#remarks2").prop('disabled',false);
 				$( "#dialog_remarks" ).dialog( "option", "buttons", butt1_rem);
@@ -829,14 +866,12 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
-	//var addmore_jqgrid2=false // if addmore is true, add after refresh jqgrid2
 	var myEditOptions = {
         keys: true,
         extraparam:{
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-        	//console.log(rowid);
         	linenotoedit = rowid;
         	$("#jqGrid2").find(".remarks_button[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
         	$("#jqGrid2").find(".remarks_button[data-lineno_='undefined']").prop("disabled", false);
@@ -853,7 +888,6 @@ $(document).ready(function () {
         beforeSaveRow: function(options, rowid) {
         	mycurrency2.formatOff();
 			let data = selrowData('#jqGrid2');
-			console.log(data);
 			
 			let editurl = "/deliveryOrderDetail/form?"+
 				$.param({
@@ -1012,7 +1046,6 @@ $(document).ready(function () {
 	}
 
 	function galGridCustomValue (elem, operation, value){
-		console.log(elem);
 		if(operation == 'get') {
 			return $(elem).find("input").val();
 		} 
@@ -1174,9 +1207,6 @@ $(document).ready(function () {
 	/////////////calculate conv fac//////////////////////////////////
 	 function calculate_conversion_factor(event) {
 
-		console.log("balconv");
-
-
 		var id="#jqGrid2 input[name='qtydelivered']"
 		var fail_msg = "Please Choose Suitable UOMCode & POUOMCode"
 		var name = "calculate_conversion_factor";
@@ -1186,9 +1216,6 @@ $(document).ready(function () {
 		let convfactor_pouom = parseFloat($("#convfactor_pouom").val());
 
 		let qtydelivered = parseFloat($("#jqGrid2 input[name='qtydelivered']").val());
-
-		console.log(convfactor_uom);
-		console.log(convfactor_pouom);
 
 		var balconv = convfactor_pouom*qtydelivered%convfactor_uom;
 
@@ -1222,10 +1249,6 @@ $(document).ready(function () {
         var qtyOutstand = (qtyorder - qtydelivered);
 
         $("input[name='qtyOutstand']").val(qtyOutstand);
-
-        console.log(qtyOutstand);
-
-
 	}
 	///////////////////////////////////////////////////////////////////////////////
 
@@ -1474,7 +1497,11 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				]
+			],
+			ondblClickRow:function(){
+				let data = selrowData('#'+dialog_deldept.gridname);
+				backdated.set_backdate(data.deptcode);
+			}
 		},{
 			title:"Select Receiver Department",
 			open: function(){
