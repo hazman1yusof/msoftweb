@@ -53,7 +53,7 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					$("#delordhd_prdept").val($("#x").val());
+					$("#delordhd_prdept").val($("#deptcode").val());
 					
 					break;
 				case state = 'edit':
@@ -102,8 +102,8 @@ $(document).ready(function () {
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdata2');
-			// $('.alert').detach();
-			// $("#formdata a").off();
+			$('.alert').detach();
+			$("#formdata a").off();
 			dialog_authorise.off();
 			dialog_prdept.off();
 			dialog_suppcode.off();
@@ -1021,6 +1021,44 @@ $(document).ready(function () {
 		}
 	}
 
+	///////////Validation for delordhd_delordno////////////////////////////////////////////////////////
+	
+	$("#delordhd_delordno").blur(function(){
+		if(oper == 'add'){
+			var id = "#delordhd_delordno";
+			var param={
+				func:'getDONo',
+				action:'get_value_default',
+				url: '/util/get_value_default',
+				field:['delordno'],
+				table_name:'material.delordhd'
+			}
+
+			param.filterCol = ['delordno'];
+			param.filterVal = [$("#delordhd_delordno").val()];
+
+			$.get( param.url+"?"+$.param(param), function( data ) {
+			
+				
+			},'json').done(function(data) {
+				if ($.isEmptyObject(data.rows)) {
+					if($.inArray(id,errorField)!==-1){
+						errorField.splice($.inArray(id,errorField), 1);
+					}
+					$( id ).removeClass( "error" ).addClass( "valid" );
+				} else {
+					bootbox.alert("Duplicate DO No");
+					$( id ).removeClass( "valid" ).addClass( "error" );
+					if($.inArray(id,errorField)===-1){
+						errorField.push( id );
+					}
+				}
+			});
+		}
+	});
+
+
+	
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){ //actually saving the header
 		mycurrency.formatOff();
@@ -1100,6 +1138,42 @@ $(document).ready(function () {
 		});
 	});
 
+
+	/*///////////if po no != 0////////////////////////////////////////////////////////
+	
+	$("#delordhd_srcdocno").blur(function(){
+		if(oper == 'add'){
+			var id = "#delordhd_srcdocno";
+			var param={
+				func:'getPONo',
+				action:'get_value_default',
+				url: '/util/get_value_default',
+				field:['srcdocno'],
+				table_name:'material.delordhd'
+			}
+
+			param.filterCol = ['srcdocno'];
+			param.filterVal = [$("#delordhd_delordno").val()];
+
+			$.get( param.url+"?"+$.param(param), function( data ) {
+			
+				
+			},'json').done(function(data) {
+				if ($.isEmptyObject(data.rows)) {
+					if($.inArray(id,errorField)!==-1){
+						errorField.splice($.inArray(id,errorField), 1);
+					}
+					$( id ).removeClass( "error" ).addClass( "valid" );
+				} else {
+					bootbox.alert("Duplicate DO No");
+					$( id ).removeClass( "valid" ).addClass( "error" );
+					if($.inArray(id,errorField)===-1){
+						errorField.push( id );
+					}
+				}
+			});
+		}
+	});*/
 
 	////////////////////////////////////////// Check Delivery Dept/////////////////////////////////////////////
 /*	function getQOHPrDept(){
