@@ -1191,19 +1191,7 @@ $(document).ready(function () {
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			
 				
-			},'json').done(function(data) {
-				if ($.isEmptyObject(data.rows)) {
-					if($.inArray(id,errorField)!==-1){
-						errorField.splice($.inArray(id,errorField), 1);
-					}
-					$( id ).removeClass( "error" ).addClass( "valid" );
-				} else {
-					bootbox.alert("Duplicate DO No");
-					$( id ).removeClass( "valid" ).addClass( "error" );
-					if($.inArray(id,errorField)===-1){
-						errorField.push( id );
-					}
-				}
+			},
 			});
 		}
 	});*/
