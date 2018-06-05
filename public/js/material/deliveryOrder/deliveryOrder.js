@@ -1095,44 +1095,6 @@ $(document).ready(function () {
 		}
 	});
 
-	///////////pono != 0////////////////////////////////////////////////////////
-	
-	$("#delordhd_delordno").blur(function(){
-		if(oper == 'add'){
-			var id = "#delordhd_delordno";
-			var param={
-				func:'getDONo',
-				action:'get_value_default',
-				url: '/util/get_value_default',
-				field:['delordno'],
-				table_name:'material.delordhd'
-			}
-
-			param.filterCol = ['delordno'];
-			param.filterVal = [$("#delordhd_delordno").val()];
-
-			$.get( param.url+"?"+$.param(param), function( data ) {
-			
-				
-			},'json').done(function(data) {
-				if ($.isEmptyObject(data.rows)) {
-					if($.inArray(id,errorField)!==-1){
-						errorField.splice($.inArray(id,errorField), 1);
-					}
-					$( id ).removeClass( "error" ).addClass( "valid" );
-				} else {
-					bootbox.alert("Duplicate DO No");
-					$( id ).removeClass( "valid" ).addClass( "error" );
-					if($.inArray(id,errorField)===-1){
-						errorField.push( id );
-					}
-				}
-			});
-		}
-	});
-
-
-	
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){ //actually saving the header
 		mycurrency.formatOff();
