@@ -9,21 +9,29 @@
 		<input id="Epistycode" name="Epistycode" type="hidden" value="{{Request::get('epistycode')}}">
 		<form id="searchForm" class="formclass" style='width:99%;position: relative;'>
 			<fieldset>
-				<div class="ScolClass" style="padding:0 0 0 15px">
-					<div name='Scol'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+				<div class='col-md-12' style="padding:0 0 15px 0;">
+					<div class="form-group"> 
+					  <div class="col-md-2">
+					  	<label class="control-label" for="Scol">Search By : </label>  
+					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
+		              </div>
+
+					  	<div class="col-md-5">
+					  		<label class="control-label"></label>  
+								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+						</div>
+
+		             </div>
 				</div>
 				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px;padding-top: 25px" >
 					<button type="button" class="btn btn-default" id='mrn_but_currentPt'>
-						<span class='fa fa-user fa-lg'></span> MRN Update
+						<span class='fa fa-user fa-lg'></span> MRN
 					</button>
 					<button type="button" class="btn btn-default" id='episode_but_currentPt' data-oper='add'>
-						<span class='fa fa-h-square fa-lg'></span> Episode Update
+						<span class='fa fa-h-square fa-lg'></span> Episode
 					</button>
 				    <button id="adjustment_but_currentPt" type="button" class="btn btn-default">
-				    	<span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Adjustment
+				    	<span class="glyphicon glyphicon-adjust" aria-hidden="true"> </span> Adjustment
 				    </button>
 				</div>
 				
@@ -266,11 +274,21 @@
 
 	</div>
 
+@include('hisdb.pat_mgmt.mdl_episode')
 @endsection
 
 
 @section('scripts')
- 
+
+	<script type="text/javascript" src="plugins/datatables/js/jquery.datatables.min.js"></script>
+	<script type="text/javascript" src="plugins/jquery-validator/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="plugins/jquery-validator/additional-methods.min.js"></script>
+
+	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
+	<script type="text/javascript" src="js/myjs/global.js"></script>
+	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
+	<script src="js/hisdb/pat_mgmt/episode.js"></script>
+
 
 	<script src="js/hisdb/currentPt/currentPt.js"></script>
 	

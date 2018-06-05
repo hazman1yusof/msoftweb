@@ -44,12 +44,70 @@ $(document).ready(function () {
 	}];
     
      $("#adjustment_but_currentPt").click(function(){
-            	var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+     	var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+            	if(!selRowId){
+            		alert('Please select patient');
+            	}else{
 					$("#adjustmentform").dialog("open");
-
+            	}
      });
 
+    /////////////////start pasal episode//////////////////
 
+	$('#episode_but_currentPt').click(function(){
+		var data = $(this).data('bio_from_grid');
+		var form = '#episode_form';
+
+		if(data==undefined){
+			alert('no patient selected');
+			return false;
+		}
+
+		var param={
+            action:'get_value_default',
+            field:"*",
+            table_name:'hisdb.episode',
+            table_id:'_none',
+            filterCol:['compcode','mrn','episno'],
+            filterVal:['session.company',data.mrn,data.episno]
+        };
+
+        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+
+        },'json').done(function(data) {
+
+            if(data.rows.length > 0){
+
+            	fail = false;
+				if(data.rows[0].epistycode!='OP'){
+					alert('This Patient was Registered as '+data.rows[0].epistycode);
+					fail = true;
+				}
+
+                if(!fail){ 
+                	$.each(data.rows[0], function( index, value ) {
+	                    var input=$(form+" [name='"+index+"']");
+
+	                    if(input.is("[type=radio]")){
+	                        $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+	                    }else{
+	                        input.val(value);
+	                    }
+	                    desc_show_epi.write_desc();
+	                });
+			        $('#editEpisode').modal({backdrop: "static"});
+			        $('#editEpisode').modal('show');
+				}
+               
+
+            }else{
+                alert('MRN not found')
+            }
+
+        }).error(function(data){
+
+        }); 
+    });
 	var oper;
 	$("#adjustmentform")
 		.dialog({
@@ -126,11 +184,11 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'MRN', name: 'mrn', width: 15, classes: 'wrap', canSearch: true, checked: true, },
+			{ label: 'MRN', name: 'mrn', width: 15, classes: 'wrap', canSearch: true },
 			{ label: 'Episode No', name: 'episno', width: 10, classes: 'wrap'},
-			{ label: 'Name', name: 'name', width: 30, classes: 'wrap' },
-			{ label: 'New IC', name: 'newic', width: 20, classes: 'wrap' },
-			{ label: 'Birth Date', name: 'dob', width: 20, classes: 'wrap' },
+			{ label: 'Name', name: 'name', width: 30, classes: 'wrap', canSearch: true },
+			{ label: 'New IC', name: 'newic', width: 20, classes: 'wrap', canSearch: true },
+			{ label: 'Birth Date', name: 'dob', width: 20, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Sex', name: 'sex', width: 10, classes: 'wrap' },
 			{ label: 'Epistycode', name: 'epistycode',hidden: true },
 			{ label: 'Handphone No', name: 'telhp', width: 20, classes: 'wrap' },
@@ -149,8 +207,8 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			// $('#biodata_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
-			// $('#episode_but_currentPt').data('bio_from_grid',selrowData("#jqGrid"));
+
+			$('#episode_but_currentPt').data('bio_from_grid',selrowData("#jqGrid"));
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -181,6 +239,66 @@ $(document).ready(function () {
 		}
 		if (cellvalue == 'Deactive') {
 			return "Deactive";
+		}
+	}
+	 function padzero(cellvalue, options, rowObject){
+		let padzero = 5, str="";
+		while(padzero>0){
+			str=str.concat("0");
+			padzero--;
+		}
+		return pad(str, cellvalue, true);
+	}
+
+	function unpadzero(cellvalue, options, rowObject){
+		return cellvalue.substring(cellvalue.search(/[1-9]/));
+	}
+
+	function searchClick2(grid,form,urlParam){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				// refreshGrid("#jqGrid3",null,"kosongkan");
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
+			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+			// refreshGrid("#jqGrid3",null,"kosongkan");
+		});
+	}
+
+	searchBy();
+	function searchBy(){
+		$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
+			if(value['canSearch']){
+				if(value['selected']){
+					$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+				}else{
+					$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+				}
+			}
+			searchClick2('#jqGrid','#searchForm',urlParam);
+		});
+	}
+	$('#Scol').on('change', whenchangetodate);
+	// $('#Status').on('change', searchChange);
+	function whenchangetodate() {
+		if($('#Scol').val()=='dob'){
+			$("input[name='Stext']").show("fast");
+			$("#tunjukname").hide("fast");
+			$("input[name='Stext']").attr('type', 'date');
+			$("input[name='Stext']").velocity({ width: "250px" });
+			$("input[name='Stext']").on('change', searchbydate);
+		} else if($('#Scol').val() == 'supplier_name'){
+			$("input[name='Stext']").hide("fast");
+			$("#tunjukname").show("fast");
+		} else {
+			$("input[name='Stext']").show("fast");
+			$("#tunjukname").hide("fast");
+			$("input[name='Stext']").attr('type', 'text');
+			$("input[name='Stext']").velocity({ width: "100%" });
+			$("input[name='Stext']").off('change', searchbydate);
 		}
 	}
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -230,6 +348,7 @@ $(document).ready(function () {
 			$("#dialogForm").dialog("open");
 		},
 	});
+
     var urlParam2 = {
 		action: 'get_table_default',
 		url: '/util/get_table_default',
@@ -267,15 +386,17 @@ $(document).ready(function () {
 
 	});
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-
+    
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-	toogleSearch('#sbut1', '#searchForm', 'on');
-	populateSelect('#jqGrid', '#searchForm');
-	searchClick('#jqGrid', '#searchForm', urlParam);
+	populateSelect('#jqGrid','#searchForm');
 
-	toogleSearch('#sbut2','#searchForm2','off');
-	populateSelect('#detail','#searchForm2');
-	searchClick('#detail','#searchForm2',urlParam2);
+	// toogleSearch('#sbut1', '#searchForm', 'on');
+	// populateSelect('#jqGrid', '#searchForm');
+	// searchClick('#jqGrid', '#searchForm', urlParam);
+
+	// toogleSearch('#sbut2','#searchForm2','off');
+	// populateSelect('#detail','#searchForm2');
+	// searchClick('#detail','#searchForm2',urlParam2);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
