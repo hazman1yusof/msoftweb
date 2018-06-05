@@ -674,6 +674,38 @@ class DeliveryOrderController extends defaultController
                     }
                 }
 
+                //---- 8. update po kalu ada srcdocno ---//
+                if($delordhd_obj->srcdocno != 0){
+                    
+                    $purordhd = DB::table('material.purordhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('purordno','=',$delordhd_obj->srcdocno)
+                        ->first();
+
+                    $po_recno = $purordhd->recno;
+
+                    $podt_obj = DB::table('material.purorddt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$po_recno)
+                        ->where('lineno_','=',$value->lineno_);
+
+                    $podt_obj_lama = $podt_obj->first();
+
+                    $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
+
+                    if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
+                        DB::rollback();
+                        
+                        return response('Error: Quantity delivered exceed quantity order', 500)
+                            ->header('Content-Type', 'text/plain');
+                    }
+
+                    $podt_obj->update([
+                        'qtydelivered' => $jumlah_qtydelivered
+                    ]);
+
+                }
+
             } // habis looping untuk delorddt
 
             //--- 8. change recstatus to posted ---//
@@ -1054,14 +1086,7 @@ class DeliveryOrderController extends defaultController
 
                     $podt_obj_lama = $podt_obj->first();
 
-                    $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
-
-                    if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
-                        DB::rollback();
-                        
-                        return response('Error: Quantity delivered exceed quantity order', 500)
-                            ->header('Content-Type', 'text/plain');
-                    }
+                    $jumlah_qtydelivered = $podt_obj_lama->qtydelivered - $value->qtydelivered;
 
                     $podt_obj->update([
                         'qtydelivered' => $jumlah_qtydelivered

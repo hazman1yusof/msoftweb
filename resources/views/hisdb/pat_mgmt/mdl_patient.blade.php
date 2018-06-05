@@ -70,6 +70,9 @@
 														<small for="cmb_pat_sex">Sex</small>
 														<select id="cmb_pat_sex" name="Sex" class="form-control form-mandatory">
 															<option value="">- Select Sex -</option>
+															<option value="M">Male</option>
+															<option value="F">Female</option>
+															<option value="U">Unisex</option>
 														</select>
 													</div>
 												</div>

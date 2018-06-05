@@ -509,6 +509,31 @@ class EmergencyController extends defaultController
 
             $queries = DB::getQueryLog();
 
+            //3. update queue mrn,telh,telhp
+
+            $queueAll_obj=DB::table('hisdb.queue')
+                ->where('mrn','=',$request->MRN)
+                ->where('episno','=',$request->Episno)
+                ->where('deptcode','=','ALL');
+
+            $queueSPEC_obj=DB::table('hisdb.queue')
+                ->where('mrn','=',$request->MRN)
+                ->where('episno','=',$request->Episno)
+                ->where('deptcode','=','SPEC');
+
+            $queueAll_obj->update([
+                'pat_name' => $request->Name,
+                'telno' => $request->telh,
+                'telhp' => $request->telhp
+            ]);
+
+            $queueSPEC_obj->update([
+                'pat_name' => $request->Name,
+                'telno' => $request->telh,
+                'telhp' => $request->telhp
+            ]);
+
+
             $responce = new stdClass();
             $responce->sql = $queries;
             echo json_encode($responce);

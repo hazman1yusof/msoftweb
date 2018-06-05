@@ -512,7 +512,7 @@ $(document).ready(function () {
 	}
 
 	function savecolor(columncolor,color){
-		$.post( "/emergency/form",{oper:'savecolor',columncolor:columncolor,color:color,_token:$('#csrf_token').val()} , function( data ) {
+		$.post( "/emergency/form",{action:'save_table_default',oper:'savecolor',columncolor:columncolor,color:color,_token:$('#csrf_token').val()} , function( data ) {
 	
 		}).success(function(data){
 			set_grid_color();
