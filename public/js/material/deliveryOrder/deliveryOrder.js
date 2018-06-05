@@ -877,14 +877,19 @@ $(document).ready(function () {
         	$("#jqGrid2").find(".remarks_button[data-lineno_='undefined']").prop("disabled", false);
         },
         aftersavefunc: function (rowid, response, options) {
-           $('#delordhd_totamount').val(response.responseText);
-           $('#delordhd_subamount').val(response.responseText);
-        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-        	//state true maksudnyer ada isi, tak kosong
-        	linenotoedit = null;
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-        	$("#jqGridPager2Delete").show();
+			$('#delordhd_totamount').val(response.responseText);
+			$('#delordhd_subamount').val(response.responseText);
+	    	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+	    	//state true maksudnyer ada isi, tak kosong
+	    	linenotoedit = null;
+	    	refreshGrid('#jqGrid2',urlParam2,'add');
+	    	$("#jqGridPager2Delete").show();
         }, 
+        errorfunc: function(rowid,response){
+        	alert(response.responseText);
+        	refreshGrid('#jqGrid2',urlParam2,'add');
+	    	$("#jqGridPager2Delete").show();
+        },
         beforeSaveRow: function(options, rowid) {
         	mycurrency2.formatOff();
 			let data = selrowData('#jqGrid2');

@@ -82,7 +82,7 @@ class DeliveryOrderController extends defaultController
             if(!empty($request->referral)){
                 ////ni kalu dia amik dari po
                 ////amik detail dari po sana, save dkt do detail, amik total amount
-                $totalAmount = $this->save_dt_from_othr_po($request->referral,$recno);
+                $totalAmount = $this->save_dt_from_othr_po($request->referral,$recno,$request->delordhd_srcdocno);
 
                 $srcdocno = $request->delordhd_srcdocno;
                 $delordno = $request->delordhd_delordno;
@@ -188,7 +188,7 @@ class DeliveryOrderController extends defaultController
                 $totalAmount = $request->delordhd_totamount;
                 //4. Update delorddt
                 if(!empty($request->referral)){
-                    $totalAmount = $this->save_dt_from_othr_po($request->referral,$request->delordhd_recno);
+                    $totalAmount = $this->save_dt_from_othr_po($request->referral,$request->delordhd_recno,$request->delordhd_srcdocno);
 
                     $srcdocno = $request->delordhd_srcdocno;
                     $delordno = $request->delordhd_delordno;
@@ -1037,9 +1037,41 @@ class DeliveryOrderController extends defaultController
                     }
                 }
 
+                //---- 8. update po kalu ada srcdocno ---//
+                if($delordhd_obj->srcdocno != 0){
+                    
+                    $purordhd = DB::table('material.purordhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('purordno','=',$delordhd_obj->srcdocno)
+                        ->first();
+
+                    $po_recno = $purordhd->recno;
+
+                    $podt_obj = DB::table('material.purorddt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$po_recno)
+                        ->where('lineno_','=',$value->lineno_);
+
+                    $podt_obj_lama = $podt_obj->first();
+
+                    $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
+
+                    if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
+                        DB::rollback();
+                        
+                        return response('Error: Quantity delivered exceed quantity order', 500)
+                            ->header('Content-Type', 'text/plain');
+                    }
+
+                    $podt_obj->update([
+                        'qtydelivered' => $jumlah_qtydelivered
+                    ]);
+
+                }
+
             } // habis looping untuk delorddt
 
-            //--- 8. change recstatus to cancelled ---//
+            //--- 9. change recstatus to cancelled ---//
 
             DB::table('material.delordhd')
                 ->where('recno','=',$request->recno)
@@ -1151,7 +1183,7 @@ class DeliveryOrderController extends defaultController
         }
     }
 
-    public function save_dt_from_othr_po($refer_recno,$recno){
+    public function save_dt_from_othr_po($refer_recno,$recno,$srcdocno){
         $po_dt = DB::table('material.purorddt')
                 ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'pouom', 'qtyorder', 'qtydelivered', 'unitprice', 'taxcode', 'perdisc','amtdisc', 'amtslstax', 'netunitprice', 'totamount', 'amount','rem_but', 'recstatus','remarks')
                 ->where('recno', '=', $refer_recno)
@@ -1178,13 +1210,14 @@ class DeliveryOrderController extends defaultController
                 'amtdisc' => $value->amtdisc, 
                 'amtslstax' => $value->amtslstax, 
                 'netunitprice' => $value->netunitprice,
-                'totamount' => $value->totamount,  
+                'totamount' => $value->totamount,
                 'amount' => $value->amount, 
                 'rem_but'=>$value->rem_but,
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                 'recstatus' => 'A', 
-                'remarks' => $value->remarks
+                'remarks' => $value->remarks,
+                'srcdocno' => $srcdocno
             ]);
         }
        

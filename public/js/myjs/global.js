@@ -8,6 +8,18 @@ var Global = function () {
 			
 		switch (type)
 		{
+			case "LanguageCode":
+				act = "get_patient_language";
+				break;
+			case "Religion":
+				act = "get_patient_religioncode";
+				break;
+			case "RaceCode":
+				act = "get_patient_race";
+				break;
+			case "ID_Type":
+				act = "get_patient_idtype";
+				break;
 			case "pat_title":
 				act = "get_patient_title";
 				break;

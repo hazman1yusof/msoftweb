@@ -200,7 +200,7 @@
     });
 
     $("#biodata_but").click(function() {
-    	populatecombo1();
+    	// populatecombo1();
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","add");
         var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
@@ -342,7 +342,11 @@
     var desc_show = new loading_desc([
         {code:'#hid_pat_citizen',desc:'#txt_pat_citizen',id:'citizencode'},
         {code:'#hid_pat_area',desc:'#txt_pat_area',id:'areacode'},
-        {code:'#hid_pat_title',desc:'#txt_pat_title',id:'titlecode'}
+        {code:'#hid_pat_title',desc:'#txt_pat_title',id:'titlecode'},
+        {code:'#hid_ID_Type',desc:'#txt_ID_Type',id:'idtype'},
+        {code:'#hid_LanguageCode',desc:'#txt_LanguageCode',id:'language'},
+        {code:'#hid_RaceCode',desc:'#txt_RaceCode',id:'race'},
+        {code:'#hid_Religion',desc:'#txt_Religion',id:'religioncode'}
     ]);
     desc_show.load_desc();
 
@@ -351,15 +355,18 @@
         this.titlecode={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.citizencode={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.areacode={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.idtype={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.language={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.race={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.religioncode={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.load_desc = function(){
-            var urlTitle = 'pat_mast/get_entry?action=get_patient_title';
-            load_for_desc(this,'titlecode',urlTitle);
-
-            var urlcitizen = 'pat_mast/get_entry?action=get_patient_citizen';
-            load_for_desc(this,'citizencode',urlcitizen);
-
-            var urlareacode = 'pat_mast/get_entry?action=get_patient_areacode';
-            load_for_desc(this,'areacode',urlareacode);
+            load_for_desc(this,'titlecode','pat_mast/get_entry?action=get_patient_title');
+            load_for_desc(this,'citizencode','pat_mast/get_entry?action=get_patient_citizen');
+            load_for_desc(this,'areacode','pat_mast/get_entry?action=get_patient_areacode');
+            load_for_desc(this,'idtype','pat_mast/get_entry?action=get_patient_idtype');
+            load_for_desc(this,'language','pat_mast/get_entry?action=get_patient_language');
+            load_for_desc(this,'race','pat_mast/get_entry?action=get_patient_race');
+            load_for_desc(this,'religioncode','pat_mast/get_entry?action=get_patient_religioncode');
         }
 
         function load_for_desc(selobj,id,url){

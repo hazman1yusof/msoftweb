@@ -546,7 +546,7 @@ $(document).ready(function () {
 		}else{
 
 			var oper = 'edit';
-			populatecombo1();
+			// populatecombo1();
 	        $('#mdl_patient_info').modal({backdrop: "static"});
 	        $("#btn_register_patient").data("oper",oper);
 

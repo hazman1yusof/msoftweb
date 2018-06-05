@@ -76,9 +76,16 @@
 												<div class="row">
 													<div class="col-md-3">
 														<small for="cmb_pat_idtype">IC Type</small>
-														<select id="cmb_pat_idtype" name="ID_Type" class="form-control">
+														<!-- <select id="cmb_pat_idtype" name="ID_Type" class="form-control">
 															<option value="">- Select IC Type -</option>
-														</select>
+														</select> -->
+														<div class="input-group">
+		                                                    <input type="text" class="form-control form-mandatory" name="txt_ID_Type" id="txt_ID_Type">
+		                                                    <input type="hidden" name="ID_Type" id="hid_ID_Type" value="" />
+		                                                    <span class="input-group-btn">
+		                                                        <button type="button" class="btn btn-warning" id="btn_ID_Type" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('ID_Type');"><span class="fa fa-ellipsis-h"></span> </button>
+		                                                    </span>
+		                                                </div>
 													</div>
 													<div class="col-md-3">
 														<small for="txt_pat_newic">New IC (eg 690101086649)</small>
@@ -107,21 +114,42 @@
 											</div>											
 											<div class="col-md-2">
                                                 <small for="cmb_pat_racecode">Race</small>
-                                                <select id="cmb_pat_racecode" name="RaceCode" class="form-control form-mandatory">
+                                                <!-- <select id="cmb_pat_racecode" name="RaceCode" class="form-control form-mandatory">
                                                     <option value="">- Select Race -</option>
-                                                </select>
+                                                </select> -->
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_RaceCode" id="txt_RaceCode">
+                                                    <input type="hidden" name="RaceCode" id="hid_RaceCode" value="" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-warning" id="btn_RaceCode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('RaceCode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    </span>
+                                                </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <small for="cmb_pat_religion">Religion</small>
-                                                <select id="cmb_pat_religion" name="Religion" class="form-control form-mandatory">
+                                                <!-- <select id="cmb_pat_religion" name="Religion" class="form-control form-mandatory">
                                                     <option value="">- Select Religion -</option>
-                                                </select>
+                                                </select> -->
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_Religion" id="txt_Religion">
+                                                    <input type="hidden" name="Religion" id="hid_Religion" value="" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-warning" id="btn_Religion" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('Religion');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    </span>
+                                                </div>
                                             </div>											
 											<div class="col-md-3">
                                                 <small for="cmb_pat_langcode">Language</small>
-                                                <select id="cmb_pat_langcode" name="LanguageCode" class="form-control">
+                                                <!-- <select id="cmb_pat_langcode" name="LanguageCode" class="form-control">
                                                     <option value="">- Select Language -</option>
-                                                </select>
+                                                </select> -->
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_LanguageCode" id="txt_LanguageCode">
+                                                    <input type="hidden" name="LanguageCode" id="hid_LanguageCode" value="" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-warning" id="btn_LanguageCode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('LanguageCode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    </span>
+                                                </div>
                                             </div>
 											
 											<!--div class="col-md-5">

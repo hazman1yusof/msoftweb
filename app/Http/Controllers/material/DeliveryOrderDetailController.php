@@ -381,7 +381,7 @@ class DeliveryOrderDetailController extends defaultController
                     'expdate' => $this->chgDate($request->expdate), 
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
-                    'srcdocno' => $request->,
+                    'srcdocno' => $this->srcdocno,
                     'remarks' => $request->remarks
                 ]);
 
@@ -416,7 +416,7 @@ class DeliveryOrderDetailController extends defaultController
                 ->first();
             $po_recno = $purordhd->recno;
 
-            ///6. amik old qtyorder dkt qtyrequest
+            ///6. amik old qtyorder dkt podt
             $podt_obj = DB::table('material.purorddt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$po_recno)
@@ -424,13 +424,29 @@ class DeliveryOrderDetailController extends defaultController
 
             $podt_obj_lama = $podt_obj->first();
 
+            ///7. amik suma do yg open
+            $delorddt_obj = DB::table('material.delorddt')
+                ->where('compcode','=',session('compcode'))
+                ->where('srcdocno','=',$this->srcdocno)
+                ->where('lineno_','=',$request->lineno_);
 
+            $total_qtydeliverd_do = 0;
 
-            $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $request->qtydelivered;
+            if($delorddt_obj->exist()){
+                $delorddt_data = $delorddt_obj->get();
+                foreach ($delorddt_data as $value) {
+                    $total_qtydeliverd_do = $total_qtydeliverd_do + $value->qtydelivered;
+                }
+            }
 
-            $podt_obj->update([
-                    'qtydelivered'=> $delivered_baru
-                ]);
+            $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $request->qtydelivered + $total_qtydeliverd_do;
+
+            if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
+                DB::rollback();
+
+                return response('Error: Quantity delivered exceed quantity order', 500)
+                  ->header('Content-Type', 'text/plain');
+            }
 
             echo $totalAmount;
 
@@ -516,11 +532,28 @@ class DeliveryOrderDetailController extends defaultController
             $podt_obj_lama = $podt_obj->first();
 
             ///6. update to purorddt
-            $delivered_baru = $podt_obj_lama->qtydelivered + $request->qtydelivered;
+            $delorddt_obj = DB::table('material.delorddt')
+                ->where('compcode','=',session('compcode'))
+                ->where('srcdocno','=',$this->srcdocno)
+                ->where('lineno_','=',$request->lineno_);
 
-            $podt_obj->update([
-                    'qtydelivered'=> $delivered_baru
-                ]);
+            $total_qtydeliverd_do = 0;
+
+            if($delorddt_obj->exists()){
+                $delorddt_data = $delorddt_obj->get();
+                foreach ($delorddt_data as $value) {
+                    $total_qtydeliverd_do = $total_qtydeliverd_do + $value->qtydelivered;
+                }
+            }
+
+            $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $request->qtydelivered + $total_qtydeliverd_do;
+
+            if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
+                DB::rollback();
+
+                return response('Error: Quantity delivered exceed quantity order', 500)
+                  ->header('Content-Type', 'text/plain');
+            }
             
             echo $totalAmount;
 
