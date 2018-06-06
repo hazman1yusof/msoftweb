@@ -325,7 +325,8 @@ Route::post('/product/form','material\ProductController@form');
 
 //// pat_mgmt Current Patient ///
 Route::get('/currentPt','hisdb\CurrentPatientController@show');
-Route::get('/currentPt/table','hisdb\CurrentPatientController@table');
-Route::post('/currentPt/form','hisdb\CurrentPatientController@form');
+Route::get('/currentPt/get_entry','hisdb\CurrentPatientController@get_entry');
+Route::post('/currentPt/post_entry','hisdb\CurrentPatientController@post_entry');
+
 
 

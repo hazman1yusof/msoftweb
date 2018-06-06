@@ -1,295 +1,138 @@
-@extends('layouts.main')
+<!DOCTYPE html>
 
-@section('title', 'Current Patient')
+<html lang="en">
+<head>
 
-@section('body')
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
+	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap-theme.css">
+	<link rel="stylesheet" href="plugins/bootgrid/css/jquery.bootgrid.css">
+	<link rel="stylesheet" href="plugins/datatables/css/jquery.dataTables.css">
+	<link rel="stylesheet" href="plugins/font-awesome-4.4.0/css/font-awesome.min.css">
+
+	<style type="text/css" class="init">
+		td.details-control {
+			background: url('../../../../assets/img/details_open.png') no-repeat center center;
+			cursor: pointer;
+		}
+		tr.details td.details-control {
+			background: url('../../../../assets/img/details_close.png') no-repeat center center;
+		}
+
+		.modal-header {
+			min-height: 16.42857143px;
+			padding: 5px;
+			border-bottom: 1px solid #e5e5e5;
+		}
+		.modal-body {
+			position: relative;
+			padding: 10px;
+		}
+
+		.form-group{
+			margin-bottom: 5px;
+		}
+		
+		.form-mandatory{
+			background-color: lightyellow;
+		}
+		
+		.form-disabled{
+			background-color: #DDD;
+			color: #999;
+		}
+		
+		.modal-open {
+		  overflow: scroll;
+		}
+		.justbc{
+			background-color: #dff0d8 !important;
+		}
+		label.error{
+			color: rgb(169, 68, 66);
+		}
+		#mykad_reponse{
+			color: rgb(169, 68, 66);
+			font-weight: bolder;
+		}
+		.addressinp{
+			margin-bottom: 5px;
+		}
+	</style>
+
+</head>
+
+
+<body class="header-fixed">
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
-	<div class='row'>
-		<input id="Epistycode" name="Epistycode" type="hidden" value="{{Request::get('epistycode')}}">
-		<form id="searchForm" class="formclass" style='width:99%;position: relative;'>
-			<fieldset>
-				<div class='col-md-12' style="padding:0 0 15px 0;">
-					<div class="form-group"> 
-					  <div class="col-md-2">
-					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
-		              </div>
+    <div class="wrapper">
+        	<input name="pattype" id="pattype" type="hidden" value="{{request()->get('pattype')}}">
+        	<input name="listtype" id="listtype" type="hidden" value="{{request()->get('listtype')}}">
+        	<input name="Epistycode" id="Epistycode" type="hidden" value="{{request()->get('epistycode')}}">
+        <div id="info"></div>
 
-					  	<div class="col-md-5">
-					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-						</div>
+		<div class="panel">
+			<button id="patientBox" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
+			&nbsp;&nbsp;
+			<button id="btn_mykad" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-credit-card" aria-hidden="true"> </span> My Kad</button>
+			<!-- &nbsp;&nbsp;
+			<button type="button" class="btn btn-success btn-md" disabled ><span class="glyphicon glyphicon-import" aria-hidden="true"> </span> Import File</button> -->
+		</div>
+		<div class="panel">
+			<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
+                <thead>
+                <tr>
+                	<th data-column-id="Mrn" data-formatter="col_add" data-width="5%">#</th>
+                    <th data-column-id="mrn" data-type="numeric" data-width="10%">MRN No</th>
+                    <th data-column-id="episno" data-width="15%">Episode No</th>
+                    <th data-style="dropDownItem" data-column-id="name" data-formatter="col_name" data-width="30%">Name</th>
+                    <th data-column-id="newic" data-width="15%">New IC</th>
+                    <th data-column-id="oldic" data-width="10%">Old IC</th>
+                    <th data-column-id="dob" data-formatter="col_dob" data-width="12%">Birth Date</th>
+                    <th data-column-id="sex" data-width="6%">Sex</th>
+					<th data-column-id="telhp" data-width="15%">Hp No</th>
+					<th data-column-id="telhp" data-width="15%">Home No</th>
+                   <!--  <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="8%">Age</th> -->
 
-		             </div>
-				</div>
-				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px;padding-top: 25px" >
-					<button type="button" class="btn btn-default" id='mrn_but_currentPt'>
-						<span class='fa fa-user fa-lg'></span> MRN
-					</button>
-					<button type="button" class="btn btn-default" id='episode_but_currentPt' data-oper='add'>
-						<span class='fa fa-h-square fa-lg'></span> Episode
-					</button>
-				    <button id="adjustment_but_currentPt" type="button" class="btn btn-default">
-				    	<span class="glyphicon glyphicon-adjust" aria-hidden="true"> </span> Adjustment
-				    </button>
-				</div>
-				
-			 </fieldset> 
-		</form>
+<!--                    <th data-column-id="edit_cmd" data-formatter="edit_cmd" data-sortable="false">Commands</th>-->
+<!--                    <th data-column-id="episode_cmd" data-formatter="episode_cmd" data-sortable="false">Commands</th>-->
+					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="8%">#</th>
+				</tr>
+				</thead>
 
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<div class='col-md-12' style="padding:0 0 15px 0">
-					<table id="jqGrid" class="table table-striped"></table>
-					<div id="jqGridPager"></div>
-				</div>
-			</div>
-		</div>
-	<!-- 	<div class="form-group">
-		<div class="col-md-4" style="padding:0 0 15px 0">
-		<br />
-		<p><strong>HOME ADDRESS</strong></p>														
-		<div class="panel panel-default">
-		<ul class="nav nav-tabs">
-		<li class="active"><a href="#addr_current" data-toggle="tab">Current</a></li>
-		<li><a href="#addr_office" data-toggle="tab">Office</a></li>
-		<li><a href="#addr_home" data-toggle="tab">Home</a></li>
-		</ul>
-		<div class="panel-body">
-		<div class="tab-pane fade in active" id="addr_current">
-		<br />
-		<div class="col-md-4">
-		<p>Current Address</p>
-		</div>
-		<div class="col-md-8">
-		<p><input name="Address1" id="txt_pat_curradd1" class="form-control form-mandatory" type="text" required /></p>
-		</div>
-		<div class="col-md-4">
-		<p></p>
-		</div>
-		<div class="col-md-8">
-		<p><input name="Address2" id="txt_pat_curradd2" class="form-control form-mandatory" type="text" /></p>
-		</div>
-		<div class="col-md-4">
-		<p></p>
-		</div>
-		<div class="col-md-8">
-		<p><input name="Address3" id="txt_pat_curradd3" class="form-control form-mandatory" type="text" /></p>
-		</div>
-		<div class="col-md-4">
-		<p></p>
-		</div>
-		<div class="col-md-4">
-		<p>Postcode<input name="Postcode" id="txt_pat_currpostcode" class="form-control form-mandatory" type="text" required /></p>
-		</div>
-		<div class="col-md-12">
-		<p></p>
-		</div>
-	
-		</div>
-	</div>
-	</div>
-	</div>
-	</div>
-    <div class="form-group">
-		<div class="col-md-4" style="padding:0 0 15px 0">
-		<br />
-		<p><strong>OFFICE ADDRESS</strong></p>														
-		<div class="panel panel-default">
-		<ul class="nav nav-tabs">
-		<li class="active"><a href="#addr_current" data-toggle="tab">Current</a></li>
-		<li><a href="#addr_office" data-toggle="tab">Office</a></li>
-		<li><a href="#addr_home" data-toggle="tab">Home</a></li>
-		</ul>
-		<div class="panel-body">
-		<div class="tab-pane fade in active" id="addr_current">
-		<br />
-		<div class="col-md-4">
-		<p>Current Address</p>
-		</div>
-		<div class="col-md-8">
-		<p><input name="Address1" id="txt_pat_curradd1" class="form-control form-mandatory" type="text" required /></p>
-		</div>
-		<div class="col-md-4">
-		<p></p>
-		</div>
-		<div class="col-md-8">
-		<p><input name="Address2" id="txt_pat_curradd2" class="form-control form-mandatory" type="text" /></p>
-		</div>
-		<div class="col-md-4">
-		<p></p>
-		</div>
-		<div class="col-md-8">
-		<p><input name="Address3" id="txt_pat_curradd3" class="form-control form-mandatory" type="text" /></p>
-		</div>
-		<div class="col-md-4">
-		<p></p>
-		</div>
-		<div class="col-md-4">
-		<p>Postcode<input name="Postcode" id="txt_pat_currpostcode" class="form-control form-mandatory" type="text" required /></p>
-		</div>
-		<div class="col-md-12">
-		<p></p>
-		</div>
-	
-		</div>
-	</div>
-	</div>
-	</div>
-	</div>
-	 <div class="form-group">
-		<div class="col-md-4" style="padding:0 0 15px 0">
-		<br />
-		<p><strong>PAYER INFORMATION</strong></p>														
-		<div class="panel panel-default">
-		<ul class="nav nav-tabs">
-		<li class="active"><a href="#addr_current" data-toggle="tab">Current</a></li>
-		<li><a href="#addr_office" data-toggle="tab">Office</a></li>
-		<li><a href="#addr_home" data-toggle="tab">Home</a></li>
-		</ul>
-		<div class="panel-body">
-		<div class="tab-pane fade in active" id="addr_current">
-		<br />
-		<div class="col-md-4">
-		<p>Current Address</p>
-		</div>
-		<div class="col-md-8">
-		<p><input name="Address1" id="txt_pat_curradd1" class="form-control form-mandatory" type="text" required /></p>
-		</div>
-		<div class="col-md-4">
-		<p></p>
-		</div>
-		<div class="col-md-8">
-		<p><input name="Address2" id="txt_pat_curradd2" class="form-control form-mandatory" type="text" /></p>
-		</div>
-		<div class="col-md-4">
-		<p></p>
-		</div>
-		<div class="col-md-8">
-		<p><input name="Address3" id="txt_pat_curradd3" class="form-control form-mandatory" type="text" /></p>
-		</div>
-		<div class="col-md-4">
-		<p></p>
-		</div>
-		<div class="col-md-4">
-		<p>Postcode<input name="Postcode" id="txt_pat_currpostcode" class="form-control form-mandatory" type="text" required /></p>
-		</div>
-		<div class="col-md-12">
-		<p></p>
-		</div>
-	
-		</div>
-	</div>
-	</div>
-	</div>
-	</div> -->
-
-	</div>
-
-	<div id="adjustmentform" title="Adjustment" >
-		<form class='form-horizontal' style='width:99%' id='adjustmentformdata'>
-		{{ csrf_field() }}
-			<input type="hidden" name="idno">
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="episno">Episode No</label>  
-                      <div class="col-md-2">
-                      <input id="episno" name="episno" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
-                      </div>
-				</div>
-
-			<div class="form-group">
-                  <label class="col-md-2 control-label" for="epistycode">Type</label>  
-                      <div class="col-md-2">
-                      <input id="epistycode" name="epistycode" type="text" class="form-control input-sm" data-validation="required">
-                      </div>
-                   <div class="col-md-2">
-				      <input id="epistycode" name="epistycode" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-				   </div>     
-			</div>
-                
-            <div class="form-group">
-                  <label class="col-md-2 control-label" for="bedtype">Bed Type</label>  
-                      <div class="col-md-2">
-                      <input id="bedtype" name="bedtype" type="text" class="form-control input-sm" data-validation="required">
-                      </div>
-                   <div class="col-md-2">
-					<input id="bedtype" name="bedtype" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-				   </div>      
-			</div>    
-                
-            <div class="form-group">
-                  <label class="col-md-2 control-label" for="bed">Bed</label>  
-                      <div class="col-md-2">
-                      <input id="bed" name="bed" type="text" class="form-control input-sm" data-validation="required">
-                      </div>
-                  <label class="col-md-1 control-label" for="room">Room</label>
-			          <div class="col-md-2">
-				      <input type="text" name="room" id="room" class="form-control input-sm" maxlength="14" data-validation-optional-if-answered="Oldic" >
-			          </div>     
-            </div> 
-        
-        <hr>
-            <div class="form-group">
-				  <label class="col-md-2 control-label" for="reg_date">Reg Date</label>  
-                      <div class="col-md-2">
-                      <input id="reg_date" name="reg_date" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
-                      </div>
-                  <label class="col-md-1 control-label" for="reg_by">Register By</label>
-			          <div class="col-md-2">
-				      <input type="text" name="reg_by" id="reg_by" class="form-control input-sm" maxlength="14" data-validation-optional-if-answered="Oldic" >
-			          </div>
-			      <label class="col-md-1 control-label" for="reg_time">Time</label>
-			          <div class="col-md-2">
-				      <input type="text" name="reg_time" id="reg_time" class="form-control input-sm" maxlength="14" data-validation-optional-if-answered="Oldic" >
-			          </div>     
-			</div>
-
-			<div class="form-group">
-			      <label class="col-md-2 control-label" for="qdate">Discharge Date</label>  
-                      <div class="col-md-2">
-                      <input id="qdate" name="qdate" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
-                      </div>
-                  <label class="col-md-1 control-label" for="qdate">Discharge By</label>
-			          <div class="col-md-2">
-				      <input type="text" name="qdate" id="qdate" class="form-control input-sm" maxlength="14" data-validation-optional-if-answered="Oldic" >
-			          </div>
-			      <label class="col-md-1 control-label" for="qtime">Time</label>
-			          <div class="col-md-2">
-				      <input type="text" name="qtime" id="qtime" class="form-control input-sm" maxlength="14" data-validation-optional-if-answered="Oldic" >
-			          </div>     
-			</div>
-                
-            <div class="form-group">
-                  <label class="col-md-2 control-label" for="description">Destination</label>  
-                      <div class="col-md-2">
-                      <input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
-                      </div>
-                      <div class="col-md-3">
-					  <input id="description" name="description" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-				      </div>      
-			</div>    
-          
-	  </form>
-
-	</div>
-
-@include('hisdb.pat_mgmt.mdl_episode')
-@endsection
+			</table>
 
 
-@section('scripts')
+		</div>
+
+
+		@include('hisdb.pat_mgmt.mdl_patient')
+		@include('hisdb.pat_mgmt.mdl_episode')
+		@include('hisdb.pat_mgmt.itemselector')
+
+		
+
+	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
+	<script type="text/ecmascript" src="plugins/jquery-migrate-3.0.0.js"></script>
+    <script type="text/ecmascript" src="plugins/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
+	<script type="text/ecmascript" src="plugins/moment.js"></script>
+
 
 	<script type="text/javascript" src="plugins/datatables/js/jquery.datatables.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/additional-methods.min.js"></script>
 
+	<script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script>
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
-	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
-	<script src="js/hisdb/pat_mgmt/episode.js"></script>
-
-
 	<script src="js/hisdb/currentPt/currentPt.js"></script>
-	
-@endsection
+
+	</div>
+
+</body>
+</html>
