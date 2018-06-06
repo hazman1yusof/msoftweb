@@ -1142,7 +1142,7 @@ $(document).ready(function () {
 
 	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
 
-	var mycurrency2 =new currencymode(["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']"]);
+	var mycurrency2 =new currencymode(["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']", "#jqGrid2 input[name='totamount']"]);
 
 	$("#jqGrid2_iladd, #jqGrid2_iledit").click(function(){
 		unsaved = false;
