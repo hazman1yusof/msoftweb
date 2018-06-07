@@ -423,9 +423,7 @@ $(document).ready(function () {
 			unsaved = false;
 			hideatdialogForm(false);
 
-			console.log($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1)
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				console.log('clicked');
 				addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
 			}
@@ -739,7 +737,7 @@ $(document).ready(function () {
 			},
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},editrules:{required: true},
 				editoptions: {
                     dataInit: function (element) {
                         $(element).datepicker({
@@ -753,7 +751,7 @@ $(document).ready(function () {
                     }
                 }
 			},
-			{ label: 'Batch No', name: 'batchno', width: 75, classes: 'wrap', editable:true,
+			{ label: 'Batch No', name: 'batchno', width: 75, classes: 'wrap', editable:true,editrules:{required: true},
 					maxlength: 30,
 			},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
@@ -772,7 +770,6 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(){
-			console.log(addmore_jqgrid2);
 			if(addmore_jqgrid2.more == true)$('#jqGrid2_iladd').click();
 			addmore_jqgrid2.more = false; //only addmore after save inline
 		},
@@ -875,6 +872,7 @@ $(document).ready(function () {
         	linenotoedit = rowid;
         	$("#jqGrid2").find(".remarks_button[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
         	$("#jqGrid2").find(".remarks_button[data-lineno_='undefined']").prop("disabled", false);
+        	cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
         },
         aftersavefunc: function (rowid, response, options) {
 			$('#delordhd_totamount').val(response.responseText);
@@ -1336,6 +1334,7 @@ $(document).ready(function () {
 				errorField.push( id );
 			}
 		}
+		console.log(event.data.currency);
 
 		event.data.currency.formatOn();//change format to currency on each calculation
 
@@ -1741,6 +1740,25 @@ $(document).ready(function () {
 		},'urlParam'
 	);
 	dialog_taxcode.makedialog(false);
+
+	function cari_gstpercent(taxcode){
+		var param = {
+			url:'util/get_value_default',
+			action:'get_value_default',
+			table_name:'hisdb.taxmast',
+			field:['rate'],
+			filterCol:['taxcode'],
+			filterVal:[taxcode],
+		}
+
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data.rows)){
+				$("input[name='gstpercent']").val(data.rows[0].rate);
+			}
+		});
+	}
 
 	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();

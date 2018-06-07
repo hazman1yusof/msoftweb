@@ -17,8 +17,9 @@ $(document).ready(function () {
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
-			if(errorField.length>0){
+			if(errorField.length>0){console.log(errorField[0]);
 				return {
+
 					element : $(errorField[0]),
 					message : ' '
 				}
@@ -94,7 +95,7 @@ $(document).ready(function () {
 				dialog_pouom.urlParam.filterCol = ['recstatus'];
 				dialog_pouom.urlParam.filterVal = [ 'A'];	
 			}
-		},'urlParam'
+		},'urlParam','radio','notab',false
 	);
 	dialog_pouom.makedialog();
 
@@ -112,7 +113,7 @@ $(document).ready(function () {
 				dialog_suppcode.urlParam.filterCol = ['recstatus'];
 				dialog_suppcode.urlParam.filterVal = [ 'A'];	
 			}
-		},'urlParam'
+		},'urlParam','radio','notab',false
 	);
 	dialog_suppcode.makedialog();
 
@@ -130,7 +131,7 @@ $(document).ready(function () {
 				dialog_mstore.urlParam.filterCol = ['mainstore','recstatus'];
 				dialog_mstore.urlParam.filterVal = ['1','A'];	
 			}
-		},'urlParam'
+		},'urlParam','radio','notab',false
 	);
 	dialog_mstore.makedialog();
 
@@ -148,7 +149,7 @@ $(document).ready(function () {
 				dialog_subcategory.urlParam.filterCol = ['recstatus'];
 				dialog_subcategory.urlParam.filterVal = [ 'A'];	
 			}
-		},'urlParam'
+		},'urlParam','radio','notab',false
 	);
 	dialog_subcategory.makedialog();
 

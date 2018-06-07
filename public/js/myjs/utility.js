@@ -548,7 +548,7 @@ function setactdate(target){
 	}
 }
 
-function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default',dcolrType='radio',needTab='notab'){
+function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam',dcolrType='radio',needTab='notab',required=true){
 	this.unique=unique;
 	this.gridname="othergrid_"+unique;
 	this.dialogname="otherdialog_"+unique;
@@ -573,6 +573,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 	};
 	this.needTab=needTab;
 	this.dcolrType=dcolrType;
+	this.required=required;
 	this.on = function(){
 		this.eventstat='on';
 		if(this.needTab=='tab'){
@@ -751,7 +752,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 					$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
 				}
 				var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;
-				if($.inArray(idtopush,obj.errorField)!==-1){
+				if($.inArray(idtopush,obj.errorField)!==-1 && obj.required){
 					obj.errorField.splice($.inArray(idtopush,obj.errorField), 1);
 				}
 			},
@@ -832,7 +833,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 
 			var idtopush = (id.substring(0, 1) == '#')?id.substring(1):id;
 
-			if(typeof errorField != 'string'){
+			if(typeof errorField != 'string' && self.required){
 				if(!fail){
 					if($.inArray(idtopush,errorField)!==-1){
 						errorField.splice($.inArray(idtopush,errorField), 1);

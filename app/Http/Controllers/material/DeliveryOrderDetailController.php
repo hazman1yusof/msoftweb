@@ -531,23 +531,36 @@ class DeliveryOrderDetailController extends defaultController
 
             $podt_obj_lama = $podt_obj->first();
 
-            ///6. update to purorddt
-            $delorddt_obj = DB::table('material.delorddt')
+            ///6. check dan bagi error kalu exceed quantity order
+
+                //step 1. cari header yang ada srcdocno ni
+            $delordhd_obj = DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
-                ->where('srcdocno','=',$this->srcdocno)
-                ->where('lineno_','=',$request->lineno_);
+                ->where('srcdocno','=',$this->srcdocno);
 
-            $total_qtydeliverd_do = 0;
+            if($delordhd_obj->exists()){
+                $total_qtydeliverd_do = 0;
 
-            if($delorddt_obj->exists()){
-                $delorddt_data = $delorddt_obj->get();
-                foreach ($delorddt_data as $value) {
-                    $total_qtydeliverd_do = $total_qtydeliverd_do + $value->qtydelivered;
+                $delorhd_all = $delordhd_obj->get();
+
+                //step 2. dapatkan dia punya qtydelivered melalui lineno yg sama, pastu jumlahkan, jumlah ni qtydelivered yang blom post lagi
+                foreach ($delorhd_all as $value_hd) {
+                    $delorddt_obj = DB::table('material.delorddt')
+                        ->where('recno','=',$value_hd->recno)
+                        ->where('compcode','=',session('compcode'))
+                        ->where('lineno_','=',$request->lineno_);
+
+                    if($delorddt_obj->exists()){
+                        $delorddt_data = $delorddt_obj->first();
+                        $total_qtydeliverd_do = $total_qtydeliverd_do + $delorddt_data->qtydelivered;
+                    }
                 }
             }
 
-            $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $request->qtydelivered + $total_qtydeliverd_do;
+                //step 3. jumlah_qtydelivered = qtydelivered yang dah post + qtydelivered yang blom post
+            $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $total_qtydeliverd_do;
 
+                //step 4. kalu melebihi qtyorder, rollback
             if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
                 DB::rollback();
 
