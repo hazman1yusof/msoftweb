@@ -52,7 +52,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly('#formdata');
 					$("#delordhd_prdept").val($("#deptcode").val());
-					
+					$('#delordhd_trantime').val(moment().format('HH:mm:ss'));
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -1334,7 +1334,6 @@ $(document).ready(function () {
 				errorField.push( id );
 			}
 		}
-		console.log(event.data.currency);
 
 		event.data.currency.formatOn();//change format to currency on each calculation
 
