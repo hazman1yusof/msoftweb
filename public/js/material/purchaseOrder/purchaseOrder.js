@@ -817,7 +817,8 @@ $(document).ready(function () {
 
 			linenotoedit = rowid;
         	$("#jqGrid2").find(".remarks_button[data-lineno!='"+linenotoedit+"']").prop("disabled", true);
-        	$("#jqGrid2").find(".remarks_button[data-lineno='undefined']").prop("disabled", false);
+        	$("#jqGrid2").find(".remarks_button[data-lineno='undefined']").prop("disabled", false); 	
+        	cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
 		},
 		aftersavefunc: function (rowid, response, options) {
 			$('#purordhd_totamount').val(response.responseText);
@@ -1048,7 +1049,7 @@ $(document).ready(function () {
 
 	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
 
-	var mycurrency2 = new currencymode(["#jqGrid2 input[name='amtdisc']", "#jqGrid2 input[name='unitprice']", "#jqGrid2 input[name='amount']", "#jqGrid2 input[name='tot_gst']"]);
+	var mycurrency2 = new currencymode(["#jqGrid2 input[name='amtdisc']", "#jqGrid2 input[name='unitprice']", "#jqGrid2 input[name='amount']", "#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
 
 	$("#jqGrid2_iladd, #jqGrid2_iledit").click(function () {
 		unsaved = false;
@@ -1071,10 +1072,6 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='taxcode']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='itemcode']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='qtyorder']").on('blur',  calculate_conversion_factor);
-		
-		
-		
-
 
 		$("input[name='tot_gst']").keydown(function (e) {//when click tab at tot_gst, auto save
 			var code = e.keyCode || e.which;
@@ -1623,6 +1620,24 @@ $(document).ready(function () {
 	);
 	dialog_credcode.makedialog();
 
+	function cari_gstpercent(taxcode){
+		var param = {
+			url:'util/get_value_default',
+			action:'get_value_default',
+			table_name:'hisdb.taxmast',
+			field:['rate'],
+			filterCol:['taxcode'],
+			filterVal:[taxcode],
+		}
+
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data.rows)){
+				$("input[name='gstpercent']").val(data.rows[0].rate);
+			}
+		});
+	}
 
 	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent(); 
