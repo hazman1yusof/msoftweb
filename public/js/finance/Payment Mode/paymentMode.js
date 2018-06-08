@@ -245,9 +245,9 @@ $(document).ready(function () {
 		 colModel: [
 			{label: 'compcode', name: 'compcode', width: 90 , hidden: true},
 			{label: 'source', name: 'source', width: 90, hidden: true},
-			{label: 'PayMode', name: 'paymode', width: 90, classes: 'wrap', canSearch: true, checked:true,},
-			{label: 'PayType', name: 'paytype', width: 90, checked:true,  classes: 'wrap'},
-			{label: 'Description', name: 'description', width: 100, canSearch: true, classes: 'wrap'}, 
+			{label: 'PayMode', name: 'paymode', width: 90, classes: 'wrap', canSearch: true,},
+			{label: 'PayType', name: 'paytype', width: 90, classes: 'wrap'},
+			{label: 'Description', name: 'description', width: 100, canSearch: true, checked:true,classes: 'wrap'}, 
 			{label: 'Cost Code', name: 'ccode', width: 90, hidden: true, classes: 'wrap'}, 
 			{label: 'GL Account', name: 'glaccno', width: 90, hidden: true, classes: 'wrap'},
 			{label: 'Dr. Payment', name: 'drpayment', width: 90, hidden: true, classes: 'wrap'},

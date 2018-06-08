@@ -135,8 +135,8 @@
 				datatype: "local",
 				 colModel: [
 				 	{label: 'compcode', name: 'compcode', width: 90 , hidden: true, classes: 'wrap'},
-					{label: 'Doctor Code', name: 'doctorcode', width: 90, canSearch:true, checked:true, classes: 'wrap'},
-					{label: 'Doctor Name', name: 'doctorname', width: 90, canSearch:true , classes: 'wrap'},
+					{label: 'Doctor Code', name: 'doctorcode', width: 90, canSearch:true, classes: 'wrap'},
+					{label: 'Doctor Name', name: 'doctorname', width: 90, canSearch:true , classes: 'wrap', checked:true},
 					{label: 'Costcenter', name: 'department', width: 90 , hidden: true, classes: 'wrap'},
 					{label: 'Discipline Code', name: 'disciplinecode', width: 90, classes: 'wrap'},
 					{label: 'Speciality Code', name: 'specialitycode', width: 90, classes: 'wrap'},

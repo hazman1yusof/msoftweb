@@ -121,8 +121,8 @@
 				datatype: "local",
 				 colModel: [						
 					{ label: 'idno', name: 'idno', hidden:true},						
-					{ label: 'PO Type', name: 'potype', width: 10,  classes: 'wrap' , checked:true, canSearch: true,},
-					{ label: 'Description', name: 'typedec', width: 80,  classes: 'wrap' , canSearch: true},
+					{ label: 'PO Type', name: 'potype', width: 10,  classes: 'wrap' ,canSearch: true,},
+					{ label: 'Description', name: 'typedec', width: 80,  classes: 'wrap' ,checked:true, canSearch: true},
 					{ label: 'Record Status', name: 'recstatus', formatter:formatter, unformat:unformat,
 					 	width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 						{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },

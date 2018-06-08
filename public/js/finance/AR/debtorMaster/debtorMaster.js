@@ -189,8 +189,8 @@
 				datatype: "local",
 				 colModel: [
 					{label: 'Financial Class', name: 'debtortype',editable: true, width: 60}, 
-					{label: 'Debtor Code', name: 'debtorcode', width: 100, checked:true, canSearch: true},
-					{label: 'Debtor Name', name: 'name', width: 200, classes: 'wrap', canSearch: true},
+					{label: 'Debtor Code', name: 'debtorcode', width: 100, canSearch: true},
+					{label: 'Debtor Name', name: 'name', width: 200, classes: 'wrap', checked:true,canSearch: true},
 					{label: 'Address', name: 'address1',hidden: true},
 					{label: 'Address 2', name: 'address2', hidden: true},
 					{label: 'Address 3', name: 'address3',hidden: true},

@@ -120,8 +120,8 @@
 				datatype: "local",
 				 colModel: [
 					//{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
-					{ label: 'Gl Account', name: 'glaccno', width: 20, classes: 'wrap', canSearch: true, checked:true},
-					{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true},
+					{ label: 'Gl Account', name: 'glaccno', width: 20, classes: 'wrap', canSearch: true,},
+					{ label: 'Description', name: 'description', width: 80, classes: 'wrap', checked:true,canSearch: true},
 					{ label: 'Act Type', name: 'acttype', width: 80, hidden:true},
 					{ label: 'Rep Group', name: 'repgroup', width: 90, hidden:true},
 					{ label: 'Type', name: 'accgroup', width: 10, classes: 'wrap'},

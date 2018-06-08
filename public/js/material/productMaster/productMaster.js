@@ -136,8 +136,8 @@
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [						
-					{ label: 'Item Code', name: 'itemcode', width: 40, classes: 'wrap', canSearch: true, checked:true},
-					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true},
+					{ label: 'Item Code', name: 'itemcode', width: 40, classes: 'wrap', canSearch: true,},
+					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', checked:true,canSearch: true},
 					{ label: 'Group Code', name: 'groupcode', width: 30, classes: 'wrap'},
 					{ label: 'Product Category', name: 'productcat', width: 30, classes: 'wrap'},
 					{ label: 'Class ', name: 'Class', width: 30, classes: 'wrap'},
@@ -383,8 +383,8 @@
 			var dialog_category = new ordialog(
 				'productcat','material.category','#productcat',errorField,
 				{	colModel:[
-						{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 						]
 				},{
 					title:"Select Category",

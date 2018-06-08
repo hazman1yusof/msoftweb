@@ -35,8 +35,8 @@ $(document).ready(function () {
 	var dialog_itemcode = new ordialog(
 		'itemcodesearch','material.productmaster','#itemcodesearch',errorField,
 		{	colModel:[
-				{label:'Dept Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Dept Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 				{label:'groupcode',name:'groupcode',hidden:true},
 				{label:'productcat',name:'productcat',hidden:true},
 				{label:'Class',name:'Class',hidden:true},
@@ -65,8 +65,8 @@ $(document).ready(function () {
 	var dialog_uomcode = new ordialog(
 		'uomcodesearch','material.uom','#uomcodesearch',errorField,
 		{	colModel:[
-				{label:'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			ondblClickRow:function(){
 			}	
@@ -84,8 +84,8 @@ $(document).ready(function () {
 	var dialog_pouom = new ordialog(
 		'pouom','material.uom','#pouom',errorField,
 		{	colModel:[
-				{label:'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			ondblClickRow:function(){
 			}	
@@ -102,8 +102,8 @@ $(document).ready(function () {
 	var dialog_suppcode = new ordialog(
 		'suppcode','material.supplier','#suppcode',errorField,
 		{	colModel:[
-				{label:'Supplier Code',name:'SuppCode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Supplier Code',name:'SuppCode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			ondblClickRow:function(){
 			}	
@@ -120,8 +120,8 @@ $(document).ready(function () {
 	var dialog_mstore = new ordialog(
 		'mstore','sysdb.department','#mstore',errorField,
 		{	colModel:[
-				{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			ondblClickRow:function(){
 			}	
@@ -138,8 +138,8 @@ $(document).ready(function () {
 	var dialog_subcategory = new ordialog(
 		'subcatcode','material.subcategory','#subcatcode',errorField,
 		{	colModel:[
-				{label:'Dept Code',name:'subcatcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Dept Code',name:'subcatcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			ondblClickRow:function(){
 			}	
@@ -156,8 +156,8 @@ $(document).ready(function () {
 	var dialog_taxCode = new ordialog(
 		'TaxCode','hisdb.taxmast','#TaxCode',errorField,
 		{	colModel:[
-				{label:'Tax Code',name:'taxcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Tax Code',name:'taxcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			ondblClickRow:function(){
 			}	
@@ -315,8 +315,8 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Item Code', name: 'itemcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, checked: true},
-			{ label: 'Item Description', name: 'description', width: 80, sorttype: 'text', classes: 'wrap', canSearch: true  },
+			{ label: 'Item Code', name: 'itemcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true},
+			{ label: 'Item Description', name: 'description', width: 80, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true  },
 			{ label: 'Uom Code', name: 'uomcode', width: 30, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Group Code', name: 'groupcode', width: 30, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Class', name: 'Class', width: 40, sorttype: 'text', classes: 'wrap', hidden:true   },
@@ -651,8 +651,8 @@ $(document).ready(function () {
 				var dialog_cat = new ordialog(
 					'productcatAddNew','material.category','#productcatAddNew',errorField,
 					{	colModel:[
-							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 						],
 						ondblClickRow:function(){
 						}	
@@ -672,8 +672,8 @@ $(document).ready(function () {
 				var dialog_cat = new ordialog(
 					'productcatAddNew','finance.facode','#productcatAddNew',errorField,
 					{	colModel:[
-							{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						],
 						ondblClickRow:function(){
 						}	
@@ -692,8 +692,8 @@ $(document).ready(function () {
 				var dialog_cat = new ordialog(
 					'productcatAddNew','material.category','#productcatAddNew',errorField,
 					{	colModel:[
-							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						],
 						ondblClickRow:function(){
 						}	

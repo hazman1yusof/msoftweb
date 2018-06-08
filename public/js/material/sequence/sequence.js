@@ -125,9 +125,9 @@
 				 colModel: [
 					{ label: 'idno', name: 'idno', sorttype: 'number', hidden:true },
 					{ label: 'Compcode', name: 'compcode', hidden:true},
-					{ label: 'Dept Code', name: 'dept', classes: 'wrap', width: 40, canSearch: true, checked:true},
+					{ label: 'Dept Code', name: 'dept', classes: 'wrap', width: 40, canSearch: true},
 					{ label: 'Trx Type', name: 'trantype', classes: 'wrap', width: 25},
-					{ label: 'Description', name: 'description', classes: 'wrap', width: 80,  canSearch: true},
+					{ label: 'Description', name: 'description', classes: 'wrap', width: 80,checked:true,  canSearch: true},
 					{ label: 'Sequence No', name: 'seqno', classes: 'wrap', width: 25},
 					{ label: 'Days For Backdated', name: 'backday', classes: 'wrap', width: 25},
 					{ label: 'Add User', name: 'adduser', width: 30,hidden:true },
@@ -251,8 +251,8 @@
 			var dialog_dept = new ordialog(
 				'dept','sysdb.department','#dept',errorField,
 				{	colModel:[
-						{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 						],
 					ondblClickRow:function(){
 					}	
@@ -269,8 +269,8 @@
 			var dialog_trantype = new ordialog(
 				'trantype','material.ivtxntype','#trantype',errorField,
 				{	colModel:[
-						{label:'Transaction Type',name:'trantype',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Transaction Type',name:'trantype',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 						],
 					ondblClickRow:function(){
 					}	

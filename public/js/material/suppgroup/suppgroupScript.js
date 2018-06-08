@@ -31,8 +31,8 @@
 			var dialog_costcode = new ordialog(
 				'costcode','finance.costcenter','#costcode',errorField,
 				{	colModel:[
-						{label:'Cost Code',name:'costcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Cost Code',name:'costcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 						],
 					ondblClickRow:function(){
 					}	
@@ -49,8 +49,8 @@
 			var dialog_glaccno = new ordialog(
 				'glaccno','finance.glmasref','#glaccno',errorField,
 				{	colModel:[
-						{label:'Account No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Account No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 						],
 					ondblClickRow:function(){
 					}	
@@ -67,8 +67,8 @@
 			var dialog_advccode = new ordialog(
 				'advccode','finance.costcenter','#advccode',errorField,
 				{	colModel:[
-						{label:'Cost Code',name:'costcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Cost Code',name:'costcode',width:100,classes:'pointer',canSearch:true,,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 						],
 					ondblClickRow:function(){
 					}	
@@ -85,8 +85,8 @@
 			var dialog_advglaccno = new ordialog(
 				'advglaccno','finance.glmasref','#advglaccno',errorField,
 				{	colModel:[
-						{label:'Account No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Account No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 						],
 					ondblClickRow:function(){
 					}	
@@ -206,8 +206,8 @@
 				 colModel: [
 				 	{ label: 'idno', name: 'idno', width: 30,hidden:true },
 					{ label: 'Comp Code', name: 'compcode', hidden:true},
-					{ label: 'Supplier Group', name: 'suppgroup', width: 50, sorttype: 'text', classes: 'wrap', canSearch: true, checked:true},
-					{ label: 'Description', name: 'description', width: 100, sorttype: 'text', classes: 'wrap', canSearch: true},
+					{ label: 'Supplier Group', name: 'suppgroup', width: 50, sorttype: 'text', classes: 'wrap', canSearch: true},
+					{ label: 'Description', name: 'description', width: 100, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true},
 					{ label: 'Cost Code', name: 'costcode', width: 60, sorttype: 'number', classes: 'wrap'},
 					{ label: 'Gl Account No', name: 'glaccno', width: 60, sorttype: 'number', classes: 'wrap'},
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},

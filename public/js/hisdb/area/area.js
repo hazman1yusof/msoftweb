@@ -107,8 +107,8 @@
 				 colModel: [
 					{ label: 'No', name: 'sysno', width: 5, sorttype: 'number', hidden:true},
 					{ label: 'compcode', name: 'compcode', hidden:true},						
-					{ label: 'Area Code', name: 'areacode', width: 20, classes: 'wrap', canSearch: true, checked:true,},
-					{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true,},
+					{ label: 'Area Code', name: 'areacode', width: 20, classes: 'wrap', canSearch: true},
+					{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true, checked:true},
 					{ label: 'createdby', name: 'createdby', width: 80,hidden:true},
 					{ label: 'createddate', name: 'createddate', width: 90,hidden:true},
 					{ label: 'lastupdater', name: 'lastupdate', width: 80,hidden:true},

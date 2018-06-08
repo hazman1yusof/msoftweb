@@ -331,8 +331,8 @@ $(document).ready(function () {
 	var dialog_itemcode = new ordialog(
 		'itemcodeS','material.product','#itemcodeS',errorField,
 		{	colModel:[
-				{label:'Item Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Item Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 				{label:'Uom Code',name:'uomcode',width:100,classes:'pointer'},
 				{label:'Class',name:'Class',width:400,classes:'pointer',hidden:true},
 			],
@@ -372,8 +372,8 @@ $(document).ready(function () {
 		{
 			colModel:
 			[
-				{ label: 'UOM code', name: 'p_uomcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'u_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'UOM code', name: 'p_uomcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'u_description', width: 400, classes: 'pointer', checked:true, canSearch: true, or_search: true },
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_uomcode.gridname);
@@ -401,8 +401,8 @@ $(document).ready(function () {
 	var dialog_deptcode = new ordialog(
 		'deptcode','sysdb.department','#deptcode',errorField,
 		{	colModel:[
-				{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 				],
 			ondblClickRow:function(){
 			}	
