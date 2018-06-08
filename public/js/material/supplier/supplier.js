@@ -186,8 +186,8 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Supplier Code', name: 'SuppCode', width: 35 , sorttype: 'text', classes: 'wrap', canSearch: true, checked:true},
-			{ label: 'Supplier Name', name: 'Name', width: 100, editable: true, classes: 'wrap', canSearch: true },
+			{ label: 'Supplier Code', name: 'SuppCode', width: 35 , sorttype: 'text', classes: 'wrap', canSearch: true},
+			{ label: 'Supplier Name', name: 'Name', width: 100, editable: true, classes: 'wrap',checked:true, canSearch: true },
 			{ label: 'Supplier Group', name: 'SuppGroup', width: 35, editable: true, classes: 'wrap' },
 			{ label: 'Cont Pers', name: 'ContPers', width: 90, hidden: true},
 			{ label: 'Addr1', name: 'Addr1', width: 30, hidden: true}, 
@@ -519,8 +519,8 @@ $(document).ready(function () {
 		 colModel: [
 			{ label: 'Supplier Code', name: 'si_suppcode', width: 30, hidden: true},
 		 	{ label: 'no', name: 'si_lineno_', width: 50, sorttype: 'number', hidden: true,}, // 
-		 	{ label: 'Item Code', name: 'si_itemcode', width: 40, sorttype: 'text', editable: true, classes: 'wrap', canSearch: true, checked:true},
-			{ label: 'Item Description', name: 'p_description', width: 90, sorttype: 'text', classes: 'wrap', canSearch: true},
+		 	{ label: 'Item Code', name: 'si_itemcode', width: 40, sorttype: 'text', editable: true, classes: 'wrap', canSearch: true},
+			{ label: 'Item Description', name: 'p_description', width: 90, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true},
 			{ label: 'Price Code', name: 'si_pricecode', width: 30, sorttype: 'text', editable: true, classes: 'wrap'},
 			{ label: 'Uom Code', name: 'si_uomcode', width: 30, sorttype: 'text', editable: true, classes: 'wrap'},
 			{ label: 'Unit Price', name: 'si_unitprice', width: 30, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
@@ -830,8 +830,8 @@ $(document).ready(function () {
 			{ label: 'uomcode', name: 'sb_uomcode', width: 50, hidden: true},
 			{ label: 'purqty', name: 'sb_purqty', width: 50, hidden: true},
 			{ label: 'bonpricecode', name: 'sb_bonpricecode', width: 50, hidden: true},
-		 	{ label: 'Bonus Item Code', name: 'sb_bonitemcode', width: 50, classes: 'wrap', canSearch: true, checked:true},
-			{ label: 'Item Description', name: 'p_description', width: 30, classes: 'wrap', canSearch: true},
+		 	{ label: 'Bonus Item Code', name: 'sb_bonitemcode', width: 50, classes: 'wrap', canSearch: true},
+			{ label: 'Item Description', name: 'p_description', width: 30, classes: 'wrap', checked:true,canSearch: true},
 			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 30, classes: 'wrap'},
 			{ label: 'Bonus Quantity', name: 'sb_bonqty', width: 30, classes: 'wrap', formatter:'currency'}, 
 			{ label: "Supplier's Item Code", name: 'sb_bonsitemcode', width: 30, classes: 'wrap'},

@@ -121,11 +121,11 @@
 				 colModel: [
 				 	{ label: 'idno', name: 'idno', width: 5,hidden:true},
 										
-					{ label: 'UOM Code', name: 'uomcode', width: 20, classes: 'wrap', canSearch: true, checked:true, editable: true, 
+					{ label: 'UOM Code', name: 'uomcode', width: 20, classes: 'wrap', canSearch: true,editable: true, 
 							editrules:{required: true}, 
 							editoptions: {maxlength: 2},
 						},
-					{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, editable: true,
+					{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, checked:true,editable: true,
 							editrules:{required: true}, 
 							editoptions: { maxlength: 100},
 					},

@@ -124,8 +124,8 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
 			//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
-			{label: 'Category Code', name: 'catcode', width: 70, checked:true, canSearch: true},
-			{label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true},					
+			{label: 'Category Code', name: 'catcode', width: 70, canSearch: true},
+			{label: 'Description', name: 'description', width: 100, classes: 'wrap',checked:true, canSearch: true},					
 			{label: 'Category Type', name: 'cattype', width: 90 , hidden: true},					
 			{label: 'Source', name: 'source', width: 90 , hidden: true},					
 			{label: 'Stock Account', name: 'stockacct', width: 90 ,  hidden: true},					
@@ -255,8 +255,8 @@ $(document).ready(function () {
 	var dialog_expacct = new ordialog(
 		'expacct','finance.glmasref','#expacct',errorField,
 		{	colModel:[
-				{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 				],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_expacct.gridname);

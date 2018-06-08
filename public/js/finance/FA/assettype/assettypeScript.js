@@ -116,8 +116,8 @@
 				datatype: "local",
 				 colModel: [
 					//{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
-					{ label: 'Asset Type', name: 'assettype', width: 20, classes: 'wrap', canSearch: true, checked:true},   ////////
-					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true},
+					{ label: 'Asset Type', name: 'assettype', width: 20, classes: 'wrap', canSearch: true},   ////////
+					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true,checked:true,},
 					{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatter, cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 					{ label: 'idno', name:'idno', width: 10, hidden:true},

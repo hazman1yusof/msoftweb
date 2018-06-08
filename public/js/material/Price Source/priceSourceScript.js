@@ -121,9 +121,8 @@
 				 colModel: [
 				 	{ label: 'idno', name: 'idno', width: 30,hidden:true },
 					{label: 'compcode', name: 'compcode', width: 90 , hidden: true},
-					{label: 'Price Code', name: 'pricecode', width: 90, classes: 'wrap', checked:true, 
-					canSearch: true}, 
-					{label: 'Description', name: 'description', width: 90, classes: 'wrap', canSearch: true}, 
+					{label: 'Price Code', name: 'pricecode', width: 90, classes: 'wrap', canSearch: true}, 
+					{label: 'Description', name: 'description', width: 90, classes: 'wrap', checked:true,canSearch: true}, 
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 					{ label: 'upduser', name: 'upduser', width: 90, hidden:true},

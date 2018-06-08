@@ -110,8 +110,8 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
             {label: 'idno', name: 'idno', hidden: true},
-			{ label: 'Item code', name: 'itemcode', width: 20, classes: 'wrap', canSearch: true, checked:true},						
-			{ label: 'Item Description', name: 'description', width: 40, classes: 'wrap', canSearch: true},
+			{ label: 'Item code', name: 'itemcode', width: 20, classes: 'wrap', canSearch: true},						
+			{ label: 'Item Description', name: 'description', width: 40, classes: 'wrap', checked:true,canSearch: true},
 			{ label: 'UOM Code', name: 'uomcode', width: 20, classes: 'wrap'},
 			{ label: 'Quantity on Hand', name: 'qtyonhand', width: 30,classes: 'wrap',align: 'right'},
 			{ label: 'Average Cost', name: 'avgcost', width: 40,classes: 'wrap',align: 'right'},

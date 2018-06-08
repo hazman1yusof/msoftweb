@@ -123,8 +123,8 @@
 				 colModel: [
 				 	{label: 'idno', name: 'idno', width: 5, hidden:true},
 					{label: 'compcode', name: 'compcode', hidden:true},
-					{label: 'Transaction Type', name: 'trantype', width: 90, classes: 'wrap' , canSearch: true, checked:true, },
-					{label: 'Description', name: 'description', width: 90,  classes: 'wrap' , canSearch: true, },
+					{label: 'Transaction Type', name: 'trantype', width: 90, classes: 'wrap' , canSearch: true, },
+					{label: 'Description', name: 'description', width: 90,  classes: 'wrap' , checked:true,canSearch: true, },
 					{label: 'Issue Type', name: 'isstype', width: 90,  classes: 'wrap', },
 					{label: 'Transaction By Inventory', name: 'trbyiv', width: 90,  classes: 'wrap', hidden:true,},
 					{label: 'Update Quantity', name: 'updqty', width: 90,  classes: 'wrap', hidden: true, },

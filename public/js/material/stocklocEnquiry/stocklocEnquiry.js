@@ -114,7 +114,7 @@ $(document).ready(function () {
             {label: 'idno', name: 's_idno', hidden: true},
             { label: 'Department Code', name: 's_deptcode', width: 20, classes: 'wrap', canSearch: true,selected:true},
 			{ label: 'Item code', name: 's_itemcode', width: 20, classes: 'wrap', canSearch: true,selected:true},		
-			{ label: 'Description', name: 'p_description', width: 30, classes: 'wrap', canSearch: true,selected:true},
+			{ label: 'Description', name: 'p_description', width: 30, classes: 'wrap', checked:true,canSearch: true,selected:true},
 			{ label: 'UOM Code', name: 's_uomcode', width: 20, classes: 'wrap'},
 			{ label: 'Quantity on Hand', name: 's_qtyonhand', width: 20,classes: 'wrap',align: 'right'},
 			{ label: 'Stock TrxType', name: 's_stocktxntype', width: 20, classes: 'wrap'},
