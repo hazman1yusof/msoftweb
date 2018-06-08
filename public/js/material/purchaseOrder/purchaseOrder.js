@@ -103,6 +103,7 @@ $(document).ready(function () {
 				//dialog_deldept.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
+				refreshGrid("#jqGrid2",null,"kosongkan");
 			},
 		});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
