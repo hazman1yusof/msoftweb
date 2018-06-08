@@ -324,7 +324,7 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', false, urlParam);
 	//addParamField('#jqGrid',false,saveParam);
-	addParamField('#jqGrid', false, saveParam, ['idno', 'adduser', 'adddate', 'upduser', 'upddate', 'recstatus', 'computerid', 'ipaddress']);
+	addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 

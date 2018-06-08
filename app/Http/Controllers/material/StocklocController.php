@@ -24,6 +24,7 @@ class StocklocController extends defaultController
 
     public function form(Request $request)
     {  
+        $request->noduplicate='yes';
         switch($request->oper){
             case 'add':
                 return $this->defaultAdd($request);
