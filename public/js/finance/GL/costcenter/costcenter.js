@@ -140,6 +140,8 @@
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
+				sortname:'costcode',
+				sortorder:'asc',
 				width: 900,
 				height: 350,
 				rowNum: 30,

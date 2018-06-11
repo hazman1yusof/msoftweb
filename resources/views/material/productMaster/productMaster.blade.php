@@ -89,7 +89,7 @@
 				<div class="form-group">
                    <label class="col-md-2 control-label" for="avgcost">Avg Cost</label>  
 				  <div class="col-md-3">
-					<input id="avgcost" name="avgcost" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					<input id="avgcost" name="avgcost" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" disabled>
 				  </div>
 				</div>
 
