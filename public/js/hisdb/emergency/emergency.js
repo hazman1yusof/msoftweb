@@ -217,7 +217,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
-		height: 350,
+		height: 365,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
@@ -699,6 +699,4 @@ $(document).ready(function () {
 		// });
 
 	});
-
-
 });

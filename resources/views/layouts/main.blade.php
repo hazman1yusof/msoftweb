@@ -34,7 +34,11 @@
 	@yield('css')
 	
     <style>
+	    html{
+	 		height: 100%;
+	    }
     	body{
+  			height: 100%;
     		background: #f9f1f1;
 			background: -webkit-linear-gradient(#f9f1f1, #0c7567);
 			background: -o-linear-gradient(#f9f1f1, #0c7567);
@@ -50,7 +54,6 @@
 			padding: 5px 0px 10px 0px;
 			margin: 0px 0px 15px 0px;
 		}
-		
 		.ScolClass{
 			float:left;
 			margin-top:5px;

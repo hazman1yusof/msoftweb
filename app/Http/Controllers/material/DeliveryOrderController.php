@@ -1217,6 +1217,39 @@ class DeliveryOrderController extends defaultController
                 ->get();
 
         foreach ($po_dt as $key => $value) {
+            ///step 0.5 calculate qtyoutstand
+            $qtyoutstand = 0;
+
+            $delordhd_obj = DB::table('material.delordhd')
+                ->where('compcode','=',session('compcode'))
+                ->where('srcdocno','=',$srcdocno);
+
+            if($delordhd_obj->exists()){
+                $total_qtydeliverd_do = 0;
+
+                $delorhd_all = $delordhd_obj->get();
+
+                //step 0.5.1 dapatkan dia punya qtydelivered melalui lineno yg sama, pastu jumlahkan, jumlah ni qtydelivered yang blom post lagi
+                foreach ($delorhd_all as $value_hd) {
+                    $delorddt_obj = DB::table('material.delorddt')
+                        ->where('recno','=',$value_hd->recno)
+                        ->where('compcode','=',session('compcode'))
+                        ->where('lineno_','=',$value->lineno_);
+
+                    if($delorddt_obj->exists()){
+                        $delorddt_data = $delorddt_obj->first();
+                        $total_qtydeliverd_do = $total_qtydeliverd_do + $delorddt_data->qtydelivered;
+                    }
+                }
+
+                // jumlah_qtydelivered = qtydelivered yang dah post + qtydeliverd yg blom post
+                $jumlah_qtydelivered = $value->qtydelivered + $total_qtydeliverd_do;
+
+                // qtyoutstand = qtyorder - jumlah_qtydelivered
+                $qtyoutstand = $value->qtyorder - $jumlah_qtydelivered;
+            }
+
+
             ///1. insert detail we get from existing purchase order
             $table = DB::table("material.delorddt");
             $table->insert([
@@ -1229,6 +1262,7 @@ class DeliveryOrderController extends defaultController
                 'pouom' => $value->pouom,  
                 'qtyorder' => $value->qtyorder, 
                 'qtydelivered' => $value->qtydelivered, 
+                'qtyoutstand' => $qtyoutstand,
                 'unitprice' => $value->unitprice, 
                 'taxcode' => $value->taxcode, 
                 'perdisc' => $value->perdisc, 
@@ -1241,8 +1275,7 @@ class DeliveryOrderController extends defaultController
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                 'recstatus' => 'A', 
-                'remarks' => $value->remarks,
-                'srcdocno' => $srcdocno
+                'remarks' => $value->remarks
             ]);
         }
        

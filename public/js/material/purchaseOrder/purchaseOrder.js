@@ -213,6 +213,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce: false,
+		sortname:'purordhd_idno',
+		sortorder:'desc',
 		width: 900,
 		height: 200,
 		rowNum: 30,

@@ -944,4 +944,9 @@ function unpadzero(cellvalue, options, rowObject){
 	return cellvalue.substring(cellvalue.search(/[1-9]/));
 }
 
+function setHeight_singletable(){
+	var heightuse = $('body').height()-($('#searchForm').outerHeight(true)+30);
+	$("#jqGrid").jqGrid('setGridHeight', heightuse);
+}
+
 /////////////////////////////////End utility function////////////////////////////////////////////////
