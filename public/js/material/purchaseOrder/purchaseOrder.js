@@ -1524,7 +1524,7 @@ $(document).ready(function () {
 				dialog_uomcode.urlParam.fixPost="true";
 				dialog_uomcode.urlParam.table_id="none_";
 				dialog_uomcode.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcode.urlParam.filterVal=['session.company',$('#purordhd_prdept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#purordhd_purdate').val()).year()];
+				dialog_uomcode.urlParam.filterVal=['session.company',$('#purordhd_deldept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#purordhd_purdate').val()).year()];
 				dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
 				dialog_uomcode.urlParam.join_onCol=['s.uomcode'];
 				dialog_uomcode.urlParam.join_onVal=['u.uomcode'];

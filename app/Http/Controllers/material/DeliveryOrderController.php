@@ -53,7 +53,7 @@ class DeliveryOrderController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('GRN', $request->delordhd_deldept);
+        $request_no = $this->request_no('GRN', $request->delordhd_prdept);
         $recno = $this->recno('PUR','DO');
 
         DB::beginTransaction();

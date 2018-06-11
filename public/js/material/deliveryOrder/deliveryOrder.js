@@ -717,7 +717,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Total GST Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
-				editrules:{required: true},edittype:"text",
+				editrules:{required: true},editoptions:{readonly: "readonly"},
 						editoptions:{
 						maxlength: 12,
 						dataInit: function(element) {
@@ -1469,9 +1469,9 @@ $(document).ready(function () {
 									perdisc:elem['perdisc'],
 									amtdisc:elem['amtdisc'],
 									tot_gst:0,
-									netunitprice:elem['netunitprice'],
-									totamount:elem['totamount'],
-									amount:elem['amount'],
+									netunitprice:0,
+									totamount:0,
+									amount:0,
 									remarks_button:null,
 									remarks:elem['remarks'],
 								}

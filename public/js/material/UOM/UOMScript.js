@@ -153,7 +153,7 @@
 				sortname: 'idno',
 				sortorder: 'desc',
 				width: 900,
-				height: 350,
+				height: 470,
 				rowNum: 30,
 				pager: "#jqGridPager",
 				ondblClickRow: function(rowid, iRow, iCol, e){
