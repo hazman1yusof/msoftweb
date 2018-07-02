@@ -283,3 +283,8 @@ Route::post('/priceSource/form','material\PriceSourceController@form');
 Route::get('/suppgroup','material\SuppgroupController@show');
 Route::get('/suppgroup/table','material\SuppgroupController@table');
 Route::post('/suppgroup/form','material\SuppgroupController@form');
+
+/// Register setup /// 
+Route::get('/assetregister','finance\assetregisterController@show');
+Route::get('/assetregister/table','finance\assetregisterController@table');
+Route::post('/assetregister/form','finance\assetregisterController@form'); 
