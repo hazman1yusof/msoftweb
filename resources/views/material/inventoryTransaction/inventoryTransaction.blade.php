@@ -152,10 +152,10 @@
 										<input id="docno" name="docno" type="text" maxlength="11" class="form-control input-sm" rdonly>
 						  			</div>
 
-						  		<label class="col-md-2 control-label" for="srcdocno">Request RecNo</label>  
+						  		<label class="col-md-2 control-label" for="srcdocno">Request No</label>  
 						  			<div class="col-md-2" id="srcdocno_parent">
 									  	<div class='input-group'>
-											<input id="srcdocno" name="srcdocno" type="text" class="form-control input-sm" data-validation="required">
+											<input id="srcdocno" name="srcdocno" type="text" class="form-control input-sm" >
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										</div>
 						  			</div>
