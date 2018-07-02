@@ -69,15 +69,15 @@ $(document).ready(function () {
 					inputTrantypeValue();
 					break;
 			}if(oper!='add'){
-				dialog_trantype.on();
-				dialog_txndept.on();
-				dialog_sndrcv.on();
-				dialog_requestRecNo.on();
-			}if(oper!='view'){
 				dialog_trantype.check(errorField);
 				dialog_txndept.check(errorField);
 				dialog_sndrcv.check(errorField);
 				dialog_requestRecNo.check(errorField);
+			}if(oper!='view'){
+				dialog_trantype.on();
+				dialog_txndept.on();
+				dialog_sndrcv.on();
+				dialog_requestRecNo.on();
 			}
 		},
 		beforeClose: function(event, ui){
@@ -323,6 +323,7 @@ $(document).ready(function () {
 						break;
 					default:
 						$("#jqGrid2").jqGrid('hideCol', 'recvqtyonhand');
+						$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
 						$("label[for=sndrcv]").hide();
 						$("#sndrcv_parent").hide();
 
@@ -336,6 +337,7 @@ $(document).ready(function () {
 
 				function forTR(){
 					$("#jqGrid2").jqGrid('showCol', 'recvqtyonhand');
+					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
 					$("label[for=sndrcv]").show();
 					$("#sndrcv_parent").show();
 
@@ -352,6 +354,7 @@ $(document).ready(function () {
 
 				function exceptTR(){
 					$("#jqGrid2").jqGrid('showCol', 'recvqtyonhand');
+					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
 					$("label[for=sndrcv]").show();
 					$("#sndrcv_parent").show();
 
@@ -604,7 +607,7 @@ $(document).ready(function () {
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'UOM Code Tran Dept', name: 'uomcode', width: 110, classes: 'wrap', editable:true,
+			{ label: 'UOM Code Tran Dept', name: 'uomcodetran', width: 110, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -617,7 +620,7 @@ $(document).ready(function () {
 				editoptions:{readonly: "readonly"},
 				formatter: formatter_recvqtyonhand,//$('#jqGrid2_iladd').click();
 			},
-			{ label: 'UOM Code Recv Dept', name: 'uomcode', width: 110, classes: 'wrap', editable:true,
+			{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 110, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					formatter: showdetail,
 						edittype:'custom',	editoptions:

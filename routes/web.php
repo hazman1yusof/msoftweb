@@ -135,7 +135,7 @@ Route::post('/doctor_maintenance/save_session','hisdb\DoctorMaintenanceControlle
 Route::post('/doctor_maintenance/save_bgleave','hisdb\DoctorMaintenanceController@save_bgleave');
 Route::post('/doctor_maintenance/save_colorph','hisdb\DoctorMaintenanceController@save_colorph');
 
-//// purchase Order setup page ///
+//// inventory Transaction setup page ///
 Route::get('/inventoryTransaction','material\InventoryTransactionController@show');
 Route::get('/inventoryTransaction/table','material\InventoryTransactionController@table');
 Route::post('/inventoryTransaction/form','material\InventoryTransactionController@form');
