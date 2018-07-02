@@ -124,13 +124,9 @@
 									  <span class="help-block"></span>
 								  	</div>
 
-						  		<label class="col-md-2 control-label" for="trantype">Transaction Type</label>
-									<div class="col-md-2">
-									  <div class='input-group'>
-										<input id="trantype" name="trantype" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									  </div>
-									  <span class="help-block"></span>
+						  		<label class="col-md-2 control-label" for="trandate">Transaction Date</label>  
+								  	<div class="col-md-2">
+										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required">
 								  	</div>
 
 								<label class="col-md-2 control-label" for="srcdocno">Request RecNo</label>  
@@ -152,7 +148,21 @@
 									  <span class="help-block"></span>
 								  	</div>
 
-								<label class="col-md-2 control-label" for="sndrcvtype">Receiver Type</label>  
+								
+
+						  		<label class="col-md-2 control-label" for="docno">Document No</label>  
+						  			<div class="col-md-2">
+										<input id="docno" name="docno" type="text" maxlength="11" class="form-control input-sm" rdonly>
+						  			</div>
+
+						  		<label class="col-md-2 control-label" for="recno">Record No</label>  
+						  			<div class="col-md-2">
+										<input id="recno" name="recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
+						  			</div>	
+						  	</div>
+
+						  	<div class="form-group">
+						  		<label class="col-md-2 control-label" for="sndrcvtype">Receiver Type</label>  
 						  			<div class="col-md-2 selectContainer" id="sndrcvtype_parent">
 						  				<select id="sndrcvtype" name="sndrcvtype" class="form-control" data-validation="required">
 							  				<option value="">Please Select</option>
@@ -162,17 +172,7 @@
 									    </select>
 						  			</div>
 
-						  		<label class="col-md-2 control-label" for="docno">Document No</label>  
-						  			<div class="col-md-2">
-										<input id="docno" name="docno" type="text" maxlength="11" class="form-control input-sm" rdonly>
-						  			</div>
-						  	</div>
-
-						  	<div class="form-group">
-								<label class="col-md-2 control-label" for="trandate">Transaction Date</label>  
-								  	<div class="col-md-2">
-										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required">
-								  	</div>
+								
 
 
 								<label class="col-md-2 control-label" for="sndrcv">Receiver</label>	  
@@ -185,10 +185,7 @@
 									  </div>
 
 								
-								<label class="col-md-2 control-label" for="recno">Record No</label>  
-						  			<div class="col-md-2">
-										<input id="recno" name="recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
-						  			</div>
+								
 						  	</div>
 
 						  	<div class="form-group">
