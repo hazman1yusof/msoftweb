@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Asset Register ')
+@section('title', 'Asset Register')
 
 @section('body')
 	<!-------------------------------- Search + table ---------------------->
@@ -17,6 +17,7 @@
 			 </fieldset> 
 		</form>
     	<div class="panel panel-default">
+		    	
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
             				<table id="jqGrid" class="table table-striped"></table>
@@ -24,6 +25,7 @@
         				</div>
 		    		</div>
 		</div>
+
     </div>
 	<!-------------------------------- End Search + table ------------------>
 	<!---secondform-->
@@ -33,7 +35,8 @@
 		
 			<input type='hidden' id='recno' name='recno'>
 			<input type='hidden' id='lineno_' name='lineno_'>
-			
+			<input type='hidden' id='recno' name='recno'>
+			<input type='hidden' id='idno' name='idno'>
 			<div class="prevnext btn-group pull-right"></div>
 			{{ csrf_field() }}
 			<div class="form-group">

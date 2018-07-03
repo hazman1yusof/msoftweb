@@ -105,8 +105,8 @@
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
-					{ label: 'Language Code', name: 'Code', width: 10,  classes: 'wrap' , editable: true, checked:true, canSearch: true},
-					{ label: 'Description', name: 'Description', width: 80, classes: 'wrap' , canSearch: true,  editable: true},
+					{ label: 'Language Code', name: 'Code', width: 10,  classes: 'wrap' , editable: true, canSearch: true},
+					{ label: 'Description', name: 'Description', width: 80, classes: 'wrap' , canSearch: true,  editable: true,checked:true,},
 					{ label: 'recstatus', name: 'recstatus', width: 90, classes: 'wrap' , cellattr: function(rowid, cellvalue){
 						return cellvalue == 'D' ? ' class="alert alert-danger"' : ''},},
 				],

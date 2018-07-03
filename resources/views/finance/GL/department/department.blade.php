@@ -9,9 +9,7 @@
 <div id="dialogForm" title="Add Form" >
 	<form class='form-horizontal' style='width:99%' id='formdata'>
 			{{ csrf_field() }}
-
-		<div class="prevnext btn-group pull-right">
-		</div>
+		<input type="hidden" name="idno">
 
 		<div class="form-group">
         	<label class="col-md-2 control-label" for="deptcode">Department</label>  

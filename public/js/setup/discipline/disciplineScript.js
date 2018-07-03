@@ -125,11 +125,11 @@
 				 colModel: [
 				 	
 				 	{ label: 'idno', name: 'idno', width: 80,hidden:true},					
-					{ label: 'Discipline Code', name: 'code', width: 20, classes: 'wrap', canSearch: true, checked:true, editable: true, 
+					{ label: 'Discipline Code', name: 'code', width: 20, classes: 'wrap', canSearch: true, editable: true, 
 							editrules:{required: true}, 
 							editoptions: {maxlength: 2},
 						},
-					{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, editable: true,
+					{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, editable: true, checked:true,
 							editrules:{required: true}, 
 							editoptions: { maxlength: 100},
 					},

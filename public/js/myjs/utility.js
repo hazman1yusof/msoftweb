@@ -548,7 +548,7 @@ function setactdate(target){
 	}
 }
 
-function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default',dcolrType='radio',needTab='notab'){
+function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam',dcolrType='radio',needTab='notab',required=true){
 	this.unique=unique;
 	this.gridname="othergrid_"+unique;
 	this.dialogname="otherdialog_"+unique;
@@ -573,6 +573,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 	};
 	this.needTab=needTab;
 	this.dcolrType=dcolrType;
+	this.required=required;
 	this.on = function(){
 		this.eventstat='on';
 		if(this.needTab=='tab'){
@@ -612,6 +613,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 			$("#Dcol_"+unique).on('change',{data:this},onChange);
 			$(this.textfield).on('blur',{data:this,errorField:errorField},onBlur);
 		}
+	}
+	this.changeColModel = function(colModel){
+
 	}
 
 	function onClick(event){
@@ -691,6 +695,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 
 	function othDialog_dropdown(obj){
 		$("#Dcol_"+unique+"").append("<select name='dcolr' class='form-control input-sm' style='margin-right:10px;min-width:150px'></select>");
+		$("#Dtext_"+unique+"").parent().prepend("<b>&nbsp;</b>");
 		$.each($("#"+obj.gridname).jqGrid('getGridParam','colModel'), function( index, value ) {
 			if(value['canSearch']){
 				if(value['checked']){$("#Dcol_"+unique+" select[name=dcolr]").append( "<option value='"+value['name']+"' selected>"+value['label']+"</option>" );
@@ -742,10 +747,12 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 					$("#"+obj.dialogname).dialog( "close" );
 					$("#"+obj.gridname).jqGrid("clearGridData", true);
+					// $(obj.textfield).parent().removeClass( "has-error" ).addClass( "has-success" );
+					$(obj.textfield).removeClass( "error" ).addClass( "valid" );
 					$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
 				}
 				var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;
-				if($.inArray(idtopush,obj.errorField)!==-1){
+				if($.inArray(idtopush,obj.errorField)!==-1 && obj.required){
 					obj.errorField.splice($.inArray(idtopush,obj.errorField), 1);
 				}
 			},
@@ -804,18 +811,21 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 		$.get( param.url+"?"+$.param(param), function( data ) {
 
 		},'json').done(function(data) {
-			let fail=true,code,desc;
+			let fail=true,code,desc2;
 			if(self.checkstat=='default'){
 				if(data.msg=='success'){
-					fail=false;desc=data.row[field[1]];
+					fail=false;desc2=data.rows[field[1]];
 				}else if(data.msg=='fail'){
 					fail=true;code=field[0];
 				}
 			}else{
 				if(data.rows.length>0){
 					fail=false;
-					desc_ =(desc_.indexOf('.') !== -1)?desc_.split('.')[1]:desc_;
-					desc=data.rows[0][desc_];
+					if(param.fixPost == 'true'){
+						desc2=data.rows[0][self.urlParam.field[desc].split('.')[1]];
+					}else{
+						desc2=data.rows[0][self.urlParam.field[desc]];
+					}
 				}else{
 					fail=true;code=code_;
 				}
@@ -823,23 +833,25 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='default'
 
 			var idtopush = (id.substring(0, 1) == '#')?id.substring(1):id;
 
-			if(!fail){
-				if($.inArray(idtopush,errorField)!==-1){
-					errorField.splice($.inArray(idtopush,errorField), 1);
-				}
-				$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-				$( id ).removeClass( "error" ).addClass( "valid" );
-				$( id ).parent().siblings( ".help-block" ).html(desc);
-				$( id ).parent().siblings( ".help-block" ).show();
-			}else{
-				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-				$( id ).removeClass( "valid" ).addClass( "error" );
-				$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+code+" )");
-				if($.inArray(idtopush,errorField)===-1){
-					errorField.push( idtopush );
+			if(typeof errorField != 'string' && self.required){
+				if(!fail){
+					if($.inArray(idtopush,errorField)!==-1){
+						errorField.splice($.inArray(idtopush,errorField), 1);
+					}
+					$( id ).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
+					$( id ).removeClass( "error" ).addClass( "valid" );
+					$( id ).parent().siblings( ".help-block" ).html(desc2);
+					$( id ).parent().siblings( ".help-block" ).show();
+				}else{
+					$( id ).parent().parent().removeClass( "has-success" ).addClass( "has-error" );
+					$( id ).removeClass( "valid" ).addClass( "error" );
+					$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+code+" )");
+					if($.inArray(idtopush,errorField)===-1){
+						errorField.push( idtopush );
+					}
 				}
 			}
-
+			
 		});
 	}
 }
@@ -930,6 +942,11 @@ function padzero(cellvalue, options, rowObject){
 
 function unpadzero(cellvalue, options, rowObject){
 	return cellvalue.substring(cellvalue.search(/[1-9]/));
+}
+
+function setHeight_singletable(){
+	var heightuse = $('body').height()-($('#searchForm').outerHeight(true)+30);
+	$("#jqGrid").jqGrid('setGridHeight', heightuse);
 }
 
 /////////////////////////////////End utility function////////////////////////////////////////////////

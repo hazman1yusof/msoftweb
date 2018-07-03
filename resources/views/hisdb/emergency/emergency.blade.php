@@ -88,11 +88,13 @@
 					</fieldset>
 				</div>
 				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px;padding-top: 25px" >
-				    <button id="biodata_but_emergency" type="button" class="btn btn-default" data-mrn='0'>
-				    	<span class='fa fa-user fa-lg'></span> 
-				    	<span id="span_biodata_label"> Biodata </span>
+					<button type="button" class="btn btn-default" id='biodata_but_emergency'>
+						<span class='fa fa-user fa-lg'></span> Biodata
 					</button>
-				    <button id="regBtn" type="button" class="btn btn-success " >
+					<button type="button" class="btn btn-default" id='episode_but_emergency' data-oper='add'>
+						<span class='fa fa-h-square fa-lg'></span> Episode
+					</button>
+				    <button id="regBtn" type="button" class="btn btn-default" >
 				    	<span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New
 				    </button>
 				</div>
@@ -101,7 +103,7 @@
 		</form>
 
 		<div class="panel panel-default">
-			<div class="panel-body">
+			<div class="panel-body" id="panel_body">
 				<div class='col-md-4' id="colmd_outer">
 				   	<div id="mydate" gldp-id="mydate"></div>
 				    <div gldp-el="mydate" id="mydate_glpd" style="position:static;top:30px;left:0px;z-index:0;font-size: 28px;"></div>
@@ -131,7 +133,7 @@
 				<span class='help-block'></span>
 			</div>
              <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="patname" name="patname">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="Name" id="patname" name="patname">
 			</div>
 		</div>	
         <div class="form-group">
@@ -150,12 +152,12 @@
 
 		    <label class="col-md-1 control-label" for="Newic">New I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Newic" id="Newic" class="form-control input-sm">
+				<input type="text" name="Newic" id="Newic" class="form-control input-sm" maxlength="14" data-validation-optional-if-answered="Oldic" >
 			</div>	
 
 		   	<label class="col-md-1 control-label" for="Oldic">Old I.C</label>
 			<div class="col-md-2">
-				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm">
+				<input type="text" name="Oldic" id="Oldic" class="form-control input-sm" maxlength="7" data-validation-optional-if-answered="Newic">
 			</div>	
 
         </div>
@@ -185,14 +187,14 @@
 			<label for="title" class="col-md-2 control-label">Race</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="Race" id="race" name="race" maxlength="12" rdonly>
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="Race" id="race" name="race" maxlength="12" rdonly>
 				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
 
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description_race" name="description_race">
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description_race" name="description_race" rdonly>
 			</div>
 		</div>
 
@@ -203,8 +205,8 @@
 			<label for="title" class="col-md-2 control-label">Financial Class</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="Finanncial Class" id="financeclass" name="financeclass" maxlength="12" rdonly>
-				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+					<input type="text" class="form-control input-sm" data-validation="required" placeholder="Finanncial Class" id="financeclass" name="financeclass" maxlength="12" rdonly>
+					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
@@ -219,8 +221,8 @@
 			<label for="title" class="col-md-2 control-label">Payer</label>
 		    <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="Payer" id="payer" name="payer" maxlength="12" rdonly>
-				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+					<input type="text" class="form-control input-sm" data-validation="required" placeholder="Payer" id="payer" name="payer" maxlength="12" rdonly>
+					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
@@ -234,8 +236,8 @@
 			<label for="title" class="col-md-2 control-label">Bill Type</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="BillType" id="billtype" name="billtype" maxlength="12" rdonly>
-				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+					<input type="text" class="form-control input-sm" data-validation="required" placeholder="BillType" id="billtype" name="billtype" maxlength="12" rdonly>
+					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
@@ -248,13 +250,13 @@
 			<label for="title" class="col-md-2 control-label">Doctor</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" rdonly>
-				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+					<input type="text" class="form-control input-sm" placeholder="Doctor" data-validation="required" id="doctor" name="doctor" maxlength="12" rdonly>
+					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="docname" name="docname">
+				<input type="text" class="form-control input-sm"  placeholder="Doctor Name" id="docname" name="docname" data-validation="required">
 			</div>
 		</div>
 
@@ -262,6 +264,7 @@
 	</div>
 
 	@include('hisdb.pat_mgmt.mdl_patient')
+	@include('hisdb.pat_mgmt.mdl_episode')
 	@include('hisdb.pat_mgmt.itemselector')
  
 @endsection
@@ -275,6 +278,7 @@
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
 	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
+	<script src="js/hisdb/pat_mgmt/episode.js"></script>
 
 	<script src="js/hisdb/emergency/emergency.js"></script>
 	<script type="text/javascript" src="plugins/glDatePicker/glDatePicker.js"></script>

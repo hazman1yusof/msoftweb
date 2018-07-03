@@ -364,8 +364,8 @@
 				datatype: "local",
 				 colModel: [
                     { label: 'idno', name: 'idno', hidden: true},
-					{ label: 'Code', name: 'resourcecode', width: 40, classes: 'wrap', canSearch: true, checked:true},						
-				    { label: 'Description', name: 'description', width: 40, classes: 'wrap', canSearch: true},
+					{ label: 'Code', name: 'resourcecode', width: 40, classes: 'wrap', canSearch: true},						
+				    { label: 'Description', name: 'description', width: 40, classes: 'wrap', canSearch: true, checked:true},
 				    { label: 'Type', name: 'TYPE', width: 40, classes: 'wrap', hidden:true},
 				    { label: 'session', name: 'countsession', width: 40, classes: 'wrap', hidden:true},
 				],
@@ -904,8 +904,6 @@
 				onSelectRow:function(rowid, selected){
 					$('#resourcecode').val(selrowData('#jqGrid').resourcecode);
 					$('#description').val(selrowData('#jqGrid').description);
-
-					
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
 					$("#gridleavepager td[title='Edit Selected Row']").click();

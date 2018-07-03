@@ -223,7 +223,7 @@
 
 <!-- JS Global Compulsory -->
 <script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
-<script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script>
+<script type="text/ecmascript" src="plugins//jquery-migrate-3.0.0.js"></script>
 <script type="text/ecmascript" src="plugins/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 <script type="text/ecmascript" src="plugins/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
 <script type="text/ecmascript" src="plugins/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
@@ -248,11 +248,11 @@
         // Menu.init_card();
 
         var timeoutId;
-		$(".navmenu").hover(function() {
+		$("#myNavmenu").hover(function() {
 			if (!timeoutId) {
 				timeoutId = window.setTimeout(function() {
 					timeoutId = null; // EDIT: added this line
-		        	$( ".navmenu" ).animate({ width:"20%" }, 'fast' ,"linear", function() {
+		        	$( "#myNavmenu" ).animate({ width:"20%" }, 'fast' ,"linear", function() {
 		        		$( ".lilabel" ).show();
 		        	});
 		        	// $( ".navmenu" ).velocity({ width:"20%" }, 130, "linear", function() { 
@@ -270,7 +270,7 @@
 				// 	$( ".lilabel" ).velocity("fadeOut", { duration: 0 })
 	   //      	});
 	        	$( ".lilabel" ).hide();
-	        	$( ".navmenu" ).animate({ width:"7%" }, 'fast' ,"linear", function() {
+	        	$( "#myNavmenu" ).animate({ width:"8%" }, 'fast' ,"linear", function() {
 	        		$( ".lilabel" ).hide();
 	        	});
 			}

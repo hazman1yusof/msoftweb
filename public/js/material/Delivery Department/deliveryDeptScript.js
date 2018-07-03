@@ -30,8 +30,8 @@
 			var dialog_deptcode = new ordialog(
 				'deptcode','sysdb.department','#deptcode',errorField,
 				{	colModel:[
-						{label:'Department Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Department Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 						],
 					ondblClickRow:function(){
 					}	
@@ -153,8 +153,8 @@
 				 colModel: [
 				 	{ label: 'idno', name: 'idno', width: 30,hidden:true },
 					{ label: 'compcode', name: 'compcode', width: 90, hidden: true},
-					{label: 'Delivery Store', name: 'deptcode', width: 90, classes: 'wrap', canSearch: true, checked: true}, 
-					{label: 'Description', name: 'description', width: 90, classes: 'wrap', canSearch: true},
+					{label: 'Delivery Store', name: 'deptcode', width: 90, classes: 'wrap', canSearch: true}, 
+					{label: 'Description', name: 'description', width: 90, classes: 'wrap', checked:true,canSearch: true},
 					{label: 'Address', name: 'addr1', width: 90, classes: 'wrap', hidden: true},
 					{label: 'Address 2', name: 'addr2', width: 90, classes: 'wrap', hidden: true},
 					{label: 'Address 3', name: 'addr3', width: 90, classes: 'wrap', hidden: true},

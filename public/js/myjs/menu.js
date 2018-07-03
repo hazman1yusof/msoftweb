@@ -42,12 +42,14 @@ var Menu = function () {
 		
 		function makeNewDialog(obj){
 			var dialogObj = {id:obj.attr('programid'),dialog:{}};
+
+			let title = dialog_title(obj.parents('li'));
 			
 			dialogObj.dialog=$("<iframe src='"+obj.attr('targetURL')+"' programid='"+obj.attr('programid')+"' ></iframe>")
 			  .dialog({ 
-				title : obj.attr('title'),
-				position: { my: "left bottom", at: "left+300px bottom"},
-				width: 9.3/10 * $(window).width(),
+				title : title,
+				position: { my: "left bottom", at: "left+500px bottom"},
+				width: 9.2/10 * $(window).width(),
 				height: $(window).height() - 50,
 				close: function( event, ui ) {
 					deleteDialog(obj.attr('programid'));
@@ -72,15 +74,24 @@ var Menu = function () {
 				$('body').removeClass('stop-scrolling')
 			});
 		}
+
+		function dialog_title(obj_array){
+			var title = '';
+			obj_array.each(function( index ) {
+				title = ' > ' + $(this).children('a').find('span.lilabel').text() + title;
+			});
+
+			return title.substring(3);
+		}
 		
 		var last;
-		$(".clickable").click(function(){
+		$("#myNavmenu a.clickable").click(function(){
 			if(cntrlIsPressed){
 				cntrlIsPressed=false;
 				window.open($(this).attr('targetURL'));
 			}else{
 				$( ".lilabel" ).hide();
-				$( ".navmenu" ).animate({ width:"7%" }, "fast");
+				$( "#myNavmenu" ).animate({ width:"7%" }, "fast");
 				window.scrollTo(0,0);
 				$(this).append( "<i class='fa fa-caret-right fa-lg'></i>" );
 				if(typeof last !== 'undefined' && $(this).attr('programid') != last.attr('programid')){

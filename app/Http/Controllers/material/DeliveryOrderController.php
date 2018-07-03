@@ -25,6 +25,7 @@ class DeliveryOrderController extends defaultController
 
     public function form(Request $request)
     {   
+        DB::enableQueryLog();
         // return $this->request_no('GRN','2FL');
         switch($request->oper){
             case 'add':
@@ -52,7 +53,7 @@ class DeliveryOrderController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('GRN', $request->delordhd_deldept);
+        $request_no = $this->request_no('GRN', $request->delordhd_prdept);
         $recno = $this->recno('PUR','DO');
 
         DB::beginTransaction();
@@ -81,7 +82,7 @@ class DeliveryOrderController extends defaultController
             if(!empty($request->referral)){
                 ////ni kalu dia amik dari po
                 ////amik detail dari po sana, save dkt do detail, amik total amount
-                $totalAmount = $this->save_dt_from_othr_po($request->referral,$recno);
+                $totalAmount = $this->save_dt_from_othr_po($request->referral,$recno,$request->delordhd_srcdocno);
 
                 $srcdocno = $request->delordhd_srcdocno;
                 $delordno = $request->delordhd_delordno;
@@ -187,7 +188,7 @@ class DeliveryOrderController extends defaultController
                 $totalAmount = $request->delordhd_totamount;
                 //4. Update delorddt
                 if(!empty($request->referral)){
-                    $totalAmount = $this->save_dt_from_othr_po($request->referral,$request->delordhd_recno);
+                    $totalAmount = $this->save_dt_from_othr_po($request->referral,$request->delordhd_recno,$request->delordhd_srcdocno);
 
                     $srcdocno = $request->delordhd_srcdocno;
                     $delordno = $request->delordhd_delordno;
@@ -673,6 +674,38 @@ class DeliveryOrderController extends defaultController
                     }
                 }
 
+                //---- 8. update po kalu ada srcdocno ---//
+                if($delordhd_obj->srcdocno != 0){
+                    
+                    $purordhd = DB::table('material.purordhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('purordno','=',$delordhd_obj->srcdocno)
+                        ->first();
+
+                    $po_recno = $purordhd->recno;
+
+                    $podt_obj = DB::table('material.purorddt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$po_recno)
+                        ->where('lineno_','=',$value->lineno_);
+
+                    $podt_obj_lama = $podt_obj->first();
+
+                    $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
+
+                    if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
+                        DB::rollback();
+                        
+                        return response('Error: Quantity delivered exceed quantity order', 500)
+                            ->header('Content-Type', 'text/plain');
+                    }
+
+                    $podt_obj->update([
+                        'qtydelivered' => $jumlah_qtydelivered
+                    ]);
+
+                }
+
             } // habis looping untuk delorddt
 
             //--- 8. change recstatus to posted ---//
@@ -693,7 +726,12 @@ class DeliveryOrderController extends defaultController
                 ->update([
                     'recstatus' => 'POSTED' 
                 ]);
-           
+            
+
+            $queries = DB::getQueryLog();
+            dump($queries);
+
+
             DB::commit();
         
         } catch (\Exception $e) {
@@ -760,16 +798,16 @@ class DeliveryOrderController extends defaultController
                     ->where('ivtxnhd.recno', '=', $request->recno)
                     ->update(['recstatus' => 'CANCELLED']);
 
-                DB::table('material.ivtxnhd')
-                    ->where('ivtxnhd.compcode', '=', session('compcode'))
-                    ->where('ivtxnhd.recno', '=', $request->recno)
+                DB::table('material.ivtxndt')
+                    ->where('ivtxndt.compcode', '=', session('compcode'))
+                    ->where('ivtxndt.recno', '=', $request->recno)
                     ->update([
-                        'netprice' => $value->netprice,
+                        'netprice' => $netprice,
                         'recstatus' =>'CANCELLED'
                     ]);    
 
 
-            //--- 3. cancel to stockloc ---///
+                //--- 3. cancel to stockloc ---///
                 //1. amik stockloc
                 $stockloc_obj = DB::table('material.StockLoc')
                     ->where('StockLoc.CompCode','=',session('compcode'))
@@ -806,7 +844,7 @@ class DeliveryOrderController extends defaultController
 
                 }
 
-            //--- 4. cancel to stock enquiry ---//
+                //--- 4. cancel to stock enquiry ---//
                 //1. amik Stock Expiry
                 $stockexp_obj = DB::table('material.stockexp')
                     ->where('stockexp.compcode','=',session('compcode'))
@@ -848,6 +886,7 @@ class DeliveryOrderController extends defaultController
                     ->where('product.uomcode','=',$value->uomcode)
                     ->first();
 
+
                 if(count($product_obj)){ // kalu jumpa
                     $month = $this->toMonth($value->trandate);
                     $OldQtyOnHand = $product_obj->qtyonhand;
@@ -857,7 +896,11 @@ class DeliveryOrderController extends defaultController
                     $NewAmount = $netprice * $txnqty;
 
                     $newqtyonhand = $OldQtyOnHand - $txnqty;
-                    $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand + $txnqty);
+                    if($newqtyonhand == 0){
+                        $newAvgCost = 0;
+                    }else{
+                        $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+                    }
 
                     // update qtyonhand, avgcost, currprice
                     $product_obj = DB::table('material.product')
@@ -907,7 +950,7 @@ class DeliveryOrderController extends defaultController
                 //1. delete gltran
                 DB::table('finance.gltran')
                     ->where('auditno','=', $request->recno)
-                    ->where('lineno_','=', $request->lineno_)
+                    ->where('lineno_','=', $value->lineno_)
                     ->where('source','=','IV')
                     ->where('trantype','=','GRN')
                     ->delete();
@@ -926,17 +969,7 @@ class DeliveryOrderController extends defaultController
                             'recstatus' => 'A'
                         ]);
                 }else{
-                    DB::table('finance.glmasdtl')
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'costcode' => $row_dept->costcode,
-                            'glaccount' => $row_cat->stockacct,
-                            'year' => $yearperiod->year,
-                            'actamount'.$yearperiod->period => $value->amount,
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'recstatus' => 'A'
-                        ]);
+                    
                 }
 
                 //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
@@ -996,11 +1029,10 @@ class DeliveryOrderController extends defaultController
                     //1. delete gltran utk GST
                         DB::table('finance.gltran')
                             ->where('auditno','=', $request->recno)
-                            ->where('lineno_','=', $request->lineno_)
+                            ->where('lineno_','=', $value->lineno_)
                             ->where('source','=','IV')
                             ->where('trantype','=','GST')
                             ->delete();
-
 
                     //2. check glmastdtl utk debit, kalu ada update kalu xde create
                     if($this->isGltranExist($drcostcode_,$dracc_,$yearperiod->year,$yearperiod->period)){
@@ -1037,9 +1069,34 @@ class DeliveryOrderController extends defaultController
                     }
                 }
 
+                //---- 8. update po kalu ada srcdocno ---//
+                if($delordhd_obj->srcdocno != 0){
+                    
+                    $purordhd = DB::table('material.purordhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('purordno','=',$delordhd_obj->srcdocno)
+                        ->first();
+
+                    $po_recno = $purordhd->recno;
+
+                    $podt_obj = DB::table('material.purorddt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$po_recno)
+                        ->where('lineno_','=',$value->lineno_);
+
+                    $podt_obj_lama = $podt_obj->first();
+
+                    $jumlah_qtydelivered = $podt_obj_lama->qtydelivered - $value->qtydelivered;
+
+                    $podt_obj->update([
+                        'qtydelivered' => $jumlah_qtydelivered
+                    ]);
+
+                }
+
             } // habis looping untuk delorddt
 
-            //--- 8. change recstatus to cancelled ---//
+            //--- 9. change recstatus to cancelled ---//
 
             DB::table('material.delordhd')
                 ->where('recno','=',$request->recno)
@@ -1057,6 +1114,8 @@ class DeliveryOrderController extends defaultController
                 ->update([
                     'recstatus' => 'CANCELLED' 
                 ]);
+
+            dump(DB::getQueryLog());
            
             DB::commit();
         
@@ -1101,10 +1160,14 @@ class DeliveryOrderController extends defaultController
                 ->where('costcode','=',$ccode)
                 ->where('glaccount','=',$glcode)
                 ->first();
-        $pvalue1 = (array)$pvalue1;
+        if(!count($pvalue1)){
+            return false;
+        }else{
+            $pvalue1 = (array)$pvalue1;
 
-        $this->gltranAmount = $pvalue1["actamount".$period];
-        return !empty($pvalue1);
+            $this->gltranAmount = $pvalue1["actamount".$period];
+            return true;
+        }
     }
 
     public function toYear($date){
@@ -1145,15 +1208,48 @@ class DeliveryOrderController extends defaultController
         }
     }
 
-    public function save_dt_from_othr_po($refer_recno,$recno){
+    public function save_dt_from_othr_po($refer_recno,$recno,$srcdocno){
         $po_dt = DB::table('material.purorddt')
-                ->select('compcode, recno, lineno_, pricecode, itemcode, uomcode, qtyorder, qtydelivered, unitprice, taxcode,perdisc,amtdisc, amtslstax,amount,recstatus,remarks')
+                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'pouom', 'qtyorder', 'qtydelivered', 'unitprice', 'taxcode', 'perdisc','amtdisc', 'amtslstax', 'netunitprice', 'totamount', 'amount','rem_but', 'recstatus','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
                 ->get();
 
         foreach ($po_dt as $key => $value) {
+            ///step 0.5 calculate qtyoutstand
+            $qtyoutstand = 0;
+
+            $delordhd_obj = DB::table('material.delordhd')
+                ->where('compcode','=',session('compcode'))
+                ->where('srcdocno','=',$srcdocno);
+
+            if($delordhd_obj->exists()){
+                $total_qtydeliverd_do = 0;
+
+                $delorhd_all = $delordhd_obj->get();
+
+                //step 0.5.1 dapatkan dia punya qtydelivered melalui lineno yg sama, pastu jumlahkan, jumlah ni qtydelivered yang blom post lagi
+                foreach ($delorhd_all as $value_hd) {
+                    $delorddt_obj = DB::table('material.delorddt')
+                        ->where('recno','=',$value_hd->recno)
+                        ->where('compcode','=',session('compcode'))
+                        ->where('lineno_','=',$value->lineno_);
+
+                    if($delorddt_obj->exists()){
+                        $delorddt_data = $delorddt_obj->first();
+                        $total_qtydeliverd_do = $total_qtydeliverd_do + $delorddt_data->qtydelivered;
+                    }
+                }
+
+                // jumlah_qtydelivered = qtydelivered yang dah post + qtydeliverd yg blom post
+                $jumlah_qtydelivered = $value->qtydelivered + $total_qtydeliverd_do;
+
+                // qtyoutstand = qtyorder - jumlah_qtydelivered
+                $qtyoutstand = $value->qtyorder - $jumlah_qtydelivered;
+            }
+
+
             ///1. insert detail we get from existing purchase order
             $table = DB::table("material.delorddt");
             $table->insert([
@@ -1162,22 +1258,27 @@ class DeliveryOrderController extends defaultController
                 'lineno_' => $value->lineno_, 
                 'pricecode' => $value->pricecode, 
                 'itemcode' => $value->itemcode, 
-                'uomcode' => $value->uomcode, 
-                'qtytag' => 0, 
+                'uomcode' => $value->uomcode,
+                'pouom' => $value->pouom,  
                 'qtyorder' => $value->qtyorder, 
                 'qtydelivered' => $value->qtydelivered, 
+                'qtyoutstand' => $qtyoutstand,
                 'unitprice' => $value->unitprice, 
                 'taxcode' => $value->taxcode, 
                 'perdisc' => $value->perdisc, 
                 'amtdisc' => $value->amtdisc, 
                 'amtslstax' => $value->amtslstax, 
+                'netunitprice' => $value->netunitprice,
+                'totamount' => $value->totamount,
                 'amount' => $value->amount, 
+                'rem_but'=>$value->rem_but,
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                 'recstatus' => 'A', 
                 'remarks' => $value->remarks
             ]);
         }
+       
         ///2. calculate total amount from detail earlier
         $amount = DB::table('material.delorddt')
                     ->where('compcode','=',session('compcode'))
@@ -1191,7 +1292,7 @@ class DeliveryOrderController extends defaultController
                     ->where('recno','=',$recno);
         $table->update([
                 'totamount' => $amount, 
-                'subamount' => $amount
+                //'subamount' => $amount
             ]);
 
         return $amount;

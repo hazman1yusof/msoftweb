@@ -109,8 +109,8 @@
 
 				 	{ label: 'No', name: 'sysno', width: 5, sorttype: 'number',hidden:true},
 					{ label: 'compcode', name: 'compcode', hidden:true},						
-					{ label: 'Code', name: 'Code', width: 10, canSearch: true, checked:true},
-					{ label: 'Description', name: 'Description',width: 80, canSearch: true},
+					{ label: 'Code', name: 'Code', width: 10, canSearch: true},
+					{ label: 'Description', name: 'Description',width: 80, canSearch: true, checked: true },
 					{ label: 'recstatus', name: 'recstatus', width: 80,hidden:true, cellattr: function(rowid, cellvalue){
 						return cellvalue == 'D' ? ' class="alert alert-danger"' : ''},},
 					//{ label: 'createdBy', name: 'createdBy', width: 80,hidden:true},					

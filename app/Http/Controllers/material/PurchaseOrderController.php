@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
+use DateTime;
 use Carbon\Carbon;
 
 class PurchaseOrderController extends defaultController
@@ -24,11 +25,17 @@ class PurchaseOrderController extends defaultController
     {   
         switch($request->oper){
             case 'add':
-                return $this->defaultAdd($request);
+                return $this->add($request);
             case 'edit':
-                return $this->defaultEdit($request);
+                return $this->edit($request);
             case 'del':
-                return $this->defaultDel($request);
+                return $this->del($request);
+            case 'posted':
+                return $this->posted($request);
+            case 'cancel':
+                return $this->cancel($request);
+            case 'reopen':
+                return $this->reopen($request);
             default:
                 return 'error happen..';
         }
@@ -43,9 +50,9 @@ class PurchaseOrderController extends defaultController
             $idno = $request->table_id;
         }
 
-        $purordno = $this->purOrd_no('PO',$request->purordhd_prdept);
+        $purordno = $this->purordno('PO',$request->purordhd_prdept);
         $recno = $this->recno('PUR','PO');
-        $purreqno = $this->purreqno($request->purordhd_purreqno);
+        // $purreqno = $this->purreqno($request->purordhd_purreqno);
 
 
         DB::beginTransaction();
@@ -53,9 +60,10 @@ class PurchaseOrderController extends defaultController
         $table = DB::table("material.purordhd");
 
         $array_insert = [
+            // 'trantype' => 'PO', 
             'recno' => $recno,
             'purordno' => $purordno,
-            'purreqno' => $purreqno,
+            // 'purreqno' => $purreqno,
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now(),
@@ -210,8 +218,98 @@ class PurchaseOrderController extends defaultController
     public function del(Request $request){
 
     }
+    
+    public function posted(Request $request){
+        DB::beginTransaction();
 
+        try{
 
+            DB::table('material.purordhd')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'postedby' => session('username'),
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'POSTED' 
+                ]);
+
+            DB::table('material.purorddt')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'POSTED' 
+                ]);
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }       
+    
+     public function reopen(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            DB::table('material.purordhd')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'reopenby' => session('username'),
+                    'reopendate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'OPEN' 
+                ]);
+
+            DB::table('material.purorddt')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'OPEN' 
+                ]);
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+    public function cancel(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            DB::table('material.purordhd')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'CANCELLED' 
+                ]);
+
+            DB::table('material.purorddt')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'CANCELLED' 
+                ]);
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }                      
     public function recno($source,$trantype){
         $pvalue1 = DB::table('sysdb.sysparam')
                 ->select('pvalue1')
@@ -224,14 +322,14 @@ class PurchaseOrderController extends defaultController
         return $pvalue1->pvalue1;
     }
 
-      public function purordno($source,$trantype){
+    public function purordno($trantype,$dept){
         $seqno = DB::table('material.sequence')
                 ->select('seqno')
                 ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
 
         DB::table('material.sequence')
-        ->where('trantype','=',$trantype)->where('dept','=',$dept)
-        ->update(['seqno' => intval($seqno->seqno) + 1]);
+            ->where('trantype','=',$trantype)->where('dept','=',$dept)
+            ->update(['seqno' => intval($seqno->seqno) + 1]);
         
         return $seqno->seqno;
 

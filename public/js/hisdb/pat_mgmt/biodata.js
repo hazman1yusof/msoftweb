@@ -9,6 +9,7 @@
             }
         }
     });	// patient form validation
+    
     function destoryallerror(){
         $('#frm_patient_info').find("label.error").detach();
     }//utk buang label error lepas close dialog modal
@@ -198,8 +199,8 @@
             .end(); //this for clearing input after hide modal
     });
 
-    $( "#biodata_but").click(function() {
-    	populatecombo1();
+    $("#biodata_but").click(function() {
+    	// populatecombo1();
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","add");
         var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
@@ -209,18 +210,20 @@
         $('#episno').val('1');
         //patient_empty();
     });
-	
-	$('#btn_register_patient').click(function(){
+
+    function default_click_register(){
         if($('#frm_patient_info').valid()){
             if($(this).data('oper') == 'add'){
-                check_existing_patient();
+                check_existing_patient(save_patient,{action:'default',param:'add'});
             }else{
                 save_patient($(this).data('oper'),$(this).data('idno'));
             }
         }
-    });
+    }
+	
+	$('#btn_register_patient').on('click',default_click_register);
 
-    $('#btn_reg_proceed').click(function(){
+    function default_click_proceed(){
         var checkedbox = $("#tbl_existing_record input[type='checkbox']:checked");
         if(checkedbox.closest("td").next().length>0){
             let mrn = checkedbox.data("mrn");
@@ -229,12 +232,14 @@
         }else{
             save_patient('add');
         }
-    });
+    }
+
+    $('#btn_reg_proceed').on('click',default_click_proceed);
 
     function save_patient(oper,idno,mrn="nothing"){
         var saveParam={
             action:'save_patient',
-            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno'],
+            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date'],
             oper:oper,
             table_name:'hisdb.pat_mast',
             table_id:'idno',
@@ -256,7 +261,7 @@
         });
     }
 	
-	function check_existing_patient(){
+	function check_existing_patient(callback,obj_callback){
 		var patname = $("#txt_pat_name").val();
 		var patdob = moment($("#txt_pat_dob").val(), 'DD/MM/Y').format('Y-MM-DD');
 		var patnewic = $("#txt_pat_newic").val();
@@ -291,7 +296,14 @@
                 tbl_exist_rec.rows.add(data.rows).draw();
                 $('#mdl_existing_record').modal('show');
             }else{
-                save_patient('add');
+                if(obj_callback.action=='default'){
+                    callback(obj_callback.param);
+                }else if(obj_callback.action=='apptrsc'){
+                    let oper = obj_callback.param[0];
+                    let apptbook_idno = obj_callback.param[3];
+                    callback(oper,null,null,apptbook_idno);
+                }
+                
             }
         }).error(function(data){
             alert('there is an error on check existing patient!');
@@ -330,7 +342,11 @@
     var desc_show = new loading_desc([
         {code:'#hid_pat_citizen',desc:'#txt_pat_citizen',id:'citizencode'},
         {code:'#hid_pat_area',desc:'#txt_pat_area',id:'areacode'},
-        {code:'#hid_pat_title',desc:'#txt_pat_title',id:'titlecode'}
+        {code:'#hid_pat_title',desc:'#txt_pat_title',id:'titlecode'},
+        {code:'#hid_ID_Type',desc:'#txt_ID_Type',id:'idtype'},
+        {code:'#hid_LanguageCode',desc:'#txt_LanguageCode',id:'language'},
+        {code:'#hid_RaceCode',desc:'#txt_RaceCode',id:'race'},
+        {code:'#hid_Religion',desc:'#txt_Religion',id:'religioncode'}
     ]);
     desc_show.load_desc();
 
@@ -339,15 +355,18 @@
         this.titlecode={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.citizencode={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.areacode={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.idtype={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.language={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.race={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.religioncode={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.load_desc = function(){
-            var urlTitle = 'pat_mast/get_entry?action=get_patient_title';
-            load_for_desc(this,'titlecode',urlTitle);
-
-            var urlcitizen = 'pat_mast/get_entry?action=get_patient_citizen';
-            load_for_desc(this,'citizencode',urlcitizen);
-
-            var urlareacode = 'pat_mast/get_entry?action=get_patient_areacode';
-            load_for_desc(this,'areacode',urlareacode);
+            load_for_desc(this,'titlecode','pat_mast/get_entry?action=get_patient_title');
+            load_for_desc(this,'citizencode','pat_mast/get_entry?action=get_patient_citizen');
+            load_for_desc(this,'areacode','pat_mast/get_entry?action=get_patient_areacode');
+            load_for_desc(this,'idtype','pat_mast/get_entry?action=get_patient_idtype');
+            load_for_desc(this,'language','pat_mast/get_entry?action=get_patient_language');
+            load_for_desc(this,'race','pat_mast/get_entry?action=get_patient_race');
+            load_for_desc(this,'religioncode','pat_mast/get_entry?action=get_patient_religioncode');
         }
 
         function load_for_desc(selobj,id,url){
@@ -376,4 +395,41 @@
 
             return (retdata == undefined)? "N/A" : retdata[desc_];
         }
+    }
+
+    function populate_data_from_mrn(mrn,form){
+        var param={
+            action:'get_value_default',
+            field:"*",
+            table_name:'hisdb.pat_mast',
+            table_id:'_none',
+            filterCol:['compcode'],filterVal:['session.company'],
+            searchCol:['mrn'],searchVal:[mrn]
+        };
+
+        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+
+        },'json').done(function(data) {
+
+            if(data.rows.length > 0){
+                
+                $.each(data.rows[0], function( index, value ) {
+                    var input=$(form+" [name='"+index+"']");
+
+                    if(input.is("[type=radio]")){
+                        $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+                    }else{
+                        input.val(value);
+                    }
+                    desc_show.write_desc();
+                });
+
+            }else{
+                alert('MRN not found')
+            }
+
+        }).error(function(data){
+
+        });
+
     }

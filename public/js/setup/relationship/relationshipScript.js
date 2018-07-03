@@ -121,8 +121,8 @@ $(document).ready(function () {
 		colModel: [
 
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'Code', name: 'RelationShipCode', width: 20, classes: 'wrap', canSearch: true, checked: true },
-			{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80 },
+			{ label: 'Code', name: 'RelationShipCode', width: 20, classes: 'wrap', canSearch: true },
+			{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, checked: true},
 
 			{
 				label: 'Record Status', name: 'recstatus', width: 80, formatter: formatterstatus, unformat: unformat,

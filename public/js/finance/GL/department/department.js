@@ -166,7 +166,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
-				url: '/deparment/form',
+				url: '/department/form',
 				field:'',
 				oper:oper,
 				table_name:'sysdb.department',
@@ -178,8 +178,8 @@
 				datatype: "local",
 				 colModel: [
 					//{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
-					{ label: 'Department', name: 'deptcode', width: 20, classes: 'wrap', canSearch: true, checked:true},
-					{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true},
+					{ label: 'Department', name: 'deptcode', width: 20, classes: 'wrap', canSearch: true},
+					{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true,checked:true,},
 					{ label: 'Cost Code', name: 'costcode', width: 50, classes: 'wrap'},
 					{ label: 'Purchase Dept', name: 'purdept', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'Register Dept', name: 'regdept', width: 90, hidden:true, classes: 'wrap'},
@@ -334,7 +334,7 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress']);
+			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress','adduser','adddate','upduser','upddate','recstatus']);
 
 			///////////////////////////////start->dialogHandler part////////////////////////////////////////////
 			function makeDialog(table,id,cols,title){
@@ -370,8 +370,8 @@
 			$("#gridDialog").jqGrid({
 				datatype: "local",
 				colModel: [
-					{ label: 'Code', name: 'code', width: 200,  classes: 'pointer', canSearch:true,checked:true}, 
-					{ label: 'Description', name: 'desc', width: 400, canSearch:true, classes: 'pointer'},
+					{ label: 'Code', name: 'code', width: 200,  classes: 'pointer', canSearch:true}, 
+					{ label: 'Description', name: 'desc', width: 400, canSearch:true,checked:true, classes: 'pointer'},
 				],
 				width: 500,
 				autowidth: true,

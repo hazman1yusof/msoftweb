@@ -120,7 +120,7 @@ $(document).ready(function() {
             populate_patient_episode("edit",rowid);
             $('#mdl_patient_info').modal({backdrop: "static"});
             $("#btn_register_patient").data("oper","edit");
-            console.log($("#grid-command-buttons").bootgrid("getCurrentRows")[rowid]);
+            // console.log($("#grid-command-buttons").bootgrid("getCurrentRows")[rowid]);
             $("#btn_register_patient").data("idno",$("#grid-command-buttons").bootgrid("getCurrentRows")[rowid].idno);
             
             desc_show.write_desc();
@@ -787,13 +787,11 @@ $(document).ready(function() {
         $('#glReference').modal('show');
     });
 	
-	$( "#btn_payer_new_gl").click(function() 
-	{
+	$( "#btn_payer_new_gl").click(function() {
         $('#mdl_new_gl').modal('show');
     });
 
-    $( "#btn_epis_new_gl").click(function() 
-	{
+    $( "#btn_epis_new_gl").click(function() {
         $('#mdl_reference').modal('hide');
         $('#mdl_new_gl').modal('show');
     });
@@ -805,6 +803,8 @@ $(document).ready(function() {
     $( "#btnglsave").click(function() {
         $('#mdl_reference').modal('show');
     });
+
+    /////////////////mykad///////////////
 
     $('#btn_mykad').click(function(){
        $('#mdl_mykad').modal('show');
@@ -834,6 +834,8 @@ $(document).ready(function() {
             }
         });
     });
+
+    ////////////////habis mykad///////
 
 
 

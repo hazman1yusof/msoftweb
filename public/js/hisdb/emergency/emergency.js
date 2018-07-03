@@ -1,6 +1,9 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
+$.formUtils.loadModules('logic', null, function () {
+	$.validate({}); // ini perlu kalu nak ada 'data-validation-optional-if-answered'
+});
 
 $(document).ready(function () {
 	$("body").show();
@@ -24,13 +27,14 @@ $(document).ready(function () {
 		zIndex: 0,
 		showAlways: true,
 		onClick: function(target, cell, date, data) {
-			urlParam.filterVal[0] = moment(date).format('YYYY-MM-DD');
+			urlParam.apptdatefr = moment(date).format('YYYY-MM-DD');
 			refreshGrid("#jqGrid", urlParam);
 	    }
 	}).glDatePicker(true);
 
 	var errorField = [];
 	conf = {
+		modules : 'logic',
 		language: {
 			requiredFields: 'You have not answered all required fields'
 		},
@@ -46,7 +50,9 @@ $(document).ready(function () {
 	};
 
 	$('input').on('beforeValidation', function(value, lang, config) {
-
+		if($(this).attr('data-validation-optional-if-answered')!=''){
+			console.log($(this).attr('data-validation-optional-if-answered'));
+		}
     });
 
 	//////////////////////////////////////////////////////////////
@@ -95,18 +101,18 @@ $(document).ready(function () {
              var Oldic = $('#Oldic');
 
             if(Newic.val() == '' && Oldic.val() == '') {
-            alert('Fill out new ic or old ic fields');
+            	// alert('Fill out new ic or old ic fields');
             }
-    //         else if(Newic.val() == '') {
-    //         alert('Oldic, please...');
-    //         }
-    //         else if(Oldic.val() == '') {
-    //         alert('Newic, please...');      
-    //         }
-    //         else {
-    //         alert('Yay!');
-    // }   
-   }
+			    //         else if(Newic.val() == '') {
+			    //         alert('Oldic, please...');
+			    //         }
+			    //         else if(Oldic.val() == '') {
+			    //         alert('Newic, please...');      
+			    //         }
+			    //         else {
+			    //         alert('Yay!');
+			    // }   
+   		}
 	}, {
 		text: "Cancel", click: function () {
 			$(this).dialog('close');
@@ -180,17 +186,8 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
-		fixPost: 'true',
-		field: ['e.MRN', 'e.Episno','p.Name','p.Newic'],
-		table_name: ['hisdb.apptbook AS a','hisdb.episode AS e','hisdb.pat_mast AS p','hisdb.doctor as d'],
-		join_type: ['INNER JOIN','INNER JOIN','INNER JOIN'],
-		join_onCol: ['a.episno','a.mrn','a.loccode'],
-		join_onVal: ['e.episno','p.mrn','d.doctorcode'],
-		join_filterCol: [['e.mrn on =']],
-		join_filterVal: [['a.mrn']],
-		filterCol:['a.apptdatefr','a.type'],
-	 	filterVal:[ moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD HH:mm:ss'),'ED']
+		url: '/emergency/table',
+	 	apptdatefr:moment(gldatepicker.options.selectedDate).format('YYYY-MM-DD')
 	}
 
 	///////////////////parameter for saving url////////////////////////////////////////////////
@@ -204,31 +201,55 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'compcode', name: 'e_compcode', width: 5, hidden: true },
-			{ label: 'MRN', name: 'e_MRN', width: 10, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true, checked: true,  },
-			{ label: 'Episode No', name: 'e_Episno', width: 20 ,canSearch: true,classes: 'wrap',hidden:true },
-			{ label: 'IC No', name: 'p_Newic', width: 15 ,classes: 'wrap' },
-			{ label: 'Registered Date', name: 'e_reg_date', width: 15 ,classes: 'wrap' },
-			{ label: 'Registered Time', name: 'e_reg_time', width: 15 ,classes: 'wrap' },
-			{ label: 'Name', name: 'p_Name', width: 30 ,canSearch: true,classes: 'wrap' },
-			// { label: 'Payer', name: 'q_', width: 20 ,classes: 'wrap' },
+			{ label: 'idno', name: 'a_idno', width: 5, hidden: true },
+			{ label: 'compcode', name: 'a_compcode', width: 5, hidden: true },
+			{ label: 'MRN', name: 'a_mrn', width: 12, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true, checked: true,  },
+			{ label: 'Epis. No', name: 'a_Episno', width: 10 ,canSearch: true,classes: 'wrap' },
+			{ label: 'IC No', name: 'a_icnum', width: 18 ,classes: 'wrap' , hidden: true },
+			{ label: 'Registered Date', name: 'reg_date', width: 15 ,classes: 'wrap' },
+			{ label: 'Registered Time', name: 'reg_time', width: 15 ,classes: 'wrap' },
+			{ label: 'Name', name: 'a_pat_name', width: 30 ,canSearch: true,classes: 'wrap' },
 			{ label: 'Doctor', name: 'd_doctorname', width: 20 ,classes: 'wrap' },
-			{ label: 'Status', name: 'e_episstatus', width: 10 ,classes: 'wrap',hidden:true },
+			{ label: 'Status', name: 'a_episstatus', width: 10 ,classes: 'wrap',hidden:true },
 		],
 		autowidth: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
-		height: 350,
+		height: 365,
 		rowNum: 30,
 		pager: "#jqGridPager",
+		onSelectRow:function(rowid, selected){
+			$('#biodata_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
+			$('#episode_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
+		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 		},
 		gridComplete: function () {
+			set_grid_color();
 		},
-
 	});
+
+	function set_grid_color(){
+		var rows = $("#jqGrid").getDataIDs();
+	    for (var i = 0; i < rows.length; i++){
+	    	let data = $("#jqGrid").jqGrid ('getRowData', rows[i]);
+	    	switch(data.a_episstatus){
+	    		case '':
+    				$("#jqGrid").jqGrid('setRowData',rows[i],false, {background:$('#CurrentPTcolor').val()});
+	    			break
+	    		case 'cancel':
+    				$("#jqGrid").jqGrid('setRowData',rows[i],false, {background:$('#CancelPTcolor').val()});
+	    			break
+	    		case 'discharge':
+    				$("#jqGrid").jqGrid('setRowData',rows[i],false, {background:$('#DiscPTcolor').val()});
+	    			break
+	    		default:
+	    			break;
+	    	}
+		}
+	}
    
     var dialog_mrn = new ordialog(
 		'mrn', ['hisdb.pat_mast AS pt','hisdb.racecode AS rc'], "#registerform input[name='mrn']", errorField,
@@ -253,7 +274,7 @@ $(document).ready(function () {
 				$("#registerform input[name='idnumber']").val(data['pt_idnumber']);
 				$("#registerform input[name='race']").val(data['pt_RaceCode']);
 				$("#registerform input[name='description_race']").val(data['rc_description']);
-				$(dialog_race.textfield).parent().next().text(" ");
+				$(dialog_mrn.textfield).parent().next().text(" ");
 			}
 		},
 		{
@@ -468,8 +489,7 @@ $(document).ready(function () {
 	searchClick('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus']);
+	addParamField('#jqGrid', true, urlParam,['reg_date','reg_time']);
 
 	//////////////////////////// background color//////////////////////////////
 	$(".colorpointer").click(function(){
@@ -492,23 +512,191 @@ $(document).ready(function () {
 	}
 
 	function savecolor(columncolor,color){
-		$.post( "/emergency/form",{oper:'savecolor',columncolor:columncolor,color:color,_token:$('#csrf_token').val()} , function( data ) {
+		$.post( "/emergency/form",{action:'save_table_default',oper:'savecolor',columncolor:columncolor,color:color,_token:$('#csrf_token').val()} , function( data ) {
 	
 		}).success(function(data){
-
+			set_grid_color();
 		});
 	}
 	////////////////////////////////////////////////////////////////////////
 
 	$('#patname').blur(function(){
-		var value = $(this).val();
-		if(value == 'unknown'){
+		var value = $("#mrn").val();
+		if(value == '' || value == '00000000'){
 			$('#mrn').val('00000000');
 			$('#financeclass').val('PR');
 			$('#fName').val('PERSON RESPONSIBLE');
-			$('#payer').val('00000000');
-			$('#payername').val('unknown');
+			$('#payer').val('CASH');
+			$('#payername').val('CASH');
+			// $('#payer').val('00000000');
+			// $('#payername').val('unknown');
 		}
 	});
 
+	//////////////// start pasal biodata//////////////////////////
+	$('#btn_register_patient').off('click',default_click_register);
+	$('#btn_reg_proceed').off('click',default_click_proceed);
+
+	$("#biodata_but_emergency").click(function(){
+
+		var data = $(this).data('bio_from_grid');
+
+		if(data==undefined){
+			alert('no patient biodata selected');
+		}else{
+
+			var oper = 'edit';
+			// populatecombo1();
+	        $('#mdl_patient_info').modal({backdrop: "static"});
+	        $("#btn_register_patient").data("oper",oper);
+
+			populate_data_from_mrn(data.a_mrn,"#frm_patient_info");
+		}
+
+	});
+
+	$('#btn_register_patient').on('click',function(){
+		var data = $("#biodata_but_emergency").data('bio_from_grid');
+        var apptbook_idno = data.a_idno;
+
+        if($('#frm_patient_info').valid()){
+            if($(this).data('oper') == 'add'){
+                check_existing_patient(save_patient_apptrsc,{
+                	"action":"apptrsc",
+                	"param":['add',null,null,apptbook_idno]
+                });
+            }else{
+	            let mrn =  $('#txt_pat_mrn').val();
+	            let idno =  $('#txt_pat_idno').val();
+                save_patient_apptrsc('edit',idno,mrn,apptbook_idno);
+            }
+        }
+    });
+
+    $('#btn_reg_proceed').on('click',function(){ /// sepatutnya takkan run function ni
+		var data = $("#biodata_but_emergency").data('bio_from_grid');
+        var apptbook_idno = data.idno;
+        var checkedbox = $("#tbl_existing_record input[type='checkbox']:checked");
+
+        if(checkedbox.closest("td").next().length>0){
+            let mrn = checkedbox.data("mrn");
+            let idno = checkedbox.data("idno");
+            save_patient_apptrsc('edit',idno,mrn,apptbook_idno);
+        }else{
+            save_patient_apptrsc('add',null,null,apptbook_idno);
+        }
+    });
+
+ 	function save_patient_apptrsc(oper,idno,mrn="nothing",apptbook_idno){
+ 		var saveParam={
+            action:'save_patient',
+            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date'],
+            oper:oper,
+            table_name:'hisdb.pat_mast',
+            table_id:'idno',
+            sysparam:null
+        },_token = $('#csrf_token').val();
+
+        if(oper=='add'){
+            saveParam.sysparam = {source:'HIS',trantype:'MRN',useOn:'MRN'};
+            var postobj = {_token:_token,apptbook_idno:apptbook_idno};
+        }else if(oper == 'edit'){
+            var postobj = {_token:_token,idno:idno,apptbook_idno:apptbook_idno,MRN:mrn};
+        }
+
+        $.post( "/emergency/form?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
+            
+        },'json').fail(function(data) {
+            alert('there is an error');
+        }).success(function(data){
+            $('#mdl_patient_info').modal('hide');
+            $('#mdl_existing_record').modal('hide');
+			refreshGrid('#jqGrid',urlParam);
+        });
+ 	}
+	//////////////////////end pasal biodata/////////////////////////
+
+	/////////////////start pasal episode//////////////////
+
+	$('#episode_but_emergency').click(function(){
+		var data = $(this).data('bio_from_grid');
+		var form = '#episode_form';
+
+		if(data==undefined){
+			alert('no patient selected');
+			return false;
+		}
+
+		var param={
+            action:'get_value_default',
+            field:"*",
+            table_name:'hisdb.episode',
+            table_id:'_none',
+            filterCol:['compcode','mrn','episno'],filterVal:['session.company',data.a_mrn,data.a_Episno]
+        };
+
+        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+
+        },'json').done(function(data) {
+
+            if(data.rows.length > 0){
+
+            	fail = false;
+				if(data.rows[0].epistycode!='OP'){
+					alert('This Patient was Registered as '+data.rows[0].epistycode);
+					fail = true;
+				}
+
+                if(!fail){ 
+                	$.each(data.rows[0], function( index, value ) {
+	                    var input=$(form+" [name='"+index+"']");
+
+	                    if(input.is("[type=radio]")){
+	                        $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+	                    }else{
+	                        input.val(value);
+	                    }
+	                    desc_show_epi.write_desc();
+	                });
+			        $('#editEpisode').modal({backdrop: "static"});
+			        $('#editEpisode').modal('show');
+				}
+               
+
+            }else{
+                alert('MRN not found')
+            }
+
+        }).error(function(data){
+
+        });
+		// var episode_param={
+		// 	action:'get_value_default',
+		// 	table_name:'hisdb.episode',
+		// 	url:'util/get_value_default',
+		// 	field:['*'],
+		// 	filterCol:['compcode','mrn','episno','reg_date'],
+		// 	filterVal:['session.compcode',data.a_mrn,data.a_Episno,moment().format('YYYY-MM-DD')]
+		// }
+
+		// var fail = true;
+		// $.get( episode_param.url+"?"+$.param(episode_param), function( data ) {
+			
+		// },'json').done(function(data) {
+		// 	if(!$.isEmptyObject(data.rows[0])){
+		// 		fail = false;
+		// 		if(data.rows[0].epistycode!='OP'){
+		// 			alert('This Patient was Registered as '+data.rows[0].epistycode);
+		// 			fail = true;
+		// 		}
+
+		// 		if(!fail){
+		// 			// populate_patient_episode(data.rows[0]);
+		// 	        $('#editEpisode').modal({backdrop: "static"});
+		// 	        $('#editEpisode').modal('show');
+		// 		}
+		// 	}
+		// });
+
+	});
 });

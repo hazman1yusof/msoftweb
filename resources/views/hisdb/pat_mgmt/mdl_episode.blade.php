@@ -1,7 +1,7 @@
 <!-- Large modal -->
 <div id="editEpisode" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editEpisode" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
-        <form class="form-horizontal">
+        <form class="form-horizontal" id="episode_form">
             <div class="modal-content">
                 <div class="modal-header label-warning">
                     <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
@@ -56,12 +56,9 @@
                                         <div class="form-group">
                                             <div class="col-md-10">
                                                 <small for="txt_epis_dept">Registration Department</small>
-                                                <!--select id="cmb_epis_dept" name="cmb_epis_dept" class="form-control form-mandatory">
-                                                    <option value="">- Select Department -</option>
-                                                </select-->
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_dept">
-                                                    <input type="hidden" id="hid_epis_dept" value="" />
+                                                    <input type="hidden" id="hid_epis_dept" value="" name="regdept" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_epis_dept" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_dept');"><span class="fa fa-ellipsis-h"></span> </button>
                                                     </span>
@@ -69,12 +66,9 @@
                                             </div>                                          
                                             <div class="col-md-10">
                                                 <small for="txt_epis_source">Registration Source</small>
-                                                <!--select id="cmb_epis_source" name="cmb_epis_source" class="form-control form-mandatory">
-                                                    <option value="">- Select Source -</option>
-                                                </select-->
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_source">
-                                                    <input type="hidden" id="hid_epis_source" value="" />
+                                                    <input type="hidden" id="hid_epis_source" value="" name="" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_epis_source" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_source');"><span class="fa fa-ellipsis-h"></span> </button>
                                                     </span>
@@ -82,12 +76,9 @@
                                             </div>
                                             <div class="col-md-10">
                                                 <small for="txt_epis_case">Case </small>
-                                                <!--select id="cmb_epis_case" name="cmb_epis_case" class="form-control form-mandatory">
-                                                    <option value="">- Select Case -</option>
-                                                </select-->
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_case">
-                                                    <input type="hidden" id="hid_epis_case" value="" />
+                                                    <input type="hidden" id="hid_epis_case" value="" name="case_code"/>
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_epis_case" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_case');"><span class="fa fa-ellipsis-h"></span> </button>
                                                     </span>
@@ -95,12 +86,9 @@
                                             </div>
                                             <div class="col-md-10">
                                                 <small for="txt_epis_doctor">Doctor</small>
-                                                <!--select id="cmb_epis_doctor" name="cmb_epis_doctor" class="form-control form-mandatory">
-                                                    <option value="">- Select Doctor -</option>
-                                                </select-->
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_doctor">
-                                                    <input type="hidden" id="hid_epis_doctor" value="" />
+                                                    <input type="hidden" id="hid_epis_doctor" value="" name="admdoctor"/>
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_epis_doctor" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_doctor');"><span class="fa fa-ellipsis-h"></span> </button>
                                                     </span>
@@ -108,12 +96,9 @@
                                             </div>
                                             <div class="col-md-10">
                                                 <small for="txt_epis_fin">Financial Class</small>
-                                                <!--select id="cmb_epis_fin" name="cmb_epis_fin" class="form-control form-mandatory">
-                                                    <option value="">- Select Class -</option>
-                                                </select-->
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_fin" name="txt_epis_fin">
-                                                    <input type="hidden" id="hid_epis_fin" name="hid_epis_fin" value="" />
+                                                    <input type="hidden" id="hid_epis_fin" name="pay_type" value="" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_epis_fin" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_fin');"><span class="fa fa-ellipsis-h"></span> </button>
                                                     </span>
@@ -121,7 +106,7 @@
                                             </div>
                                             <div class="col-md-10">
                                                 <small for="cmb_epis_pay_mode">Pay Mode </small>
-                                                <select id="cmb_epis_pay_mode" name="cmb_epis_pay_mode" class="form-control form-disabled">
+                                                <select id="cmb_epis_pay_mode" name="pyrmode" class="form-control form-disabled">
                                                     <option value="">- Select Pay Mode -</option>
                                                     <option value='CASH'>Cash</option>
                                                     <option value='CARD'>Card</option>
@@ -137,7 +122,7 @@
                                                 <small for="txt_epis_payer">Payer </small>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_payer">
-                                                    <input type="hidden" id="hid_epis_payer" value="PURI" />
+                                                    <input type="hidden" id="hid_epis_payer" value="PURI" name=""/>
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_epis_payer"><span class="fa fa-ellipsis-h"></span> </button>
                                                     </span>
@@ -147,7 +132,7 @@
                                                 <small for="txt_epis_bill_type">Bill Type </small>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_bill_type">
-                                                    <input type="hidden" id="hid_epis_bill_type" value="STD" />
+                                                    <input type="hidden" id="hid_epis_bill_type" value="STD" name=""/>
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_bill_type_info" ><span class="fa fa-ellipsis-h"></span> </button>
                                                     </span>

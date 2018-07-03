@@ -135,10 +135,19 @@ Route::post('/doctor_maintenance/save_session','hisdb\DoctorMaintenanceControlle
 Route::post('/doctor_maintenance/save_bgleave','hisdb\DoctorMaintenanceController@save_bgleave');
 Route::post('/doctor_maintenance/save_colorph','hisdb\DoctorMaintenanceController@save_colorph');
 
+//// inventory Transaction setup page ///
+Route::get('/inventoryTransaction','material\InventoryTransactionController@show');
+Route::get('/inventoryTransaction/table','material\InventoryTransactionController@table');
+Route::post('/inventoryTransaction/form','material\InventoryTransactionController@form');
+Route::get('/inventoryTransaction/form','material\InventoryTransactionController@form');
+Route::post('/inventoryTransactionDetail/form','material\InventoryTransactionDetailController@form');
+
 //// purchase Order setup page ///
 Route::get('/purchaseOrder','material\PurchaseOrderController@show');
 Route::get('/purchaseOrder/table','material\PurchaseOrderController@table');
 Route::post('/purchaseOrder/form','material\PurchaseOrderController@form');
+Route::get('/purchaseOrder/form','material\PurchaseOrderController@form');
+Route::post('/purchaseOrderDetail/form','material\PurchaseOrderDetailController@form');
 
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');
@@ -288,3 +297,40 @@ Route::post('/suppgroup/form','material\SuppgroupController@form');
 Route::get('/assetregister','finance\assetregisterController@show');
 Route::get('/assetregister/table','finance\assetregisterController@table');
 Route::post('/assetregister/form','finance\assetregisterController@form'); 
+//// Product Master setup ///
+Route::get('/productMaster','material\ProductMasterController@show');
+Route::get('/productMaster/table','material\ProductMasterController@table');
+Route::post('/productMaster/form','material\ProductMasterController@form');
+
+//// Supplier setup ///
+Route::get('/supplier','material\SupplierController@show');
+Route::get('/supplier/table','material\SupplierController@table');
+Route::post('/supplier/form','material\SupplierController@form');
+
+//// Stock Loc Enquiry ///
+Route::get('/stocklocEnquiry','material\StocklocEnquiryController@show');
+Route::get('/stocklocEnquiry/table','material\StocklocEnquiryController@table');
+Route::post('/stocklocEnquiry/form','material\StocklocEnquiryController@form');
+
+//// Item Enquiry ///
+Route::get('/itemEnquiry','material\ItemEnquiryController@show');
+Route::get('/itemEnquiry/table','material\ItemEnquiryController@table');
+Route::post('/itemEnquiry/form','material\ItemEnquiryController@form');
+
+//// Stock Location ///
+Route::get('/stockloc','material\StocklocController@show');
+Route::get('/stockloc/table','material\StocklocController@table');
+Route::post('/stockloc/form','material\StocklocController@form');\
+
+//// Product ///
+Route::get('/product','material\ProductController@show');
+Route::get('/product/table','material\ProductController@table');
+Route::post('/product/form','material\ProductController@form');
+
+//// pat_mgmt Current Patient ///
+Route::get('/currentPt','hisdb\CurrentPatientController@show');
+Route::get('/currentPt/get_entry','hisdb\CurrentPatientController@get_entry');
+Route::post('/currentPt/post_entry','hisdb\CurrentPatientController@post_entry');
+
+
+

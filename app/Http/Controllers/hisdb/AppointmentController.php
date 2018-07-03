@@ -4,6 +4,7 @@ namespace App\Http\Controllers\hisdb;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use stdClass;
 use DB;
 use Carbon\Carbon;
 
@@ -30,13 +31,23 @@ class AppointmentController extends defaultController
 
     public function form(Request $request)
     {   
-        switch($request->oper){
+        DB::enableQueryLog();
+        switch($request->action){
             case 'add':
                 return $this->defaultAdd($request);
             case 'edit':
                 return $this->defaultEdit($request);
             case 'del':
                 return $this->defaultDel($request);
+            case 'save_patient':
+                if($request->oper == 'add'){
+                    return $this->save_patient_add($request);
+                }else if($request->oper == 'edit'){
+                    return $this->save_patient_edit($request);
+                }else{
+                    return false; 
+                }
+                
             default:
                 return 'error happen..';
         }
@@ -114,7 +125,8 @@ class AppointmentController extends defaultController
             'adduser'     => session('username'),
             'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
             'lastuser'    => session('username'),
-            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
+            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+            'type'        => 'DOC'
         ]);
         
     }
@@ -173,6 +185,120 @@ class AppointmentController extends defaultController
                 'deluser'     => session('username'),
                 'deldate'     => Carbon::now("Asia/Kuala_Lumpur")
             ]);
+    }
+
+    public function save_patient_add(Request $request){
+        DB::beginTransaction();
+
+        $table = DB::table('hisdb.pat_mast');
+
+        $array_insert = [
+            'compcode' => session('compcode'),
+            'adduser' => session('username'),
+            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'recstatus' => 'A'
+        ];
+
+        foreach ($request->field as $key => $value) {
+            $array_insert[$value] = $request[$request->field[$key]];
+        }
+
+        $array_insert['first_visit_date'] = Carbon::createFromFormat('d/m/Y', $request->first_visit_date);
+        $array_insert['last_visit_date'] = Carbon::createFromFormat('d/m/Y', $request->last_visit_date);
+
+
+        try {
+
+            //1. save into pat_mast
+            $mrn = $this->defaultSysparam($request->sysparam['source'],$request->sysparam['trantype']);
+            $array_insert['MRN'] = $mrn;
+            $lastidno = $table->insertGetId($array_insert);
+
+            //2. edit apptbook mrn, telh, telhp
+            $old_apptbook = DB::table('hisdb.apptbook')
+                ->where('idno','=',$request->apptbook_idno)
+                ->first();
+
+            $newtitle = $mrn.' - '.$old_apptbook->pat_name.' - '.$request->telhp.' - '.$old_apptbook->case_code.' - '.$old_apptbook->remarks;
+
+            DB::table('hisdb.apptbook')
+                ->where('idno','=',$request->apptbook_idno)
+                ->update([
+                    'title' => $newtitle,
+                    'mrn' => $mrn,
+                    'telno' => $request->telh,
+                    'telhp' => $request->telhp
+                ]);
+
+
+           
+            $responce = new stdClass();
+            $responce->lastMrn = $mrn;
+            $responce->lastidno = $lastidno;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function save_patient_edit(Request $request){
+        DB::beginTransaction();
+
+        $table = DB::table('hisdb.pat_mast');
+
+        $array_update = [
+            'compcode' => session('compcode'),
+            'upduser' => session('username'),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'recstatus' => 'A'
+        ];
+
+        foreach ($request->field as $key => $value) {
+            $array_update[$value] = $request[$request->field[$key]];
+        }
+
+        array_pull($array_update, 'first_visit_date');
+        array_pull($array_update, 'last_visit_date');
+
+        try {
+
+            //////////where//////////
+            //1. edit pat_mast
+            $table = $table->where('idno','=',$request->idno);
+            $table->update($array_update);
+
+            //2. edit apptbook mrn, telh, telhp
+            $old_apptbook = DB::table('hisdb.apptbook')
+                ->where('idno','=',$request->apptbook_idno)
+                ->first();
+
+            $newtitle = $old_apptbook->mrn.' - '.$old_apptbook->pat_name.' - '.$request->telhp.' - '.$old_apptbook->case_code.' - '.$old_apptbook->remarks;
+
+            DB::table('hisdb.apptbook')
+                ->where('idno','=',$request->apptbook_idno)
+                ->update([
+                    'title' => $newtitle,
+                    'telno' => $request->telh,
+                    'telhp' => $request->telhp
+                ]);
+
+            $queries = DB::getQueryLog();
+
+            $responce = new stdClass();
+            $responce->sql = $queries;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
     }
 
 }

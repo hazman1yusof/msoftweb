@@ -83,11 +83,11 @@
 				 colModel: [
 					{ label: 'No', name: 'sysno', width: 5, sorttype: 'number',hidden:true},
 					{ label: 'Comp', name: 'Comp', hidden:true},						
-					{ label: 'Code', name: 'Code', width: 10, classes: 'wrap', canSearch: true, checked:true, editable: true, 
+					{ label: 'Code', name: 'Code', width: 10, classes: 'wrap', canSearch: true, editable: true, 
 							editrules:{required: true}, 
 							editoptions: {maxlength: 2},
 						},
-					{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, editable: true,
+					{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, , checked: true,editable: true,
 							editrules:{required: true}, 
 							editoptions: { maxlength: 100},
 					},

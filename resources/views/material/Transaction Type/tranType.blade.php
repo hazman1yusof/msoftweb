@@ -31,6 +31,7 @@
 				  <div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="isstype" value='Issue' checked>Issue</label>
 					<label class="radio-inline"><input type="radio" name="isstype" value='Transfer'>Transfer</label>
+					<label class="radio-inline"><input type="radio" name="isstype" value='Adjustment'>Adjustment</label>
 					<label class="radio-inline"><input type="radio" name="isstype" value='Others'>Others</label>
 				  </div>
 				

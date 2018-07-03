@@ -121,11 +121,11 @@
 				 colModel: [
 				 	{ label: 'idno', name: 'idno', width: 5,hidden:true},
 										
-					{ label: 'UOM Code', name: 'uomcode', width: 20, classes: 'wrap', canSearch: true, checked:true, editable: true, 
+					{ label: 'UOM Code', name: 'uomcode', width: 20, classes: 'wrap', canSearch: true,editable: true, 
 							editrules:{required: true}, 
 							editoptions: {maxlength: 2},
 						},
-					{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, editable: true,
+					{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, checked:true,editable: true,
 							editrules:{required: true}, 
 							editoptions: { maxlength: 100},
 					},
@@ -150,8 +150,10 @@
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
+				sortname: 'idno',
+				sortorder: 'desc',
 				width: 900,
-				height: 350,
+				height: 470,
 				rowNum: 30,
 				pager: "#jqGridPager",
 				ondblClickRow: function(rowid, iRow, iCol, e){

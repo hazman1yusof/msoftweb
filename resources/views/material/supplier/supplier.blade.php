@@ -98,19 +98,19 @@
                    	<div class="form-group">
 				   		<label class="col-md-2 control-label" for="TelNo">Tel No</label>  
 				 			<div class="col-md-3">
-				  				<input id="TelNo" name="TelNo" type="text" maxlength="50" class="form-control input-sm" data-validation="number">
+				  				<input id="TelNo" name="TelNo" type="text" maxlength="50" class="form-control input-sm">
 				  			</div>
                             
                   		<label class="col-md-2 control-label" for="Faxno">Fax No</label>  
 				  			<div class="col-md-3">
-				  				<input id="Faxno" name="Faxno" type="text" maxlength="30" class="form-control input-sm" data-validation="number">
+				  				<input id="Faxno" name="Faxno" type="text" maxlength="30" class="form-control input-sm">
 				  			</div>
 					</div>
                     
                     <div class="form-group">
 				  		<label class="col-md-2 control-label" for="ContPers">Contact Person</label>  
 				  			<div class="col-md-3">
-				  				<input id="ContPers" name="ContPers" type="text" maxlength="40" class="form-control input-sm" data-validation="required">
+				  				<input id="ContPers" name="ContPers" type="text" maxlength="40" class="form-control input-sm">
 				  			</div>
 				  
 				   		<label class="col-md-2 control-label" for="SuppGroup">Supplier Group</label>  

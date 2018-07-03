@@ -2,6 +2,7 @@
 <div id="mdl_patient_info" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <form id="frm_patient_info" class="form-horizontal">
+			<input type="hidden" name="idno" id="txt_pat_idno">
             <div class="modal-content">
                 <div class="modal-header label-warning">
                     <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
@@ -25,7 +26,7 @@
                         </div>
                         <div class="col-sm-3">
                             <small for="episno">EPISODE NO</small>
-                            <input class="form-control" name="episno" id="txt_pat_episno" placeholder="" type="text" readonly></div>
+                            <input class="form-control" name="Episno" id="txt_pat_episno" placeholder="" type="text" readonly></div>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -69,27 +70,37 @@
 														<small for="cmb_pat_sex">Sex</small>
 														<select id="cmb_pat_sex" name="Sex" class="form-control form-mandatory">
 															<option value="">- Select Sex -</option>
+															<option value="M">Male</option>
+															<option value="F">Female</option>
+															<option value="U">Unisex</option>
 														</select>
 													</div>
 												</div>
 												<div class="row">
 													<div class="col-md-3">
 														<small for="cmb_pat_idtype">IC Type</small>
-														<select id="cmb_pat_idtype" name="ID_Type" class="form-control">
+														<!-- <select id="cmb_pat_idtype" name="ID_Type" class="form-control">
 															<option value="">- Select IC Type -</option>
-														</select>
+														</select> -->
+														<div class="input-group">
+		                                                    <input type="text" class="form-control form-mandatory" name="txt_ID_Type" id="txt_ID_Type">
+		                                                    <input type="hidden" name="ID_Type" id="hid_ID_Type" value="" />
+		                                                    <span class="input-group-btn">
+		                                                        <button type="button" class="btn btn-warning" id="btn_ID_Type" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('ID_Type');"><span class="fa fa-ellipsis-h"></span> </button>
+		                                                    </span>
+		                                                </div>
 													</div>
 													<div class="col-md-3">
 														<small for="txt_pat_newic">New IC (eg 690101086649)</small>
-														<input class="form-control form-mandatory" name="Newic" id="txt_pat_newic" placeholder="" type="text">
+														<input class="form-control form-mandatory" name="Newic" id="txt_pat_newic" placeholder="" type="text" required>
 													</div>
 													<div class="col-md-3">
 														<small for="txt_pat_oldic">Old IC</small>
 														<input class="form-control form-mandatory" name="Oldic" id="txt_pat_oldic" placeholder="" type="text">
 													</div>
 													<div class="col-md-3">
-														<small for="txt_pat_idno">Other (eg Passport Number)</small>
-														<input class="form-control form-mandatory" name="idnumber" id="txt_pat_idno" placeholder="" type="text">
+														<small for="txt_pat_idnumber">Other (eg Passport Number)</small>
+														<input class="form-control form-mandatory" name="idnumber" id="txt_pat_idnumber" placeholder="" type="text">
 													</div>												
 													
 												</div>
@@ -106,21 +117,42 @@
 											</div>											
 											<div class="col-md-2">
                                                 <small for="cmb_pat_racecode">Race</small>
-                                                <select id="cmb_pat_racecode" name="RaceCode" class="form-control form-mandatory">
+                                                <!-- <select id="cmb_pat_racecode" name="RaceCode" class="form-control form-mandatory">
                                                     <option value="">- Select Race -</option>
-                                                </select>
+                                                </select> -->
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_RaceCode" id="txt_RaceCode">
+                                                    <input type="hidden" name="RaceCode" id="hid_RaceCode" value="" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-warning" id="btn_RaceCode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('RaceCode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    </span>
+                                                </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <small for="cmb_pat_religion">Religion</small>
-                                                <select id="cmb_pat_religion" name="Religion" class="form-control form-mandatory">
+                                                <!-- <select id="cmb_pat_religion" name="Religion" class="form-control form-mandatory">
                                                     <option value="">- Select Religion -</option>
-                                                </select>
+                                                </select> -->
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_Religion" id="txt_Religion">
+                                                    <input type="hidden" name="Religion" id="hid_Religion" value="" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-warning" id="btn_Religion" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('Religion');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    </span>
+                                                </div>
                                             </div>											
 											<div class="col-md-3">
                                                 <small for="cmb_pat_langcode">Language</small>
-                                                <select id="cmb_pat_langcode" name="LanguageCode" class="form-control">
+                                                <!-- <select id="cmb_pat_langcode" name="LanguageCode" class="form-control">
                                                     <option value="">- Select Language -</option>
-                                                </select>
+                                                </select> -->
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_LanguageCode" id="txt_LanguageCode">
+                                                    <input type="hidden" name="LanguageCode" id="hid_LanguageCode" value="" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-warning" id="btn_LanguageCode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('LanguageCode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    </span>
+                                                </div>
                                             </div>
 											
 											<!--div class="col-md-5">
@@ -557,34 +589,34 @@
 							<div class="row"><br /></div>
 							<div class="row">
 								<div class="col-md-6">
-									<small for="txt_pat_name">Name</small>
+									<small for="Name">Name</small>
 									<input class="form-control has-error form-mandatory" name="Name" id="mykad_pat_name" placeholder="" type="text" required>
 								</div>
 								<div class="col-md-3">
-									<small for="cmb_pat_sex">DOB</small>
-										<input class="form-control has-error form-mandatory" name="Name" id="mykad_DOB" placeholder="" type="date" required>
+									<small for="DOB">DOB</small>
+										<input class="form-control has-error form-mandatory" name="DOB" id="mykad_DOB" placeholder="" type="date" required>
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_newic">Race</small>
+									<small for="race">Race</small>
 									<input class="form-control form-mandatory" name="Newic" id="mykad_race" placeholder="" type="text">
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-3">
-									<small for="txt_pat_newic">New IC (eg 690101086649)</small>
+									<small for="Newic">New IC (eg 690101086649)</small>
 									<input class="form-control form-mandatory" name="Newic" id="mykad_newic" placeholder="" type="text">
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_oldic">Old IC</small>
+									<small for="Oldic">Old IC</small>
 									<input class="form-control form-mandatory" name="Oldic" id="mykad_oldic" placeholder="" type="text">
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_idno">Religion</small>
-									<input class="form-control form-mandatory" name="idnumber" id="mykad_religion" placeholder="" type="text">
+									<small for="religion">Religion</small>
+									<input class="form-control form-mandatory" name="religion" id="mykad_religion" placeholder="" type="text">
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_newic">Gender</small>
-									<input class="form-control form-mandatory" name="Newic" id="mykad_gender" placeholder="" type="text">
+									<small for="Gender">Gender</small>
+									<input class="form-control form-mandatory" name="Gender" id="mykad_gender" placeholder="" type="text">
 								</div>
 							</div>
 							<div class="row">
@@ -598,15 +630,15 @@
 							</div>
 							<div class="row">
 								<div class="col-md-3">
-									<small for="txt_pat_idno">Postcode</small>
+									<small for="mykad_postcode">Postcode</small>
 									<input class="form-control form-mandatory" name="mykad_postcode" id="mykad_postcode" placeholder="" type="text">
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_idno">City</small>
+									<small for="mykad_city">City</small>
 									<input class="form-control form-mandatory" name="mykad_city" id="mykad_city" placeholder="" type="text">
 								</div>
 								<div class="col-md-3">
-									<small for="txt_pat_newic">State</small>
+									<small for="mykad_state">State</small>
 									<input class="form-control form-mandatory" name="mykad_state" id="mykad_state" placeholder="" type="text">
 								</div>
 							</div>

@@ -3,6 +3,7 @@ $.jgrid.defaults.responsive = true;
 		var editedRow=0;
 
 		$(document).ready(function () {
+			$('body').show();
 			/////////////////////////validation//////////////////////////
 				$.validate({
 					modules : 'sanitize',
@@ -26,24 +27,56 @@ $.jgrid.defaults.responsive = true;
 
 			/////////////////Object for Dialog Handler///////////////////
 				//categorycode
-				dialog_assetcode=new makeDialog('finance.facode','#assetcode',['assetcode','description','assettype','method','residualvalue'],'Category');
+				// dialog_assetcode=new makeDialog('finance.facode','#assetcode',['assetcode','description','assettype','method','residualvalue'],'Category');
 			//linkage with assetco	//assettype
-				dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');
+				// dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');
 				//department
-				dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description'], 'Department');
+				// dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description'], 'Department');
 				//location
-				dialog_loccode=new makeDialog('sysdb.location','#loccode',['loccode','description'],'Location');
+				// dialog_loccode=new makeDialog('sysdb.location','#loccode',['loccode','description'],'Location');
 				//supplier
-				dialog_suppcode=new makeDialog('material.supplier','#suppcode',['SuppCode','Name'],'Supplier');
+				// dialog_suppcode=new makeDialog('material.supplier','#suppcode',['SuppCode','Name'],'Supplier');
 				//delivery ordno
-				dialog_delordno=new makeDialog('material.delordhd','#delordno',['delordno','suppcode'], 'Delivery Order No');
-				//itemcode
-				dialog_itemcode=new makeDialog('material.product','#itemcode',['itemcode','description'],'Item');     ////itemcode heap changes
+				
+				// dialog_itemcode=new makeDialog('material.product','#itemcode',['itemcode','description'],'Item');     ////itemcode heap changes
 
 				//var mycurrency =new currencymode(['#origcost','#purprice','#lstytddep','#cuytddep','#nbv']);
 				
 		////////////////////////////////////start dialog///////////////////////////////////////
-
+		var dialog_itemcode= new ordialog(
+			'itemcode','material.product','#itemcode',errorField,
+			{	colModel:[
+					{label:'Itemcode',name:'itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+					
+					]
+			},{
+				title:"Select Itemcode",
+				open: function(){
+					dialog_itemcode.urlParam.filterCol=['compcode'],
+					dialog_itemcode.urlParam.filterVal=['9A']
+				}
+			},'urlParam'
+		);
+		dialog_itemcode.makedialog();
+		 
+	    var dialog_delordno= new ordialog(
+			'delordno','material.delordhd','#delordno',errorField,
+			{	colModel:[
+				    {label:'Delordno',name:'delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
+							
+					]
+			},{
+				title:"Select Delordno",
+				open: function(){
+					dialog_delordno.urlParam.filterCol=['compcode'],
+					dialog_delordno.urlParam.filterVal=['9A']
+				}
+			},'urlParam'
+		);
+	    dialog_delordno.makedialog();
+		
 		var butt1=[{
 				text: "Save",click: function() {
 					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
@@ -105,26 +138,17 @@ $.jgrid.defaults.responsive = true;
 							//getOrigCost();
 							break;
 					}
-					if(oper!='view'){                            
-						dialog_assetcode.handler(errorField);
-						//dialog_assettype.handler(errorField);
-						dialog_deptcode.handler(errorField);
-						dialog_loccode.handler(errorField);
-						dialog_suppcode.handler(errorField);
-						dialog_delordno.handler(errorField);
-						dialog_itemcode.handler(errorField);
-						
+					if(oper!='view'){
+						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+						dialog_itemcode.on();
+						dialog_delordno.on();
+						//dialog_dept.handler(errorField);
 					}
 					if(oper!='add'){
-						//toggleFormData('#jqGrid','#formdata');
-						dialog_assetcode.check(errorField);
-						//dialog_assettype.check(errorField);
-						dialog_deptcode.check(errorField);
-						dialog_loccode.check(errorField);
-						dialog_suppcode.check(errorField);
+						dialog_itemcode.check(errorField);
 						dialog_delordno.check(errorField);
-						//dialog_itemcode.check(errorField);
-						
+						//toggleFormData('#jqGrid','#formdata');
+						//dialog_dept.check(errorField);
 					}
 				},
 				close: function( event, ui ) {
@@ -146,7 +170,7 @@ $.jgrid.defaults.responsive = true;
 				field:'',
 				table_name:'finance.fatemp',
 				table_id:'idno',
-				sort_idno:true, 
+				
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -155,7 +179,9 @@ $.jgrid.defaults.responsive = true;
 				field:'',
 				oper:oper,
 				table_name:'finance.fatemp',
-				table_id:'idno'    
+				table_id:'idno' 
+				
+				
 			};
 			
 			$("#jqGrid").jqGrid({
@@ -201,6 +227,8 @@ $.jgrid.defaults.responsive = true;
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
+				sortname: 'idno',
+				sortorder: 'desc',
 				width: 900,
 				height: 350,
 				rowNum: 30,
@@ -209,9 +237,11 @@ $.jgrid.defaults.responsive = true;
 					$("#jqGridPager td[title='View Selected Row']").click();
 				},
 				gridComplete: function(){
-					/*if(editedRow!=0){
-						$("#jqGrid").jqGrid('setSelection',editedRow,false);
-					}*/
+					if (oper == 'add') {
+						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+						}
+	
+						$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 				},
 				
 			});
@@ -297,7 +327,7 @@ $.jgrid.defaults.responsive = true;
 							total = origcost - lstytddep - cuytddep;
 							$("#nbv").val(total.toFixed(2));
 						}
-						}, 1000 );
+					}, 1000 );
 			});
 
 			$("#lstytddep").keydown(function(e) {
@@ -314,7 +344,7 @@ $.jgrid.defaults.responsive = true;
 							total = origcost - lstytddep - cuytddep;
 							$("#nbv").val(numeral(total).format('0,0.00'));
 						}
-						}, 1000 );
+					}, 1000 );
 			});
 
 			$("#cuytddep").keydown(function(e) {
@@ -396,176 +426,176 @@ $.jgrid.defaults.responsive = true;
 			addParamField('#jqGrid',true,urlParam);
 			addParamField('#jqGrid',false,saveParam);
 
-		///////////////////////////////start->dialogHandler part////////////////////////////////////////////
-			function makeDialog(table,id,cols,title){
-				this.table=table;
-				this.id=id;
-				this.cols=cols;
-				this.title=title;
-				this.handler=dialogHandler;
-				this.check=checkInput;
-			}
+		// ///////////////////////////////start->dialogHandler part////////////////////////////////////////////
+		// 	function makeDialog(table,id,cols,title){
+		// 		this.table=table;
+		// 		this.id=id;
+		// 		this.cols=cols;
+		// 		this.title=title;
+		// 		this.handler=dialogHandler;
+		// 		this.check=checkInput;
+		// 	}
 
-			$( "#dialog" ).dialog({
-				autoOpen: false,
-				width: 7/10 * $(window).width(),
-				modal: true,
-				open: function(){
-					$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
-				},
-				close: function( event, ui ){
-					paramD.searchCol=null;
-					paramD.searchVal=null;
-				},
-			});
+		// 	$( "#dialog" ).dialog({
+		// 		autoOpen: false,
+		// 		width: 7/10 * $(window).width(),
+		// 		modal: true,
+		// 		open: function(){
+		// 			$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
+		// 		},
+		// 		close: function( event, ui ){
+		// 			paramD.searchCol=null;
+		// 			paramD.searchVal=null;
+		// 		},
+		// 	});
 
-			var selText,Dtable,Dcols;
-			$("#gridDialog").jqGrid({
-				datatype: "local",
-				colModel: [
-					{ label: 'Code', name: 'code', width: 200,  classes: 'pointer', canSearch:true,checked:true}, 
-					{ label: 'Description', name: 'desc', width: 400, classes: 'pointer', canSearch:true},
-					{ label: 'holder1', name: 'holder1',  hidden:true},
-					{ label: 'holder2', name: 'holder2',  hidden:true},
-					{ label: 'holder3', name: 'holder3',  hidden:true},
-					{ label: 'holder4', name: 'holder4',  hidden:true},
-					{ label: 'holder5', name: 'holder5',  hidden:true},
-					{ label: 'holder6', name: 'holder6',  hidden:true},
-					{ label: 'holder7', name: 'holder7',  hidden:true},
-					{ label: 'holder8', name: 'holder8',  hidden:true},
-					{ label: 'holder9', name: 'holder9',  hidden:true},
-				],
-				width: 500,
-				autowidth: true,
-				viewrecords: true,
-				loadonce: false,
-                multiSort: true,
-				rowNum: 30,
-				pager: "#gridDialogPager",
-				ondblClickRow: function(rowid, iRow, iCol, e){
-					var data=$("#gridDialog").jqGrid ('getRowData', rowid);
-					$("#gridDialog").jqGrid("clearGridData", true);
-					$("#dialog").dialog( "close" );
-					$(selText).val(rowid);
-					$(selText).focus();
-					$(selText).parent().next().html(data['desc']);
+		// 	var selText,Dtable,Dcols;
+		// 	$("#gridDialog").jqGrid({
+		// 		datatype: "local",
+		// 		colModel: [
+		// 			{ label: 'Code', name: 'code', width: 200,  classes: 'pointer', canSearch:true,checked:true}, 
+		// 			{ label: 'Description', name: 'desc', width: 400, classes: 'pointer', canSearch:true},
+		// 			{ label: 'holder1', name: 'holder1',  hidden:true},
+		// 			{ label: 'holder2', name: 'holder2',  hidden:true},
+		// 			{ label: 'holder3', name: 'holder3',  hidden:true},
+		// 			{ label: 'holder4', name: 'holder4',  hidden:true},
+		// 			{ label: 'holder5', name: 'holder5',  hidden:true},
+		// 			{ label: 'holder6', name: 'holder6',  hidden:true},
+		// 			{ label: 'holder7', name: 'holder7',  hidden:true},
+		// 			{ label: 'holder8', name: 'holder8',  hidden:true},
+		// 			{ label: 'holder9', name: 'holder9',  hidden:true},
+		// 		],
+		// 		width: 500,
+		// 		autowidth: true,
+		// 		viewrecords: true,
+		// 		loadonce: false,
+        //         multiSort: true,
+		// 		rowNum: 30,
+		// 		pager: "#gridDialogPager",
+		// 		ondblClickRow: function(rowid, iRow, iCol, e){
+		// 			var data=$("#gridDialog").jqGrid ('getRowData', rowid);
+		// 			$("#gridDialog").jqGrid("clearGridData", true);
+		// 			$("#dialog").dialog( "close" );
+		// 			$(selText).val(rowid);
+		// 			$(selText).focus();
+		// 			$(selText).parent().next().html(data['desc']);
 
-					if(selText=="#assetcode"){
-						assettype=data.holder1;
-						method=data.holder2;
-						residualvalue=data.holder3;
-						$("#assettype").val(data.holder1);
-						$("#method").val(data.holder2);
-						$("#rvalue").val(data.holder3);
-						$("#deptcode").focus();
+		// 			if(selText=="#assetcode"){
+		// 				assettype=data.holder1;
+		// 				method=data.holder2;
+		// 				residualvalue=data.holder3;
+		// 				$("#assettype").val(data.holder1);
+		// 				$("#method").val(data.holder2);
+		// 				$("#rvalue").val(data.holder3);
+		// 				$("#deptcode").focus();
 
-					}else if(selText=="#delordno"){
-						$('#invno').val(data.holder2);
-						$('#delorddate').val(moment(data.holder3).format("YYYY-MM-DD"));
-						$('#docno').val(data.holder4+' '+data.holder5);
-						$('#purordno').val(data.holder4+' '+data.holder6);
-						$('#recno').val(data.holder7);
-						$('#purdate').val(moment().format('YYYY-MM-DD'));
-						getinvdate(data.holder2);
-					}else if(selText=="#itemcode"){
-						$('#description').val(data.desc + data.holder8);  ///remarks
-						$('#purprice').val(data.holder2);
-						$('#origcost').val(data.holder2 - data.holder7);
-						$('#currentcost').val(data.holder2);
-						$('#qty').val(data.holder1);
-						$('#lineno_').val(data.holder5);
-					}
+		// 			}else if(selText=="#delordno"){
+		// 				$('#invno').val(data.holder2);
+		// 				$('#delorddate').val(moment(data.holder3).format("YYYY-MM-DD"));
+		// 				$('#docno').val(data.holder4+' '+data.holder5);
+		// 				$('#purordno').val(data.holder4+' '+data.holder6);
+		// 				$('#recno').val(data.holder7);
+		// 				$('#purdate').val(moment().format('YYYY-MM-DD'));
+		// 				getinvdate(data.holder2);
+		// 			}else if(selText=="#itemcode"){
+		// 				$('#description').val(data.desc + data.holder8);  ///remarks
+		// 				$('#purprice').val(data.holder2);
+		// 				$('#origcost').val(data.holder2 - data.holder7);
+		// 				$('#currentcost').val(data.holder2);
+		// 				$('#qty').val(data.holder1);
+		// 				$('#lineno_').val(data.holder5);
+		// 			}
 						
-				},
-			});
+		// 		},
+		// 	});
 
-			var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:''};
-			function dialogHandler(errorField){
-				var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
-				$( id+" ~ a" ).on( "click", function() {
-					selText=id,Dtable=table,Dcols=cols,
-					paramD.table_name=table;
-					paramD.field=cols;
-					paramD.table_id=cols[0];
-					paramD.filterCol=null;
-					paramD.filterVal=null;
-					paramD.join_type=null;
-					paramD.join_onCol=null;
-					paramD.join_onVal=null;
+		// 	var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:''};
+		// 	function dialogHandler(errorField){
+		// 		var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
+		// 		$( id+" ~ a" ).on( "click", function() {
+		// 			selText=id,Dtable=table,Dcols=cols,
+		// 			paramD.table_name=table;
+		// 			paramD.field=cols;
+		// 			paramD.table_id=cols[0];
+		// 			paramD.filterCol=null;
+		// 			paramD.filterVal=null;
+		// 			paramD.join_type=null;
+		// 			paramD.join_onCol=null;
+		// 			paramD.join_onVal=null;
 
-					$("#gridDialog").jqGrid('hideCol',["holder1","holder3","holder2","holder5"]);
-					switch(id){
-						case '#delordno':
-							paramD.field=['delordno','suppcode','totamount','invoiceno','deldate','prdept','docno','srcdocno','recno'];
-							paramD.filterCol=['suppcode','recstatus'];
-							paramD.filterVal=[$('#suppcode').val(),'POSTED'];
+		// 			$("#gridDialog").jqGrid('hideCol',["holder1","holder3","holder2","holder5"]);
+		// 			switch(id){
+		// 				case '#delordno':
+		// 					paramD.field=['delordno','suppcode','totamount','invoiceno','deldate','prdept','docno','srcdocno','recno'];
+		// 					paramD.filterCol=['suppcode','recstatus'];
+		// 					paramD.filterVal=[$('#suppcode').val(),'POSTED'];
 
-							$("#gridDialog").jqGrid('setLabel','holder3','DO. Date');
-							$("#gridDialog").jqGrid('setLabel','desc','Supplier Code');
-							$("#gridDialog").jqGrid('setLabel','holder1','Total amt.');
-							$("#gridDialog").jqGrid('showCol',["holder1","holder3"]);
+		// 					$("#gridDialog").jqGrid('setLabel','holder3','DO. Date');
+		// 					$("#gridDialog").jqGrid('setLabel','desc','Supplier Code');
+		// 					$("#gridDialog").jqGrid('setLabel','holder1','Total amt.');
+		// 					$("#gridDialog").jqGrid('showCol',["holder1","holder3"]);
 
-							break;
-						case '#itemcode':
-							if($("input[name=regtype]:checked").val() == "P"){
-								paramD.table_id='itemcode'
-								paramD.field=['product.itemcode','product.description','delorddt.qtydelivered','delorddt.netunitprice','delorddt.remarks','delorddt.itemcode','delorddt.lineno_','delorddt.idno','delorddt.prortdisc','delorddt.remarks'];  //remarks, not description
-								paramD.table_name=['material.delorddt','material.product','material.delordhd','finance.facode'];
-								paramD.join_type=['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
-								paramD.join_onCol=['delorddt.itemcode','delorddt.recno','product.productcat'];
-								paramD.join_onVal=['product.itemcode','delordhd.recno','facode.assetcode'];
-								paramD.filterCol=['delorddt.recno','facode.assetcode'];
-								paramD.filterVal=[$('#recno').val(),$('#assetcode').val()];
+		// 					break;
+		// 				case '#itemcode':
+		// 					if($("input[name=regtype]:checked").val() == "P"){
+		// 						paramD.table_id='itemcode'
+		// 						paramD.field=['product.itemcode','product.description','delorddt.qtydelivered','delorddt.netunitprice','delorddt.remarks','delorddt.itemcode','delorddt.lineno_','delorddt.idno','delorddt.prortdisc','delorddt.remarks'];  //remarks, not description
+		// 						paramD.table_name=['material.delorddt','material.product','material.delordhd','finance.facode'];
+		// 						paramD.join_type=['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
+		// 						paramD.join_onCol=['delorddt.itemcode','delorddt.recno','product.productcat'];
+		// 						paramD.join_onVal=['product.itemcode','delordhd.recno','facode.assetcode'];
+		// 						paramD.filterCol=['delorddt.recno','facode.assetcode'];
+		// 						paramD.filterVal=[$('#recno').val(),$('#assetcode').val()];
 
-								//NOT AMOUN but delorddt.netunitprice
-								//Cost take delorddt.netunitprice * delorddt.qtydelivered
-								$("#gridDialog").jqGrid('setLabel','holder2','Amount');
-								$("#gridDialog").jqGrid('setLabel','holder5','Line No.');
-								$("#gridDialog").jqGrid('showCol',["holder2","holder5"]);
+		// 						//NOT AMOUN but delorddt.netunitprice
+		// 						//Cost take delorddt.netunitprice * delorddt.qtydelivered
+		// 						$("#gridDialog").jqGrid('setLabel','holder2','Amount');
+		// 						$("#gridDialog").jqGrid('setLabel','holder5','Line No.');
+		// 						$("#gridDialog").jqGrid('showCol',["holder2","holder5"]);
 
 
-								}
-							else{
+		// 						}
+		// 					else{
 								
-								paramD.table_id='itemcode';
-								paramD.table_name='material.product';      ///
-								paramD.field=['itemcode','description'];  //remarks
-								}
+		// 						paramD.table_id='itemcode';
+		// 						paramD.table_name='material.product';      ///
+		// 						paramD.field=['itemcode','description'];  //remarks
+		// 						}
 
 
-							break;
-						default:
-							paramD.filterCol=null;
-							paramD.filterVal=null;
+		// 					break;
+		// 				default:
+		// 					paramD.filterCol=null;
+		// 					paramD.filterVal=null;
 
-							$("#gridDialog").jqGrid('setLabel','code','Code');
-							$("#gridDialog").jqGrid('setLabel','desc','Description');
-							// $("#gridDialog").jqGrid('hideCol',["holder1","holder3","holder2","holder5"]);
-							break;
-					}
+		// 					$("#gridDialog").jqGrid('setLabel','code','Code');
+		// 					$("#gridDialog").jqGrid('setLabel','desc','Description');
+		// 					// $("#gridDialog").jqGrid('hideCol',["holder1","holder3","holder2","holder5"]);
+		// 					break;
+		// 			}
 
-					$( "#dialog" ).dialog( "open" );
-					$( "#dialog" ).dialog( "option", "title", title );
+		// 			$( "#dialog" ).dialog( "open" );
+		// 			$( "#dialog" ).dialog( "option", "title", title );
 					
-					$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
-					$('#Dtext').val('');$('#Dcol').html('');
+		// 			$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
+		// 			$('#Dtext').val('');$('#Dcol').html('');
 					
-					$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
-						if(value['canSearch']){
-							if(value['checked']){
-								$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
-							}else{
-								$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
-							}
-						}
-					});
-				});
-				$(id).on("blur", function(){
-					if(id!='#itemcode'){
-						self.check(errorField);
-					}
-				});
-			}
+		// 			$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
+		// 				if(value['canSearch']){
+		// 					if(value['checked']){
+		// 						$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
+		// 					}else{
+		// 						$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
+		// 					}
+		// 				}
+		// 			});
+		// 		});
+		// 		$(id).on("blur", function(){
+		// 			if(id!='#itemcode'){
+		// 				self.check(errorField);
+		// 			}
+		// 		});
+		// 	}
 			
 			function checkInput(errorField){
 				var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
@@ -635,7 +665,7 @@ $.jgrid.defaults.responsive = true;
 						}
 					});
 			}
-
+			
 
 			function getmethod_and_res(assetcode){
 				var param={
