@@ -332,5 +332,10 @@ Route::get('/currentPt','hisdb\CurrentPatientController@show');
 Route::get('/currentPt/get_entry','hisdb\CurrentPatientController@get_entry');
 Route::post('/currentPt/post_entry','hisdb\CurrentPatientController@post_entry');
 
+/// Fixed Asset Inquiry /// 
+Route::get('/assetenquiry','finance\assetenquiryController@show');
+Route::get('/assetenquiry/table','finance\assetenquiryController@table');
+Route::post('/assetenquiry/form','finance\assetenquiryController@form');
+
 
 
