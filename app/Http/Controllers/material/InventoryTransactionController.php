@@ -52,7 +52,7 @@ class InventoryTransactionController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('IV', $request->txndept);
+        $request_no = $this->request_no($request->trantype, $request->txndept);
         $recno = $this->recno('IV','IT');
 
         DB::beginTransaction();
@@ -60,11 +60,9 @@ class InventoryTransactionController extends defaultController
         $table = DB::table("material.ivtmphd");
 
         $array_insert = [
-            'trantype' => 'IV', 
+            'trantype' => $request->trantype, 
             'docno' => $request_no,
             'recno' => $recno,
-            'sndrcvtype' => $sndrcvtype,
-            'sndrcv' => $sndrcv,
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -74,6 +72,7 @@ class InventoryTransactionController extends defaultController
         foreach ($field as $key => $value) {
             $array_insert[$value] = $request[$request->field[$key]];
         }
+
 
         try {
 
@@ -230,6 +229,11 @@ class InventoryTransactionController extends defaultController
         $seqno = DB::table('material.sequence')
                 ->select('seqno')
                 ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
+
+        if(!$seqno){
+            throw new \Exception("Sequence Number for dept $dept not available");
+        }
+
 
         DB::table('material.sequence')
             ->where('trantype','=',$trantype)->where('dept','=',$dept)

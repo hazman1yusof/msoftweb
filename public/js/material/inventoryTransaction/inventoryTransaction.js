@@ -15,7 +15,6 @@ $(document).ready(function () {
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
-			console.log(errorField);
 			if(errorField.length>0){
 				return {
 					element : $(errorField[0]),
@@ -113,7 +112,6 @@ $(document).ready(function () {
 		action:'get_table_default',
 		url:'/util/get_table_default',
 		field:'',
-		fixPost:'true',
 		table_name:['material.ivtmphd'],
 		table_id:'idno',
 		
@@ -123,7 +121,6 @@ $(document).ready(function () {
 		action:'invTran_save',
 		url:'/inventoryTransaction/form',
 		field:'',
-		fixPost:'true',
 		oper:oper,
 		table_name:'material.ivtmphd',
 		table_id:'recno'
@@ -291,7 +288,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['adduser','adddate','idno']);
+	addParamField('#jqGrid',false,saveParam,['adduser','adddate','idno','docno','recno','trantype','compcode','recstatus']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide){
@@ -422,17 +419,24 @@ $(document).ready(function () {
 		saveParam.oper=selfoper;
 
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
-		unsaved = false;
-			hideatdialogForm(false);
+			
 
-			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				addmore_jqgrid2.state = false;
-				$('#jqGrid2_iladd').click();
-			}
+		},'json').fail(function (data) {
+			alert(data.responseJSON.message);
+		}).done(function (data) {
+
+			unsaved = false;
+
+			// if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
+			// 	addmore_jqgrid2.state = false;
+			// 	$('#jqGrid2_iladd').click();
+			// }
 			if(selfoper=='add'){
+			console.log(selfoper);
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				$('#recno').val(data.recno);
 				$('#docno').val(data.docno);
+				$('#amount').val(data.totalAmount);
 				$('#idno').val(data.idno);//just save idno for edit later
 				
 				urlParam2.filterVal[0]=data.recno; 
@@ -444,11 +448,6 @@ $(document).ready(function () {
 			}
 			disableForm('#formdata');
 			hideatdialogForm(false);
-
-			},'json').fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
 		});
 	}
 	
@@ -897,7 +896,7 @@ $(document).ready(function () {
 		return cellvalue;
 	}
 
-function formatter_recvqtyonhand(cellvalue, options, rowObject){
+	function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		let year=($('#trandate').val().trim()!='')?moment($('#trandate').val()).year():selrowData('#jqGrid').trandate;
 		let txndept=($('#txndept').val().trim()!='')?$('#txndept').val():selrowData('#jqGrid').txndept;
 		var param={action:'get_value_default',
