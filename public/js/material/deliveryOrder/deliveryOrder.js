@@ -782,6 +782,7 @@ $(document).ready(function () {
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
+
 			$( "#jqGrid2_ilcancel" ).off();
 			$( "#jqGrid2_ilcancel" ).on( "click", function(event) {
 				event.preventDefault();
@@ -1009,6 +1010,19 @@ $(document).ready(function () {
 			}
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2EditAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-th-list",
+		title:"Edit All Row",
+		onClickButton: function(){
+			var ids = $("#jqGrid2").jqGrid('getDataIDs');
+			console.log(ids);
+		    for (var i = 0; i < ids.length; i++) {
+		        $("#jqGrid2").jqGrid('editRow',ids[i]);
+		    }
+
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "saveHeaderLabel",
 		caption:"Header",cursor: "pointer",position: "last", 
 		buttonicon:"",
@@ -1204,11 +1218,6 @@ $(document).ready(function () {
 			
 		//event.data.currency.formatOn();//change format to currency on each calculation
 		
-	}
-
-	function save_then_next(event){
-
-
 	}
 
 	///////////////////////////////////////////////////////////////////////////////

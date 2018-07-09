@@ -232,8 +232,8 @@ class InventoryTransactionController extends defaultController
                 ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
 
         DB::table('material.sequence')
-        ->where('trantype','=',$trantype)->where('dept','=',$dept)
-        ->update(['seqno' => intval($seqno->seqno) + 1]);
+            ->where('trantype','=',$trantype)->where('dept','=',$dept)
+            ->update(['seqno' => intval($seqno->seqno) + 1]);
         
         return $seqno->seqno;
     }
