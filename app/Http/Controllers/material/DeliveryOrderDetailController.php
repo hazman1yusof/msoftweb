@@ -400,8 +400,9 @@ class DeliveryOrderDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('srcdocno','=',$this->srcdocno);
 
+            $total_qtydeliverd_do = 0;
+            
             if($delordhd_obj->exists()){
-                $total_qtydeliverd_do = 0;
 
                 $delorhd_all = $delordhd_obj->get();
 
@@ -418,7 +419,6 @@ class DeliveryOrderDetailController extends defaultController
                     }
                 }
             }
-
                 //step 3. jumlah_qtydelivered = qtydelivered yang dah post + qtydelivered yang blom post
             $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $total_qtydeliverd_do;
 
