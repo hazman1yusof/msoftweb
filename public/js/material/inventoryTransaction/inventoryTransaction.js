@@ -397,7 +397,7 @@ $(document).ready(function () {
 	}
 
 
-	/*///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
+	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
 		saveParam.oper = $(this).data("oper");
 		let obj={recno:selrowData('#jqGrid').delordhd_recno,_token:$('#_token').val()};
@@ -408,7 +408,7 @@ $(document).ready(function () {
 		}).done(function (data) {
 			//2nd successs?
 		});
-	});*/
+	});
 	
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
@@ -426,7 +426,8 @@ $(document).ready(function () {
 		}).done(function (data) {
 
 			unsaved = false;
-
+			hideatdialogForm(false);
+			
 			// if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
 			// 	addmore_jqgrid2.state = false;
 			// 	$('#jqGrid2_iladd').click();
@@ -447,7 +448,7 @@ $(document).ready(function () {
 				//doesnt need to do anything
 			}
 			disableForm('#formdata');
-			hideatdialogForm(false);
+			
 		});
 	}
 	
@@ -617,7 +618,7 @@ $(document).ready(function () {
 			{ label: 'Qty on Hand at Recv Dept', name: 'recvqtyonhand', width: 100, align: 'right', classes: 'wrap', editable:true,
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editoptions:{readonly: "readonly"},
-				formatter: formatter_recvqtyonhand,//$('#jqGrid2_iladd').click();
+				formatter: formatter_recvqtyonhand,
 			},
 			{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 110, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
@@ -699,8 +700,19 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(){
-			if(addmore_jqgrid2.more == true)$('#jqGrid2_iladd').click();
-			addmore_jqgrid2.more = false; //only addmore after save inline
+			if(addmore_jqgrid2.edit == true){
+			var linenotoedit_new = parseInt(linenotoedit)+1;
+				if($.inArray(String(linenotoedit_new),$('#jqGrid2').jqGrid ('getDataIDs')) != -1){
+					$('#jqGrid2').jqGrid ('setSelection', String(linenotoedit_new));
+					$('#jqGrid2_iledit').click();
+				}
+			}
+			else if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+
+			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
 			$( "#jqGrid2_ilcancel" ).off();
@@ -883,7 +895,9 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table;
 		switch(options.colModel.name){
-			case 'uomcode':field=['uomcode','description'];table="material.uom";break;
+			case 'uomcodetrdept':field=['uomcodetrdept','description'];table="material.uom";break;
+			case 'uomcoderecv':field=['uomcoderecv','description'];table="material.uom";break;
+			//case 'uomcode':field=['uomcode','description'];table="material.uom";break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		$.get( param.url+"?"+$.param(param), function( data ) {

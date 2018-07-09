@@ -110,7 +110,7 @@ class InventoryTransactionController extends defaultController
     }
 
     public function edit(Request $request){
-       /* if(!empty($request->fixPost)){
+        if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
             $idno = substr(strstr($request->table_id,'_'),1);
         }else{
@@ -118,12 +118,12 @@ class InventoryTransactionController extends defaultController
             $idno = $request->table_id;
         }
 
-        $srcdocno = DB::table('material.ivtmphd')
-                    ->select('srcdocno')
+        $docno = DB::table('material.ivtmphd')
+                    ->select('docno')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->delordhd_recno)->first();
+                    ->where('recno','=',$request->recno)->first();
         
-        if($srcdocno->srcdocno == $request->delordhd_srcdocno){
+        if($docno->docno == $request->docno){
             // ni edit macam biasa, nothing special
             DB::beginTransaction();
 
@@ -141,11 +141,11 @@ class InventoryTransactionController extends defaultController
 
             try {
                 //////////where//////////
-                $table = $table->where('idno','=',$request->delordhd_idno);
+                $table = $table->where('idno','=',$request->idno);
                 $table->update($array_update);
 
                 $responce = new stdClass();
-                $responce->totalAmount = $request->delordhd_totamount;
+                $responce->totalAmount = $request->totamount;
                 echo json_encode($responce);
 
                 DB::commit();
@@ -155,7 +155,7 @@ class InventoryTransactionController extends defaultController
                 return response('Error'.$e, 500);
             }
         }else{
-            DB::beginTransaction();
+           /* DB::beginTransaction();
 
             try{
                 // ni edit kalu copy utk do dari existing po
@@ -208,9 +208,9 @@ class InventoryTransactionController extends defaultController
                 DB::rollback();
 
                 return response('Error'.$e, 500);
-            }
+            }*/
         }
-*/
+
     }
 
     public function del(Request $request){
@@ -252,18 +252,6 @@ class InventoryTransactionController extends defaultController
         ->update(['pvalue1' => intval($pvalue1->pvalue1) + 1]);
         
         return $pvalue1->pvalue1;
-    }
-
-    public function sndrcv($material,$dept){
-        $seqno = DB::table('material.sequence')
-                ->select('seqno')
-                ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
-
-        DB::table('material.sequence')
-        ->where('trantype','=',$trantype)->where('dept','=',$dept)
-        ->update(['seqno' => intval($seqno->seqno) + 1]);
-        
-        return $seqno->seqno;
     }
 
     //nak check glmasdtl exist ke tak utk sekian costcode, glaccount, year, period

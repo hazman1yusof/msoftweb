@@ -8,7 +8,7 @@ use stdClass;
 use DB;
 use Carbon\Carbon;
 
-class InventoryTransactionDetailController extends defaultController
+class DeliveryOrderDetailController extends defaultController
 {   
     var $gltranAmount;
     var $srcdocno;
@@ -18,20 +18,39 @@ class InventoryTransactionDetailController extends defaultController
         $this->middleware('auth');
     }
 
-     public function form(Request $request)
+    public function form(Request $request)
     {   
         // return $this->request_no('GRN','2FL');
+        $delordhd = DB::table('material.delordhd')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$request->recno)
+            ->first();
+        $this->srcdocno = $delordhd->srcdocno;
+
         switch($request->oper){
             case 'add':
-                return $this->add($request);
+
+                if($delordhd->srcdocno != 0){
+                    return 'error happen, do srcdocno!=0, x boleh add';
+                }else{
+                    return $this->add($request);
+                }
+
             case 'edit':
-                return $this->edit($request);
+
+                if($delordhd->srcdocno != 0){
+                    return $this->edit_from_PO($request);
+                }else{
+                    return $this->edit($request);
+                }
+
             case 'del':
                 return $this->del($request);
             default:
                 return 'error happen..';
         }
     }
+
     public function get_draccno($itemcode){
         $query = DB::table('material.category')
                 ->select('category.stockacct')
@@ -91,12 +110,16 @@ class InventoryTransactionDetailController extends defaultController
         $crccode = $this->get_crccode();
 
         $recno = $request->recno;
+        $suppcode = $request->suppcode;
+        $trandate = $request->trandate;
+        $deldept = $request->deldept;
+        $deliverydate = $request->deliverydate;
 
         DB::beginTransaction();
 
         try {
             ////1. calculate lineno_ by recno
-            $sqlln = DB::table('material.ivtmpdt')->select('lineno_')
+            $sqlln = DB::table('material.delorddt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$recno)
                         ->count('lineno_');
@@ -104,19 +127,29 @@ class InventoryTransactionDetailController extends defaultController
             $li=intval($sqlln)+1;
 
             ///2. insert detail
-            DB::table('material.ivtmpdt')
+            DB::table('material.delorddt')
                 ->insert([
                     'compcode' => session('compcode'),
                     'recno' => $recno,
                     'lineno_' => $li,
+                    'pricecode' => $request->pricecode,
                     'itemcode' => $request->itemcode,
-                    'uomcodetrdept' => $request->uomcodetrdept,
-                    'txnqty' => $request->txnqty,
-                    'netprice' => $request->netprice,
-                    'productcat' => $request->productcat,
-                    'qtyonhandtr' => $request->qtyonhandtr,
-                    'uomcoderecv'=> $request->uomcoderecv,
-                    'qtyonhandrecv'=> $request->qtyonhandrecv,
+                    'uomcode' => $request->uomcode,
+                    'pouom' => $request->pouom,
+                    'suppcode' => $request->suppcode,
+                    'trandate' => $request->trandate,
+                    'deldept' => $request->deldept,
+                    'deliverydate' => $request->deliverydate,
+                    'qtyorder' => $request->qtyorder,
+                    'qtydelivered' => $request->qtydelivered,
+                    'qtytag' => $request->qtytag,
+                    'unitprice' => $request->unitprice,
+                    'taxcode' => $request->taxcode,
+                    'perdisc' => $request->perdisc,
+                    'amtdisc' => $request->amtdisc,
+                    'amtslstax' => $request->tot_gst,
+                    'netunitprice' => $request->netunitprice,
+                    /*'qtydelivered' => $request->qtydelivered,*/
                     'amount' => $request->amount,
                     'totamount' => $request->totamount,
                     'draccno' => $draccno,
@@ -132,21 +165,21 @@ class InventoryTransactionDetailController extends defaultController
                 ]);
 
             ///3. calculate total amount from detail
-            $totalAmount = DB::table('material.ivtmpdt')
+            $totalAmount = DB::table('material.delorddt')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$recno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('totamount');
 
-           /* //calculate tot gst from detail
-            $tot_gst = DB::table('material.ivtmpdt')
+            //calculate tot gst from detail
+            $tot_gst = DB::table('material.delorddt')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$recno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amtslstax');
-*/
+
             ///4. then update to header
-            DB::table('material.ivtmphd')
+            DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$recno)
                 ->update([
@@ -173,49 +206,48 @@ class InventoryTransactionDetailController extends defaultController
 
 
             ///1. update detail
-            DB::table('material.ivtmpdt')
+            DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
-                    'itemcode' => $request->itemcode,
-                    'uomcodetrdept' => $request->uomcodetrdept,
-                    'txnqty' => $request->txnqty,
-                    'netprice' => $request->netprice,
-                    'productcat' => $request->productcat,
-                    'qtyonhandtr' => $request->qtyonhandtr,
-                    'uomcoderecv'=> $request->uomcoderecv,
-                    'qtyonhandrecv'=> $request->qtyonhandrecv,
-                    'amount' => $request->amount,
-                    'totamount' => $request->totamount,
-                    'draccno' => $draccno,
-                    'drccode' => $drccode,
-                    'craccno' => $craccno,
-                    'crccode' => $crccode, 
-                    'adduser' => session('username'), 
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $this->chgDate($request->expdate), 
-                    'batchno' => $request->batchno, 
-                    'recstatus' => 'OPEN', 
-                    'remarks' => $request->remarks
+                    'pricecode' => $request->pricecode, 
+                    'itemcode'=> $request->itemcode, 
+                    'uomcode'=> $request->uomcode, 
+                    'pouom'=> $request->pouom, 
+                    'qtyorder'=> $request->qtyorder, 
+                    'qtydelivered'=> $request->qtydelivered, 
+                    'unitprice'=> $request->unitprice,
+                    'taxcode'=> $request->taxcode, 
+                    'perdisc'=> $request->perdisc, 
+                    'amtdisc'=> $request->amtdisc, 
+                    'amtslstax'=> $request->tot_gst, 
+                    'netunitprice'=> $request->netunitprice, 
+                    'amount'=> $request->amount, 
+                    'totamount'=> $request->totamount, 
+                    'upduser'=> session('username'), 
+                    'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
+                    'expdate'=> $this->chgDate($request->expdate),  
+                    'batchno'=> $request->batchno, 
+                    'remarks'=> $request->remarks
                 ]);
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('material.ivtmpdt')
+            $totalAmount = DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('totamount');
 
             //calculate tot gst from detail
-            $tot_gst = DB::table('material.ivtmpdt')
+            $tot_gst = DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amtslstax');
 
             ///3. update total amount to header
-            DB::table('material.ivtmphd')
+            DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->update([
@@ -368,8 +400,9 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('srcdocno','=',$this->srcdocno);
 
+            $total_qtydeliverd_do = 0;
+            
             if($delordhd_obj->exists()){
-                $total_qtydeliverd_do = 0;
 
                 $delorhd_all = $delordhd_obj->get();
 
@@ -386,7 +419,6 @@ class InventoryTransactionDetailController extends defaultController
                     }
                 }
             }
-
                 //step 3. jumlah_qtydelivered = qtydelivered yang dah post + qtydelivered yang blom post
             $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $total_qtydeliverd_do;
 
