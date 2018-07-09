@@ -135,7 +135,7 @@ Route::post('/doctor_maintenance/save_session','hisdb\DoctorMaintenanceControlle
 Route::post('/doctor_maintenance/save_bgleave','hisdb\DoctorMaintenanceController@save_bgleave');
 Route::post('/doctor_maintenance/save_colorph','hisdb\DoctorMaintenanceController@save_colorph');
 
-//// purchase Order setup page ///
+//// inventory Transaction setup page ///
 Route::get('/inventoryTransaction','material\InventoryTransactionController@show');
 Route::get('/inventoryTransaction/table','material\InventoryTransactionController@table');
 Route::post('/inventoryTransaction/form','material\InventoryTransactionController@form');
@@ -293,6 +293,10 @@ Route::get('/suppgroup','material\SuppgroupController@show');
 Route::get('/suppgroup/table','material\SuppgroupController@table');
 Route::post('/suppgroup/form','material\SuppgroupController@form');
 
+/// Register setup /// 
+Route::get('/assetregister','finance\assetregisterController@show');
+Route::get('/assetregister/table','finance\assetregisterController@table');
+Route::post('/assetregister/form','finance\assetregisterController@form'); 
 //// Product Master setup ///
 Route::get('/productMaster','material\ProductMasterController@show');
 Route::get('/productMaster/table','material\ProductMasterController@table');
@@ -327,6 +331,11 @@ Route::post('/product/form','material\ProductController@form');
 Route::get('/currentPt','hisdb\CurrentPatientController@show');
 Route::get('/currentPt/get_entry','hisdb\CurrentPatientController@get_entry');
 Route::post('/currentPt/post_entry','hisdb\CurrentPatientController@post_entry');
+
+/// Fixed Asset Inquiry /// 
+Route::get('/assetenquiry','finance\assetenquiryController@show');
+Route::get('/assetenquiry/table','finance\assetenquiryController@table');
+Route::post('/assetenquiry/form','finance\assetenquiryController@form');
 
 
 

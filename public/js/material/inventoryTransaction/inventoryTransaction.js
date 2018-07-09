@@ -54,7 +54,7 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					$("#txndept").val($("#x").val());
+					$("#txndept").val($("#deptcode").val());
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -69,15 +69,15 @@ $(document).ready(function () {
 					inputTrantypeValue();
 					break;
 			}if(oper!='add'){
-				dialog_trantype.on();
-				dialog_txndept.on();
-				dialog_sndrcv.on();
-				dialog_requestRecNo.on();
-			}if(oper!='view'){
 				dialog_trantype.check(errorField);
 				dialog_txndept.check(errorField);
 				dialog_sndrcv.check(errorField);
 				dialog_requestRecNo.check(errorField);
+			}if(oper!='view'){
+				dialog_trantype.on();
+				dialog_txndept.on();
+				dialog_sndrcv.on();
+				dialog_requestRecNo.on();
 			}
 		},
 		beforeClose: function(event, ui){
@@ -323,6 +323,7 @@ $(document).ready(function () {
 						break;
 					default:
 						$("#jqGrid2").jqGrid('hideCol', 'recvqtyonhand');
+						$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
 						$("label[for=sndrcv]").hide();
 						$("#sndrcv_parent").hide();
 
@@ -336,6 +337,7 @@ $(document).ready(function () {
 
 				function forTR(){
 					$("#jqGrid2").jqGrid('showCol', 'recvqtyonhand');
+					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
 					$("label[for=sndrcv]").show();
 					$("#sndrcv_parent").show();
 
@@ -352,6 +354,7 @@ $(document).ready(function () {
 
 				function exceptTR(){
 					$("#jqGrid2").jqGrid('showCol', 'recvqtyonhand');
+					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
 					$("label[for=sndrcv]").show();
 					$("#sndrcv_parent").show();
 
@@ -578,7 +581,7 @@ $(document).ready(function () {
 		join_onCol:['ivt.itemcode', 'ivt.itemcode'],
 		join_onVal:['s.itemcode','p.itemcode'],
 		filterCol:['ivt.recno', 'ivt.compcode', 'ivt.recstatus'],
-		filterVal:['', 'session.company','A']
+		filterVal:['', 'session.company','<>.DELETE']
 	};
 
 	var addmore_jqgrid2={more:false,state:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -597,7 +600,14 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Uom Code', name: 'uomcode', width: 110, classes: 'wrap', editable:true,
+			{ label: 'Item Description', name: 'description', width: 200, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
+			
+			
+			{ label: 'Qty on Hand at Tran Dept', name: 'deptqtyonhand', width: 100, align: 'right', classes: 'wrap', editable:true,	
+				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},editoptions:{readonly: "readonly"},
+			},
+			{ label: 'UOM Code Tran Dept', name: 'uomcodetran', width: 110, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -605,15 +615,18 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Item Description', name: 'description', width: 200, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
-			{ label: 'Qty on Hand at Tran Dept', name: 'deptqtyonhand', width: 100, align: 'right', classes: 'wrap', editable:true,	
-				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: true},editoptions:{readonly: "readonly"},
-			},
 			{ label: 'Qty on Hand at Recv Dept', name: 'recvqtyonhand', width: 100, align: 'right', classes: 'wrap', editable:true,
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editoptions:{readonly: "readonly"},
 				formatter: formatter_recvqtyonhand,//$('#jqGrid2_iladd').click();
+			},
+			{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 110, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:uomcodeCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
 			},
 			{ label: 'Max Qty', name: 'maxqty', width: 80, align: 'right', classes: 'wrap',  
 				editable:true,
@@ -887,7 +900,8 @@ $(document).ready(function () {
 function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		let year=($('#trandate').val().trim()!='')?moment($('#trandate').val()).year():selrowData('#jqGrid').trandate;
 		let txndept=($('#txndept').val().trim()!='')?$('#txndept').val():selrowData('#jqGrid').txndept;
-		var param={action:'get_value_default',field:['qtyonhand'],table_name:'material.stockloc'}
+		var param={action:'get_value_default',
+			url: '/util/get_value_default',field:['qtyonhand'],table_name:'material.stockloc'}
 
 		param.filterCol = ['year','itemcode', 'deptcode','uomcode'];
 		param.filterVal = [year,rowObject[3], txndept,rowObject[4]];
@@ -937,10 +951,10 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-		// dialog_txndept.off();
-		// dialog_trantype.off();
-		// dialog_sndrcv.off();
-		// dialog_requestRecNo.off();
+		/*dialog_txndept.off();
+		dialog_trantype.off();
+		dialog_sndrcv.off();
+		dialog_requestRecNo.off();*/
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			dialog_txndept.off();
 			dialog_trantype.off();
@@ -989,6 +1003,7 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		var param={
 			func:'getQOHsndrcv',
 			action:'get_value_default',
+			url: '/util/get_value_default',
 			field:['qtyonhand'],
 			table_name:'material.stockloc'
 		}
@@ -1025,6 +1040,7 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		var param={
 			func:'getTrantypeDetail',
 			action:'get_value_default',
+			url: '/util/get_value_default',
 			field:['crdbfl','isstype'],
 			table_name:'material.ivtxntype'
 		}
@@ -1032,7 +1048,7 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		param.filterCol = ['trantype'];
 		param.filterVal = [$('#trantype').val()];
 
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 	
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
@@ -1119,6 +1135,7 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		var param={
 			func:'getavgcost',
 			action:'get_value_default',
+			url: '/util/get_value_default',
 			field:['avgcost','expdtflg'],
 			table_name:'material.product'
 		}
@@ -1126,7 +1143,7 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		param.filterCol = ['itemcode', 'uomcode',];
 		param.filterVal = [ $("#jqGrid2 input[name='itemcode']").val(), $("#jqGrid2 input[name='uomcode']").val()];
 
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 	
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
@@ -1169,8 +1186,8 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 	var dialog_txndept = new ordialog(
 		'txndept','sysdb.department','#txndept',errorField,
 		{	colModel:[
-				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true,},
 				]
 		},{
 			title:"Select Transaction Department",
@@ -1185,8 +1202,8 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 	var dialog_trantype = new ordialog(
 		'trantype','material.ivtxntype','#trantype',errorField,
 		{	colModel:[
-				{label:'Transaction type',name:'trantype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Transaction Type',name:'trantype',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'isstype',name:'isstype',width:100,classes:'pointer',hidden:true},
 				],
 			ondblClickRow:function(){
@@ -1213,15 +1230,15 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 	var dialog_sndrcv = new ordialog(
 		'sndrcv','sysdb.department','#sndrcv',errorField,
 		{	colModel:[
-				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				]
 		},{
 			title:"Select Receiver Department",
 			open: function(){
 				if($('#trantype').val().trim() == 'TR') {
 					dialog_sndrcv.urlParam.filterCol=['storedept', 'recstatus'];
-					dialog_sndrcv.urlParam.filterVal=['1', 'A'];
+					dialog_sndrcv.urlParam.filterVal=['1', '<>.DELETE'];
 					dialog_sndrcv.urlParam.filterInCol=['deptcode'];
 					dialog_sndrcv.urlParam.filterInType=['NOT IN'];
 					dialog_sndrcv.urlParam.filterInVal=[[$('#txndept').val()]];
@@ -1238,8 +1255,8 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		'itemcode',['material.stockloc AS s','material.productmaster AS p'],"#jqGrid2 input[name='itemcode']",errorField,
 		{	colModel:
 			[
-				{label:'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
 				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
 				{label:'Max Quantity',name:'s_maxqty',width:100,classes:'pointer'},
@@ -1274,8 +1291,8 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		'uom',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
 		{	colModel:
 			[
-				{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
 			],
@@ -1311,9 +1328,10 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		},{
 			title:"Select Request RecNo",
 			open: function(){
-				
+				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus'];
+				dialog_requestRecNo.urlParam.filterVal=['session.company','A'];
 			}
-		}
+		}, 'urlParam'
 	);
 	dialog_requestRecNo.makedialog();
 

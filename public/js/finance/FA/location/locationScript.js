@@ -58,17 +58,21 @@
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
 							rdonly("#dialogForm");
+							hideOne("#formdata");
 							break;
 						case state = 'edit':
 							$( this ).dialog( "option", "title", "Edit" );
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
+						rdonly("#formdata");
+							
 							rdonly("#dialogForm");
 							break;
 						case state = 'view':
 							$( this ).dialog( "option", "title", "View" );
 							disableForm('#formdata');
 							 $(this).dialog("option", "buttons",butt2);
+							 $('#formdata :input[hideOne]').show();
 							break;
 					}
 					if(oper!='view'){
@@ -141,11 +145,13 @@
 				ondblClickRow: function(rowid, iRow, iCol, e){
 					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
-				gridComplete: function(){
-					/*if(editedRow!=0){
-						$("#jqGrid").jqGrid('setSelection',editedRow,false);
-					}*/
-				},
+				gridComplete: function () {
+					if (oper == 'add') {
+					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+					}
+
+					$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			   },
 
 			});
 

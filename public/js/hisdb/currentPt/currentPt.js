@@ -30,7 +30,6 @@ $(document).ready(function() {
             $('#txt_pat_age').val(gettheage(dobval));
         }
     })
-
     function turntoappropriatetime(moments){
         let year = moments.substring(0,2);
         let month = moments.substring(2,4);
@@ -78,8 +77,8 @@ $(document).ready(function() {
                 table_name:'hisdb.queue',
                 field:'*',
                 _token: $('#csrf_token').val(),
-                filterCol:['epistycode'],
-		        filterVal:[ $('#Epistycode').val()]
+                filterCol:['epistycode','deptcode'],
+		        filterVal:[ $('#Epistycode').val(),'ALL']
             };
         },
         url: "pat_mast/post_entry?action=get_patient_list&listtype="+$("#listtype").val(),
@@ -484,7 +483,62 @@ $(document).ready(function() {
             save_patient('add');
         }
     });
+   
+ //    $("#adjustment_but_currentPt").click(function(){
+ //     	var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+ //            	if(!selRowId){
+ //            		alert('Please select patient');
+ //            	}else{
+	// 				$("#adjustmentform").dialog("open");
+ //            	}
+ //     });
 
+ //    var oper;
+	// $("#adjustmentform")
+	// 	.dialog({
+	// 		width: 6 / 10 * $(window).width(),
+	// 		modal: true,
+	// 		autoOpen: false,
+	// 		open: function (event, ui) {
+	// 			parent_close_disabled(true);
+	// 			switch (oper) {
+	// 				case state = 'add':
+	// 					$(this).dialog("option", "title", "Adjustment");
+	// 					enableForm('#adjustmentform');
+	// 					hideOne('#adjustmentformdata');
+	// 					rdonly("#adjustmentform");
+	// 					break;
+	// 				case state = 'edit':
+	// 					$(this).dialog("option", "title", "Edit");
+	// 					enableForm('#adjustmentformdata');
+	// 					frozeOnEdit("#adjustmentform");
+	// 					rdonly("#adjustmentform");
+	// 					$('#adjustmentformdata :input[hideOne]').show();
+	// 					break;
+	// 				case state = 'view':
+	// 					$(this).dialog("option", "title", "View");
+	// 					disableForm('#adjustmentformdata');
+	// 					$('#adjustmentformdata :input[hideOne]').show();
+	// 					$(this).dialog("option", "buttons", butt2);
+	// 					break;
+	// 			}
+	// 			if(oper!='view'){
+	// 					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
+	// 					//dialog_dept.handler(errorField);
+	// 				}
+	// 		},
+	// 		close: function (event, ui) {
+	// 			parent_close_disabled(false);
+	// 			emptyFormdata(errorField, '#adjustmentformdata');
+	// 			//$('.alert').detach();
+	// 			$('#adjustmentformdata .alert').detach();
+	// 			$("#adjustmentformdata a").off();
+	// 			if (oper == 'view') {
+	// 				$(this).dialog("option", "buttons", butt1);
+	// 			}
+	// 		},
+	// 		buttons: butt1,
+	// 	});
     function save_patient(oper,idno,mrn="nothing"){
         var saveParam={
             action:'save_patient',
@@ -811,7 +865,10 @@ $(document).ready(function() {
     $('#btn_mykad').click(function(){
        $('#mdl_mykad').modal('show');
     });
-
+    
+     $('#adjustment_but_currentPt').click(function(){
+       $('#adjustment').modal('show');
+    });
     $('#read_mykad').click(function(){
         $.getJSON('http://127.0.0.1:4000', function(data){
             if(data.response != "success"){
@@ -994,8 +1051,7 @@ $(document).ready(function() {
                );
 		*/
     }
-
-
+  
 
 
 } );

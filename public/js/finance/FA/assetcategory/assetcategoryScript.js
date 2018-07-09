@@ -131,10 +131,33 @@ $.jgrid.defaults.responsive = true;
 							break;
 						} if(oper!='view'){
 							dialog_assettype.on();
+							dialog_deptcode.on();
+							dialog_glassetcode.on();
+							dialog_glasset.on();
+							dialog_gldepccode.on();
+							dialog_gldep.on();
+							dialog_glprovccode.on();
+							dialog_glprovdep.on();
+							dialog_glglossccode.on();
+							dialog_glgainloss.on();
+							dialog_glrevccode.on();
+							dialog_glrevaluation.on();
+
 
 						} if(oper!='add'){
 							// toggleFormData('#jqGrid','#formdata');
 							dialog_assettype.check(errorField);
+							dialog_deptcode.check(errorField);
+							dialog_glassetcode.check(errorField);
+							dialog_glasset.check(errorField);
+							dialog_gldepccode.check(errorField);
+							dialog_gldep.check(errorField);
+							dialog_glprovccode.check(errorField);
+							dialog_glprovdep.check(errorField);
+							dialog_glglossccode.check(errorField);
+							dialog_glgainloss.check(errorField);
+							dialog_glrevccode.check(errorField);
+							dialog_glrevaluation.check(errorField);
 							
 							
 						}
@@ -289,7 +312,8 @@ $.jgrid.defaults.responsive = true;
 				'assettype','finance.fatype','#assettype',errorField,
 				{	colModel:[
 						{label:'Asset Type',name:'assettype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						
 						]
 				},{
 					title:"Select Asset Type",
@@ -300,5 +324,213 @@ $.jgrid.defaults.responsive = true;
 				},'urlParam'
 			);
 			dialog_assettype.makedialog();
+			
+			var dialog_deptcode = new ordialog(
+				'deptcode','sysdb.department','#deptcode',errorField,
+				{	colModel:[
+						{label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Cost Code',name:'costcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Department",
+					open: function(){
+						dialog_deptcode.urlParam.filterCol=['recstatus'],
+						dialog_deptcode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_deptcode.makedialog();
+
+			var dialog_glassetcode = new ordialog(
+				'glassetcode','finance.costcenter','#glassetccode',errorField,
+				{	colModel:[
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Asset",
+					open: function(){
+						dialog_glassetcode.urlParam.filterCol=['recstatus'],
+						dialog_glassetcode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glassetcode.makedialog();
+
+			var dialog_glasset = new ordialog(
+				'glasset','finance.glmasref','#glasset',errorField,
+				{	colModel:[
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Asset",
+					open: function(){
+						dialog_glasset.urlParam.filterCol=['recstatus'],
+						dialog_glasset.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glasset.makedialog();
+
+			var dialog_gldepccode = new ordialog(
+				'gldepccode','finance.costcenter','#gldepccode',errorField,
+				{	colModel:[
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Depreciation Code",
+					open: function(){
+						dialog_gldepccode.urlParam.filterCol=['recstatus'],
+						dialog_gldepccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_gldepccode.makedialog();
+// dialog_gldepccode=new makeDialog('finance.costcenter','#gldepccode',['costcode','description'], 'Depreciation');
+
+			var  dialog_gldep  = new ordialog(
+				'gldep','finance.glmasref','#gldep',errorField,
+				{	colModel:[
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Depreciation Code",
+					open: function(){
+						dialog_gldep.urlParam.filterCol=['recstatus'],
+						dialog_gldep.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_gldep.makedialog();
+
+			// dialog_gldep=new makeDialog('finance.glmasref','#gldep',['glaccno','description'], 'Depreciation');
+
+			var dialog_glprovccode  = new ordialog(
+				'glprovccode','finance.costcenter','#glprovccode',errorField,
+				{	colModel:[
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Provision for Depr",
+					open: function(){
+						dialog_glprovccode.urlParam.filterCol=['recstatus'],
+						dialog_glprovccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glprovccode.makedialog();
+// dialog_glprovccode=new makeDialog('finance.costcenter','#glprovccode',['costcode','description'], 'Provision for Depr');
+
+			var dialog_glprovdep  = new ordialog(
+				'glprovdep','finance.glmasref','#glprovdep',errorField,
+				{	colModel:[
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Provision for Depr",
+					open: function(){
+						dialog_glprovdep.urlParam.filterCol=['recstatus'],
+						dialog_glprovdep.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glprovdep.makedialog();
+// dialog_glprovdep=new makeDialog('finance.glmasref','#glprovdep',['glaccno','description'], 'Provision for Depr');
+			
+var dialog_glglossccode = new ordialog(
+				'glglossccode','finance.costcenter','#glglossccode',errorField,
+				{	colModel:[
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Gain ",
+					open: function(){
+						dialog_glglossccode.urlParam.filterCol=['recstatus'],
+						dialog_glglossccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glglossccode.makedialog();
+// dialog_glglossccode=new makeDialog('finance.costcenter','#glglossccode',['costcode','description'], 'Gain');
+
+			var dialog_glgainloss  = new ordialog(
+				'glgainloss','finance.glmasref', '#glgainloss',errorField,
+				{	colModel:[
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Gain ",
+					open: function(){
+						dialog_glgainloss.urlParam.filterCol=['recstatus'],
+						dialog_glgainloss.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glgainloss.makedialog();
+
+			// dialog_glgainloss=new makeDialog('finance.glmasref','#glgainloss',['glaccno','description'], 'Gain');
+
+
+			var dialog_glrevccode = new ordialog(
+				'glrevccode','finance.costcenter','#glrevccode',errorField,
+				{	colModel:[
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Loss",
+					open: function(){
+						dialog_glrevccode.urlParam.filterCol=['recstatus'],
+						dialog_glrevccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glrevccode.makedialog();
+			// dialog_glrevccode=new makeDialog('finance.costcenter','#glrevccode',['costcode','description'], 'Loss');
+
+
+			var dialog_glrevaluation = new ordialog(
+				'glrevaluation','finance.glmasref','#glrevaluation',errorField,
+				{	colModel:[
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Loss",
+					open: function(){
+						dialog_glrevaluation.urlParam.filterCol=['recstatus'],
+						dialog_glrevaluation.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glrevaluation.makedialog();
+		
+		
+			// dialog_glrevaluation=new makeDialog('finance.glmasref','#glrevaluation',['glaccno','description'], 'Loss');
 
 		});
+			
+		
+
+			
+			
+
+			
