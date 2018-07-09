@@ -18,39 +18,20 @@ class InventoryTransactionDetailController extends defaultController
         $this->middleware('auth');
     }
 
-    public function form(Request $request)
+     public function form(Request $request)
     {   
         // return $this->request_no('GRN','2FL');
-        $delordhd = DB::table('material.delordhd')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$request->recno)
-            ->first();
-        $this->srcdocno = $delordhd->srcdocno;
-
         switch($request->oper){
             case 'add':
-
-                if($delordhd->srcdocno != 0){
-                    return 'error happen, do srcdocno!=0, x boleh add';
-                }else{
-                    return $this->add($request);
-                }
-
+                return $this->add($request);
             case 'edit':
-
-                if($delordhd->srcdocno != 0){
-                    return $this->edit_from_PO($request);
-                }else{
-                    return $this->edit($request);
-                }
-
+                return $this->edit($request);
             case 'del':
                 return $this->del($request);
             default:
                 return 'error happen..';
         }
     }
-
     public function get_draccno($itemcode){
         $query = DB::table('material.category')
                 ->select('category.stockacct')

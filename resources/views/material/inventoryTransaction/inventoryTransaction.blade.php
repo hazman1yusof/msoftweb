@@ -124,11 +124,11 @@
 									  <span class="help-block"></span>
 								  	</div>
 
-						  		<label class="col-md-2 control-label" for="trandate">Transaction Date</label>  
-								  	<div class="col-md-2">
-										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required">
-								  	</div>
-
+								 <label class="col-md-2 control-label" for="docno">Document No</label>  
+						  			<div class="col-md-2">
+										<input id="docno" name="docno" type="text" maxlength="11" class="form-control input-sm" rdonly>
+						  			</div> 	
+						  		
 								<label class="col-md-2 control-label" for="recno">Record No</label>  
 						  			<div class="col-md-2">
 										<input id="recno" name="recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
@@ -145,12 +145,13 @@
 									  <span class="help-block"></span>
 								  	</div>
 
-								
+								<label class="col-md-2 control-label" for="trandate">Transaction Date</label>  
+								  	<div class="col-md-2">
+										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required">
+								  	</div>
 
-						  		<label class="col-md-2 control-label" for="docno">Document No</label>  
-						  			<div class="col-md-2">
-										<input id="docno" name="docno" type="text" maxlength="11" class="form-control input-sm" rdonly>
-						  			</div>
+
+						  		
 
 						  		<label class="col-md-2 control-label" for="srcdocno">Request No</label>  
 						  			<div class="col-md-2" id="srcdocno_parent">

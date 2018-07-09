@@ -57,12 +57,14 @@ class InventoryTransactionController extends defaultController
 
         DB::beginTransaction();
 
-        $table = DB::table("material.ivtxnhd");
+        $table = DB::table("material.ivtmphd");
 
         $array_insert = [
-            'trantype' => 'GRT', 
+            'trantype' => 'IV', 
             'docno' => $request_no,
             'recno' => $recno,
+            'sndrcvtype' => $sndrcvtype,
+            'sndrcv' => $sndrcv,
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -78,19 +80,19 @@ class InventoryTransactionController extends defaultController
             $idno = $table->insertGetId($array_insert);
 
             $totalAmount = 0;
-            if(!empty($request->referral)){
+            /*if(!empty($request->referral)){
                 ////ni kalu dia amik dari do
                 ////amik detail dari do sana, save dkt do detail, amik total amount
                 $totalAmount = $this->save_dt_from_othr_do($request->referral,$recno);
 
                 $srcdocno = $request->delordhd_srcdocno;
-                $delordno = $request->delordhd_delordno;
+                $delordno = $request->delordhd_delordno;*/
 
                 /*////dekat do header sana, save balik delordno dkt situ
                 DB::table('material.delordno')
                 ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
                 ->update(['delordno' => $delordno]);*/
-            }
+           // }
 
             $responce = new stdClass();
             $responce->docno = $request_no;
@@ -109,7 +111,7 @@ class InventoryTransactionController extends defaultController
     }
 
     public function edit(Request $request){
-        if(!empty($request->fixPost)){
+       /* if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
             $idno = substr(strstr($request->table_id,'_'),1);
         }else{
@@ -117,7 +119,7 @@ class InventoryTransactionController extends defaultController
             $idno = $request->table_id;
         }
 
-        $srcdocno = DB::table('material.delordhd')
+        $srcdocno = DB::table('material.ivtmphd')
                     ->select('srcdocno')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$request->delordhd_recno)->first();
@@ -126,7 +128,7 @@ class InventoryTransactionController extends defaultController
             // ni edit macam biasa, nothing special
             DB::beginTransaction();
 
-            $table = DB::table("material.delordhd");
+            $table = DB::table("material.ivtmphd");
 
             $array_update = [
                 'compcode' => session('compcode'),
@@ -209,7 +211,7 @@ class InventoryTransactionController extends defaultController
                 return response('Error'.$e, 500);
             }
         }
-
+*/
     }
 
     public function del(Request $request){
@@ -246,6 +248,18 @@ class InventoryTransactionController extends defaultController
         ->update(['pvalue1' => intval($pvalue1->pvalue1) + 1]);
         
         return $pvalue1->pvalue1;
+    }
+
+    public function sndrcv($material,$dept){
+        $seqno = DB::table('material.sequence')
+                ->select('seqno')
+                ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
+
+        DB::table('material.sequence')
+        ->where('trantype','=',$trantype)->where('dept','=',$dept)
+        ->update(['seqno' => intval($seqno->seqno) + 1]);
+        
+        return $seqno->seqno;
     }
 
     //nak check glmasdtl exist ke tak utk sekian costcode, glaccount, year, period

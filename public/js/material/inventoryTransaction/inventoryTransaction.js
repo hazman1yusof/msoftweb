@@ -1048,7 +1048,7 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		param.filterCol = ['trantype'];
 		param.filterVal = [$('#trantype').val()];
 
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 	
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
@@ -1143,7 +1143,7 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		param.filterCol = ['itemcode', 'uomcode',];
 		param.filterVal = [ $("#jqGrid2 input[name='itemcode']").val(), $("#jqGrid2 input[name='uomcode']").val()];
 
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 	
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
@@ -1230,8 +1230,8 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 	var dialog_sndrcv = new ordialog(
 		'sndrcv','sysdb.department','#sndrcv',errorField,
 		{	colModel:[
-				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				]
 		},{
 			title:"Select Receiver Department",
@@ -1255,8 +1255,8 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		'itemcode',['material.stockloc AS s','material.productmaster AS p'],"#jqGrid2 input[name='itemcode']",errorField,
 		{	colModel:
 			[
-				{label:'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
 				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
 				{label:'Max Quantity',name:'s_maxqty',width:100,classes:'pointer'},
@@ -1291,8 +1291,8 @@ function formatter_recvqtyonhand(cellvalue, options, rowObject){
 		'uom',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
 		{	colModel:
 			[
-				{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
 			],
