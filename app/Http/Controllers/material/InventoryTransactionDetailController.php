@@ -151,8 +151,8 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('recno','=',$recno)
                 ->update([
                     'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
+                  /*  'subamount'=> $totalAmount, 
+                    'TaxAmt' => $tot_gst*/
                 ]);
 
             echo $totalAmount;
@@ -206,13 +206,13 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('totamount');
-
+/*
             //calculate tot gst from detail
             $tot_gst = DB::table('material.ivtmpdt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
-                ->sum('amtslstax');
+                ->sum('amtslstax');*/
 
             ///3. update total amount to header
             DB::table('material.ivtmphd')
@@ -220,8 +220,8 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('recno','=',$request->recno)
                 ->update([
                     'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
+                    /*'subamount'=> $totalAmount, 
+                    'TaxAmt' => $tot_gst*/
                 ]);
             
             echo $totalAmount;
@@ -238,7 +238,7 @@ class InventoryTransactionDetailController extends defaultController
 
     public function del(Request $request){
 
-        DB::beginTransaction();
+       /* DB::beginTransaction();
 
         try {
 
@@ -286,7 +286,7 @@ class InventoryTransactionDetailController extends defaultController
 
             return response('Error'.$e, 500);
         }
-        
+        */
     }
 
     public function edit_from_PO(Request $request){
