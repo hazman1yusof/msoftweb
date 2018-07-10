@@ -139,22 +139,22 @@ $(document).ready(function () {
 	}
 
 	function searchClick2(grid,form,urlParam){
-	$(form+' [name=Stext]').on( "keyup", function() {
-		delay(function(){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				$('#recnodepan').text("");//tukar kat depan tu
+				$('#prdeptdepan').text("");
+				refreshGrid("#jqGrid3",null,"kosongkan");
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
 			$('#recnodepan').text("");//tukar kat depan tu
 			$('#prdeptdepan').text("");
 			refreshGrid("#jqGrid3",null,"kosongkan");
-		}, 500 );
-	});
-
-	$(form+' [name=Scol]').on( "change", function() {
-		search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-		$('#recnodepan').text("");//tukar kat depan tu
-		$('#prdeptdepan').text("");
-		refreshGrid("#jqGrid3",null,"kosongkan");
-	});
-}
+		});
+	}
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
@@ -220,7 +220,7 @@ $(document).ready(function () {
 			}*/
 			(selrowData("#jqGrid").recstatus!='POSTED')?$('#but_post_jq').show():$('#but_post_jq').hide();
 			urlParam2.filterVal[0]=selrowData("#jqGrid").recno; 
-			urlParam2.join_filterCol = [['ivt.uomcodetrdept on =', 's.deptcode on =','s.year on ='],[]];
+			urlParam2.join_filterCol = [['ivt.uomcodetrdept on =', 's.deptcode no = ','s.year no ='],[]];
 			urlParam2.join_filterVal = [['s.uomcode',selrowData("#jqGrid").txndept,moment(selrowData("#jqGrid").trandate).year()],[]];
 			
 			$('#txndeptdepan').text(selrowData("#jqGrid").txndept);//tukar kat depan tu
@@ -423,17 +423,21 @@ $(document).ready(function () {
 
 		},'json').fail(function (data) {
 			alert(data.responseJSON.message);
+			dialog_txndept.on();
+			dialog_trantype.on();
+			dialog_sndrcv.on();
+			dialog_requestRecNo.on();
 		}).done(function (data) {
 
 			unsaved = false;
 			hideatdialogForm(false);
 			
-			/*if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
+			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
 				addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
-			}*/
+			}
 			if(selfoper=='add'){
-			console.log(selfoper);
+
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				$('#recno').val(data.recno);
 				$('#docno').val(data.docno);
@@ -583,7 +587,7 @@ $(document).ready(function () {
 		filterVal:['', 'session.company','<>.DELETE']
 	};
 
-	var addmore_jqgrid2={more:false,state:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
+	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
@@ -747,6 +751,8 @@ $(document).ready(function () {
 		beforeSubmit: function(postdata, rowid){ 
 			dialog_itemcode.check(errorField);
 			dialog_uomcode.check(errorField);
+			dialog_uomcoderecv.check(errorField);
+			dialog_uomcodetrdept.check(errorField);
 	 	}
 	});
 
@@ -825,11 +831,12 @@ $(document).ready(function () {
         }, 
         beforeSaveRow: function(options, rowid) {
         	mycurrency2.formatOff();
+			let data = selrowData('#jqGrid2');
 			let editurl = "/inventoryTransactionDetail/form?"+
 				$.param({
 					action: 'invTranDetail_save',
 					docno:$('#docno').val(),
-					recno:$('#recno').val()
+					recno:$('#recno').val(),
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
@@ -895,8 +902,8 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table;
 		switch(options.colModel.name){
-			case 'uomcodetrdept':field=['uomcodetrdept','description'];table="material.uom";break;
-			case 'uomcoderecv':field=['uomcoderecv','description'];table="material.uom";break;
+			case 'uomcodetran':field=['uomcode','description'];table="material.uom";break;
+			case 'uomcoderecv':field=['uomcode','description'];table="material.uom";break;
 			//case 'uomcode':field=['uomcode','description'];table="material.uom";break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
@@ -935,6 +942,7 @@ $(document).ready(function () {
 		switch(name){
 			case 'Item Code':temp=$('#itemcode');break;
 			case 'Uom Code Tran':temp=$('#uomcodetrdept');break;
+			case 'Uom Code Recv':temp=$('#uomcoderecv');break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 	}
@@ -1002,7 +1010,8 @@ $(document).ready(function () {
 		unsaved = false;
 		$("#jqGridPager2Delete").hide();
 		dialog_itemcode.on();//start binding event on jqgrid2
-		dialog_uomcode.on();
+		dialog_uomcodetrdept.on();
+		dialog_uomcoderecv.on();
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
 
 		$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
@@ -1282,7 +1291,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='description']").val(data['p_description']);
 				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
 				$("#jqGrid2 input[name='maxqty']").val(data['s_maxqty']);
-				$("#jqGrid2 input[name='deptqtyonhand']").val(data['s_qtyonhand']);
+				$("#jqGrid2 input[name='qtyonhandtr']").val(data['s_qtyonhand']);
 				getQOHsndrcv();getavgcost();
 			}
 		},{
@@ -1295,15 +1304,15 @@ $(document).ready(function () {
 				dialog_itemcode.urlParam.join_onCol=['s.itemcode'];
 				dialog_itemcode.urlParam.join_onVal=['p.itemcode'];
 				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on =']];
-				dialog_itemcode.urlParam.join_filterVal=[['skip.p.compcode']];
+				dialog_itemcode.urlParam.join_filterVal=[['p.compcode']];
 			}
 		},'urlParam'
 	);
 	dialog_itemcode.makedialog(false);
 	//false means not binding event on jqgrid2 yet, after jqgrid2 add, event will be bind
 
-	var dialog_uomcode = new ordialog(
-		'uom',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
+	var dialog_uomcodetrdept = new ordialog(
+		'uomcodetrdept',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcodetrdept']",errorField,
 		{	colModel:
 			[
 				{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -1312,25 +1321,55 @@ $(document).ready(function () {
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
 			],
 			ondblClickRow:function(){
-				let data=selrowData('#'+dialog_uomcode.gridname);
-				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
+				let data=selrowData('#'+dialog_uomcodetrdept.gridname);
+				$("#jqGrid2 input[name='uomcodetrdept']").val(data['s_uomcode']);
 			}
 			
 		},{
 			title:"Select UOM Code For Item",
 			open:function(){
-				dialog_uomcode.urlParam.table_id="none_";
-				dialog_uomcode.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcode.urlParam.filterVal=['session.company',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()];
-				dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
-				dialog_uomcode.urlParam.join_onCol=['s.uomcode'];
-				dialog_uomcode.urlParam.join_onVal=['u.uomcode'];
-				dialog_uomcode.urlParam.join_filterCol=[['s.compcode on =']];
-				dialog_uomcode.urlParam.join_filterVal=[['skip.u.compcode']];
+				dialog_uomcodetrdept.urlParam.table_id="none_";
+				dialog_uomcodetrdept.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
+				dialog_uomcodetrdept.urlParam.filterVal=['session.company',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()];
+				dialog_uomcodetrdept.urlParam.join_type=['LEFT JOIN'];
+				dialog_uomcodetrdept.urlParam.join_onCol=['s.uomcode'];
+				dialog_uomcodetrdept.urlParam.join_onVal=['u.uomcode'];
+				dialog_uomcodetrdept.urlParam.join_filterCol=[['s.compcode on =']];
+				dialog_uomcodetrdept.urlParam.join_filterVal=[['u.compcode']];
 			}
 		},'urlParam'
 	);
-	dialog_uomcode.makedialog(false);
+	dialog_uomcodetrdept.makedialog(false);
+
+	var dialog_uomcoderecv = new ordialog(
+		'uomcoderecv',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcoderecv']",errorField,
+		{	colModel:
+			[
+				{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
+				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
+			],
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_uomcoderecv.gridname);
+				$("#jqGrid2 input[name='uomcoderecv']").val(data['s_uomcode']);
+			}
+			
+		},{
+			title:"Select UOM Code For Item",
+			open:function(){
+				dialog_uomcoderecv.urlParam.table_id="none_";
+				dialog_uomcoderecv.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
+				dialog_uomcoderecv.urlParam.filterVal=['session.company',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()];
+				dialog_uomcoderecv.urlParam.join_type=['LEFT JOIN'];
+				dialog_uomcoderecv.urlParam.join_onCol=['s.uomcode'];
+				dialog_uomcoderecv.urlParam.join_onVal=['u.uomcode'];
+				dialog_uomcoderecv.urlParam.join_filterCol=[['s.compcode on =']];
+				dialog_uomcoderecv.urlParam.join_filterVal=[['u.compcode']];
+			}
+		},'urlParam'
+	);
+	dialog_uomcoderecv.makedialog(false);
 
 	var dialog_requestRecNo = new ordialog(
 		'srcdocno','material.purordhd','#srcdocno',errorField,

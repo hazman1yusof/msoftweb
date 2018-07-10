@@ -231,7 +231,7 @@ class InventoryTransactionController extends defaultController
                 ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
 
         if(!$seqno){
-            throw new \Exception("Sequence Number for dept $dept not available");
+            throw new \Exception("Sequence Number for dept $dept is not available");
         }
 
 

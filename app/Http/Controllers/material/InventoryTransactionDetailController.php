@@ -42,11 +42,11 @@ class InventoryTransactionDetailController extends defaultController
         return $query->stockacct;
     }
 
-    public function get_drccode($deldept){
+    public function get_drccode($txndept){
         $query = DB::table('sysdb.department')
                 ->select('costcode')
                 ->where('compcode','=',session('compcode'))
-                ->where('deptcode','=',$deldept)
+                ->where('deptcode','=',$txndept)
                 ->first();
         
         return $query->costcode;
@@ -86,7 +86,7 @@ class InventoryTransactionDetailController extends defaultController
     public function add(Request $request){
 
         $draccno = $this->get_draccno($request->itemcode);
-        $drccode = $this->get_drccode($request->deldept);
+        $drccode = $this->get_drccode($request->txndept);
         $craccno = $this->get_craccno();
         $crccode = $this->get_crccode();
 
