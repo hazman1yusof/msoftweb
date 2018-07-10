@@ -33,9 +33,9 @@ $.jgrid.defaults.responsive = true;
 				//department
 				// dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description'], 'Department');
 				//location
-				// dialog_loccode=new makeDialog('sysdb.location','#loccode',['loccode','description'],'Location');
+				
 				//supplier
-				// dialog_suppcode=new makeDialog('material.supplier','#suppcode',['SuppCode','Name'],'Supplier');
+				
 				//delivery ordno
 				
 				// dialog_itemcode=new makeDialog('material.product','#itemcode',['itemcode','description'],'Item');     ////itemcode heap changes
@@ -75,7 +75,105 @@ $.jgrid.defaults.responsive = true;
 				}
 			},'urlParam'
 		);
-	    dialog_delordno.makedialog();
+		dialog_delordno.makedialog();
+	
+		// dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');	
+		var  dialog_assettype= new ordialog(
+			'assettype','finance.fatype','#assettype',errorField,
+			{	colModel:[
+				    {label:'AssetType',name:'assettype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+
+			]
+			},{
+				title:"Select Type",
+				open: function(){
+					dialog_assettype.urlParam.filterCol=['compcode'],
+					dialog_assettype.urlParam.filterVal=['9A']
+				}
+			},'urlParam'
+		);
+		dialog_assettype.makedialog();
+
+		// dialog_suppcode=new makeDialog('material.supplier','#suppcode',['SuppCode','Name'],'Supplier');
+		var  dialog_suppcode= new ordialog(
+			'suppcode','material.supplier','#suppcode',errorField,
+			{	colModel:[
+				    {label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,or_search:true},
+
+			]
+
+			},{
+				title:"Select Supplier",
+				open: function(){
+					dialog_suppcode.urlParam.filterCol=['compcode'],
+					dialog_suppcode.urlParam.filterVal=['9A']
+				}
+			},'urlParam'
+		);
+		dialog_suppcode.makedialog();
+				
+		// dialog_loccode=new makeDialog('sysdb.location','#loccode',['loccode','description'],'Location');
+		var  dialog_loccode= new ordialog(
+			'loccode','sysdb.location','#loccode',errorField,
+			{	colModel:[
+				    {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+
+			]
+
+			},{
+				title:"Select Location",
+				open: function(){
+					dialog_loccode.urlParam.filterCol=['compcode'],
+					dialog_loccode.urlParam.filterVal=['9A']
+				}
+			},'urlParam'
+		);
+		dialog_loccode.makedialog();
+				
+		// dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description'], 'Department');
+		var dialog_deptcode= new ordialog(
+			'deptcode','sysdb.department','#deptcode',errorField,
+			{	colModel:[
+				    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+
+			]
+
+			},{
+				title:"Select Department",
+				open: function(){
+					dialog_deptcode.urlParam.filterCol=['compcode'],
+					dialog_deptcode.urlParam.filterVal=['9A']
+				}
+			},'urlParam'
+		);
+		dialog_deptcode.makedialog();
+		
+		// dialog_assetcode=new makeDialog('finance.facode','#assetcode',['assetcode','description','assettype','method','residualvalue'],'Category');
+		var dialog_assetcode= new ordialog(
+			'assetcode','finance.facode','#assetcode',errorField,
+			{	colModel:[
+				    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+					{label:'AssetType',name:' assettype',width:100,classes:'pointer',hidden:true},
+					{label:'Method',name:' method',width:100,classes:'pointer',hidden:true},
+					{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
+
+			]
+
+			},{
+				title:"Select Department",
+				open: function(){
+					dialog_assetcode.urlParam.filterCol=['compcode'],
+					dialog_assetcode.urlParam.filterVal=['9A']
+				}
+			},'urlParam'
+		);
+		dialog_assetcode.makedialog();
+		
 		
 		var butt1=[{
 				text: "Save",click: function() {
@@ -95,6 +193,7 @@ $.jgrid.defaults.responsive = true;
 					//}
 				//}
 			//},{
+
 				text: "Cancel",click: function() {
 					$(this).dialog('close');
 				}
@@ -142,11 +241,21 @@ $.jgrid.defaults.responsive = true;
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 						dialog_itemcode.on();
 						dialog_delordno.on();
+						dialog_assetcode.on();
+						dialog_assettype.on();
+						dialog_suppcode.on();
+						dialog_deptcode.on();
+						dialog_loccode.on();
 						//dialog_dept.handler(errorField);
 					}
 					if(oper!='add'){
 						dialog_itemcode.check(errorField);
 						dialog_delordno.check(errorField);
+						dialog_assetcode.check(erorField);
+						dialog_assettype.check(errorfield);
+						dialog_suppcode.check(errorfield);
+						dialog_deptcode.check(errorfield);
+						dialog_loccode.check(errorfield);
 						//toggleFormData('#jqGrid','#formdata');
 						//dialog_dept.check(errorField);
 					}
