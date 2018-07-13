@@ -228,12 +228,14 @@ class InventoryTransactionController extends defaultController
     public function request_no($trantype,$dept){
         $seqno = DB::table('material.sequence')
                 ->select('seqno')
-                ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
-
+                ->where('trantype','=',$trantype)
+                ->where('dept','=',$dept)
+                ->where('recstatus','=', 'A')
+                ->first();
+                
         if(!$seqno){
             throw new \Exception("Sequence Number for dept $dept is not available");
         }
-
 
         DB::table('material.sequence')
             ->where('trantype','=',$trantype)->where('dept','=',$dept)

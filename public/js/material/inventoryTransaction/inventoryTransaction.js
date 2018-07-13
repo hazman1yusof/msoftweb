@@ -92,6 +92,7 @@ $(document).ready(function () {
 		},
 		close: function( event, ui ) {
 			addmore_jqgrid2.state = false;//reset balik
+			addmore_jqgrid2.more = false;
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdata2');
@@ -103,6 +104,7 @@ $(document).ready(function () {
 
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
+			refreshGrid("#jqGrid2",null,"kosongkan");
 		},
 	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
