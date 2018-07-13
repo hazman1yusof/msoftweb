@@ -1037,7 +1037,7 @@ $(document).ready(function () {
 		}
 
 		param.filterCol = ['year','itemcode', 'deptcode','uomcode'];
-		param.filterVal = [moment($('#trandate').val()).year(), $("#jqGrid2 input[name='itemcode']").val(),$('#sndrcv').val(), $("#jqGrid2 input[name='uomcode']").val()];
+		param.filterVal = [moment($('#trandate').val()).year(), $("#jqGrid2 input[name='itemcode']").val(),$('#sndrcv').val(), $("#jqGrid2 input[name='uomcoderecv']").val()];
 
 		
 			$.get( param.url+"?"+$.param(param), function( data ) {
@@ -1049,6 +1049,45 @@ $(document).ready(function () {
 			}else if($("#sndrcv").val()!=''){
 				bootbox.confirm({
 				    message: "No stock location at department code: "+$('#sndrcv').val()+"... Proceed? ",
+				    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+				    },
+				    callback: function (result) {
+				    	if(!result){
+				    		$("#jqGrid2_ilcancel").click();
+				    	}else{
+							
+				    	}
+				    }
+				});
+			}else{
+				
+			}
+		});
+	}
+
+	///////////////////////////////////////// QtyOnHand Recv/////////////////////////////////////////////
+	function getQOHtxndept(){
+		var param={
+			func:'getQOHtxndept',
+			action:'get_value_default',
+			url: '/util/get_value_default',
+			field:['qtyonhand'],
+			table_name:'material.stockloc'
+		}
+
+		param.filterCol = ['year','itemcode', 'deptcode','uomcode'];
+		param.filterVal = [moment($('#trandate').val()).year(), $("#jqGrid2 input[name='itemcode']").val(),$('#txndept').val(), $("#jqGrid2 input[name='uomcodetrdept']").val()];
+
+		
+			$.get( param.url+"?"+$.param(param), function( data ) {
+			
+			$("#jqGrid2 input[name='qtyonhandtr']").val('');
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data.rows) && data.rows[0].qtyonhand!=null){
+				$("#jqGrid2 input[name='qtyonhandtr']").val(data.rows[0].qtyonhand);
+			}else if($("#txndept").val()!=''){
+				bootbox.confirm({
+				    message: "No stock location at department code: "+$('#txndept').val()+"... Proceed? ",
 				    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
 				    },
 				    callback: function (result) {
@@ -1170,7 +1209,7 @@ $(document).ready(function () {
 			table_name:'material.product'
 		}
 
-		param.filterCol = ['itemcode', 'uomcode',];
+		param.filterCol = ['itemcode', 'uomcode'];
 		param.filterVal = [ $("#jqGrid2 input[name='itemcode']").val(), $("#jqGrid2 input[name='uomcode']").val()];
 
 		$.get( param.url+"?"+$.param(param), function( data ) {
@@ -1298,7 +1337,9 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
 				$("#jqGrid2 input[name='maxqty']").val(data['s_maxqty']);
 				$("#jqGrid2 input[name='qtyonhandtr']").val(data['s_qtyonhand']);
-				getQOHsndrcv();getavgcost();
+				getQOHsndrcv();
+				getQOHtxndept();
+				getavgcost();
 			}
 		},{
 			title:"Select Item For Stock Transaction",
