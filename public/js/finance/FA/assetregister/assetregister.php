@@ -34,8 +34,6 @@
 			<input type='hidden' id='recno' name='recno'>
 			<input type='hidden' id='lineno_' name='lineno_'>
 
-			<div class="prevnext btn-group pull-right"></div>
-
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="assetcode">Category</label>
 					<div class="col-md-3">
@@ -69,6 +67,7 @@
 						<span class="help-block"></span>
 					</div>
 			</div>
+
 			<hr>
 
 			<div class="form-group">
@@ -133,14 +132,13 @@
                     	<input id="description" name="description" type="text" maxlength="300" class="form-control input-sm">
                     </div> !-->
 			</div>
+
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="description"></label>  
 					<div class="col-md-5">
                     	<input id="description" name="description" type="text" maxlength="100"  class="form-control input-sm">
                     </div>
-				
 			</div>
-
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="purordno">Purchase No.</label>
@@ -169,6 +167,8 @@
 					<div class="col-md-3">
 						<input id="currentcost" name="currentcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required">  
 				 	</div>
+			</div>
+
 			<hr>
 
 			<div class="form-group">

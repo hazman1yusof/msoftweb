@@ -619,14 +619,44 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function onClick(event){
-		renull_search(event.data.data);
-		$("#"+event.data.data.dialogname).dialog( "open" );
-		refreshGrid("#"+event.data.data.gridname,event.data.data.urlParam);
+		var textfield = $(event.currentTarget).siblings("input[type='text']");
+
+		var obj = event.data.data;
+		$("#"+obj.gridname).jqGrid('setGridParam',{ ondblClickRow: function(id){ 
+			if(!obj.jqgrid_.hasOwnProperty('ondblClickRow_off')){
+				textfield.off('blur',onBlur);
+				textfield.val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
+				textfield.parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
+				textfield.focus();
+				if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow(event);
+				$("#"+obj.dialogname).dialog( "close" );
+				$("#"+obj.gridname).jqGrid("clearGridData", true);
+				// $(obj.textfield).parent().removeClass( "has-error" ).addClass( "has-success" );
+				textfield.removeClass( "error" ).addClass( "valid" );
+				textfield.on('blur',{data:obj,errorField:errorField},onBlur);
+			}
+
+			// var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;
+			var idtopush = $(event.currentTarget).siblings("input[type='text']").attr('id');
+			if($.inArray(idtopush,obj.errorField)!==-1 && obj.required){
+				obj.errorField.splice($.inArray(idtopush,obj.errorField), 1);
+			}
+		}});
+
+		$("#"+obj.gridname).jqGrid('setGridParam',{ onSelectRow: function(id){ 
+			if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow(rowid, selected);
+		}});
+
+		renull_search(obj);
+		$("#"+obj.dialogname).dialog( "open" );
+		refreshGrid("#"+obj.gridname,obj.urlParam);
 	}
 
 	function onBlur(event){
+		var idtopush = $(event.currentTarget).siblings("input[type='text']").end().attr('id');
+		// console.log($(event.currentTarget).prev("input[type='text']").end().attr('id'));
 		if(event.data.data.checkstat!='none'){
-			event.data.data.check(event.data.errorField);
+			event.data.data.check(event.data.errorField,idtopush);
 		}
 	}
 
@@ -772,8 +802,21 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		return fieldReturn;
 	}
 
-	function checkInput(errorField,urlParamID=0,desc=1){///can choose code and desc used, usually field number 0 and 1
-		var table=this.urlParam.table_name,id=this.textfield,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this;
+	function checkInput(errorField,idtopush){///can choose code and desc used, usually field number 0 and 1
+		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=1;
+
+			console.log(idtopush)
+
+		if(idtopush){ /// ni nk tgk sama ada from idtopush exist atau tak
+			var idtopush = idtopush;
+			value = $('#'+idtopush).val();
+			var id = '#'+idtopush;
+		}else{
+			var idtopush = (this.textfield.substring(0, 1) == '#')?this.textfield.substring(1):this.textfield;
+			value = $('#'+idtopush).val();
+			var id = '#'+idtopush;
+		}
+
 		if(param.fixPost == 'true'){
 			code_ = this.urlParam.field[urlParamID];
 			desc_ = this.urlParam.field[desc];
@@ -831,7 +874,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				}
 			}
 
-			var idtopush = (id.substring(0, 1) == '#')?id.substring(1):id;
 
 			if(typeof errorField != 'string' && self.required){
 				if(!fail){
@@ -853,12 +895,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			}
 			
 		});
-	}
-}
-
-function onBlur(event){
-	if(event.data.data.checkstat!='none'){
-		event.data.data.check(event.data.errorField);
 	}
 }
 

@@ -172,6 +172,8 @@
 					<div class="col-md-3">
 						<input id="currentcost" name="currentcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required">  
 				 	</div>
+			</div>
+
 			<hr>
 
 			<div class="form-group">
