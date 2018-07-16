@@ -156,7 +156,7 @@ $.jgrid.defaults.responsive = true;
 		var dialog_assetcode= new ordialog(
 			'assetcode','finance.facode','#assetcode',errorField,
 			{	colModel:[
-				    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				    {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
 					{label:'AssetType',name:' assettype',width:100,classes:'pointer',hidden:true},
 					{label:'Method',name:' method',width:100,classes:'pointer',hidden:true},
@@ -165,7 +165,7 @@ $.jgrid.defaults.responsive = true;
 			]
 
 			},{
-				title:"Select Department",
+				title:"Select Category",
 				open: function(){
 					dialog_assetcode.urlParam.filterCol=['compcode'],
 					dialog_assetcode.urlParam.filterVal=['9A']
