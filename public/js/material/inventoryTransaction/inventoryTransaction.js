@@ -1337,12 +1337,12 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_itemcode.gridname);
 				$("#jqGrid2 input[name='itemcode']").val(data['s_itemcode']);
 				$("#jqGrid2 input[name='description']").val(data['p_description']);
-				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
+				$("#jqGrid2 input[name='uomcodetrdept']").val(data['s_uomcode']);
 				$("#jqGrid2 input[name='maxqty']").val(data['s_maxqty']);
 				$("#jqGrid2 input[name='qtyonhandtr']").val(data['s_qtyonhand']);
 				
 				getQOHtxndept();
-				getavgcost();
+				//getavgcost();
 			}
 		},{
 			title:"Select Item For Stock Transaction",
@@ -1412,7 +1412,7 @@ $(document).ready(function () {
 			open:function(){
 				dialog_uomcoderecv.urlParam.table_id="none_";
 				dialog_uomcoderecv.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcoderecv.urlParam.filterVal=['session.company',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
+				dialog_uomcoderecv.urlParam.filterVal=['session.company',$('#sndrcv').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
 				dialog_uomcoderecv.urlParam.join_type=['LEFT JOIN'];
 				dialog_uomcoderecv.urlParam.join_onCol=['s.uomcode'];
 				dialog_uomcoderecv.urlParam.join_onVal=['u.uomcode'];
