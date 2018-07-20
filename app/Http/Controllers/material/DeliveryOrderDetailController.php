@@ -36,7 +36,7 @@ class DeliveryOrderDetailController extends defaultController
                     return $this->add($request);
                 }
 
-            case 'edit':
+            case 'edit': /// ni x guna dah
 
                 if($delordhd->srcdocno != 0){
                     return $this->edit_from_PO($request);
@@ -47,11 +47,11 @@ class DeliveryOrderDetailController extends defaultController
             case 'edit_all':
 
                 if($delordhd->srcdocno != 0){
-                    return 'edit all srcdocno !=0';
-                    // return $this->edit_from_PO($request);
+                    // return 'edit all srcdocno !=0';
+                    return $this->edit_all_from_PO($request);
                 }else{
-                    return 'edit all biasa';
-                    // return $this->edit($request);
+                    // return 'edit all biasa';
+                    return $this->edit_all($request);
                 }
 
 
@@ -243,6 +243,77 @@ class DeliveryOrderDetailController extends defaultController
                     'remarks'=> $request->remarks
                 ]);
 
+            ///2. recalculate total amount
+            $totalAmount = DB::table('material.delorddt')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$request->recno)
+                ->where('recstatus','!=','DELETE')
+                ->sum('totamount');
+
+            //calculate tot gst from detail
+            $tot_gst = DB::table('material.delorddt')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$request->recno)
+                ->where('recstatus','!=','DELETE')
+                ->sum('amtslstax');
+
+            ///3. update total amount to header
+            DB::table('material.delordhd')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$request->recno)
+                ->update([
+                    'totamount' => $totalAmount, 
+                    'subamount'=> $totalAmount, 
+                    'TaxAmt' => $tot_gst
+                ]);
+            
+            echo $totalAmount;
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+
+    }
+
+    public function edit_all(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->dataobj as $key => $value) {
+                ///1. update detail
+                DB::table('material.delorddt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->where('lineno_','=',$value['lineno_'])
+                    ->update([
+                        'pricecode' => $value['pricecode'], 
+                        'itemcode'=> $value['itemcode'], 
+                        'uomcode'=> $value['uomcode'], 
+                        'pouom'=> $value['pouom'], 
+                        'qtyorder'=> $value['qtyorder'], 
+                        'qtydelivered'=> $value['qtydelivered'], 
+                        'unitprice'=> $value['unitprice'],
+                        'taxcode'=> $value['taxcode'], 
+                        'perdisc'=> $value['perdisc'], 
+                        'amtdisc'=> $value['amtdisc'], 
+                        'amtslstax'=> $value['tot_gst'], 
+                        'netunitprice'=> $value['netunitprice'], 
+                        'amount'=> $value['amount'], 
+                        'totamount'=> $value['totamount'], 
+                        'upduser'=> session('username'), 
+                        'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
+                        'expdate'=> $this->chgDate($value['expdate']),  
+                        'batchno'=> $value['batchno']
+                        // 'remarks'=> $request['remarks
+                    ]);
+            }
+            
             ///2. recalculate total amount
             $totalAmount = DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))

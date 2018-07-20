@@ -202,7 +202,7 @@
 	<!-- <script src="religionScript.js"></script> example yielded scripts-->
 
 	<script src="js/myjs/utility.js"></script>
-	<script src="js/myjs/dialogHandler.js"></script>
+	<!-- <script src="js/myjs/dialogHandler.js"></script> -->
 
 <script>
 		

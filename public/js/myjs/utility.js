@@ -373,7 +373,16 @@ function currencymode(arraycurrency){
 	}
 	this.formatOnBlur = function(){
 		$.each(this.array, function( index, value ) {
-			currencyBlur(value);currencyChg(value)
+			$(value).on("blur",{value:value},currencyBlur);
+			$(value).on("keyup",{value:value},currencyChg);
+			// currencyBlur(value);currencyChg(value)
+		});
+	}
+	this.off = function(){
+		$.each(this.array, function( index, value ) {
+			$(value).off("blur",currencyBlur);
+			$(value).off("keyup",currencyChg);
+			// currencyBlur(value);currencyChg(value)
 		});
 	}
 	this.formatOff = function(){
@@ -381,7 +390,6 @@ function currencymode(arraycurrency){
 			$(value).val(currencyRealval(value));
 		});
 	}
-
 	this.check0value = function(errorField){
 		$.each(this.array, function( index, value ) {
 			if($(value).val()=='0' || $(value).val()=='0.00'){
@@ -390,25 +398,39 @@ function currencymode(arraycurrency){
 		});
 	}
 
-	function currencyBlur(v){
-		$(v).on( "blur", function(){
-			$(v).val(numeral($(v).val()).format('0,0.00'));
-		});
+	function currencyBlur(event){
+		value = event.data.value;
+		$(value).val(numeral($(value).val()).format('0,0.00'));
 	}
 
-	function currencyChg(v){
-		$(v).on( "keyup", function(event){
-			var val = $(this).val();
-			if(val.match(/[^0-9\.]/)){
-				event.preventDefault();
-				$(this).val(val.slice(0,val.length-1));
-			}
-		});
+	function currencyChg(event){
+		value = event.data.value;
+		var val = $(value).val();
+		if(val.match(/[^0-9\.]/)){
+			event.preventDefault();
+			$(this).val(val.slice(0,val.length-1));
+		}
 	}
-}
 
-function currencyRealval(v){
-	return numeral().unformat($(v).val());
+	// function currencyBlur(v){
+	// 	$(v).on( "blur", function(){
+	// 		$(v).val(numeral($(v).val()).format('0,0.00'));
+	// 	});
+	// }
+
+	// function currencyChg(v){
+	// 	$(v).on( "keyup", function(event){
+	// 		var val = $(this).val();
+	// 		if(val.match(/[^0-9\.]/)){
+	// 			event.preventDefault();
+	// 			$(this).val(val.slice(0,val.length-1));
+	// 		}
+	// 	});
+	// }
+
+	function currencyRealval(v){
+		return numeral().unformat($(v).val());
+	}
 }
 
 function modal(){
@@ -631,7 +653,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow(event);
 				$("#"+obj.dialogname).dialog( "close" );
 				$("#"+obj.gridname).jqGrid("clearGridData", true);
-				// $(obj.textfield).parent().removeClass( "has-error" ).addClass( "has-success" );
+				$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 				textfield.removeClass( "error" ).addClass( "valid" );
 				textfield.on('blur',{data:obj,errorField:errorField},onBlur);
 			}
@@ -654,7 +676,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 	function onBlur(event){
 		var idtopush = $(event.currentTarget).siblings("input[type='text']").end().attr('id');
-		// console.log($(event.currentTarget).prev("input[type='text']").end().attr('id'));
 		if(event.data.data.checkstat!='none'){
 			event.data.data.check(event.data.errorField,idtopush);
 		}
@@ -777,7 +798,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 					$("#"+obj.dialogname).dialog( "close" );
 					$("#"+obj.gridname).jqGrid("clearGridData", true);
-					// $(obj.textfield).parent().removeClass( "has-error" ).addClass( "has-success" );
+					$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 					$(obj.textfield).removeClass( "error" ).addClass( "valid" );
 					$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
 				}
@@ -804,8 +825,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 	function checkInput(errorField,idtopush){///can choose code and desc used, usually field number 0 and 1
 		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=1;
-
-			console.log(idtopush)
 
 		if(idtopush){ /// ni nk tgk sama ada from idtopush exist atau tak
 			var idtopush = idtopush;
@@ -873,7 +892,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					fail=true;code=code_;
 				}
 			}
-
 
 			if(typeof errorField != 'string' && self.required){
 				if(!fail){
