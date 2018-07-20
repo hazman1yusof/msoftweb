@@ -378,7 +378,7 @@ class DeliveryOrderController extends defaultController
                     ->where('stockexp.year','=', $this->toYear($value->trandate))
                     ->where('stockexp.uomcode','=',$value->uomcode)
                     ->where('stockexp.batchno','=',$value->batchno)
-                    ->where('stockexp.lasttt','=','GRN')
+                   // ->where('stockexp.lasttt','=','GRN')
                     ->first();
 
                 //2.kalu ada Stock Expiry, update
@@ -394,7 +394,7 @@ class DeliveryOrderController extends defaultController
                         ->where('stockexp.year','=', $this->toYear($value->trandate))
                         ->where('stockexp.uomcode','=',$value->uomcode)
                         ->where('stockexp.batchno','=',$value->batchno)
-                        ->where('stockexp.lasttt','=','GRN')
+                      //  ->where('stockexp.lasttt','=','GRN')
                         ->update([
                             'balqty' => $BalQty
                         ]);
@@ -416,7 +416,7 @@ class DeliveryOrderController extends defaultController
                             'adddate' => $value->adddate, 
                             'upduser' => $value->upduser, 
                             'upddate' => $value->upddate, 
-                            'lasttt' => 'GRN', 
+                           // 'lasttt' => 'GRN', 
                             'year' => $this->toYear($value->trandate)
                         ]);
                 }
@@ -856,7 +856,7 @@ class DeliveryOrderController extends defaultController
                     ->where('stockexp.year','=', $this->toYear($value->trandate))
                     ->where('stockexp.uomcode','=',$value->uomcode)
                     ->where('stockexp.batchno','=',$value->batchno)
-                    ->where('stockexp.lasttt','=','GRN')
+                   // ->where('stockexp.lasttt','=','GRN')
                     ->first();
 
                 //2.kalu ada Stock Expiry, update
@@ -872,7 +872,7 @@ class DeliveryOrderController extends defaultController
                         ->where('stockexp.year','=', $this->toYear($value->trandate))
                         ->where('stockexp.uomcode','=',$value->uomcode)
                         ->where('stockexp.batchno','=',$value->batchno)
-                        ->where('stockexp.lasttt','=','GRN')
+                     //   ->where('stockexp.lasttt','=','GRN')
                         ->update([
                             'balqty' => $BalQty
                         ]);
