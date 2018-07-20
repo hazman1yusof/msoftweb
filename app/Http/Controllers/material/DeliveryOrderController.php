@@ -277,6 +277,8 @@ class DeliveryOrderController extends defaultController
                 //2. start looping untuk delorddt
             foreach ($delorddt_obj as $value) {
 
+                $value->expdate = $this->null_date($value->expdate);
+
                 //3. dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
                 $convfactorPOUOM_obj = DB::table('material.delorddt')
                     ->select('uom.convfactor')

@@ -833,7 +833,6 @@ $(document).ready(function () {
         	$("#jqGridPager2Delete").show();
         }, 
         beforeSaveRow: function(options, rowid) {
-        	mycurrency2.formatOff();
 			let data = selrowData('#jqGrid2');
 			let editurl = "/inventoryTransactionDetail/form?"+
 				$.param({
@@ -944,8 +943,8 @@ $(document).ready(function () {
 		var temp;
 		switch(name){
 			case 'Item Code':temp=$('#itemcode');break;
-			case 'Uom Code Tran':temp=$('#uomcodetrdept');break;
-			case 'Uom Code Recv':temp=$('#uomcoderecv');break;
+			case 'UOM Code Tran Dept':temp=$('#uomcodetrdept');break;
+			case 'UOM Code Recv Dept':temp=$('#uomcoderecv');break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 	}
@@ -1375,6 +1374,7 @@ $(document).ready(function () {
 		},{
 			title:"Select UOM Code For Item",
 			open:function(){
+				dialog_uomcodetrdept.urlParam.fixPost="true";
 				dialog_uomcodetrdept.urlParam.table_id="none_";
 				dialog_uomcodetrdept.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
 				dialog_uomcodetrdept.urlParam.filterVal=['session.company',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
@@ -1406,6 +1406,7 @@ $(document).ready(function () {
 		},{
 			title:"Select UOM Code For Item",
 			open:function(){
+				dialog_uomcoderecv.urlParam.fixPost="true";
 				dialog_uomcoderecv.urlParam.table_id="none_";
 				dialog_uomcoderecv.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
 				dialog_uomcoderecv.urlParam.filterVal=['session.company',$('#sndrcv').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];

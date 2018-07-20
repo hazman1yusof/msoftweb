@@ -381,6 +381,14 @@ abstract class defaultController extends Controller{
         return $pvalue1;
     }
 
+    public function null_date($date){
+        if($date == '0000-00-00'){
+            return null;
+        }else{
+            return $date;
+        }
+    }
+
     // public function defaultlineno($table,$lineno){
     //     $lineno=$this->lineno;
     //     $first=false;
