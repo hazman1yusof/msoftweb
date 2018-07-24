@@ -578,7 +578,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 's.qtyonhand AS qtyonhandtr','ivt.uomcodetran', 's.bincode AS qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
+		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 's.qtyonhand AS qtyonhandtr','ivt.uomcodetrdept', 's.bincode AS qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
 		'ivt.txnqty','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'],
 		table_name:['material.ivtmpdt AS ivt', 'material.stockloc AS s', 'material.productmaster AS p'],
 		table_id:'lineno_',
@@ -596,8 +596,8 @@ $(document).ready(function () {
 		editurl: "/inventoryTransactionDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-		 	{ label: 'recno', name: 'recno', width: 50, classes: 'wrap',editable:true, hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:true, hidden:true},
+		 	{ label: 'recno', name: 'recno', width: 50, classes: 'wrap',editable:false, hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Item Code', name: 'itemcode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
@@ -607,7 +607,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Item Description', name: 'description', width: 200, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
 			
-			{ label: 'UOM Code Tran Dept', name: 'uomcodetran', width: 110, classes: 'wrap', editable:true,
+			{ label: 'UOM Code Tran Dept', name: 'uomcodetrdept', width: 110, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -742,11 +742,7 @@ $(document).ready(function () {
 				});
 			});
 
-			/*$("#jqGrid2").find(".rem_but").on("click", function(e){
-				$("#remarks2").data('lineno_',$(this).data('lineno_'));
-				$("#remarks2").data('grid',"#jqGrid2");
-				$("#dialog_remarks").dialog( "open" );
-			});*/
+			
 		},
 		afterShowForm: function (rowid) {
 		    $("#expdate").datepicker();
@@ -762,55 +758,7 @@ $(document).ready(function () {
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
-	/////////////////////////all function for remarks//////////////////////////////////////////////////
-	/*var linenotoedit=null;
-	function formatterRemarks(cellvalue, options, rowObject){
-		return "<button class='rem_but btn btn-success btn-xs' type='button' data-lineno_='"+rowObject[2]+"' data-remarks='"+rowObject[20]+"'><i class='fa fa-file-text-o'></i> remark</button>";
-	}
-
-	function unformatRemarks(cellvalue, options, rowObject){
-		return null;
-	}
-
-	var butt1_rem = 
-		[{
-			text: "Save",click: function() {
-				let newval = $("#remarks2").val();
-				$("#jqGrid2").jqGrid('setRowData', linenotoedit ,{remarks:newval});
-				$(this).dialog('close');
-			}
-		},{
-			text: "Cancel",click: function() {
-				$(this).dialog('close');
-			}
-		}];
-
-	var butt2_rem = 
-		[{
-			text: "Close",click: function() {
-				$(this).dialog('close');
-			}
-		}];
-
-	$("#dialog_remarks").dialog({
-		autoOpen: false,
-		width: 4/10 * $(window).width(),
-		modal: true,
-		open: function( event, ui ) {
-			let lineno_use = ($('#remarks2').data('lineno_')!='undefined')?$('#remarks2').data('lineno_'):linenotoedit;
-			$('#remarks2').val($($('#remarks2').data('grid')).jqGrid ('getRowData', lineno_use).remarks);
-			console.log(linenotoedit);
-			if(linenotoedit == lineno_use){
-				$("#remarks2").prop('disabled',false);
-				$( "#dialog_remarks" ).dialog( "option", "buttons", butt1_rem);
-			}else{
-				$("#remarks2").prop('disabled',true);
-				$( "#dialog_remarks" ).dialog( "option", "buttons", butt2_rem);
-			}
-		},
-		buttons : butt2_rem
-	});
-*/
+	
 	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	
 	var myEditOptions = {
@@ -904,7 +852,7 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table;
 		switch(options.colModel.name){
-			case 'uomcodetran':field=['uomcode','description'];table="material.uom";break;
+			case 'uomcodetrdept':field=['uomcode','description'];table="material.uom";break;
 			case 'uomcoderecv':field=['uomcode','description'];table="material.uom";break;
 			//case 'uomcode':field=['uomcode','description'];table="material.uom";break;
 		}
@@ -928,7 +876,7 @@ $(document).ready(function () {
 		param.filterCol = ['year','itemcode', 'deptcode','uomcode'];
 		param.filterVal = [year,rowObject[3], txndept,rowObject[4]];
 
-		$.get( "/inventoryTransactionDetail/form"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){

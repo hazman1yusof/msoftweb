@@ -20,9 +20,11 @@ class InventoryTransactionDetailController extends defaultController
 
      public function form(Request $request)
     {   
+
+        DB::enableQueryLog();
         // return $this->request_no('GRN','2FL');
         switch($request->oper){
-            case 'add':
+            case 'add': 
                 return $this->add($request);
             case 'edit':
                 return $this->edit($request);
@@ -90,11 +92,12 @@ class InventoryTransactionDetailController extends defaultController
         $craccno = $this->get_craccno();
         $crccode = $this->get_crccode();*/
 
-        $recno = $request->recno;
 
         DB::beginTransaction();
 
         try {
+
+            $recno = $request->recno;
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.ivtmpdt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
@@ -150,10 +153,16 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$recno)
                 ->update([
-                    'amount' => $amount, 
+                    'amount' => $totalAmount
                   /*  'subamount'=> $totalAmount, 
                     'TaxAmt' => $tot_gst*/
                 ]);
+
+
+
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+
 
             echo $totalAmount;
 
@@ -219,7 +228,7 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->update([
-                    'amount' => $amount, 
+                    'amount' => $totalAmount, 
                     /*'subamount'=> $totalAmount, 
                     'TaxAmt' => $tot_gst*/
                 ]);
