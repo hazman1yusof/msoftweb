@@ -1132,7 +1132,7 @@ $(document).ready(function () {
 	function calculate_amount_and_other(event){
 		console.log(event.handleObj.data[0]);
 		var fail=false,fail_msg="";
-		let deptqtyonhand=parseInt($("#jqGrid2 input[name='deptqtyonhand']").val());
+		let qtyonhandtr=parseInt($("#jqGrid2 input[name='qtyonhandtr']").val());
 		let txnqty=parseInt($("input[name='txnqty']").val());
 		let netprice=parseFloat($("input[name='netprice']").val());
 		let crdbfl=$('#crdbfl').val();
@@ -1140,23 +1140,19 @@ $(document).ready(function () {
 		if(event.target.name=='txnqty'){
 			switch(crdbfl){
 				case "Out":
-					if(event.target.value >= deptqtyonhand && isstype=='Others'){
-						//bootbox.alert("Transaction Quantity Cannot be greater than Quantity On Hand");
+					if(event.target.value >= qtyonhandtr && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot be greater than Quantity On Hand";
 						event.target.value='';fail=true;
-					}else if(deptqtyonhand<event.target.value){
-						//bootbox.alert("Transaction quantity exceed quantity on hand");
+					}else if(qtyonhandtr<event.target.value){
 						fail_msg = "Transaction quantity exceed quantity on hand";
 						event.target.value='';fail=true;
-					}else if(deptqtyonhand<event.target.value && isstype=='Transfer'){
-						//bootbox.alert("Transaction quantity exceed quantity on hand");
+					}else if(qtyonhandtr<event.target.value && isstype=='Transfer'){
 						fail_msg = "Transaction quantity exceed quantity on hand";
 						event.target.value='';fail=true;
 					}
 					break;
 				case "In":
 					if(event.target.name == 0 && isstype=='Others'){
-						//bootbox.alert("Transaction Quantity Cannot Be Zero");
 						fail_msg = "Transaction Quantity Cannot Be Zero";
 						event.target.value='';fail=true;
 					}
@@ -1166,7 +1162,6 @@ $(document).ready(function () {
 			}
 		}else{
 			if(crdbfl=='Out'&&event.target.value==0){
-				//bootbox.alert("Net Price Cannot Be Zero");
 				fail_msg = "Net Price Cannot Be Zero";
 				event.target.value='';fail=true;
 			}

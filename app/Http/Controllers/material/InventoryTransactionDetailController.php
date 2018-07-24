@@ -85,10 +85,10 @@ class InventoryTransactionDetailController extends defaultController
 
     public function add(Request $request){
 
-        $draccno = $this->get_draccno($request->itemcode);
+      /*  $draccno = $this->get_draccno($request->itemcode);
         $drccode = $this->get_drccode($request->txndept);
         $craccno = $this->get_craccno();
-        $crccode = $this->get_crccode();
+        $crccode = $this->get_crccode();*/
 
         $recno = $request->recno;
 
@@ -118,11 +118,11 @@ class InventoryTransactionDetailController extends defaultController
                     'uomcoderecv'=> $request->uomcoderecv,
                     'qtyonhandrecv'=> $request->qtyonhandrecv,
                     'amount' => $request->amount,
-                    'totamount' => $request->totamount,
+                   /* 'totamount' => $request->totamount,
                     'draccno' => $draccno,
                     'drccode' => $drccode,
                     'craccno' => $craccno,
-                    'crccode' => $crccode, 
+                    'crccode' => $crccode, */
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate' => $this->chgDate($request->expdate), 
@@ -136,7 +136,7 @@ class InventoryTransactionDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$recno)
                     ->where('recstatus','!=','DELETE')
-                    ->sum('totamount');
+                    ->sum('amount');
 
            /* //calculate tot gst from detail
             $tot_gst = DB::table('material.ivtmpdt')
@@ -150,7 +150,7 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$recno)
                 ->update([
-                    'totamount' => $totalAmount, 
+                    'amount' => $amount, 
                   /*  'subamount'=> $totalAmount, 
                     'TaxAmt' => $tot_gst*/
                 ]);
@@ -187,11 +187,11 @@ class InventoryTransactionDetailController extends defaultController
                     'uomcoderecv'=> $request->uomcoderecv,
                     'qtyonhandrecv'=> $request->qtyonhandrecv,
                     'amount' => $request->amount,
-                    'totamount' => $request->totamount,
+                 /*   'totamount' => $request->totamount,
                     'draccno' => $draccno,
                     'drccode' => $drccode,
                     'craccno' => $craccno,
-                    'crccode' => $crccode, 
+                    'crccode' => $crccode, */
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate' => $this->chgDate($request->expdate), 
@@ -205,7 +205,7 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
-                ->sum('totamount');
+                ->sum('amount');
 /*
             //calculate tot gst from detail
             $tot_gst = DB::table('material.ivtmpdt')
@@ -219,7 +219,7 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->update([
-                    'totamount' => $totalAmount, 
+                    'amount' => $amount, 
                     /*'subamount'=> $totalAmount, 
                     'TaxAmt' => $tot_gst*/
                 ]);
@@ -314,7 +314,7 @@ class InventoryTransactionDetailController extends defaultController
                     'amtslstax'=> $request->tot_gst, 
                     'netunitprice'=> $request->netunitprice, 
                     'amount'=> $request->amount, 
-                    'totamount'=> $request->totamount, 
+                    //'totamount'=> $request->totamount, 
                     'upduser'=> session('username'), 
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $this->chgDate($request->expdate),  
@@ -323,11 +323,11 @@ class InventoryTransactionDetailController extends defaultController
                 ]);
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('material.delorddt')
+           /* $totalAmount = DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
-                ->sum('totamount');
+                ->sum('amount');
 
             //calculate tot gst from detail
             $tot_gst = DB::table('material.delorddt')
@@ -344,7 +344,7 @@ class InventoryTransactionDetailController extends defaultController
                     'totamount' => $totalAmount, 
                     'subamount'=> $totalAmount, 
                     'TaxAmt' => $tot_gst
-                ]);
+                ]);*/
 
             ///4. cari recno dkt podt
             $purordhd = DB::table('material.purordhd')

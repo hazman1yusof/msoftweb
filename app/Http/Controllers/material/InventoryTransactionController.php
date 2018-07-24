@@ -145,7 +145,7 @@ class InventoryTransactionController extends defaultController
                 $table->update($array_update);
 
                 $responce = new stdClass();
-                $responce->totalAmount = $request->totamount;
+                $responce->totalAmount = $request->amount;
                 echo json_encode($responce);
 
                 DB::commit();
@@ -363,7 +363,7 @@ class InventoryTransactionController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$recno);
         $table->update([
-                'totamount' => $amount, 
+                'amount' => $amount, 
                 //'subamount' => $amount
             ]);
 
