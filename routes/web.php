@@ -339,5 +339,6 @@ Route::post('/assetenquiry/form','finance\assetenquiryController@form');
 
 /// Test route /// 
 Route::get('/test','test\TestController@show');
+Route::post('/test/form','test\TestController@form');
 
 
