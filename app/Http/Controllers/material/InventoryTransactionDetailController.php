@@ -141,13 +141,7 @@ class InventoryTransactionDetailController extends defaultController
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
-           /* //calculate tot gst from detail
-            $tot_gst = DB::table('material.ivtmpdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
-                    ->where('recstatus','!=','DELETE')
-                    ->sum('amtslstax');
-*/
+       
             ///4. then update to header
             DB::table('material.ivtmphd')
                 ->where('compcode','=',session('compcode'))
@@ -215,13 +209,6 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
-/*
-            //calculate tot gst from detail
-            $tot_gst = DB::table('material.ivtmpdt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amtslstax');*/
 
             ///3. update total amount to header
             DB::table('material.ivtmphd')
