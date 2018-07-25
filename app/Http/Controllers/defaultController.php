@@ -412,4 +412,90 @@ abstract class defaultController extends Controller{
 
     //     return intval($row['count']) + 1;
     // }
+
+    public function request_no($trantype,$dept){
+        $seqno = DB::table('material.sequence')
+                ->select('seqno')
+                ->where('trantype','=',$trantype)
+                ->where('dept','=',$dept)
+                ->where('recstatus','=', 'A')
+                ->first();
+                
+        if(!$seqno){
+            throw new \Exception("Sequence Number for dept $dept is not available");
+        }
+
+        DB::table('material.sequence')
+            ->where('trantype','=',$trantype)->where('dept','=',$dept)
+            ->update(['seqno' => $ivtmphd
+        
+        return $seqno->seqno;
+    }
+
+    public function recno($source,$trantype){
+        $pvalue1 = DB::table('sysdb.sysparam')
+                ->select('pvalue1')
+                ->where('source','=',$source)->where('trantype','=',$trantype)->first();
+
+        DB::table('sysdb.sysparam')
+        ->where('source','=',$source)->where('trantype','=',$trantype)
+        ->update(['pvalue1' => $ivtmphd
+        
+        return $pvalue1->pvalue1;
+    }
+
+    //nak check glmasdtl exist ke tak utk sekian costcode, glaccount, year, period
+    //kalu jumpa dia return true, pastu simpan actamount{month} dkt global variable gltranAmount
+    public function isGltranExist($ccode,$glcode,$year,$period){
+        $pvalue1 = DB::table('finance.glmasdtl')
+                ->select("glaccount","actamount".$period)
+                ->where('compcode','=',session('compcode'))
+                ->where('year','=',$year)
+                ->where('costcode','=',$ccode)
+                ->where('glaccount','=',$glcode)
+                ->first();
+        $pvalue1 = (array)$pvalue1;
+
+        $this->gltranAmount = $pvalue1["actamount".$period];
+        return !empty($pvalue1);
+    }
+
+    public function toYear($date){
+        $carbon = new Carbon($date);
+        return $carbon->year;
+    }
+
+    public function toMonth($date){
+        $carbon = new Carbon($date);
+        return $carbon->month;
+    }
+
+    public function getyearperiod($date){
+        $period = DB::table('sysdb.period')
+            ->where('compcode','=',session('compcode'))
+            ->get();
+
+        $seldate = new DateTime($date);
+
+        foreach ($period as $value) {
+            $arrvalue = (array)$value;
+
+            $year= $value->year;
+            $period=0;
+
+            for($x=1;$x<=12;$x++){
+                $period = $x;
+
+                $datefr = new DateTime($arrvalue['datefr'.$x]);
+                $dateto = new DateTime($arrvalue['dateto'.$x]);
+                if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
+                    $responce = new stdClass();
+                    $responce->year = $year;
+                    $responce->period = $period;
+                    return $responce;
+                }
+            }
+        }
+    }
+
 }

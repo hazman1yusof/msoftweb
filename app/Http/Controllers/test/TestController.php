@@ -29,12 +29,12 @@ class TestController extends defaultController
 
     public function form(Request $request)
     {   
-        $expdate = $request->date;
+        $trandate = $request->date;
         $quan = $request->quan;
 
 
         $expdate_obj = DB::table('test.test')
-                        ->where('expdate','>','date')
+                        ->where('expdate','>',$trandate)
                         ->orderBy('expdate', 'asc')
                         ->get();
 
