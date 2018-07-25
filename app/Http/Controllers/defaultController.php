@@ -427,7 +427,7 @@ abstract class defaultController extends Controller{
 
         DB::table('material.sequence')
             ->where('trantype','=',$trantype)->where('dept','=',$dept)
-            ->update(['seqno' => $ivtmphd
+            ->update(['seqno' => intval($seqno->seqno) + 1]);
         
         return $seqno->seqno;
     }
@@ -438,9 +438,9 @@ abstract class defaultController extends Controller{
                 ->where('source','=',$source)->where('trantype','=',$trantype)->first();
 
         DB::table('sysdb.sysparam')
-        ->where('source','=',$source)->where('trantype','=',$trantype)
-        ->update(['pvalue1' => $ivtmphd
-        
+            ->where('source','=',$source)->where('trantype','=',$trantype)
+            ->update(['pvalue1' => intval($pvalue1->pvalue1) + 1]);
+            
         return $pvalue1->pvalue1;
     }
 

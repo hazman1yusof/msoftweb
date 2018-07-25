@@ -422,7 +422,6 @@ $(document).ready(function () {
 
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
-
 		},'json').fail(function (data) {
 			alert(data.responseJSON.message);
 			dialog_txndept.on();

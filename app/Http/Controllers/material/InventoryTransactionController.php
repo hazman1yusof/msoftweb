@@ -60,13 +60,13 @@ class InventoryTransactionController extends defaultController
         $table = DB::table("material.ivtmphd");
 
         $array_insert = [
-            'trantype' => $ivtmphd
-            'docno' => $ivtmphd
-            'recno' => $ivtmphd
-            'compcode' => $ivtmphd
-            'adduser' => $ivtmphd
-            'adddate' => $ivtmphd
-            'recstatus' => $ivtmphd
+            'trantype' => $request->trantype,
+            'docno' => $request_no,
+            'recno' => $recno,
+            'compcode' => session('compcode'),
+            'adduser' => session('username'),
+            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'recstatus' => 'A'
         ];
 
         foreach ($field as $key => $ivtmphd){
@@ -337,37 +337,37 @@ class InventoryTransactionController extends defaultController
                 ->where('recstatus', '<>', 'DELETE')
                 ->get();
 
-        foreach ($do_dt as $key => $ivtmphd
-            ///1. insert detail we get from existing purchase order
-            $table = DB::table("material.delorddt");
-            $table->insert([
-                'compcode' => $ivtmphd
-                'recno' => $ivtmphd
-                'lineno_' => $ivtmphd
-                'pricecode' => $ivtmphd
-                'itemcode' => $ivtmphd
-                'uomcode' => $ivtmphd
-                'pouom' => $ivtmphd
-                'suppcode'=> $ivtmphd
-                'trandate'=> $ivtmphd
-                'deldept'=> $ivtmphd
-                'deliverydate'=> $ivtmphd
-                'qtydelivered' => $ivtmphd
-                'unitprice' => $ivtmphd
-                'taxcode' => $ivtmphd
-                'perdisc' => $ivtmphd
-                'amtdisc' => $ivtmphd
-                'amtslstax' => $ivtmphd
-                'amount' => $ivtmphd
-                'expdate'=> $ivtmphd
-                'batchno'=> $ivtmphd
-                'rem_but'=> $ivtmphd
-                'adduser' => $ivtmphd
-                'adddate' => $ivtmphd
-                'recstatus' => $ivtmphd
-                'remarks' => $ivtmphd
-            ]);
-        }
+        // foreach ($do_dt as $key => $ivtmphd){
+        //     ///1. insert detail we get from existing purchase order
+        //     $table = DB::table("material.delorddt");
+        //     $table->insert([
+        //         'compcode' => $ivtmphd
+        //         'recno' => $ivtmphd
+        //         'lineno_' => $ivtmphd
+        //         'pricecode' => $ivtmphd
+        //         'itemcode' => $ivtmphd
+        //         'uomcode' => $ivtmphd
+        //         'pouom' => $ivtmphd
+        //         'suppcode'=> $ivtmphd
+        //         'trandate'=> $ivtmphd
+        //         'deldept'=> $ivtmphd
+        //         'deliverydate'=> $ivtmphd
+        //         'qtydelivered' => $ivtmphd
+        //         'unitprice' => $ivtmphd
+        //         'taxcode' => $ivtmphd
+        //         'perdisc' => $ivtmphd
+        //         'amtdisc' => $ivtmphd
+        //         'amtslstax' => $ivtmphd
+        //         'amount' => $ivtmphd
+        //         'expdate'=> $ivtmphd
+        //         'batchno'=> $ivtmphd
+        //         'rem_but'=> $ivtmphd
+        //         'adduser' => $ivtmphd
+        //         'adddate' => $ivtmphd
+        //         'recstatus' => $ivtmphd
+        //         'remarks' => $ivtmphd
+        //     ]);
+        // }
         ///2. calculate total amount from detail earlier
         $amount = DB::table('material.delorddt')
                     ->where('compcode','=',session('compcode'))

@@ -1146,8 +1146,8 @@ class DeliveryOrderController extends defaultController
                 ->where('source','=',$source)->where('trantype','=',$trantype)->first();
 
         DB::table('sysdb.sysparam')
-        ->where('source','=',$source)->where('trantype','=',$trantype)
-        ->update(['pvalue1' => intval($pvalue1->pvalue1) + 1]);
+            ->where('source','=',$source)->where('trantype','=',$trantype)
+            ->update(['pvalue1' => intval($pvalue1->pvalue1) + 1]);
         
         return $pvalue1->pvalue1;
     }
