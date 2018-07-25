@@ -511,16 +511,11 @@ $(document).ready(function () {
 	function whenchangetodate() {
 		if($('#Scol').val()=='delordhd_trandate'){
 			$("input[name='Stext']").show("fast");
-			//$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'date');
 			$("input[name='Stext']").velocity({ width: "250px" });
 			$("input[name='Stext']").on('change', searchbydate);
-		} /*else if($('#Scol').val() == 'supplier_name'){
-			$("input[name='Stext']").hide("fast");
-			$("#tunjukname").show("fast");
-		} */else {
+		}else {
 			$("input[name='Stext']").show("fast");
-			//$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'text');
 			$("input[name='Stext']").velocity({ width: "100%" });
 			$("input[name='Stext']").off('change', searchbydate);
@@ -578,7 +573,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 's.qtyonhand AS qtyonhandtr','ivt.uomcodetran', 's.bincode AS qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
+		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 's.qtyonhand AS qtyonhandtr','ivt.uomcodetrdept', 's.bincode AS qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
 		'ivt.txnqty','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'],
 		table_name:['material.ivtmpdt AS ivt', 'material.stockloc AS s', 'material.productmaster AS p'],
 		table_id:'lineno_',
@@ -596,8 +591,8 @@ $(document).ready(function () {
 		editurl: "/inventoryTransactionDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-		 	{ label: 'recno', name: 'recno', width: 50, classes: 'wrap',editable:true, hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:true, hidden:true},
+		 	{ label: 'recno', name: 'recno', width: 50, classes: 'wrap',editable:false, hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Item Code', name: 'itemcode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
@@ -607,7 +602,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Item Description', name: 'description', width: 200, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
 			
-			{ label: 'UOM Code Tran Dept', name: 'uomcodetran', width: 110, classes: 'wrap', editable:true,
+			{ label: 'UOM Code Tran Dept', name: 'uomcodetrdept', width: 110, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -672,7 +667,7 @@ $(document).ready(function () {
 					},
 			},
 			{ label: 'Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap', editable:true,
-				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
@@ -742,11 +737,7 @@ $(document).ready(function () {
 				});
 			});
 
-			/*$("#jqGrid2").find(".rem_but").on("click", function(e){
-				$("#remarks2").data('lineno_',$(this).data('lineno_'));
-				$("#remarks2").data('grid',"#jqGrid2");
-				$("#dialog_remarks").dialog( "open" );
-			});*/
+			
 		},
 		afterShowForm: function (rowid) {
 		    $("#expdate").datepicker();
@@ -762,55 +753,7 @@ $(document).ready(function () {
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
-	/////////////////////////all function for remarks//////////////////////////////////////////////////
-	/*var linenotoedit=null;
-	function formatterRemarks(cellvalue, options, rowObject){
-		return "<button class='rem_but btn btn-success btn-xs' type='button' data-lineno_='"+rowObject[2]+"' data-remarks='"+rowObject[20]+"'><i class='fa fa-file-text-o'></i> remark</button>";
-	}
-
-	function unformatRemarks(cellvalue, options, rowObject){
-		return null;
-	}
-
-	var butt1_rem = 
-		[{
-			text: "Save",click: function() {
-				let newval = $("#remarks2").val();
-				$("#jqGrid2").jqGrid('setRowData', linenotoedit ,{remarks:newval});
-				$(this).dialog('close');
-			}
-		},{
-			text: "Cancel",click: function() {
-				$(this).dialog('close');
-			}
-		}];
-
-	var butt2_rem = 
-		[{
-			text: "Close",click: function() {
-				$(this).dialog('close');
-			}
-		}];
-
-	$("#dialog_remarks").dialog({
-		autoOpen: false,
-		width: 4/10 * $(window).width(),
-		modal: true,
-		open: function( event, ui ) {
-			let lineno_use = ($('#remarks2').data('lineno_')!='undefined')?$('#remarks2').data('lineno_'):linenotoedit;
-			$('#remarks2').val($($('#remarks2').data('grid')).jqGrid ('getRowData', lineno_use).remarks);
-			console.log(linenotoedit);
-			if(linenotoedit == lineno_use){
-				$("#remarks2").prop('disabled',false);
-				$( "#dialog_remarks" ).dialog( "option", "buttons", butt1_rem);
-			}else{
-				$("#remarks2").prop('disabled',true);
-				$( "#dialog_remarks" ).dialog( "option", "buttons", butt2_rem);
-			}
-		},
-		buttons : butt2_rem
-	});
-*/
+	
 	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	
 	var myEditOptions = {
@@ -904,7 +847,7 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table;
 		switch(options.colModel.name){
-			case 'uomcodetran':field=['uomcode','description'];table="material.uom";break;
+			case 'uomcodetrdept':field=['uomcode','description'];table="material.uom";break;
 			case 'uomcoderecv':field=['uomcode','description'];table="material.uom";break;
 			//case 'uomcode':field=['uomcode','description'];table="material.uom";break;
 		}
@@ -928,7 +871,7 @@ $(document).ready(function () {
 		param.filterCol = ['year','itemcode', 'deptcode','uomcode'];
 		param.filterVal = [year,rowObject[3], txndept,rowObject[4]];
 
-		$.get( "/inventoryTransactionDetail/form"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
@@ -980,10 +923,6 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-		/*dialog_txndept.off();
-		dialog_trantype.off();
-		dialog_sndrcv.off();
-		dialog_requestRecNo.off();*/
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			dialog_txndept.off();
 			dialog_trantype.off();
@@ -1021,7 +960,7 @@ $(document).ready(function () {
 		dialog_uomcodetrdept.on();
 		dialog_uomcoderecv.on();
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
-
+		$("#jqGrid2 input[name='qtyonhandtr']").on('blur',calculate_conversion_factor);
 		$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
 			var code = e.keyCode || e.which;
 			if (code == '9')$('#jqGrid2_ilsave').click();
@@ -1127,6 +1066,41 @@ $(document).ready(function () {
 		});
 	}
 	
+	/////////////calculate conv fac//////////////////////////////////
+	 function calculate_conversion_factor(event) {
+
+		console.log("balconv");
+
+
+		var id="#jqGrid2 input[name='qtyonhandtr']"
+		var fail_msg = "Please Choose Suitable UOMCode"
+		var name = "calculate_conversion_factor";
+
+		let convfactor_bool = false;
+		let convfactor_uomcodetrdept = parseFloat($("#convfactoruomcodetrdept").val());
+		let convfactor_uomcoderecv = parseFloat($("#convfactoruomcoderecv").val());
+
+		let qtyonhandtr = parseFloat($("#jqGrid2 input[name='qtyonhandtr']").val());
+
+		console.log(convfactor_uomcodetrdept);
+		console.log(convfactor_uomcoderecv);
+
+		var balconv = convfactor_uomcoderecv*qtyonhandtr%convfactor_uomcodetrdept;
+
+		if (balconv  == 0) {
+			if($.inArray(id,errorField)!==-1){
+				errorField.splice($.inArray(id,errorField), 1);
+			}
+			$('.noti').find("li[data-errorid='"+name+"']").detach();
+		} else {
+			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+			if($.inArray(id,errorField)===-1){
+				errorField.push( id );
+			}
+		}
+		
+	}
+	///////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////calculate amount////////////////////////////
 	function calculate_amount_and_other(event){
@@ -1314,7 +1288,7 @@ $(document).ready(function () {
 	dialog_sndrcv.makedialog();
 
 	var dialog_itemcode = new ordialog(
-		'itemcode',['material.stockloc AS s','material.productmaster AS p'],"#jqGrid2 input[name='itemcode']",errorField,
+		'itemcode',['material.stockloc AS s','material.productmaster AS p', 'material.uom AS u'],"#jqGrid2 input[name='itemcode']",errorField,
 		{	colModel:
 			[
 				{label:'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -1322,6 +1296,7 @@ $(document).ready(function () {
 				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
 				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
 				{label:'Max Quantity',name:'s_maxqty',width:100,classes:'pointer'},
+				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
@@ -1329,6 +1304,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='description']").val(data['p_description']);
 				$("#jqGrid2 input[name='uomcodetrdept']").val(data['s_uomcode']);
 				$("#jqGrid2 input[name='maxqty']").val(data['s_maxqty']);
+				$("#jqGrid2 input[name='convfactoruomcodetrdept']").val(data['u_convfactor']);
 				$("#jqGrid2 input[name='qtyonhandtr']").val(data['s_qtyonhand']);
 				
 				getQOHtxndept();
@@ -1341,11 +1317,11 @@ $(document).ready(function () {
 				dialog_itemcode.urlParam.table_id="none_";
 				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode'];
 				dialog_itemcode.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$('#txndept').val()];
-				dialog_itemcode.urlParam.join_type=['LEFT JOIN'];
-				dialog_itemcode.urlParam.join_onCol=['s.itemcode'];
-				dialog_itemcode.urlParam.join_onVal=['p.itemcode'];
-				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on =']];
-				dialog_itemcode.urlParam.join_filterVal=[['p.compcode']];
+				dialog_itemcode.urlParam.join_type=['LEFT JOIN', 'LEFT JOIN'];
+				dialog_itemcode.urlParam.join_onCol=['s.itemcode','u.uomcode'];
+				dialog_itemcode.urlParam.join_onVal=['p.itemcode', 's.uomcode'];
+				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on ='], []];
+				dialog_itemcode.urlParam.join_filterVal=[['p.compcode'], []];
 			}
 		},'urlParam'
 	);
@@ -1360,9 +1336,11 @@ $(document).ready(function () {
 				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
+				{label: 'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' }
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcodetrdept.gridname);
+				$("#convfactoruomcodetrdept").val(data['u_convfactor']);
 				//$("#jqGrid2 input[name='uomcodetrdept']").val(data['s_uomcode']);
 			}
 			
@@ -1394,6 +1372,7 @@ $(document).ready(function () {
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcoderecv.gridname);
+				$("#convfactor_uomcoderecv").val(data['u_convfactor']);
 				//$("#jqGrid2 input[name='uomcoderecv']").val(data['s_uomcode']);
 				getQOHsndrcv();
 			}

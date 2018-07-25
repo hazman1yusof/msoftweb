@@ -34,7 +34,7 @@ class TestController extends defaultController
 
 
         $expdate_obj = DB::table('test.test')
-                        ->where('expdate','>',$trandate)
+                        ->where('expdate','<=',$expdate)
                         ->orderBy('expdate', 'asc')
                         ->get();
 

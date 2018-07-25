@@ -113,7 +113,7 @@ class InventoryTransactionController extends defaultController
     }
 
     public function posted(Request $request){
-        
+
         DB::beginTransaction();
 
         try {
@@ -214,7 +214,7 @@ class InventoryTransactionController extends defaultController
 
                 //4. tolak expdate
                     $expdate_obj = DB::table('material.stockexp')
-                        ->where('expdate','>',$value->trandate)
+                        ->where('expdate','<=',$value->expdate)
                         ->orderBy('expdate', 'asc')
                         ->get();
 
@@ -312,7 +312,6 @@ class InventoryTransactionController extends defaultController
                     //ni utk kalu xde stockloc
                     throw new \Exception("stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->sndrcv." | year: ".$this->toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcoderecv);
                 }
-
             }
 
             DB::commit();
