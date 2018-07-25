@@ -1077,8 +1077,8 @@ $(document).ready(function () {
 		var name = "calculate_conversion_factor";
 
 		let convfactor_bool = false;
-		let convfactor_uomcodetrdept = parseFloat($("#convfactor_uomcodetrdept").val());
-		let convfactor_uomcoderecv = parseFloat($("#convfactor_uomcoderecv").val());
+		let convfactor_uomcodetrdept = parseFloat($("#convfactoruomcodetrdept").val());
+		let convfactor_uomcoderecv = parseFloat($("#convfactoruomcoderecv").val());
 
 		let qtyonhandtr = parseFloat($("#jqGrid2 input[name='qtyonhandtr']").val());
 
@@ -1304,7 +1304,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='description']").val(data['p_description']);
 				$("#jqGrid2 input[name='uomcodetrdept']").val(data['s_uomcode']);
 				$("#jqGrid2 input[name='maxqty']").val(data['s_maxqty']);
-				$("#jqGrid2 input[name='convfactor_uomcodetrdept']").val(data['u_convfactor']);
+				$("#jqGrid2 input[name='convfactoruomcodetrdept']").val(data['u_convfactor']);
 				$("#jqGrid2 input[name='qtyonhandtr']").val(data['s_qtyonhand']);
 				
 				getQOHtxndept();
@@ -1340,7 +1340,7 @@ $(document).ready(function () {
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcodetrdept.gridname);
-				$("#convfactor_uomcodetrdept").val(data['u_convfactor']);
+				$("#convfactoruomcodetrdept").val(data['u_convfactor']);
 				//$("#jqGrid2 input[name='uomcodetrdept']").val(data['s_uomcode']);
 			}
 			
