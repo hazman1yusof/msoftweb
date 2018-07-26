@@ -576,7 +576,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 's.qtyonhand AS qtyonhandtr','ivt.uomcodetrdept', 's.bincode AS qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
+		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 'ivt.qtyonhandtr','ivt.uomcodetrdept', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
 		'ivt.txnqty','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'],
 		table_name:['material.ivtmpdt AS ivt', 'material.stockloc AS s', 'material.productmaster AS p'],
 		table_id:'lineno_',
@@ -629,7 +629,7 @@ $(document).ready(function () {
 			{ label: 'Qty on Hand at Recv Dept', name: 'qtyonhandrecv', width: 100, align: 'right', classes: 'wrap', editable:true,
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editoptions:{readonly: "readonly"},
-				formatter: formatter_recvqtyonhand,
+				// formatter: formatter_recvqtyonhand,
 			},
 			
 			{ label: 'Max Qty', name: 'maxqty', width: 80, align: 'right', classes: 'wrap',  

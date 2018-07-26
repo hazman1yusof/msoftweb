@@ -201,7 +201,7 @@ class InventoryTransactionController extends defaultController
                         'recno' => $value->recno, 
                         'lineno_' => $value->lineno_, 
                         'itemcode' => $value->itemcode, 
-                        'uomcode' => $value->uomcode, 
+                        'uomcode' => $value->uomcodetrdept, 
                         'txnqty' => $value->txnqty, 
                         'netprice' => $value->netprice, 
                         'adduser' => $value->adduser, 
@@ -214,7 +214,7 @@ class InventoryTransactionController extends defaultController
                         'craccno' => $value->craccno, 
                         'crccode' => $value->crccode, 
                         'expdate' => $value->expdate, 
-                        'qtyonhand' => $value->qtyonhand,  
+                        'qtyonhand' => $value->qtyonhandtr,  
                         'batchno' => $value->batchno, 
                         'amount' => $value->amount, 
                     ]);
@@ -229,6 +229,8 @@ class InventoryTransactionController extends defaultController
                     ->where('StockLoc.UomCode','=',$value->uomcodetrdept);
 
                 $stockloc_first = $stockloc_obj->first();
+
+
 
                 //2.kalu ada stockloc, update 
                 if(count($stockloc_first)){
@@ -250,25 +252,33 @@ class InventoryTransactionController extends defaultController
                 //4. tolak expdate
                     $expdate_obj = DB::table('material.stockexp')
                         ->where('expdate','<=',$value->expdate)
+                        ->where('Year','=',$this->toYear($ivtmphd->trandate))
+                        ->where('DeptCode','=',$ivtmphd->txndept)
+                        ->where('ItemCode','=',$value->itemcode)
+                        ->where('UomCode','=',$value->uomcodetrdept)
+                        ->where('BatchNo','=',$value->batchno)
+                        ->where('expdate','<=',$value->expdate)
                         ->orderBy('expdate', 'asc');
+
 
                     $expdate_get = $expdate_obj->get();
 
                     if(count($expdate_get)){
                         $txnqty_ = $value->txnqty;
-                        foreach ($expdate_obj as $value) {
-                            $balqty = $value->balqty;
+                        $balqty = 0;
+                        foreach ($expdate_get as $value2) {
+                            $balqty = $value2->balqty;
                             if($txnqty_-$balqty>0){
                                 $txnqty_ = $txnqty_-$balqty;
                                 DB::table('material.stockexp')
-                                    ->where('id','=',$value->id)
+                                    ->where('idno','=',$value2->idno)
                                     ->update([
                                         'balqty' => '0'
                                     ]);
                             }else{
                                 $balqty = $balqty-$txnqty_;
                                 DB::table('material.stockexp')
-                                    ->where('id','=',$value->id)
+                                    ->where('idno','=',$value2->idno)
                                     ->update([
                                         'balqty' => $balqty
                                     ]);
@@ -276,6 +286,8 @@ class InventoryTransactionController extends defaultController
                             }
                         }
                     }else{
+                        dump($expdate_obj->toSql());
+                        dump($expdate_obj->getBindings());
                         throw new \Exception("stockexp not exist at all");
                     }
 
@@ -333,11 +345,11 @@ class InventoryTransactionController extends defaultController
 
                 //6. tolak expdate
                     $expdate_obj = DB::table('material.stockexp')
-                        ->where('Year','>',$this->toYear($ivtmphd->trandate))
-                        ->where('DeptCode','>',$ivtmphd->sndrcv)
-                        ->where('ItemCode','>',$value->itemcode)
-                        ->where('UomCode','>',$value->uomcoderecv)
-                        ->where('BatchNo','>',$value->batchno)
+                        ->where('Year','=',$this->toYear($ivtmphd->trandate))
+                        ->where('DeptCode','=',$ivtmphd->sndrcv)
+                        ->where('ItemCode','=',$value->itemcode)
+                        ->where('UomCode','=',$value->uomcoderecv)
+                        ->where('BatchNo','=',$value->batchno)
                         ->where('expdate','<=',$value->expdate)
                         ->orderBy('expdate', 'asc');
 
