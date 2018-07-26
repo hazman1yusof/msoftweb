@@ -372,6 +372,30 @@ class InventoryTransactionController extends defaultController
                 }
             }
 
+           /* //--- 8. change recstatus to posted ---//
+
+            DB::table('material.ivtmphd')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'postedby' => session('username'),
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'POSTED' 
+                ]);
+
+            DB::table('material.ivtmpdt')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'POSTED' 
+                ]);*/
+            
+
+            /*$queries = DB::getQueryLog();
+            dump($queries);*/
+
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();

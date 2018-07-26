@@ -191,7 +191,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			/*let stat = selrowData("#jqGrid").delordhd_recstatus;
+			/*let stat = selrowData("#jqGrid").recstatus;
 			switch($("#scope").val()){
 				case "dataentry":
 						$("label[for=delordhd_reqdept]").hide();
@@ -963,7 +963,7 @@ $(document).ready(function () {
 		dialog_uomcodetrdept.on();
 		dialog_uomcoderecv.on();
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
-		$("#jqGrid2 input[name='qtyonhandtr']").on('blur',calculate_conversion_factor);
+		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
 		$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
 			var code = e.keyCode || e.which;
 			if (code == '9')$('#jqGrid2_ilsave').click();
@@ -1375,7 +1375,7 @@ $(document).ready(function () {
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcoderecv.gridname);
-				$("#convfactor_uomcoderecv").val(data['u_convfactor']);
+				$("#convfactoruomcoderecv").val(data['u_convfactor']);
 				//$("#jqGrid2 input[name='uomcoderecv']").val(data['s_uomcode']);
 				getQOHsndrcv();
 			}
