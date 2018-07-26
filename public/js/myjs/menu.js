@@ -34,9 +34,10 @@ var Menu = function () {
 		}
 
 		var colCounter = 0; 
-		function coloringHeader(programid){
+		function coloringHeader_title(programid,title){
 			var curr = $("iframe[programid="+programid+"]");
 			curr.prev().addClass("headerColor"+colCounter%6);
+			curr.prev().attr("title",title);
 			colCounter++;
 		}
 		
@@ -66,7 +67,7 @@ var Menu = function () {
 					}
 			  });
 			  dialogArray.push(dialogObj);
-			  coloringHeader(obj.attr('programid'));
+			  coloringHeader_title(obj.attr('programid'),title);
 			$( dialogObj.dialog ).mouseenter(function() {
 				window.scrollTo(0,0);
 				$('body').addClass('stop-scrolling')

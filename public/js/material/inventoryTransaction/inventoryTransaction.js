@@ -402,7 +402,11 @@ $(document).ready(function () {
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
 		saveParam.oper = $(this).data("oper");
-		let obj={recno:selrowData('#jqGrid').recno,_token:$('#_token').val()};
+		let obj={
+			recno:selrowData('#jqGrid').recno,
+			_token:$('#_token').val(),
+			idno:selrowData('#jqGrid').idno
+		};
 		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
@@ -1409,7 +1413,7 @@ $(document).ready(function () {
 			}
 		}, 'urlParam'
 	);
-	dialog_requestRecNo.makedialog();
+	dialog_requestRecNo.makedialog(false);
 
 	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();
