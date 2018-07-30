@@ -128,7 +128,7 @@ class InventoryTransactionDetailController extends defaultController
                     'crccode' => $crccode, */
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $this->chgDate($request->expdate), 
+                    'expdate' => $request->expdate, 
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
@@ -197,7 +197,7 @@ class InventoryTransactionDetailController extends defaultController
                     'crccode' => $crccode, */
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $this->chgDate($request->expdate), 
+                    'expdate' => $request->expdate, 
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks

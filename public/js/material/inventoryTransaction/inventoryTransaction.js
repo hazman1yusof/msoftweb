@@ -673,7 +673,7 @@ $(document).ready(function () {
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
+			/*{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
                     dataInit: function (element) {
@@ -687,6 +687,14 @@ $(document).ready(function () {
                         });
                     }
                 }
+			},*/
+			{ label: 'Expiry Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
+			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+						edittype:'custom',	editoptions:
+						    {  custom_element:expdateCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
 			},
 			{ label: 'Batch No', name: 'batchno', width: 75, classes: 'wrap', editable:true,
 					maxlength: 30,
@@ -747,7 +755,7 @@ $(document).ready(function () {
 		},
 		beforeSubmit: function(postdata, rowid){ 
 			dialog_itemcode.check(errorField);
-			dialog_uomcode.check(errorField);
+			dialog_expdate.check(errorField);
 			dialog_uomcoderecv.check(errorField);
 			dialog_uomcodetrdept.check(errorField);
 	 	}
@@ -912,6 +920,10 @@ $(document).ready(function () {
 		return $('<div class="input-group"><input id="uomcoderecv" name="uomcoderecv" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
+	function expdateCustomEdit(val,opt){
+		// val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+	}
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
 			return $(elem).find("input").val();
@@ -962,6 +974,7 @@ $(document).ready(function () {
 		dialog_itemcode.on();//start binding event on jqgrid2
 		dialog_uomcodetrdept.on();
 		dialog_uomcoderecv.on();
+		dialog_expdate.on();
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
 		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
 		$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
@@ -1119,7 +1132,7 @@ $(document).ready(function () {
 				case "Out":
 					if(event.target.value >= qtyonhandtr && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot be greater than Quantity On Hand";
-						event.target.value='';fail=true;
+						event.target.value=event.target.name;fail=true;
 					}else if(qtyonhandtr<event.target.value){
 						fail_msg = "Transaction quantity exceed quantity on hand";
 						event.target.value='';fail=true;
@@ -1344,7 +1357,7 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcodetrdept.gridname);
 				$("#convfactoruomcodetrdept").val(data['u_convfactor']);
-				//$("#jqGrid2 input[name='uomcodetrdept']").val(data['s_uomcode']);
+				$("#jqGrid2 input[name='uomcodetrdept']").val(data['s_qtyonhand']);
 			}
 			
 		},{
@@ -1396,6 +1409,38 @@ $(document).ready(function () {
 		},'urlParam'
 	);
 	dialog_uomcoderecv.makedialog(false);
+
+	var dialog_expdate = new ordialog(
+		'expdate',['material.stockexp AS e', 'material.stockloc AS s'],"#jqGrid2 input[name='expdate']",errorField,
+		{	colModel:
+			[
+				{label:'Expiry Date',name:'e_expdate',width:200,classes:'pointer',canSearch:true,or_search:true,checked:true,},
+				{label:'Batch No',name:'e_batchno',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'itemcode', name: 's_itemcode', width: 50, classes: 'pointer', hidden:true },
+				{label:'uomcode', name: 's_uomcode', width: 50, classes: 'pointer', hidden:true },
+				{label:'deptcode', name: 'e_deptcode', width: 50, classes: 'pointer', hidden:true },
+			],
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_expdate.gridname);
+				$("#jqGrid2 input[name='batchno']").val(data['e_batchno']);
+				
+			}
+		},{
+			title:"Select Expiry Date",
+			open: function(){
+				dialog_expdate.urlParam.fixPost="true";
+				dialog_expdate.urlParam.table_id="none_";
+				dialog_expdate.urlParam.filterCol=['e.compcode','e.deptcode'];
+				dialog_expdate.urlParam.filterVal=['session.company',$("#txndept").val()];
+				dialog_expdate.urlParam.join_type=['LEFT JOIN'];
+				dialog_expdate.urlParam.join_onCol=['e.itemcode'];
+				dialog_expdate.urlParam.join_onVal=['s.itemcode'];
+				dialog_expdate.urlParam.join_filterCol=[['e.compcode on =']];
+				dialog_expdate.urlParam.join_filterVal=[['s.compcode']];
+			}
+		},'urlParam'
+	);
+	dialog_expdate.makedialog();
 
 	var dialog_requestRecNo = new ordialog(
 		'srcdocno','material.purordhd','#srcdocno',errorField,
