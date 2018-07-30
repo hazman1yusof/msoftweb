@@ -12,8 +12,8 @@ var Menu = function () {
 			}
 			$.each(dialogArray, function( index, obj ) {
 				if(obj.id==programid){
-					 dialogArray.splice(index, 1);
-					 return false;
+					dialogArray.splice(index, 1);
+					return false;
 				}
 			});
 			if(dialogArray.length>0){

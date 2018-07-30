@@ -249,7 +249,7 @@ class InventoryTransactionController extends defaultController
                             'NetMvVal'.$month => $NetMvVal
                         ]);
 
-                //4. tolak expdate
+                //4. tolak expdate, kalu ada batchno
                     $expdate_obj = DB::table('material.stockexp')
                         ->where('expdate','<=',$value->expdate)
                         ->where('Year','=',$this->toYear($ivtmphd->trandate))
@@ -288,7 +288,7 @@ class InventoryTransactionController extends defaultController
                     }else{
                         dump($expdate_obj->toSql());
                         dump($expdate_obj->getBindings());
-                        throw new \Exception("stockexp not exist at all");
+                        throw new \Exception("stockexp for that batchno does not exist");
                     }
 
                 }else{
@@ -367,8 +367,15 @@ class InventoryTransactionController extends defaultController
                     }
 
                 }else{ 
-                    //ni utk kalu xde stockloc
-                    throw new \Exception("stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->sndrcv." | year: ".$this->toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcoderecv);
+                    //ni utk kalu xde stockloc, buat baru
+                    DB::table('material.stockexp')
+                        ->insert([
+                            'DeptCode' => $ivtmphd->sndrcv,
+                            'ItemCode' => $value->itemcode,
+                            'UomCode' => $value->uomcoderecv,
+                            'BatchNo' => $value->batchno,
+                            'expdate' => $value->expdate
+                        ]);
                 }
             }
 

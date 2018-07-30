@@ -262,7 +262,10 @@ class PatmastController extends defaultController
             'recstatus' => 'A'
         ];
 
+        $array_ignore = ['mrn','MRN'];
+
         foreach ($request->field as $key => $value) {
+            if(array_search($value,$array_ignore))continue;
             $array_update[$value] = $request[$request->field[$key]];
         }
 
