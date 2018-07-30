@@ -1645,7 +1645,7 @@ $(document).ready(function () {
 
 			}
 		},{
-			title:"Select Item For Stock Transaction",
+			title:"Select Item For Delivery Order",
 			open:function(){
 				dialog_itemcode.urlParam.fixPost="true";
 				dialog_itemcode.urlParam.table_id = "none_";
