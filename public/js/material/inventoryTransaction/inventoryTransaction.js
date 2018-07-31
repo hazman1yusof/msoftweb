@@ -1411,38 +1411,31 @@ $(document).ready(function () {
 	dialog_uomcoderecv.makedialog(false);
 
 	var dialog_expdate = new ordialog(
-		'expdate',['material.stockexp AS e', 'material.stockloc AS s'],"#jqGrid2 input[name='expdate']",errorField,
+		'expdate',['material.stockexp'],"#jqGrid2 input[name='expdate']",errorField,
 		{	colModel:
 			[
-				{label:'Expiry Date',name:'e_expdate',width:200,classes:'pointer',canSearch:true,or_search:true,checked:true,},
-				{label:'Batch No',name:'e_batchno',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'itemcode', name: 's_itemcode', width: 50, classes: 'pointer', hidden:true },
-				{label:'uomcode', name: 's_uomcode', width: 50, classes: 'pointer', hidden:true },
-				{label:'deptcode', name: 'e_deptcode', width: 50, classes: 'pointer', hidden:true },
+				{label:'Expiry Date',name:'expdate',width:200,classes:'pointer',canSearch:true,or_search:true,checked:true,},
+				{label:'Batch No',name:'batchno',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'itemcode', name: 'itemcode', width: 50, classes: 'pointer', hidden:true },
+				{label:'uomcode', name: 'uomcode', width: 50, classes: 'pointer', hidden:true },
+				{label:'deptcode', name: 'deptcode', width: 50, classes: 'pointer', hidden:true },
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_expdate.gridname);
-				$("#jqGrid2 input[name='expdate']").val(data['e_expdate']);
-				$("#jqGrid2 input[name='batchno']").val(data['e_batchno']);
+				$("#jqGrid2 input[name='batchno']").val(data['batchno']);
 
 				
 			}
 		},{
 			title:"Select Expiry Date",
 			open: function(){
-				dialog_expdate.urlParam.fixPost="true";
-				dialog_expdate.urlParam.table_id="none_";
-				dialog_expdate.urlParam.filterCol=['e.compcode','e.year','e.deptcode'];
-				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val()];
-				dialog_expdate.urlParam.join_type=['LEFT JOIN'];
-				dialog_expdate.urlParam.join_onCol=['e.itemcode'];
-				dialog_expdate.urlParam.join_onVal=['s.itemcode'];
-				dialog_expdate.urlParam.join_filterCol=[['e.compcode on =']];
-				dialog_expdate.urlParam.join_filterVal=[['s.compcode']];
+				dialog_expdate.urlParam.filterCol=['compcode','year','deptcode', 'uomcode'];
+				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcodetrdept").val()];
+			
 			}
 		},'urlParam'
 	);
-	dialog_expdate.makedialog();
+	dialog_expdate.makedialog(false);
 
 	var dialog_requestRecNo = new ordialog(
 		'srcdocno','material.purordhd','#srcdocno',errorField,

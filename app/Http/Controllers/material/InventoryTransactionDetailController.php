@@ -78,7 +78,7 @@ class InventoryTransactionDetailController extends defaultController
 
     public function chgDate($date){
         if(!empty($date)){
-            $newstr=explode("-", $date);
+            $newstr=explode("/", $date);
             return $newstr[2].'-'.$newstr[1].'-'.$newstr[0];
         }else{
             return '0000-00-00';
