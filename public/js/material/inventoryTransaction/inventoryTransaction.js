@@ -921,7 +921,7 @@ $(document).ready(function () {
 	}
 
 	function expdateCustomEdit(val,opt){
-		// val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		 val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 	}
 	function galGridCustomValue (elem, operation, value){
@@ -1422,7 +1422,9 @@ $(document).ready(function () {
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_expdate.gridname);
+				$("#jqGrid2 input[name='expdate']").val(data['e_expdate']);
 				$("#jqGrid2 input[name='batchno']").val(data['e_batchno']);
+
 				
 			}
 		},{
@@ -1430,8 +1432,8 @@ $(document).ready(function () {
 			open: function(){
 				dialog_expdate.urlParam.fixPost="true";
 				dialog_expdate.urlParam.table_id="none_";
-				dialog_expdate.urlParam.filterCol=['e.compcode','e.deptcode'];
-				dialog_expdate.urlParam.filterVal=['session.company',$("#txndept").val()];
+				dialog_expdate.urlParam.filterCol=['e.compcode','e.year','e.deptcode'];
+				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val()];
 				dialog_expdate.urlParam.join_type=['LEFT JOIN'];
 				dialog_expdate.urlParam.join_onCol=['e.itemcode'];
 				dialog_expdate.urlParam.join_onVal=['s.itemcode'];

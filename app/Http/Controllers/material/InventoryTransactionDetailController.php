@@ -78,7 +78,7 @@ class InventoryTransactionDetailController extends defaultController
 
     public function chgDate($date){
         if(!empty($date)){
-            $newstr=explode("/", $date);
+            $newstr=explode("-", $date);
             return $newstr[2].'-'.$newstr[1].'-'.$newstr[0];
         }else{
             return '0000-00-00';
@@ -128,7 +128,7 @@ class InventoryTransactionDetailController extends defaultController
                     'crccode' => $crccode, */
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $request->expdate, 
+                    'expdate' => $this->chgDate($request->expdate), 
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
@@ -197,7 +197,7 @@ class InventoryTransactionDetailController extends defaultController
                     'crccode' => $crccode, */
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $request->expdate, 
+                    'expdate' => $this->chgDate($request->expdate),
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
