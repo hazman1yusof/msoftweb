@@ -899,6 +899,7 @@ $(document).ready(function () {
 			case 'Item Code':temp=$('#itemcode');break;
 			case 'UOM Code Tran Dept':temp=$('#uomcodetrdept');break;
 			case 'UOM Code Recv Dept':temp=$('#uomcoderecv');break;
+			case 'Expiry Date':temp=$('#expdate');break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 	}
@@ -1132,19 +1133,19 @@ $(document).ready(function () {
 				case "Out":
 					if(event.target.value >= qtyonhandtr && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot be greater than Quantity On Hand";
-						event.target.value=event.target.name;fail=true;
+						event.target.value=$("input[name='txnqty']").val();fail=true;
 					}else if(qtyonhandtr<event.target.value){
 						fail_msg = "Transaction quantity exceed quantity on hand";
-						event.target.value='';fail=true;
+						event.target.value=$("input[name='txnqty']").val();fail=true;
 					}else if(qtyonhandtr<event.target.value && isstype=='Transfer'){
 						fail_msg = "Transaction quantity exceed quantity on hand";
-						event.target.value='';fail=true;
+						event.target.value=$("input[name='txnqty']").val();fail=true;
 					}
 					break;
 				case "In":
 					if(event.target.name == 0 && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot Be Zero";
-						event.target.value='';fail=true;
+						event.target.value=$("input[name='txnqty']").val();fail=true;
 					}
 					break;
 				default:
@@ -1423,8 +1424,6 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_expdate.gridname);
 				$("#jqGrid2 input[name='batchno']").val(data['batchno']);
-
-				
 			}
 		},{
 			title:"Select Expiry Date",
