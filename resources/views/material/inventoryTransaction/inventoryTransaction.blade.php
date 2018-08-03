@@ -17,10 +17,10 @@
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
-					  <div class="col-md-2">
-					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
-		              </div>
+						<div class="col-md-2">
+							<label class="control-label" for="Scol">Search By : </label>  
+							<select id='Scol' name='Scol' class="form-control input-sm"></select>
+						</div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  

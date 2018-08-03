@@ -472,17 +472,6 @@ $(document).ready(function() {
         }
     });
 
-    $('#btn_reg_proceed').click(function(){
-        var checkedbox = $("#tbl_existing_record input[type='checkbox']:checked");
-        if(checkedbox.closest("td").next().length>0){
-            let mrn = checkedbox.data("mrn");
-            let idno = checkedbox.data("idno");
-            save_patient('edit',idno,mrn);
-        }else{
-            save_patient('add');
-        }
-    });
-
     function save_patient(oper,idno,mrn="nothing"){
         var saveParam={
             action:'save_patient',
@@ -550,35 +539,6 @@ $(document).ready(function() {
             alert('there is an error on check existing patient!');
         });
 	}
-
-    var tbl_exist_rec = $('#tbl_existing_record').DataTable( {
-        "lengthChange": false,"info": false,"pagingType" : "numbers", "ordering": false,
-        "search": {"smart": true, },
-        "columns": [
-                    {'data' : 'merge'},
-                    {'data' : 'MRN'}, 
-                    {'data' : 'Name' },
-                    {'data' : 'Newic'}, 
-                    {'data' : 'Oldic' },
-                    {'data' : 'idnumber'}, 
-                    {'data' : 'DOB' },
-                    {'data' : "idno"},
-                   ],
-        columnDefs: [{
-            targets:   0,
-            'render': function (data, type, full, meta){
-                if(data==null){
-                    return "<small>Merge this</br>with?</small>"
-                }else{
-                    return '<input type="checkbox" name="chk_' + data + '" id="chk_' + data + '" data-mrn="' + data + '" data-idno="' + full.idno + '">';
-                }
-             }
-        }],
-        select: {
-            style:    'os',
-            selector: 'td:first-child'
-        },
-    });
 
     // *************************** episode ******************************
 

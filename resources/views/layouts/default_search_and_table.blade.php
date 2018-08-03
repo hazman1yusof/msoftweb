@@ -2,7 +2,7 @@
 	<form id="searchForm" class="formclass" style='width:99%'>
 		<fieldset>
 			<div class="ScolClass" style="padding:0 0 0 15px">
-				<div name='Scol'>Search By : </div>
+				<div name='Scol' style='font-weight:bold'>Search By : </div>
 			</div>
 			<div class="StextClass">
 				<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">

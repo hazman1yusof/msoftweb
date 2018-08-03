@@ -311,7 +311,8 @@
 						<div class="noti"><ol></ol>
 						</div>
 					</div>
-			</div>		
+			</div>
+				
 			<div id="dialog_remarks" title="Remarks">
 			  <div class="panel panel-default">
 			    <div class="panel-body">

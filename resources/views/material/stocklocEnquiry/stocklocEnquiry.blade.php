@@ -29,116 +29,104 @@
     		<div class="panel-body">
     			<div class='col-md-12' style="padding:0 0 15px 0">
     				<table id="jqGrid" class="table table-striped"></table>
-    					<div id="jqGridPager"></div>
+    				<div id="jqGridPager"></div>
 				</div>
     		</div>
 		</div>
+
+
+
 		<div class="panel panel-default">
     		<div class="panel-body">
-    			<div class='col-md-6' style="padding:0 0 15px 0">
-    				<table id="details" class ="table table-bordered" >
-    					<div id="jqGridPager"></div>
+			    <div class='col-md-6' >
+					<table id="details" class ="table table-bordered" > 
+			        	<thead>
+					      <tr>
+					         <th></th>
+					         <th>Quantity Movement</th>
+					         <th>Value Movement</th>
+					         
+					      </tr>
+					    </thead>
+
+					    <tbody>
+						    <tr id="details_tr1">
+						    	<th scope="row">Opening</th>
+					      		<td>
+					      			<input id="openbalqty" name="openbalqty" type="text"class="form-control input-sm" readonly="readonly">
+					      		</td>
+					      		<td>
+					      			<input id="openbalval" name="openbalval" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+						    </tr>
+
+						   	<tr id="details_tr2">
+						      	<th scope="row">Jan</th>
+						  		<td>
+					      			<input id="netmvqty1" name="netmvqty1" type="text"class="form-control input-sm" readonly="readonly">
+					      		</td>
+					      		<td>
+					      			<input id="netmvval1" name="netmvval1" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+						    </tr>
+
+						  	<tr id="details_tr3">
+						      	<th scope="row">Feb</th>
+					      		<td>
+					      			<input id="netmvqty2" name="netmvqty2" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+					      		<td>
+					      			<input id="netmvval2" name="netmvval2" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+						    </tr>
+
+						    <tr id="details_tr4">
+						      	<th scope="row">Mar</th>
+					      		<td>
+					      			<input id="netmvqty3" name="netmvqty3" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+					      		<td>
+					      			<input id="netmvval3" name="netmvval3" type="text"class="form-control input-sm" readonly="readonly">
+					      		</td>
+						    </tr>
+
+						    <tr id="details_tr5">
+						      	<th scope="row">Apr</th>
+					      		<td>
+					      			<input id="netmvqty4" name="netmvqty4" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+					      		<td>
+					      			<input id="netmvval4" name="netmvval4" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+						    </tr>
+
+						    <tr id="details_tr6">
+						      	<th scope="row">May</th>
+					     		<td>
+					      			<input id="netmvqty5" name="netmvqty5" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+					      		<td>
+					      			<input id="netmvval5" name="netmvval5" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+						    </tr>
+
+						    <tr id="details_tr7">
+						      	<th scope="row">June</th>
+					      		<td>
+					      			<input id="netmvqty6" name="netmvqty6" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+					      		<td>
+					      			<input id="netmvval6" name="netmvval6" type="text" class="form-control input-sm" readonly="readonly">
+					      		</td>
+						    </tr>
+						</tbody>
+			        </table>
 				</div>
-    		</div>
-		</div>
 
-				
-			
-		<table id="details" class ="table table-bordered" > 
-
-        	<thead>
-		      <tr>
-		         <th></th>
-		         <th>Quantity Movement</th>
-		         <th>Value Movement</th>
-		         
-		      </tr>
-		    </thead>
-
-		    <tbody>
-			    <tr id="details_tr1">
-			    	<th scope="row">Opening</th>
-		      		<td>
-		      			<input id="openbalqty" name="openbalqty" type="text"class="form-control input-sm" readonly="readonly">
-		      		</td>
-		      		<td>
-		      			<input id="openbalval" name="openbalval" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-			    </tr>
-
-			   	<tr id="details_tr2">
-			      	<th scope="row">Jan</th>
-			  		<td>
-		      			<input id="netmvqty1" name="netmvqty1" type="text"class="form-control input-sm" readonly="readonly">
-		      		</td>
-		      		<td>
-		      			<input id="netmvval1" name="netmvval1" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-			    </tr>
-
-			  	<tr id="details_tr3">
-			      	<th scope="row">Feb</th>
-		      		<td>
-		      			<input id="netmvqty2" name="netmvqty2" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-		      		<td>
-		      			<input id="netmvval2" name="netmvval2" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-			    </tr>
-
-			    <tr id="details_tr4">
-			      	<th scope="row">Mar</th>
-		      		<td>
-		      			<input id="netmvqty3" name="netmvqty3" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-		      		<td>
-		      			<input id="netmvval3" name="netmvval3" type="text"class="form-control input-sm" readonly="readonly">
-		      		</td>
-			    </tr>
-
-			    <tr id="details_tr5">
-			      	<th scope="row">Apr</th>
-		      		<td>
-		      			<input id="netmvqty4" name="netmvqty4" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-		      		<td>
-		      			<input id="netmvval4" name="netmvval4" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-			    </tr>
-
-			    <tr id="details_tr6">
-			      	<th scope="row">May</th>
-		     		<td>
-		      			<input id="netmvqty5" name="netmvqty5" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-		      		<td>
-		      			<input id="netmvval5" name="netmvval5" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-			    </tr>
-
-			    <tr id="details_tr7">
-			      	<th scope="row">June</th>
-		      		<td>
-		      			<input id="netmvqty6" name="netmvqty6" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-		      		<td>
-		      			<input id="netmvval6" name="netmvval6" type="text" class="form-control input-sm" readonly="readonly">
-		      		</td>
-			    </tr>
-			</tbody>
-
-        </table>
-
-		</div>
-
-	                	<div class='col-md-6' >
-			<form class='form-horizontal' style='width:99%' id='formdata'>
-
-				
-			
+			    <div class='col-md-6' >
 					<table id="details" class ="table table-bordered" >
 
-	                	<thead>
+		            	<thead>
 					      <tr>
 					         <th></th>
 					         <th>Quantity Movement</th>
@@ -226,12 +214,11 @@
 						      		</td>
 						      		
 						    </tr>
-                             
-
 						</tbody>
-
-	                </table>
-    </div>
+		            </table>
+		    	</div>
+			</div>
+		</div>
 
 	@endsection
 

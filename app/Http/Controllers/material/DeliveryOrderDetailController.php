@@ -309,8 +309,8 @@ class DeliveryOrderDetailController extends defaultController
                         'upduser'=> session('username'), 
                         'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                         'expdate'=> $this->chgDate($value['expdate']),  
-                        'batchno'=> $value['batchno']
-                        // 'remarks'=> $request['remarks
+                        'batchno'=> $value['batchno'],
+                        'remarks'=> $value['remarks']
                     ]);
             }
             

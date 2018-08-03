@@ -262,7 +262,7 @@ class PatmastController extends defaultController
             'recstatus' => 'A'
         ];
 
-        $array_ignore = ['mrn','MRN'];
+        $array_ignore = ['mrn','MRN','first_visit_date','last_visit_date'];
 
         foreach ($request->field as $key => $value) {
             if(array_search($value,$array_ignore))continue;
