@@ -1358,7 +1358,7 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcodetrdept.gridname);
 				$("#convfactoruomcodetrdept").val(data['u_convfactor']);
-				$("#jqGrid2 input[name='uomcodetrdept']").val(data['s_qtyonhand']);
+				$("#jqGrid2 input[name='qtyonhandtr']").val(data['s_qtyonhand']);
 			}
 			
 		},{

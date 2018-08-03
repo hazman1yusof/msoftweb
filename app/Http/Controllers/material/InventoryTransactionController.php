@@ -379,7 +379,7 @@ class InventoryTransactionController extends defaultController
                 }
             }
 
-           /* //--- 8. change recstatus to posted ---//
+            //--- 8. change recstatus to posted ---//
 
             DB::table('material.ivtmphd')
                 ->where('recno','=',$request->recno)
@@ -396,7 +396,7 @@ class InventoryTransactionController extends defaultController
                 ->where('recstatus','!=','DELETE')
                 ->update([
                     'recstatus' => 'POSTED' 
-                ]);*/
+                ]);
             
 
             /*$queries = DB::getQueryLog();
