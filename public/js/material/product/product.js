@@ -467,7 +467,6 @@ $(document).ready(function () {
 		this.check = function(){
 			$.each(this.radiobuttons, function( index, value ) {
 				var checked = $("input[name="+value+"]:checked").val();
-				//alert(itemtype);
 			    if(!checked){
 			     	$("label[for="+value+"]").css('color', 'red');
 			     	$(":radio[name='"+value+"']").parent('label').css('color', 'red');
@@ -497,7 +496,6 @@ $(document).ready(function () {
 		this.hideradioButton=hideradioButton;
 		this.check = function(){
 			$.each(this.hideradioButton, function( index, value ) {
-				//console.log(value);
 				$(":radio[name="+value+"]:not(:checked)").hide();
 				$(":radio[name="+value+"]:not(:checked)").parent('label').hide();
 			});

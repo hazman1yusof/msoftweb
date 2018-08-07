@@ -165,21 +165,7 @@ $(document).ready(function () {
      $("#jqGrid").jqGrid('setLabel', 'minqty', 'Min Stock Qty', {'text-align':'right'});
      $("#jqGrid").jqGrid('setLabel', 'maxqty', 'Max Stock Qty', {'text-align':'right'});
      $("#jqGrid").jqGrid('setLabel', 'reordqty', 'Reorder Qty', {'text-align':'right'});
-    
-	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
-	
-    var urlParam3={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:'',
-		table_name:'material.stockexp',
-		table_id:'idno',
-		sort_idno:true,
-		filterCol:['itemcode', 'uomcode','year'],
-		filterVal:['', '',$("#getYear").val()],
-	}
 
-	
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();
 	function searchBy(){
@@ -213,7 +199,7 @@ $(document).ready(function () {
 			action:'get_value_default',
 			url:'util/get_value_default',
 			field: ['openbalval','openbalqty','netmvval1','netmvqty1','netmvval2','netmvqty2','netmvval3','netmvqty3','netmvval4','netmvqty4','netmvval5','netmvqty5', 'netmvval6','netmvqty6','netmvval7','netmvqty7','netmvval8','netmvqty8','netmvval9','netmvqty9','netmvval10','netmvqty10',
-			'netmvval11','netmvqty11','netmvval2','netmvqty12'],
+			'netmvval11','netmvqty11','netmvval12','netmvqty12'],
 			table_name:'material.stockloc',
 			table_id:'itemcode',
 			filterCol:['itemcode', 'uomcode', 'deptcode', 'year'],
@@ -273,8 +259,6 @@ $(document).ready(function () {
 			}
 		});
 	}
-         
-
 	
 	function searchMain(Stext,Scol){
 
@@ -304,31 +288,5 @@ $(document).ready(function () {
      	refreshGrid('#jqGrid',urlParam);
 	}
 
-    $('#filter').change(function(){
-		if($(this).val() == 'itemcode' || $(this).val() == 'deptcode' ){
-			$('#search').prop('disabled',false);
-		}else{
-			$('#search').prop('disabled',true);
-		}
-	});
-
-    $('#search').click(function(){
-		$( "#dialogbox" ).dialog( "open" );
-	});
-
-	function populateTable(){
-		selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-		rowData = $("#jqGrid").jqGrid ('getRowData', selrow);
-		$.each(rowData, function( index, value ) {
-			if(value)$('#TableBankEnquiry #'+index+' span').text(numeral(value).format('0,0.00'));
-		});
-	}
-
-    $("#itemExpiry").jqGrid('setLabel', 'balqty', 'Balance Quantity', {'text-align':'right'});
-	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-
 	addParamField('#jqGrid',true,urlParam);
-
-	$("#pg_jqGridPager2 table").hide();
-	$("#pg_jqGridPager3 table").hide();
 });

@@ -5,56 +5,42 @@
 @section('body')
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
+				<div class="ScolClass" style="padding:0 0 0 15px">
+					<div name='Scol' style='font-weight:bold'>Search By : </div>
 				</div>
 				<div class="StextClass">
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-					
 				</div>
-			 </fieldset> 
+				<div class="col-md-3 col-md-offset-9" style="padding-top: 0; text-align: end;">
+					<button type="button" id='histbut' class='btn btn-info' >History</button>
+				</div>
+			</fieldset>
 		</form>
-		<button type="button" id='histbut' class='btn btn-info pull-right' style='margin: 0.2%'>History</button>
-		<br><br><br>
     	<div class="panel panel-default">
-		    	
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
+    		<div class="panel-body">
+    			<div class='col-md-12' style="padding:0 0 15px 0">
+    				<table id="jqGrid" class="table table-striped"></table>
+    					<div id="jqGridPager"></div>
+				</div>
+    		</div>
 		</div>
 
     </div>
 
-		<!-- <button type="button" id='histbut' class='btn btn-info pull-right' style='margin: 0.2%'>History</button>
-		<br><br><br>
-    	<div class="panel panel-default">
-		    	
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
-		</div>
-
-    </div> -->
-
     <div id="msgBox" title="Particulars of Asset Movement" style="display:none">
-    <ul>
+
+    	<ul style="padding:15px 0 0 0">
 			<b>ASSET NO  : </b><span name='assetno' ></span> <br><br>
 			<b>DESCRIPTION: </b><span name='description' ></span>
-			
 		</ul>	
 
 		<div id='gridhist_c' style="padding:15px 0 0 0">
             <table id="gridhist" class="table table-striped"></table>
             <div id="gridhistpager"></div>
         </div>
+        
 	</div>
 
 	<!-------------------------------- End Search + table ------------------>

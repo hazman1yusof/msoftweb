@@ -998,9 +998,79 @@ function unpadzero(cellvalue, options, rowObject){
 	return cellvalue.substring(cellvalue.search(/[1-9]/));
 }
 
-function setHeight_singletable(){
-	var heightuse = $('body').height()-($('#searchForm').outerHeight(true)+30);
-	$("#jqGrid").jqGrid('setGridHeight', heightuse);
+function checkradiobutton(radiobuttons){
+	this.radiobuttons=radiobuttons;
+	this.check = function(){
+		$.each(this.radiobuttons, function( index, value ) {
+			var checked = $("input[name="+value+"]:checked").val();
+		    if(!checked){
+		     	$("label[for="+value+"]").css('color', '#a94442');
+		     	$(":radio[name='"+value+"']").parent('label').css('color', '#a94442');
+			}else{
+				$("label[for="+value+"]").css('color', '#444444');
+				$(":radio[name='"+value+"']").parent('label').css('color', '#444444');
+			}
+		});
+	}
+	this.reset = function(){
+		$.each(this.radiobuttons, function( index, value ) {
+			$("label[for="+value+"]").css('color', '#444444');
+			$(":radio[name="+value+"]").parent('label').css('color', '#444444');
+		});
+	}
 }
+
+////////////////////////////////// faster detail loading  ///////////////////////////////////////////
+
+function faster_detail_load(){
+	this.array = [];
+	this.get_array = function(page,options,param,case_,cellvalue){
+		let storage_name = 'fastload_'+page+'_'+case_+'_'+cellvalue;
+		let storage_obj = localStorage.getItem(storage_name);
+
+		if(!storage_obj){
+
+			$.get( param.url+"?"+$.param(param), function( data ) {
+					
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data.rows)){
+					$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0].description+"</span>");
+
+					let desc = data.rows[0].description;
+					let now = moment()
+
+					var json = JSON.stringify({
+						'description':desc,
+						'timestamp': now
+					});
+
+					localStorage.setItem(storage_name,json);
+				}
+			});
+
+		}else{
+			let obj_stored = {
+				'json':JSON.parse(storage_obj),
+				'options':options
+			}
+			this.array.push(obj_stored);
+		}
+	}
+	this.set_array = function(){
+		this.array.forEach(function(elem,i){
+			let options = elem.options;
+			let desc = elem.json.description;
+			$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+desc+"</span>");
+		});
+		return this;
+	}
+	this.reset = function(){
+		this.array.length = 0;
+	}
+
+}
+
+
+
 
 /////////////////////////////////End utility function////////////////////////////////////////////////

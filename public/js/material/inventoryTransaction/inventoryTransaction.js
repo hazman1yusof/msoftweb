@@ -1354,6 +1354,7 @@ $(document).ready(function () {
 				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
 				{label: 'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' }
+				{label: 'qtyonhand', name: 's_qtyonhand', width: 100, classes: 'pointer', hidden: true }
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcodetrdept.gridname);
