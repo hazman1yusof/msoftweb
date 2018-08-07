@@ -86,17 +86,10 @@ class InventoryTransactionDetailController extends defaultController
     }
 
     public function add(Request $request){
-
-      /*  $draccno = $this->get_draccno($request->itemcode);
-        $drccode = $this->get_drccode($request->txndept);
-        $craccno = $this->get_craccno();
-        $crccode = $this->get_crccode();*/
-
-
         DB::beginTransaction();
 
         try {
-
+            $request->expdate = $this->null_date($request->expdate);
             $recno = $request->recno;
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.ivtmpdt')->select('lineno_')
@@ -113,19 +106,14 @@ class InventoryTransactionDetailController extends defaultController
                     'recno' => $recno,
                     'lineno_' => $li,
                     'itemcode' => $request->itemcode,
-                    'uomcodetrdept' => $request->uomcodetrdept,
+                    'uomcode' => $request->uomcode,
                     'txnqty' => $request->txnqty,
                     'netprice' => $request->netprice,
                     'productcat' => $request->productcat,
-                    'qtyonhandtr' => $request->qtyonhandtr,
+                    'qtyonhand' => $request->qtyonhand,
                     'uomcoderecv'=> $request->uomcoderecv,
                     'qtyonhandrecv'=> $request->qtyonhandrecv,
                     'amount' => $request->amount,
-                   /* 'totamount' => $request->totamount,
-                    'draccno' => $draccno,
-                    'drccode' => $drccode,
-                    'craccno' => $craccno,
-                    'crccode' => $crccode, */
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate' => $request->expdate, 
@@ -151,12 +139,6 @@ class InventoryTransactionDetailController extends defaultController
                   
                 ]);
 
-
-
-            // $queries = DB::getQueryLog();
-            // dump($queries);
-
-
             echo $totalAmount;
 
             DB::commit();
@@ -172,7 +154,7 @@ class InventoryTransactionDetailController extends defaultController
         DB::beginTransaction();
 
         try {
-
+            $request->expdate = $this->null_date($request->expdate);
 
             ///1. update detail
             DB::table('material.ivtmpdt')
@@ -181,19 +163,14 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
                     'itemcode' => $request->itemcode,
-                    'uomcodetrdept' => $request->uomcodetrdept,
+                    'uomcode' => $request->uomcode,
                     'txnqty' => $request->txnqty,
                     'netprice' => $request->netprice,
                     'productcat' => $request->productcat,
-                    'qtyonhandtr' => $request->qtyonhandtr,
+                    'qtyonhand' => $request->qtyonhand,
                     'uomcoderecv'=> $request->uomcoderecv,
                     'qtyonhandrecv'=> $request->qtyonhandrecv,
                     'amount' => $request->amount,
-                 /*   'totamount' => $request->totamount,
-                    'draccno' => $draccno,
-                    'drccode' => $drccode,
-                    'craccno' => $craccno,
-                    'crccode' => $crccode, */
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate' => $request->expdate,

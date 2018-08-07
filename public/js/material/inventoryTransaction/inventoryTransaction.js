@@ -222,7 +222,7 @@ $(document).ready(function () {
 			}*/
 			(selrowData("#jqGrid").recstatus!='POSTED')?$('#but_post_jq').show():$('#but_post_jq').hide();
 			urlParam2.filterVal[0]=selrowData("#jqGrid").recno; 
-			urlParam2.join_filterCol = [['ivt.uomcodetrdept on =', 's.deptcode no = ','s.year no ='],[]];
+			urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode no = ','s.year no ='],[]];
 			urlParam2.join_filterVal = [['s.uomcode',selrowData("#jqGrid").txndept,moment(selrowData("#jqGrid").trandate).year()],[]];
 			
 			$('#txndeptdepan').text(selrowData("#jqGrid").txndept);//tukar kat depan tu
@@ -450,7 +450,7 @@ $(document).ready(function () {
 				$('#idno').val(data.idno);//just save idno for edit later
 				
 				urlParam2.filterVal[0]=data.recno; 
-				/*urlParam2.join_filterCol = [['ivt.uomcodetrdept', 's.deptcode','s.year'],[]]; 
+				/*urlParam2.join_filterCol = [['ivt.uomcode', 's.deptcode','s.year'],[]]; 
 				urlParam2.join_filterVal = [['skip.s.uomcode',$('#txndept').val(),moment($("#trandate").val()).year()],[]];
 			*/
 			}else if(selfoper=='edit'){
@@ -576,7 +576,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 'ivt.qtyonhandtr','ivt.uomcodetrdept', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
+		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 'ivt.qtyonhand','ivt.uomcode', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
 		'ivt.txnqty','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'],
 		table_name:['material.ivtmpdt AS ivt', 'material.stockloc AS s', 'material.productmaster AS p'],
 		table_id:'lineno_',
@@ -605,7 +605,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Item Description', name: 'description', width: 200, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
 			
-			{ label: 'UOM Code Tran Dept', name: 'uomcodetrdept', width: 110, classes: 'wrap', editable:true,
+			{ label: 'UOM Code Tran Dept', name: 'uomcode', width: 110, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -614,7 +614,7 @@ $(document).ready(function () {
 						    },
 			},
 			
-			{ label: 'Qty on Hand at Tran Dept', name: 'qtyonhandtr', width: 100, align: 'right', classes: 'wrap', editable:true,	
+			{ label: 'Qty on Hand at Tran Dept', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap', editable:true,	
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
@@ -690,7 +690,7 @@ $(document).ready(function () {
 			},*/
 			{ label: 'Expiry Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
 			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-					editrules:{required: true,custom:true, custom_func:cust_rules},
+					editrules:{required: false,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
 						    {  custom_element:expdateCustomEdit,
 						       custom_value:galGridCustomValue 	
@@ -858,7 +858,7 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table;
 		switch(options.colModel.name){
-			case 'uomcodetrdept':field=['uomcode','description'];table="material.uom";break;
+			case 'uomcode':field=['uomcode','description'];table="material.uom";break;
 			case 'uomcoderecv':field=['uomcode','description'];table="material.uom";break;
 			//case 'uomcode':field=['uomcode','description'];table="material.uom";break;
 		}
@@ -897,7 +897,7 @@ $(document).ready(function () {
 		var temp;
 		switch(name){
 			case 'Item Code':temp=$('#itemcode');break;
-			case 'UOM Code Tran Dept':temp=$('#uomcodetrdept');break;
+			case 'UOM Code Tran Dept':temp=$('#uomcode');break;
 			case 'UOM Code Recv Dept':temp=$('#uomcoderecv');break;
 			case 'Expiry Date':temp=$('#expdate');break;
 		}
@@ -912,7 +912,7 @@ $(document).ready(function () {
 
 	function uomcodetrdeptCustomEdit(val,opt){  	
 		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input id="uomcodetrdept" name="uomcodetrdept" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input id="uomcode" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 
@@ -923,7 +923,7 @@ $(document).ready(function () {
 
 	function expdateCustomEdit(val,opt){
 		 val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+		return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 	}
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -1032,15 +1032,15 @@ $(document).ready(function () {
 		}
 
 		param.filterCol = ['year','itemcode', 'deptcode','uomcode'];
-		param.filterVal = [moment($('#trandate').val()).year(), $("#jqGrid2 input[name='itemcode']").val(),$('#txndept').val(), $("#jqGrid2 input[name='uomcodetrdept']").val()];
+		param.filterVal = [moment($('#trandate').val()).year(), $("#jqGrid2 input[name='itemcode']").val(),$('#txndept').val(), $("#jqGrid2 input[name='uomcode']").val()];
 
 		
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			
-			$("#jqGrid2 input[name='qtyonhandtr']").val('');
+			$("#jqGrid2 input[name='qtyonhand']").val('');
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows) && data.rows[0].qtyonhand!=null){
-				$("#jqGrid2 input[name='qtyonhandtr']").val(data.rows[0].qtyonhand);
+				$("#jqGrid2 input[name='qtyonhand']").val(data.rows[0].qtyonhand);
 			}else if($("#txndept").val()!=''){
 				bootbox.alert({
 				    message: "No stock location at department code: "+$('#txndept').val(),
@@ -1089,7 +1089,7 @@ $(document).ready(function () {
 		console.log("balconv");
 
 
-		var id="#jqGrid2 input[name='qtyonhandtr']"
+		var id="#jqGrid2 input[name='qtyonhand']"
 		var fail_msg = "Please Choose Suitable UOMCode"
 		var name = "calculate_conversion_factor";
 
@@ -1097,12 +1097,12 @@ $(document).ready(function () {
 		let convfactor_uomcodetrdept = parseFloat($("#convfactoruomcodetrdept").val());
 		let convfactor_uomcoderecv = parseFloat($("#convfactoruomcoderecv").val());
 
-		let qtyonhandtr = parseFloat($("#jqGrid2 input[name='qtyonhandtr']").val());
+		let qtyonhand = parseFloat($("#jqGrid2 input[name='qtyonhand']").val());
 
 		console.log(convfactor_uomcodetrdept);
 		console.log(convfactor_uomcoderecv);
 
-		var balconv = convfactor_uomcoderecv*qtyonhandtr%convfactor_uomcodetrdept;
+		var balconv = convfactor_uomcoderecv*qtyonhand%convfactor_uomcodetrdept;
 
 		if (balconv  == 0) {
 			if($.inArray(id,errorField)!==-1){
@@ -1123,7 +1123,7 @@ $(document).ready(function () {
 	function calculate_amount_and_other(event){
 		console.log(event.handleObj.data[0]);
 		var fail=false,fail_msg="";
-		let qtyonhandtr=parseInt($("#jqGrid2 input[name='qtyonhandtr']").val());
+		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
 		let txnqty=parseInt($("input[name='txnqty']").val());
 		let netprice=parseFloat($("input[name='netprice']").val());
 		let crdbfl=$('#crdbfl').val();
@@ -1131,13 +1131,13 @@ $(document).ready(function () {
 		if(event.target.name=='txnqty'){
 			switch(crdbfl){
 				case "Out":
-					if(event.target.value >= qtyonhandtr && isstype=='Others'){
+					if(event.target.value >= qtyonhand && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot be greater than Quantity On Hand";
 						event.target.value=$("input[name='txnqty']").val();fail=true;
-					}else if(qtyonhandtr<event.target.value){
+					}else if(qtyonhand<event.target.value){
 						fail_msg = "Transaction quantity exceed quantity on hand";
 						event.target.value=$("input[name='txnqty']").val();fail=true;
-					}else if(qtyonhandtr<event.target.value && isstype=='Transfer'){
+					}else if(qtyonhand<event.target.value && isstype=='Transfer'){
 						fail_msg = "Transaction quantity exceed quantity on hand";
 						event.target.value=$("input[name='txnqty']").val();fail=true;
 					}
@@ -1305,24 +1305,26 @@ $(document).ready(function () {
 	dialog_sndrcv.makedialog();
 
 	var dialog_itemcode = new ordialog(
-		'itemcode',['material.stockloc AS s','material.productmaster AS p', 'material.uom AS u'],"#jqGrid2 input[name='itemcode']",errorField,
+		'itemcode',['material.stockloc AS s','material.product AS p', 'material.uom AS u'],"#jqGrid2 input[name='itemcode']",errorField,
 		{	colModel:
 			[
-				{label:'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Item Code',name:'s_itemcode',width:150,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'p_description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
 				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
 				{label:'Max Quantity',name:'s_maxqty',width:100,classes:'pointer'},
+				{label: 'Average Cost', name: 'p_avgcost', width: 100, classes: 'pointer', hidden:false },
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
 				$("#jqGrid2 input[name='itemcode']").val(data['s_itemcode']);
 				$("#jqGrid2 input[name='description']").val(data['p_description']);
-				$("#jqGrid2 input[name='uomcodetrdept']").val(data['s_uomcode']);
+				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
 				$("#jqGrid2 input[name='maxqty']").val(data['s_maxqty']);
+				$("#jqGrid2 input[name='netprice']").val(data['p_avgcost']);
 				$("#jqGrid2 input[name='convfactoruomcodetrdept']").val(data['u_convfactor']);
-				$("#jqGrid2 input[name='qtyonhandtr']").val(data['s_qtyonhand']);
+				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
 				
 				getQOHtxndept();
 				//getavgcost();
@@ -1337,8 +1339,8 @@ $(document).ready(function () {
 				dialog_itemcode.urlParam.join_type=['LEFT JOIN', 'LEFT JOIN'];
 				dialog_itemcode.urlParam.join_onCol=['s.itemcode','u.uomcode'];
 				dialog_itemcode.urlParam.join_onVal=['p.itemcode', 's.uomcode'];
-				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on ='], []];
-				dialog_itemcode.urlParam.join_filterVal=[['p.compcode'], []];
+				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on ='], []];
+				dialog_itemcode.urlParam.join_filterVal=[['p.compcode','p.uomcode'], []];
 			}
 		},'urlParam'
 	);
@@ -1346,20 +1348,21 @@ $(document).ready(function () {
 	//false means not binding event on jqgrid2 yet, after jqgrid2 add, event will be bind
 
 	var dialog_uomcodetrdept = new ordialog(
-		'uomcodetrdept',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcodetrdept']",errorField,
+		'uomcode',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
 		{	colModel:
 			[
 				{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
-				{label: 'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' }
-				{label: 'qtyonhand', name: 's_qtyonhand', width: 100, classes: 'pointer', hidden: true }
+				{label: 'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' },
+				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer', hidden:true},
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcodetrdept.gridname);
+				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
+				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
 				$("#convfactoruomcodetrdept").val(data['u_convfactor']);
-				$("#jqGrid2 input[name='qtyonhandtr']").val(data['s_qtyonhand']);
 			}
 			
 		},{
@@ -1430,7 +1433,7 @@ $(document).ready(function () {
 			title:"Select Expiry Date",
 			open: function(){
 				dialog_expdate.urlParam.filterCol=['compcode','year','deptcode', 'uomcode'];
-				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcodetrdept").val()];
+				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val()];
 			
 			}
 		},'urlParam'

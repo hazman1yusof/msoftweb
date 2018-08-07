@@ -201,7 +201,8 @@ class InventoryTransactionController extends defaultController
                         'recno' => $value->recno, 
                         'lineno_' => $value->lineno_, 
                         'itemcode' => $value->itemcode, 
-                        'uomcode' => $value->uomcodetrdept, 
+                        'uomcode' => $value->uomcode,
+                        'uomcoderecv' => $value->uomcoderecv,  
                         'txnqty' => $value->txnqty, 
                         'netprice' => $value->netprice, 
                         'adduser' => $value->adduser, 
@@ -214,7 +215,8 @@ class InventoryTransactionController extends defaultController
                         'craccno' => $value->craccno, 
                         'crccode' => $value->crccode, 
                         'expdate' => $value->expdate, 
-                        'qtyonhand' => $value->qtyonhandtr,  
+                        'qtyonhand' => $value->qtyonhand,
+                        'qtyonhandrecv' => $value->qtyonhandrecv,  
                         'batchno' => $value->batchno, 
                         'amount' => $value->amount, 
                     ]);
@@ -226,11 +228,9 @@ class InventoryTransactionController extends defaultController
                     ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
                     ->where('StockLoc.ItemCode','=',$value->itemcode)
                     ->where('StockLoc.Year','=', $this->toYear($ivtmphd->trandate))
-                    ->where('StockLoc.UomCode','=',$value->uomcodetrdept);
+                    ->where('StockLoc.UomCode','=',$value->uomcode);
 
                 $stockloc_first = $stockloc_obj->first();
-
-
 
                 //2.kalu ada stockloc, update 
                 if(count($stockloc_first)){
@@ -251,19 +251,23 @@ class InventoryTransactionController extends defaultController
 
                 //4. tolak expdate, kalu ada batchno
                     $expdate_obj = DB::table('material.stockexp')
-                        ->where('expdate','<=',$value->expdate)
                         ->where('Year','=',$this->toYear($ivtmphd->trandate))
                         ->where('DeptCode','=',$ivtmphd->txndept)
                         ->where('ItemCode','=',$value->itemcode)
-                        ->where('UomCode','=',$value->uomcodetrdept)
-                        ->where('BatchNo','=',$value->batchno)
-                        ->where('expdate','<=',$value->expdate)
-                        ->orderBy('expdate', 'asc');
+                        ->where('UomCode','=',$value->uomcode);
 
+                    if($value->expdate == NULL){
+                        $expdate_obj
+                            ->orderBy('expdate', 'asc');
+                    }else{
+                         $expdate_obj
+                            ->where('BatchNo','=',$value->batchno)
+                            ->where('expdate','<=',$value->expdate)
+                            ->orderBy('expdate', 'asc');
+                    }
 
-                    $expdate_get = $expdate_obj->get();
-
-                    if(count($expdate_get)){
+                    if($expdate_obj->exists()){
+                        $expdate_get = $expdate_obj->get();
                         $txnqty_ = $value->txnqty;
                         $balqty = 0;
                         foreach ($expdate_get as $value2) {
@@ -285,15 +289,16 @@ class InventoryTransactionController extends defaultController
                                 break;
                             }
                         }
+
                     }else{
                         dump($expdate_obj->toSql());
                         dump($expdate_obj->getBindings());
-                        throw new \Exception("stockexp for that batchno does not exist");
+                        throw new \Exception("stockexp xde langsung");
                     }
 
                 }else{
                     //ni utk kalu xde stockloc
-                    throw new \Exception("stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".$this->toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcodetrdept);
+                    throw new \Exception("stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".$this->toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
                 }
 
             //4. posting stockloc IN
@@ -307,7 +312,7 @@ class InventoryTransactionController extends defaultController
 
                 $convfactor_obj = DB::table('material.uom')
                     ->select('convfactor')
-                    ->where('uomcode','=',$value->uomcodetrdept)
+                    ->where('uomcode','=',$value->uomcode)
                     ->where('compcode','=',session('compcode'))
                     ->first();
                 $convfactor_uomcodetrdept = $convfactor_obj->convfactor;
@@ -343,16 +348,24 @@ class InventoryTransactionController extends defaultController
                             'NetMvVal'.$month => $NetMvVal
                         ]);
 
-                //6. tolak expdate
+                //6. tambah expdate
+
                     $expdate_obj = DB::table('material.stockexp')
                         ->where('Year','=',$this->toYear($ivtmphd->trandate))
                         ->where('DeptCode','=',$ivtmphd->sndrcv)
                         ->where('ItemCode','=',$value->itemcode)
                         ->where('UomCode','=',$value->uomcoderecv)
-                        ->where('BatchNo','=',$value->batchno)
-                        ->where('expdate','<=',$value->expdate)
-                        ->orderBy('expdate', 'asc');
+                        ->where('BatchNo','=',$value->batchno);
 
+                    if($value->expdate == NULL){
+                        $expdate_obj
+                            ->where('expdate','=',$value->expdate)
+                            ->orderBy('expdate', 'asc');
+                    }else{
+                         $expdate_obj
+                            ->where('expdate','<=',$value->expdate)
+                            ->orderBy('expdate', 'asc');
+                    }
 
                     $expdate_first = $expdate_obj->first();
 
@@ -360,21 +373,72 @@ class InventoryTransactionController extends defaultController
                         $balqty_new = $expdate_first->balqty + $txnqty;
 
                         $expdate_obj->update([
+
                             'balqty' => $balqty_new
                         ]);
-                    }else{
-                        throw new \Exception("stockexp not exist at all");
+                    }else{ 
+                        DB::table('material.stockexp')
+                            ->insert([
+                                'Year' => $this->toYear($ivtmphd->trandate),
+                                'DeptCode' => $ivtmphd->sndrcv,
+                                'ItemCode' => $value->itemcode,
+                                'UomCode' => $value->uomcoderecv,
+                                'BatchNo' => $value->batchno,
+                                'expdate' => $value->expdate,
+                                'balqty' => $txnqty
+                            ]);
                     }
 
                 }else{ 
                     //ni utk kalu xde stockloc, buat baru
-                    DB::table('material.stockexp')
-                        ->insert([
-                            'DeptCode' => $ivtmphd->sndrcv,
-                            'ItemCode' => $value->itemcode,
-                            'UomCode' => $value->uomcoderecv,
-                            'BatchNo' => $value->batchno,
-                            'expdate' => $value->expdate
+                    
+                }
+
+                //7. posting product -> update qtyonhand, avgcost, currprice ---//
+                    //waktu OUT trandept
+                $product_obj = DB::table('material.product')
+                    ->where('product.compcode','=',session('compcode'))
+                    ->where('product.itemcode','=',$value->itemcode)
+                    ->where('product.uomcode','=',$value->uomcode)
+                    ->first();
+
+                if(count($product_obj)){ // kalu jumpa
+                    $month = $this->toMonth($ivtmphd->trandate);
+                    $OldQtyOnHand = $product_obj->qtyonhand;
+
+                    $newqtyonhand = $OldQtyOnHand - $value->txnqty;
+
+                    // update qtyonhand, avgcost, currprice
+                    $product_obj = DB::table('material.product')
+                        ->where('product.compcode','=',session('compcode'))
+                        ->where('product.itemcode','=',$value->itemcode)
+                        ->where('product.uomcode','=',$value->uomcode)
+                        ->update([
+                            'qtyonhand' => $newqtyonhand,
+                        ]);
+
+                }
+
+                    //waktu IN sndrecv
+                $product_obj = DB::table('material.product')
+                    ->where('product.compcode','=',session('compcode'))
+                    ->where('product.itemcode','=',$value->itemcode)
+                    ->where('product.uomcode','=',$value->uomcoderecv)
+                    ->first();
+
+                if(count($product_obj)){ // kalu jumpa
+                    $month = $this->toMonth($ivtmphd->trandate);
+                    $OldQtyOnHand = $product_obj->qtyonhand;
+
+                    $newqtyonhand = $OldQtyOnHand + $txnqty;
+
+                    // update qtyonhand, avgcost, currprice
+                    $product_obj = DB::table('material.product')
+                        ->where('product.compcode','=',session('compcode'))
+                        ->where('product.itemcode','=',$value->itemcode)
+                        ->where('product.uomcode','=',$value->uomcoderecv)
+                        ->update([
+                            'qtyonhand' => $newqtyonhand,
                         ]);
                 }
             }
@@ -382,7 +446,7 @@ class InventoryTransactionController extends defaultController
             //--- 8. change recstatus to posted ---//
 
             DB::table('material.ivtmphd')
-                ->where('recno','=',$request->recno)
+                ->where('recno','=',$ivtmphd->recno)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'postedby' => session('username'),
@@ -391,7 +455,7 @@ class InventoryTransactionController extends defaultController
                 ]);
 
             DB::table('material.ivtmpdt')
-                ->where('recno','=',$request->recno)
+                ->where('recno','=',$ivtmphd->recno)
                 ->where('compcode','=',session('compcode'))
                 ->where('recstatus','!=','DELETE')
                 ->update([
