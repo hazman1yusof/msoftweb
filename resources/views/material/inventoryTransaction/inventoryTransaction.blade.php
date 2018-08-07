@@ -51,7 +51,7 @@
 	            </div>
 
 	            <div class="col-md-2">
-			  		<label class="control-label" for="trandept">Store / Dept</label> 
+			  		<label class="control-label" for="trandept">Transaction Dept</label> 
 						<select id='trandept' class="form-control input-sm">
 				      		<option value="All" selected>ALL</option>
 						</select>
