@@ -168,7 +168,7 @@ $(document).ready(function () {
 			{ label: 'Document No', name: 'docno', width: 30, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Transaction Date', name: 'trandate', width: 27, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Sender/Receiver', name: 'sndrcv', width: 21, classes: 'wrap', canSearch: true},
-			{ label: 'SndRcvType', name: 'sndrcvtype', width: 30, classes: 'wrap'},
+			{ label: 'SndRcvType', name: 'sndrcvtype', width: 30, classes: 'wrap', hidden:true},
 			{ label: 'Amount', name: 'amount', width: 20, align: 'right', classes: 'wrap', formatter:'currency'},
 			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap',},			
 			{ label: 'Request RecNo', name: 'srcdocno', width: 90, hidden:true, classes: 'wrap'},
@@ -603,9 +603,9 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Item Description', name: 'description', width: 200, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
+			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
 			
-			{ label: 'UOM Code Tran Dept', name: 'uomcode', width: 110, classes: 'wrap', editable:true,
+			{ label: 'UOM Code Tran Dept', name: 'uomcode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -614,11 +614,11 @@ $(document).ready(function () {
 						    },
 			},
 			
-			{ label: 'Qty on Hand at Tran Dept', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap', editable:true,	
+			{ label: 'Qty on Hand at Tran Dept', name: 'qtyonhand', width: 80, align: 'right', classes: 'wrap', editable:true,	
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 110, classes: 'wrap', editable:true,
+			{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -626,7 +626,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Qty on Hand at Recv Dept', name: 'qtyonhandrecv', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Qty on Hand at Recv Dept', name: 'qtyonhandrecv', width: 80, align: 'right', classes: 'wrap', editable:true,
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editoptions:{readonly: "readonly"},
 				// formatter: formatter_recvqtyonhand,
@@ -658,6 +658,7 @@ $(document).ready(function () {
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
 						editoptions:{
+						readonly: "readonly",
 						maxlength: 12,
 						dataInit: function(element) {
 							element.style.textAlign = 'right';  
@@ -673,21 +674,7 @@ $(document).ready(function () {
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			/*{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-				editoptions: {
-                    dataInit: function (element) {
-                        $(element).datepicker({
-                            id: 'expdate_datePicker',
-                            dateFormat: 'dd/mm/yy',
-                            minDate: 1,
-                            showOn: 'focus',
-                            changeMonth: true,
-		  					changeYear: true,
-                        });
-                    }
-                }
-			},*/
+		
 			{ label: 'Expiry Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
 			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 					editrules:{required: false,custom:true, custom_func:cust_rules},
@@ -1421,6 +1408,7 @@ $(document).ready(function () {
 			[
 				{label:'Expiry Date',name:'expdate',width:200,classes:'pointer',canSearch:true,or_search:true,checked:true,},
 				{label:'Batch No',name:'batchno',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Quantity',name:'balqty',width:400,classes:'pointer'},
 				{label:'itemcode', name: 'itemcode', width: 50, classes: 'pointer', hidden:true },
 				{label:'uomcode', name: 'uomcode', width: 50, classes: 'pointer', hidden:true },
 				{label:'deptcode', name: 'deptcode', width: 50, classes: 'pointer', hidden:true },
