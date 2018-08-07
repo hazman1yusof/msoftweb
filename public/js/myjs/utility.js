@@ -172,7 +172,7 @@ function rdonly(form){
 }
 
 function hideOne(form){
-	$(form+' input[hideOne]').hide();
+	$(form+' [hideOne]').hide();
 }
 
 function parent_close_disabled(isClose){
@@ -463,6 +463,7 @@ function modal(){
 }
 
 function dateFormatter(cellvalue, options, rowObject){
+	if(cellvalue == null) return '';
 	return moment(cellvalue).format("DD/MM/YYYY");
 }
 
@@ -703,8 +704,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		}
 	}
 
-	function onChange(event){
-		obj = event.data.data;
+	function onChange(event){console.log('asd  onchange  asd');
+		let obj = event.data.data;
 		renull_search(obj);
 		let Dtext=$("#Dtext_"+obj.unique).val().trim();
 		if(obj.dcolrType == 'radio'){
@@ -769,8 +770,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			open: function(){
 				$("#"+obj.gridname).jqGrid ('setGridWidth', Math.floor($("#"+obj.gridname+"_c")[0].offsetWidth-$("#"+obj.gridname+"_c")[0].offsetLeft));
 				if(obj.dialog_.hasOwnProperty('open'))obj.dialog_.open();
-
-				$("#Dtext_"+unique).focus();
+				if(obj.needTab == 'notab')$("#Dtext_"+unique).focus();
 
 			},
 			close: function( event, ui ){

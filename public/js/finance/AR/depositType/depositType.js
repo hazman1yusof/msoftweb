@@ -88,7 +88,6 @@
 				autoOpen: false,
 				open: function( event, ui ) {
 					parent_close_disabled(true);
-					toggleFormData('#jqGrid','#formdata');
 					switch(oper) {
 						case state = 'add':
 							$( this ).dialog( "option", "title", "Add" );
@@ -179,7 +178,7 @@
 					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 35, classes: 'wrap', formatter: formatterstatus, unformat: unformat,
+					{ label: 'Record Status', name: 'recstatus', width: 35, classes: 'wrap', formatter: formatterstatus, unformat: unformatstatus,
 					cellattr: function(rowid, cellvalue){
 						return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''},  }
 				],
@@ -212,7 +211,7 @@
 			function unformat(cellvalue, options){
 				//return parseInt(cellvalue) ? "Yes" : "No";
 
-				if ((cellvalue) == 'Yes') {
+				if (cellvalue == 'Yes') {
 					return "1";
 				}
 				else {
@@ -233,7 +232,7 @@
 				}
 
 			////////////////////unformatter status////////////////////////////////////////
-				function unformat(cellvalue, option, rowObject){
+				function unformatstatus(cellvalue, option, rowObject){
 					if (cellvalue == 'Active'){
 						return 'Active';
 					}

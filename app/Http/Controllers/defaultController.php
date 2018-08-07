@@ -7,6 +7,7 @@ use stdClass;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use DateTime;
 
 abstract class defaultController extends Controller{
 
@@ -149,6 +150,8 @@ abstract class defaultController extends Controller{
 
         /////////searching 2///////// ni search utk ordialog
         if(!empty($request->searchCol2)){
+            $request->searchCol2 = $this->fixPost3($request->searchCol2);
+
             $table = $table->Where(function($query) use ($request){
                 foreach ($request->searchCol2 as $key => $value) {
                     $query = $query->orWhere($request->searchCol2[$key],'like',$request->searchVal2[$key]);
@@ -170,7 +173,7 @@ abstract class defaultController extends Controller{
             }
         }
 
-        //////////ordering/////////
+        //////////ordering///////// ['expdate asc','idno desc']
         if(!empty($request->sortby)){
             foreach ($request->sortby as $key => $value) {
                 $pieces = explode(" ", $request->sortby[$key]);

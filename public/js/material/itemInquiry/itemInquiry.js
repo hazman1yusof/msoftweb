@@ -246,6 +246,7 @@ $(document).ready(function () {
 		filterVal:['', '',''],*/
 		filterCol:['itemcode','uomcode','deptcode'],
 		filterVal:['','',''],
+		sortby:['expdate asc']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -257,7 +258,6 @@ $(document).ready(function () {
 			{ label: 'Expiry Date', name: 'expdate', width: 40, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Batch No', name: 'batchno', width: 40, classes: 'wrap'},
 			{ label: 'Balance Quantity', name: 'balqty', width: 40, classes: 'wrap'},
-		
 		],
 		autowidth:true,
         multiSort: true,
@@ -290,7 +290,7 @@ $(document).ready(function () {
 		var netmvval12 = parseFloat(element.netmvval12);
 
 		var total = openbalval + netmvval1 + netmvval2 + netmvval3 + netmvval4 + netmvval5 + netmvval6 + netmvval7 + netmvval8+ netmvval9 + netmvval10 + netmvval11 + netmvval12;
-		console.log(rowid);
+
 		$('#detail').jqGrid('setRowData', rowid, {rackno:total});
 	}
 	

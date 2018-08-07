@@ -222,6 +222,7 @@ $(document).ready(function () {
 					$( this ).dialog( "option", "title", "Edit" );
 					enableForm('#formdata');
 					frozeOnEdit("#dialogForm");
+					$('#formdata [hideOne]').show();
 					//rdonly("#dialogForm");
 					whenEdit();
 					getgcforAdd();
@@ -230,7 +231,7 @@ $(document).ready(function () {
 				case state = 'view':
 					$( this ).dialog( "option", "title", "View" );
 					disableForm('#formdata');
-					$('#formdata :input[hideOne]').show();
+					$('#formdata [hideOne]').show();
 					$(this).dialog("option", "buttons",butt2);
 					whenEdit();
 					$("#Cancel").hide();
@@ -371,10 +372,10 @@ $(document).ready(function () {
 			$("#jqGridPager td[title='Edit Selected Row']").click();
 		},
 		gridComplete: function(){
-			if(oper == 'add'){
+			if (oper == 'add' || oper == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
-			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 
 			if(searched){
 				populateFormdata("#jqGrid","#dialogForm","#formdata", idno,'view');
@@ -739,235 +740,5 @@ $(document).ready(function () {
 		},
 		buttons :addNew2,
 	});
-	// ///////////////////////////////start->dialogHandler part////////////////////////////////////////////
-	// function makeDialog(table,id,cols,title){
-	// 	this.table=table;
-	// 	this.id=id;
-	// 	this.cols=cols;
-	// 	this.title=title;
-	// 	this.handler=dialogHandler;
-	// 	this.offHandler=function(){
-	// 		$( this.id+" ~ a" ).off();
-	// 	}
-	// 	this.check=checkInput;
-	// 	this.updateField=function(table,id,cols,title){
-	// 		this.table=table;
-	// 		this.id=id;
-	// 		this.cols=cols;
-	// 		this.title=title;
-	// 		//console.log(this);
-	// 	}
-	// }
-
-	// $("#dialog" ).dialog({
-	// 	autoOpen: false,
-	// 	width: 7/10 * $(window).width(),
-	// 	modal: true,
-	// 	open: function(){
-	// 		$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
-	// 		if(selText=='#mstore'){
-	// 			paramD.filterCol=['mainstore', 'recstatus'];
-	// 			paramD.filterVal=['1', 'A'];
-	// 		}else if(selText=='#itemcodesearch') {
-	// 			var gc2 = $('#groupcode2').val();
-	// 			var Class2 = $('#Class2').val();
-	// 				paramD.filterCol=['groupcode', 'Class', 'recstatus'];
-	// 				paramD.filterVal=[gc2, Class2, 'A'];
-	// 		}else if(selText=='#productcatAddNew') {
-	// 			var gc2 = $('#groupcode2').val();
-	// 			if(gc2.toLowerCase() == 'Stock'.toLowerCase()){
-	// 				paramD.filterCol=['cattype', 'source', 'recstatus'];
-	// 				paramD.filterVal=['Stock', 'PO', 'A'];
-	// 			}else if(gc2.toLowerCase() == 'Others'.toLowerCase()) {
-	// 				paramD.filterCol=['cattype', 'source', 'recstatus'];
-	// 				paramD.filterVal=['Other', 'PO', 'A'];
-	// 			}else{
-	// 			paramD.filterCol=['recstatus'];
-	// 			paramD.filterVal=['A'];
-	// 			}
-	// 		}else if(selText == "#TaxCode"){
-	// 			paramD.filterCol=['recstatus','taxtype'];
-	// 			paramD.filterVal=['A','Input'];
-	// 		}else{
-	// 			paramD.filterCol=['recstatus'];
-	// 			paramD.filterVal=['A'];
-	// 		}
-	// 	},
-	// 	close: function( event, ui ){
-	// 		paramD.searchCol=null;
-	// 		paramD.searchVal=null;
-	// 	},
-	// 	buttons :addNew,
-	// });
-
-	// var selText,Dtable,Dcols;
-	// $("#gridDialog").jqGrid({
-	// 	datatype: "local",
-	// 	colModel: [
-	// 		{ label: 'Code', name: 'code', width: 30,  classes: 'pointer', canSearch:true,checked:true, classes: 'wrap'},
-	// 		{ label: 'Description', name: 'description', width: 70, canSearch:true, classes: 'pointer', classes: 'wrap'},
-	// 		{ label: 'Group Code', name: 'groupcode', width: 30, classes: 'pointer', classes: 'wrap'},
-	// 		{ label: 'Product Category', name: 'productcat', width: 30, classes: 'pointer', classes: 'wrap'},
-	// 		{ label: 'Class', name: 'Class', width: 40, classes: 'pointer', classes: 'wrap'},
-	// 	],
-	// 	width: 450,
-	// 	viewrecords: true,
-	// 	loadonce: false,
- //        multiSort: true,
-	// 	rowNum: 30,
-	// 	shrinkToFit: true,
-	// 	pager: "#gridDialogPager",
-	// 	ondblClickRow: function(rowid, iRow, iCol, e){
-	// 		var data=$("#gridDialog").jqGrid ('getRowData', rowid);
-	// 		$("#gridDialog").jqGrid("clearGridData", true);
-	// 		$("#dialog").dialog( "close" );
-	// 		$(selText).val(rowid);
-	// 		$(selText).focus();
-	// 		$(selText).parent().next().html(data['description']);
-
-	// 		if(selText=="#itemcodesearch"){
-	// 			productcat=data.productcat;
-	// 			groupcode=data.groupcode;
-	// 			description=data.description;
-	// 			Class=data.Class;
-	// 		} 
-	// 	},
-		
-	// });
-
-	
-
-	// var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:'',
-	// 	sort_idno:true};
-	// function dialogHandler(errorField){
-	// 	var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
-	// 	$( id+" ~ a" ).on( "click", function() {
-	// 		selText=id,Dtable=table,Dcols=cols,
-	// 		$("#gridDialog").jqGrid("clearGridData", true);
-
-	// 		if(selText == "#itemcodesearch"){
-	// 			$("#addnp").show();
-	// 			$("#gridDialog").jqGrid('showCol', 'groupcode');
-	// 			$("#gridDialog").jqGrid('showCol', 'productcat');
-	// 			$("#gridDialog").jqGrid('showCol', 'Class');
-	// 		}else{
-	// 			$("#addnp").hide();
-	// 			$("#gridDialog").jqGrid('hideCol', 'groupcode');
-	// 			$("#gridDialog").jqGrid('hideCol', 'productcat');
-	// 			$("#gridDialog").jqGrid('hideCol', 'Class');
-	// 		}
-
-	// 		$("#dialog").dialog( "open" );
-	// 		$("#dialog").dialog( "option", "title", title );
-
-
-	// 		paramD.table_name=table;
-	// 		paramD.field=cols;
-	// 		paramD.table_id=cols[0];
-			
-	// 		$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
-	// 		$('#Dtext').val('');$('#Dcol').html('');
-			
-	// 		$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
-	// 			if(value['canSearch']){
-	// 				if(value['checked']){
-	// 					$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
-	// 				}else{
-	// 					$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
-	// 				}
-	// 			}
-	// 		});
-	// 	});
-	// 	$(id).on("blur", function(){
-	// 		self.check(errorField);
-	// 	});
-	// }
-	
-	// function checkInput(errorField){
-	// 	var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
-	// 	var param={action:'input_check',table:table,field:field,value:value};
-	// 	$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-
-	// 	},'json').done(function(data) {
-	// 		if(data.msg=='success'){
-	// 			if(id== "#itemcodesearch") {
-	// 				//console.log("success");
-	// 				dialog_uomcode.handler(errorField);
-	// 				//$("#uomcodesearch_parent").show();
-	// 			}
-	// 			if(!searched && id=="#itemcodesearch"){
-	// 				productcat=data.row.productcat;
-	// 				groupcode=data.row.groupcode;
-	// 				description=data.row.description;
-	// 				Class=data.row.Class;
-	// 			}
-	// 			if($.inArray(id,errorField)!==-1){
-	// 				errorField.splice($.inArray(id,errorField), 1);
-	// 			}
-	// 			$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-	// 			$( id ).removeClass( "error" ).addClass( "valid" );
-	// 			$( id ).parent().siblings( ".help-block" ).html(data.row[field[1]]);
-	// 			$( id ).parent().siblings( ".help-block" ).show();
-	// 		}else if(data.msg=='fail'){
-	// 			if((id == '#subcatcode') && ($('#subcatcode').val()== "")) {
-	// 					$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
-	// 					$( id ).removeClass( "valid" ).removeClass( "error" );
-	// 					$( id ).parent().siblings( ".help-block" ).hide();
-	// 			}else if((id == '#mstore') && ($('#mstore').val()== "")) {
-	// 					$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
-	// 					$( id ).removeClass( "valid" ).removeClass( "error" );
-	// 					$( id ).parent().siblings( ".help-block" ).hide();
-	// 			}else if((id == '#pouom') && ($('#pouom').val()== "")) {
-	// 					$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
-	// 					$( id ).removeClass( "valid" ).removeClass( "error" );
-	// 					$( id ).parent().siblings( ".help-block" ).hide();
-	// 			}else if((id == '#suppcode') && ($('#suppcode').val()== "")) {
-	// 					$( id ).parent().removeClass( "has-success" ).removeClass( "has-error" );
-	// 					$( id ).removeClass( "valid" ).removeClass( "error" );
-	// 					$( id ).parent().siblings( ".help-block" ).hide();
-	// 			}else{
-	// 				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-	// 				$( id ).removeClass( "valid" ).addClass( "error" );
-	// 				$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+field[0]+" )");
-	// 				if($.inArray(id,errorField)===-1){
-	// 					errorField.push(id);
-	// 				}
-	// 			}
-
-	// 			if(id== "#itemcodesearch") {
-	// 				//console.log("fail");
-	// 				dialog_uomcode.offHandler();
-	// 				//$("#uomcodesearch_parent").hide();
-	// 			}
-	// 		}
-	// 	});
-	// }
-	
-	// $('#Dtext').keyup(function() {
-	// 	delay(function(){
-	// 		Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-	// 	}, 500 );
-	// });
-	
-	// $('#Dcol').change(function(){
-	// 	Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-	// });
-	
-	// function Dsearch(Dtext,Dcol){
-	// 	paramD.searchCol=null;
-	// 	paramD.searchVal=null;
-	// 	Dtext=Dtext.trim();
-	// 	if(Dtext != ''){
-	// 		var split = Dtext.split(" "),searchCol=[],searchVal=[];
-	// 		$.each(split, function( index, value ) {
-	// 			searchCol.push(Dcol);
-	// 			searchVal.push('%'+value+'%');
-	// 		});
-	// 		paramD.searchCol=searchCol;
-	// 		paramD.searchVal=searchVal;
-	// 	}
-	// 	refreshGrid("#gridDialog",paramD);
-	// }
-	///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
 
 });

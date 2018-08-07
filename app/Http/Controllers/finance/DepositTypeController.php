@@ -5,7 +5,7 @@ namespace App\Http\Controllers\finance;
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 
-class PaymentModeController extends defaultController
+class DepositTypeController extends defaultController
 {   
 
     public function __construct()

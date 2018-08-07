@@ -60,6 +60,7 @@ class InventoryTransactionController extends defaultController
         $table = DB::table("material.ivtmphd");
 
         $array_insert = [
+            'source' => 'IV',
             'trantype' => $request->trantype,
             'docno' => $request_no,
             'recno' => $recno,
@@ -153,7 +154,7 @@ class InventoryTransactionController extends defaultController
 
         try {
 
-            //1. transfer from ivtmphd to ivtxnhd
+            //-- 1. transfer from ivtmphd to ivtxnhd --//
             $ivtmphd = DB::table('material.ivtmphd')
                         ->where('idno','=',$request->idno)
                         ->first();
@@ -186,14 +187,54 @@ class InventoryTransactionController extends defaultController
                     'UpdUser'  => $ivtmphd->upduser
                 ]);
 
-            //2. transfer from ivtmpdt to ivtxndt
+            //-- 2. transfer from ivtmpdt to ivtxndt --//
             $ivtmpdt_obj = DB::table('material.ivtmpdt')
                     ->where('ivtmpdt.compcode','=',session('compcode'))
                     ->where('ivtmpdt.recno','=',$ivtmphd->recno)
                     ->where('ivtmpdt.recstatus','!=','DELETE')
                     ->get();
 
+
             foreach ($ivtmpdt_obj as $value) {
+
+            //-- 3. cari CrAccNo,CrCCode,DrAccNo,DrCCode --//
+                $productcat_obj = DB::table('material.product')
+                    ->where('product.compcode','=',session('compcode'))
+                    ->where('product.itemcode','=',$value->itemcode)
+                    ->where('product.uomcode','=',$value->uomcode)
+                    ->first();
+
+                $category_obj = DB::table('material.category')
+                    ->where('category.compcode','=',session('compcode'))
+                    ->where('category.catcode','=',$productcat_obj->productcat)
+                    ->first();
+
+                $dept_obj = DB::table('sysdb.department')
+                    ->where('department.compcode','=',session('compcode'))
+                    ->where('department.deptcode','=',$ivtmphd->txndept)
+                    ->first();
+
+                $craccno = $category_obj->stockacct;
+                $crccode = $dept_obj->costcode;
+
+                $productcat_obj = DB::table('material.product')
+                    ->where('product.compcode','=',session('compcode'))
+                    ->where('product.itemcode','=',$value->itemcode)
+                    ->where('product.uomcode','=',$value->uomcoderecv)
+                    ->first();
+
+                $category_obj = DB::table('material.category')
+                    ->where('category.compcode','=',session('compcode'))
+                    ->where('category.catcode','=',$productcat_obj->productcat)
+                    ->first();
+
+                $dept_obj = DB::table('sysdb.department')
+                    ->where('department.compcode','=',session('compcode'))
+                    ->where('department.deptcode','=',$ivtmphd->sndrcv)
+                    ->first();
+
+                $draccno = $category_obj->stockacct;
+                $drccode = $dept_obj->costcode;
 
                 DB::table('material.ivtxndt')
                     ->insert([
@@ -210,10 +251,10 @@ class InventoryTransactionController extends defaultController
                         'upduser' => $value->upduser, 
                         'upddate' => $value->upddate, 
                         // 'productcat' => $productcat, 
-                        'draccno' => $value->draccno, 
-                        'drccode' => $value->drccode, 
-                        'craccno' => $value->craccno, 
-                        'crccode' => $value->crccode, 
+                        'draccno' => $draccno, 
+                        'drccode' => $drccode, 
+                        'craccno' => $craccno, 
+                        'crccode' => $crccode, 
                         'expdate' => $value->expdate, 
                         'qtyonhand' => $value->qtyonhand,
                         'qtyonhandrecv' => $value->qtyonhandrecv,  
@@ -221,7 +262,7 @@ class InventoryTransactionController extends defaultController
                         'amount' => $value->amount, 
                     ]);
 
-            //3. posting stockloc OUT
+            //-- 4. posting stockloc OUT --//
                 //1. amik stockloc
                 $stockloc_obj = DB::table('material.StockLoc')
                     ->where('StockLoc.CompCode','=',session('compcode'))
@@ -301,7 +342,7 @@ class InventoryTransactionController extends defaultController
                     throw new \Exception("stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".$this->toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
                 }
 
-            //4. posting stockloc IN
+            //-- 5. posting stockloc IN --//
                 //1. amik convfactor
                 $convfactor_obj = DB::table('material.uom')
                     ->select('convfactor')
@@ -394,8 +435,8 @@ class InventoryTransactionController extends defaultController
                     
                 }
 
-                //7. posting product -> update qtyonhand, avgcost, currprice ---//
-                    //waktu OUT trandept
+                //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
+                    //1. waktu OUT trandept
                 $product_obj = DB::table('material.product')
                     ->where('product.compcode','=',session('compcode'))
                     ->where('product.itemcode','=',$value->itemcode)
@@ -419,7 +460,7 @@ class InventoryTransactionController extends defaultController
 
                 }
 
-                    //waktu IN sndrecv
+                    //2. waktu IN sndrecv
                 $product_obj = DB::table('material.product')
                     ->where('product.compcode','=',session('compcode'))
                     ->where('product.itemcode','=',$value->itemcode)
@@ -441,6 +482,89 @@ class InventoryTransactionController extends defaultController
                             'qtyonhand' => $newqtyonhand,
                         ]);
                 }
+
+                 //--- 7. posting GL ---//
+
+                //amik yearperiod dari delordhd
+                $yearperiod = $this->getyearperiod($ivtmphd->trandate);
+ 
+                //1. buat gltran
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => $value->compcode,
+                        'adduser' => $value->adduser,
+                        'adddate' => $value->adddate,
+                        'auditno' => $value->recno,
+                        'lineno_' => $value->lineno_,
+                        'source' => $ivtmphd->source,
+                        'trantype' => $ivtmphd->trantype,
+                        'reference' => $ivtmphd->txndept .' '. $ivtmphd->docno,
+                        'description' => $ivtmphd->sndrcv,
+                        'postdate' => $ivtmphd->trandate,
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
+                        'drcostcode' => $drccode,
+                        'dracc' => $draccno,
+                        'crcostcode' => $crccode,
+                        'cracc' => $craccno,
+                        'amount' => $value->amount,
+                        'idno' => $value->itemcode
+                    ]);
+
+                //2. check glmastdtl utk debit, kalu ada update kalu xde create
+                if($this->isGltranExist($drccode,$draccno,$yearperiod->year,$yearperiod->period)){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$drccode)
+                        ->where('glaccount','=',$draccno)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $value->amount + $this->gltranAmount,
+                            'recstatus' => 'A'
+                        ]);
+                }else{
+                    DB::table('finance.glmasdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'costcode' => $drccode,
+                            'glaccount' => $draccno,
+                            'year' => $yearperiod->year,
+                            'actamount'.$yearperiod->period => $value->amount,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'recstatus' => 'A'
+                        ]);
+                }
+
+                //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+                if($this->isGltranExist($crccode,$craccno,$yearperiod->year,$yearperiod->period)){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$crccode)
+                        ->where('glaccount','=',$craccno)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $this->gltranAmount - $value->amount,
+                            'recstatus' => 'A'
+                        ]);
+                }else{
+                    DB::table('finance.glmasdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'costcode' => $crccode,
+                            'glaccount' => $craccno,
+                            'year' => $yearperiod->year,
+                            'actamount'.$yearperiod->period => -$value->amount,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'recstatus' => 'A'
+                        ]);
+                }
+
             }
 
             //--- 8. change recstatus to posted ---//
