@@ -221,7 +221,6 @@ $(document).ready(function () {
 		field:'',
 		table_name:'debtor.paymode',
 		table_id:'paymode',
-		sort_idno: true,
 		filterCol:['source'],
 		filterVal:[$('#source2').val()]
 	}

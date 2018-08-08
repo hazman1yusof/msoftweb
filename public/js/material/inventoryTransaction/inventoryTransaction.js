@@ -96,7 +96,6 @@ $(document).ready(function () {
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdata2');
-		
 			dialog_trantype.off();
 			dialog_txndept.off();
 			dialog_sndrcv.off();
@@ -934,7 +933,6 @@ $(document).ready(function () {
 			saveHeader("#formdata",oper,saveParam);
 			//unsaved = false;
 		}else{
-			console.log(errorField);
 			mycurrency.formatOn();
 		}
 		getTrantypeDetail();
@@ -1100,9 +1098,6 @@ $(document).ready(function () {
 	/////////////calculate conv fac//////////////////////////////////
 	 function calculate_conversion_factor(event) {
 
-		console.log("balconv");
-
-
 		var id="#jqGrid2 input[name='qtyonhand']"
 		var fail_msg = "Please Choose Suitable UOMCode"
 		var name = "calculate_conversion_factor";
@@ -1112,9 +1107,6 @@ $(document).ready(function () {
 		let convfactor_uomcoderecv = parseFloat($("#convfactoruomcoderecv").val());
 
 		let qtyonhand = parseFloat($("#jqGrid2 input[name='qtyonhand']").val());
-
-		console.log(convfactor_uomcodetrdept);
-		console.log(convfactor_uomcoderecv);
 
 		var balconv = convfactor_uomcoderecv*qtyonhand%convfactor_uomcodetrdept;
 
@@ -1357,7 +1349,7 @@ $(document).ready(function () {
 				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on ='], []];
 				dialog_itemcode.urlParam.join_filterVal=[['p.compcode','p.uomcode'], []];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_itemcode.makedialog(false);
 	//false means not binding event on jqgrid2 yet, after jqgrid2 add, event will be bind

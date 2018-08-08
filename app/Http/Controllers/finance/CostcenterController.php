@@ -4,7 +4,6 @@ namespace App\Http\Controllers\finance;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
-use DB;
 
 class CostcenterController extends defaultController
 {   

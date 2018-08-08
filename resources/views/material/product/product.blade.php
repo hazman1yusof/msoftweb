@@ -142,9 +142,9 @@
               			</div>
                 
                  		<div class="form-group">
-                  			<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-				  				<div class="col-md-2">
-									<input id="recstatus" name="recstatus" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+                  			<label class="col-md-2 control-label" for="recstatus" hideOne>Record Status</label>  
+				  				<div class="col-md-2" hideOne>
+									<input id="recstatus" name="recstatus" type="text" class="form-control input-sm" frozeOnEdit >
                	 
 				  				</div>
 
@@ -185,12 +185,26 @@
 						  		</div>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group" hideOne>
                   			<label class="col-md-3 control-label" for="qtyonhand">Qty On Hand</label>  
 				  				<div class="col-md-2">
-									<input id="qtyonhand" name="qtyonhand" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="qtyonhand" name="qtyonhand" type="text" class="form-control input-sm" frozeOnEdit>
                	 
 				  				</div> 
+
+			  				<label class="col-md-3 control-label" for="avgcost">Average Cost</label>  
+				  				<div class="col-md-2">
+									<input id="avgcost" name="avgcost" type="text" class="form-control input-sm" frozeOnEdit>
+	           	 
+				  				</div> 
+						</div>
+
+						<div class="form-group" hideOne>
+                  			<label class="col-md-3 control-label" for="currprice">Current Price</label>  
+				  				<div class="col-md-2">
+									<input id="currprice" name="currprice" type="text" class="form-control input-sm" frozeOnEdit>
+               	 
+				  				</div>
 						</div>
                 
                 		<hr>
@@ -235,29 +249,29 @@
 						  		</div>
 						</div>
 
-						  <div class="form-group">
-					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
-						<div class="col-md-3">
-						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
-						</div>
+						<div class="form-group" hideOne>
+							<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
+								<div class="col-md-3">
+								  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+								</div>
 
-					<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
-						<div class="col-md-3">
-							<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
-						  	</div>
-				</div>    
+							<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
+								<div class="col-md-3">
+									<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
+								  	</div>
+						</div>    
 
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
-						<div class="col-md-3">
-						  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
-						</div>
+						<div class="form-group" hideOne>
+							<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
+								<div class="col-md-3">
+								  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+								</div>
 
-					<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
-						<div class="col-md-3">
-							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
-						  	</div>
-				</div>  
+							<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
+								<div class="col-md-3">
+									<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
+								  	</div>
+						</div>  
 					</form>
 				</div>
 			</div>
