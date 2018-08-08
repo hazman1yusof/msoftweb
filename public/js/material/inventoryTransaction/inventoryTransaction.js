@@ -1045,6 +1045,33 @@ $(document).ready(function () {
 		});
 	}
 
+	/////////////calculate conv fac//////////////////////////////////
+	 function checkQOH(event) {
+
+		//console.log("balconv");
+
+
+		var qtyonhand="#jqGrid2 input[name='qtyonhand']"
+		var fail_msg = "Quantity on Hand is 0"
+		var name = "checkQOH";
+
+		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
+		let uomcode=$('#uomcode').val();
+
+		if (qtyonhand  == 0) {
+			if($.inArray(id,errorField)!==-1){
+				errorField.splice($.inArray(id,errorField), 1);
+			}
+			$('.noti').find("li[data-errorid='"+name+"']").detach();
+		} else {
+			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+			if($.inArray(id,errorField)===-1){
+				errorField.push( id );
+			}
+		}
+		
+	}
+	///////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////// get trantype detail////////////////////////
 	function getTrantypeDetail(){
 		var param={
@@ -1141,7 +1168,7 @@ $(document).ready(function () {
 		}else{
 			if(crdbfl=='Out'&&event.target.value==0){
 				fail_msg = "Net Price Cannot Be Zero";
-				event.target.value='';fail=true;
+				event.target.value='0.00';fail=true;
 			}
 		}
 		errorIt(event.target.name,errorField,fail,fail_msg);
@@ -1314,6 +1341,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
 				
 				getQOHtxndept();
+				//checkQOH();
 				//getavgcost();
 			}
 		},{
