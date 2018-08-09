@@ -1116,7 +1116,7 @@ $(document).ready(function () {
 			
 		}
 		
-	}
+	}*/
 
 	 function checkQOH(event) {
 		var optid = event.currentTarget.id;
@@ -1139,16 +1139,13 @@ $(document).ready(function () {
 				errorField.push( id );
 			}
 		}
-	}*/
+	}
 
-	function checkQOH(event){
+	/*function checkQOH(event){
 		console.log(event.handleObj.data[0]);
 		var fail=false,fail_msg="";
 		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		/*let txnqty=parseInt($("input[name='txnqty']").val());
-		let netprice=parseFloat($("input[name='netprice']").val());
-		let crdbfl=$('#crdbfl').val();
-		let isstype=$('#isstype').val();*/
+		
 		if(event.target.name=='qtyonhand'){
 			if(event.target.name == 0){
 				fail_msg = "Transaction Quantity is 0";
@@ -1182,7 +1179,7 @@ $(document).ready(function () {
 				errorField.push( id );
 			}
 		}
-	}
+	}*/
 	///////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////calculate amount////////////////////////////
