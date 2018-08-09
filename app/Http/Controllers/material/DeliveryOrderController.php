@@ -89,8 +89,8 @@ class DeliveryOrderController extends defaultController
 
                 ////dekat po header sana, save balik delordno dkt situ
                 DB::table('material.purordhd')
-                ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
-                ->update(['delordno' => $delordno]);
+                    ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
+                    ->update(['delordno' => $delordno]);
             }
 
             $responce = new stdClass();
