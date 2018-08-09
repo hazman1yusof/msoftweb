@@ -511,7 +511,7 @@ $(document).ready(function () {
 	$('#trandept').on('change', searchChange);
 
 	function whenchangetodate() {
-		if($('#Scol').val()=='delordhd_trandate'){
+		if($('#Scol').val()=='trandate'){
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").attr('type', 'date');
 			$("input[name='Stext']").velocity({ width: "250px" });
@@ -963,6 +963,7 @@ $(document).ready(function () {
 		dialog_expdate.on();
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
 		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
+		$("#jqGrid2 input[name='qtyonhand']").on('blur',checkQOH);
 		$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
 			var code = e.keyCode || e.which;
 			if (code == '9')$('#jqGrid2_ilsave').click();
@@ -1043,33 +1044,7 @@ $(document).ready(function () {
 		});
 	}
 
-	/////////////calculate conv fac//////////////////////////////////
-	 function checkQOH(event) {
-
-		//console.log("balconv");
-
-
-		var qtyonhand="#jqGrid2 input[name='qtyonhand']"
-		var fail_msg = "Quantity on Hand is 0"
-		var name = "checkQOH";
-
-		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		let uomcode=$('#uomcode').val();
-
-		if (qtyonhand  == 0) {
-			if($.inArray(id,errorField)!==-1){
-				errorField.splice($.inArray(id,errorField), 1);
-			}
-			$('.noti').find("li[data-errorid='"+name+"']").detach();
-		} else {
-			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
-			if($.inArray(id,errorField)===-1){
-				errorField.push( id );
-			}
-		}
-		
-	}
-	///////////////////////////////////////////////////////////////////////////////
+	
 	////////////////////////////////////// get trantype detail////////////////////////
 	function getTrantypeDetail(){
 		var param={
@@ -1122,6 +1097,48 @@ $(document).ready(function () {
 			}
 		}
 		
+	}
+	///////////////////////////////////////////////////////////////////////////////
+
+	/////////////calculate conv fac//////////////////////////////////
+/*	 function checkQOH(event) {
+
+		console.log("qtyonhand");
+
+		var qtyonhand="#jqGrid2 input[name='qtyonhand']"
+		var fail=false,fail_msg="";
+
+		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
+		
+		if (qtyonhand  == 0) {
+			fail_msg = "Transaction Quantity Cannot Be Zero";
+		} else {
+			
+		}
+		
+	}
+*/
+	 function checkQOH(event) {
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+
+		var id="#jqGrid2 #"+id_optid+"_qtyonhand";
+		var fail_msg = "Transaction Quantity is 0";
+		var name = "checkQOH";
+
+		let qtyonhand = parseInt($("#jqGrid2 #input_"+id_optid+"_qtyonhand").val());
+
+		if (qtyonhand  == 0) {
+			if($.inArray(id,errorField)!==-1){
+				errorField.splice($.inArray(id,errorField), 1);
+			}
+			$('.noti').find("li[data-errorid='"+name+"']").detach();
+		} else {
+			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+			if($.inArray(id,errorField)===-1){
+				errorField.push( id );
+			}
+		}
 	}
 	///////////////////////////////////////////////////////////////////////////////
 
@@ -1324,7 +1341,7 @@ $(document).ready(function () {
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
-				$("#jqGrid2 input[name='itemcode']").val(data['s_itemcode']);
+				//$("#jqGrid2 input[name='itemcode']").val(data['s_itemcode']);
 				$("#jqGrid2 input[name='description']").val(data['p_description']);
 				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
 				$("#jqGrid2 input[name='maxqty']").val(data['s_maxqty']);
@@ -1440,8 +1457,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Expiry Date",
 			open: function(){
-				dialog_expdate.urlParam.filterCol=['compcode','year','deptcode', 'uomcode'];
-				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val()];
+				dialog_expdate.urlParam.filterCol=['compcode','year','deptcode', 'uomcode', 'balqty'];
+				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val(),$("#jqGrid2 input[name='qtyonhand']").val()];
 			
 			}
 		},'urlParam'
