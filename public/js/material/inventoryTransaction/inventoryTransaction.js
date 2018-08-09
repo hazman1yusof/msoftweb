@@ -1117,7 +1117,7 @@ $(document).ready(function () {
 		}
 		
 	}
-*/
+
 	 function checkQOH(event) {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
@@ -1134,6 +1134,49 @@ $(document).ready(function () {
 			}
 			$('.noti').find("li[data-errorid='"+name+"']").detach();
 		} else {
+			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+			if($.inArray(id,errorField)===-1){
+				errorField.push( id );
+			}
+		}
+	}*/
+
+	function checkQOH(event){
+		console.log(event.handleObj.data[0]);
+		var fail=false,fail_msg="";
+		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
+		/*let txnqty=parseInt($("input[name='txnqty']").val());
+		let netprice=parseFloat($("input[name='netprice']").val());
+		let crdbfl=$('#crdbfl').val();
+		let isstype=$('#isstype').val();*/
+		if(event.target.name=='qtyonhand'){
+			if(event.target.name == 0){
+				fail_msg = "Transaction Quantity is 0";
+				event.target.value='';fail=true;
+			}else if{
+						
+			}
+					
+		} else{
+			
+		}
+		errorIt(event.target.name,errorField,fail,fail_msg);
+		let amount=txnqty*netprice;
+		$("#jqGrid2 input[name='amount']").val(amount.toFixed(4));
+	}
+
+	function errorIt(name,errorField,fail,fail_msg){
+		let id = "#jqGrid2 input[name='"+name+"']";
+		if(!fail){
+			if($.inArray(id,errorField)!==-1){
+				errorField.splice($.inArray(id,errorField), 1);
+			}
+			$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+			$( id ).removeClass( "error" ).addClass( "valid" );
+			$('.noti').find("li[data-errorid='"+name+"']").detach();
+		}else{
+			$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+			$( id ).removeClass( "valid" ).addClass( "error" );
 			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
 			if($.inArray(id,errorField)===-1){
 				errorField.push( id );

@@ -7,7 +7,7 @@ $.jgrid.defaults.responsive = true;
 			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
-				modules : 'sanitize',
+			//	modules : 'sanitize',
 				language : {
 					requiredFields: ''
 				},
@@ -63,25 +63,6 @@ $.jgrid.defaults.responsive = true;
 
 			});
 			*/	
-			////////////////////object for dialog handler//////////////////
-			dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');
-
-			dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description','costcode'], 'Department');
-
-			dialog_glassetccode=new makeDialog('finance.costcenter','#glassetccode',['costcode','description'], 'Asset');
-			dialog_glasset=new makeDialog('finance.glmasref','#glasset',['glaccno','description'], 'Asset');
-
-			dialog_gldepccode=new makeDialog('finance.costcenter','#gldepccode',['costcode','description'], 'Depreciation');
-			dialog_gldep=new makeDialog('finance.glmasref','#gldep',['glaccno','description'], 'Depreciation');
-
-			dialog_glprovccode=new makeDialog('finance.costcenter','#glprovccode',['costcode','description'], 'Provision for Depr');
-			dialog_glprovdep=new makeDialog('finance.glmasref','#glprovdep',['glaccno','description'], 'Provision for Depr');
-
-			dialog_glglossccode=new makeDialog('finance.costcenter','#glglossccode',['costcode','description'], 'Gain');
-			dialog_glgainloss=new makeDialog('finance.glmasref','#glgainloss',['glaccno','description'], 'Gain');
-
-			dialog_glrevccode=new makeDialog('finance.costcenter','#glrevccode',['costcode','description'], 'Loss');
-			dialog_glrevaluation=new makeDialog('finance.glmasref','#glrevaluation',['glaccno','description'], 'Loss');
 
 
 			////////////////////////////////////start dialog///////////////////////////////////////
@@ -111,17 +92,20 @@ $.jgrid.defaults.responsive = true;
 				autoOpen: false,
 				open: function( event, ui ) {
 					parent_close_disabled(true);
+					toggleFormData('#jqGrid','#formdata');
 					switch(oper) {
 						case state = 'add':
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
-							rdonly('#formdata');
+							rdonly("#formdata");
+							hideOne("#formdata");
 							break;
 						case state = 'edit':
 							$( this ).dialog( "option", "title", "Edit" );
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
 							rdonly('#formdata');
+							$('#formdata :input[hideOne]').show();
 							break;
 						case state = 'view':
 							$( this ).dialog( "option", "title", "View" );
@@ -130,40 +114,54 @@ $.jgrid.defaults.responsive = true;
 							break;
 						} if(oper!='view'){
 							set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-							
-							dialog_assettype.handler(errorField);
-							dialog_deptcode.handler(errorField);
-							dialog_glassetccode.handler(errorField);
-							dialog_glasset.handler(errorField);
-							dialog_gldepccode.handler(errorField);
-							dialog_gldep.handler(errorField);
-							dialog_glprovccode.handler(errorField);
-							dialog_glprovdep.handler(errorField);
-							dialog_glglossccode.handler(errorField);
-							dialog_glgainloss.handler(errorField);
-							dialog_glrevccode.handler(errorField);
-							dialog_glrevaluation.handler(errorField);
+							dialog_assettype.on();
+							dialog_deptcode.on();
+							dialog_glassetcode.on();
+							dialog_glasset.on();
+							dialog_gldepccode.on();
+							dialog_gldep.on();
+							dialog_glprovccode.on();
+							dialog_glprovdep.on();
+							dialog_glglossccode.on();
+							dialog_glgainloss.on();
+							dialog_glrevccode.on();
+							dialog_glrevaluation.on();
+
 
 						} if(oper!='add'){
-							toggleFormData('#jqGrid','#formdata');
+							// toggleFormData('#jqGrid','#formdata');
+							dialog_assettype.check(errorField);
+							dialog_deptcode.check(errorField);
+							dialog_glassetcode.check(errorField);
+							dialog_glasset.check(errorField);
+							dialog_gldepccode.check(errorField);
+							dialog_gldep.check(errorField);
+							dialog_glprovccode.check(errorField);
+							dialog_glprovdep.check(errorField);
+							dialog_glglossccode.check(errorField);
+							dialog_glgainloss.check(errorField);
+							dialog_glrevccode.check(errorField);
+							dialog_glrevaluation.check(errorField);
 							
-							dialog_assettype.handler(errorField);
-							dialog_deptcode.handler(errorField);
-							dialog_glassetccode.handler(errorField);
-							dialog_glasset.handler(errorField);
-							dialog_gldepccode.handler(errorField);
-							dialog_glprovccode.handler(errorField);
-							dialog_glprovdep.handler(errorField);
-							dialog_glglossccode.handler(errorField);
-							dialog_glgainloss.handler(errorField);
-							dialog_glrevccode.handler(errorField);
-							dialog_glrevaluation.handler(errorField);
+							
 						}
 				},
 				close: function( event, ui ) {
 					parent_close_disabled(false);
-					$('.alert').detach();
-					$("#formdata a").off();
+					emptyFormdata(errorField,'#formdata');
+					$('#formdata .alert').detach();
+							dialog_assettype.off();
+							dialog_deptcode.off();
+							dialog_glassetcode.off();
+							dialog_glasset.off();
+							dialog_gldepccode.off();
+							dialog_gldep.off();
+							dialog_glprovccode.off();
+							dialog_glprovdep.off();
+							dialog_glglossccode.off();
+							dialog_glgainloss.off();
+							dialog_glrevccode.off();
+							dialog_glrevaluation.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -171,33 +169,37 @@ $.jgrid.defaults.responsive = true;
 				buttons :butt1,
 			  });
 
+
 			////////////////////////////////////////end dialog///////////////////////////////////////////
 
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
+				url: '/util/get_table_default',
 				field:'',
 				table_name:'finance.facode',
-				table_id:'assetcode',
-				filterCol:null,
-				filterVal:null,
+				table_id:'idno',
+				sort_idno: true,	
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
+				url:"/assetcategory/form",
 				field:'',
 				oper:oper,
 				table_name:'finance.facode',
-				table_id:'assetcode'
+				table_id:'idno',
+				saveip:'true'
 			};
 			
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
+					{ label: 'idno', name: 'idno', width: 20, hidden:true },
 					{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
-					{ label: 'Category', name: 'assetcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
-					{ label: 'Description', name: 'description', width: 40, sorttype: 'text',canSearch: true, classes: 'wrap',checked:true },
+					{ label: 'Category', name: 'assetcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, checked: true},
+					{ label: 'Description', name: 'description', width: 40, sorttype: 'text',canSearch: true, classes: 'wrap'  },
 					{ label: 'Type', name: 'assettype', width: 80, sorttype: 'text', classes: 'wrap', hidden:true},
 					{ label: 'Rate (%p.a)', name: 'rate', width: 50 },
 					{ label: 'Department', name: 'deptcode', width: 40, sorttype: 'text', classes: 'wrap'  },
@@ -232,10 +234,13 @@ $.jgrid.defaults.responsive = true;
 					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
 				gridComplete: function(){
-					/*if(editedRow!=0){
-						$("#jqGrid").jqGrid('setSelection',editedRow,false);
-					}*/
+					if(oper == 'add'){
+						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+					}
+
+					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 				},
+				
 				
 			});
 
@@ -257,7 +262,7 @@ $.jgrid.defaults.responsive = true;
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'assetcode':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -300,138 +305,219 @@ $.jgrid.defaults.responsive = true;
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam);
+			addParamField('#jqGrid',false,saveParam,['idno', 'compcode', 'ipaddress', 'computerid', 'adddate', 'adduser','upduser','upddate']);
 
-			///////////////////////////////start->dialogHandler part////////////////////////////////////////////
-			function makeDialog(table,id,cols,title){
-				this.table=table;
-				this.id=id;
-				this.cols=cols;
-				this.title=title;
-				this.handler=dialogHandler;
-				this.check=checkInput;
-			}
 
-			$( "#dialog" ).dialog({
-				autoOpen: false,
-				width: 7/10 * $(window).width(),
-				modal: true,
-				open: function(){
-					$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
-				},
-				close: function( event, ui ){
-					paramD.searchCol=null;
-					paramD.searchVal=null;
-				},
-			});
-
-			var selText,Dtable,Dcols;
-			$("#gridDialog").jqGrid({
-				datatype: "local",
-				colModel: [
-					{ label: 'Code', name: 'code', width: 200,  classes: 'pointer', canSearch:true,checked:true}, 
-					{ label: 'Description', name: 'desc', width: 400, canSearch:true, classes: 'pointer'},
-					{ label: 'holder1', name: 'holder1',  hidden:true},
-				],
-				width: 500,
-				autowidth: true,
-				viewrecords: true,
-				loadonce: false,
-                multiSort: true,
-				rowNum: 30,
-				pager: "#gridDialogPager",
-				ondblClickRow: function(rowid, iRow, iCol, e){
-					var data=$("#gridDialog").jqGrid ('getRowData', rowid);
-					$("#gridDialog").jqGrid("clearGridData", true);
-					$("#dialog").dialog( "close" );
-					$(selText).val(rowid);
-					$(selText).focus();
-					$(selText).parent().next().html(data['desc']);
-					if(selText == '#deptcode'){
-						$('#glassetccode, #gldepccode, #glprovccode, #glglossccode, #glrevccode').val(data.holder1)
+			var dialog_assettype = new ordialog(
+				'assettype','finance.fatype','#assettype',errorField,
+				{	colModel:[
+						{label:'Asset Type',name:'assettype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						
+						]
+				},{
+					title:"Select Asset Type",
+					open: function(){
+						dialog_assettype.urlParam.filterCol=['recstatus'],
+						dialog_assettype.urlParam.filterVal=['A']
 					}
-				},
-				
-			});
-
-			var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:''};
-			function dialogHandler(errorField){
-				var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
-				$( id+" ~ a" ).on( "click", function() {
-					selText=id,Dtable=table,Dcols=cols,
-					$( "#dialog" ).dialog( "open" );
-					$( "#dialog" ).dialog( "option", "title", title );
-					paramD.table_name=table;
-					paramD.field=cols;
-					paramD.table_id=cols[0];
-					
-					$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
-					$('#Dtext').val('');$('#Dcol').html('');
-					
-					$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
-						if(value['canSearch']){
-							if(value['checked']){
-								$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
-							}else{
-								$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
-							}
-						}
-					});
-				});
-				$(id).on("blur", function(){
-					self.check(errorField);
-				});
-			}
+				},'urlParam'
+			);
+			dialog_assettype.makedialog();
 			
-			function checkInput(errorField){
-				var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
-				var param={action:'input_check',table:table,field:field,value:value};
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-					
-				},'json').done(function(data) {
-					if(data.msg=='success'){
-						if($.inArray(id,errorField)!==-1){
-							errorField.splice($.inArray(id,errorField), 1);
-						}
-						$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-						$( id ).removeClass( "error" ).addClass( "valid" );
-						$( id ).parent().siblings( ".help-block" ).html(data.row[field[1]]);
-					}else if(data.msg=='fail'){
-						$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-						$( id ).removeClass( "valid" ).addClass( "error" );
-						$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+field[0]+" )");
-						if($.inArray(id,errorField)===-1){
-							errorField.push(id);
-						}
+			var dialog_deptcode = new ordialog(
+				'deptcode','sysdb.department','#deptcode',errorField,
+				{	colModel:[
+						{label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Cost Code',name:'costcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Department",
+					open: function(){
+						dialog_deptcode.urlParam.filterCol=['recstatus'],
+						dialog_deptcode.urlParam.filterVal=['A']
 					}
-				});
-			}
-			
-			$('#Dtext').keyup(function() {
-				delay(function(){
-					Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-				}, 500 );
-			});
-			
-			$('#Dcol').change(function(){
-				Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-			});
-			
-			function Dsearch(Dtext,Dcol){
-				paramD.searchCol=null;
-				paramD.searchVal=null;
-				Dtext=Dtext.trim();
-				if(Dtext != ''){
-					var split = Dtext.split(" "),searchCol=[],searchVal=[];
-					$.each(split, function( index, value ) {
-						searchCol.push(Dcol);
-						searchVal.push('%'+value+'%');
-					});
-					paramD.searchCol=searchCol;
-					paramD.searchVal=searchVal;
-				}
-				refreshGrid("#gridDialog",paramD);
-			}
-			///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
-			
+				},'urlParam'
+			);
+			dialog_deptcode.makedialog();
+
+			var dialog_glassetcode = new ordialog(
+				'glassetcode','finance.costcenter','#glassetccode',errorField,
+				{	colModel:[
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Asset",
+					open: function(){
+						dialog_glassetcode.urlParam.filterCol=['recstatus'],
+						dialog_glassetcode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glassetcode.makedialog();
+
+			var dialog_glasset = new ordialog(
+				'glasset','finance.glmasref','#glasset',errorField,
+				{	colModel:[
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Asset",
+					open: function(){
+						dialog_glasset.urlParam.filterCol=['recstatus'],
+						dialog_glasset.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glasset.makedialog();
+
+			var dialog_gldepccode = new ordialog(
+				'gldepccode','finance.costcenter','#gldepccode',errorField,
+				{	colModel:[
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Depreciation Code",
+					open: function(){
+						dialog_gldepccode.urlParam.filterCol=['recstatus'],
+						dialog_gldepccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_gldepccode.makedialog();
+
+			var  dialog_gldep  = new ordialog(
+				'gldep','finance.glmasref','#gldep',errorField,
+				{	colModel:[
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Depreciation Code",
+					open: function(){
+						dialog_gldep.urlParam.filterCol=['recstatus'],
+						dialog_gldep.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_gldep.makedialog();
+
+			var dialog_glprovccode  = new ordialog(
+				'glprovccode','finance.costcenter','#glprovccode',errorField,
+				{	colModel:[
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Provision for Depr",
+					open: function(){
+						dialog_glprovccode.urlParam.filterCol=['recstatus'],
+						dialog_glprovccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glprovccode.makedialog();
+
+			var dialog_glprovdep  = new ordialog(
+				'glprovdep','finance.glmasref','#glprovdep',errorField,
+				{	colModel:[
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Provision for Depr",
+					open: function(){
+						dialog_glprovdep.urlParam.filterCol=['recstatus'],
+						dialog_glprovdep.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glprovdep.makedialog();
+
+			var dialog_glglossccode = new ordialog(
+				'glglossccode','finance.costcenter','#glglossccode',errorField,
+				{	colModel:[
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Gain ",
+					open: function(){
+						dialog_glglossccode.urlParam.filterCol=['recstatus'],
+						dialog_glglossccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glglossccode.makedialog();
+
+			var dialog_glgainloss  = new ordialog(
+				'glgainloss','finance.glmasref', '#glgainloss',errorField,
+				{	colModel:[
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Gain ",
+					open: function(){
+						dialog_glgainloss.urlParam.filterCol=['recstatus'],
+						dialog_glgainloss.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glgainloss.makedialog();
+
+
+			var dialog_glrevccode = new ordialog(
+				'glrevccode','finance.costcenter','#glrevccode',errorField,
+				{	colModel:[
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Loss",
+					open: function(){
+						dialog_glrevccode.urlParam.filterCol=['recstatus'],
+						dialog_glrevccode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glrevccode.makedialog();
+
+			var dialog_glrevaluation = new ordialog(
+				'glrevaluation','finance.glmasref','#glrevaluation',errorField,
+				{	colModel:[
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Compcode',name:'compcode',width:400,hidden:true},
+						]
+				},{
+					title:"Select Loss",
+					open: function(){
+						dialog_glrevaluation.urlParam.filterCol=['recstatus'],
+						dialog_glrevaluation.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_glrevaluation.makedialog();
+		
+	
 		});
+			
+		
+
+			
+			
+
