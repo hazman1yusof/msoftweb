@@ -1098,93 +1098,23 @@ $(document).ready(function () {
 		}
 		
 	}
-	///////////////////////////////////////////////////////////////////////////////
 
-	/////////////calculate conv fac//////////////////////////////////
-/*	 function checkQOH(event) {
-
-		console.log("qtyonhand");
-
-		var qtyonhand="#jqGrid2 input[name='qtyonhand']"
-		var fail=false,fail_msg="";
-
-		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		
-		if (qtyonhand  == 0) {
-			fail_msg = "Transaction Quantity Cannot Be Zero";
-		} else {
-			
-		}
-		
-	}*/
-
+	/////////////checkQOH//////////////////////////////////
 	 function checkQOH(event) {
-		var optid = event.currentTarget.id;
-		var id_optid = optid.substring(0,optid.search("_"));
-
-		var id="#jqGrid2 #"+id_optid+"_qtyonhand";
-		var fail_msg = "Transaction Quantity is 0";
+		var fail = false;
+		var id="#jqGrid2 input[name='qtyonhand']"
+		var fail_msg = "Qty on Hand cant be 0"
 		var name = "checkQOH";
 
-		let qtyonhand = parseInt($("#jqGrid2 #input_"+id_optid+"_qtyonhand").val());
-
-		if (qtyonhand  == 0) {
-			if($.inArray(id,errorField)!==-1){
-				errorField.splice($.inArray(id,errorField), 1);
-			}
-			$('.noti').find("li[data-errorid='"+name+"']").detach();
-		} else {
-			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
-			if($.inArray(id,errorField)===-1){
-				errorField.push( id );
-			}
-		}
+		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
+		if(qtyonhand<=0)fail=true;
+		errorIt('qtyonhand',errorField,fail,fail_msg);
 	}
 
-	/*function checkQOH(event){
-		console.log(event.handleObj.data[0]);
-		var fail=false,fail_msg="";
-		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		
-		if(event.target.name=='qtyonhand'){
-			if(event.target.name == 0){
-				fail_msg = "Transaction Quantity is 0";
-				event.target.value='';fail=true;
-			}else if{
-						
-			}
-					
-		} else{
-			
-		}
-		errorIt(event.target.name,errorField,fail,fail_msg);
-		let amount=txnqty*netprice;
-		$("#jqGrid2 input[name='amount']").val(amount.toFixed(4));
-	}
-
-	function errorIt(name,errorField,fail,fail_msg){
-		let id = "#jqGrid2 input[name='"+name+"']";
-		if(!fail){
-			if($.inArray(id,errorField)!==-1){
-				errorField.splice($.inArray(id,errorField), 1);
-			}
-			$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-			$( id ).removeClass( "error" ).addClass( "valid" );
-			$('.noti').find("li[data-errorid='"+name+"']").detach();
-		}else{
-			$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-			$( id ).removeClass( "valid" ).addClass( "error" );
-			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
-			if($.inArray(id,errorField)===-1){
-				errorField.push( id );
-			}
-		}
-	}*/
 	///////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////calculate amount////////////////////////////
 	function calculate_amount_and_other(event){
-		console.log(event.handleObj.data[0]);
 		var fail=false,fail_msg="";
 		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
 		let txnqty=parseInt($("input[name='txnqty']").val());
@@ -1390,7 +1320,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
 				
 				getQOHtxndept();
-				//checkQOH();
+				checkQOH();
 				//getavgcost();
 			}
 		},{
