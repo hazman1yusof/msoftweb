@@ -123,14 +123,13 @@ $.jgrid.defaults.responsive = true;
 							$( this ).dialog( "option", "title", "Edit" );
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
-							rdonly('#formdata');
-							$('#formdata :input[hideOne]').show();
 							break;
 						case state = 'view':
 							$( this ).dialog( "option", "title", "View" );
 							disableForm('#formdata');
 							$(this).dialog("option", "buttons",butt2);
 							break;
+
 						} if(oper!='view'){
 							set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 							dialog_assettype.on();
@@ -145,7 +144,6 @@ $.jgrid.defaults.responsive = true;
 							dialog_glgainloss.on();
 							dialog_glrevccode.on();
 							dialog_glrevaluation.on();
-
 
 						} if(oper!='add'){
 							// toggleFormData('#jqGrid','#formdata');
@@ -187,7 +185,8 @@ $.jgrid.defaults.responsive = true;
 				field:'',
 				table_name:'finance.facode',
 				table_id:'assetcode',
-				sort_idno: true,	
+				table_id:'idno',
+				sort_idno: true,
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -197,14 +196,13 @@ $.jgrid.defaults.responsive = true;
 				field:'',
 				oper:oper,
 				table_name:'finance.facode',
-				table_id:'assetcode',
+				table_id:'idno'
 				saveip:'true'
 			};
 			
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
-					{ label: 'idno', name: 'idno', width: 20, hidden:true },
 					{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
 					{ label: 'Category', name: 'assetcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, checked: true},
 					{ label: 'Description', name: 'description', width: 40, sorttype: 'text',canSearch: true, classes: 'wrap'  },
