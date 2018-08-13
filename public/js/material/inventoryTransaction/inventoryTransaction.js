@@ -336,6 +336,7 @@ $(document).ready(function () {
 				function forTR(){
 					$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
 					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
+					$("#jqGrid2").jqGrid('setColProp', 'netprice', {editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
 					
 					$("label[for=sndrcv]").show();
 					$("#sndrcv_parent").show();
@@ -354,6 +355,8 @@ $(document).ready(function () {
 				function exceptTR(){
 					$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
 					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
+					
+
 					$("label[for=sndrcv]").show();
 					$("#sndrcv_parent").show();
 
@@ -658,7 +661,7 @@ $(document).ready(function () {
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
 						editoptions:{
-						readonly: "readonly",
+						//readonly: "readonly",
 						maxlength: 12,
 						dataInit: function(element) {
 							element.style.textAlign = 'right';  
@@ -1123,6 +1126,7 @@ $(document).ready(function () {
 		let netprice=parseFloat($("input[name='netprice']").val());
 		let crdbfl=$('#crdbfl').val();
 		let isstype=$('#isstype').val();
+		let acctype=$('#acctype').val();
 		if(event.target.name=='txnqty'){
 			switch(crdbfl){
 				case "Out":
@@ -1135,17 +1139,13 @@ $(document).ready(function () {
 					}else if(qtyonhand<event.target.value && isstype=='Transfer'){
 						fail_msg = "Transaction quantity exceed quantity on hand";
 						event.target.value=$("input[name='txnqty']").val();fail=true;
-					}/*else if (accttype == 'Adjustment' && isstype == 'Others'){
-						$("#jqGrid2").jqGrid('setColProp', 'netprice',{editrules: {required: true},edittype:"text",  editable:true});
-					}*/
+					}
 					break;
 				case "In":
 					if(event.target.name == 0 && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot Be Zero";
 						event.target.value=$("input[name='txnqty']").val();fail=true;
-					}/*else if (acctype == 'Adjustment' && isstype == 'Others'){
-						$("#jqGrid2").jqGrid('setColProp', 'netprice',{editrules: {required: true},edittype:"text", editable:true});
-					}*/
+					}
 					break;
 				default:
 					break;
@@ -1180,27 +1180,6 @@ $(document).ready(function () {
 		}
 	}
 
-	////////////////////////////////////// get average cost////////////////////////
-	function getavgcost(){
-		let crdbfl = $('#crdbfl').val();
-		let isstype = $('#isstype').val();
-		let accttype=$('#accttype').val();
-		
-				if (accttype == 'Adjustment' && crdbfl == 'In' && isstype == 'Others') {
-						$("#jqGrid2").jqGrid('setColProp', 'netprice', {editrules: {required: true}});
-						//$("#jqGrid2").jqGrid('setColProp', 'batchno', {editrules: {required: true}});
-				}
-				if (accttype == 'Adjustment' && crdbfl == 'In' && isstype == 'Others') {
-						$("#jqGrid2").jqGrid('setColProp', 'netprice', {editrules: {required: false}});
-						//$("#jqGrid2").jqGrid('setColProp', 'batchno', {editrules: {required: false}});
-				}
-			/*}else{
-				//alert('Cannot find avgcost and expdtflg for itemcode: '+$("#jqGrid2 input[name='itemcode']").val()+' and uom: '+$("#jqGrid2 input[name='uomcode']").val());
-			}*/
-		
-	}
-
-	
 	
 
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
@@ -1312,7 +1291,7 @@ $(document).ready(function () {
 				
 				getQOHtxndept();
 				checkQOH();
-				//getavgcost();
+				
 			}
 		},{
 			title:"Select Item For Stock Transaction",
