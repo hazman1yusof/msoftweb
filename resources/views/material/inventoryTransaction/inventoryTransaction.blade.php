@@ -165,7 +165,7 @@
 						  	<div class="form-group">
 						  		<label class="col-md-2 control-label" for="sndrcvtype">Receiver Type</label>  
 						  			<div class="col-md-2 selectContainer" id="sndrcvtype_parent">
-						  				<select id="sndrcvtype" name="sndrcvtype" class="form-control">
+						  				<select id="sndrcvtype" name="sndrcvtype" class="form-control" data-validation="required">
 							  				<option value="">Please Select</option>
 											<option value="Department">Department</option>
 											<option value="Supplier">Supplier</option>
@@ -179,7 +179,7 @@
 								<label class="col-md-2 control-label" for="sndrcv">Receiver</label>	  
 									<div class="col-md-2" id="sndrcv_parent">
 										  <div class='input-group'>
-											<input id="sndrcv" name="sndrcv" type="text" class="form-control input-sm">
+											<input id="sndrcv" name="sndrcv" type="text" class="form-control input-sm" data-validation="required">
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										  </div>
 										  <span class="help-block"></span>

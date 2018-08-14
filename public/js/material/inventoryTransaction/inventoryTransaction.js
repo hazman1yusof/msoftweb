@@ -67,9 +67,21 @@ $(document).ready(function () {
 					inputTrantypeValue();
 					break;
 			}if(oper!='add'){
+				switch(trantype){
+					case "LI":
+					case "LIR":
+					case "LO":
+					case "LOR":
+						dialog_sndrcv.check(errorField);
+						break;
+					case "TR":
+						dialog_sndrcv.check(errorField);
+						break;
+					default:
+						break;
+				}
 				dialog_trantype.check(errorField);
 				dialog_txndept.check(errorField);
-				dialog_sndrcv.check(errorField);
 				dialog_requestRecNo.check(errorField);
 			}if(oper!='view'){
 				dialog_trantype.on();
@@ -308,70 +320,70 @@ $(document).ready(function () {
 		var trantype = $('#trantype').val();
 		//accttype = Loan (LI LIR LO LOR)
 
-				switch(trantype){
-					case "LI":
-					case "LIR":
-					case "LO":
-					case "LOR":
-						exceptTR();
-						break;
-					case "TR":
-						forTR();
-						break;
-					default:
-						$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
-						$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
-						$("label[for=sndrcv]").hide();
-						$("#sndrcv_parent").hide();
+		switch(trantype){
+			case "LI":
+			case "LIR":
+			case "LO":
+			case "LOR":
+				exceptTR();
+				break;
+			case "TR":
+				forTR();
+				break;
+			default:
+				$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
+				$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
+				$("label[for=sndrcv]").hide();
+				$("#sndrcv_parent").hide();
 
-						$("label[for=sndrcvtype]").hide();
-						$("#sndrcvtype_parent").hide();
-						
-						$("#sndrcv").removeAttr('required');
-						$("#sndrcvtype").removeAttr('required');
-						break;
-				}
+				$("label[for=sndrcvtype]").hide();
+				$("#sndrcvtype_parent").hide();
+				
+				$("#sndrcv").removeAttr('data-validation');
+				$("#sndrcvtype").removeAttr('data-validation');
+				break;
+		}
 
-				function forTR(){
-					$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
-					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
-					$("#jqGrid2").jqGrid('setColProp', 'netprice', 
-						{formatter:'currency', 
-						formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-						editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
+		function forTR(){
+			$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
+			$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
+			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+				{formatter:'currency', 
+				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+				editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
 
 
-					$("label[for=sndrcv]").show();
-					$("#sndrcv_parent").show();
+			$("label[for=sndrcv]").show();
+			$("#sndrcv_parent").show();
 
-					$("label[for=sndrcvtype]").show();
-					$("#sndrcvtype_parent").show();
-					$("#sndrcvtype option[value='Department']").show();
-					$("#sndrcvtype option[value='Supplier']").hide();
-					$("#sndrcvtype option[value='Other']").hide();
+			$("label[for=sndrcvtype]").show();
+			$("#sndrcvtype_parent").show();
+			$("#sndrcvtype option[value='Department']").show();
+			$("#sndrcvtype option[value='Supplier']").hide();
+			$("#sndrcvtype option[value='Other']").hide();
 
-					$("#sndrcv").attr('required', true);
-					$("#sndrcvtype").attr('required', true);
+			$("#sndrcv").attr('data-validation', 'required');
+			$("#sndrcvtype").attr('data-validation', 'required');
 
-				}
+		}
 
-				function exceptTR(){
-					$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
-					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
-					
+		function exceptTR(){
+			$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
+			$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
+			
 
-					$("label[for=sndrcv]").show();
-					$("#sndrcv_parent").show();
+			$("label[for=sndrcv]").show();
+			$("#sndrcv_parent").show();
 
-					$("label[for=sndrcvtype]").show();
-					$("#sndrcvtype_parent").show();
-					$("#sndrcvtype option[value='Department']").hide();
-					$("#sndrcvtype option[value='Supplier']").show();
-					$("#sndrcvtype option[value='Other']").show();
+			$("label[for=sndrcvtype]").show();
+			$("#sndrcvtype_parent").show();
+			$("#sndrcvtype option[value='Department']").hide();
+			$("#sndrcvtype option[value='Supplier']").show();
+			$("#sndrcvtype option[value='Other']").show();
 
-					$("#sndrcv").attr('required', true);
-					$("#sndrcvtype").attr('required', true);
-				}
+			$("#sndrcv").attr('data-validation', 'required');
+			$("#sndrcvtype").attr('data-validation', 'required');
+		}
 	}
 
 	/////////////////////////////////REQ REC NO////////////////////////////////////////////////////////////
