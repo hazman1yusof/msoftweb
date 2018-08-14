@@ -40,7 +40,7 @@
 				<div class="form-group">
 				  <label class="col-md-3 control-label" for="assetcode">Category</label>  
 				  <div class="col-md-2">
-                      <input id="assetcode" name="assetcode" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+                      <input id="assetcode" name="assetcode" type="text" maxlength="100" class="form-control input-sm" data-validation="required" frozeOnEdit>
                       </div>
                        <label class="col-md-3 control-label" for="description" hidden="">Description</label>  
                       <div class="col-md-5">
@@ -93,7 +93,7 @@
 		         	<label class="col-md-3 control-label" for="rate">Rate (%p.a)</label>  
 		              <div class="col-md-2">
 		                <div class="input-group">
-		                <input id="rate" name="rate" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required">
+		                <input id="rate" name="rate" type="number" maxlength="30" class="form-control input-sm text-uppercase" input type ="number" data-validation="required">
 		                
 		                </div>
 		              </div>
@@ -101,13 +101,15 @@
 
 				<div class="form-group">
                 	<label class="col-md-3 control-label" for="residualvalue">Residual Value</label>  
-                      <div class="col-md-1">
-                      <input id="residualvalue" name="residualvalue" type="text" maxlength="100" class="form-control input-sm" data-validation="required"  value = "1" rdonly>
+                      <div class="col-md-2">
+                      <input id="residualvalue" name="residualvalue" type="number" maxlength="100" class="form-control input-sm" data-validation="required"  value = "1">
                       </div>
 				</div>
 
 				<div class="form-group">
-                	<label class="col-md-3 control-label" for="description">Cost Code Account</label>
+                	<label class="col-md-3 control-label" for="description">Code</label>
+									<label class="col-md-2 control-label" for="description">Cost Code</label>
+									<label class="col-md-2 control-label" for="description">Account Code</label>
 				</div>
 
 				<div class="form-group">

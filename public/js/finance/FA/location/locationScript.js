@@ -64,8 +64,8 @@
 							$( this ).dialog( "option", "title", "Edit" );
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
-						rdonly("#formdata");
-							
+							rdonly("#formdata");
+					
 							rdonly("#dialogForm");
 							break;
 						case state = 'view':

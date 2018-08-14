@@ -93,11 +93,11 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
-				url: '/util/get_table_default',
-				
+				url: '/util/get_table_default',				
 				field:'',
 				table_name:'finance.fatype', ////////////////////
 				table_id:'assettype',
+				table_id:'idno',
 				sort_idno: true,					////////////////////
 			}
 
