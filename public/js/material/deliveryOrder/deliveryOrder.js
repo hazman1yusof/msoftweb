@@ -854,6 +854,7 @@ $(document).ready(function () {
 			}else{
 				dialog_pricecode.on();//start binding event on jqgrid2
 				dialog_itemcode.on();
+				dialog_itemcode_init(blur=true);
 				dialog_uomcode.on();
 				dialog_pouom.on();
 				dialog_taxcode.on();
@@ -1281,6 +1282,7 @@ $(document).ready(function () {
 		}else{
 			dialog_pricecode.on();//start binding event on jqgrid2
 			dialog_itemcode.on();
+			dialog_itemcode_init(blur=true);
 			dialog_uomcode.on();
 			dialog_pouom.on();
 			dialog_taxcode.on();
@@ -1631,26 +1633,45 @@ $(document).ready(function () {
 		},{
 			title:"Select Item For Delivery Order",
 			open:function(){
-				dialog_itemcode.urlParam.fixPost="true";
-				dialog_itemcode.urlParam.table_id = "none_";
-				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode'];
-				dialog_itemcode.urlParam.filterVal = ['session.company', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val()];
-				dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
-				dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
-				dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
-				dialog_itemcode.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
-				dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
+				dialog_itemcode_init();
 			},
 			close: function(){
-				// $(dialog_itemcode.textfield)			//lepas close dialog focus on next textfield 
-				// 	.closest('td')						//utk dialog dalam jqgrid jer
-				// 	.next()
-				// 	.find("input[type=text]").focus();
+				$(dialog_itemcode.textfield)			//lepas close dialog focus on next textfield 
+					.closest('td')						//utk dialog dalam jqgrid jer
+					.next()
+					.find("input[type=text]").focus();
 			}
-		},'none','radio','tab'//urlParam means check() using urlParam not check_input
+		},'none','radio'//urlParam means check() using urlParam not check_input
 	);
 	dialog_itemcode.makedialog(false);
-	//false means not binding event on jqgrid2 yet, after jqgrid2 add, event will be bind
+
+	//init urlparam sebelum open
+	function dialog_itemcode_init(blur=false){
+		dialog_itemcode.urlParam.fixPost="true";
+		dialog_itemcode.urlParam.table_id = "none_";
+		dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode'];
+		dialog_itemcode.urlParam.filterVal = ['session.company', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val()];
+		dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
+		dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
+		dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
+		dialog_itemcode.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
+		dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
+
+		if(blur)$(dialog_itemcode.textfield).on('blur',{data:dialog_itemcode,errorField:errorField},dialog_itemcode_onleave);
+	}
+
+	//onleave dialog itemcode
+	function dialog_itemcode_onleave(event){
+		let obj = event.data.data;
+		console.log(event.currentTarget);
+		let optid = $(event.currentTarget).getAttribute("optid");
+		let id_optid = optid.substring(0,optid.search("_"));
+		let itemcode = $("#jqGrid2 #input_"+id_optid+"_itemcode").val();
+
+		obj.urlParam.searchCol=['itemcode'];
+		obj.urlParam.searchVal=['%'+itemcode+'%'];
+		refreshGrid("#"+obj.gridname,obj.urlParam);
+	}
 
 	var dialog_uomcode = new ordialog(
 		'uom',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,

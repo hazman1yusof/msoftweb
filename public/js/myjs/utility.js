@@ -637,9 +637,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			$(this.textfield).on('blur',{data:this,errorField:errorField},onBlur);
 		}
 	}
-	this.changeColModel = function(colModel){
-
-	}
 
 	function onClick(event){
 		var textfield = $(event.currentTarget).siblings("input[type='text']");
@@ -704,7 +701,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		}
 	}
 
-	function onChange(event){console.log('asd  onchange  asd');
+	function onChange(event){
 		let obj = event.data.data;
 		renull_search(obj);
 		let Dtext=$("#Dtext_"+obj.unique).val().trim();
@@ -858,11 +855,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				if(param.fixPost == 'true'){
 					code_ = code_.replaceAt(code_.search("_"),'.');
 				}
-				// param.filterCol = param.filterCol.filter(function(el,index){
-				// 	if(el == code_){param.filterVal.splice(index,1);return false}
-				// 	return true;
-				// })
-
+				
 				param.filterCol.push(code_);
 				param.filterVal.push(value);
 			}else{
