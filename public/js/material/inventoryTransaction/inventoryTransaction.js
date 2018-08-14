@@ -336,8 +336,12 @@ $(document).ready(function () {
 				function forTR(){
 					$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
 					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
-					$("#jqGrid2").jqGrid('setColProp', 'netprice', {editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
-					
+					$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+						{formatter:'currency', 
+						formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+						editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
+
+
 					$("label[for=sndrcv]").show();
 					$("#sndrcv_parent").show();
 
@@ -400,6 +404,7 @@ $(document).ready(function () {
 		}
 
 	}
+
 
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
@@ -515,13 +520,18 @@ $(document).ready(function () {
 	$('#trandept').on('change', searchChange);
 
 	function whenchangetodate() {
-		if($('#Scol').val()=='trandate'){
+		if($('#Scol').val()=='delordhd_trandate'){
 			$("input[name='Stext']").show("fast");
+			$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'date');
 			$("input[name='Stext']").velocity({ width: "250px" });
 			$("input[name='Stext']").on('change', searchbydate);
-		}else {
+		} else if($('#Scol').val() == 'supplier_name'){
+			$("input[name='Stext']").hide("fast");
+			$("#tunjukname").show("fast");
+		} else {
 			$("input[name='Stext']").show("fast");
+			$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'text');
 			$("input[name='Stext']").velocity({ width: "100%" });
 			$("input[name='Stext']").off('change', searchbydate);
@@ -543,7 +553,7 @@ $(document).ready(function () {
 				refreshGrid('#jqGrid', urlParam);
 			}
 		},{
-			title: "Select Purchase Department",
+			title: "Select Transaction Department",
 			open: function () {
 				dialog_suppcode.urlParam.filterCol = ['recstatus'];
 				dialog_suppcode.urlParam.filterVal = ['A'];
@@ -686,6 +696,21 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
+			/*{ label: 'Expiry Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+				editoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            id: 'expdate_datePicker',
+                            dateFormat: 'dd/mm/yy',
+                            minDate: 1,
+                            showOn: 'focus',
+                            changeMonth: true,
+		  					changeYear: true,
+                        });
+                    }
+                }
+			},*/
 			{ label: 'Batch No', name: 'batchno', width: 75, classes: 'wrap', editable:true,
 					maxlength: 30,
 			},
@@ -968,6 +993,7 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
 		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='qtyonhand']").on('blur',checkQOH);
+	//	$("#jqGrid2 input[name='itemcode']").on('blur',expdate_batchno);
 		$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
 			var code = e.keyCode || e.which;
 			if (code == '9')$('#jqGrid2_ilsave').click();
@@ -1126,7 +1152,6 @@ $(document).ready(function () {
 		let netprice=parseFloat($("input[name='netprice']").val());
 		let crdbfl=$('#crdbfl').val();
 		let isstype=$('#isstype').val();
-		let acctype=$('#acctype').val();
 		if(event.target.name=='txnqty'){
 			switch(crdbfl){
 				case "Out":
@@ -1179,6 +1204,41 @@ $(document).ready(function () {
 			}
 		}
 	}
+/*
+	////////////////////////////////////////calculate amount////////////////////////////
+	function expdate_batchno(){
+		
+		let crdbfl=$('#crdbfl').val();
+		let isstype=$('#isstype').val();
+
+		if (isstype == 'Adjustment' && crdbfl == 'In'){
+			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+				{editable:true,
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+				editoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            id: 'expdate_datePicker',
+                            dateFormat: 'dd/mm/yy',
+                            minDate: 1,
+                            showOn: 'focus',
+                            changeMonth: true,
+		  					changeYear: true,
+                        });
+                    }
+                }
+			});
+		} else if (isstype == 'Adjustment' && crdbfl == 'Out'){
+			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+			{editable:true,
+			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+					editrules:{required: false,custom:true, custom_func:cust_rules},
+						edittype:'custom',	editoptions:
+						    {  custom_element:expdateCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    }});
+		}
+	}*/
 
 	
 
