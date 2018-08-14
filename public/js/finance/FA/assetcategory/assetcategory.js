@@ -18,8 +18,9 @@ $.jgrid.defaults.responsive = true;
 			conf = {
 				onValidate : function($form) {
 					if(errorField.length>0){
+						console.log(errorField)
 						return {
-							element : $(errorField[0]),
+							element : $('#'+errorField[0]),
 							message : ' '
 						}
 					}

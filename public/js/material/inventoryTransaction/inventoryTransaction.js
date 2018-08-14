@@ -16,6 +16,7 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
+				console.log(errorField[0]);
 				return {
 					element : $(errorField[0]),
 					message : ' '
@@ -24,16 +25,14 @@ $(document).ready(function () {
 		},
 	};
 
-	
-
-	/////////////////////////////////// currency ///////////////////////////////
+	/////////////////////////////////// currency /////////////////////////////////////////
 	var mycurrency =new currencymode(['#amount']);
 
-	///////////////////////////////// trandate check date validate from period////////// ////////////////
+	///////////////////////////////// trandate check date validate from period////////// ////
 	var actdateObj = new setactdate(["#trandate"]);
 	actdateObj.getdata().set();
 
-	////////////////////////////////////start dialog//////////////////////////////////////
+	////////////////////////////////////start dialog////////////////////////////////////////
 	var oper;
 	var unsaved = false;
 
@@ -328,15 +327,20 @@ $(document).ready(function () {
 						$("label[for=sndrcvtype]").hide();
 						$("#sndrcvtype_parent").hide();
 						
-						$("#sndrcv").attr('required', true);
-						$("#sndrcvtype").attr('required', true);
+						$("#sndrcv").removeAttr('required');
+						$("#sndrcvtype").removeAttr('required');
 						break;
 				}
 
 				function forTR(){
 					$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
 					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
-					
+					$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+						{formatter:'currency', 
+						formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+						editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
+
+
 					$("label[for=sndrcv]").show();
 					$("#sndrcv_parent").show();
 
@@ -346,14 +350,16 @@ $(document).ready(function () {
 					$("#sndrcvtype option[value='Supplier']").hide();
 					$("#sndrcvtype option[value='Other']").hide();
 
-					$("#sndrcv").removeAttr('required');
-					$("#sndrcvtype").removeAttr('required');
+					$("#sndrcv").attr('required', true);
+					$("#sndrcvtype").attr('required', true);
 
 				}
 
 				function exceptTR(){
 					$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
 					$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
+					
+
 					$("label[for=sndrcv]").show();
 					$("#sndrcv_parent").show();
 
@@ -363,8 +369,8 @@ $(document).ready(function () {
 					$("#sndrcvtype option[value='Supplier']").show();
 					$("#sndrcvtype option[value='Other']").show();
 
-					$("#sndrcv").removeAttr('required');
-					$("#sndrcvtype").removeAttr('required');
+					$("#sndrcv").attr('required', true);
+					$("#sndrcvtype").attr('required', true);
 				}
 	}
 
@@ -397,6 +403,7 @@ $(document).ready(function () {
 		}
 
 	}
+
 
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
@@ -512,13 +519,18 @@ $(document).ready(function () {
 	$('#trandept').on('change', searchChange);
 
 	function whenchangetodate() {
-		if($('#Scol').val()=='trandate'){
+		if($('#Scol').val()=='delordhd_trandate'){
 			$("input[name='Stext']").show("fast");
+			$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'date');
 			$("input[name='Stext']").velocity({ width: "250px" });
 			$("input[name='Stext']").on('change', searchbydate);
-		}else {
+		} else if($('#Scol').val() == 'supplier_name'){
+			$("input[name='Stext']").hide("fast");
+			$("#tunjukname").show("fast");
+		} else {
 			$("input[name='Stext']").show("fast");
+			$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'text');
 			$("input[name='Stext']").velocity({ width: "100%" });
 			$("input[name='Stext']").off('change', searchbydate);
@@ -540,7 +552,7 @@ $(document).ready(function () {
 				refreshGrid('#jqGrid', urlParam);
 			}
 		},{
-			title: "Select Purchase Department",
+			title: "Select Transaction Department",
 			open: function () {
 				dialog_suppcode.urlParam.filterCol = ['recstatus'];
 				dialog_suppcode.urlParam.filterVal = ['A'];
@@ -658,7 +670,7 @@ $(document).ready(function () {
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
 						editoptions:{
-						readonly: "readonly",
+						//readonly: "readonly",
 						maxlength: 12,
 						dataInit: function(element) {
 							element.style.textAlign = 'right';  
@@ -683,6 +695,21 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
+			/*{ label: 'Expiry Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+				editoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            id: 'expdate_datePicker',
+                            dateFormat: 'dd/mm/yy',
+                            minDate: 1,
+                            showOn: 'focus',
+                            changeMonth: true,
+		  					changeYear: true,
+                        });
+                    }
+                }
+			},*/
 			{ label: 'Batch No', name: 'batchno', width: 75, classes: 'wrap', editable:true,
 					maxlength: 30,
 			},
@@ -965,6 +992,7 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
 		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='qtyonhand']").on('blur',checkQOH);
+	//	$("#jqGrid2 input[name='itemcode']").on('blur',expdate_batchno);
 		$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
 			var code = e.keyCode || e.which;
 			if (code == '9')$('#jqGrid2_ilsave').click();
@@ -1135,17 +1163,13 @@ $(document).ready(function () {
 					}else if(qtyonhand<event.target.value && isstype=='Transfer'){
 						fail_msg = "Transaction quantity exceed quantity on hand";
 						event.target.value=$("input[name='txnqty']").val();fail=true;
-					}/*else if (accttype == 'Adjustment' && isstype == 'Others'){
-						$("#jqGrid2").jqGrid('setColProp', 'netprice',{editrules: {required: true},edittype:"text",  editable:true});
-					}*/
+					}
 					break;
 				case "In":
 					if(event.target.name == 0 && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot Be Zero";
 						event.target.value=$("input[name='txnqty']").val();fail=true;
-					}/*else if (acctype == 'Adjustment' && isstype == 'Others'){
-						$("#jqGrid2").jqGrid('setColProp', 'netprice',{editrules: {required: true},edittype:"text", editable:true});
-					}*/
+					}
 					break;
 				default:
 					break;
@@ -1179,28 +1203,42 @@ $(document).ready(function () {
 			}
 		}
 	}
-
-	////////////////////////////////////// get average cost////////////////////////
-	function getavgcost(){
-		let crdbfl = $('#crdbfl').val();
-		let isstype = $('#isstype').val();
-		let accttype=$('#accttype').val();
+/*
+	////////////////////////////////////////calculate amount////////////////////////////
+	function expdate_batchno(){
 		
-				if (accttype == 'Adjustment' && crdbfl == 'In' && isstype == 'Others') {
-						$("#jqGrid2").jqGrid('setColProp', 'netprice', {editrules: {required: true}});
-						//$("#jqGrid2").jqGrid('setColProp', 'batchno', {editrules: {required: true}});
-				}
-				if (accttype == 'Adjustment' && crdbfl == 'In' && isstype == 'Others') {
-						$("#jqGrid2").jqGrid('setColProp', 'netprice', {editrules: {required: false}});
-						//$("#jqGrid2").jqGrid('setColProp', 'batchno', {editrules: {required: false}});
-				}
-			/*}else{
-				//alert('Cannot find avgcost and expdtflg for itemcode: '+$("#jqGrid2 input[name='itemcode']").val()+' and uom: '+$("#jqGrid2 input[name='uomcode']").val());
-			}*/
-		
-	}
+		let crdbfl=$('#crdbfl').val();
+		let isstype=$('#isstype').val();
 
-	
+		if (isstype == 'Adjustment' && crdbfl == 'In'){
+			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+				{editable:true,
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+				editoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            id: 'expdate_datePicker',
+                            dateFormat: 'dd/mm/yy',
+                            minDate: 1,
+                            showOn: 'focus',
+                            changeMonth: true,
+		  					changeYear: true,
+                        });
+                    }
+                }
+			});
+		} else if (isstype == 'Adjustment' && crdbfl == 'Out'){
+			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+			{editable:true,
+			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+					editrules:{required: false,custom:true, custom_func:cust_rules},
+						edittype:'custom',	editoptions:
+						    {  custom_element:expdateCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    }});
+		}
+	}*/
+
 	
 
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
@@ -1312,7 +1350,7 @@ $(document).ready(function () {
 				
 				getQOHtxndept();
 				checkQOH();
-				//getavgcost();
+				
 			}
 		},{
 			title:"Select Item For Stock Transaction",

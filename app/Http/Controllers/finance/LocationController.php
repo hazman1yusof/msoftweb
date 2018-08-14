@@ -7,7 +7,6 @@ use App\Http\Controllers\defaultController;
 
 class LocationController extends defaultController
 {   
-
     var $table;
     var $duplicateCode;
 
