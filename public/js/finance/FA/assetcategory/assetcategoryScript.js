@@ -197,7 +197,6 @@ $.jgrid.defaults.responsive = true;
 				oper:oper,
 				table_name:'finance.facode',
 				table_id:'idno'
-				saveip:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

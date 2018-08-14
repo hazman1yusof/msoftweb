@@ -1,6 +1,7 @@
 
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
+		var editedRow=0;
 
 		$(document).ready(function () {
 			$("body").show();
@@ -17,7 +18,7 @@
 				onValidate : function($form) {
 					if(errorField.length>0){
 						return {
-							element : $('#'+errorField[0]),
+							element : $(errorField[0]),
 							message : ' '
 						}
 					}
@@ -26,68 +27,69 @@
 			
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1 = [{
-		    text: "Save", click: function () {
-			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", oper, saveParam, urlParam);
-			}
-		}
-	}, {
-		text: "Cancel", click: function () {
-			$(this).dialog('close');
-		}
-	}];
-
-	var butt2 = [{
-		text: "Close", click: function () {
-			$(this).dialog('close');
-		}
-	}];
-
-		var oper;
-	$("#dialogForm")
-		.dialog({
-			width: 9 / 10 * $(window).width(),
-			modal: true,
-			autoOpen: false,
-			open: function (event, ui) {
-				parent_close_disabled(true);
-				switch (oper) {
-					case state = 'add':
-						$(this).dialog("option", "title", "Add");
-						enableForm('#formdata');
-						rdonly("#formdata");
-						rdonly("#dialogForm");
-						hideOne("#formdata");
-						break;
-					case state = 'edit':
-						$(this).dialog("option", "title", "Edit");
-						enableForm('#formdata');
-						frozeOnEdit("#dialogForm");
-						rdonly("#formdata");
-						rdonly("#dialogForm");
-						$('#formdata :input[hideOne]').show();
-						break;
-					case state = 'view':
-						$(this).dialog("option", "title", "View");
-						disableForm('#formdata');
-						$(this).dialog("option", "buttons", butt2);
-						$('#formdata :input[hideOne]').show();
-						break;
-				}
-				if(oper!='view'){
-						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
+		    	text: "Save", click: function () {
+					if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
+						saveFormdata("#jqGrid", "#dialogForm", "#formdata", oper, saveParam, urlParam);
 					}
-			},
-			close: function (event, ui) {
-				parent_close_disabled(false);
-				emptyFormdata(errorField, '#formdata');
-				$("#formdata a").off();
-				if (oper == 'view') {
-					$(this).dialog("option", "buttons", butt1);
 				}
-			},
-			buttons: butt1,
-		});
+			}, {
+				text: "Cancel", click: function () {
+					$(this).dialog('close');
+				}
+			}];
+
+			var butt2 = [{
+				text: "Close", click: function () {
+					$(this).dialog('close');
+				}
+			}];
+
+			var oper;
+			$("#dialogForm")
+			 .dialog({
+				width: 9/10 * $(window).width(),
+				modal: true,
+				autoOpen: false,
+				open: function (event, ui) {
+					parent_close_disabled(true);
+					switch (oper) {
+						case state = 'add':
+							$(this).dialog("option", "title", "Add");
+							enableForm('#formdata');
+							rdonly("#formdata");
+							rdonly("#dialogForm");
+							hideOne("#formdata");
+							break;
+						case state = 'edit':
+							$(this).dialog("option", "title", "Edit");
+							enableForm('#formdata');
+							frozeOnEdit("#dialogForm");
+							rdonly("#formdata");
+							rdonly("#dialogForm");
+							$('#formdata :input[hideOne]').show();
+							break;
+						case state = 'view':
+							$(this).dialog("option", "title", "View");
+							disableForm('#formdata');
+							$(this).dialog("option", "buttons", butt2);
+							$('#formdata :input[hideOne]').show();
+							break;
+					}
+					if(oper!='view'){
+							set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
+						}
+				},
+				close: function (event, ui) {
+					parent_close_disabled(false);
+					emptyFormdata(errorField, '#formdata');
+					$('#formdata .alert').detach();
+					$("#formdata a").off();
+					if (oper == 'view') {
+						$(this).dialog("option", "buttons", butt1);
+					}
+				},
+				buttons: butt1,
+			});
 			////////////////////////////////////////end dialog///////////////////////////////////////////
 
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -97,8 +99,6 @@
 				field:'',
 				table_name:'finance.fatype', ////////////////////
 				table_id:'assettype',
-				table_id:'idno',
-				sort_idno: true,					////////////////////
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -118,7 +118,7 @@
 					//{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
 					{ label: 'Asset Type', name: 'assettype', width: 20, classes: 'wrap', canSearch: true},   ////////
 					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true,checked:true,},
-					{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatter, cellattr: function(rowid, cellvalue)
+					{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 					{ label: 'idno', name:'idno', width: 10, hidden:true},
 
@@ -152,15 +152,6 @@
 
 	       });
 
-
-			function formatter (cellvalue, option, rowObject) {
-				if(cellvalue == 'A') {
-					return 'Active';
-				} else if(cellvalue == 'D') {
-					return 'Deactive';
-				}
-			}
-
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 				view:false,edit:false,add:false,del:false,search:false,
@@ -173,12 +164,12 @@
 				title:"Delete Selected Row",
 				onClickButton: function(){
 					oper='del';
-					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					if(!selRowId){
+					let idno = selrowData('#jqGrid').idno;
+					if(!idno){
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'assettype':selRowId}); 
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':idno}); 
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{

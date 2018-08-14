@@ -107,7 +107,7 @@
 				</div>
 
 				<div class="form-group">
-                	<label class="col-md-3 control-label" for="description">Code</label>
+                	<label class="col-md-3 control-label" for="description"></label>
 									<label class="col-md-2 control-label" for="description">Cost Code</label>
 									<label class="col-md-2 control-label" for="description">Account Code</label>
 				</div>
