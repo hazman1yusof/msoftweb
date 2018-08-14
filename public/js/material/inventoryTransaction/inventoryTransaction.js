@@ -16,6 +16,7 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
+				console.log(errorField[0]);
 				return {
 					element : $(errorField[0]),
 					message : ' '
@@ -24,16 +25,14 @@ $(document).ready(function () {
 		},
 	};
 
-	
-
-	/////////////////////////////////// currency ///////////////////////////////
+	/////////////////////////////////// currency /////////////////////////////////////////
 	var mycurrency =new currencymode(['#amount']);
 
-	///////////////////////////////// trandate check date validate from period////////// ////////////////
+	///////////////////////////////// trandate check date validate from period////////// ////
 	var actdateObj = new setactdate(["#trandate"]);
 	actdateObj.getdata().set();
 
-	////////////////////////////////////start dialog//////////////////////////////////////
+	////////////////////////////////////start dialog////////////////////////////////////////
 	var oper;
 	var unsaved = false;
 
@@ -328,8 +327,8 @@ $(document).ready(function () {
 						$("label[for=sndrcvtype]").hide();
 						$("#sndrcvtype_parent").hide();
 						
-						$("#sndrcv").attr('required', true);
-						$("#sndrcvtype").attr('required', true);
+						$("#sndrcv").removeAttr('required');
+						$("#sndrcvtype").removeAttr('required');
 						break;
 				}
 
@@ -351,8 +350,8 @@ $(document).ready(function () {
 					$("#sndrcvtype option[value='Supplier']").hide();
 					$("#sndrcvtype option[value='Other']").hide();
 
-					$("#sndrcv").removeAttr('required');
-					$("#sndrcvtype").removeAttr('required');
+					$("#sndrcv").attr('required', true);
+					$("#sndrcvtype").attr('required', true);
 
 				}
 
@@ -370,8 +369,8 @@ $(document).ready(function () {
 					$("#sndrcvtype option[value='Supplier']").show();
 					$("#sndrcvtype option[value='Other']").show();
 
-					$("#sndrcv").removeAttr('required');
-					$("#sndrcvtype").removeAttr('required');
+					$("#sndrcv").attr('required', true);
+					$("#sndrcvtype").attr('required', true);
 				}
 	}
 

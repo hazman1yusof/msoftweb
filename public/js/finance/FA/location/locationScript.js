@@ -87,7 +87,7 @@
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
+					$('#formdata .alert').detach();
 					$("#formdata a").off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
@@ -123,8 +123,9 @@
 					//{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
 					{ label: 'Location Code', name: 'loccode', width: 20, classes: 'wrap', canSearch: true, checked:true},
 					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true},
-					{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatter, cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+					{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					},
 					{label: 'id', name: 'idno', width:10, hidden: true},
 
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -155,17 +156,6 @@
 
 			});
 
-			function formatter(cellvalue, option, rowObject){
-				if (cellvalue == 'A')
-				{
-					return 'Active';
-				}
-				else if (cellvalue == 'D')
-				{
-					return 'Deactive';
-				}
-			}
-
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 				view:false,edit:false,add:false,del:false,search:false,
@@ -178,12 +168,12 @@
 				title:"Delete Selected Row",
 				onClickButton: function(){
 					oper='del';
-					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					if(!selRowId){
+					let idno = selrowData('#jqGrid').idno;
+					if(!idno){
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'loccode':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':idno});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{

@@ -493,11 +493,11 @@ function formatterstatus(cellvalue, option, rowObject) {
 ////////////////////unformatter status////////////////////////////////////////
 function unformatstatus(cellvalue, option, rowObject) {
 	if (cellvalue == 'Active') {
-		return 'Active';
+		return 'A';
 	}
 
 	if (cellvalue == 'Deactive') {
-		return 'Deactive';
+		return 'D';
 	}
 }
 
