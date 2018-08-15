@@ -208,12 +208,12 @@ class InventoryTransactionDetailController extends defaultController
 
     public function del(Request $request){
 
-       /* DB::beginTransaction();
+        DB::beginTransaction();
 
         try {
 
             ///1. update detail
-            DB::table('material.delorddt')
+            DB::table('material.ivtmpdt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$request->lineno_)
@@ -224,27 +224,20 @@ class InventoryTransactionDetailController extends defaultController
                 ]);
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('material.delorddt')
+            $totalAmount = DB::table('material.ivtmpdt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
-                ->sum('totamount');
+                ->sum('amount');
 
-            //calculate tot gst from detail
-            $tot_gst = DB::table('material.delorddt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amtslstax');
-
+           
             ///3. update total amount to header
-            DB::table('material.delordhd')
+            DB::table('material.ivtmphd')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->update([
-                    'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
+                    'amount' => $totalAmount,  
+                   
                 ]);
 
             echo $totalAmount;
@@ -256,7 +249,7 @@ class InventoryTransactionDetailController extends defaultController
 
             return response('Error'.$e, 500);
         }
-        */
+        
     }
 
     public function edit_from_PO(Request $request){
