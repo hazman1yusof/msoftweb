@@ -330,6 +330,12 @@ $(document).ready(function () {
 			case "TR":
 				forTR();
 				break;
+			case "AI":
+				forAI();
+				break;
+			case "AO":
+				forAO();
+				break;	
 			default:
 				$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
 				$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
@@ -387,6 +393,69 @@ $(document).ready(function () {
 
 			$("#sndrcv").attr('data-validation', 'required');
 			$("#sndrcvtype").attr('data-validation', 'required');
+		}
+
+		function forAI(){
+			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
+			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
+			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+				{formatter:'currency', 
+				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+				editrules:{required:true}, editable:true});
+			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+				{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+					editoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            id: 'expdate_datePicker',
+                            dateFormat: 'dd/mm/yy',
+                            minDate: 1,
+                            showOn: 'focus',
+                            changeMonth: true,
+		  					changeYear: true,
+                        });
+                    }
+                } 
+				
+				 });
+			
+			$("label[for=sndrcv]").hide();
+			$("#sndrcv_parent").hide();
+			$("label[for=sndrcvtype]").hide();
+			$("#sndrcvtype_parent").hide();
+				
+			$("#sndrcv").removeAttr('data-validation');
+			$("#sndrcvtype").removeAttr('data-validation');
+			
+		}
+
+		function forAO(){
+			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
+			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
+			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+				{formatter:'currency', 
+				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+				editrules:{required:true}, editable:true});
+			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+				{formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},editable:true,
+					editrules:{required: false,custom:true, custom_func:cust_rules},
+					edittype:'custom',	editoptions:
+						{  custom_element:expdateCustomEdit,
+						   custom_value:galGridCustomValue 	
+						}, 
+				
+				 });
+			
+			
+			$("label[for=sndrcv]").hide();
+			$("#sndrcv_parent").hide();
+			$("label[for=sndrcvtype]").hide();
+			$("#sndrcvtype_parent").hide();
+				
+			$("#sndrcv").removeAttr('data-validation');
+			$("#sndrcvtype").removeAttr('data-validation');
+
+			
 		}
 	}
 
@@ -952,8 +1021,16 @@ $(document).ready(function () {
 	}
 
 	function expdateCustomEdit(val,opt){
-		 val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+		 val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));
+		/* if (isstype == 'Adjustment' && crdbfl == "In"){
+		 	return $('<div class="form-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" > ');
+		 } else if (isstype == 'Adjustment' && crdbfl == 'Out'){
+		 	return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+		 }else {
+		 	return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+		 }*/
+		 return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+		
 	}
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -1219,41 +1296,7 @@ $(document).ready(function () {
 			}
 		}
 	}
-/*
-	////////////////////////////////////////calculate amount////////////////////////////
-	function expdate_batchno(){
-		
-		let crdbfl=$('#crdbfl').val();
-		let isstype=$('#isstype').val();
 
-		if (isstype == 'Adjustment' && crdbfl == 'In'){
-			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
-				{editable:true,
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-				editoptions: {
-                    dataInit: function (element) {
-                        $(element).datepicker({
-                            id: 'expdate_datePicker',
-                            dateFormat: 'dd/mm/yy',
-                            minDate: 1,
-                            showOn: 'focus',
-                            changeMonth: true,
-		  					changeYear: true,
-                        });
-                    }
-                }
-			});
-		} else if (isstype == 'Adjustment' && crdbfl == 'Out'){
-			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
-			{editable:true,
-			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-					editrules:{required: false,custom:true, custom_func:cust_rules},
-						edittype:'custom',	editoptions:
-						    {  custom_element:expdateCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    }});
-		}
-	}*/
 
 	
 
