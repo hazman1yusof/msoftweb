@@ -370,6 +370,10 @@ $(document).ready(function () {
 		function exceptTR(){
 			$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
 			$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
+			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+				{formatter:'currency', 
+				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+				editrules:{required:true}, editable:true});
 			
 
 			$("label[for=sndrcv]").show();
