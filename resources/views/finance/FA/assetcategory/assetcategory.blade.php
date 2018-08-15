@@ -52,7 +52,7 @@
 				    	<label class="col-md-3 control-label" for="assettype">Type</label>  
 						<div class="col-md-2">
 						  <div class='input-group'>
-							<input id="assettype" name="assettype" type="text" class="form-control input-sm" data-validation="required"/>
+							<input id="assettype" name="assettype" type="text" maxlength="8" class="form-control input-sm" data-validation="required"/>
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 						</div>
 						<span class="help-block"></span>

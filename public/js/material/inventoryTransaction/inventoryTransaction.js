@@ -926,8 +926,9 @@ $(document).ready(function () {
 				    			action: 'inventoryTransactionDetail_save',
 								recno: $('#recno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
+
 				    		}
-				    		$.post( "/inventoryTransactionDetail/form"+$.param(param),{oper:'del'}, function( data ){
+				    		$.post( "/inventoryTransactionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
@@ -1020,13 +1021,6 @@ $(document).ready(function () {
 
 	function expdateCustomEdit(val,opt){
 		 val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));
-		/* if (isstype == 'Adjustment' && crdbfl == "In"){
-		 	return $('<div class="form-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" > ');
-		 } else if (isstype == 'Adjustment' && crdbfl == 'Out'){
-		 	return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
-		 }else {
-		 	return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
-		 }*/
 		 return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 		
 	}
@@ -1083,7 +1077,6 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
 		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='qtyonhand']").on('blur',checkQOH);
-	//	$("#jqGrid2 input[name='itemcode']").on('blur',expdate_batchno);
 		$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
 			var code = e.keyCode || e.which;
 			if (code == '9')$('#jqGrid2_ilsave').click();
@@ -1227,9 +1220,14 @@ $(document).ready(function () {
 		var name = "checkQOH";
 		let crdbfl=$('#crdbfl').val();
 		let isstype=$('#isstype').val();
+
 		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		if(qtyonhand<=0)fail=true;
-		errorIt('qtyonhand',errorField,fail,fail_msg);
+		if(qtyonhand<=0 && isstype=='Adjustment' && crdbfl == 'A'){
+			fail=false;
+		}else if(qtyonhand<=0){
+			fail=true;
+			errorIt('qtyonhand',errorField,fail,fail_msg);
+		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////

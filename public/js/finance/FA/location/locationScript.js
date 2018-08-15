@@ -213,6 +213,6 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam);
+			addParamField('#jqGrid',false,saveParam,['recstatus','idno']);
 		});
 		
