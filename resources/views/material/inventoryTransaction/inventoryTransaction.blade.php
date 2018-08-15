@@ -248,7 +248,7 @@
 					</div>
 
 					<div class="panel-body">
-						<div class="noti"><ol></ol>
+						<div class="noti" style="font-size: bold; color: red"><ol></ol>
 						</div>
 					</div>
 			</div>		
