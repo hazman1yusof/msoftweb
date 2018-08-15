@@ -38,7 +38,7 @@
 				<div class="form-group">
             		<label class="col-md-3 control-label" for="loccode">Location Code</label>  
                       <div class="col-md-2">
-                      	<input id="loccode" name="loccode" type="text" maxlength="5" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                      	<input id="loccode" name="loccode" type="text" maxlength="8" class="form-control input-sm" data-validation="required" frozeOnEdit>
                       </div>
 				</div>
                 
@@ -52,7 +52,7 @@
                 <div class="form-group">
 				  <label class="col-md-3 control-label" for="recstatus">Record Status</label>  
 				  <div class="col-md-4">
-					<label class="radio-inline"><input type="radio" name="recstatus" value='A' >Active</label>
+					<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
 					<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
 				  </div>
 				</div>   

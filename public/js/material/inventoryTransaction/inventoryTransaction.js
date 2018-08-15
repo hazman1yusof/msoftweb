@@ -1219,9 +1219,10 @@ $(document).ready(function () {
 		var fail_msg = "Qty on Hand cant be 0"
 		var name = "checkQOH";
 		let crdbfl=$('#crdbfl').val();
+		let isstype=$('#isstype').val();
 
 		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		if(qtyonhand<=0 && crdbfl == 'In'){
+		if(qtyonhand<=0 && crdbfl == 'In' && isstype=='Adjustment'){
 			fail=false;
 		}	
 		//errorIt('qtyonhand',errorField,fail,fail_msg);
