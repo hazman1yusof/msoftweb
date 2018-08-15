@@ -882,6 +882,8 @@ $(document).ready(function () {
         	$("#jqGridPager2Delete").show();
         }, 
         beforeSaveRow: function(options, rowid) {
+        	if(errorField.length>0)return false;
+
 			let data = selrowData('#jqGrid2');
 			let editurl = "/inventoryTransactionDetail/form?"+
 				$.param({

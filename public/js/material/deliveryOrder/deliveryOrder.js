@@ -1663,14 +1663,15 @@ $(document).ready(function () {
 	//onleave dialog itemcode
 	function dialog_itemcode_onleave(event){
 		let obj = event.data.data;
-		console.log(event.currentTarget);
-		let optid = $(event.currentTarget).getAttribute("optid");
+		let optid = event.currentTarget.getAttribute("optid")
 		let id_optid = optid.substring(0,optid.search("_"));
 		let itemcode = $("#jqGrid2 #input_"+id_optid+"_itemcode").val();
 
 		obj.urlParam.searchCol=['itemcode'];
 		obj.urlParam.searchVal=['%'+itemcode+'%'];
 		refreshGrid("#"+obj.gridname,obj.urlParam);
+		var rowdata = $("#"+obj.gridname).jqGrid ('getRowData', 1);
+		console.log(rowdata);
 	}
 
 	var dialog_uomcode = new ordialog(
