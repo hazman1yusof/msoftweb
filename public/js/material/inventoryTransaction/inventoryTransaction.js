@@ -420,8 +420,6 @@ $(document).ready(function () {
 
 	}
 
-
-
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
 		saveParam.oper = $(this).data("oper");
@@ -438,7 +436,6 @@ $(document).ready(function () {
 			//2nd successs?
 		});
 	});
-	
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj){
