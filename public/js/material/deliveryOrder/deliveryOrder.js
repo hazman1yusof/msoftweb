@@ -1670,8 +1670,14 @@ $(document).ready(function () {
 		obj.urlParam.searchCol=['itemcode'];
 		obj.urlParam.searchVal=['%'+itemcode+'%'];
 		refreshGrid("#"+obj.gridname,obj.urlParam);
-		var rowdata = $("#"+obj.gridname).jqGrid ('getRowData', 1);
-		console.log(rowdata);
+		var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
+
+		$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
+		$("#jqGrid2 #input_"+id_optid+"_uomcode").val(data['s_uomcode']);
+		$("#jqGrid2 #input_"+id_optid+"_taxcode").val(data['p_TaxCode']);
+		$("#jqGrid2 #input_"+id_optid+"_rate").val(data['t_rate']);
+		$("#jqGrid2 #input_"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
+		$("#jqGrid2 #input_"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
 	}
 
 	var dialog_uomcode = new ordialog(

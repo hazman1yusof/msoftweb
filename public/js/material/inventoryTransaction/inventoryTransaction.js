@@ -28,11 +28,11 @@ $(document).ready(function () {
 	/////////////////////////////////// currency /////////////////////////////////////////
 	var mycurrency =new currencymode(['#amount']);
 
-	///////////////////////////////// trandate check date validate from period////////// ////
+	///////////////////////////////// trandate check date validate from period////////////
 	var actdateObj = new setactdate(["#trandate"]);
 	actdateObj.getdata().set();
 
-	////////////////////////////////////start dialog////////////////////////////////////////
+	////////////////////////////////////start dialog/////////////////////////////////////
 	var oper;
 	var unsaved = false;
 
@@ -1225,7 +1225,8 @@ $(document).ready(function () {
 		var id="#jqGrid2 input[name='qtyonhand']"
 		var fail_msg = "Qty on Hand cant be 0"
 		var name = "checkQOH";
-
+		let crdbfl=$('#crdbfl').val();
+		let isstype=$('#isstype').val();
 		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
 		if(qtyonhand<=0)fail=true;
 		errorIt('qtyonhand',errorField,fail,fail_msg);
@@ -1235,7 +1236,6 @@ $(document).ready(function () {
 
 	////////////////////////////////////////calculate amount////////////////////////////
 	function calculate_amount_and_other(event){
-		console.log(event.handleObj.data[0]);
 		var fail=false,fail_msg="";
 		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
 		let txnqty=parseInt($("input[name='txnqty']").val());
@@ -1295,9 +1295,6 @@ $(document).ready(function () {
 		}
 	}
 
-
-	
-
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
@@ -1312,7 +1309,6 @@ $(document).ready(function () {
 		pager: "#jqGridPager3",
 	});
 	jqgrid_label_align_right("#jqGrid3");
-
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 	var dialog_txndept = new ordialog(
