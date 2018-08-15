@@ -394,7 +394,6 @@ $(document).ready(function () {
 			$("#sndrcv").attr('data-validation', 'required');
 			$("#sndrcvtype").attr('data-validation', 'required');
 		}
-
 		function forAI(){
 			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
 			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
@@ -404,7 +403,8 @@ $(document).ready(function () {
 				editrules:{required:true}, editable:true});
 			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
 				{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-					editoptions: {
+				edittype: 'text',
+				editoptions: {
                     dataInit: function (element) {
                         $(element).datepicker({
                             id: 'expdate_datePicker',
@@ -768,7 +768,6 @@ $(document).ready(function () {
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-		
 			{ label: 'Expiry Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
 			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 					editrules:{required: false,custom:true, custom_func:cust_rules},
