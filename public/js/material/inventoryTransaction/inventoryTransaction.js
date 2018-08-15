@@ -1221,8 +1221,14 @@ $(document).ready(function () {
 		let crdbfl=$('#crdbfl').val();
 
 		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		if(qtyonhand<=0)fail=true;
+		if(qtyonhand<=0 && crdbfl == 'In'){
+			fail=false;
+		}	
+		//errorIt('qtyonhand',errorField,fail,fail_msg);
+		else if(qtyonhand<=0){
+			fail=true;
 		errorIt('qtyonhand',errorField,fail,fail_msg);
+	}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
