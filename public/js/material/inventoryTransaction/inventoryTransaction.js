@@ -1155,6 +1155,7 @@ $(document).ready(function () {
 		}else{
 			mycurrency.formatOn();
 		}
+		//getTrantypeDetail();
 	});
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
