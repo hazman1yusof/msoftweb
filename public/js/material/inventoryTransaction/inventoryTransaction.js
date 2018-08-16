@@ -59,12 +59,12 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					inputTrantypeValue(selrowData('#jqGrid').isstype);
+					inputTrantypeValue(selrowData('#jqGrid').isstype,selrowData('#jqGrid').crdbfl);
 					break;
 				case state = 'view':
 					disableForm('#formdata');
 					$("#pg_jqGridPager2 table").hide();
-					inputTrantypeValue(selrowData('#jqGrid').isstype);
+					inputTrantypeValue(selrowData('#jqGrid').isstype,selrowData('#jqGrid').crdbfl);
 					break;
 			}if(oper!='add'){
 				switch(trantype){
@@ -123,7 +123,7 @@ $(document).ready(function () {
 	var urlParam={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field: ['ivt.recno','ivt.txndept','ivt.trantype','ivt.docno','ivt.trandate','ivt.sndrcv','ivt.sndrcvtype','ivt.amount','ivt.recstatus','ivt.srcdocno','ivt.remarks','ivt.adduser','ivt.adddate','ivt.upduser','ivt.upddate','ivt.source','ivt.idno','itt.isstype'],
+		field: ['ivt.recno','ivt.txndept','ivt.trantype','ivt.docno','ivt.trandate','ivt.sndrcv','ivt.sndrcvtype','ivt.amount','ivt.recstatus','ivt.srcdocno','ivt.remarks','ivt.adduser','ivt.adddate','ivt.upduser','ivt.upddate','ivt.source','ivt.idno','itt.isstype','itt.crdbfl'],
 		table_name:['material.ivtmphd as ivt','material.ivtxntype as itt'],
 		join_type:['LEFT JOIN'],
 		join_onCol:['ivt.trantype'],
@@ -194,6 +194,7 @@ $(document).ready(function () {
 			{ label: 'source', name: 'source', width: 40, hidden:'true'},
 			{ label: 'idno', name: 'idno', width: 90, hidden:true},
 			{ label: 'isstype', name: 'isstype', width: 90, hidden:true},
+			{ label: 'crdbfl', name: 'crdbfl', width: 90, hidden:true},
 		],
 		autowidth:true,
 		multiSort: true,
@@ -306,7 +307,7 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	// addParamField('#jqGrid',true,urlParam);
 	refreshGrid('#jqGrid',urlParam);
-	addParamField('#jqGrid',false,saveParam,['isstype','adduser','adddate','idno','docno','recno','trantype','compcode','recstatus']);
+	addParamField('#jqGrid',false,saveParam,['crdbfl','isstype','adduser','adddate','idno','docno','recno','trantype','compcode','recstatus']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide){
@@ -465,13 +466,14 @@ $(document).ready(function () {
 	// 	}
 	// }
 
-	function inputTrantypeValue(isstype){
+	function inputTrantypeValue(isstype,crdbfl){
+		console.log(crdbfl);
 		switch(isstype){
 			case 'Transfer':
 				caseTransfer();
 				break;
 			case 'Adjustment':
-				caseAdjustment();
+				caseAdjustment(crdbfl);
 				break;
 			case 'Others':
 				break;
@@ -492,7 +494,7 @@ $(document).ready(function () {
 							edittype:'custom',	editoptions:
 							    {  custom_element:expdateCustomEdit,
 							       custom_value:galGridCustomValue 	
-							    },
+							    },editoptions:{dataInit:null}
 				});
 
 			$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
@@ -515,30 +517,43 @@ $(document).ready(function () {
 			$("#sndrcvtype").attr('data-validation', 'required');
 		}
 
-		function caseAdjustment(){
+		function caseAdjustment(crdbfl){
 			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
 			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
 				{formatter:'currency', 
 				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-				 editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
+				 editrules:{required:true}, editable:true, editoptions: {readonly: null}});
 
-			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
-				{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},edittype: 'text',
-					editoptions: {
-	                    dataInit: function (element) {
-	                        $(element).datepicker({
-	                            id: 'expdate_datePicker',
-	                            dateFormat: 'yy/mm/dd',
-	                            minDate: 1,
-	                            showOn: 'focus',
-	                            changeMonth: true,
-			  					changeYear: true,
-	                        });
-	                    }
-	                } 
-				});
+			
 
+			if(crdbfl=='In'){
+				$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+					{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},edittype: 'text',
+						editoptions: {
+		                    dataInit: function (element) {
+		                        $(element).datepicker({
+		                            id: 'expdate_datePicker',
+		                            dateFormat: 'yy/mm/dd',
+		                            minDate: 1,
+		                            showOn: 'focus',
+		                            changeMonth: true,
+				  					changeYear: true,
+		                        });
+		                    }
+		                } 
+					});
+			}else if(crdbfl=='Out'){
+				$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+					{ width: 130, classes: 'wrap', editable:true,
+					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+							editrules:{required: false,custom:true, custom_func:cust_rules},
+								edittype:'custom',	editoptions:
+								    {  custom_element:expdateCustomEdit,
+								       custom_value:galGridCustomValue 	
+								    },editoptions:{dataInit:null}
+					});
+			}
 			$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
 				{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: false,custom:true, custom_func:cust_rules},
@@ -1251,34 +1266,8 @@ $(document).ready(function () {
 		});
 	}
 
-	
-	////////////////////////////////////// get trantype detail////////////////////////
-	function getTrantypeDetail(){
-		var param={
-			func:'getTrantypeDetail',
-			action:'get_value_default',
-			url: '/util/get_value_default',
-			field:['crdbfl','isstype'],
-			table_name:'material.ivtxntype'
-		}
-
-		param.filterCol = ['trantype'];
-		param.filterVal = [$('#trantype').val()];
-
-		$.get( param.url+"?"+$.param(param), function( data ) {
-	
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.rows)){
-				$('#crdbfl').val(data.rows[0].crdbfl);
-				$('#isstype').val(data.rows[0].isstype);
-			}else{
-				alert('no crdbfl or isstype for trantype: '+$('#trantype').val());
-			}
-		});
-	}
-	
 	/////////////calculate conv fac//////////////////////////////////
-	 function calculate_conversion_factor(event) {
+	function calculate_conversion_factor(event) {
 
 		var id="#jqGrid2 input[name='qtyonhand']"
 		var fail_msg = "Please Choose Suitable UOMCode"
@@ -1307,13 +1296,13 @@ $(document).ready(function () {
 	}
 
 	/////////////checkQOH//////////////////////////////////
-	 function checkQOH(event) {
+	function checkQOH(event) {
 		var fail = false;
 		var id="#jqGrid2 input[name='qtyonhand']"
 		var fail_msg = "Qty on Hand cant be 0"
 		var name = "checkQOH";
-		let crdbfl=$('#crdbfl').val();
-		let isstype=$('#isstype').val();
+		let crdbfl=selrowData('#jqGrid').crdbfl;
+		let isstype=selrowData('#jqGrid').isstype;
 
 		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
 		if(qtyonhand<=0 && isstype=='Adjustment' && crdbfl == 'In'){
@@ -1332,8 +1321,8 @@ $(document).ready(function () {
 		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
 		let txnqty=parseInt($("input[name='txnqty']").val());
 		let netprice=parseFloat($("input[name='netprice']").val());
-		let crdbfl=$('#crdbfl').val();
-		let isstype=$('#isstype').val();
+		let crdbfl=selrowData('#jqGrid').crdbfl;
+		let isstype=selrowData('#jqGrid').isstype;
 		if(event.target.name=='txnqty'){
 			switch(crdbfl){
 				case "Out":
@@ -1406,12 +1395,12 @@ $(document).ready(function () {
 				{label:'Transaction Type',name:'trantype',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'isstype',name:'isstype',width:100,classes:'pointer',hidden:true},
+				{label:'crdbfl',name:'crdbfl',width:100,classes:'pointer',hidden:true},
 				],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_trantype.gridname);
-				isstype = data['isstype'];
-				inputTrantypeValue(isstype);
-				reqRecNo(isstype);
+				inputTrantypeValue(data['isstype'],data['crdbfl']);
+				reqRecNo(data['isstype']);
 				
 				$("#sndrcvtype").val("");
 			}	
