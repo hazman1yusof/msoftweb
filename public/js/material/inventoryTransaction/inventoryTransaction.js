@@ -1154,11 +1154,12 @@ $(document).ready(function () {
 			dialog_sndrcv.off();
 			dialog_requestRecNo.off();
 			saveHeader("#formdata",oper,saveParam);
+			errorField.length=0;
 			//unsaved = false;
 		}else{
 			mycurrency.formatOn();
 		}
-		getTrantypeDetail();
+		//getTrantypeDetail();
 	});
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
