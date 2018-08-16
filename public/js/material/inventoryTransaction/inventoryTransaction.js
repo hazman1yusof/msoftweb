@@ -466,7 +466,6 @@ $(document).ready(function () {
 	// }
 
 	function inputTrantypeValue(isstype,crdbfl){
-		console.log(crdbfl);
 		switch(isstype){
 			case 'Transfer':
 				caseTransfer();
@@ -1285,9 +1284,9 @@ $(document).ready(function () {
 			}
 			$('.noti').find("li[data-errorid='"+name+"']").detach();
 		} else {
-			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
 			if($.inArray(id,errorField)===-1){
 				errorField.push( id );
+				$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
 			}
 		}
 		
@@ -1301,10 +1300,8 @@ $(document).ready(function () {
 		var name = "checkQOH";
 		let crdbfl=$('#crdbfl').val();
 		let isstype=$('#isstype').val();
-		console.log(isstype);
 
 		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		console.log(qtyonhand);
 		if(qtyonhand<=0 && isstype=='Adjustment' && crdbfl == 'In'){
 			fail=false;
 		}else if(qtyonhand<=0){
@@ -1505,6 +1502,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
 				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
 				$("#convfactoruomcodetrdept").val(data['u_convfactor']);
+				checkQOH(event)
 			}
 			
 		},{
@@ -1611,11 +1609,11 @@ $(document).ready(function () {
 			$( id ).removeClass( "error" ).addClass( "valid" );
 			$('.noti').find("li[data-errorid='"+name+"']").detach();
 		}else{
-			$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-			$( id ).removeClass( "valid" ).addClass( "error" );
-			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
 			if($.inArray(id,errorField)===-1){
 				errorField.push( id );
+				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+				$( id ).removeClass( "valid" ).addClass( "error" );
+				$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
 			}
 		}
 	}
