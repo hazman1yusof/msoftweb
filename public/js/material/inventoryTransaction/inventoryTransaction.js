@@ -1297,7 +1297,7 @@ $(document).ready(function () {
 		let isstype=$('#isstype').val();
 
 		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		if(qtyonhand<=0 && isstype=='Adjustment' && crdbfl == 'A'){
+		if(qtyonhand<=0 && isstype=='Adjustment' && crdbfl == 'In'){
 			fail=false;
 		}else if(qtyonhand<=0){
 			fail=true;
