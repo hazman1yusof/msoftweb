@@ -241,6 +241,9 @@ $(document).ready(function () {
 			$('#trantypedepan').text(selrowData("#jqGrid").trantype);
 			$('#docnodepan').text(selrowData("#jqGrid").docno);
 
+			$('#crdbfl').val(selrowData("#jqGrid").crdbfl);
+			$('#isstype').val(selrowData("#jqGrid").isstype);
+
 			refreshGrid("#jqGrid3",urlParam2);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -520,8 +523,6 @@ $(document).ready(function () {
 				{formatter:'currency', 
 				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 				 editrules:{required:true}, editable:true, editoptions: {readonly: null}});
-
-			
 
 			if(crdbfl=='In'){
 				$("#jqGrid2").jqGrid('setColProp', 'expdate', 
@@ -1294,12 +1295,13 @@ $(document).ready(function () {
 
 	/////////////checkQOH//////////////////////////////////
 	function checkQOH(event) {
+
 		var fail = false;
 		var id="#jqGrid2 input[name='qtyonhand']"
 		var fail_msg = "Qty on Hand cant be 0"
 		var name = "checkQOH";
-		let crdbfl=selrowData('#jqGrid').crdbfl;
-		let isstype=selrowData('#jqGrid').isstype;
+		let crdbfl=$('#crdbfl').val();
+		let isstype=$('#isstype').val();
 
 		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
 		if(qtyonhand<=0 && isstype=='Adjustment' && crdbfl == 'In'){
@@ -1318,8 +1320,8 @@ $(document).ready(function () {
 		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
 		let txnqty=parseInt($("input[name='txnqty']").val());
 		let netprice=parseFloat($("input[name='netprice']").val());
-		let crdbfl=selrowData('#jqGrid').crdbfl;
-		let isstype=selrowData('#jqGrid').isstype;
+		let crdbfl=$('#crdbfl').val();
+		let isstype=$('#isstype').val();
 		if(event.target.name=='txnqty'){
 			switch(crdbfl){
 				case "Out":
@@ -1397,6 +1399,9 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_trantype.gridname);
 				inputTrantypeValue(data['isstype'],data['crdbfl']);
+
+				$('#crdbfl').val(data['crdbfl']);
+				$('#isstype').val(data['isstype']);
 				reqRecNo(data['isstype']);
 				
 				$("#sndrcvtype").val("");
