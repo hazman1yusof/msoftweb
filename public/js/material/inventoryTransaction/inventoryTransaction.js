@@ -1505,6 +1505,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
 				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
 				$("#convfactoruomcodetrdept").val(data['u_convfactor']);
+				$("#jqGrid2 input[name='netprice']").val(data['p_avgcost']);
 			}
 			
 		},{
