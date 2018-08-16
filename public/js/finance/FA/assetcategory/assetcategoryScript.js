@@ -221,6 +221,12 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Gain', name: 'glgainloss', width: 50, hidden:true },
 					{ label: 'Loss Code', name: 'glrevccode', width: 50, hidden:true },
 					{ label: 'Loss', name: 'glrevaluation', width: 50, hidden:true },
+					{
+						label: 'Record Status', name: 'recstatus', width: 80, formatter: formatterstatus,
+						unformat: unformat, cellattr: function (rowid, cellvalue) {
+							return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : ''
+						},
+					},
 
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -307,7 +313,7 @@ $.jgrid.defaults.responsive = true;
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam);
+			addParamField('#jqGrid',false,saveParam);  ['idno','recstatus']);
 
 
 			  var dialog_assettype = new ordialog(
