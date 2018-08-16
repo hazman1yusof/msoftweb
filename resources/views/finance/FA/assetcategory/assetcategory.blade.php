@@ -106,6 +106,13 @@
                       </div>
 				</div>
 
+        <div class="form-group">
+				  				<label class="col-md-3 control-label" for="recstatus">Record Status</label>  
+				 						 <div class="col-md-2">
+										 <input id="recstatus" name="recstatus" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+				  					 </div>
+				</div>				
+
 				<div class="form-group">
                 	<label class="col-md-3 control-label" for="description"></label>
 									<label class="col-md-2 control-label" for="description">Cost Code</label>
