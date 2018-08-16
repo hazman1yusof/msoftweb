@@ -1295,21 +1295,22 @@ $(document).ready(function () {
 
 	/////////////checkQOH//////////////////////////////////
 	function checkQOH(event) {
-
 		var fail = false;
 		var id="#jqGrid2 input[name='qtyonhand']"
 		var fail_msg = "Qty on Hand cant be 0"
 		var name = "checkQOH";
 		let crdbfl=$('#crdbfl').val();
 		let isstype=$('#isstype').val();
+		console.log(isstype);
 
 		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
+		console.log(qtyonhand);
 		if(qtyonhand<=0 && isstype=='Adjustment' && crdbfl == 'In'){
 			fail=false;
 		}else if(qtyonhand<=0){
 			fail=true;
-			errorIt('qtyonhand',errorField,fail,fail_msg);
 		}
+		errorIt('qtyonhand',errorField,fail,fail_msg);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -1488,15 +1489,16 @@ $(document).ready(function () {
 	//false means not binding event on jqgrid2 yet, after jqgrid2 add, event will be bind
 
 	var dialog_uomcodetrdept = new ordialog(
-		'uomcode',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
+		'uomcode',['material.stockloc AS s','material.product AS p','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
 		{	colModel:
 			[
 				{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
-				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
-				{label: 'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' },
-				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer', hidden:true},
+				{label:'Department code',name:'s_deptcode',width:80,classes:'pointer'},
+				{label:'Item code',name:'s_itemcode',width:100,classes:'pointer'},
+				{label:'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer'},
+				{label:'Average Cost', name: 'p_avgcost', width: 100, classes: 'pointer'},
+				{label:'Quantity On Hand',name:'s_qtyonhand',width:80,classes:'pointer'},
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcodetrdept.gridname);
@@ -1512,11 +1514,11 @@ $(document).ready(function () {
 				dialog_uomcodetrdept.urlParam.table_id="none_";
 				dialog_uomcodetrdept.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
 				dialog_uomcodetrdept.urlParam.filterVal=['session.company',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
-				dialog_uomcodetrdept.urlParam.join_type=['LEFT JOIN'];
-				dialog_uomcodetrdept.urlParam.join_onCol=['s.uomcode'];
-				dialog_uomcodetrdept.urlParam.join_onVal=['u.uomcode'];
-				dialog_uomcodetrdept.urlParam.join_filterCol=[['s.compcode on =']];
-				dialog_uomcodetrdept.urlParam.join_filterVal=[['u.compcode']];
+				dialog_uomcodetrdept.urlParam.join_type=['LEFT JOIN','LEFT JOIN'];
+				dialog_uomcodetrdept.urlParam.join_onCol=['s.itemcode','s.uomcode'];
+				dialog_uomcodetrdept.urlParam.join_onVal=['p.itemcode','u.uomcode'];
+				dialog_uomcodetrdept.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on ='], []];
+				dialog_uomcodetrdept.urlParam.join_filterVal=[['p.compcode','p.uomcode'], []];
 			}
 		},'urlParam'
 	);

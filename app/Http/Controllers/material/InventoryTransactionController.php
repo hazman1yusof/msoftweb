@@ -121,7 +121,7 @@ class InventoryTransactionController extends defaultController
             $idno = $request->table_id;
         }
 
-       DB::beginTransaction();
+        DB::beginTransaction();
 
         $table = DB::table("material.ivtmphd");
 
