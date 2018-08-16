@@ -496,6 +496,16 @@ $(document).ready(function () {
 							    },
 				});
 
+			$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
+				{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:uomcoderecvCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+			});
+
 			$("#sndrcv_parent, label[for=sndrcv]").show();
 			$("#sndrcvtype_parent, label[for=sndrcvtype]").show();
 
@@ -520,7 +530,7 @@ $(document).ready(function () {
 	                    dataInit: function (element) {
 	                        $(element).datepicker({
 	                            id: 'expdate_datePicker',
-	                            dateFormat: 'dd/mm/yy',
+	                            dateFormat: 'yy/mm/dd',
 	                            minDate: 1,
 	                            showOn: 'focus',
 	                            changeMonth: true,
@@ -529,6 +539,17 @@ $(document).ready(function () {
 	                    }
 	                } 
 				});
+
+			$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
+				{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
+					editrules:{required: false,custom:true, custom_func:cust_rules},
+					formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:uomcoderecvCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+			});
+
 			
 			$("label[for=sndrcv],label[for=sndrcvtype],#sndrcvtype_parent, #sndrcv_parent").hide();
 				
