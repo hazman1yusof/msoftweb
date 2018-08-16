@@ -466,7 +466,6 @@ $(document).ready(function () {
 	// }
 
 	function inputTrantypeValue(isstype){
-		console.log(isstype)
 		switch(isstype){
 			case 'Transfer':
 				caseTransfer();
@@ -504,7 +503,7 @@ $(document).ready(function () {
 						    {  custom_element:uomcoderecvCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
-			});
+				});
 
 			$("#sndrcv_parent, label[for=sndrcv]").show();
 			$("#sndrcvtype_parent, label[for=sndrcvtype]").show();
@@ -522,7 +521,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
 				{formatter:'currency', 
 				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-				editrules:{required:true}, editable:true});
+				 editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
 
 			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
 				{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},edittype: 'text',
@@ -548,8 +547,7 @@ $(document).ready(function () {
 						    {  custom_element:uomcoderecvCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
-			});
-
+				});
 			
 			$("label[for=sndrcv],label[for=sndrcvtype],#sndrcvtype_parent, #sndrcv_parent").hide();
 				
