@@ -93,10 +93,32 @@ $(document).ready(function () {
 		beforeClose: function(event, ui){
 			if(unsaved){
 				event.preventDefault();
-				bootbox.confirm("Are you sure want to leave without save?", function(result){
-					if (result == true) {
-						unsaved = false
-						$("#dialogForm").dialog('close');
+
+				var bootbox1 = bootbox.dialog({
+					message: 'Are you sure want to leave without save?',
+					buttons: {
+					    cancel: {
+					        label: '<i class="fa fa-times"></i> Cancel'
+					    },
+					    noclose: {
+					        label: '<i class="fa fa-save"></i> Save',
+					        className: 'btn-warning',
+					        callback: function(){
+					        	saveDetailLabel(function(){
+					        		bootbox1.modal('hide');
+									$("#dialogForm").dialog('close');
+					        	});
+					            return false;
+					        }
+					    },
+					    confirm: {
+					        label: '<i class="fa fa-check"></i> Confirm',
+					        className: 'btn-primary',
+					        callback: function(){
+								unsaved = false
+								$("#dialogForm").dialog('close');
+					        }
+					    }
 					}
 				});
 			}
@@ -662,6 +684,10 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
+	$("#dialogForm").on('click','#formdata a.input-group-addon',function(){
+		unsaved = true; //kalu dia change apa2 bagi prompt
+	});
+
 	/////////////////////////////populate data for dropdown search By////////////////////////////
 	searchBy();
 	function searchBy(){
@@ -1140,7 +1166,9 @@ $(document).ready(function () {
 	}
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
-	$("#saveDetailLabel").click(function(){ //actually saving the header
+	$("#saveDetailLabel").click(saveDetailLabel);
+
+	function saveDetailLabel(callback){
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -1151,12 +1179,11 @@ $(document).ready(function () {
 			dialog_requestRecNo.off();
 			saveHeader("#formdata",oper,saveParam);
 			errorField.length=0;
-			//unsaved = false;
 		}else{
 			mycurrency.formatOn();
 		}
-		//getTrantypeDetail();
-	});
+		callback();
+	}
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
 	$("#saveHeaderLabel").click(function(){
@@ -1170,6 +1197,7 @@ $(document).ready(function () {
 		rdonly('#formdata');
 		$(".noti").empty();
 		refreshGrid("#jqGrid2",urlParam2);
+		errorField.length=0;
 	});
 
 
