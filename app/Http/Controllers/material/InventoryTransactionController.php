@@ -100,6 +100,9 @@ class InventoryTransactionController extends defaultController
             $responce->totalAmount = $totalAmount;
             echo json_encode($responce);
 
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -139,6 +142,9 @@ class InventoryTransactionController extends defaultController
             $responce = new stdClass();
             $responce->totalAmount = $request->delordhd_totamount;
             echo json_encode($responce);
+
+            // $queries = DB::getQueryLog();
+            // dump($queries);
 
             DB::commit();
         } catch (\Exception $e) {

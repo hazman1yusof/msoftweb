@@ -306,7 +306,7 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	// addParamField('#jqGrid',true,urlParam);
 	refreshGrid('#jqGrid',urlParam);
-	addParamField('#jqGrid',false,saveParam,['crdbfl','isstype','adduser','adddate','idno','docno','recno','trantype','compcode','recstatus']);
+	addParamField('#jqGrid',false,saveParam,['upddate','upduser','source','crdbfl','isstype','adduser','adddate','idno','docno','recno','compcode','recstatus']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide){
