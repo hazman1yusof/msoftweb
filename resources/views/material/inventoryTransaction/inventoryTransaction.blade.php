@@ -150,9 +150,6 @@
 										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required">
 								  	</div>
 
-
-						  		
-
 						  		<label class="col-md-2 control-label" for="srcdocno">Request No</label>  
 						  			<div class="col-md-2" id="srcdocno_parent">
 									  	<div class='input-group'>
@@ -173,9 +170,6 @@
 									    </select>
 						  			</div>
 
-								
-
-
 								<label class="col-md-2 control-label" for="sndrcv">Receiver</label>	  
 									<div class="col-md-2" id="sndrcv_parent">
 										  <div class='input-group'>
@@ -184,9 +178,6 @@
 										  </div>
 										  <span class="help-block"></span>
 									  </div>
-
-								
-								
 						  	</div>
 
 						  	<div class="form-group">

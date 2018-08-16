@@ -59,12 +59,12 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					inputTrantypeValue();
+					inputTrantypeValue(selrowData('#jqGrid').isstype);
 					break;
 				case state = 'view':
 					disableForm('#formdata');
 					$("#pg_jqGridPager2 table").hide();
-					inputTrantypeValue();
+					inputTrantypeValue(selrowData('#jqGrid').isstype);
 					break;
 			}if(oper!='add'){
 				switch(trantype){
@@ -123,9 +123,13 @@ $(document).ready(function () {
 	var urlParam={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:'',
-		table_name:['material.ivtmphd'],
-		table_id:'idno',
+		field: ['ivt.recno','ivt.txndept','ivt.trantype','ivt.docno','ivt.trandate','ivt.sndrcv','ivt.sndrcvtype','ivt.amount','ivt.recstatus','ivt.srcdocno','ivt.remarks','ivt.adduser','ivt.adddate','ivt.upduser','ivt.upddate','ivt.source','ivt.idno','itt.isstype'],
+		table_name:['material.ivtmphd as ivt','material.ivtxntype as itt'],
+		join_type:['LEFT JOIN'],
+		join_onCol:['ivt.trantype'],
+		join_onVal:['itt.trantype'],
+		filterCol:['ivt.compcode'],
+		filterVal:['session.company']
 		
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -189,6 +193,7 @@ $(document).ready(function () {
 			{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'source', name: 'source', width: 40, hidden:'true'},
 			{ label: 'idno', name: 'idno', width: 90, hidden:true},
+			{ label: 'isstype', name: 'isstype', width: 90, hidden:true},
 		],
 		autowidth:true,
 		multiSort: true,
@@ -299,7 +304,8 @@ $(document).ready(function () {
 	populateSelect('#jqGrid','#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
+	// addParamField('#jqGrid',true,urlParam);
+	refreshGrid('#jqGrid',urlParam);
 	addParamField('#jqGrid',false,saveParam,['adduser','adddate','idno','docno','recno','trantype','compcode','recstatus']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
@@ -316,146 +322,218 @@ $(document).ready(function () {
 	/////////////////////////////////trantype////////////////////////////////////////////////////////////
 
 	//LI LIR LO LOR TR  --> Enable Receiver N Qty On Hand Receiver else hide
-	function inputTrantypeValue(){
-		var trantype = $('#trantype').val();
-		//accttype = Loan (LI LIR LO LOR)
+	// function inputTrantypeValue(){
+	// 	var trantype = $('#trantype').val();
+	// 	//accttype = Loan (LI LIR LO LOR)
 
-		switch(trantype){
-			case "LI":
-			case "LIR":
-			case "LO":
-			case "LOR":
-				exceptTR();
-				break;
-			case "TR":
-				forTR();
-				break;
-			case "AI":
-				forAI();
-				break;
-			case "AO":
-				forAO();
-				break;	
-			default:
-				$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
-				$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
-				$("label[for=sndrcv]").hide();
-				$("#sndrcv_parent").hide();
+	// 	switch(trantype){
+	// 		case "LI":
+	// 		case "LIR":
+	// 		case "LO":
+	// 		case "LOR":
+	// 			exceptTR();
+	// 			break;
+	// 		case "TR":
+	// 			forTR();
+	// 			break;
+	// 		case "AI":
+	// 			forAI();
+	// 			break;
+	// 		case "AO":
+	// 			forAO();
+	// 			break;	
+	// 		default:
+	// 			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
+	// 			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
+	// 			$("label[for=sndrcv]").hide();
+	// 			$("#sndrcv_parent").hide();
 
-				$("label[for=sndrcvtype]").hide();
-				$("#sndrcvtype_parent").hide();
+	// 			$("label[for=sndrcvtype]").hide();
+	// 			$("#sndrcvtype_parent").hide();
 				
-				$("#sndrcv").removeAttr('data-validation');
-				$("#sndrcvtype").removeAttr('data-validation');
+	// 			$("#sndrcv").removeAttr('data-validation');
+	// 			$("#sndrcvtype").removeAttr('data-validation');
+	// 			break;
+	// 	}
+
+	// 	function forTR(){
+	// 		$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
+	// 		$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
+	// 		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+	// 			{formatter:'currency', 
+	// 			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+	// 			editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
+
+
+	// 		$("label[for=sndrcv]").show();
+	// 		$("#sndrcv_parent").show();
+
+	// 		$("label[for=sndrcvtype]").show();
+	// 		$("#sndrcvtype_parent").show();
+	// 		$("#sndrcvtype option[value='Department']").show();
+	// 		$("#sndrcvtype option[value='Supplier']").hide();
+	// 		$("#sndrcvtype option[value='Other']").hide();
+
+	// 		$("#sndrcv").attr('data-validation', 'required');
+	// 		$("#sndrcvtype").attr('data-validation', 'required');
+
+	// 	}
+
+	// 	function exceptTR(){
+	// 		$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
+	// 		$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
+	// 		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+	// 			{formatter:'currency', 
+	// 			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+	// 			editrules:{required:true}, editable:true});
+			
+
+	// 		$("label[for=sndrcv]").show();
+	// 		$("#sndrcv_parent").show();
+
+	// 		$("label[for=sndrcvtype]").show();
+	// 		$("#sndrcvtype_parent").show();
+	// 		$("#sndrcvtype option[value='Department']").hide();
+	// 		$("#sndrcvtype option[value='Supplier']").show();
+	// 		$("#sndrcvtype option[value='Other']").show();
+
+	// 		$("#sndrcv").attr('data-validation', 'required');
+	// 		$("#sndrcvtype").attr('data-validation', 'required');
+	// 	}
+
+	// 	function forAI(){
+	// 		$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
+	// 		$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
+	// 		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+	// 			{formatter:'currency', 
+	// 			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+	// 			editrules:{required:true}, editable:true});
+	// 		$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+	// 			{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+	// 			edittype: 'text',
+	// 			editoptions: {
+ //                    dataInit: function (element) {
+ //                        $(element).datepicker({
+ //                            id: 'expdate_datePicker',
+ //                            dateFormat: 'dd/mm/yy',
+ //                            minDate: 1,
+ //                            showOn: 'focus',
+ //                            changeMonth: true,
+	// 	  					changeYear: true,
+ //                        });
+ //                    }
+ //                } 
+				
+	// 			 });
+			
+	// 		$("label[for=sndrcv]").hide();
+	// 		$("#sndrcv_parent").hide();
+	// 		$("label[for=sndrcvtype]").hide();
+	// 		$("#sndrcvtype_parent").hide();
+				
+	// 		$("#sndrcv").removeAttr('data-validation');
+	// 		$("#sndrcvtype").removeAttr('data-validation');
+			
+	// 	}
+
+	// 	function forAO(){
+	// 		$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
+	// 		$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
+	// 		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+	// 			{formatter:'currency', 
+	// 			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+	// 			editrules:{required:true}, editable:true});
+	// 		$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+	// 			{formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},editable:true,
+	// 				editrules:{required: false,custom:true, custom_func:cust_rules},
+	// 				edittype:'custom',	editoptions:
+	// 					{  custom_element:expdateCustomEdit,
+	// 					   custom_value:galGridCustomValue 	
+	// 					}, 
+				
+	// 			 });
+			
+			
+	// 		$("label[for=sndrcv]").hide();
+	// 		$("#sndrcv_parent").hide();
+	// 		$("label[for=sndrcvtype]").hide();
+	// 		$("#sndrcvtype_parent").hide();
+				
+	// 		$("#sndrcv").removeAttr('data-validation');
+	// 		$("#sndrcvtype").removeAttr('data-validation');
+			
+	// 	}
+	// }
+
+	function inputTrantypeValue(isstype){
+		console.log(isstype)
+		switch(isstype){
+			case 'Transfer':
+				caseTransfer();
+				break;
+			case 'Adjustment':
+				caseAdjustment();
+				break;
+			case 'Others':
 				break;
 		}
 
-		function forTR(){
+		function caseTransfer(){
 			$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
 			$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
 				{formatter:'currency', 
 				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-				editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
+				 editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
 
+			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+				{ width: 130, classes: 'wrap', editable:true,
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+						editrules:{required: false,custom:true, custom_func:cust_rules},
+							edittype:'custom',	editoptions:
+							    {  custom_element:expdateCustomEdit,
+							       custom_value:galGridCustomValue 	
+							    },
+				});
 
-			$("label[for=sndrcv]").show();
-			$("#sndrcv_parent").show();
+			$("#sndrcv_parent, label[for=sndrcv]").show();
+			$("#sndrcvtype_parent, label[for=sndrcvtype]").show();
 
-			$("label[for=sndrcvtype]").show();
-			$("#sndrcvtype_parent").show();
 			$("#sndrcvtype option[value='Department']").show();
-			$("#sndrcvtype option[value='Supplier']").hide();
-			$("#sndrcvtype option[value='Other']").hide();
-
-			$("#sndrcv").attr('data-validation', 'required');
-			$("#sndrcvtype").attr('data-validation', 'required');
-
-		}
-
-		function exceptTR(){
-			$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
-			$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
-			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
-				{formatter:'currency', 
-				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-				editrules:{required:true}, editable:true});
-			
-
-			$("label[for=sndrcv]").show();
-			$("#sndrcv_parent").show();
-
-			$("label[for=sndrcvtype]").show();
-			$("#sndrcvtype_parent").show();
-			$("#sndrcvtype option[value='Department']").hide();
-			$("#sndrcvtype option[value='Supplier']").show();
-			$("#sndrcvtype option[value='Other']").show();
+			$("#sndrcvtype option[value='Supplier'], #sndrcvtype option[value='Other']").hide();
 
 			$("#sndrcv").attr('data-validation', 'required');
 			$("#sndrcvtype").attr('data-validation', 'required');
 		}
-		function forAI(){
+
+		function caseAdjustment(){
 			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
 			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
 				{formatter:'currency', 
 				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 				editrules:{required:true}, editable:true});
+
 			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
-				{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-				edittype: 'text',
-				editoptions: {
-                    dataInit: function (element) {
-                        $(element).datepicker({
-                            id: 'expdate_datePicker',
-                            dateFormat: 'dd/mm/yy',
-                            minDate: 1,
-                            showOn: 'focus',
-                            changeMonth: true,
-		  					changeYear: true,
-                        });
-                    }
-                } 
-				
-				 });
+				{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},edittype: 'text',
+					editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).datepicker({
+	                            id: 'expdate_datePicker',
+	                            dateFormat: 'dd/mm/yy',
+	                            minDate: 1,
+	                            showOn: 'focus',
+	                            changeMonth: true,
+			  					changeYear: true,
+	                        });
+	                    }
+	                } 
+				});
 			
-			$("label[for=sndrcv]").hide();
-			$("#sndrcv_parent").hide();
-			$("label[for=sndrcvtype]").hide();
-			$("#sndrcvtype_parent").hide();
+			$("label[for=sndrcv],label[for=sndrcvtype],#sndrcvtype_parent, #sndrcv_parent").hide();
 				
 			$("#sndrcv").removeAttr('data-validation');
 			$("#sndrcvtype").removeAttr('data-validation');
-			
-		}
-
-		function forAO(){
-			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
-			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
-			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
-				{formatter:'currency', 
-				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-				editrules:{required:true}, editable:true});
-			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
-				{formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},editable:true,
-					editrules:{required: false,custom:true, custom_func:cust_rules},
-					edittype:'custom',	editoptions:
-						{  custom_element:expdateCustomEdit,
-						   custom_value:galGridCustomValue 	
-						}, 
-				
-				 });
-			
-			
-			$("label[for=sndrcv]").hide();
-			$("#sndrcv_parent").hide();
-			$("label[for=sndrcvtype]").hide();
-			$("#sndrcvtype_parent").hide();
-				
-			$("#sndrcv").removeAttr('data-validation');
-			$("#sndrcvtype").removeAttr('data-validation');
-
-			
 		}
 	}
 
@@ -643,8 +721,6 @@ $(document).ready(function () {
 	);
 	supplierkatdepan.makedialog();
 
-
-	
 	function searchbydate() {
 		search('#jqGrid', $('#searchForm [name=Stext]').val(), $('#searchForm [name=Scol] option:selected').val(), urlParam);
 	}
@@ -1096,8 +1172,7 @@ $(document).ready(function () {
 		param.filterCol = ['year','itemcode', 'deptcode','uomcode'];
 		param.filterVal = [moment($('#trandate').val()).year(), $("#jqGrid2 input[name='itemcode']").val(),$('#sndrcv').val(), $("#jqGrid2 input[name='uomcoderecv']").val()];
 
-		
-			$.get( param.url+"?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 			
 			$("#jqGrid2 input[name='qtyonhandrecv']").val('');
 		},'json').done(function(data) {
@@ -1274,25 +1349,6 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='amount']").val(amount.toFixed(4));
 	}
 
-	function errorIt(name,errorField,fail,fail_msg){
-		let id = "#jqGrid2 input[name='"+name+"']";
-		if(!fail){
-			if($.inArray(id,errorField)!==-1){
-				errorField.splice($.inArray(id,errorField), 1);
-			}
-			$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-			$( id ).removeClass( "error" ).addClass( "valid" );
-			$('.noti').find("li[data-errorid='"+name+"']").detach();
-		}else{
-			$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-			$( id ).removeClass( "valid" ).addClass( "error" );
-			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
-			if($.inArray(id,errorField)===-1){
-				errorField.push( id );
-			}
-		}
-	}
-
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
@@ -1333,9 +1389,9 @@ $(document).ready(function () {
 				{label:'isstype',name:'isstype',width:100,classes:'pointer',hidden:true},
 				],
 			ondblClickRow:function(){
-				inputTrantypeValue();
 				let data=selrowData('#'+dialog_trantype.gridname);
 				isstype = data['isstype'];
+				inputTrantypeValue(isstype);
 				reqRecNo(isstype);
 				
 				$("#sndrcvtype").val("");
@@ -1533,7 +1589,28 @@ $(document).ready(function () {
 	);
 	dialog_requestRecNo.makedialog(false);
 
+	function errorIt(name,errorField,fail,fail_msg){
+		let id = "#jqGrid2 input[name='"+name+"']";
+		if(!fail){
+			if($.inArray(id,errorField)!==-1){
+				errorField.splice($.inArray(id,errorField), 1);
+			}
+			$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+			$( id ).removeClass( "error" ).addClass( "valid" );
+			$('.noti').find("li[data-errorid='"+name+"']").detach();
+		}else{
+			$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+			$( id ).removeClass( "valid" ).addClass( "error" );
+			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+			if($.inArray(id,errorField)===-1){
+				errorField.push( id );
+			}
+		}
+	}
+
 	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();
+
+
 
 });
