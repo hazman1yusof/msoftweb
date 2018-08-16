@@ -150,10 +150,6 @@ $(document).ready(function () {
 		return pad(str, cellvalue, true);
 	}
 
-	function unpadzero(cellvalue, options, rowObject){
-		return cellvalue.substring(cellvalue.search(/[1-9]/));
-	}
-
 	function searchClick2(grid,form,urlParam){
 		$(form+' [name=Stext]').on( "keyup", function() {
 			delay(function(){
@@ -207,7 +203,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			/*let stat = selrowData("#jqGrid").recstatus;
+			let stat = selrowData("#jqGrid").recstatus;
 			switch($("#scope").val()){
 				case "dataentry":
 						$("label[for=delordhd_reqdept]").hide();
@@ -235,7 +231,7 @@ $(document).ready(function () {
 						$('#but_cancel_jq,#but_post_jq').show();
 					}
 					break;
-			}*/
+			}
 			(selrowData("#jqGrid").recstatus!='POSTED')?$('#but_post_jq').show():$('#but_post_jq').hide();
 			urlParam2.filterVal[0]=selrowData("#jqGrid").recno; 
 			urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode no = ','s.year no ='],[]];
@@ -1154,11 +1150,11 @@ $(document).ready(function () {
 			dialog_sndrcv.off();
 			dialog_requestRecNo.off();
 			saveHeader("#formdata",oper,saveParam);
+			errorField.length=0;
 			//unsaved = false;
 		}else{
 			mycurrency.formatOn();
 		}
-		getTrantypeDetail();
 	});
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////

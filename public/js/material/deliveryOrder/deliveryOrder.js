@@ -827,7 +827,6 @@ $(document).ready(function () {
 			let grid = $('#remarks2').data('grid');
 			$('#remarks2').val($(grid).jqGrid('getRowData', rowid).remarks);
 			let exist = $("#input_"+rowid+"_pouom_convfactor_uom").length;
-			console.log(exist);
 			if(grid == '#jqGrid3' || exist==0){ // lepas ni letak or not edit mode
 				$("#remarks2").prop('disabled',true);
 				$( "#dialog_remarks" ).dialog( "option", "buttons", butt2_rem);
