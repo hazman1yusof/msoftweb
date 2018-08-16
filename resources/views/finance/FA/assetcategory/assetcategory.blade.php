@@ -244,7 +244,7 @@
 
 @section('scripts')
 
-	<script src="js/finance/FA/assetcategory/assetcategory.js"></script>
+	<script src="js/finance/FA/assetcategory/assetcategoryScript.js"></script>
 
 	
 @endsection

@@ -63,27 +63,6 @@ $.jgrid.defaults.responsive = true;
 
 			});
 			*/	
-			////////////////////object for dialog handler//////////////////
-			// dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');
-
-			// dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description','costcode'], 'Department');
-
-			// dialog_glassetccode=new makeDialog('finance.costcenter','#glassetccode',['costcode','description'], 'Asset');
-			// dialog_glasset=new makeDialog('finance.glmasref','#glasset',['glaccno','description'], 'Asset');
-
-			// dialog_gldepccode=new makeDialog('finance.costcenter','#gldepccode',['costcode','description'], 'Depreciation');
-			// dialog_gldep=new makeDialog('finance.glmasref','#gldep',['glaccno','description'], 'Depreciation');
-
-			// dialog_glprovccode=new makeDialog('finance.costcenter','#glprovccode',['costcode','description'], 'Provision for Depr');
-			// dialog_glprovdep=new makeDialog('finance.glmasref','#glprovdep',['glaccno','description'], 'Provision for Depr');
-
-			// dialog_glglossccode=new makeDialog('finance.costcenter','#glglossccode',['costcode','description'], 'Gain');
-			// dialog_glgainloss=new makeDialog('finance.glmasref','#glgainloss',['glaccno','description'], 'Gain');
-
-			// dialog_glrevccode=new makeDialog('finance.costcenter','#glrevccode',['costcode','description'], 'Loss');
-			// dialog_glrevaluation=new makeDialog('finance.glmasref','#glrevaluation',['glaccno','description'], 'Loss');
-
-
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
 				text: "Save",click: function() {
@@ -185,7 +164,6 @@ $.jgrid.defaults.responsive = true;
 				field:'',
 				table_name:'finance.facode',
 				table_id:'assetcode',
-				table_id:'idno',
 				sort_idno: true,
 			}
 
@@ -196,14 +174,15 @@ $.jgrid.defaults.responsive = true;
 				field:'',
 				oper:oper,
 				table_name:'finance.facode',
-				table_id:'idno'
+				table_id:'assetcode'
 			};
 			
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
+					{ label: 'idno', name: 'idno', width: 20, hidden:true },
 					{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
-					{ label: 'Category', name: 'assetcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, checked: true},
+					{ label: 'Category', name: 'assetcode', width: 10, sorttype: 'text', classes: 'wrap', canSearch: true, checked: true},
 					{ label: 'Description', name: 'description', width: 40, sorttype: 'text',canSearch: true, classes: 'wrap'  },
 					{ label: 'Type', name: 'assettype', width: 80, sorttype: 'text', classes: 'wrap', hidden:true},
 					{ label: 'Rate (%p.a)', name: 'rate', width: 50 },
@@ -222,10 +201,10 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Loss Code', name: 'glrevccode', width: 50, hidden:true },
 					{ label: 'Loss', name: 'glrevaluation', width: 50, hidden:true },
 					{
-						label: 'Record Status', name: 'recstatus', width: 80, formatter: formatterstatus,
-						unformat: unformat, cellattr: function (rowid, cellvalue) {
+						label: 'Record Status', name: 'recstatus', width: 20, formatter: formatterstatus,
+						unformat: null, cellattr: function (rowid, cellvalue) {
 							return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : ''
-						},
+						}
 					},
 
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -251,6 +230,30 @@ $.jgrid.defaults.responsive = true;
 				},
 				
 			});
+
+			/////////////////formatter status////////////////////////////////////////
+			function formatterstatus(cellvalue, option, rowObject) {
+				if (cellvalue == 'A') {
+					return 'Active';
+				}
+
+				if (cellvalue == 'D') {
+					return 'Deactive';
+				}
+
+			}
+
+		////////////////////unformatter status////////////////////////////////////////
+		function unformat(cellvalue, option, rowObject) {
+			if (cellvalue == 'Active') {
+				return 'Active';
+			}
+
+			if (cellvalue == 'Deactive') {
+				return 'Deactive';
+			}
+
+		}
 
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -313,7 +316,7 @@ $.jgrid.defaults.responsive = true;
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam);  ['idno','recstatus']);
+			addParamField('#jqGrid',false,saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus' ]);
 
 
 			  var dialog_assettype = new ordialog(
