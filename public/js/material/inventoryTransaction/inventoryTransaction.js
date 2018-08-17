@@ -15,6 +15,7 @@ $(document).ready(function () {
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
+			console.log(errorField)
 			if(errorField.length>0){
 				return {
 					element : $(errorField[0]),
@@ -41,6 +42,7 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
+			errorField.length=0;
 			parent_close_disabled(true);
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 			mycurrency.formatOnBlur();
@@ -132,7 +134,7 @@ $(document).ready(function () {
 			dialog_txndept.off();
 			dialog_sndrcv.off();
 			dialog_requestRecNo.off();
-
+			errorField.length=0;
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
 			refreshGrid("#jqGrid2",null,"kosongkan");
@@ -546,7 +548,7 @@ $(document).ready(function () {
 
 			if(crdbfl=='In'){
 				$("#jqGrid2").jqGrid('setColProp', 'expdate', 
-					{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},edittype: 'text',
+					{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},edittype: 'text',editrules:{required: false,custom:false, custom_func:null},
 						editoptions: {
 		                    dataInit: function (element) {
 		                        $(element).datepicker({
@@ -567,8 +569,9 @@ $(document).ready(function () {
 							editrules:{required: false,custom:true, custom_func:cust_rules},
 								edittype:'custom',	editoptions:
 								    {  custom_element:expdateCustomEdit,
-								       custom_value:galGridCustomValue 	
-								    },editoptions:{dataInit:null}
+								       custom_value:galGridCustomValue ,
+								       dataInit:null
+								    }
 					});
 			}
 
@@ -586,6 +589,26 @@ $(document).ready(function () {
 				
 			$("#sndrcv").removeAttr('data-validation');
 			$("#sndrcvtype").removeAttr('data-validation');
+		}
+	}
+
+	function expdate_stat(isstype,crdbfl){
+		switch(isstype){
+			case 'Transfer':
+				break;
+			case 'Adjustment':
+				caseAdjustment(crdbfl);
+				break;
+			case 'Others':
+				break;
+		}
+
+		function caseAdjustment(crdbfl){
+			if(crdbfl=='In'){
+				dialog_expdate.off()}
+			else{
+				dialog_expdate.on();
+			}
 		}
 	}
 
@@ -1166,7 +1189,21 @@ $(document).ready(function () {
 	}
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
-	$("#saveDetailLabel").click(saveDetailLabel);
+	$("#saveDetailLabel").click(function(){
+		mycurrency.formatOff();
+		mycurrency.check0value(errorField);
+		unsaved = false;
+		if($('#formdata').isValid({requiredFields:''},conf,true)){
+			dialog_txndept.off();
+			dialog_trantype.off();
+			dialog_sndrcv.off();
+			dialog_requestRecNo.off();
+			saveHeader("#formdata",oper,saveParam);
+			errorField.length=0;
+		}else{
+			mycurrency.formatOn();
+		}
+	});
 
 	function saveDetailLabel(callback=null){
 		mycurrency.formatOff();
@@ -1204,11 +1241,11 @@ $(document).ready(function () {
 	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
 	$("#jqGrid2_iladd, #jqGrid2_iledit").click(function(){
 		unsaved = false;
-		$("#jqGridPager2Delete").hide();
+		$("#jqGridPager2Delete,#saveHeaderLabel").hide();
 		dialog_itemcode.on();//start binding event on jqgrid2
 		dialog_uomcodetrdept.on();
 		dialog_uomcoderecv.on();
-		dialog_expdate.on();
+		expdate_stat(selrowData('#jqGrid').isstype,selrowData('#jqGrid').crdbfl);
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
 		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='qtyonhand']").on('blur',checkQOH);
@@ -1629,6 +1666,7 @@ $(document).ready(function () {
 	dialog_requestRecNo.makedialog(false);
 
 	function errorIt(name,errorField,fail,fail_msg){
+		console.log(name+'   '+fail)
 		let id = "#jqGrid2 input[name='"+name+"']";
 		if(!fail){
 			if($.inArray(id,errorField)!==-1){
