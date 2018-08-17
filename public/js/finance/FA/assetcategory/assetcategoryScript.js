@@ -185,8 +185,8 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Category', name: 'assetcode', width: 10, sorttype: 'text', classes: 'wrap', canSearch: true, checked: true},
 					{ label: 'Description', name: 'description', width: 40, sorttype: 'text',canSearch: true, classes: 'wrap'  },
 					{ label: 'Type', name: 'assettype', width: 80, sorttype: 'text', classes: 'wrap', hidden:true},
-					{ label: 'Rate (%p.a)', name: 'rate', width: 50 },
-					{ label: 'Department', name: 'deptcode', width: 40, sorttype: 'text', classes: 'wrap'  },
+					{ label: 'Rate (%p.a)', name: 'rate', width: 10 },
+					{ label: 'Department', name: 'deptcode', width: 10, sorttype: 'text', classes: 'wrap'  },
 					{ label: 'Tagging Next No.', name: 'tagnextno', width: 40, sorttype: 'text', classes: 'wrap',hidden:true  },
 					{ label: 'Basis', name: 'method', width: 40, sorttype: 'text', classes: 'wrap', hidden:true  },
 					{ label: 'Residual Value', name: 'residualvalue', width: 50, hidden:true },
@@ -201,7 +201,7 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Loss Code', name: 'glrevccode', width: 50, hidden:true },
 					{ label: 'Loss', name: 'glrevaluation', width: 50, hidden:true },
 					{
-						label: 'Record Status', name: 'recstatus', width: 20, formatter: formatterstatus,
+						label: 'Record Status', name: 'recstatus', width: 10, formatter: formatterstatus,
 						unformat: null, cellattr: function (rowid, cellvalue) {
 							return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : ''
 						}
