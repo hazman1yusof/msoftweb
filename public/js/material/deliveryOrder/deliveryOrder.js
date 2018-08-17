@@ -455,6 +455,10 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
+	$("#dialogForm").on('click','#formdata a.input-group-addon',function(){
+		unsaved = true; //kalu dia change apa2 bagi prompt
+	});
+
 	/////////////////////////////populate data for dropdown search By////////////////////////////
 	searchBy();
 	function searchBy(){
@@ -778,7 +782,7 @@ $(document).ready(function () {
 		    $("#expdate").datepicker();
 		},
 		beforeSubmit: function(postdata, rowid){ 
-			dialog_itemcode.check(errorField);//have function or not??
+			dialog_itemcode.check(errorField);
 			dialog_uomcode.check(errorField);
 			dialog_pouom.check(errorField);
 	 	}
@@ -845,7 +849,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-        	$("#jqGridPager2EditAll").hide();
+        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
         	if($('#delordhd_srcdocno').val()!=''){
         		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
@@ -864,7 +868,6 @@ $(document).ready(function () {
 			linenotoedit = dataobj.lineno_;
 
 			unsaved = false;
-			$("#jqGridPager2Delete").hide();
 			mycurrency2.array.length = 0;
 			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
 			
@@ -892,8 +895,7 @@ $(document).ready(function () {
 	    	//state true maksudnyer ada isi, tak kosong
 	    	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
 	    	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();	    	
-
+	    	$("#jqGridPager2Delete").show();
         }, 
         errorfunc: function(rowid,response){
         	alert(response.responseText);
@@ -901,6 +903,8 @@ $(document).ready(function () {
 	    	$("#jqGridPager2Delete").show();
         },
         beforeSaveRow: function(options, rowid) {
+        	if(errorField.length>0)return false;
+        	
         	mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			

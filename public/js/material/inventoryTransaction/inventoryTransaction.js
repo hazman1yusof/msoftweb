@@ -16,7 +16,6 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
-				console.log(errorField[0]);
 				return {
 					element : $(errorField[0]),
 					message : ' '
@@ -225,35 +224,35 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			let stat = selrowData("#jqGrid").recstatus;
-			switch($("#scope").val()){
-				case "dataentry":
-						$("label[for=delordhd_reqdept]").hide();
-						$("#delordhd_reqdept_parent").hide();
-						$("#delordhd_reqdept").removeAttr('required');
-					break;
-				case "cancel": 
-					if(stat=='POSTED'){
-						$('#but_cancel_jq').show();
-						$('#but_post_jq,#but_reopen_jq').hide();
-					}else if(stat=="CANCELLED"){
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-					}else{
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-					}
-					break;
-				case "all": 
-					if(stat=='POSTED'){
-						$('#but_cancel_jq').show();
-						$('#but_post_jq,#but_reopen_jq').hide();
-					}else if(stat=="CANCELLED"){
-						$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq').hide();
-					}else{
-						$('#but_cancel_jq,#but_post_jq').show();
-					}
-					break;
-			}
+			// let stat = selrowData("#jqGrid").recstatus;
+			// switch($("#scope").val()){
+			// 	case "dataentry":
+			// 			$("label[for=delordhd_reqdept]").hide();
+			// 			$("#delordhd_reqdept_parent").hide();
+			// 			$("#delordhd_reqdept").removeAttr('required');
+			// 		break;
+			// 	case "cancel": 
+			// 		if(stat=='POSTED'){
+			// 			$('#but_cancel_jq').show();
+			// 			$('#but_post_jq,#but_reopen_jq').hide();
+			// 		}else if(stat=="CANCELLED"){
+			// 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			// 		}else{
+			// 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			// 		}
+			// 		break;
+			// 	case "all": 
+			// 		if(stat=='POSTED'){
+			// 			$('#but_cancel_jq').show();
+			// 			$('#but_post_jq,#but_reopen_jq').hide();
+			// 		}else if(stat=="CANCELLED"){
+			// 			$('#but_reopen_jq').show();
+			// 			$('#but_post_jq,#but_cancel_jq').hide();
+			// 		}else{
+			// 			$('#but_cancel_jq,#but_post_jq').show();
+			// 		}
+			// 		break;
+			// }
 			(selrowData("#jqGrid").recstatus!='POSTED')?$('#but_post_jq').show():$('#but_post_jq').hide();
 			urlParam2.filterVal[0]=selrowData("#jqGrid").recno; 
 			urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode no = ','s.year no ='],[]];
@@ -572,6 +571,7 @@ $(document).ready(function () {
 								    },editoptions:{dataInit:null}
 					});
 			}
+
 			$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
 				{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: false,custom:true, custom_func:cust_rules},
@@ -1168,7 +1168,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(saveDetailLabel);
 
-	function saveDetailLabel(callback){
+	function saveDetailLabel(callback=null){
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -1182,7 +1182,7 @@ $(document).ready(function () {
 		}else{
 			mycurrency.formatOn();
 		}
-		callback();
+		if(callback!=null)callback();
 	}
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
