@@ -8,6 +8,7 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use App\Http\Controllers\util\invtran_util;
 
 class InventoryTransactionController extends defaultController
 {   
@@ -203,44 +204,12 @@ class InventoryTransactionController extends defaultController
 
             foreach ($ivtmpdt_obj as $value) {
 
-            //-- 3. cari CrAccNo,CrCCode,DrAccNo,DrCCode --//
-                $productcat_obj = DB::table('material.product')
-                    ->where('product.compcode','=',session('compcode'))
-                    ->where('product.itemcode','=',$value->itemcode)
-                    ->where('product.uomcode','=',$value->uomcode)
-                    ->first();
+                $obj_acc = invtran_util::get_acc($value,$ivtmphd);
 
-                $category_obj = DB::table('material.category')
-                    ->where('category.compcode','=',session('compcode'))
-                    ->where('category.catcode','=',$productcat_obj->productcat)
-                    ->first();
-
-                $dept_obj = DB::table('sysdb.department')
-                    ->where('department.compcode','=',session('compcode'))
-                    ->where('department.deptcode','=',$ivtmphd->txndept)
-                    ->first();
-
-                $craccno = $category_obj->stockacct;
-                $crccode = $dept_obj->costcode;
-
-                $productcat_obj = DB::table('material.product')
-                    ->where('product.compcode','=',session('compcode'))
-                    ->where('product.itemcode','=',$value->itemcode)
-                    ->where('product.uomcode','=',$value->uomcoderecv)
-                    ->first();
-
-                $category_obj = DB::table('material.category')
-                    ->where('category.compcode','=',session('compcode'))
-                    ->where('category.catcode','=',$productcat_obj->productcat)
-                    ->first();
-
-                $dept_obj = DB::table('sysdb.department')
-                    ->where('department.compcode','=',session('compcode'))
-                    ->where('department.deptcode','=',$ivtmphd->sndrcv)
-                    ->first();
-
-                $draccno = $category_obj->stockacct;
-                $drccode = $dept_obj->costcode;
+                $craccno = $obj_acc->craccno;
+                $crccode = $obj_acc->crccode;
+                $draccno = $obj_acc->draccno;
+                $drccode = $obj_acc->drccode;
 
                 DB::table('material.ivtxndt')
                     ->insert([
@@ -338,8 +307,6 @@ class InventoryTransactionController extends defaultController
                         }
 
                     }else{
-                        dump($expdate_obj->toSql());
-                        dump($expdate_obj->getBindings());
                         throw new \Exception("stockexp xde langsung");
                     }
 
