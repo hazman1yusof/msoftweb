@@ -327,7 +327,6 @@ $(document).ready(function () {
 	populateSelect('#jqGrid','#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
-	// addParamField('#jqGrid',true,urlParam);
 	refreshGrid('#jqGrid',urlParam);
 	addParamField('#jqGrid',false,saveParam,['upddate','upduser','source','crdbfl','isstype','adduser','adddate','idno','docno','recno','compcode','recstatus']);
 
@@ -593,13 +592,19 @@ $(document).ready(function () {
 	}
 
 	function expdate_stat(isstype,crdbfl){
+		// console.log([isstype,crdbfl]);
 		switch(isstype){
 			case 'Transfer':
+				dialog_expdate.on();
 				break;
 			case 'Adjustment':
 				caseAdjustment(crdbfl);
 				break;
 			case 'Others':
+				dialog_expdate.on();
+				break;
+			default:
+				dialog_expdate.off();
 				break;
 		}
 
@@ -1639,8 +1644,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Expiry Date",
 			open: function(){
-				dialog_expdate.urlParam.filterCol=['compcode','year','deptcode', 'uomcode', 'balqty'];
-				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val(),$("#jqGrid2 input[name='qtyonhand']").val()];
+				dialog_expdate.urlParam.filterCol=['compcode','year','deptcode', 'uomcode', 'itemcode'];
+				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val(), $("#jqGrid2 input[name='itemcode']").val()];
 			
 			}
 		},'urlParam'

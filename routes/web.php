@@ -297,6 +297,7 @@ Route::post('/suppgroup/form','material\SuppgroupController@form');
 Route::get('/assetregister','finance\assetregisterController@show');
 Route::get('/assetregister/table','finance\assetregisterController@table');
 Route::post('/assetregister/form','finance\assetregisterController@form'); 
+
 //// Product Master setup ///
 Route::get('/productMaster','material\ProductMasterController@show');
 Route::get('/productMaster/table','material\ProductMasterController@table');
@@ -312,7 +313,7 @@ Route::get('/stocklocEnquiry','material\StocklocEnquiryController@show');
 Route::get('/stocklocEnquiry/table','material\StocklocEnquiryController@table');
 Route::post('/stocklocEnquiry/form','material\StocklocEnquiryController@form');
 
-//// Item Enquiry ///
+//// Item Enquiry /// Class=Pharmacy
 Route::get('/itemEnquiry','material\ItemEnquiryController@show');
 Route::get('/itemEnquiry/table','material\ItemEnquiryController@table');
 Route::post('/itemEnquiry/form','material\ItemEnquiryController@form');

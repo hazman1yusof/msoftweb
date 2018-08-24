@@ -244,14 +244,16 @@ class InventoryTransactionController extends defaultController
                     ->where('ivtxntype.trantype','=',$ivtmphd->trantype)
                     ->first();
 
-                if($trantype_obj->isstype == 'TRANSFER'){
+                if($trantype_obj->isstype == 'TRANSFER' || $trantype_obj->isstype == 'Transfer'){
                     $retval = invtran_util::posting_for_transfer($value,$ivtmphd);
-                }else if($trantype_obj->isstype == 'Adjustment'){
+                }else if($trantype_obj->isstype == 'Adjustment' || $trantype_obj->isstype == 'ADJUSTMENT'){
                     switch ($trantype_obj->crdbfl) {
                         case 'in':
+                        case 'In':
                             invtran_util::posting_for_adjustment_in($value,$ivtmphd);
                             break;
                         case 'out':
+                        case 'Out':
                             invtran_util::posting_for_adjustment_out($value,$ivtmphd);
                             break;
                         default:
@@ -260,7 +262,7 @@ class InventoryTransactionController extends defaultController
                     }
                 }
 
-                 //--- 7. posting GL ---//
+                //--- 7. posting GL ---//
 
                 //amik yearperiod dari delordhd
                 $yearperiod = $this->getyearperiod($ivtmphd->trandate);
@@ -287,7 +289,6 @@ class InventoryTransactionController extends defaultController
                         'amount' => $value->amount,
                         'idno' => $value->itemcode
                     ]);
-
                 //2. check glmastdtl utk debit, kalu ada update kalu xde create
                 if($this->isGltranExist($drccode,$draccno,$yearperiod->year,$yearperiod->period)){
                     DB::table('finance.glmasdtl')

@@ -165,7 +165,6 @@ $(document).ready(function () {
 		table_id:'idno',
 		filterCol:['itemcode', 'uomcode','year'],
 		filterVal:['', '',$("#getYear").val()],
-       
 	}
 
 	$("#detail").jqGrid({
@@ -191,7 +190,6 @@ $(document).ready(function () {
 			{ label: 'netmvval10', name: 'netmvval10', hidden:true},
 			{ label: 'netmvval11', name: 'netmvval11', hidden:true},
 			{ label: 'netmvval12', name: 'netmvval12', hidden:true},
-			
 			//{ label: 'idno', name: 'idno', width: 30, classes: 'wrap', hidden:true},
 		],
 		autowidth:true,
@@ -204,12 +202,11 @@ $(document).ready(function () {
 		pager: "#jqGridPager2",
         
         gridComplete:function(rowdata){
-        	var rowid= 0;
+        	var rowid= 1;
         	$("#detail").jqGrid('getRowData').forEach(function(element){
         		getStockvalue(rowid,element);
         		rowid++;
         	});
-
 		},
 
 		onSelectRow:function(rowid,selected){
@@ -229,11 +226,10 @@ $(document).ready(function () {
 			beforeRefresh: function(){
 				refreshGrid("#jqGrid",urlParam);
 			},
-			
 		}	
 	);
 
-	 $("#detail").jqGrid('setLabel', 'qtyonhand', 'Quantity on Hand', {'text-align':'right'});
+	$("#detail").jqGrid('setLabel', 'qtyonhand', 'Quantity on Hand', {'text-align':'right'});
 	
     var urlParam3={
 		action:'get_table_default',

@@ -463,12 +463,12 @@ abstract class defaultController extends Controller{
         return !empty($pvalue1);
     }
 
-    public function toYear($date){
+    public static function toYear($date){
         $carbon = new Carbon($date);
         return $carbon->year;
     }
 
-    public function toMonth($date){
+    public static function toMonth($date){
         $carbon = new Carbon($date);
         return $carbon->month;
     }
@@ -499,6 +499,15 @@ abstract class defaultController extends Controller{
                 }
             }
         }
+    }
+
+    public static function mydump($obj,$line='null'){
+        dd([
+            $line,
+            $obj->toSql(),
+            $obj->getBindings()
+        ]);
+
     }
 
 }
