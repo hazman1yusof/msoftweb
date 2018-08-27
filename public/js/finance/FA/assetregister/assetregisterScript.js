@@ -78,7 +78,7 @@ $.jgrid.defaults.responsive = true;
 		dialog_delordno.makedialog();
 	
 		// dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');	
-		var  dialog_assettype= new ordialog(
+		/*var  dialog_assettype= new ordialog(
 			'assettype','finance.fatype','#assettype',errorField,
 			{	colModel:[
 				    {label:'AssetType',name:'assettype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -88,12 +88,12 @@ $.jgrid.defaults.responsive = true;
 			},{
 				title:"Select Type",
 				open: function(){
-					dialog_assettype.urlParam.filterCol=['compcode'],
-					dialog_assettype.urlParam.filterVal=['9A']
+					dialog_assettype.urlParam.filterCol=['compcode'];
+					dialog_assettype.urlParam.filterVal=['9A'];
 				}
 			},'urlParam'
 		);
-		dialog_assettype.makedialog();
+		dialog_assettype.makedialog();*/
 
 		// dialog_suppcode=new makeDialog('material.supplier','#suppcode',['SuppCode','Name'],'Supplier');
 		var  dialog_suppcode= new ordialog(
@@ -158,17 +158,23 @@ $.jgrid.defaults.responsive = true;
 			{	colModel:[
 				    {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-					{label:'AssetType',name:' assettype',width:100,classes:'pointer',hidden:true},
+					{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
 					{label:'Method',name:' method',width:100,classes:'pointer',hidden:true},
 					{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
 
-			]
+			],
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_assetcode.gridname);
+				$('#assettype').val(data['assettype']);
+			
+				
+			}
 
 			},{
 				title:"Select Category",
 				open: function(){
-					dialog_assetcode.urlParam.filterCol=['compcode'],
-					dialog_assetcode.urlParam.filterVal=['9A']
+					dialog_assetcode.urlParam.filterCol=['compcode'];
+					dialog_assetcode.urlParam.filterVal=['9A'];
 				}
 			},'urlParam'
 		);
@@ -242,7 +248,7 @@ $.jgrid.defaults.responsive = true;
 						dialog_itemcode.on();
 						dialog_delordno.on();
 						dialog_assetcode.on();
-						dialog_assettype.on();
+						//dialog_assettype.on();
 						dialog_suppcode.on();
 						dialog_deptcode.on();
 						dialog_loccode.on();
@@ -252,7 +258,7 @@ $.jgrid.defaults.responsive = true;
 						dialog_itemcode.check(errorField);
 						dialog_delordno.check(errorField);
 						dialog_assetcode.check(erorField);
-						dialog_assettype.check(errorfield);
+						//dialog_assettype.check(errorfield);
 						dialog_suppcode.check(errorfield);
 						dialog_deptcode.check(errorfield);
 						dialog_loccode.check(errorfield);
