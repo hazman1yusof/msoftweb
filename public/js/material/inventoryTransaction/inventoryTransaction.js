@@ -552,10 +552,9 @@ $(document).ready(function () {
 				$('#amount').val(data.totalAmount);
 				$('#idno').val(data.idno);//just save idno for edit later
 				
-				urlParam2.filterVal[0]=data.recno; 
-				/*urlParam2.join_filterCol = [['ivt.uomcode', 's.deptcode','s.year'],[]]; 
-				urlParam2.join_filterVal = [['skip.s.uomcode',$('#txndept').val(),moment($("#trandate").val()).year()],[]];
-			*/
+				urlParam2.filterVal[0] = data.recno; 
+				urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode no = ','s.year no ='],[]];
+				urlParam2.join_filterVal = [['s.uomcode',$('#txndept').val(),moment($('#trandate').val()).year()],[]];
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
@@ -894,6 +893,7 @@ $(document).ready(function () {
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
         	//linenotoedit = null;
+
         	refreshGrid('#jqGrid2',urlParam2,'add');
         	$("#jqGridPager2Delete").show();
         }, 

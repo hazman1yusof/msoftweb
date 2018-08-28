@@ -461,9 +461,12 @@ abstract class defaultController extends Controller{
                 ->where('costcode','=',$ccode)
                 ->where('glaccount','=',$glcode)
                 ->first();
-        $pvalue1 = (array)$pvalue1;
 
-        $this->gltranAmount = $pvalue1["actamount".$period];
+        if(!empty($pvalue1)){
+            $pvalue1 = (array)$pvalue1;
+            $this->gltranAmount = $pvalue1["actamount".$period];
+        }
+
         return !empty($pvalue1);
     }
 
