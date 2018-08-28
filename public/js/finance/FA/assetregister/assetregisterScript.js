@@ -24,23 +24,6 @@ $.jgrid.defaults.responsive = true;
 					},
 				};
 			//////////////////////////////////////////////////////////////
-
-			/////////////////Object for Dialog Handler///////////////////
-				//categorycode
-				// dialog_assetcode=new makeDialog('finance.facode','#assetcode',['assetcode','description','assettype','method','residualvalue'],'Category');
-			//linkage with assetco	//assettype
-				// dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');
-				//department
-				// dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description'], 'Department');
-				//location
-				
-				//supplier
-				
-				//delivery ordno
-				
-				// dialog_itemcode=new makeDialog('material.product','#itemcode',['itemcode','description'],'Item');     ////itemcode heap changes
-
-				//var mycurrency =new currencymode(['#origcost','#purprice','#lstytddep','#cuytddep','#nbv']);
 				
 		////////////////////////////////////start dialog///////////////////////////////////////
 		var dialog_itemcode= new ordialog(
@@ -53,8 +36,8 @@ $.jgrid.defaults.responsive = true;
 			},{
 				title:"Select Itemcode",
 				open: function(){
-					dialog_itemcode.urlParam.filterCol=['compcode'],
-					dialog_itemcode.urlParam.filterVal=['9A']
+					dialog_itemcode.urlParam.filterCol=['compcode','groupcode'],
+					dialog_itemcode.urlParam.filterVal=['9A','asset']
 				}
 			},'urlParam'
 		);
@@ -159,15 +142,16 @@ $.jgrid.defaults.responsive = true;
 				    {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
 					{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
-					{label:'Method',name:' method',width:100,classes:'pointer',hidden:true},
+					{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
 					{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
 
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_assetcode.gridname);
-				$('#assettype').val(data['assettype']);
-			
-				
+				$('#assettype').val(data['assettype']);		
+				$('#method').val(data['method']);
+				$('#rvalue').val(data['residualvalue']);
+
 			}
 
 			},{
@@ -179,8 +163,7 @@ $.jgrid.defaults.responsive = true;
 			},'urlParam'
 		);
 		dialog_assetcode.makedialog();
-		
-		
+
 		var butt1=[{
 				text: "Save",click: function() {
 					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
@@ -283,7 +266,7 @@ $.jgrid.defaults.responsive = true;
 				action:'get_table_default',
 				url: '/util/get_table_default',
 				field:'',
-				table_name:'finance.fatemp',
+				table_name:'finance.fatemp', 
 				table_id:'idno',
 				
 			}
@@ -294,8 +277,7 @@ $.jgrid.defaults.responsive = true;
 				field:'',
 				oper:oper,
 				table_name:'finance.fatemp',
-				table_id:'idno' 
-				
+				table_id:'idno' 				
 				
 			};
 			
@@ -313,7 +295,7 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 					{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 					{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
-					{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
+					//{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
 					{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 					{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
 					{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
@@ -357,8 +339,7 @@ $.jgrid.defaults.responsive = true;
 						}
 	
 						$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-				},
-				
+				},				
 			});
 
 			////////////////////////////// DATE FORMATTER ////////////////////////////////////////
