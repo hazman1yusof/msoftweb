@@ -159,13 +159,15 @@ $.jgrid.defaults.responsive = true;
 				    {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
 					{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
-					{label:'Method',name:' method',width:100,classes:'pointer',hidden:true},
+					{label:'Method',name: 'method',width:100,classes:'pointer',hidden:true},
 					{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
 
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_assetcode.gridname);
 				$('#assettype').val(data['assettype']);
+				$('#method').val(data['method']);
+				$('#rvalue').val(data['residualvalue']);
 			
 				
 			}
@@ -335,6 +337,7 @@ $.jgrid.defaults.responsive = true;
 					//nbv
 					{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:true},
 					{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
+
 								
 				
 				],
@@ -368,6 +371,22 @@ $.jgrid.defaults.responsive = true;
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////////
+
+			/*/////////////inBetween date///////////
+			function validate_actdate(event){
+					
+					if(!moment(obj.target.value).isBetween(actdateObj.lowestdate,actdateObj.highestdate)){
+						bootbox.alert('Date not in accounting period setup');
+						$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
+					}else if(!permission){
+						bootbox.alert('Accounting Period Has been Closed');
+						$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
+					} //Accounting Period Has been Closed
+						//Date not in accounting period setup
+					
+				}
+
+			////////////////////////////	*/	
 			///////////////////////// REGISTER TYPE SELECTION///////////////////////////////////////
 
 			$("input[name=regtype]:radio").on('change', function(){
