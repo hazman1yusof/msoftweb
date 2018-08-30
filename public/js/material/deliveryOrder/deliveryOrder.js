@@ -1588,7 +1588,13 @@ $(document).ready(function () {
 			[
 				{label:'Price code',name:'pricecode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-			]
+			],
+			ondblClickRow:function(event){
+				let data = selrowData('#'+dialog_pricecode.gridname);
+
+				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode','p.groupcode'];
+				dialog_itemcode.urlParam.filterVal = ['session.company', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val(),(data.pricecode == 'MS') ? '<>.Stock' : 'Stock'];
+			}
 		},{
 			title:"Select Price Code For Item",
 			open: function(){
@@ -1609,11 +1615,12 @@ $(document).ready(function () {
 		'itemcode',['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u'],"#jqGrid2 input[name='itemcode']",errorField,
 		{	colModel:
 			[
-				{label:'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
-				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
+				{label: 'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
+				{label: 'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
 				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
+				{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 				{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 			],
@@ -1636,7 +1643,7 @@ $(document).ready(function () {
 		},{
 			title:"Select Item For Delivery Order",
 			open:function(){
-				dialog_itemcode_init();
+				// dialog_itemcode_init();
 			},
 			close: function(){
 				$(dialog_itemcode.textfield)			//lepas close dialog focus on next textfield 
@@ -1650,7 +1657,7 @@ $(document).ready(function () {
 
 	//init urlparam sebelum open
 	function dialog_itemcode_init(blur=false){
-		dialog_itemcode.urlParam.fixPost="true";
+		dialog_itemcode.urlParam.fixPost = "true";
 		dialog_itemcode.urlParam.table_id = "none_";
 		dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode'];
 		dialog_itemcode.urlParam.filterVal = ['session.company', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val()];
@@ -1670,17 +1677,19 @@ $(document).ready(function () {
 		let id_optid = optid.substring(0,optid.search("_"));
 		let itemcode = $("#jqGrid2 #input_"+id_optid+"_itemcode").val();
 
-		obj.urlParam.searchCol=['itemcode'];
+		obj.urlParam.searchCol=['s_itemcode'];
 		obj.urlParam.searchVal=['%'+itemcode+'%'];
-		refreshGrid("#"+obj.gridname,obj.urlParam);
-		var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
+		if(itemcode!=''){
+			refreshGrid("#"+obj.gridname,obj.urlParam);
+			var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
 
-		$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
-		$("#jqGrid2 #input_"+id_optid+"_uomcode").val(data['s_uomcode']);
-		$("#jqGrid2 #input_"+id_optid+"_taxcode").val(data['p_TaxCode']);
-		$("#jqGrid2 #input_"+id_optid+"_rate").val(data['t_rate']);
-		$("#jqGrid2 #input_"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
-		$("#jqGrid2 #input_"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+			$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
+			$("#jqGrid2 #input_"+id_optid+"_uomcode").val(data['s_uomcode']);
+			$("#jqGrid2 #input_"+id_optid+"_taxcode").val(data['p_TaxCode']);
+			$("#jqGrid2 #input_"+id_optid+"_rate").val(data['t_rate']);
+			$("#jqGrid2 #input_"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
+			$("#jqGrid2 #input_"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+		}
 	}
 
 	var dialog_uomcode = new ordialog(

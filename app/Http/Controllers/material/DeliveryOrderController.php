@@ -337,7 +337,7 @@ class DeliveryOrderController extends defaultController
                     ->where('StockLoc.CompCode','=',session('compcode'))
                     ->where('StockLoc.DeptCode','=',$value->deldept)
                     ->where('StockLoc.ItemCode','=',$value->itemcode)
-                    ->where('StockLoc.Year','=', $this->toYear($value->trandate))
+                    ->where('StockLoc.Year','=', defaultContrdefaultController::toYear($value->trandate))
                     ->where('StockLoc.UomCode','=',$value->uomcode)
                     ->first();
 
@@ -346,7 +346,7 @@ class DeliveryOrderController extends defaultController
 
                 //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
                     $stockloc_arr = (array)$stockloc_obj;
-                    $month = $this->toMonth($value->trandate);
+                    $month = defaultController::toMonth($value->trandate);
                     $QtyOnHand = $stockloc_obj->qtyonhand + $txnqty; 
                     $NetMvQty = $stockloc_arr['netmvqty'.$month] + $txnqty;
                     $NetMvVal = $stockloc_arr['netmvval'.$month] + ($netprice * $txnqty);
@@ -355,7 +355,7 @@ class DeliveryOrderController extends defaultController
                         ->where('StockLoc.CompCode','=',session('compcode'))
                         ->where('StockLoc.DeptCode','=',$value->deldept)
                         ->where('StockLoc.ItemCode','=',$value->itemcode)
-                        ->where('StockLoc.Year','=', $this->toYear($value->trandate))
+                        ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
                         ->where('StockLoc.UomCode','=',$value->uomcode)
                         ->update([
                             'QtyOnHand' => $QtyOnHand,
@@ -375,7 +375,7 @@ class DeliveryOrderController extends defaultController
                     ->where('stockexp.deptcode','=',$value->deldept)
                     ->where('stockexp.itemcode','=',$value->itemcode)
                     ->where('stockexp.expdate','=',$value->expdate)
-                    ->where('stockexp.year','=', $this->toYear($value->trandate))
+                    ->where('stockexp.year','=', defaultController::toYear($value->trandate))
                     ->where('stockexp.uomcode','=',$value->uomcode)
                     ->where('stockexp.batchno','=',$value->batchno)
                    // ->where('stockexp.lasttt','=','GRN')
@@ -391,7 +391,7 @@ class DeliveryOrderController extends defaultController
                         ->where('stockexp.deptcode','=',$value->deldept)
                         ->where('stockexp.itemcode','=',$value->itemcode)
                         ->where('stockexp.expdate','=',$value->expdate)
-                        ->where('stockexp.year','=', $this->toYear($value->trandate))
+                        ->where('stockexp.year','=', defaultController::toYear($value->trandate))
                         ->where('stockexp.uomcode','=',$value->uomcode)
                         ->where('stockexp.batchno','=',$value->batchno)
                       //  ->where('stockexp.lasttt','=','GRN')
@@ -417,7 +417,7 @@ class DeliveryOrderController extends defaultController
                             'upduser' => $value->upduser, 
                             'upddate' => $value->upddate, 
                            // 'lasttt' => 'GRN', 
-                            'year' => $this->toYear($value->trandate)
+                            'year' => defaultController::toYear($value->trandate)
                         ]);
                 }
 
@@ -429,7 +429,7 @@ class DeliveryOrderController extends defaultController
                     ->first();
 
                 if(count($product_obj)){ // kalu jumpa
-                    $month = $this->toMonth($value->trandate);
+                    $month = defaultController::toMonth($value->trandate);
                     $OldQtyOnHand = $product_obj->qtyonhand;
                     $currprice = $netprice;
                     $Oldavgcost = $product_obj->avgcost;
@@ -815,7 +815,7 @@ class DeliveryOrderController extends defaultController
                     ->where('StockLoc.CompCode','=',session('compcode'))
                     ->where('StockLoc.DeptCode','=',$value->deldept)
                     ->where('StockLoc.ItemCode','=',$value->itemcode)
-                    ->where('StockLoc.Year','=', $this->toYear($value->trandate))
+                    ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
                     ->where('StockLoc.UomCode','=',$value->uomcode)
                     ->first();
 
@@ -824,7 +824,7 @@ class DeliveryOrderController extends defaultController
 
                 //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
                     $stockloc_arr = (array)$stockloc_obj;
-                    $month = $this->toMonth($value->trandate);
+                    $month = defaultController::toMonth($value->trandate);
                     $QtyOnHand = $stockloc_obj->qtyonhand - $txnqty; 
                     $NetMvQty = $stockloc_arr['netmvqty'.$month] - $txnqty;
                     $NetMvVal = $stockloc_arr['netmvval'.$month] - ($netprice * $txnqty);
@@ -833,7 +833,7 @@ class DeliveryOrderController extends defaultController
                         ->where('StockLoc.CompCode','=',session('compcode'))
                         ->where('StockLoc.DeptCode','=',$value->deldept)
                         ->where('StockLoc.ItemCode','=',$value->itemcode)
-                        ->where('StockLoc.Year','=', $this->toYear($value->trandate))
+                        ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
                         ->where('StockLoc.UomCode','=',$value->uomcode)
                         ->update([
                             'QtyOnHand' => $QtyOnHand,
@@ -853,7 +853,7 @@ class DeliveryOrderController extends defaultController
                     ->where('stockexp.deptcode','=',$value->deldept)
                     ->where('stockexp.itemcode','=',$value->itemcode)
                     ->where('stockexp.expdate','=',$value->expdate)
-                    ->where('stockexp.year','=', $this->toYear($value->trandate))
+                    ->where('stockexp.year','=', defaultController::toYear($value->trandate))
                     ->where('stockexp.uomcode','=',$value->uomcode)
                     ->where('stockexp.batchno','=',$value->batchno)
                    // ->where('stockexp.lasttt','=','GRN')
@@ -869,7 +869,7 @@ class DeliveryOrderController extends defaultController
                         ->where('stockexp.deptcode','=',$value->deldept)
                         ->where('stockexp.itemcode','=',$value->itemcode)
                         ->where('stockexp.expdate','=',$value->expdate)
-                        ->where('stockexp.year','=', $this->toYear($value->trandate))
+                        ->where('stockexp.year','=', defaultController::toYear($value->trandate))
                         ->where('stockexp.uomcode','=',$value->uomcode)
                         ->where('stockexp.batchno','=',$value->batchno)
                      //   ->where('stockexp.lasttt','=','GRN')
@@ -890,7 +890,7 @@ class DeliveryOrderController extends defaultController
 
 
                 if(count($product_obj)){ // kalu jumpa
-                    $month = $this->toMonth($value->trandate);
+                    $month = defaultController::toMonth($value->trandate);
                     $OldQtyOnHand = $product_obj->qtyonhand;
                     $currprice = $netprice;
                     $Oldavgcost = $product_obj->avgcost;
@@ -1125,88 +1125,6 @@ class DeliveryOrderController extends defaultController
             DB::rollback();
 
             return response('Error'.$e, 500);
-        }
-    }
-
-    public function request_no($trantype,$dept){
-        $seqno = DB::table('material.sequence')
-                ->select('seqno')
-                ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
-
-        DB::table('material.sequence')
-        ->where('trantype','=',$trantype)->where('dept','=',$dept)
-        ->update(['seqno' => intval($seqno->seqno) + 1]);
-        
-        return $seqno->seqno;
-    }
-
-    public function recno($source,$trantype){
-        $pvalue1 = DB::table('sysdb.sysparam')
-                ->select('pvalue1')
-                ->where('source','=',$source)->where('trantype','=',$trantype)->first();
-
-        DB::table('sysdb.sysparam')
-            ->where('source','=',$source)->where('trantype','=',$trantype)
-            ->update(['pvalue1' => intval($pvalue1->pvalue1) + 1]);
-        
-        return $pvalue1->pvalue1;
-    }
-
-    //nak check glmasdtl exist ke tak utk sekian costcode, glaccount, year, period
-    //kalu jumpa dia return true, pastu simpan actamount{month} dkn global variable gltranAmount
-    public function isGltranExist($ccode,$glcode,$year,$period){
-        $pvalue1 = DB::table('finance.glmasdtl')
-                ->select("glaccount","actamount".$period)
-                ->where('compcode','=',session('compcode'))
-                ->where('year','=',$year)
-                ->where('costcode','=',$ccode)
-                ->where('glaccount','=',$glcode)
-                ->first();
-        if(!count($pvalue1)){
-            return false;
-        }else{
-            $pvalue1 = (array)$pvalue1;
-
-            $this->gltranAmount = $pvalue1["actamount".$period];
-            return true;
-        }
-    }
-
-    public function toYear($date){
-        $carbon = new Carbon($date);
-        return $carbon->year;
-    }
-
-    public function toMonth($date){
-        $carbon = new Carbon($date);
-        return $carbon->month;
-    }
-
-    public function getyearperiod($date){
-        $period = DB::table('sysdb.period')
-            ->where('compcode','=',session('compcode'))
-            ->get();
-
-        $seldate = new DateTime($date);
-
-        foreach ($period as $value) {
-            $arrvalue = (array)$value;
-
-            $year= $value->year;
-            $period=0;
-
-            for($x=1;$x<=12;$x++){
-                $period = $x;
-
-                $datefr = new DateTime($arrvalue['datefr'.$x]);
-                $dateto = new DateTime($arrvalue['dateto'.$x]);
-                if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
-                    $responce = new stdClass();
-                    $responce->year = $year;
-                    $responce->period = $period;
-                    return $responce;
-                }
-            }
         }
     }
 
