@@ -115,7 +115,7 @@
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="invdate">Invoice Date</label>  
 					<div class="col-md-3">
-						<input id="invdate" name="invdate" type="date" onchange="TDate()" class="form-control input-sm" data-validation="required" placeholder="YYYY-MM-DD">
+						<input id="invdate" name="invdate" type="date" class="form-control input-sm" data-validation="required" placeholder="YYYY-MM-DD">
 					</div>
 				
 				<label class="col-md-2 control-label" for="docno">GRN No</label>  
