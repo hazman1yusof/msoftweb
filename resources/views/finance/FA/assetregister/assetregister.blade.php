@@ -115,8 +115,9 @@
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="invdate">Invoice Date</label>  
 					<div class="col-md-3">
-						<input id="invdate" name="invdate" type="date" class="form-control input-sm" 	data-validation="required" placeholder="YYYY-MM-DD">
+						<input id="invdate" name="invdate" type="date" class="form-control input-sm" data-validation="required" placeholder="YYYY-MM-DD">
 					</div>
+				
 				<label class="col-md-2 control-label" for="docno">GRN No</label>  
 					<div class="col-md-3">
 						<input id="docno" name="docno" type="text" class="form-control input-sm" 	data-validation="required">
@@ -136,13 +137,13 @@
                     	<input id="description" name="description" type="text" maxlength="300" class="form-control input-sm">
                     </div> !-->
 			</div>
-			<div class="form-group">
+		<!--	<div class="form-group">
 				<label class="col-md-2 control-label" for="description"></label>  
 					<div class="col-md-5">
                     	<input id="description" name="description" type="text" maxlength="100"  class="form-control input-sm">
                     </div>
 				
-			</div>
+			</div> !-->
 
 
 			<div class="form-group">
@@ -187,11 +188,11 @@
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="method">Method</label>  
 					<div class="col-md-3">
-						<input id="method" type="text" name="method" maxlength="12" class="form-control input-sm" rdonly>
+						<input id="method" type="text" name="method" maxlength="12" class="form-control input-sm" data-validation="required">
 					</div>
 				<label class="col-md-2 control-label" for="rvalue">Residual Value</label>  
 					<div class="col-md-3">
-						<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm" rdonly>
+							<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm" data-validation="required">
 					</div>
 			</div>
 
@@ -216,7 +217,7 @@
 					</div>
 				<label class="col-md-2 control-label" for="recstatus">Status</label>
 					<div class="col-md-4">
-						<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Activated</label>
+						<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
 					</div>
 			</div>
 

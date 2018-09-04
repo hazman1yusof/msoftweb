@@ -343,150 +343,6 @@ $(document).ready(function () {
 
 	/////////////////////////////////trantype////////////////////////////////////////////////////////////
 
-	//LI LIR LO LOR TR  --> Enable Receiver N Qty On Hand Receiver else hide
-	// function inputTrantypeValue(){
-	// 	var trantype = $('#trantype').val();
-	// 	//accttype = Loan (LI LIR LO LOR)
-
-	// 	switch(trantype){
-	// 		case "LI":
-	// 		case "LIR":
-	// 		case "LO":
-	// 		case "LOR":
-	// 			exceptTR();
-	// 			break;
-	// 		case "TR":
-	// 			forTR();
-	// 			break;
-	// 		case "AI":
-	// 			forAI();
-	// 			break;
-	// 		case "AO":
-	// 			forAO();
-	// 			break;	
-	// 		default:
-	// 			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
-	// 			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
-	// 			$("label[for=sndrcv]").hide();
-	// 			$("#sndrcv_parent").hide();
-
-	// 			$("label[for=sndrcvtype]").hide();
-	// 			$("#sndrcvtype_parent").hide();
-				
-	// 			$("#sndrcv").removeAttr('data-validation');
-	// 			$("#sndrcvtype").removeAttr('data-validation');
-	// 			break;
-	// 	}
-
-	// 	function forTR(){
-	// 		$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
-	// 		$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
-	// 		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
-	// 			{formatter:'currency', 
-	// 			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-	// 			editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
-
-
-	// 		$("label[for=sndrcv]").show();
-	// 		$("#sndrcv_parent").show();
-
-	// 		$("label[for=sndrcvtype]").show();
-	// 		$("#sndrcvtype_parent").show();
-	// 		$("#sndrcvtype option[value='Department']").show();
-	// 		$("#sndrcvtype option[value='Supplier']").hide();
-	// 		$("#sndrcvtype option[value='Other']").hide();
-
-	// 		$("#sndrcv").attr('data-validation', 'required');
-	// 		$("#sndrcvtype").attr('data-validation', 'required');
-
-	// 	}
-
-	// 	function exceptTR(){
-	// 		$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
-	// 		$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');
-	// 		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
-	// 			{formatter:'currency', 
-	// 			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-	// 			editrules:{required:true}, editable:true});
-			
-
-	// 		$("label[for=sndrcv]").show();
-	// 		$("#sndrcv_parent").show();
-
-	// 		$("label[for=sndrcvtype]").show();
-	// 		$("#sndrcvtype_parent").show();
-	// 		$("#sndrcvtype option[value='Department']").hide();
-	// 		$("#sndrcvtype option[value='Supplier']").show();
-	// 		$("#sndrcvtype option[value='Other']").show();
-
-	// 		$("#sndrcv").attr('data-validation', 'required');
-	// 		$("#sndrcvtype").attr('data-validation', 'required');
-	// 	}
-
-	// 	function forAI(){
-	// 		$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
-	// 		$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
-	// 		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
-	// 			{formatter:'currency', 
-	// 			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-	// 			editrules:{required:true}, editable:true});
-	// 		$("#jqGrid2").jqGrid('setColProp', 'expdate', 
-	// 			{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-	// 			edittype: 'text',
-	// 			editoptions: {
- //                    dataInit: function (element) {
- //                        $(element).datepicker({
- //                            id: 'expdate_datePicker',
- //                            dateFormat: 'dd/mm/yy',
- //                            minDate: 1,
- //                            showOn: 'focus',
- //                            changeMonth: true,
-	// 	  					changeYear: true,
- //                        });
- //                    }
- //                } 
-				
-	// 			 });
-			
-	// 		$("label[for=sndrcv]").hide();
-	// 		$("#sndrcv_parent").hide();
-	// 		$("label[for=sndrcvtype]").hide();
-	// 		$("#sndrcvtype_parent").hide();
-				
-	// 		$("#sndrcv").removeAttr('data-validation');
-	// 		$("#sndrcvtype").removeAttr('data-validation');
-			
-	// 	}
-
-	// 	function forAO(){
-	// 		$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
-	// 		$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
-	// 		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
-	// 			{formatter:'currency', 
-	// 			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-	// 			editrules:{required:true}, editable:true});
-	// 		$("#jqGrid2").jqGrid('setColProp', 'expdate', 
-	// 			{formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},editable:true,
-	// 				editrules:{required: false,custom:true, custom_func:cust_rules},
-	// 				edittype:'custom',	editoptions:
-	// 					{  custom_element:expdateCustomEdit,
-	// 					   custom_value:galGridCustomValue 	
-	// 					}, 
-				
-	// 			 });
-			
-			
-	// 		$("label[for=sndrcv]").hide();
-	// 		$("#sndrcv_parent").hide();
-	// 		$("label[for=sndrcvtype]").hide();
-	// 		$("#sndrcvtype_parent").hide();
-				
-	// 		$("#sndrcv").removeAttr('data-validation');
-	// 		$("#sndrcvtype").removeAttr('data-validation');
-			
-	// 	}
-	// }
-
 	function inputTrantypeValue(isstype,crdbfl){
 		switch(isstype){
 			case 'Transfer':
@@ -696,10 +552,9 @@ $(document).ready(function () {
 				$('#amount').val(data.totalAmount);
 				$('#idno').val(data.idno);//just save idno for edit later
 				
-				urlParam2.filterVal[0]=data.recno; 
-				/*urlParam2.join_filterCol = [['ivt.uomcode', 's.deptcode','s.year'],[]]; 
-				urlParam2.join_filterVal = [['skip.s.uomcode',$('#txndept').val(),moment($("#trandate").val()).year()],[]];
-			*/
+				urlParam2.filterVal[0] = data.recno; 
+				urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode no = ','s.year no ='],[]];
+				urlParam2.join_filterVal = [['s.uomcode',$('#txndept').val(),moment($('#trandate').val()).year()],[]];
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
@@ -1038,6 +893,7 @@ $(document).ready(function () {
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
         	//linenotoedit = null;
+
         	refreshGrid('#jqGrid2',urlParam2,'add');
         	$("#jqGridPager2Delete").show();
         }, 

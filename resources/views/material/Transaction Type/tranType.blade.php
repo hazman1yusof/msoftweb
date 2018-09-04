@@ -32,7 +32,8 @@
 					<label class="radio-inline"><input type="radio" name="isstype" value='Issue' checked>Issue</label>
 					<label class="radio-inline"><input type="radio" name="isstype" value='Transfer'>Transfer</label>
 					<label class="radio-inline"><input type="radio" name="isstype" value='Adjustment'>Adjustment</label>
-					<label class="radio-inline"><input type="radio" name="isstype" value='Others'>Others</label>
+					<label class="radio-inline"><input type="radio" name="isstype" value='Loan'>Loan</label>
+					<label class="radio-inline"><input type="radio" name="isstype" value='Write-Off'>Write Off</label>
 				  </div>
 				
 				  <label class="col-md-2 control-label" for="trbyiv">Transaction By Inventory</label>  

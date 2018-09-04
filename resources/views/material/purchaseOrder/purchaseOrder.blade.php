@@ -133,42 +133,30 @@
 							</div>
 
 							<div class="form-group">
-                            <label class="col-md-2 control-label" for="purordhd_deldept">Delivery Department</label>	 
-								 <div class="col-md-2">
-									  <div class='input-group'>
-										<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									  </div>
-									  <span class="help-block"></span>
+                            	<label class="col-md-2 control-label" for="purordhd_deldept">Delivery Department</label>	 
+								<div class="col-md-2">
+								  <div class='input-group'>
+									<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
+								  <span class="help-block"></span>
+								</div>
 
-								   <!-- <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
-								 <div class="col-md-2">
-									<div class='input-group'>
-										<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm"  >
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>  -->
-							       <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
-								 <div class="col-md-2">
-									  <div class='input-group'>
-										<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm" >
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									  </div>
-									 
+						        <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
+							    <div class="col-md-2">
+								  <div class='input-group'>
+									<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm" >
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
+							    </div>
 
-                                       <label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 
-								 <div class="col-md-2">
-									  <div class='input-group'>
-										<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm" >
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									  </div>
-									 
+                                <label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 
+							 	<div class="col-md-2">
+								  <div class='input-group'>
+									<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm" >
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
-
-
+							  	</div>
 							</div>
 
 							<div class="form-group">
@@ -182,44 +170,32 @@
 									  <span class="help-block"></span>
 								  </div>
 
-								  
-						  			 
-
-                                     <label class="col-md-2 control-label" for="credcode">Creditor</label>	  
-								<div class="col-md-2">
+                                  <label class="col-md-2 control-label" for="credcode">Creditor</label>	  
+								  <div class="col-md-2">
 									  <div class='input-group'>
 										<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
 								  </div>
-                            
+								  
 							</div>
 							<hr/>
 
-							<!-- min="<?php $date// =  date('Y-m-d', strtotime("-5 days")); // it shows 5 days before today. -->
-//echo $date;?>" max="<?php //echo date('Y-m-d');?>"-->
-							
-                           <!-- <input id="backday" name="backday" class="form-control input-sm">-->
-
-
                             <div class="form-group">
-                            <label class="col-md-2 control-label" for="purordhd_purdate">PO Date</label>  
-						  			<div class="col-md-2">
-						  			 <input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" 
-									min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
-										max="<?php echo date('Y-m-d');?>"  
-										data-validation="required"> 
+                           		<label class="col-md-2 control-label" for="purordhd_purdate">PO Date</label>  
+						  		<div class="col-md-2">
+						  			 <input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" max="<?php echo date('Y-m-d');?>" data-validation="required"> 
 								
 						  		</div>
                              
-                             <label class="col-md-2 control-label" for="purordhd_expecteddate">Expected Date</label>  
-						  			<div class="col-md-2">
+                                <label class="col-md-2 control-label" for="purordhd_expecteddate">Expected Date</label>  
+						  		<div class="col-md-2">
 									<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required">
 						  		</div>
 
 						  		<label class="col-md-2 control-label" for="termdays">Payment Terms</label>  
-						  			<div class="col-md-2"> 
+						  		<div class="col-md-2"> 
 						  			<input id="purordhd_termdays" name="purordhd_termdays" type="text" class="form-control input-sm" data-validation="number" frozeOnEdit hideOne value="30">
 						  		</div>
                             </div>
@@ -229,49 +205,48 @@
                             <div class="form-group">
                               <div class="form-group">
 								<label class="col-md-2 control-label" for="purordhd_perdisc">Discount[%]</label>  
-						  			<div class="col-md-2">
-										<input id="purordhd_perdisc" name="purordhd_perdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
-						  			</div>
-						  			<label class="col-md-2 control-label" for="purordhd_amtdisc">Amount Discount</label>	  
+					  			<div class="col-md-2">
+									<input id="purordhd_perdisc" name="purordhd_perdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					  			</div>
+
+						  		<label class="col-md-2 control-label" for="purordhd_amtdisc">Amount Discount</label>	  
 						  		<div class="col-md-2">
-										<input id="purordhd_amtdisc" name="purordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
-						  			</div>
+									<input id="purordhd_amtdisc" name="purordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					  			</div>
 								
 								<label class="col-md-2 control-label" for="purordhd_recstatus">Record Status</label>  
-							  <div class="col-md-2">
-								<input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
-							  </div>
- 
-                            </div>
+							    <div class="col-md-2">
+								  <input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
+							    </div>
+                              </div>
                             </div>
                              
                              <div class="form-group">
-                             <label class="col-md-2 control-label" for="purordhd_subamount">Sub Amount</label>  
-						  			<div class="col-md-2">
-										<input id="purordhd_subamount" name="purordhd_subamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
-						  			</div>
+                             	<label class="col-md-2 control-label" for="purordhd_subamount">Sub Amount</label>  
+					  			<div class="col-md-2">
+									<input id="purordhd_subamount" name="purordhd_subamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
+					  			</div>
 
-						  			<label class="col-md-2 control-label" for="purordhd_totamount">Total Amount</label>  
-						  			<div class="col-md-2">
-										<input id="purordhd_totamount" name="purordhd_totamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
-						  			</div>
+					  			<label class="col-md-2 control-label" for="purordhd_totamount">Total Amount</label>  
+					  			<div class="col-md-2">
+									<input id="purordhd_totamount" name="purordhd_totamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
+					  			</div>
 
 
 						  		<label class="col-md-2 control-label" for="purordhd_taxclaimable">Tax Claim</label>  
-							  <div class="col-md-2">
-								<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" value='Claimable'>Yes</label><br>
-								<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required"  value='Non-Claimable'>No</label>
-							  </div> 
+								  <div class="col-md-2">
+									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" value='Claimable'>Yes</label><br>
+									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required"  value='Non-Claimable'>No</label>
+								  </div> 
 
 							   <div class="form-group">
 								<label class="col-md-2 control-label" for="purordhd_remarks">Remark</label>   
 						  			<div class="col-md-5">
 						  				<textarea rows="5" id='purordhd_remarks' name='purordhd_remarks' class="form-control input-sm" ></textarea>
 						  			</div>
-					    	</div>
+					    		</div>
 
-
-                             </div>
+                            </div>
 
 
 					    	<div class="form-group data_info">

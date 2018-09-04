@@ -24,42 +24,72 @@ $.jgrid.defaults.responsive = true;
 					},
 				};
 			//////////////////////////////////////////////////////////////
-
-			/////////////////Object for Dialog Handler///////////////////
-				//categorycode
-				// dialog_assetcode=new makeDialog('finance.facode','#assetcode',['assetcode','description','assettype','method','residualvalue'],'Category');
-			//linkage with assetco	//assettype
-				// dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');
-				//department
-				// dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description'], 'Department');
-				//location
-				
-				//supplier
-				
-				//delivery ordno
-				
-				// dialog_itemcode=new makeDialog('material.product','#itemcode',['itemcode','description'],'Item');     ////itemcode heap changes
-
-				//var mycurrency =new currencymode(['#origcost','#purprice','#lstytddep','#cuytddep','#nbv']);
 				
 		////////////////////////////////////start dialog///////////////////////////////////////
-		var dialog_itemcode= new ordialog(
-			'itemcode','material.product','#itemcode',errorField,
+
+		// dialog_assetcode=new makeDialog('finance.facode','#assetcode',['assetcode','description','assettype','method','residualvalue'],'Category');
+		var dialog_assetcode= new ordialog(
+			'assetcode','finance.facode','#assetcode',errorField,
 			{	colModel:[
-					{label:'Itemcode',name:'itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-					
-					]
-			},{
-				title:"Select Itemcode",
+				    {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+					{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
+					{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
+					{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
+			],
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_assetcode.gridname);
+				$('#assettype').val(data['assettype']);		
+				$('#method').val(data['method']);
+				$('#rvalue').val(data['residualvalue']);
+			}},
+			{
+				title:"Select Category",
 				open: function(){
-					dialog_itemcode.urlParam.filterCol=['compcode'],
-					dialog_itemcode.urlParam.filterVal=['9A']
+					dialog_assetcode.urlParam.filterCol=['compcode'];
+					dialog_assetcode.urlParam.filterVal=['9A'];
 				}
 			},'urlParam'
 		);
-		dialog_itemcode.makedialog();
-		 
+		dialog_assetcode.makedialog();
+
+		// dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description'], 'Department');
+		var dialog_deptcode= new ordialog(
+			'deptcode','sysdb.department','#deptcode',errorField,
+			{	colModel:[
+				    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+			]},
+			{
+				title:"Select Department",
+				open: function(){
+					dialog_deptcode.urlParam.filterCol=['compcode'],
+					dialog_deptcode.urlParam.filterVal=['9A']
+				}
+			},'urlParam'
+		);
+		dialog_deptcode.makedialog();
+
+		// dialog_loccode=new makeDialog('sysdb.location','#loccode',['loccode','description'],'Location');
+		var  dialog_loccode= new ordialog(
+			'loccode','sysdb.location','#loccode',errorField,
+			{	colModel:[
+				    {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+
+			]
+			},
+			{
+				title:"Select Location",
+				open: function(){
+					dialog_loccode.urlParam.filterCol=['compcode'],
+					dialog_loccode.urlParam.filterVal=['9A']
+				}
+			},'urlParam'
+		);
+		dialog_loccode.makedialog();		
+
+		// dialog_delordno=new makeDialog('material.delordhd','#delordhd',['Delordhd','Suppcode'],'Delordno');
 	    var dialog_delordno= new ordialog(
 			'delordno','material.delordhd','#delordno',errorField,
 			{	colModel:[
@@ -76,6 +106,42 @@ $.jgrid.defaults.responsive = true;
 			},'urlParam'
 		);
 		dialog_delordno.makedialog();
+
+		// dialog_suppcode=new makeDialog('material.supplier','#suppcode',['SuppCode','Name'],'Supplier');
+		var  dialog_suppcode= new ordialog(
+			'suppcode','material.supplier','#suppcode',errorField,
+			{	colModel:[
+				    {label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,or_search:true},
+
+			]
+			},{
+				title:"Select Supplier",
+				open: function(){
+					dialog_suppcode.urlParam.filterCol=['compcode'],
+					dialog_suppcode.urlParam.filterVal=['9A']
+				}
+			},'urlParam'
+		);
+		dialog_suppcode.makedialog();
+		
+		// dialog_itemcode=new makeDialog('material.product','#itemcode',['itemcode','description'],'itemcode');
+		var dialog_itemcode= new ordialog(
+			'itemcode','material.product','#itemcode',errorField,
+			{	colModel:[
+					{label:'Itemcode',name:'itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+					
+					]
+			},{
+				title:"Select Itemcode",
+				open: function(){
+					dialog_itemcode.urlParam.filterCol=['compcode','groupcode'],
+					dialog_itemcode.urlParam.filterVal=['9A','asset']
+				}
+			},'urlParam'
+		);
+		dialog_itemcode.makedialog();
 	
 		// dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');	
 		/*var  dialog_assettype= new ordialog(
@@ -93,63 +159,7 @@ $.jgrid.defaults.responsive = true;
 				}
 			},'urlParam'
 		);
-		dialog_assettype.makedialog();*/
-
-		// dialog_suppcode=new makeDialog('material.supplier','#suppcode',['SuppCode','Name'],'Supplier');
-		var  dialog_suppcode= new ordialog(
-			'suppcode','material.supplier','#suppcode',errorField,
-			{	colModel:[
-				    {label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,or_search:true},
-
-			]
-
-			},{
-				title:"Select Supplier",
-				open: function(){
-					dialog_suppcode.urlParam.filterCol=['compcode'],
-					dialog_suppcode.urlParam.filterVal=['9A']
-				}
-			},'urlParam'
-		);
-		dialog_suppcode.makedialog();
-				
-		// dialog_loccode=new makeDialog('sysdb.location','#loccode',['loccode','description'],'Location');
-		var  dialog_loccode= new ordialog(
-			'loccode','sysdb.location','#loccode',errorField,
-			{	colModel:[
-				    {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-
-			]
-
-			},{
-				title:"Select Location",
-				open: function(){
-					dialog_loccode.urlParam.filterCol=['compcode'],
-					dialog_loccode.urlParam.filterVal=['9A']
-				}
-			},'urlParam'
-		);
-		dialog_loccode.makedialog();
-				
-		// dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description'], 'Department');
-		var dialog_deptcode= new ordialog(
-			'deptcode','sysdb.department','#deptcode',errorField,
-			{	colModel:[
-				    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-
-			]
-
-			},{
-				title:"Select Department",
-				open: function(){
-					dialog_deptcode.urlParam.filterCol=['compcode'],
-					dialog_deptcode.urlParam.filterVal=['9A']
-				}
-			},'urlParam'
-		);
+<<<<<<< HEAD
 		dialog_deptcode.makedialog();
 		
 		// dialog_assetcode=new makeDialog('finance.facode','#assetcode',['assetcode','description','assettype','method','residualvalue'],'Category');
@@ -171,21 +181,14 @@ $.jgrid.defaults.responsive = true;
 			
 				
 			}
+=======
+		dialog_assettype.makedialog();*/
 
-			},{
-				title:"Select Category",
-				open: function(){
-					dialog_assetcode.urlParam.filterCol=['compcode'];
-					dialog_assetcode.urlParam.filterVal=['9A'];
-				}
-			},'urlParam'
-		);
-		dialog_assetcode.makedialog();
-		
-		
+>>>>>>> 58f9552ade67c547fefa389a5662769a9c04eba8
+
 		var butt1=[{
 				text: "Save",click: function() {
-					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+					if( $('#formdata').isValid({requiredFields: ''}, conf, true) && checkdate_asset()) {
 						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 					}
 				}
@@ -285,9 +288,8 @@ $.jgrid.defaults.responsive = true;
 				action:'get_table_default',
 				url: '/util/get_table_default',
 				field:'',
-				table_name:'finance.fatemp',
-				table_id:'idno',
-				
+				table_name:'finance.fatemp', 
+				table_id:'idno',				
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -296,8 +298,7 @@ $.jgrid.defaults.responsive = true;
 				field:'',
 				oper:oper,
 				table_name:'finance.fatemp',
-				table_id:'idno' 
-				
+				table_id:'idno' 				
 				
 			};
 			
@@ -315,7 +316,7 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 					{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 					{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
-					{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
+					//{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
 					{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 					{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
 					{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
@@ -360,8 +361,7 @@ $.jgrid.defaults.responsive = true;
 						}
 	
 						$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-				},
-				
+				},				
 			});
 
 			////////////////////////////// DATE FORMATTER ////////////////////////////////////////
@@ -429,74 +429,74 @@ $.jgrid.defaults.responsive = true;
 				$("#qty").prop('readonly',false);
 			}
 
-			function getNVB() {
-				var origcost = $("#origcost").val();
-				var lstytddep = $("#lstytddep").val();
-				var cuytddep = $("#cuytddep").val();
+			// function getNVB() { 
+			// 	var origcost = $("#origcost").val();
+			// 	var lstytddep = $("#lstytddep").val();
+			// 	var cuytddep = $("#cuytddep").val();
 
-				total = origcost - lstytddep - cuytddep;
-				$("#nbv").val(total.toFixed(2));
-			}
+			// 	total = origcost - lstytddep - cuytddep;
+			// 	$("#nbv").val(total.toFixed(2));
+			// }
 			
-			function getOrigCost() {
-				//var origcost = $("#origcost").val();
-				var netunitprice = $("#netunitprice").val();
-				var prortdisc = $("#prortdisc").val();
+			// function getOrigCost() {
+			// 	//var origcost = $("#origcost").val();
+			// 	var netunitprice = $("#netunitprice").val();
+			// 	var prortdisc = $("#prortdisc").val();
 
-				total = netunitprice - prortdisc ;
-				$("#origcost").val(total.toFixed(2));
-			}
+			// 	total = netunitprice - prortdisc ;
+			// 	$("#origcost").val(total.toFixed(2));
+			// }
 
-			$("#origcost").keydown(function(e) {
-					delay(function(){
-						var origcost = $("#origcost").val();
-						var lstytddep = $("#lstytddep").val();
-						var cuytddep = $("#cuytddep").val();
+			// $("#origcost").keydown(function(e) {
+			// 		delay(function(){
+			// 			var origcost = $("#origcost").val();
+			// 			var lstytddep = $("#lstytddep").val();
+			// 			var cuytddep = $("#cuytddep").val();
 
-						if($("#origcost").val() == '') {
-							total = origcost - lstytddep - cuytddep;
-							$("#nbv").val(total.toFixed(2));
-						}
-						else{
-							total = origcost - lstytddep - cuytddep;
-							$("#nbv").val(total.toFixed(2));
-						}
-					}, 1000 );
-			});
+			// 			if($("#origcost").val() == '') {
+			// 				total = origcost - lstytddep - cuytddep;
+			// 				$("#nbv").val(total.toFixed(2));
+			// 			}
+			// 			else{
+			// 				total = origcost - lstytddep - cuytddep;
+			// 				$("#nbv").val(total.toFixed(2));
+			// 			}
+			// 		}, 1000 );
+			// });
 
-			$("#lstytddep").keydown(function(e) {
-					delay(function(){
-						var origcost = currencyRealval("#origcost");
-						var lstytddep = currencyRealval("#lstytddep");
-						var cuytddep = currencyRealval("#cuytddep");
+			// $("#lstytddep").keydown(function(e) {
+			// 		delay(function(){
+			// 			var origcost = currencyRealval("#origcost");
+			// 			var lstytddep = currencyRealval("#lstytddep");
+			// 			var cuytddep = currencyRealval("#cuytddep");
 
-						if($("#lstytddep").val() == '') {
-							total = origcost - lstytddep - cuytddep;
-							$("#nbv").val(numeral(total).format('0,0.00'));
-						}
-						else{
-							total = origcost - lstytddep - cuytddep;
-							$("#nbv").val(numeral(total).format('0,0.00'));
-						}
-					}, 1000 );
-			});
+			// 			if($("#lstytddep").val() == '') {
+			// 				total = origcost - lstytddep - cuytddep;
+			// 				$("#nbv").val(numeral(total).format('0,0.00'));
+			// 			}
+			// 			else{
+			// 				total = origcost - lstytddep - cuytddep;
+			// 				$("#nbv").val(numeral(total).format('0,0.00'));
+			// 			}
+			// 		}, 1000 );
+			// });
 
-			$("#cuytddep").keydown(function(e) {
-					delay(function(){
-						var origcost = currencyRealval("#origcost");
-						var lstytddep = currencyRealval("#lstytddep");
-						var cuytddep = currencyRealval("#cuytddep");
+			// $("#cuytddep").keydown(function(e) {
+			// 		delay(function(){
+			// 			var origcost = currencyRealval("#origcost");
+			// 			var lstytddep = currencyRealval("#lstytddep");
+			// 			var cuytddep = currencyRealval("#cuytddep");
 
-						if($("#cuytddep").val() == '') {
-							total = origcost - lstytddep - cuytddep;
-							$("#nbv").val(numeral(total).format('0,0.00'));
-						}
-						else{
-							total = origcost - lstytddep - cuytddep;
-							$("#nbv").val(numeral(total).format('0,0.00'));
-						}
-					}, 1000 );
-			});
+			// 			if($("#cuytddep").val() == '') {
+			// 				total = origcost - lstytddep - cuytddep;
+			// 				$("#nbv").val(numeral(total).format('0,0.00'));
+			// 			}
+			// 			else{
+			// 				total = origcost - lstytddep - cuytddep;
+			// 				$("#nbv").val(numeral(total).format('0,0.00'));
+			// 			}
+			// 		}, 1000 );
+			// });
 
 
 				/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -559,177 +559,6 @@ $.jgrid.defaults.responsive = true;
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
 			addParamField('#jqGrid',false,saveParam);
-
-		// ///////////////////////////////start->dialogHandler part////////////////////////////////////////////
-		// 	function makeDialog(table,id,cols,title){
-		// 		this.table=table;
-		// 		this.id=id;
-		// 		this.cols=cols;
-		// 		this.title=title;
-		// 		this.handler=dialogHandler;
-		// 		this.check=checkInput;
-		// 	}
-
-		// 	$( "#dialog" ).dialog({
-		// 		autoOpen: false,
-		// 		width: 7/10 * $(window).width(),
-		// 		modal: true,
-		// 		open: function(){
-		// 			$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
-		// 		},
-		// 		close: function( event, ui ){
-		// 			paramD.searchCol=null;
-		// 			paramD.searchVal=null;
-		// 		},
-		// 	});
-
-		// 	var selText,Dtable,Dcols;
-		// 	$("#gridDialog").jqGrid({
-		// 		datatype: "local",
-		// 		colModel: [
-		// 			{ label: 'Code', name: 'code', width: 200,  classes: 'pointer', canSearch:true,checked:true}, 
-		// 			{ label: 'Description', name: 'desc', width: 400, classes: 'pointer', canSearch:true},
-		// 			{ label: 'holder1', name: 'holder1',  hidden:true},
-		// 			{ label: 'holder2', name: 'holder2',  hidden:true},
-		// 			{ label: 'holder3', name: 'holder3',  hidden:true},
-		// 			{ label: 'holder4', name: 'holder4',  hidden:true},
-		// 			{ label: 'holder5', name: 'holder5',  hidden:true},
-		// 			{ label: 'holder6', name: 'holder6',  hidden:true},
-		// 			{ label: 'holder7', name: 'holder7',  hidden:true},
-		// 			{ label: 'holder8', name: 'holder8',  hidden:true},
-		// 			{ label: 'holder9', name: 'holder9',  hidden:true},
-		// 		],
-		// 		width: 500,
-		// 		autowidth: true,
-		// 		viewrecords: true,
-		// 		loadonce: false,
-        //         multiSort: true,
-		// 		rowNum: 30,
-		// 		pager: "#gridDialogPager",
-		// 		ondblClickRow: function(rowid, iRow, iCol, e){
-		// 			var data=$("#gridDialog").jqGrid ('getRowData', rowid);
-		// 			$("#gridDialog").jqGrid("clearGridData", true);
-		// 			$("#dialog").dialog( "close" );
-		// 			$(selText).val(rowid);
-		// 			$(selText).focus();
-		// 			$(selText).parent().next().html(data['desc']);
-
-		// 			if(selText=="#assetcode"){
-		// 				assettype=data.holder1;
-		// 				method=data.holder2;
-		// 				residualvalue=data.holder3;
-		// 				$("#assettype").val(data.holder1);
-		// 				$("#method").val(data.holder2);
-		// 				$("#rvalue").val(data.holder3);
-		// 				$("#deptcode").focus();
-
-		// 			}else if(selText=="#delordno"){
-		// 				$('#invno').val(data.holder2);
-		// 				$('#delorddate').val(moment(data.holder3).format("YYYY-MM-DD"));
-		// 				$('#docno').val(data.holder4+' '+data.holder5);
-		// 				$('#purordno').val(data.holder4+' '+data.holder6);
-		// 				$('#recno').val(data.holder7);
-		// 				$('#purdate').val(moment().format('YYYY-MM-DD'));
-		// 				getinvdate(data.holder2);
-		// 			}else if(selText=="#itemcode"){
-		// 				$('#description').val(data.desc + data.holder8);  ///remarks
-		// 				$('#purprice').val(data.holder2);
-		// 				$('#origcost').val(data.holder2 - data.holder7);
-		// 				$('#currentcost').val(data.holder2);
-		// 				$('#qty').val(data.holder1);
-		// 				$('#lineno_').val(data.holder5);
-		// 			}
-						
-		// 		},
-		// 	});
-
-		// 	var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:''};
-		// 	function dialogHandler(errorField){
-		// 		var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
-		// 		$( id+" ~ a" ).on( "click", function() {
-		// 			selText=id,Dtable=table,Dcols=cols,
-		// 			paramD.table_name=table;
-		// 			paramD.field=cols;
-		// 			paramD.table_id=cols[0];
-		// 			paramD.filterCol=null;
-		// 			paramD.filterVal=null;
-		// 			paramD.join_type=null;
-		// 			paramD.join_onCol=null;
-		// 			paramD.join_onVal=null;
-
-		// 			$("#gridDialog").jqGrid('hideCol',["holder1","holder3","holder2","holder5"]);
-		// 			switch(id){
-		// 				case '#delordno':
-		// 					paramD.field=['delordno','suppcode','totamount','invoiceno','deldate','prdept','docno','srcdocno','recno'];
-		// 					paramD.filterCol=['suppcode','recstatus'];
-		// 					paramD.filterVal=[$('#suppcode').val(),'POSTED'];
-
-		// 					$("#gridDialog").jqGrid('setLabel','holder3','DO. Date');
-		// 					$("#gridDialog").jqGrid('setLabel','desc','Supplier Code');
-		// 					$("#gridDialog").jqGrid('setLabel','holder1','Total amt.');
-		// 					$("#gridDialog").jqGrid('showCol',["holder1","holder3"]);
-
-		// 					break;
-		// 				case '#itemcode':
-		// 					if($("input[name=regtype]:checked").val() == "P"){
-		// 						paramD.table_id='itemcode'
-		// 						paramD.field=['product.itemcode','product.description','delorddt.qtydelivered','delorddt.netunitprice','delorddt.remarks','delorddt.itemcode','delorddt.lineno_','delorddt.idno','delorddt.prortdisc','delorddt.remarks'];  //remarks, not description
-		// 						paramD.table_name=['material.delorddt','material.product','material.delordhd','finance.facode'];
-		// 						paramD.join_type=['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
-		// 						paramD.join_onCol=['delorddt.itemcode','delorddt.recno','product.productcat'];
-		// 						paramD.join_onVal=['product.itemcode','delordhd.recno','facode.assetcode'];
-		// 						paramD.filterCol=['delorddt.recno','facode.assetcode'];
-		// 						paramD.filterVal=[$('#recno').val(),$('#assetcode').val()];
-
-		// 						//NOT AMOUN but delorddt.netunitprice
-		// 						//Cost take delorddt.netunitprice * delorddt.qtydelivered
-		// 						$("#gridDialog").jqGrid('setLabel','holder2','Amount');
-		// 						$("#gridDialog").jqGrid('setLabel','holder5','Line No.');
-		// 						$("#gridDialog").jqGrid('showCol',["holder2","holder5"]);
-
-
-		// 						}
-		// 					else{
-								
-		// 						paramD.table_id='itemcode';
-		// 						paramD.table_name='material.product';      ///
-		// 						paramD.field=['itemcode','description'];  //remarks
-		// 						}
-
-
-		// 					break;
-		// 				default:
-		// 					paramD.filterCol=null;
-		// 					paramD.filterVal=null;
-
-		// 					$("#gridDialog").jqGrid('setLabel','code','Code');
-		// 					$("#gridDialog").jqGrid('setLabel','desc','Description');
-		// 					// $("#gridDialog").jqGrid('hideCol',["holder1","holder3","holder2","holder5"]);
-		// 					break;
-		// 			}
-
-		// 			$( "#dialog" ).dialog( "open" );
-		// 			$( "#dialog" ).dialog( "option", "title", title );
-					
-		// 			$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
-		// 			$('#Dtext').val('');$('#Dcol').html('');
-					
-		// 			$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
-		// 				if(value['canSearch']){
-		// 					if(value['checked']){
-		// 						$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
-		// 					}else{
-		// 						$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
-		// 					}
-		// 				}
-		// 			});
-		// 		});
-		// 		$(id).on("blur", function(){
-		// 			if(id!='#itemcode'){
-		// 				self.check(errorField);
-		// 			}
-		// 		});
-		// 	}
 			
 			function checkInput(errorField){
 				var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
@@ -798,8 +627,7 @@ $.jgrid.defaults.responsive = true;
 							$('#invdate').val(moment(data.rows[0].actdate).format("YYYY-MM-DD"));
 						}
 					});
-			}
-			
+			}		
 
 			function getmethod_and_res(assetcode){
 				var param={
@@ -819,5 +647,38 @@ $.jgrid.defaults.responsive = true;
 						}
 					});
 			}
-	});
- 
+
+			function checkdate_asset(){
+				var delorddate = $('#delorddate').val();
+				var invdate = $('#invdate').val();
+				var purdate = $('#purdate').val();
+
+				var error = false,failmsg='';
+
+				if(moment(invdate).isBefore(delorddate)){
+					error = true;
+					failmsg = 'Invdate cant be lower than delorddate';
+				}else{
+					error = false;
+				}
+
+				if(moment(purdate).isAfter(invdate) || moment(purdate).isAfter(delorddate) ){
+					error = true;
+					failmsg = 'purdate cant be greater than either invdate or delorddate';
+				}else{
+					error=false;
+				}
+
+				if(error){
+					console.log(failmsg)
+					return false;
+				}else{
+					console.log(failmsg)
+					return true;
+				}
+
+			}
+		
+		}
+	
+	);

@@ -85,10 +85,9 @@ abstract class defaultController extends Controller{
         //////////join//////////
         if(!empty($request->join_onCol)){
             foreach ($request->join_onCol as $key => $value) {
-
                 if(empty($request->join_filterCol)){ //ni nak check kalu ada AND lepas JOIN ON
 
-                     if($request->join_type[$key] == 'LEFT JOIN'){
+                    if($request->join_type[$key] == 'LEFT JOIN'){
 
                         $table = $table->leftJoin($request->table_name[$key+1], $request->join_onCol[$key], '=', $request->join_onVal[$key]);
 
@@ -99,35 +98,40 @@ abstract class defaultController extends Controller{
 
                 }else{
 
-                    if($request->join_type[$key] == 'LEFT JOIN'){
+                   if($request->join_type[$key] == 'LEFT JOIN'){
 
                         $table = $table->leftJoin($request->table_name[$key+1], function($join) use ($request,$key){
                             $join = $join->on($request->join_onCol[$key], '=', $request->join_onVal[$key]);
                             
-                            foreach ($request->join_filterCol as $key2 => $value2) {
-                                foreach ($value2 as $key3 => $value3) {
-                                    $pieces = explode(' ', $value3);
+                            if(isset($request->join_filterCol[$key])){
+                                foreach ($request->join_filterCol[$key] as $key2 => $value2) {
+                                    $pieces = explode(' ', $value2);
                                     if($pieces[1] == 'on'){
-                                        $join = $join->on($pieces[0],$pieces[2],$request->join_filterVal[$key2][$key3]);
+                                        $join = $join->on($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
                                     }else{
-                                        $join = $join->where($pieces[0],$pieces[2],$request->join_filterVal[$key2][$key3]);
+                                        $join = $join->where($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
                                     }
                                 }
                             }
+                            
                         });
 
                     }else{
 
                         $table = $table->join($request->table_name[$key+1], function($join) use ($request,$key){
                             $join = $join->on($request->join_onCol[$key], '=', $request->join_onVal[$key]);
-                            foreach ($request->join_filterCol[$key] as $key2 => $value2) {
-                                $pieces = explode(' ', $value2);
-                                if($pieces[1] == 'on'){
-                                    $join = $join->on($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
-                                }else{
-                                    $join = $join->where($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
+
+                            if(isset($request->join_filterCol[$key])){
+                                foreach ($request->join_filterCol[$key] as $key2 => $value2) {
+                                    $pieces = explode(' ', $value2);
+                                    if($pieces[1] == 'on'){
+                                        $join = $join->on($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
+                                    }else{
+                                        $join = $join->where($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
+                                    }
                                 }
                             }
+                            
                         });
 
                     }
@@ -457,10 +461,33 @@ abstract class defaultController extends Controller{
                 ->where('costcode','=',$ccode)
                 ->where('glaccount','=',$glcode)
                 ->first();
-        $pvalue1 = (array)$pvalue1;
 
-        $this->gltranAmount = $pvalue1["actamount".$period];
+        if(!empty($pvalue1)){
+            $pvalue1 = (array)$pvalue1;
+            $this->gltranAmount = $pvalue1["actamount".$period];
+        }
+
         return !empty($pvalue1);
+    }
+
+    //nak check glmasdtl exist ke tak utk sekian costcode, glaccount, year, period
+    //kalu jumpa dia return true, pastu simpan actamount{month} dkt global variable gltranAmount
+    public static function isGltranExist_($ccode,$glcode,$year,$period){
+        $pvalue1 = DB::table('finance.glmasdtl')
+                ->select("glaccount","actamount".$period)
+                ->where('compcode','=',session('compcode'))
+                ->where('year','=',$year)
+                ->where('costcode','=',$ccode)
+                ->where('glaccount','=',$glcode)
+                ->first();
+
+        if(!empty($pvalue1)){
+            $pvalue1 = (array)$pvalue1;
+            return $pvalue1["actamount".$period];
+        }else{
+            return false;
+        }
+
     }
 
     public static function toYear($date){
@@ -471,6 +498,34 @@ abstract class defaultController extends Controller{
     public static function toMonth($date){
         $carbon = new Carbon($date);
         return $carbon->month;
+    }
+
+    public static function getyearperiod_($date){
+        $period = DB::table('sysdb.period')
+            ->where('compcode','=',session('compcode'))
+            ->get();
+
+        $seldate = new DateTime($date);
+
+        foreach ($period as $value) {
+            $arrvalue = (array)$value;
+
+            $year= $value->year;
+            $period=0;
+
+            for($x=1;$x<=12;$x++){
+                $period = $x;
+
+                $datefr = new DateTime($arrvalue['datefr'.$x]);
+                $dateto = new DateTime($arrvalue['dateto'.$x]);
+                if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
+                    $responce = new stdClass();
+                    $responce->year = $year;
+                    $responce->period = $period;
+                    return $responce;
+                }
+            }
+        }
     }
 
     public function getyearperiod($date){

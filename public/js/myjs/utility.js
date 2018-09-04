@@ -674,8 +674,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 	function onBlur(event){
 		var idtopush = $(event.currentTarget).siblings("input[type='text']").end().attr('id');
+		var jqgrid = $(event.currentTarget).siblings("input[type='text']").end().attr('jqgrid');
+
 		if(event.data.data.checkstat!='none'){
-			event.data.data.check(event.data.errorField,idtopush);
+			event.data.data.check(event.data.errorField,idtopush,jqgrid);
 		}
 	}
 
@@ -820,13 +822,18 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		return fieldReturn;
 	}
 
-	function checkInput(errorField,idtopush){///can choose code and desc used, usually field number 0 and 1
+	function checkInput(errorField,idtopush,jqgrid=null){///can choose code and desc used, usually field number 0 and 1
 		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=1;
 
 		if(idtopush){ /// ni nk tgk sama ada from idtopush exist atau tak
-			var idtopush = idtopush;
-			value = $('#'+idtopush).val();
-			var id = '#'+idtopush;
+			var idtopush = idtopush,id;
+			if(jqgrid==null){
+				id = 'input#'+idtopush;
+				value = $(id).val();
+			}else{
+				id = '#'+jqgrid+' input#'+idtopush;
+				value = $(id).val();
+			}
 		}else{
 			var idtopush = (this.textfield.substring(0, 1) == '#')?this.textfield.substring(1):this.textfield;
 			value = $('#'+idtopush).val();
