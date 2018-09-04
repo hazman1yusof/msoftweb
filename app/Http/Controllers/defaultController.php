@@ -470,6 +470,26 @@ abstract class defaultController extends Controller{
         return !empty($pvalue1);
     }
 
+    //nak check glmasdtl exist ke tak utk sekian costcode, glaccount, year, period
+    //kalu jumpa dia return true, pastu simpan actamount{month} dkt global variable gltranAmount
+    public static function isGltranExist_($ccode,$glcode,$year,$period){
+        $pvalue1 = DB::table('finance.glmasdtl')
+                ->select("glaccount","actamount".$period)
+                ->where('compcode','=',session('compcode'))
+                ->where('year','=',$year)
+                ->where('costcode','=',$ccode)
+                ->where('glaccount','=',$glcode)
+                ->first();
+
+        if(!empty($pvalue1)){
+            $pvalue1 = (array)$pvalue1;
+            return $pvalue1["actamount".$period];
+        }else{
+            return false;
+        }
+
+    }
+
     public static function toYear($date){
         $carbon = new Carbon($date);
         return $carbon->year;
@@ -478,6 +498,34 @@ abstract class defaultController extends Controller{
     public static function toMonth($date){
         $carbon = new Carbon($date);
         return $carbon->month;
+    }
+
+    public static function getyearperiod_($date){
+        $period = DB::table('sysdb.period')
+            ->where('compcode','=',session('compcode'))
+            ->get();
+
+        $seldate = new DateTime($date);
+
+        foreach ($period as $value) {
+            $arrvalue = (array)$value;
+
+            $year= $value->year;
+            $period=0;
+
+            for($x=1;$x<=12;$x++){
+                $period = $x;
+
+                $datefr = new DateTime($arrvalue['datefr'.$x]);
+                $dateto = new DateTime($arrvalue['dateto'.$x]);
+                if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
+                    $responce = new stdClass();
+                    $responce->year = $year;
+                    $responce->period = $period;
+                    return $responce;
+                }
+            }
+        }
     }
 
     public function getyearperiod($date){

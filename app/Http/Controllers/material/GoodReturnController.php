@@ -323,6 +323,7 @@ class GoodReturnController extends defaultController
                         'batchno' => $value->batchno, 
                         'amount' => $value->amount, 
                         'trandate' => $value->trandate, 
+                        'trantype' => $delordhd_obj->trantype,
                         'deptcode' => $value->deldept, 
                         'gstamount' => $value->amtslstax, 
                         'totamount' => $value->totamount
@@ -476,7 +477,7 @@ class GoodReturnController extends defaultController
                         'auditno' => $value->recno,
                         'lineno_' => $value->lineno_,
                         'source' => 'IV',
-                        'trantype' => 'GRT',
+                        'trantype' => $delordhd_obj->trantype,
                         'reference' => $ivtxnhd_obj->txndept .' '. $ivtxnhd_obj->docno,
                         'description' => $ivtxnhd_obj->sndrcv,
                         'postdate' => $ivtxnhd_obj->trandate,
