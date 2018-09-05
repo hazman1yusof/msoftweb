@@ -184,8 +184,6 @@ $.jgrid.defaults.responsive = true;
 =======
 		dialog_assettype.makedialog();*/
 
->>>>>>> 58f9552ade67c547fefa389a5662769a9c04eba8
-
 		var butt1=[{
 				text: "Save",click: function() {
 					if( $('#formdata').isValid({requiredFields: ''}, conf, true) && checkdate_asset()) {
@@ -296,6 +294,7 @@ $.jgrid.defaults.responsive = true;
 			var saveParam={
 				action:'save_table_default',
 				field:'',
+				url:'assetregister/form',
 				oper:oper,
 				table_name:'finance.fatemp',
 				table_id:'idno' 				
@@ -657,14 +656,14 @@ $.jgrid.defaults.responsive = true;
 
 				if(moment(invdate).isBefore(delorddate)){
 					error = true;
-					failmsg = 'Invdate cant be lower than delorddate';
+					alert("Invoice date cannot be lower than Delivery Order date");
 				}else{
 					error = false;
 				}
 
-				if(moment(purdate).isAfter(invdate) || moment(purdate).isAfter(delorddate) ){
+				if(moment(purdate).isAfter(invdate) && moment(purdate).isAfter(delorddate) ){
 					error = true;
-					failmsg = 'purdate cant be greater than either invdate or delorddate';
+					alert("Purchase date cannot be greater than Invoice date and Delovery Order date");
 				}else{
 					error=false;
 				}
