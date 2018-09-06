@@ -2,6 +2,12 @@
 
 @section('title', 'Asset Register')
 
+@section('style')
+	.noti{
+		color: rgb(185, 74, 72);
+	}
+@endsection
+
 @section('body')
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
@@ -188,11 +194,11 @@
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="method">Method</label>  
 					<div class="col-md-3">
-						<input id="method" type="text" name="method" maxlength="12" class="form-control input-sm" data-validation="required">
+						<input id="method" type="text" name="method" maxlength="12" class="form-control input-sm">
 					</div>
 				<label class="col-md-2 control-label" for="rvalue">Residual Value</label>  
 					<div class="col-md-3">
-							<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm" data-validation="required">
+							<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm">
 					</div>
 			</div>
 
@@ -245,6 +251,11 @@
 
 			<hr>
 		</form>
+
+		<div class="panel-body">
+			<div class="noti"><ol></ol>
+			</div>
+		</div>
 	</div>
 	@endsection
 
