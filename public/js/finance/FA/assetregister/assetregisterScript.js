@@ -352,7 +352,7 @@ $.jgrid.defaults.responsive = true;
 				rowNum: 30,
 				pager: "#jqGridPager",
 				ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#jqGridPager td[title='View Selected Row']").click();
+					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
 				gridComplete: function(){
 					if (oper == 'add') {
@@ -661,7 +661,7 @@ $.jgrid.defaults.responsive = true;
 					error = false;
 				}
 
-				if(moment(purdate).isAfter(invdate) && moment(purdate).isAfter(delorddate) ){
+				if(moment(purdate).isAfter(invdate) || moment(purdate).isAfter(delorddate) ){
 					error = true;
 					alert("Purchase date cannot be greater than Invoice date and Delovery Order date");
 				}else{
