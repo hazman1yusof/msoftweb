@@ -136,8 +136,8 @@ $.jgrid.defaults.responsive = true;
 			},{
 				title:"Select Itemcode",
 				open: function(){
-					dialog_itemcode.urlParam.filterCol=['compcode','groupcode'],
-					dialog_itemcode.urlParam.filterVal=['9A','asset']
+					dialog_itemcode.urlParam.filterCol=['compcode','groupcode','productcat'],
+					dialog_itemcode.urlParam.filterVal=['9A','asset',$('#assetcode').val()]
 				}
 			},'urlParam'
 		);
@@ -260,18 +260,18 @@ $.jgrid.defaults.responsive = true;
 					if(oper!='add'){
 						dialog_itemcode.check(errorField);
 						dialog_delordno.check(errorField);
-						dialog_assetcode.check(erorField);
+						dialog_assetcode.check(errorField);
 						//dialog_assettype.check(errorfield);
-						dialog_suppcode.check(errorfield);
-						dialog_deptcode.check(errorfield);
-						dialog_loccode.check(errorfield);
+						dialog_suppcode.check(errorField);
+						dialog_deptcode.check(errorField);
+						dialog_loccode.check(errorField);
 						//toggleFormData('#jqGrid','#formdata');
 						//dialog_dept.check(errorField);
 					}
 				},
 				close: function( event, ui ) {
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
+					$(".noti ol").empty();
 					$("#formdata a").off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
@@ -652,27 +652,24 @@ $.jgrid.defaults.responsive = true;
 				var invdate = $('#invdate').val();
 				var purdate = $('#purdate').val();
 
-				var error = false,failmsg='';
+				$(".noti ol").empty();
+				var failmsg=[];
 
 				if(moment(invdate).isBefore(delorddate)){
-					error = true;
-					alert("Invoice date cannot be lower than Delivery Order date");
-				}else{
-					error = false;
+					failmsg.push("Invoice date cannot be lower than Delivery Order date");
 				}
 
 				if(moment(purdate).isAfter(invdate) || moment(purdate).isAfter(delorddate) ){
-					error = true;
-					alert("Purchase date cannot be greater than Invoice date and Delovery Order date");
-				}else{
-					error=false;
+					failmsg.push("Purchase date cannot be greater than Invoice date and Delovery Order date");
 				}
 
-				if(error){
-					console.log(failmsg)
+				if(failmsg.length){
+					failmsg.forEach(function(element){
+						console.log(element);
+						$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
+					});
 					return false;
 				}else{
-					console.log(failmsg)
 					return true;
 				}
 
