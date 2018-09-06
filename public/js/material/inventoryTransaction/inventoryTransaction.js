@@ -68,19 +68,6 @@ $(document).ready(function () {
 					inputTrantypeValue(selrowData('#jqGrid').isstype,selrowData('#jqGrid').crdbfl);
 					break;
 			}if(oper!='add'){
-				switch(trantype){
-					case "LI":
-					case "LIR":
-					case "LO":
-					case "LOR":
-						dialog_sndrcv.check(errorField);
-						break;
-					case "TR":
-						dialog_sndrcv.check(errorField);
-						break;
-					default:
-						break;
-				}
 				dialog_trantype.check(errorField);
 				dialog_txndept.check(errorField);
 				dialog_requestRecNo.check(errorField);
@@ -351,6 +338,12 @@ $(document).ready(function () {
 			case 'Adjustment':
 				caseAdjustment(crdbfl);
 				break;
+			case 'Loan':
+				caseAdjustment(crdbfl);
+				break;
+			case 'Issue':
+				caseAdjustment(crdbfl);
+				break;
 			case 'Others':
 				break;
 		}
@@ -448,23 +441,22 @@ $(document).ready(function () {
 	}
 
 	function expdate_stat(isstype,crdbfl){
-		// console.log([isstype,crdbfl]);
 		switch(isstype){
 			case 'Transfer':
 				dialog_expdate.on();
 				break;
 			case 'Adjustment':
-				caseAdjustment(crdbfl);
+				caseCrdbfl(crdbfl);
 				break;
-			case 'Others':
-				dialog_expdate.on();
+			case 'Loan':
+				caseCrdbfl(crdbfl);
 				break;
 			default:
 				dialog_expdate.off();
 				break;
 		}
 
-		function caseAdjustment(crdbfl){
+		function caseCrdbfl(crdbfl){
 			if(crdbfl=='In'){
 				dialog_expdate.off()}
 			else{
@@ -674,7 +666,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		},{fct:['compcode','recstatus','txndept'],fv:[],fc:[]});//tukar kat sini utk searching purreqhd.compcode','purreqhd.recstatus','purreqhd.prdept'
+		},{fct:['ivt.compcode','ivt.recstatus','ivt.txndept'],fv:[],fc:[]});//tukar kat sini utk searching purreqhd.compcode','purreqhd.recstatus','purreqhd.prdept'
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
@@ -837,26 +829,26 @@ $(document).ready(function () {
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
-			$( "#jqGrid2_ilcancel" ).off();
-			$( "#jqGrid2_ilcancel" ).on( "click", function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-				bootbox.confirm({
-				    message: "Are you sure want to cancel?",
-				    buttons: {
-				        confirm: { label: 'Yes',className: 'btn-success'},
-				        cancel: {label: 'No',className: 'btn-danger'}
-					},
-					callback: function (result) {
-						if (result == true) {
-							$(".noti").empty();
-							$("#jqGrid2").jqGrid("clearGridData", true);
-							refreshGrid("#jqGrid2",urlParam2);
-						}
-						linenotoedit = null;
-				    }
-				});
-			});
+			// $( "#jqGrid2_ilcancel" ).off();
+			// $( "#jqGrid2_ilcancel" ).on( "click", function(event) {
+			// 	event.preventDefault();
+			// 	event.stopPropagation();
+			// 	bootbox.confirm({
+			// 	    message: "Are you sure want to cancel?",
+			// 	    buttons: {
+			// 	        confirm: { label: 'Yes',className: 'btn-success'},
+			// 	        cancel: {label: 'No',className: 'btn-danger'}
+			// 		},
+			// 		callback: function (result) {
+			// 			if (result == true) {
+			// 				$(".noti").empty();
+			// 				$("#jqGrid2").jqGrid("clearGridData", true);
+			// 				refreshGrid("#jqGrid2",urlParam2);
+			// 			}
+			// 			linenotoedit = null;
+			// 	    }
+			// 	});
+			// });
 
 			
 		},
@@ -909,6 +901,9 @@ $(document).ready(function () {
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
+        afterrestorefunc : function( response ) {
+			hideatdialogForm(false);
+	    }
     };
 
     //////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
@@ -1106,7 +1101,7 @@ $(document).ready(function () {
 		dialog_itemcode.on();//start binding event on jqgrid2
 		dialog_uomcodetrdept.on();
 		dialog_uomcoderecv.on();
-		expdate_stat(selrowData('#jqGrid').isstype,selrowData('#jqGrid').crdbfl);
+		expdate_stat($('#isstype').val(),$('#crdbfl').val());
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
 		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='qtyonhand']").on('blur',checkQOH);
@@ -1333,9 +1328,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Transaction Type",
 			open: function(){
-				dialog_trantype.urlParam.filterInCol=['trantype'];
-				dialog_trantype.urlParam.filterInType=['NOT IN'];
-				dialog_trantype.urlParam.filterInVal=[['DS1', 'DS']];
+				dialog_trantype.urlParam.whereNotInCol=['trantype'];
+				dialog_trantype.urlParam.whereNotInVal=[['DS1', 'DS']];
 				dialog_trantype.urlParam.filterCol=['recstatus'];
 				dialog_trantype.urlParam.filterVal=['A'];
 			}
@@ -1527,7 +1521,6 @@ $(document).ready(function () {
 	dialog_requestRecNo.makedialog(false);
 
 	function errorIt(name,errorField,fail,fail_msg){
-		console.log(name+'   '+fail)
 		let id = "#jqGrid2 input[name='"+name+"']";
 		if(!fail){
 			if($.inArray(id,errorField)!==-1){

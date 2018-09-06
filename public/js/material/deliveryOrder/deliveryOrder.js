@@ -793,7 +793,6 @@ $(document).ready(function () {
 	jqgrid_label_align_right("#jqGrid2");
 
 	/////////////////////////all function for remarks//////////////////////////////////////////////////
-	var linenotoedit=null;
 	function formatterRemarks(cellvalue, options, rowObject){
 		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'></i> remark</button>";
 	}
@@ -850,7 +849,6 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-        	console.log(errorField)
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
         	if($('#delordhd_srcdocno').val()!=''){
@@ -867,7 +865,6 @@ $(document).ready(function () {
 			}
 
 			var dataobj = $('#jqGrid2').jqGrid ('getRowData', rowid);
-			linenotoedit = dataobj.lineno_;
 
 			unsaved = false;
 			mycurrency2.array.length = 0;
@@ -885,19 +882,15 @@ $(document).ready(function () {
 				if (code == '9')$('#jqGrid2_ilsave').click();
 			});
 
-        	$("#jqGrid2").find(".remarks_button[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
-        	$("#jqGrid2").find(".remarks_button[data-lineno_='undefined']").prop("disabled", false);
         	cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
         },
         aftersavefunc: function (rowid, response, options) {
-        	$("#jqGridPager2EditAll").show();
 			$('#delordhd_totamount').val(response.responseText);
 			$('#delordhd_subamount').val(response.responseText);
 	    	if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
 	    	//state true maksudnyer ada isi, tak kosong
-	    	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
 	    	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
         }, 
         errorfunc: function(rowid,response){
         	alert(response.responseText);
@@ -928,7 +921,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
         afterrestorefunc : function( response ) {
-	        $("#jqGridPager2EditAll").show();
+			hideatdialogForm(false);
 	    }
     };
 

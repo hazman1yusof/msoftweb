@@ -244,17 +244,17 @@ class InventoryTransactionController extends defaultController
                     ->where('ivtxntype.trantype','=',$ivtmphd->trantype)
                     ->first();
 
-                if($trantype_obj->isstype == 'TRANSFER' || $trantype_obj->isstype == 'Transfer'){
+                if($trantype_obj->isstype == 'Transfer'){
                     $retval = invtran_util::posting_for_transfer($value,$ivtmphd);
-                }else if($trantype_obj->isstype == 'Adjustment' || $trantype_obj->isstype == 'ADJUSTMENT'){
+                }else if($trantype_obj->isstype == 'Adjustment' || $trantype_obj->isstype == 'Loan' || $trantype_obj->isstype == 'Issue'){
                     switch ($trantype_obj->crdbfl) {
                         case 'in':
                         case 'In':
-                            invtran_util::posting_for_adjustment_in($value,$ivtmphd);
+                            invtran_util::posting_for_adjustment_in($value,$ivtmphd,$trantype_obj->isstype);
                             break;
                         case 'out':
                         case 'Out':
-                            invtran_util::posting_for_adjustment_out($value,$ivtmphd);
+                            invtran_util::posting_for_adjustment_out($value,$ivtmphd,$trantype_obj->isstype);
                             break;
                         default:
                             # code...

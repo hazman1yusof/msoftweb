@@ -368,7 +368,7 @@ class invtran_util extends defaultController{
 
 	}
 
-	public static function posting_for_adjustment_in($value,$ivtmphd){
+	public static function posting_for_adjustment_in($value,$ivtmphd,$isstype){
 
  		//1. amik stockloc
         $stockloc_obj = DB::table('material.StockLoc')
@@ -464,7 +464,12 @@ class invtran_util extends defaultController{
             $NewAmount = $netprice * $txnqty;
 
             $newqtyonhand = $OldQtyOnHand + $txnqty;
-            $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+            if($isstype == "Adjustment"){
+                $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+            }else{
+                $newAvgCost = $Oldavgcost;
+            }
+
 
             // update qtyonhand, avgcost, currprice
             $product_obj = DB::table('material.product')
@@ -481,7 +486,7 @@ class invtran_util extends defaultController{
 
 	}
 
-	public static function posting_for_adjustment_out($value,$ivtmphd){
+	public static function posting_for_adjustment_out($value,$ivtmphd,$isstype){
 		//1. amik stockloc
         $stockloc_obj = DB::table('material.StockLoc')
             ->where('StockLoc.CompCode','=',session('compcode'))
@@ -581,7 +586,11 @@ class invtran_util extends defaultController{
             $NewAmount = $netprice * $txnqty;
 
             $newqtyonhand = $OldQtyOnHand - $txnqty;
-            $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            if($isstype == "Adjustment"){
+                $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            }else{
+                $newAvgCost = $Oldavgcost;
+            }
 
             // update qtyonhand, avgcost, currprice
             $product_obj = DB::table('material.product')

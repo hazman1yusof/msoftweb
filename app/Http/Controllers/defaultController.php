@@ -177,6 +177,20 @@ abstract class defaultController extends Controller{
             }
         }
 
+        //////////where in //////////
+        if(!empty($request->WhereInCol)){
+            foreach ($request->WhereInCol as $key => $value) {
+                $table = $table->whereIn($value,$request->WhereInVal[$key]);
+            }
+        }
+
+        /////////where not in///////
+        if(!empty($request->whereNotInCol)){
+            foreach ($request->whereNotInCol as $key => $value) {
+                $table = $table->whereNotIn($value,$request->whereNotInVal[$key]);
+            }
+        }
+
         //////////ordering///////// ['expdate asc','idno desc']
         if(!empty($request->sortby)){
             foreach ($request->sortby as $key => $value) {
