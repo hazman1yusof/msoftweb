@@ -48,7 +48,7 @@ $.jgrid.defaults.responsive = true;
 					dialog_assetcode.urlParam.filterCol=['compcode'];
 					dialog_assetcode.urlParam.filterVal=['9A'];
 				}
-			},'urlParam'
+			},'urlParam','radio','tab'
 		);
 		dialog_assetcode.makedialog();
 
@@ -64,7 +64,7 @@ $.jgrid.defaults.responsive = true;
 					dialog_deptcode.urlParam.filterCol=['compcode'],
 					dialog_deptcode.urlParam.filterVal=['9A']
 				}
-			},'urlParam'
+			},'urlParam','radio','tab'
 		);
 		dialog_deptcode.makedialog();
 
@@ -82,7 +82,7 @@ $.jgrid.defaults.responsive = true;
 					dialog_loccode.urlParam.filterCol=['compcode'],
 					dialog_loccode.urlParam.filterVal=['9A']
 				}
-			},'urlParam'
+			},'urlParam','radio','tab'
 		);
 		dialog_loccode.makedialog();		
 
@@ -99,7 +99,7 @@ $.jgrid.defaults.responsive = true;
 					dialog_delordno.urlParam.filterCol=['compcode'],
 					dialog_delordno.urlParam.filterVal=['9A']
 				}
-			},'urlParam'
+			},'urlParam','radio','tab'
 		);
 		dialog_delordno.makedialog();
 
@@ -116,7 +116,7 @@ $.jgrid.defaults.responsive = true;
 					dialog_suppcode.urlParam.filterCol=['compcode'],
 					dialog_suppcode.urlParam.filterVal=['9A']
 				}
-			},'urlParam'
+			},'urlParam','radio','tab'
 		);
 		dialog_suppcode.makedialog();
 		
@@ -133,7 +133,7 @@ $.jgrid.defaults.responsive = true;
 					dialog_itemcode.urlParam.filterCol=['compcode','groupcode','productcat'],
 					dialog_itemcode.urlParam.filterVal=['9A','asset',$('#assetcode').val()]
 				}
-			},'urlParam'
+			},'urlParam','radio','tab'
 		);
 		dialog_itemcode.makedialog();
 	
@@ -305,26 +305,23 @@ $.jgrid.defaults.responsive = true;
 			});
 
 			////////////////////////////// DATE FORMATTER ////////////////////////////////////////
-
 			function dateFormatter(cellvalue, options, rowObject){
 				return moment(cellvalue).format("YYYY-MM-DD");
 			}
 
-			///////////////////////// REGISTER TYPE SELECTION///////////////////////////////////////
-
+			///////////////////////// REGISTER TYPE SELECTION/////////////////////////////////////
 			$("input[name=regtype]:radio").on('change', function(){
 				regtype  = $("input[name=regtype]:checked").val();
 				if(regtype == 'P'){
 					disableField();
 				}else if(regtype == 'D') {
 					enableField();
-					
 				}
 			});
 
 			function disableField() {
 				$("#invno").prop('readonly',true);
-				$("#delordno").closest( "div" ).show('fast');
+				dialog_delordno.on()
 				$("#delorddate").prop('readonly',true);
 				$("#invdate").prop('readonly',true);
 				$("#docno").prop('readonly',true);
@@ -338,7 +335,7 @@ $.jgrid.defaults.responsive = true;
 
 			function enableField() {
 				$("#invno").prop('readonly',false);
-				$("#delordno").closest( "div" ).hide('fast');
+				dialog_delordno.off()
 				$("#delorddate").prop('readonly',false);
 				$("#invdate").prop('readonly',false);
 				$("#docno").prop('readonly',false);
@@ -519,9 +516,9 @@ $.jgrid.defaults.responsive = true;
 			addParamField('#jqGrid',true,urlParam);
 			addParamField('#jqGrid',false,saveParam);
 			
+			$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
 
-
-			function checkdate_asset(){
+			function checkdate_asset(nkreturn=false){
 				var delorddate = $('#delorddate').val();
 				var invdate = $('#invdate').val();
 				var purdate = $('#purdate').val();
@@ -541,9 +538,9 @@ $.jgrid.defaults.responsive = true;
 					failmsg.forEach(function(element){
 						$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
 					});
-					return false;
+					if(nkreturn)return false;
 				}else{
-					return true;
+					if(nkreturn)return true;
 				}
 
 			}
