@@ -143,46 +143,7 @@ $.jgrid.defaults.responsive = true;
 		);
 		dialog_itemcode.makedialog();
 	
-		// dialog_assettype=new makeDialog('finance.fatype','#assettype',['assettype','description'], 'Type');	
-		/*var  dialog_assettype= new ordialog(
-			'assettype','finance.fatype','#assettype',errorField,
-			{	colModel:[
-				    {label:'AssetType',name:'assettype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
 
-			]
-			},{
-				title:"Select Type",
-				open: function(){
-					dialog_assettype.urlParam.filterCol=['compcode'];
-					dialog_assettype.urlParam.filterVal=['9A'];
-				}
-			},'urlParam'
-		);
-<<<<<<< HEAD
-		dialog_deptcode.makedialog();
-		
-		// dialog_assetcode=new makeDialog('finance.facode','#assetcode',['assetcode','description','assettype','method','residualvalue'],'Category');
-		var dialog_assetcode= new ordialog(
-			'assetcode','finance.facode','#assetcode',errorField,
-			{	colModel:[
-				    {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-					{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
-					{label:'Method',name: 'method',width:100,classes:'pointer',hidden:true},
-					{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
-
-			],
-			ondblClickRow:function(){
-				let data=selrowData('#'+dialog_assetcode.gridname);
-				$('#assettype').val(data['assettype']);
-				$('#method').val(data['method']);
-				$('#rvalue').val(data['residualvalue']);
-			
-				
-			}
-=======
-		dialog_assettype.makedialog();*/
 
 		var butt1=[{
 				text: "Save",click: function() {
@@ -191,17 +152,6 @@ $.jgrid.defaults.responsive = true;
 					}
 				}
 			},{
-			//var butt1=[{
-				//text: "Save",click: function() {
-				//	mycurrency.formatOff();
-					//mycurrency.check0value(errorField);
-					//if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-						//saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,null,{idno:selrowData("#jqGrid").idno});
-					//}else{
-						//mycurrency.formatOn();
-					//}
-				//}
-			//},{
 
 				text: "Cancel",click: function() {
 					$(this).dialog('close');
@@ -315,6 +265,7 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 					{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 					{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
+					{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},	
 					//{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
 					{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 					{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
@@ -369,23 +320,6 @@ $.jgrid.defaults.responsive = true;
 				return moment(cellvalue).format("YYYY-MM-DD");
 			}
 
-			////////////////////////////////////////////////////////////////////////////////////////
-
-			/*/////////////inBetween date///////////
-			function validate_actdate(event){
-					
-					if(!moment(obj.target.value).isBetween(actdateObj.lowestdate,actdateObj.highestdate)){
-						bootbox.alert('Date not in accounting period setup');
-						$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
-					}else if(!permission){
-						bootbox.alert('Accounting Period Has been Closed');
-						$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
-					} //Accounting Period Has been Closed
-						//Date not in accounting period setup
-					
-				}
-
-			////////////////////////////	*/	
 			///////////////////////// REGISTER TYPE SELECTION///////////////////////////////////////
 
 			$("input[name=regtype]:radio").on('change', function(){
@@ -428,40 +362,66 @@ $.jgrid.defaults.responsive = true;
 				$("#qty").prop('readonly',false);
 			}
 
-			// function getNVB() { 
-			// 	var origcost = $("#origcost").val();
-			// 	var lstytddep = $("#lstytddep").val();
-			// 	var cuytddep = $("#cuytddep").val();
+			// //onleave dialog currentcost
+			// function dialog_currentcost_onleave(event){
+			// 	let currentcost = $("#currentcost").val();
 
-			// 	total = origcost - lstytddep - cuytddep;
-			// 	$("#nbv").val(total.toFixed(2));
+			// 	obj.urlParam.searchCol=['s_itemcode'];
+			// 	obj.urlParam.searchVal=['%'+currentcost+'%'];
+			// 	if(currentcost!=''){
+			// 		refreshGrid("#currentcost")
+			// 		var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
+
+			// 		$("#origcost #"+id_optid+"currentcost").val(data['pcurrentcost']);
+			// 	}
 			// }
-			
-			// function getOrigCost() {
-			// 	//var origcost = $("#origcost").val();
-			// 	var netunitprice = $("#netunitprice").val();
-			// 	var prortdisc = $("#prortdisc").val();
+				// function dialog_itemcode_onleave(event){
+				// 	let obj = event.data.data;
+				// 	let optid = event.currentTarget.getAttribute("optid")
+				// 	let id_optid = optid.substring(0,optid.search("_"));
+				// 	let itemcode = $("#jqGrid2 #"+id_optid+"_itemcode").val();
 
-			// 	total = netunitprice - prortdisc ;
-			// 	$("#origcost").val(total.toFixed(2));
-			// }
+				// 	obj.urlParam.searchCol=['s_itemcode'];
+				// 	obj.urlParam.searchVal=['%'+itemcode+'%'];
+				// 	if(itemcode!=''){
+				// 		refreshGrid("#"+obj.gridname,obj.urlParam);
+				// 		var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
+						
 
-			// $("#origcost").keydown(function(e) {
-			// 		delay(function(){
-			// 			var origcost = $("#origcost").val();
-			// 			var lstytddep = $("#lstytddep").val();
-			// 			var cuytddep = $("#cuytddep").val();
+				// 		$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
+				// 		$("#jqGrid2 #"+id_optid+"_uomcode").val(data['s_uomcode']);
+				// 		$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
+				// 		$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
+				// 		$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
+				// 		$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+				// 	}
+				// }
 
-			// 			if($("#origcost").val() == '') {
-			// 				total = origcost - lstytddep - cuytddep;
-			// 				$("#nbv").val(total.toFixed(2));
-			// 			}
-			// 			else{
-			// 				total = origcost - lstytddep - cuytddep;
-			// 				$("#nbv").val(total.toFixed(2));
-			// 			}
-			// 		}, 1000 );
-			// });
+			function getNVB() { 
+				var origcost = $("#origcost").val();
+				var lstytddep = $("#lstytddep").val();
+				var cuytddep = $("#cuytddep").val();
+
+				total = origcost - lstytddep - cuytddep;
+				$("#nbv").val(total.toFixed(2));
+			}
+
+			$("#origcost").keydown(function(e) {
+					delay(function(){
+						var origcost = $("#origcost").val();
+						var lstytddep = $("#lstytddep").val();
+						var cuytddep = $("#cuytddep").val();
+
+						if($("#origcost").val() == '') {
+							total = origcost - lstytddep - cuytddep;
+							$("#nbv").val(total.toFixed(2));
+						}
+						else{
+							total = origcost - lstytddep - cuytddep;
+							$("#nbv").val(total.toFixed(2));
+						}
+					}, 1000 );
+			});
 
 			// $("#lstytddep").keydown(function(e) {
 			// 		delay(function(){
@@ -526,6 +486,12 @@ $.jgrid.defaults.responsive = true;
 					oper='view';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+					if(selrowData('#jqGrid').regtype == 'P'){
+						disableField();
+					}else if(selrowData('#jqGrid').regtype == 'D') {
+						enableField();
+						
+					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  
@@ -535,6 +501,12 @@ $.jgrid.defaults.responsive = true;
 					oper='edit';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+					if(selrowData('#jqGrid').regtype == 'P'){
+						disableField();
+					}else if(selrowData('#jqGrid').regtype == 'D') {
+						enableField();
+						
+					}
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  
@@ -627,25 +599,6 @@ $.jgrid.defaults.responsive = true;
 						}
 					});
 			}		
-
-			function getmethod_and_res(assetcode){
-				var param={
-					action:'get_value_default',
-					field:['method','residualvalue'],
-					table_name:'finance.facode',
-					table_id:'idno',
-					filterCol:['assetcode'],
-					filterVal:[assetcode],
-				}
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-						
-					},'json').done(function(data) {
-						if(!$.isEmptyObject(data)){
-							$("#method").val(data.rows[0].method);
-							$("#rvalue").val(data.rows[0].residualvalue);
-						}
-					});
-			}
 
 			function checkdate_asset(){
 				var delorddate = $('#delorddate').val();

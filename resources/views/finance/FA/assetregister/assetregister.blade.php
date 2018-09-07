@@ -82,8 +82,8 @@
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="regtype">Register Type</label>  
-				  <div class="col-md-4">
-					<label class="radio-inline"><input type="radio" name="regtype" value='P'>Purchase Order</label>
+				  <div class="col-md-4" data-validation="required">
+					<label class="radio-inline"><input type="radio" name="regtype" value='P'>Purchase Order</label >
 					<label class="radio-inline"><input type="radio" name="regtype" value='D'>Direct</label>
 				  </div>
 			</div>
@@ -185,8 +185,8 @@
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="individualtag">Individual Tagging</label>  
-				  <div class="col-md-4">
-					<label class="radio-inline"><input type="radio" name="individualtag" value='Y' checked>Yes</label>
+				  <div class="col-md-4" >
+					<label class="radio-inline"><input type="radio" name="individualtag" data-validation="required" value='Y' checked>Yes</label>
 					<label class="radio-inline"><input type="radio" name="individualtag" value='N'>No</label>
 				  </div>
 			</div>
@@ -205,7 +205,7 @@
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="statdate">Start Date</label>  
 					<div class="col-md-3">
-						<input id="statdate" name="statdate" type="date" class="form-control input-sm" 	data-validation="required">
+						<input id="statdate" name="statdate" type="date" class="form-control input-sm">
 					</div>
 			</div>
 
