@@ -15,8 +15,8 @@ $(document).ready(function () {
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
-			console.log(errorField);
 			if(errorField.length>0){
+				console.log(errorField);
 				return {
 					element : $(errorField[0]),
 					message : ' '
@@ -29,6 +29,8 @@ $(document).ready(function () {
 
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#amount']);
+	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
+	//var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#trandate"]);
@@ -54,7 +56,7 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					$("#delordhd_prdept").val($("#x").val());
+					$("#delordhd_prdept").val($("#deptcode").val());
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -96,7 +98,8 @@ $(document).ready(function () {
 			}
 		},
 		close: function( event, ui ) {
-			addmore_jqgrid2.state = false;//reset balik
+			addmore_jqgrid2.state = false;
+			addmore_jqgrid2.more = false;//reset balik
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdata2');
@@ -111,9 +114,51 @@ $(document).ready(function () {
 			dialog_docno.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
+			refreshGrid("#jqGrid2",null,"kosongkan");
+			radbuts.reset();
+			errorField.length=0;
 		},
 	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
+
+	var backdated = new func_backdated('#delordhd_deldept');
+	backdated.getdata();
+
+	function func_backdated(target){
+		this.sequence_data;
+		this.target=target;
+		this.param={
+			action:'get_value_default',
+			url:"/util/get_value_default",
+			field: ['*'],
+			table_name:'material.sequence',
+			table_id:'idno',
+			filterCol:['trantype'],
+			filterVal:['GRT'],
+		}
+
+		this.getdata = function(){
+			var self=this;
+			$.get( this.param.url+"?"+$.param(this.param), function( data ) {
+				
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data.rows)){
+					self.sequence_data = data.rows;
+				}
+			});
+			return this;
+		}
+
+		this.set_backdate = function(dept){
+			$.each(this.sequence_data, function( index, value ) {
+				if(value.dept == dept){
+					var backday =  value.backday;
+					var backdate = moment().subtract(backday, 'days').format('YYYY-MM-DD');
+					$('#delordhd_trandate').attr('min',backdate);
+				}
+			});
+		}
+	}
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 	var urlParam={
@@ -232,16 +277,10 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
 			switch($("#scope").val()){
 				case "dataentry":
-					/*if($('#delordhd_srcdocno')=='0' && $('#delordhd_srcdocno')=='null'){
-						$("label[for=delordhd_reqdept]").show();
-						$("#delordhd_reqdept_parent").show();
-						$("#delordhd_reqdept").attr('required',false);
-					}else{*/
-						$("label[for=delordhd_reqdept]").hide();
-						$("#delordhd_reqdept_parent").hide();
-						$("#delordhd_reqdept").removeAttr('required');
-					//}
-					break;
+					$("label[for=delordhd_reqdept]").hide();
+					$("#delordhd_reqdept_parent").hide();
+					$("#delordhd_reqdept").removeAttr('required');	
+				break;
 				case "cancel": 
 					if(stat=='POSTED'){
 						$('#but_cancel_jq').show();
@@ -251,17 +290,8 @@ $(document).ready(function () {
 					}else{
 						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 					}
-					break;
+				break;
 				case "all": 
-					/*if($('#delordhd_srcdocno')=='0' && $('#delordhd_srcdocno')=='null'){
-							$("label[for=delordhd_reqdept]").show();
-							$("#delordhd_reqdept_parent").show();
-							$("#delordhd_reqdept").attr('required',true);
-						}else{
-							$("label[for=delordhd_reqdept]").hide();
-							$("#delordhd_reqdept_parent").hide();
-							$("#delordhd_reqdept").removeAttr('required');
-						}*/
 					if(stat=='POSTED'){
 						$('#but_cancel_jq').show();
 						$('#but_post_jq,#but_reopen_jq').hide();
@@ -270,12 +300,8 @@ $(document).ready(function () {
 						$('#but_post_jq,#but_cancel_jq').hide();
 					}else{
 						$('#but_cancel_jq,#but_post_jq').show();
-						// $('#but_reopen_jq').hide();
-						// $("label[for=delordhd_reqdept]").hide();
-						// $("#delordhd_reqdept_parent").hide();
-						// $("#delordhd_reqdept").removeAttr('required');
 					}
-					break;
+				break;
 			}
 
 			urlParam2.filterVal[0]=selrowData("#jqGrid").delordhd_recno;
@@ -378,7 +404,11 @@ $(document).ready(function () {
 		saveParam.oper=selfoper;
 
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
-		unsaved = false;
+		
+		},'json').fail(function (data) {
+			alert(data.responseText);
+		}).done(function (data) {
+			unsaved = false;
 			hideatdialogForm(false);
 
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
@@ -393,19 +423,11 @@ $(document).ready(function () {
 				$('#delordhd_totamount').val(data.totalAmount);
 
 				urlParam2.filterVal[0]=data.recno; 
-			/*	urlParam2.join_filterCol = [['ivt.uomcode', 's.deptcode','s.year'],[]];
-				urlParam2.join_filterVal = [['skip.s.uomcode',$('#txndept').val(),moment($("#trandate").val()).year()],[]];*/
-				//if ($('#delordhd_delordno')) {}
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
 			disableForm('#formdata');
-			hideatdialogForm(false);
-
-			},'json').fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
+			
 		});
 	}
 	
@@ -541,7 +563,7 @@ $(document).ready(function () {
 		filterVal:['','session.company','<>.DELETE']
 	};
 
-	var addmore_jqgrid2={more:false,state:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
+	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
