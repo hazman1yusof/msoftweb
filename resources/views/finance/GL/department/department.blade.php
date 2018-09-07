@@ -44,7 +44,7 @@
         </div>
 
         <div class="form-group">
-        	<label class="col-md-2 control-label" for="region">Region</label>  
+        	<label class="col-md-2 control-label" for="region">Section</label>  
 		  		<div class="col-md-3">
 			  		<div class='input-group'>
 						<input id="region" name="region" type="text" class="form-control input-sm" data-validation="required">
@@ -53,7 +53,7 @@
 			  		<span class="help-block"></span>
 		  		</div>
 		  		
-		  	<label class="col-md-2 control-label" for="sector">Sector</label>  
+		  	<label class="col-md-2 control-label" for="sector">Unit</label>  
 		  		<div class="col-md-3">
 			  		<div class='input-group'>
 						<input id="sector" name="sector" type="text" class="form-control input-sm" data-validation="required">
