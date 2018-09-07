@@ -27,7 +27,6 @@ $.jgrid.defaults.responsive = true;
 				
 		////////////////////////////////////start dialog///////////////////////////////////////
 
-		// dialog_assetcode=new makeDialog('finance.facode','#assetcode',['assetcode','description','assettype','method','residualvalue'],'Category');
 		var dialog_assetcode= new ordialog(
 			'assetcode','finance.facode','#assetcode',errorField,
 			{	colModel:[
@@ -53,7 +52,6 @@ $.jgrid.defaults.responsive = true;
 		);
 		dialog_assetcode.makedialog();
 
-		// dialog_deptcode=new makeDialog('sysdb.department','#deptcode',['deptcode','description'], 'Department');
 		var dialog_deptcode= new ordialog(
 			'deptcode','sysdb.department','#deptcode',errorField,
 			{	colModel:[
@@ -70,7 +68,6 @@ $.jgrid.defaults.responsive = true;
 		);
 		dialog_deptcode.makedialog();
 
-		// dialog_loccode=new makeDialog('sysdb.location','#loccode',['loccode','description'],'Location');
 		var  dialog_loccode= new ordialog(
 			'loccode','sysdb.location','#loccode',errorField,
 			{	colModel:[
@@ -89,7 +86,6 @@ $.jgrid.defaults.responsive = true;
 		);
 		dialog_loccode.makedialog();		
 
-		// dialog_delordno=new makeDialog('material.delordhd','#delordhd',['Delordhd','Suppcode'],'Delordno');
 	    var dialog_delordno= new ordialog(
 			'delordno','material.delordhd','#delordno',errorField,
 			{	colModel:[
@@ -107,7 +103,6 @@ $.jgrid.defaults.responsive = true;
 		);
 		dialog_delordno.makedialog();
 
-		// dialog_suppcode=new makeDialog('material.supplier','#suppcode',['SuppCode','Name'],'Supplier');
 		var  dialog_suppcode= new ordialog(
 			'suppcode','material.supplier','#suppcode',errorField,
 			{	colModel:[
@@ -125,7 +120,6 @@ $.jgrid.defaults.responsive = true;
 		);
 		dialog_suppcode.makedialog();
 		
-		// dialog_itemcode=new makeDialog('material.product','#itemcode',['itemcode','description'],'itemcode');
 		var dialog_itemcode= new ordialog(
 			'itemcode','material.product','#itemcode',errorField,
 			{	colModel:[
@@ -176,6 +170,7 @@ $.jgrid.defaults.responsive = true;
 							//mycurrency.formatOnBlur();
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
+							ToggleDisableForm();
 							rdonly("#dialogForm");
 							break;
 						case state = 'edit':
@@ -198,25 +193,20 @@ $.jgrid.defaults.responsive = true;
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-						dialog_itemcode.on();
-						dialog_delordno.on();
 						dialog_assetcode.on();
-						//dialog_assettype.on();
-						dialog_suppcode.on();
 						dialog_deptcode.on();
 						dialog_loccode.on();
-						//dialog_dept.handler(errorField);
+						dialog_suppcode.on();
+						dialog_itemcode.on();
+						dialog_delordno.on();
 					}
 					if(oper!='add'){
 						dialog_itemcode.check(errorField);
 						dialog_delordno.check(errorField);
 						dialog_assetcode.check(errorField);
-						//dialog_assettype.check(errorfield);
 						dialog_suppcode.check(errorField);
 						dialog_deptcode.check(errorField);
 						dialog_loccode.check(errorField);
-						//toggleFormData('#jqGrid','#formdata');
-						//dialog_dept.check(errorField);
 					}
 				},
 				close: function( event, ui ) {
@@ -338,7 +328,6 @@ $.jgrid.defaults.responsive = true;
 				$("#delorddate").prop('readonly',true);
 				$("#invdate").prop('readonly',true);
 				$("#docno").prop('readonly',true);
-				//$("#description").prop('readonly',true);
 				$("#purordno").prop('readonly',true);
 				$("#purdate").prop('readonly',true);
 				$("#purprice").prop('readonly',true);
@@ -353,7 +342,6 @@ $.jgrid.defaults.responsive = true;
 				$("#delorddate").prop('readonly',false);
 				$("#invdate").prop('readonly',false);
 				$("#docno").prop('readonly',false);
-				//$("#description").prop('readonly',false);
 				$("#purordno").prop('readonly',false);
 				$("#purdate").prop('readonly',false);
 				$("#purprice").prop('readonly',false);
@@ -407,20 +395,20 @@ $.jgrid.defaults.responsive = true;
 			}
 
 			$("#origcost").keydown(function(e) {
-					delay(function(){
-						var origcost = $("#origcost").val();
-						var lstytddep = $("#lstytddep").val();
-						var cuytddep = $("#cuytddep").val();
+				delay(function(){
+					var origcost = $("#origcost").val();
+					var lstytddep = $("#lstytddep").val();
+					var cuytddep = $("#cuytddep").val();
 
-						if($("#origcost").val() == '') {
-							total = origcost - lstytddep - cuytddep;
-							$("#nbv").val(total.toFixed(2));
-						}
-						else{
-							total = origcost - lstytddep - cuytddep;
-							$("#nbv").val(total.toFixed(2));
-						}
-					}, 1000 );
+					if($("#origcost").val() == '') {
+						total = origcost - lstytddep - cuytddep;
+						$("#nbv").val(total.toFixed(2));
+					}
+					else{
+						total = origcost - lstytddep - cuytddep;
+						$("#nbv").val(total.toFixed(2));
+					}
+				}, 1000 );
 			});
 
 			// $("#lstytddep").keydown(function(e) {
@@ -531,74 +519,7 @@ $.jgrid.defaults.responsive = true;
 			addParamField('#jqGrid',true,urlParam);
 			addParamField('#jqGrid',false,saveParam);
 			
-			function checkInput(errorField){
-				var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
-				var param={action:'input_check',table:table,field:field,value:value};
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-					
-				},'json').done(function(data) {
-					if(data.msg=='success'){
-						if($.inArray(id,errorField)!==-1){
-							errorField.splice($.inArray(id,errorField), 1);
-						}
-						$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-						$( id ).removeClass( "error" ).addClass( "valid" );
-						$( id ).parent().siblings( ".help-block" ).html(data.row[field[1]]);
-					}else if(data.msg=='fail'){
-						$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-						$( id ).removeClass( "valid" ).addClass( "error" );
-						$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+field[0]+" )");
-						if($.inArray(id,errorField)===-1){
-							errorField.push(id);
-						}
-					}
-				});
-			}
-			
-			$('#Dtext').keyup(function() {
-				delay(function(){
-					Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-				}, 500 );
-			});
-			
-			$('#Dcol').change(function(){
-				Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-			});
-			
-			function Dsearch(Dtext,Dcol){
-				paramD.searchCol=null;
-				paramD.searchVal=null;
-				Dtext=Dtext.trim();
-				if(Dtext != ''){
-					var split = Dtext.split(" "),searchCol=[],searchVal=[];
-					$.each(split, function( index, value ) {
-						searchCol.push(Dcol);
-						searchVal.push('%'+value+'%');
-					});
-					paramD.searchCol=searchCol;
-					paramD.searchVal=searchVal;
-				}
-				refreshGrid("#gridDialog",paramD);
-			}
-			///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
 
-			function getinvdate(document){
-				var param={
-					action:'get_value_default',
-					field:['actdate'],
-					table_name:'finance.apacthdr',
-					table_id:'auditno',
-					filterCol:['document'],
-					filterVal:[document],
-				}
-				$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-						
-					},'json').done(function(data) {
-						if(!$.isEmptyObject(data)){
-							$('#invdate').val(moment(data.rows[0].actdate).format("YYYY-MM-DD"));
-						}
-					});
-			}		
 
 			function checkdate_asset(){
 				var delorddate = $('#delorddate').val();
@@ -618,7 +539,6 @@ $.jgrid.defaults.responsive = true;
 
 				if(failmsg.length){
 					failmsg.forEach(function(element){
-						console.log(element);
 						$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
 					});
 					return false;
@@ -626,6 +546,37 @@ $.jgrid.defaults.responsive = true;
 					return true;
 				}
 
+			}
+
+			function ToggleDisableForm(disable=true){
+				if(disable){
+					disableForm('#disableGroup');
+					$('#disableGroup input').on('click',alert_toogle);
+				}else{
+					enableForm('#disableGroup');
+					$('#disableGroup input').off('click',alert_toogle);
+				}
+			}
+
+			function alert_toogle(){
+				let element = "Choose either Purchase ORder or direct";
+				$(".noti ol").empty();
+				$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
+			}
+
+			$("input[type='radio'][name='regtype']").on('click',regtype_choose);
+
+			function regtype_choose(){
+				ToggleDisableForm(false);
+				$(".noti ol").empty();
+				$( '#disableGroup input' ).each(function() {
+					if ( $(this).hasClass('error') || $(this).closest("div").hasClass('has-error') ){
+						$(this).removeClass('error');
+						$(this).closest("div .has-error").removeClass('has-error');
+						$(this).css("border-color","");
+					}
+				});
+				$('#disableGroup .help-block').html('');
 			}
 		
 		}
