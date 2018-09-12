@@ -5,6 +5,7 @@
 @section('body')
 
 	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
+	<input id="deldept" name="deldept" type="hidden" value="{{Session::get('deldept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 

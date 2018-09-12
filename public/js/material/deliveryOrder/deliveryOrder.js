@@ -56,6 +56,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly('#formdata');
 					$("#delordhd_prdept").val($("#deptcode").val());
+					$("#delordhd_unit").val($("#deldept").val());
 					$('#delordhd_trantime').val(moment().format('HH:mm:ss'));
 					break;
 				case state = 'edit':
@@ -263,6 +264,7 @@ $(document).ready(function () {
 			{ label: 'canceldate', name: 'delordhd_canceldate', width: 40, hidden:'true'},
 			{ label: 'reopenby', name: 'delordhd_reopenby', width: 40, hidden:'true'},
 			{ label: 'reopendate', name: 'delordhd_reopendate', width: 40, hidden:'true'},
+			{ label: 'unit', name: 'delordhd_unit', width: 40, hidden:'true'},
 
 		],
 		autowidth:true,
@@ -575,7 +577,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks','t.rate'],
+		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate'],
 		table_name:['material.delorddt AS dodt','material.productmaster AS p','hisdb.taxmast AS t'],
 		table_id:'lineno_',
 		join_type:['LEFT JOIN','LEFT JOIN'],
@@ -751,6 +753,7 @@ $(document).ready(function () {
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
 			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
+			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 		],
 		autowidth: false,
 		shrinkToFit: false,
@@ -1023,7 +1026,8 @@ $(document).ready(function () {
                     'totamount' : $("#"+ids[i]+"_totamount").val(),
                     'expdate' : $("#"+ids[i]+"_expdate").val(),
                     'batchno' : $("#"+ids[i]+"_batchno").val(),
-                    'remarks' : data.remarks
+                    'remarks' : data.remarks,
+                    'unit' : $("#"+ids[i]+"_unit").val()
 		    	}
 
 		    	jqgrid2_data.push(obj);
@@ -1038,7 +1042,8 @@ $(document).ready(function () {
 				suppcode:$('#delordhd_suppcode').val(),
 				trandate:$('#delordhd_trandate').val(),
 				deldept:$('#delordhd_deldept').val(),
-				deliverydate:$('#delordhd_deliverydate').val()
+				deliverydate:$('#delordhd_deliverydate').val(),
+				unit:$('#delordhd_unit').val()
     		}
 
     		$.post( "/deliveryOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
