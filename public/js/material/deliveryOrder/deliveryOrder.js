@@ -916,6 +916,7 @@ $(document).ready(function () {
 					trandate:$('#delordhd_trandate').val(),
 					deldept:$('#delordhd_deldept').val(),
 					deliverydate:$('#delordhd_deliverydate').val(),
+					unit:$('#delordhd_unit').val(),
 					remarks:data.remarks,
 					amount:data.amount,
 					netunitprice:data.netunitprice,
@@ -1557,6 +1558,7 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data = selrowData('#'+dialog_deldept.gridname);
 				backdated.set_backdate(data.deptcode);
+				$("#delordhd_unit").val(data['deptcode']);
 			}
 		},{
 			title:"Select Receiver Department",

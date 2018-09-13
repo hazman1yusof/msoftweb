@@ -125,6 +125,7 @@ class DeliveryOrderDetailController extends defaultController
         $trandate = $request->trandate;
         $deldept = $request->deldept;
         $deliverydate = $request->deliverydate;
+        $unit = $request->unit;
 
         DB::beginTransaction();
 
@@ -160,7 +161,6 @@ class DeliveryOrderDetailController extends defaultController
                     'amtdisc' => $request->amtdisc,
                     'amtslstax' => $request->tot_gst,
                     'netunitprice' => $request->netunitprice,
-                    /*'qtydelivered' => $request->qtydelivered,*/
                     'amount' => $request->amount,
                     'totamount' => $request->totamount,
                     'draccno' => $draccno,
@@ -172,7 +172,8 @@ class DeliveryOrderDetailController extends defaultController
                     'expdate' => $this->chgDate($request->expdate), 
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
-                    'remarks' => $request->remarks
+                    'remarks' => $request->remarks,
+                    'unit' => $request->unit
                 ]);
 
             ///3. calculate total amount from detail
@@ -240,7 +241,8 @@ class DeliveryOrderDetailController extends defaultController
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $this->chgDate($request->expdate),  
                     'batchno'=> $request->batchno, 
-                    'remarks'=> $request->remarks
+                    'remarks'=> $request->remarks,
+                    'unit' => $request->unit
                 ]);
 
             ///2. recalculate total amount
@@ -311,6 +313,7 @@ class DeliveryOrderDetailController extends defaultController
                         'expdate'=> $this->chgDate($value['expdate']),  
                         'batchno'=> $value['batchno'],
                         'remarks'=> $value['remarks']
+                        //'unit'=> $value['unit']
                     ]);
             }
             
@@ -434,6 +437,7 @@ class DeliveryOrderDetailController extends defaultController
                     'expdate'=> $this->chgDate($request->expdate),  
                     'batchno'=> $request->batchno, 
                     'remarks'=> $request->remarks
+                   // 'unit'=> $request->unit
                 ]);
 
             ///2. recalculate total amount
