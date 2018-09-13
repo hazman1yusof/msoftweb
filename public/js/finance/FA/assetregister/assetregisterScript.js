@@ -16,6 +16,7 @@ $.jgrid.defaults.responsive = true;
 				conf = {
 					onValidate : function($form) {
 						if(errorField.length>0){
+							console.log(errorField);
 							return {
 								element : $(errorField[0]),
 								message : ' '
@@ -141,7 +142,7 @@ $.jgrid.defaults.responsive = true;
 
 		var butt1=[{
 				text: "Save",click: function() {
-					if( $('#formdata').isValid({requiredFields: ''}, conf, true) && checkdate_asset()) {
+					if( checkdate_asset(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 					}
 				}
@@ -172,6 +173,7 @@ $.jgrid.defaults.responsive = true;
 							enableForm('#formdata');
 							ToggleDisableForm();
 							rdonly("#dialogForm");
+							
 							break;
 						case state = 'edit':
 							//mycurrency.formatOnBlur();
@@ -179,7 +181,7 @@ $.jgrid.defaults.responsive = true;
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
 							rdonly("#dialogForm");
-
+							
 							break;
 						case state = 'view':
 							//mycurrency.formatOn();
@@ -187,7 +189,7 @@ $.jgrid.defaults.responsive = true;
 							disableForm('#formdata');
 							$(this).dialog("option", "buttons",butt2);
 							getmethod_and_res(selrowData("#jqGrid").assetcode);
-							getNVB();
+							//getNVB();
 							//getOrigCost();
 							break;
 					}
@@ -342,105 +344,10 @@ $.jgrid.defaults.responsive = true;
 				$("#purordno").prop('readonly',false);
 				$("#purdate").prop('readonly',false);
 				$("#purprice").prop('readonly',false);
-				$("#origcost").prop('readonly',false);
-				$("#currentcost").prop('readonly',false);
+				$("#origcost").prop('readonly',true);
+				$("#currentcost").prop('readonly',true);
 				$("#qty").prop('readonly',false);
 			}
-
-			// //onleave dialog currentcost
-			// function dialog_currentcost_onleave(event){
-			// 	let currentcost = $("#currentcost").val();
-
-			// 	obj.urlParam.searchCol=['s_itemcode'];
-			// 	obj.urlParam.searchVal=['%'+currentcost+'%'];
-			// 	if(currentcost!=''){
-			// 		refreshGrid("#currentcost")
-			// 		var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
-
-			// 		$("#origcost #"+id_optid+"currentcost").val(data['pcurrentcost']);
-			// 	}
-			// }
-				// function dialog_itemcode_onleave(event){
-				// 	let obj = event.data.data;
-				// 	let optid = event.currentTarget.getAttribute("optid")
-				// 	let id_optid = optid.substring(0,optid.search("_"));
-				// 	let itemcode = $("#jqGrid2 #"+id_optid+"_itemcode").val();
-
-				// 	obj.urlParam.searchCol=['s_itemcode'];
-				// 	obj.urlParam.searchVal=['%'+itemcode+'%'];
-				// 	if(itemcode!=''){
-				// 		refreshGrid("#"+obj.gridname,obj.urlParam);
-				// 		var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
-						
-
-				// 		$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
-				// 		$("#jqGrid2 #"+id_optid+"_uomcode").val(data['s_uomcode']);
-				// 		$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
-				// 		$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
-				// 		$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
-				// 		$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
-				// 	}
-				// }
-
-			function getNVB() { 
-				var origcost = $("#origcost").val();
-				var lstytddep = $("#lstytddep").val();
-				var cuytddep = $("#cuytddep").val();
-
-				total = origcost - lstytddep - cuytddep;
-				$("#nbv").val(total.toFixed(2));
-			}
-
-			$("#origcost").keydown(function(e) {
-				delay(function(){
-					var origcost = $("#origcost").val();
-					var lstytddep = $("#lstytddep").val();
-					var cuytddep = $("#cuytddep").val();
-
-					if($("#origcost").val() == '') {
-						total = origcost - lstytddep - cuytddep;
-						$("#nbv").val(total.toFixed(2));
-					}
-					else{
-						total = origcost - lstytddep - cuytddep;
-						$("#nbv").val(total.toFixed(2));
-					}
-				}, 1000 );
-			});
-
-			// $("#lstytddep").keydown(function(e) {
-			// 		delay(function(){
-			// 			var origcost = currencyRealval("#origcost");
-			// 			var lstytddep = currencyRealval("#lstytddep");
-			// 			var cuytddep = currencyRealval("#cuytddep");
-
-			// 			if($("#lstytddep").val() == '') {
-			// 				total = origcost - lstytddep - cuytddep;
-			// 				$("#nbv").val(numeral(total).format('0,0.00'));
-			// 			}
-			// 			else{
-			// 				total = origcost - lstytddep - cuytddep;
-			// 				$("#nbv").val(numeral(total).format('0,0.00'));
-			// 			}
-			// 		}, 1000 );
-			// });
-
-			// $("#cuytddep").keydown(function(e) {
-			// 		delay(function(){
-			// 			var origcost = currencyRealval("#origcost");
-			// 			var lstytddep = currencyRealval("#lstytddep");
-			// 			var cuytddep = currencyRealval("#cuytddep");
-
-			// 			if($("#cuytddep").val() == '') {
-			// 				total = origcost - lstytddep - cuytddep;
-			// 				$("#nbv").val(numeral(total).format('0,0.00'));
-			// 			}
-			// 			else{
-			// 				total = origcost - lstytddep - cuytddep;
-			// 				$("#nbv").val(numeral(total).format('0,0.00'));
-			// 			}
-			// 		}, 1000 );
-			// });
 
 
 				/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -508,7 +415,6 @@ $.jgrid.defaults.responsive = true;
 			//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 			
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-			//toogleSearch('#sbut1','#searchForm','on');
 			populateSelect('#jqGrid','#searchForm');
 			searchClick('#jqGrid','#searchForm',urlParam);
 
@@ -531,7 +437,7 @@ $.jgrid.defaults.responsive = true;
 				}
 
 				if(moment(purdate).isAfter(invdate) || moment(purdate).isAfter(delorddate) ){
-					failmsg.push("Purchase date cannot be greater than Invoice date and Delovery Order date");
+					failmsg.push("Purchase date cannot be greater than Invoice date and Delivery Order date");
 				}
 
 				if(failmsg.length){
@@ -551,12 +457,13 @@ $.jgrid.defaults.responsive = true;
 					$('#disableGroup input').on('click',alert_toogle);
 				}else{
 					enableForm('#disableGroup');
+					$("#currentcost").prop("readonly",true);
 					$('#disableGroup input').off('click',alert_toogle);
 				}
 			}
 
 			function alert_toogle(){
-				let element = "Choose either Purchase ORder or direct";
+				let element = "Choose 'Register Type' either Purchase Order or Direct";
 				$(".noti ol").empty();
 				$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
 			}
@@ -575,7 +482,15 @@ $.jgrid.defaults.responsive = true;
 				});
 				$('#disableGroup .help-block').html('');
 			}
+
+			$("#purprice,#qty").blur(getcurentcost);
+			function getcurentcost(event) { 
+		        let purprice = parseFloat($("#purprice").val());
+		        let qty = parseFloat($("#qty").val());
+
+		        var currentcost = (purprice * qty);
+
+		        $("#currentcost, #origcost").val(currentcost);
+			}
 		
-		}
-	
-	);
+		});

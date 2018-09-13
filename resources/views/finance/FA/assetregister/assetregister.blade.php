@@ -115,7 +115,7 @@
 						</div>
 					<label class="col-md-2 control-label" for="delorddate">Delivery Order Date</label>
 						<div class="col-md-3">
-							<input id="delorddate" name="delorddate" type="date" class="form-control input-sm" 	data-validation="required">
+							<input id="delorddate" name="delorddate" type="date" class="form-control input-sm" 	data-validation="required" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 						</div>
 				</div>
 
@@ -127,7 +127,7 @@
 					
 					<label class="col-md-2 control-label" for="docno">GRN No</label>  
 						<div class="col-md-3">
-							<input id="docno" name="docno" type="text" class="form-control input-sm" 	data-validation="required">
+							<input id="docno" name="docno" type="text" class="form-control input-sm" data-validation="required">
 						</div>
 				</div>
 
@@ -167,7 +167,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="currentcost">Current Cost</label>  
 						<div class="col-md-3">
-							<input id="currentcost" name="currentcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required">  
+							<input id="currentcost" name="currentcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" readonly>  
 					 	</div>
 				</div>
 
@@ -202,7 +202,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="origcost">Cost</label>  
 						<div class="col-md-3">
-							<input id="origcost" name="origcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00">  
+							<input id="origcost" name="origcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" readonly>  
 					 	</div>
 				</div>
 
@@ -235,7 +235,7 @@
 						</div>
 					<label class="col-md-2 control-label" for="trandate">Post Date</label>  
 						<div class="col-md-3">
-							<input id="trandate" name="trandate" type="date" class="form-control input-sm" 	data-validation="required">
+							<input id="trandate" name="trandate" type="date" class="form-control input-sm" >
 						</div>
 				</div>
 
