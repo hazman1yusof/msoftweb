@@ -19,6 +19,7 @@ class HomeController extends Controller
     public function index(){
         $user = Auth::user();
         $menu = $this->create_main_menu();
+        $unit = DB::table('sysdb.')
         return view('init.container',compact('menu'));
     }
 

@@ -45,6 +45,19 @@
 			</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
+
+			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
+				<li><h4>&nbsp;Unit :&nbsp;</h4></li>
+				<li>
+					<select class="form-control">
+					  <option value="volvo">Volvo</option>
+					  <option value="saab">Saab</option>
+					  <option value="mercedes">Mercedes</option>
+					  <option value="audi">Audi</option>
+					</select>
+				</li>
+				
+			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="#" class='dropdown-toggle active' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -60,6 +73,7 @@
 					</ul>
 				</li>
 			</ul>
+
 		</div>
 	</div>
 	</div>
