@@ -5,6 +5,7 @@
 @section('body')
 
 	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
+	<input id="deldept" name="deldept" type="hidden" value="{{Session::get('deldept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
@@ -108,6 +109,7 @@
 							{{ csrf_field() }}
 							<input id="delordhd_trantype" name="delordhd_trantype" type="hidden">
 							<input id="delordhd_idno" name="delordhd_idno" type="hidden">
+							<input id="delordhd_unit" name="delordhd_unit" type="hidden">
 							<input id="referral" name="referral" type="hidden">
 
 							<div class="form-group">
