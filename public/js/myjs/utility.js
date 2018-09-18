@@ -606,6 +606,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		$("#Dtext_"+unique).on('keyup',{data:this},onChange);
 		$("#Dcol_"+unique).on('change',{data:this},onChange);
 		$(this.textfield).on('blur',{data:this,errorField:errorField},onBlur);
+		return this;
 	}
 	this.off = function(){
 		this.eventstat='off';
@@ -669,15 +670,28 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 		renull_search(obj);
 		$("#"+obj.dialogname).dialog( "open" );
+
+		var idtopush = $(event.currentTarget).siblings("input[type='text']").attr('id');
+		var jqgrid = $(event.currentTarget).siblings("input[type='text']").attr('jqgrid');
+		var optid = (event.data.data.urlParam.hasOwnProperty('optid'))? event.data.data.urlParam.optid:null;
+
+		if(optid!=null){
+			var id_optid = idtopush.substring(0,idtopush.search("_"));
+			optid.field.forEach(function(element,i){
+				obj.urlParam.filterVal[optid.id[i]] = $(optid.jq+' input#'+id_optid+element).val();
+			});
+		}
+
 		refreshGrid("#"+obj.gridname,obj.urlParam);
 	}
 
 	function onBlur(event){
 		var idtopush = $(event.currentTarget).siblings("input[type='text']").end().attr('id');
 		var jqgrid = $(event.currentTarget).siblings("input[type='text']").end().attr('jqgrid');
+		var optid = (event.data.data.urlParam.hasOwnProperty('optid'))? event.data.data.urlParam.optid:null;
 
 		if(event.data.data.checkstat!='none'){
-			event.data.data.check(event.data.errorField,idtopush,jqgrid);
+			event.data.data.check(event.data.data.errorField,idtopush,jqgrid,optid);
 		}
 	}
 
@@ -766,15 +780,15 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			autoOpen: false,
 			width: 7/10 * $(window).width(),
 			modal: true,
-			open: function(){
+			open: function(event, ui){
 				$("#"+obj.gridname).jqGrid ('setGridWidth', Math.floor($("#"+obj.gridname+"_c")[0].offsetWidth-$("#"+obj.gridname+"_c")[0].offsetLeft));
-				if(obj.dialog_.hasOwnProperty('open'))obj.dialog_.open();
+				if(obj.dialog_.hasOwnProperty('open'))obj.dialog_.open(event);
 				if(obj.needTab == 'notab')$("#Dtext_"+unique).focus();
 
 			},
 			close: function( event, ui ){
 				$("#Dtext_"+unique).val('');
-				if(obj.dialog_.hasOwnProperty('close'))obj.dialog_.close();
+				if(obj.dialog_.hasOwnProperty('close'))obj.dialog_.close(event);
 			},
 		});
 	}
@@ -822,7 +836,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		return fieldReturn;
 	}
 
-	function checkInput(errorField,idtopush,jqgrid=null){///can choose code and desc used, usually field number 0 and 1
+	function checkInput(errorField,idtopush,jqgrid=null,optid=null){
 		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=1;
 
 		if(idtopush){ /// ni nk tgk sama ada from idtopush exist atau tak
@@ -840,7 +854,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			var id = '#'+idtopush;
 		}
 
-		if(param.fixPost == 'true'){
+		if(this.urlParam.fixPost == 'true'){
 			code_ = this.urlParam.field[urlParamID];
 			desc_ = this.urlParam.field[desc];
 			code_ = code_.replaceAt(code_.search("_"),'.');
@@ -849,20 +863,26 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			desc_ = this.urlParam.field[desc];
 		}
 
+		let index=0;
 		if(this.checkstat=='default'){
 			param={action:'input_check',table:table,field:field,value:value};
 
 		}else{
+
 			param=Object.assign({},this.urlParam);
+
+			if(optid!=null){
+				var id_optid = idtopush.substring(0,idtopush.search("_"));
+				optid.field.forEach(function(element,i){
+					param.filterVal[optid.id[i]] = $(optid.jq+' input#'+id_optid+element).val();
+				});
+			}
+
 			param.action="get_value_default";
 			param.url='/util/get_value_default';
 			param.field=[code_,desc_];
-			let index=jQuery.inArray(code_,param.filterCol);
+			index=jQuery.inArray(code_,param.filterCol);
 			if(index == -1){
-				if(param.fixPost == 'true'){
-					code_ = code_.replaceAt(code_.search("_"),'.');
-				}
-				
 				param.filterCol.push(code_);
 				param.filterVal.push(value);
 			}else{
@@ -873,6 +893,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		$.get( param.url+"?"+$.param(param), function( data ) {
 
 		},'json').done(function(data) {
+			// if(index == -1){
+			// 	param.filterCol.pop();
+			// 	param.filterVal.pop();
+			// }
 			let fail=true,code,desc2;
 			if(self.checkstat=='default'){
 				if(data.msg=='success'){
@@ -914,6 +938,15 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			
 		});
 	}
+
+	this.init_func = null;
+	this._init_func = function _init_func(init_func){
+		this.init_func = init_func;
+	}
+	this._init = function(){
+		this.init_func(this);
+	}
+	
 }
 
 function getfield(field,or_search){

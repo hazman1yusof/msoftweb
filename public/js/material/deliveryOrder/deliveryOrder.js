@@ -856,8 +856,7 @@ $(document).ready(function () {
 
 			}else{
 				dialog_pricecode.on();//start binding event on jqgrid2
-				dialog_itemcode.on();
-				dialog_itemcode_init(blur=true);
+				dialog_itemcode.on()._init();
 				dialog_uomcode.on();
 				dialog_pouom.on();
 				dialog_taxcode.on();
@@ -1244,9 +1243,6 @@ $(document).ready(function () {
 		let qtydelivered = parseFloat($("#jqGrid2 #"+id_optid+"_qtydelivered").val());
 
 		var balconv = convfactor_pouom*qtydelivered%convfactor_uom;
-		console.log(convfactor_uom);
-		console.log(convfactor_pouom);
-		console.log(balconv);
 		if (balconv  == 0) {
 			if($.inArray(id,errorField)!==-1){
 				errorField.splice($.inArray(id,errorField), 1);
@@ -1282,8 +1278,7 @@ $(document).ready(function () {
 
 		}else{
 			dialog_pricecode.on();//start binding event on jqgrid2
-			dialog_itemcode.on();
-			dialog_itemcode_init(blur=true);
+			dialog_itemcode.on()._init();
 			dialog_uomcode.on();
 			dialog_pouom.on();
 			dialog_taxcode.on();
@@ -1505,7 +1500,6 @@ $(document).ready(function () {
 		},'none'
 	);
 	dialog_srcdocno.makedialog();
-	dialog_srcdocno.urlParam.fixPost = "true";
 
 	var dialog_suppcode = new ordialog(
 		'suppcode','material.supplier','#delordhd_suppcode',errorField,
@@ -1652,43 +1646,41 @@ $(document).ready(function () {
 		},'none','radio'//urlParam means check() using urlParam not check_input
 	);
 	dialog_itemcode.makedialog(false);
+	dialog_itemcode._init_func(function(self){
+		self.urlParam.fixPost = "true";
+		self.urlParam.table_id = "none_";
+		self.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode'];
+		self.urlParam.filterVal = ['session.company', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val()];
+		self.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
+		self.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
+		self.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
+		self.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
+		self.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
 
-	//init urlparam sebelum open
-	function dialog_itemcode_init(blur=false){
-		dialog_itemcode.urlParam.fixPost = "true";
-		dialog_itemcode.urlParam.table_id = "none_";
-		dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode'];
-		dialog_itemcode.urlParam.filterVal = ['session.company', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val()];
-		dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
-		dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
-		dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
-		dialog_itemcode.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
-		dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
+		$(dialog_itemcode.textfield).on('blur',{data:dialog_itemcode,errorField:errorField},dialog_itemcode_onleave);
 
-		if(blur)$(dialog_itemcode.textfield).on('blur',{data:dialog_itemcode,errorField:errorField},dialog_itemcode_onleave);
-	}
+		//onleave dialog itemcode
+		function dialog_itemcode_onleave(event){
+			let obj = event.data.data;
+			let optid = event.currentTarget.getAttribute("optid")
+			let id_optid = optid.substring(0,optid.search("_"));
+			let itemcode = $("#jqGrid2 #"+id_optid+"_itemcode").val();
 
-	//onleave dialog itemcode
-	function dialog_itemcode_onleave(event){
-		let obj = event.data.data;
-		let optid = event.currentTarget.getAttribute("optid")
-		let id_optid = optid.substring(0,optid.search("_"));
-		let itemcode = $("#jqGrid2 #"+id_optid+"_itemcode").val();
+			obj.urlParam.searchCol=['s_itemcode'];
+			obj.urlParam.searchVal=['%'+itemcode+'%'];
+			if(itemcode!=''){
+				refreshGrid("#"+obj.gridname,obj.urlParam);
+				var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
 
-		obj.urlParam.searchCol=['s_itemcode'];
-		obj.urlParam.searchVal=['%'+itemcode+'%'];
-		if(itemcode!=''){
-			refreshGrid("#"+obj.gridname,obj.urlParam);
-			var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
-
-			$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
-			$("#jqGrid2 #"+id_optid+"_uomcode").val(data['s_uomcode']);
-			$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
-			$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
-			$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
-			$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+				$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
+				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['s_uomcode']);
+				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
+				$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
+				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
+				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+			}
 		}
-	}
+	});
 
 	var dialog_uomcode = new ordialog(
 		'uom',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
