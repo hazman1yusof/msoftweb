@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\model\sysdb\Company;
 use App\User;
+use DB;
 use Auth;
 use Hash;
 use Session;
@@ -31,6 +32,22 @@ class SessionController extends Controller
             $request->session()->put('compcode', request('cmb_companies'));
             $request->session()->put('username', request('username'));
             $request->session()->put('deptcode', $user->deptcode);
+
+            if($user->deptcode != ''){
+                $units = DB::table('sysdb.department')
+                    ->select('sector')
+                    ->where('deptcode','=',$user->deptcode)
+                    ->where('compcode','=',request('cmb_companies'))
+                    ->first();
+                $request->session()->put('unit', $units->sector);
+            }else{
+                $units = DB::table('sysdb.sector')
+                    ->select('sectorcode')
+                    ->where('compcode','=',request('cmb_companies'))
+                    ->first();
+                $request->session()->put('unit', $units->sectorcode);
+            }
+           
     		return redirect()->home();
     	}else{
     		return back();
@@ -41,6 +58,7 @@ class SessionController extends Controller
     	Session::flush();
 
     	$company = company::all();
-        return view('init.login',compact("company"));
+        return redirect()->home();
+        // return view('init.login',compact("company"));
     }
 }

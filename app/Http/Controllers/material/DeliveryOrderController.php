@@ -66,6 +66,7 @@ class DeliveryOrderController extends defaultController
             'docno' => $request_no,
             'recno' => $recno,
             'compcode' => session('compcode'),
+            'unit' => session('unit'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'OPEN'
@@ -131,6 +132,7 @@ class DeliveryOrderController extends defaultController
             $table = DB::table("material.delordhd");
 
             $array_update = [
+                'unit' => session('unit'),
                 'compcode' => session('compcode'),
                 'upduser' => session('username'),
                 'upddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -260,7 +262,8 @@ class DeliveryOrderController extends defaultController
                         'recstatus'=>$delordhd_obj->recstatus, 
                         'adduser'=>$delordhd_obj->adduser, 
                         'adddate'=>Carbon::now("Asia/Kuala_Lumpur"),
-                        'remarks'=>$delordhd_obj->remarks
+                        'remarks'=>$delordhd_obj->remarks,
+                        'unit' =>$delordhd_obj->unit
                     ]);
             }
             
@@ -275,6 +278,7 @@ class DeliveryOrderController extends defaultController
                     $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
                 })
                 ->where('delorddt.compcode','=',session('compcode'))
+                ->where('delorddt.unit','=',session('unit'))
                 ->where('product.groupcode','=','Stock')
                 ->where('delorddt.recno','=',$request->recno)
                 ->first();
@@ -282,6 +286,7 @@ class DeliveryOrderController extends defaultController
 
             $delorddt_obj = DB::table('material.delorddt')
                 ->where('delorddt.compcode','=',session('compcode'))
+                ->where('delorddt.unit','=',session('unit'))
                 ->where('delorddt.recno','=',$request->recno)
                 ->where('delorddt.recstatus','!=','DELETE')
                 ->get();
@@ -295,6 +300,7 @@ class DeliveryOrderController extends defaultController
                 $convfactorPOUOM_obj = DB::table('material.delorddt')
                     ->select('uom.convfactor')
                     ->join('material.uom','delorddt.pouom','=','uom.uomcode')
+                    ->where('delorddt.unit','=',session('unit'))
                     ->where('delorddt.compcode','=',session('compcode'))
                     ->where('delorddt.recno','=',$request->recno)
                     ->where('delorddt.lineno_','=',$value->lineno_)
@@ -304,6 +310,7 @@ class DeliveryOrderController extends defaultController
                 $convfactorUOM_obj = DB::table('material.delorddt')
                     ->select('uom.convfactor')
                     ->join('material.uom','delorddt.uomcode','=','uom.uomcode')
+                    ->where('delorddt.unit','=',session('unit'))
                     ->where('delorddt.compcode','=',session('compcode'))
                     ->where('delorddt.recno','=',$request->recno)
                     ->where('delorddt.lineno_','=',$value->lineno_)
@@ -339,12 +346,14 @@ class DeliveryOrderController extends defaultController
                     
                     $purordhd = DB::table('material.purordhd')
                         ->where('compcode','=',session('compcode'))
+                        ->where('delorddt.unit','=',session('unit'))
                         ->where('purordno','=',$delordhd_obj->srcdocno)
                         ->first();
 
                     $po_recno = $purordhd->recno;
 
                     $podt_obj = DB::table('material.purorddt')
+                        ->where('delorddt.unit','=',session('unit'))
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$po_recno)
                         ->where('lineno_','=',$value->lineno_);
@@ -371,6 +380,7 @@ class DeliveryOrderController extends defaultController
             //--- 8. change recstatus to posted ---//
             DB::table('material.delordhd')
                 ->where('recno','=',$request->recno)
+                ->where('delorddt.unit','=',session('unit'))
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'postedby' => session('username'),
@@ -380,6 +390,7 @@ class DeliveryOrderController extends defaultController
 
             DB::table('material.delorddt')
                 ->where('recno','=',$request->recno)
+                ->where('delorddt.unit','=',session('unit'))
                 ->where('compcode','=',session('compcode'))
                 ->where('recstatus','!=','DELETE')
                 ->update([

@@ -19,11 +19,10 @@ class HomeController extends Controller
     public function index(){
         $user = Auth::user();
         $menu = $this->create_main_menu();
-        $unit = DB::table('sysdb.sector')
+        $units = DB::table('sysdb.sector')
                 ->where('compcode','=',$user->compcode)
                 ->get();
-
-        return view('init.container',compact('menu','unit'));
+        return view('init.container',compact('menu','units'));
     }
 
     public function create_main_menu(){
@@ -99,5 +98,9 @@ class HomeController extends Controller
 
     public function tab($loop){
         return (30 + (10 * $loop)) . 'px';
+    }
+
+    public function changeSessionUnit(Request $request){
+        $request->session()->put('unit', $request->unit);
     }
 }
