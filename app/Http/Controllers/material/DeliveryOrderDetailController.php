@@ -125,7 +125,6 @@ class DeliveryOrderDetailController extends defaultController
         $trandate = $request->trandate;
         $deldept = $request->deldept;
         $deliverydate = $request->deliverydate;
-        $unit = $request->unit;
 
         DB::beginTransaction();
 
@@ -173,7 +172,7 @@ class DeliveryOrderDetailController extends defaultController
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks,
-                    'unit' => $request->unit
+                    'unit' => session('unit')
                 ]);
 
             ///3. calculate total amount from detail
@@ -242,7 +241,7 @@ class DeliveryOrderDetailController extends defaultController
                     'expdate'=> $this->chgDate($request->expdate),  
                     'batchno'=> $request->batchno, 
                     'remarks'=> $request->remarks,
-                    'unit' => $request->unit
+                    'unit' => session('unit')
                 ]);
 
             ///2. recalculate total amount
@@ -313,7 +312,7 @@ class DeliveryOrderDetailController extends defaultController
                         'expdate'=> $this->chgDate($value['expdate']),  
                         'batchno'=> $value['batchno'],
                         'remarks'=> $value['remarks']
-                        //'unit'=> $value['unit']
+                        'unit' => session('unit')
                     ]);
             }
             
