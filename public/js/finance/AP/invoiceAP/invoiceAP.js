@@ -171,7 +171,7 @@ $(document).ready(function () {
 		height: 200,
 		rowNum: 30,
 		pager: "#jqGridPager",
-		onSelectRow:function(rowid, selected){
+		/*onSelectRow:function(rowid, selected){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			switch($("#scope").val()){
 				case "cancel": 
@@ -199,7 +199,7 @@ $(document).ready(function () {
 			}
 
 			refreshGrid("#jqGrid3",urlParam2);
-		},
+		},*/
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='Edit Selected Row']").click();
 		},
@@ -216,6 +216,17 @@ $(document).ready(function () {
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
+
+	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
+	function hideatdialogForm(hide){
+		if(hide){
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete").hide();
+			$("#saveDetailLabel").show();
+		}else{
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete").show();
+			$("#saveDetailLabel").hide();
+		}
+	}
 
 	/////////////////////////////// for Button /////////////////////////////////////////////////////////
 	var adtNo
@@ -245,10 +256,10 @@ $(document).ready(function () {
 				$('#save').hide();
 				$('#ap_parent').show();
 			}
-				/*else {
-					$('#save').show();
-					$('#ap_parent').hide();
-				}*/
+			else {
+				$('#save').show();
+				$('#ap_parent').hide();
+			}
 			});
 	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -381,7 +392,7 @@ $(document).ready(function () {
 		'supplier','material.supplier','#apacthdr_suppcode',errorField,
 		{	colModel:[
 				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Name',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			]
 		},{
 			title:"Select Supplier Code",
