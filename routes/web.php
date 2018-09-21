@@ -135,13 +135,6 @@ Route::post('/doctor_maintenance/save_session','hisdb\DoctorMaintenanceControlle
 Route::post('/doctor_maintenance/save_bgleave','hisdb\DoctorMaintenanceController@save_bgleave');
 Route::post('/doctor_maintenance/save_colorph','hisdb\DoctorMaintenanceController@save_colorph');
 
-//// invoice AP setup page ///
-Route::get('/invoiceAP','material\InventoryTransactionController@show');
-Route::get('/invoiceAP/table','material\InventoryTransactionController@table');
-Route::post('/invoiceAP/form','material\InventoryTransactionController@form');
-Route::get('/invoiceAP/form','material\InventoryTransactionController@form');
-Route::post('/invoiceAPDetail/form','material\InventoryTransactionDetailController@form');
-
 //// inventory Transaction setup page ///
 Route::get('/inventoryTransaction','material\InventoryTransactionController@show');
 Route::get('/inventoryTransaction/table','material\InventoryTransactionController@table');
@@ -274,6 +267,13 @@ Route::post('/sequence/form','material\SequenceController@form');
 Route::get('/categoryinv','material\CategoryInvController@show');
 Route::get('/categoryinv/table','material\CategoryInvController@table');
 Route::post('/categoryinv/form','material\CategoryInvController@form');
+
+//// invoice AP setup page ///
+Route::get('/invoiceAP','finance\InvoiceAPController@show');
+Route::get('/invoiceAP/table','finance\InvoiceAPController@table');
+Route::post('/invoiceAP/form','finance\InvoiceAPController@form');
+Route::get('/invoiceAP/form','finance\InvoiceAPController@form');
+Route::post('/invoiceAPDetail/form','finance\InvoiceAPDetailController@form');
 
 //// Delivery Department material setup ///
 Route::get('/deliveryDept','material\DeliveryDeptController@show');

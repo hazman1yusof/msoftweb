@@ -19,9 +19,9 @@
 				</div>
                 
                 <div class="form-group">
-                	<label class="col-md-2 control-label" for="Description">Description</label>  
+                	<label class="col-md-2 control-label" for="description">Description</label>  
                       <div class="col-md-3">
-                      <input id="Description" name="Description" type="text" maxlength="50" class="form-control input-sm" data-validation="required">
+                      <input id="description" name="description" type="text" maxlength="50" class="form-control input-sm" data-validation="required">
                       </div>
 				</div>
                 

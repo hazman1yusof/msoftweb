@@ -78,7 +78,10 @@ $(document).ready(function () {
 				}
 				if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
-						//dialog_dept.handler(errorField);
+						dialog_regioncode.on();
+				}
+				if(oper!='add'){
+						dialog_regioncode.check(errorField);
 					}
 			},
 			close: function (event, ui) {
@@ -121,22 +124,15 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 5, hidden: true },
 
-			{
-				label: 'Sector Code', name: 'sectorcode', width: 10, classes: 'wrap', canSearch: true, checked: true, editable: true,
-				editrules: { required: true },
-				editoptions: { maxlength: 2 },
-			},
-			{
-				label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, editable: true,
-				editrules: { required: true },
-				editoptions: { maxlength: 100 },
-			},
+			{ label: 'Sector Code', name: 'sectorcode', width: 20, classes: 'wrap', canSearch: true},
+			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true,checked:true,},
+			{ label: 'Region Code', name: 'regioncode', width: 50, classes: 'wrap'},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
 			{
-				label: 'Record Status', name: 'recstatus', width: 80, formatter: formatterstatus,
+				label: 'Record Status', name: 'recstatus', width: 20, formatter: formatterstatus,
 				unformat: unformat, cellattr: function (rowid, cellvalue) {
 					return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : ''
 				},
@@ -242,6 +238,23 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+
+	////////////////////object for dialog handler//////////////////\
+			var dialog_regioncode = new ordialog(
+				'regioncode','sysdb.region','#regioncode',errorField,
+				{	colModel:[
+						{label:'Region Code',name:'regioncode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						]
+				},{
+					title:"Select Region Code",
+					open: function(){
+						dialog_regioncode.urlParam.filterCol=['recstatus'],
+						dialog_regioncode.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+			dialog_regioncode.makedialog();
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 
