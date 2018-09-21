@@ -109,7 +109,6 @@
 							{{ csrf_field() }}
 							<input id="delordhd_trantype" name="delordhd_trantype" type="hidden">
 							<input id="delordhd_idno" name="delordhd_idno" type="hidden">
-							<input id="delordhd_unit" name="delordhd_unit" type="hidden">
 							<input id="referral" name="referral" type="hidden">
 
 							<div class="form-group">

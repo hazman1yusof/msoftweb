@@ -381,7 +381,7 @@ class DeliveryOrderController extends defaultController
             //--- 8. change recstatus to posted ---//
             DB::table('material.delordhd')
                 ->where('recno','=',$request->recno)
-                ->where('delorddt.unit','=',session('unit'))
+                ->where('unit','=',session('unit'))
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'postedby' => session('username'),
@@ -391,7 +391,7 @@ class DeliveryOrderController extends defaultController
 
             DB::table('material.delorddt')
                 ->where('recno','=',$request->recno)
-                ->where('delorddt.unit','=',session('unit'))
+                ->where('unit','=',session('unit'))
                 ->where('compcode','=',session('compcode'))
                 ->where('recstatus','!=','DELETE')
                 ->update([

@@ -56,7 +56,6 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly('#formdata');
 					$("#delordhd_prdept").val($("#deptcode").val());
-					$("#delordhd_unit").val($("#deldept").val());
 					$('#delordhd_trantime').val(moment().format('HH:mm:ss'));
 					break;
 				case state = 'edit':
@@ -389,7 +388,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['delordhd_trantype','delordhd_recno','delordhd_docno','delordhd_adduser','delordhd_adddate','delordhd_upduser','delordhd_upddate','delordhd_deluser','delordhd_idno','supplier_name','delordhd_recstatus']);
+	addParamField('#jqGrid',false,saveParam,['delordhd_trantype','delordhd_recno','delordhd_docno','delordhd_adduser','delordhd_adddate','delordhd_upduser','delordhd_upddate','delordhd_deluser','delordhd_idno','supplier_name','delordhd_recstatus','delordhd_unit']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -915,7 +914,6 @@ $(document).ready(function () {
 					trandate:$('#delordhd_trandate').val(),
 					deldept:$('#delordhd_deldept').val(),
 					deliverydate:$('#delordhd_deliverydate').val(),
-					unit:$('#delordhd_unit').val(),
 					remarks:data.remarks,
 					amount:data.amount,
 					netunitprice:data.netunitprice,
@@ -1043,7 +1041,6 @@ $(document).ready(function () {
 				trandate:$('#delordhd_trandate').val(),
 				deldept:$('#delordhd_deldept').val(),
 				deliverydate:$('#delordhd_deliverydate').val(),
-				unit:$('#delordhd_unit').val()
     		}
 
     		$.post( "/deliveryOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
@@ -1552,13 +1549,12 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data = selrowData('#'+dialog_deldept.gridname);
 				backdated.set_backdate(data.deptcode);
-				$("#delordhd_unit").val(data['deptcode']);
 			}
 		},{
 			title:"Select Receiver Department",
 			open: function(){
-				dialog_deldept.urlParam.filterCol=['storedept', 'recstatus'];
-				dialog_deldept.urlParam.filterVal=['1', 'A'];
+				dialog_deldept.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
+				dialog_deldept.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
 			}
 		},'urlParam'
 	);
