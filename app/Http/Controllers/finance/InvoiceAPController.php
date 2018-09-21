@@ -28,18 +28,13 @@ class InvoiceAPController extends defaultController
 
     public function form(Request $request)
     {  
-        DB::enableQueryLog();
         switch($request->oper){
             case 'add':
-                return $this->add($request);
+                return $this->defaultAdd($request);
             case 'edit':
-                return $this->edit($request);
+                return $this->defaultEdit($request);
             case 'del':
-                return $this->del($request);
-            case 'posted':
-                return $this->posted($request);
-            case 'cancel':
-                return $this->cancel($request);
+                return $this->defaultDel($request);
             default:
                 return 'error happen..';
         }
