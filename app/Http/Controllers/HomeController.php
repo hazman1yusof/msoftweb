@@ -22,7 +22,15 @@ class HomeController extends Controller
         $units = DB::table('sysdb.sector')
                 ->where('compcode','=',$user->compcode)
                 ->get();
-        return view('init.container',compact('menu','units'));
+        $unit_user = '';
+        if($user->deptcode != ''){
+            $unit_user_ = DB::table('sysdb.department')
+                ->where('compcode','=',$user->compcode)
+                ->where('deptcode','=',$user->deptcode)
+                ->first();
+            $unit_user = $unit_user_->sector;
+        }
+        return view('init.container',compact('menu','units','unit_user'));
     }
 
     public function create_main_menu(){

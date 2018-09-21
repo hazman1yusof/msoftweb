@@ -49,12 +49,21 @@
 			@if(Auth::user()->deptcode == '')
 			<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
-				<li><h4>&nbsp;Unit :&nbsp;</h4></li>
+				<li><h4 style="font-size: 15px">&nbsp;Unit :&nbsp;</h4></li>
 				<li>
 					<select class="form-control" id="session_unit">
 						@foreach ($units as $unit)
 					  		<option value="{{$unit->sectorcode}}">{{$unit->description}}</option>
 						@endforeach
+					</select>
+				</li>
+			</ul>
+			@else
+			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
+				<li><h4 style="font-size: 15px">&nbsp;Unit :&nbsp;</h4></li>
+				<li>
+					<select class="form-control" id="session_unit" readonly>
+					  	<option>{{$unit_user}}</option>
 					</select>
 				</li>
 			</ul>
