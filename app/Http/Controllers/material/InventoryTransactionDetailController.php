@@ -28,6 +28,16 @@ class InventoryTransactionDetailController extends defaultController
                 return $this->add($request);
             case 'edit':
                 return $this->edit($request);
+            case 'edit_all':
+
+                if($request->srcdocno != 0){
+                    // return 'edit all srcdocno !=0';
+                    return $this->edit_all_from_PO($request);
+                }else{
+                    // return 'edit all biasa';
+                    return $this->edit_all($request);
+                }
+
             case 'del':
                 return $this->del($request);
             default:
@@ -138,10 +148,9 @@ class InventoryTransactionDetailController extends defaultController
                     'amount' => $totalAmount
                   
                 ]);
-
-            echo $totalAmount;
-
             DB::commit();
+            return response($totalAmount,200);
+
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -193,10 +202,9 @@ class InventoryTransactionDetailController extends defaultController
                 ->update([
                     'amount' => $totalAmount, 
                 ]);
-            
-            echo $totalAmount;
 
             DB::commit();
+            return response($totalAmount,200);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -240,9 +248,9 @@ class InventoryTransactionDetailController extends defaultController
                    
                 ]);
 
-            echo $totalAmount;
-
             DB::commit();
+
+            return response($totalAmount,200);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -321,7 +329,6 @@ class InventoryTransactionDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$po_recno)
                 ->where('lineno_','=',$request->lineno_);
-
             $podt_obj_lama = $podt_obj->first();
 
             ///6. check dan bagi error kalu exceed quantity order
@@ -371,10 +378,68 @@ class InventoryTransactionDetailController extends defaultController
                 ->update([
                     'qtyoutstand' => $qtyoutstand, 
                 ]);
-            
-            echo $totalAmount;
 
             DB::commit();
+
+            return response($totalAmount,200);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+
+    }
+
+    public function edit_all(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->dataobj as $key => $value) {
+
+                ///1. update detail
+                DB::table('material.ivtmpdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->where('lineno_','=',$value['lineno_'])
+                    ->update([
+                        'itemcode' => $value['itemcode'],
+                        'uomcode' => $value['uomcode'],
+                        'txnqty' => $value['txnqty'],
+                        'netprice' => $value['netprice'],
+                        // 'productcat' => $value['productcat'],
+                        'qtyonhand' => $value['qtyonhand'],
+                        'uomcoderecv'=> $value['uomcoderecv'],
+                        'qtyonhandrecv'=> $value['qtyonhandrecv'],
+                        'amount' => $value['amount'],
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'expdate' => $value['expdate'],
+                        'batchno' => $value['batchno'], 
+                        'recstatus' => 'OPEN', 
+                        // 'remarks' => $value['remarks']
+                    ]);
+
+                ///2. recalculate total amount
+                $totalAmount = DB::table('material.ivtmpdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('amount');
+
+                ///3. update total amount to header
+                DB::table('material.ivtmphd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->update([
+                        'amount' => $totalAmount, 
+                    ]);
+            }
+
+            DB::commit();
+            return response($totalAmount,200);
 
         } catch (\Exception $e) {
             DB::rollback();

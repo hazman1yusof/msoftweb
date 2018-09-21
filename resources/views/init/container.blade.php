@@ -45,10 +45,25 @@
 			</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
+
+			@if(Auth::user()->deptcode == '')
+			<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
+				<li><h4>&nbsp;Unit :&nbsp;</h4></li>
+				<li>
+					<select class="form-control" id="session_unit">
+						@foreach ($units as $unit)
+					  		<option value="{{$unit->sectorcode}}">{{$unit->description}}</option>
+						@endforeach
+					</select>
+				</li>
+			</ul>
+			@endif
+
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="#" class='dropdown-toggle active' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<span id='username'></span>
+						<span id='username' style="font-size: 15px">{{Auth::user()->username}}</span>
 						<i class="fa fa-user fa-fw"></i>
 						<i class="fa fa-caret-down"></i>
 					</a>
@@ -60,6 +75,7 @@
 					</ul>
 				</li>
 			</ul>
+
 		</div>
 	</div>
 	</div>
@@ -246,6 +262,15 @@
         Menu.init_menu();
         Menu.init_announce();
         // Menu.init_card();
+        $("#session_unit").change(function(){
+        	$.post( '/sessionUnit', {_token:$('#_token').val(), unit:$(this).val()}, function( data ) {
+				
+			}).fail(function(data) {
+				
+			}).success(function(data){
+				
+			});
+        });
 
         var timeoutId;
 		$("#myNavmenu").hover(function() {

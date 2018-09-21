@@ -73,7 +73,7 @@ $("body").show();
 			if(oper!='add'){
 				setColor();
 				dialog_txndept.check(errorField);
-				dialog_deptcode.check(errorField);
+				// dialog_deptcode.check(errorField);
 			}
 		},
 		close: function( event, ui ) {
@@ -242,7 +242,7 @@ $("body").show();
 				dialog_deptcode.urlParam.filterCol=['recstatus'],
 				dialog_deptcode.urlParam.filterVal=['A']
 			}
-		},'urlParam'
+		},'none'
 	);
 	dialog_deptcode.makedialog();
 

@@ -14,22 +14,20 @@
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
 				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
+					<div name='Scol'>Search By : </div>
 				</div>
 				<div class="StextClass">
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-					
 				</div>
 			 </fieldset> 
 		</form>
     	<div class="panel panel-default">
-		    	
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
+    		<div class="panel-body">
+    			<div class='col-md-12' style="padding:0 0 15px 0">
+    				<table id="jqGrid" class="table table-striped"></table>
+    					<div id="jqGridPager"></div>
+				</div>
+    		</div>
 		</div>
 
     </div>
@@ -140,6 +138,15 @@
 							</div>
 							<span class="help-block"></span>
 						</div>
+
+					<label class="col-md-2 control-label" for="uomcode">UOM Code</label>
+						<div class="col-md-3">
+							<div class='input-group'>
+								<input id="uomcode" name="uomcode" type="text" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
 				</div>
 
 				<div class="form-group">
@@ -184,7 +191,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="method">Method</label>  
 						<div class="col-md-3">
-							<input id="method" type="text" name="method" maxlength="12" class="form-control input-sm">
+							<input id="method" type="text" name="method" maxlength="15" class="form-control input-sm">
 						</div>
 					<label class="col-md-2 control-label" for="rvalue">Residual Value</label>  
 						<div class="col-md-3">
@@ -202,7 +209,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="origcost">Cost</label>  
 						<div class="col-md-3">
-							<input id="origcost" name="origcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" readonly>  
+							<input id="origcost" name="origcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" value="0.00" readonly>  
 					 	</div>
 				</div>
 
@@ -231,7 +238,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="nbv">N-B-V</label>
 						<div class="col-md-3">
-							<input id="nbv" type="text" name="nbv" maxlength="12" class="form-control input-sm" rdonly>
+							<input id="nbv" type="text" name="nbv" maxlength="12" class="form-control input-sm" readonly>
 						</div>
 					<label class="col-md-2 control-label" for="trandate">Post Date</label>  
 						<div class="col-md-3">
@@ -254,6 +261,5 @@
 @section('scripts')
 
 	<script src="js/finance/FA/assetregister/assetregisterScript.js"></script>
-
 	
 @endsection

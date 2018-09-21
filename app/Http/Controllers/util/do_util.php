@@ -14,6 +14,7 @@ class do_util extends defaultController{
 		DB::table('material.ivtxndt')
             ->insert([
                 'compcode' => $value->compcode, 
+                'unit' => $value->unit, 
                 'recno' => $value->recno, 
                 'lineno_' => $value->lineno_, 
                 'itemcode' => $value->itemcode, 
@@ -46,6 +47,7 @@ class do_util extends defaultController{
 		//1. amik stockloc
         $stockloc_obj = DB::table('material.StockLoc')
             ->where('StockLoc.CompCode','=',session('compcode'))
+            ->where('StockLoc.unit','=',session('unit'))
             ->where('StockLoc.DeptCode','=',$value->deldept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
             ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
@@ -64,6 +66,7 @@ class do_util extends defaultController{
 
             DB::table('material.StockLoc')
                 ->where('StockLoc.CompCode','=',session('compcode'))
+                ->where('StockLoc.unit','=',session('unit'))
                 ->where('StockLoc.DeptCode','=',$value->deldept)
                 ->where('StockLoc.ItemCode','=',$value->itemcode)
                 ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
@@ -84,6 +87,7 @@ class do_util extends defaultController{
 		//1. amik Stock Expiry
         $stockexp_obj = DB::table('material.stockexp')
             ->where('stockexp.compcode','=',session('compcode'))
+            ->where('stockexp.unit','=',session('unit'))
             ->where('stockexp.deptcode','=',$value->deldept)
             ->where('stockexp.itemcode','=',$value->itemcode)
             ->where('stockexp.expdate','=',$value->expdate)
@@ -99,6 +103,7 @@ class do_util extends defaultController{
 
             DB::table('material.stockexp')
                 ->where('stockexp.compcode','=',session('compcode'))
+                ->where('stockexp.unit','=',session('unit'))
                 ->where('stockexp.deptcode','=',$value->deldept)
                 ->where('stockexp.itemcode','=',$value->itemcode)
                 ->where('stockexp.expdate','=',$value->expdate)
@@ -136,6 +141,7 @@ class do_util extends defaultController{
 	public static function product_ins($value,$txnqty,$netprice){
 		$product_obj = DB::table('material.product')
 	        ->where('product.compcode','=',session('compcode'))
+            ->where('product.unit','=',session('unit'))
 	        ->where('product.itemcode','=',$value->itemcode)
 	        ->where('product.uomcode','=',$value->uomcode)
 	        ->first();
@@ -154,6 +160,7 @@ class do_util extends defaultController{
 	        // update qtyonhand, avgcost, currprice
 	        $product_obj = DB::table('material.product')
 	            ->where('product.compcode','=',session('compcode'))
+                ->where('product.unit','=',session('unit'))
 	            ->where('product.itemcode','=',$value->itemcode)
 	            ->where('product.uomcode','=',$value->uomcode)
 	            ->update([
@@ -164,7 +171,6 @@ class do_util extends defaultController{
 
 	    }
 	}
-
 
 	public static function postingGL($value,$delordhd_obj,$productcat){
 
@@ -395,7 +401,6 @@ class do_util extends defaultController{
                     ]);
             }
         }
-
 	}
 
 }

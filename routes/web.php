@@ -12,6 +12,7 @@
 */
 
 Route::get('/','HomeController@index')->name('home');
+Route::post('/sessionUnit','HomeController@changeSessionUnit');
 Route::get('/login','SessionController@create')->name('login');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');

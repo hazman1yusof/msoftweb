@@ -32,7 +32,7 @@ class invtran_util extends defaultController{
             ->where('department.deptcode','=',$ivtmphd->txndept)
             ->first();
 
-        if($trantype_obj->accttype == 'STOCK' || $trantype_obj->accttype == 'Stock'){
+        if($trantype_obj->isstype == 'Transfer'){
 
 	        $craccno = $category_obj->stockacct;
 	        $crccode = $dept_obj->costcode;
@@ -53,8 +53,23 @@ class invtran_util extends defaultController{
 	            ->where('department.deptcode','=',$ivtmphd->sndrcv)
 	            ->first();
 
-	        $draccno = $category_obj->stockacct;
-	        $drccode = $dept_obj->costcode;
+            $stockloc_obj = DB::table('material.StockLoc')
+                ->where('StockLoc.CompCode','=',session('compcode'))
+                ->where('StockLoc.DeptCode','=',$ivtmphd->sndrcv)
+                ->where('StockLoc.ItemCode','=',$value->itemcode)
+                ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+                ->where('StockLoc.UomCode','=',$value->uomcode);
+                ->first();
+
+            if(count($stockloc_obj)){
+                if($stockloc_obj->disptype == 'DS'){
+                    $draccno = $category_obj->stockacct;
+                    $drccode = $dept_obj->costcode;
+                }else if($stockloc_obj->disptype == 'DS1'){
+                    $draccno = $category_obj->cosacct;
+                    $drccode = $dept_obj->costcode;
+                }
+            }
 
         }else{
         	switch($trantype_obj->crdbfl){

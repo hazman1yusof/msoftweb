@@ -172,7 +172,7 @@ abstract class defaultController extends Controller{
             foreach ($request->filterCol as $key => $value) {
                 $pieces = explode(".", $request->filterVal[$key], 2);
                 if($pieces[0] == 'session'){
-                    $table = $table->where($request->filterCol[$key],'=',session('compcode'));
+                    $table = $table->where($request->filterCol[$key],'=',session($pieces[1]));
                 }else if($pieces[0] == '<>'){
                     $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
                 }else{
