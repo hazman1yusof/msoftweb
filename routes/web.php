@@ -215,9 +215,9 @@ Route::get('/department/table','finance\DepartmentController@table');
 Route::post('/department/form','finance\DepartmentController@form');
 
 //// Sector setup page ///
-Route::get('/sector','finance\SectorController@show');
-Route::get('/sector/table','finance\SectorController@table');
-Route::post('/sector/form','finance\SectorController@form');
+Route::get('/region','finance\SectionController@show');
+Route::get('/region/table','finance\SectionController@table');
+Route::post('/region/form','finance\SectionController@form');
 
 //// Unit setup page ///
 Route::get('/unit','finance\UnitController@show');
