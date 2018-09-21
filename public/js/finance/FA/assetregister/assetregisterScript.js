@@ -138,6 +138,23 @@ $.jgrid.defaults.responsive = true;
 		);
 		dialog_itemcode.makedialog();
 	
+		var dialog_uomcode= new ordialog(
+			'uomcode','material.product','#uomcode',errorField,
+			{	colModel:[
+					{label:'uomcode',name:'uomcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+					
+					]
+			},{
+				title:"Select uomcode",
+				open: function(){
+					dialog_uomcode.urlParam.filterCol=['compcode','itemcode'],
+					dialog_uomcode.urlParam.filterVal=['9A',$("#itemcode").val()]
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_uomcode.makedialog()
+;
 
 
 		var butt1=[{
@@ -200,10 +217,12 @@ $.jgrid.defaults.responsive = true;
 						dialog_loccode.on();
 						dialog_suppcode.on();
 						dialog_itemcode.on();
+						dialog_uomcode.on();
 						dialog_delordno.on();
 					}
 					if(oper!='add'){
 						dialog_itemcode.check(errorField);
+						dialog_uomcode.check(errorField);
 						dialog_delordno.check(errorField);
 						dialog_assetcode.check(errorField);
 						dialog_suppcode.check(errorField);
@@ -257,6 +276,7 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 					{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 					{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
+					{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
 					{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},	
 					//{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
 					{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
@@ -269,7 +289,7 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
 					{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 					{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
-					{ label: 'Status', name: 'actionstatus', width: 20},
+					//{ label: 'Status', name: 'actionstatus', width: 20},
 					//method
 					//residual value
 					{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, hidden:true},
@@ -333,6 +353,7 @@ $.jgrid.defaults.responsive = true;
 				$("#purprice").prop('readonly',true);
 				$("#origcost").prop('readonly',true);
 				$("#currentcost").prop('readonly',true);
+				$("#nbv").prop('readonly',true);
 				$("#qty").prop('readonly',true);
 			}
 
@@ -347,6 +368,7 @@ $.jgrid.defaults.responsive = true;
 				$("#purprice").prop('readonly',false);
 				$("#origcost").prop('readonly',true);
 				$("#currentcost").prop('readonly',true);
+				$("#nbv").prop('readonly',true);
 				$("#qty").prop('readonly',false);
 			}
 
@@ -420,8 +442,8 @@ $.jgrid.defaults.responsive = true;
 			searchClick('#jqGrid','#searchForm',urlParam);
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam);
+			addParamField('#jqGrid',true,urlParam,['regtype','nbv']);
+			addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','recstatus','regtype','nbv']);
 			
 			$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
 
@@ -459,6 +481,7 @@ $.jgrid.defaults.responsive = true;
 				}else{
 					enableForm('#disableGroup');
 					$("#currentcost").prop("readonly",true);
+					$("#nbv").prop('readonly',true);
 					$('#disableGroup input').off('click',alert_toogle);
 				}
 			}
@@ -493,5 +516,16 @@ $.jgrid.defaults.responsive = true;
 
 		        $("#currentcost, #origcost").val(currentcost);
 			}
+
+			$("#origcost,#lstytddep,#cuytddep").blur(getNVB);
+			function getNVB(event) { 
+		        let origcost = parseFloat($("#origcost").val());
+		        let lstytddep = parseFloat($("#lstytddep").val());
+		        let cuytddep = parseFloat($("#cuytddep").val());
+
+		        var nbv = (origcost - lstytddep - cuytddep);
+
+		        $("#nbv").val(nbv);
+			}			
 		
 		});
