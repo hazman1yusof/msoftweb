@@ -1,47 +1,67 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
+@extends('layouts.main')
 
+@section('title', 'Invoice AP')
 
+@section('body')
 
-a
-<body>
+	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
+	<input id="deldept" name="deldept" type="hidden" value="{{Session::get('deldept')}}">
+	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
+	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 	 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
-				<!--<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-				</div>-->
+			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
 					  <div class="col-md-2">
 					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' class="form-control input-sm"></select>
+					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
 		              </div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input id="searchText" name="searchText" type="text" class="form-control input-sm" autocomplete="off"/>
+								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+
+							<div  id="tunjukname" style="display:none">
+								<div class='input-group'>
+									<input id="supplierkatdepan" name="supplierkatdepan" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+							
 						</div>
+
 		             </div>
+				</div>
+
+				<div class="col-md-2">
+				  	<label class="control-label" for="Status">Status</label>  
+					  	<select id="Status" name="Status" class="form-control input-sm">
+					      <option value="All" selected>ALL</option>
+					      <option value="Open">OPEN</option>
+					      <option value="Confirmed">CONFIRMED</option>
+					      <option value="Posted">POSTED</option>
+					      <option value="Cancelled">CANCELLED</option>
+					    </select>
+	            </div>
+
+
+				<div id="div_for_but_post" class="col-md-3 col-md-offset-5" style="padding-top: 20px; text-align: end;">
+					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 
 		</form>
-		
-		
 
-        <button type="button" id='cancelBut' class='btn btn-info btn-sm pull-right' style='margin: 0.2%'>Cancel</button>
-		<button type="button" id='postedBut' class='btn btn-info btn-sm pull-right' style='margin: 0.2%'>Post</button>
-
-		<div class="panel panel-default">
+        <div class="panel panel-default">
 		    	<div class="panel-heading">Invoice AP Header</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
@@ -50,33 +70,41 @@ a
         				</div>
 		    		</div>
 		</div>
-		
-    	<div class='col-md-12' style="padding:0 0 15px 0">
-            <table id="jqGrid" class="table table-striped"></table>
-            <div id="jqGridPager"></div>
-        </div>
 
-         <div class='col-md-12' style="padding:0 0 15px 0">
-	            <table id="jqGrid3" class="table table-striped"></table>
-	            <div id="jqGridPager3"></div>
-	    </div>
+        	<div class='click_row'>
+        		<label class="control-label">Record No</label>
+        		<span id="recnodepan" style="display: block;">&nbsp</span>
+        	</div>
+        	<div class='click_row'>
+				<label class="control-label">Purchase Dept</label>
+        		<span id="prdeptdepan" style="display: block;">&nbsp</span>
+        	</div>
+
+	    <div class="panel panel-default">
+		    	<div class="panel-heading">Invoice AP Detail</div>
+		    		<div class="panel-body">
+		    			<div class='col-md-12' style="padding:0 0 15px 0">
+	            			<table id="jqGrid3" class="table table-striped"></table>
+	            			<div id="jqGridPager3"></div>
+	    				</div>'
+		    		</div>
+		</div>
         
     </div>
 	<!-- ***************End Search + table ********************* -->
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Invoice AP Header</div>
-				<div class="panel-body">
-
+			<div class="panel-heading">Invoice AP Header
+					<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
+					</div>
+				<div class="panel-body" style="position: relative;">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
+							{{ csrf_field() }}
+							<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="AP">
+							<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden">
 
-						<div class="prevnext btn-group pull-right">
-						</div>
-								<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="AP">
-								<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden">
-
-						<div class="form-group">
+							<div class="form-group">
 
 							<label class="col-md-2 control-label" for="apacthdr_ttype">Doc Type</label> 
 							<div class="col-md-3" id="apacthdr_ttype">
@@ -189,36 +217,43 @@ a
 				</div>
 			</div>
 			
-			<div class='panel panel-info' id="ap_parent">
-				<div class="panel-heading">Detail</div>
+			<div class='panel panel-info'>
+				<div class="panel-heading">Invoice AP Detail</div>
 					<div class="panel-body">
-						<form id='formdata2' class='form-horizontal' style='width:99%'>
-					    	<div id="jqGrid2_c" class='col-md-12' style="padding:0 0 15px 0">
-					            <table id="jqGrid2" class="table table-striped"></table>
+						<form id='formdata2' class='form-vertical' style='width:99%'>
+							<!-- <input id="gstpercent" name="gstpercent" type="hidden">
+							<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
+							<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'> -->
+
+							<div id="jqGrid2_c" class='col-md-12'>
+								<table id="jqGrid2" class="table table-striped"></table>
 					            <div id="jqGridPager2"></div>
-					        </div>
+							</div>
 						</form>
 					</div>
-				</div>
+
+					<div class="panel-body">
+						<div class="noti"><ol></ol>
+						</div>
+					</div>
+			</div>
+				
+			<div id="dialog_remarks" title="Remarks">
+			  <div class="panel panel-default">
+			    <div class="panel-body">
+			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm" style="width:100%;"></textarea>
+			    </div>
+			  </div>
+			</div>
 		</div>
-		
-		
+@endsection
 
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
+
+@section('scripts')
+
+	<script src="js/finance/invoiceAP/invoiceAP.js"></script>
+	<script src="js/finance/invoiceAP/pdfgen.js"></script>
+	<script src="plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	
-	<!-- JS Implementing Plugins -->
-
-	<!-- JS Customization -->
-
-	<!-- JS Page Level-->
-	<script src="invoiceAP.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<!--<script src="../../../../assets/js/dialogHandler.js"></script>-->
-
-<script>
-		
-</script>
-</body>
-</html>
+@endsection

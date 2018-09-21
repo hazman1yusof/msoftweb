@@ -135,6 +135,13 @@ Route::post('/doctor_maintenance/save_session','hisdb\DoctorMaintenanceControlle
 Route::post('/doctor_maintenance/save_bgleave','hisdb\DoctorMaintenanceController@save_bgleave');
 Route::post('/doctor_maintenance/save_colorph','hisdb\DoctorMaintenanceController@save_colorph');
 
+//// invoice AP setup page ///
+Route::get('/invoiceAP','material\InventoryTransactionController@show');
+Route::get('/invoiceAP/table','material\InventoryTransactionController@table');
+Route::post('/invoiceAP/form','material\InventoryTransactionController@form');
+Route::get('/invoiceAP/form','material\InventoryTransactionController@form');
+Route::post('/invoiceAPDetail/form','material\InventoryTransactionDetailController@form');
+
 //// inventory Transaction setup page ///
 Route::get('/inventoryTransaction','material\InventoryTransactionController@show');
 Route::get('/inventoryTransaction/table','material\InventoryTransactionController@table');
@@ -212,6 +219,16 @@ Route::post('/glenquiry/form','finance\GlenquiryController@form');
 Route::get('/department','finance\DepartmentController@show');
 Route::get('/department/table','finance\DepartmentController@table');
 Route::post('/department/form','finance\DepartmentController@form');
+
+//// Sector setup page ///
+Route::get('/sector','finance\SectorController@show');
+Route::get('/sector/table','finance\SectorController@table');
+Route::post('/sector/form','finance\SectorController@form');
+
+//// Unit setup page ///
+Route::get('/unit','finance\UnitController@show');
+Route::get('/unit/table','finance\UnitController@table');
+Route::post('/unit/form','finance\UnitController@form');
 
 //// costcenter setup ///
 Route::get('/costcenter','finance\CostcenterController@show');
