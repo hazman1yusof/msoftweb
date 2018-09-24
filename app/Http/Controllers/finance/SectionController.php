@@ -5,7 +5,7 @@ namespace App\Http\Controllers\finance;
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 
-class SectorController extends defaultController
+class SectionController extends defaultController
 {   
 
     var $table;
@@ -19,7 +19,7 @@ class SectorController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('finance.GL.sector.sector');
+        return view('finance.GL.region.region');
     }
 
     public function form(Request $request)

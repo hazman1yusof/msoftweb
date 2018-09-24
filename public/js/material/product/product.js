@@ -297,8 +297,8 @@ $(document).ready(function () {
 		field:'',
 		table_id:'idno',
 		sort_idno:true,
-		filterCol:['groupcode', 'Class'],
-		filterVal:[$('#groupcode2').val(), $('#Class2').val()]
+		filterCol:['groupcode', 'Class','unit','compcode'],
+		filterVal:[$('#groupcode2').val(), $('#Class2').val(),'session.unit','session.compcode']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -316,6 +316,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
+		 	{ label: 'Unit', name: 'unit', width: 20, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Item Code', name: 'itemcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Item Description', name: 'description', width: 80, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true  },
 			{ label: 'Uom Code', name: 'uomcode', width: 30, sorttype: 'text', classes: 'wrap'  },

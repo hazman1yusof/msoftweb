@@ -77,7 +77,11 @@ $(document).ready(function () {
 						break;
 				}
 				if(oper!='view'){
-						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");;
+					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
+					dialog_regioncode.on();
+				}
+				if(oper!='add'){
+					dialog_regioncode.check(errorField);
 				}
 				
 			},
@@ -100,8 +104,8 @@ $(document).ready(function () {
 		action: 'get_table_default',
 		url: '/util/get_table_default',
 		field: '',
-		table_name: 'sysdb.region',
-		table_id: 'regioncode',
+		table_name: 'sysdb.sector',
+		table_id: 'sectorcode',
 		sort_idno: true
 	}
 
@@ -111,8 +115,8 @@ $(document).ready(function () {
 		url: '/sector/form',
 		field: '',
 		oper: oper,
-		table_name: 'sysdb.region',
-		table_id: 'regioncode',
+		table_name: 'sysdb.sector',
+		table_id: 'sectorcode',
 		saveip:'true'
 	};
 
@@ -120,8 +124,9 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 5, hidden: true },
-			{ label: 'Region Code', name: 'regioncode', width: 20, classes: 'wrap', canSearch: true},
+			{ label: 'Unit', name: 'sectorcode', width: 20, classes: 'wrap', canSearch: true},
 			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true,checked:true,},
+			{ label: 'Section', name: 'regioncode', width: 50, classes: 'wrap'},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
@@ -233,7 +238,21 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-
+	var dialog_regioncode = new ordialog(
+		'regioncode','sysdb.region','#regioncode',errorField,
+		{	colModel:[
+				{label:'Region Code',name:'regioncode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				]
+		},{
+			title:"Select Region Code",
+			open: function(){
+				dialog_regioncode.urlParam.filterCol=['recstatus'],
+				dialog_regioncode.urlParam.filterVal=['A']
+			}
+		},'urlParam'
+	);
+	dialog_regioncode.makedialog();
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 
 	toogleSearch('#sbut1', '#searchForm', 'on');

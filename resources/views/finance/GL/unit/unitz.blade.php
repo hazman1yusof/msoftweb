@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Sector Setup')
+@section('title', 'Unit')
 
 @section('body')
 
@@ -12,7 +12,7 @@
 			<input type="hidden" name="idno">
 
 				<div class="form-group">
-                	<label class="col-md-2 control-label" for="sectorcode">Code</label>  
+                	<label class="col-md-2 control-label" for="sectorcode">Unit</label>  
                       <div class="col-md-3">
                       <input id="sectorcode" name="sectorcode" type="text" maxlength="20" class="form-control input-sm" data-validation="required" frozeOnEdit>
                       </div>
@@ -26,7 +26,7 @@
 				</div>
                 
                 <div class="form-group">
-                	<label class="col-md-2 control-label" for="regioncode">Region Code</label>  
+                	<label class="col-md-2 control-label" for="regioncode">Section</label>  
 		  				<div class="col-md-3">
 					  		<div class='input-group'>
 								<input id="regioncode" name="regioncode" type="text" class="form-control input-sm" data-validation="required">

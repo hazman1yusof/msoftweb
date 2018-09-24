@@ -250,8 +250,8 @@ $(document).ready(function () {
 
 			var currentDate = $("#datetoday").val();
 
-			urlParam.filterCol = ['itemcode', 'uomcode', 'year'];
-			urlParam.filterVal = [$('#itemcodeS').val(), $('#uomcodeS').val(), currentDate];
+			urlParam.filterCol = ['itemcode', 'uomcode', 'year', 'unit', 'compcode'];
+			urlParam.filterVal = [$('#itemcodeS').val(), $('#uomcodeS').val(), currentDate, 'session.unit', 'session.compcode'];
 
 			refreshGrid('#jqGrid', urlParam);
 			$("#pg_jqGridPager table").show();
