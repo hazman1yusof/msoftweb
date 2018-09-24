@@ -1373,7 +1373,7 @@ $(document).ready(function () {
 		{	colModel:
 			[
 				{label:'Authorize Person',name:'authorid',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true}
 			]
 		},{
 			title:"Authorize Person",
@@ -1390,6 +1390,7 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Unit',name:'sector'},
 				],
 			ondblClickRow: function () {
 			}
@@ -1497,8 +1498,8 @@ $(document).ready(function () {
 			open: function(){
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_srcdocno.urlParam.fixPost = "true";
-				dialog_srcdocno.urlParam.filterCol = ['h.prdept','h.recstatus'];
-				dialog_srcdocno.urlParam.filterVal = [$("#delordhd_prdept").val(),'POSTED'];
+				dialog_srcdocno.urlParam.filterCol = ['h.prdept','h.recstatus','h.compcode'];
+				dialog_srcdocno.urlParam.filterVal = [$("#delordhd_prdept").val(),'POSTED','session.compcode'];
 			}
 		},'none'
 	);
@@ -1517,8 +1518,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Transaction Type",
 			open: function(){
-				dialog_suppcode.urlParam.filterCol=['recstatus'];
-				dialog_suppcode.urlParam.filterVal=['A'];
+				dialog_suppcode.urlParam.filterCol=['recstatus','compcode'];
+				dialog_suppcode.urlParam.filterVal=['A','session.compcode'];
 			}
 		},'urlParam'
 	);
@@ -1533,8 +1534,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Creditor",
 			open: function(){
-				dialog_credcode.urlParam.filterCol=['recstatus'];
-				dialog_credcode.urlParam.filterVal=['A'];
+				dialog_credcode.urlParam.filterCol=['recstatus','compcode'];
+				dialog_credcode.urlParam.filterVal=['A','session.compcode'];
 			}
 		},'urlParam'
 	);
@@ -1545,6 +1546,7 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Unit',name:'sector'},
 			],
 			ondblClickRow:function(){
 				let data = selrowData('#'+dialog_deldept.gridname);
@@ -1566,12 +1568,13 @@ $(document).ready(function () {
 			colModel: [
 				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{label:'Unit',name:'sector'},
 			]
 		}, {
 			title: "Select Request Department",
 			open: function(){
-				dialog_reqdept.urlParam.filterCol=['recstatus'];
-				dialog_reqdept.urlParam.filterVal=['A'];
+				dialog_reqdept.urlParam.filterCol=['recstatus','compcode','sector'];
+				dialog_reqdept.urlParam.filterVal=['A', 'session.compcode', 'session.unit'];
 			}
 		},'urlParam'
 	);
@@ -1587,8 +1590,8 @@ $(document).ready(function () {
 			ondblClickRow:function(event){
 				let data = selrowData('#'+dialog_pricecode.gridname);
 
-				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode','p.groupcode'];
-				dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val(),(data.pricecode == 'MS') ? '<>.Stock' : 'Stock'];
+				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 'p.groupcode', 's.unit'];
+				dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val(),(data.pricecode == 'MS') ? '<>.Stock' : 'Stock', 'session.unit'];
 			}
 		},{
 			title:"Select Price Code For Item",
@@ -1618,6 +1621,7 @@ $(document).ready(function () {
 				{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 				{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
+				{label: 'Unit', name:'s_unit'},
 			],
 			ondblClickRow:function(event){
 				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
@@ -1652,8 +1656,8 @@ $(document).ready(function () {
 	dialog_itemcode._init_func(function(self){
 		self.urlParam.fixPost = "true";
 		self.urlParam.table_id = "none_";
-		self.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode'];
-		self.urlParam.filterVal = ['session.compcode', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val()];
+		self.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 's.unit'];
+		self.urlParam.filterVal = ['session.compcode', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val(),'session.unit'];
 		self.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
 		self.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
 		self.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
