@@ -153,8 +153,7 @@ $.jgrid.defaults.responsive = true;
 				}
 			},'urlParam','radio','tab'
 		);
-		dialog_uomcode.makedialog()
-;
+		dialog_uomcode.makedialog();
 
 
 		var butt1=[{
@@ -289,7 +288,6 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
 					{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 					{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
-					//{ label: 'Status', name: 'actionstatus', width: 20},
 					//method
 					//residual value
 					{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, hidden:true},
@@ -443,7 +441,7 @@ $.jgrid.defaults.responsive = true;
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam,['regtype','nbv']);
-			addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','recstatus','regtype','nbv']);
+			addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','recstatus','assetreg_status','regtype','nbv']);
 			
 			$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
 
