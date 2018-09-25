@@ -38,8 +38,7 @@ $(document).ready(function () {
 				{label:'Dept Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 				{label:'groupcode',name:'groupcode',hidden:true},
-				{label:'productcat',name:'productcat',hidden:true},
-				{label:'Class',name:'Class',hidden:true},
+				{label:'productcat',name:'productcat',hidden:true}
 			],
 			ondblClickRow:function(){
 				data = selrowData('#'+dialog_itemcode.gridname);
@@ -54,8 +53,8 @@ $(document).ready(function () {
 
 				var gc2 = $('#groupcode2').val();
 				var Class2 = $('#Class2').val();
-				dialog_itemcode.urlParam.filterCol = ['groupcode', 'Class','recstatus'];
-				dialog_itemcode.urlParam.filterVal = [ gc2, Class2,'A'];
+				dialog_itemcode.urlParam.filterCol = ['groupcode', 'Class','recstatus','compcode'];
+				dialog_itemcode.urlParam.filterVal = [ gc2, Class2,'A','session.compcode'];
 
 			}
 		},'urlParam'
@@ -73,8 +72,8 @@ $(document).ready(function () {
 		},{
 			title:"Select UOM Code",
 			open: function(){
-				dialog_uomcode.urlParam.filterCol = ['recstatus'];
-				dialog_uomcode.urlParam.filterVal = [ 'A'];	
+				dialog_uomcode.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_uomcode.urlParam.filterVal = [ 'A','session.compcode'];	
 			}
 		},'urlParam'
 	);
@@ -92,8 +91,8 @@ $(document).ready(function () {
 		},{
 			title:"Select PO UOM",
 			open: function(){
-				dialog_pouom.urlParam.filterCol = ['recstatus'];
-				dialog_pouom.urlParam.filterVal = [ 'A'];	
+				dialog_pouom.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_pouom.urlParam.filterVal = [ 'A','session.compcode'];	
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -110,8 +109,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Supplier Code",
 			open: function(){
-				dialog_suppcode.urlParam.filterCol = ['recstatus'];
-				dialog_suppcode.urlParam.filterVal = [ 'A'];	
+				dialog_suppcode.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_suppcode.urlParam.filterVal = [ 'A','session.compcode'];	
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -128,8 +127,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Main Store",
 			open: function(){
-				dialog_mstore.urlParam.filterCol = ['mainstore','recstatus'];
-				dialog_mstore.urlParam.filterVal = ['1','A'];	
+				dialog_mstore.urlParam.filterCol = ['mainstore','recstatus','compcode','sector'];
+				dialog_mstore.urlParam.filterVal = ['1','A','session.compcode','session.unit'];	
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -146,8 +145,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Sub Category",
 			open: function(){
-				dialog_subcategory.urlParam.filterCol = ['recstatus'];
-				dialog_subcategory.urlParam.filterVal = [ 'A'];	
+				dialog_subcategory.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_subcategory.urlParam.filterVal = [ 'A','session.compcode'];	
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -164,8 +163,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Tax Code",
 			open: function(){
-				dialog_taxCode.urlParam.filterCol=['recstatus','taxtype'];
-				dialog_taxCode.urlParam.filterVal=['A','Input'];
+				dialog_taxCode.urlParam.filterCol=['recstatus','taxtype','compcode'];
+				dialog_taxCode.urlParam.filterVal=['A','Input','session.compcode'];
 			}
 		},'urlParam'
 	);
@@ -265,7 +264,6 @@ $(document).ready(function () {
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdataSearch');
-			emptyFormdata(errorField,'#formdata');
 
 			urlParam.filterCol=['groupcode', 'Class'];
 			urlParam.filterVal=[$('#groupcode2').val(), $('#Class2').val()];

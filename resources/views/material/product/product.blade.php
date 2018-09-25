@@ -48,6 +48,7 @@
 				<div class="panel-body">
 					<form id='formdata' class='form-horizontal' style='width:99%'>
 						<input id="idno" name="idno" type="hidden">
+						<input id="unit" name="unit" type="hidden" value="{{ Session::get('unit') }}">
 
 						{{ csrf_field() }}
 						<div class="form-group">
@@ -60,7 +61,6 @@
 						  		<div class="col-md-5" id="description_parent">
 						  			<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required" frozeOnEdit>
 						  		</div>
-
 					    </div>
 
 						<div class="form-group">                   
@@ -73,7 +73,6 @@
 						  		<div class="col-md-2" id="uomcode_parent">
 									<input id="uomcode" name="uomcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required" frozeOnEdit>
 						 		 </div>
-
 						</div>
 
 						<div class="form-group">

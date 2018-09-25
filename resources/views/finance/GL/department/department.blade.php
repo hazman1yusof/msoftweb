@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'GL Enquiry')
-
+@section('title', 'Department')
 
 @section('body')
 		

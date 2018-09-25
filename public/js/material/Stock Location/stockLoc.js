@@ -28,15 +28,6 @@ $(document).ready(function () {
 	var mycurrency = new currencymode(['#minqty', '#maxqty', '#reordlevel', '#reordqty']);
 
 
-	/////////////////////////////////////////////////////////object for dialog handler//////////////////
-
-	// dialog_itemcode = new makeDialog('material.product', '#itemcodeS', ['itemcode', 'description', 'Class', 'uomcode'], 'Item');
-	// dialog_itemcode.handler(errorField);
-	// dialog_uomcode = new makeDialog('material.product', '#uomcodeS', ['uomcode'], 'UOM');
-	// dialog_uomcode.handler(errorField);
-
-	// dialog_deptcode = new makeDialog('sysdb.department', '#deptcode', ['deptcode', 'description'], 'Department');
-
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1 = [{
 		text: "Save", click: function () {
@@ -144,6 +135,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'compcode', name: 'compcode', width: 10, hidden: true },
+			{ label: 'unit', name: 'unit', width: 10, hidden: true },
 			{ label: 'Department Code', name: 'deptcode', width: 80, classes: 'wrap' },
 			{ label: 'year', name: 'year', width: 80, classes: 'wrap' },
 			{ label: 'Item Code', name: 'itemcode', width: 60, classes: 'wrap', hidden: true, },
@@ -335,6 +327,7 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 				{label:'Uom Code',name:'uomcode',width:100,classes:'pointer'},
 				{label:'Class',name:'Class',width:400,classes:'pointer',hidden:true},
+				{label:'Unit',name:'unit',classes:'pointer'},
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
@@ -345,20 +338,20 @@ $(document).ready(function () {
 			open: function(){
 				console.log($('#Class2').val());
 				if ($('#Class2').val().trim()  == 'Pharmacy') { 
-					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus'];
-					dialog_itemcode.urlParam.filterVal=['Pharmacy', 'A'];
+					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus','compcode','unit'];
+					dialog_itemcode.urlParam.filterVal=['Pharmacy', 'A','session.compcode','session.unit'];
 				}else if ($('#Class2').val().trim()  == 'Non-Pharmacy'){
-					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus'];
-					dialog_itemcode.urlParam.filterVal=['Non-Pharmacy', 'A'];
+					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus','compcode','unit'];
+					dialog_itemcode.urlParam.filterVal=['Non-Pharmacy', 'A','session.compcode','session.unit'];
 				}else if ($('#Class2').val().trim()  == 'Others'){
-					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus'];
-					dialog_itemcode.urlParam.filterVal=['Others', 'A'];
+					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus','compcode','unit'];
+					dialog_itemcode.urlParam.filterVal=['Others', 'A','session.compcode','session.unit'];
 				}else if ($('#Class2').val().trim()  == 'Asset'){
-					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus'];
-					dialog_itemcode.urlParam.filterVal=['Asset', 'A'];
+					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus','compcode','unit'];
+					dialog_itemcode.urlParam.filterVal=['Asset', 'A','session.compcode','session.unit'];
 				}else if ($('#Class2').val().trim()  == 'All'){
-					dialog_itemcode.urlParam.filterCol=['recstatus'];
-					dialog_itemcode.urlParam.filterVal=['A'];
+					dialog_itemcode.urlParam.filterCol=['recstatus','compcode','unit'];
+					dialog_itemcode.urlParam.filterVal=['A','session.compcode','session.unit'];
 				}
 			}
 		},'urlParam'
@@ -374,6 +367,7 @@ $(document).ready(function () {
 			[
 				{ label: 'UOM code', name: 'p_uomcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Description', name: 'u_description', width: 400, classes: 'pointer', checked:true, canSearch: true, or_search: true },
+				{label:'Unit',name:'p_unit',classes:'pointer'},
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_uomcode.gridname);
@@ -385,8 +379,8 @@ $(document).ready(function () {
 			open: function () {
 				dialog_uomcode.urlParam.fixPost = true;
 				dialog_uomcode.urlParam.table_id = "uomcode";
-				dialog_uomcode.urlParam.filterCol = ['p.itemcode'];
-				dialog_uomcode.urlParam.filterVal = [$("#itemcodeS").val()];
+				dialog_uomcode.urlParam.filterCol = ['p.itemcode','p.compcode','p.unit'];
+				dialog_uomcode.urlParam.filterVal = [$("#itemcodeS").val(),'session.compcode','session.unit'];
 				dialog_uomcode.urlParam.join_type = ['LEFT JOIN'];
 				dialog_uomcode.urlParam.join_onCol = ['p.uomcode'];
 				dialog_uomcode.urlParam.join_onVal = ['u.uomcode'];
@@ -409,266 +403,11 @@ $(document).ready(function () {
 		},{
 			title:"Select Dept",
 			open: function(){
-				dialog_deptcode.urlParam.filterCol = ['recstatus'];
-				dialog_deptcode.urlParam.filterVal = [ 'A'];	
+				dialog_deptcode.urlParam.filterCol = ['recstatus','compcode','sector'];
+				dialog_deptcode.urlParam.filterVal = [ 'A','session.compcode','session.unit'];
 			}
 		},'urlParam'
 	);
 	dialog_deptcode.makedialog();
-
-
-	///////////////////////////////start->dialogHandler part////////////////////////////////////////////
-	// function makeDialog(table, id, cols, title) {
-	// 	this.table = table;
-	// 	this.id = id;
-	// 	this.cols = cols;
-	// 	this.title = title;
-	// 	this.handler = dialogHandler;
-	// 	this.offHandler = function () {
-	// 		$(this.id + " ~ a").off();
-	// 	}
-	// 	this.check = checkInput;
-	// 	this.updateField = function (table, id, cols, title) {
-	// 		this.table = table;
-	// 		this.id = id;
-	// 		this.cols = cols;
-	// 		this.title = title;
-	// 		//console.log(this);
-	// 	}
-	// }
-
-	// $("#dialog").dialog({
-	// 	autoOpen: false,
-	// 	width: 7 / 10 * $(window).width(),
-	// 	modal: true,
-	// 	open: function () {
-	// 		$("#gridDialog").jqGrid('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth - $("#gridDialog_c")[0].offsetLeft));
-	// 		if (selText == '#itemcodeS') {
-	// 			var getClass = $('#Class2').val();
-	// 			if (getClass == 'Pharmacy') {
-	// 				paramD.filterCol = ['Class', 'recstatus'];
-	// 				paramD.filterVal = ['Pharmacy', 'A'];
-	// 			} else if (getClass == 'Non-Pharmacy') {
-	// 				paramD.filterCol = ['Class', 'recstatus'];
-	// 				paramD.filterVal = ['Non-Pharmacy', 'A'];
-	// 			}
-	// 			else if (getClass == 'Others') {
-	// 				paramD.filterCol = ['Class', 'recstatus'];
-	// 				paramD.filterVal = ['Others', 'A'];
-	// 			}
-	// 			else if (getClass == 'Asset') {
-	// 				paramD.filterCol = ['Class', 'recstatus'];
-	// 				paramD.filterVal = ['Asset', 'A'];
-	// 			} else if (getClass == 'All') {
-	// 				paramD.filterCol = ['recstatus'];
-	// 				paramD.filterVal = ['A'];
-	// 			}
-	// 		} else if (selText == '#uomcodeS') {
-	// 			paramD.table_name = ['material.product']; //'material.uom'
-	// 			paramD.field = ['product.uomcode']; //'uom.uomcode'
-	// 			//paramD.join_type=['JOIN'];
-	// 			//paramD.join_onCol=['product.uomcode'];
-	// 			//paramD.join_onVal=['uom.uomcode'];
-	// 			paramD.filterCol = ['product.itemcode', 'product.recstatus'];
-	// 			paramD.filterVal = [$('#itemcodeS').val(), 'A'];
-	// 		} else {
-	// 			paramD.filterCol = ['recstatus'];
-	// 			paramD.filterVal = ['A'];
-	// 		}
-	// 	},
-	// 	close: function (event, ui) {
-	// 		paramD.searchCol = ['recstatus'];
-	// 		paramD.searchVal = ['A'];
-	// 	},
-	// });
-
-	// var selText, Dtable, Dcols, fromdblclick = false;
-	// $("#gridDialog").jqGrid({
-	// 	datatype: "local",
-	// 	colModel: [
-	// 		{ label: 'Code', name: 'code', width: 200, classes: 'pointer', canSearch: true, checked: true },
-	// 		{ label: 'Description', name: 'desc', width: 400, canSearch: true, classes: 'pointer' },
-	// 		{ label: 'Class', name: 'Class', width: 400, classes: 'pointer', hidden: true },
-	// 		{ label: 'uomcode', name: 'uomcode', width: 400, classes: 'pointer', hidden: true },
-	// 	],
-	// 	width: 500,
-	// 	autowidth: true,
-	// 	viewrecords: true,
-	// 	loadonce: false,
-	// 	multiSort: true,
-	// 	rowNum: 30,
-	// 	pager: "#gridDialogPager",
-	// 	ondblClickRow: function (rowid, iRow, iCol, e) {
-	// 		var data = $("#gridDialog").jqGrid('getRowData', rowid);
-	// 		$("#gridDialog").jqGrid("clearGridData", true);
-	// 		$("#dialog").dialog("close");
-	// 		$(selText).val(rowid);
-	// 		$(selText).focus();
-	// 		$(selText).parent().next().html(data['desc']);
-
-	// 		if (selText == "#itemcodeS") {
-	// 			fromdblclick = true;
-	// 			itemcode = data.itemcode;
-	// 			uomcode = data.uomcode;
-	// 			Class = data.Class;
-	// 			console.log(uomcode);
-	// 			$("#uomcodeS").focus();
-	// 			//$("#uomcodeS").val(uomcode);
-	// 		}
-	// 	},
-
-	// });
-
-	// var paramD = { action: 'get_table_default', table_name: '', field: '', table_id: '', filter: '' };
-	// function dialogHandler(errorField) {
-	// 	var table = this.table, id = this.id, cols = this.cols, title = this.title, self = this;
-	// 	$(id + " ~ a").on("click", function () {
-	// 		selText = id, Dtable = table, Dcols = cols,
-	// 			$("#gridDialog").jqGrid("clearGridData", true);
-
-
-	// 		paramD.table_name = table;
-	// 		paramD.field = cols;
-	// 		paramD.table_id = cols[0];
-	// 		paramD.join_type = null;
-	// 		paramD.join_onCol = null;
-	// 		paramD.join_onVal = null;
-	// 		paramD.filterCol = null;
-	// 		paramD.filterVal = null;
-
-
-
-	// 		switch(id){
-	// 			case "#uomcodeS":
-	// 				var itemcodeS = $('#itemcodeS').val();
-
-	// 				paramD.table_name=['material.product'];
-	// 				paramD.field=['product.uomcode'];
-	// 				//paramD.join_type=['JOIN'];
-	// 				//paramD.join_onCol=['product.uomcode'];
-	// 				//paramD.join_onVal=['uom.uomcode'];
-	// 				//paramD.table_id = 'none_';
-	// 				paramD.filterCol=['product.itemcode', 'product.recstatus'];
-	// 				paramD.filterVal=[itemcodeS, 'A'];
-	// 				break;
-	// 			default:
-	// 				paramD.filterCol=['recstatus'];
-	// 				paramD.filterVal=['A'];
-	// 				break;
-	// 		}
-
-
-	// 		$("#dialog").dialog("open");
-	// 		$("#dialog").dialog("option", "title", title);
-
-	// 		$("#gridDialog").jqGrid('setGridParam', { datatype: 'json', url: '../../../../assets/php/entry.php?' + $.param(paramD) }).trigger('reloadGrid');
-	// 		$('#Dtext').val(''); $('#Dcol').html('');
-
-	// 		$.each($("#gridDialog").jqGrid('getGridParam', 'colModel'), function (index, value) {
-	// 			if (value['canSearch']) {
-	// 				if (value['checked']) {
-	// 					$("#Dcol").append("<label class='radio-inline'><input type='radio' name='dcolr' value='" + cols[index] + "' checked>" + value['label'] + "</input></label>");
-	// 				} else {
-	// 					$("#Dcol").append("<label class='radio-inline'><input type='radio' name='dcolr' value='" + cols[index] + "' >" + value['label'] + "</input></label>");
-	// 				}
-	// 			}
-	// 		});
-	// 	});
-	// 	$(id).on("blur", function () {
-	// 		self.check(errorField);
-	// 	});
-	// }
-
-	// function checkInput(errorField) {
-	// 	var table = this.table, id = this.id, field = this.cols, value = $(this.id).val()
-	// 	var param = { action: 'input_check', table: table, field: field, value: value };
-	// 	$.get("../../../../assets/php/entry.php?" + $.param(param), function (data) {
-
-	// 	}, 'json').done(function (data) {
-	// 		if (data.msg == 'success') {
-	// 			if ($.inArray(id, errorField) !== -1) {
-	// 				errorField.splice($.inArray(id, errorField), 1);
-	// 			}
-	// 			$(id).parent().removeClass("has-error").addClass("has-success");
-	// 			$(id).removeClass("error").addClass("valid");
-	// 			$(id).parent().siblings(".help-block").html(data.row[field[1]]);
-
-	// 			if (id == "#itemcodeS") {
-	// 				dialog_uomcode.handler(errorField);
-	// 				//$('#uomcodeS').prop("readonly",false);
-	// 				itemcode = data.row.itemcode;
-	// 				Class = data.row.Class;
-	// 				uomcode = data.row.uomcode;
-	// 				// $("#uomcodeS").val(uomcode);
-	// 				var getClass = $('#Class2').val();
-
-	// 				if (getClass == Class) {
-	// 					console.log("same")
-	// 					dialog_uomcode.handler(errorField);
-	// 					//$('#uomcodeS').prop("readonly",false);
-	// 					$(id).parent().removeClass("has-error").addClass("has-success");
-	// 					$(id).removeClass("error").addClass("valid");
-	// 					$(id).parent().siblings(".help-block").html(data.row[field[1]]);
-	// 				} else if (getClass != Class) {
-	// 					console.log("not");
-	// 					dialog_uomcode.offHandler();
-	// 					//$('#uomcodeS').prop("readonly",true);
-	// 					$(id).parent().removeClass("has-success").addClass("has-error");
-	// 					$(id).removeClass("valid").addClass("error");
-	// 					$(id).parent().siblings(".help-block").html("Invalid Code ( " + field[0] + " )");
-	// 				}
-
-	// 				if (getClass == 'All') {
-	// 					console.log("for All");
-	// 					dialog_uomcode.handler(errorField);
-	// 					//$('#uomcodeS').prop("readonly",false);
-	// 					$(id).parent().removeClass("has-error").addClass("has-success");
-	// 					$(id).removeClass("error").addClass("valid");
-	// 					$(id).parent().siblings(".help-block").html(data.row[field[1]]);
-	// 				}
-
-	// 			}
-	// 		} else if (data.msg == 'fail') {
-	// 			$(id).parent().removeClass("has-success").addClass("has-error");
-	// 			$(id).removeClass("valid").addClass("error");
-	// 			$(id).parent().siblings(".help-block").html("Invalid Code ( " + field[0] + " )");
-	// 			if ($.inArray(id, errorField) === -1) {
-	// 				errorField.push(id);
-	// 			}
-	// 			if (id == "#itemcode") {
-	// 				dialog_uomcode.offHandler();
-	// 				//$('#uomcodeS').prop("readonly",true);
-
-	// 			}
-	// 		}
-	// 	});
-	// }
-
-	// $('#Dtext').keyup(function () {
-	// 	delay(function () {
-	// 		Dsearch($('#Dtext').val(), $('#checkForm input:radio[name=dcolr]:checked').val());
-	// 	}, 500);
-	// });
-
-	// $('#Dcol').change(function () {
-	// 	Dsearch($('#Dtext').val(), $('#checkForm input:radio[name=dcolr]:checked').val());
-	// });
-
-	// function Dsearch(Dtext, Dcol) {
-	// 	paramD.searchCol = null;
-	// 	paramD.searchVal = null;
-	// 	Dtext = Dtext.trim();
-	// 	if (Dtext != '') {
-	// 		var split = Dtext.split(" "), searchCol = [], searchVal = [];
-	// 		$.each(split, function (index, value) {
-	// 			searchCol.push(Dcol);
-	// 			searchVal.push('%' + value + '%');
-	// 		});
-	// 		paramD.searchCol = searchCol;
-	// 		paramD.searchVal = searchVal;
-	// 	}
-	// 	refreshGrid("#gridDialog", paramD);
-	// }
-	///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
 
 });

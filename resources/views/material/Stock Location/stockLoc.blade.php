@@ -12,7 +12,7 @@
 		<!-- <div class='col-md-12' style="padding:0 0 15px 0;"> -->
 			<div class="form-group"> 
 			  	<div class="col-md-3">
-			  	<label class="control-label" for="itemcode">Item Code</label>  
+			  		<label class="control-label" for="itemcode">Item Code</label>  
 	  				<div class='input-group'>
 						<input id="itemcodeS" name="itemcode" type="text" class="form-control input-sm"/>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -61,7 +61,7 @@
 				<input id="uomcode" name="uomcode" type="hidden">
 				<input id="qtyonhand" name="qtyonhand" type="hidden" value="0.00">
 				<input id="year" name="year" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
-				
+				<input id="unit" name="unit" type="hidden"  value="{{ Session::get('unit') }}">
 
 
 				<div class="form-group">
@@ -95,59 +95,59 @@
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="rackno">Rack No</label>  
 				  <div class="col-md-3">
-				  <input id="rackno" name="rackno" type="text" maxlength="30" class="form-control input-sm">
-				 </div>
+				  	<input id="rackno" name="rackno" type="text" maxlength="30" class="form-control input-sm">
+				  </div>
 				
 				  <label class="col-md-2 control-label" for="bincode">Bin Code</label>  
 				  <div class="col-md-3">
-				  <input id="bincode" name="bincode" type="text" maxlength="30" class="form-control input-sm">
-				</div>
+				  	<input id="bincode" name="bincode" type="text" maxlength="30" class="form-control input-sm">
+				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="minqty">Maximum Stock Qty</label>  
                   <div class="col-md-3">
-				  <input id="minqty" name="minqty" type="text" class="form-control input-sm" >
+				  	<input id="minqty" name="minqty" type="text" class="form-control input-sm" >
 				  </div>
                  
 				  <label class="col-md-2 control-label" for="maxqty">Minimum Stock Qty</label>  
                   <div class="col-md-3">
-				  <input id="maxqty" name="maxqty" type="text" class="form-control input-sm" >
+				  	<input id="maxqty" name="maxqty" type="text" class="form-control input-sm" >
 				  </div>
-                  </div>
+                </div>
                   
-                  <div class="form-group">
+                <div class="form-group">
 				  <label class="col-md-2 control-label" for="reordlevel">Reorder Level</label>  
                   <div class="col-md-3">
-				  <input id="reordlevel" name="reordlevel" type="text" class="form-control input-sm" >
+				  	<input id="reordlevel" name="reordlevel" type="text" class="form-control input-sm" >
 				  </div>
                  
 				  <label class="col-md-2 control-label" for="reordqty">Reorder Quantity</label>  
                   <div class="col-md-3">
-				  <input id="reordqty" name="reordqty" type="text" class="form-control input-sm">
+				  	<input id="reordqty" name="reordqty" type="text" class="form-control input-sm">
 				  </div>
-                  </div>
+                </div>
 
-                  <div class="form-group">
+                <div class="form-group">
 					<label class="col-md-2 control-label" for="adduser">Created By</label>  
-						<div class="col-md-2">
+						<div class="col-md-3">
 						  	<input id="adduser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
 					<label class="col-md-2 control-label" for="upduser">Last Entered</label>  
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 				</div>
 
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="adddate">Created Date</label>  
-						<div class="col-md-2">
+						<div class="col-md-3">
 						  	<input id="adddate" name="adddate" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
 						<label class="col-md-2 control-label" for="upddate">Last Entered Date</label>  
-						  	<div class="col-md-2">
+						  	<div class="col-md-3">
 								<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
 				</div>  
