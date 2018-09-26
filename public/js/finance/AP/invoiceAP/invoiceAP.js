@@ -104,7 +104,7 @@ $(document).ready(function () {
 			dialog_department.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
-			refreshGrid("#jqGrid2",null,"kosongkan");
+			//refreshGrid("#jqGrid2",null,"kosongkan");
 			radbuts.reset();
 			errorField.length=0;
 		},
@@ -338,6 +338,24 @@ $(document).ready(function () {
 	addParamField('#jqGrid', true, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus']);
 
+	$("#save").click(function(){
+				unsaved = false;
+				mycurrency.formatOff();
+				mycurrency.check0value(errorField);
+				if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+					saveHeader("#formdata", oper,saveParam,{idno:selrowData('#jqGrid').apacthdr_idno});
+					unsaved = false;
+					$("#dialogForm").dialog('close');
+
+					// $("#saveHeaderLabel").hide();
+					// $("#saveDetailLabel").show();
+					// $("#jqGrid2_iladd").show();
+					// $("#jqGrid2_iladd").click();
+				}else{
+					mycurrency.formatOn();
+				}
+			});
+	
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj){
 		if(obj==null){
@@ -359,18 +377,17 @@ $(document).ready(function () {
 			hideatdialogForm(false);
 			
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				addmore_jqgrid2.state = true;
+				//addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
 			}
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
+				sometodo();
 				$('#pvno').val(data.pvno);
-				$('#auditno').val(data.auditno);//just save idno for edit later
-				
-				/*urlParam2.filterVal[0] = data.recno; 
-				urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode no = ','s.year no ='],[]];
-				urlParam2.join_filterVal = [['s.uomcode',$('#txndept').val(),moment($('#trandate').val()).year()],[]];*/
+				$('#auditno').val(data.auditno);
+				$('#amount').val(data.amount);//just save idno for edit later
+			
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
@@ -387,7 +404,22 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
-	////////////////////object for dialog handler//////////////////\
+	////////////////////////////populate data for dropdown search By////////////////////////////
+	searchBy();
+	function searchBy(){
+		$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
+			if(value['canSearch']){
+				if(value['selected']){
+					$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+				}else{
+					$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+				}
+			}
+			searchClick2('#jqGrid','#searchForm',urlParam);
+		});
+	}
+
+	////////////////////object for dialog handler///////////////////
 	var dialog_supplier = new ordialog(
 		'supplier','material.supplier','#apacthdr_suppcode',errorField,
 		{	colModel:[
@@ -397,8 +429,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Supplier Code",
 			open: function(){
-				dialog_supplier.urlParam.filterCol=['recstatus'],
-				dialog_supplier.urlParam.filterVal=['A']
+				dialog_supplier.urlParam.filterCol=['recstatus', 'compcode'],
+				dialog_supplier.urlParam.filterVal=['A', '9A']
 				}
 			},'urlParam'
 		);
@@ -413,8 +445,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Supplier Code",
 			open: function(){
-				dialog_payto.urlParam.filterCol=['recstatus'],
-				dialog_payto.urlParam.filterVal=['A']
+				dialog_payto.urlParam.filterCol=['recstatus', 'compcode'],
+				dialog_payto.urlParam.filterVal=['A', '9A']
 				}
 			},'urlParam'
 		);
@@ -425,13 +457,21 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
+				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
 			]
 		},{
 			title:"Select Category Code",
 			open: function(){
-				dialog_category.urlParam.filterCol=['recstatus'],
-				dialog_category.urlParam.filterVal=['A']
-				}
+					if($("#apacthdr_ttype option:selected" ).val()=="IN"){
+						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'],
+						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '!=.0']
+					}else if($("#apacthdr_ttype option:selected" ).val()=="DN"){
+						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'],
+						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '=.0']
+					}
+				}		
+				
 			},'urlParam'
 		);
 	dialog_category.makedialog();
@@ -445,8 +485,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Department Code",
 			open: function(){
-				dialog_department.urlParam.filterCol=['recstatus'],
-				dialog_department.urlParam.filterVal=['A']
+				dialog_department.urlParam.filterCol=['recstatus', 'compcode'],
+				dialog_department.urlParam.filterVal=['A', '9A']
 				}
 			},'urlParam'
 		);

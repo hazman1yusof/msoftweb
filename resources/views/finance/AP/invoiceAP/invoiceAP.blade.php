@@ -125,7 +125,7 @@
 
 						  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
 						  			<div class="col-md-3"> <!--- value="<?php// echo "auditno";?>" -->
-						  			<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+						  			<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
 						  		</div>
 							</div>
 
@@ -202,12 +202,12 @@
 						  		
 							 <label class="col-md-2 control-label" for="apacthdr_amount">Invoice Amount</label>  
 							  	<div class="col-md-3">
-										<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm">  <!--data-validation-allowing="float" -->
+										<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"> 
 				 				</div>
 
 							 <label class="col-md-2 control-label" for="apacthdr_outamount">Total Detail Amount</label>  
 							  	<div class="col-md-3">
-										<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly>  <!--data-validation-allowing="float" -->
+										<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly> 
 				 				</div>
 							</div>
 
