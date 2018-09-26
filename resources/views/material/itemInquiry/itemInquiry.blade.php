@@ -10,7 +10,7 @@
 
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
-				<div class="ScolClass">
+				<div class="ScolClass"  style="padding-right: 15px;">
 						<div name='Scol'>Search By : </div>
 				</div>
 				<div class="StextClass">

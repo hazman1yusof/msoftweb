@@ -14,7 +14,7 @@ class do_util extends defaultController{
 		DB::table('material.ivtxndt')
             ->insert([
                 'compcode' => $value->compcode, 
-                'unit' => $value->unit, 
+                'unit' => $value->unit, //ikut unit delorddt
                 'recno' => $value->recno, 
                 'lineno_' => $value->lineno_, 
                 'itemcode' => $value->itemcode, 
@@ -86,8 +86,8 @@ class do_util extends defaultController{
 	public static function stockExp_ins($value,$txnqty,$netprice){
 		//1. amik Stock Expiry
         $stockexp_obj = DB::table('material.stockexp')
-            ->where('stockexp.compcode','=',session('compcode'))
-            ->where('stockexp.unit','=',session('unit'))
+            ->where('stockexp.compcode','=',$value->compcode)
+            ->where('stockexp.unit','=',$value->unit)
             ->where('stockexp.deptcode','=',$value->deldept)
             ->where('stockexp.itemcode','=',$value->itemcode)
             ->where('stockexp.expdate','=',$value->expdate)
@@ -102,8 +102,8 @@ class do_util extends defaultController{
             $BalQty = $stockexp_obj->balqty + $txnqty;
 
             DB::table('material.stockexp')
-                ->where('stockexp.compcode','=',session('compcode'))
-                ->where('stockexp.unit','=',session('unit'))
+                ->where('stockexp.compcode','=',$value->compcode)
+                ->where('stockexp.unit','=',$value->unit)
                 ->where('stockexp.deptcode','=',$value->deldept)
                 ->where('stockexp.itemcode','=',$value->itemcode)
                 ->where('stockexp.expdate','=',$value->expdate)
@@ -121,7 +121,8 @@ class do_util extends defaultController{
 
             DB::table('material.stockexp')
                 ->insert([
-                    'compcode' => session('compcode'), 
+                    'compcode' => $value->compcode, 
+                    'unit' => $value->unit, 
                     'deptcode' => $value->deldept, 
                     'itemcode' => $value->itemcode, 
                     'uomcode' => $value->uomcode, 
@@ -159,8 +160,8 @@ class do_util extends defaultController{
 
 	        // update qtyonhand, avgcost, currprice
 	        $product_obj = DB::table('material.product')
-	            ->where('product.compcode','=',session('compcode'))
-                ->where('product.unit','=',session('unit'))
+	            ->where('product.compcode','=',$value->compcode)
+                ->where('product.unit','=',$value->unit)
 	            ->where('product.itemcode','=',$value->itemcode)
 	            ->where('product.uomcode','=',$value->uomcode)
 	            ->update([

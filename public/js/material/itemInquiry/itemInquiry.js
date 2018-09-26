@@ -99,8 +99,8 @@ $(document).ready(function () {
 		table_name:'material.product',
 		table_id:'idno',
 		sort_idno:true,
-		filterCol:['Class'],
-		filterVal:[ $('#Class2').val()]
+		filterCol:['compcode','unit','Class'],
+		filterVal:['session.compcode','session.unit', $('#Class2').val()]
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -109,13 +109,14 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-            {label: 'idno', name: 'idno', hidden: true},
+            { label: 'idno', name: 'idno', hidden: true},
+            { label: 'Unit', name: 'unit', width: 20},
 			{ label: 'Item code', name: 'itemcode', width: 20, classes: 'wrap', canSearch: true},						
-			{ label: 'Item Description', name: 'description', width: 40, classes: 'wrap', checked:true,canSearch: true},
+			{ label: 'Item Description', name: 'description', width: 80, classes: 'wrap', checked:true,canSearch: true},
 			{ label: 'UOM Code', name: 'uomcode', width: 20, classes: 'wrap'},
 			{ label: 'Quantity on Hand', name: 'qtyonhand', width: 30,classes: 'wrap',align: 'right'},
-			{ label: 'Average Cost', name: 'avgcost', width: 40,classes: 'wrap',align: 'right'},
-			{ label: 'Current Price', name: 'currprice', width: 40, classes: 'wrap',align: 'right'},
+			{ label: 'Average Cost', name: 'avgcost', width: 30,classes: 'wrap',align: 'right'},
+			{ label: 'Current Price', name: 'currprice', width: 30, classes: 'wrap',align: 'right'},
 
 			
 		],
@@ -160,11 +161,11 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['idno','deptcode','stocktxntype','uomcode','qtyonhand','openbalval','itemcode','netmvval1','netmvval2','netmvval3','netmvval4','netmvval5','netmvval6','netmvval7','netmvval8','netmvval9','netmvval10','netmvval11','netmvval12','computerid'],
+		field:['idno','unit','deptcode','stocktxntype','uomcode','qtyonhand','openbalval','itemcode','netmvval1','netmvval2','netmvval3','netmvval4','netmvval5','netmvval6','netmvval7','netmvval8','netmvval9','netmvval10','netmvval11','netmvval12','computerid'],
 		table_name:'material.stockloc',
 		table_id:'idno',
-		filterCol:['itemcode', 'uomcode','year'],
-		filterVal:['', '',$("#getYear").val()],
+		filterCol:['itemcode', 'uomcode','year','compcode','unit'],
+		filterVal:['', '',$("#getYear").val(), 'session.compcode', 'session.unit'],
 	}
 
 	$("#detail").jqGrid({
@@ -172,6 +173,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 40, classes: 'wrap', hidden:true},
 		 	{ label: 'Department Code', name: 'deptcode', width: 40, classes: 'wrap'},
+			{ label: 'Unit', name: 'unit', width: 30, classes: 'wrap', hidden:false},
 			{ label: 'Stock TrxType', name: 'stocktxntype', width: 40, classes: 'wrap'},
 			{ label: 'UOM Code', name: 'uomcode', width: 40, classes: 'wrap'},
 			{ label: 'Quantity on Hand', name: 'qtyonhand', width: 40, classes: 'wrap',align: 'right'},
@@ -234,14 +236,14 @@ $(document).ready(function () {
     var urlParam3={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['expdate','batchno','balqty','uomcode','itemcode','deptcode'],
+		field:['expdate','unit','batchno','balqty','uomcode','itemcode','deptcode'],
 		table_name:'material.stockexp',
 		table_id:'itemcode',
 		sort_itemcode:true,
 		/*filterCol:['itemcode', 'uomcode','deptcode'],
 		filterVal:['', '',''],*/
-		filterCol:['itemcode','uomcode','deptcode'],
-		filterVal:['','',''],
+		filterCol:['itemcode','uomcode','deptcode','compcode','unit'],
+		filterVal:['','','','session.compcode','session.unit'],
 		sortby:['expdate asc']
 	}
 
@@ -251,6 +253,7 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
             //{label: 'idno', name: 'idno', hidden: true},
+			{ label: 'Unit', name: 'unit', width: 30, classes: 'wrap', hidden:false},
 			{ label: 'Expiry Date', name: 'expdate', width: 40, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Batch No', name: 'batchno', width: 40, classes: 'wrap'},
 			{ label: 'Balance Quantity', name: 'balqty', width: 40, classes: 'wrap'},

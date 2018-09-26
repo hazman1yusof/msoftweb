@@ -135,9 +135,9 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'compcode', name: 'compcode', width: 10, hidden: true },
-			{ label: 'unit', name: 'unit', width: 10, hidden: true },
-			{ label: 'Department Code', name: 'deptcode', width: 80, classes: 'wrap' },
-			{ label: 'year', name: 'year', width: 80, classes: 'wrap' },
+			{ label: 'Unit', name: 'unit', width: 50 },
+			{ label: 'Department Code', name: 'deptcode', width: 50, classes: 'wrap' },
+			{ label: 'Year', name: 'year', width: 50, classes: 'wrap' },
 			{ label: 'Item Code', name: 'itemcode', width: 60, classes: 'wrap', hidden: true, },
 			{ label: 'UOM Code', name: 'uomcode', width: 60, classes: 'wrap' },
 			{ label: 'Bin Code', name: 'bincode', width: 50, classes: 'wrap', hidden: true },
