@@ -76,13 +76,13 @@ use Carbon\Carbon;
 
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
-            $auditno = substr(strstr($request->table_id,'_'),1);
+            $idno = substr(strstr($request->table_id,'_'),1);
         }else{
             $field = $request->field;
-            $auditno = $request->table_id;
+            $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no($request->source, $request->trantype);
+        $recno = $this->recno($request->source, $request->trantype);
         $suppgroup = $this->suppgroup($request->suppcode);
 
         DB::beginTransaction();
@@ -91,7 +91,7 @@ use Carbon\Carbon;
 
         $array_insert = [
             'source' => 'AP',
-            'auditno' => $request_no,
+            'auditno' => $recno,
             'trantype' => $request->trantype,
             'suppcode' => $request->suppcode,
             'suppgroup' => $suppgroup,
@@ -121,7 +121,7 @@ use Carbon\Carbon;
             $totalAmount = 0;
 
             $responce = new stdClass();
-            $responce->auditno = $request_no;
+            $responce->auditno = $recno;
             $responce->idno = $idno;
             $responce->suppgroup = $suppgroup;
           //  $responce->totalAmount = $totalAmount;
@@ -137,6 +137,16 @@ use Carbon\Carbon;
             return response('Error'.$e, 500);
         }
 
+    }
+
+     public function suppgroup($suppcode){
+        $seqno = DB::table('material.supplier')
+                ->select('SuppGroup')
+                ->where('SuppCode','=',$suppcode)
+                ->where('compcode','=', '9A')
+                ->first();
+        
+        return $SuppGroup->SuppGroup;
     }
 
    
