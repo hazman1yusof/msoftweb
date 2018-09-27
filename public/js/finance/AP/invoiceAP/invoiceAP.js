@@ -90,8 +90,8 @@ $(document).ready(function () {
 				}
 			},
 			close: function( event, ui ) {
-			addmore_jqgrid2.state = false;
-			addmore_jqgrid2.more = false;
+		/*	addmore_jqgrid2.state = false;
+			addmore_jqgrid2.more = false;*/
 			//reset balik
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
@@ -105,7 +105,7 @@ $(document).ready(function () {
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
 			//refreshGrid("#jqGrid2",null,"kosongkan");
-			radbuts.reset();
+			//radbuts.reset();
 			errorField.length=0;
 		},
 	});
@@ -228,7 +228,7 @@ $(document).ready(function () {
 		}
 	}
 
-	/////////////////////////////// for Button /////////////////////////////////////////////////////////
+	/*/////////////////////////////// for Button /////////////////////////////////////////////////////////
 	var adtNo
 		function sometodo(){
 			$("#jqGrid2_iledit").show();
@@ -240,7 +240,7 @@ $(document).ready(function () {
 			$("input[id*='_auditno']").val(auditno);
 			$("#formdata a").off(); 
 		}
-
+*/
 	////////////////////selected///////////////
 
 	$('#apacthdr_ttype').on('change', function() {
@@ -361,7 +361,7 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
-			alert(data.responseJSON.message);
+			//alert(data.responseJSON.message);
 			dialog_supplier.on();
 			dialog_payto.on();
 			dialog_category.on();
@@ -378,12 +378,12 @@ $(document).ready(function () {
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
-				sometodo();
+				//sometodo();
 				$('#pvno').val(data.pvno);
 				$('#auditno').val(data.auditno);
 				$('#amount').val(data.amount);//just save idno for edit later
 				
-				urlParam.filterVal[0]=data.auditno;
+				//urlParam.filterVal[0]=data.auditno;
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}

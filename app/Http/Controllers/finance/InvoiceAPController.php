@@ -62,7 +62,7 @@ use Carbon\Carbon;
         }
 
         $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
-        $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
+      //  $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
 
         DB::beginTransaction();
 
@@ -73,7 +73,7 @@ use Carbon\Carbon;
             'auditno' => $auditno,
             'trantype' => $request->trantype,
             //'suppcode' => $request->suppcode,
-            'suppgroup' => $suppgroup,
+          //  'suppgroup' => $suppgroup,
           /*  'payto' => $request->payto,
             'document' => $request->document,
             'category' => $request->category,
@@ -100,7 +100,7 @@ use Carbon\Carbon;
             $responce = new stdClass();
             $responce->auditno = $auditno;
             $responce->idno = $idno;
-            $responce->suppgroup = $suppgroup;
+          //  $responce->suppgroup = $suppgroup;
             echo json_encode($responce);
 
             // $queries = DB::getQueryLog();
