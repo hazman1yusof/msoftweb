@@ -82,7 +82,7 @@ use Carbon\Carbon;
             $idno = $request->table_id;
         }
 
-        $recno = $this->recno($request->source, $request->trantype);
+        $recno = $this->recno('AP', $request->trantype);
         $suppgroup = $this->suppgroup($request->suppcode);
 
         DB::beginTransaction();
@@ -140,13 +140,13 @@ use Carbon\Carbon;
     }
 
      public function suppgroup($suppcode){
-        $seqno = DB::table('material.supplier')
+        $query = DB::table('material.supplier')
                 ->select('SuppGroup')
                 ->where('SuppCode','=',$suppcode)
                 ->where('compcode','=', '9A')
                 ->first();
         
-        return $SuppGroup->SuppGroup;
+        return $query->SuppGroup;
     }
 
    

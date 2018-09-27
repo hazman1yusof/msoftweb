@@ -339,23 +339,18 @@ $(document).ready(function () {
 	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus']);
 
 	$("#save").click(function(){
+		unsaved = false;
+		mycurrency.formatOff();
+		mycurrency.check0value(errorField);
+			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+				saveHeader("#formdata", oper,saveParam,{idno:selrowData('#jqGrid').apacthdr_idno});
 				unsaved = false;
-				mycurrency.formatOff();
-				mycurrency.check0value(errorField);
-				if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-					saveHeader("#formdata", oper,saveParam,{idno:selrowData('#jqGrid').apacthdr_idno});
-					unsaved = false;
-					$("#dialogForm").dialog('close');
-
-					// $("#saveHeaderLabel").hide();
-					// $("#saveDetailLabel").show();
-					// $("#jqGrid2_iladd").show();
-					// $("#jqGrid2_iladd").click();
+				$("#dialogForm").dialog('close');
 				}else{
 					mycurrency.formatOn();
-				}
-			});
-	
+			}
+	});
+
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj){
 		if(obj==null){
@@ -376,10 +371,10 @@ $(document).ready(function () {
 			unsaved = false;
 			hideatdialogForm(false);
 			
-			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
+			/*if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
 				//addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
-			}
+			}*/
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
@@ -387,7 +382,8 @@ $(document).ready(function () {
 				$('#pvno').val(data.pvno);
 				$('#auditno').val(data.auditno);
 				$('#amount').val(data.amount);//just save idno for edit later
-			
+				
+				urlParam.filterVal[0]=data.recno;
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
@@ -459,18 +455,28 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
-			]
+			],
+			/*ondblClickRow:function(){
+				let data=selrowData('#'+dialog_category.gridname);
+				
+				$('#apacthdr_category').val(data['apacthdr_trantype']);
+				//$("#jqGrid input[name='apacthdr_category']").val(data['apacthdr_category']);
+			
+			}	*/
 		},{
 			title:"Select Category Code",
 			open: function(){
-					if($("#apacthdr_ttype option:selected" ).val()=="IN"){
-						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'],
-						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '!=.0']
-					}else if($("#apacthdr_ttype option:selected" ).val()=="DN"){
-						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'],
-						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '=.0']
+				//if(apacthdr_ttype=='#apacthdr_category'){&& ($("#apacthdr_ttype").text()=='Supplier'))
+					if (($("#apacthdr_trantype").val()=="IN")) {
+						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
+						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '!=.0'];
+					}else {
+						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
+						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '=.0'];
 					}
-				}		
+				}
+
+				//}		
 				
 			},'urlParam'
 		);
