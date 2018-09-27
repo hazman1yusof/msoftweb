@@ -273,8 +273,8 @@ Route::post('/categoryinv/form','material\CategoryInvController@form');
 Route::get('/invoiceAP','finance\InvoiceAPController@show');
 Route::get('/invoiceAP/table','finance\InvoiceAPController@table');
 Route::post('/invoiceAP/form','finance\InvoiceAPController@form');
-//Route::get('/invoiceAP/form','finance\InvoiceAPController@form');
-//Route::post('/invoiceAPDetail/form','finance\InvoiceAPDetailController@form');
+Route::get('/invoiceAP/form','finance\InvoiceAPController@form');
+Route::post('/invoiceAPDetail/form','finance\InvoiceAPDetailController@form');
 
 //// Delivery Department material setup ///
 Route::get('/deliveryDept','material\DeliveryDeptController@show');

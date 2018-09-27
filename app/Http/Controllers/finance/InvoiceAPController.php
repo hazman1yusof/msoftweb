@@ -118,13 +118,10 @@ use Carbon\Carbon;
 
             $idno = $table->insertGetId($array_insert);
 
-            $totalAmount = 0;
-
             $responce = new stdClass();
             $responce->auditno = $recno;
             $responce->idno = $idno;
             $responce->suppgroup = $suppgroup;
-          //  $responce->totalAmount = $totalAmount;
             echo json_encode($responce);
 
             // $queries = DB::getQueryLog();
