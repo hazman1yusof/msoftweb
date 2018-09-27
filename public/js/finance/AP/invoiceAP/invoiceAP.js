@@ -317,7 +317,7 @@ $(document).ready(function () {
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
 		saveParam.oper = $(this).data("oper");
 		let obj={
-			recno:selrowData('#jqGrid').recno,
+			auditno:selrowData('#jqGrid').auditno,
 			_token:$('#_token').val(),
 			idno:selrowData('#jqGrid').idno
 		};
@@ -383,7 +383,7 @@ $(document).ready(function () {
 				$('#auditno').val(data.auditno);
 				$('#amount').val(data.amount);//just save idno for edit later
 				
-				urlParam.filterVal[0]=data.recno;
+				urlParam.filterVal[0]=data.auditno;
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}

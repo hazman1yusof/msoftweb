@@ -9,37 +9,6 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 
-/*class InvoiceAPController extends defaultController
-{   
-
-    var $table;
-    var $duplicateCode;
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->duplicateCode = "auditno";
-    }
-
-    public function show(Request $request)
-    {   
-        return view('finance.AP.invoiceAP.invoiceAP');
-    }
-
-    public function form(Request $request)
-    {  
-        switch($request->oper){
-            case 'add':
-                return $this->defaultAdd($request);
-            case 'edit':
-                return $this->defaultEdit($request);
-            case 'del':
-                return $this->defaultDel($request);
-            default:
-                return 'error happen..';
-        }
-    }*/
-
     class InvoiceAPController extends defaultController
 {   
 
@@ -72,6 +41,16 @@ use Carbon\Carbon;
         }
     }
 
+    public function suppgroup($suppcode){
+        $query = DB::table('material.supplier')
+                ->select('supplier.SuppGroup')
+                ->where('SuppCode','=',$suppcode)
+                ->where('compcode','=', '9A')
+                ->first();
+        
+        return $query->SuppGroup;
+    }
+
     public function add(Request $request){
 
         if(!empty($request->fixPost)){
@@ -82,8 +61,8 @@ use Carbon\Carbon;
             $idno = $request->table_id;
         }
 
-        $recno = $this->recno('AP', $request->trantype);
-        $suppgroup = $this->suppgroup($request->suppcode);
+        $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
+        $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
 
         DB::beginTransaction();
 
@@ -91,11 +70,11 @@ use Carbon\Carbon;
 
         $array_insert = [
             'source' => 'AP',
-            'auditno' => $recno,
+            'auditno' => $auditno,
             'trantype' => $request->trantype,
-            'suppcode' => $request->suppcode,
+            //'suppcode' => $request->suppcode,
             'suppgroup' => $suppgroup,
-            'payto' => $request->payto,
+          /*  'payto' => $request->payto,
             'document' => $request->document,
             'category' => $request->category,
             'amount' => $request->amount,
@@ -103,7 +82,7 @@ use Carbon\Carbon;
             'remarks' => $request->remarks,
             'actdate' => $request->actdate,
             'recdate' => $request->recdate,
-            'deptcode' => $request->deptcode,
+            'deptcode' => $request->deptcode,*/
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -119,7 +98,7 @@ use Carbon\Carbon;
             $idno = $table->insertGetId($array_insert);
 
             $responce = new stdClass();
-            $responce->auditno = $recno;
+            $responce->auditno = $auditno;
             $responce->idno = $idno;
             $responce->suppgroup = $suppgroup;
             echo json_encode($responce);
@@ -136,15 +115,6 @@ use Carbon\Carbon;
 
     }
 
-     public function suppgroup($suppcode){
-        $query = DB::table('material.supplier')
-                ->select('SuppGroup')
-                ->where('SuppCode','=',$suppcode)
-                ->where('compcode','=', '9A')
-                ->first();
-        
-        return $query->SuppGroup;
-    }
 
    
 }
