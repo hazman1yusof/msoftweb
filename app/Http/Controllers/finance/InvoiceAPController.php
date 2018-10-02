@@ -68,6 +68,17 @@ use Carbon\Carbon;
 
         $table = DB::table("finance.apacthdr");
 
+        /*if trantype = 'supplier'
+        {
+            $trantypevalue = 'IN'
+       }
+       else trantype = 'others'
+    {
+            $trantypevalue = 'IN'
+       }
+       else        
+            $trantypevalue = 'DN'*/
+        
         $array_insert = [
             'source' => 'AP',
             'auditno' => $auditno,

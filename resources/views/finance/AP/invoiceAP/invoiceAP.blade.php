@@ -116,9 +116,9 @@
 							  	<select id="apacthdr_ttype" name=apacthdr_ttype" class="form-control" data-validation="required">
 						  											     
 							       
-							       <option value="IN">Supplier</option>
-							       <option value="IN">Others</option>
-							       <option value="DN">Debit Note</option>
+							       <option value="Supplier">Supplier</option>
+							       <option value="Others">Others</option>
+							       <option value="Debit Note">Debit Note</option>
 							    </select>
 		
 						  			</div>
