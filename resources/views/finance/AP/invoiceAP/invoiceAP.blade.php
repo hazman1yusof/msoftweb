@@ -107,14 +107,14 @@
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}
 								<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="AP">
-								<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden">
+								<input id="apacthdr_trantype" name="apacthdr_trantype">
 
 						<div class="form-group">
 
-							<label class="col-md-2 control-label" for="apacthdr_ttype">Doc Type</label> 
-							<div class="col-md-3" id="apacthdr_ttype">
+							<label class="col-md-2 control-label" for="apacthdr_doctype">Doc Type</label> 
+							<div class="col-md-3" id="apacthdr_doctype">
 						 
-							  	<select id="apacthdr_ttype" name=apacthdr_ttype" class="form-control" data-validation="required">
+							  	<select id="apacthdr_doctype" name=apacthdr_doctype" class="form-control" data-validation="required">
 						  											     
 							       
 							       <option value="Supplier">Supplier</option>

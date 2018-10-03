@@ -59,7 +59,7 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					$("#apacthdr_ttype").val($("#trantype").val());
+					//$("#apacthdr_ttype").val($("#trantype").val());
 					break;
 				case state = 'view':
 					disableForm('#formdata');
@@ -161,6 +161,7 @@ $(document).ready(function () {
 		{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:'true'},
 		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true'},
+		{ label: 'doctype', name: 'apacthdr_doctype', width: 40, hidden:'true'},
 	],
 		autowidth:true,
 		multiSort: true,
@@ -244,8 +245,8 @@ $(document).ready(function () {
 */
 	////////////////////selected///////////////
 
-	$('#apacthdr_ttype').on('change', function() {
-		let ttype1 = $("#apacthdr_ttype option:selected" ).val();
+	$('#apacthdr_doctype').on('change', function() {
+		let ttype1 = $("#apacthdr_doctype option:selected" ).val();
 			if(ttype1 == 'IN') {
 				$("#formdata :input[name='apacthdr_source']").val("AP");
 				$("#formdata :input[name='apacthdr_trantype']").val("IN");
@@ -253,7 +254,7 @@ $(document).ready(function () {
 				$("#formdata :input[name='apacthdr_source']").val("AP");
 				$("#formdata :input[name='apacthdr_trantype']").val("DN");
 			}
-			if (($("#apacthdr_ttype option:selected" ).text()=='Supplier')){
+			if (($("#apacthdr_doctype option:selected" ).text()=='Supplier')){
 				$('#save').hide();
 				$('#ap_parent').show();
 			}
