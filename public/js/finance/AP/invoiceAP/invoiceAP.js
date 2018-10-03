@@ -246,10 +246,10 @@ $(document).ready(function () {
 
 	$('#apacthdr_ttype').on('change', function() {
 		let ttype1 = $("#apacthdr_ttype option:selected" ).val();
-		if(ttype1 == 'IN') {
+		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("IN");
-		}else if(ttype1 == 'DN') {
+		}else if(ttype1 == 'Debit_Note') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("DN");
 		}
@@ -470,12 +470,12 @@ $(document).ready(function () {
 			title:"Select Category Code",
 			open: function(){
 				//if(apacthdr_ttype=='#apacthdr_category'){&& ($("#apacthdr_ttype").text()=='Supplier'))
-					if (($("#apacthdr_trantype").val()=="Supplier")) {
+					if (($("#apacthdr_ttype").val()=="Supplier")) {
 						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '!=.0'];
+						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '1'];
 					}else {
 						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '=.0'];
+						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '0'];
 					}
 				}
 

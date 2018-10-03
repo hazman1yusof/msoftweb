@@ -106,15 +106,15 @@
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="AP">
-					<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden">
+					<input id="apacthdr_trantype" name="apacthdr_trantype" value = "IN">
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_ttype">Doc Type</label> 
 						<div class="col-md-3">
 						  	<select id="apacthdr_ttype" name=apacthdr_ttype" class="form-control" data-validation="required">
 						       <option value="Supplier">Supplier</option>
-						       <option value="IN">Others</option>
-						       <option value="DN">Debit Note</option>
+						       <option value="Others">Others</option>
+						       <option value="Debit_Note">Debit Note</option>
 						    </select>
 					  	</div>
 
