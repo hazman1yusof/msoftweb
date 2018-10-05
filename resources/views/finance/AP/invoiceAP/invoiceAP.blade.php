@@ -18,22 +18,14 @@
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
-					  <div class="col-md-2">
-					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
-		              </div>
+					  	<div class="col-md-2">
+					  		<label class="control-label" for="Scol">Search By : </label>  
+					  			<select id='Scol' name='Scol' class="form-control input-sm"></select>
+		             	</div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
 								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-
-							<!-- <div  id="tunjukname" style="display:none">
-								<div class='input-group'>
-									<input id="supplierkatdepan" name="supplierkatdepan" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div> -->
 							
 						</div>
 		            </div>
@@ -50,13 +42,6 @@
 					    </select>
 	            </div> -->
 
-	           <!--  <div class="col-md-2">
-			  		<label class="control-label" for="trandept">Purchase Dept</label> 
-						<select id='trandept' class="form-control input-sm">
-				      		<option value="All" selected>ALL</option>
-						</select>
-				</div> -->
-
 				<div id="div_for_but_post" class="col-md-3 col-md-offset-9" style="text-align: end;">
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
@@ -65,33 +50,38 @@
 
 			</fieldset> 
 		</form>
-		 <div class="panel panel-default">
-	    	<div class="panel-heading">Invoice AP DataEntry Header</div>
-    		<div class="panel-body">
-    			<div class='col-md-12' style="padding:0 0 15px 0">
-    				<table id="jqGrid" class="table table-striped"></table>
-    				<div id="jqGridPager"></div>
-				</div>
-    		</div>
+		 
+		<div class="panel panel-default">
+		    <div class="panel-heading">Invoice AP Data Entry Header</div>
+		    	<div class="panel-body">
+		    		<div class='col-md-12' style="padding:0 0 15px 0">
+            			<table id="jqGrid" class="table table-striped"></table>
+            			<div id="jqGridPager"></div>
+        			</div>
+		    	</div>
 		</div>
 
-        	<!-- <div class='click_row'>
-        		<label class="control-label">Record No</label>
-        		<span id="recnodepan" style="display: block;">&nbsp</span>
-        	</div>
-        	<div class='click_row'>
-				<label class="control-label">Purchase Dept</label>
-        		<span id="prdeptdepan" style="display: block;">&nbsp</span>
-        	</div> -->
+		<div class='click_row'>
+        	<label class="control-label">Audit No</label>
+        		<span id="auditnodepan" style="display: block;">&nbsp</span>
+        </div>
+        <div class='click_row'>
+			<label class="control-label">Trantype</label>
+        	<span id="trantypedepan" style="display: block;">&nbsp</span>
+        </div>
+        <div class='click_row'>
+			<label class="control-label">Document No</label>
+        	<span id="docnodepan" style="display: block;">&nbsp</span>
+        </div>
 
 	    <div class="panel panel-default">
-	    	<div class="panel-heading">Invoice AP DataEntry Detail</div>
-    		<div class="panel-body">
-    			<div class='col-md-12' style="padding:0 0 15px 0">
-        			<table id="jqGrid3" class="table table-striped"></table>
-        			<div id="jqGridPager3"></div>
-				</div>'
-    		</div>
+		    <div class="panel-heading">Invoie AP Data Entry Detail</div>
+		    	<div class="panel-body">
+		    		<div class='col-md-12' style="padding:0 0 15px 0">
+	            		<table id="jqGrid3" class="table table-striped"></table>
+	            		<div id="jqGridPager3"></div>
+	    			</div>'
+		    	</div>
 		</div>
         
     </div>
@@ -110,50 +100,50 @@
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_ttype">Doc Type</label> 
-						<div class="col-md-3">
-						  	<select id="apacthdr_ttype" name=apacthdr_ttype" class="form-control" data-validation="required">
-						       <option value="Supplier">Supplier</option>
-						       <option value="Others">Others</option>
-						       <option value="Debit_Note">Debit Note</option>
-						    </select>
-					  	</div>
+							<div class="col-md-3">
+							  	<select id="apacthdr_ttype" name=apacthdr_ttype" class="form-control" data-validation="required">
+							       <option value="Supplier">Supplier</option>
+							       <option value="Others">Others</option>
+							       <option value="Debit_Note">Debit Note</option>
+							    </select>
+						  	</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
 				  			<div class="col-md-3"> <!--- value="<?php// echo "auditno";?>" -->
-				  			<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
+				  				<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
 				  		</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_suppcode">Creditor</label>	 
-						 <div class="col-md-3">
-							  <div class='input-group'>
-								<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  </div>
-							  <span class="help-block"></span>
-						  </div>
+						 	<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
 				  			<div class="col-md-3">
-							<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
-				  		</div>
+								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
+				  			</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>	  
-						<div class="col-md-3">
-							  <div class='input-group'>
-								<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  </div>
-							  <span class="help-block"></span>
-						  </div>
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_actdate">Doc Date</label>  
 				  			<div class="col-md-3">
-							<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
-				  		</div>
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+				  			</div>
 					</div>
 
 					<div class="form-group">
@@ -163,70 +153,69 @@
 				  			</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_category">Category</label>	  
-				  		<div class="col-md-3">
-							  <div class='input-group'>
-								<input id="apacthdr_category" name="apacthdr_category" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  </div>
-							  <span class="help-block"></span>
-						  </div>
+				  			<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_category" name="apacthdr_category" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
 					</div>
 
 					<div class="form-group">
-					<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>
-					<div class="col-md-3">
-							  <div class='input-group'>
-								<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  </div>
-							  <span class="help-block"></span>
-						  </div>
+						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						 	 </div>
 					</div>
 
 					<div class="form-group">
-						
 			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
-			    		<div class="col-md-8"> 
-			    			<textarea class="form-control input-sm" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
-			    		</div>
-			    	
+			    			<div class="col-md-8"> 
+			    				<textarea class="form-control input-sm" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
+			    			</div>
 			   		</div>
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_amount">Invoice Amount</label>  
-					  	<div class="col-md-3">
-							<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"> 
-		 				</div>
+					  		<div class="col-md-3">
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"> 
+		 					</div>
 
 						<label class="col-md-2 control-label" for="apacthdr_outamount">Total Detail Amount</label>  
-					  	<div class="col-md-3">
-							<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly> 
-		 				</div>
+					  		<div class="col-md-3">
+								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly> 
+		 					</div>
 					</div>
 
-						 <!-- <button type="button" id='cancel' class='btn btn-info btn-sm pull-right' style='margin: 0.2%'>Cancel</button> -->
 					<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;display: none;'>Save</button>
 
 				</form>
 			</div>
 		</div>
 			
-		<div class='panel panel-info' id="ap_parent">
-			<div class="panel-heading">Invoice AP Detail</div>
+
+	<div class='panel panel-info' id="ap_parent">
+		<div class="panel-heading">Invoice AP  Detail</div>
 			<div class="panel-body">
 				<form id='formdata2' class='form-vertical' style='width:99%'>
 					<div id="jqGrid2_c" class='col-md-12'>
 						<table id="jqGrid2" class="table table-striped"></table>
-			            <div id="jqGridPager2"></div>
+					        <div id="jqGridPager2"></div>
 					</div>
 				</form>
 			</div>
 
 			<div class="panel-body">
-				<div class="noti"><ol></ol>
-				</div>
+				<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 			</div>
 		</div>
+	</div>			
+			
 	</div>
 @endsection
 

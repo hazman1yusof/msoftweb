@@ -91,8 +91,8 @@ $(document).ready(function () {
 				}
 			},
 			close: function( event, ui ) {
-		/*	addmore_jqgrid2.state = false;
-			addmore_jqgrid2.more = false;*/
+			addmore_jqgrid2.state = false;
+			addmore_jqgrid2.more = false;
 			//reset balik
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
@@ -105,7 +105,7 @@ $(document).ready(function () {
 			dialog_department.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
-			//refreshGrid("#jqGrid2",null,"kosongkan");
+			refreshGrid("#jqGrid2",null,"kosongkan");
 			//radbuts.reset();
 			errorField.length=0;
 		},
@@ -127,6 +127,40 @@ $(document).ready(function () {
 		filterVal: ['AP'],
 	}
 
+	/////////////////////parameter for saving url///////////////////////////////////////////////////////
+	var saveParam={
+		action:'invoiceAP_save',
+		url:'/invoiceAP/form',
+		field:'',
+		oper:oper,
+		table_name:'finance.apacthdr',
+		table_id:'idno'
+	};
+	function padzero(cellvalue, options, rowObject){
+		let padzero = 5, str="";
+		while(padzero>0){
+			str=str.concat("0");
+			padzero--;
+		}
+		return pad(str, cellvalue, true);
+	}
+
+	function searchClick2(grid,form,urlParam){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				$('#auditno').text("");//tukar kat depan tu
+				refreshGrid("#jqGrid3",null,"kosongkan");
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
+			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+			$('#auditno').text("");//tukar kat depan tu
+			refreshGrid("#jqGrid3",null,"kosongkan");
+		});
+	}
+
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam={
 		action:'invoiceAP_save',
@@ -142,7 +176,7 @@ $(document).ready(function () {
 	datatype: "local",
 	colModel: [
 		//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
-		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap'},
+		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
 		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 20, classes: 'wrap', canSearch: true},
 		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true},
@@ -200,7 +234,11 @@ $(document).ready(function () {
 					break;
 			}
 
-			// refreshGrid("#jqGrid3",urlParam2);
+			$('#auditnodepan').text(selrowData("#jqGrid").auditno);//tukar kat depan tu
+			$('#trantypedepan').text(selrowData("#jqGrid").trantype);
+			$('#docnodepan').text(selrowData("#jqGrid").document);
+
+			refreshGrid("#jqGrid3",urlParam2);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -373,10 +411,10 @@ $(document).ready(function () {
 			unsaved = false;
 			hideatdialogForm(false);
 			
-			/*if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
+			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
 				//addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
-			}*/
+			}
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
@@ -417,7 +455,381 @@ $(document).ready(function () {
 		});
 	}
 
+	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
+	var urlParam2={
+		action:'get_table_default',
+		url:'/util/get_table_default',
+		field:['apdt.compcode','apdt.source','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
+		table_name:['finance.apactdtl AS apdt'],
+		table_id:'lineno_',
+		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source','apdt.trantype'],
+		filterVal:['session.company', '', 'A', 'AP', '']
+	};
+
+	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
+	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
+	$("#jqGrid2").jqGrid({
+		datatype: "local",
+		editurl: "/invoiceAPDetail/form",
+		colModel: [
+		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
+			{ label: 'Delivery Order Number', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},
+				formatter: showdetail,
+				edittype:'custom',	editoptions:
+					{ custom_element:documentCustomEdit,
+					custom_value:galGridCustomValue },
+			},
+			{ label: 'Purchase Order Number', name: 'reference', width: 200, edittype:'text', classes: 'wrap',  
+				editable:true,
+				editrules:{required: false},editoptions:{readonly: "readonly"},
+			},
+			{ label: 'Amount', name: 'AmtB4GST', width: 100, classes: 'wrap',
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: true,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					maxlength: 12,
+					dataInit: function(element) {
+					element.style.textAlign = 'right';
+					$(element).keypress(function(e){
+						if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+						return false;
+						}
+					});
+					}
+					},
+			},
+			/*{ label: 'Tax Claim', name: 'GSTCode', width: 100, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:GSTCodeCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+			},*/
+			{ label: 'Tax Claim', name: 'GSTCode', width: 200, edittype:'text', classes: 'wrap',  
+				editable:true,
+				editrules:{required: false},editoptions:{readonly: "readonly"},
+			},
+			{ label: 'Tax Amount', name: 'amount', width: 100, classes: 'wrap', 
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: true,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					maxlength: 12,
+					dataInit: function(element) {
+					element.style.textAlign = 'right';
+						$(element).keypress(function(e){					
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+						}
+					});
+					}
+				},
+			},
+			{ label: 'Record No', name: 'dorecno', width: 100, classes: 'wrap', editable: true,
+				//editrules:{required: true},
+				edittype:"text",
+			},
+			{ label: 'GRN No', name: 'grnno', width: 100, classes: 'wrap', editable: true,
+				//editrules:{required: true},
+				edittype:"text",
+			},
+		],
+		autowidth: false,
+		shrinkToFit: false,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 1150,
+		height: 200,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridPager2",
+		loadComplete: function(){
+			if(addmore_jqgrid2.edit == true){
+			var linenotoedit_new = parseInt(linenotoedit)+1;
+				if($.inArray(String(linenotoedit_new),$('#jqGrid2').jqGrid ('getDataIDs')) != -1){
+					$('#jqGrid2').jqGrid ('setSelection', String(linenotoedit_new));
+					$('#jqGrid2_iledit').click();
+				}
+			}
+			else if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+
+			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+		},
+		gridComplete: function(){
+			// $( "#jqGrid2_ilcancel" ).off();
+			// $( "#jqGrid2_ilcancel" ).on( "click", function(event) {
+			// 	event.preventDefault();
+			// 	event.stopPropagation();
+			// 	bootbox.confirm({
+			// 	    message: "Are you sure want to cancel?",
+			// 	    buttons: {
+			// 	        confirm: { label: 'Yes',className: 'btn-success'},
+			// 	        cancel: {label: 'No',className: 'btn-danger'}
+			// 		},
+			// 		callback: function (result) {
+			// 			if (result == true) {
+			// 				$(".noti").empty();
+			// 				$("#jqGrid2").jqGrid("clearGridData", true);
+			// 				refreshGrid("#jqGrid2",urlParam2);
+			// 			}
+			// 			linenotoedit = null;
+			// 	    }
+			// 	});
+			// });
+
+			
+		},
+		/*afterShowForm: function (rowid) {
+		    $("#expdate").datepicker();
+		},*/
+		beforeSubmit: function(postdata, rowid){ 
+			dialog_supplier.check(errorField);
+			dialog_payto.check(errorField);
+			dialog_category.check(errorField);
+			dialog_department.check(errorField);
+	 	}
+	});
+
+	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
+	jqgrid_label_align_right("#jqGrid2");
+
 	
+	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
+	
+	var myEditOptions = {
+        keys: true,
+        extraparam:{
+		    "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid) {
+        	//console.log(rowid);
+        	/*linenotoedit = rowid;
+        	$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
+        	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
+        },
+        aftersavefunc: function (rowid, response, options) {
+           $('#amount').val(response.responseText);
+        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+        	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
+        	//linenotoedit = null;
+
+        	refreshGrid('#jqGrid2',urlParam2,'add');
+        	$("#jqGridPager2Delete").show();
+        }, 
+        beforeSaveRow: function(options, rowid) {
+        	if(errorField.length>0)return false;
+
+			let data = selrowData('#jqGrid2');
+			let editurl = "/invoiceAPDetail/form?"+
+				$.param({
+					action: 'invoiceAPDetail_save',
+					auditno:$('#auditno').val(),
+					/*recno:$('#recno').val(),*/
+				});
+			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
+        },
+        afterrestorefunc : function( response ) {
+			hideatdialogForm(false);
+	    }
+    };
+
+    //////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
+	$("#jqGrid2").inlineNav('#jqGridPager2',{	
+		add:true,
+		edit:true,
+		cancel: true,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: { 
+			addRowParams: myEditOptions
+		},
+		editParams: myEditOptions
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2Delete",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-trash",
+		title:"Delete Selected Row",
+		onClickButton: function(){
+			selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+			if(!selRowId){
+				bootbox.alert('Please select row');
+			}else{
+				bootbox.confirm({
+				    message: "Are you sure you want to delete this row?",
+				    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+				    },
+				    callback: function (result) {
+				    	if(result == true){
+				    		param={
+				    			action: 'invoiceAPDetail_save',
+								auditno: $('#auditno').val(),
+								lineno_: selrowData('#jqGrid2').lineno_,
+
+				    		}
+				    		$.post( "/invoiceAPDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+							}).fail(function(data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function(data){
+								$('#amount').val(data);
+								refreshGrid("#jqGrid2",urlParam2);
+							});
+				    	}
+				    }
+				});
+			}
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "saveHeaderLabel",
+		caption:"Header",cursor: "pointer",position: "last", 
+		buttonicon:"",
+		title:"Header"
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "saveDetailLabel",
+		caption:"Detail",cursor: "pointer",position: "last", 
+		buttonicon:"",
+		title:"Detail"
+	});
+
+	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table;
+		switch(options.colModel.name){
+			case 'document':field=['delordno','srcdocno'];table="material.delordhd";break;
+			//case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
+		}
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data.rows)){
+				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0].description+"</span>");
+			}
+		});
+		return cellvalue;
+	}
+
+	///////////////////////////////////////cust_rules//////////////////////////////////////////////
+	function cust_rules(value,name){
+		var temp;
+		switch(name){
+			case 'Delivery Order No':temp=$('#document');break;
+			//case 'Tax Claim':temp=$('#GSTCode');break;
+		}
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+	}
+
+	/////////////////////////////////////////////custom input////////////////////////////////////////////
+	function documentCustomEdit(val,opt){
+		// val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input id="document" name="document" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+	}
+
+	/*function GSTCodeCustomEdit(val,opt){  	
+		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input id="GSTCode" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}*/
+
+	function galGridCustomValue (elem, operation, value){
+		if(operation == 'get') {
+			return $(elem).find("input").val();
+		} 
+		else if(operation == 'set') {
+			$('input',elem).val(value);
+		}
+	}
+
+	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
+	$("#saveDetailLabel").click(function(){
+		mycurrency.formatOff();
+		mycurrency.check0value(errorField);
+		unsaved = false;
+		if($('#formdata').isValid({requiredFields:''},conf,true)){
+			dialog_supplier.off();
+			dialog_payto.off();
+			dialog_category.off();
+			dialog_department.off();
+			saveHeader("#formdata",oper,saveParam);
+			errorField.length=0;
+		}else{
+			mycurrency.formatOn();
+		}
+	});
+
+	function saveDetailLabel(callback=null){
+		mycurrency.formatOff();
+		mycurrency.check0value(errorField);
+		unsaved = false;
+		if($('#formdata').isValid({requiredFields:''},conf,true)){
+			dialog_supplier.off();
+			dialog_payto.off();
+			dialog_category.off();
+			dialog_department.off();
+			saveHeader("#formdata",oper,saveParam);
+			errorField.length=0;
+		}else{
+			mycurrency.formatOn();
+		}
+		if(callback!=null)callback();
+	}
+
+	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
+	$("#saveHeaderLabel").click(function(){
+		emptyFormdata(errorField,'#formdata2');
+		hideatdialogForm(true);
+		dialog_supplier.on();
+		dialog_payto.on();
+		dialog_category.on();
+		dialog_department.on();
+		enableForm('#formdata');
+		rdonly('#formdata');
+		$(".noti").empty();
+		refreshGrid("#jqGrid2",urlParam2);
+		errorField.length=0;
+	});
+
+
+	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
+	$("#jqGrid2_iladd, #jqGrid2_iledit").click(function(){
+		unsaved = false;
+		$("#jqGridPager2Delete,#saveHeaderLabel").hide();
+		dialog_document.on();//start binding event on jqgrid2
+		//dialog_gstcode.on();
+		/*$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
+		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
+		$("#jqGrid2 input[name='qtyonhand']").on('blur',checkQOH);*/
+		$("input[name='grnno']").keydown(function(e) {//when click tab at batchno, auto save
+			var code = e.keyCode || e.which;
+			if (code == '9')$('#jqGrid2_ilsave').click();
+		});
+	});	
+
+	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
+	$("#jqGrid3").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
+		shrinkToFit: false,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridPager3",
+	});
+	jqgrid_label_align_right("#jqGrid3");
 
 	////////////////////object for dialog handler///////////////////
 	var dialog_supplier = new ordialog(
@@ -460,17 +872,8 @@ $(document).ready(function () {
 				{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
 			],
-			/*ondblClickRow:function(){
-				let data=selrowData('#'+dialog_category.gridname);
-				
-				$('#apacthdr_category').val(data['apacthdr_trantype']);
-				//$("#jqGrid input[name='apacthdr_category']").val(data['apacthdr_category']);
-			
-			}	*/
-		},{
 			title:"Select Category Code",
 			open: function(){
-				//if(apacthdr_ttype=='#apacthdr_category'){&& ($("#apacthdr_ttype").text()=='Supplier'))
 					if (($("#apacthdr_ttype").val()=="Supplier")) {
 						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
 						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '1'];
@@ -502,7 +905,59 @@ $(document).ready(function () {
 		);
 	dialog_department.makedialog();
 
-	
+	var dialog_document = new ordialog(
+		'document',['material.delordhd'],"#jqGrid2 input[name='document']",errorField,
+		{	colModel:[
+				{label:'DO No',name:'delordno',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Trandate',name:'trandate',width:400,classes:'pointer', hidden:true},
+				{label:'pono',name:'srcdocno',width:400,classes:'pointer', hidden:true},
+				{label:'amount',name:'totamount',width:400,classes:'pointer', hidden:true},
+				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
+				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
+				{label:'record no',name:'recno',width:400,classes:'pointer', hidden:true},
+			],
+
+			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_document.gridname);
+
+				$("#jqGrid2 input[name='document']").val(data['delordno']);
+				$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
+				$("#jqGrid2 input[name='amount']").val(data['totamount']);
+				$("#jqGrid2 input[name='GTSCode']").val(data['taxclaimable']);
+				$("#jqGrid2 input[name='AmtB4GST']").val(data['TaxAmt']);
+				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
+				$("#jqGrid2 input[name='grnno']").val(data['docno']);
+			}
+		},{
+			title:"Select DO No",
+			open: function(){
+				/*dialog_document.urlParam.fixPost="true";
+				dialog_document.urlParam.table_id="none_";*/
+				dialog_document.urlParam.filterCol=['compcode', 'recstatus','suppcode'];
+				dialog_document.urlParam.filterVal=['session.company', 'POSTED',$("#suppcode").val()];
+				}
+			},'urlParam'
+		);
+	dialog_document.makedialog(false);
+
+	/*var dialog_gstcode = new ordialog(
+		'GSTCode',['hisdb.taxmast'],"#jqGrid2 input[name='GSTCode']",errorField,
+		{	colModel:[
+				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			]
+		},{
+			title:"Select Tax Code For Item",
+			open: function(){
+				dialog_gstcode.urlParam.filterCol=['recstatus', 'compcode'],
+				dialog_gstcode.urlParam.filterVal=['A', '9A']
+				}
+			},'urlParam'
+		);
+	dialog_gstcode.makedialog();*/
+
+
 
 var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();
