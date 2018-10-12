@@ -412,14 +412,14 @@ $(document).ready(function () {
 			hideatdialogForm(false);
 			
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				//addmore_jqgrid2.state = true;
+				addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
 			}
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				//sometodo();
-				$('#pvno').val(data.pvno);
+				//$('#pvno').val(data.pvno);
 				$('#auditno').val(data.auditno);
 				$('#amount').val(data.amount);//just save idno for edit later
 				
@@ -505,13 +505,6 @@ $(document).ready(function () {
 					}
 					},
 			},
-			/*{ label: 'Tax Claim', name: 'GSTCode', width: 100, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:GSTCodeCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-			},*/
 			{ label: 'Tax Claim', name: 'GSTCode', width: 200, edittype:'text', classes: 'wrap',  
 				editable:true,
 				editrules:{required: false},editoptions:{readonly: "readonly"},
@@ -725,7 +718,7 @@ $(document).ready(function () {
 	function cust_rules(value,name){
 		var temp;
 		switch(name){
-			case 'Delivery Order No':temp=$('#document');break;
+			case 'Delivery Order Number':temp=$('#document');break;
 			//case 'Tax Claim':temp=$('#GSTCode');break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -733,7 +726,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function documentCustomEdit(val,opt){
-		// val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input id="document" name="document" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 	}
 
@@ -906,11 +899,11 @@ $(document).ready(function () {
 	dialog_department.makedialog();
 
 	var dialog_document = new ordialog(
-		'document',['material.delordhd'],"#jqGrid2 input[name='document']",errorField,
+		'document',['material.delordhd'],"#jqGrid2 input[name='document']", errorField,
 		{	colModel:[
 				{label:'DO No',name:'delordno',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Trandate',name:'trandate',width:400,classes:'pointer', hidden:true},
+				{label:'Post Date',name:'postdate',width:400,classes:'pointer', hidden:true},
 				{label:'pono',name:'srcdocno',width:400,classes:'pointer', hidden:true},
 				{label:'amount',name:'totamount',width:400,classes:'pointer', hidden:true},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
@@ -920,7 +913,6 @@ $(document).ready(function () {
 
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_document.gridname);
-
 				$("#jqGrid2 input[name='document']").val(data['delordno']);
 				$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
 				$("#jqGrid2 input[name='amount']").val(data['totamount']);
@@ -928,14 +920,13 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='AmtB4GST']").val(data['TaxAmt']);
 				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
 				$("#jqGrid2 input[name='grnno']").val(data['docno']);
+				$("#jqGrid2 input[name='entrydate']").val(data['postdate']);
 			}
 		},{
 			title:"Select DO No",
 			open: function(){
-				/*dialog_document.urlParam.fixPost="true";
-				dialog_document.urlParam.table_id="none_";*/
 				dialog_document.urlParam.filterCol=['compcode', 'recstatus','suppcode'];
-				dialog_document.urlParam.filterVal=['session.company', 'POSTED',$("#suppcode").val()];
+				dialog_document.urlParam.filterVal=['9A', 'POSTED',$("#apacthdr_suppcode").val()];
 				}
 			},'urlParam'
 		);

@@ -98,10 +98,10 @@ class InvoiceAPDetailController extends defaultController
         DB::beginTransaction();
 
         try {
-            $request->expdate = $this->null_date($request->expdate);
-            $recno = $request->recno;
+           
+            $auditno = $request->auditno;
             ////1. calculate lineno_ by recno
-            $sqlln = DB::table('material.ivtmpdt')->select('lineno_')
+            $sqlln = DB::table('finance.apactdtl')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$recno)
                         ->count('lineno_');
@@ -109,40 +109,35 @@ class InvoiceAPDetailController extends defaultController
             $li=intval($sqlln)+1;
 
             ///2. insert detail
-            DB::table('material.ivtmpdt')
+            DB::table('finance.apactdtl')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'recno' => $recno,
+                    'auditno' => $auditno,
                     'lineno_' => $li,
-                    'itemcode' => $request->itemcode,
-                    'uomcode' => $request->uomcode,
-                    'txnqty' => $request->txnqty,
-                    'netprice' => $request->netprice,
-                    'productcat' => $request->productcat,
-                    'qtyonhand' => $request->qtyonhand,
-                    'uomcoderecv'=> $request->uomcoderecv,
-                    'qtyonhandrecv'=> $request->qtyonhandrecv,
+                    'document' => $request->document,
+                    'reference' => $request->reference,
                     'amount' => $request->amount,
+                    'GTSCode' => $request->GTSCode,
+                    'AmtB4GST' => $request->AmtB4GST,
+                    'dorecno' => $request->dorecno,
+                    'grnno'=> $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $request->expdate, 
-                    'batchno' => $request->batchno, 
-                    'recstatus' => 'OPEN', 
-                    'remarks' => $request->remarks
+                    'recstatus' => 'OPEN'
                 ]);
 
             ///3. calculate total amount from detail
-            $totalAmount = DB::table('material.ivtmpdt')
+            $totalAmount = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
+                    ->where('auditno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
        
             ///4. then update to header
-            DB::table('material.ivtmphd')
+            DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
+                ->where('auditno','=',$auditno)
                 ->update([
                     'amount' => $totalAmount
                   
