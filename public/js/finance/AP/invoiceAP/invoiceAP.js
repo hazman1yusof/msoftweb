@@ -744,6 +744,7 @@ $(document).ready(function () {
 		}
 	}
 
+	
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){
 		mycurrency.formatOff();
