@@ -5,7 +5,6 @@
 @section('body')
 
 	<!-- @include('layouts.default_search_and_table') -->
-	<input id="doctype" name="doctype" type="hidden" value="{{Session::get('trantype')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 

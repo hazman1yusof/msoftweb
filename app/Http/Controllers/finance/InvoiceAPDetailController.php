@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\material;
+namespace App\Http\Controllers\finance;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
@@ -103,7 +103,7 @@ class InvoiceAPDetailController extends defaultController
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('finance.apactdtl')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$recno)
+                        ->where('auditno','=',$auditno)
                         ->count('lineno_');
 
             $li=intval($sqlln)+1;
@@ -117,7 +117,7 @@ class InvoiceAPDetailController extends defaultController
                     'document' => $request->document,
                     'reference' => $request->reference,
                     'amount' => $request->amount,
-                    'GTSCode' => $request->GTSCode,
+                    'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
                     'dorecno' => $request->dorecno,
                     'grnno'=> $request->grnno,
@@ -126,7 +126,7 @@ class InvoiceAPDetailController extends defaultController
                     'recstatus' => 'OPEN'
                 ]);
 
-            ///3. calculate total amount from detail
+          /*  ///3. calculate total amount from detail
             $totalAmount = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('auditno','=',$auditno)
@@ -143,7 +143,7 @@ class InvoiceAPDetailController extends defaultController
                   
                 ]);
             DB::commit();
-            return response($totalAmount,200);
+            return response($totalAmount,200);*/
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -152,7 +152,7 @@ class InvoiceAPDetailController extends defaultController
         }
     }
 
-    public function edit(Request $request){
+    /*public function edit(Request $request){
 
         DB::beginTransaction();
 
@@ -252,7 +252,7 @@ class InvoiceAPDetailController extends defaultController
             return response('Error'.$e, 500);
         }
         
-    }
+    }*/
 
     public function edit_from_PO(Request $request){
 

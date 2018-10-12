@@ -463,7 +463,7 @@ $(document).ready(function () {
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
 		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source','apdt.trantype'],
-		filterVal:['session.company', '', 'A', 'AP', '']
+		filterVal:['session.company', '', '<>.DELETE', 'AP', $('#apacthdr_trantype').val()]
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
