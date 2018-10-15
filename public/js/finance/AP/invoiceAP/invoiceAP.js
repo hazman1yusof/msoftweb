@@ -149,14 +149,14 @@ $(document).ready(function () {
 		$(form+' [name=Stext]').on( "keyup", function() {
 			delay(function(){
 				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-				$('#auditno').text("");//tukar kat depan tu
+				// $('#auditno').text("");//tukar kat depan tu
 				refreshGrid("#jqGrid3",null,"kosongkan");
 			}, 500 );
 		});
 
 		$(form+' [name=Scol]').on( "change", function() {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			$('#auditno').text("");//tukar kat depan tu
+			// $('#auditno').text("");//tukar kat depan tu
 			refreshGrid("#jqGrid3",null,"kosongkan");
 		});
 	}
@@ -234,9 +234,13 @@ $(document).ready(function () {
 					break;
 			}
 
-			$('#auditnodepan').text(selrowData("#jqGrid").auditno);//tukar kat depan tu
-			$('#trantypedepan').text(selrowData("#jqGrid").trantype);
-			$('#docnodepan').text(selrowData("#jqGrid").document);
+			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
+			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);
+			$('#docnodepan').text(selrowData("#jqGrid").apacthdr_document);
+
+			$('#auditno').val(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
+			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+			console.log(urlParam2.filterVal);
 
 			refreshGrid("#jqGrid3",urlParam2);
 		},
@@ -463,7 +467,7 @@ $(document).ready(function () {
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
 		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source','apdt.trantype'],
-		filterVal:['session.company', '', '<>.DELETE', 'AP', $('#apacthdr_trantype').val()]
+		filterVal:['session.compcode', '', '<>.DELETE', 'AP', $('#apacthdr_trantype').val()]
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -475,7 +479,7 @@ $(document).ready(function () {
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
+			// { label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
 			{ label: 'Delivery Order Number', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
@@ -618,7 +622,7 @@ $(document).ready(function () {
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
         	//linenotoedit = null;
-
+        	console.log(urlParam2);
         	refreshGrid('#jqGrid2',urlParam2,'add');
         	$("#jqGridPager2Delete").show();
         }, 

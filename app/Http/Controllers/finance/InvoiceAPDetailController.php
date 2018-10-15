@@ -114,6 +114,8 @@ class InvoiceAPDetailController extends defaultController
                     'compcode' => session('compcode'),
                     'auditno' => $auditno,
                     'lineno_' => $li,
+                    'source' => 'AP',
+                    'trantype' => 'IN',
                     'document' => $request->document,
                     'reference' => $request->reference,
                     'amount' => $request->amount,
@@ -126,7 +128,7 @@ class InvoiceAPDetailController extends defaultController
                     'recstatus' => 'OPEN'
                 ]);
 
-          /*  ///3. calculate total amount from detail
+            ///3. calculate total amount from detail
             $totalAmount = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('auditno','=',$auditno)
@@ -143,7 +145,7 @@ class InvoiceAPDetailController extends defaultController
                   
                 ]);
             DB::commit();
-            return response($totalAmount,200);*/
+            return response($totalAmount,200);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -152,7 +154,7 @@ class InvoiceAPDetailController extends defaultController
         }
     }
 
-    /*public function edit(Request $request){
+    public function edit(Request $request){
 
         DB::beginTransaction();
 
@@ -160,39 +162,39 @@ class InvoiceAPDetailController extends defaultController
             $request->expdate = $this->null_date($request->expdate);
 
             ///1. update detail
-            DB::table('material.ivtmpdt')
+            DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
-                    'itemcode' => $request->itemcode,
-                    'uomcode' => $request->uomcode,
-                    'txnqty' => $request->txnqty,
-                    'netprice' => $request->netprice,
-                    'productcat' => $request->productcat,
-                    'qtyonhand' => $request->qtyonhand,
-                    'uomcoderecv'=> $request->uomcoderecv,
-                    'qtyonhandrecv'=> $request->qtyonhandrecv,
+                    'compcode' => session('compcode'),
+                    'auditno' => $auditno,
+                    'lineno_' => $li,
+                    'source' => 'AP',
+                    'trantype' => 'IN',
+                    'document' => $request->document,
+                    'reference' => $request->reference,
                     'amount' => $request->amount,
+                    'GSTCode' => $request->GSTCode,
+                    'AmtB4GST' => $request->AmtB4GST,
+                    'dorecno' => $request->dorecno,
+                    'grnno'=> $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $request->expdate,
-                    'batchno' => $request->batchno, 
-                    'recstatus' => 'OPEN', 
-                    'remarks' => $request->remarks
+                    'recstatus' => 'OPEN'
                 ]);
 
             ///2. recalculate total amount
             $totalAmount = DB::table('material.ivtmpdt')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
 
             ///3. update total amount to header
             DB::table('material.ivtmphd')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('auditno','=',$request->auditno)
                 ->update([
                     'amount' => $totalAmount, 
                 ]);
@@ -208,7 +210,7 @@ class InvoiceAPDetailController extends defaultController
 
     }
 
-    public function del(Request $request){
+   /* public function del(Request $request){
 
         DB::beginTransaction();
 
