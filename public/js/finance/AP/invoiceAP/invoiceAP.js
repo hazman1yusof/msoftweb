@@ -284,6 +284,35 @@ $(document).ready(function () {
 			$("input[id*='_auditno']").val(auditno);
 			$("#formdata a").off(); 
 		}
+
+		////////////////////selected///////////////
+
+	$('#apacthdr_ttype').on('change', function() {
+		let ttype1 = $("#apacthdr_ttype option:selected" ).val();
+		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
+			if (ttype1 == 'Supplier') {
+				$doctype = 'Supplier';
+			} else
+				$doctype = 'Others';
+			$("#formdata :input[name='apacthdr_source']").val("AP");
+			$("#formdata :input[name='apacthdr_trantype']").val("IN");
+		}else if(ttype1 == 'Debit_Note') {
+			$doctype = 'Debit_Note';
+			
+			$("#formdata :input[name='apacthdr_source']").val("AP");
+			$("#formdata :input[name='apacthdr_trantype']").val("DN");
+		}
+////////////////////selection of category///////////////
+title:"Select Category Code",
+			open: function(){
+					if (($doctype =="Supplier")) {
+						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
+						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '1'];
+					}else {
+						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
+						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '0'];
+					}
+				}
 */
 	////////////////////selected///////////////
 
@@ -466,8 +495,8 @@ $(document).ready(function () {
 		field:['apdt.compcode','apdt.source','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source','apdt.trantype'],
-		filterVal:['session.compcode', '', '<>.DELETE', 'AP', $('#apacthdr_trantype').val()]
+		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
+		filterVal:['session.compcode', '', '<>.DELETE', 'AP']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
