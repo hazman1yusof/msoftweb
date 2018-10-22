@@ -154,15 +154,17 @@ abstract class defaultController extends Controller{
 
         /////////searching 2///////// ni search utk ordialog
         if(!empty($request->searchCol2)){
-            if(!empty($request->fixPost)){
-                $searchCol_array = $this->fixPost3($request->searchCol);
-            }else{
-                $searchCol_array = $request->searchCol;
-            }
 
             $table = $table->where(function($query) use ($request){
-                foreach ($request->searchCol2 as $key => $value) {
-                    $query = $query->orWhere($request->searchCol2[$key],'like',$request->searchVal2[$key]);
+
+                if(!empty($request->fixPost)){
+                    $searchCol_array = $this->fixPost3($request->searchCol2);
+                }else{
+                    $searchCol_array = $request->searchCol2;
+                }
+
+                foreach ($searchCol_array as $key => $value) {
+                    $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
                 }
             });
         }

@@ -233,21 +233,44 @@ class DeliveryOrderController extends defaultController
                 ->where('compcode', '=' ,session('compcode'))
                 ->first();
 
-                //check kalu dia stock
-            $Stock_flag_obj = DB::table('material.delorddt')
-                ->where('recno', '=', $request->recno)
-                ->where('compcode', '=' ,session('compcode'))
-                ->where('pricecode', '<>', 'MS');
+            
+            // $Stock_flag_obj = DB::table('material.delorddt')
+            //     ->where('recno', '=', $request->recno)
+            //     ->where('compcode', '=' ,session('compcode'))
+            //     ->where('pricecode', '<>', 'MS');
+
+            // $Stock_flag = $Stock_flag_obj->exists();
+
+            $delorddt_obj = DB::table('material.delorddt')
+                ->where('delorddt.compcode','=',session('compcode'))
+                ->where('delorddt.unit','=',session('unit'))
+                ->where('delorddt.recno','=',$request->recno)
+                ->where('delorddt.recstatus','!=','DELETE')
+                ->get();
+
+            //check kalu dia stock
+            $Stock_flag = false;
+            foreach ($delorddt_obj as $value) {
 
                 //product from delorddt.itemcode
                 //if product.groupcode = "stock" then stockflag = iv
                 //if product.groupcode = "asset" then stockflag = asset
                 //if product.groupcode = "other" then stockflag = other
+                $Stock_flag = DB::table('material.product')
+                    ->where('itemcode','=', $value->itemcode)
+                    ->where('compcode','=', $value->compcode)
+                    ->where('unit','=', $value->unit)
+                    ->where('groupcode','=', "Stock")
+                    ->exist();
 
-            $Stock_flag = $Stock_flag_obj->exists();
+                if($Stock_flag) break;
+
+            }
+                
 
 
                 //2. pastu letak dkt ivtxnhd
+
             if($Stock_flag){
                 DB::table('material.ivtxnhd')
                     ->insert([
@@ -289,13 +312,6 @@ class DeliveryOrderController extends defaultController
                 ->where('delorddt.recno','=',$request->recno)
                 ->first();
             $productcat = $productcat_obj->productcat;
-
-            $delorddt_obj = DB::table('material.delorddt')
-                ->where('delorddt.compcode','=',session('compcode'))
-                ->where('delorddt.unit','=',session('unit'))
-                ->where('delorddt.recno','=',$request->recno)
-                ->where('delorddt.recstatus','!=','DELETE')
-                ->get();
 
                 //2. start looping untuk delorddt
             foreach ($delorddt_obj as $value) {
