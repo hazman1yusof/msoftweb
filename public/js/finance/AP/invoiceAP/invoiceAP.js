@@ -320,10 +320,6 @@ title:"Select Category Code",
 		let ttype1 = $("#apacthdr_ttype option:selected" ).val();
 		//let doctype = $("ttype1").val();
 		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
-<<<<<<< HEAD
-		
-=======
->>>>>>> af1578f376d32c477a5e52aaaf9c640c491ca198
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("IN");
 		}else if(ttype1 == 'Debit_Note') {
@@ -903,7 +899,6 @@ title:"Select Category Code",
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
-<<<<<<< HEAD
 			]
 		},{	
 			title:"Select Category Code",
@@ -918,23 +913,8 @@ title:"Select Category Code",
 				}
 
 			},'urlParam'
-		);
-=======
-			],
-		},{
-			title:"Select Category Code",
-			open: function(){
-				if ($("#apacthdr_ttype").val()=="Supplier") {
-					dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-					dialog_category.urlParam.filterVal=['A', '9A', 'CR', '1'];
-				}else {
-					dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-					dialog_category.urlParam.filterVal=['A', '9A', 'CR', '0'];
-				}
-			}
-		},'urlParam'
+		
 	);
->>>>>>> af1578f376d32c477a5e52aaaf9c640c491ca198
 	dialog_category.makedialog();
 
 	var dialog_department = new ordialog(
