@@ -320,17 +320,10 @@ title:"Select Category Code",
 		let ttype1 = $("#apacthdr_ttype option:selected" ).val();
 		//let doctype = $("ttype1").val();
 		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
-			if (ttype1 == 'Supplier') {
-				$doctype = 'Supplier';
-				console.log($doctype);
-			} else
-				$doctype = 'Others';
-				console.log($doctype);
+		
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("IN");
 		}else if(ttype1 == 'Debit_Note') {
-			$doctype = 'Debit_Note';
-			console.log($doctype);
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("DN");
 		}
@@ -907,10 +900,11 @@ title:"Select Category Code",
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
-			],
+			]
+		},{	
 			title:"Select Category Code",
 			open: function(){
-					if ((doctype=="Supplier")) {
+					if (($('#apacthdr_ttype').val()=="Supplier")) {
 						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
 						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '1'];
 					}else {
@@ -919,8 +913,6 @@ title:"Select Category Code",
 					}
 				}
 
-				//}		
-				
 			},'urlParam'
 		);
 	dialog_category.makedialog();
