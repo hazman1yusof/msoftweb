@@ -384,7 +384,7 @@ class DeliveryOrderController extends defaultController
 
             } // habis looping untuk delorddt
 
-            //--- 8. change recstatus to posted ---//
+            //--- 8. change recstatus to posted -dd--//
             DB::table('material.delordhd')
                 ->where('recno','=',$request->recno)
                 ->where('unit','=',session('unit'))
