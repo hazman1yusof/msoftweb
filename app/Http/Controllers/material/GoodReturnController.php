@@ -335,7 +335,7 @@ class GoodReturnController extends defaultController
                     ->where('StockLoc.CompCode','=',session('compcode'))
                     ->where('StockLoc.DeptCode','=',$value->deldept)
                     ->where('StockLoc.ItemCode','=',$value->itemcode)
-                    ->where('StockLoc.Year','=', $this->toYear($value->trandate))
+                    ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
                     ->where('StockLoc.UomCode','=',$value->uomcode)
                     ->first();
 
@@ -353,7 +353,7 @@ class GoodReturnController extends defaultController
                         ->where('StockLoc.CompCode','=',session('compcode'))
                         ->where('StockLoc.DeptCode','=',$value->deldept)
                         ->where('StockLoc.ItemCode','=',$value->itemcode)
-                        ->where('StockLoc.Year','=', $this->toYear($value->trandate))
+                        ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
                         ->where('StockLoc.UomCode','=',$value->uomcode)
                         ->update([
                             'QtyOnHand' => $QtyOnHand,
@@ -373,7 +373,7 @@ class GoodReturnController extends defaultController
                     ->where('stockexp.deptcode','=',$value->deldept)
                     ->where('stockexp.itemcode','=',$value->itemcode)
                     ->where('stockexp.expdate','=',$value->expdate)
-                    ->where('stockexp.year','=', $this->toYear($value->trandate))
+                    ->where('stockexp.year','=', defaultController::toYear($value->trandate))
                     ->where('stockexp.uomcode','=',$value->uomcode)
                     ->where('stockexp.batchno','=',$value->batchno)
                     ->where('stockexp.lasttt','=','GRN')
@@ -389,7 +389,7 @@ class GoodReturnController extends defaultController
                         ->where('stockexp.deptcode','=',$value->deldept)
                         ->where('stockexp.itemcode','=',$value->itemcode)
                         ->where('stockexp.expdate','=',$value->expdate)
-                        ->where('stockexp.year','=', $this->toYear($value->trandate))
+                        ->where('stockexp.year','=', defaultController::toYear($value->trandate))
                         ->where('stockexp.uomcode','=',$value->uomcode)
                         ->where('stockexp.batchno','=',$value->batchno)
                         ->where('stockexp.lasttt','=','GRN')
@@ -409,7 +409,7 @@ class GoodReturnController extends defaultController
                     ->first();
 
                 if(count($product_obj)){ // kalu jumpa
-                    $month = $this->toMonth($value->trandate);
+                    $month = defaultController::toMonth($value->trandate);
                     $OldQtyOnHand = $product_obj->qtyonhand;
                     $currprice = $netprice;
                     $Oldavgcost = $product_obj->avgcost;
@@ -732,16 +732,6 @@ class GoodReturnController extends defaultController
 
         $this->gltranAmount = $pvalue1["actamount".$period];
         return !empty($pvalue1);
-    }
-
-    public function toYear($date){
-        $carbon = new Carbon($date);
-        return $carbon->year;
-    }
-
-    public function toMonth($date){
-        $carbon = new Carbon($date);
-        return $carbon->month;
     }
 
     public function getyearperiod($date){
