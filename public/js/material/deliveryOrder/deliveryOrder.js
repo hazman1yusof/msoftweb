@@ -1400,7 +1400,7 @@ $(document).ready(function () {
 				dialog_prdept.urlParam.filterCol=['purdept', 'recstatus','compcode','sector'];
 				dialog_prdept.urlParam.filterVal=['1', 'A','session.compcode','session.unit'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_prdept.makedialog();
 
@@ -1650,7 +1650,7 @@ $(document).ready(function () {
 					.next()
 					.find("input[type=text]").focus();
 			}
-		},'none','radio'//urlParam means check() using urlParam not check_input
+		},'none','radio','tab'//urlParam means check() using urlParam not check_input
 	);
 	dialog_itemcode.makedialog(false);
 	dialog_itemcode._init_func(function(self){
@@ -1664,29 +1664,29 @@ $(document).ready(function () {
 		self.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
 		self.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
 
-		$(dialog_itemcode.textfield).on('blur',{data:dialog_itemcode,errorField:errorField},dialog_itemcode_onleave);
+		// $(dialog_itemcode.textfield).on('blur',{data:dialog_itemcode,errorField:errorField},dialog_itemcode_onleave);
 
-		//onleave dialog itemcode
-		function dialog_itemcode_onleave(event){
-			let obj = event.data.data;
-			let optid = event.currentTarget.getAttribute("optid")
-			let id_optid = optid.substring(0,optid.search("_"));
-			let itemcode = $("#jqGrid2 #"+id_optid+"_itemcode").val();
+		// //onleave dialog itemcode
+		// function dialog_itemcode_onleave(event){
+		// 	let obj = event.data.data;
+		// 	let optid = event.currentTarget.getAttribute("optid")
+		// 	let id_optid = optid.substring(0,optid.search("_"));
+		// 	let itemcode = $("#jqGrid2 #"+id_optid+"_itemcode").val();
 
-			obj.urlParam.searchCol=['s_itemcode'];
-			obj.urlParam.searchVal=['%'+itemcode+'%'];
-			if(itemcode!=''){
-				refreshGrid("#"+obj.gridname,obj.urlParam);
-				var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
+		// 	obj.urlParam.searchCol=['s_itemcode'];
+		// 	obj.urlParam.searchVal=['%'+itemcode+'%'];
+		// 	if(itemcode!=''){
+		// 		refreshGrid("#"+obj.gridname,obj.urlParam);
+		// 		var data = $("#"+obj.gridname).jqGrid('getRowData', 1);
 
-				$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
-				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['s_uomcode']);
-				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
-				$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
-				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
-				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
-			}
-		}
+		// 		$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
+		// 		$("#jqGrid2 #"+id_optid+"_uomcode").val(data['s_uomcode']);
+		// 		$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
+		// 		$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
+		// 		$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
+		// 		$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+		// 	}
+		// }
 	});
 
 	var dialog_uomcode = new ordialog(
