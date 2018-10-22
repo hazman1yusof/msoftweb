@@ -238,6 +238,12 @@ class DeliveryOrderController extends defaultController
                 ->where('recno', '=', $request->recno)
                 ->where('compcode', '=' ,session('compcode'))
                 ->where('pricecode', '<>', 'MS');
+
+                //product from delorddt.itemcode
+                //if product.groupcode = "stock" then stockflag = iv
+                //if product.groupcode = "asset" then stockflag = asset
+                //if product.groupcode = "other" then stockflag = other
+
             $Stock_flag = $Stock_flag_obj->exists();
 
 

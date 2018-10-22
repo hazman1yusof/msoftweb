@@ -37,6 +37,8 @@ class GoodReturnController extends defaultController
                 return $this->posted($request);
             case 'cancel':
                 return $this->cancel($request);
+            case 'reopen':
+                return $this->reopen($request);
             default:
                 return 'error happen..';
         }
@@ -691,75 +693,43 @@ class GoodReturnController extends defaultController
     }
 
     public function cancel(Request $request){
-        
-    }
-
-    public function request_no($trantype,$dept){
-        $seqno = DB::table('material.sequence')
-                ->select('seqno')
-                ->where('trantype','=',$trantype)->where('dept','=',$dept)->first();
-
-        DB::table('material.sequence')
-        ->where('trantype','=',$trantype)->where('dept','=',$dept)
-        ->update(['seqno' => intval($seqno->seqno) + 1]);
-        
-        return $seqno->seqno;
-    }
-
-    public function recno($source,$trantype){
-        $pvalue1 = DB::table('sysdb.sysparam')
-                ->select('pvalue1')
-                ->where('source','=',$source)->where('trantype','=',$trantype)->first();
-
-        DB::table('sysdb.sysparam')
-        ->where('source','=',$source)->where('trantype','=',$trantype)
-        ->update(['pvalue1' => intval($pvalue1->pvalue1) + 1]);
-        
-        return $pvalue1->pvalue1;
-    }
-
-    //nak check glmasdtl exist ke tak utk sekian costcode, glaccount, year, period
-    //kalu jumpa dia return true, pastu simpan actamount{month} dkn global variable gltranAmount
-    public function isGltranExist($ccode,$glcode,$year,$period){
-        $pvalue1 = DB::table('finance.glmasdtl')
-                ->select("glaccount","actamount".$period)
+        DB::table('material.delordhd')
+                ->where('recno','=',$request->recno)
                 ->where('compcode','=',session('compcode'))
-                ->where('year','=',$year)
-                ->where('costcode','=',$ccode)
-                ->where('glaccount','=',$glcode)
-                ->first();
-        $pvalue1 = (array)$pvalue1;
+                ->update([
+                    'postedby' => session('username'),
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'CANCELLED' 
+                ]);
 
-        $this->gltranAmount = $pvalue1["actamount".$period];
-        return !empty($pvalue1);
+            DB::table('material.delorddt')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'CANCELLED' 
+                ]);
+           
     }
 
-    public function getyearperiod($date){
-        $period = DB::table('sysdb.period')
-            ->where('compcode','=',session('compcode'))
-            ->get();
+    public function reopen(Request $request){
+        DB::table('material.delordhd')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'postedby' => session('username'),
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'OPEN' 
+                ]);
 
-        $seldate = new DateTime($date);
-
-        foreach ($period as $value) {
-            $arrvalue = (array)$value;
-
-            $year= $value->year;
-            $period=0;
-
-            for($x=1;$x<=12;$x++){
-                $period = $x;
-
-                $datefr = new DateTime($arrvalue['datefr'.$x]);
-                $dateto = new DateTime($arrvalue['dateto'.$x]);
-                if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
-                    $responce = new stdClass();
-                    $responce->year = $year;
-                    $responce->period = $period;
-                    return $responce;
-                }
-            }
-        }
+            DB::table('material.delorddt')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'OPEN' 
+                ]);
+           
     }
 
     public function save_dt_from_othr_do($refer_recno,$recno){
