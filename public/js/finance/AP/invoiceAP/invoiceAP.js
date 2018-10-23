@@ -195,7 +195,7 @@ $(document).ready(function () {
 		{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:'true'},
 		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true'},
-		{ label: 'doctype', name: 'apacthdr_doctype', width: 40, hidden:'true'},
+
 	],
 		autowidth:true,
 		multiSort: true,
@@ -938,9 +938,9 @@ title:"Select Category Code",
 		{	colModel:[
 				{label:'DO No',name:'delordno',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Post Date',name:'postdate',width:400,classes:'pointer', hidden:true},
+				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer'},
 				{label:'pono',name:'srcdocno',width:400,classes:'pointer', hidden:true},
-				{label:'amount',name:'totamount',width:400,classes:'pointer', hidden:true},
+				{label:'amount',name:'totamount',width:400,classes:'pointer'},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
 				{label:'record no',name:'recno',width:400,classes:'pointer', hidden:true},
@@ -951,11 +951,11 @@ title:"Select Category Code",
 				$("#jqGrid2 input[name='document']").val(data['delordno']);
 				$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
 				$("#jqGrid2 input[name='amount']").val(data['totamount']);
-				$("#jqGrid2 input[name='GTSCode']").val(data['taxclaimable']);
+				$("#jqGrid2 input[name='GSTCode']").val(data['taxclaimable']);
 				$("#jqGrid2 input[name='AmtB4GST']").val(data['TaxAmt']);
 				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
 				$("#jqGrid2 input[name='grnno']").val(data['docno']);
-				$("#jqGrid2 input[name='entrydate']").val(data['postdate']);
+				$("#jqGrid2 input[name='entrydate']").val(data['deliverydate']);
 			}
 		},{
 			title:"Select DO No",
