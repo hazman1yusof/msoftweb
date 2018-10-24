@@ -528,6 +528,7 @@ title:"Select Category Code",
 				align: "right",
 				editrules:{required: true},edittype:"text",
 				editoptions:{
+					readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 					element.style.textAlign = 'right';
@@ -549,6 +550,7 @@ title:"Select Category Code",
 				align: "right",
 				editrules:{required: true},edittype:"text",
 				editoptions:{
+					readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 					element.style.textAlign = 'right';
@@ -560,11 +562,11 @@ title:"Select Category Code",
 					}
 				},
 			},
-			{ label: 'Record No', name: 'dorecno', width: 100, classes: 'wrap', editable: true,
+			{ label: 'Record No', name: 'dorecno', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
 				//editrules:{required: true},
 				edittype:"text",
 			},
-			{ label: 'GRN No', name: 'grnno', width: 100, classes: 'wrap', editable: true,
+			{ label: 'GRN No', name: 'grnno', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
 				//editrules:{required: true},
 				edittype:"text",
 			},
@@ -940,7 +942,7 @@ title:"Select Category Code",
 				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer'},
 				{label:'pono',name:'srcdocno',width:400,classes:'pointer', hidden:true},
-				{label:'amount',name:'totamount',width:400,classes:'pointer'},
+				{label:'Amount',name:'totamount',width:400,classes:'pointer'},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
 				{label:'record no',name:'recno',width:400,classes:'pointer', hidden:true},
@@ -960,8 +962,8 @@ title:"Select Category Code",
 		},{
 			title:"Select DO No",
 			open: function(){
-				dialog_document.urlParam.filterCol=['compcode', 'recstatus','suppcode'];
-				dialog_document.urlParam.filterVal=['9A', 'POSTED',$("#apacthdr_suppcode").val()];
+				dialog_document.urlParam.filterCol=['compcode', 'recstatus','suppcode', 'trantype'];
+				dialog_document.urlParam.filterVal=['9A', 'POSTED',$("#apacthdr_suppcode").val(), 'GRN'];
 				}
 			},'urlParam'
 		);
