@@ -846,6 +846,29 @@ title:"Select Category Code",
 		});
 	});	
 
+	//////////////calculation grn + grt/////////////////////////////
+	$("#apactdt_document").blur(function(){
+		if(oper == 'add'){
+			var id = "#apactdt_document";
+			var param={
+				func:'getamount',
+				action:'get_value_default',
+				url: '/util/get_value_default',
+				field:['totamount, trantype', 'suppcode'],
+				table_name:'material.delordhd'
+			}
+
+	$("#purprice,#qty").blur(getamount);
+			function getamount(event) { 
+		        let purprice = parseFloat($("#purprice").val());
+		        let qty = parseFloat($("#qty").val());
+
+		        var currentcost = (purprice * qty);
+
+		        $("#currentcost, #origcost").val(currentcost);
+			}
+
+
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
