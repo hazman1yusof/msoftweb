@@ -845,18 +845,7 @@ title:"Select Category Code",
 		});
 	});	
 
-	//////////////calculation grn + grt/////////////////////////////
-/*	$("#jqGrid2 input[name='document']").blur(getamount);
-			function getamount(event) { 
-
-				let trantype = ($("#trantype").val());
-		       let totamount_grt = parseFloat($("#totamount").val());
-		       let totamount_grn = parseFloat($("#totamount").val());
-
-		        var totamount = (totamount_grn - totamount_grt);
-
-		        $("#totamount").val(totamount);
-			}	*/		
+	//////////////calculation grn + grt/////////////////////////////	
 	$("#jqGrid2 input[name='document']").blur(function(){
 		if(oper == 'add'){
 			var id = "#jqGrid2 input[name='document']";
@@ -874,20 +863,17 @@ title:"Select Category Code",
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			
 			},'json').done(function(data) { 
-				if (($("#delordhd_suppcode").val(trantype_grt)) && ($("#delordhd_suppcode").val(trantype_grn))) {
-					getamount();
-				} else{
-
-				}
 				
 			});
 			
 			function getamount(event) { 
-				let trantype_grt = ($("trantype").val());
-				let trantype_grn = ($("trantype").val());
+				let suppcode = ($("suppcode").val());
+				let trantype_grt = ($("trantype").val(GRT));
+				let trantype_grn = ($("trantype").val(GRN));
 		        let totamount_grt = parseFloat($("#totamount").val(trantype_grt));
 		        let totamount_grn = parseFloat($("#totamount").val(trantype_grn));
 
+		        if (($("suppcode").val(trantype_grn)) == ($("suppcode").val(trantype_grt)))
 		        var totamount = (totamount_grn - totamount_grt);
 
 		        $("#totamount").val(totamount);
@@ -1000,10 +986,10 @@ title:"Select Category Code",
 
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_document.gridname);
-				getamount();
+				//getamount();
 				$("#jqGrid2 input[name='document']").val(data['delordno']);
 				$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
-				$("#jqGrid2 input[name='amount']").val(data['totamount']);
+				$("#jqGrid2 input[name='amount']").val(getamount);
 				$("#jqGrid2 input[name='GSTCode']").val(data['taxclaimable']);
 				$("#jqGrid2 input[name='AmtB4GST']").val(data['TaxAmt']);
 				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
