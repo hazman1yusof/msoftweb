@@ -257,10 +257,10 @@ class DeliveryOrderController extends defaultController
                 //if product.groupcode = "asset" then stockflag = asset
                 //if product.groupcode = "other" then stockflag = other
                 $Stock_flag = DB::table('material.product')
-                    ->where('itemcode','=', $value->itemcode)
                     ->where('compcode','=', $value->compcode)
                     ->where('unit','=', $value->unit)
                     ->where('groupcode','=', "Stock")
+                    ->where('itemcode','=', $value->itemcode)
                     ->exist();
 
                 if($Stock_flag) break;

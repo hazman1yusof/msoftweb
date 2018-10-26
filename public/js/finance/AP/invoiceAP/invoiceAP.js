@@ -307,10 +307,10 @@ title:"Select Category Code",
 			open: function(){
 					if (($doctype =="Supplier")) {
 						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '1'];
+						dialog_category.urlParam.filterVal=['A', 'session.compcode', 'CR', '1'];
 					}else {
 						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '0'];
+						dialog_category.urlParam.filterVal=['A', 'session.compcode', 'CR', '0'];
 					}
 				}
 */
@@ -907,7 +907,7 @@ title:"Select Category Code",
 			title:"Select Supplier Code",
 			open: function(){
 				dialog_supplier.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_supplier.urlParam.filterVal=['A', '9A']
+				dialog_supplier.urlParam.filterVal=['A', 'session.compcode']
 				}
 			},'urlParam'
 		);
@@ -923,7 +923,7 @@ title:"Select Category Code",
 			title:"Select Supplier Code",
 			open: function(){
 				dialog_payto.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_payto.urlParam.filterVal=['A', '9A']
+				dialog_payto.urlParam.filterVal=['A', 'session.compcode']
 				}
 			},'urlParam'
 		);
@@ -942,10 +942,10 @@ title:"Select Category Code",
 			open: function(){
 					if (($('#apacthdr_ttype').val()=="Supplier")) {
 						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '1'];
+						dialog_category.urlParam.filterVal=['A', 'session.compcode', 'CR', '1'];
 					}else {
 						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-						dialog_category.urlParam.filterVal=['A', '9A', 'CR', '0'];
+						dialog_category.urlParam.filterVal=['A', 'session.compcode', 'CR', '0'];
 					}
 				}
 
@@ -964,7 +964,7 @@ title:"Select Category Code",
 			title:"Select Department Code",
 			open: function(){
 				dialog_department.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_department.urlParam.filterVal=['A', '9A']
+				dialog_department.urlParam.filterVal=['A', 'session.compcode']
 				}
 			},'urlParam'
 		);
@@ -1001,7 +1001,7 @@ title:"Select Category Code",
 			title:"Select DO No",
 			open: function(){
 				dialog_document.urlParam.filterCol=['compcode', 'recstatus','suppcode', 'trantype'];
-				dialog_document.urlParam.filterVal=['9A', 'POSTED',$("#apacthdr_suppcode").val(), 'GRN'];
+				dialog_document.urlParam.filterVal=['session.compcode', 'POSTED',$("#apacthdr_suppcode").val(), 'GRN'];
 				}
 			},'urlParam'
 		);

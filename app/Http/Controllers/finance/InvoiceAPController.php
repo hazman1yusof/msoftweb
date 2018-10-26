@@ -45,7 +45,7 @@ use Carbon\Carbon;
         $query = DB::table('material.supplier')
                 ->select('supplier.SuppGroup')
                 ->where('SuppCode','=',$suppcode)
-                ->where('compcode','=', '9A')
+                ->where('compcode','=', session('compcode'))
                 ->first();
         
         return $query->SuppGroup;
@@ -160,6 +160,9 @@ use Carbon\Carbon;
                 ]);
 
             $this->gltran($request->idno);
+            //if count apactdtl > 0, update delordhd
+            //SELECT * FROM delordhd WHERE compcode = '9A' AND suppcode = 'A1C001' AND delordno = 'A00001' AND recstatus = 'POSTED'
+            //update all above invoiceno = apacthdr.document
 
             DB::commit();
         } catch (\Exception $e) {
