@@ -836,7 +836,6 @@ title:"Select Category Code",
 		unsaved = false;
 		$("#jqGridPager2Delete,#saveHeaderLabel").hide();
 		dialog_document.on();//start binding event on jqgrid2
-		//dialog_gstcode.on();
 		/*$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
 		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='qtyonhand']").on('blur',checkQOH);*/
@@ -847,27 +846,47 @@ title:"Select Category Code",
 	});	
 
 	//////////////calculation grn + grt/////////////////////////////
-	$("#apactdt_document").blur(function(){
+	$("#jqGrid2 input[name='document']").blur(getamount);
+			function getamount(event) { 
+		       let totamount_grt = parseFloat($("#totamount").val());
+		       let totamount_grn = parseFloat($("#totamount").val());
+
+		        var totamount = (totamount_grn - totamount_grt);
+
+		        $("#totamount").val(totamount);
+			}			
+	/*$("#jqGrid2 input[name='document']").blur(function(){
 		if(oper == 'add'){
-			var id = "#apactdt_document";
+			var id = "#jqGrid2 input[name='document']";
 			var param={
 				func:'getamount',
 				action:'get_value_default',
 				url: '/util/get_value_default',
-				field:['totamount, trantype', 'suppcode'],
+				field:['totamount', 'trantype', 'suppcode'],
 				table_name:'material.delordhd'
 			}
+			
+			param.filterCol = ['suppcode'];
+			param.filterVal = [$("#delordhd_suppcode").val()];
 
-	$("#purprice,#qty").blur(getamount);
+			$.get( param.url+"?"+$.param(param), function( data ) {
+			
+			},'json').done(function(data) {
+				if($("#delordhd_suppcode").val(trantype == 'GRT') && (($("#delordhd_suppcode").val(trantype == 'GRN')){
+					getamount();
+				}
+			});
+			
 			function getamount(event) { 
-		        let purprice = parseFloat($("#purprice").val());
-		        let qty = parseFloat($("#qty").val());
+		        let totamount_grt = parseFloat($("#totamount").val());
+		        let totamount_grn = parseFloat($("#totamount").val());
 
-		        var currentcost = (purprice * qty);
+		        var totamount = (totamount_grn - totamount_grn);
 
-		        $("#currentcost, #origcost").val(currentcost);
+		        $("#totamount").val(totamount);
 			}
-
+		}	
+	});	*/
 
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
@@ -969,6 +988,7 @@ title:"Select Category Code",
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
 				{label:'record no',name:'recno',width:400,classes:'pointer', hidden:true},
+				{label:'suppcode',name:'suppcode',width:400,classes:'pointer', hidden:true},
 			],
 
 			ondblClickRow: function () {
