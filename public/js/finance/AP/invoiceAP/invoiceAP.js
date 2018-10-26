@@ -846,16 +846,18 @@ title:"Select Category Code",
 	});	
 
 	//////////////calculation grn + grt/////////////////////////////
-	$("#jqGrid2 input[name='document']").blur(getamount);
+/*	$("#jqGrid2 input[name='document']").blur(getamount);
 			function getamount(event) { 
+
+				let trantype = ($("#trantype").val());
 		       let totamount_grt = parseFloat($("#totamount").val());
 		       let totamount_grn = parseFloat($("#totamount").val());
 
 		        var totamount = (totamount_grn - totamount_grt);
 
 		        $("#totamount").val(totamount);
-			}			
-	/*$("#jqGrid2 input[name='document']").blur(function(){
+			}	*/		
+	$("#jqGrid2 input[name='document']").blur(function(){
 		if(oper == 'add'){
 			var id = "#jqGrid2 input[name='document']";
 			var param={
@@ -871,22 +873,27 @@ title:"Select Category Code",
 
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			
-			},'json').done(function(data) {
-				if($("#delordhd_suppcode").val(trantype == 'GRT') && (($("#delordhd_suppcode").val(trantype == 'GRN')){
+			},'json').done(function(data) { 
+				if (($("#delordhd_suppcode").val(trantype_grt)) && ($("#delordhd_suppcode").val(trantype_grn))) {
 					getamount();
+				} else{
+
 				}
+				
 			});
 			
 			function getamount(event) { 
-		        let totamount_grt = parseFloat($("#totamount").val());
-		        let totamount_grn = parseFloat($("#totamount").val());
+				let trantype_grt = ($("trantype").val());
+				let trantype_grn = ($("trantype").val());
+		        let totamount_grt = parseFloat($("#totamount").val(trantype_grt));
+		        let totamount_grn = parseFloat($("#totamount").val(trantype_grn));
 
-		        var totamount = (totamount_grn - totamount_grn);
+		        var totamount = (totamount_grn - totamount_grt);
 
 		        $("#totamount").val(totamount);
 			}
 		}	
-	});	*/
+	});	
 
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
@@ -993,6 +1000,7 @@ title:"Select Category Code",
 
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_document.gridname);
+				getamount();
 				$("#jqGrid2 input[name='document']").val(data['delordno']);
 				$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
 				$("#jqGrid2 input[name='amount']").val(data['totamount']);
@@ -1001,6 +1009,7 @@ title:"Select Category Code",
 				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
 				$("#jqGrid2 input[name='grnno']").val(data['docno']);
 				$("#jqGrid2 input[name='entrydate']").val(data['deliverydate']);
+
 			}
 		},{
 			title:"Select DO No",
@@ -1011,24 +1020,6 @@ title:"Select Category Code",
 			},'urlParam'
 		);
 	dialog_document.makedialog(false);
-
-	/*var dialog_gstcode = new ordialog(
-		'GSTCode',['hisdb.taxmast'],"#jqGrid2 input[name='GSTCode']",errorField,
-		{	colModel:[
-				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-			]
-		},{
-			title:"Select Tax Code For Item",
-			open: function(){
-				dialog_gstcode.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_gstcode.urlParam.filterVal=['A', '9A']
-				}
-			},'urlParam'
-		);
-	dialog_gstcode.makedialog();*/
-
-
 
 var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();
