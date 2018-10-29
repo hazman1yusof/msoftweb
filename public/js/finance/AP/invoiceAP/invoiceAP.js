@@ -780,6 +780,40 @@ title:"Select Category Code",
 		}
 	}
 
+	///////////Validation for document no////////////////////////////////////////////////////////
+	
+	$("#apacthdr_document").blur(function(){
+		if(oper == 'add'){
+			var id = "#apacthdr_document";
+			var param={
+				func:'getDocNo',
+				action:'get_value_default',
+				url: '/util/get_value_default',
+				field:['document'],
+				table_name:'finance.apacthdr'
+			}
+
+			param.filterCol = ['document'];
+			param.filterVal = [$("#apacthdr_document").val()];
+
+			$.get( param.url+"?"+$.param(param), function( data ) {
+			
+			},'json').done(function(data) {
+				if ($.isEmptyObject(data.rows)) {
+					if($.inArray(id,errorField)!==-1){
+						errorField.splice($.inArray(id,errorField), 1);
+					}
+					$( id ).removeClass( "error" ).addClass( "valid" );
+				} else {
+					bootbox.alert("Duplicate Document No");
+					$( id ).removeClass( "valid" ).addClass( "error" );
+					if($.inArray(id,errorField)===-1){
+						errorField.push( id );
+					}
+				}
+			});
+		}
+	});
 	
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){
