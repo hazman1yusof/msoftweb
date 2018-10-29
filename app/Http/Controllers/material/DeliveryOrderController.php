@@ -266,8 +266,6 @@ class DeliveryOrderController extends defaultController
                 if($Stock_flag) break;
 
             }
-                
-
 
                 //2. pastu letak dkt ivtxnhd
 
@@ -344,7 +342,14 @@ class DeliveryOrderController extends defaultController
 
                 //4. start insert dalam ivtxndt
 
-                if($Stock_flag){
+                $product_obj = DB::table('material.product')
+                    ->where('compcode','=', $value->compcode)
+                    ->where('unit','=', $value->unit)
+                    ->where('itemcode','=', $value->itemcode)
+                    ->where('uomcode','=', $value->uomcode)
+                    ->first();
+
+                if($product_obj->groupcode == "Stock" ){
                 //--- 2.5. masuk dalam intxndt ---//
                     do_util::ivtxndt_ins($value,$txnqty,$netprice,$delordhd_obj,$productcat);
 

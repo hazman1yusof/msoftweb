@@ -178,26 +178,61 @@ class do_util extends defaultController{
         //amik yearperiod dari delordhd
         $yearperiod = defaultController::getyearperiod_($delordhd_obj->trandate);
 
+        //tengok product category
+        $product_obj = DB::table('material.product')
+            ->where('compcode','=', $value->compcode)
+            ->where('unit','=', $value->unit)
+            ->where('itemcode','=', $value->itemcode)
+            ->where('uomcode','=', $value->uomcode)
+            ->first();
+
         //amik department,category dgn sysparam pvalue1 dgn pvalue2
         //utk debit costcode
-        $row_dept = DB::table('sysdb.department')
-            ->select('costcode')
-            ->where('compcode','=',session('compcode'))
-            ->where('deptcode','=',$delordhd_obj->deldept)
-            ->first();
-        //utk debit accountcode
-        $row_cat = DB::table('material.category')
-            ->select('stockacct')
-            ->where('compcode','=',session('compcode'))
-            ->where('catcode','=',$productcat)
-            ->first();
-        //utk credit costcode dgn accountocde
-        $row_sysparam = DB::table('sysdb.sysparam')
-            ->select('pvalue1','pvalue2')
-            ->where('compcode','=',session('compcode'))
-            ->where('source','=','AP')
-            ->where('trantype','=','ACC')
-            ->first();
+        if($product_obj->groupcode == "Stock" || $product_obj->groupcode == "Others" ){
+            $row_dept = DB::table('sysdb.department')
+                ->select('costcode')
+                ->where('compcode','=',session('compcode'))
+                ->where('deptcode','=',$delordhd_obj->deldept)
+                ->first();
+            //utk debit accountcode
+            $row_cat = DB::table('material.category')
+                ->select('stockacct')
+                ->where('compcode','=',session('compcode'))
+                ->where('catcode','=',$productcat)
+                ->first();
+
+            $drcostcode = $row_dept->costcode;
+            $dracc = $row_cat->stockacct;
+
+            //utk credit costcode dgn accountocde
+            $row_sysparam = DB::table('sysdb.sysparam')
+                ->select('pvalue1','pvalue2')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','AP')
+                ->where('trantype','=','ACC')
+                ->first();
+
+        }else if($product_obj->groupcode == "Asset"){
+            $facode = DB::table('finance.facode')
+                ->where('compcode','=', $value->compcode)
+                ->where('assetcode','=', $product_obj->productcat)
+                ->first();
+
+            $drcostcode = $facode->glassetccode;
+            $dracc = $facode->glasset;
+            
+            //utk credit costcode dgn accountocde
+            $row_sysparam = DB::table('sysdb.sysparam')
+                ->select('pvalue1','pvalue2')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','AP')
+                ->where('trantype','=','ACC')
+                ->first();
+
+        }else{
+            throw new \Exception("Item at delorddt doesnt have groupcode at table poduct");
+        }
+
 
         //1. buat gltran
         DB::table('finance.gltran')
@@ -214,8 +249,8 @@ class do_util extends defaultController{
                 'postdate' => $delordhd_obj->trandate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,
-                'drcostcode' => $row_dept->costcode,
-                'dracc' => $row_cat->stockacct,
+                'drcostcode' => $drcostcode,
+                'dracc' => $dracc,
                 'crcostcode' => $row_sysparam->pvalue1,
                 'cracc' => $row_sysparam->pvalue2,
                 'amount' => $value->amount,

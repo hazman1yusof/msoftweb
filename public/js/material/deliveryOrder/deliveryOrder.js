@@ -1591,7 +1591,7 @@ $(document).ready(function () {
 				let data = selrowData('#'+dialog_pricecode.gridname);
 
 				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 'p.groupcode', 's.unit'];
-				dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val(),(data.pricecode == 'MS') ? '<>.Stock' : 'Stock', 'session.unit'];
+				dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val(),(data.pricecode == 'BO' || data.pricecode == 'IV') ? 'Stock' : '<>.Stock', 'session.unit'];
 			}
 		},{
 			title:"Select Price Code For Item",
