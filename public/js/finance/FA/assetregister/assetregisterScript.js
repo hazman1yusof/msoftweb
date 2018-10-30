@@ -47,7 +47,7 @@ $.jgrid.defaults.responsive = true;
 				title:"Select Category",
 				open: function(){
 					dialog_assetcode.urlParam.filterCol=['compcode'];
-					dialog_assetcode.urlParam.filterVal=['9A'];
+					dialog_assetcode.urlParam.filterVal=['session.compcode'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -63,7 +63,7 @@ $.jgrid.defaults.responsive = true;
 				title:"Select Department",
 				open: function(){
 					dialog_deptcode.urlParam.filterCol=['compcode'],
-					dialog_deptcode.urlParam.filterVal=['9A']
+					dialog_deptcode.urlParam.filterVal=['session.compcode']
 				}
 			},'urlParam','radio','tab'
 		);
@@ -81,7 +81,7 @@ $.jgrid.defaults.responsive = true;
 				title:"Select Location",
 				open: function(){
 					dialog_loccode.urlParam.filterCol=['compcode'],
-					dialog_loccode.urlParam.filterVal=['9A']
+					dialog_loccode.urlParam.filterVal=['session.compcode']
 				}
 			},'urlParam','radio','tab'
 		);
@@ -98,7 +98,7 @@ $.jgrid.defaults.responsive = true;
 				title:"Select Delordno",
 				open: function(){
 					dialog_delordno.urlParam.filterCol=['compcode'],
-					dialog_delordno.urlParam.filterVal=['9A']
+					dialog_delordno.urlParam.filterVal=['session.compcode']
 				}
 			},'urlParam','radio','tab'
 		);
@@ -115,7 +115,7 @@ $.jgrid.defaults.responsive = true;
 				title:"Select Supplier",
 				open: function(){
 					dialog_suppcode.urlParam.filterCol=['compcode'],
-					dialog_suppcode.urlParam.filterVal=['9A']
+					dialog_suppcode.urlParam.filterVal=['session.compcode']
 				}
 			},'urlParam','radio','tab'
 		);
@@ -132,7 +132,7 @@ $.jgrid.defaults.responsive = true;
 				title:"Select Itemcode",
 				open: function(){
 					dialog_itemcode.urlParam.filterCol=['compcode','groupcode','productcat'],
-					dialog_itemcode.urlParam.filterVal=['9A','asset',$('#assetcode').val()]
+					dialog_itemcode.urlParam.filterVal=['session.compcode','asset',$('#assetcode').val()]
 				}
 			},'urlParam','radio','tab'
 		);
@@ -149,7 +149,7 @@ $.jgrid.defaults.responsive = true;
 				title:"Select uomcode",
 				open: function(){
 					dialog_uomcode.urlParam.filterCol=['compcode','itemcode'],
-					dialog_uomcode.urlParam.filterVal=['9A',$("#itemcode").val()]
+					dialog_uomcode.urlParam.filterVal=['session.compcode',$("#itemcode").val()]
 				}
 			},'urlParam','radio','tab'
 		);
