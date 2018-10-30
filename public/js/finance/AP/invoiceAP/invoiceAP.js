@@ -879,42 +879,7 @@ title:"Select Category Code",
 		});
 	});	
 
-	//////////////calculation grn + grt/////////////////////////////	
-	$("#jqGrid2 input[name='document']").blur(function(){
-		if(oper == 'add'){
-			var id = "#jqGrid2 input[name='document']";
-			var param={
-				func:'getamount',
-				action:'get_value_default',
-				url: '/util/get_value_default',
-				field:['totamount', 'trantype', 'suppcode'],
-				table_name:'material.delordhd'
-			}
-			
-			param.filterCol = ['suppcode'];
-			param.filterVal = [$("#delordhd_suppcode").val()];
-
-			$.get( param.url+"?"+$.param(param), function( data ) {
-			
-			},'json').done(function(data) { 
-				
-			});
-			
-			function getamount(event) { 
-				let suppcode = ($("suppcode").val());
-				let trantype_grt = ($("trantype").val(GRT));
-				let trantype_grn = ($("trantype").val(GRN));
-		        let totamount_grt = parseFloat($("#totamount").val(trantype_grt));
-		        let totamount_grn = parseFloat($("#totamount").val(trantype_grn));
-
-		        if (($("suppcode").val(trantype_grn)) == ($("suppcode").val(trantype_grt)))
-		        var totamount = (totamount_grn - totamount_grt);
-
-		        $("#totamount").val(totamount);
-			}
-		}	
-	});	
-
+	
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
@@ -1020,7 +985,6 @@ title:"Select Category Code",
 
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_document.gridname);
-				//getamount();
 				$("#jqGrid2 input[name='document']").val(data['delordno']);
 				$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
 				$("#jqGrid2 input[name='amount']").val(data['totamount']);
