@@ -41,15 +41,14 @@ use Carbon\Carbon;
             ")
         );
 
-        DB::update("update table_temp_a set subamount = 0-subamount where trantype = 'GRT'");
+        DB::update("update table_temp_a set totamount = 0-totamount where trantype = 'GRT'");
 
         $table = DB::select("
                     SELECT table_temp_a.delordno as delordno,
-                        SUM(table_temp_a.subamount) as subamount,
+                        SUM(table_temp_a.totamount) as totamount,
                         max(delordhd.docno) as docno,
                         max(delordhd.deliverydate) as deliverydate,
                         max(delordhd.srcdocno) as srcdocno,
-                        max(delordhd.totamount) as totamount,
                         max(delordhd.taxclaimable) as taxclaimable,
                         max(delordhd.TaxAmt) as TaxAmt,
                         max(delordhd.recno) as recno,
@@ -213,7 +212,7 @@ use Carbon\Carbon;
 
             $this->gltran($request->idno);
 
-            if($request->)
+          //  if($request->)
             //if count apactdtl > 0, update delordhd
             //SELECT * FROM delordhd WHERE compcode = '9A' AND suppcode = 'A1C001' AND delordno = 'A00001' AND recstatus = 'POSTED'
             //update all above invoiceno = apacthdr.document

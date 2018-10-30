@@ -540,11 +540,11 @@ title:"Select Category Code",
 					}
 					},
 			},
-			{ label: 'Tax Claim', name: 'GSTCode', width: 200, edittype:'text', classes: 'wrap',  
+			{ label: 'Tax Claim', name: 'GSTCode', width: 200, edittype:'text', hidden:true, classes: 'wrap',  
 				editable:true,
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Tax Amount', name: 'AmtB4GST', width: 100, classes: 'wrap', 
+			{ label: 'Tax Amount', name: 'AmtB4GST', width: 100, classes: 'wrap', hidden:true, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
@@ -571,8 +571,8 @@ title:"Select Category Code",
 				edittype:"text",
 			},
 		],
-		autowidth: false,
-		shrinkToFit: false,
+		autowidth: true,
+		shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
@@ -1023,7 +1023,7 @@ title:"Select Category Code",
 				//getamount();
 				$("#jqGrid2 input[name='document']").val(data['delordno']);
 				$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
-				$("#jqGrid2 input[name='amount']").val(getamount);
+				$("#jqGrid2 input[name='amount']").val(data['totamount']);
 				$("#jqGrid2 input[name='GSTCode']").val(data['taxclaimable']);
 				$("#jqGrid2 input[name='AmtB4GST']").val(data['TaxAmt']);
 				$("#jqGrid2 input[name='dorecno']").val(data['recno']);

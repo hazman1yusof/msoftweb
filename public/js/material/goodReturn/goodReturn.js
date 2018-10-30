@@ -123,6 +123,9 @@ $(document).ready(function () {
 
 	var backdated = new func_backdated('#delordhd_deldept');
 	backdated.getdata();
+	$('#delordhd_prdept').change(function(){
+		alert('asd');
+	});
 
 	function func_backdated(target){
 		this.sequence_data;
@@ -153,7 +156,9 @@ $(document).ready(function () {
 			$.each(this.sequence_data, function( index, value ) {
 				if(value.dept == dept){
 					var backday =  value.backday;
+					console.log('backday: '+backday);
 					var backdate = moment().subtract(backday, 'days').format('YYYY-MM-DD');
+					console.log(backdate);
 					$('#delordhd_trandate').attr('min',backdate);
 				}
 			});
@@ -1316,7 +1321,10 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				]
+			],
+			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_prdept.gridname);
+			}
 		},{
 			title:"Select Transaction Department",
 			open: function(){
