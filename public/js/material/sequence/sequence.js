@@ -259,8 +259,8 @@
 				},{
 					title:"Select Department",
 					open: function(){
-						dialog_dept.urlParam.filterCol = ['recstatus'];
-						dialog_dept.urlParam.filterVal = ['A'];
+						dialog_dept.urlParam.filterCol = ['recstatus', 'compcode'];
+						dialog_dept.urlParam.filterVal = ['A', 'session.compcode'];
 					}
 				}, 'urlParam'
 			);
@@ -277,8 +277,8 @@
 				},{
 					title:"Select Transaction Type",
 					open: function(){
-						dialog_trantype.urlParam.filterCol = ['recstatus'];
-						dialog_trantype.urlParam.filterVal = ['A'];
+						dialog_trantype.urlParam.filterCol = ['recstatus', 'compcode'];
+						dialog_trantype.urlParam.filterVal = ['A','session.compcode'];
 					}
 				}, 'urlParam'
 			);

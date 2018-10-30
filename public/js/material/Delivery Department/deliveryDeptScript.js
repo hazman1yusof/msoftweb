@@ -38,8 +38,8 @@
 				},{
 					title:"Select Delivery Store",
 					open: function(){
-						dialog_deptcode.urlParam.filterCol=['recstatus'],
-						dialog_deptcode.urlParam.filterVal=['A']
+						dialog_deptcode.urlParam.filterCol=['compcode','recstatus'],
+						dialog_deptcode.urlParam.filterVal=['session.compcode','A']
 					}
 				},'urlParam'
 			);

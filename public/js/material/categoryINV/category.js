@@ -272,8 +272,8 @@
 				},{
 					title:"Select Stock Account",
 					open: function(){
-						dialog_stockacct.urlParam.filterCol=['recstatus'],
-						dialog_stockacct.urlParam.filterVal=['A']
+						dialog_stockacct.urlParam.filterCol=['recstatus', 'compcode'],
+						dialog_stockacct.urlParam.filterVal=['A','session.compcode']
 					}
 				},'urlParam'
 			);
@@ -290,8 +290,8 @@
 				},{
 					title:"Select COS Account",
 					open: function(){
-						dialog_cosacct.urlParam.filterCol=['recstatus'],
-						dialog_cosacct.urlParam.filterVal=['A']
+						dialog_cosacct.urlParam.filterCol=['recstatus', 'compcode'],
+						dialog_cosacct.urlParam.filterVal=['A','session.compcode']
 					}
 				},'urlParam'
 			);
@@ -308,8 +308,8 @@
 				},{
 					title:"Select Adjusment Account",
 					open: function(){
-						dialog_adjacct.urlParam.filterCol=['recstatus'],
-						dialog_adjacct.urlParam.filterVal=['A']
+						dialog_adjacct.urlParam.filterCol=['recstatus', 'compcode'],
+						dialog_adjacct.urlParam.filterVal=['A','session.compcode']
 					}
 				},'urlParam'
 			);
@@ -326,8 +326,8 @@
 				},{
 					title:"Select Write Off Account",
 					open: function(){
-						dialog_woffacct.urlParam.filterCol=['recstatus'],
-						dialog_woffacct.urlParam.filterVal=['A']
+						dialog_woffacct.urlParam.filterCol=['recstatus', 'compcode'],
+						dialog_woffacct.urlParam.filterVal=['A','session.compcode']
 					}
 				},'urlParam'
 			);
@@ -344,8 +344,8 @@
 				},{
 					title:"Select Expenses Account",
 					open: function(){
-						dialog_expacct.urlParam.filterCol=['recstatus'],
-						dialog_expacct.urlParam.filterVal=['A']
+						dialog_expacct.urlParam.filterCol=['recstatus', 'compcode'],
+						dialog_expacct.urlParam.filterVal=['A','session.compcode']
 					}
 				},'urlParam'
 			);
@@ -362,8 +362,8 @@
 				},{
 					title:"Select Loan Account",
 					open: function(){
-						dialog_loanacct.urlParam.filterCol=['recstatus'],
-						dialog_loanacct.urlParam.filterVal=['A']
+						dialog_loanacct.urlParam.filterCol=['recstatus', 'compcode'],
+						dialog_loanacct.urlParam.filterVal=['A','session.compcode']
 					}
 				},'urlParam'
 			);
