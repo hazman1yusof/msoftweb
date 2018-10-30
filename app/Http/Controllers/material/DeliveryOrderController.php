@@ -37,6 +37,10 @@ class DeliveryOrderController extends defaultController
                 return $this->del($request);
             case 'posted':
                 return $this->posted($request);
+            case 'reopen':
+                return $this->reopen($request);
+            case 'soft_cancel':
+                return $this->soft_cancel($request);
             case 'cancel':
                 return $this->cancel($request);
             default:
@@ -429,6 +433,76 @@ class DeliveryOrderController extends defaultController
             $queries = DB::getQueryLog();
             dump($queries);
 
+
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function reopen(Request $request){
+
+         DB::beginTransaction();
+
+        try{
+
+            //--- 8. change recstatus to cancelled -dd--//
+            DB::table('material.delordhd')
+                ->where('recno','=',$request->recno)
+                ->where('unit','=',session('unit'))
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'postedby' => session('username'),
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'OPEN' 
+                ]);
+
+            DB::table('material.delorddt')
+                ->where('recno','=',$request->recno)
+                ->where('unit','=',session('unit'))
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'OPEN' 
+                ]);
+
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function soft_cancel(Request $request){
+
+         DB::beginTransaction();
+
+        try{
+
+            //--- 8. change recstatus to cancelled -dd--//
+            DB::table('material.delordhd')
+                ->where('recno','=',$request->recno)
+                ->where('unit','=',session('unit'))
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'postedby' => session('username'),
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'CANCELLED' 
+                ]);
+
+            DB::table('material.delorddt')
+                ->where('recno','=',$request->recno)
+                ->where('unit','=',session('unit'))
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'CANCELLED' 
+                ]);
 
             DB::commit();
         

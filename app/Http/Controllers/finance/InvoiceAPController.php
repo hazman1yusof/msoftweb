@@ -22,6 +22,58 @@ use Carbon\Carbon;
         return view('finance.AP.invoiceAP.invoiceAP');
     }
 
+    public function table(Request $request){
+        $table = DB::table('material.delordhd')
+                ->where('compcode',"=",session('compcode'))
+                ->where('suppcode','=',$request->suppcode)
+                ->where('recstatus','=','POSTED');
+
+        DB::insert(
+            DB::raw("
+                CREATE TEMPORARY TABLE table_temp_a 
+                    AS (
+                        SELECT *
+                        FROM material.delordhd 
+                        WHERE compcode = '".session('compcode')."'
+                        AND suppcode = '$request->suppcode'
+                        AND recstatus = 'POSTED'
+                    );
+            ")
+        );
+
+        DB::update("update table_temp_a set subamount = 0-subamount where trantype = 'GRT'");
+
+        $table = DB::select("
+                    SELECT table_temp_a.delordno as delordno,
+                        SUM(table_temp_a.subamount) as subamount,
+                        max(delordhd.docno) as docno,
+                        max(delordhd.deliverydate) as deliverydate,
+                        max(delordhd.srcdocno) as srcdocno,
+                        max(delordhd.totamount) as totamount,
+                        max(delordhd.taxclaimable) as taxclaimable,
+                        max(delordhd.TaxAmt) as TaxAmt,
+                        max(delordhd.recno) as recno,
+                        max(delordhd.suppcode) as suppcode
+                    FROM table_temp_a
+                    LEFT JOIN material.delordhd on delordhd.delordno = table_temp_a.delordno and delordhd.trantype = 'GRN' and delordhd.suppcode = '$request->suppcode' and delordhd.recstatus = 'POSTED'
+                    GROUP BY table_temp_a.delordno
+                ");
+
+        $chunk = collect($table)->forPage($request->page,$request->rows);
+
+        $responce = new stdClass();
+        // $responce->page = $paginate->currentPage();
+        // $responce->total = $paginate->lastPage();
+        // $responce->records = $paginate->total();
+        $responce->rows = $chunk;
+        // $responce->sql = $table->toSql();
+        // $responce->sql_bind = $table->getBindings();
+
+
+        return json_encode($responce);
+
+    }
+
     public function form(Request $request)
     {   
         DB::enableQueryLog();
@@ -160,6 +212,8 @@ use Carbon\Carbon;
                 ]);
 
             $this->gltran($request->idno);
+
+            if($request->)
             //if count apactdtl > 0, update delordhd
             //SELECT * FROM delordhd WHERE compcode = '9A' AND suppcode = 'A1C001' AND delordno = 'A00001' AND recstatus = 'POSTED'
             //update all above invoiceno = apacthdr.document

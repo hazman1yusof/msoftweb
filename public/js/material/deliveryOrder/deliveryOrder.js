@@ -293,7 +293,7 @@ $(document).ready(function () {
 				case "cancel": 
 					if(stat=='POSTED'){
 						$('#but_cancel_jq').show();
-						$('#but_post_jq,#but_reopen_jq').hide();
+						$('#but_post_jq,#but_reopen_jq,#but_cancel_jq').hide();
 					}else if(stat=="CANCELLED"){
 						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 					}else{
@@ -302,23 +302,24 @@ $(document).ready(function () {
 					break;
 				case "all": 
 					if($('#delordhd_srcdocno')=='0' && $('#delordhd_srcdocno')=='null'){
-							$("label[for=delordhd_reqdept]").show();
-							$("#delordhd_reqdept_parent").show();
-							$("#delordhd_reqdept").attr('required',true);
-						}else{
-							$("label[for=delordhd_reqdept]").hide();
-							$("#delordhd_reqdept_parent").hide();
-							$("#delordhd_reqdept").removeAttr('required');
-						}
+						$("label[for=delordhd_reqdept]").show();
+						$("#delordhd_reqdept_parent").show();
+						$("#delordhd_reqdept").attr('required',true);
+					}else{
+						$("label[for=delordhd_reqdept]").hide();
+						$("#delordhd_reqdept_parent").hide();
+						$("#delordhd_reqdept").removeAttr('required');
+					}
+
 					if(stat=='POSTED'){
-						$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq').hide();
+						$('#but_cancel_jq').show();
+						$('#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq').hide();
 					}else if(stat=="CANCELLED"){
 						$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq').hide();
-					}else{
-						$('#but_cancel_jq,#but_post_jq').show();
-						$('#but_reopen_jq').hide();
+						$('#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq').hide();
+					}else if(stat=='OPEN'){
+						$('#but_soft_cancel_jq,#but_post_jq').show();
+						$('#but_reopen_jq,#but_cancel_jq').hide();
 					}
 					break;
 			}
@@ -405,7 +406,7 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
+	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
 		saveParam.oper = $(this).data("oper");
 		let obj={recno:selrowData('#jqGrid').delordhd_recno,_token:$('#_token').val()};
 		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {

@@ -1034,11 +1034,12 @@ title:"Select Category Code",
 		},{
 			title:"Select DO No",
 			open: function(){
-				dialog_document.urlParam.filterCol=['compcode', 'recstatus','suppcode', 'trantype'];
-				dialog_document.urlParam.filterVal=['session.compcode', 'POSTED',$("#apacthdr_suppcode").val(), 'GRN'];
-				}
-			},'urlParam'
-		);
+				dialog_document.urlParam.url = "/invoiceAP/table";
+				dialog_document.urlParam.suppcode =  $("#apacthdr_suppcode").val();
+
+			}
+		},'none'
+	);
 	dialog_document.makedialog(false);
 
 var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
