@@ -59,7 +59,6 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					//$("#apacthdr_ttype").val($("#trantype").val());
 					break;
 				case state = 'view':
 					disableForm('#formdata');
@@ -272,53 +271,12 @@ $(document).ready(function () {
 		}
 	}
 
-	/*/////////////////////////////// for Button /////////////////////////////////////////////////////////
-	var adtNo
-		function sometodo(){
-			$("#jqGrid2_iledit").show();
-			$("#jqGrid2").jqGrid('showCol', 'action');
-			$('#formdata  textarea').prop("readonly",true);
-			$('#formdata :input[hideOne]').show();
-			$('#formdata input').prop("readonly",true);
-			$('#formdata  input[type=radio]').prop("disabled",true);
-			$("input[id*='_auditno']").val(auditno);
-			$("#formdata a").off(); 
-		}
-
-		////////////////////selected///////////////
-
-	$('#apacthdr_ttype').on('change', function() {
-		let ttype1 = $("#apacthdr_ttype option:selected" ).val();
-		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
-			if (ttype1 == 'Supplier') {
-				$doctype = 'Supplier';
-			} else
-				$doctype = 'Others';
-			$("#formdata :input[name='apacthdr_source']").val("AP");
-			$("#formdata :input[name='apacthdr_trantype']").val("IN");
-		}else if(ttype1 == 'Debit_Note') {
-			$doctype = 'Debit_Note';
-			
-			$("#formdata :input[name='apacthdr_source']").val("AP");
-			$("#formdata :input[name='apacthdr_trantype']").val("DN");
-		}
-////////////////////selection of category///////////////
-title:"Select Category Code",
-			open: function(){
-					if (($doctype =="Supplier")) {
-						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-						dialog_category.urlParam.filterVal=['A', 'session.compcode', 'CR', '1'];
-					}else {
-						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-						dialog_category.urlParam.filterVal=['A', 'session.compcode', 'CR', '0'];
-					}
-				}
-*/
+	
 	////////////////////selected///////////////
 
 	$('#apacthdr_ttype').on('change', function() {
 		let ttype1 = $("#apacthdr_ttype option:selected" ).val();
-		//let doctype = $("ttype1").val();
+	
 		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("IN");
