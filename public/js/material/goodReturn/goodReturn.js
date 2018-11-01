@@ -1324,6 +1324,7 @@ $(document).ready(function () {
 			],
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_prdept.gridname);
+				backdated.set_backdate(data.deptcode);
 			}
 		},{
 			title:"Select Transaction Department",
