@@ -383,6 +383,32 @@ $(document).ready(function () {
 		}
 	});
 
+	///////////check postdate & docdate///////////////////
+	$("#apacthdr_recdate,#apacthdr_actdate").blur(checkdate);
+
+			function checkdate(nkreturn=false){
+				var apacthdr_recdate = $('#apacthdr_recdate').val();
+				var apacthdr_actdate = $('#apacthdr_actdate').val();
+
+				$(".noti ol").empty();
+				var failmsg=[];
+
+				if(moment(apacthdr_recdate).isBefore(apacthdr_actdate)){
+					failmsg.push("Post Date cannot be lower than Document date");
+				}
+
+				if(failmsg.length){
+					failmsg.forEach(function(element){
+						$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
+					});
+					if(nkreturn)return false;
+				}else{
+					if(nkreturn)return true;
+				}
+
+			}
+	//////////////////////////////////////////////////////
+
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj){
 		if(obj==null){
@@ -410,8 +436,6 @@ $(document).ready(function () {
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
-				//sometodo();
-				//$('#pvno').val(data.pvno);
 				$('#auditno').val(data.auditno);
 				$('#amount').val(data.amount);//just save idno for edit later
 				
@@ -724,11 +748,6 @@ $(document).ready(function () {
 		return $('<div class="input-group"><input id="document" name="document" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 	}
 
-	/*function GSTCodeCustomEdit(val,opt){  	
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input id="GSTCode" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}*/
-
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
 			return $(elem).find("input").val();
@@ -778,7 +797,8 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-		if($('#formdata').isValid({requiredFields:''},conf,true)){
+
+		if( checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			dialog_supplier.off();
 			dialog_payto.off();
 			dialog_category.off();
@@ -794,7 +814,7 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-		if($('#formdata').isValid({requiredFields:''},conf,true)){
+		if( checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			dialog_supplier.off();
 			dialog_payto.off();
 			dialog_category.off();
@@ -828,9 +848,7 @@ $(document).ready(function () {
 		unsaved = false;
 		$("#jqGridPager2Delete,#saveHeaderLabel").hide();
 		dialog_document.on();//start binding event on jqgrid2
-		/*$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
-		$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
-		$("#jqGrid2 input[name='qtyonhand']").on('blur',checkQOH);*/
+
 		$("input[name='grnno']").keydown(function(e) {//when click tab at batchno, auto save
 			var code = e.keyCode || e.which;
 			if (code == '9')$('#jqGrid2_ilsave').click();
