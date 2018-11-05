@@ -121,7 +121,7 @@ $(document).ready(function () {
 	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
 
-	var backdated = new func_backdated('#delordhd_deldept');
+	var backdated = new func_backdated('#delordhd_prdept');
 	backdated.getdata();
 	$('#delordhd_prdept').change(function(){
 		alert('asd');
