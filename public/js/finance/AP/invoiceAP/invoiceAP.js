@@ -207,30 +207,15 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			let stat = selrowData("#jqGrid").apacthdr_recstatus;
-			switch($("#scope").val()){
-				case "cancel": 
-					if(stat=='POSTED'){
-						$('#but_cancel_jq').show();
-						$('#but_post_jq,#but_reopen_jq').hide();
-					}else if(stat=="CANCELLED"){
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-					}else{
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-					}
-					break;
-				case "all": 
-					if(stat=='POSTED'){
-						$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq').hide();
-					}else if(stat=="CANCELLED"){
-						$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq').hide();
-					}else{
-						$('#but_post_jq').show();
-						$('but_cancel_jq,#but_reopen_jq').hide();
-					}
-					break;
+		let recstatus = selrowData("#jqGrid").apacthdr_recstatus;
+			if(recstatus=='OPEN'){
+				$('#but_cancel_jq,#but_post_jq').show();
+				$('#but_reopen_jq').hide();
+			}else if(recstatus=="POSTED"){
+				$('#but_cancel_jq,#but_post_jq').hide();
+				$('#but_reopen_jq').show();
+			}else if (recstatus == "CANCELLED"){
+				$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			}
 
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
@@ -408,6 +393,71 @@ $(document).ready(function () {
 
 			}
 	//////////////////////////////////////////////////////
+
+	/////////////////check period///////////////////////////
+	var actdateObj = new setactdate(["#trandate"]);
+			actdateObj.getdata().set();
+			function setactdate(target){
+				this.actdateopen=[];
+				this.lowestdate;
+				this.highestdate;
+				this.target=target;
+				this.param={
+					action:'get_value_default',
+					field: ['*'],
+					table_name:'sysdb.period',
+					table_id:'idno'
+				}
+
+				this.getdata = function(){
+					var self=this;
+					$.get( "../../../../assets/php/entry.php?"+$.param(this.param), function( data ) {
+						
+					},'json').done(function(data) {
+						if(!$.isEmptyObject(data.rows)){
+							self.lowestdate = data.rows[0]["datefr1"];
+							self.highestdate = data.rows[data.rows.length-1]["dateto12"];
+							data.rows.forEach(function(element){
+								$.each(element, function( index, value ) {
+									if(index.match('periodstatus') && value == 'O'){
+										self.actdateopen.push({
+											from:element["datefr"+index.match(/\d+/)[0]],
+											to:element["dateto"+index.match(/\d+/)[0]]
+										})
+									}
+								});
+							});
+						}
+					});
+					return this;
+				}
+
+				this.set = function(){
+					this.target.forEach(function(element){
+						$(element).on('change',validate_actdate);
+					});
+				}
+
+				function validate_actdate(obj){
+					var permission = false;
+					actdateObj.actdateopen.forEach(function(element){
+					 	if(moment(obj.target.value).isBetween(element.from,element.to, null, '[]')) {
+							permission=true
+						}else{
+							(permission)?permission=true:permission=false;
+						}
+					});
+					if(!moment(obj.target.value).isBetween(actdateObj.lowestdate,actdateObj.highestdate)){
+						bootbox.alert('Date not in accounting period setup');
+						$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
+					}else if(!permission){
+						bootbox.alert('Accounting Period Has been Closed');
+						$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
+					}
+					
+				}
+			}
+	///////////////////////////////////////////////////////
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj){
@@ -798,7 +848,7 @@ $(document).ready(function () {
 		mycurrency.check0value(errorField);
 		unsaved = false;
 
-		if( checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			dialog_supplier.off();
 			dialog_payto.off();
 			dialog_category.off();
