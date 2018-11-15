@@ -33,6 +33,7 @@ $(document).ready(function () {
 	var actdateObj = new setactdate(["#trandate"]);
 	actdateObj.getdata().set();
 
+	
 	////////////////////////////////////start dialog//////////////////////////////////////
 
 	var oper;
@@ -207,30 +208,15 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			let stat = selrowData("#jqGrid").apacthdr_recstatus;
-			switch($("#scope").val()){
-				case "cancel": 
-					if(stat=='POSTED'){
-						$('#but_cancel_jq').show();
-						$('#but_post_jq,#but_reopen_jq').hide();
-					}else if(stat=="CANCELLED"){
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-					}else{
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-					}
-					break;
-				case "all": 
-					if(stat=='POSTED'){
-						$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq').hide();
-					}else if(stat=="CANCELLED"){
-						$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq').hide();
-					}else{
-						$('#but_post_jq').show();
-						$('but_cancel_jq,#but_reopen_jq').hide();
-					}
-					break;
+		let recstatus = selrowData("#jqGrid").apacthdr_recstatus;
+			if(recstatus=='OPEN'){
+				$('#but_cancel_jq,#but_post_jq').show();
+				$('#but_reopen_jq').hide();
+			}else if(recstatus=="POSTED"){
+				$('#but_cancel_jq,#but_post_jq').hide();
+				$('#but_reopen_jq').show();
+			}else if (recstatus == "CANCELLED"){
+				$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			}
 
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
@@ -797,7 +783,7 @@ $(document).ready(function () {
 		mycurrency.check0value(errorField);
 		unsaved = false;
 
-		if( checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			dialog_supplier.off();
 			dialog_payto.off();
 			dialog_category.off();
