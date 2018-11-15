@@ -30,7 +30,7 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#amount']);
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#trandate"]);
+	var actdateObj = new setactdate(["#apacthdr_recdate"]);
 	actdateObj.getdata().set();
 
 	
