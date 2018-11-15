@@ -546,26 +546,32 @@ function setactdate(target){
 	}
 
 	this.set = function(){
-		this.target.forEach(function(element){
-			$(element).on('change',validate_actdate);
+		var self = this;
+		this.target.forEach(function(element,i){
+			$(element).on('change',{data:self,index:i},validate_actdate);
 		});
 	}
 
-	function validate_actdate(obj){
+	function validate_actdate(event){
 		var permission = false;
+		var actdateObj = event.data.data; 
+		var index = event.data.index;
+		var value = $(actdateObj.target[index]).val();
+		var currentTarget = actdateObj.target[index];
+		console.log(index)
 		actdateObj.actdateopen.forEach(function(element){
-		 	if(moment(obj.target.value).isBetween(element.from,element.to, null, '[]')) {
+		 	if(moment(value).isBetween(element.from,element.to, null, '[]')) {
 				permission=true
 			}else{
 				(permission)?permission=true:permission=false;
 			}
 		});
-		if(!moment(obj.target.value).isBetween(actdateObj.lowestdate,actdateObj.highestdate)){
-			bootbox.alert('Date not in accounting period setup');
-			$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
+		if(!moment(value).isBetween(actdateObj.lowestdate,actdateObj.highestdate)){
+			alert('Date not in accounting period setup');
+			$(currentTarget).val('').addClass( "error" ).removeClass( "valid" );
 		}else if(!permission){
-			bootbox.alert('Accounting Period Has been Closed');
-			$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
+			alert('Accounting Period Has been Closed');
+			$(currentTarget).val('').addClass( "error" ).removeClass( "valid" );
 		} //Accounting Period Has been Closed
 			//Date not in accounting period setup
 	}
