@@ -627,6 +627,13 @@ $(document).ready(function () {
         	$("#jqGridPager2Delete").show();
         }, 
         beforeSaveRow: function(options, rowid) {
+
+        	if ($("#apacthdr_amount").val() != $("#jqGrid2 input[name='amount']").val()) {
+
+				event.preventDefault();
+				alert("Detail amount not equal to invoice amount");
+				
+		}
         	if(errorField.length>0)return false;
 
 			let data = selrowData('#jqGrid2');
@@ -785,7 +792,7 @@ $(document).ready(function () {
 		unsaved = false;
 		
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-			
+		
 			dialog_supplier.off();
 			dialog_payto.off();
 			dialog_category.off();
@@ -843,6 +850,7 @@ $(document).ready(function () {
 		$("input[name='grnno']").keydown(function(e) {//when click tab at batchno, auto save
 			var code = e.keyCode || e.which;
 			if (code == '9')$('#jqGrid2_ilsave').click();
+
 		});
 
 	});	
