@@ -213,10 +213,11 @@ $(document).ready(function () {
 				$('#but_cancel_jq,#but_post_jq').show();
 				$('#but_reopen_jq').hide();
 			}else if(recstatus=="POSTED"){
+				$('#but_reopen_jq,#but_post_jq').hide();
+				$('#but_cancel_jq').show();
+			}else if (recstatus == "CANCELLED"){
 				$('#but_cancel_jq,#but_post_jq').hide();
 				$('#but_reopen_jq').show();
-			}else if (recstatus == "CANCELLED"){
-				$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			}
 
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
@@ -286,7 +287,7 @@ $(document).ready(function () {
 		beforeRefresh: function () {
 			refreshGrid("#jqGrid", urlParam);
 		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
+	/*}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
 		buttonicon: "glyphicon glyphicon-trash",
 		title: "Delete Selected Row",
@@ -300,7 +301,7 @@ $(document).ready(function () {
 			} else {
 				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'idno': selrowData('#jqGrid').idno });
 			}
-		},
+		},*/
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
 		buttonicon: "glyphicon glyphicon-info-sign",
@@ -360,7 +361,7 @@ $(document).ready(function () {
 		unsaved = false;
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
-		if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			saveHeader("#formdata", oper,saveParam,{idno:selrowData('#jqGrid').apacthdr_idno});
 			unsaved = false;
 			$("#dialogForm").dialog('close');
