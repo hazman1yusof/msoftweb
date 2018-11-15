@@ -265,7 +265,7 @@ class DeliveryOrderController extends defaultController
                     ->where('unit','=', $value->unit)
                     ->where('groupcode','=', "Stock")
                     ->where('itemcode','=', $value->itemcode)
-                    ->exist();
+                    ->exists();
 
                 if($Stock_flag) break;
 

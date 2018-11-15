@@ -495,7 +495,6 @@ $(document).ready(function () {
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
 			{ label: 'Delivery Order Number', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
-				formatter: showdetail,
 				edittype:'custom',	editoptions:
 					{ custom_element:documentCustomEdit,
 					custom_value:galGridCustomValue },
@@ -513,14 +512,14 @@ $(document).ready(function () {
 					readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
-					element.style.textAlign = 'right';
-					$(element).keypress(function(e){
-						if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-						return false;
-						}
-					});
+						element.style.textAlign = 'right';
+						$(element).keypress(function(e){
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+							}
+						});
 					}
-					},
+				},
 			},
 			{ label: 'Tax Claim', name: 'GSTCode', width: 200, edittype:'text', hidden:true, classes: 'wrap',  
 				editable:true,
@@ -952,23 +951,26 @@ $(document).ready(function () {
 				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer'},
 				{label:'pono',name:'srcdocno',width:400,classes:'pointer', hidden:true},
-				{label:'Amount',name:'totamount',width:400,classes:'pointer'},
+				{label:'Amount',name:'amount',width:400,classes:'pointer'},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
 				{label:'record no',name:'recno',width:400,classes:'pointer', hidden:true},
 				{label:'suppcode',name:'suppcode',width:400,classes:'pointer', hidden:true},
+
 			],
 
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_document.gridname);
 				$("#jqGrid2 input[name='document']").val(data['delordno']);
 				$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
-				$("#jqGrid2 input[name='amount']").val(data['totamount']);
+				$("#jqGrid2 input[name='amount']").val(data['amount']);
 				$("#jqGrid2 input[name='GSTCode']").val(data['taxclaimable']);
 				$("#jqGrid2 input[name='AmtB4GST']").val(data['TaxAmt']);
 				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
 				$("#jqGrid2 input[name='grnno']").val(data['docno']);
 				$("#jqGrid2 input[name='entrydate']").val(data['deliverydate']);
+
+				$('#apacthdr_outamount').val(data['amount']);
 
 			}
 		},{
@@ -982,6 +984,6 @@ $(document).ready(function () {
 	);
 	dialog_document.makedialog(false);
 
-var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
+	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();
 });

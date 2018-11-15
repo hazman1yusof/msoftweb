@@ -51,16 +51,15 @@ class do_util extends defaultController{
             ->where('StockLoc.DeptCode','=',$value->deldept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
             ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
-            ->where('StockLoc.UomCode','=',$value->uomcode)
-            ->first();
+            ->where('StockLoc.UomCode','=',$value->uomcode);
 
         //2.kalu ada stockloc, update 
-        if(count($stockloc_obj)){
+        if($stockloc_obj->exists()){
 
         //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
-            $stockloc_arr = (array)$stockloc_obj;
+            $stockloc_arr = (array)$stockloc_obj->first();
             $month = defaultController::toMonth($value->trandate);
-            $QtyOnHand = $stockloc_obj->qtyonhand + $txnqty; 
+            $QtyOnHand = $stockloc_obj->first()->qtyonhand + $txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] + $txnqty;
             $NetMvVal = $stockloc_arr['netmvval'.$month] + ($netprice * $txnqty);
 
@@ -93,13 +92,11 @@ class do_util extends defaultController{
             ->where('stockexp.expdate','=',$value->expdate)
             ->where('stockexp.year','=', defaultController::toYear($value->trandate))
             ->where('stockexp.uomcode','=',$value->uomcode)
-            ->where('stockexp.batchno','=',$value->batchno)
-           // ->where('stockexp.lasttt','=','GRN')
-            ->first();
+            ->where('stockexp.batchno','=',$value->batchno);
 
-        if(count($stockexp_obj)){
+        if($stockexp_obj->exists()){
         //2.kalu ada Stock Expiry, update
-            $BalQty = $stockexp_obj->balqty + $txnqty;
+            $BalQty = $stockexp_obj->first()->balqty + $txnqty;
 
             DB::table('material.stockexp')
                 ->where('stockexp.compcode','=',$value->compcode)
@@ -110,7 +107,6 @@ class do_util extends defaultController{
                 ->where('stockexp.year','=', defaultController::toYear($value->trandate))
                 ->where('stockexp.uomcode','=',$value->uomcode)
                 ->where('stockexp.batchno','=',$value->batchno)
-              //  ->where('stockexp.lasttt','=','GRN')
                 ->update([
                     'balqty' => $BalQty
                 ]);
@@ -144,14 +140,13 @@ class do_util extends defaultController{
 	        ->where('product.compcode','=',session('compcode'))
             ->where('product.unit','=',session('unit'))
 	        ->where('product.itemcode','=',$value->itemcode)
-	        ->where('product.uomcode','=',$value->uomcode)
-	        ->first();
+	        ->where('product.uomcode','=',$value->uomcode);
 
-	    if(count($product_obj)){ // kalu jumpa
+	    if($product_obj->exists()){ // kalu jumpa
 	        $month = defaultController::toMonth($value->trandate);
-	        $OldQtyOnHand = $product_obj->qtyonhand;
+	        $OldQtyOnHand = $product_obj->first()->qtyonhand;
 	        $currprice = $netprice;
-	        $Oldavgcost = $product_obj->avgcost;
+	        $Oldavgcost = $product_obj->first()->avgcost;
 	        $OldAmount = $OldQtyOnHand * $Oldavgcost;
 	        $NewAmount = $netprice * $txnqty;
 
@@ -159,11 +154,7 @@ class do_util extends defaultController{
 	        $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
 
 	        // update qtyonhand, avgcost, currprice
-	        $product_obj = DB::table('material.product')
-	            ->where('product.compcode','=',$value->compcode)
-                ->where('product.unit','=',$value->unit)
-	            ->where('product.itemcode','=',$value->itemcode)
-	            ->where('product.uomcode','=',$value->uomcode)
+	        $product_obj
 	            ->update([
 	                'qtyonhand' => $newqtyonhand ,
 	                'avgcost' => $newAvgCost,
