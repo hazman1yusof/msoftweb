@@ -783,8 +783,9 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-
+		
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+			
 			dialog_supplier.off();
 			dialog_payto.off();
 			dialog_category.off();
@@ -799,13 +800,16 @@ $(document).ready(function () {
 	function saveDetailLabel(callback=null){
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
+		
 		unsaved = false;
 		if( checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+
 			dialog_supplier.off();
 			dialog_payto.off();
 			dialog_category.off();
 			dialog_department.off();
 			saveHeader("#formdata",oper,saveParam);
+
 			errorField.length=0;
 		}else{
 			mycurrency.formatOn();
@@ -831,6 +835,7 @@ $(document).ready(function () {
 
 	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
 	$("#jqGrid2_iladd, #jqGrid2_iledit").click(function(){
+
 		unsaved = false;
 		$("#jqGridPager2Delete,#saveHeaderLabel").hide();
 		dialog_document.on();//start binding event on jqgrid2
@@ -839,7 +844,9 @@ $(document).ready(function () {
 			var code = e.keyCode || e.which;
 			if (code == '9')$('#jqGrid2_ilsave').click();
 		});
+
 	});	
+
 
 	
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
