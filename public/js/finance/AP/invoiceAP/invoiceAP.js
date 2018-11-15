@@ -226,7 +226,6 @@ $(document).ready(function () {
 
 			$('#auditno').val(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
-			console.log(urlParam2.filterVal);
 
 			refreshGrid("#jqGrid3",urlParam2);
 		},
@@ -310,6 +309,7 @@ $(document).ready(function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
+			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -319,6 +319,7 @@ $(document).ready(function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -618,22 +619,18 @@ $(document).ready(function () {
         	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
         },
         aftersavefunc: function (rowid, response, options) {
-           $('#amount').val(response.responseText);
+			$('#apacthdr_outamount').val(response.responseText);
+			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
+				alert('amount not the same');
+			}
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
         	//linenotoedit = null;
-        	console.log(urlParam2);
         	refreshGrid('#jqGrid2',urlParam2,'add');
         	$("#jqGridPager2Delete").show();
         }, 
         beforeSaveRow: function(options, rowid) {
 
-        	if ($("#apacthdr_amount").val() != $("#jqGrid2 input[name='amount']").val()) {
-
-				event.preventDefault();
-				alert("Detail amount not equal to invoice amount");
-				
-		}
         	if(errorField.length>0)return false;
 
 			let data = selrowData('#jqGrid2');
@@ -971,8 +968,6 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
 				$("#jqGrid2 input[name='grnno']").val(data['docno']);
 				$("#jqGrid2 input[name='entrydate']").val(data['deliverydate']);
-
-				$('#apacthdr_outamount').val(data['amount']);
 
 			}
 		},{
