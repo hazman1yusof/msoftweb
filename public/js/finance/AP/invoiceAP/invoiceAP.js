@@ -30,72 +30,10 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#amount']);
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	/*var actdateObj = new setactdate(["#trandate"]);
-	actdateObj.getdata().set();*/
-
 	var actdateObj = new setactdate(["#trandate"]);
-			actdateObj.getdata().set();
-			function setactdate(target){
-				this.actdateopen=[];
-				this.lowestdate;
-				this.highestdate;
-				this.target=target;
-				this.param={
-					action:'get_value_default',
-					url:"/util/get_value_default",
-					field: ['*'],
-					table_name:'sysdb.period',
-					table_id:'idno'
-				}
+	actdateObj.getdata().set();
 
-				this.getdata = function(){
-					var self=this;
-					$.get( this.param.url+"?"+$.param(this.param), function( data ) {	
-						
-					},'json').done(function(data) {
-						if(!$.isEmptyObject(data.rows)){
-							self.lowestdate = data.rows[0]["datefr1"];
-							self.highestdate = data.rows[data.rows.length-1]["dateto12"];
-							data.rows.forEach(function(element){
-								$.each(element, function( index, value ) {
-									if(index.match('periodstatus') && value == 'O'){
-										self.actdateopen.push({
-											from:element["datefr"+index.match(/\d+/)[0]],
-											to:element["dateto"+index.match(/\d+/)[0]]
-										})
-									}
-								});
-							});
-						}
-					});
-					return this;
-				}
-
-				this.set = function(){
-					this.target.forEach(function(element){
-						$(element).on('change',validate_actdate);
-					});
-				}
-
-				function validate_actdate(obj){
-					var permission = false;
-					actdateObj.actdateopen.forEach(function(element){
-					 	if(moment(obj.target.value).isBetween(element.from,element.to, null, '[]')) {
-							permission=true
-						}else{
-							(permission)?permission=true:permission=false;
-						}
-					});
-					if(!moment(obj.target.value).isBetween(actdateObj.lowestdate,actdateObj.highestdate)){
-						bootbox.alert('Date not in accounting period setup');
-						$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
-					}else if(!permission){
-						bootbox.alert('Accounting Period Has been Closed');
-						$(obj.currentTarget).val('').addClass( "error" ).removeClass( "valid" );
-					}
-					
-				}
-			}
+	
 	////////////////////////////////////start dialog//////////////////////////////////////
 
 	var oper;
