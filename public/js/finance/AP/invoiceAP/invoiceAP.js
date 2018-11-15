@@ -30,7 +30,7 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#amount']);
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#trandate"]);
+	var actdateObj = new setactdate(["#apacthdr_recdate"]);
 	actdateObj.getdata().set();
 
 	
@@ -372,27 +372,27 @@ $(document).ready(function () {
 	///////////check postdate & docdate///////////////////
 	$("#apacthdr_recdate,#apacthdr_actdate").blur(checkdate);
 
-			function checkdate(nkreturn=false){
-				var apacthdr_recdate = $('#apacthdr_recdate').val();
-				var apacthdr_actdate = $('#apacthdr_actdate').val();
+	function checkdate(nkreturn=false){
+		var apacthdr_recdate = $('#apacthdr_recdate').val();
+		var apacthdr_actdate = $('#apacthdr_actdate').val();
 
-				$(".noti ol").empty();
-				var failmsg=[];
+		$(".noti ol").empty();
+		var failmsg=[];
 
-				if(moment(apacthdr_recdate).isBefore(apacthdr_actdate)){
-					failmsg.push("Post Date cannot be lower than Document date");
-				}
+		if(moment(apacthdr_recdate).isBefore(apacthdr_actdate)){
+			failmsg.push("Post Date cannot be lower than Document date");
+		}
 
-				if(failmsg.length){
-					failmsg.forEach(function(element){
-						$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
-					});
-					if(nkreturn)return false;
-				}else{
-					if(nkreturn)return true;
-				}
+		if(failmsg.length){
+			failmsg.forEach(function(element){
+				$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
+			});
+			if(nkreturn)return false;
+		}else{
+			if(nkreturn)return true;
+		}
 
-			}
+	}
 	//////////////////////////////////////////////////////
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
