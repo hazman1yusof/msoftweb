@@ -1200,6 +1200,7 @@ $(document).ready(function () {
 		// dialog_reqdept.off();
 		dialog_srcdocno.off();
 		radbuts.check();
+		errorField.length = 0;
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;

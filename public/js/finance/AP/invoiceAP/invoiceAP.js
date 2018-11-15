@@ -226,7 +226,6 @@ $(document).ready(function () {
 
 			$('#auditno').val(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
-			console.log(urlParam2.filterVal);
 
 			refreshGrid("#jqGrid3",urlParam2);
 		},
@@ -310,6 +309,7 @@ $(document).ready(function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
+			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -319,6 +319,7 @@ $(document).ready(function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
