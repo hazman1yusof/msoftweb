@@ -137,11 +137,11 @@ class InvoiceAPDetailController extends defaultController
 
        
             ///4. then update to header
-            DB::table('finance.apactdtl')
+            DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$auditno)
                 ->update([
-                    'amount' => $totalAmount
+                    'outamount' => $totalAmount
                   
                 ]);
             DB::commit();

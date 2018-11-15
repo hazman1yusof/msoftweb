@@ -617,11 +617,13 @@ $(document).ready(function () {
         	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
         },
         aftersavefunc: function (rowid, response, options) {
-           $('#amount').val(response.responseText);
+			$('#apacthdr_outamount').val(response.responseText);
+			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
+				alert('amount not the same');
+			}
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
         	//linenotoedit = null;
-        	console.log(urlParam2);
         	refreshGrid('#jqGrid2',urlParam2,'add');
         	$("#jqGridPager2Delete").show();
         }, 
@@ -955,8 +957,6 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
 				$("#jqGrid2 input[name='grnno']").val(data['docno']);
 				$("#jqGrid2 input[name='entrydate']").val(data['deliverydate']);
-
-				$('#apacthdr_outamount').val(data['amount']);
 
 			}
 		},{
