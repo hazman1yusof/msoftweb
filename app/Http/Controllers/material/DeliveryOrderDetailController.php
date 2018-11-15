@@ -195,7 +195,7 @@ class DeliveryOrderDetailController extends defaultController
                 ->where('recno','=',$recno)
                 ->update([
                     'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
+                    'subamount'=> $totalAmount - $tot_gst, 
                     'TaxAmt' => $tot_gst
                 ]);
 

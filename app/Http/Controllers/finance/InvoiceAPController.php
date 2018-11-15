@@ -41,11 +41,11 @@ use Carbon\Carbon;
             ")
         );
 
-        DB::update("update table_temp_a set totamount = 0-totamount where trantype = 'GRT'");
+        DB::update("update table_temp_a set subamount = 0-subamount where trantype = 'GRT'");
 
         $table = DB::select("
                     SELECT table_temp_a.delordno as delordno,
-                        SUM(table_temp_a.totamount) as totamount,
+                        SUM(table_temp_a.subamount) as amount,
                         max(delordhd.docno) as docno,
                         max(delordhd.deliverydate) as deliverydate,
                         max(delordhd.srcdocno) as srcdocno,
@@ -202,15 +202,30 @@ use Carbon\Carbon;
         DB::beginTransaction();
         try {
 
-            $query = DB::table('finance.apacthdr')
-                ->where('idno','=',$request->idno)
-                ->update([
-                    'recstatus' => 'POSTED',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
+            $apacthdr = DB::table('finance.apacthdr')
+                ->where('idno','=',$request->idno);
+
+            $apactdtl = DB::table('finance.apactdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=', $apacthdr->first()->auditno);
 
             $this->gltran($request->idno);
+
+            if($apactdtl->exists()){ 
+                foreach ($apactdtl->get() as $value) {
+                    DB::table('material.delordhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recstatus','=','POSTED')
+                        ->where('delordno','=',$value->document)
+                        ->update(['invoiceno'=>$apacthdr->first()->document]);
+                }
+            }
+
+            $apacthdr->update([
+                'recstatus' => 'POSTED',
+                'upduser' => session('username'),
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+            ]);
 
           //  if($request->)
             //if count apactdtl > 0, update delordhd

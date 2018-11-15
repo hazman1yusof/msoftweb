@@ -338,25 +338,19 @@ class GoodReturnController extends defaultController
                     ->where('StockLoc.DeptCode','=',$value->deldept)
                     ->where('StockLoc.ItemCode','=',$value->itemcode)
                     ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
-                    ->where('StockLoc.UomCode','=',$value->uomcode)
-                    ->first();
+                    ->where('StockLoc.UomCode','=',$value->uomcode);
 
                 //2.kalu ada stockloc, update 
-                if(count($stockloc_obj)){
+                if($stockloc_obj->exists()){
 
                 //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
-                    $stockloc_arr = (array)$stockloc_obj;
+                    $stockloc_arr = (array)$stockloc_obj->first();
                     $month = $this->toMonth($value->trandate);
-                    $QtyOnHand = $stockloc_obj->qtyonhand - $txnqty; 
+                    $QtyOnHand = $stockloc_obj->first()->qtyonhand - $txnqty; 
                     $NetMvQty = $stockloc_arr['netmvqty'.$month] - $txnqty;
                     $NetMvVal = $stockloc_arr['netmvval'.$month] - ($netprice * $txnqty);
 
-                    DB::table('material.StockLoc')
-                        ->where('StockLoc.CompCode','=',session('compcode'))
-                        ->where('StockLoc.DeptCode','=',$value->deldept)
-                        ->where('StockLoc.ItemCode','=',$value->itemcode)
-                        ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
-                        ->where('StockLoc.UomCode','=',$value->uomcode)
+                     $stockloc_obj
                         ->update([
                             'QtyOnHand' => $QtyOnHand,
                             'NetMvQty'.$month => $NetMvQty, 
@@ -378,23 +372,14 @@ class GoodReturnController extends defaultController
                     ->where('stockexp.year','=', defaultController::toYear($value->trandate))
                     ->where('stockexp.uomcode','=',$value->uomcode)
                     ->where('stockexp.batchno','=',$value->batchno)
-                    ->where('stockexp.lasttt','=','GRN')
-                    ->first();
+                    ->where('stockexp.lasttt','=','GRN');
 
                 //2.kalu ada Stock Expiry, update
 
-                if(count($stockexp_obj)){
-                    $BalQty = $stockexp_obj->balqty - $txnqty;
+                if($stockexp_obj->exists()){
+                    $BalQty = $stockexp_obj->first()->balqty - $txnqty;
 
-                    DB::table('material.stockexp')
-                        ->where('stockexp.compcode','=',session('compcode'))
-                        ->where('stockexp.deptcode','=',$value->deldept)
-                        ->where('stockexp.itemcode','=',$value->itemcode)
-                        ->where('stockexp.expdate','=',$value->expdate)
-                        ->where('stockexp.year','=', defaultController::toYear($value->trandate))
-                        ->where('stockexp.uomcode','=',$value->uomcode)
-                        ->where('stockexp.batchno','=',$value->batchno)
-                        ->where('stockexp.lasttt','=','GRN')
+                    $stockexp_obj
                         ->update([
                             'balqty' => $BalQty
                         ]);
@@ -407,14 +392,13 @@ class GoodReturnController extends defaultController
                 $product_obj = DB::table('material.product')
                     ->where('product.compcode','=',session('compcode'))
                     ->where('product.itemcode','=',$value->itemcode)
-                    ->where('product.uomcode','=',$value->uomcode)
-                    ->first();
+                    ->where('product.uomcode','=',$value->uomcode);
 
-                if(count($product_obj)){ // kalu jumpa
+                if($product_obj->first()){ // kalu jumpa
                     $month = defaultController::toMonth($value->trandate);
-                    $OldQtyOnHand = $product_obj->qtyonhand;
+                    $OldQtyOnHand = $product_obj->first()->qtyonhand;
                     $currprice = $netprice;
-                    $Oldavgcost = $product_obj->avgcost;
+                    $Oldavgcost = $product_obj->first()->avgcost;
                     $OldAmount = $OldQtyOnHand * $Oldavgcost;
                     $NewAmount = $netprice * $txnqty;
 
@@ -426,10 +410,7 @@ class GoodReturnController extends defaultController
                     }
 
                     // update qtyonhand, avgcost, currprice
-                    $product_obj = DB::table('material.product')
-                        ->where('product.compcode','=',session('compcode'))
-                        ->where('product.itemcode','=',$value->itemcode)
-                        ->where('product.uomcode','=',$value->uomcode)
+                    $product_obj
                         ->update([
                             'qtyonhand' => $newqtyonhand ,
                             'avgcost' => $newAvgCost,

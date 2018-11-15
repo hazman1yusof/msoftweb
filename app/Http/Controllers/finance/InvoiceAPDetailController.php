@@ -168,8 +168,7 @@ class InvoiceAPDetailController extends defaultController
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
                     'compcode' => session('compcode'),
-                    'auditno' => $auditno,
-                    'lineno_' => $li,
+                    'auditno' => $request->auditno,
                     'source' => 'AP',
                     'trantype' => 'IN',
                     'document' => $request->document,
