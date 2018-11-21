@@ -1251,9 +1251,9 @@ $(document).ready(function () {
 		$("#jqGrid2").jqGrid('setRowData', linenotoedit ,{netunitprice:netunitprice});
 		
 
-		/*var id="#jqGrid2 input[name='qtyreturned']"
-		var fail_msg = "Quantity Delivered must be greater than 0"
-		var name = ">0quantitydelivered";
+		var id="#jqGrid2 input[name='qtyreturned']"
+		var fail_msg = "Quantity Return must be less than Quantity On Hand"
+		var name = "qtyreturned";
 		if (qtyreturned < qtydelivered) {
 			if($.inArray(id,errorField)!==-1){
 				errorField.splice($.inArray(id,errorField), 1);
@@ -1268,7 +1268,7 @@ $(document).ready(function () {
 			if($.inArray(id,errorField)===-1){
 				errorField.push( id );
 			}
-		}*/
+		}
 
 		event.data.currency.formatOn();//change format to currency on each calculation
 

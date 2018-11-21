@@ -875,7 +875,11 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Name',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_supplier.gridname);
+				$("#apacthdr_payto").val(data['SuppCode']);
+			}
 		},{
 			title:"Select Supplier Code",
 			open: function(){
