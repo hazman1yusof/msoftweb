@@ -67,7 +67,7 @@
 			var dialog_advccode = new ordialog(
 				'advccode','finance.costcenter','#advccode',errorField,
 				{	colModel:[
-						{label:'Cost Code',name:'costcode',width:100,classes:'pointer',canSearch:true,,or_search:true},
+						{label:'Cost Code',name:'costcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 						],
 					ondblClickRow:function(){
