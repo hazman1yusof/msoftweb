@@ -19,6 +19,7 @@
 				</div>
 
 			 </fieldset> 
+
 		</form>
 
 		<div class="panel panel-default">
@@ -28,6 +29,7 @@
             					<div id="jqGridPager"></div>
         				</div>
 		    		</div>
+		    		
 		</div>
 
  		<div class="panel panel-default">
@@ -39,12 +41,29 @@
 
         		<div class='col-md-4'>
             		<table id="itemExpiry" class="table table-striped"></table>
-            			<div id="jqGridPager3"></div>
+            			<div id="jqGridPager3">			
+            			</div>
         		</div>
-		    </div>
+        	</div>
+
 		</div>
 
+		<!-- <div class="panel panel-default">
+		    <div class="panel-body">
+		    	<div class='col-md-4'>
+            		<table id="detail" class="table table-striped"></table>
+            			<div id="jqGridPager4"></div>
+        		</div> -->
+		<!-- <form class='form-horizontal' style='width:99%' id='formdata'>
+			
+    <button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;display: none;'>Detail Movement</button>
+		</form>	
+ -->	
+ 	<!-- <div id="dialogForm" title="detailmovement  dialog">
+  <div id=body></div>
+</div> -->
     </div>
+
 
 	@endsection
 
