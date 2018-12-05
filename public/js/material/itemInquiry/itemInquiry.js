@@ -292,54 +292,36 @@ $(document).ready(function () {
 
 		$('#detail').jqGrid('setRowData', rowid, {rackno:total});
 	}
-	
-	$("#itemExpiry").jqGrid('navGrid','#jqGridPager3',
-		{	
-			edit:false,view:false,add:false,del:false,search:false,
-			beforeRefresh: function(){
-				refreshGrid("#itemExpiry",urlParam);
-			},
-			}).jqGrid('navButtonAdd', "#jqGridPager3", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-plus",
-		title: "Add New Row",
-		onClickButton: function () {
-			oper = 'add';
-			$("#dialogForm").dialog("open");
-			$("#formdata :input[name='itemcode']").val($("#itemcodeS").val());
-			$("#formdata :input[name='uomcode']").val($("#uomcodeS").val());
-			$("#formdata :input[name='year']").val($("#year").val());
+
+	var detailMovement=[{
+		id: 'detailMovement',
+		text: "Detail Movement",click: function() {
+			$("#detailMovementDialog" ).dialog( "open" );
+		}
+	}];
+
+	//$("#itemExpiry").jqGrid("option", "buttons", detailMovement);
+
+	$("#detailMovementDialog")
+		.dialog({
+		width: 6/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			rdonly("#detailMovementDialog");
+			set_compid_from_storage("input[name='computerid']", "input[name='ipaddress']");
 		},
-			
-		}	
-	);
-	
+		close: function( event, ui ) {
+			emptyFormdata([],'#dmFormdata');
+			$('.alert').detach();
+			$("#dmFormdata a").off();
+		},
+		//buttons :addNew2,
+	});
+
 
     $("#itemExpiry").jqGrid('setLabel', 'balqty', 'Balance Quantity', {'text-align':'right'});
 
-    /////////detail movement/////////////
-	/*$(document).ready(function() {
-		$(function() {
-			var pos = { my: "center center", at: "center top", of: window };
-			    $( "#my_dialog" ).dialog({
-				autoOpen: false,
-			    position: pos,
-				buttons: {
-			        "Close ": function() {
-			          $( this ).dialog( "close" );
-			        }
-			      }
-
-		});
-	});*/
-
-	$("#save").click(function(){
-		$("#dialogForm").dialog("open");
-		$("#formdata :input[name='itemcode']").val($("#itemcodeS").val());
-		$("#formdata :input[name='uomcode']").val($("#uomcodeS").val());
-		$("#formdata :input[name='year']").val($("#year").val());
-
-	});
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////// 
 	toogleSearch('#sbut1','#searchForm','on');
 	populateSelect('#jqGrid','#searchForm');
