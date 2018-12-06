@@ -86,8 +86,8 @@
 		</div>
     </div>
 
-<!---*********************************** ADD NEW PRODUCT ************************************************** -->
-		<div id="detailMovementDialog" title="Add New Product" >
+<!---*********************************** VIEW DETAIL MOVEMENT ************************************************** -->
+		<div id="detailMovementDialog" title="View Detail Movement" >
 			<form class='form-horizontal' style='width:99%' id='dmFormdata'>
 
 				{{ csrf_field() }}

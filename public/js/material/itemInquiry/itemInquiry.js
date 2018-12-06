@@ -322,6 +322,85 @@ $(document).ready(function () {
 
     $("#itemExpiry").jqGrid('setLabel', 'balqty', 'Balance Quantity', {'text-align':'right'});
 
+    //////////////////////////////// TABLE DETAIL MOVEMENT/////////////////////////////////////////////////
+
+    function populateTable(){
+		selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+		rowData = $("#jqGrid").jqGrid ('getRowData', selrow);
+		$.each(rowData, function( index, value ) {
+			if(value){
+				$('#TableDetailMovement #'+index+' span').text(numeral(value).format('0,0.00'))
+			}else{
+				$('#TableDetailMovement #'+index+' span').text("0.00");
+			}
+		});
+	}
+
+	var counter=20, moredr=true, morecr=true, DTscrollTop = 0;
+		function scroll_next1000(){
+			var scrolbody = $(".dataTables_scrollBody")[0];
+			$('#but_det').hide();
+			DTscrollTop = scrolbody.scrollTop;
+			if (scrolbody.scrollHeight - scrolbody.scrollTop === scrolbody.clientHeight) {
+				if(moredr || morecr){
+					mymodal.show("#TableDetailMovement");
+					getdatadr(false,counter,20);
+					getdatacr(false,counter,20);
+					counter+=20;
+				}
+			}
+	}
+
+
+	var DataTable = $('#TableDetailMovement').DataTable({
+		responsive: true,
+		scrollY: 500,
+		paging: false,
+		columns: [
+			{ data: 'trandate' ,"width": "5%"},
+			{ data: 'trantype'},
+			{ data: 'trantype'},
+			{ data: 'auditno'},
+			{ data: 'postdate' ,"width": "15%"},
+			{ data: 'description'},
+			{ data: 'reference'},
+			{ data: 'acccode'},
+			{ data: 'dramount', "sClass": "numericCol"},
+			{ data: 'cramount', "sClass": "numericCol"},
+		],
+		drawCallback: function( settings ) {
+			$(".dataTables_scrollBody")[0].scrollTop = DTscrollTop;
+		}
+	});
+
+			$('#TableGlmasTran tbody').on( 'click', 'tr', function () {
+				DataTable.$('tr.bg-info').removeClass('bg-info');
+				$(this).addClass('bg-info');
+			});
+
+			
+			// $('#TableGlmasTran').on( 'dblclick', 'tr', function () {
+			// 	console.log($(this));
+			// 	// detbut.show($(this));
+			// });
+
+			$('#TableGlmasTran').on( 'click', 'i', function () {
+				detbut.show($(this).closest( "tr" ));
+			});
+
+			hidetbl(true);
+			function hidetbl(hide){
+				$('#but_det').hide();
+				counter=20
+				if(hide){
+					$('#TableGlmasTran_wrapper').children().first().hide();
+					$('#TableGlmasTran_wrapper').children().last().hide();
+				}else{
+					$('#TableGlmasTran_wrapper').children().first().show();
+					$('#TableGlmasTran_wrapper').children().last().show();
+				}
+			}		
+
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////// 
 	toogleSearch('#sbut1','#searchForm','on');
 	populateSelect('#jqGrid','#searchForm');
