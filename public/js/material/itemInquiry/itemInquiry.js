@@ -359,48 +359,14 @@ $(document).ready(function () {
 		columns: [
 			{ data: 'trandate' ,"width": "5%"},
 			{ data: 'trantype'},
-			{ data: 'trantype'},
-			{ data: 'auditno'},
-			{ data: 'postdate' ,"width": "15%"},
-			{ data: 'description'},
-			{ data: 'reference'},
-			{ data: 'acccode'},
-			{ data: 'dramount', "sClass": "numericCol"},
-			{ data: 'cramount', "sClass": "numericCol"},
+			
 		],
 		drawCallback: function( settings ) {
 			$(".dataTables_scrollBody")[0].scrollTop = DTscrollTop;
 		}
 	});
 
-			$('#TableGlmasTran tbody').on( 'click', 'tr', function () {
-				DataTable.$('tr.bg-info').removeClass('bg-info');
-				$(this).addClass('bg-info');
-			});
-
 			
-			// $('#TableGlmasTran').on( 'dblclick', 'tr', function () {
-			// 	console.log($(this));
-			// 	// detbut.show($(this));
-			// });
-
-			$('#TableGlmasTran').on( 'click', 'i', function () {
-				detbut.show($(this).closest( "tr" ));
-			});
-
-			hidetbl(true);
-			function hidetbl(hide){
-				$('#but_det').hide();
-				counter=20
-				if(hide){
-					$('#TableGlmasTran_wrapper').children().first().hide();
-					$('#TableGlmasTran_wrapper').children().last().hide();
-				}else{
-					$('#TableGlmasTran_wrapper').children().first().show();
-					$('#TableGlmasTran_wrapper').children().last().show();
-				}
-			}		
-
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////// 
 	toogleSearch('#sbut1','#searchForm','on');
 	populateSelect('#jqGrid','#searchForm');
