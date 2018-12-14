@@ -204,6 +204,17 @@ Route::get('/assetcategory','finance\assetcategoryController@show');
 Route::get('/assetcategory/table','finance\assetcategoryController@table');
 Route::post('/assetcategory/form','finance\assetcategoryController@form');
 
+/// Fixed Asset Inquiry /// 
+Route::get('/assetenquiry','finance\assetenquiryController@show');
+Route::get('/assetenquiry/table','finance\assetenquiryController@table');
+Route::post('/assetenquiry/form','finance\assetenquiryController@form');
+
+/// Asset Transfer /// 
+Route::get('/assettransfer','finance\assettransferController@show');
+Route::get('/assettransfer/table','finance\assettransferController@table');
+Route::post('/assettransfer/form','finance\assettransferController@form');
+
+
 //// GL Enquiry ///
 Route::get('/glenquiry','finance\GlenquiryController@show');
 Route::get('/glenquiry/table','finance\GlenquiryController@table');
@@ -351,10 +362,7 @@ Route::get('/currentPt','hisdb\CurrentPatientController@show');
 Route::get('/currentPt/get_entry','hisdb\CurrentPatientController@get_entry');
 Route::post('/currentPt/post_entry','hisdb\CurrentPatientController@post_entry');
 
-/// Fixed Asset Inquiry /// 
-Route::get('/assetenquiry','finance\assetenquiryController@show');
-Route::get('/assetenquiry/table','finance\assetenquiryController@table');
-Route::post('/assetenquiry/form','finance\assetenquiryController@form');
+
 
 /// Test route /// 
 Route::get('/test','test\TestController@show');

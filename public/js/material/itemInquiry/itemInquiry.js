@@ -300,7 +300,6 @@ $(document).ready(function () {
 		}
 	}];
 
-	//$("#itemExpiry").jqGrid("option", "buttons", detailMovement);
 
 	$("#detailMovementDialog")
 		.dialog({
