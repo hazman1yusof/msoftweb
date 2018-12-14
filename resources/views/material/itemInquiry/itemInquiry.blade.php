@@ -121,5 +121,6 @@
 @section('scripts')
 
 	<script src="js/material/itemInquiry/itemInquiry.js"></script>
+	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 
 @endsection
