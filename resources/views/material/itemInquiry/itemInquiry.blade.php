@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Debtor Type')
+@section('title', 'Item Enquiry')
 @section('style')
 	.num{
 		width:20px;
@@ -34,6 +34,9 @@
 		border-color:#ddd;
 		background-color:#ddd;
 	}
+	#detailMovement{
+		margin: 0.2%;position: absolute;right: 20px; bottom:5px;
+	}
 	
 @endsection
 
@@ -45,8 +48,8 @@
 
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
-				<div class="ScolClass"  style="padding-right: 15px;">
-						<div name='Scol'>Search By : </div>
+				<div class="ScolClass"  style="padding:0 0 0 15px">
+					<div name='Scol' style='font-weight:bold'>Search By : </div>
 				</div>
 				<div class="StextClass">
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
@@ -58,13 +61,12 @@
 		</form>
 
 		<div class="panel panel-default">
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
-		    		
+    		<div class="panel-body">
+    			<div class='col-md-12' style="padding:0 0 15px 0">
+    				<table id="jqGrid" class="table table-striped"></table>
+    					<div id="jqGridPager"></div>
+				</div>
+    		</div>
 		</div>
 
  		<div class="panel panel-default">
@@ -77,46 +79,39 @@
 
         		<div class='col-md-4'>
             		<table id="itemExpiry" class="table table-striped"></table>
-            			<div id="jqGridPager3">			
-            			</div>
-            		<button type="button" id='detailMovement' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;display: none;'>Detail Movement</button>	
+        			<div id="jqGridPager3">
+        			</div>
+            		<button type="button" id='detailMovement' class='btn btn-info btn-sm'>Detail Movement</button>	
         		</div>
+
         	</div>
 
 		</div>
     </div>
 
 <!---*********************************** VIEW DETAIL MOVEMENT ************************************************** -->
-		<div id="detailMovementDialog" title="View Detail Movement" >
-			<form class='form-horizontal' style='width:99%' id='dmFormdata'>
-
-				{{ csrf_field() }}
-
-				<div id='detailMovement' class='col-xs-9 modalx'>
-				<table class="table table-hover  table-bordered" id='TableDetailMovement'>
+	<div id="detailMovementDialog" title="View Detail Movement" >
+		<div id='detailMovement_c' class=''>
+			<table class="table table-hover  table-bordered" id='TableDetailMovement'>
 				<thead>
 					<tr>
+						<th> </th>
 						<th>Transaction Date</th>
 						<th>Trantype</th>
-						<th>Transaction</th>
-						<th>Description</th>
+						<th>Transaction Description</th>
 						<th>Qty In</th>
 						<th>Qty Out</th>
 						<th>Balance Quantity</th>
 						<th>Unit Cost</th>
-						<th>***</th>
-						<th>***</th>
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
-				</table>
-			</div>
-
-			</form>
+			</table>
 		</div>
+	</div>
 
-	@endsection
+@endsection
 
 @section('scripts')
 

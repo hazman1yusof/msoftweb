@@ -293,77 +293,107 @@ $(document).ready(function () {
 		$('#detail').jqGrid('setRowData', rowid, {rackno:total});
 	}
 
-	var detailMovement=[{
-		id: 'detailMovement',
-		text: "Detail Movement",click: function() {
+
+	$("#detailMovement").click(function(){
+		if(selrowData("#detail").deptcode != undefined){
 			$("#detailMovementDialog" ).dialog( "open" );
+		}else{
+			alert('Select department code');
 		}
-	}];
+	});
 
 
-	$("#detailMovementDialog")
-		.dialog({
+	$("#detailMovementDialog").dialog({
 		width: 6/10 * $(window).width(),
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
-			rdonly("#detailMovementDialog");
-			set_compid_from_storage("input[name='computerid']", "input[name='ipaddress']");
+			DataTable.clear().draw();
+			getdtlmov(false,0,20);
 		},
 		close: function( event, ui ) {
-			emptyFormdata([],'#dmFormdata');
-			$('.alert').detach();
-			$("#dmFormdata a").off();
 		},
-		//buttons :addNew2,
 	});
 
-
-    $("#itemExpiry").jqGrid('setLabel', 'balqty', 'Balance Quantity', {'text-align':'right'});
+    $("#itemExpiry").jqGrid('setLabel', 'balqty', 'Balance', {'text-align':'right'});
 
     //////////////////////////////// TABLE DETAIL MOVEMENT/////////////////////////////////////////////////
 
-    function populateTable(){
-		selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-		rowData = $("#jqGrid").jqGrid ('getRowData', selrow);
-		$.each(rowData, function( index, value ) {
-			if(value){
-				$('#TableDetailMovement #'+index+' span').text(numeral(value).format('0,0.00'))
-			}else{
-				$('#TableDetailMovement #'+index+' span').text("0.00");
+	var counter=20, moremov=true, DTscrollTop = 0;
+	function scroll_next1000(){
+		var scrolbody = $(".dataTables_scrollBody")[0];
+		$('#but_det').hide();
+		DTscrollTop = scrolbody.scrollTop;
+		if (scrolbody.scrollHeight - scrolbody.scrollTop === scrolbody.clientHeight) {
+			if(moremov){
+				getdtlmov(false,counter,20);
+				counter+=20;
 			}
-		});
+		}
 	}
-
-	var counter=20, moredr=true, morecr=true, DTscrollTop = 0;
-		function scroll_next1000(){
-			var scrolbody = $(".dataTables_scrollBody")[0];
-			$('#but_det').hide();
-			DTscrollTop = scrolbody.scrollTop;
-			if (scrolbody.scrollHeight - scrolbody.scrollTop === scrolbody.clientHeight) {
-				if(moredr || morecr){
-					mymodal.show("#TableDetailMovement");
-					getdatadr(false,counter,20);
-					getdatacr(false,counter,20);
-					counter+=20;
-				}
-			}
-	}
-
 
 	var DataTable = $('#TableDetailMovement').DataTable({
 		responsive: true,
 		scrollY: 500,
 		paging: false,
 		columns: [
-			{ data: 'trandate' ,"width": "5%"},
+			{ data: 'open' ,"width": "5%"},
+			{ data: 'trandate'},
 			{ data: 'trantype'},
+			{ data: 'description'},
+			{ data: 'qtyin'},
+			{ data: 'qtyout'},
+			{ data: 'balquan'},
+			{ data: 'cost'}
 			
 		],
 		drawCallback: function( settings ) {
 			$(".dataTables_scrollBody")[0].scrollTop = DTscrollTop;
 		}
 	});
+
+	function getdtlmov(fetchall,start,limit){
+		var param={
+					action:'get_value_default',
+					url:'/util/get_value_default',
+					field:['trandate','trantype','deptcode','txnqty'],
+					table_name:'material.ivtxndt',
+					table_id:'auditno',
+					filterCol:['compcode','itemcode','deptcode'],
+					filterVal:[
+						'session.compcode',
+						selrowData("#detail").itemcode,
+						selrowData("#detail").deptcode
+						],
+					sidx: 'adddate', sord:'desc'
+				}
+		if(!fetchall){
+			param.offset=start;
+			param.limit=limit;
+		}
+		$.get( "/util/get_value_default?"+$.param(param), function( data ) {
+				
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data.rows)){
+				data.rows.forEach(function(obj){
+					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
+					obj.description = 'transfer to '+obj.deptcode;
+					if(obj.trantype == 'GRT'){
+						obj.qtyin = '';
+						obj.qtyout = obj.txnqty;
+					}else{
+						obj.qtyin = obj.txnqty;
+						obj.qtyout = '';
+					}
+					obj.balquan = '-';
+					obj.cost = '-';
+				});
+				DataTable.rows.add(data.rows).draw();
+			}else{
+				moremov=false;
+			}
+		});
+	}
 
 			
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////// 
