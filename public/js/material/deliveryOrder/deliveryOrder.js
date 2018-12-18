@@ -577,7 +577,6 @@ $(document).ready(function () {
 		refreshGrid('#jqGrid',urlParam);
 	}
 
-
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
@@ -870,8 +869,6 @@ $(document).ready(function () {
 				dialog_taxcode.on();
 
 			}
-
-			var dataobj = $('#jqGrid2').jqGrid ('getRowData', rowid);
 
 			unsaved = false;
 			mycurrency2.array.length = 0;

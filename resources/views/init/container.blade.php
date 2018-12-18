@@ -281,7 +281,19 @@
 			});
         });
 
-        var timeoutId;
+  //       var timeoutId;
+		// $("#myNavmenu").hover(function() {
+  //       	$( "#myNavmenu" ).animate({ width:"20%" }, 'fast' ,"linear", function() {
+  //       		$( ".lilabel" ).show();
+  //       	});
+		// },function () {
+  //       	$( ".lilabel" ).hide();
+  //       	$( "#myNavmenu" ).animate({ width:"8%" }, 'fast' ,"linear", function() {
+  //       		$( ".lilabel" ).hide();
+  //       	});
+		// });
+
+		var timeoutId;
 		$("#myNavmenu").hover(function() {
 			if (!timeoutId) {
 				timeoutId = window.setTimeout(function() {
