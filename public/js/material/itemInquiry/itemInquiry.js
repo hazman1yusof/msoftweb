@@ -293,7 +293,6 @@ $(document).ready(function () {
 		$('#detail').jqGrid('setRowData', rowid, {rackno:total});
 	}
 
-
 	$("#detailMovement").click(function(){
 		if(selrowData("#detail").deptcode != undefined){
 			$("#detailMovementDialog" ).dialog( "open" );
@@ -301,7 +300,6 @@ $(document).ready(function () {
 			alert('Select department code');
 		}
 	});
-
 
 	$("#detailMovementDialog").dialog({
 		width: 6/10 * $(window).width(),
