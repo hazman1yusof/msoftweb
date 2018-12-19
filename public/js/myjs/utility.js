@@ -704,6 +704,36 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	function onTab(event){
 		renull_search(event.data.data);
 		if(event.key == "Tab"){
+			var textfield = $(event.currentTarget).siblings("input[type='text']");
+
+			var obj = event.data.data;
+
+			var obj = event.data.data;
+			$("#"+obj.gridname).jqGrid('setGridParam',{ ondblClickRow: function(id){ 
+				if(!obj.jqgrid_.hasOwnProperty('ondblClickRow_off')){
+					textfield.off('blur',onBlur);
+					textfield.val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
+					textfield.parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
+					textfield.focus();
+					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow(event);
+					$("#"+obj.dialogname).dialog( "close" );
+					$("#"+obj.gridname).jqGrid("clearGridData", true);
+					$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
+					textfield.removeClass( "error" ).addClass( "valid" );
+					textfield.on('blur',{data:obj,errorField:errorField},onBlur);
+				}
+
+				// var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;
+				var idtopush = $(event.currentTarget).siblings("input[type='text']").attr('id');
+				if($.inArray(idtopush,obj.errorField)!==-1 && obj.required){
+					obj.errorField.splice($.inArray(idtopush,obj.errorField), 1);
+				}
+			}});
+
+			$("#"+obj.gridname).jqGrid('setGridParam',{ onSelectRow: function(id){ 
+				if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow(rowid, selected);
+			}});
+
 			event.preventDefault();
 			let text = $(this).val().trim();
 			if(text != ''){

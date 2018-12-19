@@ -1628,6 +1628,7 @@ $(document).ready(function () {
 				{label: 'Unit', name:'s_unit'},
 			],
 			ondblClickRow:function(event){
+				console.log(event)
 				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 				var id_optid = optid.substring(0,optid.search("_"));
 
