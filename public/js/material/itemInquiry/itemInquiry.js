@@ -343,6 +343,11 @@ $(document).ready(function () {
 			{ data: 'qtyout'},
 			{ data: 'balquan'},
 			{ data: 'cost'}
+			// trans amount 
+			//balance amount
+			//document no
+			//userid
+			//transtime
 			
 		],
 		drawCallback: function( settings ) {
