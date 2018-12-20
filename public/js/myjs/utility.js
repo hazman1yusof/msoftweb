@@ -704,10 +704,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	function onTab(event){
 		renull_search(event.data.data);
 		if(event.key == "Tab"){
-			var textfield = $(event.currentTarget).siblings("input[type='text']");
-
-			var obj = event.data.data;
-
+			var textfield = $(event.currentTarget);
+			
 			var obj = event.data.data;
 			$("#"+obj.gridname).jqGrid('setGridParam',{ ondblClickRow: function(id){ 
 				if(!obj.jqgrid_.hasOwnProperty('ondblClickRow_off')){
@@ -724,7 +722,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				}
 
 				// var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;
-				var idtopush = $(event.currentTarget).siblings("input[type='text']").attr('id');
+				var idtopush = $(event.currentTarget).attr('id');
 				if($.inArray(idtopush,obj.errorField)!==-1 && obj.required){
 					obj.errorField.splice($.inArray(idtopush,obj.errorField), 1);
 				}

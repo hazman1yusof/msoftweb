@@ -25,6 +25,8 @@ class GoodReturnDetailController extends defaultController
                 return $this->add($request);
             case 'edit':
                 return $this->edit($request);
+            case 'edit_all':
+                return $this->edit_all($request);
             case 'del':
                 return $this->del($request);
             default:
@@ -210,6 +212,77 @@ class GoodReturnDetailController extends defaultController
                     'remarks'=> $request->remarks
                 ]);
 
+            ///2. recalculate total amount
+            $totalAmount = DB::table('material.delorddt')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$request->recno)
+                ->where('recstatus','!=','DELETE')
+                ->sum('totamount');
+
+            //calculate tot gst from detail
+            $tot_gst = DB::table('material.delorddt')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$request->recno)
+                ->where('recstatus','!=','DELETE')
+                ->sum('amtslstax');
+
+            ///3. update total amount to header
+            DB::table('material.delordhd')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$request->recno)
+                ->update([
+                    'totamount' => $totalAmount, 
+                    'subamount'=> $totalAmount, 
+                    'TaxAmt' => $tot_gst
+                ]);
+            
+            echo $totalAmount;
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+
+    }
+
+    public function edit_all(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->dataobj as $key => $value) {
+                ///1. update detail
+                DB::table('material.delorddt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->where('lineno_','=',$value['lineno_'])
+                    ->update([
+                        'pricecode' => $request->pricecode, 
+                        'itemcode'=> $request->itemcode, 
+                        'uomcode'=> $request->uomcode, 
+                        'pouom'=> $request->pouom,
+                        'qtydelivered'=> $request->qtydelivered, 
+                        'qtyreturned'=> $request->qtyreturned,
+                        'unitprice'=> $request->unitprice,
+                        'taxcode'=> $request->taxcode, 
+                        'perdisc'=> $request->perdisc, 
+                        'amtdisc'=> $request->amtdisc, 
+                        'amtslstax'=> $request->tot_gst, 
+                        'netunitprice'=> $request->netunitprice, 
+                        'amount'=> $request->amount, 
+                        'totamount'=> $request->totamount, 
+                        'upduser'=> session('username'), 
+                        'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
+                        'expdate'=> $this->chgDate($request->expdate),  
+                        'batchno'=> $request->batchno, 
+                        'remarks'=> $request->remarks
+                    ]);
+            }
+            
             ///2. recalculate total amount
             $totalAmount = DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
