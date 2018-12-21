@@ -261,25 +261,25 @@ class GoodReturnDetailController extends defaultController
                     ->where('recno','=',$request->recno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'pricecode' => $request->pricecode, 
-                        'itemcode'=> $request->itemcode, 
-                        'uomcode'=> $request->uomcode, 
-                        'pouom'=> $request->pouom,
-                        'qtydelivered'=> $request->qtydelivered, 
-                        'qtyreturned'=> $request->qtyreturned,
-                        'unitprice'=> $request->unitprice,
-                        'taxcode'=> $request->taxcode, 
-                        'perdisc'=> $request->perdisc, 
-                        'amtdisc'=> $request->amtdisc, 
-                        'amtslstax'=> $request->tot_gst, 
-                        'netunitprice'=> $request->netunitprice, 
-                        'amount'=> $request->amount, 
-                        'totamount'=> $request->totamount, 
+                        'pricecode' => $value['pricecode'], 
+                        'itemcode'=> $value['itemcode'], 
+                        'uomcode'=> $value['uomcode'], 
+                        'pouom'=> $value['pouom'],
+                        'qtydelivered'=> $value['qtydelivered'], 
+                        'qtyreturned'=>  $value['qtyreturned'],
+                        'unitprice'=>  $value['unitprice'],
+                        'taxcode'=>  $value['taxcode'], 
+                        'perdisc'=>  $value['perdisc'], 
+                        'amtdisc'=>  $value['amtdisc'], 
+                        'amtslstax'=>  $value['tot_gst'], 
+                        'netunitprice'=>  $value['netunitprice'], 
+                        'amount'=>  $value['amount'], 
+                        'totamount'=>  $value['totamount'], 
                         'upduser'=> session('username'), 
                         'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
-                        'expdate'=> $this->chgDate($request->expdate),  
-                        'batchno'=> $request->batchno, 
-                        'remarks'=> $request->remarks
+                        'expdate'=> $this->chgDate($value['expdate']), 
+                        'batchno'=>  $value['batchno'], 
+                        'remarks'=>  $value['remarks']
                     ]);
             }
             
