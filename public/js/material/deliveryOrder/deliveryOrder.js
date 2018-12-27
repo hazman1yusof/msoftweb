@@ -1594,64 +1594,8 @@ $(document).ready(function () {
 			ondblClickRow:function(event){
 				let data = selrowData('#'+dialog_pricecode.gridname);
 
-				if(data.pricecode == 'MS'){
-					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:
-						[
-							{label: 'Item Codex',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label: 'Description',name:'p_descriptions',width:400,classes:'pointer',canSearch:true,or_search:true},
-							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
-							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
-							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
-							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
-							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-							{label: 'Unit', name:'p_unit'},
-						]
-					});
-
-					dialog_itemcode.urlParam.table = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u']
-					dialog_itemcode.urlParam.filterCol = ['s.compcode', 'p.groupcode', 's.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode', $('#delordhd_deldept').val(), 'Stock', 'session.unit'];
-
-
-					dialog_itemcode.urlParam.table = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
-					dialog_itemcode.urlParam.fixPost = "true";
-					dialog_itemcode.urlParam.table_id = "none_";
-					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode', 'p.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode',  'Stock', 'session.unit'];
-					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
-					dialog_itemcode.urlParam.join_onCol = ['p.taxcode','u.uomcode'];
-					dialog_itemcode.urlParam.join_onVal = ['t.taxcode','p.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
-					dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
-
-				}else{
-					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:
-						[
-							{label: 'Item Codex',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
-							{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
-							{label: 'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
-							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
-							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
-							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-							{label: 'Unit', name:'s_unit'},
-						]
-					});
-
-					dialog_itemcode.urlParam.table = ['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u']
-					dialog_itemcode.urlParam.fixPost = "true";
-					dialog_itemcode.urlParam.table_id = "none_";
-					dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 's.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val(),'session.unit'];
-					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
-					dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
-					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
-					dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
-
-				}
+				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 'p.groupcode', 's.unit'];
+				dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val(),(data.pricecode == 'BO' || data.pricecode == 'IV') ? 'Stock' : '<>.Stock', 'session.unit'];
 			}
 		},{
 			title:"Select Price Code For Item",
