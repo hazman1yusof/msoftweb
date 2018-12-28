@@ -1304,7 +1304,7 @@ $(document).ready(function () {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
        
-		let qtyorder = parseFloat($("#"+id_optid+"_qtydelivered").val());
+		let qtyorder = parseFloat($("#"+id_optid+"_qtyorder").val());
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
 		let amtdisc = parseFloat($("#"+id_optid+"_amtdisc").val());
 		let perdisc = parseFloat($("#"+id_optid+"_perdisc").val());
@@ -1326,7 +1326,7 @@ $(document).ready(function () {
 		
 		var id="#jqGrid2 #"+id_optid+"_qtyorder";
 		var fail_msg = "Quantity Ordered must be greater than 0";
-		var name = ">0quantityordered";
+		var name = "quantityorder";
 		if (qtyorder > 0) {
 			if($.inArray(id,errorField)!==-1){
 				errorField.splice($.inArray(id,errorField), 1);
