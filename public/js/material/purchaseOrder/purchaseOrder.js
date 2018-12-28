@@ -1097,12 +1097,12 @@ $(document).ready(function () {
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
-		var field,table;
+		var field,table, case_;;
 		switch(options.colModel.name){
-			case 'uomcode':field=['uomcode','description'];table="material.uom";break;
-			case 'pouom': field = ['uomcode', 'description']; table = "material.uom"; break;
-			case 'pricecode':field=['pricecode','description'];table="material.pricesource";break;
-			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";break;
+			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
+			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
+			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
+			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		/*$.get( param.url+"?"+$.param(param), function( data ) {
