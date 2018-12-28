@@ -1385,7 +1385,7 @@ $(document).ready(function () {
 				dialog_authorise.urlParam.filterCol=['compcode','recstatus'];
 				dialog_authorise.urlParam.filterVal=['session.compcode','A'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_authorise.makedialog();
 
@@ -1527,7 +1527,7 @@ $(document).ready(function () {
 				dialog_suppcode.urlParam.filterCol=['recstatus','compcode'];
 				dialog_suppcode.urlParam.filterVal=['A','session.compcode'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_suppcode.makedialog();
 
@@ -1543,7 +1543,7 @@ $(document).ready(function () {
 				dialog_credcode.urlParam.filterCol=['recstatus','compcode'];
 				dialog_credcode.urlParam.filterVal=['A','session.compcode'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_credcode.makedialog();
 
@@ -1562,7 +1562,7 @@ $(document).ready(function () {
 				dialog_deldept.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 				dialog_deldept.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_deldept.makedialog();
 
@@ -1595,10 +1595,9 @@ $(document).ready(function () {
 				let data = selrowData('#'+dialog_pricecode.gridname);
 
 				if(data.pricecode == 'MS'){
-					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:
-						[
+					let newcolmodel = [
 							{label: 'Item Codex',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label: 'Description',name:'p_descriptions',width:400,classes:'pointer',canSearch:true,or_search:true},
+							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
 							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
 							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
@@ -1607,27 +1606,23 @@ $(document).ready(function () {
 							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 							{label: 'Unit', name:'p_unit'},
 						]
-					});
 
-					dialog_itemcode.urlParam.table = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u']
-					dialog_itemcode.urlParam.filterCol = ['s.compcode', 'p.groupcode', 's.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode', $('#delordhd_deldept').val(), 'Stock', 'session.unit'];
+					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
 
-
-					dialog_itemcode.urlParam.table = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
+					dialog_itemcode.urlParam.field = getfield(newcolmodel);
+					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
 					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode', 'p.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode',  'Stock', 'session.unit'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode',  'Asset', 'session.unit'];
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['t.taxcode','p.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
-					dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
+					dialog_itemcode.urlParam.join_filterCol = [];
+					dialog_itemcode.urlParam.join_filterVal = [];
 
 				}else{
-					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:
-						[
+					let newcolmodel = [
 							{label: 'Item Codex',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
 							{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
@@ -1638,9 +1633,10 @@ $(document).ready(function () {
 							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 							{label: 'Unit', name:'s_unit'},
 						]
-					});
+					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
 
-					dialog_itemcode.urlParam.table = ['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u']
+					dialog_itemcode.urlParam.field = getfield(newcolmodel);
+					dialog_itemcode.urlParam.table_name = ['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u']
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
 					dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 's.unit'];
@@ -1699,6 +1695,10 @@ $(document).ready(function () {
 				}
 
 				let data=selrowData('#'+dialog_itemcode.gridname);
+
+				if(data.hasOwnProperty('p_itemcode')){
+					$("#jqGrid2 #"+id_optid+"_itemcode").val(data['p_itemcode']);
+				}
 
 				$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
 				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['s_uomcode']);

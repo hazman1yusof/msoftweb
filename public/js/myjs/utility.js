@@ -841,6 +841,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					$(obj.textfield).off('blur',onBlur);
 					$(obj.textfield).val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
 					$(obj.textfield).parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
+					console.log(getfield(obj.field)[0])
 					$(obj.textfield).focus();
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 					$("#"+obj.dialogname).dialog( "close" );
