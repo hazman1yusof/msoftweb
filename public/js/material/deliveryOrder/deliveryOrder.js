@@ -1648,6 +1648,10 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
 
 				}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8516c2ce92b6add191d6489bf9d18f39a933b018
 				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 'p.groupcode', 's.unit'];
 				dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val(),(data.pricecode == 'BO' || data.pricecode == 'IV') ? 'Stock' : '<>.Stock', 'session.unit'];
 
