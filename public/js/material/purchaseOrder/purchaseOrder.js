@@ -1439,12 +1439,13 @@ $(document).ready(function () {
 			colModel: [
 				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{label:'Unit',name:'sector'},
 			]
 		}, {
 			title: "Select Request Department",
 			open: function(){
-				dialog_reqdept.urlParam.filterCol=['recstatus'];
-				dialog_reqdept.urlParam.filterVal=['A'];
+				dialog_reqdept.urlParam.filterCol=['recstatus', 'compcode', 'sector'];
+				dialog_reqdept.urlParam.filterVal=['A', 'session.compcode', 'session.unit'];
 			}
 		},'urlParam'
 	);
@@ -1464,8 +1465,6 @@ $(document).ready(function () {
 				{label:'Status',name:'h_recstatus',width:400,classes:'pointer',hidden:true},
 				{label:'Remark',name:'h_remarks',width:400,classes:'pointer',hidden:true},
 				{label:'recno',name:'h_recno',width:400,classes:'pointer',hidden:true}
-				
-
 
 				],
 			ondblClickRow: function () {
@@ -1481,7 +1480,6 @@ $(document).ready(function () {
 				$("#purordhd_subamount").val(data['h.subamount']);
 				$("#purordhd_recstatus").val(data['h.recstatus']);
 				$("#purordhd_remarks").val(data['h.remarks']);
-
 				$('#referral').val(data['h.recno']);
 
 				var urlParam2 = {
@@ -1531,8 +1529,6 @@ $(document).ready(function () {
 
 					}
 				});
-
-
 				
 			}
 
@@ -1543,29 +1539,23 @@ $(document).ready(function () {
 				dialog_purreqno.urlParam.fixPost = "true";
 				dialog_purreqno.urlParam.filterCol = ['h.reqdept','h.recstatus', 'h.purordno'];
 				dialog_purreqno.urlParam.filterVal = [$("#purordhd_reqdept").val(),'POSTED', '0'];
-				// dialog_purreqno.urlParam.join_type = ['LEFT JOIN'];
-				// dialog_purreqno.urlParam.join_onCol = ['h.recno'];
-				// dialog_purreqno.urlParam.join_onVal = ['d.recno'];
-				
-
-				
 			}
 		},'none'
 	);
 	dialog_purreqno.makedialog();
-	dialog_purreqno.urlParam.fixPost = "true";
 
 	var dialog_prdept = new ordialog(
 		'prdept','sysdb.department','#purordhd_prdept',errorField,
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				]
+				{label:'Unit',name:'sector'},
+				],
 		},{
 			title:"Select Transaction Department",
 			open: function(){
-				dialog_prdept.urlParam.filterCol=['purdept', 'recstatus'];
-				dialog_prdept.urlParam.filterVal=['1', 'A'];
+				dialog_prdept.urlParam.filterCol=['purdept', 'recstatus', 'compcode', 'sector'];
+				dialog_prdept.urlParam.filterVal=['1', 'A','session.compcode','session.unit'];
 			}
 		},'urlParam'
 	);
@@ -1576,12 +1566,13 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				]
+				{label:'Unit',name:'sector'},
+				],
 		},{
 			title:"Select Receiver Department",
 			open: function(){
-				dialog_deldept.urlParam.filterCol=['storedept', 'recstatus'];
-				dialog_deldept.urlParam.filterVal=['1', 'A'];
+				dialog_deldept.urlParam.filterCol=['storedept', 'recstatus', 'compcode', 'sector'];
+				dialog_deldept.urlParam.filterVal=['1', 'A','session.compcode','session.unit'];
 			}
 		},'urlParam'
 	);
@@ -1602,34 +1593,39 @@ $(document).ready(function () {
 		},{
 			title:"Select Transaction Type",
 			open: function(){
-				dialog_suppcode.urlParam.filterCol=['recstatus'];
-				dialog_suppcode.urlParam.filterVal=['A'];
+				dialog_suppcode.urlParam.filterCol=['recstatus', 'compcode'];
+				dialog_suppcode.urlParam.filterVal=['A', 'session.compcode'];
 			}
 		},'urlParam'
 	);
 	dialog_suppcode.makedialog();
 
 	var dialog_pricecode = new ordialog(
-		'pricecode', ['material.pricesource'], "#jqGrid2 input[name='pricecode']", errorField,
-		{
-			colModel:
+		'pricecode',['material.pricesource'],"#jqGrid2 input[name='pricecode']",errorField,
+		{	colModel:
 			[
-				{ label: 'Price code', name: 'pricecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-			]
-		}, {
-			title: "Select Price Code For Item",
-			open: function () {
-				dialog_pricecode.urlParam.filterCol = ['compcode', 'recstatus'];
-				dialog_pricecode.urlParam.filterVal = ['session.compcode', 'A'];
-			},
-			close: function () {
-				$(dialog_pricecode.textfield)			//lepas close dialog focus on next textfield 
-					.closest('td')						//utk dialog dalam jqgrid jer
-					.next()
-					.find("input[type=text]").focus();
+				{label:'Price code',name:'pricecode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			ondblClickRow:function(event){
+				let data = selrowData('#'+dialog_pricecode.gridname);
+
+				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 'p.groupcode', 's.unit'];
+				dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#purordhd_purdate').val()).year(), $('#purordhd_prdept').val(),(data.pricecode == 'BO' || data.pricecode == 'IV') ? 'Stock' : '<>.Stock', 'session.unit'];
 			}
-		}, 'urlParam'
+		},{
+			title:"Select Price Code For Item",
+			open: function(){
+				dialog_pricecode.urlParam.filterCol=['compcode','recstatus'];
+				dialog_pricecode.urlParam.filterVal=['session.compcode','A'];
+			},
+			close: function(){
+				// $(dialog_pricecode.textfield)			//lepas close dialog focus on next textfield 
+				// 	.closest('td')						//utk dialog dalam jqgrid jer
+				// 	.next()
+				// 	.find("input[type=text]").focus();
+			}
+		},'urlParam',jgrid2='#jqGrid2 '
 	);
 	dialog_pricecode.makedialog(false);
 
