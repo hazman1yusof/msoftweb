@@ -1625,7 +1625,7 @@ $(document).ready(function () {
 				// 	.next()
 				// 	.find("input[type=text]").focus();
 			}
-		},'urlParam',jgrid2='#jqGrid2 '
+		},'urlParam',jgrid2='#jqGrid2'
 	);
 	dialog_pricecode.makedialog(false);
 
@@ -1634,12 +1634,11 @@ $(document).ready(function () {
 		'itemcode',['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u'],"#jqGrid2 input[name='itemcode']",errorField,
 		{	colModel:
 			[
-				{label:'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
-				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
+				{label: 'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
+				{label: 'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
 				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-				//{label:'Max Quantity',name:'s.maxqty',width:100,classes:'pointer'},
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 				{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 				{label: 'Unit', name:'s_unit'},
@@ -1804,8 +1803,8 @@ $(document).ready(function () {
 		}, {
 			title: "Select Tax Code For Item",
 			open: function () {
-				dialog_taxcode.urlParam.filterCol = ['taxtype', 'compcode', 'recstatus'];
-				dialog_taxcode.urlParam.filterVal = ['input', 'session.compcode', 'A'];
+				dialog_taxcode.urlParam.filterCol = ['compcode', 'recstatus','taxtype'];
+				dialog_taxcode.urlParam.filterVal = ['session.compcode', 'A','Input'];
 			},
 			close: function () {
 				$(dialog_taxcode.textfield)			//lepas close dialog focus on next textfield 
