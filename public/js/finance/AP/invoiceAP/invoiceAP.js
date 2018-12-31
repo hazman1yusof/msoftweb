@@ -621,7 +621,7 @@ $(document).ready(function () {
         aftersavefunc: function (rowid, response, options) {
 			$('#apacthdr_outamount').val(response.responseText);
 			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
-				alert('Invoice amount not equal to Total Detail Amount');
+				alert('Invoice amount not equal to Total Detail Amount');	
 			}
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
