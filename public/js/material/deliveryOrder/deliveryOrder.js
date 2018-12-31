@@ -1594,7 +1594,6 @@ $(document).ready(function () {
 			ondblClickRow:function(event){
 				let data = selrowData('#'+dialog_pricecode.gridname);
 
-<<<<<<< HEAD
 				if(data.pricecode == 'MS'){
 					let newcolmodel = [
 							{label: 'Item Codex',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -1649,10 +1648,6 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
 
 				}
-=======
-				dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 'p.groupcode', 's.unit'];
-				dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#delordhd_trandate').val()).year(), $('#delordhd_deldept').val(),(data.pricecode == 'BO' || data.pricecode == 'IV') ? 'Stock' : '<>.Stock', 'session.unit'];
->>>>>>> 4d6cf050825f9a195ec403ec1abfa0e76522fbde
 			}
 		},{
 			title:"Select Price Code For Item",
