@@ -302,37 +302,7 @@
 			</div>
 		</div>
 
-			<!-- <div class='panel panel-info'>
-				<div class="panel-heading">Purchase Order Detail</div>
-				<input id="gstpercent" name="gstpercent" type="hidden">
-					<div class="panel-body">
-						<form id='formdata2' class='form-vertical' style='width:99%'>
-						<input id="gstpercent" name="gstpercent" type="hidden">
-							<div id="jqGrid2_c" class='col-md-12'>
-								<table id="jqGrid2" class="table table-striped"></table>
-					            <div id="jqGridPager2"></div>
-							</div>
-						</form>
-					</div>
-
-					<input id="gstpercent" name="gstpercent" type="hidden">
-					<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
-					<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'>
-					<div class="panel-body">
-						<div class="noti"><ol></ol>
-						</div>
-					</div>
-
-			</div>
-
-			<div id="dialog_remarks" title="Remarks">
-			  <div class="panel panel-default">
-			    <div class="panel-body">
-			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm" style="width:100%;"></textarea>
-			    </div>
-			  </div>
-			</div>
-		</div> -->
+			
 @endsection
 
 

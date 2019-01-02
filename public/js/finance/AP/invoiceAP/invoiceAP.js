@@ -286,21 +286,6 @@ $(document).ready(function () {
 		beforeRefresh: function () {
 			refreshGrid("#jqGrid", urlParam);
 		},
-	/*}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-trash",
-		title: "Delete Selected Row",
-		onClickButton: function () {
-			oper = 'del';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			if (!selRowId) {
-				alert('Please select row');
-				return emptyFormdata(errorField, '#formdata');
-				//return emptyFormdata('#formdata');
-			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'idno': selrowData('#jqGrid').idno });
-			}
-		},*/
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
 		buttonicon: "glyphicon glyphicon-info-sign",
@@ -621,7 +606,12 @@ $(document).ready(function () {
         aftersavefunc: function (rowid, response, options) {
 			$('#apacthdr_outamount').val(response.responseText);
 			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
-				alert('Invoice amount not equal to Total Detail Amount');	
+				bootbox.confirm({
+					message: "Are you sure you want to add?",
+					buttons: {
+						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
+					},
+				});		
 			}
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
@@ -886,7 +876,7 @@ $(document).ready(function () {
 				dialog_supplier.urlParam.filterCol=['recstatus', 'compcode'],
 				dialog_supplier.urlParam.filterVal=['A', 'session.compcode']
 				}
-			},'urlParam'
+			},'urlParam','radio','tab'
 		);
 	dialog_supplier.makedialog();
 
@@ -902,7 +892,7 @@ $(document).ready(function () {
 				dialog_payto.urlParam.filterCol=['recstatus', 'compcode'],
 				dialog_payto.urlParam.filterVal=['A', 'session.compcode']
 				}
-			},'urlParam'
+			},'urlParam','radio','tab'
 		);
 	dialog_payto.makedialog();
 
@@ -926,7 +916,7 @@ $(document).ready(function () {
 					}
 				}
 
-			},'urlParam'
+			},'urlParam','radio','tab'
 		
 	);
 	dialog_category.makedialog();
@@ -943,7 +933,7 @@ $(document).ready(function () {
 				dialog_department.urlParam.filterCol=['recstatus', 'compcode'],
 				dialog_department.urlParam.filterVal=['A', 'session.compcode']
 				}
-			},'urlParam'
+			},'urlParam','radio','tab'
 		);
 	dialog_department.makedialog();
 

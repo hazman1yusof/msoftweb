@@ -1105,14 +1105,7 @@ $(document).ready(function () {
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
-		/*$.get( param.url+"?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.rows)){
-				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0].description+"</span>");
-			}
-		});*/
-
+	
 		fdl.get_array('purchaseOrder',options,param,case_,cellvalue);
 		return cellvalue;
 	}
@@ -1447,7 +1440,7 @@ $(document).ready(function () {
 				dialog_reqdept.urlParam.filterCol=['recstatus', 'compcode', 'sector'];
 				dialog_reqdept.urlParam.filterVal=['A', 'session.compcode', 'session.unit'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_reqdept.makedialog();
 
@@ -1557,7 +1550,7 @@ $(document).ready(function () {
 				dialog_prdept.urlParam.filterCol=['purdept', 'recstatus', 'compcode', 'sector'];
 				dialog_prdept.urlParam.filterVal=['1', 'A','session.compcode','session.unit'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_prdept.makedialog();
 
@@ -1574,7 +1567,7 @@ $(document).ready(function () {
 				dialog_deldept.urlParam.filterCol=['storedept', 'recstatus', 'compcode', 'sector'];
 				dialog_deldept.urlParam.filterVal=['1', 'A','session.compcode','session.unit'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_deldept.makedialog();
 
@@ -1596,7 +1589,7 @@ $(document).ready(function () {
 				dialog_suppcode.urlParam.filterCol=['recstatus', 'compcode'];
 				dialog_suppcode.urlParam.filterVal=['A', 'session.compcode'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_suppcode.makedialog();
 
@@ -1744,7 +1737,7 @@ $(document).ready(function () {
 					.next()
 					.find("input[type=text]").focus();
 			}
-		}, 'urlParam'
+		}, 'urlParam','radio','tab'
 	);
 	dialog_uomcode.makedialog(false);
 
@@ -1778,7 +1771,7 @@ $(document).ready(function () {
 					.next()
 					.find("input[type=text]").focus();
 			}
-		}, 'urlParam'
+		}, 'urlParam','radio','tab'
 	);
 	dialog_pouom.makedialog(false);
 
@@ -1812,7 +1805,7 @@ $(document).ready(function () {
 					.next()
 					.find("input[type=text]").focus();
 			}
-		}, 'urlParam'
+		}, 'urlParam','radio','tab'
 	);
 	dialog_taxcode.makedialog(false);
 
@@ -1829,7 +1822,7 @@ $(document).ready(function () {
 				dialog_credcode.urlParam.filterCol = ['compcode','recstatus'];
 				dialog_credcode.urlParam.filterVal = ['session.compcode','A'];
 			}
-		}, 'urlParam'
+		}, 'urlParam','radio','tab'
 	);
 	dialog_credcode.makedialog();
 
