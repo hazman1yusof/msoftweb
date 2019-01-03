@@ -611,6 +611,24 @@ $(document).ready(function () {
 					buttons: {
 						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
 					},
+					callback: function (result) {
+				    	if(result == true){
+				    		param={
+				    			action: 'invoiceAPDetail_save',
+								auditno: $('#auditno').val(),
+								lineno_: selrowData('#jqGrid2').lineno_,
+				    		}
+				    		$.post( "/invoiceAPDetail/form"+$.param(param),{oper:'del'}, function( data ){
+							}).fail(function(data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function(data){
+								$('#apacthdr_amount').val(data);
+								refreshGrid("#jqGrid2",urlParam2);
+							});
+				    	}else{
+        					$("#jqGrid2_iledit").show();
+				    	}
+				    }
 				});		
 			}
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
