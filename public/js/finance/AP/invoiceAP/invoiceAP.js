@@ -175,7 +175,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 	datatype: "local",
 	colModel: [
-		{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
+		//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
 		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 20, classes: 'wrap', canSearch: true},
@@ -342,7 +342,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name']);
+	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit']);
 
 	$("#save").click(function(){
 		unsaved = false;

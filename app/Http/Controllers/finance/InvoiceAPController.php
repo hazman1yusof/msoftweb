@@ -170,8 +170,8 @@ use Carbon\Carbon;
         $table = DB::table("finance.apacthdr");
 
         $array_update = [
-              'unit' => session('unit'),
-                'compcode' => session('compcode'),
+            'unit' => session('unit'),
+            'compcode' => session('compcode'),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
         ];
@@ -186,7 +186,7 @@ use Carbon\Carbon;
             $table->update($array_update);
 
             $responce = new stdClass();
-            $responce->totalAmount = $request->delordhd_totamount;
+            $responce->amount = $request->apacthdr_amount;
             echo json_encode($responce);
 
             // $queries = DB::getQueryLog();
