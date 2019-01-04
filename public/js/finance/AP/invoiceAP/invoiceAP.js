@@ -226,6 +226,7 @@ $(document).ready(function () {
 			$('#docnodepan').text(selrowData("#jqGrid").apacthdr_document);
 
 			$('#auditno').val(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
+			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);//tukar kat depan tu
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 
 			refreshGrid("#jqGrid3",urlParam2);
@@ -410,6 +411,7 @@ $(document).ready(function () {
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
+				$('#idno').val(data.idno);
 				$('#auditno').val(data.auditno);
 				$('#amount').val(data.amount);//just save idno for edit later
 				

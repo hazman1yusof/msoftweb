@@ -1614,7 +1614,7 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
 					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode', 'p.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode',  'Asset', 'session.unit'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '><.Stock', 'session.unit'];
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['t.taxcode','p.uomcode'];

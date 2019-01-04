@@ -233,7 +233,7 @@ class do_util extends defaultController{
                 'adddate' => $value->adddate,
                 'auditno' => $value->recno,
                 'lineno_' => $value->lineno_,
-                'source' => 'IV',
+                'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
                 'trantype' => $delordhd_obj->trantype,
                 'reference' => $delordhd_obj->deldept .' '. $delordhd_obj->docno,
                 'description' => $delordhd_obj->suppcode,

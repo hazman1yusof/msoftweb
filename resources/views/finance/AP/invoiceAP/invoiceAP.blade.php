@@ -96,6 +96,7 @@
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="AP">
 					<input id="apacthdr_trantype" name="apacthdr_trantype" value = "IN" type="hidden">
 					<input id="auditno" name="auditno" type="hidden">
+					<input id="idno" name="idno" type="hidden">
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_ttype">Doc Type</label> 
