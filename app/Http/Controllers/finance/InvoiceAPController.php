@@ -170,6 +170,8 @@ use Carbon\Carbon;
         $table = DB::table("finance.apacthdr");
 
         $array_update = [
+              'unit' => session('unit'),
+                'compcode' => session('compcode'),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
         ];
