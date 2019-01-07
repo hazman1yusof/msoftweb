@@ -1615,9 +1615,6 @@ $(document).ready(function () {
 							{label: 'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' }
 						]
 
-						console.log('#'+dialog_uomcode.gridname)
-						console.log('#'+dialog_itemcode.gridname)
-
 					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
 					$('#'+dialog_uomcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel_uom});
 
@@ -1686,8 +1683,8 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.table_name = ['material.stockloc AS s','material.uom AS u'];
 					dialog_uomcode.urlParam.fixPost="true";
 					dialog_uomcode.urlParam.table_id="none_";
-					dialog_uomcode.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-					dialog_uomcode.urlParam.filterVal=['session.compcode',$('#delordhd_deldept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#delordhd_trandate').val()).year()];
+					dialog_uomcode.urlParam.filterCol=['s.compcode','s.itemcode','s.deptcode','s.year'];
+					dialog_uomcode.urlParam.filterVal=['session.compcode',$("#jqGrid2 input[name='itemcode']").val(),$('#delordhd_deldept').val(),moment($('#delordhd_trandate').val()).year()];
 					dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
 					dialog_uomcode.urlParam.join_onCol=['s.uomcode'];
 					dialog_uomcode.urlParam.join_onVal=['u.uomcode'];
@@ -1827,15 +1824,16 @@ $(document).ready(function () {
 		},{
 			title:"Select UOM Code For Item",
 			open:function(){
-				dialog_uomcode.urlParam.fixPost="true";
-				dialog_uomcode.urlParam.table_id="none_";
-				dialog_uomcode.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcode.urlParam.filterVal=['session.compcode',$('#delordhd_deldept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#delordhd_trandate').val()).year()];
-				dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
-				dialog_uomcode.urlParam.join_onCol=['s.uomcode'];
-				dialog_uomcode.urlParam.join_onVal=['u.uomcode'];
-				dialog_uomcode.urlParam.join_filterCol=[['s.compcode on =']];
-				dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
+				dialog_uomcode.urlParam.filterVal[1] = $("#jqGrid2 input[name='itemcode']").val();
+				// dialog_uomcode.urlParam.fixPost="true";
+				// dialog_uomcode.urlParam.table_id="none_";
+				// dialog_uomcode.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
+				// dialog_uomcode.urlParam.filterVal=['session.compcode',$('#delordhd_deldept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#delordhd_trandate').val()).year()];
+				// dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
+				// dialog_uomcode.urlParam.join_onCol=['s.uomcode'];
+				// dialog_uomcode.urlParam.join_onVal=['u.uomcode'];
+				// dialog_uomcode.urlParam.join_filterCol=[['s.compcode on =']];
+				// dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
 			},
 			close: function(){
 				// $(dialog_uomcode.textfield)			//lepas close dialog focus on next textfield 
