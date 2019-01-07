@@ -1607,19 +1607,43 @@ $(document).ready(function () {
 							{label: 'Unit', name:'p_unit'},
 						]
 
+
+					let newcolmodel_uom = [
+							{label:'UOM code',name:'p_uomcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							{label:'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Item code',name:'p_itemcode',width:150,classes:'pointer'},
+							{label: 'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' }
+						]
+
+						console.log('#'+dialog_uomcode.gridname)
+						console.log('#'+dialog_itemcode.gridname)
+
 					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
+					$('#'+dialog_uomcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel_uom});
 
 					dialog_itemcode.urlParam.field = getfield(newcolmodel);
 					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
 					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode', 'p.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '><.Stock', 'session.unit'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '<>.Stock', 'session.unit'];
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['t.taxcode','p.uomcode'];
 					dialog_itemcode.urlParam.join_filterCol = [];
 					dialog_itemcode.urlParam.join_filterVal = [];
+
+					dialog_uomcode.urlParam.field = getfield(newcolmodel_uom);
+					dialog_uomcode.urlParam.table_name = ['material.product AS p','material.uom AS u'];
+					dialog_uomcode.urlParam.fixPost="true";
+					dialog_uomcode.urlParam.table_id="none_";
+					dialog_uomcode.urlParam.filterCol=['p.compcode','p.itemcode'];
+					dialog_uomcode.urlParam.filterVal=['session.compcode',$("#jqGrid2 input[name='itemcode']").val()];
+					dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
+					dialog_uomcode.urlParam.join_onCol=['p.uomcode'];
+					dialog_uomcode.urlParam.join_onVal=['u.uomcode'];
+					dialog_uomcode.urlParam.join_filterCol=[['p.compcode on =']];
+					dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
 
 				}else{
 					let newcolmodel = [
@@ -1633,7 +1657,18 @@ $(document).ready(function () {
 							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 							{label: 'Unit', name:'s_unit'},
 						]
+
+					let newcolmodel_uom = [
+							{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
+							{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
+							{label: 'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' }
+						]
+
+
 					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
+					$('#'+dialog_uomcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel_uom});
 
 					dialog_itemcode.urlParam.field = getfield(newcolmodel);
 					dialog_itemcode.urlParam.table_name = ['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u']
@@ -1646,6 +1681,18 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
 					dialog_itemcode.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
 					dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
+
+					dialog_uomcode.urlParam.field = getfield(newcolmodel_uom);
+					dialog_uomcode.urlParam.table_name = ['material.stockloc AS s','material.uom AS u'];
+					dialog_uomcode.urlParam.fixPost="true";
+					dialog_uomcode.urlParam.table_id="none_";
+					dialog_uomcode.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
+					dialog_uomcode.urlParam.filterVal=['session.compcode',$('#delordhd_deldept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#delordhd_trandate').val()).year()];
+					dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
+					dialog_uomcode.urlParam.join_onCol=['s.uomcode'];
+					dialog_uomcode.urlParam.join_onVal=['u.uomcode'];
+					dialog_uomcode.urlParam.join_filterCol=[['s.compcode on =']];
+					dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
 
 				}
 			}
