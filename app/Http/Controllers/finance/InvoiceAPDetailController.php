@@ -216,7 +216,7 @@ class InvoiceAPDetailController extends defaultController
         try {
 
             ///1. update detail
-            DB::table('material.ivtmpdt')
+            DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$request->lineno_)
@@ -227,7 +227,7 @@ class InvoiceAPDetailController extends defaultController
                 ]);
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('material.ivtmpdt')
+            $totalAmount = DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
@@ -235,7 +235,7 @@ class InvoiceAPDetailController extends defaultController
 
            
             ///3. update total amount to header
-            DB::table('material.ivtmphd')
+            DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->update([
