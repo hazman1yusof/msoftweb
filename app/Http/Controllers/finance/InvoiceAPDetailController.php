@@ -209,7 +209,7 @@ class InvoiceAPDetailController extends defaultController
 
     }
 
-   /* public function del(Request $request){
+    public function del(Request $request){
 
         DB::beginTransaction();
 
@@ -253,7 +253,7 @@ class InvoiceAPDetailController extends defaultController
             return response('Error'.$e, 500);
         }
         
-    }*/
+    }
 
     public function edit_from_PO(Request $request){
 
