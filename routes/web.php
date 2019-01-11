@@ -365,7 +365,7 @@ Route::post('/currentPt/post_entry','hisdb\CurrentPatientController@post_entry')
 
 
 /// Test route /// 
-Route::get('/test','test\TestController@show');
-Route::post('/test/form','test\TestController@form');
+Route::get('/test','util\TestController@show');
+Route::post('/test/form','util\TestController@form');
 
 

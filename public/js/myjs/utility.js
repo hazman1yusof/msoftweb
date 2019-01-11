@@ -841,7 +841,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					$(obj.textfield).off('blur',onBlur);
 					$(obj.textfield).val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
 					$(obj.textfield).parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
-					console.log(getfield(obj.field)[0])
 					$(obj.textfield).focus();
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 					$("#"+obj.dialogname).dialog( "close" );
@@ -855,6 +854,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					obj.errorField.splice($.inArray(idtopush,obj.errorField), 1);
 				}
 			},
+			loadComplete: function(data) {
+				if(obj.jqgrid_.hasOwnProperty('loadComplete'))obj.jqgrid_.loadComplete(data);
+		    },
+
 		});
 		addParamField("#"+obj.gridname,false,obj.urlParam);
 	}

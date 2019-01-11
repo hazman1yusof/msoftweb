@@ -310,7 +310,6 @@ class DeliveryOrderController extends defaultController
                 })
                 ->where('delorddt.compcode','=',session('compcode'))
                 ->where('delorddt.unit','=',session('unit'))
-                ->where('product.groupcode','=','Stock')
                 ->where('delorddt.recno','=',$request->recno)
                 ->first();
             $productcat = $productcat_obj->productcat;

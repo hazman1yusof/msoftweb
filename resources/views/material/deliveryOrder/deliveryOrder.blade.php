@@ -301,7 +301,7 @@
 							<!-- <input id="gstpercent" name="gstpercent" type="hidden">
 							<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
 							<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'> -->
-
+							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
 							<div id="jqGrid2_c" class='col-md-12'>
 								<table id="jqGrid2" class="table table-striped"></table>
 					            <div id="jqGridPager2"></div>

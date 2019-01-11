@@ -249,13 +249,13 @@ class do_util extends defaultController{
             ]);
 
         //2. check glmastdtl utk debit, kalu ada update kalu xde create
-        $gltranAmount =  defaultController::isGltranExist_($row_dept->costcode,$row_cat->stockacct,$yearperiod->year,$yearperiod->period);
+        $gltranAmount =  defaultController::isGltranExist_($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
 
         if($gltranAmount!=false){
             DB::table('finance.glmasdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('costcode','=',$row_dept->costcode)
-                ->where('glaccount','=',$row_cat->stockacct)
+                ->where('costcode','=',$drcostcode)
+                ->where('glaccount','=',$dracc)
                 ->where('year','=',$yearperiod->year)
                 ->update([
                     'upduser' => session('username'),
@@ -267,8 +267,8 @@ class do_util extends defaultController{
             DB::table('finance.glmasdtl')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'costcode' => $row_dept->costcode,
-                    'glaccount' => $row_cat->stockacct,
+                    'costcode' => $drcostcode,
+                    'glaccount' => $dracc,
                     'year' => $yearperiod->year,
                     'actamount'.$yearperiod->period => $value->amount,
                     'adduser' => session('username'),

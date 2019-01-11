@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\test;
+namespace App\Http\Controllers\util;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;

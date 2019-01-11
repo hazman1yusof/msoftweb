@@ -62,14 +62,26 @@ class DeliveryOrderDetailController extends defaultController
         }
     }
 
-    public function get_draccno($itemcode){
-        $query = DB::table('material.category')
-                ->select('category.stockacct')
-                ->join('material.product', 'category.catcode', '=', 'product.productcat')
-                ->where('product.itemcode','=',$itemcode)
-                ->first();
-        
-        return $query->stockacct;
+    public function get_draccno($itemcode,$pricecode){
+        if($pricecode == 'MS'){
+            $query = DB::table('finance.facode')
+                    ->select('facode.glassetccode')
+                    ->join('material.product', 'facode.assetcode', '=', 'product.productcat')
+                    ->where('product.itemcode','=',$itemcode)
+                    ->first();
+            
+            return $query->glassetccode;
+
+        }else{
+
+            $query = DB::table('material.category')
+                    ->select('category.stockacct')
+                    ->join('material.product', 'category.catcode', '=', 'product.productcat')
+                    ->where('product.itemcode','=',$itemcode)
+                    ->first();
+            
+            return $query->stockacct;
+        }
     }
 
     public function get_drccode($deldept){
@@ -115,7 +127,7 @@ class DeliveryOrderDetailController extends defaultController
 
     public function add(Request $request){
 
-        $draccno = $this->get_draccno($request->itemcode);
+        $draccno = $this->get_draccno($request->itemcode,$request->pricecode);
         $drccode = $this->get_drccode($request->deldept);
         $craccno = $this->get_craccno();
         $crccode = $this->get_crccode();
