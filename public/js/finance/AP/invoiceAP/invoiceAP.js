@@ -723,19 +723,75 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-th-list",
 		title:"Edit All Row",
 		onClickButton: function(){
-			/*mycurrency2.array.length = 0;
+			mycurrency2.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 		    for (var i = 0; i < ids.length; i++) {
 
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
-
-		        cari_gstpercent(ids[i]);
-		    }*/
+		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
+		    }
 		    onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
 		},
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2SaveAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-download-alt",
+		title:"Save All Row",
+		onClickButton: function(){
+			var ids = $("#jqGrid2").jqGrid('getDataIDs');
+
+			var jqgrid2_data = [];
+			mycurrency2.formatOff();
+		    for (var i = 0; i < ids.length; i++) {
+
+				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
+
+		    	var obj = 
+		    	{
+		    		'lineno_' : ids[i],
+		    		'document' : $("#jqGrid2 input#"+ids[i]+"_document").val(),
+		    		'reference' : data.reference,
+		    		'amount' : data.amount,
+		    		'dorecno' : data.dorecno,
+		    		'grnno' : data.grnno,
+                    'unit' : $("#"+ids[i]+"_unit").val()
+		    	}
+
+		    	jqgrid2_data.push(obj);
+		    }
+
+			var param={
+    			action: 'invoiceAPDetail_save',
+				_token: $("#_token").val(),
+				auditno: $('#apacthdr_auditno').val(),
+				action: 'invoiceAPDetail_save',
+				/*purordno:$('#purordhd_purordno').val(),
+				suppcode:$('#purordhd_suppcode').val(),
+				purdate:$('#purordhd_purdate').val(),
+				prdept:$('#purordhd_prdept').val(),
+				expecteddate:$('#purordhd_expecteddate').val(),*/
+    		}
+
+    		$.post( "/invoiceAPDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+			}).fail(function(data) {
+				//////////////////errorText(dialog,data.responseText);
+			}).done(function(data){
+				// $('#amount').val(data);
+				hideatdialogForm(false);
+				refreshGrid("#jqGrid2",urlParam2);
+			});
+		},	
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2CancelAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-remove-circle",
+		title:"Cancel",
+		onClickButton: function(){
+			hideatdialogForm(false);
+			refreshGrid("#jqGrid2",urlParam2);
+		},	
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "saveHeaderLabel",
 		caption:"Header",cursor: "pointer",position: "last", 
@@ -750,19 +806,13 @@ $(document).ready(function () {
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
-		var field,table;
+		var field, table, case_;
 		switch(options.colModel.name){
-			case 'document':field=['delordno','srcdocno'];table="material.delordhd";break;
-			//case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
+			case 'document':field=['delordno','srcdocno'];table="material.delordhd";case_='uomcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
-		$.get( param.url+"?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.rows)){
-				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0].description+"</span>");
-			}
-		});
+	
+		fdl.get_array('invoiceAP',options,param,case_,cellvalue);
 		return cellvalue;
 	}
 
@@ -771,7 +821,6 @@ $(document).ready(function () {
 		var temp;
 		switch(name){
 			case 'Delivery Order Number':temp=$('#document');break;
-			//case 'Tax Claim':temp=$('#GSTCode');break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 	}

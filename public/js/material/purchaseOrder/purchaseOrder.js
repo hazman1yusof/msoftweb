@@ -1086,7 +1086,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
-		var field,table, case_;;
+		var field,table, case_;
 		switch(options.colModel.name){
 			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
