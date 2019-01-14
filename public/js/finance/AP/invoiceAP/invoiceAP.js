@@ -28,6 +28,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#amount']);
+	var fdl = new faster_detail_load();
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#apacthdr_recdate"]);
@@ -132,10 +133,12 @@ $(document).ready(function () {
 		action:'invoiceAP_save',
 		url:'/invoiceAP/form',
 		field:'',
+		fixPost:'true',
 		oper:oper,
 		table_name:'finance.apacthdr',
 		table_id:'idno'
 	};
+
 	function padzero(cellvalue, options, rowObject){
 		let padzero = 5, str="";
 		while(padzero>0){
@@ -143,6 +146,10 @@ $(document).ready(function () {
 			padzero--;
 		}
 		return pad(str, cellvalue, true);
+	}
+
+	function unpadzero(cellvalue, options, rowObject){
+		return cellvalue.substring(cellvalue.search(/[1-9]/));
 	}
 
 	function searchClick2(grid,form,urlParam){
@@ -161,16 +168,7 @@ $(document).ready(function () {
 		});
 	}
 
-	/////////////////////parameter for saving url////////////////////////////////////////////////
-	var saveParam={
-		action:'invoiceAP_save',
-		url:'/invoiceAP/form',
-		field:'',
-		fixPost:'true',
-		oper:oper,
-		table_name:'finance.apacthdr',
-		table_id:'idno'
-	};
+	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 
 	$("#jqGrid").jqGrid({
 	datatype: "local",
@@ -245,43 +243,9 @@ $(document).ready(function () {
 
 	});
 
-	////////////////////// set label jqGrid right ////////////////////////////////////////////////////
+	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
-	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
-	function hideatdialogForm(hide){
-		if(hide){
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete").hide();
-			$("#saveDetailLabel").show();
-		}else{
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete").show();
-			$("#saveDetailLabel").hide();
-		}
-	}
-
-	
-	////////////////////selected///////////////
-
-	$('#apacthdr_ttype').on('change', function() {
-		let ttype1 = $("#apacthdr_ttype option:selected" ).val();
-	
-		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
-			$("#formdata :input[name='apacthdr_source']").val("AP");
-			$("#formdata :input[name='apacthdr_trantype']").val("IN");
-		}else if(ttype1 == 'Debit_Note') {
-			$("#formdata :input[name='apacthdr_source']").val("AP");
-			$("#formdata :input[name='apacthdr_trantype']").val("DN");
-		}
-		
-		if(($("#apacthdr_ttype option:selected" ).text()=='Supplier')){
-			$('#save').hide();
-			$('#ap_parent').show();
-		}else {
-			$('#save').show();
-			$('#ap_parent').hide();
-		}
-	});
-	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -320,26 +284,8 @@ $(document).ready(function () {
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
-	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_post_jq").click(function(){
-		saveParam.oper = $(this).data('oper');
-		let obj={
-			auditno:selrowData('#jqGrid').apacthdr_auditno,
-			_token:$('#_token').val(),
-			idno:selrowData('#jqGrid').apacthdr_idno
-		};
-		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
-		});
-	});
-
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////
 	populateSelect('#jqGrid','#searchForm');
-
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
@@ -356,6 +302,71 @@ $(document).ready(function () {
 			}else{
 				mycurrency.formatOn();
 		}
+	});
+
+	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
+	/*function hideatdialogForm(hide){
+		if(hide){
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete").hide();
+			$("#saveDetailLabel").show();
+		}else{
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete").show();
+			$("#saveDetailLabel").hide();
+		}
+	}*/
+
+	function hideatdialogForm(hide,saveallrow){
+		if(saveallrow == 'saveallrow'){
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
+			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
+		}else if(hide){
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
+			$("#saveDetailLabel").show();
+		}else{
+			$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
+			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+		}
+	}
+
+	
+	////////////////////selected///////////////
+
+	$('#apacthdr_ttype').on('change', function() {
+		let ttype1 = $("#apacthdr_ttype option:selected" ).val();
+	
+		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
+			$("#formdata :input[name='apacthdr_source']").val("AP");
+			$("#formdata :input[name='apacthdr_trantype']").val("IN");
+		}else if(ttype1 == 'Debit_Note') {
+			$("#formdata :input[name='apacthdr_source']").val("AP");
+			$("#formdata :input[name='apacthdr_trantype']").val("DN");
+		}
+		
+		if(($("#apacthdr_ttype option:selected" ).text()=='Supplier')){
+			$('#save').hide();
+			$('#ap_parent').show();
+		}else {
+			$('#save').show();
+			$('#ap_parent').hide();
+		}
+	});
+	
+	
+	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
+	$("#but_cancel_jq,#but_post_jq").click(function(){
+		saveParam.oper = $(this).data('oper');
+		let obj={
+			auditno:selrowData('#jqGrid').apacthdr_auditno,
+			_token:$('#_token').val(),
+			idno:selrowData('#jqGrid').apacthdr_idno
+		};
+		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
+			refreshGrid("#jqGrid", urlParam);
+		}).fail(function (data) {
+			alert(data.responseText);
+		}).done(function (data) {
+			//2nd successs?
+		});
 	});
 
 	///////////check postdate & docdate///////////////////
@@ -394,11 +405,11 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
-			//alert(data.responseJSON.message);
-			dialog_supplier.on();
+			alert(data.responseText);
+			/*dialog_supplier.on();
 			dialog_payto.on();
 			dialog_category.on();
-			dialog_department.on();
+			dialog_department.on();*/
 		}).done(function (data) {
 
 			unsaved = false;
@@ -411,11 +422,11 @@ $(document).ready(function () {
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
-				$('#idno').val(data.idno);
-				$('#auditno').val(data.auditno);
-				$('#amount').val(data.amount);//just save idno for edit later
+				$('#apacthdr_idno').val(data.idno);
+				$('#apacthdr_auditno').val(data.auditno);
+				$('#apacthdr_amount').val(data.amount);//just save idno for edit later
 				
-				//urlParam.filterVal[0]=data.auditno;
+				urlParam.filterVal[0]=data.auditno;
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
@@ -540,14 +551,7 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(){
-			if(addmore_jqgrid2.edit == true){
-			var linenotoedit_new = parseInt(linenotoedit)+1;
-				if($.inArray(String(linenotoedit_new),$('#jqGrid2').jqGrid ('getDataIDs')) != -1){
-					$('#jqGrid2').jqGrid ('setSelection', String(linenotoedit_new));
-					$('#jqGrid2_iledit').click();
-				}
-			}
-			else if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
+			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
@@ -605,6 +609,13 @@ $(document).ready(function () {
         	/*linenotoedit = rowid;
         	$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
         	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
+
+        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
+
+        	$("input[name='document']").keydown(function(e) {//when click tab at document, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid2_ilsave').click();
+			})
         },
         aftersavefunc: function (rowid, response, options) {
 			$('#apacthdr_outamount').val(response.responseText);
@@ -636,16 +647,16 @@ $(document).ready(function () {
 				});		*/
 			}
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-        	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
+        	//if(addmore_jqgrid2.edit == false)linenotoedit = null; 
         	//linenotoedit = null;
         	refreshGrid('#jqGrid2',urlParam2,'add');
-        	$("#jqGridPager2Delete").show();
+	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
         }, 
         beforeSaveRow: function(options, rowid) {
 
         	if(errorField.length>0)return false;
 
-			let data = selrowData('#jqGrid2');
+			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			let editurl = "/invoiceAPDetail/form?"+
 				$.param({
 					action: 'invoiceAPDetail_save',
@@ -699,10 +710,31 @@ $(document).ready(function () {
 								$('#amount').val(data);
 								refreshGrid("#jqGrid2",urlParam2);
 							});
+				    	}else{
+        					$("#jqGridPager2EditAll").show();
 				    	}
 				    }
 				});
 			}
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2EditAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-th-list",
+		title:"Edit All Row",
+		onClickButton: function(){
+			/*mycurrency2.array.length = 0;
+			var ids = $("#jqGrid2").jqGrid('getDataIDs');
+		    for (var i = 0; i < ids.length; i++) {
+
+		        $("#jqGrid2").jqGrid('editRow',ids[i]);
+
+		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
+
+		        cari_gstpercent(ids[i]);
+		    }*/
+		    onall_editfunc();
+			hideatdialogForm(true,'saveallrow');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "saveHeaderLabel",
