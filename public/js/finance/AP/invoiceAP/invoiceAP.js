@@ -609,7 +609,8 @@ $(document).ready(function () {
         aftersavefunc: function (rowid, response, options) {
 			$('#apacthdr_outamount').val(response.responseText);
 			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
-				bootbox.confirm({
+				alert('Total Detail Amount is not equal to Invoice Amount');
+				/*bootbox.confirm({
 					message: "Are you sure you want to add?",
 					buttons: {
 						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
@@ -632,7 +633,7 @@ $(document).ready(function () {
         					$("#jqGrid2_iledit").show();
 				    	}
 				    }
-				});		
+				});		*/
 			}
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
