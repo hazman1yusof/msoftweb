@@ -579,7 +579,7 @@ $(document).ready(function () {
 			// 	    }
 			// 	});
 			// });
-
+			fdl.set_array().reset();
 			
 		},
 		/*afterShowForm: function (rowid) {
@@ -945,6 +945,14 @@ $(document).ready(function () {
 
 	});	
 
+	function onall_editfunc(){
+		
+		
+		mycurrency2.formatOnBlur();//make field to currency on leave cursor
+		
+		
+		
+	}
 
 	
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
@@ -959,6 +967,10 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager3",
+		gridComplete: function(){
+			
+			fdl.set_array().reset();
+		},
 	});
 	jqgrid_label_align_right("#jqGrid3");
 
