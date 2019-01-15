@@ -305,15 +305,6 @@ $(document).ready(function () {
 	});
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
-	/*function hideatdialogForm(hide){
-		if(hide){
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete").hide();
-			$("#saveDetailLabel").show();
-		}else{
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete").show();
-			$("#saveDetailLabel").hide();
-		}
-	}*/
 
 	function hideatdialogForm(hide,saveallrow){
 		if(saveallrow == 'saveallrow'){
@@ -582,9 +573,6 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 			
 		},
-		/*afterShowForm: function (rowid) {
-		    $("#expdate").datepicker();
-		},*/
 		beforeSubmit: function(postdata, rowid){ 
 			dialog_supplier.check(errorField);
 			dialog_payto.check(errorField);
