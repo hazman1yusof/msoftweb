@@ -182,6 +182,7 @@ $(document).ready(function () {
 		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
 		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap'},
 		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right'},
+		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
 		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
 		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},
 		{ label: 'Doc Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', hidden:true},
