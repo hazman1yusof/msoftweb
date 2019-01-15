@@ -41,7 +41,8 @@ OTH=price are inclusive 6% GST";
         Storage::put('StockLabel\pharmacy.ini', $contents);
 
 
-        $process = new Process('C:\xampp\htdocs\msoftweb\app\Http\Controllers\util\runbarcode.bat');
+        $process = new Process('C:\laragon\www\msoftweb\app\Http\Controllers\util\runbarcode.bat');
+        // $process = new Process('C:\xampp\htdocs\msoftweb\app\Http\Controllers\util\runbarcode.bat');
         $process->run();
 
         // executes after the command finishes

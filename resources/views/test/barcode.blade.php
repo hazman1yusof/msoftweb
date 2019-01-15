@@ -13,6 +13,13 @@
 	<span class="help-block"></span>
 	<input type="button" name="submit" id="submit" value="submit" class="btn btn-primary btn-sm">
 </form>
+<hr>
+
+<script language="javascript">var p = false;</script>
+<form method="post" onsubmit = "return(false)">
+    <input type = "text" name = "text" />
+    <input type = "submit" value = "submit" name = "submit" onClick = "javascript: p=true;" />
+</form>
 
 @endsection
 
