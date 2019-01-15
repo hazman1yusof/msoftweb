@@ -90,6 +90,12 @@ $(document).ready(function () {
 						}
 					});
 				}
+
+				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val()){
+					event.preventDefault();
+					bootbox.alert('Total Detail Amount is not equal to Invoice Amount');
+				}
+				
 			},
 			close: function( event, ui ) {
 			addmore_jqgrid2.state = false;
@@ -551,26 +557,35 @@ $(document).ready(function () {
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
-			// $( "#jqGrid2_ilcancel" ).off();
-			// $( "#jqGrid2_ilcancel" ).on( "click", function(event) {
-			// 	event.preventDefault();
-			// 	event.stopPropagation();
-			// 	bootbox.confirm({
-			// 	    message: "Are you sure want to cancel?",
-			// 	    buttons: {
-			// 	        confirm: { label: 'Yes',className: 'btn-success'},
-			// 	        cancel: {label: 'No',className: 'btn-danger'}
-			// 		},
-			// 		callback: function (result) {
-			// 			if (result == true) {
-			// 				$(".noti").empty();
-			// 				$("#jqGrid2").jqGrid("clearGridData", true);
-			// 				refreshGrid("#jqGrid2",urlParam2);
-			// 			}
-			// 			linenotoedit = null;
-			// 	    }
-			// 	});
-			// });
+			
+			/*$('#apacthdr_outamount').val(response.responseText);
+			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
+				alert('Total Detail Amount is not equal to Invoice Amount');
+				bootbox.confirm({
+					message: "Are you sure you want to add?",
+					buttons: {
+						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
+					},
+					callback: function (result) {
+				    	if(result == true){
+				    		param={
+				    			action: 'invoiceAPDetail_save',
+								auditno: $('#auditno').val(),
+								lineno_: selrowData('#jqGrid2').lineno_,
+				    		}
+				    		$.post( "/invoiceAPDetail/form"+$.param(param),{oper:'del'}, function( data ){
+							}).fail(function(data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function(data){
+								$('#apacthdr_amount').val(data);
+								refreshGrid("#jqGrid2",urlParam2);
+							});
+				    	}else{
+        					$("#jqGrid2_iledit").show();
+				    	}
+				    }
+				});		
+			}*/
 			fdl.set_array().reset();
 			
 		},
@@ -610,30 +625,6 @@ $(document).ready(function () {
 			$('#apacthdr_outamount').val(response.responseText);
 			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
 				alert('Total Detail Amount is not equal to Invoice Amount');
-				/*bootbox.confirm({
-					message: "Are you sure you want to add?",
-					buttons: {
-						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
-					},
-					callback: function (result) {
-				    	if(result == true){
-				    		param={
-				    			action: 'invoiceAPDetail_save',
-								auditno: $('#auditno').val(),
-								lineno_: selrowData('#jqGrid2').lineno_,
-				    		}
-				    		$.post( "/invoiceAPDetail/form"+$.param(param),{oper:'del'}, function( data ){
-							}).fail(function(data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function(data){
-								$('#apacthdr_amount').val(data);
-								refreshGrid("#jqGrid2",urlParam2);
-							});
-				    	}else{
-        					$("#jqGrid2_iledit").show();
-				    	}
-				    }
-				});		*/
 			}
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	//if(addmore_jqgrid2.edit == false)linenotoedit = null; 
@@ -712,14 +703,14 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-th-list",
 		title:"Edit All Row",
 		onClickButton: function(){
-			mycurrency2.array.length = 0;
+			/*mycurrency2.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 		    for (var i = 0; i < ids.length; i++) {
 
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
 		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
-		    }
+		    }*/
 		    onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
 		},
