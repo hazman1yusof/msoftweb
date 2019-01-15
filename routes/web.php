@@ -368,8 +368,9 @@ Route::post('/currentPt/post_entry','hisdb\CurrentPatientController@post_entry')
 Route::get('/test','util\TestController@show');
 Route::post('/test/form','util\TestController@form');
 
-Route::get('/barcode','util\SymfonyController@show');
-Route::post('/barcode/form','util\SymfonyController@form');
+Route::get('/barcode','util\BarcodeController@show');
+Route::post('/barcode/form','util\BarcodeController@form');
+Route::post('/barcode/print','util\BarcodeController@print');
 
 
 

@@ -174,7 +174,6 @@ class do_util extends defaultController{
             ->where('compcode','=', $value->compcode)
             ->where('unit','=', $value->unit)
             ->where('itemcode','=', $value->itemcode)
-            ->where('uomcode','=', $value->uomcode)
             ->first();
 
         //amik department,category dgn sysparam pvalue1 dgn pvalue2

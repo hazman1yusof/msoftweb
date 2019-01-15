@@ -349,7 +349,6 @@ class DeliveryOrderController extends defaultController
                     ->where('compcode','=', $value->compcode)
                     ->where('unit','=', $value->unit)
                     ->where('itemcode','=', $value->itemcode)
-                    ->where('uomcode','=', $value->uomcode)
                     ->first();
 
                 if($product_obj->groupcode == "Stock" ){

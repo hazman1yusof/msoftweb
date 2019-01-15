@@ -88,7 +88,9 @@
         	</div>
 
 	    <div class="panel panel-default">
-		    	<div class="panel-heading">Delivery Order DataEntry Detail</div>
+		    	<div class="panel-heading">Delivery Order DataEntry Detail
+					<button type="button" class="btn btn-primary btn-xs pull-right" id="but_print_dtl" style="display: none;">Print barcode</button>
+		    	</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
 	            			<table id="jqGrid3" class="table table-striped"></table>
@@ -330,6 +332,7 @@
 
 	<script src="js/material/deliveryOrder/deliveryOrder.js"></script>
 	<script src="js/material/deliveryOrder/pdfgen.js"></script>
+	<script src="js/myjs/barcode.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

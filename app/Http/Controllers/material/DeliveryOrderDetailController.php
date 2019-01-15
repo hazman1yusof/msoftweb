@@ -63,7 +63,7 @@ class DeliveryOrderDetailController extends defaultController
     }
 
     public function get_draccno($itemcode,$pricecode){
-        $product = DB::table('material.product')->where('itemcode','=',$itemcode)->get();
+        $product = DB::table('material.product')->where('itemcode','=',$itemcode)->first();
 
         if($pricecode == 'MS' && $product->groupcode == 'Asset'){
             $query = DB::table('finance.facode')
@@ -126,6 +126,16 @@ class DeliveryOrderDetailController extends defaultController
         return $query->pvalue1;
     }
 
+    public function get_productcat($itemcode){
+        $query = DB::table('material.product')
+                ->select('productcat')
+                ->where('compcode','=',session('compcode'))
+                ->where('itemcode','=',$itemcode)
+                ->first();
+        
+        return $query->productcat;
+    }
+
     public function chgDate($date){
         if(!empty($date)){
             $newstr=explode("/", $date);
@@ -141,6 +151,7 @@ class DeliveryOrderDetailController extends defaultController
         $drccode = $this->get_drccode($request->deldept);
         $craccno = $this->get_craccno();
         $crccode = $this->get_crccode();
+        $productcat = $this->get_productcat($request->itemcode);
 
         $recno = $request->recno;
         $suppcode = $request->suppcode;
@@ -188,6 +199,7 @@ class DeliveryOrderDetailController extends defaultController
                     'drccode' => $drccode,
                     'craccno' => $craccno,
                     'crccode' => $crccode, 
+                    'productcat' => $productcat,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate' => $this->chgDate($request->expdate), 
