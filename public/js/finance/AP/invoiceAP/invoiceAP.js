@@ -93,7 +93,7 @@ $(document).ready(function () {
 
 				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val()){
 					event.preventDefault();
-					bootbox.alert('Total Detail Amount is not equal to Invoice Amount');
+					bootbox.alert('Total Detail Amount is not equal with Invoice Amount');
 				}
 				
 			},
@@ -557,35 +557,6 @@ $(document).ready(function () {
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
-			
-			/*$('#apacthdr_outamount').val(response.responseText);
-			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
-				alert('Total Detail Amount is not equal to Invoice Amount');
-				bootbox.confirm({
-					message: "Are you sure you want to add?",
-					buttons: {
-						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
-					},
-					callback: function (result) {
-				    	if(result == true){
-				    		param={
-				    			action: 'invoiceAPDetail_save',
-								auditno: $('#auditno').val(),
-								lineno_: selrowData('#jqGrid2').lineno_,
-				    		}
-				    		$.post( "/invoiceAPDetail/form"+$.param(param),{oper:'del'}, function( data ){
-							}).fail(function(data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function(data){
-								$('#apacthdr_amount').val(data);
-								refreshGrid("#jqGrid2",urlParam2);
-							});
-				    	}else{
-        					$("#jqGrid2_iledit").show();
-				    	}
-				    }
-				});		
-			}*/
 			fdl.set_array().reset();
 			
 		},
@@ -622,10 +593,6 @@ $(document).ready(function () {
 			})
         },
         aftersavefunc: function (rowid, response, options) {
-			$('#apacthdr_outamount').val(response.responseText);
-			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
-				alert('Total Detail Amount is not equal to Invoice Amount');
-			}
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	//if(addmore_jqgrid2.edit == false)linenotoedit = null; 
         	//linenotoedit = null;
