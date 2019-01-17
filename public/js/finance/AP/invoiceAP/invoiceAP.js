@@ -92,8 +92,49 @@ $(document).ready(function () {
 				}
 
 				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val()){
-					event.preventDefault();
-					bootbox.alert('Total Detail Amount is not equal with Invoice Amount');
+					/*bootbox.confirm({
+						message: "Total Detail Amount is not equal with Invoice Amount",
+				    	buttons: {confirm: {label: 'Yes', className: 'btn-danger',},cancel: {label: 'No', className: 'btn-success' }
+				    	},
+				    	callback: function (result) {
+				    	if(result == true){
+				    		param={
+				    			action: 'invoiceAPDetail_save',
+								auditno: $('#apacthdr_auditno').val(),
+								lineno_: selrowData('#jqGrid2').lineno_,
+				    		}
+				    		$.post( "/invoiceAPDetail/form"+$.param(param),{oper:'del'}, function( data ){
+							}).fail(function(data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function(data){
+								$('#amount').val(data);
+								refreshGrid("#jqGrid2",urlParam2);
+							});
+				    	}else{
+        					$("#dialogForm").dialog('close');
+				    	}
+				    }
+						
+					});	*/
+					bootbox.confirm({
+					    message: "Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?",
+					    buttons: {
+					        confirm: {
+					            label: 'Yes',
+					            className: 'btn-success'
+					        },
+					        cancel: {
+					            label: 'No',
+					            className: 'btn-danger'
+					        }
+					    },
+					    callback: function (result) {
+					        if (result == true) {
+					        	unsaved = false
+					        	$("#dialogForm").dialog('close');
+					        }
+					    }
+					});
 				}
 				
 			},
@@ -557,6 +598,8 @@ $(document).ready(function () {
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
+			
+		
 			fdl.set_array().reset();
 			
 		},
