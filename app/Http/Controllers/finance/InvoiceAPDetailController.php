@@ -10,8 +10,6 @@ use Carbon\Carbon;
 
 class InvoiceAPDetailController extends defaultController
 {   
-    var $gltranAmount;
-    var $srcdocno;
 
     public function __construct()
     {
@@ -117,7 +115,8 @@ class InvoiceAPDetailController extends defaultController
                     'grnno'=> $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'OPEN'
+                    'recstatus' => 'OPEN',
+                    'unit' => session('unit')
                 ]);
 
             ///3. calculate total amount from detail
@@ -172,7 +171,8 @@ class InvoiceAPDetailController extends defaultController
                     'grnno'=> $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'OPEN'
+                    'recstatus' => 'OPEN',
+                    'unit' => session('unit')
                 ]);
 
             ///2. recalculate total amount
@@ -187,7 +187,7 @@ class InvoiceAPDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'amount' => $totalAmount, 
+                    'outamount' => $totalAmount, 
                 ]);
 
             DB::commit();
@@ -223,16 +223,16 @@ class InvoiceAPDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
-                ->sum('outamount');
+                ->sum('amount');
 
-           
+          
             ///3. update total amount to header
-            DB::table('finance.apactdtl')
+            DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$request->auditno)
+                ->where('auditno','=',$auditno)
                 ->update([
-                    'outamount' => $totalAmount,  
-                   
+                    'amount' => $totalAmount
+                  
                 ]);
 
             DB::commit();

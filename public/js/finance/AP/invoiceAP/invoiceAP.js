@@ -91,8 +91,8 @@ $(document).ready(function () {
 					});
 				}
 
-				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val()){
-					event.preventDefault();
+				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val(), save){
+					//event.preventDefault();
 
 					var bootbox1 = bootbox.dialog({
 					message: 'Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?',
@@ -103,12 +103,9 @@ $(document).ready(function () {
 					    confirm: {
 					        label: '<i class="fa fa-check"></i> Yes',
 					        className: 'btn-primary',
-					        callback: function(){
-					        	saveDetailLabel(function(){
-					        		bootbox1.modal('hide');
-									$("#dialogForm").dialog('close');
-					        	});
-					            return false;
+					         callback: function(){
+								unsaved = false
+								$("#dialogForm").dialog('close');
 					        }
 					    }
 					}
@@ -700,7 +697,7 @@ $(document).ready(function () {
 
 		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
 		    }*/
-		    onall_editfunc();
+		   // onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -914,7 +911,7 @@ $(document).ready(function () {
 
 	});	
 
-	function onall_editfunc(){
+	/*function onall_editfunc(){
 		
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
@@ -922,7 +919,7 @@ $(document).ready(function () {
 		
 		
 	}
-
+*/
 	
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
