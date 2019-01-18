@@ -150,7 +150,6 @@ class InvoiceAPDetailController extends defaultController
         DB::beginTransaction();
 
         try {
-            $request->expdate = $this->null_date($request->expdate);
 
             ///1. update detail
             DB::table('finance.apactdtl')
