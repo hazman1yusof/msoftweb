@@ -38,13 +38,14 @@ $(document).ready(function () {
 	////////////////////////////////////start dialog//////////////////////////////////////
 
 	var oper;
-	var unsaved = false;
+	var unsaved = false,counter_save=0;
 	$("#dialogForm")
 		.dialog({
 			width: 9 / 10 * $(window).width(),
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
+				counter_save=0;
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
@@ -91,26 +92,19 @@ $(document).ready(function () {
 					});
 				}
 
-				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val()){
+				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val() && counter_save==0){
 					event.preventDefault();
-
-					var bootbox1 = bootbox.dialog({
-					message: 'Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?',
-					buttons: {
-					    cancel: {
-					        label: '<i class="fa fa-times"></i> No'
+					bootbox.confirm({
+					    message: "Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?",
+					    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
 					    },
-					    confirm: {
-					        label: '<i class="fa fa-check"></i> Yes',
-					        className: 'btn-primary',
-					         callback: function(){
-								
+					    callback: function (result) {
+					    	if(result == true){
+								counter_save=1;
 								$("#dialogForm").dialog('close');
-					        }
+					    	}
 					    }
-					}
-				});
-
+					});
 				}
 				
 			},
@@ -566,6 +560,7 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(){
+			console.log(addmore_jqgrid2);
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
@@ -1038,6 +1033,9 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
 				$("#jqGrid2 input[name='grnno']").val(data['docno']);
 				$("#jqGrid2 input[name='entrydate']").val(data['deliverydate']);
+
+				addmore_jqgrid2.state = true;
+				$('#jqGrid2_ilsave').click();
 
 			}
 		},{

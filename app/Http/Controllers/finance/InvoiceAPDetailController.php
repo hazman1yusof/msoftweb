@@ -224,7 +224,7 @@ class InvoiceAPDetailController extends defaultController
             ///3. update total amount to header
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$auditno)
+                ->where('auditno','=',$request->auditno)
                 ->update([
                     'amount' => $totalAmount
                   
