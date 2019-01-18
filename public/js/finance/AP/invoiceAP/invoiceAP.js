@@ -92,49 +92,28 @@ $(document).ready(function () {
 				}
 
 				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val()){
-					/*bootbox.confirm({
-						message: "Total Detail Amount is not equal with Invoice Amount",
-				    	buttons: {confirm: {label: 'Yes', className: 'btn-danger',},cancel: {label: 'No', className: 'btn-success' }
-				    	},
-				    	callback: function (result) {
-				    	if(result == true){
-				    		param={
-				    			action: 'invoiceAPDetail_save',
-								auditno: $('#apacthdr_auditno').val(),
-								lineno_: selrowData('#jqGrid2').lineno_,
-				    		}
-				    		$.post( "/invoiceAPDetail/form"+$.param(param),{oper:'del'}, function( data ){
-							}).fail(function(data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function(data){
-								$('#amount').val(data);
-								refreshGrid("#jqGrid2",urlParam2);
-							});
-				    	}else{
-        					$("#dialogForm").dialog('close');
-				    	}
-				    }
-						
-					});	*/
-					bootbox.confirm({
-					    message: "Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?",
-					    buttons: {
-					        confirm: {
-					            label: 'Yes',
-					            className: 'btn-success'
-					        },
-					        cancel: {
-					            label: 'No',
-					            className: 'btn-danger'
-					        }
+					event.preventDefault();
+
+					var bootbox1 = bootbox.dialog({
+					message: 'Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?',
+					buttons: {
+					    cancel: {
+					        label: '<i class="fa fa-times"></i> No'
 					    },
-					    callback: function (result) {
-					        if (result == true) {
-					        	unsaved = false
-					        	$("#dialogForm").dialog('close');
+					    confirm: {
+					        label: '<i class="fa fa-check"></i> Yes',
+					        className: 'btn-primary',
+					        callback: function(){
+					        	saveDetailLabel(function(){
+					        		bootbox1.modal('hide');
+									$("#dialogForm").dialog('close');
+					        	});
+					            return false;
 					        }
 					    }
-					});
+					}
+				});
+
 				}
 				
 			},
