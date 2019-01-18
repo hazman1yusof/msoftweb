@@ -770,7 +770,7 @@ $(document).ready(function () {
 		height: 200,
 		rowNum: 30,
 		sortname: 'lineno_',
-		sortorder: "asc",
+		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(){
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
@@ -959,11 +959,12 @@ $(document).ready(function () {
 				    callback: function (result) {
 				    	if(result == true){
 				    		param={
+				    			_token: $("#_token").val(),
 				    			action: 'delOrdDetail_save',
 								recno: $('#delordhd_recno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 				    		}
-				    		$.post( "/deliveryOrderDetail/form"+$.param(param),{oper:'del'}, function( data ){
+				    		$.post( "/deliveryOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
@@ -1716,7 +1717,7 @@ $(document).ready(function () {
 				{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
-				{label: 'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
+				{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
 				{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
@@ -1745,7 +1746,7 @@ $(document).ready(function () {
 				}
 
 				$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
-				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['s_uomcode']);
+				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['p_uomcode']);
 				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
 				$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
@@ -1926,10 +1927,13 @@ $(document).ready(function () {
 				dialog_taxcode.urlParam.filterVal=['session.compcode','A', 'Input'];
 			},
 			close: function(){
-				// $(dialog_taxcode.textfield)			//lepas close dialog focus on next textfield 
-				// 	.closest('td')						//utk dialog dalam jqgrid jer
-				// 	.next()
-				// 	.find("input[type=text]").focus();
+				if($('#jqGridPager2SaveAll').css("display") == "none"){
+					$(dialog_taxcode.textfield)			//lepas close dialog focus on next textfield 
+					.closest('td')						//utk dialog dalam jqgrid jer
+					.next()
+					.find("input[type=text]").focus();
+				}
+				
 			}
 		},'urlParam'
 	);

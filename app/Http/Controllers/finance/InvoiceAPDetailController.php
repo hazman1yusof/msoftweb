@@ -218,18 +218,14 @@ class InvoiceAPDetailController extends defaultController
             ///1. update detail
             DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
-                ->update([ 
-                    'deluser' => session('username'), 
-                    'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'DELETE'
-                ]);
+                ->delete();
 
             ///2. recalculate total amount
             $totalAmount = DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('recno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
 

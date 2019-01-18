@@ -931,10 +931,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		$.get( param.url+"?"+$.param(param), function( data ) {
 
 		},'json').done(function(data) {
-			// if(index == -1){
-			// 	param.filterCol.pop();
-			// 	param.filterVal.pop();
-			// }
+			if(index == -1){
+				param.filterCol.pop();
+				param.filterVal.pop();
+			}
 			let fail=true,code,desc2;
 			if(self.checkstat=='default'){
 				if(data.msg=='success'){
