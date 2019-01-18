@@ -905,7 +905,8 @@ $(document).ready(function () {
         },
         beforeSaveRow: function(options, rowid) {
         	console.log(errorField)
-        	if(errorField.length>0)return false;
+        	// console.log($('#jqGrid2 input[name=uomcode]').val()=='')
+        	if(errorField.length>0 || $('#jqGrid2 input[name=uomcode]').val()=='')return false;
         	
         	mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
@@ -1804,11 +1805,12 @@ $(document).ready(function () {
 								dialog_uomcode.urlParam.filterVal[1] = data_['p_itemcode'];
 							}
 
-							$("#jqGrid2 #"+id_optid+"_qtydelivered").focus();
+							$("#jqGrid2 #"+id_optid+"_qtydelivered").focus().select();
 						}
 
 					}else if(data.records==0 && $('#jqgrid2_itemcode_refresh').val()==1){
 						alert('Incorrect itemcode inserted')
+						$(self.textfield).select();
 					}
 
 					$('#jqgrid2_itemcode_refresh').val(0);

@@ -93,7 +93,24 @@ $(document).ready(function () {
 
 				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val()){
 					event.preventDefault();
-					bootbox.alert('Total Detail Amount is not equal to Invoice Amount');
+
+					var bootbox1 = bootbox.dialog({
+					message: 'Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?',
+					buttons: {
+					    cancel: {
+					        label: '<i class="fa fa-times"></i> No'
+					    },
+					    confirm: {
+					        label: '<i class="fa fa-check"></i> Yes',
+					        className: 'btn-primary',
+					         callback: function(){
+								
+								$("#dialogForm").dialog('close');
+					        }
+					    }
+					}
+				});
+
 				}
 				
 			},
@@ -558,34 +575,7 @@ $(document).ready(function () {
 		},
 		gridComplete: function(){
 			
-			/*$('#apacthdr_outamount').val(response.responseText);
-			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
-				alert('Total Detail Amount is not equal to Invoice Amount');
-				bootbox.confirm({
-					message: "Are you sure you want to add?",
-					buttons: {
-						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
-					},
-					callback: function (result) {
-				    	if(result == true){
-				    		param={
-				    			action: 'invoiceAPDetail_save',
-								auditno: $('#auditno').val(),
-								lineno_: selrowData('#jqGrid2').lineno_,
-				    		}
-				    		$.post( "/invoiceAPDetail/form"+$.param(param),{oper:'del'}, function( data ){
-							}).fail(function(data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function(data){
-								$('#apacthdr_amount').val(data);
-								refreshGrid("#jqGrid2",urlParam2);
-							});
-				    	}else{
-        					$("#jqGrid2_iledit").show();
-				    	}
-				    }
-				});		
-			}*/
+		
 			fdl.set_array().reset();
 			
 		},
@@ -609,10 +599,6 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-        	//console.log(rowid);
-        	/*linenotoedit = rowid;
-        	$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
-        	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
 
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
@@ -622,26 +608,26 @@ $(document).ready(function () {
 			})
         },
         aftersavefunc: function (rowid, response, options) {
-			$('#apacthdr_outamount').val(response.responseText);
-			if(parseFloat(response.responseText)!=parseFloat($('#apacthdr_amount').val())){
-				alert('Total Detail Amount is not equal to Invoice Amount');
-			}
+        	$('#apacthdr_outamount').val(response.responseText);
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-        	//if(addmore_jqgrid2.edit == false)linenotoedit = null; 
-        	//linenotoedit = null;
         	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
         }, 
+        errorfunc: function(rowid,response){
+        	alert(response.responseText);
+        	refreshGrid('#jqGrid2',urlParam2,'add');
+	    	$("#jqGridPager2Delete").show();
+        },
         beforeSaveRow: function(options, rowid) {
 
-        	if(errorField.length>0)return false;
+        	//if(errorField.length>0)return false;
 
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			let editurl = "/invoiceAPDetail/form?"+
 				$.param({
 					action: 'invoiceAPDetail_save',
 					auditno:$('#auditno').val(),
-					/*recno:$('#recno').val(),*/
+					amount:data.amount,
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
@@ -711,7 +697,7 @@ $(document).ready(function () {
 
 		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
 		    }*/
-		    onall_editfunc();
+		   // onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -747,11 +733,6 @@ $(document).ready(function () {
 				_token: $("#_token").val(),
 				auditno: $('#apacthdr_auditno').val(),
 				action: 'invoiceAPDetail_save',
-				/*purordno:$('#purordhd_purordno').val(),
-				suppcode:$('#purordhd_suppcode').val(),
-				purdate:$('#purordhd_purdate').val(),
-				prdept:$('#purordhd_prdept').val(),
-				expecteddate:$('#purordhd_expecteddate').val(),*/
     		}
 
     		$.post( "/invoiceAPDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
@@ -920,12 +901,12 @@ $(document).ready(function () {
 		$("input[name='grnno']").keydown(function(e) {//when click tab at batchno, auto save
 			var code = e.keyCode || e.which;
 			if (code == '9')$('#jqGrid2_ilsave').click();
-
+			
 		});
 
 	});	
 
-	function onall_editfunc(){
+	/*function onall_editfunc(){
 		
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
@@ -933,7 +914,7 @@ $(document).ready(function () {
 		
 		
 	}
-
+*/
 	
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
