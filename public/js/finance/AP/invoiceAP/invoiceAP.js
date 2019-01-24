@@ -153,7 +153,7 @@ $(document).ready(function () {
 		fixPost:'true',
 		oper:oper,
 		table_name:'finance.apacthdr',
-		table_id:'idno'
+		table_id:'apacthdr_auditno'
 	};
 
 	function padzero(cellvalue, options, rowObject){
@@ -367,7 +367,6 @@ $(document).ready(function () {
 		let obj={
 			auditno:selrowData('#jqGrid').apacthdr_auditno,
 			_token:$('#_token').val(),
-			idno:selrowData('#jqGrid').apacthdr_idno
 		};
 		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
 			refreshGrid("#jqGrid", urlParam);
