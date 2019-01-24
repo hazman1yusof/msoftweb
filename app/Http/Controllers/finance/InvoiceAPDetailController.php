@@ -90,7 +90,8 @@ class InvoiceAPDetailController extends defaultController
         try {
            
             $auditno = $request->auditno;
-            ////1. calculate lineno_ by recno
+
+            ////1. calculate lineno_ by auditno
             $sqlln = DB::table('finance.apactdtl')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('auditno','=',$auditno)
@@ -158,7 +159,6 @@ class InvoiceAPDetailController extends defaultController
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
                     'compcode' => session('compcode'),
-                    'auditno' => $request->auditno,
                     'source' => 'AP',
                     'trantype' => 'IN',
                     'document' => $request->document,
@@ -186,7 +186,7 @@ class InvoiceAPDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'outamount' => $totalAmount, 
+                    'outamount' => $totalAmount
                 ]);
 
             DB::commit();
@@ -226,7 +226,7 @@ class InvoiceAPDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'amount' => $totalAmount
+                    'outamount' => $totalAmount
                   
                 ]);
 
@@ -254,7 +254,7 @@ class InvoiceAPDetailController extends defaultController
                 ///1. update detail
                 DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
+                    ->where('auditno','=',$request->auditno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
                         'document' => $value['itemcode'],

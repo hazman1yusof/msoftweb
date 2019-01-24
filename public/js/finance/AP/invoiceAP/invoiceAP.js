@@ -241,8 +241,8 @@ $(document).ready(function () {
 			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);
 			$('#docnodepan').text(selrowData("#jqGrid").apacthdr_document);
 
-			$('#auditno').val(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
-			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);//tukar kat depan tu
+		/*	$('#auditno').val(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
+			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);//tukar kat depan tu*/
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 
 			refreshGrid("#jqGrid3",urlParam2);
@@ -430,8 +430,9 @@ $(document).ready(function () {
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
-				$('#apacthdr_idno').val(data.idno);
+				
 				$('#apacthdr_auditno').val(data.auditno);
+				$('#apacthdr_idno').val(data.idno);
 				$('#apacthdr_amount').val(data.amount);//just save idno for edit later
 				
 				urlParam.filterVal[0]=data.auditno;
