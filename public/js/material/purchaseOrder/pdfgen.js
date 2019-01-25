@@ -26,7 +26,12 @@
 				cellsOfRow = row.cells;
 				var temparray = [];
 				selarray.forEach(function(element){
-					temparray.push($(cellsOfRow[element.jq_index]).text());
+					let index_to_del = $(cellsOfRow[element.jq_index]).html().search('<span class="help-block">');
+					if(index_to_del != -1){ //this fix is for not including help-block at jqgrid2
+						temparray.push($(cellsOfRow[element.jq_index]).html().slice(0,index_to_del));
+					}else{
+						temparray.push($(cellsOfRow[element.jq_index]).text());
+					}
 				});
 				temp.push(temparray);
 			}
@@ -37,17 +42,17 @@
 
 	function get_pdf_dataURL(event){
 		var header_data = $(event.data.data.formdataHeader).serializeArray();
-		console.log(getval_from_name);
 		var gridname = event.data.data.gridname;
-		var table_array = getval_from_grid(gridname,[	//get the index from jqgrid
-								{text: 'Item Code', style: 'tableHeader', jq_index: 3},// 3
-								{text: 'UOM Code', style: 'tableHeader', jq_index: 4},// 4
-								{text: 'Item Description', style: 'tableHeader', jq_index: 5},// 5
-								{text: 'Tran Qty', style: 'tableHeader', jq_index: 9},// 9
-								{text: 'Net Price', style: 'tableHeader', jq_index: 10},// 10
-								{text: 'Amount', style: 'tableHeader', jq_index: 11},// 11
-								{text: 'Expiry Date', style: 'tableHeader', jq_index: 12},// 12
-								{text: 'Batch No.', style: 'tableHeader', jq_index: 13}// 13
+		var table_array = getval_from_grid(gridname,[	//get the index from jqgrid start with 0
+								{text: 'Price Code', style: 'tableHeader', jq_index: 3},
+								{text: 'Item Code', style: 'tableHeader', jq_index: 4},
+								{text: 'Item Description', style: 'tableHeader', jq_index: 5},
+								{text: 'Quantity Order', style: 'tableHeader', jq_index: 8},
+								{text: 'Unit Price', style: 'tableHeader', jq_index: 9},
+								{text: 'Tax Code', style: 'tableHeader', jq_index: 10},
+								{text: 'Total GST Amount', style: 'tableHeader', jq_index: 12},
+								{text: 'Total Line Amount.', style: 'tableHeader', jq_index: 13}
+
 							]);
 
 		docDefinition = {
@@ -56,74 +61,91 @@
 			{ 
 				style: 'header',
 				text: [
-					'Inventory Data Entry Header'
+					'Purchase Order Header'
 					]
 			},{
 		      style:'colmargin',
 		      columns: [
-					{ width: 120, text: 'Transaction Department: ', bold: true },
-					{ width: 200, text: get_desc('txndept')+' ( '+getval_from_name(header_data,'txndept')+' )' },
-					{ width: 120, text: 'Request RecNo: ', bold: true },
-					{ width: 50, text: getval_from_name(header_data,'srcdocno') },
+					{ width: 80, text: 'Purchase Department: ', bold: true },
+					{ width: 200, text: get_desc('purordhd_prdept')+' ( '+getval_from_name(header_data,'purordhd_prdept')+' )' },
+					{ width: 80, text: 'PO No: ', bold: true },
+					{ width: 50, text: getval_from_name(header_data,'purordhd_purordno') },
+					{ width: 80, text: 'Record No: ', bold: true },
+					{ width: 50, text: getval_from_name(header_data,'purordhd_recno') },
 				],
 		    },{
 		      style:'colmargin',
 		      columns: [
-					{ width: 120, text: 'Transaction Type: ', bold: true },
-					{ width: 200, text: get_desc('trantype')+' ( '+getval_from_name(header_data,'trantype')+' )' },
-					{ width: 120, text: 'Document No: ', bold: true },
-					{ width: 50, text: getval_from_name(header_data,'docno') },
+					{ width: 80, text: 'Delivery Department: ', bold: true },
+					{ width: 200, text: get_desc('purordhd_deldept')+' ( '+getval_from_name(header_data,'purordhd_deldept')+' )' },
+					{ width: 80, text: 'Req Dept: ', bold: true },
+					{ width: 50, text: getval_from_name(header_data,'purordhd_reqdept') },
+					{ width: 80, text: 'Req No: ', bold: true },
+					{ width: 50, text: getval_from_name(header_data,'purordhd_purreqno') },
 		      ],
 		    },{
 		      style:'colmargin',
 		      columns: [
-					{ width: 120, text: ' ', bold: true },
-					{ width: 200, text: ' ' },
-					{ width: 120, text: 'Record No: ', bold: true },
-					{ width: 50, text: getval_from_name(header_data,'recno') },
+					{ width: 80, text: 'Supplier Code: ', bold: true },
+					{ width: 200, text: get_desc('purordhd_suppcode')+' ( '+getval_from_name(header_data,'purordhd_suppcode')+' )' },
+					{ width: 80, text: 'Creditor: ', bold: true },
+					{ width: 50, text: getval_from_name(header_data,'purordhd_credcode') },
+		      ],
+		      
+		    },
+		    {canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 1 }]},
+		    {
+		      style:'colmargin',
+		      columns: [
+					{ width: 80, text: 'PO Date: ', bold: true },
+					{ width: 100, text: getval_from_name(header_data,'purordhd_purdate') },
+					{ width: 80, text: 'Expected Date: ', bold: true },
+					{ width: 100, text: getval_from_name(header_data,'purordhd_expecteddate') },
+					{ width: 80, text: 'Payment Terms: ', bold: true },
+					{ width: 100, text: getval_from_name(header_data,'purordhd_termdays') },
 		      ],
 		    },
 		    {canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 1 }]},
 		    {
 		      style:'colmargin',
 		      columns: [
-					{ width: 120, text: 'Receiver Type: ', bold: true },
-					{ width: 200, text: getval_from_name(header_data,'sndrcvtype') },
-					{ width: 120, text: ' ', bold: true },
-					{ width: 50, text: ' ' },
-				],
-		    },{
-		      style:'colmargin',
-		      columns: [
-					{ width: 120, text: 'Receiver: ', bold: true },
-					{ width: 200, text: get_desc('sndrcv')+' ( '+getval_from_name(header_data,'sndrcv')+' )' },
-					{ width: 120, text: 'Amount: ', bold: true },
-					{ width: 50, text: getval_from_name(header_data,'amount') },
+		      		{ width: 80, text: 'Discount (%): ', bold: true },
+					{ width: 100, text: getval_from_name(header_data,'purordhd_perdisc') },
+					{ width: 80, text: 'Amount Discount: ', bold: true },
+					{ width: 100, text: getval_from_name(header_data,'purordhd_amtdisc') },
+					{ width: 80, text: 'Record Status: ', bold: true },
+					{ width: 100, text: getval_from_name(header_data,'purordhd_recstatus') },
+					
 		      ],
 		    },{
 		      style:'colmargin',
 		      columns: [
-					{ width: 120, text: 'Transaction Date: ', bold: true },
-					{ width: 200, text: getval_from_name(header_data,'trandate') },
-					{ width: 120, text: 'Status: ', bold: true },
-					{ width: 50, text: getval_from_name(header_data,'recstatus') },
+					{ width: 80, text: 'Sub Amount: ', bold: true },
+					{ width: 100, text: getval_from_name(header_data,'purordhd_subamount') },
+					{ width: 80, text: 'Total Amount: ', bold: true },
+					{ width: 100, text: getval_from_name(header_data,'purordhd_totamount') },
+					{ width: 80, text: 'Tax Claim: ', bold: true },
+					{ width: 100, text: getval_from_name(header_data,'purordhd_taxclaimable') },
+					
 		      ],
-		    },{
+		    },
+		    {canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 1 }]},
+		    {
 		      style:'colmargin',
 		      columns: [
 					{ width: 120, text: 'Remark: ', bold: true },
-					{ width: 450, text: getval_from_name(header_data,'remarks') },
+					{ width: 450, text: getval_from_name(header_data,'purordhd_remarks') },
 		      ],
 		    },{ 
 				style: 'headerDetail',
 				text: [
-					'Inventory DataEntry Detail'
+					'Purchase Order Detail'
 					]
 			},{
 					style: 'tableExample',
 					table: {
 						headerRows: 1,
-						widths: ['*',50,100,20,20,30,'*','*'],
+						widths: ['auto','auto','auto','auto','auto','auto','auto','auto'],//panjang standard dia 515
 						body: 
 							table_array ///from jqgrid2
 						
@@ -157,8 +179,9 @@
 			}
 		};
 		pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
-			window.open(dataURL, "_blank", "resizable=yes, scrollbars=yes, titlebar=yes, width=700, height=700, top=10, left=10");
-		});	
+			var win = window.open("", "_blank", "resizable=yes, scrollbars=yes, titlebar=yes, width=700, height=700, top=10, left=10");
+			win.document.write('<iframe width="100%" height="100%" src="'+dataURL+'" frameborder="0"></iframe>')
+		});
 	}
 	this.printEvent=function(){
 		$(this.anchor).on('click',{data:this},get_pdf_dataURL);

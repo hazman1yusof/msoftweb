@@ -335,7 +335,7 @@ $(document).ready(function () {
 		scrollY: 500,
 		paging: false,
 		columns: [
-			{ data: 'open' ,"width": "5%"},
+			{ data: 'open' ,"width": "15%"},
 			{ data: 'trandate'},
 			{ data: 'trantype'},
 			{ data: 'description'},
