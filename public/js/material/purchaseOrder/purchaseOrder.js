@@ -791,11 +791,6 @@ $(document).ready(function () {
 	jqgrid_label_align_right("#jqGrid2");
 
 	/////////////////////////all function for remarks//////////////////////////////////////////////////
-	var linenotoedit=null;
-	/*function formatterRemarks(cellvalue, options, rowObject){
-		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-lineno='"+rowObject[2]+"' data-remarks='"+rowObject[12]+"'><i class='fa fa-file-text-o'></i> remark</button>";
-	}*/
-
 	function formatterRemarks(cellvalue, options, rowObject){
 		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'></i> remark</button>";
 	}
@@ -809,7 +804,7 @@ $(document).ready(function () {
 			text: "Save",click: function() {
 				let newval = $("#remarks2").val();
 				let rowid = $('#remarks2').data('rowid');
-				$("#jqGrid2").jqGrid('setRowData', linenotoedit ,{remarks:newval});
+				$("#jqGrid2").jqGrid('setRowData', rowid ,{remarks:newval});
 				$(this).dialog('close');
 			}
 		},{
@@ -824,24 +819,11 @@ $(document).ready(function () {
 				$(this).dialog('close');
 			}
 		}];
-
 	
 	$("#dialog_remarks").dialog({
 		autoOpen: false,
 		width: 4/10 * $(window).width(),
 		modal: true,
-		/*open: function( event, ui ) {
-			let lineno_use = ($('#remarks2').data('lineno_')!='undefined')?$('#remarks2').data('lineno_'):linenotoedit;
-			$('#remarks2').val($($('#remarks2').data('grid')).jqGrid ('getRowData', lineno_use).remarks);
-			console.log(linenotoedit);
-			if(linenotoedit == lineno_use){
-				$("#remarks2").prop('disabled',false);
-				$( "#dialog_remarks" ).dialog( "option", "buttons", butt1_rem);
-			}else{
-				$("#remarks2").prop('disabled',true);
-				$( "#dialog_remarks" ).dialog( "option", "buttons", butt2_rem);
-			}
-		},*/
 		open: function( event, ui ) {
 			let rowid = $('#remarks2').data('rowid');
 			let grid = $('#remarks2').data('grid');
@@ -865,10 +847,6 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
 		oneditfunc: function (rowid) {
-			/*linenotoedit = rowid;
-        	$("#jqGrid2").find(".remarks_button[data-lineno!='"+linenotoedit+"']").prop("disabled", true);
-        	$("#jqGrid2").find(".remarks_button[data-lineno='undefined']").prop("disabled", false); 	
-        	cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());*/
 
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
@@ -895,9 +873,11 @@ $(document).ready(function () {
 
 			$("#jqGrid2 input[name='qtyorder']").on('blur',calculate_conversion_factor);
 
-			$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
+			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
+				/*addmore_jqgrid2.state = true;
+				$('#jqGrid2_ilsave').click();*/
 			});
 
         	cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
