@@ -29,6 +29,12 @@
 					<span class="help-block"></span>
               	</div>
 
+              	<div class="col-md-1">
+              	 	<label class="control-label" for="year">Year</label>  
+				  		<input id="year" name="year" type="text" maxlength="10" class="form-control input-sm"/>
+				</div>  		
+
+
               	<input id="datetoday" name="datetoday" type="hidden"  value="<?php echo date("Y") ?>">
 
 			  	<div class="col-md-1">

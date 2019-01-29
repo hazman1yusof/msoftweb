@@ -331,6 +331,7 @@ $(document).ready(function () {
 	}
 
 	var DataTable = $('#TableDetailMovement').DataTable({
+	
 		responsive: true,
 		scrollY: 500,
 		paging: false,
