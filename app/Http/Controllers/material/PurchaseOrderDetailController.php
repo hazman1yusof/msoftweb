@@ -25,6 +25,16 @@ class PurchaseOrderDetailController extends defaultController
                 return $this->add($request);
             case 'edit':
                 return $this->edit($request);
+
+            case 'edit_all':
+
+               /* if($purordhd->purordno != 0){
+                    // return 'edit all srcdocno !=0';
+                    return $this->edit_all_from_PO($request);
+                }else{
+                    // return 'edit all biasa';*/
+                    return $this->edit_all($request);
+               // }    
             case 'del':
                 return $this->del($request);
             default:
@@ -83,7 +93,8 @@ class PurchaseOrderDetailController extends defaultController
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN', 
-                    'remarks' => $request->remarks
+                    'remarks' => $request->remarks,
+                    'unit' => session('unit'),
                 ]);
 
             ///3. calculate total amount from detail
@@ -190,6 +201,78 @@ class PurchaseOrderDetailController extends defaultController
 
     }
 
+    public function edit_all(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->dataobj as $key => $value) {
+                ///1. update detail
+                DB::table('material.purorddt')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$request->recno)
+                ->where('lineno_','=',$value['lineno_'])
+                ->update([
+                    'pricecode' => $value['pricecode'],
+                    'itemcode' => $value['itemcode'],
+                    'uomcode' => $value['uomcode'],
+                    'pouom' => $value['pouom'],
+                    'suppcode' => $request->suppcode,
+                    'purdate' => $request->purdate,
+                    'qtyorder' => $value['qtyorder'],
+                    'qtydelivered' => $value['qtydelivered'],
+                    'unitprice' => $value['unitprice'],
+                    'taxcode' => $value['taxcode'],
+                    'perdisc' => $value['perdisc'],
+                    'amtdisc' => $value['amtdisc'],
+                    'amtslstax' => $value['tot_gst'],
+                    'netunitprice' => $value['netunitprice'],
+                    'amount' => $value['amount'],
+                    'totamount' => $value['totamount'],
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),  
+                    'recstatus' => 'OPEN', 
+                    'remarks' => $value['remarks'],
+                ]);
+            }
+            
+            ///2. recalculate total amount
+            $totalAmount = DB::table('material.purorddt')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$request->recno)
+                ->where('recstatus','!=','DELETE')
+                ->sum('totamount');
+
+            //calculate tot gst from detail
+            $tot_gst = DB::table('material.purorddt')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$request->recno)
+                ->where('recstatus','!=','DELETE')
+                ->sum('amtslstax');
+
+            ///3. update total amount to header
+            DB::table('material.purordhd')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$request->recno)
+                ->update([
+                    'totamount' => $totalAmount, 
+                    'subamount'=> $totalAmount, 
+                    'TaxAmt' => $tot_gst
+                ]);
+            
+            echo $totalAmount;
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+
+    }
+
     public function del(Request $request){
 
         DB::beginTransaction();
@@ -201,11 +284,7 @@ class PurchaseOrderDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$request->lineno_)
-                ->update([ 
-                    'deluser' => session('username'), 
-                    'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'DELETE'
-                ]);
+                ->delete();
 
             ///2. recalculate total amount
             $totalAmount = DB::table('material.purorddt')

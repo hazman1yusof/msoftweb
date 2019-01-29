@@ -952,7 +952,7 @@ $(document).ready(function () {
 								recno: $('#purordhd_recno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 				    		}
-				    		$.post( "/purchaseOrderDetail/form"+$.param(param),{oper:'del'}, function( data ){
+				    		$.post( "/purchaseOrderDetail/form"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
