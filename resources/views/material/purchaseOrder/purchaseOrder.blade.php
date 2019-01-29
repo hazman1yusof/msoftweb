@@ -192,7 +192,7 @@
                              
                                 <label class="col-md-2 control-label" for="purordhd_expecteddate">Expected Date</label>  
 						  		<div class="col-md-2">
-									<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required">
+									<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php echo date("Y-m-d"); ?>">
 						  		</div>
 
 						  		<label class="col-md-2 control-label" for="termdays">Payment Terms</label>  
