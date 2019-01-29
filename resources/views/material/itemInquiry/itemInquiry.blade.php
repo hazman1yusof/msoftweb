@@ -103,11 +103,11 @@
 						<th>Qty Out</th>
 						<th>Balance Quantity</th>
 						<th>Unit Cost</th>
-						<th>Trans Amount</th>
+						<!-- <th>Trans Amount</th>
 						<th>Balance Amount</th>
 						<th>Document No</th>
 						<th>User Id</th>
-						<th>Trans Time</th>
+						<th>Trans Time</th> -->
 					</tr>
 				</thead>
 				<tbody>

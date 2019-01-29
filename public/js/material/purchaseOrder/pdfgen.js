@@ -47,14 +47,13 @@
 		var gridname = event.data.data.gridname;
 		var table_array = getval_from_grid(gridname,[	//get the index from jqgrid start with 0
 								{text: 'Line No', style: 'tableHeader', jq_index: 2},
-							//	{text: 'Price Code', style: 'tableHeader', jq_index: 3},
 								{text: 'Item Code', style: 'tableHeader', jq_index: 4},
 								{text: 'Item Description', style: 'tableHeader', jq_index: 5},
 								{text: 'Quantity Order', style: 'tableHeader', jq_index: 9},
 								{text: 'Unit Price', style: 'tableHeader', jq_index: 12},
 								{text: 'Tax Code', style: 'tableHeader', jq_index: 13},
-								{text: 'Total GST Amount', style: 'tableHeader', jq_index: 16},
-								{text: 'Total Line Amount.', style: 'tableHeader', jq_index: 19}
+								{text: 'GST', style: 'tableHeader', jq_index: 16},
+								{text: 'Nett Amount (RM)', style: 'tableHeader', jq_index: 19}
 
 							]);
 
@@ -176,21 +175,50 @@
 					layout: 'lightHorizontalLines'
 				},
 
-				'Purchase Order Remarks : \n\n',
+			{
+		      style:'colmargin',
+		      alignment: 'right',
+		      columns: [
+					{ width: '*', text: 'Sub Total: ', bold: true },
+					{ width: '*', text: getval_from_name(header_data,'purordhd_subamount') },
+					
+		      ],
+		    },
+		    {
+		      style:'colmargin',
+		      alignment: 'right',
+		      columns: [
+					{ width: '*', text: 'Discount: ', bold: true },
+					{ width: '*', text: getval_from_name(header_data,'purordhd_') },
+					
+		      ],
+		    },
+		    {
+		      style:'colmargin',
+		      alignment: 'right',
+		      columns: [
+
+					{ width: '*', text: 'Net Total: ', bold: true },
+					{ width: '*', text: getval_from_name(header_data,'purordhd_totamount') },
+					
+		      ],
+		    },
+
+
+				'\nPurchase Order Remarks : \n\n',
 				'1. Goods which are not comply to our specification and as per our Purchase Order will be rejected\n\n',
 				'2. In order to ensure prompt payment, all Delivery Order, Invoices and other documents related to this order must bear this Purchase Order Number\n\n',
 				'3. Any goods supplied without our Purchase Order will not be entertained.\n\n',
 
-			//{canvas: [{ type: 'line', x1: 8, y1: 5, x2: 100, y2: 5, lineWidth: 1 }]},
-			//{text: 'noBorders:', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+			
 		{
 			style: 'tableExample2',
 			table: {
 				headerRows: 1,
 				alignment: 'center',
 				body: [
-					[{text: 'Issued by: ', style: 'tableHeader'}, {text: 'Checked/Verified by:', style: 'tableHeader'}, {text: 'Authorised by:', style: 'tableHeader'}],
-					['__________', '________________', '__________'],
+					[{text: 'Issued by: \n\n\n', style: 'tableHeader'}, {text: 'Checked/Verified by:\n\n\n', style: 'tableHeader'}, {text: 'Authorised by: \n\n\n', style: 'tableHeader'}],
+					['__________', '________________', '_____________'],
 					
 				]
 			},
@@ -215,7 +243,8 @@
 					margin: [0, 5, 0, 15]
 				},
 				tableExample2: {
-					margin: [0, 0, 0, 0]
+					alignment: 'center',
+					margin: [0, 5, 0, 15]
 				},
 				colmargin: {
 					margin: [0, 5, 0, 5]
