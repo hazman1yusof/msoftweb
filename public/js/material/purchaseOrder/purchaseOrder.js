@@ -741,34 +741,6 @@ $(document).ready(function () {
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
-		/*gridComplete: function(){
-			$( "#jqGrid2_ilcancel" ).off();
-			$( "#jqGrid2_ilcancel" ).on( "click", function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-				bootbox.confirm({
-				    message: "Are you sure want to cancel?",
-				    buttons: {
-				        confirm: { label: 'Yes',className: 'btn-success'},
-				        cancel: {label: 'No',className: 'btn-danger'}
-					},
-					callback: function (result) {
-						if (result == true) {
-							$(".noti").empty();
-							$("#jqGrid2").jqGrid("clearGridData", true);
-							refreshGrid("#jqGrid2",urlParam2);
-						}
-						linenotoedit = null;
-				    }
-				});
-			});
-
-			$("#jqGrid2").find(".remarks_button").on("click", function(e){
-				$("#remarks2").data('lineno_',$(this).data('lineno_'));
-				$("#remarks2").data('grid',"#jqGrid2");
-				$("#dialog_remarks").dialog( "open" );
-			});
-		},*/
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
 				$("#remarks2").data('rowid',$(this).data('rowid'));
