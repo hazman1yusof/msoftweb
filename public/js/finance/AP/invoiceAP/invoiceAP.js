@@ -351,13 +351,13 @@ $(document).ready(function () {
 			$("#formdata :input[name='apacthdr_trantype']").val("DN");
 		}
 		
-		if(($("#apacthdr_ttype option:selected" ).text()=='Supplier')){
-			$('#save').hide();
-			$('#ap_parent').show();
-		}else {
-			$('#save').show();
-			$('#ap_parent').hide();
-		}
+		// if(($("#apacthdr_ttype option:selected" ).text()=='Supplier')){
+		// 	$('#save').hide();
+		// 	$('#ap_parent').show();
+		// }else {
+		// 	$('#save').show();
+		// 	$('#ap_parent').hide();
+		// }
 	});
 	
 	
@@ -431,11 +431,11 @@ $(document).ready(function () {
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				
-				$('#apacthdr_auditno').val(data.auditno);
+				$('#apacthdr_auditno,#auditno').val(data.auditno);
 				$('#apacthdr_idno').val(data.idno);
-				$('#apacthdr_amount').val(data.amount);//just save idno for edit later
+				// $('#apacthdr_outamount').val(data.outamount);//just save idno for edit later
 				
-				urlParam.filterVal[0]=data.auditno;
+				urlParam2.filterVal[1]=data.auditno;
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
@@ -560,7 +560,6 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(){
-			console.log(addmore_jqgrid2);
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");

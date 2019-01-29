@@ -602,14 +602,14 @@ $(document).ready(function () {
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:false, hidden:true},
-			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
+			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', frozen:true, editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:pricecodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable:true,
+			{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', frozen:true, editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
 						    {  custom_element:itemcodeCustomEdit,
@@ -617,7 +617,7 @@ $(document).ready(function () {
 						    },
 			},
 			
-			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
+			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
 			{ label: 'UOM Code', name: 'uomcode', width: 120, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -761,6 +761,7 @@ $(document).ready(function () {
 			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 		],
+		scroll: false,
 		autowidth: false,
 		shrinkToFit: false,
 		multiSort: true,
@@ -816,6 +817,9 @@ $(document).ready(function () {
 				let newval = $("#remarks2").val();
 				let rowid = $('#remarks2').data('rowid');
 				$("#jqGrid2").jqGrid('setRowData', rowid ,{remarks:newval});
+				if($("#jqGridPager2SaveAll").css('display') == 'none'){
+					$("#jqGrid2_ilsave").click();
+				}
 				$(this).dialog('close');
 			}
 		},{
