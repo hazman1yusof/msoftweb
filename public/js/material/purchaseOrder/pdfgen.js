@@ -114,18 +114,18 @@
 		      
 		    },
 		    {canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 1 }]},
-		    {
+		   /* {
 		      style:'colmargin',
 		      columns: [
-					/*{ width: 80, text: 'PO Date: ', bold: true },
-					{ width: 100, text: getval_from_name(header_data,'purordhd_purdate') },*/
+					{ width: 80, text: 'PO Date: ', bold: true },
+					{ width: 100, text: getval_from_name(header_data,'purordhd_purdate') },
 					{ width: 80, text: 'Expected Date: ', bold: true },
 					{ width: 100, text: getval_from_name(header_data,'purordhd_expecteddate') },
 					{ width: 80, text: 'Payment Terms: ', bold: true },
 					{ width: 100, text: getval_from_name(header_data,'purordhd_termdays') },
 		      ],
 		    },
-		    {canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 1 }]},
+		    {canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 1 }]},*/
 		    {
 		      style:'colmargin',
 		      columns: [
