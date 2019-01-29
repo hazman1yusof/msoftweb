@@ -331,11 +331,12 @@ $(document).ready(function () {
 	}
 
 	var DataTable = $('#TableDetailMovement').DataTable({
+	
 		responsive: true,
 		scrollY: 500,
 		paging: false,
 		columns: [
-			{ data: 'open' ,"width": "5%"},
+			{ data: 'open' ,"width": "15%"},
 			{ data: 'trandate'},
 			{ data: 'trantype'},
 			{ data: 'description'},
@@ -348,6 +349,19 @@ $(document).ready(function () {
 			//document no
 			//userid
 			//transtime
+
+			/*<th>Transaction Date</th>
+						<th>Trantype</th>
+						<th>Transaction Description</th>
+						<th>Qty In</th>
+						<th>Qty Out</th>
+						<th>Balance Quantity</th>
+						<th>Unit Cost</th>
+						<th>Trans Amount</th>
+						<th>Balance Amount</th>
+						<th>Document No</th>
+						<th>User Id</th>
+						<th>Trans Time</th>*/
 			
 		],
 		drawCallback: function( settings ) {
