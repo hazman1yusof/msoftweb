@@ -48,7 +48,7 @@ $(document).ready(function () {
 				mycurrency.formatOnBlur();
 				switch (oper) {
 					case state = 'add':
-						$("#jqGrid2").jqGrid("clearGridData", true);
+						$("#jqGrid2").jqGrid("clearGridData", false);
 						$("#pg_jqGridPager2 table").show();
 						hideatdialogForm(true);
 						enableForm('#formdata');
