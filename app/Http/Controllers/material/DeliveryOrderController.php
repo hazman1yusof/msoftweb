@@ -363,6 +363,9 @@ class DeliveryOrderController extends defaultController
 
                 //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
                     do_util::product_ins($value,$txnqty,$netprice);
+
+                //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
+                    do_util::update_po($value,$txnqty,$netprice);
                 }
 
             //--- 6. posting GL ---//

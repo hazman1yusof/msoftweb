@@ -429,6 +429,25 @@ class do_util extends defaultController{
         }
 	}
 
+    public static function update_po($value,$txnqty,$netprice){
+        $delordhd = DB::table('material.delordhd')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$value->recno)
+            ->first();
+
+        if($delordhd->srcdocno!=""){
+            $purorddt = DB::table("material.purorddt")
+                            ->where('recno','=',$delordhd->srcdocno)
+                            ->where('lineno_','=',$value->lineno_);
+
+            if($purorddt->exists()){
+                $purorddt->update([
+                    'qtydelivered' => $value->qtydelivered
+                ]);
+            }
+        }
+    }
+
 }
 
 ?>
