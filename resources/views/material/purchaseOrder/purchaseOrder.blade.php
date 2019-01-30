@@ -61,6 +61,7 @@
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 
@@ -280,6 +281,7 @@
 							<!-- <input id="gstpercent" name="gstpercent" type="hidden">
 							<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
 							<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'> -->
+							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
 
 							<div id="jqGrid2_c" class='col-md-12'>
 								<table id="jqGrid2" class="table table-striped"></table>
