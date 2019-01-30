@@ -331,7 +331,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////
-	$("#jqGrid").jqGrid('setLabel', 'purordhd_totamount', 'Total Amount', { 'text-align': 'right' });
+	jqgrid_label_align_right("#jqGrid2");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 
