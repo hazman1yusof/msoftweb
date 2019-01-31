@@ -46,13 +46,13 @@ class DeliveryOrderDetailController extends defaultController
 
             case 'edit_all':
 
-                if($delordhd->srcdocno != 0){
-                    // return 'edit all srcdocno !=0';
-                    return $this->edit_all_from_PO($request);
-                }else{
+                // if($delordhd->srcdocno != 0){
+                //     // return 'edit all srcdocno !=0';
+                //     return $this->edit_all_from_PO($request);
+                // }else{
                     // return 'edit all biasa';
                     return $this->edit_all($request);
-                }
+                // }
 
             case 'del':
                 return $this->del($request);
