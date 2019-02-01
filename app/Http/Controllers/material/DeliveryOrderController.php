@@ -379,14 +379,15 @@ class DeliveryOrderController extends defaultController
                     
                     $purordhd = DB::table('material.purordhd')
                         ->where('compcode','=',session('compcode'))
-                        ->where('delorddt.unit','=',session('unit'))
+                        ->where('purordhd.unit','=',session('unit'))
+                        ->where('purordhd.prdept','=',$delordhd_obj->prdept)
                         ->where('purordno','=',$delordhd_obj->srcdocno)
                         ->first();
 
                     $po_recno = $purordhd->recno;
 
                     $podt_obj = DB::table('material.purorddt')
-                        ->where('delorddt.unit','=',session('unit'))
+                        ->where('purorddt.unit','=',session('unit'))
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$po_recno)
                         ->where('lineno_','=',$value->lineno_);
