@@ -1421,11 +1421,12 @@ $(document).ready(function () {
 	var dialog_srcdocno = new ordialog(
 		'srcdocno',['material.purordhd AS h'],'#delordhd_srcdocno',errorField,
 		{	colModel:[
+
+				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer'},
 				{label:'PO NO',name:'h_purordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'delordno',name:'h_delordno',width:400,classes:'pointer', hidden:true},
 				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
-				{label:'recno',name:'h_recno',width:400,classes:'pointer', hidden:true},
 				{label:'Delivery Department',name:'h_deldept',width:400,classes:'pointer', hidden:true},
 				{label:'Record Status',name:'h_recstatus',width:400,classes:'pointer', hidden:true},
 				{label:'Amount Discount',name:'h_amtdisc',width:400,classes:'pointer', hidden:true},
@@ -1433,11 +1434,12 @@ $(document).ready(function () {
 				{label:'Per Disc',name:'h_perdisc',width:400,classes:'pointer', hidden:true},
 				{label:'Remarks',name:'h_remarks',width:400,classes:'pointer', hidden:true},
 				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer'},
-				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer', hidden:true},
+				{label:'Rec No',name:'h_recno',width:400,classes:'pointer'},
 			],
 
 		ondblClickRow: function () {
 				let data = selrowData('#' + dialog_srcdocno.gridname);
+				
 				$("#delordhd_srcdocno").val(data['h_purordno']);
 				$("#delordhd_suppcode").val(data['h_suppcode']);
 				$("#delordhd_credcode").val(data['h_suppcode']);
