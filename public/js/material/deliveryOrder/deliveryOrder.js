@@ -981,7 +981,8 @@ $(document).ready(function () {
 								}).fail(function(data) {
 									//////////////////errorText(dialog,data.responseText);
 								}).done(function(data){
-									$('#amount').val(data);
+									$('#delordhd_totamount').val(data);
+									$('#delordhd_subamount').val(data);
 									refreshGrid("#jqGrid2",urlParam2);
 								});
 					    	}else{
@@ -1435,13 +1436,14 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data = selrowData('#'+dialog_prdept.gridname);
 				backdated.set_backdate(data.deptcode);
+				$('#delordhd_srcdocno').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#delordhd_suppcode').focus();
+					$('#delordhd_srcdocno').focus();
 				}
 			}
 		},{
@@ -1462,17 +1464,15 @@ $(document).ready(function () {
 				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'delordno',name:'h_delordno',width:400,classes:'pointer', hidden:true},
 				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
-				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer'},
-				{label:'Recno',name:'h_recno',width:400,classes:'pointer', hidden:false},
+				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer', align: 'right'},
+				{label:'Recno',name:'h_recno',width:400,classes:'pointer', hidden:false, align: 'right'},
 				{label:'Delivery Department',name:'h_deldept',width:400,classes:'pointer', hidden:true},
 				{label:'Record Status',name:'h_recstatus',width:400,classes:'pointer', hidden:true},
 				{label:'Amount Discount',name:'h_amtdisc',width:400,classes:'pointer', hidden:true},
 				{label:'Sub Amount',name:'h_subamount',width:400,classes:'pointer', hidden:true},
 				{label:'h_taxclaimable',name:'h_taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'Per Disc',name:'h_perdisc',width:400,classes:'pointer', hidden:true},
-				{label:'Remarks',name:'h_remarks',width:400,classes:'pointer', hidden:true},
-				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer'},
-				{label:'Rec No',name:'h_recno',width:400,classes:'pointer'},
+				{label:'Remarks',name:'h_remarks',width:400,classes:'pointer', hidden:true}
 			],
 
 		ondblClickRow: function () {
@@ -1570,13 +1570,14 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#delordhd_credcode").val(data['suppcode']);
+				$('#delordhd_delordno').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#delordhd_deldept').focus();
+					$('#delordhd_delordno').focus();
 				}
 			}
 		},{
@@ -1594,7 +1595,18 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Creditor Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Creditor Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
-			]
+			],
+			ondblClickRow:function(){
+				$('#delordhd_invoiceno').focus();//focus ni xjadis
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#delordhd_invoiceno').focus();
+				}
+			}
 		},{
 			title:"Select Creditor",
 			open: function(){
@@ -1613,6 +1625,7 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector'},
 			],
 			ondblClickRow:function(){
+				$('#delordhd_credcode').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
