@@ -31,7 +31,8 @@ class DeliveryOrderDetailController extends defaultController
             case 'add':
 
                 if($delordhd->srcdocno != 0){
-                    return 'error happen, do srcdocno!=0, x boleh add';
+                    // return 'error happen, do srcdocno!=0, x boleh add';
+                    return $this->add($request);
                 }else{
                     return $this->add($request);
                 }

@@ -855,7 +855,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				}
 			},
 			loadComplete: function(data) {
-				if(obj.jqgrid_.hasOwnProperty('loadComplete'))obj.jqgrid_.loadComplete(data);
+				if(obj.jqgrid_.hasOwnProperty('loadComplete'))obj.jqgrid_.loadComplete(data,obj);
+		    },
+			gridComplete: function() {
+				if(obj.jqgrid_.hasOwnProperty('gridComplete'))obj.jqgrid_.gridComplete(obj);
 		    },
 
 		});

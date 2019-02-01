@@ -909,7 +909,7 @@ class DeliveryOrderController extends defaultController
 
         foreach ($po_dt as $key => $value) {
             ///step 0.5 calculate qtyoutstand
-            $qtyoutstand = 0;
+            $qtyoutstand = $value->qtyorder;
 
             $delordhd_obj = DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))

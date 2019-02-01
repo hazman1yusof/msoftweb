@@ -297,12 +297,12 @@ $(document).ready(function () {
 					break;
 				case "cancel": 
 					if(stat=='POSTED'){
-						$('#but_cancel_jq').show();
-						$('#but_post_jq,#but_reopen_jq,#but_cancel_jq').hide();
+						$('#but_cancel_jq,#but_print_dtl').show();
+						$('#but_post_jq,#but_reopen_jq').hide();
 					}else if(stat=="CANCELLED"){
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_print_dtl').hide();
 					}else{
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_print_dtl').hide();
 					}
 					break;
 				case "all": 
@@ -338,7 +338,12 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",urlParam2);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager td[title='Edit Selected Row']").click();
+			let stat = selrowData("#jqGrid").delordhd_recstatus;
+			if(stat=='POSTED'){
+				$("#jqGridPager td[title='View Selected Row']").click();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+			}
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
@@ -864,7 +869,7 @@ $(document).ready(function () {
         oneditfunc: function (rowid) {
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
-        	if($('#delordhd_srcdocno').val()!=''){
+        	if($('#delordhd_srcdocno').val()!='' && $("#jqGrid2_iladd").css('display') == 'none' ){
         		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
 
 			}else{
@@ -957,30 +962,34 @@ $(document).ready(function () {
 			if(!selRowId){
 				bootbox.alert('Please select row');
 			}else{
-				bootbox.confirm({
-				    message: "Are you sure you want to delete this row?",
-				    buttons: {confirm: {label: 'Yes', className: 'btn-danger',},cancel: {label: 'No', className: 'btn-success' }
-				    },
-				    callback: function (result) {
-				    	if(result == true){
-				    		param={
-				    			_token: $("#_token").val(),
-				    			action: 'delOrdDetail_save',
-								recno: $('#delordhd_recno').val(),
-								lineno_: selrowData('#jqGrid2').lineno_,
-				    		}
-				    		$.post( "/deliveryOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
-							}).fail(function(data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function(data){
-								$('#amount').val(data);
-								refreshGrid("#jqGrid2",urlParam2);
-							});
-				    	}else{
-        					$("#jqGridPager2EditAll").show();
-				    	}
-				    }
-				});
+				if(selrowData('#jqGrid2').qtyorder>0){
+					alert("This data cannot be deleted");
+				}else{
+					bootbox.confirm({
+					    message: "Are you sure you want to delete this row?",
+					    buttons: {confirm: {label: 'Yes', className: 'btn-danger',},cancel: {label: 'No', className: 'btn-success' }
+					    },
+					    callback: function (result) {
+					    	if(result == true){
+					    		param={
+					    			_token: $("#_token").val(),
+					    			action: 'delOrdDetail_save',
+									recno: $('#delordhd_recno').val(),
+									lineno_: selrowData('#jqGrid2').lineno_,
+					    		}
+					    		$.post( "/deliveryOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
+								}).fail(function(data) {
+									//////////////////errorText(dialog,data.responseText);
+								}).done(function(data){
+									$('#amount').val(data);
+									refreshGrid("#jqGrid2",urlParam2);
+								});
+					    	}else{
+	        					$("#jqGridPager2EditAll").show();
+					    	}
+					    }
+					});
+				}
 			}
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -1352,6 +1361,25 @@ $(document).ready(function () {
 				errorField.push( id );
 			}
 		}
+
+		var id2="#jqGrid2 #"+id_optid+"_unitprice";
+		var fail_msg2 = "Unitprice cannot be 0";
+		var name2 = "unitprice";
+		if($("input#"+id_optid+"_pricecode").val() != 'BO' && unitprice == 0 ) {
+			$( id2 ).parent().removeClass( "has-success" ).addClass( "has-error" );
+			$( id2 ).removeClass( "valid" ).addClass( "error" );
+			if(!$('.noti').find("li[data-errorid='"+name2+"']").length)$('.noti').prepend("<li data-errorid='"+name2+"'>"+fail_msg2+"</li>");
+			if($.inArray(id2,errorField)===-1){
+				errorField.push( id2 );
+			}
+		} else {
+			if($.inArray(id2,errorField)!==-1){
+				errorField.splice($.inArray(id2,errorField), 1);
+			}
+			$( id2 ).parent().removeClass( "has-error" ).addClass( "has-success" );
+			$( id2 ).removeClass( "error" ).addClass( "valid" );
+			$('.noti').find("li[data-errorid='"+name2+"']").detach();
+		}
 		event.data.currency.formatOn();//change format to currency on each calculation
 	}
 
@@ -1395,7 +1423,7 @@ $(document).ready(function () {
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_authorise.makedialog();
+	dialog_authorise.makedialog(false);
 
 	var dialog_prdept = new ordialog(
 		'prdept','sysdb.department','#delordhd_prdept',errorField,
@@ -1407,6 +1435,14 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data = selrowData('#'+dialog_prdept.gridname);
 				backdated.set_backdate(data.deptcode);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#delordhd_suppcode').focus();
+				}
 			}
 		},{
 			title:"Select Transaction Department",
@@ -1416,24 +1452,25 @@ $(document).ready(function () {
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_prdept.makedialog();
+	dialog_prdept.makedialog(false);
 
 	var dialog_srcdocno = new ordialog(
 		'srcdocno',['material.purordhd AS h'],'#delordhd_srcdocno',errorField,
 		{	colModel:[
+				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer', hidden:false},
 				{label:'PO NO',name:'h_purordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'delordno',name:'h_delordno',width:400,classes:'pointer', hidden:true},
 				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
-				{label:'recno',name:'h_recno',width:400,classes:'pointer', hidden:true},
+				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer'},
+				{label:'Recno',name:'h_recno',width:400,classes:'pointer', hidden:false},
 				{label:'Delivery Department',name:'h_deldept',width:400,classes:'pointer', hidden:true},
 				{label:'Record Status',name:'h_recstatus',width:400,classes:'pointer', hidden:true},
 				{label:'Amount Discount',name:'h_amtdisc',width:400,classes:'pointer', hidden:true},
 				{label:'Sub Amount',name:'h_subamount',width:400,classes:'pointer', hidden:true},
+				{label:'h_taxclaimable',name:'h_taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'Per Disc',name:'h_perdisc',width:400,classes:'pointer', hidden:true},
 				{label:'Remarks',name:'h_remarks',width:400,classes:'pointer', hidden:true},
-				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer'},
-				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer', hidden:true},
 			],
 
 		ondblClickRow: function () {
@@ -1450,6 +1487,7 @@ $(document).ready(function () {
 				$("#delordhd_totamount").val(data['h_totamount']);
 				$("#delordhd_subamount").val(data['h_subamount']);
 				$("#delordhd_taxclaimable").val(data['h_taxclaimable']);
+				$("#formdata input[type='radio'][name='delordhd_taxclaimable'][value='"+data['h_taxclaimable']+"']").prop('checked', true);
 				$("#delordhd_recstatus").val(data['h_recstatus']);
 				$("#delordhd_remarks").val(data['h_remarks']);
 				$('#referral').val(data['h_recno']);
@@ -1486,6 +1524,7 @@ $(document).ready(function () {
 									pouom:elem['pouom'],
 									qtyorder:elem['qtyorder'],
 									qtydelivered:0,
+		    						qtyoutstand :elem['qtyorder'],
 									unitprice:elem['unitprice'],
 									taxcode:elem['taxcode'],
 									perdisc:elem['perdisc'],
@@ -1528,6 +1567,14 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#delordhd_credcode").val(data['suppcode']);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#delordhd_deldept').focus();
+				}
 			}
 		},{
 			title:"Select Transaction Type",
@@ -1563,6 +1610,14 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector'},
 			],
 			ondblClickRow:function(){
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#delordhd_credcode').focus();
+				}
 			}
 		},{
 			title:"Select Receiver Department",
