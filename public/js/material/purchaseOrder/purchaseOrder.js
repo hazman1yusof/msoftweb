@@ -635,20 +635,8 @@ $(document).ready(function () {
 					},
 			},
 			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap', editable:true,
-				editable: true, hidden:true,
-				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules:{required: true},edittype:"text",
-						editoptions:{
-						maxlength: 12,
-						dataInit: function(element) {
-							element.style.textAlign = 'right';
-							$(element).keypress(function(e){
-								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-									return false;
-								 }
-							});
-						}
-					},
+				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'O/S Quantity', name: 'qtyOutstand', width: 100, align: 'right', classes: 'wrap', editable:true,	
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},

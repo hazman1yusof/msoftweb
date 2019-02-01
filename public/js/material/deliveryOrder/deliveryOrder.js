@@ -1471,10 +1471,13 @@ $(document).ready(function () {
 				{label:'h_taxclaimable',name:'h_taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'Per Disc',name:'h_perdisc',width:400,classes:'pointer', hidden:true},
 				{label:'Remarks',name:'h_remarks',width:400,classes:'pointer', hidden:true},
+				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer'},
+				{label:'Rec No',name:'h_recno',width:400,classes:'pointer'},
 			],
 
 		ondblClickRow: function () {
 				let data = selrowData('#' + dialog_srcdocno.gridname);
+				
 				$("#delordhd_srcdocno").val(data['h_purordno']);
 				$("#delordhd_suppcode").val(data['h_suppcode']);
 				$("#delordhd_credcode").val(data['h_suppcode']);
