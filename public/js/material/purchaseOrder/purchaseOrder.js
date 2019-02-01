@@ -101,7 +101,12 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#formdata2');
 				$('.alert').detach();
 				$("#formdata a").off();
+				dialog_reqdept.off();
+				dialog_purreqno.off();
+				dialog_prdept.off();
 				dialog_suppcode.off();
+				dialog_deldept.off();
+				dialog_credcode.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGrid2",null,"kosongkan");
@@ -316,8 +321,13 @@ $(document).ready(function () {
 			
             refreshGrid("#jqGrid3", urlParam2);
 		},
-		ondblClickRow: function (rowid, iRow, iCol, e) {
-			$("#jqGridPager td[title='Edit Selected Row']").click();
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			let stat = selrowData("#jqGrid").purordhd_recstatus;
+			if(stat=='POSTED'){
+				$("#jqGridPager td[title='View Selected Row']").click();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+			}
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
@@ -827,7 +837,7 @@ $(document).ready(function () {
 
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
-        	if($('#purordhd_purreqno').val()!=''){
+        	if($('#purordhd_purreqno').val()!=''&& $("#jqGrid2_iladd").css('display') == 'none' ){
         		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
 
 			}else{
@@ -984,7 +994,7 @@ $(document).ready(function () {
 
 		    	var obj = 
 		    	{
-		    		'lineno_' : ids[i],
+		    		'lineno_' : data.lineno_,
 		    		'pricecode' : $("#jqGrid2 input#"+ids[i]+"_pricecode").val(),
 		    		'itemcode' : $("#jqGrid2 input#"+ids[i]+"_itemcode").val(),
 		    		'uomcode' : $("#jqGrid2 input#"+ids[i]+"_uomcode").val(),
@@ -1289,6 +1299,25 @@ $(document).ready(function () {
 			}
 		}
 
+		var id2="#jqGrid2 #"+id_optid+"_unitprice";
+		var fail_msg2 = "Unitprice cannot be 0";
+		var name2 = "unitprice";
+		if($("input#"+id_optid+"_pricecode").val() != 'BO' && unitprice == 0 ) {
+			$( id2 ).parent().removeClass( "has-success" ).addClass( "has-error" );
+			$( id2 ).removeClass( "valid" ).addClass( "error" );
+			if(!$('.noti').find("li[data-errorid='"+name2+"']").length)$('.noti').prepend("<li data-errorid='"+name2+"'>"+fail_msg2+"</li>");
+			if($.inArray(id2,errorField)===-1){
+				errorField.push( id2 );
+			}
+		} else {
+			if($.inArray(id2,errorField)!==-1){
+				errorField.splice($.inArray(id2,errorField), 1);
+			}
+			$( id2 ).parent().removeClass( "has-error" ).addClass( "has-success" );
+			$( id2 ).removeClass( "error" ).addClass( "valid" );
+			$('.noti').find("li[data-errorid='"+name2+"']").detach();
+		}
+
 		event.data.currency.formatOn();//change format to currency on each calculation
 
 	}
@@ -1491,6 +1520,18 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Unit',name:'sector'},
 			],
+			ondblClickRow: function () {
+				/*let data = selrowData('#'+dialog_prdept.gridname);
+				backdated.set_backdate(data.deptcode);*/
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purordhd_deldept').focus();
+				}
+			}
 		},{
 			title:"Select Transaction Department",
 			open: function(){
@@ -1499,7 +1540,7 @@ $(document).ready(function () {
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_prdept.makedialog();
+	dialog_prdept.makedialog(false);
 
 	var dialog_deldept = new ordialog(
 		'deldept','sysdb.department','#purordhd_deldept',errorField,
@@ -1508,6 +1549,16 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Unit',name:'sector'},
 			],
+			ondblClickRow:function(){
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purordhd_suppcode').focus();
+				}
+			}
 		},{
 			title:"Select Receiver Department",
 			open: function(){
@@ -1516,7 +1567,7 @@ $(document).ready(function () {
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_deldept.makedialog();
+	dialog_deldept.makedialog(false);
 
 	var dialog_suppcode = new ordialog(
 		'suppcode','material.supplier','#purordhd_suppcode',errorField,
@@ -1527,6 +1578,14 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#purordhd_credcode").val(data['suppcode']);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purordhd_credcode').focus();
+				}
 			}
 		},{
 			title:"Select Transaction Type",
