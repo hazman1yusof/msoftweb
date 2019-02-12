@@ -1409,7 +1409,17 @@ $(document).ready(function () {
 				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 				{label:'Unit',name:'sector'},
-			]
+			],
+			ondblClickRow:function(){
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purordhd_purreqno').focus();
+				}
+			}
 		}, {
 			title: "Select Request Department",
 			open: function(){
@@ -1499,6 +1509,14 @@ $(document).ready(function () {
 					}
 				});
 				
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purordhd_suppcode').focus();
+				}
 			}
 
 		},{
@@ -1556,7 +1574,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#purordhd_suppcode').focus();
+					$('#purordhd_reqdept').focus();
 				}
 			}
 		},{
@@ -1603,7 +1621,17 @@ $(document).ready(function () {
 			colModel: [
 				{ label: 'Creditor Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Creditor Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-			]
+			],
+			ondblClickRow:function(){
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purordhd_purdate').focus();
+				}
+			}
 		}, {
 			title: "Select Creditor",
 			open: function () {
