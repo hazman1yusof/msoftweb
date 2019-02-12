@@ -1232,6 +1232,21 @@ $(document).ready(function () {
 		
 	}
 
+	//////////////////////////////calculate outstanding quantity/////////////////////
+	/*function calculate_quantity_outstanding(event){
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+
+        let qtyorder = parseFloat($("#jqGrid2 #"+id_optid+"_qtyorder").val());
+        let qtydelivered = parseFloat($("#jqGrid2 #"+id_optid+"_qtydelivered").val());
+
+        var qtyOutstand = (qtyorder - qtydelivered);
+
+        $("input[name='qtyOutstand']").val(qtyOutstand);
+	}*/
+	///////////////////////////////////////////////////////////////////////////////
+
+
 	/////////////////////////////edit all//////////////////////////////////////////////////
 
 	function onall_editfunc(){
