@@ -949,7 +949,8 @@ $(document).ready(function () {
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
-								$('#amount').val(data);
+								$('#purordhd_totamount').val(data);
+								$('#purordhd_subamount').val(data);
 								refreshGrid("#jqGrid2",urlParam2);
 							});
 						}else{
