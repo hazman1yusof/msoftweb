@@ -45,6 +45,7 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
+			$("#jqGrid2").jqGrid("setFrozenColumns");
 			parent_close_disabled(true);
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 			mycurrency.formatOnBlur();
@@ -226,22 +227,22 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Record No', name: 'delordhd_recno', width: 12, classes: 'wrap', canSearch: true},
-			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 18, classes: 'wrap', canSearch:true},
-			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 18, classes: 'wrap'},
-			{ label: 'Request Department', name: 'delordhd_reqdept', width: 18, canSearch: true, classes: 'wrap' },
-			{ label: 'GRN No', name: 'delordhd_docno', width: 15, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
-			{ label: 'Received Date', name: 'delordhd_trandate', width: 20, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 25, classes: 'wrap', canSearch: true},
-			{ label: 'Supplier Name', name: 'supplier_name', width: 25, classes: 'wrap', canSearch: true },
-			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 15, classes: 'wrap', canSearch: true},
-			{ label: 'DO No', name: 'delordhd_delordno', width: 15, classes: 'wrap', canSearch: true},
-			{ label: 'Invoice No', name: 'delordhd_invoiceno', width: 20, classes: 'wrap'},
-			{ label: 'Trantype', name: 'delordhd_trantype', width: 20, classes: 'wrap', hidden: true},
-			{ label: 'Total Amount', name: 'delordhd_totamount', width: 20, classes: 'wrap', align: 'right', formatter: 'currency' },
-			{ label: 'Status', name: 'delordhd_recstatus', width: 20},
+			{ label: 'Record No', name: 'delordhd_recno', width: 120, classes: 'wrap', canSearch: true, frozen: true},
+			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 180, classes: 'wrap', canSearch:true},
+			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 180, classes: 'wrap'},
+			{ label: 'Request Department', name: 'delordhd_reqdept', width: 180, canSearch: true, classes: 'wrap' },
+			{ label: 'GRN No', name: 'delordhd_docno', width: 150, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: 'Received Date', name: 'delordhd_trandate', width: 200, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 250, classes: 'wrap', canSearch: true},
+			{ label: 'Supplier Name', name: 'supplier_name', width: 250, classes: 'wrap', canSearch: true },
+			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true},
+			{ label: 'DO No', name: 'delordhd_delordno', width: 150, classes: 'wrap', canSearch: true},
+			{ label: 'Invoice No', name: 'delordhd_invoiceno', width: 200, classes: 'wrap'},
+			{ label: 'Trantype', name: 'delordhd_trantype', width: 200, classes: 'wrap', hidden: true},
+			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
+			{ label: 'Status', name: 'delordhd_recstatus', width: 200},
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
-			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 25, classes: 'wrap', hidden:true},
+			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 250, classes: 'wrap', hidden:true},
 			{ label: 'perdisc', name: 'delordhd_perdisc', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'Delivery Date', name: 'delordhd_deliverydate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'Time', name: 'delordhd_trantime', width: 90, hidden:true, classes: 'wrap'},
@@ -272,6 +273,7 @@ $(document).ready(function () {
 
 		],
 		autowidth:true,
+		shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
@@ -354,6 +356,7 @@ $(document).ready(function () {
 		},
 		
 	});
+
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
@@ -584,6 +587,74 @@ $(document).ready(function () {
 		refreshGrid('#jqGrid',urlParam);
 	}
 
+	resizeColumnHeader = function () {
+        var rowHight, resizeSpanHeight,
+        // get the header row which contains
+        headerRow = $(this).closest("div.ui-jqgrid-view")
+            .find("table.ui-jqgrid-htable>thead>tr.ui-jqgrid-labels");
+
+        // reset column height
+        headerRow.find("span.ui-jqgrid-resize").each(function () {
+            this.style.height = "";
+        });
+
+        // increase the height of the resizing span
+        resizeSpanHeight = "height: " + headerRow.height() + "px !important; cursor: col-resize;";
+        headerRow.find("span.ui-jqgrid-resize").each(function () {
+            this.style.cssText = resizeSpanHeight;
+        });
+
+        // set position of the dive with the column header text to the middle
+        rowHight = headerRow.height();
+        headerRow.find("div.ui-jqgrid-sortable").each(function () {
+            var ts = $(this);
+            ts.css("top", (rowHight - ts.outerHeight()) / 2 + "px");
+        });
+    },
+    fixPositionsOfFrozenDivs = function () {
+        console.log('shitty fuck')
+        var $rows;
+        if (typeof this.grid.fbDiv !== "undefined") {
+        console.log('shitty fuck')
+            $rows = $(">div>table.ui-jqgrid-btable>tbody>tr", this.grid.bDiv);
+            $(">table.ui-jqgrid-btable>tbody>tr", this.grid.fbDiv).each(function (i) {
+                var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
+                if ($(this).hasClass("jqgrow")) {
+                    $(this).height(rowHight);
+                    rowHightFrozen = $(this).height();
+                    if (rowHight !== rowHightFrozen) {
+                        $(this).height(rowHight + (rowHight - rowHightFrozen));
+                    }
+                }
+            });
+            $(this.grid.fbDiv).height(this.grid.bDiv.clientHeight);
+            $(this.grid.fbDiv).css($(this.grid.bDiv).position());
+        }
+        if (typeof this.grid.fhDiv !== "undefined") {
+        console.log('shitty fuck')
+            $rows = $(">div>table.ui-jqgrid-htable>thead>tr", this.grid.hDiv);
+            $(">table.ui-jqgrid-htable>thead>tr", this.grid.fhDiv).each(function (i) {
+                var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
+                $(this).height(rowHight);
+                rowHightFrozen = $(this).height();
+                if (rowHight !== rowHightFrozen) {
+                    $(this).height(rowHight + (rowHight - rowHightFrozen));
+                }
+            });
+            $(this.grid.fhDiv).height(this.grid.hDiv.clientHeight);
+            $(this.grid.fhDiv).css($(this.grid.hDiv).position());
+        }
+    },
+    fixGboxHeight = function () {
+        var gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight(),
+            pagerHeight = $(this.p.pager).outerHeight();
+
+        $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
+        gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight();
+        pagerHeight = $(this.p.pager).outerHeight();
+        $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
+    }
+
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
@@ -604,25 +675,25 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/deliveryOrderDetail/form",
 		colModel: [
-		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:false, hidden:true},
-			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', frozen:true, editable:true,
+		 	{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+			
+			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false},
+			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:pricecodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', frozen:true, editable:true,
+			{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
 						    {  custom_element:itemcodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			
-			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
 			{ label: 'UOM Code', name: 'uomcode', width: 120, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -784,7 +855,6 @@ $(document).ready(function () {
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
-
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
@@ -803,7 +873,35 @@ $(document).ready(function () {
 			dialog_uomcode.check(errorField);
 			dialog_pouom.check(errorField);
 	 	}
-	});
+	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
+        fixPositionsOfFrozenDivs.call(this);
+    });
+	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+	$("#jqGrid2").jqGrid('setGroupHeaders', {
+  	useColSpanStyle: false, 
+	  groupHeaders:[
+		{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
+		{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
+	  ]
+	})
+
+    //  try {
+    //     var p = $grid.jqGrid("getGridParam"), tid = $.jgrid.jqID(p.id), colModel = p.colModel, i, n = colModel.length, cm,
+    //         skipIds = [];
+
+    //     for (i = 0; i < n; i++) {
+    //         cm = colModel[i];
+    //         if ($.inArray(cm.name, ["cb", "rn", "subgrid"]) >=0 || cm.frozen) {
+    //             skipIds.push("#jqgh_" + tid + "_" + $.jgrid.jqID(cm.name));
+    //         }
+    //     }
+
+    //     $grid.jqGrid("setGridParam", {sortable: {options: {
+    //         items: skipIds.length > 0 ? ">th:not(:has(" + skipIds.join(",") + "),:hidden)" : ">th:not(:hidden)"
+    //     }}});
+
+    //     $grid.jqGrid("sortableColumns", $($grid[0].grid.hDiv).find(".ui-jqgrid-labels"));
+    // } catch (e) {}
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
@@ -1133,20 +1231,20 @@ $(document).ready(function () {
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function itemcodeCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val;
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){
 		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function uomcodeCustomEdit(val,opt){  	
 		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pouomCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $(`<div class="input-group">
-					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 				</div>
 				<span class="help-block"></span>
 				<div class="input-group">
@@ -1159,7 +1257,7 @@ $(document).ready(function () {
 	}
 	function taxcodeCustomEdit(val,opt){
 		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function remarkCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
@@ -1406,7 +1504,11 @@ $(document).ready(function () {
 			});
 			fdl.set_array().reset();
 		},
-	});
+	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
+        fixPositionsOfFrozenDivs.call(this);
+    });
+	fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
+	$("#jqGrid3").jqGrid("setFrozenColumns");
 	jqgrid_label_align_right("#jqGrid3");
 
 

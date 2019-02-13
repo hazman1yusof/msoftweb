@@ -192,6 +192,8 @@
 		@yield('style')
  	</style>	
     <title>@yield('title')</title>
+
+	@yield('js')
 </head>
 <body style="display:none">
 
