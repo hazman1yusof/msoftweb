@@ -612,10 +612,8 @@ $(document).ready(function () {
         });
     },
     fixPositionsOfFrozenDivs = function () {
-        console.log('shitty fuck')
         var $rows;
         if (typeof this.grid.fbDiv !== "undefined") {
-        console.log('shitty fuck')
             $rows = $(">div>table.ui-jqgrid-btable>tbody>tr", this.grid.bDiv);
             $(">table.ui-jqgrid-btable>tbody>tr", this.grid.fbDiv).each(function (i) {
                 var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
@@ -631,7 +629,6 @@ $(document).ready(function () {
             $(this.grid.fbDiv).css($(this.grid.bDiv).position());
         }
         if (typeof this.grid.fhDiv !== "undefined") {
-        console.log('shitty fuck')
             $rows = $(">div>table.ui-jqgrid-htable>thead>tr", this.grid.hDiv);
             $(">table.ui-jqgrid-htable>thead>tr", this.grid.fhDiv).each(function (i) {
                 var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
