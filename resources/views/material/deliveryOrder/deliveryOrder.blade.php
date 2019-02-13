@@ -229,7 +229,7 @@
 						  			</div>
 								<label class="col-md-2 control-label" for="delordhd_totamount">Total Amount</label>  
 						  			<div class="col-md-2">
-										<input id="delordhd_totamount" name="delordhd_totamount" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" rdonly>
+										<input id="delordhd_totamount" name="delordhd_totamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
 						  			</div>
 							</div>
 

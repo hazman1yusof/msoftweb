@@ -65,6 +65,7 @@ class PurchaseOrderController extends defaultController
             'purordno' => $purordno,
             // 'purreqno' => $purreqno,
             'compcode' => session('compcode'),
+            'unit' => session('unit'),
             'adduser' => session('username'),
             'adddate' => Carbon::now(),
             'recstatus' => 'OPEN'
