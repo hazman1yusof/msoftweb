@@ -343,25 +343,12 @@ $(document).ready(function () {
 			{ data: 'qtyin'},
 			{ data: 'qtyout'},
 			{ data: 'balquan'},
-			{ data: 'cost'}
-			// trans amount 
-			//balance amount
-			//document no
-			//userid
-			//transtime
-
-			/*<th>Transaction Date</th>
-						<th>Trantype</th>
-						<th>Transaction Description</th>
-						<th>Qty In</th>
-						<th>Qty Out</th>
-						<th>Balance Quantity</th>
-						<th>Unit Cost</th>
-						<th>Trans Amount</th>
-						<th>Balance Amount</th>
-						<th>Document No</th>
-						<th>User Id</th>
-						<th>Trans Time</th>*/
+			{ data: 'cost'},
+			{ data: 'trans amount'},
+			{ data: 'balance amount'},
+			{ data: 'document no'}, //ivhdr docno
+			{ data: 'userid'}, //ivhdr respersonid
+			{ data: 'transtime'}, //ivhdr trantime
 			
 		],
 		drawCallback: function( settings ) {
@@ -373,9 +360,13 @@ $(document).ready(function () {
 		var param={
 					action:'get_value_default',
 					url:'/util/get_value_default',
-					field:['trandate','trantype','deptcode','txnqty'],
-					table_name:'material.ivtxndt',
+					field:['trandate','trantype','deptcode','txnqty', 'upduser', 'updtime'],
+					table_name:['material.ivtxndt AS ivdt', 'material.ivtxnhd AS ivhd', 'material.stockexp AS se'],
+					/*table_id:'auditno',*/
 					table_id:'auditno',
+					join_type: ['LEFT JOIN'],
+					join_onCol: ['supplier.SuppCode'],
+					join_onVal: ['purordhd.suppcode'],
 					filterCol:['compcode','itemcode','deptcode'],
 					filterVal:[
 						'session.compcode',
