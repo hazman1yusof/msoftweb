@@ -587,71 +587,6 @@ $(document).ready(function () {
 		refreshGrid('#jqGrid',urlParam);
 	}
 
-	resizeColumnHeader = function () {
-        var rowHight, resizeSpanHeight,
-        // get the header row which contains
-        headerRow = $(this).closest("div.ui-jqgrid-view")
-            .find("table.ui-jqgrid-htable>thead>tr.ui-jqgrid-labels");
-
-        // reset column height
-        headerRow.find("span.ui-jqgrid-resize").each(function () {
-            this.style.height = "";
-        });
-
-        // increase the height of the resizing span
-        resizeSpanHeight = "height: " + headerRow.height() + "px !important; cursor: col-resize;";
-        headerRow.find("span.ui-jqgrid-resize").each(function () {
-            this.style.cssText = resizeSpanHeight;
-        });
-
-        // set position of the dive with the column header text to the middle
-        rowHight = headerRow.height();
-        headerRow.find("div.ui-jqgrid-sortable").each(function () {
-            var ts = $(this);
-            ts.css("top", (rowHight - ts.outerHeight()) / 2 + "px");
-        });
-    },
-    fixPositionsOfFrozenDivs = function () {
-        var $rows;
-        if (typeof this.grid.fbDiv !== "undefined") {
-            $rows = $(">div>table.ui-jqgrid-btable>tbody>tr", this.grid.bDiv);
-            $(">table.ui-jqgrid-btable>tbody>tr", this.grid.fbDiv).each(function (i) {
-                var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
-                if ($(this).hasClass("jqgrow")) {
-                    $(this).height(rowHight);
-                    rowHightFrozen = $(this).height();
-                    if (rowHight !== rowHightFrozen) {
-                        $(this).height(rowHight + (rowHight - rowHightFrozen));
-                    }
-                }
-            });
-            $(this.grid.fbDiv).height(this.grid.bDiv.clientHeight);
-            $(this.grid.fbDiv).css($(this.grid.bDiv).position());
-        }
-        if (typeof this.grid.fhDiv !== "undefined") {
-            $rows = $(">div>table.ui-jqgrid-htable>thead>tr", this.grid.hDiv);
-            $(">table.ui-jqgrid-htable>thead>tr", this.grid.fhDiv).each(function (i) {
-                var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
-                $(this).height(rowHight);
-                rowHightFrozen = $(this).height();
-                if (rowHight !== rowHightFrozen) {
-                    $(this).height(rowHight + (rowHight - rowHightFrozen));
-                }
-            });
-            $(this.grid.fhDiv).height(this.grid.hDiv.clientHeight);
-            $(this.grid.fhDiv).css($(this.grid.hDiv).position());
-        }
-    },
-    fixGboxHeight = function () {
-        var gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight(),
-            pagerHeight = $(this.p.pager).outerHeight();
-
-        $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
-        gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight();
-        pagerHeight = $(this.p.pager).outerHeight();
-        $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
-    }
-
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
@@ -861,6 +796,7 @@ $(document).ready(function () {
 				$("#dialog_remarks").dialog( "open" );
 			});
 			fdl.set_array().reset();
+			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 		},
 		afterShowForm: function (rowid) {
 		    $("#expdate").datepicker();
@@ -874,6 +810,8 @@ $(document).ready(function () {
         fixPositionsOfFrozenDivs.call(this);
     });
 	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+
+
 	$("#jqGrid2").jqGrid('setGroupHeaders', {
   	useColSpanStyle: false, 
 	  groupHeaders:[
@@ -1033,6 +971,9 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
         afterrestorefunc : function( response ) {
+			delay(function(){
+				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			}, 500 );
 			hideatdialogForm(false);
 	    }
     };
@@ -1479,6 +1420,8 @@ $(document).ready(function () {
 			$('.noti').find("li[data-errorid='"+name2+"']").detach();
 		}
 		event.data.currency.formatOn();//change format to currency on each calculation
+
+		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 	}
 
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
@@ -1565,7 +1508,7 @@ $(document).ready(function () {
 				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'delordno',name:'h_delordno',width:400,classes:'pointer', hidden:true},
 				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
-				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer', align: 'right'},
+				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer', align: 'right', formatter: 'currency' },
 				{label:'Recno',name:'h_recno',width:400,classes:'pointer', hidden:false, align: 'right'},
 				{label:'Delivery Department',name:'h_deldept',width:400,classes:'pointer', hidden:true},
 				{label:'Record Status',name:'h_recstatus',width:400,classes:'pointer', hidden:true},
@@ -1615,34 +1558,37 @@ $(document).ready(function () {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {
-							$("#jqGrid2").jqGrid('addRowData', elem['lineno_'] ,
-								{
-									compcode:elem['compcode'],
-									recno:elem['recno'],
-									lineno_:elem['lineno_'],
-									suppcode:elem['suppcode'],
-									pricecode:elem['pricecode'],
-									itemcode:elem['itemcode'],
-									description:elem['description'],
-									uomcode:elem['uomcode'],
-									pouom:elem['pouom'],
-									qtyorder:elem['qtyorder'],
-									qtydelivered:0,
-		    						qtyoutstand :elem['qtyorder'],
-									unitprice:elem['unitprice'],
-									taxcode:elem['taxcode'],
-									perdisc:elem['perdisc'],
-									amtdisc:elem['amtdisc'],
-									tot_gst:0,
-									rate:elem['rate'],
-									netunitprice:0,
-									totamount:0,
-									amount:0,
-									remarks_button:null,
-									remarks:elem['remarks'],
-								}
-							);
+							if(elem['qtyorder'] - elem['qtydelivered'] > 0){
+								$("#jqGrid2").jqGrid('addRowData', elem['lineno_'] ,
+									{
+										compcode:elem['compcode'],
+										recno:elem['recno'],
+										lineno_:elem['lineno_'],
+										suppcode:elem['suppcode'],
+										pricecode:elem['pricecode'],
+										itemcode:elem['itemcode'],
+										description:elem['description'],
+										uomcode:elem['uomcode'],
+										pouom:elem['pouom'],
+										qtyorder:elem['qtyorder'],
+										qtydelivered:0,
+			    						qtyoutstand :elem['qtyorder'] - elem['qtydelivered'],
+										unitprice:elem['unitprice'],
+										taxcode:elem['taxcode'],
+										perdisc:elem['perdisc'],
+										amtdisc:elem['amtdisc'],
+										tot_gst:0,
+										rate:elem['rate'],
+										netunitprice:0,
+										totamount:0,
+										amount:0,
+										remarks_button:null,
+										remarks:elem['remarks'],
+									}
+								);
+							}
 						});
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 					} else {
 
@@ -1772,6 +1718,8 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 			],
 			ondblClickRow:function(event){
+
+				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 				let data = selrowData('#'+dialog_pricecode.gridname);
 
 				if(data.pricecode == 'MS'){
@@ -1922,12 +1870,15 @@ $(document).ready(function () {
 					$("#jqGrid2 #"+id_optid+"_itemcode").val(data['p_itemcode']);
 				}
 
-				$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
 				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['p_uomcode']);
 				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
 				$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
 				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+
+
+				var rowid = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+				$("#jqGrid2").jqGrid('setRowData', rowid ,{description:data['p_description']});
 
 				if($("input#"+id_optid+"_pricecode").val() != 'MS'){
 					dialog_uomcode.urlParam.filterVal[1] = data['p_itemcode'];
