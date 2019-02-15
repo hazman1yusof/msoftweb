@@ -151,7 +151,11 @@ class do_util extends defaultController{
 	        $NewAmount = $netprice * $txnqty;
 
 	        $newqtyonhand = $OldQtyOnHand + $txnqty;
-	        $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+            if($OldQtyOnHand + $txnqty == 0){
+                $newAvgCost = 0; //ini kes item baru (qtyonhand 0) dan txnqty kosong
+            }else{
+                $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+            }
 
 	        // update qtyonhand, avgcost, currprice
 	        $product_obj
