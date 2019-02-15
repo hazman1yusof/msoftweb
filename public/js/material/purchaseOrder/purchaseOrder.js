@@ -800,6 +800,8 @@ $(document).ready(function () {
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
 			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
+			{ label: 'prdept', name: 'prdept', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'purordno', name: 'purordno', width: 20, classes: 'wrap', hidden:true},
 		],
 		scroll: false,
 		autowidth: false,
@@ -975,6 +977,8 @@ $(document).ready(function () {
 					recno: $('#purordhd_recno').val(),
 					suppcode: $('#purordhd_suppcode').val(),
 					purdate: $('#purordhd_purdate').val(),
+					prdept: $('#purordhd_prdept').val(),
+					purordno: $('#purordhd_purordno').val(),
 					remarks:data.remarks,
 					amount:data.amount,
 					netunitprice:data.netunitprice,
@@ -1847,6 +1851,14 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
 
 				}
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purorddt_itemcode').focus();
+				}
 			}
 		},{
 			title:"Select Price Code For Item",
@@ -1860,7 +1872,7 @@ $(document).ready(function () {
 				// 	.next()
 				// 	.find("input[type=text]").focus();
 			}
-		},'urlParam',jgrid2='#jqGrid2 '
+		},'urlParam',jgrid2='#jqGrid2', 'tab'
 	);
 	dialog_pricecode.makedialog(false);
 
