@@ -1824,11 +1824,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					// $('#delordhd_srcdocno').focus();
-					$(dialog_pricecode.textfield)			//lepas close dialog focus on next textfield 
-						.closest('td')						//utk dialog dalam jqgrid jer
-						.next()
-						.find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
 		},{
@@ -1893,7 +1889,13 @@ $(document).ready(function () {
 				}
 
 			},
-			loadComplete:function(data){
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 		},{
 			title:"Select Item For Delivery Order",
@@ -1909,7 +1911,7 @@ $(document).ready(function () {
 		},'none','radio','tab'//urlParam means check() using urlParam not check_input
 	);
 	dialog_itemcode.makedialog(false);
-	dialog_itemcode._init_func(function(self){
+	dialog_itemcode._init_func(function(self){/// ini mungkin tak guna dekat DO, utk barcode scanner
 
 		$(self.textfield).keyup(function(event){
 
@@ -1979,6 +1981,14 @@ $(document).ready(function () {
 				}
 
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 			
 		},{
@@ -2001,7 +2011,7 @@ $(document).ready(function () {
 				// 	.next()
 				// 	.find("input[type=text]").focus();
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_uomcode.makedialog(false);
 
@@ -2021,6 +2031,14 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_pouom.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_pouom").val(data['convfactor']);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 
 		}, {
@@ -2036,7 +2054,7 @@ $(document).ready(function () {
 				// 	.next()
 				// 	.find("input[type=text]").focus();
 			}
-		}, 'urlParam'
+		}, 'urlParam','radio','tab'
 	);
 	dialog_pouom.makedialog(false);
 
@@ -2056,6 +2074,14 @@ $(document).ready(function () {
 
 				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['rate']);
 				$(dialog_taxcode.textfield).closest('td').next().has("input[type=text]").focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 		},{
 			title:"Select Tax Code For Item",
@@ -2072,7 +2098,7 @@ $(document).ready(function () {
 				}
 				
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_taxcode.makedialog(false);
 
