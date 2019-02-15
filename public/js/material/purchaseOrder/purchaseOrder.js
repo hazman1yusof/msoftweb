@@ -975,6 +975,7 @@ $(document).ready(function () {
 				$.param({
 					action: 'purOrder_detail_save',
 					recno: $('#purordhd_recno').val(),
+					prdept: $('#purordhd_prdept').val(),
 					suppcode: $('#purordhd_suppcode').val(),
 					purdate: $('#purordhd_purdate').val(),
 					prdept: $('#purordhd_prdept').val(),

@@ -76,6 +76,8 @@ class PurchaseOrderDetailController extends defaultController
                     'compcode' => session('compcode'),
                     'recno' => $recno,
                     'lineno_' => $li,
+                    'prdept' => $request->prdept,
+                    'purordno' => $request->purordno,
                     'pricecode' => $request->pricecode,
                     'itemcode' => $request->itemcode,
                     'uomcode' => $request->uomcode,

@@ -48,6 +48,16 @@ class DeliveryOrderController extends defaultController
         }
     }
 
+    public function get_productcat($itemcode){
+        $query = DB::table('material.product')
+                ->select('productcat')
+                ->where('compcode','=',session('compcode'))
+                ->where('itemcode','=',$itemcode)
+                ->first();
+        
+        return $query->productcat;
+    }
+
     public function add(Request $request){
 
         if(!empty($request->fixPost)){
@@ -302,20 +312,22 @@ class DeliveryOrderController extends defaultController
             //--- 2. loop delorddt untuk masuk dalam ivtxndt ---//
 
                 //1.amik productcat dari table product
-            $productcat_obj = DB::table('material.delorddt')
-                ->select('product.productcat')
-                ->join('material.product', function($join) use ($request){
-                    $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
-                    $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
-                })
-                ->where('delorddt.compcode','=',session('compcode'))
-                ->where('delorddt.unit','=',session('unit'))
-                ->where('delorddt.recno','=',$request->recno)
-                ->first();
-            $productcat = $productcat_obj->productcat;
+            // $productcat_obj = DB::table('material.delorddt')
+            //     ->select('product.productcat')
+            //     ->join('material.product', function($join) use ($request){
+            //         $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
+            //         $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
+            //     })
+            //     ->where('delorddt.compcode','=',session('compcode'))
+            //     ->where('delorddt.unit','=',session('unit'))
+            //     ->where('delorddt.recno','=',$request->recno)
+            //     ->first();
+
 
                 //2. start looping untuk delorddt
             foreach ($delorddt_obj as $value) {
+                
+                $productcat = $value->productcat;
 
                 $value->expdate = $this->null_date($value->expdate);
 
@@ -376,25 +388,18 @@ class DeliveryOrderController extends defaultController
 
             //---- 8. update po kalu ada srcdocno ---//
                 if($delordhd_obj->srcdocno != 0){
-                    
-                    $purordhd = DB::table('material.purordhd')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('purordhd.unit','=',session('unit'))
-                        ->where('purordhd.prdept','=',$delordhd_obj->prdept)
-                        ->where('purordno','=',$delordhd_obj->srcdocno)
-                        ->first();
-
-                    $po_recno = $purordhd->recno;
 
                     $podt_obj = DB::table('material.purorddt')
-                        ->where('purorddt.unit','=',session('unit'))
                         ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$po_recno)
-                        ->where('lineno_','=',$value->lineno_);
+                        ->where('itemcode','=',$value->itemcode)
+                        ->where('prdept','=',$value->prdept)
+                        ->where('purordno','=',$value->srcdocno)
+                        ->where('lineno_','=',$value->polineno);
 
                     $podt_obj_lama = $podt_obj->first();
 
                     $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
+                    $qtyoutstand = $podt_obj_lama->qtyorder - $jumlah_qtydelivered;
 
                     if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
                         DB::rollback();
@@ -406,6 +411,18 @@ class DeliveryOrderController extends defaultController
                     $podt_obj->update([
                         'qtydelivered' => $jumlah_qtydelivered
                     ]);
+
+
+                    //update qtyoutstand utk suma DO pulak
+                    $delordhd = DB::table('material.delorddt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('itemcode','=',$value->itemcode)
+                        ->where('prdept','=',$delordhd_obj->prdept)
+                        ->where('srcdocno','=',$delordhd_obj->srcdocno)
+                        ->update([
+                            'qtydelivered' => $jumlah_qtydelivered,
+                            'qtyoutstand' => $qtyoutstand
+                        ]);
 
                 }
 
@@ -902,73 +919,49 @@ class DeliveryOrderController extends defaultController
 
     public function save_dt_from_othr_po($refer_recno,$recno,$srcdocno){
         $po_dt = DB::table('material.purorddt')
-                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'pouom', 'qtyorder', 'qtydelivered', 'unitprice', 'taxcode', 'perdisc','amtdisc', 'amtslstax', 'netunitprice', 'totamount', 'amount','rem_but', 'recstatus','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
                 ->get();
 
         foreach ($po_dt as $key => $value) {
-            ///step 0.5 calculate qtyoutstand
-            $qtyoutstand = $value->qtyorder;
 
-            $delordhd_obj = DB::table('material.delordhd')
-                ->where('compcode','=',session('compcode'))
-                ->where('srcdocno','=',$srcdocno);
 
-            if($delordhd_obj->exists()){
-                $total_qtydeliverd_do = 0;
-
-                $delorhd_all = $delordhd_obj->get();
-
-                //step 0.5.1 dapatkan dia punya qtydelivered melalui lineno yg sama, pastu jumlahkan, jumlah ni qtydelivered yang blom post lagi
-                foreach ($delorhd_all as $value_hd) {
-                    $delorddt_obj = DB::table('material.delorddt')
-                        ->where('recno','=',$value_hd->recno)
-                        ->where('compcode','=',session('compcode'))
-                        ->where('lineno_','=',$value->lineno_);
-
-                    if($delorddt_obj->exists()){
-                        $delorddt_data = $delorddt_obj->first();
-                        $total_qtydeliverd_do = $total_qtydeliverd_do + $delorddt_data->qtydelivered;
-                    }
-                }
-
-                // jumlah_qtydelivered = qtydelivered yang dah post + qtydeliverd yg blom post
-                $jumlah_qtydelivered = $value->qtydelivered + $total_qtydeliverd_do;
-
-                // qtyoutstand = qtyorder - jumlah_qtydelivered
-                $qtyoutstand = $value->qtyorder - $jumlah_qtydelivered;
-            }
-
+            $productcat = $this->get_productcat($value->itemcode);
 
             ///1. insert detail we get from existing purchase order
             $table = DB::table("material.delorddt");
-            $table->insert([
-                'compcode' => session('compcode'), 
-                'recno' => $recno, 
-                'lineno_' => $value->lineno_, 
-                'pricecode' => $value->pricecode, 
-                'itemcode' => $value->itemcode, 
-                'uomcode' => $value->uomcode,
-                'pouom' => $value->pouom,  
-                'qtyorder' => $value->qtyorder, 
-                'qtydelivered' => $value->qtydelivered, 
-                'qtyoutstand' => $qtyoutstand,
-                'unitprice' => $value->unitprice, 
-                'taxcode' => $value->taxcode, 
-                'perdisc' => $value->perdisc, 
-                'amtdisc' => $value->amtdisc, 
-                'amtslstax' => $value->amtslstax, 
-                'netunitprice' => $value->netunitprice,
-                'totamount' => $value->totamount,
-                'amount' => $value->amount, 
-                'rem_but'=>$value->rem_but,
-                'adduser' => session('username'), 
-                'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                'recstatus' => 'A', 
-                'remarks' => $value->remarks
-            ]);
+            if($value->qtyorder - $value->qtydelivered > 0){
+                $table->insert([
+                    'compcode' => session('compcode'), 
+                    'recno' => $recno, 
+                    'lineno_' => $value->lineno_, 
+                    'polineno' => $value->lineno_,
+                    'productcat' => $productcat,
+                    'srcdocno' => $value->purordno,
+                    'prdept' => $value->prdept,
+                    'pricecode' => $value->pricecode, 
+                    'itemcode' => $value->itemcode, 
+                    'uomcode' => $value->uomcode,
+                    'pouom' => $value->pouom,  
+                    'qtyorder' => $value->qtyorder, 
+                    'qtydelivered' => $value->qtydelivered, 
+                    'qtyoutstand' => $value->qtyorder - $value->qtydelivered,
+                    'unitprice' => $value->unitprice, 
+                    'taxcode' => $value->taxcode, 
+                    'perdisc' => $value->perdisc, 
+                    'amtdisc' => $value->amtdisc, 
+                    'amtslstax' => $value->amtslstax, 
+                    'netunitprice' => $value->netunitprice,
+                    'totamount' => $value->totamount,
+                    'amount' => $value->amount, 
+                    'rem_but'=>$value->rem_but,
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'A', 
+                    'remarks' => $value->remarks
+                ]);
+            }
         }
        
         ///2. calculate total amount from detail earlier
