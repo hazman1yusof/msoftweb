@@ -831,6 +831,7 @@ $(document).ready(function () {
 			});
 			fdl.set_array().reset();
 			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			calculate_quantity_outstanding('#jqGrid2');
 		},
 		afterShowForm: function (rowid) {
 		    $("#expdate").datepicker();
@@ -1322,17 +1323,18 @@ $(document).ready(function () {
 	}
 
 	//////////////////////////////calculate outstanding quantity/////////////////////
-	/*function calculate_quantity_outstanding(event){
-		var optid = event.currentTarget.id;
-		var id_optid = optid.substring(0,optid.search("_"));
+	function calculate_quantity_outstanding(grid){
+		var ids = $(grid).jqGrid('getDataIDs');
 
-        let qtyorder = parseFloat($("#jqGrid2 #"+id_optid+"_qtyorder").val());
-        let qtydelivered = parseFloat($("#jqGrid2 #"+id_optid+"_qtydelivered").val());
+		var jqgrid2_data = [];
+	    for (var i = 0; i < ids.length; i++) {
 
-        var qtyOutstand = (qtyorder - qtydelivered);
+			var data = $(grid).jqGrid('getRowData',ids[i]);
+			var qtyOutstand = data.qtyorder - data.qtydelivered;
 
-        $("input[name='qtyOutstand']").val(qtyOutstand);
-	}*/
+			$(grid).jqGrid('setRowData', ids[i] ,{qtyOutstand:qtyOutstand});
+	    }
+	}
 	///////////////////////////////////////////////////////////////////////////////
 
 
@@ -1503,6 +1505,8 @@ $(document).ready(function () {
 				$("#dialog_remarks").dialog( "open" );
 			});
 			fdl.set_array().reset();
+
+			calculate_quantity_outstanding('#jqGrid3');
 		},
 	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
         fixPositionsOfFrozenDivs.call(this);
