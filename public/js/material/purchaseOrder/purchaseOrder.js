@@ -43,6 +43,7 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
+				$("#jqGrid2").jqGrid("setFrozenColumns");
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
@@ -259,6 +260,7 @@ $(document).ready(function () {
 
 		],
 		autowidth: true,
+		shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce: false,
@@ -568,6 +570,71 @@ $(document).ready(function () {
 		refreshGrid('#jqGrid', urlParam);
 	}
 
+	resizeColumnHeader = function () {
+        var rowHight, resizeSpanHeight,
+        // get the header row which contains
+        headerRow = $(this).closest("div.ui-jqgrid-view")
+            .find("table.ui-jqgrid-htable>thead>tr.ui-jqgrid-labels");
+
+        // reset column height
+        headerRow.find("span.ui-jqgrid-resize").each(function () {
+            this.style.height = "";
+        });
+
+        // increase the height of the resizing span
+        resizeSpanHeight = "height: " + headerRow.height() + "px !important; cursor: col-resize;";
+        headerRow.find("span.ui-jqgrid-resize").each(function () {
+            this.style.cssText = resizeSpanHeight;
+        });
+
+        // set position of the dive with the column header text to the middle
+        rowHight = headerRow.height();
+        headerRow.find("div.ui-jqgrid-sortable").each(function () {
+            var ts = $(this);
+            ts.css("top", (rowHight - ts.outerHeight()) / 2 + "px");
+        });
+    },
+    fixPositionsOfFrozenDivs = function () {
+        var $rows;
+        if (typeof this.grid.fbDiv !== "undefined") {
+            $rows = $(">div>table.ui-jqgrid-btable>tbody>tr", this.grid.bDiv);
+            $(">table.ui-jqgrid-btable>tbody>tr", this.grid.fbDiv).each(function (i) {
+                var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
+                if ($(this).hasClass("jqgrow")) {
+                    $(this).height(rowHight);
+                    rowHightFrozen = $(this).height();
+                    if (rowHight !== rowHightFrozen) {
+                        $(this).height(rowHight + (rowHight - rowHightFrozen));
+                    }
+                }
+            });
+            $(this.grid.fbDiv).height(this.grid.bDiv.clientHeight);
+            $(this.grid.fbDiv).css($(this.grid.bDiv).position());
+        }
+        if (typeof this.grid.fhDiv !== "undefined") {
+            $rows = $(">div>table.ui-jqgrid-htable>thead>tr", this.grid.hDiv);
+            $(">table.ui-jqgrid-htable>thead>tr", this.grid.fhDiv).each(function (i) {
+                var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
+                $(this).height(rowHight);
+                rowHightFrozen = $(this).height();
+                if (rowHight !== rowHightFrozen) {
+                    $(this).height(rowHight + (rowHight - rowHightFrozen));
+                }
+            });
+            $(this.grid.fhDiv).height(this.grid.hDiv.clientHeight);
+            $(this.grid.fhDiv).css($(this.grid.hDiv).position());
+        }
+    },
+    fixGboxHeight = function () {
+        var gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight(),
+            pagerHeight = $(this.p.pager).outerHeight();
+
+        $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
+        gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight();
+        pagerHeight = $(this.p.pager).outerHeight();
+        $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
+    }
+
 	/////////////////////parameter for jqgrid2 url///////////////////////////////////////////////////////
 	var urlParam2 = {
 		action: 'get_table_default',
@@ -591,11 +658,13 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/purchaseOrderDetail/form",
 		colModel: [
-		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:true, hidden:true},
+		 	{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+
+			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false},
 			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+					editrules:{required: true, custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:pricecodeCustomEdit,
 						       custom_value:galGridCustomValue 	
@@ -609,7 +678,6 @@ $(document).ready(function () {
 						    },
 			},
 			
-			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
 			{ label: 'UOM Code', name: 'uomcode', width: 120, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -732,6 +800,8 @@ $(document).ready(function () {
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
 			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
+			{ label: 'prdept', name: 'prdept', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'purordno', name: 'purordno', width: 20, classes: 'wrap', hidden:true},
 		],
 		scroll: false,
 		autowidth: false,
@@ -769,7 +839,18 @@ $(document).ready(function () {
 			dialog_uomcode.check(errorField);
 			dialog_pouom.check(errorField);
 	 	}
-	});
+	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
+        fixPositionsOfFrozenDivs.call(this);
+    });
+	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+	$("#jqGrid2").jqGrid('setGroupHeaders', {
+  	useColSpanStyle: false, 
+	  groupHeaders:[
+		{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
+		{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
+	  ]
+	})
+
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
@@ -897,6 +978,7 @@ $(document).ready(function () {
 					prdept: $('#purordhd_prdept').val(),
 					suppcode: $('#purordhd_suppcode').val(),
 					purdate: $('#purordhd_purdate').val(),
+					prdept: $('#purordhd_prdept').val(),
 					purordno: $('#purordhd_purordno').val(),
 					remarks:data.remarks,
 					amount:data.amount,
@@ -1415,7 +1497,11 @@ $(document).ready(function () {
 			});
 			fdl.set_array().reset();
 		},
-	});
+	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
+        fixPositionsOfFrozenDivs.call(this);
+    });
+	fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
+	$("#jqGrid3").jqGrid("setFrozenColumns");
 	jqgrid_label_align_right("#jqGrid3");
 
 
@@ -1766,6 +1852,14 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
 
 				}
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purorddt_itemcode').focus();
+				}
 			}
 		},{
 			title:"Select Price Code For Item",
@@ -1779,7 +1873,7 @@ $(document).ready(function () {
 				// 	.next()
 				// 	.find("input[type=text]").focus();
 			}
-		},'urlParam',jgrid2='#jqGrid2 '
+		},'urlParam',jgrid2='#jqGrid2', 'tab'
 	);
 	dialog_pricecode.makedialog(false);
 

@@ -90,8 +90,81 @@
     </div>
 
 <!---*********************************** VIEW DETAIL MOVEMENT ************************************************** -->
+
 	<div id="detailMovementDialog" title="View Detail Movement" >
 		<div id='detailMovement_c' class=''>
+			<!-- <div class="panel panel-default">
+		    	<div class="panel-heading">Detail Movement by Item</div>
+		    		<div class="panel-body">
+		    			<div class='col-md-12' style="padding:0 0 15px 0">
+            				<table id="jqGrid" class="table table-striped"></table>
+            					<div id="jqGridPager"></div>
+	            					<div class="form-group">
+		            					<label class="col-md-1 control-label" for="deptcode">Dept Code:</label>  
+								  			<div class="col-md-2">
+												<input id="deptcode" name="deptcode" type="text" maxlength="11" class="form-control input-sm" rdonly>
+								  			</div>
+								  		<label class="col-md-1 control-label" for="itemcode">Item Code:</label>  
+								  			<div class="col-md-2">
+												<input id="itemcode" name="itemcode" type="text" maxlength="11" class="form-control input-sm" rdonly>
+								  			</div>
+								  		<label class="col-md-1 control-label" for="itemcode">Date From:</label>  
+								  			<div class="col-md-2">
+												<input id="itemcode" name="itemcode" type="text" maxlength="11" class="form-control input-sm" rdonly>
+								  			</div>
+								  		<label class="col-md-1 control-label" for="itemcode">To:</label>  
+								  			<div class="col-md-2">
+												<input id="itemcode" name="itemcode" type="text" maxlength="11" class="form-control input-sm" rdonly>
+								  			</div>			
+							  		</div>
+
+							  		<hr/>	
+
+							  		<div class="form-group">
+										<label class="col-md-1 control-label" for="purordhd_perdisc">Movement for Department: </label>  
+							  			<div class="col-md-2">
+											<input id="purordhd_perdisc" name="purordhd_perdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+							  			</div>
+
+								  		<label class="col-md-1 control-label" for="purordhd_amtdisc">From Date:</label>	  
+								  		<div class="col-md-2">
+											<input id="purordhd_amtdisc" name="purordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+							  			</div>
+								
+										<label class="col-md-1 control-label" for="purordhd_recstatus">To Date:</label>  
+									    <div class="col-md-2">
+										  <input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
+									    </div>
+									</div> 
+
+									<hr/>	
+
+							  		<div class="form-group">
+										<label class="col-md-1 control-label" for="purordhd_perdisc">Movement for Department: </label>  
+							  			<div class="col-md-2">
+											<input id="purordhd_perdisc" name="purordhd_perdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+							  			</div>
+
+								  		<label class="col-md-1 control-label" for="purordhd_amtdisc">From Date:</label>	  
+								  		<div class="col-md-2">
+											<input id="purordhd_amtdisc" name="purordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+							  			</div>
+								
+										<label class="col-md-1 control-label" for="purordhd_recstatus">To Date:</label>  
+									    <div class="col-md-2">
+										  <input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
+									    </div>
+									</div>   
+
+                           
+                            </div>
+        				</div>
+		    		</div> -->
+		</div>
+			<p id="date_filter">
+			    <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="datepicker_from" />
+			    <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="datepicker_to" />
+			</p>
 			<table class="table table-hover  table-bordered" id='TableDetailMovement'>
 				<thead>
 					<tr>
@@ -103,11 +176,11 @@
 						<th>Qty Out</th>
 						<th>Balance Quantity</th>
 						<th>Unit Cost</th>
-						<!-- <th>Trans Amount</th>
+						<th>Trans Amount</th>
 						<th>Balance Amount</th>
 						<th>Document No</th>
 						<th>User Id</th>
-						<th>Trans Time</th> -->
+						<th>Trans Time</th>
 					</tr>
 				</thead>
 				<tbody>

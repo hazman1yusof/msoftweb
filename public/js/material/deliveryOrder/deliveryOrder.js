@@ -1818,6 +1818,18 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
 
 				}
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#delordhd_srcdocno').focus();
+					$(dialog_pricecode.textfield)			//lepas close dialog focus on next textfield 
+						.closest('td')						//utk dialog dalam jqgrid jer
+						.next()
+						.find("input[type=text]").focus();
+				}
 			}
 		},{
 			title:"Select Price Code For Item",
@@ -1826,12 +1838,8 @@ $(document).ready(function () {
 				dialog_pricecode.urlParam.filterVal=['session.compcode','A'];
 			},
 			close: function(){
-				// $(dialog_pricecode.textfield)			//lepas close dialog focus on next textfield 
-				// 	.closest('td')						//utk dialog dalam jqgrid jer
-				// 	.next()
-				// 	.find("input[type=text]").focus();
 			}
-		},'urlParam',jgrid2='#jqGrid2 '
+		},'urlParam','radio','tab'
 	);
 	dialog_pricecode.makedialog(false);
 

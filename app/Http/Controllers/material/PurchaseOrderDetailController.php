@@ -56,6 +56,8 @@ class PurchaseOrderDetailController extends defaultController
         $recno = $request->recno;
         $suppcode = $request->suppcode;
         $purdate = $request->purdate;
+        $prdept = $request->prdept;
+        $purordno = $request->purordno;
 
         DB::beginTransaction();
 
@@ -97,6 +99,9 @@ class PurchaseOrderDetailController extends defaultController
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks,
                     'unit' => session('unit'),
+                    'prdept' => $request->prdept,
+                    'purordno' => $request->purordno,
+
                 ]);
 
             ///3. calculate total amount from detail
@@ -164,7 +169,9 @@ class PurchaseOrderDetailController extends defaultController
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),  
                     'recstatus' => 'OPEN', 
-                    'remarks' => $request->remarks
+                    'remarks' => $request->remarks,
+                    'prdept' => $request->prdept,
+                    'purordno' => $request->purordno,
                 ]);
 
             ///2. recalculate total amount
@@ -236,6 +243,8 @@ class PurchaseOrderDetailController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),  
                     'recstatus' => 'OPEN', 
                     'remarks' => $value['remarks'],
+                    'prdept' => $request->prdept,
+                    'purordno' => $request->purordno,
                 ]);
             }
             
