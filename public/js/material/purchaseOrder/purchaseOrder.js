@@ -1857,7 +1857,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#purorddt_itemcode').focus();
+					$('##jqGrid2 input[name='itemcode']').focus();
 				}
 			}
 		},{
