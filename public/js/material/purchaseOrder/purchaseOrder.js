@@ -1431,60 +1431,6 @@ $(document).ready(function () {
 
 	}
 
-
-	/*////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
-
-	var mycurrency2 = new currencymode(["#jqGrid2 input[name='amtdisc']", "#jqGrid2 input[name='unitprice']", "#jqGrid2 input[name='amount']", "#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
-
-	$("#jqGrid2_iladd, #jqGrid2_iledit").click(function () {
-		unsaved = false;
-		$("#jqGridPager2Delete").hide();
-		dialog_pricecode.on();//start binding event on jqgrid2
-		dialog_itemcode.on();
-		dialog_uomcode.on();
-		dialog_pouom.on();
-		dialog_taxcode.on();
-		dialog_pouom.on();
-		$("input[name='gstpercent']").val('0')//reset gst to 0
-
-
-		mycurrency2.formatOnBlur();//make field to currency on leave cursor
-
-        $("#jqGrid2 input[name='qtyorder']").on('blur', { currency: mycurrency2 },calculate_line_totgst_and_totamt);
-		// $("#jqGrid2 input[name='qtyOutstand']").on('blur', { currency: mycurrency2 }, calculate_quantity_outstanding);
-		$("#jqGrid2 input[name='unitprice']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='amtdisc']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='taxcode']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='itemcode']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='qtyorder']").on('blur',  calculate_conversion_factor);
-
-		$("input[name='tot_gst']").keydown(function (e) {//when click tab at tot_gst, auto save
-			var code = e.keyCode || e.which;
-			if (code == '9') $('#jqGrid2_ilsave').click();
-			//calculate_conversion_factor();
-			//alert("Tab pressed");
-
-		});
-	});
-
-	function searchClick2(grid,form,urlParam){
-		$(form+' [name=Stext]').on( "keyup", function() {
-			delay(function(){
-				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-				$('#ponodepan').text("");//tukar kat depan tu
-				$('#prdeptdepan').text("");
-				refreshGrid("#jqGrid3",null,"kosongkan");
-			}, 500 );
-		});
-
-		$(form+' [name=Scol]').on( "change", function() {
-			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			$('#ponodepan').text("");//tukar kat depan tu
-			$('#prdeptdepan').text("");
-			refreshGrid("#jqGrid3",null,"kosongkan");
-		});
-	}*/
-
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
