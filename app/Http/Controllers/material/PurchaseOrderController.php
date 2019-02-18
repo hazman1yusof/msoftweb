@@ -231,7 +231,7 @@ class PurchaseOrderController extends defaultController
                 ->update([
                     'postedby' => session('username'),
                     'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'POSTED' 
+                    'recstatus' => 'ISSUED' 
                 ]);
 
             DB::table('material.purorddt')
@@ -239,7 +239,7 @@ class PurchaseOrderController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('recstatus','!=','DELETE')
                 ->update([
-                    'recstatus' => 'POSTED' 
+                    'recstatus' => 'ISSUED' 
                 ]);
            
             DB::commit();

@@ -277,9 +277,9 @@ $(document).ready(function () {
 				case "dataentry":
 					break;
 				case "cancel": 
-					if(stat=='POSTED'){
-						$('#but_cancel_jq').show();
-						$('#but_post_jq,#but_reopen_jq').hide();
+					if(stat=='ISSUED'){
+						$('#but_cancel_jq,#but_reopen_jq').show();
+						$('#but_post_jq').hide();
 					}else if(stat=="CANCELLED"){
 						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 					}else{
@@ -287,7 +287,7 @@ $(document).ready(function () {
 					}
 					break;
 				case "all":
-					if(stat=='POSTED'){
+					if(stat=='ISSUED'){
 						if(delordno != ''){
 							$('#but_reopen_jq').hide();
 						}else{
@@ -304,9 +304,9 @@ $(document).ready(function () {
 						$('#but_reopen_jq').hide();
 					}
 
-					if(stat=='POSTED'){
-						$('#but_cancel_jq').show();
-						$('#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq').hide();
+					if(stat=='ISSUED'){
+						$('#but_cancel_jq,#but_reopen_jq').show();
+						$('#but_post_jq,#but_soft_cancel_jq').hide();
 					}else if(stat=="CANCELLED"){
 						$('#but_reopen_jq').show();
 						$('#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq').hide();
@@ -325,7 +325,7 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
-			if(stat=='POSTED'){
+			if(stat=='ISSUED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -406,6 +406,7 @@ $(document).ready(function () {
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
+		
 		saveParam.oper = $(this).data("oper");
 		let obj={recno:selrowData('#jqGrid').purordhd_recno,_token:$('#_token').val()};
 		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
