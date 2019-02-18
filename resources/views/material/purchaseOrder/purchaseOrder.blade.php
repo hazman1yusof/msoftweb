@@ -45,7 +45,7 @@
 					      <option value="All" selected>ALL</option>
 					      <option value="Open">OPEN</option>
 					      <option value="Confirmed">CONFIRMED</option>
-					      <option value="Posted">POSTED</option>
+					      <option value="Issued">ISSUED</option>
 					      <option value="Cancelled">CANCELLED</option>
 					    </select>
 	            </div>

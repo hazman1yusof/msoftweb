@@ -277,9 +277,9 @@ $(document).ready(function () {
 				case "dataentry":
 					break;
 				case "cancel": 
-					if(stat=='POSTED'){
-						$('#but_cancel_jq').show();
-						$('#but_post_jq,#but_reopen_jq').hide();
+					if(stat=='ISSUED'){
+						$('#but_cancel_jq,#but_reopen_jq').show();
+						$('#but_post_jq').hide();
 					}else if(stat=="CANCELLED"){
 						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 					}else{
@@ -287,7 +287,7 @@ $(document).ready(function () {
 					}
 					break;
 				case "all":
-					if(stat=='POSTED'){
+					if(stat=='ISSUED'){
 						if(delordno != ''){
 							$('#but_reopen_jq').hide();
 						}else{
@@ -304,9 +304,9 @@ $(document).ready(function () {
 						$('#but_reopen_jq').hide();
 					}
 
-					if(stat=='POSTED'){
-						$('#but_cancel_jq').show();
-						$('#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq').hide();
+					if(stat=='ISSUED'){
+						$('#but_cancel_jq,#but_reopen_jq').show();
+						$('#but_post_jq,#but_soft_cancel_jq').hide();
 					}else if(stat=="CANCELLED"){
 						$('#but_reopen_jq').show();
 						$('#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq').hide();
@@ -325,7 +325,7 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
-			if(stat=='POSTED'){
+			if(stat=='ISSUED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -406,6 +406,7 @@ $(document).ready(function () {
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
+		
 		saveParam.oper = $(this).data("oper");
 		let obj={recno:selrowData('#jqGrid').purordhd_recno,_token:$('#_token').val()};
 		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
@@ -830,6 +831,8 @@ $(document).ready(function () {
 				$("#dialog_remarks").dialog( "open" );
 			});
 			fdl.set_array().reset();
+			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			calculate_quantity_outstanding('#jqGrid2');
 		},
 		afterShowForm: function (rowid) {
 		    $("#expdate").datepicker();
@@ -957,6 +960,7 @@ $(document).ready(function () {
 	    	//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
+			errorField.length=0;
 		},
 		errorfunc: function(rowid,response){
         	alert(response.responseText);
@@ -991,6 +995,9 @@ $(document).ready(function () {
 			//calculate_conversion_factor();	
 		},
 		 afterrestorefunc : function( response ) {
+			delay(function(){
+				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			}, 500 );
 			hideatdialogForm(false);
 	    }
 	};
@@ -1199,20 +1206,20 @@ $(document).ready(function () {
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function itemcodeCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val;
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){
 		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function uomcodeCustomEdit(val,opt){  	
 		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pouomCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $(`<div class="input-group">
-					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 				</div>
 				<span class="help-block"></span>
 				<div class="input-group">
@@ -1225,7 +1232,7 @@ $(document).ready(function () {
 	}
 	function taxcodeCustomEdit(val,opt){
 		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function remarkCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
@@ -1317,17 +1324,18 @@ $(document).ready(function () {
 	}
 
 	//////////////////////////////calculate outstanding quantity/////////////////////
-	/*function calculate_quantity_outstanding(event){
-		var optid = event.currentTarget.id;
-		var id_optid = optid.substring(0,optid.search("_"));
+	function calculate_quantity_outstanding(grid){
+		var ids = $(grid).jqGrid('getDataIDs');
 
-        let qtyorder = parseFloat($("#jqGrid2 #"+id_optid+"_qtyorder").val());
-        let qtydelivered = parseFloat($("#jqGrid2 #"+id_optid+"_qtydelivered").val());
+		var jqgrid2_data = [];
+	    for (var i = 0; i < ids.length; i++) {
 
-        var qtyOutstand = (qtyorder - qtydelivered);
+			var data = $(grid).jqGrid('getRowData',ids[i]);
+			var qtyOutstand = data.qtyorder - data.qtydelivered;
 
-        $("input[name='qtyOutstand']").val(qtyOutstand);
-	}*/
+			$(grid).jqGrid('setRowData', ids[i] ,{qtyOutstand:qtyOutstand});
+	    }
+	}
 	///////////////////////////////////////////////////////////////////////////////
 
 
@@ -1420,61 +1428,9 @@ $(document).ready(function () {
 
 		event.data.currency.formatOn();//change format to currency on each calculation
 
+		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+
 	}
-
-
-	/*////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
-
-	var mycurrency2 = new currencymode(["#jqGrid2 input[name='amtdisc']", "#jqGrid2 input[name='unitprice']", "#jqGrid2 input[name='amount']", "#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
-
-	$("#jqGrid2_iladd, #jqGrid2_iledit").click(function () {
-		unsaved = false;
-		$("#jqGridPager2Delete").hide();
-		dialog_pricecode.on();//start binding event on jqgrid2
-		dialog_itemcode.on();
-		dialog_uomcode.on();
-		dialog_pouom.on();
-		dialog_taxcode.on();
-		dialog_pouom.on();
-		$("input[name='gstpercent']").val('0')//reset gst to 0
-
-
-		mycurrency2.formatOnBlur();//make field to currency on leave cursor
-
-        $("#jqGrid2 input[name='qtyorder']").on('blur', { currency: mycurrency2 },calculate_line_totgst_and_totamt);
-		// $("#jqGrid2 input[name='qtyOutstand']").on('blur', { currency: mycurrency2 }, calculate_quantity_outstanding);
-		$("#jqGrid2 input[name='unitprice']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='amtdisc']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='taxcode']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='itemcode']").on('blur', { currency: mycurrency2 }, calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='qtyorder']").on('blur',  calculate_conversion_factor);
-
-		$("input[name='tot_gst']").keydown(function (e) {//when click tab at tot_gst, auto save
-			var code = e.keyCode || e.which;
-			if (code == '9') $('#jqGrid2_ilsave').click();
-			//calculate_conversion_factor();
-			//alert("Tab pressed");
-
-		});
-	});
-
-	function searchClick2(grid,form,urlParam){
-		$(form+' [name=Stext]').on( "keyup", function() {
-			delay(function(){
-				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-				$('#ponodepan').text("");//tukar kat depan tu
-				$('#prdeptdepan').text("");
-				refreshGrid("#jqGrid3",null,"kosongkan");
-			}, 500 );
-		});
-
-		$(form+' [name=Scol]').on( "change", function() {
-			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			$('#ponodepan').text("");//tukar kat depan tu
-			$('#prdeptdepan').text("");
-			refreshGrid("#jqGrid3",null,"kosongkan");
-		});
-	}*/
 
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
@@ -1496,6 +1452,8 @@ $(document).ready(function () {
 				$("#dialog_remarks").dialog( "open" );
 			});
 			fdl.set_array().reset();
+
+			calculate_quantity_outstanding('#jqGrid3');
 		},
 	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
         fixPositionsOfFrozenDivs.call(this);
@@ -1607,6 +1565,7 @@ $(document).ready(function () {
 								}
 							);
 						});
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 					} else {
 
@@ -1754,6 +1713,7 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 			],
 			ondblClickRow:function(event){
+				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 				let data = selrowData('#'+dialog_pricecode.gridname);
 
 				if(data.pricecode == 'MS'){
@@ -1858,7 +1818,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#purorddt_itemcode').focus();
+					$("#jqGrid2 input[name='itemcode']").focus();
 				}
 			}
 		},{
@@ -1882,8 +1842,8 @@ $(document).ready(function () {
 		'itemcode',['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u'],"#jqGrid2 input[name='itemcode']",errorField,
 		{	colModel:
 			[
-				{label: 'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label: 'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
 				{label: 'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
 				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
@@ -1913,17 +1873,26 @@ $(document).ready(function () {
 					$("#jqGrid2 #"+id_optid+"_itemcode").val(data['p_itemcode']);
 				}
 
-				$("#jqGrid2 #"+id_optid+"_description").val(data['p_description']);
 				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['p_uomcode']);
 				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
 				$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
 				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+				var rowid = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+				$("#jqGrid2").jqGrid('setRowData', rowid ,{description:data['p_description']});
 
 				if($("input#"+id_optid+"_pricecode").val() != 'MS'){
 					dialog_uomcode.urlParam.filterVal[1] = data['p_itemcode'];
 				}
 
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$("#jqGrid2 input[name='uomcode']").focus();
+				}
 			},
 			loadComplete:function(data){
 			}
@@ -1999,8 +1968,21 @@ $(document).ready(function () {
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
 			],
 			ondblClickRow:function(event){
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
+
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
+
 
 				let data=selrowData('#'+dialog_uomcode.gridname);
 				if($("input#"+id_optid+"_pricecode").val() == 'MS'){
@@ -2010,6 +1992,14 @@ $(document).ready(function () {
 				}
 
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$("#jqGrid2 input[name='pouom']").focus();
+				}
 			}
 			
 		},{
@@ -2032,7 +2022,7 @@ $(document).ready(function () {
 				// 	.next()
 				// 	.find("input[type=text]").focus();
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab' 	
 	);
 	dialog_uomcode.makedialog(false);
 
@@ -2046,13 +2036,35 @@ $(document).ready(function () {
 				{ label: 'Conversion', name: 'convfactor', width: 100, classes: 'pointer' }
 			],
 			ondblClickRow: function (event) {
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
+				
 
 				let data=selrowData('#'+dialog_pouom.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_pouom").val(data['convfactor']);
+			},
+
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$("#jqGrid2 input[name='qtyorder']").focus();
+				}
 			}
+			
 
 		}, {
 			title: "Select PO UOM Code For Item",
@@ -2067,7 +2079,7 @@ $(document).ready(function () {
 				// 	.next()
 				// 	.find("input[type=text]").focus();
 			}
-		}, 'urlParam'
+		}, 'urlParam', 'radio', 'tab' 
 	);
 	dialog_pouom.makedialog(false);
 
@@ -2080,14 +2092,35 @@ $(document).ready(function () {
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			ondblClickRow:function(event){
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
+				
 
 				let data=selrowData('#'+dialog_taxcode.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['rate']);
 				$(dialog_taxcode.textfield).closest('td').next().has("input[type=text]").focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$("#jqGrid2 input[name='perdisc']").focus();
+				}
 			}
+			
 		},{
 			title:"Select Tax Code For Item",
 			open: function(){
@@ -2103,7 +2136,7 @@ $(document).ready(function () {
 				}
 				
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
 	dialog_taxcode.makedialog(false);
 

@@ -940,6 +940,7 @@ $(document).ready(function () {
 	    	//state true maksudnyer ada isi, tak kosong
 	    	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
+			errorField.length=0;
         }, 
         errorfunc: function(rowid,response){
         	alert(response.responseText);
@@ -1561,7 +1562,8 @@ $(document).ready(function () {
 					join_onCol: ['podt.itemcode','podt.taxcode'],
 					join_onVal: ['p.itemcode','t.taxcode'],
 					filterCol: ['podt.recno', 'podt.compcode', 'podt.recstatus'],
-					filterVal: [data['h_recno'], 'session.compcode', '<>.DELETE']
+					filterVal: [data['h_recno'], 'session.compcode', '<>.DELETE'],
+					sortby:['lineno_ desc']
 				};
 
 				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
