@@ -1355,6 +1355,13 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='qtydelivered']").on('blur',calculate_conversion_factor);
 	}
 
+	/////////////bind shift + f to btm detail///////////
+	$(document).bind('keypress', function(event) {
+	    if( event.which === 70 && event.shiftKey ) {
+	        $("#saveDetailLabel").click();
+	    }
+	});
+
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
 
 	var mycurrency2 =new currencymode([]);
@@ -1459,7 +1466,10 @@ $(document).ready(function () {
 			[
 				{label:'Authorize Person',name:'authorid',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true}
-			]
+			],
+			ondblClickRow: function () {
+				$('#delordhd_remarks').focus();
+			},
 		},{
 			title:"Authorize Person",
 			open: function(){
