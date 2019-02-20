@@ -315,6 +315,14 @@ $(document).ready(function () {
 						$('#but_reopen_jq,#but_cancel_jq').hide();
 					}
 					break;
+				case "reopen":
+					if(stat=='ISSUED'){
+						$('#but_reopen_jq').show();
+						$('#but_post_jq,#but_cancel_jq').hide();
+					}else{
+						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+					}
+					break;	
 			}
 
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purordhd_recno;
