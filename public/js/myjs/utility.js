@@ -703,8 +703,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 	function onTab(event){
 		renull_search(event.data.data);
-		if(event.key == "Tab"){
-			var textfield = $(event.currentTarget);
+		var textfield = $(event.currentTarget);
+		if(event.key == "Tab" && textfield.val() != ""){
 			
 			var obj = event.data.data;
 			$("#"+obj.gridname).jqGrid('setGridParam',{ ondblClickRow: function(id){ 
