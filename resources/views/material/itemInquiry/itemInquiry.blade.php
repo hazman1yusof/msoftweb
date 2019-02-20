@@ -161,6 +161,13 @@
         				</div>
 		    		</div> -->
 		</div>
+			<p id = "deptcode">
+				<span id = "deptcode" class="deptcode">Deptcode: </span><input id="deptcode" name="deptcode" type="text"/>
+			</p>
+
+			<p id = "itemcode">
+				<span id = "itemcode" class="itemcode">Itemcode: </span><input id="itemcode" name="itemcode" type="text"/>
+			</p>
 			<p id="date_filter">
 			    <span id="date-label-from" class="date-label">From: </span><input class="date_range_filter date" type="text" id="datepicker_from" />
 			    <span id="date-label-to" class="date-label">To:<input class="date_range_filter date" type="text" id="datepicker_to" />
