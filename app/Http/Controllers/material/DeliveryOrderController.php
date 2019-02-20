@@ -891,10 +891,18 @@ class DeliveryOrderController extends defaultController
 
             //--- 9. change recstatus to cancelled ---//
 
-            DB::table('material.delordhd')
-                ->where('recno','=',$request->recno)
-                ->where('compcode','=',session('compcode'))
-                ->update([
+            $delordhd = DB::table('material.delordhd')
+                        ->where('recno','=',$request->recno)
+                        ->where('compcode','=',session('compcode'));
+
+            $delordhd_obj = $delordhd->first();
+
+            $purordhd = DB::table('material.purordhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('purordno','=',$$delordhd_obj->srcdocno)
+                        ->update(['delordno' => ""]);
+
+            $delordhd->update([
                     'postedby' => session('username'),
                     'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'CANCELLED' 

@@ -230,13 +230,13 @@ $(document).ready(function () {
 			{ label: 'Record No', name: 'delordhd_recno', width: 120, classes: 'wrap', canSearch: true, frozen: true},
 			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 180, classes: 'wrap', canSearch:true},
 			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 180, classes: 'wrap'},
+			{ label: 'DO No', name: 'delordhd_delordno', width: 150, classes: 'wrap', canSearch: true},
 			{ label: 'Request Department', name: 'delordhd_reqdept', width: 180, canSearch: true, classes: 'wrap' },
 			{ label: 'GRN No', name: 'delordhd_docno', width: 150, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Received Date', name: 'delordhd_trandate', width: 200, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 250, classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'supplier_name', width: 250, classes: 'wrap', canSearch: true },
 			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true},
-			{ label: 'DO No', name: 'delordhd_delordno', width: 150, classes: 'wrap', canSearch: true},
 			{ label: 'Invoice No', name: 'delordhd_invoiceno', width: 200, classes: 'wrap'},
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 200, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
@@ -1358,7 +1358,7 @@ $(document).ready(function () {
 
 	/////////////bind shift + f to btm detail///////////
 	$(document).bind('keypress', function(event) {
-	    if( event.which === 70 && event.shiftKey ) {
+	    if( event.which === 70 && event.altKey ) {
 	        $("#saveDetailLabel").click();
 	    }
 	});
