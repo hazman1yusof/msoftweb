@@ -1982,9 +1982,20 @@ $(document).ready(function () {
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
 			],
 			ondblClickRow:function(event){
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
+				if(event.type == 'keydown'){
 
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
+				
 				let data=selrowData('#'+dialog_uomcode.gridname);
 				if($("input#"+id_optid+"_pricecode").val() == 'MS'){
 					$("#jqGrid2 input#"+id_optid+"_uomcode").val(data.u_uomcode);
@@ -2037,8 +2048,19 @@ $(document).ready(function () {
 				{ label: 'Conversion', name: 'convfactor', width: 100, classes: 'pointer' }
 			],
 			ondblClickRow: function (event) {
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
 
 				let data=selrowData('#'+dialog_pouom.gridname);
 
@@ -2079,8 +2101,19 @@ $(document).ready(function () {
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			ondblClickRow:function(event){
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
 
 				let data=selrowData('#'+dialog_taxcode.gridname);
 

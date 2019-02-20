@@ -605,11 +605,11 @@ class DeliveryOrderController extends defaultController
                     ->where('StockLoc.DeptCode','=',$value->deldept)
                     ->where('StockLoc.ItemCode','=',$value->itemcode)
                     ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
-                    ->where('StockLoc.UomCode','=',$value->uomcode)
-                    ->first();
+                    ->where('StockLoc.UomCode','=',$value->uomcode);
 
                 //2.kalu ada stockloc, update 
-                if(count($stockloc_obj)){
+                if($stockloc_obj->exists()){
+                    $stockloc_obj = $stockloc_obj->first();
 
                 //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
                     $stockloc_arr = (array)$stockloc_obj;
@@ -644,13 +644,14 @@ class DeliveryOrderController extends defaultController
                     ->where('stockexp.expdate','=',$value->expdate)
                     ->where('stockexp.year','=', defaultController::toYear($value->trandate))
                     ->where('stockexp.uomcode','=',$value->uomcode)
-                    ->where('stockexp.batchno','=',$value->batchno)
+                    ->where('stockexp.batchno','=',$value->batchno);
                    // ->where('stockexp.lasttt','=','GRN')
-                    ->first();
+                    // ->first();
 
                 //2.kalu ada Stock Expiry, update
 
-                if(count($stockexp_obj)){
+                if($stockexp_obj->exists()){
+                    $stockexp_obj = $stockexp_obj->first();
                     $BalQty = $stockexp_obj->balqty - $txnqty;
 
                     DB::table('material.stockexp')
@@ -674,11 +675,12 @@ class DeliveryOrderController extends defaultController
                 $product_obj = DB::table('material.product')
                     ->where('product.compcode','=',session('compcode'))
                     ->where('product.itemcode','=',$value->itemcode)
-                    ->where('product.uomcode','=',$value->uomcode)
-                    ->first();
+                    ->where('product.uomcode','=',$value->uomcode);
+                    // ->first();
 
 
-                if(count($product_obj)){ // kalu jumpa
+                if($product_obj->exists()){ // kalu jumpa
+                    $product_obj = $product_obj->first();
                     $month = defaultController::toMonth($value->trandate);
                     $OldQtyOnHand = $product_obj->qtyonhand;
                     $currprice = $netprice;
@@ -861,11 +863,11 @@ class DeliveryOrderController extends defaultController
                 }
 
                 //---- 8. update po kalu ada srcdocno ---//
-                if($delordhd_obj->srcdocno != 0){
+                if(!empty($value->srcdocno) || $value->srcdocno != 0){
                     
                     $purordhd = DB::table('material.purordhd')
                         ->where('compcode','=',session('compcode'))
-                        ->where('purordno','=',$delordhd_obj->srcdocno)
+                        ->where('purordno','=',$value->srcdocno)
                         ->first();
 
                     $po_recno = $purordhd->recno;
