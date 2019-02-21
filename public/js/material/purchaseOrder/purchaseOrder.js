@@ -226,7 +226,7 @@ $(document).ready(function () {
 			{ label: 'Purchase Department', name: 'purordhd_prdept', width: 15, classes: 'wrap' },
 			{ label: 'Purchase Order No', name: 'purordhd_purordno', width: 10, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Req No', name: 'purordhd_purreqno', width: 20, hidden: true },
-			{ label: 'DelordNo', name: 'purordhd_delordno', width: 20, width: 10, classes: 'wrap'},
+			{ label: 'DelordNo', name: 'purordhd_delordno', width: 20, width: 10, classes: 'wrap', hidden:true},
 			{ label: 'Request Department', name: 'purordhd_reqdept', width: 30, hidden: true },
 			{ label: 'deldept', name: 'purordhd_deldept', width: 30, hidden: true },
 			{ label: 'Purchase Order Date', name: 'purordhd_purdate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
