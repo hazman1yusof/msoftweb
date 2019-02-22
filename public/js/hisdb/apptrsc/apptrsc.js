@@ -50,7 +50,7 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
             ],
-            onSelectRow: function (rowid, selected) {
+            onSelectRow: function () {
 				let data = selrowData('#' + dialog_name.gridname);
 
 				var session_param ={
@@ -98,6 +98,16 @@ $(document).ready(function () {
 			<div id='grid_session_pager'></div>
 		</div>
 		`);
+
+	function onBlur(event){
+		var idtopush = $(event.currentTarget).siblings("input[type='text']").end().attr('id');
+		var jqgrid = $(event.currentTarget).siblings("input[type='text']").end().attr('jqgrid');
+		var optid = (event.data.data.urlParam.hasOwnProperty('optid'))? event.data.data.urlParam.optid:null;
+
+		if(event.data.data.checkstat!='none'){
+			event.data.data.check(event.data.data.errorField,idtopush,jqgrid,optid);
+		}
+	}
 
 	$('#selecting_doctor').click(function(){
 		$(dialog_name.textfield).off('blur',onBlur);
@@ -160,8 +170,6 @@ $(document).ready(function () {
         ],
 		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
 		pager: "#grid_session_pager",
-		onSelectRow:function(rowid, selected){
-		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 		},
 	});
@@ -291,7 +299,7 @@ $(document).ready(function () {
         ],
 		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
 		pager: "#grid_start_time_pager",
-		onSelectRow:function(rowid, selected){
+		onSelectRow:function(){
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let time = selrowData("#grid_start_time").timehidden;
@@ -638,7 +646,7 @@ $(document).ready(function () {
 		sortname: 'time',
 		sortorder: 'asc',
 		pager: "#grid_transfer_date_from_pager",
-		onSelectRow:function(rowid, selected){
+		onSelectRow:function(){
 			$("#td_but_down").data('addedEvent',selrowData("#grid_transfer_date_from"));
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -663,7 +671,7 @@ $(document).ready(function () {
 		sortname: 'time',
 		sortorder: 'asc',
 		pager: "#grid_transfer_date_to_pager",
-		onSelectRow:function(rowid, selected){
+		onSelectRow:function(){
 			$("#td_but_up").data('addedEvent',selrowData("#grid_transfer_date_to"));
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){

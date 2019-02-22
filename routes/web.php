@@ -14,6 +14,7 @@
 Route::get('/','HomeController@index')->name('home');
 Route::post('/sessionUnit','HomeController@changeSessionUnit');
 Route::get('/login','SessionController@create')->name('login');
+Route::get('/loginappt','SessionController@create2')->name('login2');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');
 

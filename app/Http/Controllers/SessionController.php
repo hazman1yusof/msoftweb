@@ -22,6 +22,12 @@ class SessionController extends Controller
     	return view('init.login',compact("company"));
     }
 
+    public function create2(){
+        $company = company::all();
+
+        return view('init.login2',compact("company"));
+    }
+
     public function store(Request $request){
     	$user = User::where('username',request('username'))
     				->where('password',request('password'))
@@ -46,6 +52,10 @@ class SessionController extends Controller
                     ->where('compcode','=',request('cmb_companies'))
                     ->first();
                 $request->session()->put('unit', $units->sectorcode);
+            }
+
+            if(!empty($request->loginappt)){
+                return redirect('/apptrsc?TYPE=DOC');
             }
            
     		return redirect()->home();

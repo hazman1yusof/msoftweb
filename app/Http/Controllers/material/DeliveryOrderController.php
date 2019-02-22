@@ -880,10 +880,23 @@ class DeliveryOrderController extends defaultController
                     $podt_obj_lama = $podt_obj->first();
 
                     $jumlah_qtydelivered = $podt_obj_lama->qtydelivered - $value->qtydelivered;
+                    $qtyoutstand = $podt_obj_lama->qtyorder + $jumlah_qtydelivered;
 
                     $podt_obj->update([
                         'qtydelivered' => $jumlah_qtydelivered
                     ]);
+
+
+                    //update qtyoutstand utk suma DO pulak
+                    $delordhd = DB::table('material.delorddt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('itemcode','=',$value->itemcode)
+                        ->where('prdept','=',$delordhd_obj->prdept)
+                        ->where('srcdocno','=',$delordhd_obj->srcdocno)
+                        ->update([
+                            'qtydelivered' => $jumlah_qtydelivered,
+                            'qtyoutstand' => $qtyoutstand
+                        ]);
 
                 }
 

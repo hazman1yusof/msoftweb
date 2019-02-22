@@ -670,8 +670,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			}
 		}});
 
-		$("#"+obj.gridname).jqGrid('setGridParam',{ onSelectRow: function(id){ 
-			if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow(rowid, selected);
+		$("#"+obj.gridname).jqGrid('setGridParam',{ onSelectRow: function(rowid){ 
+			if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow(rowid);
 		}});
 
 		renull_search(obj);
@@ -855,6 +855,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				}
 			},
 			loadComplete: function(data) {
+				$("#"+obj.gridname+' tr#1').click().focus();
 				if(obj.jqgrid_.hasOwnProperty('loadComplete'))obj.jqgrid_.loadComplete(data,obj);
 		    },
 			gridComplete: function() {
@@ -862,6 +863,11 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		    },
 
 		});
+
+		$("#"+obj.gridname).jqGrid('bindKeys', {"onEnter":function( rowid ) { 
+				$("#"+obj.gridname+' tr#'+rowid).dblclick();
+			}
+		})
 		addParamField("#"+obj.gridname,false,obj.urlParam);
 	}
 

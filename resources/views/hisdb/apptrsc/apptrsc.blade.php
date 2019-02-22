@@ -43,7 +43,7 @@ td.fc-event-container a.selected{
 	
 	<div class='row'>
 		<input id="Class2" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
-		<div id="divform" class="formclass" style='width:99%;padding-bottom: 40px'>
+		<div id="divform" class="formclass clearfix" style='width:99%;padding-bottom: 12px'>
 			<form id="searchForm" >
 				<fieldset>
 					<div class='col-md-12' style='padding: 0 0 5px 0;'>
@@ -65,20 +65,24 @@ td.fc-event-container a.selected{
 				 </fieldset>
 			</form>
 
-			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:15px" >
-				<button type="button" class="btn btn-default" id='biodata_but_apptrsc' data-oper='add'>
-					<span class='fa fa-user fa-lg'></span> Biodata
-				</button>
-				<button type="button" class="btn btn-default" id='episode_but_apptrsc' data-oper='add'>
-					<span class='fa fa-h-square fa-lg'></span> Episode
-				</button>
+			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:12px" >
 				<button type="button" class="btn btn-default" id='transfer_doctor_but'>
-					<span class='fa fa-user-md fa-lg'></span> Transfer Doctor
+					<span class='fa fa-user-md fa-lg'></span> Transfer Doc
 				</button>
 				<button type="button" class="btn btn-default" id='transfer_date_but'>
 					<span class='fa fa-calendar fa-lg'></span> Transfer Date
 				</button>
 			</div>
+			
+			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:12px" >
+				<button type="button" class="btn btn-default btn-sm" id='biodata_but_apptrsc' data-oper='add'>
+					<span class='fa fa-user fa-lg'></span> Bio
+				</button>
+				<button type="button" class="btn btn-default" id='episode_but_apptrsc' data-oper='add'>
+					<span class='fa fa-h-square fa-lg'></span> Episode
+				</button>
+			</div>
+
 		</div>
 
 		<div class="panel panel-default">
