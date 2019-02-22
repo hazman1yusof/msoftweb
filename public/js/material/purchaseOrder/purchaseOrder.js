@@ -273,6 +273,8 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
 			let delordno = selrowData("#jqGrid").purordhd_delordno;
+			let qtyOutstand = selrowData("#jqGrid").purorddt_qtyOutstand;
+			let recstatus = selrowData("#jqGrid").purorddt_recstatus;
 			switch($("#scope").val()){
 				case "dataentry":
 					break;
@@ -305,6 +307,14 @@ $(document).ready(function () {
 					}
 
 					if(stat=='ISSUED'){
+						if (recstatus != 'CANCELLED'){
+								$('#but_reopen_jq').hide();
+							//alert('Please cancel the DO');
+						}else{
+							$('#but_reopen_jq').show();
+						$('#but_post_jq,#but_cancel_jq').hide();
+						}
+						
 						$('#but_cancel_jq,#but_reopen_jq').show();
 						$('#but_post_jq,#but_soft_cancel_jq').hide();
 					}else if(stat=="CANCELLED"){
@@ -317,8 +327,15 @@ $(document).ready(function () {
 					break;
 				case "reopen":
 					if(stat=='ISSUED'){
-						$('#but_reopen_jq').show();
+						/*if(purorddt_qtyOutstand == 0 && purorddt_recstatus != 'CANCELLED'){
+							$('#but_reopen_jq').show();
+							alert('Please cancel the DO');
+						}else{
+							$('#but_reopen_jq').show();
 						$('#but_post_jq,#but_cancel_jq').hide();
+						}*/
+						$('#but_cancel_jq,#but_reopen_jq').show();
+						$('#but_post_jq,#but_soft_cancel_jq').hide();
 					}else{
 						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 					}
