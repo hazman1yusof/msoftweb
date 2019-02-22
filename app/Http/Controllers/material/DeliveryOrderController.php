@@ -414,15 +414,15 @@ class DeliveryOrderController extends defaultController
 
 
                     //update qtyoutstand utk suma DO pulak
-                    $delordhd = DB::table('material.delorddt')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('itemcode','=',$value->itemcode)
-                        ->where('prdept','=',$delordhd_obj->prdept)
-                        ->where('srcdocno','=',$delordhd_obj->srcdocno)
-                        ->update([
-                            'qtydelivered' => $jumlah_qtydelivered,
-                            'qtyoutstand' => $qtyoutstand
-                        ]);
+                    // $delordhd = DB::table('material.delorddt')
+                    //     ->where('compcode','=',session('compcode'))
+                    //     ->where('itemcode','=',$value->itemcode)
+                    //     ->where('prdept','=',$delordhd_obj->prdept)
+                    //     ->where('srcdocno','=',$delordhd_obj->srcdocno)
+                    //     ->update([
+                    //         'qtydelivered' => $value->qtydelivered,
+                    //         'qtyoutstand' => $qtyoutstand
+                    //     ]);
 
                 }
 
@@ -888,15 +888,15 @@ class DeliveryOrderController extends defaultController
 
 
                     //update qtyoutstand utk suma DO pulak
-                    $delordhd = DB::table('material.delorddt')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('itemcode','=',$value->itemcode)
-                        ->where('prdept','=',$delordhd_obj->prdept)
-                        ->where('srcdocno','=',$delordhd_obj->srcdocno)
-                        ->update([
-                            'qtydelivered' => $jumlah_qtydelivered,
-                            'qtyoutstand' => $qtyoutstand
-                        ]);
+                    // $delordhd = DB::table('material.delorddt')
+                    //     ->where('compcode','=',session('compcode'))
+                    //     ->where('itemcode','=',$value->itemcode)
+                    //     ->where('prdept','=',$delordhd_obj->prdept)
+                    //     ->where('srcdocno','=',$delordhd_obj->srcdocno)
+                    //     ->update([
+                    //         'qtydelivered' => $value->qtydelivered,
+                    //         'qtyoutstand' => $qtyoutstand
+                    //     ]);
 
                 }
 
