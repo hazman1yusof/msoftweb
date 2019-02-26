@@ -290,7 +290,8 @@ $(document).ready(function () {
 					break;
 				case "all":
 					if(stat=='ISSUED'){
-						if(delordno != ''){
+						if(recstatus != "CANCELLED" && qtyOutstand == '0'){
+							alert('Please cancel the DO');
 							$('#but_reopen_jq').hide();
 						}else{
 							$('#but_reopen_jq').show();
@@ -298,15 +299,7 @@ $(document).ready(function () {
 
 						$('#but_post_jq,#but_cancel_jq').hide();
 
-					}else if(stat=="CANCELLED"){
-						$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq').hide();
-					}else{
-						$('#but_cancel_jq,#but_post_jq').show();
-						$('#but_reopen_jq').hide();
-					}
-
-					if(stat=='ISSUED'){
+					/*if(stat=='ISSUED'){
 						if (recstatus != 'CANCELLED'){
 								$('#but_reopen_jq').hide();
 							//alert('Please cancel the DO');
@@ -316,7 +309,7 @@ $(document).ready(function () {
 						}
 						
 						$('#but_cancel_jq,#but_reopen_jq').show();
-						$('#but_post_jq,#but_soft_cancel_jq').hide();
+						$('#but_post_jq,#but_soft_cancel_jq').hide();*/
 					}else if(stat=="CANCELLED"){
 						$('#but_reopen_jq').show();
 						$('#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq').hide();
