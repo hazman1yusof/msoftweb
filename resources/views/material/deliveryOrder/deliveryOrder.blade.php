@@ -150,7 +150,7 @@
 
 								<label class="col-md-1 control-label" for="delordhd_delordno">DO No</label>  
 						  		<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
-						  			<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm">
+						  			<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm" data-validation="required">
 						  		</div>
 
 						  		<label class="col-md-1 control-label" for="delordhd_recno">Record No</label>  

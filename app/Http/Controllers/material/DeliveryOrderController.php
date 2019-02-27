@@ -409,7 +409,8 @@ class DeliveryOrderController extends defaultController
                     }
 
                     $podt_obj->update([
-                        'qtydelivered' => $jumlah_qtydelivered
+                        'qtydelivered' => $jumlah_qtydelivered,
+                        // 'qtyoutstand' => $qtyoutstand
                     ]);
 
 
@@ -883,7 +884,8 @@ class DeliveryOrderController extends defaultController
                     $qtyoutstand = $podt_obj_lama->qtyorder + $jumlah_qtydelivered;
 
                     $podt_obj->update([
-                        'qtydelivered' => $jumlah_qtydelivered
+                        'qtydelivered' => $jumlah_qtydelivered,
+                        // 'qtyoutstand' => $qtyoutstand
                     ]);
 
 
@@ -912,7 +914,7 @@ class DeliveryOrderController extends defaultController
 
             $purordhd = DB::table('material.purordhd')
                         ->where('compcode','=',session('compcode'))
-                        ->where('purordno','=',$$delordhd_obj->srcdocno)
+                        ->where('purordno','=',$delordhd_obj->srcdocno)
                         ->update(['delordno' => ""]);
 
             $delordhd->update([

@@ -86,6 +86,7 @@ class PurchaseOrderDetailController extends defaultController
                     'purdate' => $request->purdate,
                     'qtyorder' => $request->qtyorder,
                     'qtydelivered' => $request->qtydelivered,
+                    // 'qtyoutstand' => 0,
                     'unitprice' => $request->unitprice,
                     'taxcode' => $request->taxcode,
                     'perdisc' => $request->perdisc,

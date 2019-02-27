@@ -112,7 +112,7 @@ class PurchaseOrderController extends defaultController
 
     }
 
- public function edit(Request $request){
+    public function edit(Request $request){
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
             $idno = substr(strstr($request->table_id,'_'),1);
@@ -255,6 +255,20 @@ class PurchaseOrderController extends defaultController
         DB::beginTransaction();
 
         try{
+
+            $purorddt = DB::table('material.purorddt')
+                ->where('recno','=',$request->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->where('qtydelivered', '!=' , 0);
+
+            if($purorddt->exists()){
+                DB::rollback();
+                        
+                return response('Error: Please Cancel all DO before reopen', 500)
+                    ->header('Content-Type', 'text/plain');
+            }
+
 
             DB::table('material.purordhd')
                 ->where('recno','=',$request->recno)
