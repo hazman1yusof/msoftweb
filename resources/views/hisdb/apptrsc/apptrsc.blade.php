@@ -111,13 +111,13 @@ td.fc-event-container a.selected{
 								<label for="title" class="col-md-2 control-label">MRN</label>
 								<div class="col-md-4">
 									<div class="input-group">
-										<input type="text" class="form-control input-sm" placeholder="MRN No" id="mrn" name="mrn" maxlength="12" readonly>
+										<input type="text" class="form-control input-sm" placeholder="MRN No" id="mrn" name="mrn" maxlength="12" readonly value="@if(!empty($pat_info)){{$pat_info->MRN}} @endif">
 										<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class='help-block'></span>
 								</div>
 								<div class="col-md-4">
-									<input type="text" class="form-control input-sm" data-validation="required" placeholder="Name" id="patname" name="patname">
+									<input type="text" class="form-control input-sm" data-validation="required" placeholder="Name" id="patname" name="patname" value="@if(!empty($pat_info)){{$pat_info->Name}} @endif" @if(!empty($pat_info)){{'readonly'}} @endif>
 								</div>
 							</div>
 							<div class="form-group">

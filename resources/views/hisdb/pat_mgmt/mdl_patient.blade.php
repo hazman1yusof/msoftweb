@@ -169,7 +169,7 @@
                                         </div>
 										
 										<div class="form-group">                                            
-                                             <div class="col-md-4">
+                                             <div class="col-md-6">
                                                 <small for="txt_pat_citizen">Citizenship</small>
                                                 <!--select id="citizencode" name="citizencode" class="form-control">
                                                     <option value="">- Select Citizen -</option>
@@ -182,7 +182,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <small for="txt_pat_area">Area</small>
                                                 <!--select id="areacode" name="input-area" class="form-control">
                                                     <option value="">- Select Area -</option>
@@ -195,11 +195,18 @@
                                                     </span>
                                                 </div>
                                             </div>
-											<div class="col-md-4">
+										</div>	
+
+										<div class="form-group">
+											<div class="col-md-6">
                                                 <small for="txt_pat_email">Email</small>
                                                 <input class="form-control" name="Email_official" id="txt_pat_email" placeholder="" type="email">
                                             </div>
-										</div>						
+											<div class="col-md-6">
+                                                <small for="txt_pat_loginid">logindid</small>
+                                                <input class="form-control" name="loginid" id="txt_pat_loginid" placeholder="" type="text">
+                                            </div>
+										</div>					
 										
                                         <div class="form-group">
 											<!--div class="row"-->
@@ -669,7 +676,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-success" id="btn_reg_proceed">Proceed</button>
+				<!-- <button type="button" class="btn btn-success" id="btn_reg_proceed">Proceed</button> -->
 			</div>
 		</div>
 	</div>

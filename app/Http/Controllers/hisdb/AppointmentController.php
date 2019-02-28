@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
+use Auth;
 use Carbon\Carbon;
 
 class AppointmentController extends defaultController
@@ -25,6 +26,16 @@ class AppointmentController extends defaultController
         $ALCOLOR = DB::table('sysdb.users')
                     ->where('username','=',session('username'))
                     ->first();
+
+        
+        if(Auth::user()->groupid == "patient"){
+            $pat_info = DB::table('hisdb.pat_mast')
+                    ->where('loginid','=',Auth::user()->loginid)
+                    ->first();
+
+                    
+            return view('hisdb.apptrsc.apptrsc',compact('ALCOLOR','pat_info'));
+        }
 
         return view('hisdb.apptrsc.apptrsc',compact('ALCOLOR'));
     }

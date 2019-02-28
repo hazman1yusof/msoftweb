@@ -329,6 +329,7 @@ $(document).ready(function() {
         // $('#occupcode').val(rowdata.occupcode);
         $('#hid_pat_occupation').val(rowdata.OccupCode);
 
+        $('#txt_pat_loginid').val(rowdata.loginid);
         $('#txt_pat_dob').val(rowdata.DOB);
         $('#txt_pat_age').val(gettheage(rowdata.DOB));
         $('#txt_pat_telh').val('0' +rowdata.telh);

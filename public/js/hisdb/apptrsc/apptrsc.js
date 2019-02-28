@@ -217,7 +217,11 @@ $(document).ready(function () {
 			},
 		}, 'urlParam'
 	);
-	dialog_mrn.makedialog(true);
+	dialog_mrn.makedialog(false);
+
+	if ( !$("#patname").is('[readonly]') ) {
+		dialog_mrn.on();
+	}
 
 	var dialog_doctor = new ordialog(
 		'dialog_doctor', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='transfer_doctor']", errorField,

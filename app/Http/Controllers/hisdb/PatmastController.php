@@ -273,6 +273,12 @@ class PatmastController extends defaultController
 
             //////////where//////////
             $table = $table->where('idno','=',$request->idno);
+            $user = $table->first();
+            if($user->loginid != $request->loginid){
+                $this->makeloginid($request);
+            }
+
+
             $table->update($array_update);
 
             $queries = DB::getQueryLog();
@@ -313,6 +319,41 @@ class PatmastController extends defaultController
         } catch (Exception $e) {
             DB::rollback();
             
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function makeloginid(Request $request){
+        DB::beginTransaction();
+
+        $table = DB::table('sysdb.users');
+
+        $array_insert = [
+            'compcode' => session('compcode'),
+            'adduser' => session('username'),
+            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'recstatus' => 'A',
+            'username' => $request->loginid,
+            'password' => $request->loginid,
+            'groupid' => 'patient'
+        ];
+
+
+        try {
+
+            if($this->default_duplicate('sysdb.users','username',$request->loginid)){
+                DB::rollback();
+
+                return response('Duplicate LoginID', 500);
+            }
+
+            $table->insert($array_insert);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
             return response('Error'.$e, 500);
         }
     }
