@@ -41,8 +41,11 @@
 @endsection
 
 @section('body')
+	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
+	<input id="itemcode" name="deldept" type="hidden" value="{{Session::get('itemcode')}}">
 
 	<div class='row'>
+
 		<input id="Class2" name="Class" type="hidden" value="{{ $_GET['Class'] }}">
 		<input id="getYear" name="getYear" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
 
@@ -93,7 +96,7 @@
 
 	<div id="detailMovementDialog" title="View Detail Movement" >
 		<div id='detailMovement_c' class=''>
-			<!-- <div class="panel panel-default">
+			<div class="panel panel-default">
 		    	<div class="panel-heading">Detail Movement by Item</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
@@ -108,18 +111,18 @@
 								  			<div class="col-md-2">
 												<input id="itemcode" name="itemcode" type="text" maxlength="11" class="form-control input-sm" rdonly>
 								  			</div>
-								  		<label class="col-md-1 control-label" for="itemcode">Date From:</label>  
+								  		<label class="col-md-1 control-label" for="min">Date From:</label>  
 								  			<div class="col-md-2">
-												<input id="itemcode" name="itemcode" type="text" maxlength="11" class="form-control input-sm" rdonly>
+												<input id="min" name="min" type="text" maxlength="11" class="form-control input-sm" rdonly>
 								  			</div>
-								  		<label class="col-md-1 control-label" for="itemcode">To:</label>  
+								  		<label class="col-md-1 control-label" for="max">To:</label>  
 								  			<div class="col-md-2">
-												<input id="itemcode" name="itemcode" type="text" maxlength="11" class="form-control input-sm" rdonly>
+												<input id="max" name="max" type="text" maxlength="11" class="form-control input-sm" rdonly>
 								  			</div>			
 							  		</div>
 
 							  		<hr/>	
-
+<!-- 
 							  		<div class="form-group">
 										<label class="col-md-1 control-label" for="purordhd_perdisc">Movement for Department: </label>  
 							  			<div class="col-md-2">
@@ -154,31 +157,36 @@
 									    <div class="col-md-2">
 										  <input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
 									    </div>
-									</div>   
+									</div>    -->
 
                            
                             </div>
         				</div>
-		    		</div> -->
+		    		</div>
 		</div>
-			<p id = "deptcode">
+			<!-- <p id = "deptcode">
 				<span id = "deptcode" class="deptcode">Deptcode: </span><input id="deptcode" name="deptcode" type="text"/>
 			</p>
 
 			<p id = "itemcode">
 				<span id = "itemcode" class="itemcode">Itemcode: </span><input id="itemcode" name="itemcode" type="text"/>
 			</p>
+
 			<table border="0" cellspacing="5" cellpadding="5">
-        <tbody>
-            <tr>
-                <td>Minimum Date:</td>
-                <td><input name="min" id="min" type="text"></td>
-            </tr>
-            <tr>
-                <td>Maximum Date:</td>
-                <td><input name="max" id="max" type="text"></td>
-            </tr>
-        </tbody>
+	        	<tbody>
+		            <tr>
+		                <td>Minimum Date:</td>
+		                <td><input name="min" id="min" type="text"></td>
+		            </tr>
+	           
+		            <tr>
+		                <td>Maximum Date:</td>
+		                <td><input name="max" id="max" type="text"></td>
+		            </tr>
+	        	</tbody>
+       		</table>
+       		<hr> -->
+
 			<table class="table table-hover  table-bordered" id='TableDetailMovement'>
 				<thead>
 					<tr>
