@@ -24,6 +24,9 @@ $(document).ready(function () {
 		},
 	};
 	var Class2 = $('#Class2').val();
+	/*var deptcode = $('#deptcode').val();
+	var itemcode = $('#itemcode').val();*/
+
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
 		text: "Save",click: function() {
@@ -56,10 +59,12 @@ $(document).ready(function () {
 					$( this ).dialog( "option", "title", "Add" );
 					enableForm('#formdata');
 					hideOne('#formdata');
+					rdonly('#formdata');
 					break;
 				case state = 'edit':
 					$( this ).dialog( "option", "title", "Edit" );
 					enableForm('#formdata');
+					rdonly('#formdata');
 					frozeOnEdit("#dialogForm");
 					$('#formdata :input[hideOne]').show();
 					break;
@@ -371,13 +376,13 @@ $(document).ready(function () {
         );
 
        
-            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-            var table = $('#TableDetailMovement').DataTable();
+            $("#min").datepicker({ onSelect: function () { DataTable.draw(); }, changeMonth: true, changeYear: true });
+            $("#max").datepicker({ onSelect: function () { DataTable.draw(); }, changeMonth: true, changeYear: true });
+            var DataTable = $('#TableDetailMovement').DataTable();
 
             // Event listener to the two range filtering inputs to redraw on input
             $('#min, #max').change(function () {
-                table.draw();
+                DataTable.draw();
             });
         });
 
@@ -431,6 +436,8 @@ $(document).ready(function () {
 		    return true;
 		  }
 		);*/
+
+		
 
 	function getdtlmov(fetchall,start,limit){
 		var param={
