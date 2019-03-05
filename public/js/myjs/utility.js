@@ -593,7 +593,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	this.urlParam={
 		from:unique,
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'./util/get_table_default',
 		table_name:table,
 		field:getfield(jqgrid_.colModel),
 		table_id:getfield(jqgrid_.colModel)[0],
@@ -810,9 +810,13 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function makedialog(obj){
+		let width = 7/10 * $(window).width();
+		if(obj.dialog_.hasOwnProperty('width')){
+			width = obj.dialog_.width;
+		}
 		$("#"+obj.dialogname).dialog({
 			autoOpen: false,
-			width: 7/10 * $(window).width(),
+			width: width,
 			modal: true,
 			open: function(event, ui){
 				$("#"+obj.gridname).jqGrid ('setGridWidth', Math.floor($("#"+obj.gridname+"_c")[0].offsetWidth-$("#"+obj.gridname+"_c")[0].offsetLeft));
@@ -831,7 +835,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		$("#"+obj.gridname).jqGrid({
 			datatype: "local",
 			colModel: obj.field,
-			autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
+			autowidth: true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
 			pager: "#"+obj.gridname+"Pager",
 			onSelectRow:function(rowid, selected){
 				if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow(rowid, selected);
@@ -863,6 +867,13 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		    },
 
 		});
+
+		if(obj.jqgrid_.hasOwnProperty('sortname')){
+			$("#"+obj.gridname).jqGrid('setGridParam',{ sortname: obj.jqgrid_.sortname});
+		};
+		if(obj.jqgrid_.hasOwnProperty('sortorder')){
+			$("#"+obj.gridname).jqGrid('setGridParam',{ sortorder: obj.jqgrid_.sortorder});
+		};
 
 		$("#"+obj.gridname).jqGrid('bindKeys', {"onEnter":function( rowid ) { 
 				$("#"+obj.gridname+' tr#'+rowid).dblclick();

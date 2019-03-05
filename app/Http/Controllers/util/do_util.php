@@ -44,6 +44,7 @@ class do_util extends defaultController{
 	}
 
 	public static function stockloc_ins($value,$txnqty,$netprice){
+        dd('shit');
 		//1. amik stockloc
         $stockloc_obj = DB::table('material.StockLoc')
             ->where('StockLoc.CompCode','=',session('compcode'))
@@ -439,17 +440,17 @@ class do_util extends defaultController{
             ->where('recno','=',$value->recno)
             ->first();
 
-        if($delordhd->srcdocno!=""){
-            $purorddt = DB::table("material.purorddt")
-                            ->where('recno','=',$delordhd->srcdocno)
-                            ->where('lineno_','=',$value->lineno_);
+        // if($delordhd->srcdocno!=""){
+        //     $purorddt = DB::table("material.purorddt")
+        //                     ->where('recno','=',$delordhd->srcdocno)
+        //                     ->where('lineno_','=',$value->lineno_);
 
-            if($purorddt->exists()){
-                $purorddt->update([
-                    'qtydelivered' => $value->qtydelivered
-                ]);
-            }
-        }
+        //     if($purorddt->exists()){
+        //         $purorddt->update([
+        //             'qtydelivered' => $value->qtydelivered
+        //         ]);
+        //     }
+        // }
     }
 
 }

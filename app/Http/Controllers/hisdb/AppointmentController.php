@@ -23,16 +23,16 @@ class AppointmentController extends defaultController
 
     public function show(Request $request)
     {   
-        $ALCOLOR = DB::table('sysdb.users')
-                    ->where('username','=',session('username'))
+        $ALCOLOR = DB::table('sysdb.sysparam')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','HIS')
+                    ->where('trantype','=','ALCOLOR')
                     ->first();
-
         
         if(Auth::user()->groupid == "patient"){
             $pat_info = DB::table('hisdb.pat_mast')
-                    ->where('loginid','=',Auth::user()->loginid)
+                    ->where('loginid','=',Auth::user()->username)
                     ->first();
-
                     
             return view('hisdb.apptrsc.apptrsc',compact('ALCOLOR','pat_info'));
         }

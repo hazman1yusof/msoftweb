@@ -55,7 +55,7 @@ $(document).ready(function () {
 
 				var session_param ={
 					action:"get_table_default",
-					url:'/util/get_table_default',
+					url:'./util/get_table_default',
 					field:'*',
 					table_name:'hisdb.apptsession',
 					table_id:'idno',
@@ -68,6 +68,7 @@ $(document).ready(function () {
             ondblClickRow_off:'off',
         },{
             title: "Select Doctor",
+            width: 10/10 * $(window).width(),
             open: function () {
 
 				$("#"+dialog_name.gridname).jqGrid ('setGridHeight',100);
@@ -184,6 +185,7 @@ $(document).ready(function () {
 		},
 		{
 			title: "Select Case",
+            width: 10/10 * $(window).width(),
 			open: function () {
 				dialog_case.urlParam.filterCol = ['grpcasetype','compcode'];
 				dialog_case.urlParam.filterVal = ['REGISTER','9A'];
@@ -264,7 +266,7 @@ $(document).ready(function () {
 
 	$("#dialogForm").dialog({
 		autoOpen: false,
-		width: 8 / 10 * $(window).width(),
+		width: 10 / 10 * $(window).width(),
 		modal: true,
 		open: function(event,ui){
 			set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
@@ -281,7 +283,7 @@ $(document).ready(function () {
 	$("#start_time_dialog").dialog({
     	autoOpen : false, 
     	modal : true,
-		width: 8/10 * $(window).width(),
+		width: 10/10 * $(window).width(),
 		open: function(){
 			$("#grid_start_time").jqGrid ('setGridWidth', Math.floor($("#grid_start_time_c")[0].offsetWidth-$("#grid_start_time_c")[0].offsetLeft));
 		},
@@ -526,8 +528,8 @@ $(document).ready(function () {
 						$('#biodata_but_apptrsc').data('oper','edit');
 					}
 
-					$('#biodata_but_apptrsc').data('bio_from_calander',event);
-					$('#episode_but_apptrsc').data('bio_from_calander',event);
+					// $('#biodata_but_apptrsc').data('bio_from_calander',event);
+					// $('#episode_but_apptrsc').data('bio_from_calander',event);
 
 				});
 			}
@@ -684,7 +686,7 @@ $(document).ready(function () {
 
 	$("#transfer_date").dialog({
 		autoOpen: false,
-		width: 8 / 10 * $(window).width(),
+		width: 10 / 10 * $(window).width(),
 		modal: true,
 		open: function(event,ui){
 			$("#grid_transfer_date_from").jqGrid ('setGridWidth', Math.floor($("#grid_transfer_date_from_c")[0].offsetWidth-$("#grid_transfer_date_from_c")[0].offsetLeft));
@@ -951,7 +953,8 @@ $(document).ready(function () {
 
 	$("#biodata_but_apptrsc").click(function(){
 
-		var data = $(this).data('bio_from_calander');
+		// var data = $(this).data('bio_from_calander');
+		var data = $(this).data('mrn_from_calander');
 
 		if(data==undefined){
 			alert('no patient biodata selected');
@@ -972,7 +975,7 @@ $(document).ready(function () {
 				$('#txt_pat_telh').val(data.telno);
 				$('#txt_pat_telhp').val(data.telhp);
 			}else{
-				populate_data_from_mrn(data.mrn,"#frm_patient_info");
+				populate_data_from_mrn(data,"#frm_patient_info");
 			}
 
 		}

@@ -278,7 +278,7 @@
             searchCol:['Newic'],searchVal:['%'+patnewic+'%']
         };
 
-        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+        $.get( "./util/get_value_default?"+$.param(param), function( data ) {
 
         },'json').done(function(data) {
             if(data.rows.length > 0){
@@ -404,11 +404,11 @@
             field:"*",
             table_name:'hisdb.pat_mast',
             table_id:'_none',
-            filterCol:['compcode'],filterVal:['session.company'],
+            filterCol:['compcode'],filterVal:['session.compcode'],
             searchCol:['mrn'],searchVal:[mrn]
         };
 
-        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+        $.get( "./util/get_value_default?"+$.param(param), function( data ) {
 
         },'json').done(function(data) {
 

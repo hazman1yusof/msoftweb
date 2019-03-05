@@ -444,24 +444,24 @@
 				},
 			});
 
-	////////////////////////////formatter//////////////////////////////////////////////////////////
-	function formatter(cellvalue, options, rowObject) {
-		if (cellvalue == 'A') {
-			return "Active";
-		}
-		if (cellvalue == 'D') {
-			return "Deactive";
-		}
-	}
+			////////////////////////////formatter//////////////////////////////////////////////////////////
+			function formatter(cellvalue, options, rowObject) {
+				if (cellvalue == 'A') {
+					return "Active";
+				}
+				if (cellvalue == 'D') {
+					return "Deactive";
+				}
+			}
 
-	function unformat(cellvalue, options) {
-		if (cellvalue == 'Active') {
-			return "Active";
-		}
-		if (cellvalue == 'Deactive') {
-			return "Deactive";
-		}
-	}
+			function unformat(cellvalue, options) {
+				if (cellvalue == 'Active') {
+					return "Active";
+				}
+				if (cellvalue == 'Deactive') {
+					return "Deactive";
+				}
+			}
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 
 			var TSoper = 'add';
@@ -782,26 +782,6 @@
 
 				});
 			}
-
-			function load_bg_leave(){
-				var urlParam={
-					action:'get_table_default',
-					url: '/util/get_value_default',
-					field:['pvalue1'],
-					table_name:'sysdb.sysparam',
-					filterCol:['source','trantype'],
-					filterVal:['HIS','ALCOLOR']
-				}
-
-				$.get( "util/get_value_default"+"?"+$.param(urlParam), function( data ) {
-				
-				},'json').done(function(data) {
-					if(!$.isEmptyObject(data.rows)){
-						$('#bg_leave').val(data.rows[0].pvalue1);
-					}
-				});
-			}
-
 		
 
 		$("#gridph").jqGrid('navGrid', '#gridphpager', {
@@ -1015,7 +995,7 @@
 
 		function load_bg_leave(){
 			var urlParam={
-				action:'get_table_default',
+				action:'load_bg_leave',
 				url: '/util/get_value_default',
 				field:['pvalue1'],
 				table_name:'sysdb.sysparam',
@@ -1028,6 +1008,8 @@
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data.rows)){
 					$('#bg_leave').val(data.rows[0].pvalue1);
+
+					$('#imgid').css('border-bottom-color','white');
 				}
 			});
 		}
@@ -1037,6 +1019,7 @@
 		});
 
 		$('#bg_leave').change(function(){
+			alert('asd2');
 			$('#imgid').css('border-bottom-color',$(this).val());
 			savecolor();
 		});

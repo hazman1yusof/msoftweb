@@ -39,7 +39,7 @@ td.fc-event-container a.selected{
 
 @section('body')
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
-	<input type="hidden" name="ALCOLOR" id="ALCOLOR" value="{{ $ALCOLOR->ALcolor }}">
+	<input type="hidden" name="ALCOLOR" id="ALCOLOR" value="{{ $ALCOLOR->pvalue1 }}">
 	
 	<div class='row'>
 		<input id="Class2" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
@@ -75,14 +75,18 @@ td.fc-event-container a.selected{
 			</div>
 			
 			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:12px" >
-				<button type="button" class="btn btn-default btn-sm" id='biodata_but_apptrsc' data-oper='add'>
+				<button type="button" class="btn btn-default btn-sm" id='biodata_but_apptrsc' data-oper='edit' data-mrn_from_calander="@if(!empty($pat_info)){{$pat_info->MRN}} @endif">
 					<span class='fa fa-user fa-lg'></span> Bio
 				</button>
-				<button type="button" class="btn btn-default" id='episode_but_apptrsc' data-oper='add'>
+				<!-- <button type="button" class="btn btn-default" id='episode_but_apptrsc' data-oper='add'>
 					<span class='fa fa-h-square fa-lg'></span> Episode
-				</button>
+				</button> -->
 			</div>
-
+			<a href="./logout" style="
+			    position: absolute;
+			    top: 0;
+			    right: 50px;
+			">Log Out</a>
 		</div>
 
 		<div class="panel panel-default">
@@ -139,7 +143,7 @@ td.fc-event-container a.selected{
 							<div class="form-group">
 								<label for="telh" class="col-md-2 control-label">Tel No</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="Telephone No" id="telh" name="telh" data-validation-optional-if-answered="telhp" data-validation="required">	
+									<input type="text" class="form-control input-sm" placeholder="Telephone No" id="telh" name="telh" data-validation-optional-if-answered="telhp" data-validation="required" value="@if(!empty($pat_info)){{$pat_info->telh}} @endif">	
 								</div>
 								<label for="status" class="col-md-2 control-label">Status</label>
 								<div class="col-md-3">
@@ -152,7 +156,7 @@ td.fc-event-container a.selected{
 							<div class="form-group">
 								<label for="telhp" class="col-md-2 control-label">Tel Hp</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="Telephone Hp" id="telhp" name="telhp" data-validation="required" data-validation-optional-if-answered="telh">	
+									<input type="text" class="form-control input-sm" placeholder="Telephone Hp" id="telhp" name="telhp" data-validation="required" data-validation-optional-if-answered="telh" value="@if(!empty($pat_info)){{$pat_info->telhp}} @endif">	
 								</div>
 								<label for="Doctor" class="col-md-2 control-label">Case</label>
 								<div class="col-md-3">

@@ -515,7 +515,7 @@ $(document).ready(function() {
             searchCol:['Newic'],searchVal:['%'+patnewic+'%']
         };
 
-        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+        $.get( "./util/get_value_default?"+$.param(param), function( data ) {
 
         },'json').done(function(data) {
             if(data.rows.length > 0){

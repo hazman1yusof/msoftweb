@@ -1529,6 +1529,8 @@ $(document).ready(function () {
 				{label:'Per Disc',name:'h_perdisc',width:400,classes:'pointer', hidden:true},
 				{label:'Remarks',name:'h_remarks',width:400,classes:'pointer', hidden:true}
 			],
+			sortname: 'h_recno',
+			sortorder: "desc",
 
 		ondblClickRow: function () {
 				let data = selrowData('#' + dialog_srcdocno.gridname);

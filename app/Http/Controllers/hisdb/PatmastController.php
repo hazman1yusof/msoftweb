@@ -274,7 +274,12 @@ class PatmastController extends defaultController
             //////////where//////////
             $table = $table->where('idno','=',$request->idno);
             $user = $table->first();
+
+
             if($user->loginid != $request->loginid){
+                if($this->default_duplicate('sysdb.users','username',$request->loginid)>0){
+                    throw new \Exception("Username already exist");
+                }
                 $this->makeloginid($request);
             }
 
@@ -340,12 +345,6 @@ class PatmastController extends defaultController
 
 
         try {
-
-            if($this->default_duplicate('sysdb.users','username',$request->loginid)){
-                DB::rollback();
-
-                return response('Duplicate LoginID', 500);
-            }
 
             $table->insert($array_insert);
 
