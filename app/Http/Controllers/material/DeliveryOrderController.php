@@ -949,6 +949,11 @@ class DeliveryOrderController extends defaultController
                 ->where('recstatus', '<>', 'DELETE')
                 ->get();
 
+        $po_hd = DB::table('material.purordhd')
+                ->where('recno', '=', $refer_recno)
+                ->where('compcode', '=', session('compcode'))
+                ->first();
+
         foreach ($po_dt as $key => $value) {
 
 
@@ -962,25 +967,30 @@ class DeliveryOrderController extends defaultController
                     'recno' => $recno, 
                     'lineno_' => $value->lineno_, 
                     'polineno' => $value->lineno_,
-                    'productcat' => $productcat,
-                    'srcdocno' => $value->purordno,
-                    'prdept' => $value->prdept,
                     'pricecode' => $value->pricecode, 
                     'itemcode' => $value->itemcode, 
                     'uomcode' => $value->uomcode,
                     'pouom' => $value->pouom,  
+                    'suppcode' => $po_hd->suppcode,
+                    'trandate' => $po_hd->trandate,
+                    'deldept' => $po_hd->deldept,
+                    'deliverydate' => $po_hd->deliverydate,
                     'qtyorder' => $value->qtyorder, 
                     'qtydelivered' => $value->qtydelivered, 
                     'qtyoutstand' => $value->qtyorder - $value->qtydelivered,
                     'unitprice' => $value->unitprice, 
                     'taxcode' => $value->taxcode, 
-                    'perdisc' => $value->perdisc, 
+                    'perdisc' => $value->perdisc,
                     'amtdisc' => $value->amtdisc, 
                     'amtslstax' => $value->amtslstax, 
                     'netunitprice' => $value->netunitprice,
-                    'totamount' => $value->totamount,
                     'amount' => $value->amount, 
+                    'totamount' => $value->totamount,
+                    'productcat' => $productcat,
+                    'srcdocno' => $value->purordno,
+                    'prdept' => $value->prdept, 
                     'rem_but'=>$value->rem_but,
+                    'unit' => session('unit'), 
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'A', 

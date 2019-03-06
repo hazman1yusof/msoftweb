@@ -44,7 +44,6 @@ class do_util extends defaultController{
 	}
 
 	public static function stockloc_ins($value,$txnqty,$netprice){
-        dd('shit');
 		//1. amik stockloc
         $stockloc_obj = DB::table('material.StockLoc')
             ->where('StockLoc.CompCode','=',session('compcode'))

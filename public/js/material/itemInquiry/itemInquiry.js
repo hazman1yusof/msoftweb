@@ -446,13 +446,11 @@ $(document).ready(function () {
 					field:['trandate','trantype','deptcode','txnqty', 'upduser', 'updtime'],
 					table_name:'material.ivtxndt',
 					table_id:'auditno',
-					filterCol:['compcode','itemcode','deptcode', 'upduser', 'updtime'],
+					filterCol:['compcode','itemcode','deptcode'],
 					filterVal:[
 						'session.compcode',
 						selrowData("#detail").itemcode,
 						selrowData("#detail").deptcode,
-						selrowData("#detail").upduser,
-						selrowData("#detail").updtime,
 						],
 					sidx: 'adddate', sord:'desc'
 				}
