@@ -41,9 +41,7 @@
 @endsection
 
 @section('body')
-	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
-	<input id="itemcode" name="deldept" type="hidden" value="{{Session::get('itemcode')}}">
-
+	
 	<div class='row'>
 
 		<input id="Class2" name="Class" type="hidden" value="{{ $_GET['Class'] }}">
@@ -99,6 +97,9 @@
 			<div class="panel panel-default">
 		    	<div class="panel-heading">Detail Movement by Item</div>
 		    		<div class="panel-body">
+		    			<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
+						<input id="itemcode" name="deldept" type="hidden" value="{{Session::get('itemcode')}}">
+
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
             				<table id="jqGrid" class="table table-striped"></table>
             					<div id="jqGridPager"></div>
