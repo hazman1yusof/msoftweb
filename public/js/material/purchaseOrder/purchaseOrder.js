@@ -278,6 +278,7 @@ $(document).ready(function () {
 			switch($("#scope").val()){
 				case "dataentry":
 					break;
+
 				case "cancel": 
 					if(stat=='ISSUED'){
 						$('#but_cancel_jq,#but_reopen_jq').show();
@@ -288,6 +289,7 @@ $(document).ready(function () {
 						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 					}
 					break;
+
 				case "all":
 					if(stat=='ISSUED'){
 						if(recstatus != "CANCELLED" && qtyOutstand == '0'){
@@ -299,17 +301,6 @@ $(document).ready(function () {
 
 						$('#but_post_jq,#but_cancel_jq').hide();
 
-					/*if(stat=='ISSUED'){
-						if (recstatus != 'CANCELLED'){
-								$('#but_reopen_jq').hide();
-							//alert('Please cancel the DO');
-						}else{
-							$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq').hide();
-						}
-						
-						$('#but_cancel_jq,#but_reopen_jq').show();
-						$('#but_post_jq,#but_soft_cancel_jq').hide();*/
 					}else if(stat=="CANCELLED"){
 						$('#but_reopen_jq').show();
 						$('#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq').hide();
@@ -318,6 +309,7 @@ $(document).ready(function () {
 						$('#but_reopen_jq,#but_cancel_jq').hide();
 					}
 					break;
+					
 				case "reopen":
 					if(stat=='ISSUED'){
 						/*if(purorddt_qtyOutstand == 0 && purorddt_recstatus != 'CANCELLED'){
