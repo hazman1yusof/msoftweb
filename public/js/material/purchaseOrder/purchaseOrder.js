@@ -277,6 +277,7 @@ $(document).ready(function () {
 			let recstatus = selrowData("#jqGrid").purorddt_recstatus;
 			switch($("#scope").val()){
 				case "dataentry":
+					let data = $('#jqGrid').jqGrid ('getRowData', recstatus);
 					break;
 
 				case "cancel": 
@@ -309,7 +310,7 @@ $(document).ready(function () {
 						$('#but_reopen_jq,#but_cancel_jq').hide();
 					}
 					break;
-					
+
 				case "reopen":
 					if(stat=='ISSUED'){
 						/*if(purorddt_qtyOutstand == 0 && purorddt_recstatus != 'CANCELLED'){
