@@ -1621,6 +1621,7 @@ $(document).ready(function () {
 		},'none'
 	);
 	dialog_srcdocno.makedialog();
+	jqgrid_label_align_right('#' + dialog_srcdocno.gridname);
 
 	var dialog_suppcode = new ordialog(
 		'suppcode','material.supplier','#delordhd_suppcode',errorField,
