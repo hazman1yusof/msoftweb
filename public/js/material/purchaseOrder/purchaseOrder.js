@@ -311,6 +311,10 @@ $(document).ready(function () {
 					}
 					break;
 
+				case "ISSUED":
+
+					break;
+
 				case "reopen":
 					if(stat=='ISSUED'){
 						/*if(purorddt_qtyOutstand == 0 && purorddt_recstatus != 'CANCELLED'){
@@ -2152,13 +2156,13 @@ $(document).ready(function () {
 	dialog_taxcode.makedialog(false);
 
 	function cari_gstpercent(id){
-			let data = $('#jqGrid2').jqGrid ('getRowData', id);
-			$("#jqGrid2 #"+id+"_pouom_gstpercent").val(data.rate);
-		}
+		let data = $('#jqGrid2').jqGrid ('getRowData', id);
+		$("#jqGrid2 #"+id+"_pouom_gstpercent").val(data.rate);
+	}
 
-		var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
-		genpdf.printEvent();
+	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
+	genpdf.printEvent();
 
-		/*var barcode = new gen_barcode('#_token','#but_print_dtl',);
-		barcode.init();*/
+	/*var barcode = new gen_barcode('#_token','#but_print_dtl',);
+	barcode.init();*/
 });

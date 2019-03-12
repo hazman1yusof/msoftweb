@@ -119,6 +119,13 @@ class PurchaseOrderDetailController extends defaultController
                     ->where('recstatus','!=','DELETE')
                     ->sum('amtslstax');
 
+            $authorise = DB::table('material.authorisedtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('trantype','=','PO')
+                ->where('limitamt','>=',$totalAmount)
+                ->orderBy('limitamt', 'asc')
+                ->first();
+
             ///4. then update to header
             DB::table('material.purordhd')
                 ->where('compcode','=',session('compcode'))
@@ -126,8 +133,10 @@ class PurchaseOrderDetailController extends defaultController
                 ->update([
                     'totamount' => $totalAmount, 
                     'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
+                    'TaxAmt' => $tot_gst,
+                    'authpersonid' => $authorise->authorid
                 ]);
+
 
             echo $totalAmount;
 
