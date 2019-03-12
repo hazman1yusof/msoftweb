@@ -386,59 +386,32 @@ $(document).ready(function () {
             });
         });
 
+	/*function gethdrmov(){
+		var param = {
+				action:'get_value_default',
+				url:'/util/get_value_default',
+				field:['deptcode','itemcode'],
+				table_name:'material.stockloc',
+				table_id:'idno',
+				filterCol:['compcode', 'itemcode', 'deptcode'],
+				filterVal:['session.compcode', '', '']
+				
+		}
 
-		/*$("#datepicker_from").datepicker({
-		    showOn: "button",
-		    buttonImageOnly: false,
-		    "onSelect": function(date) {
-		      minDateFilter = new Date(date).getTime();
-		    //  DataTable.fnDraw();
-	    }
-	  	}).keyup(function() {
-	    minDateFilter = new Date(this.value).getTime();
-	   // DataTable.fnDraw();
-	  	});
-
-	  	$("#datepicker_to").datepicker({
-		    showOn: "button",
-		    buttonImageOnly: false,
-		    "onSelect": function(date) {
-		      maxDateFilter = new Date(date).getTime();
-		   //   DataTable.fnDraw();
-	    }
-	  	}).keyup(function() {
-	    maxDateFilter = new Date(this.value).getTime();
-	    DataTable.fnDraw();
-	 	 });
-
-
-		// Date range filter
-		minDateFilter = "";
-		maxDateFilter = "";
-
-		$.fn.dataTableExt.afnFiltering.push(
-		  function(oSettings, aData, iDataIndex) {
-		    if (typeof aData._date == 'undefined') {
-		      aData._date = new Date(aData[0]).getTime();
-		    }
-
-		    if (minDateFilter && !isNaN(minDateFilter)) {
-		      if (aData._date < minDateFilter) {
-		        return false;
-		      }
-		    }
-
-		    if (maxDateFilter && !isNaN(maxDateFilter)) {
-		      if (aData._date > maxDateFilter) {
-		        return false;
-		      }
-		    }
-
-		    return true;
-		  }
-		);*/
-
-		
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data)){
+				$.each(data.rows, function(index, value ) {
+					if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
+						$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
+					}else{
+						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
+					}
+				});
+			}
+		});
+	}		*/
 
 	function getdtlmov(fetchall,start,limit){
 		var param={
