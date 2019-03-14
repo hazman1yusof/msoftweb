@@ -428,6 +428,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
 			alert(data.responseText);
+			// $('#error_infront').text(data.responseText);
 		}).done(function (data) {
 			//2nd successs?
 		});
@@ -810,6 +811,37 @@ $(document).ready(function () {
         fixPositionsOfFrozenDivs.call(this);
     });
 	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+
+	$("#jqGrid2").jqGrid('bindKeys');
+	var updwnkey_fld;
+	function updwnkey_func(event){
+		var optid = event.currentTarget.id;
+		var fieldname = optid.substring(optid.search("_"));
+		updwnkey_fld = fieldname;
+	}
+
+	$("#jqGrid2").keydown(function(e) {
+      switch (e.which) {
+        case 40: // down
+          var $grid = $(this);
+          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+		  $("#"+selectedRowId+updwnkey_fld).focus();
+
+          e.preventDefault();
+          break;
+
+        case 38: // up
+          var $grid = $(this);
+          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+		  $("#"+selectedRowId+updwnkey_fld).focus();
+
+          e.preventDefault();
+          break;
+
+        default:
+          return;
+      }
+    });
 
 
 	$("#jqGrid2").jqGrid('setGroupHeaders', {
@@ -1354,6 +1386,7 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='qtydelivered'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='itemcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 		$("#jqGrid2 input[name='qtydelivered']").on('blur',calculate_conversion_factor);
+		$("#jqGrid2 input[name='qtydelivered'],#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='expdate'],#jqGrid2 input[name='batchno']").on('focus',updwnkey_func);
 	}
 
 	/////////////bind shift + f to btm detail///////////

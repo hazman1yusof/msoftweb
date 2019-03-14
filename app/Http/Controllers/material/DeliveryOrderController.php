@@ -389,6 +389,8 @@ class DeliveryOrderController extends defaultController
             //---- 8. update po kalu ada srcdocno ---//
                 if($delordhd_obj->srcdocno != 0){
 
+
+
                     $podt_obj = DB::table('material.purorddt')
                         ->where('compcode','=',session('compcode'))
                         ->where('itemcode','=',$value->itemcode)
@@ -397,15 +399,13 @@ class DeliveryOrderController extends defaultController
                         ->where('lineno_','=',$value->polineno);
 
                     $podt_obj_lama = $podt_obj->first();
+                    $this->checkIfPOposted($value);
 
                     $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
                     $qtyoutstand = $podt_obj_lama->qtyorder - $jumlah_qtydelivered;
 
                     if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
-                        DB::rollback();
-                        
-                        return response('Error: Quantity delivered exceed quantity order', 500)
-                            ->header('Content-Type', 'text/plain');
+                        throw new \Exception("Quantity delivered exceed quantity order");
                     }
 
                     $podt_obj->update([
@@ -459,7 +459,7 @@ class DeliveryOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -716,6 +716,8 @@ class DeliveryOrderController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$request->recno)
                     ->first();
+
+                // dd($request->recno);
 
                 //amik yearperiod dari delordhd
                 $yearperiod = $this->getyearperiod($ivtxnhd_obj->trandate);
@@ -1016,6 +1018,19 @@ class DeliveryOrderController extends defaultController
             ]);
 
         return $amount;
+    }
+
+    public function checkIfPOposted($value){
+        $po_hd = DB::table('material.purordhd')
+                ->where('purordno', '=', $value->srcdocno)
+                ->where('compcode', '=', session('compcode'))
+                ->first();
+        // dd($po_hd->recstatus);
+
+        if($po_hd->recstatus != 'ISSUED'){
+        // dd($po_hd->recstatus);
+            throw new \Exception("Cannot posted if its PO are not ISSUED yet");
+        }
     }
 }
 
