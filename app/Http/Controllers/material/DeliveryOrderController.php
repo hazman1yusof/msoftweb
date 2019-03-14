@@ -1027,7 +1027,7 @@ class DeliveryOrderController extends defaultController
                 ->first();
         // dd($po_hd->recstatus);
 
-        if($po_hd->recstatus != 'CANCELLED'){
+        if($po_hd->recstatus == 'CANCELLED'){
             throw new \Exception("Cannot posted, PO is CANCELLED");
         }else if($po_hd->recstatus != 'ISSUED'){
         // dd($po_hd->recstatus);
