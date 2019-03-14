@@ -284,6 +284,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
 			switch($("#scope").val()){
 				case "dataentry":
