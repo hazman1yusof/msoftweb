@@ -241,6 +241,7 @@ $(document).ready(function () {
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 200, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'delordhd_recstatus', width: 200},
+			{ label: '', name: 'Refresh', width: 120,formatter: formatterRefresh,unformat: unformatRemarks},
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 250, classes: 'wrap', hidden:true},
 			{ label: 'perdisc', name: 'delordhd_perdisc', width: 90, hidden:true, classes: 'wrap'},
@@ -405,7 +406,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['delordhd_trantype','delordhd_recno','delordhd_docno','delordhd_adduser','delordhd_adddate','delordhd_upduser','delordhd_upddate','delordhd_deluser','delordhd_idno','supplier_name','delordhd_recstatus','delordhd_unit']);
+	addParamField('#jqGrid',false,saveParam,['delordhd_trantype','delordhd_recno','delordhd_docno','delordhd_adduser','delordhd_adddate','delordhd_upduser','delordhd_upddate','delordhd_deluser','delordhd_idno','supplier_name','delordhd_recstatus','delordhd_unit','Refresh']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -877,6 +878,10 @@ $(document).ready(function () {
 	/////////////////////////all function for remarks//////////////////////////////////////////////////
 	function formatterRemarks(cellvalue, options, rowObject){
 		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'></i> remark</button>";
+	}
+
+	function formatterRefresh(cellvalue, options, rowObject){
+		return "<button class='remarks_button btn btn-primary btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-refresh'></i> </button>";
 	}
 
 	function unformatRemarks(cellvalue, options, rowObject){
