@@ -427,8 +427,8 @@ $(document).ready(function () {
 		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
-			alert(data.responseText);
-			// $('#error_infront').text(data.responseText);
+			// alert(data.responseText);
+			$('#error_infront').text(data.responseText);
 		}).done(function (data) {
 			//2nd successs?
 		});
