@@ -262,6 +262,8 @@ $(document).ready(function () {
 			{ label: 'Expiry Date', name: 'expdate', width: 40, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Batch No', name: 'batchno', width: 40, classes: 'wrap'},
 			{ label: 'Balance Quantity', name: 'balqty', width: 40, classes: 'wrap'},
+			{ label: 'deptcode', name: 'deptcode', width: 30, classes: 'wrap', hidden:true},
+			{ label: 'itemcode', name: 'itemcode', width: 30, classes: 'wrap', hidden:true},
 		],
 		autowidth:true,
         multiSort: true,
@@ -274,6 +276,8 @@ $(document).ready(function () {
 
 		onSelectRow:function(rowid, selected){
 			var jg=$("#jqGrid").jqGrid('getRowData',rowid);
+			/*var deptcode = $('#deptcodedtl').val();
+			var itemcode = $('#itemcodedtl').val();*/
 			
 		},
 	});
@@ -311,6 +315,9 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
+			//$("#deptcodedtl").val($("#deptcode").val());
+			// var deptcode = $('#deptcodedtl').val(deptcode);
+			// var itemcode = $('#itemcodedtl').val();
 			DataTable.clear().draw();
 			getdtlmov(false,0,20);
 		},
@@ -319,6 +326,8 @@ $(document).ready(function () {
 	});
 
     $("#itemExpiry").jqGrid('setLabel', 'balqty', 'Balance', {'text-align':'right'});
+
+
 
     //////////////////////////////// TABLE DETAIL MOVEMENT/////////////////////////////////////////////////
 

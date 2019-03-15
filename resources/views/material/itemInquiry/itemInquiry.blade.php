@@ -46,8 +46,8 @@
 
 		<input id="Class2" name="Class" type="hidden" value="{{ $_GET['Class'] }}">
 		<input id="getYear" name="getYear" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
-		<input id="deptcode" name="deptcode" type="hidden" value="{{Request::get('deptcode')}}">
-		<input id="itemcode" name="itemcode" type="hidden" value="{{Request::get('itemcode')}}">
+		<!-- <input id="deptcode" name="deptcode" type="hidden" value="{{Request::get('deptcode')}}">
+		<input id="itemcode" name="itemcode" type="hidden" value="{{Request::get('itemcode')}}"> -->
 
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
@@ -106,13 +106,13 @@
             				<table id="hdrmove" class="table table-striped"></table>
             					<div id="jqGridPager4"></div>
 	            					<div class="form-group">
-		            					<label class="col-md-1 control-label" for="deptcode">Dept Code:</label>  
+		            					<label class="col-md-1 control-label" for="deptcodedtl">Dept Code:</label>  
 								  			<div class="col-md-2">
-												<input id="deptcode" name="deptcode" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
+												<input id="deptcodedtl" name="deptcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
 								  			</div>
-								  		<label class="col-md-1 control-label" for="itemcode">Item Code:</label>  
+								  		<label class="col-md-1 control-label" for="itemcodedtl">Item Code:</label>  
 								  			<div class="col-md-2">
-												<input id="itemcode" name="itemcode" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
+												<input id="itemcodedtl" name="itemcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
 								  			</div>
 								  		<label class="col-md-1 control-label" for="min">Date From:</label>  
 								  			<div class="col-md-2">
