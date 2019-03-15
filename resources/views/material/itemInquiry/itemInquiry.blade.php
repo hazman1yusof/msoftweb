@@ -46,6 +46,8 @@
 
 		<input id="Class2" name="Class" type="hidden" value="{{ $_GET['Class'] }}">
 		<input id="getYear" name="getYear" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
+		<input id="deptcode" name="deptcode" type="hidden" value="{{Request::get('deptcode')}}">
+		<input id="itemcode" name="itemcode" type="hidden" value="{{Request::get('itemcode')}}">
 
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
@@ -97,20 +99,20 @@
 			<div class="panel panel-default">
 		    	<div class="panel-heading">Detail Movement by Item</div>
 		    		<div class="panel-body">
-		    			<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
-						<input id="itemcode" name="deldept" type="hidden" value="{{Session::get('itemcode')}}">
+		    			<!-- <input id="deptcode" name="deptcode" type="hidden" value="{{Request::get('deptcode')}}">
+						<input id="itemcode" name="itemcode" type="hidden" value="{{Request::get('itemcode')}}"> -->
 
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
+            				<table id="hdrmove" class="table table-striped"></table>
+            					<div id="jqGridPager4"></div>
 	            					<div class="form-group">
 		            					<label class="col-md-1 control-label" for="deptcode">Dept Code:</label>  
 								  			<div class="col-md-2">
-												<input id="deptcode" name="deptcode" type="text" maxlength="11" class="form-control input-sm" rdonly>
+												<input id="deptcode" name="deptcode" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
 								  			</div>
 								  		<label class="col-md-1 control-label" for="itemcode">Item Code:</label>  
 								  			<div class="col-md-2">
-												<input id="itemcode" name="itemcode" type="text" maxlength="11" class="form-control input-sm" rdonly>
+												<input id="itemcode" name="itemcode" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
 								  			</div>
 								  		<label class="col-md-1 control-label" for="min">Date From:</label>  
 								  			<div class="col-md-2">
@@ -165,28 +167,6 @@
         				</div>
 		    		</div>
 		</div>
-			<!-- <p id = "deptcode">
-				<span id = "deptcode" class="deptcode">Deptcode: </span><input id="deptcode" name="deptcode" type="text"/>
-			</p>
-
-			<p id = "itemcode">
-				<span id = "itemcode" class="itemcode">Itemcode: </span><input id="itemcode" name="itemcode" type="text"/>
-			</p>
-
-			<table border="0" cellspacing="5" cellpadding="5">
-	        	<tbody>
-		            <tr>
-		                <td>Minimum Date:</td>
-		                <td><input name="min" id="min" type="text"></td>
-		            </tr>
-	           
-		            <tr>
-		                <td>Maximum Date:</td>
-		                <td><input name="max" id="max" type="text"></td>
-		            </tr>
-	        	</tbody>
-       		</table>
-       		<hr> -->
 
 			<table class="table table-hover  table-bordered" id='TableDetailMovement'>
 				<thead>

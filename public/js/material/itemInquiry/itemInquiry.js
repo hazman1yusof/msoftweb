@@ -386,40 +386,13 @@ $(document).ready(function () {
             });
         });
 
-	/*function gethdrmov(){
-		var param = {
-				action:'get_value_default',
-				url:'/util/get_value_default',
-				field:['deptcode','itemcode'],
-				table_name:'material.stockloc',
-				table_id:'idno',
-				filterCol:['compcode', 'itemcode', 'deptcode'],
-				filterVal:['session.compcode', '', '']
-				
-		}
-
-		$.get( param.url+"?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data)){
-				$.each(data.rows, function(index, value ) {
-					if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
-						$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}else{
-						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}
-				});
-			}
-		});
-	}		*/
-
 	function getdtlmov(fetchall,start,limit){
 		var param={
 					action:'get_value_default',
 					url:'/util/get_value_default',
 					field:['trandate','trantype','deptcode','txnqty', 'upduser', 'updtime'],
 					table_name:'material.ivtxndt',
-					table_id:'auditno',
+					table_id:'idno',
 					filterCol:['compcode','itemcode','deptcode'],
 					filterVal:[
 						'session.compcode',
