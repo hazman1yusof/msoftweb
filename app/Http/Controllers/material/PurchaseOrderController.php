@@ -33,7 +33,7 @@ class PurchaseOrderController extends defaultController
             case 'posted':
                 return $this->posted($request);
             case 'cancel':
-                return $this->cancel($request);
+                return $this->soft_cancel($request);
             case 'reopen':
                 return $this->reopen($request);
             default:
@@ -295,13 +295,14 @@ class PurchaseOrderController extends defaultController
             return response('Error'.$e, 500);
         }
     }
-    public function cancel(Request $request){
+    public function soft_cancel(Request $request){
         DB::beginTransaction();
 
         try{
 
             DB::table('material.purordhd')
                 ->where('recno','=',$request->recno)
+                ->where('unit','=',session('unit'))
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'cancelby' => session('username'),
@@ -311,6 +312,7 @@ class PurchaseOrderController extends defaultController
 
             DB::table('material.purorddt')
                 ->where('recno','=',$request->recno)
+                 ->where('unit','=',session('unit'))
                 ->where('compcode','=',session('compcode'))
                 ->where('recstatus','!=','DELETE')
                 ->update([

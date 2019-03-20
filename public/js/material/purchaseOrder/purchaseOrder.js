@@ -255,6 +255,8 @@ $(document).ready(function () {
 			{ label: 'upddate', name: 'purordhd_upddate', width: 90, hidden: true },
 			{ label: 'reopenby', name: 'purordhd_reopenby', width: 40, hidden:'true'},
 			{ label: 'reopendate', name: 'purordhd_reopendate', width: 40, hidden:'true'},
+			{ label: 'cancelby', name: 'purordhd_cancelby', width: 40, hidden:'true'},
+			{ label: 'canceldate', name: 'purordhd_canceldate', width: 40, hidden:'true'},
 			{ label: 'idno', name: 'purordhd_idno', width: 90, hidden: true },
 			{ label: 'unit', name: 'purordhd_unit', width: 40, hidden:'true'},
 
@@ -273,7 +275,7 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
 			let delordno = selrowData("#jqGrid").purordhd_delordno;
-			let qtyOutstand = selrowData("#jqGrid").purorddt_qtyOutstand;
+			let qtyOutstand = selrowData("#jqGrid2").purorddt_qtyOutstand;
 			let recstatus = selrowData("#jqGrid").purorddt_recstatus;
 			switch($("#scope").val()){
 				case "dataentry":
@@ -296,7 +298,7 @@ $(document).ready(function () {
 						if(qtyOutstand != '0'){
 							//alert('Please cancel the DO');
 							$('#but_reopen_jq').show();
-							alert('Please cancel the DO');
+							
 						}else{
 							$('#but_reopen_jq').show();
 						}
@@ -317,12 +319,13 @@ $(document).ready(function () {
 						if(qtyOutstand != '0'){
 							//alert('Please cancel the DO');
 							$('#but_reopen_jq').show();
-							alert('Please cancel the DO');
+							
 						}else{
 							$('#but_reopen_jq').show();
 						}
 
 						$('#but_post_jq,#but_cancel_jq').hide();
+					}	
 					break;
 
 				case "reopen":
@@ -442,6 +445,26 @@ $(document).ready(function () {
 			//2nd successs?
 		});
 	});
+
+	/*$("#but_reopen_jq").click(function(){
+
+		let qtyOutstand = selrowData("#jqGrid3").purorddt_qtyOutstand;
+		if (qtyOutstand != '0'){
+			alert("aa");
+		}
+		
+		saveParam.oper = $(this).data("oper");
+		let obj={recno:selrowData('#jqGrid').purordhd_recno,_token:$('#_token').val()};
+		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
+			refreshGrid("#jqGrid", urlParam);
+		}).fail(function (data) {
+			alert(data.responseText);
+		}).done(function (data) {
+			//2nd successs?
+		});
+	});*/
+
+
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj){
