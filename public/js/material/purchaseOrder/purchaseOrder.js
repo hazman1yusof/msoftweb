@@ -255,6 +255,8 @@ $(document).ready(function () {
 			{ label: 'upddate', name: 'purordhd_upddate', width: 90, hidden: true },
 			{ label: 'reopenby', name: 'purordhd_reopenby', width: 40, hidden:'true'},
 			{ label: 'reopendate', name: 'purordhd_reopendate', width: 40, hidden:'true'},
+			{ label: 'cancelby', name: 'purordhd_cancelby', width: 40, hidden:'true'},
+			{ label: 'canceldate', name: 'purordhd_canceldate', width: 40, hidden:'true'},
 			{ label: 'idno', name: 'purordhd_idno', width: 90, hidden: true },
 			{ label: 'unit', name: 'purordhd_unit', width: 40, hidden:'true'},
 
@@ -273,7 +275,7 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
 			let delordno = selrowData("#jqGrid").purordhd_delordno;
-			let qtyOutstand = selrowData("#jqGrid").purorddt_qtyOutstand;
+			let qtyOutstand = selrowData("#jqGrid2").purorddt_qtyOutstand;
 			let recstatus = selrowData("#jqGrid").purorddt_recstatus;
 			switch($("#scope").val()){
 				case "dataentry":
@@ -293,9 +295,10 @@ $(document).ready(function () {
 
 				case "all":
 					if(stat=='ISSUED'){
-						if(recstatus != "CANCELLED" && qtyOutstand == '0'){
-							alert('Please cancel the DO');
-							$('#but_reopen_jq').hide();
+						if(qtyOutstand != '0'){
+							//alert('Please cancel the DO');
+							$('#but_reopen_jq').show();
+							
 						}else{
 							$('#but_reopen_jq').show();
 						}
@@ -312,7 +315,17 @@ $(document).ready(function () {
 					break;
 
 				case "ISSUED":
+					if(stat=='ISSUED'){
+						if(qtyOutstand != '0'){
+							//alert('Please cancel the DO');
+							$('#but_reopen_jq').show();
+							
+						}else{
+							$('#but_reopen_jq').show();
+						}
 
+						$('#but_post_jq,#but_cancel_jq').hide();
+					}	
 					break;
 
 				case "reopen":
@@ -432,6 +445,26 @@ $(document).ready(function () {
 			//2nd successs?
 		});
 	});
+
+	/*$("#but_reopen_jq").click(function(){
+
+		let qtyOutstand = selrowData("#jqGrid3").purorddt_qtyOutstand;
+		if (qtyOutstand != '0'){
+			alert("aa");
+		}
+		
+		saveParam.oper = $(this).data("oper");
+		let obj={recno:selrowData('#jqGrid').purordhd_recno,_token:$('#_token').val()};
+		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
+			refreshGrid("#jqGrid", urlParam);
+		}).fail(function (data) {
+			alert(data.responseText);
+		}).done(function (data) {
+			//2nd successs?
+		});
+	});*/
+
+
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj){
@@ -861,6 +894,39 @@ $(document).ready(function () {
         fixPositionsOfFrozenDivs.call(this);
     });
 	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+
+	$("#jqGrid2").jqGrid('bindKeys');
+		var updwnkey_fld;
+		function updwnkey_func(event){
+			var optid = event.currentTarget.id;
+			var fieldname = optid.substring(optid.search("_"));
+			updwnkey_fld = fieldname;
+		}
+
+		$("#jqGrid2").keydown(function(e) {
+	      switch (e.which) {
+	        case 40: // down
+	          var $grid = $(this);
+	          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+			  $("#"+selectedRowId+updwnkey_fld).focus();
+
+	          e.preventDefault();
+	          break;
+
+	        case 38: // up
+	          var $grid = $(this);
+	          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+			  $("#"+selectedRowId+updwnkey_fld).focus();
+
+	          e.preventDefault();
+	          break;
+
+	        default:
+	          return;
+	      }
+	    });
+
+
 	$("#jqGrid2").jqGrid('setGroupHeaders', {
   	useColSpanStyle: false, 
 	  groupHeaders:[
@@ -877,6 +943,8 @@ $(document).ready(function () {
 	function formatterRemarks(cellvalue, options, rowObject){
 		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'></i> remark</button>";
 	}
+
+
 
 	function unformatRemarks(cellvalue, options, rowObject){
 		return null;
@@ -1833,7 +1901,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='itemcode']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
 		},{
@@ -1893,6 +1961,7 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
 				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+
 				var rowid = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
 				$("#jqGrid2").jqGrid('setRowData', rowid ,{description:data['p_description']});
 
@@ -1906,7 +1975,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='uomcode']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			},
 			loadComplete:function(data){
@@ -2013,7 +2082,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='pouom']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
 			
@@ -2076,7 +2145,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='qtyorder']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
 			
@@ -2132,7 +2201,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='perdisc']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
 			

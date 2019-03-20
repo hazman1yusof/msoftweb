@@ -262,6 +262,8 @@ $(document).ready(function () {
 			{ label: 'Expiry Date', name: 'expdate', width: 40, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Batch No', name: 'batchno', width: 40, classes: 'wrap'},
 			{ label: 'Balance Quantity', name: 'balqty', width: 40, classes: 'wrap'},
+			{ label: 'deptcode', name: 'deptcode', width: 30, classes: 'wrap', hidden:true},
+			{ label: 'itemcode', name: 'itemcode', width: 30, classes: 'wrap', hidden:true},
 		],
 		autowidth:true,
         multiSort: true,
@@ -274,6 +276,8 @@ $(document).ready(function () {
 
 		onSelectRow:function(rowid, selected){
 			var jg=$("#jqGrid").jqGrid('getRowData',rowid);
+			/*var deptcode = $('#deptcodedtl').val();
+			var itemcode = $('#itemcodedtl').val();*/
 			
 		},
 	});
@@ -307,10 +311,13 @@ $(document).ready(function () {
 	});
 
 	$("#detailMovementDialog").dialog({
-		width: 6/10 * $(window).width(),
+		width: 8/10 * $(window).width(),
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
+			//$("#deptcodedtl").val($("#deptcode").val());
+			// var deptcode = $('#deptcodedtl').val(deptcode);
+			// var itemcode = $('#itemcodedtl').val();
 			DataTable.clear().draw();
 			getdtlmov(false,0,20);
 		},
@@ -319,6 +326,8 @@ $(document).ready(function () {
 	});
 
     $("#itemExpiry").jqGrid('setLabel', 'balqty', 'Balance', {'text-align':'right'});
+
+
 
     //////////////////////////////// TABLE DETAIL MOVEMENT/////////////////////////////////////////////////
 
@@ -341,7 +350,7 @@ $(document).ready(function () {
 		scrollY: 500,
 		paging: false,
 		columns: [
-			{ data: 'open' ,"width": "25%"},
+			{ data: 'open' ,"width": "60%"},
 			{ data: 'trandate'},
 			{ data: 'trantype'},
 			{ data: 'description'},
@@ -386,40 +395,13 @@ $(document).ready(function () {
             });
         });
 
-	/*function gethdrmov(){
-		var param = {
-				action:'get_value_default',
-				url:'/util/get_value_default',
-				field:['deptcode','itemcode'],
-				table_name:'material.stockloc',
-				table_id:'idno',
-				filterCol:['compcode', 'itemcode', 'deptcode'],
-				filterVal:['session.compcode', '', '']
-				
-		}
-
-		$.get( param.url+"?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data)){
-				$.each(data.rows, function(index, value ) {
-					if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
-						$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}else{
-						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}
-				});
-			}
-		});
-	}		*/
-
 	function getdtlmov(fetchall,start,limit){
 		var param={
 					action:'get_value_default',
 					url:'/util/get_value_default',
 					field:['trandate','trantype','deptcode','txnqty', 'upduser', 'updtime'],
 					table_name:'material.ivtxndt',
-					table_id:'auditno',
+					table_id:'idno',
 					filterCol:['compcode','itemcode','deptcode'],
 					filterVal:[
 						'session.compcode',
