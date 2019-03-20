@@ -35,7 +35,7 @@
 		background-color:#ddd;
 	}
 	#detailMovement{
-		margin: 0.2%;position: absolute;right: 20px; bottom:5px;
+		margin: 0.2%;position: absolute;right: 50px; bottom:5px;
 	}
 	
 @endsection

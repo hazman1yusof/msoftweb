@@ -311,7 +311,7 @@ $(document).ready(function () {
 	});
 
 	$("#detailMovementDialog").dialog({
-		width: 6/10 * $(window).width(),
+		width: 8/10 * $(window).width(),
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
@@ -350,7 +350,7 @@ $(document).ready(function () {
 		scrollY: 500,
 		paging: false,
 		columns: [
-			{ data: 'open' ,"width": "25%"},
+			{ data: 'open' ,"width": "60%"},
 			{ data: 'trandate'},
 			{ data: 'trantype'},
 			{ data: 'description'},

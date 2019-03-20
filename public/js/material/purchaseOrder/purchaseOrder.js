@@ -293,9 +293,10 @@ $(document).ready(function () {
 
 				case "all":
 					if(stat=='ISSUED'){
-						if(recstatus != "CANCELLED" && qtyOutstand == '0'){
+						if(qtyOutstand != '0'){
+							//alert('Please cancel the DO');
+							$('#but_reopen_jq').show();
 							alert('Please cancel the DO');
-							$('#but_reopen_jq').hide();
 						}else{
 							$('#but_reopen_jq').show();
 						}
@@ -312,7 +313,16 @@ $(document).ready(function () {
 					break;
 
 				case "ISSUED":
+					if(stat=='ISSUED'){
+						if(qtyOutstand != '0'){
+							//alert('Please cancel the DO');
+							$('#but_reopen_jq').show();
+							alert('Please cancel the DO');
+						}else{
+							$('#but_reopen_jq').show();
+						}
 
+						$('#but_post_jq,#but_cancel_jq').hide();
 					break;
 
 				case "reopen":
@@ -861,6 +871,39 @@ $(document).ready(function () {
         fixPositionsOfFrozenDivs.call(this);
     });
 	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+
+	$("#jqGrid2").jqGrid('bindKeys');
+		var updwnkey_fld;
+		function updwnkey_func(event){
+			var optid = event.currentTarget.id;
+			var fieldname = optid.substring(optid.search("_"));
+			updwnkey_fld = fieldname;
+		}
+
+		$("#jqGrid2").keydown(function(e) {
+	      switch (e.which) {
+	        case 40: // down
+	          var $grid = $(this);
+	          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+			  $("#"+selectedRowId+updwnkey_fld).focus();
+
+	          e.preventDefault();
+	          break;
+
+	        case 38: // up
+	          var $grid = $(this);
+	          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+			  $("#"+selectedRowId+updwnkey_fld).focus();
+
+	          e.preventDefault();
+	          break;
+
+	        default:
+	          return;
+	      }
+	    });
+
+
 	$("#jqGrid2").jqGrid('setGroupHeaders', {
   	useColSpanStyle: false, 
 	  groupHeaders:[
@@ -877,6 +920,8 @@ $(document).ready(function () {
 	function formatterRemarks(cellvalue, options, rowObject){
 		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'></i> remark</button>";
 	}
+
+
 
 	function unformatRemarks(cellvalue, options, rowObject){
 		return null;
@@ -1833,7 +1878,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='itemcode']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
 		},{
@@ -1893,6 +1938,7 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
 				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+
 				var rowid = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
 				$("#jqGrid2").jqGrid('setRowData', rowid ,{description:data['p_description']});
 
@@ -1906,7 +1952,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='uomcode']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			},
 			loadComplete:function(data){
@@ -2013,7 +2059,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='pouom']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
 			
@@ -2076,7 +2122,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='qtyorder']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
 			
@@ -2132,7 +2178,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='perdisc']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
 			
