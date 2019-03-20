@@ -43,6 +43,8 @@ class DeliveryOrderController extends defaultController
                 return $this->soft_cancel($request);
             case 'cancel':
                 return $this->cancel($request);
+            case 'refresh_do':
+                return $this->refresh_do($request);
             default:
                 return 'error happen..';
         }
@@ -410,20 +412,19 @@ class DeliveryOrderController extends defaultController
 
                     $podt_obj->update([
                         'qtydelivered' => $jumlah_qtydelivered,
-                        // 'qtyoutstand' => $qtyoutstand
+                        'qtyoutstand' => $qtyoutstand
                     ]);
 
 
                     //update qtyoutstand utk suma DO pulak
-                    // $delordhd = DB::table('material.delorddt')
-                    //     ->where('compcode','=',session('compcode'))
-                    //     ->where('itemcode','=',$value->itemcode)
-                    //     ->where('prdept','=',$delordhd_obj->prdept)
-                    //     ->where('srcdocno','=',$delordhd_obj->srcdocno)
-                    //     ->update([
-                    //         'qtydelivered' => $value->qtydelivered,
-                    //         'qtyoutstand' => $qtyoutstand
-                    //     ]);
+                    $delordhd = DB::table('material.delorddt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('itemcode','=',$value->itemcode)
+                        ->where('prdept','=',$delordhd_obj->prdept)
+                        ->where('srcdocno','=',$delordhd_obj->srcdocno)
+                        ->update([
+                            'qtyoutstand' => $qtyoutstand
+                        ]);
 
                 }
 
@@ -887,20 +888,19 @@ class DeliveryOrderController extends defaultController
 
                     $podt_obj->update([
                         'qtydelivered' => $jumlah_qtydelivered,
-                        // 'qtyoutstand' => $qtyoutstand
+                        'qtyoutstand' => $qtyoutstand
                     ]);
 
 
                     //update qtyoutstand utk suma DO pulak
-                    // $delordhd = DB::table('material.delorddt')
-                    //     ->where('compcode','=',session('compcode'))
-                    //     ->where('itemcode','=',$value->itemcode)
-                    //     ->where('prdept','=',$delordhd_obj->prdept)
-                    //     ->where('srcdocno','=',$delordhd_obj->srcdocno)
-                    //     ->update([
-                    //         'qtydelivered' => $value->qtydelivered,
-                    //         'qtyoutstand' => $qtyoutstand
-                    //     ]);
+                    $delordhd = DB::table('material.delorddt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('itemcode','=',$value->itemcode)
+                        ->where('prdept','=',$delordhd_obj->prdept)
+                        ->where('srcdocno','=',$delordhd_obj->srcdocno)
+                        ->update([
+                            'qtyoutstand' => $qtyoutstand
+                        ]);
 
                 }
 
@@ -1032,6 +1032,77 @@ class DeliveryOrderController extends defaultController
         }else if($po_hd->recstatus != 'ISSUED'){
         // dd($po_hd->recstatus);
             throw new \Exception("Cannot posted, PO not ISSUED yet");
+        }
+    }
+
+    public function refresh_do(Request $request){
+        $do_hd = DB::table('material.delordhd')
+                ->where('idno', '=', $request->idno)
+                ->first();
+
+        $po_hd = DB::table('material.purordhd')
+                ->where('purordno', '=', $do_hd->srcdocno)
+                ->first();
+
+        $po_dt = DB::table('material.purorddt')
+                ->where('recno', '=', $po_hd->recno)
+                ->where('compcode', '=', session('compcode'))
+                ->where('recstatus', '<>', 'DELETE')
+                ->get();
+
+        foreach ($po_dt as $key => $value) {
+
+            $do_dt = DB::table('material.delorddt')
+                        ->where('polineno', '=', $value->lineno_)
+                        ->where('recno', '=', $do_hd->recno);
+
+            if($do_dt->exists()){
+                $do_dt
+                    ->update([
+                        'qtyorder' => $value->qtyorder
+                    ]);
+            }else{
+
+                $productcat = $this->get_productcat($value->itemcode);
+
+                $table = DB::table("material.delorddt");
+                if($value->qtyorder - $value->qtydelivered > 0){
+                    $table->insert([
+                        'compcode' => session('compcode'), 
+                        'recno' => $do_hd->recno, 
+                        'lineno_' => $value->lineno_, 
+                        'polineno' => $value->lineno_,
+                        'pricecode' => $value->pricecode, 
+                        'itemcode' => $value->itemcode, 
+                        'uomcode' => $value->uomcode,
+                        'pouom' => $value->pouom,  
+                        'suppcode' => $po_hd->suppcode,
+                        'trandate' => $po_hd->purdate,
+                        'deldept' => $po_hd->deldept,
+                        'deliverydate' => $po_hd->expecteddate,
+                        'qtyorder' => $value->qtyorder, 
+                        'qtydelivered' => $value->qtydelivered, 
+                        'qtyoutstand' => $value->qtyorder - $value->qtydelivered,
+                        'unitprice' => $value->unitprice, 
+                        'taxcode' => $value->taxcode, 
+                        'perdisc' => $value->perdisc,
+                        'amtdisc' => $value->amtdisc, 
+                        'amtslstax' => $value->amtslstax, 
+                        'netunitprice' => $value->netunitprice,
+                        'amount' => $value->amount, 
+                        'totamount' => $value->totamount,
+                        'productcat' => $productcat,
+                        'srcdocno' => $value->purordno,
+                        'prdept' => $value->prdept, 
+                        'rem_but'=>$value->rem_but,
+                        'unit' => session('unit'), 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'A', 
+                        'remarks' => $value->remarks
+                    ]);
+                }
+            }
         }
     }
 }

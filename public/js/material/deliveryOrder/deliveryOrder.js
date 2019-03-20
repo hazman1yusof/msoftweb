@@ -241,7 +241,7 @@ $(document).ready(function () {
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 200, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'delordhd_recstatus', width: 200},
-			{ label: '', name: 'Refresh', width: 120,formatter: formatterRefresh,unformat: unformatRemarks},
+			{ label: ' ', name: 'Refresh', width: 120,formatter: formatterRefresh,unformat: unformatRemarks},
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 250, classes: 'wrap', hidden:true},
 			{ label: 'perdisc', name: 'delordhd_perdisc', width: 90, hidden:true, classes: 'wrap'},
@@ -355,6 +355,16 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+
+			$("#jqGrid").find(".refresh_button").on("click", function(e){
+				var idno = $(this).data('idno');
+				$.post( "/deliveryOrder/form",{oper:'refresh_do',_token:$('#_token').val(),idno:idno}, function( data ){
+				}).fail(function(data) {
+					//////////////////errorText(dialog,data.responseText);
+				}).done(function(data){
+
+				});
+			});
 		},
 		
 	});
@@ -668,7 +678,7 @@ $(document).ready(function () {
 					},
 			},
 			{ label: 'O/S Quantity', name: 'qtyoutstand', width: 100, align: 'right', classes: 'wrap', editable:true,	
-				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
+				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'Unit Price', name: 'unitprice', width: 90, align: 'right', classes: 'wrap', 
@@ -768,8 +778,8 @@ $(document).ready(function () {
 					maxlength: 30,
 			},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
-			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
-			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
+			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:false},
+			{ label: ' ', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
 		],
@@ -877,11 +887,12 @@ $(document).ready(function () {
 
 	/////////////////////////all function for remarks//////////////////////////////////////////////////
 	function formatterRemarks(cellvalue, options, rowObject){
-		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'></i> remark</button>";
+		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'> remark</i> </button>";
 	}
 
+
 	function formatterRefresh(cellvalue, options, rowObject){
-		return "<button class='remarks_button btn btn-primary btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-refresh'></i> </button>";
+		return "<button class='refresh_button btn btn-success btn-xs' type='button' data-idno='"+rowObject.delordhd_idno+"' data-grid='#"+options.gid+"' ><i class='fa fa-refresh'></i></button>";
 	}
 
 	function unformatRemarks(cellvalue, options, rowObject){
@@ -1187,6 +1198,11 @@ $(document).ready(function () {
 		// faster_detail_array.push(faster_detail_load('deliveryOrder',options,param,case_,cellvalue));
 		
 		return cellvalue;
+	}
+
+	function format_qtyoutstand(cellvalue, options, rowObject){
+		var qtyoutstand = rowObject.qtyorder - rowObject.qtydelivered;
+		return qtyoutstand;
 	}
 
 	///////////////////////////////////////cust_rules//////////////////////////////////////////////
