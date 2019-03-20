@@ -273,6 +273,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
+			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
 			let delordno = selrowData("#jqGrid").purordhd_delordno;
 			let qtyOutstand = selrowData("#jqGrid2").purorddt_qtyOutstand;
@@ -440,7 +441,8 @@ $(document).ready(function () {
 		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
-			alert(data.responseText);
+			// alert(data.responseText);
+			$('#error_infront').text(data.responseText);
 		}).done(function (data) {
 			//2nd successs?
 		});

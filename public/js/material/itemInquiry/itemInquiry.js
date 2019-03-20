@@ -311,7 +311,7 @@ $(document).ready(function () {
 	});
 
 	$("#detailMovementDialog").dialog({
-		width: 8/10 * $(window).width(),
+		width: 9/10 * $(window).width(),
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
@@ -358,42 +358,45 @@ $(document).ready(function () {
 			{ data: 'qtyout'},
 			{ data: 'balquan'},
 			{ data: 'cost'},
-			{ data: 'trans amount'},
-			{ data: 'balance amount'},
-			{ data: 'document no'}, //ivhdr docno
+			{ data: 'amount'},
+			{ data: 'balance'},
+			{ data: 'document_no'}, //ivhdr docno
 			{ data: 'userid'}, //ivhdr respersonid
 			{ data: 'transtime'}, //ivhdr trantime
 			
 		],
 		drawCallback: function( settings ) {
 			$(".dataTables_scrollBody")[0].scrollTop = DTscrollTop;
-		}
+		},
+		initComplete: function( settings, json ) {
+	    	$('div#TableDetailMovement_filter.dataTables_filter').hide();
+	  	}
 	});
 
-	 $(document).ready(function(){
-        $.fn.dataTable.ext.search.push(
-        function (settings, data, dataIndex) {
-            var min = $('#min').datepicker("getDate");
-            var max = $('#max').datepicker("getDate");
-            var startDate = new Date(data[4]);
-            if (min == null && max == null) { return true; }
-            if (min == null && startDate <= max) { return true;}
-            if(max == null && startDate >= min) {return true;}
-            if (startDate <= max && startDate >= min) { return true; }
-            return false;
-        }
-        );
+	 // $(document).ready(function(){
+  //       $.fn.dataTable.ext.search.push(
+	 //        function (settings, data, dataIndex) {
+	 //            var min = $('#min').datepicker("getDate");
+	 //            var max = $('#max').datepicker("getDate");
+	 //            var startDate = new Date(data[4]);
+	 //            if (min == null && max == null) { return true; }
+	 //            if (min == null && startDate <= max) { return true;}
+	 //            if(max == null && startDate >= min) {return true;}
+	 //            if (startDate <= max && startDate >= min) { return true; }
+	 //            return false;
+	 //        }
+  //       );
 
        
-            $("#min").datepicker({ onSelect: function () { DataTable.draw(); }, changeMonth: true, changeYear: true });
-            $("#max").datepicker({ onSelect: function () { DataTable.draw(); }, changeMonth: true, changeYear: true });
-            var DataTable = $('#TableDetailMovement').DataTable();
+  //           $("#min").datepicker({ onSelect: function () { DataTable.draw(); }, changeMonth: true, changeYear: true });
+  //           $("#max").datepicker({ onSelect: function () { DataTable.draw(); }, changeMonth: true, changeYear: true });
+  //           var DataTable = $('#TableDetailMovement').DataTable();
 
-            // Event listener to the two range filtering inputs to redraw on input
-            $('#min, #max').change(function () {
-                DataTable.draw();
-            });
-        });
+  //           // Event listener to the two range filtering inputs to redraw on input
+  //           $('#min, #max').change(function () {
+  //               DataTable.draw();
+  //           });
+  //       });
 
 	function getdtlmov(fetchall,start,limit){
 		var param={
@@ -430,7 +433,13 @@ $(document).ready(function () {
 					}
 					obj.balquan = '-';
 					obj.cost = '-';
+					obj.amount = '-';
+					obj.balance = '-';
+					obj.document_no = '-';
+					obj.userid = '-';
+					obj.transtime = '-';
 				});
+				console.log(data.rows);
 				DataTable.rows.add(data.rows).draw();
 			}else{
 				moremov=false;

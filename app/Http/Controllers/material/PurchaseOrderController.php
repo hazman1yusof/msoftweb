@@ -33,7 +33,7 @@ class PurchaseOrderController extends defaultController
             case 'posted':
                 return $this->posted($request);
             case 'cancel':
-                return $this->soft_cancel($request);
+                return $this->cancel($request);
             case 'reopen':
                 return $this->reopen($request);
             default:
@@ -234,13 +234,26 @@ class PurchaseOrderController extends defaultController
                     'recstatus' => 'ISSUED' 
                 ]);
 
-            DB::table('material.purorddt')
-                ->where('recno','=',$request->recno)
-                ->where('compcode','=',session('compcode'))
-                ->where('recstatus','!=','DELETE')
-                ->update([
-                    'recstatus' => 'ISSUED' 
-                ]);
+            $po_dt = DB::table('material.purorddt')
+                ->where('recno', '=', $request->recno)
+                ->where('compcode', '=', session('compcode'))
+                ->where('recstatus', '<>', 'DELETE')
+                ->get();
+
+
+            foreach ($po_dt as $key => $value) {
+                DB::table('material.purorddt')
+                    ->where('recno','=',$request->recno)
+                    ->where('lineno_', '=', $value->lineno_)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','!=','DELETE')
+                    ->update([
+                        'recstatus' => 'ISSUED' ,
+                        'qtyoutstand' => $value->qtyorder
+                    ]);
+            }
+
+            
            
             DB::commit();
         
@@ -256,17 +269,19 @@ class PurchaseOrderController extends defaultController
 
         try{
 
-            $purorddt = DB::table('material.purorddt')
-                ->where('recno','=',$request->recno)
-                ->where('compcode','=',session('compcode'))
-                ->where('recstatus','!=','DELETE')
-                ->where('qtydelivered', '!=' , 0);
+            $po_dt = DB::table('material.purorddt')
+                ->where('recno', '=', $request->recno)
+                ->where('compcode', '=', session('compcode'))
+                ->where('recstatus', '<>', 'DELETE')
+                ->get();
 
-            if($purorddt->exists()){
-                DB::rollback();
+            foreach ($po_dt as $key => $value) {
+                if($value->qtyorder != $value->qtyoutstand){
+                    DB::rollback();
                         
-                return response('Error: Please Cancel all DO before reopen', 500)
-                    ->header('Content-Type', 'text/plain');
+                    return response('Error: Please Cancel all DO before reopen', 500)
+                        ->header('Content-Type', 'text/plain');
+                }
             }
 
 
@@ -295,10 +310,26 @@ class PurchaseOrderController extends defaultController
             return response('Error'.$e, 500);
         }
     }
-    public function soft_cancel(Request $request){
+    public function cancel(Request $request){
         DB::beginTransaction();
 
         try{
+
+            $po_dt = DB::table('material.purorddt')
+                ->where('recno', '=', $request->recno)
+                ->where('compcode', '=', session('compcode'))
+                ->where('recstatus', '<>', 'DELETE')
+                ->get();
+
+            foreach ($po_dt as $key => $value) {
+                if($value->qtyorder != $value->qtyoutstand){
+                    DB::rollback();
+                        
+                    return response('Error: Please Cancel all DO before reopen', 500)
+                        ->header('Content-Type', 'text/plain');
+                }
+            }
+
 
             DB::table('material.purordhd')
                 ->where('recno','=',$request->recno)

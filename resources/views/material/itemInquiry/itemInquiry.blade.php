@@ -98,31 +98,27 @@
 		<div id='detailMovement_c' class=''>
 			<div class="panel panel-default">
 		    	<div class="panel-heading">Detail Movement by Item</div>
-		    		<div class="panel-body">
-		    			<!-- <input id="deptcode" name="deptcode" type="hidden" value="{{Request::get('deptcode')}}">
-						<input id="itemcode" name="itemcode" type="hidden" value="{{Request::get('itemcode')}}"> -->
-
+		    		<div class="panel-body">=
+		    			
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="hdrmove" class="table table-striped"></table>
-            					<div id="jqGridPager4"></div>
-	            					<div class="form-group">
-		            					<label class="col-md-1 control-label" for="deptcodedtl">Dept Code:</label>  
-								  			<div class="col-md-2">
-												<input id="deptcodedtl" name="deptcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
-								  			</div>
-								  		<label class="col-md-1 control-label" for="itemcodedtl">Item Code:</label>  
-								  			<div class="col-md-2">
-												<input id="itemcodedtl" name="itemcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
-								  			</div>
-								  		<label class="col-md-1 control-label" for="min">Date From:</label>  
-								  			<div class="col-md-2">
-												<input id="min" name="min" type="text" maxlength="11" class="form-control input-sm" rdonly>
-								  			</div>
-								  		<label class="col-md-1 control-label" for="max">To:</label>  
-								  			<div class="col-md-2">
-												<input id="max" name="max" type="text" maxlength="11" class="form-control input-sm" rdonly>
-								  			</div>			
-							  		</div>
+        					<div class="form-group">
+            					<label class="col-md-1 control-label" for="deptcodedtl">Dept Code:</label>  
+						  			<div class="col-md-2">
+										<input id="deptcodedtl" name="deptcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
+						  			</div>
+						  		<label class="col-md-1 control-label" for="itemcodedtl">Item Code:</label>  
+						  			<div class="col-md-2">
+										<input id="itemcodedtl" name="itemcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
+						  			</div>
+						  		<label class="col-md-1 control-label" for="min">Date From:</label>  
+						  			<div class="col-md-2">
+										<input id="min" name="min" type="text" maxlength="11" class="form-control input-sm" rdonly>
+						  			</div>
+						  		<label class="col-md-1 control-label" for="max">To:</label>  
+						  			<div class="col-md-2">
+										<input id="max" name="max" type="text" maxlength="11" class="form-control input-sm" rdonly>
+						  			</div>			
+					  		</div>
 
 							  		<hr/>	
 <!-- 
