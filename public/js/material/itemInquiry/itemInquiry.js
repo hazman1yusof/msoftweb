@@ -370,6 +370,23 @@ $(document).ready(function () {
 	  	}
 	});
 
+	/*///////////// function date & month ////////////////////////////
+	$('#monthfrom').on('change', function() {
+		var mf1 = $("#monthfrom").val();
+		var monthfr1 = new Date(mf1);
+		monthfr1.setDate( datefr1.getDate() + 1 ); 
+		var m = datefr1.getUTCMonth() + 1;
+			if (m < 10) m='0'+m;
+		var d = datefr1.getUTCDate();
+			if (d < 10) d='0'+d;
+		var ndf1 = datefr1.getUTCFullYear()+"-"+m+"-"+d;
+		dateto1.min = ndf1;  
+	});*/
+
+
+
+	///////////////////////////////////////////////////////////////
+
 	 // $(document).ready(function(){
   //       $.fn.dataTable.ext.search.push(
 	 //        function (settings, data, dataIndex) {
@@ -444,7 +461,7 @@ $(document).ready(function () {
 		});
 	}
 
-	set_yearperiod();
+			set_yearperiod();
 			function set_yearperiod(){
 				param={
 					action:'get_value_default',
