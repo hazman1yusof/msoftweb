@@ -315,9 +315,6 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
-			//$("#deptcodedtl").val($("#deptcode").val());
-			// var deptcode = $('#deptcodedtl').val(deptcode);
-			// var itemcode = $('#itemcodedtl').val();
 			DataTable.clear().draw();
 			getdtlmov(false,0,20);
 		},
@@ -446,6 +443,27 @@ $(document).ready(function () {
 			}
 		});
 	}
+
+	set_yearperiod();
+			function set_yearperiod(){
+				param={
+					action:'get_value_default',
+					field: ['year'],
+					table_name:'sysdb.period',
+					table_id:'idno',
+					sortby:['year desc']
+				}
+				$.get( "util/get_value_default?"+$.param(this.param), function( data ) {
+						
+				},'json').done(function(data) {
+					if(!$.isEmptyObject(data.rows)){
+						data.rows.forEach(function(element){	
+							$('#yearfrom').append("<option>"+element.year+"</option>")
+							$('#yearto').append("<option>"+element.year+"</option>")
+						});
+					}
+				});
+			}
 
 			
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////// 

@@ -98,11 +98,15 @@
 		<div id='detailMovement_c' class=''>
 			<div class="panel panel-default">
 		    	<div class="panel-heading">Detail Movement by Item</div>
-		    		<div class="panel-body">=
+		    		<div class="panel-body">
 		    			
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
         					<div class="form-group">
-            					<label class="col-md-1 control-label" for="deptcodedtl">Dept Code:</label>  
+            					<label class="col-md-1 control-label" for="unit">Unit:</label>  
+						  			<div class="col-md-2">
+										<input id="unit" name="unit" type="text" maxlength="11" class="form-control input-sm" value = "{{Session::get('unit')}}">
+						  			</div>
+						  		<label class="col-md-1 control-label" for="deptcodedtl">Dept Code:</label>  
 						  			<div class="col-md-2">
 										<input id="deptcodedtl" name="deptcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
 						  			</div>
@@ -110,56 +114,81 @@
 						  			<div class="col-md-2">
 										<input id="itemcodedtl" name="itemcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
 						  			</div>
-						  		<label class="col-md-1 control-label" for="min">Date From:</label>  
+						  		<label class="col-md-1 control-label" for="uomcodedtl">UOM Code:</label>  
 						  			<div class="col-md-2">
-										<input id="min" name="min" type="text" maxlength="11" class="form-control input-sm" rdonly>
-						  			</div>
-						  		<label class="col-md-1 control-label" for="max">To:</label>  
-						  			<div class="col-md-2">
-										<input id="max" name="max" type="text" maxlength="11" class="form-control input-sm" rdonly>
-						  			</div>			
+										<input id="uomcodedtl" name="uomcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
+						  			</div>		
 					  		</div>
 
-							  		<hr/>	
-<!-- 
-							  		<div class="form-group">
-										<label class="col-md-1 control-label" for="purordhd_perdisc">Movement for Department: </label>  
-							  			<div class="col-md-2">
-											<input id="purordhd_perdisc" name="purordhd_perdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
-							  			</div>
+						</div>	  
 
-								  		<label class="col-md-1 control-label" for="purordhd_amtdisc">From Date:</label>	  
+							<div class='col-md-12' style="padding:0 0 15px 0">
+	        					<div class="form-group">
+	        						
+		            					<label class="col-md-1 control-label" for="monthfrom">Month From :</label>  
+		            					<div class="col-md-2">
+										  	<select id="monthfrom" name="monthfrom" class="form-control input-sm">
+										      <option value="monthfrom" selected>-- MONTH FROM --</option>
+										      <option value="January">January</option>
+										      <option value="February">February</option>
+										      <option value="March">March</option>
+										      <option value="April">April</option>
+										      <option value="May">May</option>
+										      <option value="June">June</option>
+										      <option value="July">July</option>
+										      <option value="August">August</option>
+										      <option value="September">September</option>
+										      <option value="October">October</option>
+										      <option value="November">November</option>
+										      <option value="December">December</option>
+										    </select>
+										</div>    
+									
+
+							  		<label class="col-md-1 control-label" for="yearfrom">Year From :</label>  
+		            					<div class="col-md-2">
+			  									<select id='yearfrom' name='yearfrom' class="form-control input-sm"></select>
+										</div>    
+
+							  		<label class="col-md-1 control-label" for="monthto">Month To :</label>  
+		            					<div class="col-md-2">
+										  	<select id="monthto" name="monthto" class="form-control input-sm">
+										      <option value="MonthFrom" selected>-- MONTH TO --</option>
+										      <option value="January">January</option>
+										      <option value="February">February</option>
+										      <option value="March">March</option>
+										      <option value="April">April</option>
+										      <option value="May">May</option>
+										      <option value="June">June</option>
+										      <option value="July">July</option>
+										      <option value="August">August</option>
+										      <option value="September">September</option>
+										      <option value="October">October</option>
+										      <option value="November">November</option>
+										      <option value="December">December</option>
+										    </select>
+										</div>    
+									
+
+							  		<label class="col-md-1 control-label" for="yearto">Year To :</label>  
+		            					<div class="col-md-2">
+										  	<select id='yearto' name='yearto' class="form-control input-sm"></select>
+										</div>    			
+						  		</div> 
+						  	</div>	
+
+						  	<div class='col-md-12' style="padding:0 0 15px 0">
+		        				<div class="form-group">
+		            				<label class="col-md-1 control-label" for="openbalqty">Opening Balance Quantity:</label>  
 								  		<div class="col-md-2">
-											<input id="purordhd_amtdisc" name="purordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
-							  			</div>
-								
-										<label class="col-md-1 control-label" for="purordhd_recstatus">To Date:</label>  
-									    <div class="col-md-2">
-										  <input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
-									    </div>
-									</div> 
-
-									<hr/>	
-
-							  		<div class="form-group">
-										<label class="col-md-1 control-label" for="purordhd_perdisc">Movement for Department: </label>  
-							  			<div class="col-md-2">
-											<input id="purordhd_perdisc" name="purordhd_perdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
-							  			</div>
-
-								  		<label class="col-md-1 control-label" for="purordhd_amtdisc">From Date:</label>	  
+											<input id="openbalqty" name="openbalqty" type="text" maxlength="11" class="form-control input-sm" value = "">
+								  		</div>
+								  	<label class="col-md-1 control-label" for="openbalval">Opening Balance Value:</label>  
 								  		<div class="col-md-2">
-											<input id="purordhd_amtdisc" name="purordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
-							  			</div>
-								
-										<label class="col-md-1 control-label" for="purordhd_recstatus">To Date:</label>  
-									    <div class="col-md-2">
-										  <input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
-									    </div>
-									</div>    -->
-
-                           
-                            </div>
+											<input id="openbalval" name="openbalval" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
+								  		</div>
+								</div>
+							</div> 
         				</div>
 		    		</div>
 		</div>
