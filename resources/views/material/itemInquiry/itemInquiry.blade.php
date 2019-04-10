@@ -48,6 +48,7 @@
 		<input id="getYear" name="getYear" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
 		<!-- <input id="deptcode" name="deptcode" type="hidden" value="{{Request::get('deptcode')}}">
 		<input id="itemcode" name="itemcode" type="hidden" value="{{Request::get('itemcode')}}"> -->
+		
 
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
@@ -74,7 +75,7 @@
 
  		<div class="panel panel-default">
 		    <div class="panel-body">
-
+		    	<input id="itemcode" name="itemcode" type="hidden">
 		    	<div class='col-md-8'>
             		<table id="detail" class="table table-striped"></table>
             			<div id="jqGridPager2"></div>
@@ -99,28 +100,26 @@
 			<div class="panel panel-default">
 		    	<div class="panel-heading">Detail Movement by Item</div>
 		    		<div class="panel-body">
-		    			
+
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
         					<div class="form-group">
-            					<label class="col-md-1 control-label" for="unit">Unit:</label>  
+            					
+            					<label class="col-md-1 control-label" for="itemcodedtl">Item Code:</label>  
 						  			<div class="col-md-2">
-										<input id="unit" name="unit" type="text" maxlength="11" class="form-control input-sm" value = "{{Session::get('unit')}}">
+										<input id="itemcodedtl" name="itemcodedtl" class="form-control input-sm"  value="$itemcode" readonly="true">
 						  			</div>
 						  		<label class="col-md-1 control-label" for="deptcodedtl">Dept Code:</label>  
 						  			<div class="col-md-2">
-										<input id="deptcodedtl" name="deptcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
-						  			</div>
-						  		<label class="col-md-1 control-label" for="itemcodedtl">Item Code:</label>  
-						  			<div class="col-md-2">
-										<input id="itemcodedtl" name="itemcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
+										<input id="deptcodedtl" name="deptcodedtl" class="form-control input-sm" value = "" readonly="true">
 						  			</div>
 						  		<label class="col-md-1 control-label" for="uomcodedtl">UOM Code:</label>  
 						  			<div class="col-md-2">
-										<input id="uomcodedtl" name="uomcodedtl" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
+										<input id="uomcodedtl" name="uomcodedtl" class="form-control input-sm" value = "" readonly="true">
 						  			</div>		
 					  		</div>
 
-						</div>	  
+						</div>	 
+
 
 							<div class='col-md-12' style="padding:0 0 15px 0">
 	        					<div class="form-group">
@@ -153,19 +152,19 @@
 							  		<label class="col-md-1 control-label" for="monthto">Month To :</label>  
 		            					<div class="col-md-2">
 										  	<select id="monthto" name="monthto" class="form-control input-sm">
-										      <option value="MonthFrom" selected>-- MONTH TO --</option>
-										      <option value="January">January</option>
-										      <option value="February">February</option>
-										      <option value="March">March</option>
-										      <option value="April">April</option>
-										      <option value="May">May</option>
-										      <option value="June">June</option>
-										      <option value="July">July</option>
-										      <option value="August">August</option>
-										      <option value="September">September</option>
-										      <option value="October">October</option>
-										      <option value="November">November</option>
-										      <option value="December">December</option>
+										      <option value="monthto" selected>-- MONTH TO --</option>
+										      <option value="1">January</option>
+										      <option value="2">February</option>
+										      <option value="3">March</option>
+										      <option value="4">April</option>
+										      <option value="5">May</option>
+										      <option value="6">June</option>
+										      <option value="7">July</option>
+										      <option value="8">August</option>
+										      <option value="9">September</option>
+										      <option value="10">October</option>
+										      <option value="11">November</option>
+										      <option value="12">December</option>
 										    </select>
 										</div>    
 									
@@ -175,17 +174,25 @@
 										  	<select id='yearto' name='yearto' class="form-control input-sm"></select>
 										</div>    			
 						  		</div> 
+						  		<br>
+						  		<br>
+						  			<div class="col-md-12">
+										<button type="button" id="search" class="pull-right btn btn-primary" >Search</button>
+			              			</div>
+						  			<hr/>
+
+						  			<hr/>
 						  	</div>	
 
 						  	<div class='col-md-12' style="padding:0 0 15px 0">
 		        				<div class="form-group">
 		            				<label class="col-md-1 control-label" for="openbalqty">Opening Balance Quantity:</label>  
 								  		<div class="col-md-2">
-											<input id="openbalqty" name="openbalqty" type="text" maxlength="11" class="form-control input-sm" value = "">
+											<input id="openbalqty" name="openbalqty" type="text" maxlength="11" class="form-control input-sm" value = "" readonly="true">
 								  		</div>
 								  	<label class="col-md-1 control-label" for="openbalval">Opening Balance Value:</label>  
 								  		<div class="col-md-2">
-											<input id="openbalval" name="openbalval" type="text" maxlength="11" class="form-control input-sm" value = "" rdonly>
+											<input id="openbalval" name="openbalval" type="text" maxlength="11" class="form-control input-sm" value = "" readonly="true">
 								  		</div>
 								</div>
 							</div> 

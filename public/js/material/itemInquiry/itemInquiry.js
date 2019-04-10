@@ -24,8 +24,7 @@ $(document).ready(function () {
 		},
 	};
 	var Class2 = $('#Class2').val();
-	/*var deptcode = $('#deptcode').val();
-	var itemcode = $('#itemcode').val();*/
+	
 
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
@@ -245,8 +244,6 @@ $(document).ready(function () {
 		table_name:'material.stockexp',
 		table_id:'itemcode',
 		sort_itemcode:true,
-		/*filterCol:['itemcode', 'uomcode','deptcode'],
-		filterVal:['', '',''],*/
 		filterCol:['itemcode','uomcode','deptcode','compcode','unit'],
 		filterVal:['','','','session.compcode','session.unit'],
 		sortby:['expdate asc']
@@ -275,10 +272,8 @@ $(document).ready(function () {
 		pager: "#jqGridPager3",
 
 		onSelectRow:function(rowid, selected){
-			var jg=$("#jqGrid").jqGrid('getRowData',rowid);
-			/*var deptcode = $('#deptcodedtl').val();
-			var itemcode = $('#itemcodedtl').val();*/
-			
+			var jg=$("#itemExpiry").jqGrid('getRowData',rowid);
+
 		},
 	});
 
@@ -302,9 +297,12 @@ $(document).ready(function () {
 		$('#detail').jqGrid('setRowData', rowid, {rackno:total});
 	}
 
+
 	$("#detailMovement").click(function(){
 		if(selrowData("#detail").deptcode != undefined){
 			$("#detailMovementDialog" ).dialog( "open" );
+			/*var itemcodedtl = $('#itemcode').val();
+			alert(itemcodedtl)*/		
 		}else{
 			alert('Select department code');
 		}
@@ -317,6 +315,8 @@ $(document).ready(function () {
 		open: function( event, ui ) {
 			DataTable.clear().draw();
 			getdtlmov(false,0,20);
+			var itemcodedtl = $('#itemcode').val();
+			alert(itemcodedtl)
 		},
 		close: function( event, ui ) {
 		},
@@ -327,6 +327,8 @@ $(document).ready(function () {
 
 
     //////////////////////////////// TABLE DETAIL MOVEMENT/////////////////////////////////////////////////
+
+   
 
 	var counter=20, moremov=true, DTscrollTop = 0;
 	function scroll_next1000(){
@@ -370,19 +372,57 @@ $(document).ready(function () {
 	  	}
 	});
 
-	/*///////////// function date & month ////////////////////////////
+	///////////// function date & month ////////////////////////////
 	$('#monthfrom').on('change', function() {
-		var mf1 = $("#monthfrom").val();
-		var monthfr1 = new Date(mf1);
-		monthfr1.setDate( datefr1.getDate() + 1 ); 
-		var m = datefr1.getUTCMonth() + 1;
-			if (m < 10) m='0'+m;
+		var mf = $("#monthfrom").val();
+		var monthfr = new (mf1);
+		var datefr = new Date(mf);
+			datefr1.setDate( datefr1.getDate() + 1 )
+		var m = monthfr.getUTCMonth() + 1;
+			if (m < 12) m='0'+m;
 		var d = datefr1.getUTCDate();
 			if (d < 10) d='0'+d;
-		var ndf1 = datefr1.getUTCFullYear()+"-"+m+"-"+d;
-		dateto1.min = ndf1;  
-	});*/
+		var nmf = monthfr.getUTCFullYear()+"-"+m+"-"+d;
+		yearto.min = nmf;  
+	});
 
+	$('#yearfrom').on('change', function() {
+		var mf = $("#yearfrom").val();
+		var monthfr = new (mf1);
+		var m = monthfr.getUTCMonth() + 1;
+			if (m < 10) m='0'+m;
+		var nmf = monthfr.getUTCFullYear()+"-"+m+"-"+d;
+		yearto.min = nmf;  
+	});
+
+	$('#monthto').on('change', function() {
+		var mf = $("#monthto").val();
+		var monthfr = new (mf1);
+		var m = monthfr.getUTCMonth() + 1;
+			if (m < 10) m='0'+m;
+		var nmf = monthfr.getUTCFullYear()+"-"+m+"-"+d;
+		yearto.min = nmf;  
+	});
+
+	$('#yearto').on('change', function() {
+		var mf = $("#yearto").val();
+		var monthfr = new (mf1);
+		var m = monthfr.getUTCMonth() + 1;
+			if (m < 10) m='0'+m;
+		var nmf = monthfr.getUTCFullYear()+"-"+m+"-"+d;
+		yearto.min = nmf;  
+	});
+
+	/* 
+	if ($monthto + 1) < 12
+		$dateto = '01' + ($monthto + 1) + $year.value
+		$dateto = $dateto - 1
+	else {
+		$dateto 31/12/2017
+	}	
+
+	$datefr = '01' + $monthfr + $year.value
+	*/
 
 
 	///////////////////////////////////////////////////////////////
@@ -437,11 +477,13 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(obj){
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
-					obj.description = 'transfer to '+obj.deptcode;
+					
 					if(obj.trantype == 'GRT'){
+						obj.description = 'Good Return Note '+obj.deptcode;
 						obj.qtyin = '';
 						obj.qtyout = obj.txnqty;
-					}else{
+					}else if (obj.trantype == 'GRN'){
+						obj.description = 'Good Receive Note '+obj.deptcode;
 						obj.qtyin = obj.txnqty;
 						obj.qtyout = '';
 					}
