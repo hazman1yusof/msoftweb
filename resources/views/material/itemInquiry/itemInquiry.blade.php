@@ -104,15 +104,15 @@
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
         					<div class="form-group">
             					
-            					<label class="col-md-1 control-label" for="itemcodedtl">Item Code:</label>  
+            					<label class="col-md-1 control-label" for="itemcodedtl">Item Code : </label>  
 						  			<div class="col-md-2">
-										<input id="itemcodedtl" name="itemcodedtl" class="form-control input-sm"  value="$itemcode" readonly="true">
+										<input id="itemcodedtl" name="itemcodedtl" class="form-control input-sm" readonly="true">
 						  			</div>
-						  		<label class="col-md-1 control-label" for="deptcodedtl">Dept Code:</label>  
+						  		<label class="col-md-1 control-label" for="deptcodedtl">Dept Code : </label>  
 						  			<div class="col-md-2">
 										<input id="deptcodedtl" name="deptcodedtl" class="form-control input-sm" value = "" readonly="true">
 						  			</div>
-						  		<label class="col-md-1 control-label" for="uomcodedtl">UOM Code:</label>  
+						  		<label class="col-md-1 control-label" for="uomcodedtl">UOM Code : </label>  
 						  			<div class="col-md-2">
 										<input id="uomcodedtl" name="uomcodedtl" class="form-control input-sm" value = "" readonly="true">
 						  			</div>		
@@ -124,7 +124,7 @@
 							<div class='col-md-12' style="padding:0 0 15px 0">
 	        					<div class="form-group">
 	        						
-		            					<label class="col-md-1 control-label" for="monthfrom">Month From :</label>  
+		            					<label class="col-md-1 control-label" for="monthfrom">Month From : </label>  
 		            					<div class="col-md-2">
 										  	<select id="monthfrom" name="monthfrom" class="form-control input-sm">
 										      <option value="monthfrom" selected>-- MONTH FROM --</option>
@@ -144,12 +144,12 @@
 										</div>    
 									
 
-							  		<label class="col-md-1 control-label" for="yearfrom">Year From :</label>  
+							  		<label class="col-md-1 control-label" for="yearfrom">Year From : </label>  
 		            					<div class="col-md-2">
 			  									<select id='yearfrom' name='yearfrom' class="form-control input-sm"></select>
 										</div>    
 
-							  		<label class="col-md-1 control-label" for="monthto">Month To :</label>  
+							  		<label class="col-md-1 control-label" for="monthto">Month To : </label>  
 		            					<div class="col-md-2">
 										  	<select id="monthto" name="monthto" class="form-control input-sm">
 										      <option value="monthto" selected>-- MONTH TO --</option>
@@ -169,7 +169,7 @@
 										</div>    
 									
 
-							  		<label class="col-md-1 control-label" for="yearto">Year To :</label>  
+							  		<label class="col-md-1 control-label" for="yearto">Year To : </label>  
 		            					<div class="col-md-2">
 										  	<select id='yearto' name='yearto' class="form-control input-sm"></select>
 										</div>    			
@@ -186,11 +186,11 @@
 
 						  	<div class='col-md-12' style="padding:0 0 15px 0">
 		        				<div class="form-group">
-		            				<label class="col-md-1 control-label" for="openbalqty">Opening Balance Quantity:</label>  
+		            				<label class="col-md-1 control-label" for="openbalqty">Opening Balance Quantity : </label>  
 								  		<div class="col-md-2">
 											<input id="openbalqty" name="openbalqty" type="text" maxlength="11" class="form-control input-sm" value = "" readonly="true">
 								  		</div>
-								  	<label class="col-md-1 control-label" for="openbalval">Opening Balance Value:</label>  
+								  	<label class="col-md-1 control-label" for="openbalval">Opening Balance Value : </label>  
 								  		<div class="col-md-2">
 											<input id="openbalval" name="openbalval" type="text" maxlength="11" class="form-control input-sm" value = "" readonly="true">
 								  		</div>

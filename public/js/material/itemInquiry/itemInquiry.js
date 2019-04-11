@@ -273,6 +273,7 @@ $(document).ready(function () {
 
 		onSelectRow:function(rowid, selected){
 			var jg=$("#itemExpiry").jqGrid('getRowData',rowid);
+			var itemcodedtl = $('#itemcode').val();
 
 		},
 	});
@@ -300,9 +301,7 @@ $(document).ready(function () {
 
 	$("#detailMovement").click(function(){
 		if(selrowData("#detail").deptcode != undefined){
-			$("#detailMovementDialog" ).dialog( "open" );
-			/*var itemcodedtl = $('#itemcode').val();
-			alert(itemcodedtl)*/		
+			$("#detailMovementDialog" ).dialog( "open" );		
 		}else{
 			alert('Select department code');
 		}
@@ -316,6 +315,7 @@ $(document).ready(function () {
 			DataTable.clear().draw();
 			getdtlmov(false,0,20);
 			var itemcodedtl = $('#itemcode').val();
+			document.getElementById('itemcodedtl').value = document.getElementById('itemcode').innerHTML;
 			alert(itemcodedtl)
 		},
 		close: function( event, ui ) {
