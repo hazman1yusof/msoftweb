@@ -437,11 +437,12 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(obj){
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
-					obj.description = 'transfer to '+obj.deptcode;
 					if(obj.trantype == 'GRT'){
+						obj.description = 'Good Return Note '+obj.deptcode;
 						obj.qtyin = '';
 						obj.qtyout = obj.txnqty;
-					}else{
+					}else if (obj.trantype == 'GRN'){
+						obj.description = 'Good Receive Note '+obj.deptcode;
 						obj.qtyin = obj.txnqty;
 						obj.qtyout = '';
 					}
