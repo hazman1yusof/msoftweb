@@ -403,8 +403,15 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(obj){
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
+<<<<<<< HEAD
+=======
 					
+<<<<<<< HEAD
 				/*	if(obj.trantype == 'GRT'){
+=======
+>>>>>>> d14552195ea6c264ff61ed3484941a6d6d7ddd14
+					if(obj.trantype == 'GRT'){
+>>>>>>> da73b597f4dfe7b59a0d1e6f2d7730d9e994a01a
 						obj.description = 'Good Return Note '+obj.deptcode;
 						obj.qtyin = '';
 						obj.qtyout = obj.txnqty;
