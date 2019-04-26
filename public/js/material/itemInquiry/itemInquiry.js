@@ -303,7 +303,6 @@ $(document).ready(function () {
 		if(selrowData("#detail").deptcode != undefined){
 			// var itemcodedtl = $('#itemcode').val();
 			var itemcodedtl = $('#itemcode').val();
-			$('#itemcodedtl').val(data['itemcode']);	
 			document.getElementById('itemcodedtl').value = document.getElementById('itemcode').innerHTML;
 			/*alert(itemcodedtl)*/
 			$("#detailMovementDialog" ).dialog( "open" );		
@@ -403,10 +402,7 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(obj){
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
-<<<<<<< HEAD
-=======
-					
-<<<<<<< HEAD
+
 				/*	if(obj.trantype == 'GRT'){
 =======
 >>>>>>> d14552195ea6c264ff61ed3484941a6d6d7ddd14
