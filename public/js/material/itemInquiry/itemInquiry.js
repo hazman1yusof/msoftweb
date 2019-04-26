@@ -301,6 +301,11 @@ $(document).ready(function () {
 
 	$("#detailMovement").click(function(){
 		if(selrowData("#detail").deptcode != undefined){
+			// var itemcodedtl = $('#itemcode').val();
+			var itemcodedtl = $('#itemcode').val();
+			$('#itemcodedtl').val(data['itemcode']);	
+			document.getElementById('itemcodedtl').value = document.getElementById('itemcode').innerHTML;
+			/*alert(itemcodedtl)*/
 			$("#detailMovementDialog" ).dialog( "open" );		
 		}else{
 			alert('Select department code');
@@ -314,9 +319,9 @@ $(document).ready(function () {
 		open: function( event, ui ) {
 			DataTable.clear().draw();
 			getdtlmov(false,0,20);
-			var itemcodedtl = $('#itemcode').val();
+			/*var itemcodedtl = $('#itemcode').val();
 			document.getElementById('itemcodedtl').value = document.getElementById('itemcode').innerHTML;
-			alert(itemcodedtl)
+			alert(itemcodedtl)*/
 		},
 		close: function( event, ui ) {
 		},
@@ -372,85 +377,6 @@ $(document).ready(function () {
 	  	}
 	});
 
-	///////////// function date & month ////////////////////////////
-	$('#monthfrom').on('change', function() {
-		var mf = $("#monthfrom").val();
-		var monthfr = new (mf1);
-		var datefr = new Date(mf);
-			datefr1.setDate( datefr1.getDate() + 1 )
-		var m = monthfr.getUTCMonth() + 1;
-			if (m < 12) m='0'+m;
-		var d = datefr1.getUTCDate();
-			if (d < 10) d='0'+d;
-		var nmf = monthfr.getUTCFullYear()+"-"+m+"-"+d;
-		yearto.min = nmf;  
-	});
-
-	$('#yearfrom').on('change', function() {
-		var mf = $("#yearfrom").val();
-		var monthfr = new (mf1);
-		var m = monthfr.getUTCMonth() + 1;
-			if (m < 10) m='0'+m;
-		var nmf = monthfr.getUTCFullYear()+"-"+m+"-"+d;
-		yearto.min = nmf;  
-	});
-
-	$('#monthto').on('change', function() {
-		var mf = $("#monthto").val();
-		var monthfr = new (mf1);
-		var m = monthfr.getUTCMonth() + 1;
-			if (m < 10) m='0'+m;
-		var nmf = monthfr.getUTCFullYear()+"-"+m+"-"+d;
-		yearto.min = nmf;  
-	});
-
-	$('#yearto').on('change', function() {
-		var mf = $("#yearto").val();
-		var monthfr = new (mf1);
-		var m = monthfr.getUTCMonth() + 1;
-			if (m < 10) m='0'+m;
-		var nmf = monthfr.getUTCFullYear()+"-"+m+"-"+d;
-		yearto.min = nmf;  
-	});
-
-	/* 
-	if ($monthto + 1) < 12
-		$dateto = '01' + ($monthto + 1) + $year.value
-		$dateto = $dateto - 1
-	else {
-		$dateto 31/12/2017
-	}	
-
-	$datefr = '01' + $monthfr + $year.value
-	*/
-
-
-	///////////////////////////////////////////////////////////////
-
-	 // $(document).ready(function(){
-  //       $.fn.dataTable.ext.search.push(
-	 //        function (settings, data, dataIndex) {
-	 //            var min = $('#min').datepicker("getDate");
-	 //            var max = $('#max').datepicker("getDate");
-	 //            var startDate = new Date(data[4]);
-	 //            if (min == null && max == null) { return true; }
-	 //            if (min == null && startDate <= max) { return true;}
-	 //            if(max == null && startDate >= min) {return true;}
-	 //            if (startDate <= max && startDate >= min) { return true; }
-	 //            return false;
-	 //        }
-  //       );
-
-       
-  //           $("#min").datepicker({ onSelect: function () { DataTable.draw(); }, changeMonth: true, changeYear: true });
-  //           $("#max").datepicker({ onSelect: function () { DataTable.draw(); }, changeMonth: true, changeYear: true });
-  //           var DataTable = $('#TableDetailMovement').DataTable();
-
-  //           // Event listener to the two range filtering inputs to redraw on input
-  //           $('#min, #max').change(function () {
-  //               DataTable.draw();
-  //           });
-  //       });
 
 	function getdtlmov(fetchall,start,limit){
 		var param={
@@ -478,7 +404,7 @@ $(document).ready(function () {
 				data.rows.forEach(function(obj){
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
 					
-					if(obj.trantype == 'GRT'){
+				/*	if(obj.trantype == 'GRT'){
 						obj.description = 'Good Return Note '+obj.deptcode;
 						obj.qtyin = '';
 						obj.qtyout = obj.txnqty;
@@ -486,7 +412,12 @@ $(document).ready(function () {
 						obj.description = 'Good Receive Note '+obj.deptcode;
 						obj.qtyin = obj.txnqty;
 						obj.qtyout = '';
-					}
+					}*/
+					obj.trandate = '-';
+					obj.trantype = '-';
+					obj.description = '-';
+					obj.qtyin = '-';
+					obj.qtyout = '-';
 					obj.balquan = '-';
 					obj.cost = '-';
 					obj.amount = '-';
@@ -503,6 +434,52 @@ $(document).ready(function () {
 		});
 	}
 
+	function getTheDays() {
+
+        // THE DATE OBJECT.
+        var dt = new Date(document.getElementById('monthfrom').value);
+        var dt = new Date(document.getElementById('monthto').value);
+
+        // GET THE MONTH AND YEAR OF THE SELECTED DATE.
+        var month = dt.getMonth(),
+            year = dt.getFullYear();
+
+        // GET THE FIRST AND LAST DATE OF THE MONTH.
+        var FirstDay = new Date(year, month, 1);
+        var LastDay = new Date(year, month + 1, 0);
+
+        // FINALLY, GET THE DAY.
+        var weekday = new Array();
+        weekday[0] = "Sunday";
+        weekday[1] = "Monday";
+        weekday[2] = "Tuesday";
+        weekday[3] = "Wednesday";
+        weekday[4] = "Thursday";
+        weekday[5] = "Friday";
+        weekday[6] = "Saturday";
+
+        if (typeof weekday[FirstDay.getDay()] != 'undefined') {     // CHECK FOR 'undefined'.
+            document.getElementById('fday').innerHTML = weekday[FirstDay.getDay()] +
+                ' (' + FirstDay.toDateString('dd/mon/yyyy') + ')';
+            document.getElementById('lday').innerHTML = weekday[LastDay.getDay()] +
+                ' (' + LastDay.toDateString('dd/mon/yyyy') + ')'; ;
+        }
+        else {
+            document.getElementById('fday').innerHTML = '';
+            document.getElementById('lday').innerHTML = '';
+        }
+    }
+
+    /*$('#search').click(function(){
+				urlParam.filterCol = ['monthto','monthfrom','yearto','yearfrom'];
+				urlParam.filterVal = [$('#glaccount').val(),$('#year').val()];
+				refreshGrid("#jqGrid",urlParam);
+				hidetbl(true);
+				$("#TableDetailMovement td[id^='glmasdtl_actamount']").removeClass('bg-primary');
+				$("#TableDetailMovement td span").text("");
+				DataTable.clear().draw();
+			});
+*/
 			set_yearperiod();
 			function set_yearperiod(){
 				param={

@@ -98,6 +98,7 @@
 	<div id="detailMovementDialog" title="View Detail Movement" >
 		<div id='detailMovement_c' class=''>
 			<div class="panel panel-default">
+				
 		    	<div class="panel-heading">Detail Movement by Item</div>
 		    		<div class="panel-body">
 
@@ -106,7 +107,7 @@
             					
             					<label class="col-md-1 control-label" for="itemcodedtl">Item Code : </label>  
 						  			<div class="col-md-2">
-										<input id="itemcodedtl" name="itemcodedtl" class="form-control input-sm" readonly="true">
+										<input id="itemcodedtl" name="itemcodedtl" class="form-control input-sm" type="text" readonly="true">
 						  			</div>
 						  		<label class="col-md-1 control-label" for="deptcodedtl">Dept Code : </label>  
 						  			<div class="col-md-2">
@@ -174,28 +175,24 @@
 										  	<select id='yearto' name='yearto' class="form-control input-sm"></select>
 										</div>    			
 						  		</div> 
-						  		<br>
-						  		<br>
-						  			<div class="col-md-12">
-										<button type="button" id="search" class="pull-right btn btn-primary" >Search</button>
-			              			</div>
-						  			<hr/>
-
-						  			<hr/>
+						 
 						  	</div>	
 
-						  	<div class='col-md-12' style="padding:0 0 15px 0">
+						  	<div class='col-md-14' style="padding:0 0 20px 0">
 		        				<div class="form-group">
 		            				<label class="col-md-1 control-label" for="openbalqty">Opening Balance Quantity : </label>  
 								  		<div class="col-md-2">
-											<input id="openbalqty" name="openbalqty" type="text" maxlength="11" class="form-control input-sm" value = "" readonly="true">
+											<input id="openbalqty" name="openbalqty" type="text"  class="form-control input-sm" value = "" readonly="true">
 								  		</div>
 								  	<label class="col-md-1 control-label" for="openbalval">Opening Balance Value : </label>  
 								  		<div class="col-md-2">
-											<input id="openbalval" name="openbalval" type="text" maxlength="11" class="form-control input-sm" value = "" readonly="true">
+											<input id="openbalval" name="openbalval" type="text"  class="form-control input-sm" value = "" readonly="true">
 								  		</div>
 								</div>
 							</div> 
+							<div class="col-md-12">
+										<button type="button" id="search" class="pull-right btn btn-primary" >Search</button>
+			              			</div>
         				</div>
 		    		</div>
 		</div>
