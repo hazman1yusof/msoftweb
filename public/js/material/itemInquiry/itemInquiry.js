@@ -135,6 +135,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			var jg=$("#jqGrid").jqGrid('getRowData',rowid);
+			$('#itemcodedtl').val(selrowData("#jqGrid").itemcode);
 			if(rowid != null) {
 				urlParam2.filterVal[0]=selrowData("#jqGrid").itemcode; 
 				urlParam2.filterVal[1]=selrowData("#jqGrid").uomcode;
@@ -220,6 +221,8 @@ $(document).ready(function () {
 			urlParam3.filterVal[0]=selrowData('#detail').itemcode;
 			urlParam3.filterVal[1]=selrowData('#detail').uomcode;
 			urlParam3.filterVal[2]=selrowData('#detail').deptcode;
+			$('#deptcodedtl').val(selrowData("#detail").deptcode);
+			$('#uomcodedtl').val(selrowData("#detail").uomcode);
 
 			refreshGrid('#itemExpiry',urlParam3);
 		}
@@ -301,10 +304,6 @@ $(document).ready(function () {
 
 	$("#detailMovement").click(function(){
 		if(selrowData("#detail").deptcode != undefined){
-			// var itemcodedtl = $('#itemcode').val();
-			var itemcodedtl = $('#itemcode').val();
-			document.getElementById('itemcodedtl').value = document.getElementById('itemcode').innerHTML;
-			/*alert(itemcodedtl)*/
 			$("#detailMovementDialog" ).dialog( "open" );		
 		}else{
 			alert('Select department code');
@@ -318,9 +317,6 @@ $(document).ready(function () {
 		open: function( event, ui ) {
 			DataTable.clear().draw();
 			getdtlmov(false,0,20);
-			/*var itemcodedtl = $('#itemcode').val();
-			document.getElementById('itemcodedtl').value = document.getElementById('itemcode').innerHTML;
-			alert(itemcodedtl)*/
 		},
 		close: function( event, ui ) {
 		},
