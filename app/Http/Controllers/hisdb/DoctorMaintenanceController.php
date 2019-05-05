@@ -139,9 +139,9 @@ class DoctorMaintenanceController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->where('userid','=',session('username'))
             ->where('phidno','=',$request->phidno)
-            ->first();
+            ->exists();
 
-        if(count($check_exist)){
+        if($check_exist){
             DB::table('hisdb.apptphcolor')
                 ->where('compcode','=',session('compcode'))
                 ->where('userid','=',session('username'))

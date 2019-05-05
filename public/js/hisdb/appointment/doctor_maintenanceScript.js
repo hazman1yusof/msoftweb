@@ -81,7 +81,7 @@
 				}
 			}];
             
-             var rscbtn=[{
+            var rscbtn=[{
 				text: "Save",click: function() {
 					if( $('#resourceformdata').isValid({requiredFields: ''}, conf, true) ) {
 						 saveFormdata("#jqGrid","#resourceAddform","#resourceformdata",oper,saveParam,urlParam,null);
@@ -126,7 +126,8 @@
 					$("#PHBox").dialog("open");
             	// }
             });
-			     $("#ALBtn").click(function(){
+			
+			$("#ALBtn").click(function(){
             	var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
             	if(!selRowId){
             		alert('Please select row');
@@ -139,14 +140,14 @@
             	}
             });
 
-          $("#allTimeBtn").click(function(){
-          	// var allTimeBtn = $("#time1").val();
-          	$("#gridtime :input[name='timefr1']").val($("#time1").val());
-          	$("#gridtime :input[name='timeto1']").val($("#time2").val());
-          	$("#gridtime :input[name='timefr2']").val($("#time3").val());
-          	$("#gridtime :input[name='timeto2']").val($("#time4").val());
-          	$("#gridtime :input[name='status']").prop('checked', true);
-         });
+	        $("#allTimeBtn").click(function(){
+	          	// var allTimeBtn = $("#time1").val();
+	          	$("#gridtime :input[name='timefr1']").val($("#time1").val());
+	          	$("#gridtime :input[name='timeto1']").val($("#time2").val());
+	          	$("#gridtime :input[name='timefr2']").val($("#time3").val());
+	          	$("#gridtime :input[name='timeto2']").val($("#time4").val());
+	          	$("#gridtime :input[name='status']").prop('checked', true);
+	        });
 
 			var oper;
 			$("#tsdialogForm")
@@ -191,9 +192,9 @@
 					}
 				},
 				buttons :tsbtn,
-			  });
+			});
 
-			  var oper;
+			var oper;
 			$("#phdialogForm")
 			  .dialog({ 
 				width: 8/10 * $(window).width(),
@@ -1009,7 +1010,7 @@
 				if(!$.isEmptyObject(data.rows)){
 					$('#bg_leave').val(data.rows[0].pvalue1);
 
-					$('#imgid').css('border-bottom-color','white');
+					$('#imgid_leave').css('border-bottom-color',data.rows[0].pvalue1);
 				}
 			});
 		}
@@ -1019,8 +1020,7 @@
 		});
 
 		$('#bg_leave').change(function(){
-			alert('asd2');
-			$('#imgid').css('border-bottom-color',$(this).val());
+			$('#imgid_leave').css('border-bottom-color',$(this).val());
 			savecolor();
 		});
 		$("#bg_leave").hide();

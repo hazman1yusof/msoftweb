@@ -303,8 +303,8 @@ $(document).ready(function () {
             { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
             { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
         ],
-		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
-		pager: "#grid_start_time_pager",
+		autowidth:true,viewrecords:true,loadonce:false,width:200,height:400,owNum:30,
+		// pager: "#grid_start_time_pager",
 		onSelectRow:function(){
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -436,7 +436,7 @@ $(document).ready(function () {
 		},
 		customButtons: {
 	        myCustomButton: {
-	            text: 'Add',
+	            text: 'Make Appointment',
 	            click: function() {
 	            	oper='add';
 

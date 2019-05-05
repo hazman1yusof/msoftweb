@@ -76,12 +76,11 @@ class AppointmentController extends defaultController
 
                 break;
             case 'appt_ph':
-
                 $select = DB::table('hisdb.apptph')
                     ->select('apptph.datefr as start','apptph.dateto as end','apptphcolor.color as color','apptph.remark as title')
                     ->leftJoin('hisdb.apptphcolor', 'apptph.idno', '=', 'apptphcolor.phidno')
                     ->where('apptphcolor.userid', '=' , session('username'))
-                    ->whereBetween('datefr', [$request->start, $request->end])
+                    ->whereBetween('apptph.datefr', [$request->start, $request->end])
                     ->get();
 
                 foreach ($select as $key => $value) {
