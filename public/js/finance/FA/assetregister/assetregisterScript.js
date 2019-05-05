@@ -31,7 +31,7 @@ $.jgrid.defaults.responsive = true;
 		var dialog_assetcode= new ordialog(
 			'assetcode','finance.facode','#assetcode',errorField,
 			{	colModel:[
-				    {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				  {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
 					{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
 					{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
@@ -87,18 +87,29 @@ $.jgrid.defaults.responsive = true;
 		);
 		dialog_loccode.makedialog();		
 
-	    var dialog_delordno= new ordialog(
+		var dialog_delordno= new ordialog(
 			'delordno','material.delordhd','#delordno',errorField,
 			{	colModel:[
-				    {label:'Delordno',name:'delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				  {label:'Delordno',name:'delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
-							
-					]
-			},{
+					{label:'deliverydate',name:'deliverydate',width:100,classes:'pointer',hidden:true},
+					{label:'Docno',name:'docno',width:100,classes:'pointer',hidden:true},
+					// {label:'uomcode',name:'uomcode',width:100,classes:'pointer',hidden:true},
+					{label:'purdate',name:'purdate',width:100,classes:'pointer',hidden:true},
+				],
+				ondblClickRow:function(){
+					let data=selrowData('#'+dialog_delordno.gridname);
+					$('#delorddate').val(data['deliverydate']);		
+					$('#docno').val(data['docno']);
+					$('#uomcode').val(data['uomcode']);
+					$('#purdate').val(data['purdate']);
+				}
+			},
+			{
 				title:"Select Delordno",
 				open: function(){
-					dialog_delordno.urlParam.filterCol=['compcode'],
-					dialog_delordno.urlParam.filterVal=['session.compcode']
+					dialog_delordno.urlParam.filterCol=['compcode'];
+					dialog_delordno.urlParam.filterVal=['session.compcode'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -107,10 +118,15 @@ $.jgrid.defaults.responsive = true;
 		var  dialog_suppcode= new ordialog(
 			'suppcode','material.supplier','#suppcode',errorField,
 			{	colModel:[
-				    {label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				  {label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,or_search:true},
 
-			]
+				],
+				ondblClickRow:function(){
+					let data=selrowData('#'+dialog_suppcode.gridname);
+					dialog_invno.urlParam.filterCol=['compcode','suppcode'];
+					dialog_invno.urlParam.filterVal=['session.compcode',data.suppcode];
+				}
 			},{
 				title:"Select Supplier",
 				open: function(){
@@ -120,7 +136,23 @@ $.jgrid.defaults.responsive = true;
 			},'urlParam','radio','tab'
 		);
 		dialog_suppcode.makedialog();
-		
+
+		var dialog_invno= new ordialog(
+			'invno','finance.apacthdr','#invno',errorField,
+			{	colModel:[
+				  {label:'invno',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},		
+					]
+			},{
+				title:"Select invno",
+				open: function(){
+					// dialog_invno.urlParam.filterCol=['compcode',],
+					// dialog_invno.urlParam.filterVal=['session.compcode']
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_invno.makedialog();
+
 		var dialog_itemcode= new ordialog(
 			'itemcode','material.product','#itemcode',errorField,
 			{	colModel:[
@@ -218,6 +250,7 @@ $.jgrid.defaults.responsive = true;
 						dialog_itemcode.on();
 						dialog_uomcode.on();
 						dialog_delordno.on();
+						dialog_invno.on();
 					}
 					if(oper!='add'){
 						dialog_itemcode.check(errorField);
@@ -227,6 +260,7 @@ $.jgrid.defaults.responsive = true;
 						dialog_suppcode.check(errorField);
 						dialog_deptcode.check(errorField);
 						dialog_loccode.check(errorField);
+						dialog_invno.check(errorField);
 					}
 				},
 				close: function( event, ui ) {

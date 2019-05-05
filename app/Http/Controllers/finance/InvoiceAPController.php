@@ -205,13 +205,13 @@ use Carbon\Carbon;
         try {
 
             $apacthdr = DB::table('finance.apacthdr')
-                ->where('idno','=',$request->idno);
+                ->where('auditno','=',$request->auditno);
 
             $apactdtl = DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('auditno','=', $apacthdr->first()->auditno);
+                ->where('auditno','=', $request->auditno);
 
-            $this->gltran($request->idno);
+            $this->gltran($request->auditno);
 
             if($apactdtl->exists()){ 
                 foreach ($apactdtl->get() as $value) {
@@ -258,9 +258,9 @@ use Carbon\Carbon;
            
     }
 
-    public function gltran($idno){
+    public function gltran($auditno){
         $apacthdr_obj = DB::table('finance.apacthdr')
-                            ->where('idno','=',$idno)
+                            ->where('auditno','=',$auditno)
                             ->first();
 
         //amik yearperiod dari delordhd

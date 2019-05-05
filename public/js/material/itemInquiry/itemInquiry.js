@@ -24,8 +24,7 @@ $(document).ready(function () {
 		},
 	};
 	var Class2 = $('#Class2').val();
-	/*var deptcode = $('#deptcode').val();
-	var itemcode = $('#itemcode').val();*/
+	
 
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
@@ -136,6 +135,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			var jg=$("#jqGrid").jqGrid('getRowData',rowid);
+			$('#itemcodedtl').val(selrowData("#jqGrid").itemcode);
 			if(rowid != null) {
 				urlParam2.filterVal[0]=selrowData("#jqGrid").itemcode; 
 				urlParam2.filterVal[1]=selrowData("#jqGrid").uomcode;
@@ -221,6 +221,8 @@ $(document).ready(function () {
 			urlParam3.filterVal[0]=selrowData('#detail').itemcode;
 			urlParam3.filterVal[1]=selrowData('#detail').uomcode;
 			urlParam3.filterVal[2]=selrowData('#detail').deptcode;
+			$('#deptcodedtl').val(selrowData("#detail").deptcode);
+			$('#uomcodedtl').val(selrowData("#detail").uomcode);
 
 			refreshGrid('#itemExpiry',urlParam3);
 		}
@@ -245,8 +247,6 @@ $(document).ready(function () {
 		table_name:'material.stockexp',
 		table_id:'itemcode',
 		sort_itemcode:true,
-		/*filterCol:['itemcode', 'uomcode','deptcode'],
-		filterVal:['', '',''],*/
 		filterCol:['itemcode','uomcode','deptcode','compcode','unit'],
 		filterVal:['','','','session.compcode','session.unit'],
 		sortby:['expdate asc']
@@ -275,10 +275,9 @@ $(document).ready(function () {
 		pager: "#jqGridPager3",
 
 		onSelectRow:function(rowid, selected){
-			var jg=$("#jqGrid").jqGrid('getRowData',rowid);
-			/*var deptcode = $('#deptcodedtl').val();
-			var itemcode = $('#itemcodedtl').val();*/
-			
+			var jg=$("#itemExpiry").jqGrid('getRowData',rowid);
+			var itemcodedtl = $('#itemcode').val();
+
 		},
 	});
 
@@ -302,9 +301,10 @@ $(document).ready(function () {
 		$('#detail').jqGrid('setRowData', rowid, {rackno:total});
 	}
 
+
 	$("#detailMovement").click(function(){
 		if(selrowData("#detail").deptcode != undefined){
-			$("#detailMovementDialog" ).dialog( "open" );
+			$("#detailMovementDialog" ).dialog( "open" );		
 		}else{
 			alert('Select department code');
 		}
@@ -327,6 +327,8 @@ $(document).ready(function () {
 
 
     //////////////////////////////// TABLE DETAIL MOVEMENT/////////////////////////////////////////////////
+
+   
 
 	var counter=20, moremov=true, DTscrollTop = 0;
 	function scroll_next1000(){
@@ -370,47 +372,6 @@ $(document).ready(function () {
 	  	}
 	});
 
-	/*///////////// function date & month ////////////////////////////
-	$('#monthfrom').on('change', function() {
-		var mf1 = $("#monthfrom").val();
-		var monthfr1 = new Date(mf1);
-		monthfr1.setDate( datefr1.getDate() + 1 ); 
-		var m = datefr1.getUTCMonth() + 1;
-			if (m < 10) m='0'+m;
-		var d = datefr1.getUTCDate();
-			if (d < 10) d='0'+d;
-		var ndf1 = datefr1.getUTCFullYear()+"-"+m+"-"+d;
-		dateto1.min = ndf1;  
-	});*/
-
-
-
-	///////////////////////////////////////////////////////////////
-
-	 // $(document).ready(function(){
-  //       $.fn.dataTable.ext.search.push(
-	 //        function (settings, data, dataIndex) {
-	 //            var min = $('#min').datepicker("getDate");
-	 //            var max = $('#max').datepicker("getDate");
-	 //            var startDate = new Date(data[4]);
-	 //            if (min == null && max == null) { return true; }
-	 //            if (min == null && startDate <= max) { return true;}
-	 //            if(max == null && startDate >= min) {return true;}
-	 //            if (startDate <= max && startDate >= min) { return true; }
-	 //            return false;
-	 //        }
-  //       );
-
-       
-  //           $("#min").datepicker({ onSelect: function () { DataTable.draw(); }, changeMonth: true, changeYear: true });
-  //           $("#max").datepicker({ onSelect: function () { DataTable.draw(); }, changeMonth: true, changeYear: true });
-  //           var DataTable = $('#TableDetailMovement').DataTable();
-
-  //           // Event listener to the two range filtering inputs to redraw on input
-  //           $('#min, #max').change(function () {
-  //               DataTable.draw();
-  //           });
-  //       });
 
 	function getdtlmov(fetchall,start,limit){
 		var param={
@@ -437,14 +398,23 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(obj){
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
-					obj.description = 'transfer to '+obj.deptcode;
+
+				/*	if(obj.trantype == 'GRT'){
+
 					if(obj.trantype == 'GRT'){
+						obj.description = 'Good Return Note '+obj.deptcode;
 						obj.qtyin = '';
 						obj.qtyout = obj.txnqty;
-					}else{
+					}else if (obj.trantype == 'GRN'){
+						obj.description = 'Good Receive Note '+obj.deptcode;
 						obj.qtyin = obj.txnqty;
 						obj.qtyout = '';
-					}
+					}*/
+					obj.trandate = '-';
+					obj.trantype = '-';
+					obj.description = '-';
+					obj.qtyin = '-';
+					obj.qtyout = '-';
 					obj.balquan = '-';
 					obj.cost = '-';
 					obj.amount = '-';
@@ -461,6 +431,52 @@ $(document).ready(function () {
 		});
 	}
 
+	function getTheDays() {
+
+        // THE DATE OBJECT.
+        var dt = new Date(document.getElementById('monthfrom').value);
+        var dt = new Date(document.getElementById('monthto').value);
+
+        // GET THE MONTH AND YEAR OF THE SELECTED DATE.
+        var month = dt.getMonth(),
+            year = dt.getFullYear();
+
+        // GET THE FIRST AND LAST DATE OF THE MONTH.
+        var FirstDay = new Date(year, month, 1);
+        var LastDay = new Date(year, month + 1, 0);
+
+        // FINALLY, GET THE DAY.
+        var weekday = new Array();
+        weekday[0] = "Sunday";
+        weekday[1] = "Monday";
+        weekday[2] = "Tuesday";
+        weekday[3] = "Wednesday";
+        weekday[4] = "Thursday";
+        weekday[5] = "Friday";
+        weekday[6] = "Saturday";
+
+        if (typeof weekday[FirstDay.getDay()] != 'undefined') {     // CHECK FOR 'undefined'.
+            document.getElementById('fday').innerHTML = weekday[FirstDay.getDay()] +
+                ' (' + FirstDay.toDateString('dd/mon/yyyy') + ')';
+            document.getElementById('lday').innerHTML = weekday[LastDay.getDay()] +
+                ' (' + LastDay.toDateString('dd/mon/yyyy') + ')'; ;
+        }
+        else {
+            document.getElementById('fday').innerHTML = '';
+            document.getElementById('lday').innerHTML = '';
+        }
+    }
+
+    /*$('#search').click(function(){
+				urlParam.filterCol = ['monthto','monthfrom','yearto','yearfrom'];
+				urlParam.filterVal = [$('#glaccount').val(),$('#year').val()];
+				refreshGrid("#jqGrid",urlParam);
+				hidetbl(true);
+				$("#TableDetailMovement td[id^='glmasdtl_actamount']").removeClass('bg-primary');
+				$("#TableDetailMovement td span").text("");
+				DataTable.clear().draw();
+			});
+*/
 			set_yearperiod();
 			function set_yearperiod(){
 				param={
