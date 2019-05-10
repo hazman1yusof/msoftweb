@@ -72,7 +72,7 @@ $.jgrid.defaults.responsive = true;
 		var  dialog_loccode= new ordialog(
 			'loccode','sysdb.location','#loccode',errorField,
 			{	colModel:[
-				    {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				  {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
 
 			]
@@ -88,21 +88,23 @@ $.jgrid.defaults.responsive = true;
 		dialog_loccode.makedialog();		
 
 		var dialog_delordno= new ordialog(
-			'delordno','material.delordhd','#delordno',errorField,
-			{	colModel:[
+			'delordno',['material.delordhd AS q','material.delorddt AS p'],'#delordno',errorField,
+			{	colModel:
+				[
 				  {label:'Delordno',name:'delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
 					{label:'deliverydate',name:'deliverydate',width:100,classes:'pointer',hidden:true},
 					{label:'Docno',name:'docno',width:100,classes:'pointer',hidden:true},
-					// {label:'uomcode',name:'uomcode',width:100,classes:'pointer',hidden:true},
-					{label:'purdate',name:'purdate',width:100,classes:'pointer',hidden:true},
+					{label:'uomcode',name:'uomcode',width:100,classes:'pointer',hidden:true},
+					{label:'qtydelivered',name:'qtydelivered',width:100,classes:'pointer',hidden:true},						
+					{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
+
 				],
 				ondblClickRow:function(){
 					let data=selrowData('#'+dialog_delordno.gridname);
 					$('#delorddate').val(data['deliverydate']);		
 					$('#docno').val(data['docno']);
 					$('#uomcode').val(data['uomcode']);
-					$('#purdate').val(data['purdate']);
+					$('#qty').val(data['qtydelvered']);
 				}
 			},
 			{
@@ -140,14 +142,18 @@ $.jgrid.defaults.responsive = true;
 		var dialog_invno= new ordialog(
 			'invno','finance.apacthdr','#invno',errorField,
 			{	colModel:[
-				  {label:'invno',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},		
+					{label:'Invno',name:'invno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Source',name:'source',width:300,classes:'pointer',canSearch:true,or_search:true},	
+					{label:'Trantype',name:'trantype',width:300,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Document',name:'document',width:300,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Regstatus',name:'recstatus',width:300,classes:'pointer',canSearch:true,or_search:true},			
 					]
 			},{
 				title:"Select invno",
 				open: function(){
-					// dialog_invno.urlParam.filterCol=['compcode',],
-					// dialog_invno.urlParam.filterVal=['session.compcode']
+					dialog_invno.urlParam.filterCol=['compcode','source','trantype','suppcode','document','recstatus'],
+					dialog_invno.urlParam.filterVal=['session.compcode','AP','IN',suppcode.val,invno.value,'POSTED']
 				}
 			},'urlParam','radio','tab'
 		);
@@ -375,7 +381,7 @@ $.jgrid.defaults.responsive = true;
 			});
 
 			function disableField() {
-				$("#invno").prop('readonly',true);
+				$("#invno").prop('readonly',false);
 				dialog_delordno.on()
 				$("#delorddate").prop('readonly',true);
 				$("#invdate").prop('readonly',true);
@@ -390,7 +396,7 @@ $.jgrid.defaults.responsive = true;
 			}
 
 			function enableField() {
-				$("#invno").prop('readonly',false);
+				$("#invno").prop('readonly',true);
 				dialog_delordno.off()
 				$("#delorddate").prop('readonly',false);
 				$("#invdate").prop('readonly',false);

@@ -106,8 +106,14 @@
 						</div>
 				</div>
 
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="invno">Invoice No.</label>
+				<!-- <div class="form-group">
+					<label class="col-md-2 control-label" for="invno">Invoice No</label>  
+						<div class="col-md-3">
+							<input id="invno" name="invno" type="text" class="form-control input-sm" data-validation="required">
+						</div> -->
+
+						<div class="form-group">
+					<label class="col-md-2 control-label" for="invno">Invoice No</label>
 						<div class="col-md-3">
 							<div class='input-group'>
 								<input id="invno" name="invno" type="text" class="form-control input-sm" data-validation="required">
@@ -115,6 +121,7 @@
 							</div>
 							<span class="help-block"></span>
 						</div>
+
 					<label class="col-md-2 control-label" for="delorddate">Delivery Order Date</label>
 						<div class="col-md-3">
 							<input id="delorddate" name="delorddate" type="date" class="form-control input-sm" 	data-validation="required" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
