@@ -205,7 +205,8 @@ use Carbon\Carbon;
         try {
 
             $apacthdr = DB::table('finance.apacthdr')
-                ->where('auditno','=',$request->auditno);
+                ->where('auditno','=',$request->auditno)
+                ->first();
 
             $apactdtl = DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
@@ -219,7 +220,7 @@ use Carbon\Carbon;
                         ->where('compcode','=',session('compcode'))
                         ->where('recstatus','=','POSTED')
                         ->where('delordno','=',$value->document)
-                        ->update(['invoiceno'=>$apacthdr->first()->document]);
+                        ->update(['invoiceno'=>$apacthdr->document]);
                 }
             }
 

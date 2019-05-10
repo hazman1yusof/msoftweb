@@ -30,6 +30,10 @@
 		            </div>
 				</div>
 
+				<div class="col-md-2" style="padding: 10px;">
+					&nbsp;
+	            </div>
+
 				<!-- <div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
 					  	<select id="Status" name="Status" class="form-control input-sm">
@@ -41,7 +45,7 @@
 					    </select>
 	            </div> -->
 
-				<div id="div_for_but_post" class="col-md-3 col-md-offset-9" style="text-align: end;">
+				<div id="div_for_but_post" class="col-md-3 col-md-offset-7" style="text-align: end;">
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 				</div>
