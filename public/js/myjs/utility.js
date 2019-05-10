@@ -657,7 +657,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				textfield.focus();
 				if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow(event);
 				$("#"+obj.dialogname).dialog( "close" );
-				$("#"+obj.gridname).jqGrid("clearGridData", true);
+				// $("#"+obj.gridname).jqGrid("clearGridData", true);
 				$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 				textfield.removeClass( "error" ).addClass( "valid" );
 				textfield.on('blur',{data:obj,errorField:errorField},onBlur);
@@ -715,7 +715,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					textfield.focus();
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow(event);
 					$("#"+obj.dialogname).dialog( "close" );
-					$("#"+obj.gridname).jqGrid("clearGridData", true);
+					// $("#"+obj.gridname).jqGrid("clearGridData", true);
 					$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 					textfield.removeClass( "error" ).addClass( "valid" );
 					textfield.on('blur',{data:obj,errorField:errorField},onBlur);
@@ -848,7 +848,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					$(obj.textfield).focus();
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 					$("#"+obj.dialogname).dialog( "close" );
-					$("#"+obj.gridname).jqGrid("clearGridData", true);
+					// $("#"+obj.gridname).jqGrid("clearGridData", true);
 					$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 					$(obj.textfield).removeClass( "error" ).addClass( "valid" );
 					$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);

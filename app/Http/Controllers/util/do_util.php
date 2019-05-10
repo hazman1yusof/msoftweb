@@ -313,10 +313,11 @@ class do_util extends defaultController{
 
 	public static function postingGL_GST($value,$delordhd_obj){
 
-        //amik yearperiod dari delordhd
-        $yearperiod = defaultController::getyearperiod_($delordhd_obj->trandate);
-
 		if($value->amtslstax > 0){
+
+            //amik yearperiod dari delordhd
+            $yearperiod = defaultController::getyearperiod_($delordhd_obj->trandate);
+
             $queryACC = DB::table('sysdb.sysparam')
                 ->where('compcode','=',session('compcode'))
                 ->where('source','=','AP')

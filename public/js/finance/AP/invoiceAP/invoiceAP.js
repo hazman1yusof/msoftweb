@@ -27,7 +27,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#amount']);
+	var mycurrency =new currencymode(['#amount','#apacthdr_amount','#apacthdr_outamount']);
 	var fdl = new faster_detail_load();
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
@@ -92,11 +92,14 @@ $(document).ready(function () {
 					});
 				}
 
+				console.log($('#apacthdr_outamount').val());
+				console.log($('#apacthdr_amount').val());
+				console.log($('#apacthdr_outamount').val() != $('#apacthdr_amount').val());
 				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val() && counter_save==0){
 					event.preventDefault();
 					bootbox.confirm({
 					    message: "Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?",
-					    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+					    buttons: { confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
 					    },
 					    callback: function (result) {
 					    	if(result == true){
