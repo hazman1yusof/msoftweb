@@ -169,7 +169,11 @@ abstract class defaultController extends Controller{
             });
         }
 
-        //////////where//////////
+        //////////where////////// 
+
+        // filterCol:['trandate','trandate']
+        // filterVal:['<.10-01-2000','>.10-12-2000']
+        
         if(!empty($request->filterCol)){
             foreach ($request->filterCol as $key => $value) {
                 $pieces = explode(".", $request->filterVal[$key], 2);
@@ -177,6 +181,14 @@ abstract class defaultController extends Controller{
                     $table = $table->where($request->filterCol[$key],'=',session($pieces[1]));
                 }else if($pieces[0] == '<>'){
                     $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
+                }else if($pieces[0] == '>'){
+                    $table = $table->where($request->filterCol[$key],'>',$pieces[1]);
+                }else if($pieces[0] == '>='){
+                    $table = $table->where($request->filterCol[$key],'>=',$pieces[1]);
+                }else if($pieces[0] == '<'){
+                    $table = $table->where($request->filterCol[$key],'<',$pieces[1]);
+                }else if($pieces[0] == '<='){
+                    $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
                 }else{
                     $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
                 }

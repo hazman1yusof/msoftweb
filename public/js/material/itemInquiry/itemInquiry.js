@@ -387,17 +387,24 @@ $(document).ready(function () {
 
 
 	function getdtlmov(fetchall,start,limit){
+		let mon_from = $('#monthfrom').val();
+		let yr_from = $('#yearfrom').val();
+		let mon_to = $('#monthto').val();
+		let yr_to = $('#yearto').val();
+
 		var param={
 					action:'get_value_default',
 					url:'/util/get_value_default',
 					field:['trandate','trantype','deptcode','txnqty', 'upduser', 'updtime'],
 					table_name:'material.ivtxndt',
 					table_id:'idno',
-					filterCol:['compcode','itemcode','deptcode'],
+					filterCol:['compcode','itemcode','deptcode','trandate','trandate'],
 					filterVal:[
 						'session.compcode',
 						selrowData("#detail").s_itemcode,
 						selrowData("#detail").s_deptcode,
+						'>=.'+yr_from+'-'+mon_from+"-01",
+						'<=.'+yr_to+'-'+mon_to+"-01"
 						],
 					sidx: 'adddate', sord:'desc'
 				}
@@ -447,6 +454,8 @@ $(document).ready(function () {
 
 		let mon_from = $('#monthfrom').val();
 		let yr_from = $('#yearfrom').val();
+
+
 		let mon_to = $('#monthto').val();
 		let yr_to = $('#yearto').val();
 
@@ -469,7 +478,7 @@ $(document).ready(function () {
 			    $.each(data.rows[0], function( index, value ) {
 					var lastChar = index.match(/\d+/g);
 
-				    if(!isNaN(parseInt(value)) && index.indexOf('netmvqty') !== -1 && mon_from>parseInt(lastChar[0])){
+				    if(!isNaN(parseInt(value)) && index.indexOf('netmvqty') !== -1 && parseInt(mon_from)>parseInt(lastChar[0])){
 						accumqty+=parseInt(value);
 					}
 				});
@@ -481,7 +490,7 @@ $(document).ready(function () {
 			    $.each(data.rows[0], function( index, value ) {
 					var lastChar = index.match(/\d+/g);
 
-				    if(!isNaN(parseInt(value)) && index.indexOf('netmvval') !== -1 && mon_from>parseInt(lastChar[0])){
+				    if(!isNaN(parseInt(value)) && index.indexOf('netmvval') !== -1 && parseInt(mon_from)>parseInt(lastChar[0])){
 						accumval+=parseInt(value);
 					}
 				});
