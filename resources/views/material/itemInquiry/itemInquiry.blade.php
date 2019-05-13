@@ -127,7 +127,7 @@
 	        						
 		            					<label class="col-md-1 control-label" for="monthfrom">Month From : </label>  
 		            					<div class="col-md-2">
-										  	<select id="monthfrom" name="monthfrom" class="form-control input-sm">
+										  	<select id="monthfrom" name="monthfrom"  class="form-control input-sm">
 										      <option value="monthfrom" selected>-- MONTH FROM --</option>
 										      <option value="1">January</option>
 										      <option value="2">February</option>

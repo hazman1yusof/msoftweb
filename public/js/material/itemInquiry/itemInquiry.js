@@ -317,6 +317,7 @@ $(document).ready(function () {
 		open: function( event, ui ) {
 			DataTable.clear().draw();
 			getdtlmov(false,0,20);
+			//getTheDays();
 		},
 		close: function( event, ui ) {
 		},
@@ -471,10 +472,10 @@ $(document).ready(function () {
 				urlParam.filterCol = ['monthto','monthfrom','yearto','yearfrom'];
 				urlParam.filterVal = [$('#glaccount').val(),$('#year').val()];
 				refreshGrid("#jqGrid",urlParam);
-				hidetbl(true);
 				$("#TableDetailMovement td[id^='glmasdtl_actamount']").removeClass('bg-primary');
 				$("#TableDetailMovement td span").text("");
 				DataTable.clear().draw();
+				getdtlmov();
 			});
 */
 			set_yearperiod();
@@ -496,9 +497,20 @@ $(document).ready(function () {
 						});
 					}
 				});
+
+				/*var nowdate = new Date();
+                var monthStartDay = new Date(nowdate.getFullYear(), nowdate.getMonth(), 1);
+                var monthEndDay = new Date(nowdate.getFullYear(), nowdate.getMonth() + 1, 0);
+
+                $(function() {
+                        $("#yearfrom").html(monthStartDay);
+                        $("#yearto").html(monthEndDay);
+                });*/
 			}
 
-			
+
+
+
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////// 
 	toogleSearch('#sbut1','#searchForm','on');
 	populateSelect('#jqGrid','#searchForm');
