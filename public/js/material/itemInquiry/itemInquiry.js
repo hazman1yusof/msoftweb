@@ -99,11 +99,13 @@ $(document).ready(function () {
 	var urlParam={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:'',
-		table_name:'material.product',
-		table_id:'idno',
-		sort_idno:true,
-		filterCol:['compcode','unit','Class'],
+		field:'',fixPost : "true",
+		table_name:['material.product as p','material.uom as u'],
+		table_id:'none_',
+		join_type : ['LEFT JOIN'],
+		join_onCol : ['p.uomcode'],
+		join_onVal : ['u.uomcode'],
+		filterCol:['p.compcode','p.unit','p.Class'],
 		filterVal:['session.compcode','session.unit', $('#Class2').val()]
 	}
 
@@ -113,14 +115,15 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-            { label: 'idno', name: 'idno', hidden: true},
-            { label: 'Unit', name: 'unit', width: 20},
-			{ label: 'Item code', name: 'itemcode', width: 20, classes: 'wrap', canSearch: true},						
-			{ label: 'Item Description', name: 'description', width: 80, classes: 'wrap', checked:true,canSearch: true},
-			{ label: 'UOM Code', name: 'uomcode', width: 20, classes: 'wrap'},
-			{ label: 'Quantity on Hand', name: 'qtyonhand', width: 30,classes: 'wrap',align: 'right'},
-			{ label: 'Average Cost', name: 'avgcost', width: 30,classes: 'wrap',align: 'right'},
-			{ label: 'Current Price', name: 'currprice', width: 30, classes: 'wrap',align: 'right'},
+            { label: 'idno', name: 'p_idno', hidden: true},
+            { label: 'Unit', name: 'p_unit', width: 20},
+			{ label: 'Item code', name: 'p_itemcode', width: 20, classes: 'wrap', canSearch: true},						
+			{ label: 'Item Description', name: 'p_description', width: 80, classes: 'wrap', checked:true,canSearch: true},
+			{ label: 'UOM Code', name: 'p_uomcode', width: 20, classes: 'wrap'},
+			{ label: 'u_description', name: 'u_description', width: 20, classes: 'wrap'},
+			{ label: 'Quantity on Hand', name: 'p_qtyonhand', width: 30,classes: 'wrap',align: 'right'},
+			{ label: 'Average Cost', name: 'p_avgcost', width: 30,classes: 'wrap',align: 'right'},
+			{ label: 'Current Price', name: 'p_currprice', width: 30, classes: 'wrap',align: 'right'},
 
 			
 		],
@@ -129,19 +132,24 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce:false,
 		height: 124,
-		sortname: 'idno',
+		sortname: 'p_idno',
 		sortorder: 'desc',
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			var jg=$("#jqGrid").jqGrid('getRowData',rowid);
-			$('#itemcodedtl').val(selrowData("#jqGrid").itemcode);
+			$('#itemcodedtl').val(selrowData("#jqGrid").p_itemcode);
+			$('#itemcodedtl_').html(selrowData("#jqGrid").p_description);
+
+			$('#uomcodedtl').val(selrowData("#jqGrid").p_uomcode);
+			$('#uomcodedtl_').html(selrowData("#jqGrid").u_description);
+
 			if(rowid != null) {
-				urlParam2.filterVal[0]=selrowData("#jqGrid").itemcode; 
-				urlParam2.filterVal[1]=selrowData("#jqGrid").uomcode;
+				urlParam2.filterVal[0]=selrowData("#jqGrid").p_itemcode; 
+				urlParam2.filterVal[1]=selrowData("#jqGrid").p_uomcode;
 				refreshGrid('#detail',urlParam2);
 
-				urlParam3.filterVal[0]=selrowData("#jqGrid").itemcode;
+				urlParam3.filterVal[0]=selrowData("#jqGrid").p_itemcode;
 									
 				refreshGrid('#itemExpiry',urlParam3);
 			}
@@ -158,45 +166,50 @@ $(document).ready(function () {
 		}	
 	);
 
-	 $("#jqGrid").jqGrid('setLabel', 'qtyonhand', 'Quantity on Hand', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'avgcost', 'Average Cost', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'currprice', 'Current Price', {'text-align':'right'});
+	 $("#jqGrid").jqGrid('setLabel', 'p_qtyonhand', 'Quantity on Hand', {'text-align':'right'});
+     $("#jqGrid").jqGrid('setLabel', 'p_avgcost', 'Average Cost', {'text-align':'right'});
+     $("#jqGrid").jqGrid('setLabel', 'p_currprice', 'Current Price', {'text-align':'right'});
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['idno','unit','deptcode','stocktxntype','uomcode','qtyonhand','openbalval','itemcode','netmvval1','netmvval2','netmvval3','netmvval4','netmvval5','netmvval6','netmvval7','netmvval8','netmvval9','netmvval10','netmvval11','netmvval12','computerid'],
-		table_name:'material.stockloc',
-		table_id:'idno',
-		filterCol:['itemcode', 'uomcode','year','compcode','unit'],
+		field:'',
+		// field:['idno','unit','deptcode','d_description','stocktxntype','uomcode','qtyonhand','openbalval','itemcode','netmvval1','netmvval2','netmvval3','netmvval4','netmvval5','netmvval6','netmvval7','netmvval8','netmvval9','netmvval10','netmvval11','netmvval12','computerid'],
+		table_name:['material.stockloc as s', 'sysdb.department as d'],
+		join_type : ['LEFT JOIN'],
+		join_onCol : ['s.deptcode'],
+		join_onVal : ['d.deptcode'],
+		table_id:'idno',fixPost : "true",
+		filterCol:['s.itemcode', 's.uomcode','s.year','s.compcode','s.unit'],
 		filterVal:['', '',$("#getYear").val(), 'session.compcode', 'session.unit'],
 	}
 
 	$("#detail").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'idno', name: 'idno', width: 40, classes: 'wrap', hidden:true},
-		 	{ label: 'Department Code', name: 'deptcode', width: 40, classes: 'wrap'},
-			{ label: 'Unit', name: 'unit', width: 30, classes: 'wrap', hidden:false},
-			{ label: 'Stock TrxType', name: 'stocktxntype', width: 40, classes: 'wrap'},
-			{ label: 'UOM Code', name: 'uomcode', width: 40, classes: 'wrap'},
-			{ label: 'Quantity on Hand', name: 'qtyonhand', width: 40, classes: 'wrap',align: 'right'},
-			{ label: 'itemcode', name: 'itemcode', width: 40, classes: 'wrap',hidden:true},
-			{ label: 'Stock Value', name: 'rackno', width: 40, classes: 'wrap', formatter: 'number', formatoptions: {decimalSeperator: '.',devimalPlaces:2,defaultValue: '0.0000'}},
-			{ label: 'openbalval', name: 'openbalval', hidden:true},
-			{ label: 'netmvval1', name: 'netmvval1', hidden:true},
-			{ label: 'netmvval2', name: 'netmvval2', hidden:true},
-			{ label: 'netmvval3', name: 'netmvval3', hidden:true},
-			{ label: 'netmvval4', name: 'netmvval4', hidden:true},
-			{ label: 'netmvval5', name: 'netmvval5', hidden:true},
-			{ label: 'netmvval6', name: 'netmvval6', hidden:true},
-			{ label: 'netmvval7', name: 'netmvval7', hidden:true},
-			{ label: 'netmvval8', name: 'netmvval8', hidden:true},
-			{ label: 'netmvval9', name: 'netmvval9', hidden:true},
-			{ label: 'netmvval10', name: 'netmvval10', hidden:true},
-			{ label: 'netmvval11', name: 'netmvval11', hidden:true},
-			{ label: 'netmvval12', name: 'netmvval12', hidden:true},
+			{ label: 'idno', name: 's_idno', width: 40, classes: 'wrap', hidden:true},
+		 	{ label: 'Department Code', name: 's_deptcode', width: 40, classes: 'wrap'},
+		 	{ label: 'Department Code', name: 'd_description', width: 40, classes: 'wrap'},
+			{ label: 'Unit', name: 's_unit', width: 30, classes: 'wrap', hidden:false},
+			{ label: 'Stock TrxType', name: 's_stocktxntype', width: 40, classes: 'wrap'},
+			{ label: 'UOM Code', name: 's_uomcode', width: 40, classes: 'wrap'},
+			{ label: 'Quantity on Hand', name: 's_qtyonhand', width: 40, classes: 'wrap',align: 'right'},
+			{ label: 'itemcode', name: 's_itemcode', width: 40, classes: 'wrap',hidden:true},
+			{ label: 'Stock Value', name: 's_rackno', width: 40, classes: 'wrap', formatter: 'number', formatoptions: {decimalSeperator: '.',devimalPlaces:2,defaultValue: '0.0000'}},
+			{ label: 'openbalval', name: 's_openbalval', hidden:true},
+			{ label: 'netmvval1', name: 's_netmvval1', hidden:true},
+			{ label: 'netmvval2', name: 's_netmvval2', hidden:true},
+			{ label: 'netmvval3', name: 's_netmvval3', hidden:true},
+			{ label: 'netmvval4', name: 's_netmvval4', hidden:true},
+			{ label: 'netmvval5', name: 's_netmvval5', hidden:true},
+			{ label: 'netmvval6', name: 's_netmvval6', hidden:true},
+			{ label: 'netmvval7', name: 's_netmvval7', hidden:true},
+			{ label: 'netmvval8', name: 's_netmvval8', hidden:true},
+			{ label: 'netmvval9', name: 's_netmvval9', hidden:true},
+			{ label: 'netmvval10', name: 's_netmvval10', hidden:true},
+			{ label: 'netmvval11', name: 's_netmvval11', hidden:true},
+			{ label: 'netmvval12', name: 's_netmvval12', hidden:true},
 			//{ label: 'idno', name: 'idno', width: 30, classes: 'wrap', hidden:true},
 		],
 		autowidth:true,
@@ -218,11 +231,11 @@ $(document).ready(function () {
 
 		onSelectRow:function(rowid,selected){
 			var jq=$('#detail').jqGrid('getRowData',rowid);
-			urlParam3.filterVal[0]=selrowData('#detail').itemcode;
-			urlParam3.filterVal[1]=selrowData('#detail').uomcode;
-			urlParam3.filterVal[2]=selrowData('#detail').deptcode;
-			$('#deptcodedtl').val(selrowData("#detail").deptcode);
-			$('#uomcodedtl').val(selrowData("#detail").uomcode);
+			urlParam3.filterVal[0]=selrowData('#detail').s_itemcode;
+			urlParam3.filterVal[1]=selrowData('#detail').s_uomcode;
+			urlParam3.filterVal[2]=selrowData('#detail').s_deptcode;
+			$('#deptcodedtl').val(selrowData("#detail").s_deptcode);
+			$('#deptcodedtl_').html(selrowData("#detail").d_description);
 
 			refreshGrid('#itemExpiry',urlParam3);
 		}
@@ -282,28 +295,28 @@ $(document).ready(function () {
 	});
 
 	function getStockvalue(rowid,element) {
-		var openbalval = parseFloat(element.openbalval);
-		var netmvval1 = parseFloat(element.netmvval1);
-		var netmvval2 = parseFloat(element.netmvval2);
-		var netmvval3 = parseFloat(element.netmvval3);
-		var netmvval4 = parseFloat(element.netmvval4);
-		var netmvval5 = parseFloat(element.netmvval5);
-		var netmvval6 = parseFloat(element.netmvval6);
-		var netmvval7 = parseFloat(element.netmvval7);
-		var netmvval8 = parseFloat(element.netmvval8);
-		var netmvval9 = parseFloat(element.netmvval9);
-		var netmvval10 = parseFloat(element.netmvval10);
-		var netmvval11 = parseFloat(element.netmvval11);
-		var netmvval12 = parseFloat(element.netmvval12);
+		var openbalval = parseFloat(element.s_openbalval);
+		var netmvval1 = parseFloat(element.s_netmvval1);
+		var netmvval2 = parseFloat(element.s_netmvval2);
+		var netmvval3 = parseFloat(element.s_netmvval3);
+		var netmvval4 = parseFloat(element.s_netmvval4);
+		var netmvval5 = parseFloat(element.s_netmvval5);
+		var netmvval6 = parseFloat(element.s_netmvval6);
+		var netmvval7 = parseFloat(element.s_netmvval7);
+		var netmvval8 = parseFloat(element.s_netmvval8);
+		var netmvval9 = parseFloat(element.s_netmvval9);
+		var netmvval10 = parseFloat(element.s_netmvval10);
+		var netmvval11 = parseFloat(element.s_netmvval11);
+		var netmvval12 = parseFloat(element.s_netmvval12);
 
 		var total = openbalval + netmvval1 + netmvval2 + netmvval3 + netmvval4 + netmvval5 + netmvval6 + netmvval7 + netmvval8+ netmvval9 + netmvval10 + netmvval11 + netmvval12;
 
-		$('#detail').jqGrid('setRowData', rowid, {rackno:total});
+		$('#detail').jqGrid('setRowData', rowid, {s_rackno:total});
 	}
 
 
 	$("#detailMovement").click(function(){
-		if(selrowData("#detail").deptcode != undefined){
+		if(selrowData("#detail").s_deptcode != undefined){
 			$("#detailMovementDialog" ).dialog( "open" );		
 		}else{
 			alert('Select department code');
@@ -316,8 +329,7 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function( event, ui ) {
 			DataTable.clear().draw();
-			getdtlmov(false,0,20);
-			//getTheDays();
+			// getdtlmov(false,0,20);
 		},
 		close: function( event, ui ) {
 		},
@@ -384,8 +396,8 @@ $(document).ready(function () {
 					filterCol:['compcode','itemcode','deptcode'],
 					filterVal:[
 						'session.compcode',
-						selrowData("#detail").itemcode,
-						selrowData("#detail").deptcode,
+						selrowData("#detail").s_itemcode,
+						selrowData("#detail").s_deptcode,
 						],
 					sidx: 'adddate', sord:'desc'
 				}
@@ -399,20 +411,8 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(obj){
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
-
-				/*	if(obj.trantype == 'GRT'){
-
-					if(obj.trantype == 'GRT'){
-						obj.description = 'Good Return Note '+obj.deptcode;
-						obj.qtyin = '';
-						obj.qtyout = obj.txnqty;
-					}else if (obj.trantype == 'GRN'){
-						obj.description = 'Good Receive Note '+obj.deptcode;
-						obj.qtyin = obj.txnqty;
-						obj.qtyout = '';
-					}*/
-					obj.trandate = '-';
-					obj.trantype = '-';
+					// obj.trandate = '-';
+					// obj.trantype = '-';
 					obj.description = '-';
 					obj.qtyin = '-';
 					obj.qtyout = '-';
@@ -423,8 +423,19 @@ $(document).ready(function () {
 					obj.document_no = '-';
 					obj.userid = '-';
 					obj.transtime = '-';
+
+					if(obj.trantype == 'GRT'){
+						obj.description = 'Good Return Note '+obj.deptcode;
+						obj.qtyin = '';
+						obj.qtyout = obj.txnqty;
+					}else if (obj.trantype == 'GRN'){
+						obj.description = 'Good Receive Note '+obj.deptcode;
+						obj.qtyin = obj.txnqty;
+						obj.qtyout = '';
+					}
+
 				});
-				console.log(data.rows);
+
 				DataTable.rows.add(data.rows).draw();
 			}else{
 				moremov=false;
@@ -432,81 +443,89 @@ $(document).ready(function () {
 		});
 	}
 
-	function getTheDays() {
+	function populateSummary(itemcode,uomcode,deptcode){
 
-        // THE DATE OBJECT.
-        var dt = new Date(document.getElementById('monthfrom').value);
-        var dt = new Date(document.getElementById('monthto').value);
+		let mon_from = $('#monthfrom').val();
+		let yr_from = $('#yearfrom').val();
+		let mon_to = $('#monthto').val();
+		let yr_to = $('#yearto').val();
 
-        // GET THE MONTH AND YEAR OF THE SELECTED DATE.
-        var month = dt.getMonth(),
-            year = dt.getFullYear();
+		let param={
+			action:'get_value_default',
+			url:'util/get_value_default',
+			field: ['openbalval','openbalqty','netmvval1','netmvqty1','netmvval2','netmvqty2','netmvval3','netmvqty3','netmvval4','netmvqty4','netmvval5','netmvqty5', 'netmvval6','netmvqty6','netmvval7','netmvqty7','netmvval8','netmvqty8','netmvval9','netmvqty9','netmvval10','netmvqty10',
+			'netmvval11','netmvqty11','netmvval12','netmvqty12'],
+			table_name:'material.stockloc',
+			table_id:'itemcode',
+			filterCol:['itemcode', 'uomcode', 'deptcode', 'year'],
+			filterVal:[itemcode, uomcode, deptcode, $("#yearfrom").val()]
+		}
+		$.get( "util/get_value_default?"+$.param(param), function( data ) {
+					
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data.rows)){
+	            var accumqty=0;
 
-        // GET THE FIRST AND LAST DATE OF THE MONTH.
-        var FirstDay = new Date(year, month, 1);
-        var LastDay = new Date(year, month + 1, 0);
+			    $.each(data.rows[0], function( index, value ) {
+					var lastChar = index.match(/\d+/g);
 
-        // FINALLY, GET THE DAY.
-        var weekday = new Array();
-        weekday[0] = "Sunday";
-        weekday[1] = "Monday";
-        weekday[2] = "Tuesday";
-        weekday[3] = "Wednesday";
-        weekday[4] = "Thursday";
-        weekday[5] = "Friday";
-        weekday[6] = "Saturday";
-
-        if (typeof weekday[FirstDay.getDay()] != 'undefined') {     // CHECK FOR 'undefined'.
-            document.getElementById('fday').innerHTML = weekday[FirstDay.getDay()] +
-                ' (' + FirstDay.toDateString('dd/mon/yyyy') + ')';
-            document.getElementById('lday').innerHTML = weekday[LastDay.getDay()] +
-                ' (' + LastDay.toDateString('dd/mon/yyyy') + ')'; ;
-        }
-        else {
-            document.getElementById('fday').innerHTML = '';
-            document.getElementById('lday').innerHTML = '';
-        }
-    }
-
-    /*$('#search').click(function(){
-				urlParam.filterCol = ['monthto','monthfrom','yearto','yearfrom'];
-				urlParam.filterVal = [$('#glaccount').val(),$('#year').val()];
-				refreshGrid("#jqGrid",urlParam);
-				$("#TableDetailMovement td[id^='glmasdtl_actamount']").removeClass('bg-primary');
-				$("#TableDetailMovement td span").text("");
-				DataTable.clear().draw();
-				getdtlmov();
-			});
-*/
-			set_yearperiod();
-			function set_yearperiod(){
-				param={
-					action:'get_value_default',
-					field: ['year'],
-					table_name:'sysdb.period',
-					table_id:'idno',
-					sortby:['year desc']
-				}
-				$.get( "util/get_value_default?"+$.param(this.param), function( data ) {
-						
-				},'json').done(function(data) {
-					if(!$.isEmptyObject(data.rows)){
-						data.rows.forEach(function(element){	
-							$('#yearfrom').append("<option>"+element.year+"</option>")
-							$('#yearto').append("<option>"+element.year+"</option>")
-						});
+				    if(!isNaN(parseInt(value)) && index.indexOf('netmvqty') !== -1 && mon_from>parseInt(lastChar[0])){
+						accumqty+=parseInt(value);
 					}
 				});
 
-				/*var nowdate = new Date();
-                var monthStartDay = new Date(nowdate.getFullYear(), nowdate.getMonth(), 1);
-                var monthEndDay = new Date(nowdate.getFullYear(), nowdate.getMonth() + 1, 0);
+				$("#openbalqty").val(accumqty);
 
-                $(function() {
-                        $("#yearfrom").html(monthStartDay);
-                        $("#yearto").html(monthEndDay);
-                });*/
+	            var accumval=0;
+
+			    $.each(data.rows[0], function( index, value ) {
+					var lastChar = index.match(/\d+/g);
+
+				    if(!isNaN(parseInt(value)) && index.indexOf('netmvval') !== -1 && mon_from>parseInt(lastChar[0])){
+						accumval+=parseInt(value);
+					}
+				});
+
+				$("#openbalval").val(accumval);
 			}
+		});
+	}
+
+    $('#search').click(function(){
+    	DataTable.clear().draw();
+		getdtlmov();
+		populateSummary($('#itemcodedtl').val(),$('#uomcodedtl').val(),$('#deptcodedtl').val());
+	});
+
+	set_yearperiod();
+	function set_yearperiod(){
+		param={
+			action:'get_value_default',
+			field: ['year'],
+			table_name:'sysdb.period',
+			table_id:'idno',
+			sortby:['year desc']
+		}
+		$.get( "util/get_value_default?"+$.param(this.param), function( data ) {
+				
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data.rows)){
+				data.rows.forEach(function(element){	
+					$('#yearfrom').append("<option>"+element.year+"</option>")
+					$('#yearto').append("<option>"+element.year+"</option>")
+				});
+			}
+		});
+
+		/*var nowdate = new Date();
+        var monthStartDay = new Date(nowdate.getFullYear(), nowdate.getMonth(), 1);
+        var monthEndDay = new Date(nowdate.getFullYear(), nowdate.getMonth() + 1, 0);
+
+        $(function() {
+                $("#yearfrom").html(monthStartDay);
+                $("#yearto").html(monthEndDay);
+        });*/
+	}
 
 
 
@@ -526,6 +545,8 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
+	addParamField('#detail',true,urlParam2);
+	
 	//addParamField('#jqGrid',false,saveParam,['idno']);
 	//addParamField('#detail',false,urlParam2,['idno']);
 

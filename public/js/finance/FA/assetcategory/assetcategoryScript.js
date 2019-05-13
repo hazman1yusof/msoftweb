@@ -194,7 +194,7 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Asset', name: 'glasset', width: 50, hidden:true },
 					{ label: 'Depreciation Code', name: 'gldepccode', width: 50, hidden:true },
 					{ label: 'Depreciation', name: 'gldep', width: 50, hidden:true },
-					{ label: 'Provision for Depriciation Code', name: 'glprovccode', width: 50, hidden:true },
+					{ label: 'Provision for Depriciation Code', name: 'gprovccode', width: 50, hidden:true },
 					{ label: 'Provision for Depr', name: 'glprovdep', width: 50, hidden:true },
 					{ label: 'Gain Code', name: 'glglossccode', width: 50, hidden:true },
 					{ label: 'Gain', name: 'glgainloss', width: 50, hidden:true },
