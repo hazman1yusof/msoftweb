@@ -372,9 +372,9 @@ $(document).ready(function () {
 			{ data: 'cost'},
 			{ data: 'amount'},
 			{ data: 'balance'},
-			{ data: 'document_no'}, //ivhdr docno
-			{ data: 'userid'}, //ivhdr respersonid
-			{ data: 'transtime'}, //ivhdr trantime
+			{ data: 'docno'},
+			{ data: 'respersonid'},
+			{ data: 'trantime'},
 			
 		],
 		drawCallback: function( settings ) {
@@ -395,10 +395,13 @@ $(document).ready(function () {
 		var param={
 					action:'get_value_default',
 					url:'/util/get_value_default',
-					field:['trandate','trantype','deptcode','txnqty', 'upduser', 'updtime'],
-					table_name:'material.ivtxndt',
+					field:['d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'h.respersonid', 'h.trantime'],
+					table_name:['material.ivtxndt as d','material.ivtxnhd as h'],
 					table_id:'idno',
-					filterCol:['compcode','itemcode','deptcode','trandate','trandate'],
+					join_type : ['LEFT JOIN'],
+					join_onCol : ['d.recno'],
+					join_onVal : ['h.recno'],
+					filterCol:['d.compcode','d.itemcode','d.deptcode','d.trandate','d.trandate'],
 					filterVal:[
 						'session.compcode',
 						selrowData("#detail").s_itemcode,
@@ -406,7 +409,7 @@ $(document).ready(function () {
 						'>=.'+yr_from+'-'+mon_from+"-01",
 						'<=.'+yr_to+'-'+mon_to+"-01"
 						],
-					sidx: 'adddate', sord:'desc'
+					sidx: 'd.adddate', sord:'desc'
 				}
 		if(!fetchall){
 			param.offset=start;
@@ -418,7 +421,7 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(obj){
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
-					// obj.trandate = '-';
+					 obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
 					// obj.trantype = '-';
 					obj.description = '-';
 					obj.qtyin = '-';
@@ -427,9 +430,9 @@ $(document).ready(function () {
 					obj.cost = '-';
 					obj.amount = '-';
 					obj.balance = '-';
-					obj.document_no = '-';
-					obj.userid = '-';
-					obj.transtime = '-';
+					/*obj.docno = '';
+					obj.respersonid = '';
+					obj.trantime = '';*/
 
 					if(obj.trantype == 'GRT'){
 						obj.description = 'Good Return Note '+obj.deptcode;
@@ -449,6 +452,22 @@ $(document).ready(function () {
 			}
 		});
 	}
+
+	/*function getBalquan(){
+				selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+				rowdata = $("#jqGrid").jqGrid ('getRowData', selrow);
+				var openbal=rowdata.s_openbalval;
+				var balance=0;
+				var total=0;
+
+				$.each(rowdata, function( index, value ) {
+					if(!isNaN(parseFloat(value)) && (index.indexOf(obj.qtyin) && index.indexOf('s_openbalval')) !== -1){
+						balance+=parseFloat(value);
+					}
+				});
+				balance = parseFloat(openbalval) + parseFloat(qtyin)
+				$('#fd_balance').html(numeral(balance).format('0,0.00'));
+	}*/
 
 	function populateSummary(itemcode,uomcode,deptcode){
 
@@ -525,15 +544,6 @@ $(document).ready(function () {
 				});
 			}
 		});
-
-		/*var nowdate = new Date();
-        var monthStartDay = new Date(nowdate.getFullYear(), nowdate.getMonth(), 1);
-        var monthEndDay = new Date(nowdate.getFullYear(), nowdate.getMonth() + 1, 0);
-
-        $(function() {
-                $("#yearfrom").html(monthStartDay);
-                $("#yearto").html(monthEndDay);
-        });*/
 	}
 
 
