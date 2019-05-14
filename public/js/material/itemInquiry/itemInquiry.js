@@ -120,7 +120,7 @@ $(document).ready(function () {
 			{ label: 'Item code', name: 'p_itemcode', width: 20, classes: 'wrap', canSearch: true},						
 			{ label: 'Item Description', name: 'p_description', width: 80, classes: 'wrap', checked:true,canSearch: true},
 			{ label: 'UOM Code', name: 'p_uomcode', width: 20, classes: 'wrap'},
-			{ label: 'u_description', name: 'u_description', width: 20, classes: 'wrap'},
+			{ label: 'UOM Description', name: 'u_description', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Quantity on Hand', name: 'p_qtyonhand', width: 30,classes: 'wrap',align: 'right'},
 			{ label: 'Average Cost', name: 'p_avgcost', width: 30,classes: 'wrap',align: 'right'},
 			{ label: 'Current Price', name: 'p_currprice', width: 30, classes: 'wrap',align: 'right'},
@@ -366,15 +366,15 @@ $(document).ready(function () {
 			{ data: 'trandate'},
 			{ data: 'trantype'},
 			{ data: 'description'},
-			{ data: 'qtyin'},
-			{ data: 'qtyout'},
-			{ data: 'balquan'},
-			{ data: 'cost'},
-			{ data: 'amount'},
-			{ data: 'balance'},
-			{ data: 'docno'},
+			{ data: 'qtyin', className: "text-right"},
+			{ data: 'qtyout', className: "text-right"},
+			{ data: 'balquan', className: "text-right"},
+			{ data: 'avgcost', className: "text-right"},
+			{ data: 'amount', className: "text-right"},
+			{ data: 'balance', className: "text-right"},
+			{ data: 'docno', className: "text-right"},
 			{ data: 'respersonid'},
-			{ data: 'trantime'},
+			{ data: 'trantime', className: "text-center"},
 			
 		],
 		drawCallback: function( settings ) {
@@ -395,12 +395,12 @@ $(document).ready(function () {
 		var param={
 					action:'get_value_default',
 					url:'/util/get_value_default',
-					field:['d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'h.respersonid', 'h.trantime'],
-					table_name:['material.ivtxndt as d','material.ivtxnhd as h'],
+					field:['d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'h.respersonid', 'h.trantime', 'p.avgcost'],
+					table_name:['material.ivtxndt as d','material.ivtxnhd as h', 'material.product as p'],
 					table_id:'idno',
-					join_type : ['LEFT JOIN'],
-					join_onCol : ['d.recno'],
-					join_onVal : ['h.recno'],
+					join_type : ['LEFT JOIN', 'LEFT JOIN'],
+					join_onCol : ['d.recno', 'd.itemcode'],
+					join_onVal : ['h.recno', 'p.itemcode'],
 					filterCol:['d.compcode','d.itemcode','d.deptcode','d.trandate','d.trandate'],
 					filterVal:[
 						'session.compcode',
@@ -427,12 +427,9 @@ $(document).ready(function () {
 					obj.qtyin = '-';
 					obj.qtyout = '-';
 					obj.balquan = '-';
-					obj.cost = '-';
+					obj.avgcost = numeral(obj.avgcost).format('0,0.00');
 					obj.amount = '-';
 					obj.balance = '-';
-					/*obj.docno = '';
-					obj.respersonid = '';
-					obj.trantime = '';*/
 
 					if(obj.trantype == 'GRT'){
 						obj.description = 'Good Return Note '+obj.deptcode;
