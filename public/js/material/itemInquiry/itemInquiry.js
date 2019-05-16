@@ -317,7 +317,7 @@ $(document).ready(function () {
 
 	$("#detailMovement").click(function(){
 		if(selrowData("#detail").s_deptcode != undefined){
-			$("#detailMovementDialog" ).dialog( "open" );		
+			$("#detailMovementDialog" ).dialog( "open" );
 		}else{
 			alert('Select department code');
 		}

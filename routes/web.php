@@ -185,6 +185,12 @@ Route::get('/pat_mast/get_entry','hisdb\PatmastController@get_entry');
 Route::post('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
 Route::post('/pat_mast/save_patient','hisdb\PatmastController@save_patient');
 
+//// pat_enq registration ////
+Route::get('/pat_enq','hisdb\PatEnqController@show');
+Route::get('/pat_enq/get_entry','hisdb\PatEnqController@get_entry');
+Route::post('/pat_enq/post_entry','hisdb\PatEnqController@post_entry');
+Route::post('/pat_enq/save_patient','hisdb\PatEnqController@save_patient');
+
 //// Emergency setup page ///
 Route::get('/emergency','hisdb\EmergencyController@show');
 Route::get('/emergency/table','hisdb\EmergencyController@table');
