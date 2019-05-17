@@ -395,17 +395,24 @@ $(document).ready(function () {
 		var param={
 					action:'get_value_default',
 					url:'/util/get_value_default',
-					field:['d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'h.respersonid', 'h.trantime', 'p.avgcost'],
+					field:['d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcode','h.respersonid', 'h.trantime'],
+					table_name:['material.ivtxndt as d','material.ivtxnhd as h'],
+					table_id:'idno',
+					join_type : ['LEFT JOIN'],
+					join_onCol : ['d.recno'],
+					join_onVal : ['h.recno'],
+					/*field:['d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcode','h.respersonid', 'h.trantime', 'p.avgcost'],
 					table_name:['material.ivtxndt as d','material.ivtxnhd as h', 'material.product as p'],
 					table_id:'idno',
 					join_type : ['LEFT JOIN', 'LEFT JOIN'],
 					join_onCol : ['d.recno', 'd.itemcode'],
-					join_onVal : ['h.recno', 'p.itemcode'],
-					filterCol:['d.compcode','d.itemcode','d.deptcode','d.trandate','d.trandate'],
+					join_onVal : ['h.recno', 'p.itemcode'],*/
+					filterCol:['d.compcode','d.itemcode','d.deptcode','d.uomcode','d.trandate','d.trandate'],
 					filterVal:[
 						'session.compcode',
 						selrowData("#detail").s_itemcode,
 						selrowData("#detail").s_deptcode,
+						selrowData("#detail").s_uomcode,
 						'>=.'+yr_from+'-'+mon_from+"-01",
 						'<=.'+yr_to+'-'+mon_to+"-01"
 						],
