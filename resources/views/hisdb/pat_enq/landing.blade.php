@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap-theme.css">
 	<link rel="stylesheet" href="plugins/bootgrid/css/jquery.bootgrid.css">
-	<link rel="stylesheet" href="plugins/datatables/css/jquery.dataTables.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
 	<link rel="stylesheet" href="plugins/font-awesome-4.4.0/css/font-awesome.min.css">
 
 
@@ -81,6 +81,7 @@
 			<!-- <button id="patientBox" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button> -->
 			&nbsp;&nbsp;
 			<button id="btn_upload" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-credit-card" aria-hidden="true"> </span> Upload</button>
+			<button id="btn_preview" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-credit-card" aria-hidden="true"> </span> Preview</button>
 			<!-- &nbsp;&nbsp;
 			<button type="button" class="btn btn-success btn-md" disabled ><span class="glyphicon glyphicon-import" aria-hidden="true"> </span> Import File</button> -->
 		</div>
@@ -108,17 +109,40 @@
 
 		</div>
 
-		<div id="uploadModal" title="Upload" >
+		<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+		<input id="app_url" name="app_url" type="hidden" value="{{ env('APP_URL') }}">
 
-			<table class="table table-hover table-bordered" id='tableUpload'>
+		<div id="previewModal" title="Data Preview" >
+
+			<table class="table table-hover table-bordered" id='tablePreview'>
 				<thead>
 					<tr>
 						<th>ID</th>
 						<th>Date</th>
 						<th>File Preview</th>
-						<th>File Name</th>
-						<th>File Remarks</th>
+						<th>MRN</th>
+						<th>Add User</th>
+						<th>Add Date</th>
 						<th>Download</th>
+						<th>type</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+
+		</div>
+
+		<div id="episodeModal" title="Episode List" >
+
+			<table class="table table-hover table-bordered" id='episodeList'>
+				<thead>
+					<tr>
+						<th>Episode No.</th>
+						<th>Episode Type</th>
+						<th>Register date</th>
+						<th>MRN</th>
+						<th>Upload</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -132,17 +156,17 @@
 		@include('hisdb.pat_enq.mdl_episode')
 		@include('hisdb.pat_enq.itemselector')
 
-		
-
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
 	<script type="text/ecmascript" src="plugins/jquery-migrate-3.0.0.js"></script>
     <script type="text/ecmascript" src="plugins/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <script type="text/javascript">$.fn.modal.Constructor.prototype.enforceFocus = function() {};</script>
+
     <script type="text/ecmascript" src="plugins/jquery-ui-1.12.1/jquery-ui.min.js"></script>
     <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 	<script type="text/ecmascript" src="plugins/moment.js"></script>
 
 	<script type="text/javascript" src="plugins/datatables/js/jquery.datatables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/additional-methods.min.js"></script>
 

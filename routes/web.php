@@ -185,12 +185,6 @@ Route::get('/pat_mast/get_entry','hisdb\PatmastController@get_entry');
 Route::post('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
 Route::post('/pat_mast/save_patient','hisdb\PatmastController@save_patient');
 
-//// pat_enq registration ////
-Route::get('/pat_enq','hisdb\PatEnqController@show');
-Route::get('/pat_enq/get_entry','hisdb\PatEnqController@get_entry');
-Route::post('/pat_enq/post_entry','hisdb\PatEnqController@post_entry');
-Route::post('/pat_enq/save_patient','hisdb\PatEnqController@save_patient');
-
 //// Emergency setup page ///
 Route::get('/emergency','hisdb\EmergencyController@show');
 Route::get('/emergency/table','hisdb\EmergencyController@table');
@@ -369,15 +363,22 @@ Route::get('/currentPt','hisdb\CurrentPatientController@show');
 Route::get('/currentPt/get_entry','hisdb\CurrentPatientController@get_entry');
 Route::post('/currentPt/post_entry','hisdb\CurrentPatientController@post_entry');
 
+//// pat_enq registration ////
+Route::get('/pat_enq','hisdb\PatEnqController@show');
+Route::post('/pat_enq/form','hisdb\PatEnqController@form');
+Route::get('/pat_enq/get_entry','hisdb\PatEnqController@get_entry');
+Route::post('/pat_enq/post_entry','hisdb\PatEnqController@post_entry');
+Route::post('/pat_enq/save_patient','hisdb\PatEnqController@save_patient');
 
+//change carousel image to small thumbnail size
+Route::get('/thumbnail/{folder}/{image_path}','hisdb\PatEnqController@thumbnail');
+
+//download file patient enquiry
+Route::get('/download/{folder}/{image_path}','hisdb\PatEnqController@download');
 
 /// Test route /// 
 Route::get('/test','util\TestController@show');
 Route::post('/test/form','util\TestController@form');
-
-Route::get('/testfixcol',function(){
-	return view('test.test');
-});
 
 Route::get('/barcode','util\BarcodeController@show');
 Route::post('/barcode/form','util\BarcodeController@form');

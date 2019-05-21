@@ -901,42 +901,147 @@ $(document).ready(function() {
 		}
     }
 
-    $("#uploadModal").dialog({
+    $("#previewModal").dialog({
         width: 9/10 * $(window).width(),
         modal: true,
         autoOpen: false,
         open: function( event, ui ) {
-            // DataTable.clear().draw();
+            preview_load_data();
+        },
+        close: function( event, ui ) {
+        },
+    });
+
+    $("#btn_preview").click(function(){
+        $("#previewModal" ).dialog( "open" );
+        
+    });
+
+    var DataTable_preview = $('#tablePreview').DataTable({
+    
+        responsive: true,
+        scrollY: 500,
+        paging: false,
+        order: [[ 1, "desc" ]],
+        columns: [
+            { data: 'auditno', width: "5%"},
+            { data: 'trxdate', width: "15%"},
+            { data: 'preview', width: "40%"},
+            { data: 'mrn' , width: "5%"},
+            { data: 'adduser', width: "10%"},
+            { data: 'adddate', width: "10%"},
+            { data: 'download', width: "15%"},
+            { data: 'type', visible: false},
+            
+        ],
+        drawCallback: function( settings ) {
+        },
+        initComplete: function( settings, json ) {
+        }
+    });
+
+
+    function preview_load_data(){
+        DataTable_preview.clear().draw();
+        let mrn = $("#grid-command-buttons tr.justbc").find("td:eq(1)").text();
+
+        var urlParam={
+            action:'preview value',
+            url:'util/get_value_default',
+            field:['auditno','attachmentfile','trxdate','type','mrn','adduser','adddate'],
+            table_name:['hisdb.patresult'],
+            table_id:'none_',
+            filterCol:['mrn'],
+            filterVal:[parseInt(mrn)]
+        }
+
+        $.get( urlParam.url+"?"+$.param(urlParam), function( data ) {
+                    
+        },'json').done(function(data) {
+            if(!$.isEmptyObject(data.rows)){
+                data.rows.forEach(function(obj,i){
+                    obj.auditno = obj.auditno; 
+                    obj.trxdate = obj.trxdate;
+                    obj.preview = make_preview_image(i,obj.attachmentfile,obj.type);
+                    obj.mrn = obj.mrn;
+                    obj.type = obj.type;
+                    obj.adduser = obj.adduser;
+                    obj.adddate = obj.adddate;
+                    obj.download = make_download_butt(i,obj.attachmentfile,obj.type);
+                });
+
+                DataTable_preview.rows.add(data.rows).draw();
+                DataTable_preview.columns.adjust().draw();
+                // upload_but_on(mrn);
+            }
+        });
+    }
+
+    function make_preview_image(i,filepath,type){
+        let app_url = $('#app_url').val();
+        let filetype = type.split('/')[0];
+        let fileextension = type.split('/')[1];
+        let return_value='';
+
+        if(filetype=='image'){
+            return_value = `<img src="`+app_url+`thumbnail/`+filepath+`" >`;
+
+        }else if(filetype=='application'){
+            switch(fileextension){
+                case 'pdf': return_value =  `<img src="`+app_url+`thumbnail/application/pdf">`; break;
+
+                default: return_value = app_url+'thumbnail/application/pdf';
+
+            }
+
+        }else if(filetype=='video'){
+            return_value = app_url+'thumbnail/video';
+
+        }else{
+            return_value = 'download';
+
+        }
+
+        return return_value;
+
+    }
+
+    function make_download_butt(i,filepath,type){
+        let filetype = type.split('/')[0];
+        let fileextension = type.split('/')[1];
+
+        return `<a class='btn btn-default btn-xs nav-link' href="/download/`+filepath+`" data-index="`+i+`"><i class='fa fa-download fa-2x' ></i></a>`
+        
+    }
+
+    $("#episodeModal").dialog({
+        width: 9/10 * $(window).width(),
+        modal: true,
+        autoOpen: false,
+        open: function( event, ui ) {
+            episode_load_data();
         },
         close: function( event, ui ) {
         },
     });
 
     $("#btn_upload").click(function(){
-        $("#uploadModal" ).dialog( "open" );
-        let data={
-            idno:1,
-            preview:'-',
-            name:'-',
-            remark:'-',
-            download:'-'
-
-        }
-        DataTable.rows.add(data).draw();
+        $("#episodeModal" ).dialog( "open" );
+        
     });
 
-    var DataTable = $('#tableUpload').DataTable({
+    var DataTable_epis = $('#episodeList').DataTable({
     
         responsive: true,
         scrollY: 500,
         paging: false,
+        order: [[ 3, "desc" ]],
         columns: [
-            { data: 'idno', width: "10%"},
-            { data: 'trxdate', width: "10%"},
-            { data: 'preview'},
-            { data: 'name'},
-            { data: 'remark'},
-            { data: 'download', width: "15%"}
+            { data: 'episno', width: "10%"},
+            { data: 'epistycode', width: "20%"},
+            { data: 'reg_date', width: "20%"},
+            { data: 'mrn', width: "15%"},
+            { data: 'upload', width: "35%"}
             
         ],
         drawCallback: function( settings ) {
@@ -947,6 +1052,115 @@ $(document).ready(function() {
 
 
 
+    function episode_load_data(){
+        DataTable_epis.clear().draw();
+        let mrn = $("#grid-command-buttons tr.justbc").find("td:eq(1)").text();
+
+        var urlParam={
+            action:'episode value',
+            url:'util/get_value_default',
+            field:['episno','epistycode','reg_date','mrn'],
+            table_name:['hisdb.episode'],
+            table_id:'none_',
+            filterCol:['mrn'],
+            filterVal:[parseInt(mrn)]
+        }
+
+        $.get( urlParam.url+"?"+$.param(urlParam), function( data ) {
+                    
+        },'json').done(function(data) {
+            if(!$.isEmptyObject(data.rows)){
+                data.rows.forEach(function(obj,i){
+                    obj.episno = obj.episno; 
+                    obj.epistycode = obj.epistycode;
+                    obj.reg_date = obj.reg_date;
+                    obj.mrn = obj.mrn;
+                    obj.upload = make_upload_butt(i,obj.reg_date);
+                });
+
+                DataTable_epis.rows.add(data.rows).draw();
+                DataTable_epis.columns.adjust().draw();
+                upload_but_on(mrn);
+            }
+        });
+    }
+
+    function make_upload_butt(i,trxdate){
+        return `
+            <form class="upload_form" method="post" data-index="`+i+`" id="upload_form_`+i+`" enctype="multipart/form-data">
+                <input type="file" name="file" accept="audio/*,image/*,video/*,application/pdf" style="display: none;" id="fileinput_`+i+`" data-index="`+i+`">
+
+                <input type="hidden" value="`+trxdate+`" name='trxdate_`+i+`' id="trxdate_`+i+`" >
+
+                <button type="button" oper='click' class='btn btn-primary btn-xs' data-index="`+i+`"><i class='fa fa-folder-open-o fa-2x' ></i></button>
+
+                <button type="button" oper='cancel_`+i+`' class='btn btn-danger btn-xs' style="margin-left:5px;display: none;" data-index="`+i+`" data-index="`+i+`"><i class='fa fa-times fa-2x'></i></button>
+
+                <button type="submit" oper='submit_`+i+`' class='btn btn-success btn-xs' style="display:none;" data-index="`+i+`" data-index="`+i+`"><i class='fa fa-check fa-2x'></i></button>
+                <label id="label_`+i+`"></label>
+            </form>
+        `;
+    }
+
+    function upload_but_on(mrn){
+        let click = $("form.upload_form button[oper='click']");
+
+        click.on("click",function(){
+            let i = $(this).data('index');
+            $("#fileinput_"+i).click();
+        });
+
+        $('form.upload_form input[type="file"]').on("change", function(){
+            let i = $(this).data('index');
+            let filename = $(this).val();
+
+            $("form.upload_form button[oper='cancel_"+i+"']").show();
+            $("form.upload_form button[oper='submit_"+i+"']").show();
+            $("form.upload_form #label_"+i).text(filename);
+
+            $("form.upload_form button[oper='cancel_"+i+"']").on("click", function(){
+                let i = $(this).data('index');
+
+                $("form.upload_form button[oper='cancel_"+i+"']").hide();
+                $("form.upload_form button[oper='submit_"+i+"']").hide();
+                $("form.upload_form #label_"+i).text("");
+                $("#upload_form_"+i).trigger('reset');
+
+            })
+
+            $("#upload_form_"+i).on('submit',function(e){
+                let i = $(this).data('index');
+                e.preventDefault();
+                var formData = new FormData($(this));
+                formData.append('_token', $('#_token').val());
+                formData.append('mrn', mrn);
+                formData.append('trxdate', $('#trxdate_'+i).val());
+                formData.append('file',$("#fileinput_"+i).prop('files')[0])
+
+                $.ajax({
+                    url: "pat_enq/form",
+                    type: "POST",
+                    data:  formData,
+                    contentType: false,
+                    cache: false,
+                    processData:false,
+                    success: function(data, textStatus, jqXHR) {
+                        alert('file saved!');
+                    },
+                    error: function(data, textStatus, jqXHR) {
+                        alert('error occurs!');
+                    },
+                });
+
+
+                $("form.upload_form button[oper='cancel_"+i+"']").hide();
+                $("form.upload_form button[oper='submit_"+i+"']").hide();
+                $("form.upload_form #label_"+i).text("");
+                $("#upload_form_"+i).trigger('reset');
+            });
+
+        });
+    }
 
 } );
 
