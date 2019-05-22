@@ -369,7 +369,7 @@ Route::get('/pat_enq/get_entry','hisdb\PatEnqController@get_entry');
 Route::post('/pat_enq/post_entry','hisdb\PatEnqController@post_entry');
 Route::post('/pat_enq/save_patient','hisdb\PatEnqController@save_patient');
 
-Route::get('/review','hisdb\ReviewController@review');
+Route::get('/preview','hisdb\ReviewController@review');
 Route::get('/upload','hisdb\ReviewController@upload');
 Route::post('/pat_enq/form','hisdb\ReviewController@form');
 

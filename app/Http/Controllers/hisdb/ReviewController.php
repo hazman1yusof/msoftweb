@@ -22,7 +22,8 @@ class ReviewController extends defaultController
 
     public function review(Request $request)
     {   
-        return view('hisdb.review.review');
+        $user = DB::table('hisdb.pat_mast')->where('mrn','=',$request->mrn)->first();
+        return view('hisdb.review.review',compact('user'));
     }
 
 

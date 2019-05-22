@@ -42,6 +42,16 @@
 <div class='row' style="padding-top: 15px">
 	<div class="panel panel-default">
 	    <div class="panel-body">
+	    <div id="bio">
+		  <div class="row">
+		    <label class="control-label col-sm-2" for="email">Name: <span id="bioname">{{$user->Name}}</span></label>
+		    <label class="control-label col-sm-2" for="pwd">DOB: <span id="biodob">{{$user->DOB}}</span></label>
+		  </div>
+		  <div class="row">
+		    <label class="control-label col-sm-2" for="pwd">IC: <span id="bioic">{{$user->Newic}}</span></label>
+		    <label class="control-label col-sm-2" for="pwd">Age: <span id="bioage">{{$user->DOB}}</span></label>
+		  </div>
+		</div>
 			<table class="table table-hover table-bordered" id='tablePreview'>
 				<thead>
 					<tr>
