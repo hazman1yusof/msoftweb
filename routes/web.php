@@ -365,16 +365,19 @@ Route::post('/currentPt/post_entry','hisdb\CurrentPatientController@post_entry')
 
 //// pat_enq registration ////
 Route::get('/pat_enq','hisdb\PatEnqController@show');
-Route::post('/pat_enq/form','hisdb\PatEnqController@form');
 Route::get('/pat_enq/get_entry','hisdb\PatEnqController@get_entry');
 Route::post('/pat_enq/post_entry','hisdb\PatEnqController@post_entry');
 Route::post('/pat_enq/save_patient','hisdb\PatEnqController@save_patient');
 
+Route::get('/review','hisdb\ReviewController@review');
+Route::get('/upload','hisdb\ReviewController@upload');
+Route::post('/pat_enq/form','hisdb\ReviewController@form');
+
 //change carousel image to small thumbnail size
-Route::get('/thumbnail/{folder}/{image_path}','hisdb\PatEnqController@thumbnail');
+Route::get('/thumbnail/{folder}/{image_path}','hisdb\ReviewController@thumbnail');
 
 //download file patient enquiry
-Route::get('/download/{folder}/{image_path}','hisdb\PatEnqController@download');
+Route::get('/download/{folder}/{image_path}','hisdb\ReviewController@download');
 
 /// Test route /// 
 Route::get('/test','util\TestController@show');

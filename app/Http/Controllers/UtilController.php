@@ -11,7 +11,7 @@ class UtilController extends defaultController
 {
     //
     public function __construct(){
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     public function getcompid(){
