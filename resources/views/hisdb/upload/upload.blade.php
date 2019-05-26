@@ -12,6 +12,22 @@
 <div class='row' style="padding-top: 15px">
 	<div class="panel panel-default">
 	    <div class="panel-body">
+	    	
+	    	<div id="bio">
+			  <div class="row">
+			  		<span class="col-md-1">Name: </span>
+			  		<span id="bioname" class="label label-primary">{{$user->Name}}</span>
+			  </div>
+			  <div class="row">
+			  		<span class="col-md-1">IC: </span>
+			  		<span id="bioic" class="label label-primary">{{$user->Newic}} </span>
+			  </div>
+			  <div class="row">
+			  		<span class="col-md-1">DOB: </span>
+			  		<span id="biodob" class="label label-primary">{{$user->DOB}} ( <span id="bioage"></span> y/o)</span></span>
+			  </div>
+			</div>
+
 			<table class="table table-hover table-bordered" id='episodeList'>
 				<thead>
 					<tr>

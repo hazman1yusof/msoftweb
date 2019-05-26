@@ -360,6 +360,11 @@ function formatDate(someDate){
 	return y + '-'+ mm + '-'+ dd;
 }
 
+function formatDate_mom(date,format,returnformat = 'DD-MM-YYYY'){
+	let mom = moment(date, format);
+	return mom.format(returnformat);
+}
+
 function setDateToNow(){
 	$('input[type=date]').val(moment().format('YYYY/M/D'));
 }

@@ -45,9 +45,9 @@ $(document).ready(function () {
                 data.rows.forEach(function(obj,i){
                     obj.episno = obj.episno; 
                     obj.epistycode = obj.epistycode;
-                    obj.reg_date = obj.reg_date;
                     obj.mrn = obj.mrn;
                     obj.upload = make_upload_butt(i,obj.reg_date);
+                    obj.reg_date = formatDate_mom(obj.reg_date,'YYYY-MM-DD HH:mm:ss');
                 });
 
                 DataTable_epis.rows.add(data.rows).draw();
@@ -99,38 +99,50 @@ $(document).ready(function () {
                 $("#upload_form_"+i).trigger('reset');
 
             })
+        });
 
-            $("#upload_form_"+i).on('submit',function(e){
-                let i = $(this).data('index');
-                e.preventDefault();
-                var formData = new FormData($(this));
-                formData.append('_token', $('#_token').val());
-                formData.append('mrn', mrn);
-                formData.append('trxdate', $('#trxdate_'+i).val());
-                formData.append('file',$("#fileinput_"+i).prop('files')[0])
+        $("form.upload_form").on('submit',function(e){
+            let i = $(this).data('index');
+            e.preventDefault();
+            var formData = new FormData($(this));
+            formData.append('_token', $('#_token').val());
+            formData.append('mrn', mrn);
+            formData.append('trxdate', $('#trxdate_'+i).val());
+            formData.append('file',$("#fileinput_"+i).prop('files')[0]);
 
-                $.ajax({
-                    url: "pat_enq/form",
-                    type: "POST",
-                    data:  formData,
-                    contentType: false,
-                    cache: false,
-                    processData:false,
-                    success: function(data, textStatus, jqXHR) {
-                        alert('file saved!');
-                    },
-                    error: function(data, textStatus, jqXHR) {
-                        alert('error occurs!');
-                    },
-                });
-
-
-                $("form.upload_form button[oper='cancel_"+i+"']").hide();
-                $("form.upload_form button[oper='submit_"+i+"']").hide();
-                $("form.upload_form #label_"+i).text("");
-                $("#upload_form_"+i).trigger('reset');
+            $.ajax({
+                url: "pat_enq/form",
+                type: "POST",
+                data:  formData,
+                contentType: false,
+                cache: false,
+                processData:false,
+                success: function(data, textStatus, jqXHR) {
+                    alert('file saved!');
+                },
+                error: function(data, textStatus, jqXHR) {
+                    alert('error occurs!');
+                },
             });
 
+            $("form.upload_form button[oper='cancel_"+i+"']").hide();
+            $("form.upload_form button[oper='submit_"+i+"']").hide();
+            $("form.upload_form #label_"+i).text("");
+            $("#upload_form_"+i).trigger('reset');
         });
+    }
+
+    $('#biodob').text(formatDate_mom($('#biodob').text(),'YYYY-MM-DD'));
+
+    $("#bioage").text(getAge($('#biodob').text()));
+    function getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
     }
 });

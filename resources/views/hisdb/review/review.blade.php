@@ -31,6 +31,14 @@
   background-color: black;
 }
 
+#bio{
+	font-size: 14px;
+}
+
+.col-md-1{
+	font-
+}
+
 @endsection
 
 @section('body')
@@ -42,21 +50,27 @@
 <div class='row' style="padding-top: 15px">
 	<div class="panel panel-default">
 	    <div class="panel-body">
-	    <div id="bio">
-		  <div class="row">
-		    <label class="control-label col-sm-2" for="email">Name: <span id="bioname">{{$user->Name}}</span></label>
-		    <label class="control-label col-sm-2" for="pwd">DOB: <span id="biodob">{{$user->DOB}}</span></label>
-		  </div>
-		  <div class="row">
-		    <label class="control-label col-sm-2" for="pwd">IC: <span id="bioic">{{$user->Newic}}</span></label>
-		    <label class="control-label col-sm-2" for="pwd">Age: <span id="bioage">{{$user->DOB}}</span></label>
-		  </div>
-		</div>
+	    	<div id="bio">
+			  <div class="row">
+			  		<span class="col-md-1">Name: </span>
+			  		<span id="bioname" class="label label-primary">{{$user->Name}}</span>
+			  </div>
+			  <div class="row">
+			  		<span class="col-md-1">IC: </span>
+			  		<span id="bioic" class="label label-primary">{{$user->Newic}} </span>
+			  </div>
+			  <div class="row">
+			  		<span class="col-md-1">DOB: </span>
+			  		<span id="biodob" class="label label-primary">{{$user->DOB}} ( <span id="bioage"></span> y/o)</span></span>
+			  </div>
+			</div>
+			
 			<table class="table table-hover table-bordered" id='tablePreview'>
 				<thead>
 					<tr>
 						<th>ID</th>
 						<th>Date</th>
+						<th>File Name</th>
 						<th>File Preview</th>
 						<th>MRN</th>
 						<th>Add User</th>

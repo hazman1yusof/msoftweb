@@ -9,12 +9,13 @@ $(document).ready(function () {
         order: [[ 1, "desc" ]],
         columns: [
             { data: 'auditno', width: "5%"},
-            { data: 'trxdate', width: "15%"},
-            { data: 'preview', width: "40%"},
+            { data: 'trxdate', width: "10%"},
+            { data: 'filename', width: "15%"},
+            { data: 'preview', width: "35%"},
             { data: 'mrn' , width: "5%"},
             { data: 'adduser', width: "10%"},
             { data: 'adddate', width: "10%"},
-            { data: 'download', width: "15%"},
+            { data: 'download', width: "10%"},
             { data: 'type', visible: false},
         ],
         drawCallback: function( settings ) {
@@ -31,7 +32,7 @@ $(document).ready(function () {
         var urlParam={
             action:'preview value',
             url:'util/get_value_default',
-            field:['auditno','attachmentfile','trxdate','type','mrn','adduser','adddate'],
+            field:['auditno','resulttext','attachmentfile','trxdate','type','mrn','adduser','adddate'],
             table_name:['hisdb.patresult'],
             table_id:'none_',
             filterCol:['mrn'],
@@ -44,18 +45,18 @@ $(document).ready(function () {
             if(!$.isEmptyObject(data.rows)){
                 data.rows.forEach(function(obj,i){
                     obj.auditno = obj.auditno; 
-                    obj.trxdate = obj.trxdate;
+                    obj.trxdate = formatDate_mom(obj.trxdate,'YYYY-MM-DD HH:mm:ss');
+                    obj.filename = obj.resulttext;
                     obj.preview = make_preview_image(i,obj.attachmentfile,obj.type);
                     obj.mrn = obj.mrn;
                     obj.type = obj.type;
                     obj.adduser = obj.adduser;
-                    obj.adddate = obj.adddate;
-                    obj.download = make_download_butt(i,obj.attachmentfile,obj.type);
+                    obj.adddate = formatDate_mom(obj.adddate,'YYYY-MM-DD HH:mm:ss');
+                    obj.download = make_download_butt(i,obj.attachmentfile,obj.type,obj.resulttext);
                 });
 
                 DataTable_preview.rows.add(data.rows).draw();
                 DataTable_preview.columns.adjust().draw();
-                // upload_but_on(mrn);
             }
         });
     }
@@ -103,13 +104,15 @@ $(document).ready(function () {
 
     }
 
-    function make_download_butt(i,filepath,type){
+    function make_download_butt(i,filepath,type,filename){
         let filetype = type.split('/')[0];
         let fileextension = type.split('/')[1];
 
-        return `<a class='btn btn-default btn-xs nav-link' href="/download/`+filepath+`" data-index="`+i+`"><i class='fa fa-download fa-2x' ></i></a>`
+        return `<a class='btn btn-default btn-xs nav-link' href="/download/`+filepath+`?filename=`+filename+`" data-index="`+i+`"><i class='fa fa-download fa-2x' ></i></a>`
         
     }   
+
+    $('#biodob').text(formatDate_mom($('#biodob').text(),'YYYY-MM-DD'));
 
     $("#bioage").text(getAge($('#biodob').text()));
     function getAge(dateString) {

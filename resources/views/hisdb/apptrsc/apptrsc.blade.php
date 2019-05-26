@@ -87,6 +87,16 @@ td.fc-event-container a.selected{
 			    top: 0;
 			    right: 50px;
 			">Log Out</a>
+			<a href="./preview?mrn={{$pat_info->MRN}}" style="
+			    position: absolute;
+			    top: 0;
+			    right: 100px;
+			">MedicalImage</a>
+			<a href="#" style="
+			    position: absolute;
+			    top: 0;
+			    right: 180px;
+			">MedicalTalk</a>
 		</div>
 
 		<div class="panel panel-default">
