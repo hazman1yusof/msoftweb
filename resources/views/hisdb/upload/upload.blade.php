@@ -34,7 +34,7 @@
 			  </div>
 			  <div class="row" style="margin: 0; padding: 0;">
 			  		<span class="col-md-1">DOB: </span>
-			  		<span id="biodob">{{$user->DOB}}</span> (<span id="bioage"></span> y/o)
+			  		<span id="biodob">{{$user->DOB}}</span> (<span id="bioage"></span> years)
 			  </div>
 			</div>
 
