@@ -14,17 +14,17 @@
 	    <div class="panel-body">
 	    	
 	    	<div id="bio">
-			  <div class="row">
+			  <div class="row" style="margin: 0; padding: 0;">
 			  		<span class="col-md-1">Name: </span>
-			  		<span id="bioname" class="label label-primary">{{$user->Name}}</span>
+			  		<span id="bioname">{{$user->Name}}</span>
 			  </div>
-			  <div class="row">
+			  <div class="row" style="margin: 0; padding: 0;">
 			  		<span class="col-md-1">IC: </span>
-			  		<span id="bioic" class="label label-primary">{{$user->Newic}} </span>
+			  		<span id="bioic">{{$user->Newic}} </span>
 			  </div>
-			  <div class="row">
+			  <div class="row" style="margin: 0; padding: 0;">
 			  		<span class="col-md-1">DOB: </span>
-			  		<span id="biodob" class="label label-primary">{{$user->DOB}} ( <span id="bioage"></span> y/o)</span></span>
+			  		<span id="biodob">{{$user->DOB}}</span> (<span id="bioage"></span> y/o)
 			  </div>
 			</div>
 

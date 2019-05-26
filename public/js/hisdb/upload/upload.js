@@ -134,7 +134,7 @@ $(document).ready(function () {
 
     $('#biodob').text(formatDate_mom($('#biodob').text(),'YYYY-MM-DD'));
 
-    $("#bioage").text(getAge($('#biodob').text()));
+    $("#bioage").html(getAge($('#biodob').text()));
     function getAge(dateString) {
         var today = new Date();
         var birthDate = new Date(dateString);
@@ -145,4 +145,5 @@ $(document).ready(function () {
         }
         return age;
     }
+
 });
