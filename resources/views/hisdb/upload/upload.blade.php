@@ -1,5 +1,15 @@
 @extends('layouts.main')
 
+
+@section('style')
+
+#bio .col-md-1 {
+    width: 58px;
+} 
+
+@endsection
+
+
 @section('title', 'Upload')
 
 @section('body')

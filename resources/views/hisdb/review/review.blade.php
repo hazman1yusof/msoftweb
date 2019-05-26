@@ -31,6 +31,10 @@
   background-color: black;
 }
 
+#bio .col-md-1 {
+    width: 58px;
+} 
+
 @endsection
 
 @section('body')
