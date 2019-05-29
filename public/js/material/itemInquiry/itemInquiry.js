@@ -424,7 +424,7 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.rows)){
 				let accumamt = parseFloat(openbalval);
 				let accumqty = parseInt(openbalqty);
-				
+
 				data.rows.forEach(function(obj){
 					accumamt = accumamt + parseFloat(obj.amount);
 
@@ -464,7 +464,6 @@ $(document).ready(function () {
 
 		let mon_from = $('#monthfrom').val();
 		let yr_from = $('#yearfrom').val();
-
 
 		let mon_to = $('#monthto').val();
 		let yr_to = $('#yearto').val();
