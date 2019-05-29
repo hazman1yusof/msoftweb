@@ -424,6 +424,7 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.rows)){
 				let accumamt = parseFloat(openbalval);
 				let accumqty = parseInt(openbalqty);
+				
 				data.rows.forEach(function(obj){
 					accumamt = accumamt + parseFloat(obj.amount);
 
