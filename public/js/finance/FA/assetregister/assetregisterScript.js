@@ -42,7 +42,16 @@ $.jgrid.defaults.responsive = true;
 				$('#assettype').val(data['assettype']);		
 				$('#method').val(data['method']);
 				$('#rvalue').val(data['residualvalue']);
-			}},
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#deptcode').focus();
+				}
+			}
+		},
 			{
 				title:"Select Category",
 				open: function(){
@@ -58,7 +67,16 @@ $.jgrid.defaults.responsive = true;
 			{	colModel:[
 				    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-			]},
+			],
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#loccode').focus();
+				}
+			}
+		},
 			{
 				title:"Select Department",
 				open: function(){
@@ -74,8 +92,15 @@ $.jgrid.defaults.responsive = true;
 			{	colModel:[
 				  {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-
-			]
+			],
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#regtype').focus();
+				}
+			}
 			},
 			{
 				title:"Select Location",
@@ -337,9 +362,9 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 					{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 					{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
-					{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
+					{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
 					{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},	
-					//{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
+					{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
 					{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 					{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
 					{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},

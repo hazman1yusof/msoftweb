@@ -194,8 +194,8 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="individualtag">Individual Tagging</label>  
 					  <div class="col-md-4" >
-						<label class="radio-inline"><input type="radio" name="individualtag" data-validation="required" value='Y' checked>Yes</label>
-						<label class="radio-inline"><input type="radio" name="individualtag" value='N'>No</label>
+						<label class="radio-inline"><input type="radio" name="individualtag" data-validation="required" value='Y' >Yes</label>
+						<label class="radio-inline"><input type="radio" name="individualtag" value='N' checked >No</label>
 					  </div>
 				</div>
 
