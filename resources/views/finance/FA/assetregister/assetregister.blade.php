@@ -163,7 +163,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="purordno">Purchase No.</label>
 						<div class="col-md-3">
-							<input id="purordno" type="text" name="purordno" class="form-control input-sm" data-validation="required">
+							<input id="purordno" type="text" name="purordno" class="form-control input-sm">
 						</div>
 					<label class="col-md-2 control-label" for="purdate">Purchase Date</label>
 						<div class="col-md-3">
