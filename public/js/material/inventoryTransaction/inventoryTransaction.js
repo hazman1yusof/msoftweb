@@ -139,7 +139,7 @@ $(document).ready(function () {
 		join_onCol:['ivt.trantype'],
 		join_onVal:['itt.trantype'],
 		filterCol:['ivt.compcode'],
-		filterVal:['session.company']
+		filterVal:['session.compcode']
 		
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -685,7 +685,7 @@ $(document).ready(function () {
 		join_onCol:['ivt.itemcode', 'ivt.itemcode'],
 		join_onVal:['s.itemcode','p.itemcode'],
 		filterCol:['ivt.recno', 'ivt.compcode', 'ivt.recstatus'],
-		filterVal:['', 'session.company','<>.DELETE']
+		filterVal:['', 'session.compcode','<>.DELETE']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -1393,7 +1393,7 @@ $(document).ready(function () {
 				dialog_itemcode.urlParam.fixPost="true";
 				dialog_itemcode.urlParam.table_id="none_";
 				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode'];
-				dialog_itemcode.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$('#txndept').val()];
+				dialog_itemcode.urlParam.filterVal=['session.compcode',moment($('#trandate').val()).year(),$('#txndept').val()];
 				dialog_itemcode.urlParam.join_type=['LEFT JOIN', 'LEFT JOIN'];
 				dialog_itemcode.urlParam.join_onCol=['s.itemcode','u.uomcode'];
 				dialog_itemcode.urlParam.join_onVal=['p.itemcode', 's.uomcode'];
@@ -1432,7 +1432,7 @@ $(document).ready(function () {
 				dialog_uomcodetrdept.urlParam.fixPost="true";
 				dialog_uomcodetrdept.urlParam.table_id="none_";
 				dialog_uomcodetrdept.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcodetrdept.urlParam.filterVal=['session.company',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
+				dialog_uomcodetrdept.urlParam.filterVal=['session.compcode',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
 				dialog_uomcodetrdept.urlParam.join_type=['LEFT JOIN','LEFT JOIN'];
 				dialog_uomcodetrdept.urlParam.join_onCol=['s.itemcode','s.uomcode'];
 				dialog_uomcodetrdept.urlParam.join_onVal=['p.itemcode','u.uomcode'];
@@ -1465,7 +1465,7 @@ $(document).ready(function () {
 				dialog_uomcoderecv.urlParam.fixPost="true";
 				dialog_uomcoderecv.urlParam.table_id="none_";
 				dialog_uomcoderecv.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcoderecv.urlParam.filterVal=['session.company',$('#sndrcv').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
+				dialog_uomcoderecv.urlParam.filterVal=['session.compcode',$('#sndrcv').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
 				dialog_uomcoderecv.urlParam.join_type=['LEFT JOIN'];
 				dialog_uomcoderecv.urlParam.join_onCol=['s.uomcode'];
 				dialog_uomcoderecv.urlParam.join_onVal=['u.uomcode'];
@@ -1495,7 +1495,7 @@ $(document).ready(function () {
 			title:"Select Expiry Date",
 			open: function(){
 				dialog_expdate.urlParam.filterCol=['compcode','year','deptcode', 'uomcode', 'itemcode'];
-				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val(), $("#jqGrid2 input[name='itemcode']").val()];
+				dialog_expdate.urlParam.filterVal=['session.compcode',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val(), $("#jqGrid2 input[name='itemcode']").val()];
 			
 			}
 		},'urlParam'
@@ -1514,7 +1514,7 @@ $(document).ready(function () {
 			title:"Select Request RecNo",
 			open: function(){
 				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus'];
-				dialog_requestRecNo.urlParam.filterVal=['session.company','POSTED'];
+				dialog_requestRecNo.urlParam.filterVal=['session.compcode','POSTED'];
 			}
 		}, 'urlParam'
 	);
