@@ -114,6 +114,11 @@ Route::get('/area','setup\AreaController@show');
 Route::get('/area/table','setup\AreaController@table');
 Route::post('/area/form','setup\AreaController@form');
 
+//// Charge master setup page ///
+Route::get('/chargemaster','setup\ChargeMasterController@show');
+Route::get('/chargemaster/table','setup\ChargeMasterController@table');
+Route::post('/chargemaster/form','setup\ChargeMasterController@form');
+
 //// Compcode setup page ///
 Route::get('/compcode','setup\CompcodeController@show');
 Route::get('/compcode/table','setup\CompcodeController@table');
