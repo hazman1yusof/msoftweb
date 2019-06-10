@@ -428,7 +428,7 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(obj){
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
-					 obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
+					obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
 					// obj.trantype = '-';
 					obj.description = '-';
 					obj.qtyin = '-';
