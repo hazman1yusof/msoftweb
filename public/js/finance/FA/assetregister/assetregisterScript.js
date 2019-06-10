@@ -42,7 +42,16 @@ $.jgrid.defaults.responsive = true;
 				$('#assettype').val(data['assettype']);		
 				$('#method').val(data['method']);
 				$('#rvalue').val(data['residualvalue']);
-			}},
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#deptcode').focus();
+				}
+			}
+		},
 			{
 				title:"Select Category",
 				open: function(){
@@ -58,7 +67,16 @@ $.jgrid.defaults.responsive = true;
 			{	colModel:[
 				    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-			]},
+			],
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#loccode').focus();
+				}
+			}
+		},
 			{
 				title:"Select Department",
 				open: function(){
@@ -74,8 +92,15 @@ $.jgrid.defaults.responsive = true;
 			{	colModel:[
 				  {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-
-			]
+			],
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#regtype').focus();
+				}
+			}
 			},
 			{
 				title:"Select Location",
@@ -90,7 +115,7 @@ $.jgrid.defaults.responsive = true;
 		var dialog_delordno= new ordialog(
 			'delordno',['material.delordhd as dohd','finance.apacthdr as ap'],'#delordno',errorField,
 			{	colModel:[
-				  	{label:'Delordno',name:'dohd_delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				  {label:'Delordno',name:'dohd_delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Suppcode',name:'dohd_suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
 					{label:'dohd_recno',name:'dohd_recno',width:100,classes:'pointer',hidden:true},
 					{label:'deliverydate',name:'dohd_deliverydate',width:100,classes:'pointer',hidden:true},
@@ -150,7 +175,7 @@ $.jgrid.defaults.responsive = true;
 		var dialog_invno= new ordialog(
 			'invno','finance.apacthdr','#invno',errorField,
 			{	colModel:[
-				  	{label:'invno',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				  {label:'invno',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
 				]
 			},{
@@ -337,9 +362,9 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 					{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 					{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
-					{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
+					{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
 					{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},	
-					//{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
+					{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
 					{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 					{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
 					{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
@@ -359,7 +384,10 @@ $.jgrid.defaults.responsive = true;
 					//accumytd
 					{ label: 'Accum YTD', name:'cuytddep', width:20, classes:'wrap', hidden:true},
 					//nbv
-					{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:true},
+					{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
+					formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
+					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+
 					{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
 
 								
@@ -386,6 +414,25 @@ $.jgrid.defaults.responsive = true;
 						$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 				},				
 			});
+	////////////////////////////formatter//////////////////////////////////////////////////////////
+	function formatter(cellvalue, options, rowObject) {
+		if (cellvalue == 'A') {
+			return "Active";
+		}
+		if (cellvalue == 'D') {
+			return "Deactive";
+		}
+	}
+
+	function unformat(cellvalue, options) {
+		if (cellvalue == 'Active') {
+			return "Active";
+		}
+		if (cellvalue == 'Deactive') {
+			return "Deactive";
+		}
+	}
+
 
 			////////////////////////////// DATE FORMATTER ////////////////////////////////////////
 			function dateFormatter(cellvalue, options, rowObject){
@@ -404,12 +451,12 @@ $.jgrid.defaults.responsive = true;
 
 			function disableField() {
 				dialog_delordno.on();
-				dialog_suppcode.off();
+				dialog_suppcode.on();
 				dialog_invno.off();
 				dialog_uomcode.off();
 
 				$("#invno").prop('readonly',true);
-				$("#suppcode").prop('readonly',true);
+				$("#suppcode").prop('readonly',false);
 				$("#delorddate").prop('readonly',true);
 				$("#uomcode").prop('readonly',true);
 				$("#invdate").prop('readonly',true);
@@ -425,12 +472,12 @@ $.jgrid.defaults.responsive = true;
 
 			function enableField() {
 				dialog_delordno.off();
-				dialog_suppcode.on();
+				dialog_suppcode.off();
 				dialog_invno.on();
 				dialog_uomcode.on();
 
 				$("#invno").prop('readonly',false);
-				$("#suppcode").prop('readonly',false);
+				$("#suppcode").prop('readonly',true);
 				$("#uomcode").prop('readonly',false);
 				$("#delorddate").prop('readonly',false);
 				$("#invdate").prop('readonly',false);

@@ -250,7 +250,7 @@
 
 @section('scripts')
 
-	<script src="js/material/inventoryTransaction/inventoryTransaction2.js"></script>
+	<script src="js/material/inventoryTransaction/inventoryTransaction.js"></script>
 	<script src="js/material/inventoryTransaction/pdfgen.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

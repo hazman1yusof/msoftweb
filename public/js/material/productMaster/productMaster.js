@@ -403,8 +403,9 @@
 						}else if($('#groupcode').val().trim() == 'Others') {
 							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
 							dialog_category.urlParam.filterVal=['Other', 'PO', 'A'];
-						}else if($('#postGroupcode').val().trim() == ''){
-							console.log("hh");
+						}else if($('#postGroupcode').val().trim() == 'Asset'){
+							dialog_category.urlParam.table_name="finance.facode";
+							dialog_category.urlParam.field=['assetcode as catcode', 'description'];
 						}else {
 							dialog_category.urlParam.filterCol=['recstatus'];
 							dialog_category.urlParam.filterVal=['A'];

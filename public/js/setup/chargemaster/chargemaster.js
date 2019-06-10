@@ -5,7 +5,7 @@
 
 		$(document).ready(function () {
 			$("body").show();
-			check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
+			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
 				language : {
@@ -18,18 +18,13 @@
 				onValidate : function($form) {
 					if(errorField.length>0){
 						return {
-							element : $('#'+errorField[0]),
+							element : $(errorField[0]),
 							message : ' '
 						}
 					}
 				},
 			};
-			//////////////////////////////////////////////////////////////
-
-
-			////////////////////object for dialog handler//////////////////
-	
-		
+			
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
 				text: "Save",click: function() {
@@ -61,34 +56,41 @@
 						case state = 'add':
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
-							rdonly("#formdata");
-							hideOne("#formdata");
+							rdonly('#formdata');
+							hideOne('#formdata');
 							break;
 						case state = 'edit':
 							$( this ).dialog( "option", "title", "Edit" );
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
-							rdonly("#formdata");
+							rdonly('#formdata');
 							$('#formdata :input[hideOne]').show();
 							break;
 						case state = 'view':
 							$( this ).dialog( "option", "title", "View" );
 							disableForm('#formdata');
-							rdonly("#formdata");
-							$(this).dialog("option", "buttons",butt2);
 							$('#formdata :input[hideOne]').show();
+							$(this).dialog("option", "buttons",butt2);
 							break;
 					}
-					if (oper != 'view') {
-						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
+					if(oper!='view'){
+						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+						// dialog_dept.on();
+						// dialog_trantype.on();
 					}
-					
+					if(oper!='add'){
+						///toggleFormData('#jqGrid','#formdata');
+						// dialog_dept.check(errorField);
+						// dialog_trantype.check(errorField);
+					}
 				},
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
+					//$('.alert').detach();
 					$('#formdata .alert').detach();
-					$("#formdata a").off();
+					// dialog_dept.off();
+					// dialog_trantype.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -102,47 +104,41 @@
 				action:'get_table_default',
 				url:'util/get_table_default',
 				field:'',
-				table_name:'material.ivtxntype',
-				table_id:'trantype',
-				sort_idno: true
+				table_name:'hisdb.chgmast',
+				table_id:'chgcode',
+				sort_idno:true,
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
-				url:'deliveryDept/form',
+				url:'chargemaster/form',
 				field:'',
 				oper:oper,
-				table_name:'material.ivtxntype',
-				table_id:'trantype',
+				table_name:'hisdb.chgmast',
+				table_id:'chgcode',
 				saveip:'true'
 			};
 			
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
-				 	{label: 'idno', name: 'idno', width: 5, hidden:true},
-					{label: 'compcode', name: 'compcode', hidden:true},
-					{label: 'Transaction Type', name: 'trantype', width: 90, classes: 'wrap' , canSearch: true, },
-					{label: 'Description', name: 'description', width: 90,  classes: 'wrap' , checked:true,canSearch: true, },
-					{label: 'Issue Type', name: 'isstype', width: 90,  classes: 'wrap', },
-					{label: 'Transaction By Inventory', name: 'trbyiv', width: 90,  classes: 'wrap', hidden:true,},
-					{label: 'Update Quantity', name: 'updqty', width: 90,  classes: 'wrap', hidden: true, },
-					{label: 'Credit/Debit', name: 'crdbfl', width: 90,  hidden: true, },
-					{label: 'Update GL', name: 'updamt', width: 90, hidden: true, },
-					{label: 'Account Type', name: 'accttype', width: 90, },
-					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
-					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
-					{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
-					{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
-					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
-					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-					{label: 'Record Status', name: 'recstatus', width: 80, formatter: formatterstatus,
-					unformat: unformat, cellattr: function(rowid, cellvalue){
-						return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''},},
+					{ label: 'idno', name: 'idno', sorttype: 'number', hidden:true },
+					{ label: 'Compcode', name: 'compcode', hidden:true},
+					{ label: 'Charge Code', name: 'chgcode', classes: 'wrap', width: 40, canSearch: true},
+					{ label: 'Description', name: 'description', classes: 'wrap', width: 80},
+					{ label: 'Class', name: 'chgclass', classes: 'wrap', width: 25,checked:true,  canSearch: true},
+					{ label: 'Group', name: 'chggroup', classes: 'wrap', width: 25},
+					{ label: 'Charge Type', name: 'chgtype', classes: 'wrap', width: 25},
+					{ label: 'UOM', name: 'uom', width: 30,hidden:false },
+					{ label: 'Generic Name', name: 'brandname', width: 90},
+					{ label: 'Upd User', name: 'upduser', width: 80,hidden:true}, 
+					{ label: 'Upd Date', name: 'upddate', width: 90,hidden:true},
+					
+					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
+					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
-					
 				],
 				autowidth:true,
                 multiSort: true,
@@ -165,30 +161,25 @@
 				
 			});
 
+			// ////////////////////////////formatter//////////////////////////////////////////////////////////
+			// function formatter(cellvalue, options, rowObject){
+			// 	if(cellvalue == 'A'){
+			// 		return "Active";
+			// 	}
+			// 	if(cellvalue == 'D') { 
+			// 		return "Deactive";
+			// 	}
+			// }
 
-			////////////////////formatter status////////////////////////////////////////
-				function formatterstatus(cellvalue, option, rowObject){
-					if (cellvalue == 'A'){
-						return 'Active';
-					}
+			// function  unformat(cellvalue, options){
+			// 	if(cellvalue == 'Active'){
+			// 		return "Active";
+			// 	}
+			// 	if(cellvalue == 'Deactive') { 
+			// 		return "Deactive";
+			// 	}
+			// }
 
-					if (cellvalue == 'D'){
-						return 'Deactive';
-					}
-
-				}
-
-			////////////////////unformatter status////////////////////////////////////////
-				function unformat(cellvalue, option, rowObject){
-					if (cellvalue == 'Active'){
-						return 'Active';
-					}
-
-					if (cellvalue == 'Deactive'){
-						return 'Deactive';
-					}
-
-				}
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -206,8 +197,9 @@
 					if(!selRowId){
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
+						//emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'idno':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -239,15 +231,53 @@
 			});
 
 			//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-			
+
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-			
 			toogleSearch('#sbut1','#searchForm','on');
 			populateSelect('#jqGrid','#searchForm');
 			searchClick('#jqGrid','#searchForm',urlParam);
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['compcode','idno', 'adduser', 'adddate', 'upddate', 'upduser', 'computerid', 'ipaddress','recstatus']);
-		});
-		
+			addParamField('#jqGrid',false,saveParam,['idno', 'compcode', 'ipaddress', 'computerid', 'adddate', 'adduser','upduser','upddate','recstatus']);
+
+			/////////////////////////////////////////////////////////object for dialog handler//////////////////
+			
+
+			// var dialog_dept = new ordialog(
+			// 	'dept','sysdb.department','#dept',errorField,
+			// 	{	colModel:[
+			// 			{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+			// 			{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+			// 			],
+			// 		ondblClickRow:function(){
+			// 		}	
+			// 	},{
+			// 		title:"Select Department",
+			// 		open: function(){
+			// 			dialog_dept.urlParam.filterCol = ['recstatus', 'compcode'];
+			// 			dialog_dept.urlParam.filterVal = ['A', 'session.compcode'];
+			// 		}
+			// 	}, 'urlParam'
+			// );
+			// dialog_dept.makedialog();
+
+			// var dialog_trantype = new ordialog(
+			// 	'trantype','material.ivtxntype','#trantype',errorField,
+			// 	{	colModel:[
+			// 			{label:'Transaction Type',name:'trantype',width:100,classes:'pointer',canSearch:true,or_search:true},
+			// 			{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+			// 			],
+			// 		ondblClickRow:function(){
+			// 		}	
+			// 	},{
+			// 		title:"Select Transaction Type",
+			// 		open: function(){
+			// 			dialog_trantype.urlParam.filterCol = ['recstatus', 'compcode'];
+			// 			dialog_trantype.urlParam.filterVal = ['A','session.compcode'];
+			// 		}
+			// 	}, 'urlParam'
+			// );
+			// dialog_trantype.makedialog();
+
+});
