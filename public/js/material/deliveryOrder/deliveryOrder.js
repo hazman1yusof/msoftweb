@@ -27,7 +27,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#amount']);
+	var mycurrency =new currencymode(['#delordhd_subamount','#delordhd_totamount']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
 
@@ -49,6 +49,7 @@ $(document).ready(function () {
 			parent_close_disabled(true);
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 			mycurrency.formatOnBlur();
+			mycurrency.formatOn();
 			switch(oper) {
 				case state = 'add':
 					$("#jqGrid2").jqGrid("clearGridData", false);
