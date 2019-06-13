@@ -942,6 +942,15 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_supplier.gridname);
 				$("#apacthdr_payto").val(data['SuppCode']);
+				$('#apacthdr_recdate').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#apacthdr_recdate').focus();
+				}
 			}
 		},{
 			title:"Select Supplier Code",
@@ -958,7 +967,18 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			ondblClickRow:function(){
+				$('#apacthdr_actdate').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#apacthdr_actdate').focus();
+				}
+			}
 		},{
 			title:"Select Supplier Code",
 			open: function(){
@@ -976,7 +996,18 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
-			]
+			],
+			ondblClickRow:function(){
+				$('#apacthdr_deptcode').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#apacthdr_deptcode').focus();
+				}
+			}
 		},{	
 			title:"Select Category Code",
 			open: function(){
@@ -999,7 +1030,18 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			ondblClickRow:function(){
+				$('#apacthdr_remarks').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#apacthdr_remarks').focus();
+				}
+			}
 		},{
 			title:"Select Department Code",
 			open: function(){
