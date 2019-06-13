@@ -27,7 +27,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#delordhd_subamount','#delordhd_totamount']);
+	var mycurrency =new currencymode(['#delordhd_subamount','#delordhd_totamount', '#delordhd_TaxAmt', '#delordhd_amtdisc']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
 
