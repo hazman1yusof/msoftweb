@@ -1423,6 +1423,8 @@ $(document).ready(function () {
 
 	var mycurrency2 =new currencymode([]);
 	function calculate_line_totgst_and_totamt(event){
+
+        mycurrency2.formatOff();
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
 
