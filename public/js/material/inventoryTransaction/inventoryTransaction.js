@@ -1296,14 +1296,27 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true,},
-				]
+				{label:'Unit',name:'sector', hidden:true},
+				],
+
+				ondblClickRow: function () {
+				$('#docno').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#docno').focus();
+				}
+			}
 		},{
 			title:"Select Transaction Department",
 			open: function(){
-				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus'];
-				dialog_txndept.urlParam.filterVal=['1', 'A'];
+				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
+				dialog_txndept.urlParam.filterVal=['1', 'A','session.compcode', 'session.unit'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_txndept.makedialog();
 
@@ -1324,6 +1337,15 @@ $(document).ready(function () {
 				reqRecNo(data['isstype']);
 				
 				$("#sndrcvtype").val("");
+				$('#trandate').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#trandate').focus();
+				}
 			}	
 		},{
 			title:"Select Transaction Type",
@@ -1333,7 +1355,7 @@ $(document).ready(function () {
 				dialog_trantype.urlParam.filterCol=['recstatus'];
 				dialog_trantype.urlParam.filterVal=['A'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_trantype.makedialog();
 
@@ -1342,7 +1364,18 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				]
+			],
+			ondblClickRow:function(){
+				$('#amount').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#amount').focus();
+				}
+			}
 		},{
 			title:"Select Receiver Department",
 			open: function(){
@@ -1357,7 +1390,7 @@ $(document).ready(function () {
 					dialog_sndrcv.urlParam.filterVal=['A'];
 				}
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_sndrcv.makedialog();
 
@@ -1385,6 +1418,7 @@ $(document).ready(function () {
 				
 				getQOHtxndept();
 				checkQOH();
+				$('#uomcode').focus();
 				
 			}
 		},{
@@ -1439,7 +1473,7 @@ $(document).ready(function () {
 				dialog_uomcodetrdept.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on ='], []];
 				dialog_uomcodetrdept.urlParam.join_filterVal=[['p.compcode','p.uomcode'], []];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_uomcodetrdept.makedialog(false);
 
@@ -1472,7 +1506,7 @@ $(document).ready(function () {
 				dialog_uomcoderecv.urlParam.join_filterCol=[['s.compcode on =']];
 				dialog_uomcoderecv.urlParam.join_filterVal=[['u.compcode']];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_uomcoderecv.makedialog(false);
 
@@ -1498,7 +1532,7 @@ $(document).ready(function () {
 				dialog_expdate.urlParam.filterVal=['session.compcode',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val(), $("#jqGrid2 input[name='itemcode']").val()];
 			
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_expdate.makedialog(false);
 
@@ -1509,6 +1543,15 @@ $(document).ready(function () {
 				//{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				],
 			ondblClickRow:function(){
+				$('#sndrcvtype').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#sndrcvtype').focus();
+				}
 			}	
 		},{
 			title:"Select Request RecNo",
@@ -1516,7 +1559,7 @@ $(document).ready(function () {
 				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus'];
 				dialog_requestRecNo.urlParam.filterVal=['session.compcode','POSTED'];
 			}
-		}, 'urlParam'
+		}, 'urlParam','radio','tab'
 	);
 	dialog_requestRecNo.makedialog(false);
 
