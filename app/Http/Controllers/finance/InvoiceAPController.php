@@ -224,11 +224,13 @@ use Carbon\Carbon;
                 }
             }
 
-            $apacthdr->update([
-                'recstatus' => 'POSTED',
-                'upduser' => session('username'),
-                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-            ]);
+            DB::table('finance.apacthdr')
+                ->where('auditno','=',$request->auditno)
+                ->update([
+                    'recstatus' => 'POSTED',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
 
             DB::commit();
         } catch (\Exception $e) {
