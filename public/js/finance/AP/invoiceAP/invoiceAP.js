@@ -243,6 +243,7 @@ $(document).ready(function () {
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
 			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);
 			$('#docnodepan').text(selrowData("#jqGrid").apacthdr_document);
+			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);
 
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 
@@ -315,7 +316,7 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-			saveHeader("#formdata", oper,saveParam,{idno:selrowData('#jqGrid').apacthdr_idno});
+			saveHeader("#formdata", oper,saveParam,{idno:$('#idno').val()});
 			unsaved = false;
 			$("#dialogForm").dialog('close');
 			}else{
@@ -429,11 +430,12 @@ $(document).ready(function () {
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				
 				$('#apacthdr_auditno,#auditno').val(data.auditno);
-				$('#apacthdr_idno').val(data.idno);
+				$('#idno').val(data.idno);
 				// $('#apacthdr_outamount').val(data.outamount);//just save idno for edit later
 				
 				urlParam2.filterVal[1]=data.auditno;
 			}else if(selfoper=='edit'){
+				urlParam2.filterVal[1]=$('#apacthdr_auditno').val();
 				//doesnt need to do anything
 			}
 			disableForm('#formdata');
@@ -615,7 +617,7 @@ $(document).ready(function () {
 			let editurl = "/invoiceAPDetail/form?"+
 				$.param({
 					action: 'invoiceAPDetail_save',
-					auditno:$('#auditno').val(),
+					auditno:$('#apacthdr_auditno').val(),
 					amount:data.amount,
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
@@ -654,7 +656,7 @@ $(document).ready(function () {
 				    	if(result == true){
 				    		param={
 				    			action: 'invoiceAPDetail_save',
-								auditno: $('#auditno').val(),
+								auditno: $('#apacthdr_auditno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 
 				    		}
@@ -720,8 +722,7 @@ $(document).ready(function () {
 			var param={
     			action: 'invoiceAPDetail_save',
 				_token: $("#_token").val(),
-				auditno: $('#apacthdr_auditno').val(),
-				action: 'invoiceAPDetail_save',
+				auditno: $('#apacthdr_auditno').val()
     		}
 
     		$.post( "/invoiceAPDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
@@ -837,32 +838,32 @@ $(document).ready(function () {
 			dialog_payto.off();
 			dialog_category.off();
 			dialog_department.off();
-			saveHeader("#formdata",oper,saveParam);
+			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
 			errorField.length=0;
 		}else{
 			mycurrency.formatOn();
 		}
 	});
 
-	function saveDetailLabel(callback=null){
-		mycurrency.formatOff();
-		mycurrency.check0value(errorField);
+	// function saveDetailLabel(callback=null){
+	// 	mycurrency.formatOff();
+	// 	mycurrency.check0value(errorField);
 		
-		unsaved = false;
-		if( checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+	// 	unsaved = false;
+	// 	if( checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 
-			dialog_supplier.off();
-			dialog_payto.off();
-			dialog_category.off();
-			dialog_department.off();
-			saveHeader("#formdata",oper,saveParam);
+	// 		dialog_supplier.off();
+	// 		dialog_payto.off();
+	// 		dialog_category.off();
+	// 		dialog_department.off();
+	// 		saveHeader("#formdata",oper,saveParam);
 
-			errorField.length=0;
-		}else{
-			mycurrency.formatOn();
-		}
-		if(callback!=null)callback();
-	}
+	// 		errorField.length=0;
+	// 	}else{
+	// 		mycurrency.formatOn();
+	// 	}
+	// 	if(callback!=null)callback();
+	// }
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
 	$("#saveHeaderLabel").click(function(){
@@ -1049,9 +1050,9 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'DO No',name:'delordno',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer'},
+				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter },
 				{label:'pono',name:'srcdocno',width:400,classes:'pointer', hidden:true},
-				{label:'Amount',name:'amount',width:400,classes:'pointer'},
+				{label:'Amount',name:'amount',width:400,classes:'pointer',formatter: 'currency'},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
 				{label:'record no',name:'recno',width:400,classes:'pointer', hidden:true},

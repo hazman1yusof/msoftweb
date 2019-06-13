@@ -242,7 +242,7 @@ use Carbon\Carbon;
 
     public function cancel(Request $request){
         $apacthdr = DB::table('finance.apacthdr')
-                        ->where('idno','=',$request->idno)
+                        ->where('auditno','=',$request->auditno)
                         ->where('compcode','=',session('compcode'));
 
         $apacthdr
