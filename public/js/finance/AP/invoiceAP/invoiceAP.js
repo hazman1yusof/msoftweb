@@ -201,7 +201,7 @@ $(document).ready(function () {
 		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
 		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
 		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap'},
-		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right'},
+		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
 		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
 		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},
@@ -244,8 +244,6 @@ $(document).ready(function () {
 			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);
 			$('#docnodepan').text(selrowData("#jqGrid").apacthdr_document);
 
-		/*	$('#auditno').val(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
-			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);//tukar kat depan tu*/
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 
 			refreshGrid("#jqGrid3",urlParam2);
@@ -417,10 +415,6 @@ $(document).ready(function () {
 			
 		},'json').fail(function (data) {
 			alert(data.responseText);
-			/*dialog_supplier.on();
-			dialog_payto.on();
-			dialog_category.on();
-			dialog_department.on();*/
 		}).done(function (data) {
 
 			unsaved = false;
@@ -490,7 +484,7 @@ $(document).ready(function () {
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			// { label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
 			{ label: 'Delivery Order Number', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
@@ -543,11 +537,9 @@ $(document).ready(function () {
 				},
 			},
 			{ label: 'Record No', name: 'dorecno', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
-				//editrules:{required: true},
 				edittype:"text",
 			},
 			{ label: 'GRN No', name: 'grnno', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
-				//editrules:{required: true},
 				edittype:"text",
 			},
 		],
