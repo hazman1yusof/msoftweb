@@ -34,7 +34,65 @@
 		             </div>
 				</div>
 
-				
+				<!-- <div class="col-md-2">
+				  	<label class="control-label" for="Status">Status</label>  
+					  	<select id="Status" name="Status" class="form-control input-sm">
+					      <option value="All" selected>ALL</option>
+					      <option value="Open">OPEN</option>
+					      <option value="Confirmed">CONFIRMED</option>
+					      <option value="Posted">POSTED</option>
+					      <option value="Cancelled">CANCELLED</option>
+					    </select>
+	            </div>
+
+	            <div class="col-md-2">
+			  		<label class="control-label" for="trandept">Purchase Dept</label> 
+						<select id='trandept' class="form-control input-sm">
+				      		<option value="All" selected>ALL</option>
+						</select>
+				</div>
+
+				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
+					<span id="error_infront" style="color: red"></span>
+					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
+				</div> -->
+
+			 </fieldset> 
+		</form>
+
+        <div class="panel panel-default">
+		    	<div class="panel-heading">Charge Master Header</div>
+		    		<div class="panel-body">
+		    			<div class='col-md-12' style="padding:0 0 15px 0">
+            				<table id="jqGrid" class="table table-striped"></table>
+            					<div id="jqGridPager"></div>
+        				</div>
+		    		</div>
+		</div>
+
+        	<!-- <div class='click_row'>
+        		<label class="control-label">Record No</label>
+        		<span id="recnodepan" style="display: block;">&nbsp</span>
+        	</div>
+        	<div class='click_row'>
+				<label class="control-label">Purchase Dept</label>
+        		<span id="prdeptdepan" style="display: block;">&nbsp</span>
+        	</div> -->
+
+	    <!-- <div class="panel panel-default">
+		    	<div class="panel-heading">Delivery Order DataEntry Detail
+					<button type="button" class="btn btn-primary btn-xs pull-right" id="but_print_dtl" style="display: none;">Print barcode</button>
+		    	</div>
+		    		<div class="panel-body">
+		    			<div class='col-md-12' style="padding:0 0 15px 0">
+	            			<table id="jqGrid3" class="table table-striped"></table>
+	            			<div id="jqGridPager3"></div>
+	    				</div>'
+		    		</div>
+		</div> -->
         
     </div>
 	<!-- ***************End Search + table ********************* -->

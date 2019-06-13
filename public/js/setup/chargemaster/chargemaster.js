@@ -126,10 +126,10 @@
 					{ label: 'idno', name: 'idno', sorttype: 'number', hidden:true },
 					{ label: 'Compcode', name: 'compcode', hidden:true},
 					{ label: 'Charge Code', name: 'chgcode', classes: 'wrap', width: 40, canSearch: true},
-					{ label: 'Description', name: 'description', classes: 'wrap', width: 80},
+					{ label: 'Description', name: 'description', classes: 'wrap', width: 80, canSearch: true},
 					{ label: 'Class', name: 'chgclass', classes: 'wrap', width: 25,checked:true,  canSearch: true},
-					{ label: 'Group', name: 'chggroup', classes: 'wrap', width: 25},
-					{ label: 'Charge Type', name: 'chgtype', classes: 'wrap', width: 25},
+					{ label: 'Group', name: 'chggroup', classes: 'wrap', width: 25, canSearch: true},
+					{ label: 'Charge Type', name: 'chgtype', classes: 'wrap', width: 25, canSearch: true},
 					{ label: 'UOM', name: 'uom', width: 30,hidden:false },
 					{ label: 'Generic Name', name: 'brandname', width: 90},
 					{ label: 'Upd User', name: 'upduser', width: 80,hidden:true}, 
@@ -160,6 +160,21 @@
 				},
 				
 			});
+
+			/////////////////////////////populate data for dropdown search By////////////////////////////
+				searchBy();
+				function searchBy(){
+					$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
+						if(value['canSearch']){
+							if(value['selected']){
+								$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+							}else{
+								$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+							}
+						}
+						//searchClick2('#jqGrid','#searchForm',urlParam);
+					});
+				}
 
 			// ////////////////////////////formatter//////////////////////////////////////////////////////////
 			// function formatter(cellvalue, options, rowObject){
