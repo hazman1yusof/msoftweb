@@ -127,7 +127,7 @@
 					{ label: 'Compcode', name: 'compcode', hidden:true},
 					{ label: 'Charge Code', name: 'chgcode', classes: 'wrap', width: 40, canSearch: true},
 					{ label: 'Description', name: 'description', classes: 'wrap', width: 80, canSearch: true},
-					{ label: 'Class', name: 'chgclass', classes: 'wrap', width: 25,checked:true,  canSearch: true},
+					{ label: 'Class', name: 'chgclass', classes: 'wrap', width: 25,checked:true},
 					{ label: 'Group', name: 'chggroup', classes: 'wrap', width: 25, canSearch: true},
 					{ label: 'Charge Type', name: 'chgtype', classes: 'wrap', width: 25, canSearch: true},
 					{ label: 'UOM', name: 'uom', width: 30,hidden:false },
@@ -196,6 +196,123 @@
 			// }
 
 
+			/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
+	var urlParam2={
+		action:'get_table_default',
+		url:'/util/get_table_default',
+		field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.lastuser','cp.lastupdate', 'cp.chgcode','cm.chgcode'],
+		table_name:['hisdb.chgmast AS cm', 'hisdb.chgprice AS cp'],
+		table_id:'lineno_',
+		join_type:['LEFT JOIN'],
+		join_onCol:['cp.chgcode'],
+		join_onVal:['cm.chgcode'],
+		filterCol:['cp.compcode'],
+		filterVal:['session.compcode']
+	};
+
+	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
+	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
+	$("#jqGrid2").jqGrid({
+		datatype: "local",
+		editurl: "/deliveryOrderDetail/form",
+		colModel: [
+		 	{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+		 	// { label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+			
+			{ label: 'Effective date', name: 'effdate', frozen:true, width: 100, classes: 'wrap', editable:false},
+			{ label: 'Amount 1', name: 'amt1', frozen:true, width: 100, classes: 'wrap', editable:false},
+			{ label: 'Amount 2', name: 'amt2', frozen:true, width: 100, classes: 'wrap', editable:false},
+			{ label: 'Amount 3', name: 'amt3', frozen:true, width: 100, classes: 'wrap', editable:false},
+			{ label: 'Cost Price', name: 'costprice', frozen:true, width: 100, classes: 'wrap', editable:false},
+			{ label: 'Inpatient Tax', name: 'iptax', frozen:true, width: 100, classes: 'wrap', editable:false},
+			{ label: 'User ID', name: 'lastuser', frozen:true, width: 200, classes: 'wrap', editable:false},
+			{ label: 'Last Updated', name: 'lastupdate', frozen:true, width: 100, classes: 'wrap', editable:false},
+			
+			{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
+		],
+		scroll: false,
+		autowidth: false,
+		shrinkToFit: false,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 1150,
+		height: 200,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridPager2",
+		loadComplete: function(){
+			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+		},
+		gridComplete: function(){
+			$("#jqGrid2").find(".remarks_button").on("click", function(e){
+				$("#remarks2").data('rowid',$(this).data('rowid'));
+				$("#remarks2").data('grid',$(this).data('grid'));
+				$("#dialog_remarks").dialog( "open" );
+			});
+			fdl.set_array().reset();
+			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		},
+		afterShowForm: function (rowid) {
+		    $("#expdate").datepicker();
+		},
+		beforeSubmit: function(postdata, rowid){ 
+			dialog_itemcode.check(errorField);
+			dialog_uomcode.check(errorField);
+			dialog_pouom.check(errorField);
+	 	}
+	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
+        fixPositionsOfFrozenDivs.call(this);
+    });
+	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+
+	$("#jqGrid2").jqGrid('bindKeys');
+	var updwnkey_fld;
+	function updwnkey_func(event){
+		var optid = event.currentTarget.id;
+		var fieldname = optid.substring(optid.search("_"));
+		updwnkey_fld = fieldname;
+	}
+
+	$("#jqGrid2").keydown(function(e) {
+      switch (e.which) {
+        case 40: // down
+          var $grid = $(this);
+          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+		  $("#"+selectedRowId+updwnkey_fld).focus();
+
+          e.preventDefault();
+          break;
+
+        case 38: // up
+          var $grid = $(this);
+          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+		  $("#"+selectedRowId+updwnkey_fld).focus();
+
+          e.preventDefault();
+          break;
+
+        default:
+          return;
+      }
+    });
+
+
+	$("#jqGrid2").jqGrid('setGroupHeaders', {
+  	useColSpanStyle: false, 
+	  groupHeaders:[
+		{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
+		{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
+	  ]
+	})
+	
+
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 				view:false,edit:false,add:false,del:false,search:false,
@@ -258,6 +375,20 @@
 
 			/////////////////////////////////////////////////////////object for dialog handler//////////////////
 			
+			////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
+			$("#jqGrid3").jqGrid({
+				datatype: "local",
+				colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
+				shrinkToFit: false,
+				autowidth:true,
+				multiSort: true,
+				viewrecords: true,
+				rowNum: 30,
+				sortname: 'lineno_',
+				sortorder: "desc",
+				pager: "#jqGridPager3",
+			});
+			jqgrid_label_align_right("#jqGrid3");
 
 			// var dialog_dept = new ordialog(
 			// 	'dept','sysdb.department','#dept',errorField,
