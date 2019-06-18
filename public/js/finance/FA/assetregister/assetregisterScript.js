@@ -108,7 +108,7 @@ $.jgrid.defaults.responsive = true;
 					dialog_loccode.urlParam.filterCol=['compcode'],
 					dialog_loccode.urlParam.filterVal=['session.compcode']
 				}
-			},'urlParam','radio','tab'
+			},'urlParam','tab'
 		);
 		dialog_loccode.makedialog();		
 
