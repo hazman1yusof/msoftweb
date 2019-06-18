@@ -126,7 +126,6 @@ $.jgrid.defaults.responsive = true;
 				],
 				ondblClickRow:function(){
 					let data=selrowData('#'+dialog_delordno.gridname);
-					console.log(selrowData('#'+dialog_delordno.gridname));
 					$('#delorddate').val(data['dohd_deliverydate']);		
 					$('#docno').val(data['dohd_docno']);
 					$('#purdate').val(data['dohd_trandate']);
@@ -138,17 +137,17 @@ $.jgrid.defaults.responsive = true;
 			{
 				title:"Select Delordno",
 				open: function(){
-					dialog_delordno.urlParam.filterCol=['dohd.compcode','dohd.invoiceno'];
-					dialog_delordno.urlParam.filterVal=['session.compcode','<>. '];
-					dialog_delordno.urlParam.fixPost = "true";
-					dialog_delordno.urlParam.table_id = "none_";
-					dialog_delordno.urlParam.join_type = ['LEFT JOIN'];
-					dialog_delordno.urlParam.join_onCol = ['dohd.invoiceno'];
-					dialog_delordno.urlParam.join_onVal = ['ap.document'];
 				}
 			},'urlParam','radio','tab'
 		);
 		dialog_delordno.makedialog();
+		dialog_delordno.urlParam.filterCol=['dohd.compcode','dohd.invoiceno','dohd.suppcode'];
+		dialog_delordno.urlParam.filterVal=['session.compcode','<>.NULL'];
+		dialog_delordno.urlParam.fixPost = "true";
+		dialog_delordno.urlParam.table_id = "none_";
+		dialog_delordno.urlParam.join_type = ['LEFT JOIN'];
+		dialog_delordno.urlParam.join_onCol = ['dohd.invoiceno'];
+		dialog_delordno.urlParam.join_onVal = ['ap.document'];
 
 		var dialog_suppcode= new ordialog(
 			'suppcode','material.supplier','#suppcode',errorField,
@@ -161,6 +160,7 @@ $.jgrid.defaults.responsive = true;
 					let data=selrowData('#'+dialog_suppcode.gridname);
 					dialog_invno.urlParam.filterCol=['compcode','suppcode'];
 					dialog_invno.urlParam.filterVal=['session.compcode',data.suppcode];
+					dialog_delordno.urlParam.filterVal[2]=data.suppcode;
 				}
 			},{
 				title:"Select Supplier",

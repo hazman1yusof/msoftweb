@@ -4,6 +4,8 @@ namespace App\Http\Controllers\finance;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use DB;
+use stdClass;
 
 class assetregisterController extends defaultController
 {   
@@ -30,9 +32,35 @@ class assetregisterController extends defaultController
             case 'edit':
                 return $this->defaultEdit($request);
             case 'del':
-                return $this->defaultDel($request);
+                return $this->asset_delete($request);
+                // return $this->defaultDel($request);
             default:
                 return 'error happen..';
         }
+    }
+
+    public function asset_delete(Request $request){
+
+        DB::beginTransaction();
+
+        $table = DB::table($request->table_name);
+
+        try {
+
+            $table = $table->where('idno','=',$request->idno);
+            $table->delete();
+
+            $responce = new stdClass();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response('Error'.$e, 500);
+        }
+
     }
 }
