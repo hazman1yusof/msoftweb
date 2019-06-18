@@ -353,7 +353,7 @@ $.jgrid.defaults.responsive = true;
 				 colModel: [
 					{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
 					{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', checked: true}, 
-					{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap' },
+					{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
 					{ label: 'Asset Type', name: 'assettype', width: 15, sorttype: 'text', classes: 'wrap'},
 					{ label: 'Department', name: 'deptcode', width: 15, sorttype: 'text', classes: 'wrap'},			
 					{ label: 'Location', name: 'loccode', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},					
