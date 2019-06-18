@@ -76,8 +76,7 @@ $(document).ready(function () {
 				dialog_suppcode.check(errorField);
 				dialog_credcode.check(errorField);
 				dialog_deldept.check(errorField);
-				// dialog_reqdept.check(errorField);
-				// dialog_srcdocno.check(errorField);
+
 			}if(oper!='view'){
 				backdated.set_backdate($('#delordhd_prdept').val());
 				dialog_authorise.on();
@@ -85,7 +84,6 @@ $(document).ready(function () {
 				dialog_suppcode.on();
 				dialog_credcode.on();
 				dialog_deldept.on();
-				// dialog_reqdept.on();
 				dialog_srcdocno.on();
 			}
 		},
@@ -114,7 +112,6 @@ $(document).ready(function () {
 			dialog_suppcode.off();
 			dialog_credcode.off();
 			dialog_deldept.off();
-			// dialog_reqdept.off();
 			dialog_srcdocno.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();

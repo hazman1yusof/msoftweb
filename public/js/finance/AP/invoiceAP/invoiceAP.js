@@ -250,7 +250,13 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",urlParam2);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager td[title='Edit Selected Row']").click();
+			let stat = selrowData("#jqGrid").apacthdr_recstatus;
+			if(stat=='POSTED'){
+				$("#jqGridPager td[title='View Selected Row']").click();
+				$('#save').hide();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+			}
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq').hide();
