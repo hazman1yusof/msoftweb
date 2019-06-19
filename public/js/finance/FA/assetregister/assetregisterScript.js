@@ -112,6 +112,37 @@ $.jgrid.defaults.responsive = true;
 		);
 		dialog_loccode.makedialog();		
 
+		var dialog_suppcode= new ordialog(
+			'suppcode','material.supplier','#suppcode',errorField,
+			{	colModel:[
+				  {label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,or_search:true},
+
+				],
+				ondblClickRow:function(){
+					let data=selrowData('#'+dialog_suppcode.gridname);
+					dialog_invno.urlParam.filterCol=['compcode','suppcode'];
+					dialog_invno.urlParam.filterVal=['session.compcode',data.suppcode];
+					dialog_delordno.urlParam.filterVal[2]=data.suppcode;
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#delordno').focus();
+					}
+				}
+			},{
+				title:"Select Supplier",
+				open: function(){
+					dialog_suppcode.urlParam.filterCol=['compcode'],
+					dialog_suppcode.urlParam.filterVal=['session.compcode']
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_suppcode.makedialog();
+
 		var dialog_delordno= new ordialog(
 			'delordno',['material.delordhd as dohd','finance.apacthdr as ap'],'#delordno',errorField,
 			{	colModel:[
@@ -132,6 +163,14 @@ $.jgrid.defaults.responsive = true;
 					$('#suppcode').val(data['dohd_suppcode']);
 					$('#invno').val(data['dohd_invoiceno']);
 					$('#invdate').val(data['ap_actdate']);
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#itemcode').focus();
+					}
 				}
 			},
 			{
@@ -149,33 +188,10 @@ $.jgrid.defaults.responsive = true;
 		dialog_delordno.urlParam.join_onCol = ['dohd.invoiceno'];
 		dialog_delordno.urlParam.join_onVal = ['ap.document'];
 
-		var dialog_suppcode= new ordialog(
-			'suppcode','material.supplier','#suppcode',errorField,
-			{	colModel:[
-				  {label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,or_search:true},
-
-				],
-				ondblClickRow:function(){
-					let data=selrowData('#'+dialog_suppcode.gridname);
-					dialog_invno.urlParam.filterCol=['compcode','suppcode'];
-					dialog_invno.urlParam.filterVal=['session.compcode',data.suppcode];
-					dialog_delordno.urlParam.filterVal[2]=data.suppcode;
-				}
-			},{
-				title:"Select Supplier",
-				open: function(){
-					dialog_suppcode.urlParam.filterCol=['compcode'],
-					dialog_suppcode.urlParam.filterVal=['session.compcode']
-				}
-			},'urlParam','radio','tab'
-		);
-		dialog_suppcode.makedialog();
-
 		var dialog_invno= new ordialog(
 			'invno','finance.apacthdr','#invno',errorField,
 			{	colModel:[
-				  {label:'invno',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				    {label:'invno',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
 				]
 			},{
@@ -207,6 +223,14 @@ $.jgrid.defaults.responsive = true;
 					$('#purprice').val(data['dodt_unitprice']);
 					$('#qty').val(data['dodt_qtydelivered']);
 					$('#currentcost').val(data['dodt_amount']);
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#individualtag').focus();
+					}
 				}
 			},{
 				title:"Select Itemcode",
@@ -219,7 +243,7 @@ $.jgrid.defaults.responsive = true;
 					dialog_itemcode.urlParam.join_onCol = ['dodt.itemcode'];
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode'];
 				}
-			},'urlParam','radio','tab'
+			},'urlParam','tab'
 		);
 		dialog_itemcode.makedialog();
 	
