@@ -240,7 +240,12 @@ $(document).ready(function () {
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'delordhd_recstatus', width: 200},
 			{ label: ' ', name: 'Refresh', width: 120,formatter: formatterRefresh,unformat: unformatRemarks},
-			{ label: ' ', name: 'Checkbox', width: 80,formatter: formatterCheckbox,unformat: unformatRemarks},
+			{ label: ' ', name: 'Checkbox', width: 80,align: "center",
+					        editoptions: { value: "True:False" },
+					        editrules: { required: true },
+					        formatter: formatterCheckbox,
+					        formatoptions: { disabled: false },
+					        editable: true  },
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 250, classes: 'wrap', hidden:true},
 			{ label: 'perdisc', name: 'delordhd_perdisc', width: 90, hidden:true, classes: 'wrap'},
@@ -365,6 +370,20 @@ $(document).ready(function () {
 				});
 			});
 		},
+
+		 beforeSelectRow: function (rowid, e) {
+        var $self = $(this),
+            iCol = $.jgrid.getCellIndex($(e.target).closest("td")[0]),
+            cm = $self.jqGrid("getGridParam", "colModel"),
+            localData = $self.jqGrid("getLocalRow", rowid);
+        if (cm[iCol].name === "MyPrint" && e.target.tagName.toUpperCase() === "INPUT") {
+            // set local grid data
+            localData.MyPrint = $(e.target).is(":checked");
+           /* alert(JSON.stringify(localData));*/
+        }
+        
+        return true; // allow selection
+    }
 		
 	});
 
@@ -896,7 +915,7 @@ $(document).ready(function () {
 	}
 
 	function formatterCheckbox(cellvalue, options, rowObject){
-		return "<buttton class='checkbox' input type='checkbox' data-idno='"+rowObject.delordhd_idno+"' data-grid='#"+options.gid+"' ><i class='fa fa-square-o'></i></button>";
+		return "<input type='checkbox' name='MyPrint' >";
 	}
 
 	function unformatRemarks(cellvalue, options, rowObject){
@@ -947,6 +966,7 @@ $(document).ready(function () {
 		buttons : butt2_rem
 	});
 
+	
 	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	var myEditOptions = {
         keys: true,
