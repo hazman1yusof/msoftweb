@@ -50,7 +50,7 @@ td.fc-event-container a.selected{
 						<div class='form-group'>
 							<div class='col-md-2'>
 								<label class="control-label" for="Scol">Search By : </label>
-								<input class="form-control input-sm" id="Scol" type="text" readonly>
+								<input class="form-control input-sm" id="Scol" type="text" readonly value="Doctor">
 							</div>
 							<div class='col-md-3'>
 								<label class="control-label" for="resourcecode">&nbsp</label>

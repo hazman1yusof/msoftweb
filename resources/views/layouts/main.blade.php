@@ -81,6 +81,10 @@
 			white-space: normal !important;
 			vertical-align: top !important;
 		}
+		.preline{
+			white-space: pre-line !important;
+			vertical-align: top !important;
+		}
 		.ui-th-column{
 			word-wrap: break-word;
 			white-space: normal !important;
