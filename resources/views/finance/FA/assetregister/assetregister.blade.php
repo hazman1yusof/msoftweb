@@ -19,6 +19,9 @@
 				<div class="StextClass">
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
 				</div>
+				<div class="col-md-3 col-md-offset-9" style="padding-top: 0; text-align: end;">
+					<button type="button" id='taggingNoButton' class='btn btn-info' >Generate Tagging No</button>
+				</div>
 			 </fieldset> 
 		</form>
     	<div class="panel panel-default">

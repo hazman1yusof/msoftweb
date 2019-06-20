@@ -224,11 +224,13 @@ use Carbon\Carbon;
                 }
             }
 
-            $apacthdr->update([
-                'recstatus' => 'POSTED',
-                'upduser' => session('username'),
-                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-            ]);
+            DB::table('finance.apacthdr')
+                ->where('auditno','=',$request->auditno)
+                ->update([
+                    'recstatus' => 'POSTED',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -240,7 +242,7 @@ use Carbon\Carbon;
 
     public function cancel(Request $request){
         $apacthdr = DB::table('finance.apacthdr')
-                        ->where('idno','=',$request->idno)
+                        ->where('auditno','=',$request->auditno)
                         ->where('compcode','=',session('compcode'));
 
         $apacthdr

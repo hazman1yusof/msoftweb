@@ -89,7 +89,7 @@ class InvoiceAPDetailController extends defaultController
 
         try {
            
-            $auditno = $request->auditno;
+            $auditno = $request->query('auditno');
 
             ////1. calculate lineno_ by auditno
             $sqlln = DB::table('finance.apactdtl')->select('lineno_')

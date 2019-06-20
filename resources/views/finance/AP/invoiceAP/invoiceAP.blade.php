@@ -105,7 +105,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_ttype">Doc Type</label> 
 							<div class="col-md-3">
-							  	<select id="apacthdr_ttype" name=apacthdr_ttype" class="form-control" data-validation="required">
+							  	<select id="apacthdr_ttype" name=apacthdr_ttype class="form-control" data-validation="required">
 							       <option value="Supplier">Supplier</option>
 							       <option value="Others">Others</option>
 							       <option value="Debit_Note">Debit Note</option>

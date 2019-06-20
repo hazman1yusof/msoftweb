@@ -27,7 +27,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#delordhd_subamount','#delordhd_totamount']);
+	var mycurrency =new currencymode(['#delordhd_subamount','#delordhd_totamount', '#delordhd_TaxAmt', '#delordhd_amtdisc']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
 
@@ -76,8 +76,7 @@ $(document).ready(function () {
 				dialog_suppcode.check(errorField);
 				dialog_credcode.check(errorField);
 				dialog_deldept.check(errorField);
-				// dialog_reqdept.check(errorField);
-				// dialog_srcdocno.check(errorField);
+
 			}if(oper!='view'){
 				backdated.set_backdate($('#delordhd_prdept').val());
 				dialog_authorise.on();
@@ -85,7 +84,6 @@ $(document).ready(function () {
 				dialog_suppcode.on();
 				dialog_credcode.on();
 				dialog_deldept.on();
-				// dialog_reqdept.on();
 				dialog_srcdocno.on();
 			}
 		},
@@ -114,7 +112,6 @@ $(document).ready(function () {
 			dialog_suppcode.off();
 			dialog_credcode.off();
 			dialog_deldept.off();
-			// dialog_reqdept.off();
 			dialog_srcdocno.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
@@ -243,6 +240,12 @@ $(document).ready(function () {
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'delordhd_recstatus', width: 200},
 			{ label: ' ', name: 'Refresh', width: 120,formatter: formatterRefresh,unformat: unformatRemarks},
+			{ label: ' ', name: 'Checkbox', width: 80,align: "center",
+					        editoptions: { value: "True:False" },
+					        editrules: { required: true },
+					        formatter: formatterCheckbox,
+					        formatoptions: { disabled: false },
+					        editable: true  },
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 250, classes: 'wrap', hidden:true},
 			{ label: 'perdisc', name: 'delordhd_perdisc', width: 90, hidden:true, classes: 'wrap'},
@@ -367,6 +370,20 @@ $(document).ready(function () {
 				});
 			});
 		},
+
+		 beforeSelectRow: function (rowid, e) {
+        var $self = $(this),
+            iCol = $.jgrid.getCellIndex($(e.target).closest("td")[0]),
+            cm = $self.jqGrid("getGridParam", "colModel"),
+            localData = $self.jqGrid("getLocalRow", rowid);
+        if (cm[iCol].name === "MyPrint" && e.target.tagName.toUpperCase() === "INPUT") {
+            // set local grid data
+            localData.MyPrint = $(e.target).is(":checked");
+           /* alert(JSON.stringify(localData));*/
+        }
+        
+        return true; // allow selection
+    }
 		
 	});
 
@@ -417,7 +434,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['delordhd_trantype','delordhd_recno','delordhd_docno','delordhd_adduser','delordhd_adddate','delordhd_upduser','delordhd_upddate','delordhd_deluser','delordhd_idno','supplier_name','delordhd_recstatus','delordhd_unit','Refresh']);
+	addParamField('#jqGrid',false,saveParam,['delordhd_trantype','delordhd_recno','delordhd_docno','delordhd_adduser','delordhd_adddate','delordhd_upduser','delordhd_upddate','delordhd_deluser','delordhd_idno','supplier_name','delordhd_recstatus','delordhd_unit','Refresh', 'Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -896,6 +913,10 @@ $(document).ready(function () {
 		return "<button class='refresh_button btn btn-success btn-xs' type='button' data-idno='"+rowObject.delordhd_idno+"' data-grid='#"+options.gid+"' ><i class='fa fa-refresh'></i></button>";
 	}
 
+	function formatterCheckbox(cellvalue, options, rowObject){
+		return "<input type='checkbox' name='MyPrint' >";
+	}
+
 	function unformatRemarks(cellvalue, options, rowObject){
 		return null;
 	}
@@ -944,6 +965,7 @@ $(document).ready(function () {
 		buttons : butt2_rem
 	});
 
+	
 	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	var myEditOptions = {
         keys: true,
