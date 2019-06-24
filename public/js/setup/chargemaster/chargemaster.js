@@ -1,7 +1,6 @@
 
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
-		var editedRow=0;
 
 		$(document).ready(function () {
 			$("body").show();
@@ -150,6 +149,9 @@
 				height: 350,
 				rowNum: 30,
 				pager: "#jqGridPager",
+				onSelectRow:function(rowid, selected){
+					refreshGrid("#jqGrid3",urlParam2);
+				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
 					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
@@ -164,19 +166,38 @@
 			});
 
 			/////////////////////////////populate data for dropdown search By////////////////////////////
-				searchBy();
-				function searchBy(){
-					$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
-						if(value['canSearch']){
-							if(value['selected']){
-								$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
-							}else{
-								$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
-							}
+			searchBy();
+			function searchBy(){
+				$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
+					if(value['canSearch']){
+						if(value['selected']){
+							$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+						}else{
+							$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
 						}
-						//searchClick2('#jqGrid','#searchForm',urlParam);
-					});
+					}
+					//searchClick2('#jqGrid','#searchForm',urlParam);
+				});
+			}
+
+			$('#Scol').on('change', scolChange);
+
+			function scolChange() {
+				if($('#Scol').val()=='chggroup'){
+					$("input[name='Stext']").hide("fast");
+					$("#show_chgtype,#show_chggroup").hide("fast");
+					$("#show_chggroup").show("fast");
+				} else if($('#Scol').val() == 'chgtype'){
+					$("input[name='Stext']").hide("fast");
+					$("#show_chgtype,#show_chggroup").hide("fast");
+					$("#show_chgtype").show("fast");
+				} else {
+					$("input[name='Stext']").show("fast");
+					$("#show_chgtype,#show_chggroup").hide("fast");
+					$("input[name='Stext']").attr('type', 'text');
+					$("input[name='Stext']").velocity({ width: "100%" });
 				}
+			}
 
 			// ////////////////////////////formatter//////////////////////////////////////////////////////////
 			// function formatter(cellvalue, options, rowObject){
@@ -510,5 +531,55 @@
 			// 	}, 'urlParam'
 			// );
 			// dialog_trantype.makedialog();
+
+		var chggroup = new ordialog(
+			'chggroup', 'hisdb.chggroup', '#chggroup', 'errorField',
+			{
+				colModel: [
+					{ label: 'Group Code', name: 'grpcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				],
+				ondblClickRow: function () {
+					let data = selrowData('#' + chggroup.gridname).grpcode;
+
+					urlParam.searchCol=["chggroup"];
+					urlParam.searchVal=[data];
+					refreshGrid('#jqGrid', urlParam);
+				}
+			},{
+				title: "Select Group Code",
+				open: function () {
+					// chggroup.urlParam.filterCol = ['recstatus'];
+					// chggroup.urlParam.filterVal = ['A'];
+				}
+			}
+		);
+		chggroup.makedialog();
+		chggroup.on();
+
+		var chgtype = new ordialog(
+			'chgtype', 'material.supplier', '#chgtype', 'errorField',
+			{
+				colModel: [
+					{ label: 'Supplier Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				],
+				ondblClickRow: function () {
+					let data = selrowData('#' + chgtype.gridname).suppcode;
+
+					urlParam.searchCol=["delordhd_suppcode"];
+					urlParam.searchVal=[data];
+					refreshGrid('#jqGrid', urlParam);
+				}
+			},{
+				title: "Select Purchase Department",
+				open: function () {
+					chgtype.urlParam.filterCol = ['recstatus'];
+					chgtype.urlParam.filterVal = ['A'];
+				}
+			}
+		);
+		chgtype.makedialog();
+		chgtype.on();
 
 });

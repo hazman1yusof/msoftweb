@@ -1,674 +1,680 @@
-$.jgrid.defaults.responsive = true;
-		$.jgrid.defaults.styleUI = 'Bootstrap';
-		var editedRow=0;
+	$.jgrid.defaults.responsive = true;
+	$.jgrid.defaults.styleUI = 'Bootstrap';
+	var editedRow=0;
 
-		$(document).ready(function () {
-			$('body').show();
-			/////////////////////////validation//////////////////////////
-				$.validate({
-					modules : 'sanitize',
-					language : {
-						requiredFields: ''
-					},
-				});
-			
-				var errorField=[];
-				conf = {
-					onValidate : function($form) {
-						if(errorField.length>0){
-							console.log(errorField);
-							return {
-								element : $(errorField[0]),
-								message : ' '
-							}
+	$(document).ready(function () {
+		$('body').show();
+		/////////////////////////validation//////////////////////////
+			$.validate({
+				modules : 'sanitize',
+				language : {
+					requiredFields: ''
+				},
+			});
+		
+			var errorField=[];
+			conf = {
+				onValidate : function($form) {
+					if(errorField.length>0){
+						console.log(errorField);
+						return {
+							element : $(errorField[0]),
+							message : ' '
 						}
-					},
-				};
-			//////////////////////////////////////////////////////////////
-				
-		////////////////////////////////////start dialog///////////////////////////////////////
+					}
+				},
+			};
+		//////////////////////////////////////////////////////////////
+			
+	////////////////////////////////////start dialog///////////////////////////////////////
 
-		var dialog_assetcode= new ordialog(
-			'assetcode','finance.facode','#assetcode',errorField,
-			{	colModel:[
-				  {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-					{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
-					{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
-					{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
+	var dialog_assetcode= new ordialog(
+		'assetcode','finance.facode','#assetcode',errorField,
+		{	colModel:[
+			  {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
+				{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
+				{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
+		],
+		ondblClickRow:function(){
+			let data=selrowData('#'+dialog_assetcode.gridname);
+			$('#assettype').val(data['assettype']);		
+			$('#method').val(data['method']);
+			$('#rvalue').val(data['residualvalue']);
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				$('#deptcode').focus();
+			}
+		}
+	},
+		{
+			title:"Select Category",
+			open: function(){
+				dialog_assetcode.urlParam.filterCol=['compcode'];
+				dialog_assetcode.urlParam.filterVal=['session.compcode'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_assetcode.makedialog();
+
+	var dialog_deptcode= new ordialog(
+		'deptcode','sysdb.department','#deptcode',errorField,
+		{	colModel:[
+			    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+		],
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				$('#loccode').focus();
+			}
+		}
+	},
+		{
+			title:"Select Department",
+			open: function(){
+				dialog_deptcode.urlParam.filterCol=['compcode'],
+				dialog_deptcode.urlParam.filterVal=['session.compcode']
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_deptcode.makedialog();
+
+	var dialog_loccode= new ordialog(
+		'loccode','sysdb.location','#loccode',errorField,
+		{	colModel:[
+			  {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+		],
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				$('#regtype').focus();
+			}
+		}
+		},
+		{
+			title:"Select Location",
+			open: function(){
+				dialog_loccode.urlParam.filterCol=['compcode'],
+				dialog_loccode.urlParam.filterVal=['session.compcode']
+			}
+		},'urlParam','tab'
+	);
+	dialog_loccode.makedialog();		
+
+	var dialog_suppcode= new ordialog(
+		'suppcode','material.supplier','#suppcode',errorField,
+		{	colModel:[
+			  {label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,or_search:true},
+
 			],
 			ondblClickRow:function(){
-				let data=selrowData('#'+dialog_assetcode.gridname);
-				$('#assettype').val(data['assettype']);		
-				$('#method').val(data['method']);
-				$('#rvalue').val(data['residualvalue']);
+				let data=selrowData('#'+dialog_suppcode.gridname);
+				dialog_invno.urlParam.filterCol=['compcode','suppcode'];
+				dialog_invno.urlParam.filterVal=['session.compcode',data.suppcode];
+				dialog_delordno.urlParam.filterVal[2]=data.suppcode;
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#deptcode').focus();
+					$('#delordno').focus();
+				}
+			}
+		},{
+			title:"Select Supplier",
+			open: function(){
+				dialog_suppcode.urlParam.filterCol=['compcode'],
+				dialog_suppcode.urlParam.filterVal=['session.compcode']
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_suppcode.makedialog();
+
+	var dialog_delordno= new ordialog(
+		'delordno',['material.delordhd as dohd','finance.apacthdr as ap'],'#delordno',errorField,
+		{	colModel:[
+			  {label:'Delordno',name:'dohd_delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Suppcode',name:'dohd_suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'dohd_recno',name:'dohd_recno',width:100,classes:'pointer',hidden:true},
+				{label:'deliverydate',name:'dohd_deliverydate',width:100,classes:'pointer',hidden:true},
+				{label:'Docno',name:'dohd_docno',width:100,classes:'pointer',hidden:true},
+				{label:'invoiceno',name:'dohd_invoiceno',width:100,classes:'pointer',hidden:false},
+				{label:'trandate',name:'dohd_trandate',width:100,classes:'pointer',hidden:false},
+				{label:'ap_actdate',name:'ap_actdate',width:100,classes:'pointer',hidden:false},
+			],
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_delordno.gridname);
+				$('#delorddate').val(data['dohd_deliverydate']);		
+				$('#docno').val(data['dohd_docno']);
+				$('#purdate').val(data['dohd_trandate']);
+				$('#suppcode').val(data['dohd_suppcode']);
+				$('#invno').val(data['dohd_invoiceno']);
+				$('#invdate').val(data['ap_actdate']);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#itemcode').focus();
 				}
 			}
 		},
-			{
-				title:"Select Category",
-				open: function(){
-					dialog_assetcode.urlParam.filterCol=['compcode'];
-					dialog_assetcode.urlParam.filterVal=['session.compcode'];
-				}
-			},'urlParam','radio','tab'
-		);
-		dialog_assetcode.makedialog();
+		{
+			title:"Select Delordno",
+			open: function(){
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_delordno.makedialog();
+	dialog_delordno.urlParam.filterCol=['dohd.compcode','dohd.invoiceno','dohd.suppcode'];
+	dialog_delordno.urlParam.filterVal=['session.compcode','<>.NULL'];
+	dialog_delordno.urlParam.fixPost = "true";
+	dialog_delordno.urlParam.table_id = "none_";
+	dialog_delordno.urlParam.join_type = ['LEFT JOIN'];
+	dialog_delordno.urlParam.join_onCol = ['dohd.invoiceno'];
+	dialog_delordno.urlParam.join_onVal = ['ap.document'];
 
-		var dialog_deptcode= new ordialog(
-			'deptcode','sysdb.department','#deptcode',errorField,
-			{	colModel:[
-				    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+	var dialog_invno= new ordialog(
+		'invno','finance.apacthdr','#invno',errorField,
+		{	colModel:[
+			    {label:'invno',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
+			]
+		},{
+			title:"Select invno",
+			open: function(){
+				dialog_invno.urlParam.filterCol=['compcode','source','trantype','suppcode','document','recstatus'],
+				dialog_invno.urlParam.filterVal=['session.compcode','AP','IN',suppcode.val,invno.value,'POSTED']
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_invno.makedialog();
+
+	var dialog_itemcode= new ordialog(
+		'itemcode',['material.delorddt as dodt','material.product as p'],'#itemcode',errorField,
+		{	colModel:[
+				{label:'Itemcode',name:'dodt_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'description',name:'p_description',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'dodt_uomcode',name:'dodt_uomcode',width:100,classes:'pointer',hidden:true},
+				{label:'dodt_qtydelivered',name:'dodt_qtydelivered',width:100,classes:'pointer',hidden:true},
+				{label:'dodt_unitprice',name:'dodt_unitprice',width:100,classes:'pointer',hidden:true},
+				{label:'dodt_amount',name:'dodt_amount',width:100,classes:'pointer',hidden:true},
+				{label:'dodt_srcdocno',name:'dodt_srcdocno',width:100,classes:'pointer',hidden:true},
+				
 			],
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_itemcode.gridname);
+				$('#uomcode').val(data['dodt_uomcode']);
+				$('#purordno').val(data['dodt_srcdocno']);
+				$('#purprice').val(data['dodt_unitprice']);
+				$('#qty').val(data['dodt_qtydelivered']);
+				$('#currentcost').val(data['dodt_amount']);
+			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#loccode').focus();
+					$('#individualtag').focus();
 				}
 			}
-		},
-			{
-				title:"Select Department",
-				open: function(){
-					dialog_deptcode.urlParam.filterCol=['compcode'],
-					dialog_deptcode.urlParam.filterVal=['session.compcode']
-				}
-			},'urlParam','radio','tab'
-		);
-		dialog_deptcode.makedialog();
-
-		var dialog_loccode= new ordialog(
-			'loccode','sysdb.location','#loccode',errorField,
-			{	colModel:[
-				  {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-			],
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#regtype').focus();
-				}
+		},{
+			title:"Select Itemcode",
+			open: function(){
+				dialog_itemcode.urlParam.filterCol=['dodt.compcode','dodt.recno'];
+				dialog_itemcode.urlParam.filterVal=['session.compcode',selrowData('#'+dialog_delordno.gridname).dohd_recno];
+				dialog_itemcode.urlParam.fixPost = "true";
+				dialog_itemcode.urlParam.table_id = "none_";
+				dialog_itemcode.urlParam.join_type = ['LEFT JOIN'];
+				dialog_itemcode.urlParam.join_onCol = ['dodt.itemcode'];
+				dialog_itemcode.urlParam.join_onVal = ['p.itemcode'];
 			}
-			},
-			{
-				title:"Select Location",
-				open: function(){
-					dialog_loccode.urlParam.filterCol=['compcode'],
-					dialog_loccode.urlParam.filterVal=['session.compcode']
-				}
-			},'urlParam','tab'
-		);
-		dialog_loccode.makedialog();		
+		},'urlParam','tab'
+	);
+	dialog_itemcode.makedialog();
 
-		var dialog_suppcode= new ordialog(
-			'suppcode','material.supplier','#suppcode',errorField,
-			{	colModel:[
-				  {label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,or_search:true},
-
-				],
-				ondblClickRow:function(){
-					let data=selrowData('#'+dialog_suppcode.gridname);
-					dialog_invno.urlParam.filterCol=['compcode','suppcode'];
-					dialog_invno.urlParam.filterVal=['session.compcode',data.suppcode];
-					dialog_delordno.urlParam.filterVal[2]=data.suppcode;
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#delordno').focus();
-					}
-				}
-			},{
-				title:"Select Supplier",
-				open: function(){
-					dialog_suppcode.urlParam.filterCol=['compcode'],
-					dialog_suppcode.urlParam.filterVal=['session.compcode']
-				}
-			},'urlParam','radio','tab'
-		);
-		dialog_suppcode.makedialog();
-
-		var dialog_delordno= new ordialog(
-			'delordno',['material.delordhd as dohd','finance.apacthdr as ap'],'#delordno',errorField,
-			{	colModel:[
-				  {label:'Delordno',name:'dohd_delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Suppcode',name:'dohd_suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
-					{label:'dohd_recno',name:'dohd_recno',width:100,classes:'pointer',hidden:true},
-					{label:'deliverydate',name:'dohd_deliverydate',width:100,classes:'pointer',hidden:true},
-					{label:'Docno',name:'dohd_docno',width:100,classes:'pointer',hidden:true},
-					{label:'invoiceno',name:'dohd_invoiceno',width:100,classes:'pointer',hidden:false},
-					{label:'trandate',name:'dohd_trandate',width:100,classes:'pointer',hidden:false},
-					{label:'ap_actdate',name:'ap_actdate',width:100,classes:'pointer',hidden:false},
-				],
-				ondblClickRow:function(){
-					let data=selrowData('#'+dialog_delordno.gridname);
-					$('#delorddate').val(data['dohd_deliverydate']);		
-					$('#docno').val(data['dohd_docno']);
-					$('#purdate').val(data['dohd_trandate']);
-					$('#suppcode').val(data['dohd_suppcode']);
-					$('#invno').val(data['dohd_invoiceno']);
-					$('#invdate').val(data['ap_actdate']);
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#itemcode').focus();
-					}
-				}
-			},
-			{
-				title:"Select Delordno",
-				open: function(){
-				}
-			},'urlParam','radio','tab'
-		);
-		dialog_delordno.makedialog();
-		dialog_delordno.urlParam.filterCol=['dohd.compcode','dohd.invoiceno','dohd.suppcode'];
-		dialog_delordno.urlParam.filterVal=['session.compcode','<>.NULL'];
-		dialog_delordno.urlParam.fixPost = "true";
-		dialog_delordno.urlParam.table_id = "none_";
-		dialog_delordno.urlParam.join_type = ['LEFT JOIN'];
-		dialog_delordno.urlParam.join_onCol = ['dohd.invoiceno'];
-		dialog_delordno.urlParam.join_onVal = ['ap.document'];
-
-		var dialog_invno= new ordialog(
-			'invno','finance.apacthdr','#invno',errorField,
-			{	colModel:[
-				    {label:'invno',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
-				]
-			},{
-				title:"Select invno",
-				open: function(){
-					dialog_invno.urlParam.filterCol=['compcode','source','trantype','suppcode','document','recstatus'],
-					dialog_invno.urlParam.filterVal=['session.compcode','AP','IN',suppcode.val,invno.value,'POSTED']
-				}
-			},'urlParam','radio','tab'
-		);
-		dialog_invno.makedialog();
-
-		var dialog_itemcode= new ordialog(
-			'itemcode',['material.delorddt as dodt','material.product as p'],'#itemcode',errorField,
-			{	colModel:[
-					{label:'Itemcode',name:'dodt_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'description',name:'p_description',width:300,classes:'pointer',canSearch:true,or_search:true},
-					{label:'dodt_uomcode',name:'dodt_uomcode',width:100,classes:'pointer',hidden:true},
-					{label:'dodt_qtydelivered',name:'dodt_qtydelivered',width:100,classes:'pointer',hidden:true},
-					{label:'dodt_unitprice',name:'dodt_unitprice',width:100,classes:'pointer',hidden:true},
-					{label:'dodt_amount',name:'dodt_amount',width:100,classes:'pointer',hidden:true},
-					{label:'dodt_srcdocno',name:'dodt_srcdocno',width:100,classes:'pointer',hidden:true},
-					
-				],
-				ondblClickRow:function(){
-					let data=selrowData('#'+dialog_itemcode.gridname);
-					$('#uomcode').val(data['dodt_uomcode']);
-					$('#purordno').val(data['dodt_srcdocno']);
-					$('#purprice').val(data['dodt_unitprice']);
-					$('#qty').val(data['dodt_qtydelivered']);
-					$('#currentcost').val(data['dodt_amount']);
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#individualtag').focus();
-					}
-				}
-			},{
-				title:"Select Itemcode",
-				open: function(){
-					dialog_itemcode.urlParam.filterCol=['dodt.compcode','dodt.recno'];
-					dialog_itemcode.urlParam.filterVal=['session.compcode',selrowData('#'+dialog_delordno.gridname).dohd_recno];
-					dialog_itemcode.urlParam.fixPost = "true";
-					dialog_itemcode.urlParam.table_id = "none_";
-					dialog_itemcode.urlParam.join_type = ['LEFT JOIN'];
-					dialog_itemcode.urlParam.join_onCol = ['dodt.itemcode'];
-					dialog_itemcode.urlParam.join_onVal = ['p.itemcode'];
-				}
-			},'urlParam','tab'
-		);
-		dialog_itemcode.makedialog();
-	
-		var dialog_uomcode= new ordialog(
-			'uomcode','material.product','#uomcode',errorField,
-			{	colModel:[
-					{label:'uomcode',name:'uomcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-					
-				]
-			},{
-				title:"Select uomcode",
-				open: function(){
-					dialog_uomcode.urlParam.filterCol=['compcode','itemcode'],
-					dialog_uomcode.urlParam.filterVal=['session.compcode',$("#itemcode").val()]
-				}
-			},'urlParam','radio','tab'
-		);
-		dialog_uomcode.makedialog();
-
-
-		var butt1=[{
-				text: "Save",click: function() {
-					if( checkdate_asset(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
-					}
-				}
-			},{
-
-				text: "Cancel",click: function() {
-					$(this).dialog('close');
-				}
-			}];
-
-			var butt2=[{
-				text: "Close",click: function() {
-					$(this).dialog('close');
-				}
-			}];
-
-			var oper;
-			$("#dialogForm")
-			  .dialog({ 
-				width: 9/10 * $(window).width(),
-				modal: true,
-				autoOpen: false,
-				open: function( event, ui ) {
-					switch(oper) {
-						case state = 'add':
-							//mycurrency.formatOnBlur();
-							$( this ).dialog( "option", "title", "Add" );
-							enableForm('#formdata');
-							ToggleDisableForm();
-							rdonly("#dialogForm");
-							
-							break;
-						case state = 'edit':
-							//mycurrency.formatOnBlur();
-							$( this ).dialog( "option", "title", "Edit" );
-							enableForm('#formdata');
-							frozeOnEdit("#dialogForm");
-							rdonly("#dialogForm");
-							
-							break;
-						case state = 'view':
-							//mycurrency.formatOn();
-							$( this ).dialog( "option", "title", "View" );
-							disableForm('#formdata');
-							$(this).dialog("option", "buttons",butt2);
-							getmethod_and_res(selrowData("#jqGrid").assetcode);
-							//getNVB();
-							//getOrigCost();
-							break;
-					}
-					if(oper!='view'){
-						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-						dialog_assetcode.on();
-						dialog_deptcode.on();
-						dialog_loccode.on();
-						dialog_suppcode.on();
-						dialog_itemcode.on();
-						dialog_uomcode.on();
-						dialog_delordno.on();
-						dialog_invno.on();
-					}
-					if(oper!='add'){
-						dialog_itemcode.check(errorField);
-						dialog_uomcode.check(errorField);
-						dialog_delordno.check(errorField);
-						dialog_assetcode.check(errorField);
-						dialog_suppcode.check(errorField);
-						dialog_deptcode.check(errorField);
-						dialog_loccode.check(errorField);
-						dialog_invno.check(errorField);
-					}
-				},
-				close: function( event, ui ) {
-					emptyFormdata(errorField,'#formdata');
-					$(".noti ol").empty();
-					$("#formdata a").off();
-					if(oper=='view'){
-						$(this).dialog("option", "buttons",butt1);
-					}
-				},
-				buttons :butt1,
-			  });
-			////////////////////////////////////////end dialog///////////////////////////////////////////
-
-			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
-			var urlParam={
-				action:'get_table_default',
-				url: '/util/get_table_default',
-				field:'',
-				table_name:'finance.fatemp', 
-				table_id:'idno',				
-			}
-
-			/////////////////////parameter for saving url////////////////////////////////////////////////
-			var saveParam={
-				action:'save_table_default',
-				field:'',
-				url:'assetregister/form',
-				oper:oper,
-				table_name:'finance.fatemp',
-				table_id:'idno' 				
+	var dialog_uomcode= new ordialog(
+		'uomcode','material.product','#uomcode',errorField,
+		{	colModel:[
+				{label:'uomcode',name:'uomcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
 				
-			};
-			
-			$("#jqGrid").jqGrid({
-				datatype: "local",
-				 colModel: [
-					{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
-					{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', checked: true}, 
-					{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
-					{ label: 'Asset Type', name: 'assettype', width: 15, sorttype: 'text', classes: 'wrap'},
-					{ label: 'Department', name: 'deptcode', width: 15, sorttype: 'text', classes: 'wrap'},			
-					{ label: 'Location', name: 'loccode', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},					
-					{ label: 'Supplier', name: 'suppcode', width: 20, sorttype: 'text', classes: 'wrap'},	
-					{ label: 'DO No', name:'delordno',width: 15, sorttype:'text', classes:'wrap'},					
-					{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
-					{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
-					{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
-					{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
-					{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},	
-					{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
-					{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
-					{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
-					{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
-					{ label: 'Purchase Date', name:'purdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},																	
-					{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
-					{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
-					{ label: 'Current Cost', name:'currentcost', width:20, classes:'wrap', hidden:true},
-					{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
-					{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
-					{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
-					//method
-					//residual value
-					{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, hidden:true},
-					{ label: 'Post Date', name:'trandate', width:20, classes:'wrap', formatter:dateFormatter, hidden:true},
-					//accumprev
-					{ label: 'Accum Prev', name:'lstytddep', width:20, classes:'wrap', hidden:true},
-					//accumytd
-					{ label: 'Accum YTD', name:'cuytddep', width:20, classes:'wrap', hidden:true},
-					//nbv
-					{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
-					formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
-					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
-
-					{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
-
-								
-				
-				],
-				autowidth:true,
-                multiSort: true,
-				viewrecords: true,
-				loadonce:false,
-				sortname: 'idno',
-				sortorder: 'desc',
-				width: 900,
-				height: 350,
-				rowNum: 30,
-				pager: "#jqGridPager",
-				ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#jqGridPager td[title='Edit Selected Row']").click();
-				},
-				gridComplete: function(){
-					if (oper == 'add') {
-						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-						}
-	
-						$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-				},				
-			});
-	////////////////////////////formatter//////////////////////////////////////////////////////////
-	function formatter(cellvalue, options, rowObject) {
-		if (cellvalue == 'A') {
-			return "Active";
-		}
-		if (cellvalue == 'D') {
-			return "Deactive";
-		}
-	}
-
-	function unformat(cellvalue, options) {
-		if (cellvalue == 'Active') {
-			return "Active";
-		}
-		if (cellvalue == 'Deactive') {
-			return "Deactive";
-		}
-	}
-
-
-			////////////////////////////// DATE FORMATTER ////////////////////////////////////////
-			function dateFormatter(cellvalue, options, rowObject){
-				return moment(cellvalue).format("YYYY-MM-DD");
+			]
+		},{
+			title:"Select uomcode",
+			open: function(){
+				dialog_uomcode.urlParam.filterCol=['compcode','itemcode'],
+				dialog_uomcode.urlParam.filterVal=['session.compcode',$("#itemcode").val()]
 			}
+		},'urlParam','radio','tab'
+	);
+	dialog_uomcode.makedialog();
 
-			///////////////////////// REGISTER TYPE SELECTION/////////////////////////////////////
-			$("input[name=regtype]:radio").on('change', function(){
-				regtype  = $("input[name=regtype]:checked").val();
-				if(regtype == 'P'){
-					disableField();
-				}else if(regtype == 'D') {
-					enableField();
+
+	var butt1=[{
+			text: "Save",click: function() {
+				if( checkdate_asset(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+					saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 				}
-			});
-
-			function disableField() {
-				dialog_delordno.on();
-				dialog_suppcode.on();
-				dialog_invno.off();
-				dialog_uomcode.off();
-
-				$("#invno").prop('readonly',true);
-				$("#suppcode").prop('readonly',false);
-				$("#delorddate").prop('readonly',true);
-				$("#uomcode").prop('readonly',true);
-				$("#invdate").prop('readonly',true);
-				$("#docno").prop('readonly',true);
-				$("#purordno").prop('readonly',true);
-				$("#purdate").prop('readonly',true);
-				$("#purprice").prop('readonly',true);
-				$("#origcost").prop('readonly',true);
-				$("#currentcost").prop('readonly',true);
-				$("#nbv").prop('readonly',true);
-				$("#qty").prop('readonly',true);
 			}
+		},{
 
-			function enableField() {
-				dialog_delordno.off();
-				dialog_suppcode.off();
-				dialog_invno.on();
-				dialog_uomcode.on();
-
-				$("#invno").prop('readonly',false);
-				$("#suppcode").prop('readonly',true);
-				$("#uomcode").prop('readonly',false);
-				$("#delorddate").prop('readonly',false);
-				$("#invdate").prop('readonly',false);
-				$("#docno").prop('readonly',false);
-				$("#purordno").prop('readonly',false);
-				$("#purdate").prop('readonly',false);
-				$("#purprice").prop('readonly',false);
-				$("#origcost").prop('readonly',true);
-				$("#currentcost").prop('readonly',true);
-				$("#nbv").prop('readonly',true);
-				$("#qty").prop('readonly',false);
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
 			}
+		}];
 
+		var butt2=[{
+			text: "Close",click: function() {
+				$(this).dialog('close');
+			}
+		}];
 
-				/////////////////////////start grid pager/////////////////////////////////////////////////////////
-			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
-				view:false,edit:false,add:false,del:false,search:false,
-				beforeRefresh: function(){
-					refreshGrid("#jqGrid",urlParam);
-				},
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first", 
-				buttonicon:"glyphicon glyphicon-trash",
-				title:"Delete Selected Row",
-				onClickButton: function(){
-					oper='del';
-					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					if(!selRowId){
-						alert('Please select row');
-						return emptyFormdata(errorField,'#formdata');
-					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'idno':selRowId});
-					}
-				},
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first", 
-				buttonicon:"glyphicon glyphicon-info-sign",
-				title:"View Selected Row",  
-				onClickButton: function(){
-					oper='view';
-					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
-					if(selrowData('#jqGrid').regtype == 'P'){
-						disableField();
-					}else if(selrowData('#jqGrid').regtype == 'D') {
-						enableField();
+		var oper;
+		$("#dialogForm")
+		  .dialog({ 
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function( event, ui ) {
+				switch(oper) {
+					case state = 'add':
+						//mycurrency.formatOnBlur();
+						$( this ).dialog( "option", "title", "Add" );
+						enableForm('#formdata');
+						ToggleDisableForm();
+						rdonly("#dialogForm");
 						
-					}
-				},
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first",  
-				buttonicon:"glyphicon glyphicon-edit",
-				title:"Edit Selected Row",  
-				onClickButton: function(){
-					oper='edit';
-					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
-					if(selrowData('#jqGrid').regtype == 'P'){
-						disableField();
-					}else if(selrowData('#jqGrid').regtype == 'D') {
-						enableField();
+						break;
+					case state = 'edit':
+						//mycurrency.formatOnBlur();
+						$( this ).dialog( "option", "title", "Edit" );
+						enableForm('#formdata');
+						frozeOnEdit("#dialogForm");
+						rdonly("#dialogForm");
 						
-					}
-				}, 
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first",  
-				buttonicon:"glyphicon glyphicon-plus", 
-				title:"Add New Row", 
-				onClickButton: function(){
-					oper='add';
-					$( "#dialogForm" ).dialog( "open" );
-				},
-			});
+						break;
+					case state = 'view':
+						//mycurrency.formatOn();
+						$( this ).dialog( "option", "title", "View" );
+						disableForm('#formdata');
+						$(this).dialog("option", "buttons",butt2);
+						getmethod_and_res(selrowData("#jqGrid").assetcode);
+						//getNVB();
+						//getOrigCost();
+						break;
+				}
+				if(oper!='view'){
+					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+					dialog_assetcode.on();
+					dialog_deptcode.on();
+					dialog_loccode.on();
+					dialog_suppcode.on();
+					dialog_itemcode.on();
+					dialog_uomcode.on();
+					dialog_delordno.on();
+					dialog_invno.on();
+				}
+				if(oper!='add'){
+					dialog_itemcode.check(errorField);
+					dialog_uomcode.check(errorField);
+					dialog_delordno.check(errorField);
+					dialog_assetcode.check(errorField);
+					dialog_suppcode.check(errorField);
+					dialog_deptcode.check(errorField);
+					dialog_loccode.check(errorField);
+					dialog_invno.check(errorField);
+				}
+			},
+			close: function( event, ui ) {
+				emptyFormdata(errorField,'#formdata');
+				$(".noti ol").empty();
+				$("#formdata a").off();
+				if(oper=='view'){
+					$(this).dialog("option", "buttons",butt1);
+				}
+			},
+			buttons :butt1,
+		  });
+		////////////////////////////////////////end dialog///////////////////////////////////////////
 
+		/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
+		var urlParam={
+			action:'get_table_default',
+			url: '/util/get_table_default',
+			field:'',
+			table_name:'finance.fatemp', 
+			table_id:'idno',				
+		}
 
-
-			//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+		/////////////////////parameter for saving url////////////////////////////////////////////////
+		var saveParam={
+			action:'save_table_default',
+			field:'',
+			url:'assetregister/form',
+			oper:oper,
+			table_name:'finance.fatemp',
+			table_id:'idno' 				
 			
-			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-			populateSelect('#jqGrid','#searchForm');
-			searchClick('#jqGrid','#searchForm',urlParam);
-
-			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-			addParamField('#jqGrid',true,urlParam,['regtype','nbv']);
-			addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','recstatus','assetreg_status','regtype','nbv']);
-			
-			$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
-
-			function checkdate_asset(nkreturn=false){
-				var delorddate = $('#delorddate').val();
-				var invdate = $('#invdate').val();
-				var purdate = $('#purdate').val();
-
-				$(".noti ol").empty();
-				var failmsg=[];
-
-				if(moment(invdate).isBefore(delorddate)){
-					failmsg.push("Invoice date cannot be lower than Delivery Order date");
-				}
-
-				if(moment(purdate).isAfter(invdate) || moment(purdate).isAfter(delorddate) ){
-					failmsg.push("Purchase date cannot be greater than Invoice date and Delivery Order date");
-				}
-
-				if(failmsg.length){
-					failmsg.forEach(function(element){
-						$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
-					});
-					if(nkreturn)return false;
-				}else{
-					if(nkreturn)return true;
-				}
-
-			}
-
-			function ToggleDisableForm(disable=true){
-				if(disable){
-					disableForm('#disableGroup');
-					$('#disableGroup input').on('click',alert_toogle);
-				}else{
-					enableForm('#disableGroup');
-					$("#currentcost").prop("readonly",true);
-					$("#nbv").prop('readonly',true);
-					$('#disableGroup input').off('click',alert_toogle);
-				}
-			}
-
-			function alert_toogle(){
-				let element = "Choose 'Register Type' either Purchase Order or Direct";
-				$(".noti ol").empty();
-				$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
-			}
-
-			$("input[type='radio'][name='regtype']").on('click',regtype_choose);
-
-			function regtype_choose(){
-				ToggleDisableForm(false);
-				$(".noti ol").empty();
-				$( '#disableGroup input' ).each(function() {
-					if ( $(this).hasClass('error') || $(this).closest("div").hasClass('has-error') ){
-						$(this).removeClass('error');
-						$(this).closest("div .has-error").removeClass('has-error');
-						$(this).css("border-color","");
-					}
-				});
-				$('#disableGroup .help-block').html('');
-			}
-
-			$("#purprice,#qty").blur(getcurentcost);
-			function getcurentcost(event) { 
-		        let purprice = parseFloat($("#purprice").val());
-		        let qty = parseFloat($("#qty").val());
-
-		        var currentcost = (purprice * qty);
-
-		        $("#currentcost, #origcost").val(currentcost);
-			}
-
-			$("#origcost,#lstytddep,#cuytddep").blur(getNVB);
-			function getNVB(event) { 
-		        let origcost = parseFloat($("#origcost").val());
-		        let lstytddep = parseFloat($("#lstytddep").val());
-		        let cuytddep = parseFloat($("#cuytddep").val());
-
-		        var nbv = (origcost - lstytddep - cuytddep);
-
-		        $("#nbv").val(nbv);
-			}			
+		};
 		
+		$("#jqGrid").jqGrid({
+			datatype: "local",
+			 colModel: [
+				{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
+				{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', checked: true}, 
+				{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
+				{ label: 'Asset Type', name: 'assettype', width: 15, sorttype: 'text', classes: 'wrap'},
+				{ label: 'Department', name: 'deptcode', width: 15, sorttype: 'text', classes: 'wrap'},			
+				{ label: 'Location', name: 'loccode', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},					
+				{ label: 'Supplier', name: 'suppcode', width: 20, sorttype: 'text', classes: 'wrap'},	
+				{ label: 'DO No', name:'delordno',width: 15, sorttype:'text', classes:'wrap'},					
+				{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
+				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
+				{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
+				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
+				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},	
+				{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
+				{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
+				{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
+				{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
+				{ label: 'Purchase Date', name:'purdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},																	
+				{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
+				{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
+				{ label: 'Current Cost', name:'currentcost', width:20, classes:'wrap', hidden:true},
+				{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
+				{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
+				{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
+				//method
+				//residual value
+				{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, hidden:true},
+				{ label: 'Post Date', name:'trandate', width:20, classes:'wrap', formatter:dateFormatter, hidden:true},
+				//accumprev
+				{ label: 'Accum Prev', name:'lstytddep', width:20, classes:'wrap', hidden:true},
+				//accumytd
+				{ label: 'Accum YTD', name:'cuytddep', width:20, classes:'wrap', hidden:true},
+				//nbv
+				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
+				formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
+				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+
+				{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
+			],
+			multiselect:true,
+			autowidth:true,
+            multiSort: true,
+			viewrecords: true,
+			loadonce:false,
+			sortname: 'idno',
+			sortorder: 'desc',
+			width: 900,
+			height: 350,
+			rowNum: 30,
+			pager: "#jqGridPager",
+			ondblClickRow: function(rowid, iRow, iCol, e){
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+			},
+			gridComplete: function(){
+				if (oper == 'add') {
+					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+					}
+
+					$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			},				
 		});
+		////////////////////////////formatter//////////////////////////////////////////////////////////
+		function formatter(cellvalue, options, rowObject) {
+			if (cellvalue == 'A') {
+				return "Active";
+			}
+			if (cellvalue == 'D') {
+				return "Deactive";
+			}
+		}
+
+		function unformat(cellvalue, options) {
+			if (cellvalue == 'Active') {
+				return "Active";
+			}
+			if (cellvalue == 'Deactive') {
+				return "Deactive";
+			}
+		}
+
+
+		////////////////////////////// DATE FORMATTER ////////////////////////////////////////
+		function dateFormatter(cellvalue, options, rowObject){
+			return moment(cellvalue).format("YYYY-MM-DD");
+		}
+
+		///////////////////////// REGISTER TYPE SELECTION/////////////////////////////////////
+		$("input[name=regtype]:radio").on('change', function(){
+			regtype  = $("input[name=regtype]:checked").val();
+			if(regtype == 'P'){
+				disableField();
+			}else if(regtype == 'D') {
+				enableField();
+			}
+		});
+
+		function disableField() {
+			dialog_delordno.on();
+			dialog_suppcode.on();
+			dialog_invno.off();
+			dialog_uomcode.off();
+
+			$("#invno").prop('readonly',true);
+			$("#suppcode").prop('readonly',false);
+			$("#delorddate").prop('readonly',true);
+			$("#uomcode").prop('readonly',true);
+			$("#invdate").prop('readonly',true);
+			$("#docno").prop('readonly',true);
+			$("#purordno").prop('readonly',true);
+			$("#purdate").prop('readonly',true);
+			$("#purprice").prop('readonly',true);
+			$("#origcost").prop('readonly',true);
+			$("#currentcost").prop('readonly',true);
+			$("#nbv").prop('readonly',true);
+			$("#qty").prop('readonly',true);
+		}
+
+		function enableField() {
+			dialog_delordno.off();
+			dialog_suppcode.off();
+			dialog_invno.on();
+			dialog_uomcode.on();
+
+			$("#invno").prop('readonly',false);
+			$("#suppcode").prop('readonly',true);
+			$("#uomcode").prop('readonly',false);
+			$("#delorddate").prop('readonly',false);
+			$("#invdate").prop('readonly',false);
+			$("#docno").prop('readonly',false);
+			$("#purordno").prop('readonly',false);
+			$("#purdate").prop('readonly',false);
+			$("#purprice").prop('readonly',false);
+			$("#origcost").prop('readonly',true);
+			$("#currentcost").prop('readonly',true);
+			$("#nbv").prop('readonly',true);
+			$("#qty").prop('readonly',false);
+		}
+
+
+			/////////////////////////start grid pager/////////////////////////////////////////////////////////
+		$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
+			view:false,edit:false,add:false,del:false,search:false,
+			beforeRefresh: function(){
+				refreshGrid("#jqGrid",urlParam);
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager",{
+			caption:"",cursor: "pointer",position: "first", 
+			buttonicon:"glyphicon glyphicon-trash",
+			title:"Delete Selected Row",
+			onClickButton: function(){
+				oper='del';
+				selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+				if(!selRowId){
+					alert('Please select row');
+					return emptyFormdata(errorField,'#formdata');
+				}else{
+					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'idno':selRowId});
+				}
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager",{
+			caption:"",cursor: "pointer",position: "first", 
+			buttonicon:"glyphicon glyphicon-info-sign",
+			title:"View Selected Row",  
+			onClickButton: function(){
+				oper='view';
+				selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+				populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+				if(selrowData('#jqGrid').regtype == 'P'){
+					disableField();
+				}else if(selrowData('#jqGrid').regtype == 'D') {
+					enableField();
+					
+				}
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager",{
+			caption:"",cursor: "pointer",position: "first",  
+			buttonicon:"glyphicon glyphicon-edit",
+			title:"Edit Selected Row",  
+			onClickButton: function(){
+				oper='edit';
+				selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+				populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+				if(selrowData('#jqGrid').regtype == 'P'){
+					disableField();
+				}else if(selrowData('#jqGrid').regtype == 'D') {
+					enableField();
+					
+				}
+			}, 
+		}).jqGrid('navButtonAdd',"#jqGridPager",{
+			caption:"",cursor: "pointer",position: "first",  
+			buttonicon:"glyphicon glyphicon-plus", 
+			title:"Add New Row", 
+			onClickButton: function(){
+				oper='add';
+				$( "#dialogForm" ).dialog( "open" );
+			},
+		});
+
+
+
+		//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+		
+		//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
+		populateSelect('#jqGrid','#searchForm');
+		searchClick('#jqGrid','#searchForm',urlParam);
+
+		//////////add field into param, refresh grid if needed////////////////////////////////////////////////
+		addParamField('#jqGrid',true,urlParam,['cb','regtype','nbv']);
+		addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','recstatus','assetreg_status','regtype','nbv']);
+		
+		$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
+
+		function checkdate_asset(nkreturn=false){
+			var delorddate = $('#delorddate').val();
+			var invdate = $('#invdate').val();
+			var purdate = $('#purdate').val();
+
+			$(".noti ol").empty();
+			var failmsg=[];
+
+			if(moment(invdate).isBefore(delorddate)){
+				failmsg.push("Invoice date cannot be lower than Delivery Order date");
+			}
+
+			if(moment(purdate).isAfter(invdate) || moment(purdate).isAfter(delorddate) ){
+				failmsg.push("Purchase date cannot be greater than Invoice date and Delivery Order date");
+			}
+
+			if(failmsg.length){
+				failmsg.forEach(function(element){
+					$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
+				});
+				if(nkreturn)return false;
+			}else{
+				if(nkreturn)return true;
+			}
+
+		}
+
+		function ToggleDisableForm(disable=true){
+			if(disable){
+				disableForm('#disableGroup');
+				$('#disableGroup input').on('click',alert_toogle);
+			}else{
+				enableForm('#disableGroup');
+				$("#currentcost").prop("readonly",true);
+				$("#nbv").prop('readonly',true);
+				$('#disableGroup input').off('click',alert_toogle);
+			}
+		}
+
+		function alert_toogle(){
+			let element = "Choose 'Register Type' either Purchase Order or Direct";
+			$(".noti ol").empty();
+			$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
+		}
+
+		$("input[type='radio'][name='regtype']").on('click',regtype_choose);
+
+		function regtype_choose(){
+			ToggleDisableForm(false);
+			$(".noti ol").empty();
+			$( '#disableGroup input' ).each(function() {
+				if ( $(this).hasClass('error') || $(this).closest("div").hasClass('has-error') ){
+					$(this).removeClass('error');
+					$(this).closest("div .has-error").removeClass('has-error');
+					$(this).css("border-color","");
+				}
+			});
+			$('#disableGroup .help-block').html('');
+		}
+
+		$("#purprice,#qty").blur(getcurentcost);
+		function getcurentcost(event) { 
+	        let purprice = parseFloat($("#purprice").val());
+	        let qty = parseFloat($("#qty").val());
+
+	        var currentcost = (purprice * qty);
+
+	        $("#currentcost, #origcost").val(currentcost);
+		}
+
+		$("#origcost,#lstytddep,#cuytddep").blur(getNVB);
+		function getNVB(event) { 
+	        let origcost = parseFloat($("#origcost").val());
+	        let lstytddep = parseFloat($("#lstytddep").val());
+	        let cuytddep = parseFloat($("#cuytddep").val());
+
+	        var nbv = (origcost - lstytddep - cuytddep);
+
+	        $("#nbv").val(nbv);
+		}
+
+
+		$('#taggingNoButton').click(gneratetagno);
+		function gneratetagno(){
+			var selarrrow = $("#jqGrid").jqGrid('getGridParam','selarrrow');
+			console.log(selarrrow);
+
+		}
+	
+	});

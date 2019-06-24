@@ -21,9 +21,17 @@
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
 
-							<div  id="tunjukname" style="display:none">
+							<div  id="show_chggroup" style="display:none">
 								<div class='input-group'>
-									<input id="supplierkatdepan" name="supplierkatdepan" type="text" maxlength="12" class="form-control input-sm">
+									<input id="chggroup" name="chggroup" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+
+							<div  id="show_chgtype" style="display:none">
+								<div class='input-group'>
+									<input id="chgtype" name="chgtype" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
