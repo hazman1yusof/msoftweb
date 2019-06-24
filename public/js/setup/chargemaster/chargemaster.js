@@ -121,6 +121,7 @@
 				saveip:'true'
 			};
 			
+			/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
@@ -221,14 +222,14 @@
 				 	// { label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
 					{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
 					
-					{ label: 'Effective date', name: 'effdate', frozen:true, width: 100, classes: 'wrap', editable:false},
-					{ label: 'Amount 1', name: 'amt1', frozen:true, width: 100, classes: 'wrap', editable:false},
-					{ label: 'Amount 2', name: 'amt2', frozen:true, width: 100, classes: 'wrap', editable:false},
-					{ label: 'Amount 3', name: 'amt3', frozen:true, width: 100, classes: 'wrap', editable:false},
-					{ label: 'Cost Price', name: 'costprice', frozen:true, width: 100, classes: 'wrap', editable:false},
-					{ label: 'Inpatient Tax', name: 'iptax', frozen:true, width: 100, classes: 'wrap', editable:false},
+					{ label: 'Effective date', name: 'effdate', frozen:true, width: 160, classes: 'wrap', editable:false},
+					{ label: 'Amount 1', name: 'amt1', frozen:true, width: 160, classes: 'wrap', editable:false},
+					{ label: 'Amount 2', name: 'amt2', frozen:true, width: 160, classes: 'wrap', editable:false},
+					{ label: 'Amount 3', name: 'amt3', frozen:true, width: 160, classes: 'wrap', editable:false},
+					{ label: 'Cost Price', name: 'costprice', frozen:true, width: 160, classes: 'wrap', editable:false},
+					{ label: 'Inpatient Tax', name: 'iptax', frozen:true, width: 150, classes: 'wrap', editable:false},
 					{ label: 'User ID', name: 'lastuser', frozen:true, width: 200, classes: 'wrap', editable:false},
-					{ label: 'Last Updated', name: 'lastupdate', frozen:true, width: 100, classes: 'wrap', editable:false},
+					{ label: 'Last Updated', name: 'lastupdate', frozen:true, width: 160, classes: 'wrap', editable:false},
 					
 					{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
 				],

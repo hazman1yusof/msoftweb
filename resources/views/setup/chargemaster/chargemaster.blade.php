@@ -161,7 +161,7 @@
 			</div>
 			
 			<div class='panel panel-info'>
-				<div class="panel-heading">Inventory Transaction Detail</div>
+				<div class="panel-heading">Charge Price Detail</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							<input id="gstpercent" name="gstpercent" type="hidden">
