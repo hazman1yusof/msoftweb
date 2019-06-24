@@ -58,7 +58,7 @@ class invtran_util extends defaultController{
                 ->where('StockLoc.DeptCode','=',$ivtmphd->sndrcv)
                 ->where('StockLoc.ItemCode','=',$value->itemcode)
                 ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
-                ->where('StockLoc.UomCode','=',$value->uomcode);
+                ->where('StockLoc.UomCode','=',$value->uomcode)
                 ->first();
 
             if(count($stockloc_obj)){

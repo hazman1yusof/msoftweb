@@ -225,6 +225,8 @@ class InventoryTransactionController extends defaultController
                         'adddate' => $value->adddate, 
                         'upduser' => $value->upduser, 
                         'upddate' => $value->upddate, 
+                        'TranType' => $ivtmphd->trantype,
+                        'deptcode'  => $ivtmphd->txndept,
                         // 'productcat' => $productcat, 
                         'draccno' => $draccno, 
                         'drccode' => $drccode, 

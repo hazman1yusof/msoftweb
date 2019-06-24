@@ -410,7 +410,7 @@ $(document).ready(function () {
 						selrowData("#detail").s_deptcode,
 						selrowData("#detail").s_uomcode,
 						'>=.'+yr_from+'-'+mon_from+"-01",
-						'<=.'+yr_to+'-'+mon_to+"-01"
+						'<=.'+yr_to+'-'+mon_to+"-31"
 						],
 					sidx: 'd.adddate', sord:'asc'
 				}
@@ -438,20 +438,23 @@ $(document).ready(function () {
 					obj.qtyout = '-';
 					obj.balquan = '-';
 					obj.avgcost = numeral(obj.avgcost).format('0,0.00');
-					obj.amount = '-';
-					obj.balance = '-';
+					obj.amount = numeral(obj.amount).format('0,0.00');
+					obj.balance = numeral(accumamt).format('0,0.00');
 
-					if(obj.trantype == 'GRT'){
-						obj.description = 'Good Return Note '+obj.deptcode;
-						obj.qtyin = '';
-						obj.qtyout = obj.txnqty;
-					}else if (obj.crdbfl == 'In'){
+					if (obj.crdbfl == 'In'){
 						accumqty = accumqty + parseInt(obj.txnqty);
 						obj.balquan = accumqty;
 
 						obj.description =  obj.description+' '+obj.deptcode;
 						obj.qtyin = obj.txnqty;
 						obj.qtyout = '';
+					}else if (obj.crdbfl == 'Out'){
+						accumqty = accumqty - parseInt(obj.txnqty);
+						obj.balquan = accumqty;
+
+						obj.description =  obj.description+' '+obj.deptcode;
+						obj.qtyin = '';
+						obj.qtyout =  obj.txnqty;
 					}
 
 				});

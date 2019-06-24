@@ -1299,8 +1299,8 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector', hidden:true},
 			],
 
-			ondblClickRow: function () {
-			//$('#docno').focus();
+			ondblClickRow: function (obj) {
+				$('#docno').focus();
 
 			},
 			gridComplete: function(obj){
@@ -1317,7 +1317,7 @@ $(document).ready(function () {
 				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 				dialog_txndept.urlParam.filterVal=['1', 'A','session.compcode', 'session.unit'];
 			}
-		},'urlParam','tab'
+		},'urlParam','','tab'
 	);
 	dialog_txndept.makedialog();
 
