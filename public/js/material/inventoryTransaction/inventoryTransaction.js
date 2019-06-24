@@ -1297,10 +1297,11 @@ $(document).ready(function () {
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true,},
 				{label:'Unit',name:'sector', hidden:true},
-				],
+			],
 
-				ondblClickRow: function () {
-				$('#docno').focus();
+			ondblClickRow: function () {
+			$('#docno').focus();
+
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1418,7 +1419,7 @@ $(document).ready(function () {
 				
 				getQOHtxndept();
 				checkQOH();
-				$('#uomcode').focus();
+				/*$('#uomcode').focus();*/
 				
 			}
 		},{
