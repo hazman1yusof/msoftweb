@@ -288,6 +288,21 @@ $(document).ready(function () {
 		height: 200,
 		rowNum: 30,
 		pager: "#jqGridPager",
+
+		/*beforeSelectRow: function (rowid, e) {
+        var $self = $(this),
+            iCol = $.jgrid.getCellIndex($(e.target).closest("td")[0]),
+            cm = $self.jqGrid("getGridParam", "colModel"),
+            localData = $self.jqGrid("getLocalRow", rowid);
+        if (cm[iCol].name === "Checkbox" && e.target.tagName.toUpperCase() === "OPEN") {
+            // set local grid data
+            localData.Checkbox = $(e.target).is(":checked");
+           alert((localData));
+        }
+        
+        return true; // allow selection
+    	},*/
+
 		onSelectRow:function(rowid, selected){
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
@@ -370,20 +385,6 @@ $(document).ready(function () {
 				});
 			});
 		},
-
-		 beforeSelectRow: function (rowid, e) {
-        var $self = $(this),
-            iCol = $.jgrid.getCellIndex($(e.target).closest("td")[0]),
-            cm = $self.jqGrid("getGridParam", "colModel"),
-            localData = $self.jqGrid("getLocalRow", rowid);
-        if (cm[iCol].name === "MyPrint" && e.target.tagName.toUpperCase() === "INPUT") {
-            // set local grid data
-            localData.MyPrint = $(e.target).is(":checked");
-           /* alert(JSON.stringify(localData));*/
-        }
-        
-        return true; // allow selection
-    }
 		
 	});
 
@@ -915,7 +916,7 @@ $(document).ready(function () {
 	}
 
 	function formatterCheckbox(cellvalue, options, rowObject){
-		return "<input type='checkbox' name='MyPrint' >";
+		return "<input type='checkbox' name='Checkbox' >";
 	}
 
 	function unformatRemarks(cellvalue, options, rowObject){
