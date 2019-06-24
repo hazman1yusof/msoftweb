@@ -401,7 +401,7 @@ $(document).ready(function () {
 		                    dataInit: function (element) {
 		                        $(element).datepicker({
 		                            id: 'expdate_datePicker',
-		                            dateFormat: 'yy/mm/dd',
+		                            dateFormat: 'dd/mm/yy',
 		                            minDate: 1,
 		                            showOn: 'focus',
 		                            changeMonth: true,
@@ -1295,12 +1295,12 @@ $(document).ready(function () {
 		'txndept','sysdb.department','#txndept',errorField,
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true,},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 				{label:'Unit',name:'sector', hidden:true},
 			],
 
 			ondblClickRow: function () {
-			$('#docno').focus();
+			//$('#docno').focus();
 
 			},
 			gridComplete: function(obj){
@@ -1317,7 +1317,7 @@ $(document).ready(function () {
 				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 				dialog_txndept.urlParam.filterVal=['1', 'A','session.compcode', 'session.unit'];
 			}
-		},'urlParam','radio','tab'
+		},'urlParam','tab'
 	);
 	dialog_txndept.makedialog();
 

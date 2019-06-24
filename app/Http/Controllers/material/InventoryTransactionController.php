@@ -141,7 +141,7 @@ class InventoryTransactionController extends defaultController
             $table->update($array_update);
 
             $responce = new stdClass();
-            $responce->totalAmount = $request->delordhd_totamount;
+           // $responce->totalAmount = $request->delordhd_totamount;
             echo json_encode($responce);
 
             // $queries = DB::getQueryLog();
