@@ -203,7 +203,7 @@
                                                 <input class="form-control" name="Email_official" id="txt_pat_email" placeholder="" type="email">
                                             </div>
 											<div class="col-md-6">
-                                                <small for="txt_pat_loginid">logindid</small>
+                                                <small for="txt_pat_loginid">login id</small>
                                                 <input class="form-control" name="loginid" id="txt_pat_loginid" placeholder="" type="text">
                                             </div>
 										</div>					
