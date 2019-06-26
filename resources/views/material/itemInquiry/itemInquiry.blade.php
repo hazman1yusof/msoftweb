@@ -220,21 +220,7 @@
 				</tbody>
 			</table>
 			<hr>
-
-			<div class='col-md-8' style="padding:0 0 20px 0">
-			    <div class="form-group">	
-					<label class="col-md-3 control-label" for="clbalqty">The Closing Balance Quantity:</label>
-						<div class="col-md-2">
-							<input id="clbalqty" name="clbalqty" type="text"  class="form-control input-sm" value = "" readonly="true">
-						</div>  
-					<br><br>
-
-					<label class="col-md-3 control-label" for="clbalval">The Closing Balance Value:</label>	
-						<div class="col-md-2">
-							<input id="clbalval" name="clbalval" type="text"  class="form-control input-sm" value = "" readonly="true">
-						</div>
-				</div>
-			</div>				
+			
 		</div>
 	</div>
 
