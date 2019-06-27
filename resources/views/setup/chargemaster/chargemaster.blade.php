@@ -107,25 +107,25 @@
 				<div class="panel-body" style="position: relative;">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}
-							<input id="idno" name="idno" type="hidden">
+							<input id="cm_idno" name="cm_idno" type="hidden">
 						
 
 							<div class="form-group">
-							  	<label class="col-md-2 control-label" for="areacode">Charge Code</label>  
+							  	<label class="col-md-2 control-label" for="cm_chgcode">Charge Code</label>  
 			                    <div class="col-md-3">
-			                    	<input id="chgcode" name="chgcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+			                    	<input id="cm_chgcode" name="cm_chgcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
 			                    </div>
 							
-			                	<label class="col-md-2 control-label" for="description">Group</label>  
+			                	<label class="col-md-2 control-label" for="cm_chggroup">Group</label>  
 			                    <div class="col-md-3">
-			                    	<input id="chggroup" name="chggroup" type="text" class="form-control input-sm" data-validation="number, required">
+			                    	<input id="cm_chggroup" name="cm_chggroup" type="text" class="form-control input-sm" data-validation="number, required">
 			                    </div>
 							</div>
 			                
 			                <div class="form-group">
-			                	<label class="col-md-2 control-label" for="description">Description</label>  
+			                	<label class="col-md-2 control-label" for="cm_description">Description</label>  
 			                	<div class="col-md-6">
-			                		<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
+			                		<input id="cm_description" name="cm_description" type="text" class="form-control input-sm" data-validation="required">
 			                	</div>
 							</div>    
 			                

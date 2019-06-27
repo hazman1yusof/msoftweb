@@ -86,7 +86,7 @@
 				<label class="col-md-2 control-label" for="regtype">Register Type</label>  
 				  <div class="col-md-4" data-validation="required">
 					<label class="radio-inline"><input type="radio" name="regtype" value='P'>Purchase Order</label >
-					<label class="radio-inline"><input type="radio" name="regtype" value='D'>Direct</label>
+					<label class="radio-inline"><input type="radio" name="regtype" value='D' >Direct</label>
 				  </div>
 			</div>
 
@@ -104,20 +104,14 @@
 						<div class="col-md-3">
 							<div class="input-group">
 								<input id="delordno" name="delordno" type="text" class="form-control input-sm" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								<a class='input-group-addon btn btn-primary' id="delordno_btn"><span class='fa fa-ellipsis-h' id="delordno_dh"></span></a>
 							</div>
-							<span class="help-block"></span>
+							<span id="dn" class="help-block"></span>
 						</div>
 				</div>
 
-				<!-- <div class="form-group">
-					<label class="col-md-2 control-label" for="invno">Invoice No</label>  
-						<div class="col-md-3">
-							<input id="invno" name="invno" type="text" class="form-control input-sm" data-validation="required">
-						</div> -->
-
-						<div class="form-group">
-					<label class="col-md-2 control-label" for="invno">Invoice No</label>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="invno">Invoice No</label>
 						<div class="col-md-3">
 							<div class='input-group'>
 								<input id="invno" name="invno" type="text" class="form-control input-sm" data-validation="required">
