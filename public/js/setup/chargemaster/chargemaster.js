@@ -100,13 +100,19 @@
 			////////////////////////////////////////end dialog///////////////////////////////////////////
 
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
+
 			var urlParam={
 				action:'get_table_default',
-				url:'util/get_table_default',
+				url:'/util/get_table_default',
 				field:'',
-				table_name:'hisdb.chgmast',
-				table_id:'chgcode',
-				sort_idno:true,
+				fixPost:'true',
+				table_name:['hisdb.chgmast AS CM', 'hisdb.chgclass AS CC', 'hisdb.chggroup AS CG', 'hisdb.chgtype AS CT'],
+				table_id:'cm_chgcode',
+				join_type:['LEFT JOIN', 'LEFT JOIN', 'LEFT JOIN'],
+				join_onCol:['cm.chgclass', 'cm.chggroup', 'cm.chgtype'],
+				join_onVal:['cc.classcode', 'cg.grpcode', 'ct.chgtype'],
+				filterCol:['cm.compcode'],
+				filterVal:['session.compcode']
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -124,29 +130,34 @@
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
-					{ label: 'idno', name: 'idno', sorttype: 'number', hidden:true },
-					{ label: 'Compcode', name: 'compcode', hidden:true},
-					{ label: 'Charge Code', name: 'chgcode', classes: 'wrap', width: 40, canSearch: true},
-					{ label: 'Description', name: 'description', classes: 'wrap', width: 80, canSearch: true},
-					{ label: 'Class', name: 'chgclass', classes: 'wrap', width: 25,checked:true},
-					{ label: 'Group', name: 'chggroup', classes: 'wrap', width: 25, canSearch: true},
-					{ label: 'Charge Type', name: 'chgtype', classes: 'wrap', width: 25, canSearch: true},
-					{ label: 'UOM', name: 'uom', width: 30,hidden:false },
-					{ label: 'Generic Name', name: 'brandname', width: 90},
-					{ label: 'Upd User', name: 'upduser', width: 80,hidden:true}, 
-					{ label: 'Upd Date', name: 'upddate', width: 90,hidden:true},
+					{ label: 'idno', name: 'cm_idno', sorttype: 'number', hidden:true },
+					{ label: 'Compcode', name: 'cm_compcode', hidden:true},
+
+					{ label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
+					{ label: 'Description', name: 'cm_description', classes: 'wrap', width: 70, canSearch: true},
+					{ label: 'Class', name: 'cm_chgclass', classes: 'wrap', width: 20,checked:true},
+					{ label: 'Class Name', name: 'cc_description', classes: 'wrap', width: 30,checked:true},
+					{ label: 'Group', name: 'cm_chggroup', classes: 'wrap', width: 20, canSearch: true},
+					{ label: 'Description', name: 'cg_description', classes: 'wrap', width: 40},
+					{ label: 'Charge Type', name: 'cm_chgtype', classes: 'wrap', width: 30, canSearch: true},
+					{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
+					{ label: 'UOM', name: 'cm_uom', width: 30,hidden:false },
+					{ label: 'Generic Name', name: 'cm_brandname', width: 70},
+
+					{ label: 'Upd User', name: 'cm_upduser', width: 80,hidden:true}, 
+					{ label: 'Upd Date', name: 'cm_upddate', width: 90,hidden:true},
 					
-					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
+					{ label: 'computerid', name: 'cm_computerid', width: 90, hidden: true, classes: 'wrap' },
+					{ label: 'ipaddress', name: 'cm_ipaddress', width: 90, hidden: true, classes: 'wrap' },
+					{ label: 'lastcomputerid', name: 'cm_lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
+					{ label: 'lastipaddress', name: 'cm_lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 				],
 				autowidth:true,
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
 				width: 900,
-				height: 350,
+				height: 250,
 				rowNum: 30,
 				pager: "#jqGridPager",
 				onSelectRow:function(rowid, selected){
@@ -183,11 +194,11 @@
 			$('#Scol').on('change', scolChange);
 
 			function scolChange() {
-				if($('#Scol').val()=='chggroup'){
+				if($('#Scol').val()=='cm_chggroup'){
 					$("input[name='Stext']").hide("fast");
 					$("#show_chgtype,#show_chggroup").hide("fast");
 					$("#show_chggroup").show("fast");
-				} else if($('#Scol').val() == 'chgtype'){
+				} else if($('#Scol').val() == 'cm_chgtype'){
 					$("input[name='Stext']").hide("fast");
 					$("#show_chgtype,#show_chggroup").hide("fast");
 					$("#show_chgtype").show("fast");
@@ -244,12 +255,12 @@
 					{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
 					
 					{ label: 'Effective date', name: 'effdate', frozen:true, width: 160, classes: 'wrap', editable:false},
-					{ label: 'Amount 1', name: 'amt1', frozen:true, width: 160, classes: 'wrap', editable:false},
-					{ label: 'Amount 2', name: 'amt2', frozen:true, width: 160, classes: 'wrap', editable:false},
-					{ label: 'Amount 3', name: 'amt3', frozen:true, width: 160, classes: 'wrap', editable:false},
+					{ label: 'Price 1', name: 'amt1', frozen:true, width: 160, classes: 'wrap', editable:false},
+					{ label: 'Price 2', name: 'amt2', frozen:true, width: 160, classes: 'wrap', editable:false},
+					{ label: 'Price 3', name: 'amt3', frozen:true, width: 160, classes: 'wrap', editable:false},
 					{ label: 'Cost Price', name: 'costprice', frozen:true, width: 160, classes: 'wrap', editable:false},
 					{ label: 'Inpatient Tax', name: 'iptax', frozen:true, width: 150, classes: 'wrap', editable:false},
-					{ label: 'User ID', name: 'lastuser', frozen:true, width: 200, classes: 'wrap', editable:false},
+					{ label: 'User ID', name: 'lastuser', frozen:true, width: 190, classes: 'wrap', editable:false},
 					{ label: 'Last Updated', name: 'lastupdate', frozen:true, width: 160, classes: 'wrap', editable:false},
 					
 					{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
@@ -533,7 +544,7 @@
 			// dialog_trantype.makedialog();
 
 		var chggroup = new ordialog(
-			'chggroup', 'hisdb.chggroup', '#chggroup', 'errorField',
+			'cm_chggroup', 'hisdb.chggroup', '#chggroup', 'errorField',
 			{
 				colModel: [
 					{ label: 'Group Code', name: 'grpcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -542,7 +553,7 @@
 				ondblClickRow: function () {
 					let data = selrowData('#' + chggroup.gridname).grpcode;
 
-					urlParam.searchCol=["chggroup"];
+					urlParam.searchCol=["cm_chggroup"];
 					urlParam.searchVal=[data];
 					refreshGrid('#jqGrid', urlParam);
 				}
@@ -558,24 +569,24 @@
 		chggroup.on();
 
 		var chgtype = new ordialog(
-			'chgtype', 'material.supplier', '#chgtype', 'errorField',
+			'cm_chgtype', 'hisdb.chgtype', '#chgtype', 'errorField',
 			{
 				colModel: [
-					{ label: 'Supplier Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-					{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+					{ label: 'Charge Type', name: 'chgtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				],
 				ondblClickRow: function () {
-					let data = selrowData('#' + chgtype.gridname).suppcode;
+					let data = selrowData('#' + chgtype.gridname).chgtype;
 
-					urlParam.searchCol=["delordhd_suppcode"];
+					urlParam.searchCol=["cm_chgtype"];
 					urlParam.searchVal=[data];
 					refreshGrid('#jqGrid', urlParam);
 				}
 			},{
-				title: "Select Purchase Department",
+				title: "Select Charge Type",
 				open: function () {
-					chgtype.urlParam.filterCol = ['recstatus'];
-					chgtype.urlParam.filterVal = ['A'];
+					// chgtype.urlParam.filterCol = ['recstatus'];
+					// chgtype.urlParam.filterVal = ['A'];
 				}
 			}
 		);
