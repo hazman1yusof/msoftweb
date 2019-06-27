@@ -181,7 +181,7 @@
 	);
 	dialog_delordno.makedialog();
 	dialog_delordno.urlParam.filterCol=['dohd.compcode','dohd.invoiceno','dohd.suppcode'];
-	dialog_delordno.urlParam.filterVal=['session.compcode','<>.NULL'];
+	dialog_delordno.urlParam.filterVal=['session.compcode','<>.NULL', $("#suppcode").val()];
 	dialog_delordno.urlParam.fixPost = "true";
 	dialog_delordno.urlParam.table_id = "none_";
 	dialog_delordno.urlParam.join_type = ['LEFT JOIN'];
@@ -198,7 +198,7 @@
 			title:"Select invno",
 			open: function(){
 				dialog_invno.urlParam.filterCol=['compcode','source','trantype','suppcode','document','recstatus'],
-				dialog_invno.urlParam.filterVal=['session.compcode','AP','IN',suppcode.val,invno.value,'POSTED']
+				dialog_invno.urlParam.filterVal=['session.compcode','AP','IN', $("#suppcode").val(),$("#invno").val(),'POSTED']
 			}
 		},'urlParam','radio','tab'
 	);
