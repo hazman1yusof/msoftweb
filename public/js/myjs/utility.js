@@ -310,6 +310,23 @@ function search(grid,Stext,Scol,urlParam){
 	refreshGrid(grid,urlParam);
 }
 
+function search2(grid,Stext,Scol,urlParam,extra){
+	urlParam.searchCol=null;
+	urlParam.searchVal=null;
+	if(Stext.trim() != ''){
+		var split = Stext.split(" "),searchCol=[],searchVal=[];
+		$.each(split, function( index, value ) {
+			searchCol.push(Scol);
+			searchVal.push('%'+value+'%');
+			searchCol.push(extra);
+			searchVal.push('%'+value+'%');
+		});
+		urlParam.searchCol=searchCol;
+		urlParam.searchVal=searchVal;
+	}
+	refreshGrid(grid,urlParam);
+}
+
 function autoPad(array){
 	$.each(array,function(i,v){
 		$(v).on( "blur", function(){
@@ -811,7 +828,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function renull_search(obj){
-		obj.urlParam.searchCol2=obj.urlParam.searchVal2=obj.urlParam.searchCol=obj.urlParam.searchVal=null;
+		obj.urlParam.searchCol2=obj.urlParam.searchVal2=obj.urlParam.searchCol=obj.urlParam.searchVal=obj.urlParam.filterCol=obj.urlParam.filterVal=null;
 	}
 
 	function makedialog(obj){

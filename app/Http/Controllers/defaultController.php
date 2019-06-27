@@ -147,10 +147,26 @@ abstract class defaultController extends Controller{
                 $searchCol_array = $request->searchCol;
             }
 
-            foreach ($searchCol_array as $key => $value) {
-                $table = $table->orWhere($searchCol_array[$key],'like',$request->searchVal[$key]);
-            }
+            $table = $table->Where(function ($table) use ($request,$searchCol_array) {
+                foreach ($searchCol_array as $key => $value) {
+                    $table->orWhere($searchCol_array[$key],'like',$request->searchVal[$key]);
+                }
+            });
+
+            
         }
+
+        // if(!empty($request->searchCol)){
+        //     if(!empty($request->fixPost)){
+        //         $searchCol_array = $this->fixPost3($request->searchCol);
+        //     }else{
+        //         $searchCol_array = $request->searchCol;
+        //     }
+
+        //     foreach ($searchCol_array as $key => $value) {
+        //         $table = $table->orWhere($searchCol_array[$key],'like',$request->searchVal[$key]);
+        //     }
+        // }
 
         /////////searching 2///////// ni search utk ordialog
         if(!empty($request->searchCol2)){

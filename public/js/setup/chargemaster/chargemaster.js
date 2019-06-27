@@ -43,7 +43,7 @@
 				}
 			}];
 
-			var oper;
+			var oper='add';
 			$("#dialogForm")
 			  .dialog({ 
 				width: 9/10 * $(window).width(),
@@ -119,6 +119,7 @@
 			var saveParam={
 				action:'save_table_default',
 				url:'chargemaster/form',
+				fixPost:'true',
 				field:'',
 				oper:oper,
 				table_name:'hisdb.chgmast',
@@ -161,6 +162,7 @@
 				rowNum: 30,
 				pager: "#jqGridPager",
 				onSelectRow:function(rowid, selected){
+					urlParam2.filterVal[1]=selrowData("#jqGrid").cm_chgcode;
 					refreshGrid("#jqGrid3",urlParam2);
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
@@ -171,7 +173,7 @@
 						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 					}
 
-					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					// $('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 				},
 				
 			});
@@ -187,7 +189,6 @@
 							$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
 						}
 					}
-					//searchClick2('#jqGrid','#searchForm',urlParam);
 				});
 			}
 
@@ -210,25 +211,36 @@
 				}
 			}
 
-			// ////////////////////////////formatter//////////////////////////////////////////////////////////
-			// function formatter(cellvalue, options, rowObject){
-			// 	if(cellvalue == 'A'){
-			// 		return "Active";
-			// 	}
-			// 	if(cellvalue == 'D') { 
-			// 		return "Deactive";
-			// 	}
-			// }
+			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
+			toogleSearch('#sbut1','#searchForm','on');
+			populateSelect('#jqGrid','#searchForm');
+			searchClick_('#jqGrid','#searchForm',urlParam);
 
-			// function  unformat(cellvalue, options){
-			// 	if(cellvalue == 'Active'){
-			// 		return "Active";
-			// 	}
-			// 	if(cellvalue == 'Deactive') { 
-			// 		return "Deactive";
-			// 	}
-			// }
+			function searchClick_(grid,form,urlParam){
+				$(form+' [name=Stext]').on( "keyup", function() {
+					delay(function(){
+						if($(form+' [name=Scol] option:selected').val() == 'cm_description'){
+							search2(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam,'cm_brandname');
+						}else{
+							search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+						}
+					}, 500 );
+					refreshGrid("#jqGrid3",null,"kosongkan");
+				});
 
+				$(form+' [name=Scol]').on( "change", function() {
+					if($(form+' [name=Scol] option:selected').val() == 'cm_description'){
+						search2(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam,'cm_brandname');
+					}else{
+						search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+					}
+					refreshGrid("#jqGrid3",null,"kosongkan");
+				});
+			}
+
+			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
+			addParamField('#jqGrid',true,urlParam);
+			addParamField('#jqGrid',false,saveParam,['cm_idno', 'cm_compcode', 'cm_ipaddress', 'cm_computerid', 'cm_adddate', 'cm_adduser','cm_upduser','cm_upddate','cm_recstatus']);
 
 			/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 			var urlParam2={
@@ -240,8 +252,8 @@
 				join_type:['LEFT JOIN'],
 				join_onCol:['cp.chgcode'],
 				join_onVal:['cm.chgcode'],
-				filterCol:['cp.compcode'],
-				filterVal:['session.compcode']
+				filterCol:['cp.compcode','cp.chgcode'],
+				filterVal:['session.compcode','']
 			};
 
 			var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
@@ -253,7 +265,6 @@
 				 	{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				 	// { label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
 					{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
-					
 					{ label: 'Effective date', name: 'effdate', frozen:true, width: 160, classes: 'wrap', editable:false},
 					{ label: 'Price 1', name: 'amt1', frozen:true, width: 160, classes: 'wrap', editable:false},
 					{ label: 'Price 2', name: 'amt2', frozen:true, width: 160, classes: 'wrap', editable:false},
@@ -262,8 +273,8 @@
 					{ label: 'Inpatient Tax', name: 'iptax', frozen:true, width: 150, classes: 'wrap', editable:false},
 					{ label: 'User ID', name: 'lastuser', frozen:true, width: 190, classes: 'wrap', editable:false},
 					{ label: 'Last Updated', name: 'lastupdate', frozen:true, width: 160, classes: 'wrap', editable:false},
-					
 					{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
+
 				],
 				scroll: false,
 				autowidth: false,
@@ -386,16 +397,6 @@
 			});
 
 			//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-
-			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-			toogleSearch('#sbut1','#searchForm','on');
-			populateSelect('#jqGrid','#searchForm');
-			searchClick('#jqGrid','#searchForm',urlParam);
-
-			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno', 'compcode', 'ipaddress', 'computerid', 'adddate', 'adduser','upduser','upddate','recstatus']);
-
 			//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	
 			var myEditOptions = {
@@ -547,15 +548,23 @@
 			'cm_chggroup', 'hisdb.chggroup', '#chggroup', 'errorField',
 			{
 				colModel: [
-					{ label: 'Group Code', name: 'grpcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+					{ label: 'Group Code', name: 'grpcode', width: 200, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 				],
 				ondblClickRow: function () {
 					let data = selrowData('#' + chggroup.gridname).grpcode;
 
 					urlParam.searchCol=["cm_chggroup"];
 					urlParam.searchVal=[data];
+					refreshGrid("#jqGrid3",null,"kosongkan");
 					refreshGrid('#jqGrid', urlParam);
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}
 				}
 			},{
 				title: "Select Group Code",
@@ -563,7 +572,7 @@
 					// chggroup.urlParam.filterCol = ['recstatus'];
 					// chggroup.urlParam.filterVal = ['A'];
 				}
-			}
+			},'urlParam','radio','tab'
 		);
 		chggroup.makedialog();
 		chggroup.on();
@@ -572,15 +581,23 @@
 			'cm_chgtype', 'hisdb.chgtype', '#chgtype', 'errorField',
 			{
 				colModel: [
-					{ label: 'Charge Type', name: 'chgtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+					{ label: 'Charge Type', name: 'chgtype', width: 200, classes: 'pointer',checked: true, canSearch: true, or_search: true },
+					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true,  or_search: true },
 				],
 				ondblClickRow: function () {
 					let data = selrowData('#' + chgtype.gridname).chgtype;
 
 					urlParam.searchCol=["cm_chgtype"];
 					urlParam.searchVal=[data];
+					refreshGrid("#jqGrid3",null,"kosongkan");
 					refreshGrid('#jqGrid', urlParam);
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}
 				}
 			},{
 				title: "Select Charge Type",
@@ -588,7 +605,7 @@
 					// chgtype.urlParam.filterCol = ['recstatus'];
 					// chgtype.urlParam.filterVal = ['A'];
 				}
-			}
+			},'urlParam','radio','tab'
 		);
 		chgtype.makedialog();
 		chgtype.on();
