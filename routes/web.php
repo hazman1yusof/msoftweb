@@ -223,6 +223,10 @@ Route::get('/assettransfer','finance\assettransferController@show');
 Route::get('/assettransfer/table','finance\assettransferController@table');
 Route::post('/assettransfer/form','finance\assettransferController@form');
 
+/// Register setup /// 
+Route::get('/assetregister','finance\assetregisterController@show');
+Route::get('/assetregister/table','finance\assetregisterController@table');
+Route::post('/assetregister/form','finance\assetregisterController@form'); 
 
 //// GL Enquiry ///
 Route::get('/glenquiry','finance\GlenquiryController@show');
@@ -330,11 +334,6 @@ Route::post('/priceSource/form','material\PriceSourceController@form');
 Route::get('/suppgroup','material\SuppgroupController@show');
 Route::get('/suppgroup/table','material\SuppgroupController@table');
 Route::post('/suppgroup/form','material\SuppgroupController@form');
-
-/// Register setup /// 
-Route::get('/assetregister','finance\assetregisterController@show');
-Route::get('/assetregister/table','finance\assetregisterController@table');
-Route::post('/assetregister/form','finance\assetregisterController@form'); 
 
 //// Product Master setup ///
 Route::get('/productMaster','material\ProductMasterController@show');

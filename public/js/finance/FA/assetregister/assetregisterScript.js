@@ -673,7 +673,24 @@
 		$('#taggingNoButton').click(gneratetagno);
 		function gneratetagno(){
 			var selarrrow = $("#jqGrid").jqGrid('getGridParam','selarrrow');
-			console.log(selarrrow);
+			var idno_array = [];
+			
+			selarrrow.forEach(function(element) {
+				idno_array.push(selrowData("#jqGrid").idno);
+			}); 
+
+			obj={};
+			obj.idno_array = idno_array;
+			obj.oper = 'gen_tagno';
+			obj._token = $('#_token').val();
+			
+			$.post( '/assetregister/form', obj , function( data ) {
+				
+			}).fail(function(data) {
+
+			}).success(function(data){
+				
+			});
 
 		}
 	

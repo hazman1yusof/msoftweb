@@ -37,6 +37,7 @@
 	<!-------------------------------- End Search + table ------------------>
 	<!---secondform-->
 	
+	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 	<div id="dialogForm" title="Add Form">
 		<form class="form-horizontal" style='width: 99%' id="formdata">
 		

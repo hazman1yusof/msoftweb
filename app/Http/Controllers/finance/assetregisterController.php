@@ -34,9 +34,87 @@ class assetregisterController extends defaultController
             case 'del':
                 return $this->asset_delete($request);
                 // return $this->defaultDel($request);
+            case 'gen_tagno':
+                return $this->gen_tagno($request);
             default:
                 return 'error happen..';
         }
+    }
+
+    public function gen_tagno(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($request->idno_array as $value){
+
+                ////1. select facode tagnextno
+                $fatemp = DB::table('finance.fatemp')
+                            ->where('idno','=',$value)
+                            ->first();
+
+                $facode = DB::table('finance.facode')->select('tagnextno')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('assettype', '=', $fatemp->assettype)
+                                ->first();
+                $tagnextno_counter = intval($facode->tagnextno)+1;
+                $assetno = str_pad($facode->tagnextno,6,"0",STR_PAD_LEFT);
+
+
+                ////2. insert into faregister
+                DB::table('finance.faregister')
+                    ->insert([
+                        'assetcode' => $fatemp->assetcode,
+                        'assettype' => $fatemp->assettype,
+                        'assetno' => $assetno, // got padding
+                        'description' => $fatemp->description,
+                        'deptcode' => $fatemp->deptcode,
+                        'loccode' => $fatemp->loccode,
+                        'suppcode' => $fatemp->suppcode,
+                        'purordno' => $fatemp->purordno,
+                        'delordno'  => $fatemp->delordno,
+                        'delorddate' => $fatemp->delorddate,
+                        'itemcode' => $fatemp->itemcode,
+                        'invno' => $fatemp->invno,
+                        'invdate' => $fatemp->invdate,
+                        'purdate' => $fatemp->purdate,
+                        'purprice' => $fatemp->purprice,
+                        'origcost' => $fatemp->origcost,
+                        'qty' => $fatemp->qty,
+                        'lstytddep' => $fatemp->lstytddep,
+                        'cuytddep' => $fatemp->cuytddep,
+                        'recstatus' => $fatemp->recstatus,
+                        'individualtag' => $fatemp->individualtag,
+                        'statdate' => $fatemp->statdate,
+                        'trantype' => $fatemp->trantype,
+                        'nprefid' => $fatemp->nprefid,
+                        'trandate' => $fatemp->trandate,
+                        'compcode' => session('compcode'),
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+
+                ////delete from fatemp
+                DB::table('finance.fatemp')
+                        ->where('idno','=',$value)
+                        ->delete();
+
+                ////4. update facode tagnextno
+                DB::table('finance.facode')->select('tagnextno')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('assettype', '=', $fatemp->assettype)
+                    ->update([
+                        'tagnextno' => $tagnextno_counter
+                    ]);
+
+            }
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response('Error'.$e, 500);
+        }
+        
     }
 
     public function asset_delete(Request $request){
