@@ -176,17 +176,17 @@
 		{
 			title:"Select Delordno",
 			open: function(){
+				dialog_delordno.urlParam.filterCol=['dohd.compcode','dohd.invoiceno','dohd.suppcode'];
+				dialog_delordno.urlParam.filterVal=['session.compcode','<>.NULL', $("#suppcode").val()];
+				dialog_delordno.urlParam.fixPost = "true";
+				dialog_delordno.urlParam.table_id = "none_";
+				dialog_delordno.urlParam.join_type = ['LEFT JOIN'];
+				dialog_delordno.urlParam.join_onCol = ['dohd.invoiceno'];
+				dialog_delordno.urlParam.join_onVal = ['ap.document'];
 			}
 		},'urlParam','radio','tab'
 	);
 	dialog_delordno.makedialog();
-	dialog_delordno.urlParam.filterCol=['dohd.compcode','dohd.invoiceno','dohd.suppcode'];
-	dialog_delordno.urlParam.filterVal=['session.compcode','<>.NULL', $("#suppcode").val()];
-	dialog_delordno.urlParam.fixPost = "true";
-	dialog_delordno.urlParam.table_id = "none_";
-	dialog_delordno.urlParam.join_type = ['LEFT JOIN'];
-	dialog_delordno.urlParam.join_onCol = ['dohd.invoiceno'];
-	dialog_delordno.urlParam.join_onVal = ['ap.document'];
 
 	var dialog_invno= new ordialog(
 		'invno','finance.apacthdr','#invno',errorField,
@@ -197,7 +197,7 @@
 		},{
 			title:"Select invno",
 			open: function(){
-				dialog_invno.urlParam.filterCol=['compcode','source','trantype','suppcode','document','recstatus'],
+				dialog_invno.urlParam.filterCol=['compcode','source','trantype','suppcode','document','recstatus'];
 				dialog_invno.urlParam.filterVal=['session.compcode','AP','IN', $("#suppcode").val(),$("#invno").val(),'POSTED']
 			}
 		},'urlParam','radio','tab'
@@ -210,6 +210,7 @@
 				{label:'Itemcode',name:'dodt_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'description',name:'p_description',width:300,classes:'pointer',canSearch:true,or_search:true},
 				{label:'dodt_uomcode',name:'dodt_uomcode',width:100,classes:'pointer',hidden:true},
+				{label:'dodt_remarks',name:'dodt_remarks',width:100,classes:'pointer',hidden:false},
 				{label:'dodt_qtydelivered',name:'dodt_qtydelivered',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_unitprice',name:'dodt_unitprice',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_amount',name:'dodt_amount',width:100,classes:'pointer',hidden:true},
@@ -223,6 +224,7 @@
 				$('#purprice').val(data['dodt_unitprice']);
 				$('#qty').val(data['dodt_qtydelivered']);
 				$('#currentcost').val(data['dodt_amount']);
+				$('#description').val(data['dodt_itemcode'] + ' ' + data['dodt_remarks']);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -298,7 +300,7 @@
 						enableForm('#formdata');
 						ToggleDisableForm();
 						rdonly("#dialogForm");
-						
+						enableField();
 						break;
 					case state = 'edit':
 						//mycurrency.formatOnBlur();
@@ -493,7 +495,7 @@
 			$("#nbv").prop('readonly',true);
 			$("#qty").prop('readonly',true);
 			$("#delordno_btn").show();
-			$("#delordno_dh").show();
+			// $("#delordno_dh").show();
 			$("#dn").show();
 		}
 //////// if the function chosen is D,  
@@ -518,7 +520,7 @@
 			$("#nbv").prop('readonly',true);
 			$("#qty").prop('readonly',false);
 			$("#delordno_btn").hide();
-			$("#delordno_dh").hide();
+			// $("#delordno_dh").hide();
 			$("#dn").hide();
 		}
 
@@ -540,7 +542,7 @@
 					alert('Please select row');
 					return emptyFormdata(errorField,'#formdata');
 				}else{
-					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'idno':selRowId});
+					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'idno':selrowData('#jqGrid').idno});
 				}
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -593,7 +595,7 @@
 
 		//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 		addParamField('#jqGrid',true,urlParam,['cb','regtype','nbv']);
-		addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','recstatus','assetreg_status','regtype','nbv']);
+		addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','recstatus','assetreg_status','regtype','nbv','cb']);
 		
 		$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
 

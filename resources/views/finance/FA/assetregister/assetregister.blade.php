@@ -45,7 +45,8 @@
 			<input type='hidden' id='lineno_' name='lineno_'>
 			<input type='hidden' id='recno' name='recno'>
 			<input type='hidden' id='idno' name='idno'>
-			<div class="prevnext btn-group pull-right"></div>
+			<input type='hidden' id='description' name='description'>
+
 			{{ csrf_field() }}
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="assetcode">Category</label>
@@ -86,7 +87,7 @@
 				<label class="col-md-2 control-label" for="regtype">Register Type</label>  
 				  <div class="col-md-4" data-validation="required">
 					<label class="radio-inline"><input type="radio" name="regtype" value='P'>Purchase Order</label >
-					<label class="radio-inline"><input type="radio" name="regtype" value='D' >Direct</label>
+					<label class="radio-inline"><input type="radio" name="regtype" value='D' checked="checked" >Direct</label>
 				  </div>
 			</div>
 
