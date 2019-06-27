@@ -277,6 +277,7 @@ $(document).ready(function () {
 			{ label: 'unit', name: 'delordhd_unit', width: 40, hidden:'true'},
 
 		],
+/*		multiselect:true,*/
 		autowidth:true,
 		shrinkToFit: true,
 		multiSort: true,

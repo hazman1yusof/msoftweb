@@ -387,7 +387,7 @@
 				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 				{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
-				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},	
+				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap'},	
 				{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
 				{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 				{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
@@ -436,7 +436,7 @@
 					$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			},				
 		});
-		////////////////////////////formatter//////////////////////////////////////////////////////////
+		//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
 		function formatter(cellvalue, options, rowObject) {
 			if (cellvalue == 'A') {
 				return "Active";
@@ -462,6 +462,7 @@
 		}
 
 		///////////////////////// REGISTER TYPE SELECTION/////////////////////////////////////
+		/////// if the function chosen is P, certain field will be disabled //////////////////
 		$("input[name=regtype]:radio").on('change', function(){
 			regtype  = $("input[name=regtype]:checked").val();
 			if(regtype == 'P'){
@@ -471,6 +472,7 @@
 			}
 		});
 
+//////// if the function chosen is P,  
 		function disableField() {
 			dialog_delordno.on();
 			dialog_suppcode.on();
@@ -490,16 +492,20 @@
 			$("#currentcost").prop('readonly',true);
 			$("#nbv").prop('readonly',true);
 			$("#qty").prop('readonly',true);
+			$("#delordno_btn").show();
+			$("#delordno_dh").show();
+			$("#dn").show();
 		}
-
-		function enableField() {
+//////// if the function chosen is D,  
+		function enableField() {  //fx yg if pilih P, apa enable and apa disable
 			dialog_delordno.off();
-			dialog_suppcode.off();
+			dialog_suppcode.on();
 			dialog_invno.on();
 			dialog_uomcode.on();
 
 			$("#invno").prop('readonly',false);
-			$("#suppcode").prop('readonly',true);
+			$("#suppcode").prop('readonly',false);
+			$("#itemcode").prop('readonly',false);
 			$("#uomcode").prop('readonly',false);
 			$("#delorddate").prop('readonly',false);
 			$("#invdate").prop('readonly',false);
@@ -511,6 +517,9 @@
 			$("#currentcost").prop('readonly',true);
 			$("#nbv").prop('readonly',true);
 			$("#qty").prop('readonly',false);
+			$("#delordno_btn").hide();
+			$("#delordno_dh").hide();
+			$("#dn").hide();
 		}
 
 
