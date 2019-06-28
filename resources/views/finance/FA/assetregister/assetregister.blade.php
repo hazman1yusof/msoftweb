@@ -140,6 +140,8 @@
 				</div>
 
 				<div class="form-group">
+
+					<div id="itemcode_div">
 					<label class="col-md-2 control-label" for="itemcode">Item Code</label>
 						<div class="col-md-3">
 							<div class='input-group'>
@@ -148,6 +150,19 @@
 							</div>
 							<span class="help-block"></span>
 						</div>
+					</div>
+
+					<div id="itemcode_direct_div">
+					<label class="col-md-2 control-label" for="itemcode">Item Code</label>
+						<div class="col-md-3">
+							<div class='input-group'>
+								<input id="itemcode_direct" name="itemcode" type="text" class="form-control input-sm" >
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+					</div>
+
 
 					<label class="col-md-2 control-label" for="uomcode">UOM Code</label>
 						<div class="col-md-3">
@@ -173,18 +188,18 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="purprice">Price</label>  
 						<div class="col-md-3">
-							<input id="purprice" name="purprice" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required">  
+							<input id="purprice" name="purprice" maxlength="12" class="form-control input-sm" value="0.00" data-validation="required">  
 					 	</div>
 					<label class="col-md-2 control-label" for="qty">Quantity</label>  
 						<div class="col-md-3">
-							<input id="qty" name="qty" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required"> 
+							<input id="qty" name="qty" maxlength="12" class="form-control input-sm" data-validation="required"> 
 					 	</div>
 				</div>
 
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="currentcost">Current Cost</label>  
 						<div class="col-md-3">
-							<input id="currentcost" name="currentcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" readonly>  
+							<input id="currentcost" name="currentcost" maxlength="12" class="form-control input-sm" value="0.00" readonly>  
 					 	</div>
 				</div>
 
@@ -219,7 +234,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="origcost">Cost</label>  
 						<div class="col-md-3">
-							<input id="origcost" name="origcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" value="0.00" readonly>  
+							<input id="origcost" name="origcost" maxlength="12" class="form-control input-sm"  readonly>  
 					 	</div>
 				</div>
 

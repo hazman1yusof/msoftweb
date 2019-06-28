@@ -28,6 +28,9 @@
 			
 	////////////////////////////////////start dialog///////////////////////////////////////
 
+
+	var mycurrency =new currencymode(['#origcost','#currentcost', '#purprice']);
+
 	var dialog_assetcode= new ordialog(
 		'assetcode','finance.facode','#assetcode',errorField,
 		{	colModel:[
@@ -215,6 +218,7 @@
 				{label:'dodt_unitprice',name:'dodt_unitprice',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_amount',name:'dodt_amount',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_srcdocno',name:'dodt_srcdocno',width:100,classes:'pointer',hidden:true},
+				{label:'dodt_lineno_',name:'dodt_lineno_',width:100,classes:'pointer',hidden:true},
 				
 			],
 			ondblClickRow:function(){
@@ -224,6 +228,7 @@
 				$('#purprice').val(data['dodt_unitprice']);
 				$('#qty').val(data['dodt_qtydelivered']);
 				$('#currentcost').val(data['dodt_amount']);
+				$('#lineno_').val(data['dodt_lineno_']);
 				$('#description').val(data['dodt_itemcode'] + ' ' + data['dodt_remarks']);
 			},
 			gridComplete: function(obj){
@@ -249,6 +254,38 @@
 	);
 	dialog_itemcode.makedialog();
 
+	var dialog_itemcode_direct= new ordialog(
+		'itemcode_direct',['material.product'],'#itemcode_direct',errorField,
+		{	colModel:[
+				{label:'Itemcode',name:'itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'uomcode',name:'uomcode',width:100,classes:'pointer',hidden:true},
+				{label:'currprice',name:'currprice',width:100,classes:'pointer',hidden:true},
+				
+			],
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_itemcode_direct.gridname);
+				$('#uomcode').val(data['uomcode']);
+				$('#purordno').val(data['dodt_srcdocno']);
+				$('#purprice').val(data['currprice']);
+				$('#description').val(data['itemcode']);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#individualtag').focus();
+				}
+			}
+		},{
+			title:"Select Itemcode",
+			open: function(){
+			}
+		},'urlParam','tab'
+	);
+	dialog_itemcode_direct.makedialog();
+
 	var dialog_uomcode= new ordialog(
 		'uomcode','material.product','#uomcode',errorField,
 		{	colModel:[
@@ -269,6 +306,8 @@
 
 	var butt1=[{
 			text: "Save",click: function() {
+				mycurrency.formatOff();
+				mycurrency.check0value(errorField);
 				if( checkdate_asset(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 					saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 				}
@@ -293,6 +332,8 @@
 			modal: true,
 			autoOpen: false,
 			open: function( event, ui ) {
+				mycurrency.formatOnBlur();
+				mycurrency.formatOn();
 				switch(oper) {
 					case state = 'add':
 						//mycurrency.formatOnBlur();
@@ -327,12 +368,14 @@
 					dialog_loccode.on();
 					dialog_suppcode.on();
 					dialog_itemcode.on();
+					dialog_itemcode_direct.on();
 					dialog_uomcode.on();
 					dialog_delordno.on();
-					dialog_invno.on();
+					dialog_invno.off();
 				}
 				if(oper!='add'){
 					dialog_itemcode.check(errorField);
+					dialog_itemcode_direct.check(errorField);
 					dialog_uomcode.check(errorField);
 					dialog_delordno.check(errorField);
 					dialog_assetcode.check(errorField);
@@ -389,7 +432,7 @@
 				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 				{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
-				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap'},	
+				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat},	
 				{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
 				{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 				{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
@@ -439,6 +482,24 @@
 			},				
 		});
 		//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
+		function regtypeformat(cellvalue, options, rowObject) {
+			if (cellvalue == 'P') {
+				return "Purchase Order";
+			}
+			if (cellvalue == 'D') {
+				return "Direct";
+			}
+		}
+
+		function regtypeunformat(cellvalue, options) {
+			if (cellvalue == 'Purchase Order') {
+				return "P";
+			}
+			if (cellvalue == 'Direct') {
+				return "D";
+			}
+		}
+
 		function formatter(cellvalue, options, rowObject) {
 			if (cellvalue == 'A') {
 				return "Active";
@@ -476,10 +537,18 @@
 
 //////// if the function chosen is P,  
 		function disableField() {
+			dialog_itemcode_direct.off();
+			$('#itemcode_direct_div').hide();
+			$('#itemcode_direct').prop('disabled',true);
+
+			dialog_itemcode.on();
+			$('#itemcode_div').show();
+			$('#itemcode').prop('disabled',false);
+
 			dialog_delordno.on();
 			dialog_suppcode.on();
 			dialog_invno.off();
-			dialog_uomcode.off();
+			dialog_uomcode.on();
 
 			$("#invno").prop('readonly',true);
 			$("#suppcode").prop('readonly',false);
@@ -500,9 +569,17 @@
 		}
 //////// if the function chosen is D,  
 		function enableField() {  //fx yg if pilih P, apa enable and apa disable
+			dialog_itemcode_direct.on();
+			$('#itemcode_direct_div').show();
+			$('#itemcode_direct').prop('disabled',false);
+
+			dialog_itemcode.off();
+			$('#itemcode_div').hide();
+			$('#itemcode').prop('disabled',true);
+
 			dialog_delordno.off();
 			dialog_suppcode.on();
-			dialog_invno.on();
+			dialog_invno.off();
 			dialog_uomcode.on();
 
 			$("#invno").prop('readonly',false);
@@ -594,8 +671,8 @@
 		searchClick('#jqGrid','#searchForm',urlParam);
 
 		//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-		addParamField('#jqGrid',true,urlParam,['cb','regtype','nbv']);
-		addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','recstatus','assetreg_status','regtype','nbv','cb']);
+		addParamField('#jqGrid',true,urlParam,['cb','nbv']);
+		addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','compcode','recstatus','assetreg_status','nbv','cb']);
 		
 		$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
 
@@ -661,16 +738,19 @@
 
 		$("#purprice,#qty").blur(getcurentcost);
 		function getcurentcost(event) { 
+			mycurrency.formatOff()
 	        let purprice = parseFloat($("#purprice").val());
 	        let qty = parseFloat($("#qty").val());
 
 	        var currentcost = (purprice * qty);
 
 	        $("#currentcost, #origcost").val(currentcost);
+			mycurrency.formatOn()
 		}
 
 		$("#origcost,#lstytddep,#cuytddep").blur(getNVB);
 		function getNVB(event) { 
+			mycurrency.formatOff()
 	        let origcost = parseFloat($("#origcost").val());
 	        let lstytddep = parseFloat($("#lstytddep").val());
 	        let cuytddep = parseFloat($("#cuytddep").val());
@@ -678,6 +758,7 @@
 	        var nbv = (origcost - lstytddep - cuytddep);
 
 	        $("#nbv").val(nbv);
+			mycurrency.formatOn()
 		}
 
 
