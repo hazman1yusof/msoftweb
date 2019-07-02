@@ -433,7 +433,7 @@ $(document).ready(function () {
 					obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
 					
 					// obj.trantype = '-';
-					obj.description = '-';
+					obj.description = '';
 					obj.qtyin = '-';
 					obj.qtyout = '-';
 					obj.balquan = '-';
