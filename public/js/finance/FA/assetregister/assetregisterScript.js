@@ -535,7 +535,7 @@
 			}
 		});
 
-//////// if the function chosen is P,  
+		//////// if the function chosen is P ////////////////////////////////////  
 		function disableField() {
 			dialog_itemcode_direct.off();
 			$('#itemcode_direct_div').hide();
@@ -567,8 +567,8 @@
 			// $("#delordno_dh").show();
 			$("#dn").show();
 		}
-//////// if the function chosen is D,  
-		function enableField() {  //fx yg if pilih P, apa enable and apa disable
+		//////// if the function chosen is D ////////////////////////////////////  
+		function enableField() {
 			dialog_itemcode_direct.on();
 			$('#itemcode_direct_div').show();
 			$('#itemcode_direct').prop('disabled',false);
@@ -665,10 +665,25 @@
 
 
 		//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+
+		/////////////////////////////populate data for dropdown search By////////////////////////////
+		searchBy();
+		function searchBy(){
+			$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
+				if(value['canSearch']){
+					if(value['selected']){
+						$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+					}else{
+						$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+					}
+				}
+				searchClick2('#jqGrid','#searchForm',urlParam);
+			});
+		}		
 		
 		//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 		populateSelect('#jqGrid','#searchForm');
-		searchClick('#jqGrid','#searchForm',urlParam);
+		// searchClick2('#jqGrid','#searchForm',urlParam);
 
 		//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 		addParamField('#jqGrid',true,urlParam,['cb','nbv']);
