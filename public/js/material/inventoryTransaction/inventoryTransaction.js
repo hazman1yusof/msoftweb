@@ -257,7 +257,12 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",urlParam2);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager td[title='Edit Selected Row']").click();
+			let stat = selrowData("#jqGrid").recstatus;
+			if(stat=='POSTED'){
+				$("#jqGridPager td[title='View Selected Row']").click();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+			}
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
