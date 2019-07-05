@@ -23,8 +23,9 @@
 				<div class="col-md-5">
 					<label class="control-label"></label>  
 						<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+				</div>
 
-				<div class="col-md-3 col-md-offset-12" style="padding-top: 0; text-align: end;">
+				<div class="col-md-6 col-md-offset-2 pull-right" style="padding-top: 0; text-align: end;">
 					<button type="button" id='taggingNoButton' class='btn btn-info' >Generate Tagging No</button>
 				</div>
 			 </fieldset> 
