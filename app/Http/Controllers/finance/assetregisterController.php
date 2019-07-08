@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
 use stdClass;
+use Carbon\Carbon;
 
 class assetregisterController extends defaultController
 {   
@@ -108,6 +109,11 @@ class assetregisterController extends defaultController
                     ]);
 
             }
+
+
+            dump(DB::getQueryLog());
+            
+            DB::commit();
 
         } catch (\Exception $e) {
             DB::rollback();
