@@ -131,8 +131,8 @@
 
 					{ label: 'Group Code', name: 'grpcode', classes: 'wrap', width: 30, canSearch: true},
 					{ label: 'Description', name: 'description', classes: 'wrap', width: 70, canSearch: true},
-					{ label: 'Last User', name: 'lastuser', classes: 'wrap', width: 30,checked:true},
-                    { label: 'Last Update', name: 'lastupdate', classes: 'wrap', width: 20},
+					{ label: 'Add User', name: 'adduser', classes: 'wrap', width: 30,checked:true},
+                    { label: 'Add Update', name: 'adddate', classes: 'wrap', width: 20},
                     { label: 'Sequence Number', name: 'seqno', classes: 'wrap', width: 20,checked:true},
 					
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },

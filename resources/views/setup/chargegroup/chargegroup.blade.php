@@ -130,14 +130,14 @@
 							</div>     -->
 			                
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="lastuser">Last User</label>  
+								<label class="col-md-2 control-label" for="lastuser">Add User</label>  
 								<div class="col-md-3">
-									<input id="lastuser" name="lastuser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="lastuser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 								</div>
 
-								<label class="col-md-2 control-label" for="lastupdate">Last Update</label>  
+								<label class="col-md-2 control-label" for="lastupdate">Add Update</label>  
 								<div class="col-md-3">
-									<input id="lastupdate" name="lastupdate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="lastupdate" name="adddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 								</div>
 							</div> 
 
