@@ -121,6 +121,26 @@ Route::post('/chargemaster/form','setup\ChargeMasterController@form');
 Route::get('/chargemaster/form','setup\ChargeMasterController@form');
 Route::post('/chargemasterDetail/form','setup\ChargeMasterDetailController@form');
 
+//// Charge class setup page ///
+Route::get('/chargeclass','setup\ChargeClassController@show');
+Route::get('/chargeclass/table','setup\ChargeClassController@table');
+Route::post('/chargeclass/form','setup\ChargeClassController@form');
+Route::get('/chargeclass/form','setup\ChargeClassController@form');
+Route::post('/chargeclassDetail/form','setup\ChargeClassDetailController@form');
+
+//// Charge type setup page ///
+Route::get('/chargetype','setup\ChargeTypeController@show');
+Route::get('/chargetype/table','setup\ChargeTypeController@table');
+Route::post('/chargetype/form','setup\ChargeTypeController@form');
+Route::get('/chargetype/form','setup\ChargeTypeController@form');
+Route::post('/chargetypeDetail/form','setup\ChargeTypeDetailController@form');
+
+//// Charge group setup page ///
+Route::get('/chargegroup','setup\ChargeGroupController@show');
+Route::get('/chargegroup/table','setup\ChargeGroupController@table');
+Route::post('/chargegroup/form','setup\ChargeGroupController@form');
+Route::get('/chargegroup/form','setup\ChargeGroupController@form');
+Route::post('/chargegroupDetail/form','setup\ChargeGroupDetailController@form');
 
 //// Compcode setup page ///
 Route::get('/compcode','setup\CompcodeController@show');
