@@ -121,8 +121,8 @@
 				datatype: "local",
 				 colModel: [
 					//{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
-					{ label: 'Location Code', name: 'loccode', width: 5, classes: 'wrap', canSearch: true, checked:true},
-					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true},
+					{ label: 'Location Code', name: 'loccode', width: 5, classes: 'wrap', canSearch: true},
+					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true, checked:true},
 					{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 					},
