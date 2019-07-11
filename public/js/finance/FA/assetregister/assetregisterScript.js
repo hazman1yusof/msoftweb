@@ -93,9 +93,11 @@
 	var dialog_loccode= new ordialog(
 		'loccode','sysdb.location','#loccode',errorField,
 		{	colModel:[
-			  {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 		],
+		sortname:'idno',
+		sortorder:'desc',
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
 			if($(gridname).jqGrid('getDataIDs').length == 1){
@@ -108,8 +110,9 @@
 		{
 			title:"Select Location",
 			open: function(){
-				dialog_loccode.urlParam.filterCol=['compcode'],
-				dialog_loccode.urlParam.filterVal=['session.compcode']
+				dialog_loccode.urlParam.filterCol=['compcode'];
+				dialog_loccode.urlParam.filterVal=['session.compcode'];
+				
 			}
 		},'urlParam','tab'
 	);
@@ -421,7 +424,7 @@
 			datatype: "local",
 			 colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
-				{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', checked: true}, 
+				{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap'}, 
 				{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'Asset Type', name: 'assettype', width: 15, sorttype: 'text', classes: 'wrap'},
 				{ label: 'Department', name: 'deptcode', width: 15, sorttype: 'text', classes: 'wrap'},			
@@ -430,7 +433,7 @@
 				{ label: 'DO No', name:'delordno',width: 15, sorttype:'text', classes:'wrap'},					
 				{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
-				{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
+				{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
 				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
 				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat},	
 				{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
@@ -677,23 +680,39 @@
 						$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
 					}
 				}
-				searchClick2('#jqGrid','#searchForm',urlParam);
 			});
-		}		
+			searchClickChange('#jqGrid','#searchForm',urlParam);
+		}
+
+		function searchClickChange(grid,form,urlParam){
+			$(form+' [name=Stext]').on( "keyup", function() {
+				delay(function(){
+					search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				}, 500 );
+			});
+		}
 
 		$('#Scol').on('change', scolChange);
 
 		function scolChange() {
 			if($('#Scol').val()=='assetcode'){
-				$("input[name='Stext']").hide("fast");
-				$("#dialog_assetcode").hide("fast");
-				$("#dialog_assetcode").show("fast");
+				$("input[name='Stext'],#search_assetcode_").hide("fast");
+				$("#search_assetcode_").show("fast");
+
+				$("#search_assetcode").attr('seltext',true);
+				$("input[name='Stext']").attr('seltext',false);
 			} else {
 				$("input[name='Stext']").show("fast");
-				$("#dialog_assetcode").hide("fast");
+				$("#search_assetcode_").hide("fast");
+
 				$("input[name='Stext']").attr('type', 'text');
 				$("input[name='Stext']").velocity({ width: "100%" });
+				
+				$("#search_assetcode").attr('seltext',false);
+				$("input[name='Stext']").attr('seltext',true);
 			}
+			
+			search('#jqGrid',$('#searchForm input[seltext=true]').val(),$('#searchForm [name=Scol] option:selected').val(),urlParam);
 		}
 		
 		//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
@@ -815,5 +834,33 @@
 			});
 
 		}
+
+		var search_assetcode= new ordialog(
+			'search_assetcode','finance.facode','#search_assetcode',errorField,
+			{	colModel:[
+				  {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
+					{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
+					{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
+			],
+			ondblClickRow:function(){
+				let data=selrowData('#'+search_assetcode.gridname);
+				
+				urlParam.searchCol=["assetcode"];
+				urlParam.searchVal=[data.assetcode];
+				refreshGrid('#jqGrid', urlParam);
+			}
+		},
+			{
+				title:"Select Category",
+				open: function(){
+					search_assetcode.urlParam.filterCol=['compcode'];
+					search_assetcode.urlParam.filterVal=['session.compcode'];
+				}
+			},'urlParam','radio','tab'
+		);
+		search_assetcode.makedialog();
+		search_assetcode.on();
 	
 	});

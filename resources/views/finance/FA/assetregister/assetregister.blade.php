@@ -22,11 +22,11 @@
 
 						<div class="col-md-5">
 							<label class="control-label"></label>  
-							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+							<input  name="Stext" seltext='true' type="search" placeholder="Search here ..." class="form-control text-uppercase">
 
-							<div  id="dialog_assetcode" style="display:none">
+							<div  id="search_assetcode_" style="display:none">
 								<div class='input-group'>
-									<input id="assetcode" name="assetcode" type="text" maxlength="12" class="form-control input-sm">
+									<input id="search_assetcode" name="search_assetcode" type="text" maxlength="12" class="form-control input-sm" seltext='false'>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>

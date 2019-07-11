@@ -859,6 +859,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			colModel: obj.field,
 			autowidth: true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
 			pager: "#"+obj.gridname+"Pager",
+			sortname: (obj.jqgrid_.hasOwnProperty('sortname'))?obj.jqgrid_.sortname:'',
+			sortorder: (obj.jqgrid_.hasOwnProperty('sortorder'))?obj.jqgrid_.sortorder:'',
 			onSelectRow:function(rowid, selected){
 				if(obj.jqgrid_.hasOwnProperty('onSelectRow'))obj.jqgrid_.onSelectRow(rowid, selected);
 			},
@@ -1215,5 +1217,13 @@ fixPositionsOfFrozenDivs = function () {
     }
 }
 
+function recstatusDisable(){
+	var recstatusvalue = $("#formdata [name='recstatus']:checked").val();
+	if(recstatusvalue == 'A'){
+		$("#formdata input[name='recstatus']").prop('disabled', true);
+	}else{
+		$("#formdata input[name='recstatus']").prop('disabled', false);
+	}
+}
 
 /////////////////////////////////End utility function////////////////////////////////////////////////
