@@ -15,14 +15,24 @@
 			<fieldset>
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
-					  <div class="col-md-2">
-					  	<label class="control-label" for="Scol">Search By : </label>  
+						<div class="col-md-2">
+					  		<label class="control-label" for="Scol">Search By : </label>  
 					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
-		              </div>
+		              	</div>
 
-				<div class="col-md-5">
-					<label class="control-label"></label>  
-						<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+						<div class="col-md-5">
+							<label class="control-label"></label>  
+							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+
+							<div  id="dialog_assetcode" style="display:none">
+								<div class='input-group'>
+									<input id="assetcode" name="assetcode" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<div class="col-md-6 col-md-offset-2 pull-right" style="padding-top: 0; text-align: end;">
@@ -91,10 +101,10 @@
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="regtype">Register Type</label>  
-				  <div class="col-md-4" data-validation="required">
-					<label class="radio-inline"><input type="radio" name="regtype" value='P'>Purchase Order</label >
-					<label class="radio-inline"><input type="radio" name="regtype" value='D' checked="checked" >Direct</label>
-				  </div>
+					<div class="col-md-4" data-validation="required">
+						<label class="radio-inline"><input type="radio" name="regtype" value='P'>Purchase Order</label >
+						<label class="radio-inline"><input type="radio" name="regtype" value='D' checked="checked" >Direct</label>
+				  	</div>
 			</div>
 
 			<div id='disableGroup'>

@@ -34,8 +34,8 @@
 	var dialog_assetcode= new ordialog(
 		'assetcode','finance.facode','#assetcode',errorField,
 		{	colModel:[
-			  {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+			  {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
 				{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
 				{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
@@ -68,8 +68,8 @@
 	var dialog_deptcode= new ordialog(
 		'deptcode','sysdb.department','#deptcode',errorField,
 		{	colModel:[
-			    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+			    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 		],
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
@@ -93,8 +93,8 @@
 	var dialog_loccode= new ordialog(
 		'loccode','sysdb.location','#loccode',errorField,
 		{	colModel:[
-			  {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+			  {label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 		],
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
@@ -118,8 +118,8 @@
 	var dialog_suppcode= new ordialog(
 		'suppcode','material.supplier','#suppcode',errorField,
 		{	colModel:[
-			  {label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 
 			],
 			ondblClickRow:function(){
@@ -289,8 +289,8 @@
 	var dialog_uomcode= new ordialog(
 		'uomcode','material.product','#uomcode',errorField,
 		{	colModel:[
-				{label:'uomcode',name:'uomcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'uomcode',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				
 			]
 		},{
@@ -680,6 +680,21 @@
 				searchClick2('#jqGrid','#searchForm',urlParam);
 			});
 		}		
+
+		$('#Scol').on('change', scolChange);
+
+		function scolChange() {
+			if($('#Scol').val()=='assetcode'){
+				$("input[name='Stext']").hide("fast");
+				$("#dialog_assetcode").hide("fast");
+				$("#dialog_assetcode").show("fast");
+			} else {
+				$("input[name='Stext']").show("fast");
+				$("#dialog_assetcode").hide("fast");
+				$("input[name='Stext']").attr('type', 'text');
+				$("input[name='Stext']").velocity({ width: "100%" });
+			}
+		}
 		
 		//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 		populateSelect('#jqGrid','#searchForm');
