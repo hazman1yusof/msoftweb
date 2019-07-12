@@ -592,7 +592,7 @@
 				}
 				},
 				{
-					title:"Select Glaccno",
+					title:"Select Category Code",
 					open: function(){
 						dialog_invcategory.urlParam.filterCol=['compcode'];
 						dialog_invcategory.urlParam.filterVal=['session.compcode'];
