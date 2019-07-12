@@ -19,17 +19,17 @@
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
 
-							<!-- <div  id="show_chggroup" style="display:none">
+							<div  id="show_chggroup_div" style="display:none">
 								<div class='input-group'>
-									<input id="chggroup" name="chggroup" type="text" maxlength="12" class="form-control input-sm">
+									<input id="show_chggroup" seltext='false' name="show_chggroup" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
 							</div>
 
-							<div  id="show_chgtype" style="display:none">
+							<!-- <div  id="show_chgtype" style="display:none">
 								<div class='input-group'>
 									<input id="chgtype" name="chgtype" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -118,7 +118,7 @@
 							
 			                	<label class="col-md-2 control-label" for="description">Description</label>  
 			                    <div class="col-md-3">
-			                    	<input id="description" name="description" type="text" class="form-control input-sm" data-validation="number, required">
+			                    	<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
 			                    </div>
 							</div>
 			                
@@ -130,28 +130,105 @@
 							</div>     -->
 			                
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="lastuser">Last User</label>  
-								<div class="col-md-3">
-									<input id="lastuser" name="lastuser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-								</div>
-
-								<label class="col-md-2 control-label" for="lastupdate">Last Update</label>  
-								<div class="col-md-3">
-									<input id="lastupdate" name="lastupdate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-								</div>
-							</div> 
-
-							<div class="form-group">
 								<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
 								<div class="col-md-3">
 									<input id="seqno" name="seqno" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 								</div>
 
 								<label class="col-md-2 control-label" for="chggroup">Charge Group</label>  
-								<div class="col-md-3">
-									<input id="chggroup" name="chggroup" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+								<div class="col-md-3" >
+									<div class='input-group'>
+										<input id="chggroup" name="chggroup" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
 								</div>
 							</div>  
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="ipdept">IP Dept</label>  
+								<div class="col-md-3" >
+									<div class='input-group'>
+										<input id="ipdept" name="ipdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+							
+			                	<label class="col-md-2 control-label" for="opdept">OP Dept</label>  
+								<div class="col-md-3" >
+									<div class='input-group'>
+										<input id="opdept" name="opdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+							</div>
+
+							
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="ipacccode">IP Account</label>  
+								<div class="col-md-3" >
+									<div class='input-group'>
+										<input id="ipacccode" name="ipacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+								<label class="col-md-2 control-label" for="opacccode">OP Account</label>  
+								<div class="col-md-3" >
+									<div class='input-group'>
+										<input id="opacccode" name="opacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+								<!-- <label class="col-md-2 control-label" for="opacc">OP Account</label>  
+								<div class="col-md-3" style="padding:0px 0px;">
+									<div class="col-md-3">
+										<input id="opacc" name="opacc" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+									</div>
+									<div class="col-md-9">
+										<input id="opacc" name="opacc" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+									</div>
+								</div> -->
+							</div>  
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="otcacccode">OTC Account</label>   
+								<div class="col-md-3" >
+									<div class='input-group'>
+										<input id="otcacccode" name="otcacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+								<label class="col-md-2 control-label" for="invcategory">Inventory Category</label>  
+								<div class="col-md-3" >
+									<div class='input-group'>
+										<input id="invcategory" name="invcategory" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+							</div>  
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="lastuser">Last User</label>  
+								<div class="col-md-3">
+									<input id="lastuser" name="upduser" type="text" class="form-control input-sm" rdonly>
+								</div>
+
+								<label class="col-md-2 control-label" for="lastupdate">Last Update</label>  
+								<div class="col-md-3">
+									<input id="lastupdate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
+							</div> 
+							
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  

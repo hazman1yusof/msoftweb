@@ -108,7 +108,6 @@
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}
 							<input id="idno" name="idno" type="hidden">
-						
 
 							<div class="form-group">
 							  	<label class="col-md-2 control-label" for="grpcode">Group Code</label>  
@@ -118,7 +117,7 @@
 							
 			                	<label class="col-md-2 control-label" for="description">Description</label>  
 			                    <div class="col-md-3">
-			                    	<input id="description" name="description" type="text" class="form-control input-sm" data-validation="number, required">
+			                    	<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
 			                    </div>
 							</div>
 			                
@@ -128,18 +127,6 @@
 			                		<input id="classlevel" name="classlevel" type="text" class="form-control input-sm" data-validation="required">
 			                	</div>
 							</div>     -->
-			                
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="lastuser">Add User</label>  
-								<div class="col-md-3">
-									<input id="lastuser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-								</div>
-
-								<label class="col-md-2 control-label" for="lastupdate">Add Update</label>  
-								<div class="col-md-3">
-									<input id="lastupdate" name="adddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-								</div>
-							</div> 
 
                             <div class="form-group">
 			                	<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
@@ -147,7 +134,18 @@
 			                		<input id="seqno" name="seqno" type="text" class="form-control input-sm" data-validation="required">
 			                	</div>
 							</div>
+			                
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="lastuser">Add User</label>  
+								<div class="col-md-3">
+									<input id="lastuser" name="adduser" type="text" class="form-control input-sm" rdonly>
+								</div>
 
+								<label class="col-md-2 control-label" for="lastupdate">Add Update</label>  
+								<div class="col-md-3">
+									<input id="lastupdate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
+							</div> 
 							<!-- <div class="form-group">
 								<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
 								<div class="col-md-3">

@@ -135,7 +135,7 @@
 					{ label: 'Compcode', name: 'cm_compcode', hidden:true},
 
 					{ label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
-					{ label: 'Description', name: 'cm_description', classes: 'wrap', width: 70, canSearch: true},
+					{ label: 'Description', name: 'cm_description', classes: 'wrap', width: 60, canSearch: true},
 					{ label: 'Class', name: 'cm_chgclass', classes: 'wrap', width: 20,checked:true},
 					{ label: 'Class Name', name: 'cc_description', classes: 'wrap', width: 30,checked:true},
 					{ label: 'Group', name: 'cm_chggroup', classes: 'wrap', width: 20, canSearch: true},
@@ -143,10 +143,13 @@
 					{ label: 'Charge Type', name: 'cm_chgtype', classes: 'wrap', width: 30, canSearch: true},
 					{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
 					{ label: 'UOM', name: 'cm_uom', width: 30,hidden:false },
-					{ label: 'Generic Name', name: 'cm_brandname', width: 70},
+					{ label: 'Generic Name', name: 'cm_brandname', width: 60},
 
 					{ label: 'Upd User', name: 'cm_upduser', width: 80,hidden:true}, 
 					{ label: 'Upd Date', name: 'cm_upddate', width: 90,hidden:true},
+					{ label: 'Status', name:'cm_recstatus', width:30, classes:'wrap', hidden:false,
+					formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
+					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
 					
 					{ label: 'computerid', name: 'cm_computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'cm_ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -177,6 +180,27 @@
 				},
 				
 			});
+
+			//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
+			
+			function formatter(cellvalue, options, rowObject) {
+				if (cellvalue == 'A') {
+					return "Active";
+				}
+				if (cellvalue == 'D') {
+					return "Deactive";
+				}
+			}
+	
+			function unformat(cellvalue, options) {
+				if (cellvalue == 'Active') {
+					return "Active";
+				}
+				if (cellvalue == 'Deactive') {
+					return "Deactive";
+				}
+			}
+
 
 			/////////////////////////////populate data for dropdown search By////////////////////////////
 			searchBy();
@@ -548,8 +572,8 @@
 			'cm_chggroup', 'hisdb.chggroup', '#chggroup', 'errorField',
 			{
 				colModel: [
-					{ label: 'Group Code', name: 'grpcode', width: 200, classes: 'pointer', checked: true, canSearch: true, or_search: true },
-					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Group Code', name: 'grpcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
 				],
 				ondblClickRow: function () {
 					let data = selrowData('#' + chggroup.gridname).grpcode;
@@ -581,8 +605,8 @@
 			'cm_chgtype', 'hisdb.chgtype', '#chgtype', 'errorField',
 			{
 				colModel: [
-					{ label: 'Charge Type', name: 'chgtype', width: 200, classes: 'pointer',checked: true, canSearch: true, or_search: true },
-					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true,  or_search: true },
+					{ label: 'Charge Type', name: 'chgtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true,  or_search: true },
 				],
 				ondblClickRow: function () {
 					let data = selrowData('#' + chgtype.gridname).chgtype;

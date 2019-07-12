@@ -1011,7 +1011,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				}else{
 					$( id ).parent().parent().removeClass( "has-success" ).addClass( "has-error" );
 					$( id ).removeClass( "valid" ).addClass( "error" );
-					$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+code+" )");
+					$( id ).parent().siblings( ".help-block" ).html("Invalid Code");
 					if($.inArray(idtopush,errorField)===-1){
 						errorField.push( idtopush );
 					}

@@ -51,7 +51,7 @@
 				autoOpen: false,
 				open: function( event, ui ) {
 					parent_close_disabled(true);
-					$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+					// $("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 					/*mycurrency.formatOnBlur();
 					mycurrency.formatOn();*/
 					switch(oper) {
@@ -114,7 +114,6 @@
 			var saveParam={
 				action:'save_table_default',
 				url:'chargeclass/form',
-				fixPost:'true',
 				field:'',
 				oper:oper,
 				table_name:'hisdb.chgclass',
@@ -132,8 +131,11 @@
 					{ label: 'Class Code', name: 'classcode', classes: 'wrap', width: 30, canSearch: true},
 					{ label: 'Description', name: 'description', classes: 'wrap', width: 70, canSearch: true},
 					{ label: 'Class Level', name: 'classlevel', classes: 'wrap', width: 20,checked:true},
-					{ label: 'Last User', name: 'lastuser', classes: 'wrap', width: 30,checked:true},
-					{ label: 'Last Update', name: 'lastupdate', classes: 'wrap', width: 20},
+					{ label: 'Last User', name: 'adduser', classes: 'wrap', width: 30,checked:true},
+					{ label: 'Last Update', name: 'adddate', classes: 'wrap', width: 20},
+					{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
+					formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
+					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
 					
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -164,6 +166,27 @@
 				},
 				
 			});
+
+			//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
+			
+			function formatter(cellvalue, options, rowObject) {
+				if (cellvalue == 'A') {
+					return "Active";
+				}
+				if (cellvalue == 'D') {
+					return "Deactive";
+				}
+			}
+	
+			function unformat(cellvalue, options) {
+				if (cellvalue == 'Active') {
+					return "Active";
+				}
+				if (cellvalue == 'Deactive') {
+					return "Deactive";
+				}
+			}
+
 
 			/////////////////////////////populate data for dropdown search By////////////////////////////
 			searchBy();

@@ -118,7 +118,7 @@
 							
 			                	<label class="col-md-2 control-label" for="description">Description</label>  
 			                    <div class="col-md-3">
-			                    	<input id="description" name="description" type="text" class="form-control input-sm" data-validation="number, required">
+			                    	<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
 			                    </div>
 							</div>
 			                
@@ -132,12 +132,12 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="lastuser">Last User</label>  
 								<div class="col-md-3">
-									<input id="lastuser" name="lastuser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="lastuser" name="adduser" type="text" class="form-control input-sm" rdonly>
 								</div>
 
 								<label class="col-md-2 control-label" for="lastupdate">Last Update</label>  
 								<div class="col-md-3">
-									<input id="lastupdate" name="lastupdate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="lastupdate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								</div>
 							</div> 
 
@@ -163,7 +163,7 @@
 								<div class="col-md-3">
 									<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" rdonly >
 								</div>
-							</div>  
+							</div>   
 					</form>
 				</div>
 			</div>
