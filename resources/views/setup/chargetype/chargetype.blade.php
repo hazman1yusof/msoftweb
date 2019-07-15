@@ -132,7 +132,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
 								<div class="col-md-3">
-									<input id="seqno" name="seqno" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="seqno" name="seqno" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 								</div>
 
 								<label class="col-md-2 control-label" for="chggroup">Charge Group</label>  
@@ -210,7 +210,7 @@
 								<label class="col-md-2 control-label" for="invcategory">Inventory Category</label>  
 								<div class="col-md-3" >
 									<div class='input-group'>
-										<input id="invcategory" name="invcategory" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="invcategory" name="invcategory" type="text" maxlength="12" class="form-control input-sm">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
