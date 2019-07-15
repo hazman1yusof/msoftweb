@@ -102,6 +102,7 @@ $.jgrid.defaults.responsive = true;
 							$( this ).dialog( "option", "title", "Edit" );
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
+							recstatusDisable();
 							break;
 						case state = 'view':
 							$( this ).dialog( "option", "title", "View" );
@@ -202,7 +203,7 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Loss', name: 'glrevaluation', width: 50, hidden:true },
 					{
 						label: 'Record Status', name: 'recstatus', width: 10, formatter: formatterstatus,
-						unformat: null, cellattr: function (rowid, cellvalue) {
+						unformat: unformatstatus, cellattr: function (rowid, cellvalue) {
 							return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : ''
 						}
 					},
@@ -293,7 +294,6 @@ $.jgrid.defaults.responsive = true;
 					oper='edit';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
-					recstatusDisable();
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  

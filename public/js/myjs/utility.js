@@ -1219,6 +1219,7 @@ fixPositionsOfFrozenDivs = function () {
 
 function recstatusDisable(){
 	var recstatusvalue = $("#formdata [name='recstatus']:checked").val();
+	console.log(recstatusvalue)
 	if(recstatusvalue == 'A'){
 		$("#formdata input[name='recstatus']").prop('disabled', true);
 	}else{
