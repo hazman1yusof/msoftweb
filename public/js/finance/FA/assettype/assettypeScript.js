@@ -119,9 +119,10 @@
 					{ label: 'Asset Type', name: 'assettype', width: 10, classes: 'wrap', canSearch: true},   ////////
 					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true,checked:true,},
 					{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+						{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					},
+					
 					{ label: 'idno', name:'idno', width: 10, hidden:true},
-
 					{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			        { label: 'adddate', name: 'adddate', width: 90, hidden: true },
 			        { label: 'upduser', name: 'upduser', width: 90, hidden: true },
@@ -189,6 +190,7 @@
 					oper='edit';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+					recstatusDisable();
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  

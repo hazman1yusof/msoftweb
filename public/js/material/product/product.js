@@ -602,6 +602,7 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			$('#formdataSearch').hide();
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+			recstatusDisable();
 		}, 
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption:"",cursor: "pointer",position: "first",  
