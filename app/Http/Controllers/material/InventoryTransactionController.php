@@ -239,6 +239,8 @@ class InventoryTransactionController extends defaultController
                         'qtyonhandrecv' => $value->qtyonhandrecv,  
                         'batchno' => $value->batchno, 
                         'amount' => $value->amount, 
+                        'trandate' => $ivtmphd->trandate,
+                        'sndrcv' => $ivtmphd->sndrcv,
                     ]);
 
             //-- 4. posting stockloc OUT --//

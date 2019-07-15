@@ -394,7 +394,7 @@ $(document).ready(function () {
 		let openbalqty = $('#openbalqty').val();
 		let openbalval = $('#openbalval').val();
 
-		var param={
+		var param_deptcode={
 					action:'get_value_default',
 					url:'/util/get_value_default',
 					field:['d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description'],
@@ -415,17 +415,16 @@ $(document).ready(function () {
 					sidx: 'd.adddate', sord:'asc'
 				}
 		if(!fetchall){
-			param.offset=start;
-			param.limit=limit;
+			param_deptcode.offset=start;
+			param_deptcode.limit=limit;
 		}
-		$.get( "/util/get_value_default?"+$.param(param), function( data ) {
+		$.get( "/util/get_value_default?"+$.param(param_deptcode), function( data ) {
 				
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
 				let accumamt = parseFloat(openbalval);
 				let accumqty = parseInt(openbalqty);
 				
-
 				data.rows.forEach(function(obj){
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
 					obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
@@ -453,6 +452,79 @@ $(document).ready(function () {
 						obj.balquan = accumqty;
 						obj.balance = numeral(accumamt).format('0,0.00');
 						obj.amount = '- '+numeral(obj.amount).format('0,0.00');
+
+						obj.description =  obj.description+' '+obj.deptcode;
+						obj.qtyin = '';
+						obj.qtyout =  obj.txnqty;
+					}
+
+				});
+
+				DataTable.rows.add(data.rows).draw();
+			}else{
+				moremov=false;
+			}
+		});
+
+		var param_sndrcv={
+					action:'get_value_default',
+					url:'/util/get_value_default',
+					field:['d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description'],
+					table_name:['material.ivtxndt as d','material.ivtxnhd as h','material.ivtxntype as t'],
+					table_id:'idno',
+					join_type : ['LEFT JOIN','LEFT JOIN'],
+					join_onCol : ['d.recno','d.trantype'],
+					join_onVal : ['h.recno','t.trantype'],
+					filterCol:['d.compcode','d.itemcode','d.sndrcv','d.uomcode','d.trandate','d.trandate'],
+					filterVal:[
+						'session.compcode',
+						selrowData("#detail").s_itemcode,
+						selrowData("#detail").s_deptcode,
+						selrowData("#detail").s_uomcode,
+						'>=.'+yr_from+'-'+mon_from+"-01",
+						'<=.'+yr_to+'-'+mon_to+"-31"
+						],
+					sidx: 'd.adddate', sord:'asc'
+				}
+		if(!fetchall){
+			param_sndrcv.offset=start;
+			param_sndrcv.limit=limit;
+		}
+		$.get( "/util/get_value_default?"+$.param(param_sndrcv), function( data ) {
+				
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data.rows)){
+				let accumamt = parseFloat(openbalval);
+				let accumqty = parseInt(openbalqty);
+				
+
+				data.rows.forEach(function(obj){
+					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
+					obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
+					
+					// obj.trantype = '-';
+					obj.description = '';
+					obj.qtyin = '-';
+					obj.qtyout = '-';
+					obj.balquan = '-';
+					obj.avgcost = numeral(obj.avgcost).format('0,0.00');
+
+					if (obj.crdbfl == 'In'){
+						accumamt = accumamt - parseFloat(obj.amount);
+						accumqty = accumqty - parseInt(obj.txnqty);
+						obj.balquan = accumqty;
+						obj.balance = numeral(accumamt).format('0,0.00');
+						obj.amount = '- '+numeral(obj.amount).format('0,0.00');
+
+						obj.description =  obj.description+' '+obj.deptcode;
+						obj.qtyin = obj.txnqty;
+						obj.qtyout = '';
+					}else if (obj.crdbfl == 'Out'){
+						accumamt = accumamt + parseFloat(obj.amount);
+						accumqty = accumqty + parseInt(obj.txnqty);
+						obj.balquan = accumqty;
+						obj.balance = numeral(accumamt).format('0,0.00');
+						obj.amount = numeral(obj.amount).format('0,0.00');
 
 						obj.description =  obj.description+' '+obj.deptcode;
 						obj.qtyin = '';
