@@ -192,6 +192,39 @@ class PatmastController extends defaultController
                 return  '{"data":[{"sysno":"5","Comp":"","code":"O","description":"Own IC","createdBy":"admin","createdDate":"2013-04-11","LastUpdate":"0000-00-00","LastUser":"","RecStatus":""},{"sysno":"7","Comp":"","code":"F","description":"Father","createdBy":"admin","createdDate":"2013-04-11","LastUpdate":"0000-00-00","LastUser":"","RecStatus":""},{"sysno":"8","Comp":"","code":"M","description":"Mother","createdBy":"","createdDate":"0000-00-00","LastUpdate":"0000-00-00","LastUser":"","RecStatus":""},{"sysno":"9","Comp":"","code":"P","description":"Polis","createdBy":"","createdDate":"0000-00-00","LastUpdate":"0000-00-00","LastUser":"","RecStatus":""},{"sysno":"10","Comp":"","code":"T","description":"Tentera","createdBy":"","createdDate":"0000-00-00","LastUpdate":"0000-00-00","LastUser":"","RecStatus":""}]}';
                 break;
 
+            case 'get_debtor_list':
+                if($request->type == 1){
+                    $data = DB::table('debtor.debtormast')
+                            ->where('compcode','=',session('compcode'))  
+                            ->where('debtorcode','=',ltrim($request->mrn, '0'))
+                            ->whereIn('debtortype', ['PR', 'PT'])
+                            ->get();
+                }else{
+                    $data = DB::table('debtor.debtormast')
+                            ->where('compcode','=',session('compcode'))  
+                            ->where('debtorcode','=',ltrim($request->mrn, '0'))
+                            ->whereNotIn('debtortype', ['PR', 'PT'])
+                            ->get();
+                }
+                break;
+
+            case 'get_billtype_list':
+                if($request->type == "OP"){
+                    $data = DB::table('hisdb.billtymst')
+                            ->where('compcode','=',session('compcode'))  
+                            ->where('opprice','=',$request->type)
+                            ->get();
+                }else{
+                    $data = DB::table('hisdb.billtymst')
+                            ->where('compcode','=',session('compcode')) 
+                            ->where('opprice','=',$request->type)
+                            ->get();
+                }
+                break;
+
+            case 'save_new_episode':
+                $this->save_new_episode($request);
+
             // case 'get_patient_active':
             //     return DB::table('hisdb.title')->select('code','description')->get();
 
@@ -355,5 +388,70 @@ class PatmastController extends defaultController
 
             return response('Error'.$e, 500);
         }
+    }
+
+    public function save_new_episode(Request $request){
+
+        $epis_mrn = $request->epis_mrn;
+        $epis_no = $request->epis_no;
+        $epis_type = $request->epis_type;
+        $epis_maturity = $request->epis_maturity;
+        $epis_date = $request->epis_date;
+        $epis_time = $request->epis_time;
+        $epis_dept = $request->epis_dept;
+        $epis_src = $request->epis_src;
+        $epis_case = $request->epis_case;
+        $epis_doctor = $request->epis_doctor;
+        $epis_fin = $request->epis_fin;
+        $epis_paymode = $request->epis_pay;
+        $epis_payer = $request->epis_payer;
+        $epis_billtype = $request->epis_billtype;
+        $epis_refno = $request->epis_refno;
+        $epis_ourrefno = $request->epis_ourrefno;
+        $epis_preg = $request->epis_preg;
+        $epis_fee = $request->epis_fee;
+
+        if ($epis_maturity == "1")
+        {
+            $epis_newcase = "1";
+            $epis_followup = "0";           
+        }
+        else
+        {
+            $epis_newcase = "0";
+            $epis_followup = "1";           
+        }
+
+        $epis_nc_preg = $epis_preg;
+        $epis_fu_preg = $epis_preg;
+
+        DB::table("hisdb.episode")
+            ->insert([
+                        "epis_compcode" => "9A",
+                        "epis_mrn" => $epis_mrn,
+                        "epis_no" => $epis_no,
+                        "epis_type" => $epis_type,
+                        "epis_newcase" => $epis_newcase,
+                        "epis_followup" => $epis_followup,
+                        "epis_date" => $epis_date,
+                        "epis_time" => $epis_time,
+                        "epis_dept" => $epis_dept,
+                        "epis_src" => $epis_src,
+                        "epis_case" => $epis_case,
+                        "epis_doctor" => $epis_doctor,
+                        "epis_paytype" => $epis_fin,
+                        "epis_paymode" => $epis_paymode,
+                        "epis_billtype" => $epis_billtype,
+                        "epis_fu_preg" => $epis_fu_preg,
+                        "epis_nc_preg" => $epis_nc_preg,
+                        "epis_fee" => $epis_fee,
+                        "epis_createdate" => Carbon::now("Asia/Kuala_Lumpur"),,
+                        "epis_createuser" => $session('username'),
+                        "epis_updatedate" => Carbon::now("Asia/Kuala_Lumpur"),,
+                        "epis_updatetime" => Carbon::now("Asia/Kuala_Lumpur"),,
+                        "epis_upduser" => $session('username'),
+                        "epis_active" => 1,
+                        "epis_allocpayer" => 1
+                     ]);
     }
 }

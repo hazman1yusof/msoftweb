@@ -596,7 +596,8 @@ $(document).ready(function() {
 			debtor_table_name = $('#tbl_epis_debtor1');
 		
 			debtor_table = $('#tbl_epis_debtor1').DataTable( {
-							"ajax": "../../../../assets/php/entry_hisdb.php?action=get_debtor_list&tp=1&mrn="+$(this).data('mrn'),
+							// "ajax": "../../../../assets/php/entry_hisdb.php?action=get_debtor_list&tp=1&mrn="+$(this).data('mrn'),
+                            "ajax": "pat_mast/get_entry?action=get_debtor_list&type=1&mrn="+$(this).data('mrn'),
 							"columns": [
 										{'data': 'debtortype'}, 
 										{'data': 'debtorcode' }, 
@@ -610,7 +611,8 @@ $(document).ready(function() {
 			debtor_table_name = $('#tbl_epis_debtor2');
 		
 			debtor_table = $('#tbl_epis_debtor2').DataTable( {
-							"ajax": "../../../../assets/php/entry_hisdb.php?action=get_debtor_list&tp=2&mrn="+$(this).data('mrn'),
+							// "ajax": "../../../../assets/php/entry_hisdb.php?action=get_debtor_list&tp=2&mrn="+$(this).data('mrn'),
+                            "ajax": "pat_mast/get_entry?action=get_debtor_list&type=2&mrn="+$(this).data('mrn'),
 							"columns": [
 										{'data': 'debtortype'}, 
 										{'data': 'debtorcode'}, 
@@ -658,7 +660,8 @@ $(document).ready(function() {
 		billtype_table_name = $('#tbl_epis_billtype');
 		
 		billtype_table = $('#tbl_epis_billtype').DataTable( {
-						"ajax": "../../../../assets/php/entry_hisdb.php?action=get_billtype_list&tp=" + $('#txt_epis_type').val(),
+						// "ajax": "../../../../assets/php/entry_hisdb.php?action=get_billtype_list&tp=" + $('#txt_epis_type').val(),
+                        "ajax": "pat_mast/get_entry?action=get_billtype_list&type=" + $('#txt_epis_type').val(),
 						"columns": [
 									{'data': 'billtype'}, 
 									{'data': 'description' },
@@ -848,8 +851,10 @@ $(document).ready(function() {
         var episfee = $('input[name=rad_epis_fee]:checked').val();
 
         $.post( 
-                  "../../../../assets/php/entry_hisdb.php?action=save_new_episode",
+                  // "../../../../assets/php/entry_hisdb.php?action=save_new_episode",
+                  "pat_mast/get_entry?action=save_new_episode",
                   { 
+                    _token:$('#csrf_token').val(),
                     epis_mrn: epismrn,
                     epis_no : episno,
                     epis_type : epistype, 

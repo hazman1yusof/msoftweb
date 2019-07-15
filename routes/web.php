@@ -248,6 +248,16 @@ Route::get('/assetregister','finance\assetregisterController@show');
 Route::get('/assetregister/table','finance\assetregisterController@table');
 Route::post('/assetregister/form','finance\assetregisterController@form'); 
 
+//// facontrol ///
+Route::get('/facontrol','finance\facontrolController@show');
+Route::get('/facontrol/table','finance\facontrolController@table');
+Route::post('/facontrol/form','finance\facontrolController@form');
+
+//// fadepricate ///
+Route::get('/fadepricate','finance\fadepricateController@show');
+Route::get('/fadepricate/table','finance\fadepricateController@table');
+Route::post('/fadepricate/form','finance\fadepricateController@form');
+
 //// GL Enquiry ///
 Route::get('/glenquiry','finance\GlenquiryController@show');
 Route::get('/glenquiry/table','finance\GlenquiryController@table');
