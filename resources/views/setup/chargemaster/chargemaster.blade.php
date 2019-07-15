@@ -115,53 +115,59 @@
 			                    <div class="col-md-3">
 			                    	<input id="cm_chgcode" name="cm_chgcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
 			                    </div>
-							
-			                	<label class="col-md-2 control-label" for="cm_chggroup">Group</label>  
+
+								<label class="col-md-2 control-label" for="cm_description">Description</label>  
 			                    <div class="col-md-3">
-			                    	<input id="cm_chggroup" name="cm_chggroup" type="text" class="form-control input-sm" data-validation="number, required">
+									<input id="cm_description" name="cm_description" type="text" class="form-control input-sm" data-validation="required">
+			                    </div>
+							</div>   
+
+							<div class="form-group">
+							  	<label class="col-md-2 control-label" for="cm_chggroup">Group</label>  
+			                    <div class="col-md-3">
+									<input id="cm_chggroup" name="cm_chggroup" type="text" class="form-control input-sm" data-validation="number, required">
+			                    </div>
+
+								<label class="col-md-2 control-label" for="cm_recstatus">Record Status</label>  
+			                    <div class="col-md-3">
+									<label class="radio-inline"><input type="radio" name="cm_recstatus" value='A' checked>Active</label>
+									<label class="radio-inline"><input type="radio" name="cm_recstatus" value='D' >Deactive</label>
 			                    </div>
 							</div>
-			                
-			                <div class="form-group">
-			                	<label class="col-md-2 control-label" for="cm_description">Description</label>  
-			                	<div class="col-md-6">
-			                		<input id="cm_description" name="cm_description" type="text" class="form-control input-sm" data-validation="required">
-			                	</div>
-							</div>    
 			                
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="adduser">Created By</label>  
 								<div class="col-md-3">
-									<input id="adduser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="adduser" name="adduser" type="text" class="form-control input-sm" rdonly>
 								</div>
 
 								<label class="col-md-2 control-label" for="upduser">Last Entered</label>  
 								<div class="col-md-3">
-									<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								</div>
 							</div> 
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="adddate">Created Date</label>  
 								<div class="col-md-3">
-									<input id="adddate" name="adddate" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="adddate" name="adddate" type="text" class="form-control input-sm" rdonly>
 								</div>
 
 								<label class="col-md-2 control-label" for="upddate">Last Entered Date</label>  
 								<div class="col-md-3">
-									<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								</div>
 							</div>  
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
 								<div class="col-md-3">
-									<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly >
+									<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly>
 								</div>
 
 								<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
 								<div class="col-md-3">
-									<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" rdonly >
+									<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" rdonly>
 								</div>
 							</div>  
 					</form>

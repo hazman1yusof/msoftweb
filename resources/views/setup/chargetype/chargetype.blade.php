@@ -132,7 +132,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
 								<div class="col-md-3">
-									<input id="seqno" name="seqno" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+									<input id="seqno" name="seqno" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 								</div>
 
 								<label class="col-md-2 control-label" for="chggroup">Charge Group</label>  
@@ -143,7 +143,7 @@
 									</div>
 									<span class="help-block"></span>
 								</div>
-							</div>  
+							</div> 
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="ipdept">IP Dept</label>  
@@ -164,9 +164,7 @@
 									<span class="help-block"></span>
 								</div>
 							</div>
-
-							
-
+						
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="ipacccode">IP Account</label>  
 								<div class="col-md-3" >
@@ -216,6 +214,14 @@
 									<span class="help-block"></span>
 								</div>
 							</div>  
+
+							<div class="form-group">
+			                	<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+			                	<div class="col-md-6">
+									<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
+									<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
+			                	</div>
+							</div> 
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="lastuser">Last User</label>  
