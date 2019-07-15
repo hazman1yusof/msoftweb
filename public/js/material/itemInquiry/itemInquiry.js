@@ -427,8 +427,6 @@ $(document).ready(function () {
 				
 
 				data.rows.forEach(function(obj){
-					accumamt = accumamt + parseFloat(obj.amount);
-
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
 					obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
 					
@@ -438,19 +436,23 @@ $(document).ready(function () {
 					obj.qtyout = '-';
 					obj.balquan = '-';
 					obj.avgcost = numeral(obj.avgcost).format('0,0.00');
-					obj.amount = numeral(obj.amount).format('0,0.00');
-					obj.balance = numeral(accumamt).format('0,0.00');
 
 					if (obj.crdbfl == 'In'){
+						accumamt = accumamt + parseFloat(obj.amount);
 						accumqty = accumqty + parseInt(obj.txnqty);
 						obj.balquan = accumqty;
+						obj.balance = numeral(accumamt).format('0,0.00');
+						obj.amount = numeral(obj.amount).format('0,0.00');
 
 						obj.description =  obj.description+' '+obj.deptcode;
 						obj.qtyin = obj.txnqty;
 						obj.qtyout = '';
 					}else if (obj.crdbfl == 'Out'){
+						accumamt = accumamt - parseFloat(obj.amount);
 						accumqty = accumqty - parseInt(obj.txnqty);
 						obj.balquan = accumqty;
+						obj.balance = numeral(accumamt).format('0,0.00');
+						obj.amount = '- '+numeral(obj.amount).format('0,0.00');
 
 						obj.description =  obj.description+' '+obj.deptcode;
 						obj.qtyin = '';

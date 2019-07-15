@@ -315,6 +315,7 @@ class invtran_util extends defaultController{
                 DB::table('material.stockexp')
                     ->insert([
                     	'compcode' => session('compcode'),
+                        'unit' => session('unit'),
                         'Year' => defaultController::toYear($ivtmphd->trandate),
                         'DeptCode' => $ivtmphd->sndrcv,
                         'ItemCode' => $value->itemcode,
@@ -443,6 +444,7 @@ class invtran_util extends defaultController{
                 DB::table('material.stockexp')
                     ->insert([
                     	'compcode' => session('compcode'),
+                        'unit' => session('unit'),
                         'Year' => defaultController::toYear($ivtmphd->trandate),
                         'DeptCode' => $ivtmphd->txndept,
                         'ItemCode' => $value->itemcode,

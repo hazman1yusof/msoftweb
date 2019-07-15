@@ -66,6 +66,7 @@ class InventoryTransactionController extends defaultController
             'docno' => $request_no,
             'recno' => $recno,
             'compcode' => session('compcode'),
+            'unit'    => session('unit'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'OPEN'
@@ -172,6 +173,7 @@ class InventoryTransactionController extends defaultController
                     'AddUser'  => $ivtmphd->adduser,
                     'Amount'   => $ivtmphd->amount,
                     'CompCode' => $ivtmphd->compcode,
+                    'unit'     => $ivtmphd->unit,
                     'DateActRet'   => $ivtmphd->dateactret,
                     'DateSupRet'   => $ivtmphd->datesupret,
                     'DocNo'    => $ivtmphd->docno,
