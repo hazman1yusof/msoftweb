@@ -129,7 +129,7 @@
 										<option value='1'>Hospital</option>
 										<option value='2'>Consultant</option>
 										<option value='3'>SST</option>
-									</select>
+									</select> 
 								</div>
 
 								<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
