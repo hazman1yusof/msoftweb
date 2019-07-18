@@ -92,7 +92,7 @@
 		        <label class="col-md-3 control-label" for="rate">Rate (%p.a)</label>  
 		        <div class="col-md-2">
 		            <div class="input-group">
-		                <input id="rate" name="rate" type="number" maxlength="30" class="form-control input-sm text-uppercase" input type ="number" data-validation="required">
+		                <input id="rate" name="rate" maxlength="30" class="form-control input-sm" input type ="text" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation="required">
 		            </div>
 		        </div>
             </div>

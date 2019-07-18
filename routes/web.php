@@ -253,6 +253,11 @@ Route::get('/facontrol','finance\facontrolController@show');
 Route::get('/facontrol/table','finance\facontrolController@table');
 Route::post('/facontrol/form','finance\facontrolController@form');
 
+//// facontrol2 ///
+Route::get('/facontrol2','finance\facontrolController2@show');
+Route::get('/facontrol2/table','finance\facontrolController2@table');
+Route::post('/facontrol2/form','finance\facontrolController2@form');
+
 //// fadepricate ///
 Route::get('/fadepricate','finance\fadepricateController@show');
 Route::get('/fadepricate/table','finance\fadepricateController@table');

@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
@@ -32,6 +31,45 @@ $(document).ready(function () {
 	
 
 	////////////////////////////////////start dialog///////////////////////////////////////
+	// var dialog_compcode= new ordialog(
+	// 	'compcode',['finance.facontrol as fac','sysdb.company as com'],'#compcode',errorField,
+	// 	{	colModel:[
+	// 		  	{label: 'compcode', name: 'fac_compcode', width:200, classes:'pointer', canSearch:true, checked:true, or_search:true},
+	// 			{label: 'Name', name:'com_name', width:300, classes:'pointer', canSearch:true,or_search:true},
+	// 			{label: 'Year', name: 'fac_year', width: 30, hidden: false ,canSearch: true, checked: true},
+	// 			{label: 'Period', name: 'fac_period', width: 30, hidden: false,canSearch: true },
+	// 		],
+	// 		ondblClickRow:function(){
+	// 			let data=selrowData('#'+dialog_compcode.gridname);
+	// 			$('#compcode').val(data['fac_compcode']);		
+	// 			$('#name').val(data['com_name']);
+	// 			// $('#year').val(data['fac_year']);
+	// 			// $('#period').val(data['fac_period']);
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$('#itemcode').focus();
+	// 			}
+	// 		}
+	// 	},
+	// 	{
+	// 		title:"Select compcode",
+	// 		open: function(){
+	// 			dialog_compcode.urlParam.filterCol=['fac.compcode','com.name'];
+	// 			dialog_compcode.urlParam.filterVal=['session.compcode','<>.NULL', $("#name").val()];
+	// 			dialog_compcode.urlParam.fixPost = "true";
+	// 			dialog_compcode.urlParam.table_id = "none_";
+	// 			dialog_compcode.urlParam.join_type = ['LEFT JOIN'];
+	// 			dialog_compcode.urlParam.join_onCol = ['fac.compcode'];
+	// 			dialog_compcode.urlParam.join_onVal = ['com.name'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_compcode.makedialog();
+	
 	var butt1 = [{
 		text: "Save", click: function () {
 			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
@@ -99,11 +137,23 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
-		action: 'get_table_default',
-		url:'util/get_table_default',
+		// action: 'get_table_default',
+		// url:'util/get_table_default',
+		// field:'',
+		// table_name:'finance.facontrol',
+		// table_id:'idno',
+
+		action:'get_table_default',
+		url:'/util/get_table_default',
 		field:'',
-		table_name:'finance.facontrol',
-		table_id:'idno',
+		fixPost:'true',
+		table_name:['finance.facontrol AS FA', 'sysdb.company AS SC'],
+		table_id:'fa_compcode',
+		join_type:['LEFT JOIN'],
+		join_onCol:['fa.compcode'],
+		join_onVal:['sc.name'],
+		filterCol:['sc.compcode'],
+		filterVal:['session.compcode']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -119,12 +169,14 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			// { label: 'Compcode', name: 'compcode', width: 90, hidden: false,canSearch: true },
-			// { label: 'Company Name', name: 'name', width: 90, hidden: false,canSearch: true },
+			{ label: 'Compcode', name: 'compcode', width: 15, hidden: false,canSearch: false },
+			{ label: 'Company Name', name: 'name', width: 50, hidden: false,canSearch: false },
 			{ label: 'idno', name: 'idno', width: 5, hidden: true },
-			{ label: 'Year', name: 'year', width: 90, hidden: false ,canSearch: true, checked: true},
-			{ label: 'Period', name: 'period', width: 90, hidden: false,canSearch: true },
-			{ label: 'Status', name: 'recstatus', width: 90, hidden: false },
+			{ label: 'Year', name: 'year', width: 30, hidden: false ,canSearch: true, checked: true},
+			{ label: 'Period', name: 'period', width: 30, hidden: false,canSearch: true },
+			{ label: 'Status', name:'recstatus', width:30, classes:'wrap', hidden:false,
+            formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
+            { return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
@@ -152,7 +204,27 @@ $(document).ready(function () {
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 		},
 
-	});
+    });
+    
+    //////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
+			
+			function formatter(cellvalue, options, rowObject) {
+				if (cellvalue == 'A') {
+					return "Active";
+				}
+				if (cellvalue == 'D') {
+					return "Deactive";
+				}
+			}
+	
+			function unformat(cellvalue, options) {
+				if (cellvalue == 'Active') {
+					return "A";
+				}
+				if (cellvalue == 'Deactive') {
+					return "D";
+				}
+			}
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
@@ -162,45 +234,47 @@ $(document).ready(function () {
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-trash",
-		title: "Delete Selected Row",
-		onClickButton: function () {
-			oper = 'del';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			if (!selRowId) {
-				alert('Please select row');
-				return emptyFormdata(errorField, '#formdata');
-			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'Code': selRowId });
-			}
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-info-sign",
-		title: "View Selected Row",
-		onClickButton: function () {
-			oper = 'view';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-edit",
-		title: "Edit Selected Row",
-		onClickButton: function () {
-			oper = 'edit';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
 		buttonicon: "glyphicon glyphicon-plus",
 		title: "Add New Row",
 		onClickButton: function () {
 			oper = 'add';
 			$("#dialogForm").dialog("open");
 		},
-	});
+    });
+    
+    // .jqGrid('navButtonAdd', "#jqGridPager", {
+	// 	caption: "", cursor: "pointer", position: "first",
+	// 	buttonicon: "glyphicon glyphicon-trash",
+	// 	title: "Delete Selected Row",
+	// 	onClickButton: function () {
+	// 		oper = 'del';
+	// 		selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+	// 		if (!selRowId) {
+	// 			alert('Please select row');
+	// 			return emptyFormdata(errorField, '#formdata');
+	// 		} else {
+	// 			saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'Code': selRowId });
+	// 		}
+	// 	},
+	// }).jqGrid('navButtonAdd', "#jqGridPager", {
+	// 	caption: "", cursor: "pointer", position: "first",
+	// 	buttonicon: "glyphicon glyphicon-info-sign",
+	// 	title: "View Selected Row",
+	// 	onClickButton: function () {
+	// 		oper = 'view';
+	// 		selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+	// 		populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
+	// 	},
+	// }).jqGrid('navButtonAdd', "#jqGridPager", {
+	// 	caption: "", cursor: "pointer", position: "first",
+	// 	buttonicon: "glyphicon glyphicon-edit",
+	// 	title: "Edit Selected Row",
+	// 	onClickButton: function () {
+	// 		oper = 'edit';
+	// 		selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+	// 		populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+	// 	},
+	// })
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 

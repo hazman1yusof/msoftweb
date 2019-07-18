@@ -11,8 +11,7 @@ $.jgrid.defaults.responsive = true;
 				language : {
 					requiredFields: ''
 				},
-			});
-			
+			});			
 			
 			var errorField=[];
 			conf = {
@@ -26,9 +25,7 @@ $.jgrid.defaults.responsive = true;
 				},
 			};
 			//////////////////////////////////////////////////////////////
-
 		
-			
 		/*	$.get("#formdata", "#jqGrid", function() {
 				var gc2 = $('#groupcode2').val();
 				//alert(gc2);
@@ -66,7 +63,13 @@ $.jgrid.defaults.responsive = true;
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
 				text: "Save",click: function() {
-					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) 
+					{
+						if ($('#rate').val() <=0) ///check field value 'rate' before save
+						{
+							alert('Value of Rate (%p.a) cannot be less than or equal to 0');
+							return 'rate';
+						}
 						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 					}
 				}
@@ -186,7 +189,7 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Category', name: 'assetcode', width: 10, sorttype: 'text', classes: 'wrap', canSearch: true},
 					{ label: 'Description', name: 'description', width: 40, sorttype: 'text',canSearch: true, classes: 'wrap', checked:true },
 					{ label: 'Type', name: 'assettype', width: 80, sorttype: 'text', classes: 'wrap', hidden:true},
-					{ label: 'Rate (%p.a)', name: 'rate', width: 10 },
+					{ label: 'Rate (%p.a)', name: 'rate', width: 10},
 					{ label: 'Department', name: 'deptcode', width: 10, sorttype: 'text', classes: 'wrap'  },
 					{ label: 'Tagging Next No.', name: 'tagnextno', width: 40, sorttype: 'text', classes: 'wrap',hidden:true  },
 					{ label: 'Basis', name: 'method', width: 40, sorttype: 'text', classes: 'wrap', hidden:true  },
@@ -244,18 +247,16 @@ $.jgrid.defaults.responsive = true;
 
 			}
 
-		////////////////////unformatter status////////////////////////////////////////
-		function unformat(cellvalue, option, rowObject) {
-			if (cellvalue == 'Active') {
-				return 'Active';
+			////////////////////unformatter status////////////////////////////////////////
+			function unformat(cellvalue, option, rowObject) {
+				if (cellvalue == 'Active') {
+					return 'Active';
+				}
+
+				if (cellvalue == 'Deactive') {
+					return 'Deactive';
+				}
 			}
-
-			if (cellvalue == 'Deactive') {
-				return 'Deactive';
-			}
-
-		}
-
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -323,9 +324,8 @@ $.jgrid.defaults.responsive = true;
 			  var dialog_assettype = new ordialog(
 				'assettype','finance.fatype','#assettype',errorField,
 				{	colModel:[
-						{label:'Asset Type',name:'assettype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
-						
+						{label:'Asset Type',name:'assettype',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},						
 						]
 				},{
 					title:"Select Asset Type",
@@ -340,8 +340,8 @@ $.jgrid.defaults.responsive = true;
 			var dialog_deptcode = new ordialog(
 				'deptcode','sysdb.department','#deptcode',errorField,
 				{	colModel:[
-						{label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Cost Code',name:'costcode',width:400,hidden:true},
 						]
 				},{
@@ -357,8 +357,8 @@ $.jgrid.defaults.responsive = true;
 			var dialog_glassetcode = new ordialog(
 				'glassetcode','finance.costcenter','#glassetccode',errorField,
 				{	colModel:[
-						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
 						]
 				},{
@@ -374,8 +374,8 @@ $.jgrid.defaults.responsive = true;
 			var dialog_glasset = new ordialog(
 				'glasset','finance.glmasref','#glasset',errorField,
 				{	colModel:[
-						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
 						]
 				},{
@@ -391,8 +391,8 @@ $.jgrid.defaults.responsive = true;
 			var dialog_gldepccode = new ordialog(
 				'gldepccode','finance.costcenter','#gldepccode',errorField,
 				{	colModel:[
-						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
 						]
 				},{
@@ -404,13 +404,13 @@ $.jgrid.defaults.responsive = true;
 				},'urlParam'
 			);
 			dialog_gldepccode.makedialog();
-// dialog_gldepccode=new makeDialog('finance.costcenter','#gldepccode',['costcode','description'], 'Depreciation');
+			// dialog_gldepccode=new makeDialog('finance.costcenter','#gldepccode',['costcode','description'], 'Depreciation');
 
 			var  dialog_gldep  = new ordialog(
 				'gldep','finance.glmasref','#gldep',errorField,
 				{	colModel:[
-						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
 						]
 				},{
@@ -428,8 +428,8 @@ $.jgrid.defaults.responsive = true;
 			var dialog_glprovccode  = new ordialog(
 				'glprovccode','finance.costcenter','#glprovccode',errorField,
 				{	colModel:[
-						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
 						]
 				},{
@@ -441,13 +441,13 @@ $.jgrid.defaults.responsive = true;
 				},'urlParam'
 			);
 			dialog_glprovccode.makedialog();
-// dialog_glprovccode=new makeDialog('finance.costcenter','#glprovccode',['costcode','description'], 'Provision for Depr');
+			// dialog_glprovccode=new makeDialog('finance.costcenter','#glprovccode',['costcode','description'], 'Provision for Depr');
 
 			var dialog_glprovdep  = new ordialog(
 				'glprovdep','finance.glmasref','#glprovdep',errorField,
 				{	colModel:[
-						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
 						]
 				},{
@@ -459,13 +459,13 @@ $.jgrid.defaults.responsive = true;
 				},'urlParam'
 			);
 			dialog_glprovdep.makedialog();
-// dialog_glprovdep=new makeDialog('finance.glmasref','#glprovdep',['glaccno','description'], 'Provision for Depr');
+			// dialog_glprovdep=new makeDialog('finance.glmasref','#glprovdep',['glaccno','description'], 'Provision for Depr');
 			
-var dialog_glglossccode = new ordialog(
+			var dialog_glglossccode = new ordialog(
 				'glglossccode','finance.costcenter','#glglossccode',errorField,
 				{	colModel:[
-						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
 						]
 				},{
@@ -477,13 +477,13 @@ var dialog_glglossccode = new ordialog(
 				},'urlParam'
 			);
 			dialog_glglossccode.makedialog();
-// dialog_glglossccode=new makeDialog('finance.costcenter','#glglossccode',['costcode','description'], 'Gain');
+			// dialog_glglossccode=new makeDialog('finance.costcenter','#glglossccode',['costcode','description'], 'Gain');
 
 			var dialog_glgainloss  = new ordialog(
 				'glgainloss','finance.glmasref', '#glgainloss',errorField,
 				{	colModel:[
-						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
 						]
 				},{
@@ -502,8 +502,8 @@ var dialog_glglossccode = new ordialog(
 			var dialog_glrevccode = new ordialog(
 				'glrevccode','finance.costcenter','#glrevccode',errorField,
 				{	colModel:[
-						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
 						]
 				},{
@@ -521,8 +521,8 @@ var dialog_glglossccode = new ordialog(
 			var dialog_glrevaluation = new ordialog(
 				'glrevaluation','finance.glmasref','#glrevaluation',errorField,
 				{	colModel:[
-						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
 						]
 				},{
