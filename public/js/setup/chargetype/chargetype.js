@@ -81,7 +81,7 @@
 						dialog_ipacccode.check(errorField);
 						dialog_opacccode.check(errorField);
 						dialog_otcacccode.check(errorField);
-						dialog_invcategory.check(errorField);
+						// dialog_invcategory.check(errorField);
 					}
 				},
 				close: function( event, ui ) {
