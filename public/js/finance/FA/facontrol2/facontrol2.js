@@ -147,12 +147,12 @@ $(document).ready(function () {
 		url:'/util/get_table_default',
 		field:'',
 		fixPost:'true',
-		table_name:['finance.facontrol AS FA', 'sysdb.company AS SC'],
-		table_id:'fa_compcode',
+		table_name:['finance.facontrol AS fa', 'sysdb.company AS sc'],
+		table_id:'fa_idno',
 		join_type:['LEFT JOIN'],
 		join_onCol:['fa.compcode'],
-		join_onVal:['sc.name'],
-		filterCol:['sc.compcode'],
+		join_onVal:['sc.compcode'],
+		filterCol:['fa.compcode'],
 		filterVal:['session.compcode']
 	}
 
@@ -163,24 +163,24 @@ $(document).ready(function () {
 		field:'',
 		oper:oper,
 		table_name:'finance.facontrol',
-		table_id:'idno'
+		table_id:'fa_idno'
 	};
 
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'Compcode', name: 'compcode', width: 15, hidden: false,canSearch: false },
-			{ label: 'Company Name', name: 'name', width: 50, hidden: false,canSearch: false },
-			{ label: 'idno', name: 'idno', width: 5, hidden: true },
-			{ label: 'Year', name: 'year', width: 30, hidden: false ,canSearch: true, checked: true},
-			{ label: 'Period', name: 'period', width: 30, hidden: false,canSearch: true },
-			{ label: 'Status', name:'recstatus', width:30, classes:'wrap', hidden:false,
+			{ label: 'Compcode', name: 'fa_compcode', width: 15, hidden: false,canSearch: false },
+			{ label: 'Company Name', name: 'sc_name', width: 50, hidden: false,canSearch: false },
+			{ label: 'idno', name: 'fa_idno', width: 5, hidden: true },
+			{ label: 'Year', name: 'fa_year', width: 30, hidden: false ,canSearch: true, checked: true},
+			{ label: 'Period', name: 'fa_period', width: 30, hidden: false,canSearch: true },
+			{ label: 'Status', name:'fa_recstatus', width:30, classes:'wrap', hidden:false,
             formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
             { return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
-			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
-			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
-			{ label: 'upddate', name: 'upddate', width: 90, hidden: true }
+			{ label: 'adduser', name: 'fa_adduser', width: 90, hidden: true },
+			{ label: 'adddate', name: 'fa_adddate', width: 90, hidden: true },
+			{ label: 'upduser', name: 'fa_upduser', width: 90, hidden: true },
+			{ label: 'upddate', name: 'fa_upddate', width: 90, hidden: true }
 			
 		],
 		autowidth: true,
@@ -190,7 +190,7 @@ $(document).ready(function () {
 		width: 900,
 		height: 350,
 		rowNum: 30,
-		sortname: 'idno',
+		sortname: 'fa_idno',
 		sortorder: 'desc',
 		pager: "#jqGridPager",
 		ondblClickRow: function (rowid, iRow, iCol, e) {
@@ -285,7 +285,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['recstatus','adduser','adddate','upduser','upddate']);
+	addParamField('#jqGrid',false,saveParam,['fa_recstatus','fa_adduser','fa_adddate','fa_upduser','fa_upddate']);
 
 
 });
