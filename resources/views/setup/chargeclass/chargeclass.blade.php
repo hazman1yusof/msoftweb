@@ -120,14 +120,24 @@
 			                    <div class="col-md-3">
 			                    	<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
 			                    </div>
-							</div>
-			                
-			                <div class="form-group">
-			                	<label class="col-md-2 control-label" for="classlevel">Class Level</label>  
-			                	<div class="col-md-6">
-			                		<input id="classlevel" name="classlevel" type="text" class="form-control input-sm" data-validation="required">
-			                	</div>
-							</div>    
+							</div>  
+
+							<div class="form-group">
+								<label class="control-label col-md-2" for="classlevel">Class Level</label>  
+								<div class="col-md-3">
+									<select class="form-control col-md-4" id='classlevel' name='classlevel'>
+										<option value='1'>Hospital</option>
+										<option value='2'>Consultant</option>
+										<option value='3'>SST</option>
+									</select> 
+								</div>
+
+								<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+								<div class="col-md-3">
+									<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
+									<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
+								</div>
+							</div>  
 			                
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="lastuser">Last User</label>  

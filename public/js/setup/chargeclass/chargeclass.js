@@ -180,10 +180,10 @@
 	
 			function unformat(cellvalue, options) {
 				if (cellvalue == 'Active') {
-					return "Active";
+					return "A";
 				}
 				if (cellvalue == 'Deactive') {
-					return "Deactive";
+					return "D";
 				}
 			}
 
@@ -377,6 +377,20 @@
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first", 
+				buttonicon:"glyphicon glyphicon-trash",
+				title:"Delete Selected Row",
+				onClickButton: function(){
+					oper='del';
+					let idno = selrowData('#jqGrid').idno;
+					if(!idno){
+						alert('Please select row');
+						return emptyFormdata(errorField,'#formdata');
+					}else{
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':idno});
+					}
+				},
+			}).jqGrid('navButtonAdd',"#jqGridPager",{
+				caption:"",cursor: "pointer",position: "first", 
 				buttonicon:"glyphicon glyphicon-info-sign",
 				title:"View Selected Row",  
 				onClickButton: function(){
@@ -394,6 +408,7 @@
 					selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
 					// refreshGrid("#jqGrid2",urlParam2);
+					recstatusDisable();
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  

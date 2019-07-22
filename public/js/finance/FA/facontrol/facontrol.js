@@ -119,6 +119,8 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
+			// { label: 'Compcode', name: 'compcode', width: 90, hidden: false,canSearch: true },
+			// { label: 'Company Name', name: 'name', width: 90, hidden: false,canSearch: true },
 			{ label: 'idno', name: 'idno', width: 5, hidden: true },
 			{ label: 'Year', name: 'year', width: 90, hidden: false ,canSearch: true, checked: true},
 			{ label: 'Period', name: 'period', width: 90, hidden: false,canSearch: true },

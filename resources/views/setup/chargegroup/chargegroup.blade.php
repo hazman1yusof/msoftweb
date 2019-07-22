@@ -128,11 +128,17 @@
 			                	</div>
 							</div>     -->
 
-                            <div class="form-group">
-			                	<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
-			                	<div class="col-md-6">
-			                		<input id="seqno" name="seqno" type="text" class="form-control input-sm" data-validation="required">
-			                	</div>
+							<div class="form-group">
+								<label class="control-label col-md-2" for="seqno">Sequence Number</label>  
+								<div class="col-md-3">
+									<input id="seqno" name="seqno" type="text" class="form-control input-sm" data-validation="required">
+								</div>
+
+								<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+								<div class="col-md-3">
+									<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
+									<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
+								</div>
 							</div>
 			                
 							<div class="form-group">
