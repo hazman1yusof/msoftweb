@@ -152,7 +152,7 @@
 	var dialog_delordno= new ordialog(
 		'delordno',['material.delordhd as dohd','finance.apacthdr as ap'],'#delordno',errorField,
 		{	colModel:[
-			  {label:'Delordno',name:'dohd_delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Delordno',name:'dohd_delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Suppcode',name:'dohd_suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
 				{label:'dohd_recno',name:'dohd_recno',width:100,classes:'pointer',hidden:true},
 				{label:'deliverydate',name:'dohd_deliverydate',width:100,classes:'pointer',hidden:true},
@@ -433,10 +433,10 @@
 				{ label: 'DO No', name:'delordno',width: 15, sorttype:'text', classes:'wrap'},					
 				{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
-				{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
+				{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
 				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat},	
-				{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true,},
+				{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
 				{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 				{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
 				{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},

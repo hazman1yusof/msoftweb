@@ -31,44 +31,7 @@ $(document).ready(function () {
 	
 
 	////////////////////////////////////start dialog///////////////////////////////////////
-	// var dialog_compcode= new ordialog(
-	// 	'compcode',['finance.facontrol as fac','sysdb.company as com'],'#compcode',errorField,
-	// 	{	colModel:[
-	// 		  	{label: 'compcode', name: 'fac_compcode', width:200, classes:'pointer', canSearch:true, checked:true, or_search:true},
-	// 			{label: 'Name', name:'com_name', width:300, classes:'pointer', canSearch:true,or_search:true},
-	// 			{label: 'Year', name: 'fac_year', width: 30, hidden: false ,canSearch: true, checked: true},
-	// 			{label: 'Period', name: 'fac_period', width: 30, hidden: false,canSearch: true },
-	// 		],
-	// 		ondblClickRow:function(){
-	// 			let data=selrowData('#'+dialog_compcode.gridname);
-	// 			$('#compcode').val(data['fac_compcode']);		
-	// 			$('#name').val(data['com_name']);
-	// 			// $('#year').val(data['fac_year']);
-	// 			// $('#period').val(data['fac_period']);
-	// 		},
-	// 		gridComplete: function(obj){
-	// 			var gridname = '#'+obj.gridname;
-	// 			if($(gridname).jqGrid('getDataIDs').length == 1){
-	// 				$(gridname+' tr#1').click();
-	// 				$(gridname+' tr#1').dblclick();
-	// 				$('#itemcode').focus();
-	// 			}
-	// 		}
-	// 	},
-	// 	{
-	// 		title:"Select compcode",
-	// 		open: function(){
-	// 			dialog_compcode.urlParam.filterCol=['fac.compcode','com.name'];
-	// 			dialog_compcode.urlParam.filterVal=['session.compcode','<>.NULL', $("#name").val()];
-	// 			dialog_compcode.urlParam.fixPost = "true";
-	// 			dialog_compcode.urlParam.table_id = "none_";
-	// 			dialog_compcode.urlParam.join_type = ['LEFT JOIN'];
-	// 			dialog_compcode.urlParam.join_onCol = ['fac.compcode'];
-	// 			dialog_compcode.urlParam.join_onVal = ['com.name'];
-	// 		}
-	// 	},'urlParam','radio','tab'
-	// );
-	// dialog_compcode.makedialog();
+
 	
 	var butt1 = [{
 		text: "Save", click: function () {
@@ -137,12 +100,6 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
-		// action: 'get_table_default',
-		// url:'util/get_table_default',
-		// field:'',
-		// table_name:'finance.facontrol',
-		// table_id:'idno',
-
 		action:'get_table_default',
 		url:'/util/get_table_default',
 		field:'',
@@ -163,7 +120,7 @@ $(document).ready(function () {
 		field:'',
 		oper:oper,
 		table_name:'finance.facontrol',
-		table_id:'fa_idno'
+		table_id:'idno'
 	};
 
 	$("#jqGrid").jqGrid({

@@ -9,7 +9,7 @@
 	<div id="dialogForm" title="Add Form" >
 		<form class='form-horizontal' style='width:99%' id='formdata'>
 			{{ csrf_field() }}
-            <input type="hidden" name="idno">
+            <input type="hidden" name="fa_idno">
             
             <!-- <div class="form-group">
             	<label class="col-md-2 control-label" for="compcode">Compcode</label>  
@@ -26,9 +26,9 @@
 			</div> -->
 
 			<div class="form-group">
-	        	<label class="col-md-2 control-label" for="year">Year</label>  
+	        	<label class="col-md-3 control-label" for="year">Year</label>  
 	              <div class="col-md-3">
-	              <select class="form-control"  id="year" name="year">
+	              <select class="form-control"  id="year" name="fa_year">
 	              	@foreach ($yearperiod as $year)
 	              		<option value="{{$year->year}}">{{$year->year}}</option>
 	              	@endforeach
@@ -37,9 +37,9 @@
 			</div>
 	        
 	        <div class="form-group">
-	        	<label class="col-md-2 control-label" for="period">Period</label>  
+	        	<label class="col-md-3 control-label" for="period">Period</label>  
 	              <div class="col-md-3">
-	              <select class="form-control" id="period" name="period">
+	              <select class="form-control" id="period" name="fa_period">
 		              <option value="1">1</option>
 		              <option value="2">2</option>
 		              <option value="3">3</option>
