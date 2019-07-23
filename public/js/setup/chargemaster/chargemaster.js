@@ -217,20 +217,16 @@
 
 			$('#Scol').on('change', scolChange);
 
+
 			function scolChange() {
 				if($('#Scol').val()=='cm_chggroup'){
-					$("input[name='Stext']").hide("fast");
-					$("#show_chgtype,#show_chggroup").hide("fast");
-					$("#show_chggroup").show("fast");
+					$("#div_chgtype").hide();
+					$("#div_chggroup").show();
 				} else if($('#Scol').val() == 'cm_chgtype'){
-					$("input[name='Stext']").hide("fast");
-					$("#show_chgtype,#show_chggroup").hide("fast");
-					$("#show_chgtype").show("fast");
+					$("#div_chggroup").hide();
+					$("#div_chgtype").show();
 				} else {
-					$("input[name='Stext']").show("fast");
-					$("#show_chgtype,#show_chggroup").hide("fast");
-					$("input[name='Stext']").attr('type', 'text');
-					$("input[name='Stext']").velocity({ width: "100%" });
+					$("#div_chgtype,#div_chggroup").hide();
 				}
 			}
 
@@ -586,6 +582,9 @@
 			// );
 			// dialog_trantype.makedialog();
 
+		$('#btn_chggroup').on( "click", function() {
+			$('#chggroup ~ a').click();
+		});
 		var chggroup = new ordialog(
 			'cm_chggroup', 'hisdb.chggroup', '#chggroup', 'errorField',
 			{
@@ -595,18 +594,12 @@
 				],
 				ondblClickRow: function () {
 					let data = selrowData('#' + chggroup.gridname).grpcode;
+					$("#searchForm input[name='Stext']").val($('#chggroup').val());
 
 					urlParam.searchCol=["cm_chggroup"];
 					urlParam.searchVal=[data];
 					refreshGrid("#jqGrid3",null,"kosongkan");
 					refreshGrid('#jqGrid', urlParam);
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-					}
 				}
 			},{
 				title: "Select Group Code",
@@ -619,6 +612,9 @@
 		chggroup.makedialog();
 		chggroup.on();
 
+		$('#btn_chgtype').on( "click", function() {
+			$('#chgtype ~ a').click();
+		});
 		var chgtype = new ordialog(
 			'cm_chgtype', 'hisdb.chgtype', '#chgtype', 'errorField',
 			{
@@ -628,18 +624,12 @@
 				],
 				ondblClickRow: function () {
 					let data = selrowData('#' + chgtype.gridname).chgtype;
+					$("#searchForm input[name='Stext']").val($('#chgtype').val());
 
 					urlParam.searchCol=["cm_chgtype"];
 					urlParam.searchVal=[data];
 					refreshGrid("#jqGrid3",null,"kosongkan");
 					refreshGrid('#jqGrid', urlParam);
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-					}
 				}
 			},{
 				title: "Select Charge Type",
