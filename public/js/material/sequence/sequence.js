@@ -134,9 +134,9 @@
 					{ label: 'Add Date', name: 'adddate', width: 90,hidden:true},
 					{ label: 'Upd User', name: 'upduser', width: 80,hidden:true}, 
 					{ label: 'Upd Date', name: 'upddate', width: 90,hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', 
-						formatter:formatter, unformat:unformat, cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
@@ -162,7 +162,7 @@
 				},
 				
 			});
-
+/*
 			////////////////////////////formatter//////////////////////////////////////////////////////////
 			function formatter(cellvalue, options, rowObject){
 				if(cellvalue == 'A'){
@@ -181,7 +181,7 @@
 					return "Deactive";
 				}
 			}
-
+*/
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -221,6 +221,7 @@
 					oper='edit';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+					recstatusDisable();
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  

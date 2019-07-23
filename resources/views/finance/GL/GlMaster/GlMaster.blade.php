@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'GL Enquiry')
+@section('title', 'GL Master')
 
 
 @section('body')
@@ -49,7 +49,8 @@
                 <div class="form-group">
 				  <label class="col-md-3 control-label" for="recstatus">Record Status</label>  
 				  <div class="col-md-2">
-					<input id="recstatus" name="recstatus" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+					<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
+					<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
 				  </div>
 				</div> 
 

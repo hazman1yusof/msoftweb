@@ -123,9 +123,9 @@
 					{ label: 'idno', name: 'idno', hidden:true},						
 					{ label: 'PO Type', name: 'potype', width: 10,  classes: 'wrap' ,canSearch: true,},
 					{ label: 'Description', name: 'typedec', width: 80,  classes: 'wrap' ,checked:true, canSearch: true},
-					{ label: 'Record Status', name: 'recstatus', formatter:formatter, unformat:unformat,
-					 	width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
-						{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					},
 					{ label: 'adddate', name: 'adddate', width: 90,hidden:true},
 					{ label: 'adduser', name: 'adduser', width: 80,hidden:true},
 					{ label: 'upddate', name: 'upddate', width: 90,hidden:true},
@@ -156,7 +156,7 @@
 				
 			});
 
-			////////////////////////////formatter//////////////////////////////////////////////////////////
+			/*////////////////////////////formatter//////////////////////////////////////////////////////////
 			function formatter(cellvalue, options, rowObject){
 				if(cellvalue == 'A'){
 					return "Active";
@@ -173,7 +173,7 @@
 				if(cellvalue == 'Deactive') { 
 					return "Deactive";
 				}
-			}
+			}*/
 
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -213,6 +213,7 @@
 					oper='edit';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+					recstatusDisable();
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  

@@ -126,11 +126,8 @@ $(document).ready(function () {
 			{ label: 'Code', name: 'bloodcode', width: 20, classes: 'wrap', canSearch: true},
 			{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, checked: true },
 
-			{
-				label: 'Record Status', name: 'recstatus', width: 80, formatter: formatterstatus, unformat: unformat,
-				cellattr: function (rowid, cellvalue) {
-					return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : ''
-				},
+			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'idno', name: 'idno', width: 5, hidden: true },
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
@@ -164,7 +161,7 @@ $(document).ready(function () {
 
 	});
 
-	////////////////////formatter status////////////////////////////////////////
+	/*////////////////////formatter status////////////////////////////////////////
 	function formatterstatus(cellvalue, option, rowObject) {
 		if (cellvalue == 'A') {
 			return 'Active';
@@ -186,7 +183,7 @@ $(document).ready(function () {
 			return 'Deactive';
 		}
 
-	}
+	}*/
 
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -226,6 +223,7 @@ $(document).ready(function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+			recstatusDisable();
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",

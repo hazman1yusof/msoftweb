@@ -81,7 +81,7 @@
 						dialog_ipacccode.check(errorField);
 						dialog_opacccode.check(errorField);
 						dialog_otcacccode.check(errorField);
-						// dialog_invcategory.check(errorField);
+						dialog_invcategory.check(errorField);
 					}
 				},
 				close: function( event, ui ) {
@@ -292,7 +292,7 @@
 			addParamField('#jqGrid',true,urlParam);
 			addParamField('#jqGrid',false,saveParam,['idno', 'compcode', 'ipaddress', 'computerid', 'adddate', 'adduser','upduser','upddate','recstatus']);
 
-			/////////////////////////start grid pager/////////////////////////////////////////////////////////
+			/////////////////////////start grid pager/////////////////////////////////////////// //////////////
 
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 				view:false,edit:false,add:false,del:false,search:false,
