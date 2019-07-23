@@ -113,7 +113,7 @@
 							<div class="form-group">
 							  	<label class="col-md-2 control-label" for="classcode">Class Code</label>  
 			                    <div class="col-md-3">
-			                    	<input id="classcode" name="classcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+			                    	<input id="classcode" name="classcode" type="text" class="form-control input-sm" data-validation="required" rdonly>
 			                    </div>
 							
 			                	<label class="col-md-2 control-label" for="description">Description</label>  
@@ -128,7 +128,7 @@
 									<select class="form-control col-md-4" id='classlevel' name='classlevel'>
 										<option value='1'>Hospital</option>
 										<option value='2'>Consultant</option>
-										<option value='3'>SST</option>
+										<option value='3'>TAX</option>
 									</select> 
 								</div>
 

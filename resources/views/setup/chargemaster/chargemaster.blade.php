@@ -113,7 +113,7 @@
 							<div class="form-group">
 							  	<label class="col-md-2 control-label" for="cm_chgcode">Charge Code</label>  
 			                    <div class="col-md-3">
-			                    	<input id="cm_chgcode" name="cm_chgcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+			                    	<input id="cm_chgcode" name="cm_chgcode" type="text" class="form-control input-sm" data-validation="required" rdonly>
 			                    </div>
 
 								<label class="col-md-2 control-label" for="cm_description">Description</label>  
@@ -121,6 +121,36 @@
 									<input id="cm_description" name="cm_description" type="text" class="form-control input-sm" data-validation="required">
 			                    </div>
 							</div>   
+
+							<div class="form-group">
+							  	<label class="col-md-2 control-label" for="cm_barcode">Bar Code</label>  
+			                    <div class="col-md-3">
+			                    	<input id="cm_barcode" name="cm_barcode" type="text" class="form-control input-sm" data-validation="required">
+			                    </div>
+
+								<label class="col-md-2 control-label" for="cm_generic">Generic</label>  
+			                    <div class="col-md-3">
+									<input id="cm_generic" name="cm_generic" type="text" class="form-control input-sm" data-validation="required">
+			                    </div>
+							</div>
+
+							<hr>
+
+							<div class="form-group">
+							  	<label class="col-md-2 control-label" for="cm_classcode">Class Code</label>  
+			                    <div class="col-md-3">
+			                    	<input id="cm_classcode" name="cm_classcode" type="text" class="form-control input-sm" data-validation="required">
+			                    </div>
+
+								<label class="control-label col-md-2" for="cm_constype">Consultation Type</label>  
+								<div class="col-md-3">
+									<select class="form-control col-md-4" id='cm_constype' name='cm_constype'>
+										<option value='1'>Anaestetics</option>
+										<option value='2'>Consultation</option>
+										<option value='3'>Surgeon</option>
+									</select> 
+								</div>
+							</div>
 
 							<div class="form-group">
 							  	<label class="col-md-2 control-label" for="cm_chggroup">Group</label>  
@@ -191,8 +221,8 @@
 
 					<div class="panel-body">
 						<div class="noti" style="font-size: bold; color: red"><ol></ol>
-						</div>
 					</div>
+				</div>
 			</div>		
 			
 		</div>

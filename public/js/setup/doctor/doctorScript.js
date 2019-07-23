@@ -159,9 +159,9 @@
 					{label: 'H/Phone', name: 'tel_hp', width: 90 , classes: 'wrap',hidden: true},
 					{label: 'Office', name: 'off_tel', width: 90 , classes: 'wrap',hidden: true},	
 					{label: 'Operation Theatre (OT)', name: 'operationtheatre', width: 90 , classes: 'wrap',hidden: true},
-					{label: 'Status', name: 'recstatus', width: 90, classes: 'wrap',formatter: formatterstatus, unformat: unformat,
-					cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''},},
+					{ label: 'Status', name:'recstatus', width:90, classes:'wrap', hidden:false,
+					formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
+					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
 					{label: 'Interval Time', name: 'intervaltime', width: 90 , classes: 'wrap',hidden: true},
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
@@ -196,30 +196,25 @@
 				
 			});
 
-			////////////////////formatter status////////////////////////////////////////
-			////////////////////formatter status////////////////////////////////////////
-				function formatterstatus(cellvalue, option, rowObject){
-					if (cellvalue == 'A'){
-						return 'Active';
-					}
-
-					if (cellvalue == 'D'){
-						return 'Deactive';
-					}
-
+			//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
+			
+			function formatter(cellvalue, options, rowObject) {
+				if (cellvalue == 'A') {
+					return "Active";
 				}
-
-			////////////////////unformatter status////////////////////////////////////////
-				function unformat(cellvalue, option, rowObject){
-					if (cellvalue == 'Active'){
-						return 'Active';
-					}
-
-					if (cellvalue == 'Deactive'){
-						return 'Deactive';
-					}
-
+				if (cellvalue == 'D') {
+					return "Deactive";
 				}
+			}
+	
+			function unformat(cellvalue, options) {
+				if (cellvalue == 'Active') {
+					return "A";
+				}
+				if (cellvalue == 'Deactive') {
+					return "D";
+				}
+			}
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -258,7 +253,7 @@
 					oper='edit';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
-
+					recstatusDisable();
 
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{

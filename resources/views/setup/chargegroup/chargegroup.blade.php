@@ -112,7 +112,7 @@
 							<div class="form-group">
 							  	<label class="col-md-2 control-label" for="grpcode">Group Code</label>  
 			                    <div class="col-md-3">
-			                    	<input id="grpcode" name="grpcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+			                    	<input id="grpcode" name="grpcode" type="text" class="form-control input-sm" data-validation="required" rdonly>
 			                    </div>
 							
 			                	<label class="col-md-2 control-label" for="description">Description</label>  
