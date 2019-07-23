@@ -211,9 +211,9 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', 
-				formatter:formatter, unformat:unformat, cellattr: function(rowid, cellvalue)
-			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			},
 			{label: 'idno', name: 'idno', hidden: true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -256,7 +256,7 @@ $(document).ready(function () {
 		
 	});
 
-	////////////////////////////formatter//////////////////////////////////////////////////////////
+	/*////////////////////////////formatter//////////////////////////////////////////////////////////
 	function formatter(cellvalue, options, rowObject){
 		if(cellvalue == 'A'){
 			return "Active";
@@ -273,7 +273,7 @@ $(document).ready(function () {
 		if(cellvalue == 'Deactive') { 
 			return "Deactive";
 		}
-	}
+	}*/
 
 	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -314,6 +314,7 @@ $(document).ready(function () {
 			oper='edit';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+			recstatusDisable();
 			
 		}, 
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -531,9 +532,9 @@ $(document).ready(function () {
 			{ label: 'Percentage of Sales Tax', name: 'si_perslstax', width: 30,  hidden: true},
 			{ label: 'Expiry Date', name: 'si_expirydate', width: 30,  hidden: true},
 			{ label: "Item Code at Supplier's Site", name: 'si_sitemcode', width: 30,  hidden: true},
-			{ label: 'Record Status', name: 'si_recstatus', width: 20, classes: 'wrap', 
-				formatter:formatter, unformat:unformat, cellattr: function(rowid, cellvalue)
-			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{ label: 'Record Status', name: 'si_recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			},
 			{label: 'No', name: 'si_idno', width: 50, hidden: true},
 			{ label: 'adduser', name: 'si_adduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adddate', name: 'si_adddate', width: 90, hidden:true, classes: 'wrap'},
@@ -634,6 +635,7 @@ $(document).ready(function () {
 			oper_suppitems='edit';
 			selRowId = $("#gridSuppitems").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",selRowId,'edit');
+			recstatusDisable();
 		}, 
 		position: "first", 
 		title:"Edit Selected Row", 
@@ -835,9 +837,9 @@ $(document).ready(function () {
 			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 30, classes: 'wrap'},
 			{ label: 'Bonus Quantity', name: 'sb_bonqty', width: 30, classes: 'wrap', formatter:'currency'}, 
 			{ label: "Supplier's Item Code", name: 'sb_bonsitemcode', width: 30, classes: 'wrap'},
-			{ label: 'Record Status', name: 'sb_recstatus', width: 20, classes: 'wrap', 
-				formatter:formatter, unformat:unformat, cellattr: function(rowid, cellvalue)
-			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{ label: 'Record Status', name: 'sb_recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			},
 			{label: 'No', name: 'sb_idno', width: 50, hidden: true},
 			{ label: 'adduser', name: 'sb_adduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adddate', name: 'sb_adddate', width: 90, hidden:true, classes: 'wrap'},
@@ -925,6 +927,7 @@ $(document).ready(function () {
 			oper_suppbonus='edit';
 			selRowId = $("#gridSuppBonus").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",selRowId,'edit');
+			recstatusDisable();
 		}, 
 		position: "first", 
 		title:"Edit Selected Row", 
