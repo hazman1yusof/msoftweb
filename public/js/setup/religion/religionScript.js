@@ -123,11 +123,9 @@ $(document).ready(function () {
 				label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, editable: true, checked: true,
 				editrules: { required: true },
 				editoptions: { maxlength: 100 },
-			},{
-				label: 'Record Status', name: 'recstatus', width: 80, formatter: formatterstatus, unformat: unformatstatus,
-				cellattr: function (rowid, cellvalue) {
-					return (cellvalue == 'Deactive') ? 'class="alert alert-danger"' : ''
-				},
+			},
+			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
@@ -197,6 +195,7 @@ $(document).ready(function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+			recstatusDisable();
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",

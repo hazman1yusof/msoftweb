@@ -145,10 +145,8 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			{
-				label: 'Record Status', name: 'recstatus', width: 40, classes: 'wrap', formatter: formatterRecord,
-				unformat: unformatterRecord, cellattr: function (rowid, cellvalue)
-				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },
+			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -221,7 +219,7 @@ $(document).ready(function () {
 		return cellvalue.replace("%", "");
 	}
 
-	function formatterRecord(cellvalue, options, rowObject) {
+	/*function formatterRecord(cellvalue, options, rowObject) {
 		if (cellvalue == 'A') {
 			return "Active";
 		}
@@ -237,7 +235,7 @@ $(document).ready(function () {
 		if (cellvalue == 'Deactive') {
 			return "Deactive";
 		}
-	}
+	}*/
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
@@ -277,6 +275,7 @@ $(document).ready(function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+			recstatusDisable();
 
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -449,10 +448,8 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'svc_adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'svc_upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'svc_upddate', width: 90, hidden: true, classes: 'wrap' },
-			{
-				label: 'Record Status', name: 'svc_recstatus', width: 40, classes: 'wrap', formatter: formatterRecord,
-				unformat: unformatterRecord, cellattr: function (rowid, cellvalue)
-				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },
+			{ label: 'Record Status', name: 'svc_recstatus', width: 30, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'No', name: 'svc_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'svc_computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -563,6 +560,7 @@ $(document).ready(function () {
 			oper_svc = 'edit';
 			selRowId = $("#jqGridsvc").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", selRowId, 'edit');
+			recstatusDisable();
 		},
 		position: "first",
 		title: "Edit Selected Row",
@@ -739,10 +737,8 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'i_adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'i_upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'i_upddate', width: 90, hidden: true, classes: 'wrap' },
-			{
-				label: 'Record Status', name: 'i_recstatus', width: 25, classes: 'wrap', formatter: formatterRecord,
-				unformat: unformatterRecord, cellattr: function (rowid, cellvalue)
-				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },
+			{ label: 'Record Status', name: 'i_recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'No', name: 'i_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'i_computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -829,6 +825,7 @@ $(document).ready(function () {
 			oper_item = 'edit';
 			selRowId = $("#jqGriditem").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGriditem", "#Ditem", "#Fitem", selRowId, 'edit');
+			recstatusDisable();
 		},
 		position: "first",
 		title: "Edit Selected Row",

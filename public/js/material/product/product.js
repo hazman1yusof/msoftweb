@@ -332,8 +332,9 @@ $(document).ready(function () {
 			{ label: 'maxqty', name: 'maxqty', width: 50, hidden:true },
 			{ label: 'reordlevel', name: 'reordlevel', width: 50, hidden:true },
 			{ label: 'reordqty', name: 'reordqty', width: 50, hidden:true },
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatter, unformat:unformat,  cellattr: function(rowid, cellvalue)
-			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			},
 			{ label: 'chgflag', name: 'chgflag', width: 50, hidden:true },
 			{ label: 'subcatcode', name: 'subcatcode', width: 50, hidden:true },
 			{ label: 'expdtflg', name: 'expdtflg', width: 50, hidden:true },
@@ -410,7 +411,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////////////formatter//////////////////////////////////////////////////////////
-	function formatter(cellvalue, options, rowObject){
+	/*function formatter(cellvalue, options, rowObject){
 		if(cellvalue == 'A'){
 			return "Active";
 		}
@@ -426,7 +427,7 @@ $(document).ready(function () {
 		if(cellvalue == 'Deactive') { 
 			return "Deactive";
 		}
-	}
+	}*/
 
 	function readonlyRTTrue(){
 		$('#formdata input[rdonly]').prop("readonly",true);
