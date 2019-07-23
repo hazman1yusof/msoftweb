@@ -445,10 +445,10 @@ class PatmastController extends defaultController
                         "epis_fu_preg" => $epis_fu_preg,
                         "epis_nc_preg" => $epis_nc_preg,
                         "epis_fee" => $epis_fee,
-                        "epis_createdate" => Carbon::now("Asia/Kuala_Lumpur"),,
+                        "epis_createdate" => Carbon::now("Asia/Kuala_Lumpur"),
                         "epis_createuser" => $session('username'),
-                        "epis_updatedate" => Carbon::now("Asia/Kuala_Lumpur"),,
-                        "epis_updatetime" => Carbon::now("Asia/Kuala_Lumpur"),,
+                        "epis_updatedate" => Carbon::now("Asia/Kuala_Lumpur"),
+                        "epis_updatetime" => Carbon::now("Asia/Kuala_Lumpur"),
                         "epis_upduser" => $session('username'),
                         "epis_active" => 1,
                         "epis_allocpayer" => 1

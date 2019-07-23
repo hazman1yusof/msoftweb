@@ -58,10 +58,13 @@ class invtran_util extends defaultController{
                 ->where('StockLoc.DeptCode','=',$ivtmphd->sndrcv)
                 ->where('StockLoc.ItemCode','=',$value->itemcode)
                 ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
-                ->where('StockLoc.UomCode','=',$value->uomcode)
-                ->first();
+                ->where('StockLoc.UomCode','=',$value->uomcode);
 
-            if(count($stockloc_obj)){
+
+            if($stockloc_obj->exists()){
+
+                $stockloc_obj = $stockloc_obj->first();
+
                 if($stockloc_obj->disptype == 'DS'){
                     $draccno = $category_obj->stockacct;
                     $drccode = $dept_obj->costcode;
@@ -170,7 +173,7 @@ class invtran_util extends defaultController{
         $stockloc_first = $stockloc_obj->first();
 
         //2.kalu ada stockloc, update 
-        if(count($stockloc_first)){
+        if($stockloc_obj->exists()){
 
         //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
@@ -267,7 +270,7 @@ class invtran_util extends defaultController{
         $stockloc_first = $stockloc_obj->first();
 
         //4.kalu ada stockloc, update 
-        if(count($stockloc_first)){
+        if($stockloc_obj->exists()){
 
         //5. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
@@ -304,7 +307,7 @@ class invtran_util extends defaultController{
 
             $expdate_first = $expdate_obj->first();
 
-            if(count($expdate_first)){
+            if($expdate_obj->exists()){
                 $balqty_new = $expdate_first->balqty + $txnqty;
 
                 $expdate_obj->update([
@@ -339,10 +342,12 @@ class invtran_util extends defaultController{
         $product_obj = DB::table('material.product')
             ->where('product.compcode','=',session('compcode'))
             ->where('product.itemcode','=',$value->itemcode)
-            ->where('product.uomcode','=',$value->uomcode)
-            ->first();
+            ->where('product.uomcode','=',$value->uomcode);
 
-        if(count($product_obj)){ // kalu jumpa
+        if($product_obj->exists()){ // kalu jumpa
+
+            $product_obj = $product_obj->first();
+
             $month = defaultController::toMonth($ivtmphd->trandate);
             $OldQtyOnHand = $product_obj->qtyonhand;
 
@@ -363,10 +368,12 @@ class invtran_util extends defaultController{
         $product_obj = DB::table('material.product')
             ->where('product.compcode','=',session('compcode'))
             ->where('product.itemcode','=',$value->itemcode)
-            ->where('product.uomcode','=',$value->uomcoderecv)
-            ->first();
+            ->where('product.uomcode','=',$value->uomcoderecv);
 
-        if(count($product_obj)){ // kalu jumpa
+        if($product_obj->exists()){ // kalu jumpa
+
+            $product_obj = $product_obj->first();
+
             $month = defaultController::toMonth($ivtmphd->trandate);
             $OldQtyOnHand = $product_obj->qtyonhand;
 
@@ -397,7 +404,7 @@ class invtran_util extends defaultController{
         $stockloc_first = $stockloc_obj->first();
 
         //2.kalu ada stockloc, update 
-        if(count($stockloc_first)){
+        if($stockloc_obj->exists()){
 
         //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
@@ -433,7 +440,7 @@ class invtran_util extends defaultController{
 
             $expdate_first = $expdate_obj->first();
 
-            if(count($expdate_first)){
+            if($expdate_obj->exists()){
                 $balqty_new = $expdate_first->balqty + $value->txnqty;
 
                 $expdate_obj->update([
@@ -466,10 +473,11 @@ class invtran_util extends defaultController{
         $product_obj = DB::table('material.product')
             ->where('product.compcode','=',session('compcode'))
             ->where('product.itemcode','=',$value->itemcode)
-            ->where('product.uomcode','=',$value->uomcode)
-            ->first();
+            ->where('product.uomcode','=',$value->uomcode);
 
-        if(count($product_obj)){ // kalu jumpa
+        if($product_obj->exists()){ // kalu jumpa
+            $product_obj = $product_obj->first();
+
             $month = defaultController::toMonth($ivtmphd->trandate);
             $netprice = $value->netprice;
             $txnqty = $value->txnqty;
@@ -515,7 +523,7 @@ class invtran_util extends defaultController{
         $stockloc_first = $stockloc_obj->first();
 
         //2.kalu ada stockloc, update 
-        if(count($stockloc_first)){
+        if($stockloc_obj->exists()){
 
         //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
@@ -588,10 +596,11 @@ class invtran_util extends defaultController{
         $product_obj = DB::table('material.product')
             ->where('product.compcode','=',session('compcode'))
             ->where('product.itemcode','=',$value->itemcode)
-            ->where('product.uomcode','=',$value->uomcode)
-            ->first();
+            ->where('product.uomcode','=',$value->uomcode);
 
-        if(count($product_obj)){ // kalu jumpa
+        if($product_obj->exists()){ // kalu jumpa
+            $product_obj = $product_obj->first();
+            
             $month = defaultController::toMonth($ivtmphd->trandate);
             $netprice = $value->netprice;
             $txnqty = $value->txnqty;

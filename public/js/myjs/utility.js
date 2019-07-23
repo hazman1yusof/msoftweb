@@ -1049,10 +1049,8 @@ String.prototype.replaceAt=function(index, replacement) {
 
 /////////////////////////////////compid and ipaddress at cookies//////////////////////
 function getcompid(callback){
-	$.get( "util/getcompid" , function( data ) {
-			
-	},'json').done(function(data) {
-		if(!$.isEmptyObject(data)){
+	$.getJSON('http://ip-api.com/json?callback=?', function(data) {
+	  if(!$.isEmptyObject(data)){
 			callback(data);
 		}
 	});
@@ -1063,8 +1061,8 @@ function check_compid_exist(lastcompid,lastip,compid,ip){
 	var msoftweb_ipaddress = localStorage.getItem('msoftweb_ipaddress');
 	if(!msoftweb_computerid){
 		getcompid(function(data){
-			localStorage.setItem('msoftweb_computerid', data.computerid);
-			localStorage.setItem('msoftweb_ipaddress', data.ipaddress);
+			localStorage.setItem('msoftweb_computerid', data.city);
+			localStorage.setItem('msoftweb_ipaddress', data.query);
 			set_compid_from_storage(lastcompid,lastip,compid,ip);
 		});
 	}

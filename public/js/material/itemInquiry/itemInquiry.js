@@ -517,8 +517,8 @@ $(document).ready(function () {
 						obj.amount = '- '+numeral(obj.amount).format('0,0.00');
 
 						obj.description =  obj.description+' '+obj.deptcode;
-						obj.qtyin = obj.txnqty;
-						obj.qtyout = '';
+						obj.qtyin = '';
+						obj.qtyout = obj.txnqty;
 					}else if (obj.crdbfl == 'Out'){
 						accumamt = accumamt + parseFloat(obj.amount);
 						accumqty = accumqty + parseInt(obj.txnqty);
@@ -527,8 +527,8 @@ $(document).ready(function () {
 						obj.amount = numeral(obj.amount).format('0,0.00');
 
 						obj.description =  obj.description+' '+obj.deptcode;
-						obj.qtyin = '';
-						obj.qtyout =  obj.txnqty;
+						obj.qtyin = obj.txnqty;
+						obj.qtyout =  '';
 					}
 
 				});
