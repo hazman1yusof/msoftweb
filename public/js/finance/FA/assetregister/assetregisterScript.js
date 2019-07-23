@@ -687,7 +687,7 @@
 		function searchClickChange(grid,form,urlParam){
 			$(form+' [name=Stext]').on( "keyup", function() {
 				delay(function(){
-					search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+					search('#jqGrid',$('#searchForm input[seltext=true]').val(),$('#searchForm [name=Scol] option:selected').val(),urlParam);
 				}, 500 );
 			});
 		}

@@ -133,7 +133,6 @@
 				 colModel: [
 					{ label: 'idno', name: 'cm_idno', sorttype: 'number', hidden:true },
 					{ label: 'Compcode', name: 'cm_compcode', hidden:true},
-
 					{ label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
 					{ label: 'Description', name: 'cm_description', classes: 'wrap', width: 60, canSearch: true},
 					{ label: 'Class', name: 'cm_chgclass', classes: 'wrap', width: 20,checked:true},
@@ -261,6 +260,10 @@
 					refreshGrid("#jqGrid3",null,"kosongkan");
 				});
 			}
+
+			$('#searchForm [name=Stext]').on( "keyup", function() {
+				$("#chgtype,#chggroup").val($(this).val());
+			});
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
