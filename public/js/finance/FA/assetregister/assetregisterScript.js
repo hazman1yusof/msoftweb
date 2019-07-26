@@ -213,8 +213,8 @@
 	var dialog_itemcode= new ordialog(
 		'itemcode',['material.delorddt as dodt','material.product as p'],'#itemcode',errorField,
 		{	colModel:[
-				{label:'Itemcode',name:'dodt_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'description',name:'p_description',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Itemcode',name:'dodt_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'description',name:'p_description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'dodt_uomcode',name:'dodt_uomcode',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_remarks',name:'dodt_remarks',width:100,classes:'pointer',hidden:false},
 				{label:'dodt_qtydelivered',name:'dodt_qtydelivered',width:100,classes:'pointer',hidden:true},
@@ -260,8 +260,8 @@
 	var dialog_itemcode_direct= new ordialog(
 		'itemcode_direct',['material.product'],'#itemcode_direct',errorField,
 		{	colModel:[
-				{label:'Itemcode',name:'itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Itemcode',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'uomcode',name:'uomcode',width:100,classes:'pointer',hidden:true},
 				{label:'currprice',name:'currprice',width:100,classes:'pointer',hidden:true},
 				
@@ -292,8 +292,8 @@
 	var dialog_uomcode= new ordialog(
 		'uomcode','material.product','#uomcode',errorField,
 		{	colModel:[
-				{label:'uomcode',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'UOM Code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				
 			]
 		},{
