@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
@@ -32,6 +31,8 @@ $(document).ready(function () {
 	
 
 	////////////////////////////////////start dialog///////////////////////////////////////
+
+	
 	var butt1 = [{
 		text: "Save", click: function () {
 			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
@@ -99,11 +100,17 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
-		action: 'get_table_default',
-		url:'util/get_table_default',
+		action:'get_table_default',
+		url:'/util/get_table_default',
 		field:'',
-		table_name:'finance.facontrol',
-		table_id:'idno',
+		fixPost:'true',
+		table_name:['finance.facontrol AS fa', 'sysdb.company AS sc'],
+		table_id:'fa_idno',
+		join_type:['LEFT JOIN'],
+		join_onCol:['fa.compcode'],
+		join_onVal:['sc.compcode'],
+		filterCol:['fa.compcode'],
+		filterVal:['session.compcode']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -119,16 +126,18 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			// { label: 'Compcode', name: 'compcode', width: 90, hidden: false,canSearch: true },
-			// { label: 'Company Name', name: 'name', width: 90, hidden: false,canSearch: true },
-			{ label: 'idno', name: 'idno', width: 5, hidden: true },
-			{ label: 'Year', name: 'year', width: 90, hidden: false ,canSearch: true, checked: true},
-			{ label: 'Period', name: 'period', width: 90, hidden: false,canSearch: true },
-			{ label: 'Status', name: 'recstatus', width: 90, hidden: false },
-			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
-			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
-			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
-			{ label: 'upddate', name: 'upddate', width: 90, hidden: true }
+			{ label: 'Compcode', name: 'fa_compcode', width: 15, hidden: false,canSearch: false },
+			{ label: 'Company Name', name: 'sc_name', width: 50, hidden: false,canSearch: false },
+			{ label: 'idno', name: 'fa_idno', width: 5, hidden: true },
+			{ label: 'Year', name: 'fa_year', width: 30, hidden: false ,canSearch: true, checked: true},
+			{ label: 'Period', name: 'fa_period', width: 30, hidden: false,canSearch: true },
+			{ label: 'Status', name:'fa_recstatus', width:30, classes:'wrap', hidden:false,
+            formatter: formatterstatus, unformat: unformatstatus, cellattr: function (rowid, cellvalue)
+            { return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+			{ label: 'adduser', name: 'fa_adduser', width: 90, hidden: true },
+			{ label: 'adddate', name: 'fa_adddate', width: 90, hidden: true },
+			{ label: 'upduser', name: 'fa_upduser', width: 90, hidden: true },
+			{ label: 'upddate', name: 'fa_upddate', width: 90, hidden: true }
 			
 		],
 		autowidth: true,
@@ -138,11 +147,11 @@ $(document).ready(function () {
 		width: 900,
 		height: 350,
 		rowNum: 30,
-		sortname: 'idno',
+		sortname: 'fa_idno',
 		sortorder: 'desc',
 		pager: "#jqGridPager",
 		ondblClickRow: function (rowid, iRow, iCol, e) {
-			$("#jqGridPager td[title='Edit Selected Row']").click();
+			$("#jqGridPager td[title='View Selected Row']").click();
 		},
 		gridComplete: function () {
 			if (oper == 'add') {
@@ -150,9 +159,15 @@ $(document).ready(function () {
 			}
 
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') == 0){
+				$("#jqGridPager td[title='Add New Row']").show();
+			}else{
+				$("#jqGridPager td[title='Add New Row']").hide();
+			}
 		},
 
-	});
+    });
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
@@ -162,19 +177,13 @@ $(document).ready(function () {
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-trash",
-		title: "Delete Selected Row",
+		buttonicon: "glyphicon glyphicon-plus",
+		title: "Add New Row",
 		onClickButton: function () {
-			oper = 'del';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			if (!selRowId) {
-				alert('Please select row');
-				return emptyFormdata(errorField, '#formdata');
-			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'Code': selRowId });
-			}
+			oper = 'add';
+			$("#dialogForm").dialog("open");
 		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
+    }).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
 		buttonicon: "glyphicon glyphicon-info-sign",
 		title: "View Selected Row",
@@ -183,24 +192,41 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
 		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-edit",
-		title: "Edit Selected Row",
-		onClickButton: function () {
-			oper = 'edit';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-plus",
-		title: "Add New Row",
-		onClickButton: function () {
-			oper = 'add';
-			$("#dialogForm").dialog("open");
-		},
 	});
+    
+    // .jqGrid('navButtonAdd', "#jqGridPager", {
+	// 	caption: "", cursor: "pointer", position: "first",
+	// 	buttonicon: "glyphicon glyphicon-trash",
+	// 	title: "Delete Selected Row",
+	// 	onClickButton: function () {
+	// 		oper = 'del';
+	// 		selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+	// 		if (!selRowId) {
+	// 			alert('Please select row');
+	// 			return emptyFormdata(errorField, '#formdata');
+	// 		} else {
+	// 			saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'Code': selRowId });
+	// 		}
+	// 	},
+	// }).jqGrid('navButtonAdd', "#jqGridPager", {
+	// 	caption: "", cursor: "pointer", position: "first",
+	// 	buttonicon: "glyphicon glyphicon-info-sign",
+	// 	title: "View Selected Row",
+	// 	onClickButton: function () {
+	// 		oper = 'view';
+	// 		selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+	// 		populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
+	// 	},
+	// }).jqGrid('navButtonAdd', "#jqGridPager", {
+	// 	caption: "", cursor: "pointer", position: "first",
+	// 	buttonicon: "glyphicon glyphicon-edit",
+	// 	title: "Edit Selected Row",
+	// 	onClickButton: function () {
+	// 		oper = 'edit';
+	// 		selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+	// 		populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+	// 	},
+	// })
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
@@ -211,7 +237,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['recstatus','adduser','adddate','upduser','upddate']);
+	addParamField('#jqGrid',false,saveParam,['fa_recstatus','fa_adduser','fa_adddate','fa_upduser','fa_upddate']);
 
 
 });
