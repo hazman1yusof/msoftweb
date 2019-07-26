@@ -95,7 +95,7 @@ $(document).ready(function () {
 			},
 			close: function (event, ui) {
 				parent_close_disabled(false);
-				emptyFormdata(errorField, '#formdata');
+				emptyFormdata(errorField, '#formdata',['#year']);
 				//$('.alert').detach();
 				$('#formdata .alert').detach();
 				dialog_deptcode.off();
@@ -231,8 +231,8 @@ $(document).ready(function () {
 
 	$("#search").click(function () {
 		//$("#uomcodeS").focus();
-		dialog_itemcode.check(errorField);
-		dialog_uomcode.check(errorField);		
+		// dialog_itemcode.check(errorField);
+		// dialog_uomcode.check(errorField);		
 
 		if ($('#formdataSearch').isValid({ requiredFields: '' }, conf, true)) {
 			$("#search").prop("disabled", true);
@@ -240,7 +240,7 @@ $(document).ready(function () {
 			dialog_itemcode.off();
 			dialog_uomcode.off();
 
-			var currentDate = $("#datetoday").val();
+			var currentDate = $("#select_year").val();
 
 			urlParam.filterCol = ['itemcode', 'uomcode', 'year', 'unit', 'compcode'];
 			urlParam.filterVal = [$('#itemcodeS').val(), $('#uomcodeS').val(), currentDate, 'session.unit', 'session.compcode'];
@@ -252,7 +252,7 @@ $(document).ready(function () {
 
 	$("#cancel").click(function () {
 		$("#pg_jqGridPager table").hide();
-		emptyFormdata(errorField, '#formdataSearch');
+		emptyFormdata(errorField, '#formdataSearch',['#year']);
 		$("#search").prop("disabled", false);
 		$('#formdataSearch :input').prop("readonly", false);
 		dialog_itemcode.on();

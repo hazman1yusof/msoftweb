@@ -4,6 +4,7 @@ namespace App\Http\Controllers\material;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use DB;
 
 class StocklocController extends defaultController
 {   
@@ -19,7 +20,8 @@ class StocklocController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.Stock Location.stockLoc');
+        $year = DB::table('sysdb.period')->select('year')->where('compcode','=','9A')->orderBy('year','desc')->get();
+        return view('material.Stock Location.stockLoc',compact('year'));
     }
 
     public function form(Request $request)

@@ -30,12 +30,13 @@
               	</div>
 
               	<div class="col-md-1">
-              	 	<label class="control-label" for="year">Year</label>  
-				  		<input id="year" name="year" type="text" maxlength="10" class="form-control input-sm"/>
-				</div>  		
-
-
-              	<input id="datetoday" name="datetoday" type="hidden"  value="<?php echo date("Y") ?>">
+              	 	<label class="control-label" for="year">Year</label>
+				  		<select id="select_year" name="select_year" class="form-control input-sm">
+				  			@foreach($year as $obj)
+							<option value='{{ $obj->year }}'>{{ $obj->year }}</option>
+							@endforeach
+				  		</select>
+				</div> 
 
 			  	<div class="col-md-1">
 					<button type="button" id="search" class="btn btn-primary" style="position:absolute;top:17px">Search</button>
