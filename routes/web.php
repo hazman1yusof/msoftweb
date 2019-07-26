@@ -389,6 +389,7 @@ Route::post('/stocklocEnquiry/form','material\StocklocEnquiryController@form');
 Route::get('/itemEnquiry','material\ItemEnquiryController@show');
 Route::get('/itemEnquiry/table','material\ItemEnquiryController@table');
 Route::post('/itemEnquiry/form','material\ItemEnquiryController@form');
+Route::get('/itemEnquiry/form','material\ItemEnquiryController@form');
 
 //// Stock Location ///
 Route::get('/stockloc','material\StocklocController@show');

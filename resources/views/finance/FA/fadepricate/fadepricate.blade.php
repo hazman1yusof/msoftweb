@@ -4,11 +4,11 @@
 
 @section('body')
 <div class="container">
-	<div class="jumbotron" style="margin-top: 50px">
+	<div class="jumbotron" style="margin-top: 50px;text-align: center;">
 	  <h2>Fixed Asset Depreciation process</h2>
-	  <h4>This function perform the depreciation process. It calculates the amount of depreciation for asset into the year-to-date figures. The current period is then closed and advance the period the next period. Make sure all the asset has been registed in current period.</h4>
+	  <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5">This function perform the depreciation process. It calculates the amount of depreciation for asset into the year-to-date figures. The current period is then closed and advance the period the next period. Make sure all the asset has been registed in current period.</h4>
 
-	 	<table class="table" width="50%">
+	 	<table class="table" style="width: 30%;margin: auto;">
 		    <tbody>
 		      <tr class="success">
 		        <th width="20%">Year</th>
@@ -23,7 +23,11 @@
 
 	  <br>
 	  <br>
-	  <p><a class="btn btn-primary btn-lg" role="button">Start Depreciation</a></p>
+	  <form method="post" id="depreciation" action="/fadepricate/form">
+	  	{{ csrf_field() }}
+	  	<input type="hidden" name="oper" value="depreciation">
+	  	<button type="submit" class="btn btn-primary btn-lg">Start Depreciation Process</button>
+	  </form>
 	</div>
 </div>
 		
@@ -32,7 +36,6 @@
 
 @section('scripts')
 
-	<script src="js/finance/FA/facontrol/facontrol.js"></script>
+	<script src="js/finance/FA/fadepricate/fadepricate.js"></script>
 
-	
 @endsection
