@@ -67,6 +67,7 @@
 							/*hideatdialogForm(true);*/
 							enableForm('#formdata');
 							rdonly('#formdata');
+							frozeOnEdit("#dialogForm");
 							break;
 						case state = 'view':
 							disableForm('#formdata');

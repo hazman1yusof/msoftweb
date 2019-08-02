@@ -20,22 +20,6 @@
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-
-							<!-- <div  id="show_chggroup" style="display:none">
-								<div class='input-group'>
-									<input id="chggroup" name="chggroup" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div>
-
-							<div  id="show_chgtype" style="display:none">
-								<div class='input-group'>
-									<input id="chgtype" name="chgtype" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div> -->
 						</div>
 		            </div>
 				</div>
@@ -86,120 +70,85 @@
 			<label class="control-label">Purchase Dept</label>
         	<span id="prdeptdepan" style="display: block;">&nbsp</span>
         </div> -->
-
-	    <!-- <div class="panel panel-default">
-		    <div class="panel-heading">Charge Price</div>
-		    <div class="panel-body">
-		    	<div class='col-md-12' style="padding:0 0 15px 0">
-	            	<table id="jqGrid3" class="table table-striped"></table>
-	            	<div id="jqGridPager3"></div>
-	    		</div>'
-		    </div>
-		</div>  -->
-
     </div>
 	<!-- ***************End Search + table ********************* -->
 
-	<div id="dialogForm" title="Add Form" >
+	<div id="dialogForm" title="Add Form">
 		<div class='panel panel-info'>
-			<div class="panel-heading">Charge Class
-					</div>
-				<div class="panel-body" style="position: relative;">
-					<form class='form-horizontal' style='width:99%' id='formdata'>
-							{{ csrf_field() }}
-							<input id="idno" name="idno" type="hidden">
+			<div class="panel-heading">Charge Class</div>
+			<div class="panel-body" style="position: relative;">
+				<form class='form-horizontal' style='width:99%' id='formdata'>
+					{{ csrf_field() }}
+					<input id="idno" name="idno" type="hidden">
 						
-
-							<div class="form-group">
-							  	<label class="col-md-2 control-label" for="classcode">Class Code</label>  
-			                    <div class="col-md-3">
-			                    	<input id="classcode" name="classcode" type="text" class="form-control input-sm" data-validation="required" rdonly>
-			                    </div>
-							
-			                	<label class="col-md-2 control-label" for="description">Description</label>  
-			                    <div class="col-md-3">
-			                    	<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
-			                    </div>
-							</div>  
-
-							<div class="form-group">
-								<label class="control-label col-md-2" for="classlevel">Class Level</label>  
-								<div class="col-md-3">
-									<select class="form-control col-md-4" id='classlevel' name='classlevel'>
-										<option value='1'>Hospital</option>
-										<option value='2'>Consultant</option>
-										<option value='3'>TAX</option>
-									</select> 
-								</div>
-
-								<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-								<div class="col-md-3">
-									<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
-									<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
-								</div>
-							</div>  
-			                
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="lastuser">Last User</label>  
-								<div class="col-md-3">
-									<input id="lastuser" name="adduser" type="text" class="form-control input-sm" rdonly>
-								</div>
-
-								<label class="col-md-2 control-label" for="lastupdate">Last Update</label>  
-								<div class="col-md-3">
-									<input id="lastupdate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
-							</div> 
-
-							<!-- <div class="form-group">
-								<label class="col-md-2 control-label" for="adddate">Created Date</label>  
-								<div class="col-md-3">
-									<input id="adddate" name="adddate" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-								</div>
-
-								<label class="col-md-2 control-label" for="upddate">Last Entered Date</label>  
-								<div class="col-md-3">
-									<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-								</div>
-							</div>   -->
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
-								<div class="col-md-3">
-									<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly >
-								</div>
-
-								<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
-								<div class="col-md-3">
-									<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" rdonly >
-								</div>
-							</div>   
-					</form>
-				</div>
-			</div>
-			
-			<!-- <div class='panel panel-info'>
-				<div class="panel-heading">Charge Price Detail</div>
-					<div class="panel-body">
-						<form id='formdata2' class='form-vertical' style='width:99%'>
-							<input id="gstpercent" name="gstpercent" type="hidden">
-							<input id="convfactoruomcodetrdept" name="convfactoruomcodetrdept" type="hidden" value='1'>
-							<input id="convfactoruomcoderecv" name="convfactoruomcoderecv" type="hidden" value='1'>
-
-							<div id="jqGrid2_c" class='col-md-12'>
-								<table id="jqGrid2" class="table table-striped"></table>
-					            <div id="jqGridPager2"></div>
-							</div>
-						</form>
-					</div>
-
-					<div class="panel-body">
-						<div class="noti" style="font-size: bold; color: red"><ol></ol>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="classcode">Class Code</label>  
+						<div class="col-md-3">
+							<input id="classcode" name="classcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
 						</div>
-					</div>
-			</div>		 -->
-			
+					
+						<label class="col-md-2 control-label" for="description">Description</label>  
+						<div class="col-md-3">
+							<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
+						</div>
+					</div>  
+
+					<div class="form-group">
+						<label class="control-label col-md-2" for="classlevel">Class Level</label>  
+						<div class="col-md-3">
+							<select class="form-control col-md-4" id='classlevel' name='classlevel'>
+								<option value='1'>Hospital</option>
+								<option value='2'>Consultant</option>
+								<option value='3'>Tax</option>
+							</select> 
+						</div>
+
+						<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+						<div class="col-md-3">
+							<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
+							<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
+						</div>
+					</div>  
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="lastuser">Last User</label>  
+						<div class="col-md-3">
+							<input id="lastuser" name="adduser" type="text" class="form-control input-sm" rdonly>
+						</div>
+
+						<label class="col-md-2 control-label" for="lastupdate">Last Update</label>  
+						<div class="col-md-3">
+							<input id="lastupdate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						</div>
+					</div> 
+
+					<!-- <div class="form-group">
+						<label class="col-md-2 control-label" for="adddate">Created Date</label>  
+						<div class="col-md-3">
+							<input id="adddate" name="adddate" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+						</div>
+
+						<label class="col-md-2 control-label" for="upddate">Last Entered Date</label>  
+						<div class="col-md-3">
+							<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+						</div>
+					</div>   -->
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
+						<div class="col-md-3">
+							<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly >
+						</div>
+
+						<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
+						<div class="col-md-3">
+							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" rdonly >
+						</div>
+					</div>   
+				</form>
+			</div>
 		</div>
+	</div>
 
 @endsection
 
