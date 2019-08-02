@@ -119,6 +119,8 @@ class fadepricateController extends defaultController
                             $faregister->assetno,
                             $faregister->assetcode
                         );
+
+            return back();
         }
 
     }
