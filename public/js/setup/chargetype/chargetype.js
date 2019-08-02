@@ -59,6 +59,7 @@
 						case state = 'edit':
 							enableForm('#formdata');
 							rdonly('#formdata');
+							frozeOnEdit("#dialogForm");
 							break;
 						case state = 'view':
 							disableForm('#formdata');

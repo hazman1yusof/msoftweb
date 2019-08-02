@@ -98,7 +98,7 @@ class fadepricateController extends defaultController
 
                 $facontrol_obj->update([
                     'period' => 1,
-                    'year' => $facontrol_obj->year + 1;
+                    'year' => $facontrol_obj->year + 1,
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);

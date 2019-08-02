@@ -28,14 +28,6 @@
 								</div>
 								<span class="help-block"></span>
 							</div>
-
-							<!-- <div  id="show_chgtype" style="display:none">
-								<div class='input-group'>
-									<input id="chgtype" name="chgtype" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div> -->
 						</div>
 		            </div>
 				</div>
@@ -86,193 +78,158 @@
 			<label class="control-label">Purchase Dept</label>
         	<span id="prdeptdepan" style="display: block;">&nbsp</span>
         </div> -->
-
-	    <!-- <div class="panel panel-default">
-		    <div class="panel-heading">Charge Price</div>
-		    <div class="panel-body">
-		    	<div class='col-md-12' style="padding:0 0 15px 0">
-	            	<table id="jqGrid3" class="table table-striped"></table>
-	            	<div id="jqGridPager3"></div>
-	    		</div>'
-		    </div>
-		</div>  -->
-
     </div>
 	<!-- ***************End Search + table ********************* -->
 
-	<div id="dialogForm" title="Add Form" >
+	<div id="dialogForm" title="Add Form">
 		<div class='panel panel-info'>
-			<div class="panel-heading">Charge Type
-					</div>
-				<div class="panel-body" style="position: relative;">
-					<form class='form-horizontal' style='width:99%' id='formdata'>
-							{{ csrf_field() }}
-							<input id="idno" name="idno" type="hidden">
+			<div class="panel-heading">Charge Type</div>
+			<div class="panel-body" style="position: relative;">
+				<form class='form-horizontal' style='width:99%' id='formdata'>
+					{{ csrf_field() }}
+					<input id="idno" name="idno" type="hidden">
 						
-
-							<div class="form-group">
-							  	<label class="col-md-2 control-label" for="chgtype">Charge Type</label>  
-			                    <div class="col-md-3">
-			                    	<input id="chgtype" name="chgtype" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
-			                    </div>
-							
-			                	<label class="col-md-2 control-label" for="description">Description</label>  
-			                    <div class="col-md-3">
-			                    	<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
-			                    </div>
-							</div>
-			                
-			                <!-- <div class="form-group">
-			                	<label class="col-md-2 control-label" for="classlevel">Class Level</label>  
-			                	<div class="col-md-6">
-			                		<input id="classlevel" name="classlevel" type="text" class="form-control input-sm" data-validation="required">
-			                	</div>
-							</div>     -->
-			                
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
-								<div class="col-md-3">
-									<input id="seqno" name="seqno" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-								</div>
-
-								<label class="col-md-2 control-label" for="chggroup">Charge Group</label>  
-								<div class="col-md-3" >
-									<div class='input-group'>
-										<input id="chggroup" name="chggroup" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
-							</div> 
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="ipdept">IP Dept</label>  
-								<div class="col-md-3" >
-									<div class='input-group'>
-										<input id="ipdept" name="ipdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
-							
-			                	<label class="col-md-2 control-label" for="opdept">OP Dept</label>  
-								<div class="col-md-3" >
-									<div class='input-group'>
-										<input id="opdept" name="opdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
-							</div>
-						
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="ipacccode">IP Account</label>  
-								<div class="col-md-3" >
-									<div class='input-group'>
-										<input id="ipacccode" name="ipacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
-
-								<label class="col-md-2 control-label" for="opacccode">OP Account</label>  
-								<div class="col-md-3" >
-									<div class='input-group'>
-										<input id="opacccode" name="opacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
-
-								<!-- <label class="col-md-2 control-label" for="opacc">OP Account</label>  
-								<div class="col-md-3" style="padding:0px 0px;">
-									<div class="col-md-3">
-										<input id="opacc" name="opacc" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-									</div>
-									<div class="col-md-9">
-										<input id="opacc" name="opacc" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-									</div>
-								</div> -->
-							</div>  
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="otcacccode">OTC Account</label>   
-								<div class="col-md-3" >
-									<div class='input-group'>
-										<input id="otcacccode" name="otcacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
-
-								<label class="col-md-2 control-label" for="invcategory">Inventory Category</label>  
-								<div class="col-md-3" >
-									<div class='input-group'>
-										<input id="invcategory" name="invcategory" type="text" maxlength="12" class="form-control input-sm">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
-							</div>  
-
-							<div class="form-group">
-			                	<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-			                	<div class="col-md-6">
-									<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
-									<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
-			                	</div>
-							</div> 
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="lastuser">Last User</label>  
-								<div class="col-md-3">
-									<input id="lastuser" name="upduser" type="text" class="form-control input-sm" rdonly>
-								</div>
-
-								<label class="col-md-2 control-label" for="lastupdate">Last Update</label>  
-								<div class="col-md-3">
-									<input id="lastupdate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
-							</div> 
-							
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
-								<div class="col-md-3">
-									<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly >
-								</div>
-
-								<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
-								<div class="col-md-3">
-									<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" rdonly >
-								</div>
-							</div>  
-					</form>
-				</div>
-			</div>
-			
-			<!-- <div class='panel panel-info'>
-				<div class="panel-heading">Charge Price Detail</div>
-					<div class="panel-body">
-						<form id='formdata2' class='form-vertical' style='width:99%'>
-							<input id="gstpercent" name="gstpercent" type="hidden">
-							<input id="convfactoruomcodetrdept" name="convfactoruomcodetrdept" type="hidden" value='1'>
-							<input id="convfactoruomcoderecv" name="convfactoruomcoderecv" type="hidden" value='1'>
-
-							<div id="jqGrid2_c" class='col-md-12'>
-								<table id="jqGrid2" class="table table-striped"></table>
-					            <div id="jqGridPager2"></div>
-							</div>
-						</form>
-					</div>
-
-					<div class="panel-body">
-						<div class="noti" style="font-size: bold; color: red"><ol></ol>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="chgtype">Charge Type</label>  
+						<div class="col-md-3">
+							<input id="chgtype" name="chgtype" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						</div>
+					
+						<label class="col-md-2 control-label" for="description">Description</label>  
+						<div class="col-md-3">
+							<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
 						</div>
 					</div>
-			</div>		 -->
-			
-		</div>
+			                
+					<!-- <div class="form-group">
+						<label class="col-md-2 control-label" for="classlevel">Class Level</label>  
+						<div class="col-md-6">
+							<input id="classlevel" name="classlevel" type="text" class="form-control input-sm" data-validation="required">
+						</div>
+					</div>     -->
+			                
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
+						<div class="col-md-3">
+							<input id="seqno" name="seqno" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+						</div>
+
+						<label class="col-md-2 control-label" for="chggroup">Charge Group</label>  
+						<div class="col-md-3" >
+							<div class='input-group'>
+								<input id="chggroup" name="chggroup" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+					</div> 
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="ipdept">IP Dept</label>  
+						<div class="col-md-3" >
+							<div class='input-group'>
+								<input id="ipdept" name="ipdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+					
+						<label class="col-md-2 control-label" for="opdept">OP Dept</label>  
+						<div class="col-md-3" >
+							<div class='input-group'>
+								<input id="opdept" name="opdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+					</div>
+						
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="ipacccode">IP Account</label>  
+						<div class="col-md-3" >
+							<div class='input-group'>
+								<input id="ipacccode" name="ipacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+
+						<label class="col-md-2 control-label" for="opacccode">OP Account</label>  
+						<div class="col-md-3" >
+							<div class='input-group'>
+								<input id="opacccode" name="opacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+
+						<!-- <label class="col-md-2 control-label" for="opacc">OP Account</label>  
+						<div class="col-md-3" style="padding:0px 0px;">
+							<div class="col-md-3">
+								<input id="opacc" name="opacc" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+							</div>
+							<div class="col-md-9">
+								<input id="opacc" name="opacc" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+							</div>
+						</div> -->
+					</div>  
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="otcacccode">OTC Account</label>   
+						<div class="col-md-3" >
+							<div class='input-group'>
+								<input id="otcacccode" name="otcacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+
+						<label class="col-md-2 control-label" for="invcategory">Inventory Category</label>  
+						<div class="col-md-3" >
+							<div class='input-group'>
+								<input id="invcategory" name="invcategory" type="text" maxlength="12" class="form-control input-sm">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+					</div>  
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+						<div class="col-md-6">
+							<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
+							<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
+						</div>
+					</div> 
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="upduser">Last User</label>  
+						<div class="col-md-3">
+							<input id="upduser" name="upduser" type="text" class="form-control input-sm" rdonly>
+						</div>
+
+						<label class="col-md-2 control-label" for="upddate">Last Update</label>  
+						<div class="col-md-3">
+							<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						</div>
+					</div> 
+					
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
+						<div class="col-md-3">
+							<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly >
+						</div>
+
+						<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
+						<div class="col-md-3">
+							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" rdonly >
+						</div>
+					</div>  
+				</form>
+			</div>
+		</div>		
+	</div>
 
 @endsection
 

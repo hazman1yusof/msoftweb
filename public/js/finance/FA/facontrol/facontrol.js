@@ -117,6 +117,7 @@ $(document).ready(function () {
 	var saveParam = {
 		action: 'save_table_default',
 		url:'facontrol/form',
+		fixPost:'true',
 		field:'',
 		oper:oper,
 		table_name:'finance.facontrol',
@@ -237,7 +238,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['fa_recstatus','fa_adduser','fa_adddate','fa_upduser','fa_upddate']);
+	addParamField('#jqGrid',false,saveParam,['fa_recstatus','fa_adduser','fa_adddate','fa_upduser','fa_upddate','sc_name','fa_compcode','fa_idno']);
 
 
 });
