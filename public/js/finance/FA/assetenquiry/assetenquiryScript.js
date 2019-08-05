@@ -349,6 +349,15 @@ $(document).ready(function () {
 				}
 			});
 	}
+
+	function toggleIcon(e) {
+        $(e.target)
+            .prev('.panel-heading')
+            .find(".short-full")
+            .toggleClass('glyphicon-plus glyphicon-minus');
+    }
+    $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+    $('.panel-group').on('shown.bs.collapse', toggleIcon);
 	
 	////////////////////////////formatter//////////////////////////////////////////////////////////
 	function formatter(cellvalue, options, rowObject){
@@ -395,6 +404,64 @@ $(document).ready(function () {
 
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+	/////////////////////parameter for jqgrid3 url/////////////////////////////////////////////////
+	var urlParam={
+		action:'get_table_default',
+		url: '/util/get_table_default',
+		field:'',
+		table_name:'finance.fatran',
+		table_id:'idno',
+		sort_idno:true,
+	}
+	
+	$("#jqGrid3").jqGrid({
+		datatype: "local",
+		 colModel: [
+			{ label: 'Post Date', name:'trandate', width:150, classes:'wrap'},
+			{ label: 'Tran Type', name:'trantype', width:150, classes:'wrap'},
+			{ label: 'Department', name: 'deptcode', width: 150, classes: 'wrap'},
+			{ label: 'Current Loc', name: 'curloccode', classes: 'wrap'},
+			{ label: 'Prev Dept', name: 'olddeptcode', classes: 'wrap'},
+			{ label: 'Prev Loc', name: 'oldloccode', classes: 'wrap'},
+            
+		],
+		autowidth:true,
+        multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 900,
+		height: 350,
+		rowNum: 30,
+		pager: "#jqGridPager3",
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridPager td[title='View Selected Row']").click();
+		},
+		gridComplete: function(){
+			if(oper == 'add'){
+				$("#jqGrid3").setSelection($("#jqGrid3").getDataIDs()[0]);
+			}
+
+			$('#'+$("#jqGrid3").jqGrid ('getGridParam', 'selrow')).focus();
+		},
+		
+	});
+	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
+	$("#jqGrid3").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid3").jqGrid('getGridParam','colModel'),
+		shrinkToFit: false,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridPager3",
+	});
+	jqgrid_label_align_right("#jqGrid3");	
+
+
+	//////////////////////////////////////////////end of jqgrid3//////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 	toogleSearch('#sbut1','#searchForm','on');
