@@ -108,7 +108,7 @@ i.fa {
         	</div>
 
 	    <div class="panel panel-default">
-		    	<div class="panel-heading" data-toggle="collapse" href="#collapse1"><i class="fa fa-angle-double-up" style="font-size:24px"></i>
+		    	<div class="panel-heading collapsed" data-toggle="collapse" href="#collapse1"><i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>Delivery Order DataEntry Detail
 					<button type="button" class="btn btn-primary btn-xs pull-right" id="but_print_dtl" style="display: none;">Print barcode</button>
 		    	</div>

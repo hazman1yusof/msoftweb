@@ -20,6 +20,9 @@ i.fa {
  <!--  margin-right: 5px; -->
 }
 
+.collapsed ~ .panel-body {
+  padding: 0;
+}
 @endsection
 
 @section('body')
@@ -67,7 +70,7 @@ i.fa {
 		</div>
 
 		<div class="panel panel-default">
-			<div class="panel-heading" data-toggle="collapse" href="#collapse2">
+			<div class="panel-heading collapsed" data-toggle="collapse" href="#collapse2">
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
     		Supplier Bonus </div>
