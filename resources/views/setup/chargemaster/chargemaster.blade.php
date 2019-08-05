@@ -5,8 +5,12 @@
 @section('style')
 
 .fa-angle-double-down {
-		float: right;
-	}
+	float: right;
+}
+
+.clearfix {
+	overflow: auto;
+}
 
 @endsection
 
@@ -189,7 +193,7 @@
 
 		<div class="panel-group">
   			<div class="panel panel-default">
-    			<div class="panel-heading" data-toggle="collapse" href="#collapse1">
+    			<div class="panel-heading clearfix" data-toggle="collapse" href="#collapse1">
 					Charge Price <i class="fa fa-angle-double-down" style="font-size:24px"></i> 
     			</div>
     			<div id="collapse1" class="panel-collapse collapse">
