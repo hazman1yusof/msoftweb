@@ -2,6 +2,25 @@
 
 @section('title', 'Delivery Order')
 
+@section('style')
+
+ .panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+  display: none;
+}
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+  display: inline-block;
+}
+
+i.fa {
+  cursor: pointer;
+  float: right;
+ <!--  margin-right: 5px; -->
+}
+@endsection
+
 @section('body')
 
 	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
@@ -89,15 +108,18 @@
         	</div>
 
 	    <div class="panel panel-default">
-		    	<div class="panel-heading">Delivery Order DataEntry Detail
+		    	<div class="panel-heading" data-toggle="collapse" href="#collapse1"><i class="fa fa-angle-double-up" style="font-size:24px"></i>
+    			<i class="fa fa-angle-double-down" style="font-size:24px"></i>Delivery Order DataEntry Detail
 					<button type="button" class="btn btn-primary btn-xs pull-right" id="but_print_dtl" style="display: none;">Print barcode</button>
 		    	</div>
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-	            			<table id="jqGrid3" class="table table-striped"></table>
-	            			<div id="jqGridPager3"></div>
-	    				</div>'
-		    		</div>
+		    		<div id="collapse1" class="panel-collapse collapse">
+			    		<div class="panel-body">
+			    			<div class='col-md-12' style="padding:0 0 15px 0">
+		            			<table id="jqGrid3" class="table table-striped"></table>
+		            			<div id="jqGridPager3"></div>
+		    				</div>'
+			    		</div>
+			    	</div>	
 		</div>
         
     </div>

@@ -2,7 +2,29 @@
 
 @section('title', 'Supplier')
 
+@section('style')
+
+ .panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+  display: none;
+}
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+  display: inline-block;
+}
+
+i.fa {
+  cursor: pointer;
+  float: right;
+ <!--  margin-right: 5px; -->
+}
+
+@endsection
+
 @section('body')
+
+
 	 
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
@@ -30,21 +52,33 @@
 		</div>
 
 		<div class="panel panel-default">
-			<div class="panel-body">
-			    <div class='col-md-12' style="padding:0 0 15px 0">
-	            	<table id="gridSuppitems" class="table table-striped"></table>
-	            		<div id="jqGridPager2"></div>
-	        	</div>
-			</div>
+			<div class="panel-heading collapsed" data-toggle="collapse" data-target="#collapse1">
+				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
+    			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
+    			Supplier Item </div>
+				<div id="collapse1" class="panel-collapse collapse">
+					<div class="panel-body">
+					    <div class='col-md-12' style="padding:0 0 15px 0">
+			            	<table id="gridSuppitems" class="table table-striped"></table>
+			            		<div id="jqGridPager2"></div>
+			        	</div>
+					</div>
+				</div>	
 		</div>
 
 		<div class="panel panel-default">
-			<div class="panel-body">
-			    <div class='col-md-12' style="padding:0 0 15px 0">
-	            	<table id="gridSuppBonus" class="table table-striped"></table>
-	            		<div id="jqGridPager3"></div>
-	        	</div>
-			</div>
+			<div class="panel-heading" data-toggle="collapse" href="#collapse2">
+				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
+    			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
+    		Supplier Bonus </div>
+				<div id="collapse2" class="panel-collapse collapse">
+					<div class="panel-body">
+					    <div class='col-md-12' style="padding:0 0 15px 0">
+			            	<table id="gridSuppBonus" class="table table-striped"></table>
+			            		<div id="jqGridPager3"></div>
+			        	</div>
+					</div>
+				</div>	
 		</div>
 
     </div>
