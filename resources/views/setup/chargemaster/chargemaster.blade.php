@@ -224,23 +224,6 @@ i.fa {
 						<div class="col-md-3">
 							<input id="cm_chggroup" name="cm_chggroup" type="text" class="form-control input-sm" data-validation="number, required">
 						</div>
-
-						<fieldset class="form-group">
-							<label class="col-md-2 control-label" for="UOM">UOM</label>  
-							<div class="col-md-2">
-								<input id="UOM" name="UOM" type="text" class="form-control input-sm" data-validation="required">
-							</div>
-
-							<label class="col-md-2 control-label" for="invitem">Inventory Item</label>  
-							<div class="col-md-2">
-								<input id="invitem" name="invitem" type="text" class="form-control input-sm" data-validation="required">
-							</div>
-
-							<label class="col-md-2 control-label" for="Packing">Packing</label>  
-							<div class="col-md-2">
-								<input id="Packing" name="Packing" type="text" class="form-control input-sm" data-validation="required">
-							</div>
-						</fieldset>
 					</div>
 
 					<div class="form-group">
@@ -253,6 +236,27 @@ i.fa {
 						<div class="col-md-3">
 							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='A' checked>Active</label>
 							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='D' >Deactive</label>
+						</div>
+					</div>
+
+					<hr>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="UOM">UOM</label>  
+						<div class="col-md-3">
+							<input id="UOM" name="UOM" type="text" class="form-control input-sm" data-validation="required">
+						</div>
+
+						<label class="col-md-2 control-label" for="invitem">Inventory Item</label>  
+						<div class="col-md-3">
+							<input id="invitem" name="invitem" type="text" class="form-control input-sm" data-validation="required">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="Packing">Packing</label>  
+						<div class="col-md-3">
+							<input id="Packing" name="Packing" type="text" class="form-control input-sm" data-validation="required">
 						</div>
 					</div>
 
