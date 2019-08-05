@@ -352,7 +352,11 @@
 						enableForm('#formdata');
 						frozeOnEdit("#dialogForm");
 						rdonly("#dialogForm");
-						
+						if($("#dialogForm input[name='regtype']").val() == 'P'){
+							disableField();
+						}else{
+							enableField();
+						}
 						break;
 					case state = 'view':
 						//mycurrency.formatOn();
@@ -424,9 +428,9 @@
 			datatype: "local",
 			 colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
-				{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap'}, 
-				{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
+				{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', hidden:true}, 
 				{ label: 'Asset Type', name: 'assettype', width: 15, sorttype: 'text', classes: 'wrap'},
+				{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'Department', name: 'deptcode', width: 15, sorttype: 'text', classes: 'wrap'},			
 				{ label: 'Location', name: 'loccode', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},					
 				{ label: 'Supplier', name: 'suppcode', width: 20, sorttype: 'text', classes: 'wrap'},	
@@ -435,7 +439,7 @@
 				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 				{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
-				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat},	
+				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', hidden: true, formatter:regtypeformat,unformat:regtypeunformat},	
 				{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
 				{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 				{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
@@ -443,7 +447,7 @@
 				{ label: 'Purchase Date', name:'purdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},																	
 				{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
 				{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
-				{ label: 'Current Cost', name:'currentcost', width:20, classes:'wrap', hidden:true},
+				{ label: 'Current Cost', name:'currentcost', width:20, classes:'wrap', hidden:false},
 				{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
 				{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 				{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
@@ -456,7 +460,7 @@
 				//accumytd
 				{ label: 'Accum YTD', name:'cuytddep', width:20, classes:'wrap', hidden:true},
 				//nbv
-				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
+				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:true,
 				formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
 				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
 
