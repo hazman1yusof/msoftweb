@@ -46,79 +46,84 @@ class fadepricateController extends defaultController
 
         if($facontrol_obj->exists()){
             //2.baca semua faregister
-            $faregisters = DB::table('finance.faregister')
+            $faregister_obj = DB::table('finance.faregister')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('recstatus','=','A')
                                 ->where('startdepdate','!=','')
-                                ->where('startdepdate','<=',Carbon::now("Asia/Kuala_Lumpur"))
-                                ->get();
+                                ->where('startdepdate','<=',Carbon::now("Asia/Kuala_Lumpur"));
 
-            foreach ($faregisters as $faregister) {
+            if($faregister_obj->exists()){
+                $faregisters = $faregister_obj->get();
 
-
-                $facode_obj = DB::table('finance.facode')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('assetcode','=',$faregister->assetcode);
-
-                if($facode_obj->exists()){
-                    //3. amik facode utk tahu rate
-                    $facode = $facode_obj->first();
-
-                    $cost = $faregister->currentcost;
-                    $lstyear = $faregister->lstytddep;
-                    $ytd = $faregister->cuytddep;
-
-                    $accum_costdisp = 0;
-                    $accum_dep = 0;
+                foreach ($faregisters as $faregister) {
 
 
-                    $fatrans = DB::table('finance.fatran')
+                    $facode_obj = DB::table('finance.facode')
                                 ->where('compcode','=',session('compcode'))
-                                ->where('assetcode','=',$faregister->assetcode)
-                                ->where('assetno','=',$faregister->assetno)
-                                ->where('trantype','=','DIS')
-                                ->get();
+                                ->where('assetcode','=',$faregister->assetcode);
 
-                    foreach ($fatrans as $fatran) {
-                        $accum_costdisp = $accum_costdisp + $fatran->amount;
+                    if($facode_obj->exists()){
+                        //3. amik facode utk tahu rate
+                        $facode = $facode_obj->first();
+
+                        $cost = $faregister->currentcost;
+                        $lstyear = $faregister->lstytddep;
+                        $ytd = $faregister->cuytddep;
+
+                        $accum_costdisp = 0;
+                        $accum_dep = 0;
+
+
+                        $fatrans = DB::table('finance.fatran')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('assetcode','=',$faregister->assetcode)
+                                    ->where('assetno','=',$faregister->assetno)
+                                    ->where('trantype','=','DIS')
+                                    ->get();
+
+                        foreach ($fatrans as $fatran) {
+                            $accum_costdisp = $accum_costdisp + $fatran->amount;
+                        }
+
+                        //4. cost - dis * (rate / 100 / 12)
+                        $cost = $cost - $accum_costdisp;
+                        $accum_dep = $cost * $facode->rate / 100 /12;
+
                     }
-
-                    //4. cost - dis * (rate / 100 / 12)
-                    $cost = $cost - $accum_costdisp;
-                    $accum_dep = $cost * $facode->rate / 100 /12;
 
                 }
 
+                //5. upd balike facontrol
+                $updated_period = $facontrol_obj->period + 1;
+
+                if($updated_period == 13){
+
+                    $facontrol_obj->update([
+                        'period' => 1,
+                        'year' => $facontrol_obj->year + 1,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+                }else{
+
+                    $facontrol_obj->update([
+                        'period' => $updated_period,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+                }
+
+                //6. buat fatran
+                $this->fainface(
+                                $request,
+                                $faregister->deptcode,
+                                $accum_dep,
+                                $faregister->assetno,
+                                $faregister->assetcode
+                            );
+                
             }
-
-            //5. upd balike facontrol
-            $updated_period = $facontrol_obj->period + 1;
-
-            if($updated_period == 13){
-
-                $facontrol_obj->update([
-                    'period' => 1,
-                    'year' => $facontrol_obj->year + 1,
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-            }else{
-
-                $facontrol_obj->update([
-                    'period' => $updated_period,
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-            }
-
-            //6. buat fatran
-            $this->fainface(
-                            $request,
-                            $faregister->deptcode,
-                            $accum_dep,
-                            $faregister->assetno,
-                            $faregister->assetcode
-                        );
+            
 
             return back();
         }
