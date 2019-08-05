@@ -24,6 +24,7 @@ $(document).ready(function () {
 			}
 		},
 	};
+
 	//////////////////////////////////////////////////////////////
 
 	////////////////////object for dialog handler//////////////////
@@ -518,21 +519,21 @@ $(document).ready(function () {
 	$("#gridSuppitems").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Supplier Code', name: 'si_suppcode', width: 30, hidden: true},
+			{ label: 'Supplier Code', name: 'si_suppcode', width: 100, hidden: true},
 		 	{ label: 'no', name: 'si_lineno_', width: 50, sorttype: 'number', hidden: true,}, // 
-		 	{ label: 'Item Code', name: 'si_itemcode', width: 40, sorttype: 'text', editable: true, classes: 'wrap', canSearch: true},
-			{ label: 'Item Description', name: 'p_description', width: 90, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true},
-			{ label: 'Price Code', name: 'si_pricecode', width: 30, sorttype: 'text', editable: true, classes: 'wrap'},
-			{ label: 'Uom Code', name: 'si_uomcode', width: 30, sorttype: 'text', editable: true, classes: 'wrap'},
-			{ label: 'Unit Price', name: 'si_unitprice', width: 30, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
-			{ label: 'Purchase Quantity', name: 'si_purqty', width: 40, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
-			{ label: 'Percentage of Discount', name: 'si_perdiscount', width: 30,  hidden: true},
+		 	{ label: 'Item Code', name: 'si_itemcode', width: 150, sorttype: 'text', editable: true, classes: 'wrap', canSearch: true},
+			{ label: 'Item Description', name: 'p_description', width: 400, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true},
+			{ label: 'Price Code', name: 'si_pricecode', width: 200, sorttype: 'text', editable: true, classes: 'wrap'},
+			{ label: 'Uom Code', name: 'si_uomcode', width: 100, sorttype: 'text', editable: true, classes: 'wrap'},
+			{ label: 'Unit Price', name: 'si_unitprice', width: 200, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
+			{ label: 'Purchase Quantity', name: 'si_purqty', width: 100, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
+			{ label: 'Percentage of Discount', name: 'si_perdiscount', width: 100,  hidden: true},
 			{ label: 'Amount Discount', name: 'si_amtdisc', width: 30,  hidden: true},
 			{ label: 'Amount Sales Tax', name: 'si_amtslstax', width: 30,  hidden: true},
 			{ label: 'Percentage of Sales Tax', name: 'si_perslstax', width: 30,  hidden: true},
 			{ label: 'Expiry Date', name: 'si_expirydate', width: 30,  hidden: true},
 			{ label: "Item Code at Supplier's Site", name: 'si_sitemcode', width: 30,  hidden: true},
-			{ label: 'Record Status', name: 'si_recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{ label: 'Record Status', name: 'si_recstatus', width: 100, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
 			{label: 'No', name: 'si_idno', width: 50, hidden: true},
@@ -546,11 +547,12 @@ $(document).ready(function () {
 			{ label: 'lastipaddress', name: 'si_lastipaddress', width: 90, hidden:true, classes: 'wrap'},
 		],
 		viewrecords: true,
+		//shrinkToFit: true,
 		autowidth:true,
         multiSort: true,
 		loadonce:false,
 		width: 900,
-		height: 100,
+		height: 200,
 		rowNum: 30,
 		hidegrid: false,
 		caption: caption('searchForm2','Items Supplied By the Supplier'),
@@ -832,12 +834,12 @@ $(document).ready(function () {
 			{ label: 'uomcode', name: 'sb_uomcode', width: 50, hidden: true},
 			{ label: 'purqty', name: 'sb_purqty', width: 50, hidden: true},
 			{ label: 'bonpricecode', name: 'sb_bonpricecode', width: 50, hidden: true},
-		 	{ label: 'Bonus Item Code', name: 'sb_bonitemcode', width: 50, classes: 'wrap', canSearch: true},
-			{ label: 'Item Description', name: 'p_description', width: 30, classes: 'wrap', checked:true,canSearch: true},
-			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 30, classes: 'wrap'},
-			{ label: 'Bonus Quantity', name: 'sb_bonqty', width: 30, classes: 'wrap', formatter:'currency'}, 
-			{ label: "Supplier's Item Code", name: 'sb_bonsitemcode', width: 30, classes: 'wrap'},
-			{ label: 'Record Status', name: 'sb_recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+		 	{ label: 'Bonus Item Code', name: 'sb_bonitemcode', width: 200, classes: 'wrap', canSearch: true},
+			{ label: 'Item Description', name: 'p_description', width: 400, classes: 'wrap', checked:true,canSearch: true},
+			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 100, classes: 'wrap'},
+			{ label: 'Bonus Quantity', name: 'sb_bonqty', width: 100, classes: 'wrap', formatter:'currency'}, 
+			{ label: "Supplier's Item Code", name: 'sb_bonsitemcode', width: 200, classes: 'wrap'},
+			{ label: 'Record Status', name: 'sb_recstatus', width: 200, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
 			{label: 'No', name: 'sb_idno', width: 50, hidden: true},
@@ -852,6 +854,7 @@ $(document).ready(function () {
 			{ label: 'lastipaddress', name: 'sb_lastipaddress', width: 90, hidden:true, classes: 'wrap'},
 		],
 		viewrecords: true,
+		shrinkToFit: true,
 		autowidth:true,
         multiSort: true,
 		loadonce:false,
