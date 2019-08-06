@@ -473,12 +473,13 @@ abstract class defaultController extends Controller{
                 ->select('seqno')
                 ->where('trantype','=',$trantype)
                 ->where('dept','=',$dept)
-                ->where('recstatus','=', 'A')
-                ->first();
+                ->where('recstatus','=', 'A');
                 
-        if(!$seqno){
+        if(!$seqno->exists()){
             throw new \Exception("Sequence Number for dept $dept is not available");
         }
+
+        $seqno = $seqno->first();
 
         DB::table('material.sequence')
             ->where('trantype','=',$trantype)->where('dept','=',$dept)
@@ -507,29 +508,32 @@ abstract class defaultController extends Controller{
                 ->where('compcode','=',session('compcode'))
                 ->where('year','=',$year)
                 ->where('costcode','=',$ccode)
-                ->where('glaccount','=',$glcode)
-                ->first();
+                ->where('glaccount','=',$glcode);
 
-        if(!empty($pvalue1)){
+        if($pvalue1->exists()){
+            $pvalue1 = $pvalue1->first();
             $pvalue1 = (array)$pvalue1;
             $this->gltranAmount = $pvalue1["actamount".$period];
         }
 
-        return !empty($pvalue1);
+        return $pvalue1->exists();
     }
 
     //nak check glmasdtl exist ke tak utk sekian costcode, glaccount, year, period
     //kalu jumpa dia return true, pastu simpan actamount{month} dkt global variable gltranAmount
     public static function isGltranExist_($ccode,$glcode,$year,$period){
+
         $pvalue1 = DB::table('finance.glmasdtl')
                 ->select("glaccount","actamount".$period)
                 ->where('compcode','=',session('compcode'))
                 ->where('year','=',$year)
                 ->where('costcode','=',$ccode)
-                ->where('glaccount','=',$glcode)
-                ->first();
+                ->where('glaccount','=',$glcode);
 
-        if(!empty($pvalue1)){
+
+        if($pvalue1->exists()){
+            $pvalue1 = $pvalue1->first();
+            dump($pvalue1);
             $pvalue1 = (array)$pvalue1;
             return $pvalue1["actamount".$period];
         }else{

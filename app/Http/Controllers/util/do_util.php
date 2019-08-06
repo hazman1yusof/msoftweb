@@ -254,7 +254,7 @@ class do_util extends defaultController{
         //2. check glmastdtl utk debit, kalu ada update kalu xde create
         $gltranAmount =  defaultController::isGltranExist_($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
 
-        if($gltranAmount!=false){
+        if($gltranAmount!==false){
             DB::table('finance.glmasdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('costcode','=',$drcostcode)
@@ -283,7 +283,7 @@ class do_util extends defaultController{
         //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
         $gltranAmount = defaultController::isGltranExist_($row_sysparam->pvalue1,$row_sysparam->pvalue2,$yearperiod->year,$yearperiod->period);
 
-        if($gltranAmount!=false){
+        if($gltranAmount!==false){
             DB::table('finance.glmasdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('costcode','=',$row_sysparam->pvalue1)
@@ -377,7 +377,7 @@ class do_util extends defaultController{
             //2. check glmastdtl utk debit, kalu ada update kalu xde create
              $gltranAmount = defaultController::isGltranExist_($drcostcode_,$dracc_,$yearperiod->year,$yearperiod->period);
 
-            if($gltranAmount!=false){
+            if($gltranAmount!==false){
                 DB::table('finance.glmasdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('costcode','=',$drcostcode_)
@@ -406,7 +406,7 @@ class do_util extends defaultController{
             //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
             $gltranAmount = defaultController::isGltranExist_($queryACC->pvalue1,$queryACC->pvalue2,$yearperiod->year,$yearperiod->period);
 
-            if($gltranAmount!=false){
+            if($gltranAmount!==false){
                 DB::table('finance.glmasdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('costcode','=',$queryACC->pvalue1)
