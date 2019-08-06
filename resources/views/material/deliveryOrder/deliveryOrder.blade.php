@@ -115,15 +115,18 @@ i.fa {
 				<label class="control-label">Purchase Dept</label>
         		<span id="prdeptdepan" style="display: block;">&nbsp</span>
         	</div>
+        	<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
+				<label class="control-label" style="margin-top: 10px;">Print Label</label>
+        	</div>
 
-	    <div class="panel panel-default">
-		    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#collapse1"><i class="fa fa-angle-double-up" style="font-size:24px"></i>
+	    <div class="panel panel-default" id="jqGrid3_c">
+		    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel"><i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>Delivery Order DataEntry Detail
-					<button type="button" class="btn btn-primary btn-xs pull-right" id="but_print_dtl" style="display: none;">Print barcode</button>
+					
 		    	</div>
-		    		<div id="collapse1" class="panel-collapse collapse">
+		    		<div id="jqGrid3_panel" class="panel-collapse collapse">
 			    		<div class="panel-body">
-			    			<div class='col-md-12' style="padding:0 0 15px 0">
+			    			<div id="" class='col-md-12' style="padding:0 0 15px 0">
 		            			<table id="jqGrid3" class="table table-striped"></table>
 		            			<div id="jqGridPager3"></div>
 		    				</div>'

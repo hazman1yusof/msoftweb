@@ -58,6 +58,7 @@ class assetregisterController extends defaultController
                                 ->where('compcode','=',session('compcode'))
                                 ->where('assettype', '=', $fatemp->assettype)
                                 ->first();
+                                
                 $tagnextno_counter = intval($facode->tagnextno)+1;
                 $assetno = str_pad($facode->tagnextno,6,"0",STR_PAD_LEFT);
 
@@ -87,6 +88,7 @@ class assetregisterController extends defaultController
                         'cuytddep' => $fatemp->cuytddep,
                         'recstatus' => $fatemp->recstatus,
                         'individualtag' => $fatemp->individualtag,
+                        'startdepdate' =>$fatemp->statdate,
                         'statdate' => $fatemp->statdate,
                         'trantype' => $fatemp->trantype,
                         'nprefid' => $fatemp->nprefid,

@@ -91,14 +91,15 @@ class fadepricateController extends defaultController
 
                 }
 
-                //5. upd balike facontrol
-                $updated_period = $facontrol_obj->period + 1;
+                //5. upd balik facontrol
+                $facontrol = $facontrol_obj->first();
+                $updated_period = $facontrol->period + 1;
 
                 if($updated_period == 13){
 
                     $facontrol_obj->update([
                         'period' => 1,
-                        'year' => $facontrol_obj->year + 1,
+                        'year' => $facontrol->year + 1,
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -137,6 +138,7 @@ class fadepricateController extends defaultController
                             ->where('trantype','=','DEP');
 
         if($sysparam_obj->exists()){
+            $sysparam = $sysparam_obj->first();
             //create fatran
             DB::table('finance.fatran')
                     ->insert([
@@ -154,9 +156,9 @@ class fadepricateController extends defaultController
 
             //plus 1 sysparam
             $sysparam_obj->update([
-                'pvalue1' => $sysparam_obj->pvalue1 + 1,
-                'upduser' => session('username'),
-                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                'pvalue1' => $sysparam->pvalue1 + 1,
+                'lastuser' => session('username'),
+                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);      
         }
     }

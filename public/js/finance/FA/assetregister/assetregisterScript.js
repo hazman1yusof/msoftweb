@@ -830,7 +830,7 @@
 			obj._token = $('#_token').val();
 			
 			$.post( '/assetregister/form', obj , function( data ) {
-				
+				refreshGrid('#jqGrid', urlParam);
 			}).fail(function(data) {
 
 			}).success(function(data){
