@@ -4,8 +4,20 @@
 
 @section('style')
 
-.fa-angle-double-down {
+.panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+	display: none;
+}
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+	display: inline-block;
+}
+
+i.fa {
+	cursor: pointer;
 	float: right;
+	<!--  margin-right: 5px; -->
 }
 
 .clearfix {
@@ -60,32 +72,6 @@
 					  	</div>
 		            </div>
 				</div>
-
-				<!-- <div class="col-md-2">
-					<label class="control-label" for="Status">Status</label>  
-					<select id="Status" name="Status" class="form-control input-sm">
-						<option value="All" selected>ALL</option>
-						<option value="Open">OPEN</option>
-						<option value="Confirmed">CONFIRMED</option>
-						<option value="Posted">POSTED</option>
-						<option value="Cancelled">CANCELLED</option>
-					</select>
-	            </div>
-
-	            <div class="col-md-2">
-			  		<label class="control-label" for="trandept">Purchase Dept</label> 
-					<select id='trandept' class="form-control input-sm">
-				      	<option value="All" selected>ALL</option>
-					</select>
-				</div>
-
-				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
-					<span id="error_infront" style="color: red"></span>
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
-				</div> -->
 			</fieldset> 
 		</form>
 
@@ -99,15 +85,6 @@
 		    </div>
 		</div>
 
-        <!-- <div class='click_row'>
-        	<label class="control-label">Record No</label>
-        	<span id="recnodepan" style="display: block;">&nbsp</span>
-        </div>
-        <div class='click_row'>
-			<label class="control-label">Purchase Dept</label>
-        	<span id="prdeptdepan" style="display: block;">&nbsp</span>
-        </div> -->
-
 	    <!-- <div class="panel panel-default">
 		    <div class="panel-heading">Charge Price</div>
 		    <div class="panel-body">
@@ -118,83 +95,10 @@
 		    </div>
 		</div>  -->
 
-		<!-- accordion sample -->
-		<!-- <div class="panel panel-default">
-			<div class="accordion" id="accordionExample">
-				<div class="card">
-					<div class="card-header" id="headingThree">
-						<h2 class="mb-0">
-							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-								Collapsible Group Item #3
-							</button>
-						</h2>
-					</div>
-					<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-						<div class="card-body">
-							Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
-		<!-- accordion sample -->
-
-		<!-- <div class="panel panel-default">
-			<div class="accordion" id="grid3">
-				<div class="card">
-					<div class="card-header panel-heading" id="JqGrid3">
-						<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseJqGrid3" aria-expanded="false" aria-controls="collapseJqGrid3">
-							Charge Price
-						</button>
-					</div>
-					<div id="collapseJqGrid3" class="collapse" aria-labelledby="JqGrid3" data-parent="#grid3">
-						<div class="panel-body card-body">
-							<div class='col-md-12' style="padding:0 0 15px 0">
-								<table id="jqGrid3" class="table table-striped"></table>
-								<div id="jqGridPager3"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>  -->
-
-		<!-- <div class="panel panel-default">
-			<div class="panel-heading" id="JqGrid3">
-				<button class="btn btn-link panel-title collapsed" type="button" data-toggle="collapse" data-target="#collapseJqGrid3" aria-expanded="false" aria-controls="collapseJqGrid3">
-					Charge Price 
-				</button>
-			</div>
-			<div id="collapseJqGrid3" class="collapse" aria-labelledby="JqGrid3">
-				<div class="panel-body">
-					<div class='col-md-12' style="padding:0 0 15px 0">
-						<table id="jqGrid3" class="table table-striped"></table>
-						<div id="jqGridPager3"></div>
-					</div>
-				</div>
-			</div>
-		</div>  -->
-
-		<!-- accordion2 sample -->
-		<!-- <div class="panel-group">
-  			<div class="panel panel-default">
-    			<div class="panel-heading">
-      				<h4 class="panel-title">
-      					<a data-toggle="collapse" href="#collapse1">Collapsible panel</a>
-      				</h4>
-    			</div>
-    			<div id="collapse1" class="panel-collapse collapse">
-					<div class="panel-body">Panel Body</div>
-					<div class="panel-footer">Panel Footer</div>
-    			</div>
-  			</div>
-		</div> -->
-		<!-- accordion2 sample -->
-
 		<div class="panel-group">
   			<div class="panel panel-default">
-    			<div class="panel-heading clearfix" data-toggle="collapse" href="#collapse1">
-					Charge Price <i class="fa fa-angle-double-down" style="font-size:24px"></i> 
+    			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#collapse1">
+					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Charge Price
     			</div>
     			<div id="collapse1" class="panel-collapse collapse">
 					<div class="panel-body">
@@ -335,19 +239,23 @@
 						</div>
 					</div>
 
+					<hr>
+
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="UOM">UOM</label>  
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<input id="UOM" name="UOM" type="text" class="form-control input-sm" data-validation="required">
 						</div>
 
 						<label class="col-md-2 control-label" for="invitem">Inventory Item</label>  
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<input id="invitem" name="invitem" type="text" class="form-control input-sm" data-validation="required">
 						</div>
+					</div>
 
+					<div class="form-group">
 						<label class="col-md-2 control-label" for="Packing">Packing</label>  
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<input id="Packing" name="Packing" type="text" class="form-control input-sm" data-validation="required">
 						</div>
 					</div>

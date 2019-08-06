@@ -202,7 +202,7 @@
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="purprice">Price</label>  
+					<label class="col-md-2 control-label" for="purprice">Current Price</label>  
 						<div class="col-md-3">
 							<input id="purprice" name="purprice" maxlength="12" class="form-control input-sm" value="0.00" data-validation="required">  
 					 	</div>

@@ -81,6 +81,7 @@ class assetregisterController extends defaultController
                         'purdate' => $fatemp->purdate,
                         'purprice' => $fatemp->purprice,
                         'origcost' => $fatemp->origcost,
+                        'currentcost' => $fatemp->currentcost,
                         'qty' => $fatemp->qty,
                         'lstytddep' => $fatemp->lstytddep,
                         'cuytddep' => $fatemp->cuytddep,

@@ -19,6 +19,15 @@ i.fa {
   float: right;
  <!--  margin-right: 5px; -->
 }
+
+.collapsed ~ .panel-body {
+  padding: 0;
+}
+
+.clearfix {
+	overflow: auto;
+}
+
 @endsection
 
 @section('body')
@@ -108,7 +117,7 @@ i.fa {
 	   
 
          <div class="panel panel-default">
-		    	<div class="panel-heading" data-toggle="collapse" href="#collapse1"><i class="fa fa-angle-double-up" style="font-size:24px"></i>
+		    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#collapse1"><i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>Purchase Order DataEntry Detail  </div>
 		    		<div id="collapse1" class="panel-collapse collapse">
 			    		<div class="panel-body">
