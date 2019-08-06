@@ -111,7 +111,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
 						<div class="col-md-3">
-							<input id="seqno" name="seqno" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+							<input id="seqno" name="seqno" type="text" class="form-control input-sm">
 						</div>
 
 						<label class="col-md-2 control-label" for="chggroup">Charge Group</label>  
