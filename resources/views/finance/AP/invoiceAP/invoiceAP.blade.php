@@ -2,6 +2,34 @@
 
 @section('title', 'Invoice AP')
 
+@section('style')
+
+.panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+ display: none;
+}
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+ display: inline-block;
+}
+
+i.fa {
+ cursor: pointer;
+ float: right;
+<!--  margin-right: 5px; -->
+}
+
+.collapsed ~ .panel-body {
+ padding: 0;
+}
+
+.clearfix {
+   overflow: auto;
+}
+
+@endsection
+
 @section('body')
 
 	<!-- @include('layouts.default_search_and_table') -->
@@ -76,14 +104,18 @@
         	<span id="docnodepan" style="display: block;">&nbsp</span>
         </div>
 
-	    <div class="panel panel-default">
-		    <div class="panel-heading">Invoie AP Data Entry Detail</div>
-		    	<div class="panel-body">
-		    		<div class='col-md-12' style="padding:0 0 15px 0">
-	            		<table id="jqGrid3" class="table table-striped"></table>
-	            		<div id="jqGridPager3"></div>
-	    			</div>'
-		    	</div>
+	    <div class="panel panel-default" id="jqGrid3_c">
+		<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
+				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
+    			<i class="fa fa-angle-double-down" style="font-size:24px"></i>Invoice AP Data Entry Detail</div>
+				<div id="jqGrid3_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class='col-md-12' style="padding:0 0 15px 0">
+							<table id="jqGrid3" class="table table-striped"></table>
+							<div id="jqGridPager3"></div>
+						</div>'
+					</div>
+				</div>	
 		</div>
         
     </div>
