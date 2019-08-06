@@ -96,7 +96,7 @@
 					<div class="form-group">
 						<label class="control-label col-md-2" for="classlevel">Class Level</label>  
 						<div class="col-md-3">
-							<select class="form-control col-md-4" id='classlevel' name='classlevel'>
+							<select class="form-control col-md-4" id='classlevel' name='classlevel' data-validation="required">
 								<option value='1'>Hospital</option>
 								<option value='2'>Consultant</option>
 								<option value='3'>Tax</option>
