@@ -57,7 +57,6 @@ class fadepricateController extends defaultController
 
                 foreach ($faregisters as $faregister) {
 
-
                     $facode_obj = DB::table('finance.facode')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('assetcode','=',$faregister->assetcode);
@@ -72,7 +71,6 @@ class fadepricateController extends defaultController
 
                         $accum_costdisp = 0;
                         $accum_dep = 0;
-
 
                         $fatrans = DB::table('finance.fatran')
                                     ->where('compcode','=',session('compcode'))
@@ -104,6 +102,7 @@ class fadepricateController extends defaultController
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+                    
                 }else{
 
                     $facontrol_obj->update([
@@ -121,7 +120,7 @@ class fadepricateController extends defaultController
                                 $faregister->assetno,
                                 $faregister->assetcode
                             );
-                
+
             }
             
 

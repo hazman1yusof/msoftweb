@@ -1916,6 +1916,7 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
 
 				}
+
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1998,6 +1999,17 @@ $(document).ready(function () {
 		},{
 			title:"Select Item For Delivery Order",
 			open:function(){
+
+				let data = selrowData('#'+dialog_pricecode.gridname);
+
+				if(data.pricecode == 'MS'){
+					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode', 'p.unit'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '<>.Stock', 'session.unit'];
+				}else{
+					dialog_uomcode.urlParam.filterCol=['s.compcode','s.itemcode','s.deptcode','s.year'];
+					dialog_uomcode.urlParam.filterVal=['session.compcode',$("#jqGrid2 input[name='itemcode']").val(),$('#delordhd_deldept').val(),moment($('#delordhd_trandate').val()).year()];
+				}
+
 				// dialog_itemcode_init();
 			},
 			close: function(){
