@@ -409,8 +409,7 @@
 			action:'get_table_default',
 			url: '/util/get_table_default',
 			field:'',
-			table_name:'finance.fatemp', 
-			table_id:'idno',				
+			table_name:'finance.fatemp',	
 		}
 
 		/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -420,7 +419,6 @@
 			url:'assetregister/form',
 			oper:oper,
 			table_name:'finance.fatemp',
-			table_id:'idno' 				
 			
 		};
 		
@@ -447,7 +445,7 @@
 				{ label: 'Purchase Date', name:'purdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},																	
 				{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
 				{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
-				{ label: 'Current Cost', name:'currentcost', width:20, classes:'wrap', hidden:false},
+				{ label: 'Current Cost', name:'currentcost', width:20, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
 				{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
 				{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 				{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
@@ -524,6 +522,9 @@
 				return "Deactive";
 			}
 		}
+
+		////////////////////// set label jqGrid right ////////////////////////////////////////////////////
+		jqgrid_label_align_right("#jqGrid");
 
 
 		////////////////////////////// DATE FORMATTER ////////////////////////////////////////

@@ -4,8 +4,24 @@
 
 @section('style')
 
-.fa-angle-double-down {
-	float: right;
+.panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+  display: none;
+}
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+  display: inline-block;
+}
+
+i.fa {
+  cursor: pointer;
+  float: right;
+ <!--  margin-right: 5px; -->
+}
+
+.collapsed ~ .panel-body {
+  padding: 0;
 }
 
 .clearfix {
@@ -30,6 +46,7 @@
 				</div>
 			</fieldset>
 		</form>
+
     	<div class="panel panel-default">
 			<div class="panel-heading">Asset Enquiry Header</div>
     		<div class="panel-body">
@@ -39,64 +56,22 @@
 				</div>
     		</div>
 		</div>
-			<!-- <div class="panel panel-default">
 
-			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-
-			<div class="panel panel-default">
-				<div class="panel-heading" role="tab" id="headingOne">
-					<h4 class="panel-title">
-						<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-							<i class="short-full glyphicon glyphicon-plus"></i>
-							Asset Movement Header
-						</a>
-					</h4>
-				</div>
-				<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-					<div class="panel-body">
-						Here you go with the content of accordion's heading 1. You may place textual information, images etc. here. <br />
-						Here you go with the content of accordion's heading 1. You may place textual information, images etc. here. <br />
-						Here you go with the content of accordion's heading 1. You may place textual information, images etc. here.
-					</div>
-				</div>
+		<div class="panel panel-default" id="jqGrid2_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid2_panel">
+				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Asset Movement Header
 			</div>
-
-			<div class="panel panel-default">
-				<div class="panel-heading" role="tab" id="headingTwo">
-					<h4 class="panel-title">
-						<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-							<i class="short-full glyphicon glyphicon-plus"></i>
-							The heading2 of panel comes here
-						</a>
-					</h4>
-				</div>
-				<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-					<div class="panel-body">
-						Here you go with the content of accordion's heading 2. You may place textual information, images etc. here.
+			<div id="jqGrid2_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid2" class="table table-striped"></table>
+						<div id="jqGridPager2"></div>
 					</div>
 				</div>
-			</div>
-
-			</div> End of panel-group  -->
-			<div class="panel-group">
-  			<div class="panel panel-default">
-    			<div class="panel-heading clearfix" data-toggle="collapse" href="#collapse1">
-				Asset Movement Header <i class="fa fa-angle-double-down" style="font-size:24px"></i> 
-    			</div>
-    			<div id="collapse1" class="panel-collapse collapse">
-					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="jqGrid3" class="table table-striped"></table>
-							<div id="jqGridPager3"></div>
-						</div>
-					</div>
-    			</div>
-  			</div>
-		</div>
-	    		</div>
-		    </div>
-		</div> 
-    </div>
+    		</div>
+  		</div>
+	</div>
 
     <!-- <div id="msgBox" title="Particulars of Asset Movement" style="display:none">
   

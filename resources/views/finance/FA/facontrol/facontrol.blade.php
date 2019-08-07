@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Fa Control')
+@section('title', 'Fixed Asset Control')
 
 @section('body')
 
