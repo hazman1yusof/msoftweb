@@ -486,7 +486,14 @@
 					}
 
 					$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-			},				
+			},
+			beforeSelectRow: function (rowid, e) {
+			    var $myGrid = $(this),
+		        i = $.jgrid.getCellIndex($(e.target).closest('td')[0]),
+		        cm = $myGrid.jqGrid('getGridParam', 'colModel');
+			    return (cm[i].name === 'cb');
+			}
+				
 		});
 		//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
 		function regtypeformat(cellvalue, options, rowObject) {

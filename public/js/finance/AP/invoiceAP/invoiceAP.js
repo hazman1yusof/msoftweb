@@ -95,6 +95,8 @@ $(document).ready(function () {
 				console.log($('#apacthdr_outamount').val());
 				console.log($('#apacthdr_amount').val());
 				console.log($('#apacthdr_outamount').val() != $('#apacthdr_amount').val());
+
+				mycurrency.formatOff();
 				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val() && counter_save==0){
 					event.preventDefault();
 					bootbox.confirm({
@@ -105,6 +107,11 @@ $(document).ready(function () {
 					    	if(result == true){
 								counter_save=1;
 								$("#dialogForm").dialog('close');
+					    	}else{
+					    		if($('#saveHeaderLabel').is(":visible")){
+					    			$("#saveHeaderLabel").click();
+					    		}
+					    		mycurrency.formatOn()
 					    	}
 					    }
 					});
@@ -322,10 +329,10 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-			saveHeader("#formdata", oper,saveParam,{idno:$('#idno').val()});
+			saveHeader("#formdata", oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
 			unsaved = false;
 			$("#dialogForm").dialog('close');
-			}else{
+		}else{
 				mycurrency.formatOn();
 		}
 	});
@@ -412,7 +419,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////////
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
-	function saveHeader(form,selfoper,saveParam,obj){
+	function saveHeader(form,selfoper,saveParam,obj,needrefresh){
 		if(obj==null){
 			obj={};
 		}
@@ -445,6 +452,10 @@ $(document).ready(function () {
 				//doesnt need to do anything
 			}
 			disableForm('#formdata');
+
+			if(needrefresh === 'refreshGrid'){
+				refreshGrid("#jqGrid", urlParam);
+			}
 			
 		});
 	}
