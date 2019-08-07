@@ -329,7 +329,7 @@
 					fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);*/
 				},
 				afterShowForm: function (rowid) {
-				    $("#expdate").datepicker();
+				    // $("#expdate").datepicker();
 				},
 				beforeSubmit: function(postdata, rowid){ 
 				/*	dialog_itemcode.check(errorField);
