@@ -429,20 +429,20 @@
 				{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', hidden:true}, 
 				{ label: 'Asset Type', name: 'assettype', width: 15, sorttype: 'text', classes: 'wrap'},
 				{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
-				{ label: 'Department', name: 'deptcode', width: 15, sorttype: 'text', classes: 'wrap'},			
+				{ label: 'Department', name: 'deptcode', width: 20, sorttype: 'text', classes: 'wrap'},			
 				{ label: 'Location', name: 'loccode', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},					
 				{ label: 'Supplier', name: 'suppcode', width: 20, sorttype: 'text', classes: 'wrap'},	
 				{ label: 'DO No', name:'delordno',width: 15, sorttype:'text', classes:'wrap'},					
 				{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
-				{ label: 'Item Code', name: 'itemcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
+				{ label: 'Item Code', name: 'itemcode', width: 20, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
 				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', hidden: true, formatter:regtypeformat,unformat:regtypeunformat},	
-				{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
+				{ label: 'Description', name: 'description', width: 60, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
 				{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 				{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
 				{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
-				{ label: 'Purchase Date', name:'purdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},																	
+				{ label: 'Purchase Date', name:'purdate', width: 40, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter},
 				{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
 				{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
 				{ label: 'Current Cost', name:'currentcost', width:20, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
@@ -461,10 +461,15 @@
 				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:true,
 				formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
 				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
-
 				{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
+				{ label: ' ', name: 'Checkbox', width: 10,align: "center",
+					        editoptions: { value: "True:False" },
+					        editrules: { required: true },
+					        formatter: formatterCheckbox,
+					        formatoptions: { disabled: false },
+					        editable: true  },
+
 			],
-			multiselect:true,
 			autowidth:true,
             multiSort: true,
 			viewrecords: true,
@@ -484,12 +489,6 @@
 					}
 
 					$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-			},
-			beforeSelectRow: function (rowid, e) {
-			    var $myGrid = $(this),
-		        i = $.jgrid.getCellIndex($(e.target).closest('td')[0]),
-		        cm = $myGrid.jqGrid('getGridParam', 'colModel');
-			    return (cm[i].name === 'cb');
 			}
 				
 		});
@@ -530,14 +529,13 @@
 			}
 		}
 
+		function formatterCheckbox(cellvalue, options, rowObject){
+			return "<input type='checkbox' name='Checkbox' >";
+		}
+
+
 		////////////////////// set label jqGrid right ////////////////////////////////////////////////////
 		jqgrid_label_align_right("#jqGrid");
-
-
-		////////////////////////////// DATE FORMATTER ////////////////////////////////////////
-		function dateFormatter(cellvalue, options, rowObject){
-			return moment(cellvalue).format("YYYY-MM-DD");
-		}
 
 		///////////////////////// REGISTER TYPE SELECTION/////////////////////////////////////
 		/////// if the function chosen is P, certain field will be disabled //////////////////
@@ -732,8 +730,8 @@
 		// searchClick2('#jqGrid','#searchForm',urlParam);
 
 		//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-		addParamField('#jqGrid',true,urlParam,['cb','nbv']);
-		addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','compcode','recstatus','assetreg_status','nbv','cb']);
+		addParamField('#jqGrid',true,urlParam,['Checkbox','nbv']);
+		addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','compcode','recstatus','assetreg_status','nbv','Checkbox']);
 		
 		$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
 
