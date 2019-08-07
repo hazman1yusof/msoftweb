@@ -526,14 +526,14 @@ $(document).ready(function () {
 			{ label: 'Price Code', name: 'si_pricecode', width: 200, sorttype: 'text', editable: true, classes: 'wrap'},
 			{ label: 'Uom Code', name: 'si_uomcode', width: 100, sorttype: 'text', editable: true, classes: 'wrap'},
 			{ label: 'Unit Price', name: 'si_unitprice', width: 200, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
-			{ label: 'Purchase Quantity', name: 'si_purqty', width: 100, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
+			{ label: 'Purchase Quantity', name: 'si_purqty', width: 200, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
 			{ label: 'Percentage of Discount', name: 'si_perdiscount', width: 100,  hidden: true},
 			{ label: 'Amount Discount', name: 'si_amtdisc', width: 30,  hidden: true},
 			{ label: 'Amount Sales Tax', name: 'si_amtslstax', width: 30,  hidden: true},
 			{ label: 'Percentage of Sales Tax', name: 'si_perslstax', width: 30,  hidden: true},
 			{ label: 'Expiry Date', name: 'si_expirydate', width: 30,  hidden: true},
 			{ label: "Item Code at Supplier's Site", name: 'si_sitemcode', width: 30,  hidden: true},
-			{ label: 'Record Status', name: 'si_recstatus', width: 100, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{ label: 'Record Status', name: 'si_recstatus', width: 200, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
 			{label: 'No', name: 'si_idno', width: 50, hidden: true},
@@ -836,8 +836,8 @@ $(document).ready(function () {
 			{ label: 'bonpricecode', name: 'sb_bonpricecode', width: 50, hidden: true},
 		 	{ label: 'Bonus Item Code', name: 'sb_bonitemcode', width: 200, classes: 'wrap', canSearch: true},
 			{ label: 'Item Description', name: 'p_description', width: 400, classes: 'wrap', checked:true,canSearch: true},
-			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 100, classes: 'wrap'},
-			{ label: 'Bonus Quantity', name: 'sb_bonqty', width: 100, classes: 'wrap', formatter:'currency'}, 
+			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 200, classes: 'wrap'},
+			{ label: 'Bonus Quantity', name: 'sb_bonqty', width: 200, classes: 'wrap', formatter:'currency'}, 
 			{ label: "Supplier's Item Code", name: 'sb_bonsitemcode', width: 200, classes: 'wrap'},
 			{ label: 'Record Status', name: 'sb_recstatus', width: 200, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
