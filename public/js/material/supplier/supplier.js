@@ -957,4 +957,12 @@ $(document).ready(function () {
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
 
+	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
+		$("#gridSuppitems").jqGrid ('setGridWidth', Math.floor($("#gridSuppitems_c")[0].offsetWidth-$("#gridSuppitems_c")[0].offsetLeft-28));
+	});
+
+	$("#jqGrid3_panel2").on("show.bs.collapse", function(){
+		$("#gridSuppBonus").jqGrid ('setGridWidth', Math.floor($("#gridSuppBonus_c")[0].offsetWidth-$("#gridSuppBonus_c")[0].offsetLeft-28));
+	});
+
 });

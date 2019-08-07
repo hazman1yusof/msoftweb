@@ -2236,4 +2236,8 @@ $(document).ready(function () {
 
 	/*var barcode = new gen_barcode('#_token','#but_print_dtl',);
 	barcode.init();*/
+
+	$("#jqGrid3_panel").on("show.bs.collapse", function(){
+		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
+	});
 });
