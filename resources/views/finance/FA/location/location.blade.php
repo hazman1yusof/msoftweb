@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Location ')
+@section('title', 'Fixed Asset Location Setup')
 
 @section('body')
 	<!-------------------------------- Search + table ---------------------->

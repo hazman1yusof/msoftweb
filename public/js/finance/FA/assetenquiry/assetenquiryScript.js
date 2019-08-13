@@ -471,9 +471,9 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid({
 				datatype: "local",
 				colModel: [
-					{ label: 'Tran Date', name:'trandate', width:120, classes:'wrap'},
+					{ label: 'Tran Date', name:'trandate', width:100, classes:'wrap'},
 					{ label: 'Tran Type', name:'trantype', width:120, classes:'wrap'},
-					{ label: 'Amount', name:'amount', width:120, classes:'wrap'},
+					{ label: 'Amount', name:'amount', width:100, classes:'wrap'},
 					{ label: 'Department', name: 'deptcode', width: 120, classes: 'wrap'},
 					{ label: 'Current Location', name: 'curloccode', width: 120, classes: 'wrap'},
 					{ label: 'Prev Department', name: 'olddeptcode', width: 120, classes: 'wrap'},

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Product')
+@section('title', 'Fixed Asset Product Setup')
 
 @section('body')
 
