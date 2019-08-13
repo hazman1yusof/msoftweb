@@ -531,6 +531,26 @@ function jqgrid_label_align_right(grid){
 	});
 }
 
+function jqgrid_set_label_to_checkbox(grid,checkbox){
+	$(grid).jqGrid('setLabel',checkbox,`
+			<input type="checkbox" name="checkbox_all_" id="checkbox_all_check" >
+			<input type="checkbox" name="checkbox_all_" id="checkbox_all_uncheck" checked style="display:none">
+			`,
+			{'text-align':'center'});
+
+	$('#checkbox_all_check').click(function(){
+		$(this).hide();
+		$('#checkbox_all_uncheck').show();
+		$('#jqGrid input[name="Checkbox"]').prop('checked', true);
+	});
+
+	$('#checkbox_all_uncheck').click(function(){
+		$(this).hide();
+		$('#checkbox_all_check').show();
+		$('#jqGrid input[name="Checkbox"]').prop('checked', false);
+	});
+}
+
 function setactdate(target){
 	this.actdateopen=[];
 	this.lowestdate;
@@ -1140,6 +1160,7 @@ function faster_detail_load(){
 	this.get_array = function(page,options,param,case_,cellvalue){
 		let storage_name = 'fastload_'+page+'_'+case_+'_'+cellvalue;
 		let storage_obj = localStorage.getItem(storage_name);
+		let desc_name = param.field[1];
 
 		if(!storage_obj){
 
@@ -1147,9 +1168,9 @@ function faster_detail_load(){
 					
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data.rows)){
-					$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0].description+"</span>");
+					$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0][desc_name]+"</span>");
 
-					let desc = data.rows[0].description;
+					let desc = data.rows[0][desc_name];
 					let now = moment()
 
 					var json = JSON.stringify({

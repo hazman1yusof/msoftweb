@@ -463,7 +463,7 @@
 				formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
 				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
 				{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
-				{ label: ' ', name: 'Checkbox', width: 10,align: "center",
+				{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center",
 					        editoptions: { value: "True:False" },
 					        editrules: { required: true },
 					        formatter: formatterCheckbox,
@@ -532,7 +532,7 @@
 		}
 
 		function formatterCheckbox(cellvalue, options, rowObject){
-			return "<input type='checkbox' name='Checkbox' >";
+			return "<input type='checkbox' name='Checkbox' idno='"+rowObject.idno+"'>";
 		}
 
 		//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
@@ -553,6 +553,7 @@
 
 		////////////////////// set label jqGrid right ////////////////////////////////////////////////////
 		jqgrid_label_align_right("#jqGrid");
+		jqgrid_set_label_to_checkbox("#jqGrid",'Checkbox');
 
 		///////////////////////// REGISTER TYPE SELECTION/////////////////////////////////////
 		/////// if the function chosen is P, certain field will be disabled //////////////////
@@ -840,12 +841,11 @@
 
 		$('#taggingNoButton').click(gneratetagno);
 		function gneratetagno(){
-			var selarrrow = $("#jqGrid").jqGrid('getGridParam','selarrrow');
 			var idno_array = [];
-			
-			selarrrow.forEach(function(element) {
-				idno_array.push(selrowData("#jqGrid").idno);
-			}); 
+
+			$('input[type="checkbox"][name="Checkbox"]:checked').each(function(){
+				idno_array.push($(this).attr('idno'));
+			});
 
 			obj={};
 			obj.idno_array = idno_array;
