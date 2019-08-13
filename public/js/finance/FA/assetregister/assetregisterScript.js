@@ -30,6 +30,7 @@
 
 
 	var mycurrency =new currencymode(['#origcost','#currentcost', '#purprice']);
+	var fdl = new faster_detail_load();
 
 	var dialog_assetcode= new ordialog(
 		'assetcode','finance.facode','#assetcode',errorField,
@@ -427,25 +428,25 @@
 			 colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
 				{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', hidden:true}, 
-				{ label: 'Asset Type', name: 'assettype', width: 15, sorttype: 'text', classes: 'wrap'},
-				{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true},
-				{ label: 'Department', name: 'deptcode', width: 20, sorttype: 'text', classes: 'wrap'},			
+				{ label: 'Asset Type', name: 'assettype', width: 13, sorttype: 'text', classes: 'wrap'},
+				{ label: 'Category', name: 'assetcode', width: 11, sorttype: 'text', classes: 'wrap', canSearch: true},
+				{ label: 'Department', name: 'deptcode', width: 14, sorttype: 'text', classes: 'wrap'},			
 				{ label: 'Location', name: 'loccode', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},					
-				{ label: 'Supplier', name: 'suppcode', width: 20, sorttype: 'text', classes: 'wrap'},	
-				{ label: 'DO No', name:'delordno',width: 15, sorttype:'text', classes:'wrap'},					
+				{ label: 'Supplier', name: 'suppcode', width: 13, sorttype: 'text', classes: 'wrap', formatter: showdetail,},	
+				{ label: 'DO No', name:'delordno',width: 13, sorttype:'text', classes:'wrap'},					
 				{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
-				{ label: 'Item Code', name: 'itemcode', width: 20, sorttype: 'text', classes: 'wrap', canSearch: true},
+				{ label: 'Item Code', name: 'itemcode', width: 11, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
-				{ label: 'Regtype', name: 'regtype', width: 40, sorttype: 'text', classes: 'wrap', hidden: true, formatter:regtypeformat,unformat:regtypeunformat},	
+				{ label: 'Regtype', name: 'regtype', width: 11, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat},	
 				{ label: 'Description', name: 'description', width: 60, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
 				{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
 				{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
 				{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
-				{ label: 'Purchase Date', name:'purdate', width: 40, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter},
+				{ label: 'Purchase Date', name:'purdate', width: 15, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter},
 				{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
 				{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
-				{ label: 'Current Cost', name:'currentcost', width:20, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
+				{ label: 'Current Cost', name:'currentcost', width:15, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
 				{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
 				{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 				{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
@@ -489,13 +490,14 @@
 					}
 
 					$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+					fdl.set_array().reset();
 			}
 				
 		});
 		//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
 		function regtypeformat(cellvalue, options, rowObject) {
 			if (cellvalue == 'P') {
-				return "Purchase Order";
+				return "PO";
 			}
 			if (cellvalue == 'D') {
 				return "Direct";
@@ -503,11 +505,11 @@
 		}
 
 		function regtypeunformat(cellvalue, options) {
-			if (cellvalue == 'Purchase Order') {
-				return "P";
+			if (cellvalue == 'P') {
+				return "PO";
 			}
-			if (cellvalue == 'Direct') {
-				return "D";
+			if (cellvalue == 'D') {
+				return "Direct";
 			}
 		}
 
@@ -531,6 +533,21 @@
 
 		function formatterCheckbox(cellvalue, options, rowObject){
 			return "<input type='checkbox' name='Checkbox' >";
+		}
+
+		//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+		function showdetail(cellvalue, options, rowObject){
+			var field,table,case_;
+			switch(options.colModel.name){
+				case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
+				
+			}
+			var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+			fdl.get_array('assetregister',options,param,case_,cellvalue);
+			// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
+			
+			return cellvalue;
 		}
 
 
