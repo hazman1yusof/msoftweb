@@ -432,7 +432,7 @@
 				{ label: 'Category', name: 'assetcode', width: 11, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'Department', name: 'deptcode', width: 14, sorttype: 'text', classes: 'wrap'},			
 				{ label: 'Location', name: 'loccode', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},					
-				{ label: 'Supplier', name: 'suppcode', width: 13, sorttype: 'text', classes: 'wrap', formatter: showdetail,},	
+				{ label: 'Supplier', name: 'suppcode', width: 13, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},	
 				{ label: 'DO No', name:'delordno',width: 13, sorttype:'text', classes:'wrap'},					
 				{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
@@ -548,6 +548,10 @@
 			// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
 			
 			return cellvalue;
+		}
+
+		function unformat_showdetail(cellvalue, options, rowObject){
+			return $(rowObject).attr('title');
 		}
 
 
