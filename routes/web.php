@@ -354,6 +354,8 @@ Route::post('/potype/form','material\POTypeController@form');
 Route::get('/authorization','material\AuthorizationController@show');
 Route::get('/authorization/table','material\AuthorizationController@table');
 Route::post('/authorization/form','material\AuthorizationController@form');
+Route::get('/authorization/form','material\authorizationDetailController@form');
+Route::post('/authorizationDetail/form','material\authorizationDetailController@form');
 
 //// UOM material setup ///
 Route::get('/uom','material\UomController@show');
