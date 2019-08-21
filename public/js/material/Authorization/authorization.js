@@ -315,7 +315,7 @@
 			action:'get_table_default',
 			url:'/util/get_table_default',
 			field:[],
-			table_name:['material.authdtl AS d'],
+			table_name:['material.authdtl'],
 			table_id:'lineno_',
 		};
 
@@ -329,26 +329,38 @@
 				{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
 				{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
 				{ label: 'Trantype', name: 'trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},
-					edittype:'custom',	editoptions:
-						{ custom_element:documentCustomEdit,
-						custom_value:galGridCustomValue },
+					 editable: true,
+                         edittype: "select",
+                         editoptions: {
+                             value: "Purchase Request:Purchase Request;Purchase Order:Purchase Order"
+                         }
 				},
 				{ label: 'Deptcode', name: 'deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},
-					edittype:'custom',	editoptions:
-						{ custom_element:documentCustomEdit,
-						custom_value:galGridCustomValue },
+					editrules:{required: true,custom:true, custom_func:cust_rules},  editable: true,
+                         edittype: "select",
+                         editoptions: {
+                             value: "Purchase Request:Purchase Request;Purchase Order:Purchase Order"
+                         }
 				},
 				{ label: 'Id', name: 'authorid', width: 200, edittype:'text', classes: 'wrap',  
 					editable:true,
 					editrules:{required: true},
 				},
-				{ label: 'CanDo', name: 'cando', width: 200, classes: 'wrap', canSearch: true, editable: true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},
-					edittype:'custom',	editoptions:
-						{ custom_element:documentCustomEdit,
-						custom_value:galGridCustomValue },
+
+				{ label: 'Record Status', name: 'recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
+					 editable: true,
+                         edittype: "select",
+                         editoptions: {
+                             value: "Request:Request;Support:Support;Verify:Verify;Approve:Approve"
+                         }
+				},
+			
+				{ label: 'CanDo', name: 'cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
+					 editable: true,
+                         edittype: "select",
+                         editoptions: {
+                             value: "Yes:Yes;No:No"
+                         }
 				},
 			
 				{ label: 'Min Limit', name: 'minlimit', width: 200, classes: 'wrap', editable: true,
@@ -427,8 +439,8 @@
 				let editurl = "/authorizationDetail/form?"+
 					$.param({
 						action: 'authorizationDetail_save',
-						/*auditno:$('#apacthdr_auditno').val(),
-						amount:data.amount,*/
+						idno:$('#idno').val(),
+						/*amount:data.amount,*/
 					});
 				$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
 	        },
@@ -466,7 +478,7 @@
 					    	if(result == true){
 					    		param={
 					    			action: 'authorizationDetail_save',
-									idno: $('#h_idno').val(),
+									idno: $('#idno').val(),
 									lineno_: selrowData('#jqGrid2').lineno_,
 
 					    		}
@@ -592,6 +604,10 @@
 			return $('<div class="input-group"><input id="document" name="document" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 		}
 
+		/*function formatterSelect(cellvalue, options, rowObject){
+		return "<input type='dropdown' name='dropdown_trantype' >";
+		}
+*/
 		function galGridCustomValue (elem, operation, value){
 			if(operation == 'get') {
 				return $(elem).find("input").val();
@@ -842,7 +858,7 @@
 		action:'get_table_default',
 			url:'/util/get_table_default',
 			field:[],
-			table_name:['material.authdtl AS d'],
+			table_name:['material.authdtl'],
 			table_id:'lineno_',
 	}
 
@@ -1004,7 +1020,7 @@
 	});
 
 	addParamField('#gridAuthdtl',false,urlParam_authdtl);
-	addParamField('#gridAuthdtl',false,saveParam_authdtl,["p_description", "si_idno", "si_adduser", "si_adddate", "si_upduser", "si_upddate", "si_computerid", 'si_ipaddress', 'si_recstatus']);
+	addParamField('#gridAuthdtl',false,saveParam_authdtl,["idno", "adduser", "adddate", "upduser", "upddate", "omputerid", 'ipaddress', 'recstatus']);
 
 	populateSelect('#gridAuthdtl','#searchForm2');
 	searchClick('#gridAuthdtl','#searchForm2',urlParam_authdtl);
