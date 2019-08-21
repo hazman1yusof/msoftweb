@@ -420,7 +420,7 @@
 			url:'assetregister/form',
 			oper:oper,
 			table_name:'finance.fatemp',
-			
+			noduplicate: 'true'
 		};
 		
 		$("#jqGrid").jqGrid({

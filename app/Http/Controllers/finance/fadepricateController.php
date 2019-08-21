@@ -43,6 +43,7 @@ class fadepricateController extends defaultController
     public function depreciation(Request $request){
 
         DB::beginTransaction();
+        DB::enableQueryLog();
 
         try {
 
@@ -56,8 +57,9 @@ class fadepricateController extends defaultController
                                     ->where('recstatus','=','A')
                                     ->where('startdepdate','!=','')
                                     ->where('startdepdate','<=',Carbon::now("Asia/Kuala_Lumpur"));
-
+                                    
                 if($faregister_obj->exists()){
+
                     $faregisters = $faregister_obj->get();
 
                     foreach ($faregisters as $faregister) {
@@ -131,9 +133,12 @@ class fadepricateController extends defaultController
 
             }
 
+            $queries = DB::getQueryLog();
+            dump($queries);
+
             DB::commit();
 
-            return back();
+            // return back();
 
         } catch (\Exception $e) {
 

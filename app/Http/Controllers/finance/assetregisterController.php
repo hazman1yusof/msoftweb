@@ -95,7 +95,7 @@ class assetregisterController extends defaultController
                         'trandate' => $fatemp->trandate,
                         'compcode' => session('compcode'),
                         'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
                 ////delete from fatemp
