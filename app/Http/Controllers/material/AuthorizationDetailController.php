@@ -167,31 +167,22 @@ class AuthorizationDetailController extends defaultController
             ///1. update detail
             DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('idno','=',$request->idno)
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
-                    'pricecode' => $request->pricecode, 
-                    'itemcode'=> $request->itemcode, 
-                    'uomcode'=> $request->uomcode, 
-                    'pouom'=> $request->pouom,
-                    'qtydelivered'=> $request->qtydelivered, 
-                    'qtyreturned'=> $request->qtyreturned,
-                    'unitprice'=> $request->unitprice,
-                    'taxcode'=> $request->taxcode, 
-                    'perdisc'=> $request->perdisc, 
-                    'amtdisc'=> $request->amtdisc, 
-                    'amtslstax'=> $request->tot_gst, 
-                    'netunitprice'=> $request->netunitprice, 
-                    'amount'=> $request->amount, 
-                    'totamount'=> $request->totamount, 
-                    'upduser'=> session('username'), 
-                    'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate'=> $this->chgDate($request->expdate),  
-                    'batchno'=> $request->batchno, 
-                    'remarks'=> $request->remarks
+                    'compcode' => session('compcode'),
+                    'idno' => $idno,
+                    'lineno_' => $li,
+                    'trantype' => $request->trantype,
+                    'deptcode' => $request->deptcode,
+                    'id' => $request->authorid,
+                    'recstatus' => $request->recstatus,
+                    'cando' => $request->cando,
+                    'minlimit' => $request->minlimit,
+                    'maxlimit' => $request->maxlimit,
                 ]);
 
-            ///2. recalculate total amount
+          /*  ///2. recalculate total amount
             $totalAmount = DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
@@ -216,7 +207,7 @@ class AuthorizationDetailController extends defaultController
                 ]);
             
             echo $totalAmount;
-
+*/
             DB::commit();
 
         } catch (\Exception $e) {
@@ -237,31 +228,19 @@ class AuthorizationDetailController extends defaultController
                 ///1. update detail
                 DB::table('material.delorddt')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
+                    ->where('idno','=',$request->idno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'pricecode' => $value['pricecode'], 
-                        'itemcode'=> $value['itemcode'], 
-                        'uomcode'=> $value['uomcode'], 
-                        'pouom'=> $value['pouom'],
-                        'qtydelivered'=> $value['qtydelivered'], 
-                        'qtyreturned'=>  $value['qtyreturned'],
-                        'unitprice'=>  $value['unitprice'],
-                        'taxcode'=>  $value['taxcode'], 
-                        'perdisc'=>  $value['perdisc'], 
-                        'amtdisc'=>  $value['amtdisc'], 
-                        'amtslstax'=>  $value['tot_gst'], 
-                        'netunitprice'=>  $value['netunitprice'], 
-                        'amount'=>  $value['amount'], 
-                        'totamount'=>  $value['totamount'], 
-                        'upduser'=> session('username'), 
-                        'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
-                        'expdate'=> $this->chgDate($value['expdate']), 
-                        'batchno'=>  $value['batchno'], 
-                        'remarks'=>  $value['remarks']
+                        'trantype' => $value['trantype'],
+                        'deptcode' => $value['deptcode'],
+                        'id' => $value['id'],
+                        'recstatus' => $value['recstatus'],
+                        'cando' => $value['cando'],
+                        'minlimit' => $value['minlimit'],
+                        'maxlimit' => $value['maxlimit'],
                     ]);
             }
-            
+          /*  
             ///2. recalculate total amount
             $totalAmount = DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
@@ -286,7 +265,7 @@ class AuthorizationDetailController extends defaultController
                     'TaxAmt' => $tot_gst
                 ]);
             
-            echo $totalAmount;
+            echo $totalAmount;*/
 
             DB::commit();
 
