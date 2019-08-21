@@ -655,7 +655,7 @@
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 
-	/*	var dialog_authorid = new ordialog(
+		var dialog_authorid = new ordialog(
 			'authorid','sysdb.users','#authorid',errorField,
 			{	colModel:[
 					{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -679,7 +679,7 @@
 			);
 		dialog_authorid.makedialog();
 
-		var dialog_deptcode = new ordialog(
+		/*var dialog_deptcode = new ordialog(
 		'deptcode','sysdb.department','#d_deptcode',errorField,
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
