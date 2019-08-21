@@ -26,6 +26,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency = new currencymode(['#amount']);
+	var fdl = new faster_detail_load();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;
@@ -359,8 +360,8 @@ $(document).ready(function () {
 		}, 'json').fail(function (data) {
 			alert(data.responseText);
 		}).done(function (data) {
-			//2nd successs?
-		});*/
+			//2nd successs?;*/
+		})
 	}
 
 	$("#dialogForm").on('change keypress', '#formdata :input', '#formdata :textarea', function () {
@@ -733,7 +734,7 @@ $(document).ready(function () {
 			});
 			fdl.set_array().reset();
 			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-			calculate_quantity_outstanding('#jqGrid2');
+			//calculate_quantity_outstanding('#jqGrid2');
 		},
 		afterShowForm: function (rowid) {
 			$("#expdate").datepicker();

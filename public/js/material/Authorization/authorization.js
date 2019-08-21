@@ -57,13 +57,16 @@
 					parent_close_disabled(true);
 					switch(oper) {
 						case state = 'add':
-							$( this ).dialog( "option", "title", "Add" );
+							$("#jqGrid2").jqGrid("clearGridData", false);
+							$("#pg_jqGridPager2 table").show();
+							hideatdialogForm(true);
 							enableForm('#formdata');
 							hideOne('#formdata');
 							rdonly("#dialogForm");
 							break;
 						case state = 'edit':
-							$( this ).dialog( "option", "title", "Edit" );
+							$("#pg_jqGridPager2 table").show();
+							hideatdialogForm(true);
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
 							$('#formdata :input[hideOne]').show();
@@ -238,6 +241,21 @@
 			addParamField('#jqGrid',true,urlParam);
 			addParamField('#jqGrid',false,saveParam,['idno','computerid', 'ipaddress', 'adduser', 'adddate', 'upddate', 'upduser', 'recstatus']);
 
+
+			////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
+			function hideatdialogForm(hide,saveallrow){
+				if(saveallrow == 'saveallrow'){
+					$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
+					$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
+				}else if(hide){
+					$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
+					$("#saveDetailLabel").show();
+				}else{
+					$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
+					$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+				}
+			}
+
 			/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 			function saveHeader(form,selfoper,saveParam,obj){
 				if(obj==null){
@@ -261,8 +279,7 @@
 						oper='edit';//sekali dia add terus jadi edit lepas tu
 						$('#idno').val(data.idno);
 					
-
-						urlParam2.filterVal[0]=data.recno; 
+						urlParam2.filterVal[0]=data.idno; 
 					}else if(selfoper=='edit'){
 						//doesnt need to do anything
 					}
@@ -325,7 +342,7 @@
 				},
 				{ label: 'Id', name: 'authorid', width: 200, edittype:'text', classes: 'wrap',  
 					editable:true,
-					editrules:{required: false},editoptions:{readonly: "readonly"},
+					editrules:{required: true},
 				},
 				{ label: 'CanDo', name: 'cando', width: 200, classes: 'wrap', canSearch: true, editable: true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
@@ -334,10 +351,10 @@
 						custom_value:galGridCustomValue },
 				},
 			
-				{ label: 'Min Limit', name: 'minlimit', width: 200, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+				{ label: 'Min Limit', name: 'minlimit', width: 200, classes: 'wrap', editable: true,
 					edittype:"text",
 				},
-				{ label: 'Max Limit', name: 'maxlimit', width: 200, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+				{ label: 'Max Limit', name: 'maxlimit', width: 200, classes: 'wrap', editable: true,
 					edittype:"text",
 				},
 			],
@@ -550,9 +567,9 @@
 		//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 		function showdetail(cellvalue, options, rowObject){
 			var field, table, case_;
-			switch(options.colModel.name){
+			/*switch(options.colModel.name){
 				case 'document':field=['delordno','srcdocno'];table="material.delordhd";case_='uomcode';break;
-			}
+			}*/
 			var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		
 			fdl.get_array('authorization',options,param,case_,cellvalue);
@@ -584,20 +601,40 @@
 			}
 		}
 
-	/*	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
-			$("#jqGrid3").jqGrid({
-				datatype: "local",
-				colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
-				shrinkToFit: false,
-				autowidth:true,
-				multiSort: true,
-				viewrecords: true,
-				rowNum: 30,
-				sortname: 'lineno_',
-				sortorder: "desc",
-				pager: "#jqGridPager3",
-			});
-			jqgrid_label_align_right("#jqGrid3");*/
+		//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
+	$("#saveDetailLabel").click(function () {
+		/*mycurrency.formatOff();
+		mycurrency.check0value(errorField);*/
+		unsaved = false;
+		dialog_authorid.off();
+		dialog_deptcode.off();
+		//radbuts.check();
+		errorField.length = 0;
+	if($('#formdata').isValid({requiredFields:''},conf,true)){
+			saveHeader("#formdata",oper,saveParam);
+			unsaved = false;
+		} else {
+			//mycurrency.formatOn();
+			dialog_authorid.on();
+			dialog_deptcode.on();
+		}
+	});
+
+
+	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
+	$("#saveHeaderLabel").click(function () {
+		emptyFormdata(errorField, '#formdata2');
+		hideatdialogForm(true);
+		dialog_authorid.on();
+		dialog_deptcode.on();
+
+		enableForm('#formdata');
+		rdonly('#formdata');
+		$(".noti").empty();
+		refreshGrid("#jqGrid2", urlParam2);
+	});
+
+	
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 
