@@ -172,6 +172,14 @@ Route::post('/inventoryTransaction/form','material\InventoryTransactionControlle
 Route::get('/inventoryTransaction/form','material\InventoryTransactionController@form');
 Route::post('/inventoryTransactionDetail/form','material\InventoryTransactionDetailController@form');
 
+//// purchase Request setup page ///
+Route::get('/purchaseRequest','material\PurchaseRequestController@show');
+Route::get('/purchaseRequest/table','material\PurchaseRequestController@table');
+Route::post('/purchaseRequest/form','material\PurchaseRequestController@form');
+Route::get('/purchaseRequest/form','material\PurchaseRequestController@form');
+Route::post('/purchaseRequestDetail/form','material\PurchaseRequestDetailController@form');
+
+
 //// purchase Order setup page ///
 Route::get('/purchaseOrder','material\PurchaseOrderController@show');
 Route::get('/purchaseOrder/table','material\PurchaseOrderController@table');
@@ -354,6 +362,8 @@ Route::post('/potype/form','material\POTypeController@form');
 Route::get('/authorization','material\AuthorizationController@show');
 Route::get('/authorization/table','material\AuthorizationController@table');
 Route::post('/authorization/form','material\AuthorizationController@form');
+Route::get('/authorization/form','material\authorizationDetailController@form');
+Route::post('/authorizationDetail/form','material\authorizationDetailController@form');
 
 //// UOM material setup ///
 Route::get('/uom','material\UomController@show');

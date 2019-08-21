@@ -357,7 +357,7 @@ i.fa {
 
 				  	<label class="col-md-2 control-label" for="si_amtslstax">Amount Sales Tax</label>  
 				  		<div class="col-md-2">
-				  		<input id="si_amtslstax" name="si_amtslstax" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000"">
+				  		<input id="si_amtslstax" name="si_amtslstax" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000">
 				  		</div>
                 </div>
                 

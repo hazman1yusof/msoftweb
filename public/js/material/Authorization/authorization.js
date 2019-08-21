@@ -26,7 +26,7 @@
 			};
 			
 			////////////////////////////////////start dialog///////////////////////////////////////
-			var butt1=[{
+			/*var butt1=[{
 				id: "Save",
 				text: "Save",click: function() {
 					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
@@ -43,7 +43,9 @@
 				text: "Close",click: function() {
 					$(this).dialog('close');
 				}
-			}];
+			}];*/
+
+			var fdl = new faster_detail_load();
 
 			var oper;
 			$("#dialogForm")
@@ -55,13 +57,16 @@
 					parent_close_disabled(true);
 					switch(oper) {
 						case state = 'add':
-							$( this ).dialog( "option", "title", "Add" );
+							$("#jqGrid2").jqGrid("clearGridData", false);
+							$("#pg_jqGridPager2 table").show();
+							hideatdialogForm(true);
 							enableForm('#formdata');
 							hideOne('#formdata');
 							rdonly("#dialogForm");
 							break;
 						case state = 'edit':
-							$( this ).dialog( "option", "title", "Edit" );
+							$("#pg_jqGridPager2 table").show();
+							hideatdialogForm(true);
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
 							$('#formdata :input[hideOne]').show();
@@ -76,23 +81,40 @@
 					}
 					if(oper!='view'){
 						dialog_authorid.on();
-						set_compid_from_storage("input[name='lastcomputerid']","input[name='lastipaddress']","input[name='computerid']","input[name='ipaddress']");
+						dialog_deptcode.on();
 					}
 					if(oper!='add'){
 						///toggleFormData('#jqGrid','#formdata');
 						dialog_authorid.check(errorField);
+						dialog_deptcode.check(errorField);
 					}
+				},
+				beforeClose: function(event, ui){
+					/*if(unsaved){
+						event.preventDefault();
+						bootbox.confirm("Are you sure want to leave without save?", function(result){
+							if (result == true) {
+								unsaved = false
+								$("#dialogForm").dialog('close');
+							}
+						});
+					}*/
 				},
 				close: function( event, ui ) {
+					addmore_jqgrid2.state = false;
+					addmore_jqgrid2.more = false;
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('#formdata .alert').detach();
+					emptyFormdata(errorField,'#formdata2');
+					$('.alert').detach();
+					$("#formdata a").off();
 					dialog_authorid.off();
-					if(oper=='view'){
-						$(this).dialog("option", "buttons",butt1);
-					}
+					dialog_deptcode.off();
+					$(".noti").empty();
+					$("#refresh_jqGrid").click();
+					refreshGrid("#jqGrid2",null,"kosongkan");
+					
 				},
-				buttons :butt1,
 			  });
 			////////////////////////////////////////end dialog///////////////////////////////////////////
 
@@ -101,8 +123,8 @@
 				action:'get_table_default',
 				url:'util/get_table_default',
 				field:'',
-				table_name:'material.authorise',
-				table_id:'authorid',
+				table_name:'material.authorise as h',
+				table_id:'h_authorid',
 				sort_idno:true,
 			}
 
@@ -121,7 +143,7 @@
 				datatype: "local",
 				 colModel: [
 					{label: 'idno', name: 'idno', hidden:true},
-					{label: 'Author ID', name: 'authorid', width: 90 ,  classes: 'wrap' , checked:true, canSearch: true,},							
+					{label: 'Author ID', name: 'authorid', width: 90 ,  classes: 'wrap', canSearch: true,},							
 					{label: 'Name', name: 'name', width: 90,  classes: 'wrap' , canSearch: true},	
 					{label: 'Password', name: 'password', width: 90 ,  classes: 'wrap' , hidden: true,},
 					{label: 'Department Code', name: 'deptcode', width: 90 , classes: 'wrap',},
@@ -158,25 +180,6 @@
 				},
 				
 			});
-
-		/*	////////////////////////////formatter//////////////////////////////////////////////////////////
-			function formatter(cellvalue, options, rowObject){
-				if(cellvalue == 'A'){
-					return "Active";
-				}
-				if(cellvalue == 'D') { 
-					return "Deactive";
-				}
-			}
-
-			function  unformat(cellvalue, options){
-				if(cellvalue == 'Active'){
-					return "Active";
-				}
-				if(cellvalue == 'Deactive') { 
-					return "Deactive";
-				}
-			}*/
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -238,30 +241,775 @@
 			addParamField('#jqGrid',true,urlParam);
 			addParamField('#jqGrid',false,saveParam,['idno','computerid', 'ipaddress', 'adduser', 'adddate', 'upddate', 'upduser', 'recstatus']);
 
-			////////////////////////////////////////////////////ordialog////////////////////////////////////////
 
-			var dialog_authorid = new ordialog(
-				'authorid','sysdb.users','#authorid',errorField,
-				{	colModel:[
-						{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
-						{label:'Password',name:'password',width:400,classes:'pointer',canSearch:true,or_search:true},
-						{label:'Dept Code',name:'deptcode',width:400,classes:'pointer',canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
-						let data=selrowData('#'+dialog_authorid.gridname);
+			////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
+			function hideatdialogForm(hide,saveallrow){
+				if(saveallrow == 'saveallrow'){
+					$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
+					$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
+				}else if(hide){
+					$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
+					$("#saveDetailLabel").show();
+				}else{
+					$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
+					$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+				}
+			}
+
+			/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
+			function saveHeader(form,selfoper,saveParam,obj){
+				if(obj==null){
+					obj={};
+				}
+				saveParam.oper=selfoper;
+
+				$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
+
+				},'json').fail(function (data) {
+					alert(data.responseText);
+				}).done(function (data) {
+					unsaved = false;
+					hideatdialogForm(false);
+
+					if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
+						addmore_jqgrid2.state = true;
+						$('#jqGrid2_iladd').click();
+					}
+					if(selfoper=='add'){
+						oper='edit';//sekali dia add terus jadi edit lepas tu
+						$('#idno').val(data.idno);
+					
+						urlParam2.filterVal[0]=data.idno; 
+					}else if(selfoper=='edit'){
+						//doesnt need to do anything
+					}
+					disableForm('#formdata');
+
+				});
+			}
+			
+			$("#dialogForm").on('change keypress','#formdata :input','#formdata :textarea',function(){
+				unsaved = true; //kalu dia change apa2 bagi prompt
+			});
+
+			$("#dialogForm").on('click','#formdata a.input-group-addon',function(){
+				unsaved = true; //kalu dia change apa2 bagi prompt
+			});
+			////////////////////////////populate data for dropdown search By////////////////////////////
+			searchBy();
+			function searchBy(){
+				$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
+					if(value['canSearch']){
+						if(value['selected']){
+							$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+						}else{
+							$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+						}
+					}
+					searchClick2('#jqGrid','#searchForm',urlParam);
+				});
+			}
+
+		/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
+		var urlParam2={
+			action:'get_table_default',
+			url:'/util/get_table_default',
+			field:[],
+			table_name:['material.authdtl AS d'],
+			table_id:'lineno_',
+		};
+
+		var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
+		////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
+		$("#jqGrid2").jqGrid({
+			datatype: "local",
+			editurl: "/authorizationDetail/form",
+			colModel: [
+			 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+				{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
+				{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
+				{ label: 'Trantype', name: 'trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					edittype:'custom',	editoptions:
+						{ custom_element:documentCustomEdit,
+						custom_value:galGridCustomValue },
+				},
+				{ label: 'Deptcode', name: 'deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					edittype:'custom',	editoptions:
+						{ custom_element:documentCustomEdit,
+						custom_value:galGridCustomValue },
+				},
+				{ label: 'Id', name: 'authorid', width: 200, edittype:'text', classes: 'wrap',  
+					editable:true,
+					editrules:{required: true},
+				},
+				{ label: 'CanDo', name: 'cando', width: 200, classes: 'wrap', canSearch: true, editable: true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					edittype:'custom',	editoptions:
+						{ custom_element:documentCustomEdit,
+						custom_value:galGridCustomValue },
+				},
+			
+				{ label: 'Min Limit', name: 'minlimit', width: 200, classes: 'wrap', editable: true,
+					edittype:"text",
+				},
+				{ label: 'Max Limit', name: 'maxlimit', width: 200, classes: 'wrap', editable: true,
+					edittype:"text",
+				},
+			],
+			autowidth: true,
+			shrinkToFit: true,
+			multiSort: true,
+			viewrecords: true,
+			loadonce:false,
+			width: 1150,
+			height: 200,
+			rowNum: 30,
+			sortname: 'lineno_',
+			sortorder: "desc",
+			pager: "#jqGridPager2",
+			loadComplete: function(){
+				if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
+				else{
+					$('#jqGrid2').jqGrid ('setSelection', "1");
+				}
+
+				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			},
+			gridComplete: function(){
+				
+			
+				fdl.set_array().reset();
+				
+			},
+			beforeSubmit: function(postdata, rowid){ 
+				dialog_authorid.check(errorField);
+		 	}
+		});
+
+		////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
+		jqgrid_label_align_right("#jqGrid2");
+
+		
+		//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
+		
+		var myEditOptions = {
+	        keys: true,
+	        extraparam:{
+			    "_token": $("#_token").val()
+	        },
+	        oneditfunc: function (rowid) {
+
+	        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
+
+	        	$("input[name='document']").keydown(function(e) {//when click tab at document, auto save
+					var code = e.keyCode || e.which;
+					if (code == '9')$('#jqGrid2_ilsave').click();
+				})
+	        },
+	        aftersavefunc: function (rowid, response, options) {
+	        	$('#apacthdr_outamount').val(response.responseText);
+	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+	        	refreshGrid('#jqGrid2',urlParam2,'add');
+		    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
+	        }, 
+	        errorfunc: function(rowid,response){
+	        	alert(response.responseText);
+	        	refreshGrid('#jqGrid2',urlParam2,'add');
+		    	$("#jqGridPager2Delete").show();
+	        },
+	        beforeSaveRow: function(options, rowid) {
+
+	        	//if(errorField.length>0)return false;
+
+				let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
+				let editurl = "/authorizationDetail/form?"+
+					$.param({
+						action: 'authorizationDetail_save',
+						/*auditno:$('#apacthdr_auditno').val(),
+						amount:data.amount,*/
+					});
+				$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
+	        },
+	        afterrestorefunc : function( response ) {
+				hideatdialogForm(false);
+		    }
+	    };
+
+	    //////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
+		$("#jqGrid2").inlineNav('#jqGridPager2',{	
+			add:true,
+			edit:true,
+			cancel: true,
+			//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+			restoreAfterSelect: false,
+			addParams: { 
+				addRowParams: myEditOptions
+			},
+			editParams: myEditOptions
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2Delete",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-trash",
+			title:"Delete Selected Row",
+			onClickButton: function(){
+				selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+				if(!selRowId){
+					bootbox.alert('Please select row');
+				}else{
+					bootbox.confirm({
+					    message: "Are you sure you want to delete this row?",
+					    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+					    },
+					    callback: function (result) {
+					    	if(result == true){
+					    		param={
+					    			action: 'authorizationDetail_save',
+									idno: $('#h_idno').val(),
+									lineno_: selrowData('#jqGrid2').lineno_,
+
+					    		}
+					    		$.post( "/authorizationDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+								}).fail(function(data) {
+									//////////////////errorText(dialog,data.responseText);
+								}).done(function(data){
+									refreshGrid("#jqGrid2",urlParam2);
+								});
+					    	}else{
+	        					$("#jqGridPager2EditAll").show();
+					    	}
+					    }
+					});
+				}
+			},
+	/*	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2EditAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-th-list",
+			title:"Edit All Row",
+			onClickButton: function(){
+				mycurrency2.array.length = 0;
+				var ids = $("#jqGrid2").jqGrid('getDataIDs');
+			    for (var i = 0; i < ids.length; i++) {
+
+			        $("#jqGrid2").jqGrid('editRow',ids[i]);
+
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
+			    }
+			   // onall_editfunc();
+				hideatdialogForm(true,'saveallrow');
+			},*/
+	/*	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2SaveAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-download-alt",
+			title:"Save All Row",
+			onClickButton: function(){
+				var ids = $("#jqGrid2").jqGrid('getDataIDs');
+
+				var jqgrid2_data = [];
+				mycurrency2.formatOff();
+			    for (var i = 0; i < ids.length; i++) {
+
+					var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
+
+			    	var obj = 
+			    	{
+			    		'lineno_' : ids[i],
+			    		'document' : $("#jqGrid2 input#"+ids[i]+"_document").val(),
+			    		'reference' : data.reference,
+			    		'amount' : data.amount,
+			    		'dorecno' : data.dorecno,
+			    		'grnno' : data.grnno,
+	                    'unit' : $("#"+ids[i]+"_unit").val()
+			    	}
+
+			    	jqgrid2_data.push(obj);
+			    }
+
+				var param={
+	    			action: 'invoiceAPDetail_save',
+					_token: $("#_token").val(),
+					auditno: $('#apacthdr_auditno').val()
+	    		}
+
+	    		$.post( "/authorizationDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+				}).fail(function(data) {
+					//////////////////errorText(dialog,data.responseText);
+				}).done(function(data){
+					// $('#amount').val(data);
+					hideatdialogForm(false);
+					refreshGrid("#jqGrid2",urlParam2);
+				});
+			},*/	
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2CancelAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-remove-circle",
+			title:"Cancel",
+			onClickButton: function(){
+				hideatdialogForm(false);
+				refreshGrid("#jqGrid2",urlParam2);
+			},	
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "saveHeaderLabel",
+			caption:"Header",cursor: "pointer",position: "last", 
+			buttonicon:"",
+			title:"Header"
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "saveDetailLabel",
+			caption:"Detail",cursor: "pointer",position: "last", 
+			buttonicon:"",
+			title:"Detail"
+		});
+
+		//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+		function showdetail(cellvalue, options, rowObject){
+			var field, table, case_;
+			/*switch(options.colModel.name){
+				case 'document':field=['delordno','srcdocno'];table="material.delordhd";case_='uomcode';break;
+			}*/
+			var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		
+			fdl.get_array('authorization',options,param,case_,cellvalue);
+			return cellvalue;
+		}
+
+		///////////////////////////////////////cust_rules//////////////////////////////////////////////
+		function cust_rules(value,name){
+			var temp;
+			switch(name){
+				case 'Deptcode':temp=$('#deptcode');break;
+			
+			}
+			return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+		}
+
+		/////////////////////////////////////////////custom input////////////////////////////////////////////
+		function documentCustomEdit(val,opt){
+			val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+			return $('<div class="input-group"><input id="document" name="document" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+		}
+
+		function galGridCustomValue (elem, operation, value){
+			if(operation == 'get') {
+				return $(elem).find("input").val();
+			} 
+			else if(operation == 'set') {
+				$('input',elem).val(value);
+			}
+		}
+
+		//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
+	$("#saveDetailLabel").click(function () {
+		/*mycurrency.formatOff();
+		mycurrency.check0value(errorField);*/
+		unsaved = false;
+		dialog_authorid.off();
+		dialog_deptcode.off();
+		//radbuts.check();
+		errorField.length = 0;
+	if($('#formdata').isValid({requiredFields:''},conf,true)){
+			saveHeader("#formdata",oper,saveParam);
+			unsaved = false;
+		} else {
+			//mycurrency.formatOn();
+			dialog_authorid.on();
+			dialog_deptcode.on();
+		}
+	});
+
+
+	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
+	$("#saveHeaderLabel").click(function () {
+		emptyFormdata(errorField, '#formdata2');
+		hideatdialogForm(true);
+		dialog_authorid.on();
+		dialog_deptcode.on();
+
+		enableForm('#formdata');
+		rdonly('#formdata');
+		$(".noti").empty();
+		refreshGrid("#jqGrid2", urlParam2);
+	});
+
+	
+
+	////////////////////////////////////////////////////ordialog////////////////////////////////////////
+
+	/*	var dialog_authorid = new ordialog(
+			'authorid','sysdb.users','#authorid',errorField,
+			{	colModel:[
+					{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Password',name:'password',width:400,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Dept Code',name:'deptcode',width:400,classes:'pointer',canSearch:true,or_search:true},
+				],
+				ondblClickRow:function(){
+					let data=selrowData('#'+dialog_authorid.gridname);
 						$("#name").val(data['name']);
 						$("#password").val(data['password']).attr('type','password');
 						$("#deptcode").val(data['deptcode']);
 					}	
 				},{
-					title:"Select Author ID",
-					open: function(){
+				title:"Select Author ID",
+				open: function(){
 						dialog_authorid.urlParam.filterCol=['recstatus'],
 						dialog_authorid.urlParam.filterVal=['A']
 					}
 				},'urlParam'
 			);
-			dialog_authorid.makedialog();
+		dialog_authorid.makedialog();
+
+		var dialog_deptcode = new ordialog(
+		'deptcode','sysdb.department','#d_deptcode',errorField,
+		{	colModel:[
+				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Unit',name:'sector'},
+			],
+			ondblClickRow:function(){
+				//$('#delordhd_credcode').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#delordhd_credcode').focus();
+				}
+			}
+		},{
+			title:"Select Department",
+			open: function(){
+				dialog_deptcode.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
+				dialog_deptcode.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_deptcode.makedialog();*/
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////Auth Detail////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+
+	var dialog_authorid = new ordialog(
+			'authorid','sysdb.users','#authorid',errorField,
+			{	colModel:[
+					{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Password',name:'password',width:400,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Dept Code',name:'deptcode',width:400,classes:'pointer',canSearch:true,or_search:true},
+				],
+				ondblClickRow:function(){
+					let data=selrowData('#'+dialog_authorid.gridname);
+						$("#name").val(data['name']);
+						$("#password").val(data['password']).attr('type','password');
+						$("#deptcode").val(data['deptcode']);
+					}	
+				},{
+				title:"Select Author ID",
+				open: function(){
+						dialog_authorid.urlParam.filterCol=['recstatus'],
+						dialog_authorid.urlParam.filterVal=['A']
+					}
+				},'urlParam'
+			);
+		dialog_authorid.makedialog();
+
+	var dialog_deptcode = new ordialog(
+		'deptcode','sysdb.department','#d_deptcode',errorField,
+		{	colModel:[
+				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Unit',name:'sector'},
+			],
+			ondblClickRow:function(){
+				//$('#delordhd_credcode').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#delordhd_credcode').focus();
+				}
+			}
+		},{
+			title:"Select Department",
+			open: function(){
+				dialog_deptcode.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
+				dialog_deptcode.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_deptcode.makedialog();
+	
+
+	var buttItem1=[{
+		text: "Save",click: function() {
+			mycurrency.formatOff();
+			mycurrency.check0value(errorField);
+			if( $('#FAuthdtl').isValid({requiredFields: ''}, {}, true) ) {
+				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",oper_authdtl,saveParam_authdtl,urlParam_authdtl,'#searchForm2');
+			}else{
+				mycurrency.formatOn();
+			}
+		}
+	},{
+		text: "Cancel",click: function() {
+			$(this).dialog('close');
+		}
+	}];
+
+	var oper_authdtl;
+	$("#Authdtl")
+	  .dialog({ 
+		width: 9/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			parent_close_disabled(true);
+			switch(oper_authdtl) {
+				case state = 'add':
+					mycurrency.formatOnBlur();
+					$( this ).dialog( "option", "title", "Add" );
+					enableForm('#FAuthdtl');
+					hideOne('#FAuthdtl');
+					rdonly('#FAuthdtl');
+					$(this).dialog("option", "buttons",buttItem1);
+					break;
+				case state = 'edit':
+					mycurrency.formatOnBlur();
+					$( this ).dialog( "option", "title", "Edit" );
+					enableForm('#FAuthdtl');
+					frozeOnEdit("#Authdtl");
+					$('#FAuthdtl :input[hideOne]').show();
+					rdonly('#FAuthdtl');
+					$(this).dialog("option", "buttons",buttItem1);
+					break;
+				case state = 'view':
+					mycurrency.formatOnBlur();
+					$( this ).dialog( "option", "title", "View" );
+					disableForm('#FAuthdtl');
+					$('#FAuthdtl :input[hideOne]').show();
+					$(this).dialog("option", "buttons",butt2);
+					break;
+			}
+			if(oper_authdtl=='add'){
+				dialog_pricecode.on();
+				dialog_itemcode.on();
+				dialog_uomcode.on();
+			}
+			if(oper_authdtl == 'edit'){
+				dialog_pricecode.on();
+				dialog_itemcode.on();
+				dialog_uomcode.on();
+			}
+			if(oper_authdtl == 'edit'){
+				$("#Fsuppitems :input[name*='si_pricecode']").prop("readonly",true);
+				$("#Fsuppitems :input[name*='si_itemcode']").prop("readonly",true);
+				$("#Fsuppitems :input[name*='si_uomcode']").prop("readonly",true);
+				$("#Fsuppitems :input[name*='si_purqty']").prop("readonly",true);
+			}
+			if(oper_authdtl!='add'){
+				dialog_pricecode.check(errorField);
+				dialog_itemcode.check(errorField);
+				dialog_uomcode.check(errorField);
+			}
+			if (oper_authdtl != 'view') {
+				set_compid_from_storage("input[name='si_lastcomputerid']","input[name='si_lastipaddress']","input[name='si_computerid']","input[name='si_ipaddress']");
+			}
+		},
+		close: function( event, ui ) {
+			parent_close_disabled(false);
+			emptyFormdata(errorField,'#Fsuppitems');
+			$('#Fsuppitems .alert').detach();
+			dialog_pricecode.off();
+			dialog_itemcode.off();
+			dialog_uomcode.off();
+			if(oper=='view'){
+				$(this).dialog("option", "buttons",buttItem1);
+			}
+		},
+		buttons :buttItem1,
+	  });
+	
+	/////////////////////parameter for jqgrid url SVC/////////////////////////////////////////////////
+	var urlParam_authdtl={
+		action:'get_table_default',
+			url:'/util/get_table_default',
+			field:[],
+			table_name:['material.authdtl AS d'],
+			table_id:'lineno_',
+	}
+
+	var saveParam_authdtl={
+		action:'save_table_default',
+			url:'authorization/form',
+			field:'',
+			oper:oper_authdtl,
+			table_name:'material.authorise',
+			table_id:'authorid',
+			saveip:'true'
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	$("#gridAuthdtl").jqGrid({
+		datatype: "local",
+		 colModel: [
+			 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+				{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
+				{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
+				{ label: 'Trantype', name: 'trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					edittype:'custom',	editoptions:
+						{ custom_element:documentCustomEdit,
+						custom_value:galGridCustomValue },
+				},
+				{ label: 'Deptcode', name: 'deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					edittype:'custom',	editoptions:
+						{ custom_element:documentCustomEdit,
+						custom_value:galGridCustomValue },
+				},
+				{ label: 'Id', name: 'authorid', width: 200, edittype:'text', classes: 'wrap',  
+					editable:true,
+					editrules:{required: false},editoptions:{readonly: "readonly"},
+				},
+				{ label: 'CanDo', name: 'cando', width: 200, classes: 'wrap', canSearch: true, editable: true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					edittype:'custom',	editoptions:
+						{ custom_element:documentCustomEdit,
+						custom_value:galGridCustomValue },
+				},
+			
+				{ label: 'Min Limit', name: 'minlimit', width: 200, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+					edittype:"text",
+				},
+				{ label: 'Max Limit', name: 'maxlimit', width: 200, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+					edittype:"text",
+				},
+		],
+		viewrecords: true,
+		//shrinkToFit: true,
+		autowidth:true,
+        multiSort: true,
+		loadonce:false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		hidegrid: false,
+		pager: "#jqGridPager3",
+		onPaging: function(pgButton){
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridPager3 td[title='Edit Selected Row']").click();
+		},
+		gridComplete: function(){
+			if(oper == 'add'){
+				$("#gridAuthdtl").setSelection($("#jqGrid").getDataIDs()[0]);
+			}
+
+			$('#'+$("#gridAuthdtl").jqGrid ('getGridParam', 'selrow')).focus();
+
+			/////////////////////////////// reccount ////////////////////////////
+			
+			if($("#gridAuthdtl").getGridParam("reccount") >= 1){
+				$("#jqGridPagerglyphicon-trash").hide();
+			} 
+
+			if($("#gridAuthdtl").getGridParam("reccount") < 1){
+				$("#jqGridPagerglyphicon-trash").show()
+			}
+		},
+		onSelectRow:function(rowid, selected){
+			/*if(rowid != null) {
+				rowData = $('#gridAuthdtl').jqGrid ('getRowData', rowid);
+				//console.log(rowData.svc_billtype);
+				urlParam_suppbonus.filterVal[0]=selrowData("#gridAuthdtl").si_itemcode; 
+
+				$("#Fsuppbonus :input[name*='sb_suppcode']").val(selrowData("#gridAuthdtl").si_suppcode);
+				$("#Fsuppbonus :input[name*='sb_pricecode']").val(selrowData("#gridAuthdtl").si_pricecode);
+				$("#Fsuppbonus :input[name*='sb_itemcode']").val(selrowData("#gridAuthdtl").si_itemcode);
+				$("#Fsuppbonus :input[name*='sb_uomcode']").val(selrowData("#gridAuthdtl").si_uomcode);
+				$("#Fsuppbonus :input[name*='sb_purqty']").val(selrowData("#gridAuthdtl").si_purqty);
+				refreshGrid('#gridSuppBonus',urlParam_suppbonus);
+				$("#pg_jqGridPager3 table").show();
+			}*/
+		},
+		
+	});
+	
+	$("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{	
+		view:false,edit:false,add:false,del:false,search:false,
+		beforeRefresh: function(){
+			refreshGrid("#gridAuthdtl",urlParam_authdtl);
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
+		caption:"", 
+		buttonicon:"glyphicon glyphicon-trash", 
+		id:"jqGridPager3glyphicon-trash",
+		onClickButton: function(){
+			oper_authdtl='del';
+			var selRowId = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
+			if(!selRowId){
+				alert('Please select row');
+				return emptyFormdata(errorField,'#Fsuppitems');
+			}else{
+				saveFormdata("#gridAuthdtl","#Dsuppitems","#Fsuppitems",'del',saveParam_authdtl,urlParam_authdtl,null,{'idno':selRowId});
+			}
+		}, 
+		position: "first", 
+		title:"Delete Selected Row", 
+		cursor: "pointer"
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
+		caption:"", 
+		buttonicon:"glyphicon glyphicon-info-sign", 
+		onClickButton: function(){
+			oper_authdtl='view';
+			selRowId = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
+			populateFormdata("#gridAuthdtl","#Dsuppitems","#Fsuppitems",selRowId,'view');
+		}, 
+		position: "first", 
+		title:"View Selected Row", 
+		cursor: "pointer"
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
+		caption:"", 
+		buttonicon:"glyphicon glyphicon-edit", 
+		onClickButton: function(){
+			oper_authdtl='edit';
+			selRowId = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
+			populateFormdata("#gridAuthdtl","#Dsuppitems","#Fsuppitems",selRowId,'edit');
+			recstatusDisable();
+		}, 
+		position: "first", 
+		title:"Edit Selected Row", 
+		cursor: "pointer"
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
+		caption:"", 
+		buttonicon:"glyphicon glyphicon-plus", 
+		onClickButton: function(){
+			oper_authdtl='add';
+			$( "#Dsuppitems" ).dialog( "open" );
+			//$('#Fsuppitems :input[name=si_lineno_]').hide();
+			//$("#Fsuppitems :input[name*='SuppCode']").val(selrowData('#jqGrid').SuppCode);
+		}, 
+		position: "first", 
+		title:"Add New Row", 
+		cursor: "pointer"
+	});
+
+	addParamField('#gridAuthdtl',false,urlParam_authdtl);
+	addParamField('#gridAuthdtl',false,saveParam_authdtl,["p_description", "si_idno", "si_adduser", "si_adddate", "si_upduser", "si_upddate", "si_computerid", 'si_ipaddress', 'si_recstatus']);
+
+	populateSelect('#gridAuthdtl','#searchForm2');
+	searchClick('#gridAuthdtl','#searchForm2',urlParam_authdtl);
+
+
+
 });
 		

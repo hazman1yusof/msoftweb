@@ -60,7 +60,7 @@ class PurchaseOrderController extends defaultController
         $table = DB::table("material.purordhd");
 
         $array_insert = [
-            // 'trantype' => 'PO', 
+            'trantype' => 'PO', 
             'recno' => $recno,
             'purordno' => $purordno,
             // 'purreqno' => $purreqno,
