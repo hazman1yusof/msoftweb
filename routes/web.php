@@ -172,6 +172,14 @@ Route::post('/inventoryTransaction/form','material\InventoryTransactionControlle
 Route::get('/inventoryTransaction/form','material\InventoryTransactionController@form');
 Route::post('/inventoryTransactionDetail/form','material\InventoryTransactionDetailController@form');
 
+//// purchase Request setup page ///
+Route::get('/purchaseRequest','material\PurchaseRequestController@show');
+Route::get('/purchaseRequest/table','material\PurchaseRequestController@table');
+Route::post('/purchaseRequest/form','material\PurchaseRequestController@form');
+Route::get('/purchaseRequest/form','material\PurchaseRequestController@form');
+Route::post('/purchaseRequestDetail/form','material\PurchaseRequestDetailController@form');
+
+
 //// purchase Order setup page ///
 Route::get('/purchaseOrder','material\PurchaseOrderController@show');
 Route::get('/purchaseOrder/table','material\PurchaseOrderController@table');

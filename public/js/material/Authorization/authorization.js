@@ -87,7 +87,7 @@
 					}
 				},
 				beforeClose: function(event, ui){
-					if(unsaved){
+					/*if(unsaved){
 						event.preventDefault();
 						bootbox.confirm("Are you sure want to leave without save?", function(result){
 							if (result == true) {
@@ -95,7 +95,7 @@
 								$("#dialogForm").dialog('close');
 							}
 						});
-					}
+					}*/
 				},
 				close: function( event, ui ) {
 					addmore_jqgrid2.state = false;
@@ -300,8 +300,6 @@
 			field:[],
 			table_name:['material.authdtl AS d'],
 			table_id:'lineno_',
-			/*filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
-			filterVal:['session.compcode', '', '<>.DELETE', 'AP']*/
 		};
 
 		var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -468,24 +466,24 @@
 					});
 				}
 			},
-		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+	/*	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 			id: "jqGridPager2EditAll",
 			caption:"",cursor: "pointer",position: "last", 
 			buttonicon:"glyphicon glyphicon-th-list",
 			title:"Edit All Row",
 			onClickButton: function(){
-				/*mycurrency2.array.length = 0;
+				mycurrency2.array.length = 0;
 				var ids = $("#jqGrid2").jqGrid('getDataIDs');
 			    for (var i = 0; i < ids.length; i++) {
 
 			        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
 			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
-			    }*/
+			    }
 			   // onall_editfunc();
 				hideatdialogForm(true,'saveallrow');
-			},
-		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			},*/
+	/*	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 			id: "jqGridPager2SaveAll",
 			caption:"",cursor: "pointer",position: "last", 
 			buttonicon:"glyphicon glyphicon-download-alt",
@@ -527,7 +525,7 @@
 					hideatdialogForm(false);
 					refreshGrid("#jqGrid2",urlParam2);
 				});
-			},	
+			},*/	
 		}).jqGrid('navButtonAdd',"#jqGridPager2",{
 			id: "jqGridPager2CancelAll",
 			caption:"",cursor: "pointer",position: "last", 
@@ -557,7 +555,7 @@
 			}
 			var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		
-			fdl.get_array('invoiceAP',options,param,case_,cellvalue);
+			fdl.get_array('authorization',options,param,case_,cellvalue);
 			return cellvalue;
 		}
 
@@ -586,7 +584,7 @@
 			}
 		}
 
-		////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
+	/*	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 			$("#jqGrid3").jqGrid({
 				datatype: "local",
 				colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
@@ -599,11 +597,11 @@
 				sortorder: "desc",
 				pager: "#jqGridPager3",
 			});
-			jqgrid_label_align_right("#jqGrid3");
+			jqgrid_label_align_right("#jqGrid3");*/
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 
-		var dialog_authorid = new ordialog(
+	/*	var dialog_authorid = new ordialog(
 			'authorid','sysdb.users','#authorid',errorField,
 			{	colModel:[
 					{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -653,7 +651,7 @@
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_deptcode.makedialog();
+	dialog_deptcode.makedialog();*/
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////Auth Detail////////////////////////////////////////////////////////
@@ -718,7 +716,7 @@
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			if( $('#FAuthdtl').isValid({requiredFields: ''}, {}, true) ) {
-				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",oper_authdtl,saveParam_suppitems,urlParam_suppitems,'#searchForm2');
+				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",oper_authdtl,saveParam_authdtl,urlParam_authdtl,'#searchForm2');
 			}else{
 				mycurrency.formatOn();
 			}
@@ -803,35 +801,22 @@
 	  });
 	
 	/////////////////////parameter for jqgrid url SVC/////////////////////////////////////////////////
-	var urlParam_suppitems={
+	var urlParam_authdtl={
 		action:'get_table_default',
-		field:'',
-		url:'util/get_table_default',
-		fixPost:'true',//replace underscore with dot
-		table_name:['material.suppitems as si','material.product as p'],
-		table_id:'si_lineno_',
-		join_type:['LEFT JOIN'],
-		join_onCol:['si.itemcode'],
-		join_onVal:['p.itemcode'],
-		filterCol:['si.SuppCode','si.compcode','p.compcode'],
-		filterVal:['','session.company','session.company'],//suppcode set when click supplier grid
-		sort_idno:true,
+			url:'/util/get_table_default',
+			field:[],
+			table_name:['material.authdtl AS d'],
+			table_id:'lineno_',
 	}
 
-	var saveParam_suppitems={
+	var saveParam_authdtl={
 		action:'save_table_default',
-		url:'supplier/form',
-		field:'',
-		oper:oper_authdtl,
-		table_name:'material.suppitems',//for save_table_default, use only 1 table
-		fixPost:'true',//throw out dot in the field name
-		idnoUse:'si_idno',
-		table_id:'itemcode',
-		// noduplicate:true,
-		// filterCol:['suppcode'],
-		// filterVal:[''],//suppcode set when click supplier grid
-		lineno:{useOn:'lineno_'},
-		saveip:'true'
+			url:'authorization/form',
+			field:'',
+			oper:oper_authdtl,
+			table_name:'material.authorise',
+			table_id:'authorid',
+			saveip:'true'
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -839,32 +824,38 @@
 	$("#gridAuthdtl").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Supplier Code', name: 'si_suppcode', width: 100, hidden: true},
-		 	{ label: 'no', name: 'si_lineno_', width: 50, sorttype: 'number', hidden: true,}, // 
-		 	{ label: 'Item Code', name: 'si_itemcode', width: 150, sorttype: 'text', editable: true, classes: 'wrap', canSearch: true},
-			{ label: 'Item Description', name: 'p_description', width: 400, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true},
-			{ label: 'Price Code', name: 'si_pricecode', width: 200, sorttype: 'text', editable: true, classes: 'wrap'},
-			{ label: 'Uom Code', name: 'si_uomcode', width: 100, sorttype: 'text', editable: true, classes: 'wrap'},
-			{ label: 'Unit Price', name: 'si_unitprice', width: 200, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
-			{ label: 'Purchase Quantity', name: 'si_purqty', width: 200, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
-			{ label: 'Percentage of Discount', name: 'si_perdiscount', width: 100,  hidden: true},
-			{ label: 'Amount Discount', name: 'si_amtdisc', width: 30,  hidden: true},
-			{ label: 'Amount Sales Tax', name: 'si_amtslstax', width: 30,  hidden: true},
-			{ label: 'Percentage of Sales Tax', name: 'si_perslstax', width: 30,  hidden: true},
-			{ label: 'Expiry Date', name: 'si_expirydate', width: 30,  hidden: true},
-			{ label: "Item Code at Supplier's Site", name: 'si_sitemcode', width: 30,  hidden: true},
-			{ label: 'Record Status', name: 'si_recstatus', width: 200, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
-			},
-			{label: 'No', name: 'si_idno', width: 50, hidden: true},
-			{ label: 'adduser', name: 'si_adduser', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'adddate', name: 'si_adddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'upduser', name: 'si_upduser', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'upddate', name: 'si_upddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'computerid', name: 'si_computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'si_ipaddress', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastcomputerid', name: 'si_lastcomputerid', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'lastipaddress', name: 'si_lastipaddress', width: 90, hidden:true, classes: 'wrap'},
+			 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+				{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
+				{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
+				{ label: 'Trantype', name: 'trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					edittype:'custom',	editoptions:
+						{ custom_element:documentCustomEdit,
+						custom_value:galGridCustomValue },
+				},
+				{ label: 'Deptcode', name: 'deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					edittype:'custom',	editoptions:
+						{ custom_element:documentCustomEdit,
+						custom_value:galGridCustomValue },
+				},
+				{ label: 'Id', name: 'authorid', width: 200, edittype:'text', classes: 'wrap',  
+					editable:true,
+					editrules:{required: false},editoptions:{readonly: "readonly"},
+				},
+				{ label: 'CanDo', name: 'cando', width: 200, classes: 'wrap', canSearch: true, editable: true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
+					edittype:'custom',	editoptions:
+						{ custom_element:documentCustomEdit,
+						custom_value:galGridCustomValue },
+				},
+			
+				{ label: 'Min Limit', name: 'minlimit', width: 200, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+					edittype:"text",
+				},
+				{ label: 'Max Limit', name: 'maxlimit', width: 200, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+					edittype:"text",
+				},
 		],
 		viewrecords: true,
 		//shrinkToFit: true,
@@ -875,12 +866,11 @@
 		height: 200,
 		rowNum: 30,
 		hidegrid: false,
-		caption: caption('searchForm2','Items Supplied By the Supplier'),
-		pager: "#jqGridPager2",
+		pager: "#jqGridPager3",
 		onPaging: function(pgButton){
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager2 td[title='Edit Selected Row']").click();
+			$("#jqGridPager3 td[title='Edit Selected Row']").click();
 		},
 		gridComplete: function(){
 			if(oper == 'add'){
@@ -900,7 +890,7 @@
 			}
 		},
 		onSelectRow:function(rowid, selected){
-			if(rowid != null) {
+			/*if(rowid != null) {
 				rowData = $('#gridAuthdtl').jqGrid ('getRowData', rowid);
 				//console.log(rowData.svc_billtype);
 				urlParam_suppbonus.filterVal[0]=selrowData("#gridAuthdtl").si_itemcode; 
@@ -912,20 +902,20 @@
 				$("#Fsuppbonus :input[name*='sb_purqty']").val(selrowData("#gridAuthdtl").si_purqty);
 				refreshGrid('#gridSuppBonus',urlParam_suppbonus);
 				$("#pg_jqGridPager3 table").show();
-			}
+			}*/
 		},
 		
 	});
 	
-	$("#gridAuthdtl").jqGrid('navGrid','#jqGridPager2',{	
+	$("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{	
 		view:false,edit:false,add:false,del:false,search:false,
 		beforeRefresh: function(){
-			refreshGrid("#gridAuthdtl",urlParam_suppitems);
+			refreshGrid("#gridAuthdtl",urlParam_authdtl);
 		},
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
 		caption:"", 
 		buttonicon:"glyphicon glyphicon-trash", 
-		id:"jqGridPager2glyphicon-trash",
+		id:"jqGridPager3glyphicon-trash",
 		onClickButton: function(){
 			oper_authdtl='del';
 			var selRowId = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
@@ -933,13 +923,13 @@
 				alert('Please select row');
 				return emptyFormdata(errorField,'#Fsuppitems');
 			}else{
-				saveFormdata("#gridAuthdtl","#Dsuppitems","#Fsuppitems",'del',saveParam_suppitems,urlParam_suppitems,null,{'idno':selRowId});
+				saveFormdata("#gridAuthdtl","#Dsuppitems","#Fsuppitems",'del',saveParam_authdtl,urlParam_authdtl,null,{'idno':selRowId});
 			}
 		}, 
 		position: "first", 
 		title:"Delete Selected Row", 
 		cursor: "pointer"
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
 		caption:"", 
 		buttonicon:"glyphicon glyphicon-info-sign", 
 		onClickButton: function(){
@@ -950,7 +940,7 @@
 		position: "first", 
 		title:"View Selected Row", 
 		cursor: "pointer"
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
 		caption:"", 
 		buttonicon:"glyphicon glyphicon-edit", 
 		onClickButton: function(){
@@ -962,7 +952,7 @@
 		position: "first", 
 		title:"Edit Selected Row", 
 		cursor: "pointer"
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
 		caption:"", 
 		buttonicon:"glyphicon glyphicon-plus", 
 		onClickButton: function(){
@@ -976,11 +966,11 @@
 		cursor: "pointer"
 	});
 
-	addParamField('#gridAuthdtl',false,urlParam_suppitems);
-	addParamField('#gridAuthdtl',false,saveParam_suppitems,["p_description", "si_idno", "si_adduser", "si_adddate", "si_upduser", "si_upddate", "si_computerid", 'si_ipaddress', 'si_recstatus']);
+	addParamField('#gridAuthdtl',false,urlParam_authdtl);
+	addParamField('#gridAuthdtl',false,saveParam_authdtl,["p_description", "si_idno", "si_adduser", "si_adddate", "si_upduser", "si_upddate", "si_computerid", 'si_ipaddress', 'si_recstatus']);
 
 	populateSelect('#gridAuthdtl','#searchForm2');
-	searchClick('#gridAuthdtl','#searchForm2',urlParam_suppitems);
+	searchClick('#gridAuthdtl','#searchForm2',urlParam_authdtl);
 
 
 
