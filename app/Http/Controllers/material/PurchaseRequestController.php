@@ -70,8 +70,8 @@ class PurchaseRequestController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('DO', $request->delordhd_prdept);
-        $recno = $this->recno('PUR','DO');
+        $request_no = $this->request_no('PR', $request->delordhd_prdept);
+        $recno = $this->recno('PUR','PR');
 
         DB::beginTransaction();
 
