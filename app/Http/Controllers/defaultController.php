@@ -149,7 +149,7 @@ abstract class defaultController extends Controller{
 
             $table = $table->Where(function ($table) use ($request,$searchCol_array) {
                 foreach ($searchCol_array as $key => $value) {
-                    $table->orWhere($searchCol_array[$key],'like',$request->searchVal[$key]);
+                    $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
                 }
             });
 
@@ -180,7 +180,7 @@ abstract class defaultController extends Controller{
                 }
 
                 foreach ($searchCol_array as $key => $value) {
-                    $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
+                    $query = $query->where($searchCol_array[$key],'like',$request->searchVal2[$key]);
                 }
             });
         }
