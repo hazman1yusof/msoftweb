@@ -146,61 +146,6 @@ i.fa {
 						</div>
 					</div>
 
-					<!-- <hr>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="cm_chgclass">Class Code</label>  
-						<div class="col-md-3">
-							<input id="cm_chgclass" name="cm_chgclass" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="control-label col-md-2" for="cm_constype">Consultation Type</label>  
-						<div class="col-md-3">
-							<select class="form-control col-md-4" id='cm_constype' name='cm_constype'>
-								<option value='1'>Anaestetics</option>
-								<option value='2'>Consultation</option>
-								<option value='3'>Surgeon</option>
-							</select> 
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="cm_chggroup">Charge Group</label>  
-						<div class="col-md-3">
-							<input id="cm_chggroup" name="cm_chggroup" type="text" class="form-control input-sm" data-validation="number, required">
-						</div>
-
-						<label class="col-md-2 control-label" for="cm_chgtype">Charge Type</label>  
-						<div class="col-md-3">
-							<input id="cm_chgtype" name="cm_chgtype" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="UOM">UOM</label>  
-						<div class="col-md-3">
-							<input id="UOM" name="UOM" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="invitem">Inventory Item</label>  
-						<div class="col-md-3">
-							<input id="invitem" name="invitem" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="Packing">Packing</label>  
-						<div class="col-md-3">
-							<input id="Packing" name="Packing" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="cm_recstatus">Record Status</label>  
-						<div class="col-md-3">
-							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='A' checked>Active</label>
-							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='D' >Deactive</label>
-						</div>
-					</div> -->
-
 					<hr>
 
 					<div class="form-group">
@@ -215,6 +160,7 @@ i.fa {
 								<option value='1'>Anaestetics</option>
 								<option value='2'>Consultation</option>
 								<option value='3'>Surgeon</option>
+								<option value='4'>None</option>
 							</select> 
 						</div>
 					</div>
@@ -244,40 +190,51 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="UOM">UOM</label>  
 						<div class="col-md-3">
-							<input id="UOM" name="UOM" type="text" class="form-control input-sm" data-validation="required">
+							<input id="UOM" name="UOM" type="text" class="form-control input-sm" rdonly>
 						</div>
 
-						<label class="col-md-2 control-label" for="invitem">Inventory Item</label>  
+						<label class="col-md-2 control-label" for="invitem">Inventory Item</label>
 						<div class="col-md-3">
-							<input id="invitem" name="invitem" type="text" class="form-control input-sm" data-validation="required">
+							<label class="radio-inline"><input type="radio" name="invitem" value='Yes' checked>Yes</label>
+							<label class="radio-inline"><input type="radio" name="invitem" value='No'>No</label>
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="Packing">Packing</label>  
 						<div class="col-md-3">
-							<input id="Packing" name="Packing" type="text" class="form-control input-sm" data-validation="required">
+							<input id="Packing" name="Packing" type="text" class="form-control input-sm" rdonly>
 						</div>
-					</div>
 
-					<hr>
-
-					<div class="form-group">
 						<label class="col-md-2 control-label" for="druggrpcode">Drug Group Code</label>  
 						<div class="col-md-3">
-							<input id="druggrpcode" name="druggrpcode" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="subgrp">Sub Group</label>  
-						<div class="col-md-3">
-							<input id="subgrp" name="subgrp" type="text" class="form-control input-sm" data-validation="required">
+							<input id="druggrpcode" name="druggrpcode" type="text" class="form-control input-sm" rdonly>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="invgrp">Inv. Group</label>  
+						<label class="col-md-2 control-label" for="subgrp">Sub Group</label>  
 						<div class="col-md-3">
-							<input id="invgrp" name="invgrp" type="text" class="form-control input-sm" data-validation="required">
+							<input id="subgrp" name="subgrp" type="text" class="form-control input-sm" rdonly>
+						</div>
+
+						<label class="col-md-2 control-label" for="stockcode">Stock Code</label>  
+						<div class="col-md-3">
+							<input id="stockcode" name="stockcode" type="text" class="form-control input-sm" data-validation="required">
+						</div>
+					</div>
+
+					<hr>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="invgrp">Inv. Group</label>
+						<div class="col-md-3">
+							<select class="form-control col-md-4" id='invgrp' name='invgrp'>
+								<option value='1'>Charge Code</option>
+								<option value='2'>Charge Group</option>
+								<option value='3'>Charge Type</option>
+								<option value='4'>Doctor</option>
+							</select> 
 						</div>
 
 						<label class="col-md-2 control-label" for="doccode">Doctor Code</label>  
@@ -298,62 +255,19 @@ i.fa {
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="stockcode">Stock Code</label>  
-						<div class="col-md-3">
-							<input id="stockcode" name="stockcode" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
 					<hr>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="ipacccode">IP Acc. Code</label>  
-						<div class="col-md-3">
-							<input id="ipacccode" name="ipacccode" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="opacccode">OP Acc. Code</label>  
-						<div class="col-md-3">
-							<input id="opacccode" name="opacccode" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="appracccode">Appr Acc. Code</label>  
-						<div class="col-md-3">
-							<input id="appracccode" name="appracccode" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="apprcostcode">Appr Cost Code</label>  
-						<div class="col-md-3">
-							<input id="apprcostcode" name="apprcostcode" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
-					<hr>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="priceactive">Price Active</label>  
-						<div class="col-md-3">
-							<input id="priceactive" name="priceactive" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="Queue">Queue</label>  
-						<div class="col-md-3">
-							<input id="Queue" name="Queue" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="priceovr">Price Overwrite</label>  
 						<div class="col-md-3">
-							<input id="priceovr" name="priceovr" type="text" class="form-control input-sm" data-validation="required">
+							<label class="radio-inline"><input type="radio" name="priceovr" value='Yes' checked>Yes</label>
+							<label class="radio-inline"><input type="radio" name="priceovr" value='No' >No</label>
 						</div>
 
 						<label class="col-md-2 control-label" for="Doctor">Doctor</label>  
 						<div class="col-md-3">
-							<input id="Doctor" name="Doctor" type="text" class="form-control input-sm" data-validation="required">
+							<label class="radio-inline"><input type="radio" name="Doctor" value='Yes' checked>Yes</label>
+							<label class="radio-inline"><input type="radio" name="Doctor" value='No' >No</label>
 						</div>
 					</div>
 
