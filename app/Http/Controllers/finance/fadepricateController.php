@@ -134,11 +134,11 @@ class fadepricateController extends defaultController
             }
 
             $queries = DB::getQueryLog();
-            dump($queries);
+            // dump($queries);
 
             DB::commit();
 
-            // return back();
+            return back();
 
         } catch (\Exception $e) {
 

@@ -190,15 +190,15 @@ i.fa {
 				<input type="hidden" name="d_idno">
             
             	<div class="form-group">
-				 	<label class="col-md-2 control-label" for="dtl_authorid">User ID</label>  
+				 	<label class="col-md-2 control-label" for="d_authorid">User ID</label>  
 				  		<div class="col-md-2">
-				  			<input id="dtl_authorid" name="dtl_authorid" type="text" maxlength="12" class="form-control input-sm">
+				  			<input id="d_authorid" name="d_authorid" type="text" maxlength="12" class="form-control input-sm">
 				  		</div>
 
-				  	<label class="col-md-2 control-label" for="dtl_deptcode">Dept Code</label>  
+				  	<label class="col-md-2 control-label" for="d_deptcode">Dept Code</label>  
 				  		<div class="col-md-2">
 					  		<div class='input-group'>
-								<input id="dtl_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm" data-validation="required">
+								<input id="d_deptcode" name="d_deptcode" type="text" class="form-control input-sm" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					 		<span class="help-block"></span>
@@ -206,9 +206,9 @@ i.fa {
                 </div>
             
             	<div class="form-group">
-					<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+					<label class="col-md-2 control-label" for="d_recstatus">Record Status</label>  
 						<div class="col-md-2">
-							<select id="recstatus" name="recstatus" class="form-control input-sm">
+							<select id="d_recstatus" name="d_recstatus" class="form-control input-sm">
 							    <option value="Request">Request</option>
 							    <option value="Support">Support</option>
 							    <option value="Verify">Verify</option>
@@ -216,9 +216,9 @@ i.fa {
 							</select>
 						</div>	
 
-					<label class="col-md-2 control-label" for="trantype">Trantype</label>  
+					<label class="col-md-2 control-label" for="d_trantype">Trantype</label>  
 						<div class="col-md-2">
-							<select id="trantype" name="trantype" class="form-control input-sm">
+							<select id="d_trantype" name="d_trantype" class="form-control input-sm">
 							    <option value="PR">Purchase Request</option>
 							    <option value="PO">Purchase Order</option>
 							</select>
@@ -226,9 +226,9 @@ i.fa {
                 </div>		
                  
                 <div class="form-group">
-					<label class="col-md-2 control-label" for="cando">CanDo</label> 
+					<label class="col-md-2 control-label" for="d_cando">CanDo</label> 
 						<div class="col-md-2"> 
-							<select id="cando" name="cando" class="form-control input-sm">
+							<select id="d_cando" name="d_cando" class="form-control input-sm">
 							    <option value="Yes">Yes</option>
 							    <option value="No">No</option>
 							</select>
@@ -236,14 +236,14 @@ i.fa {
                 </div>	
                 
                 <div class="form-group">
-				  	<label class="col-md-2 control-label" for="minlimit">Min Limit</label>  
+				  	<label class="col-md-2 control-label" for="d_minlimit">Min Limit</label>  
 				  		<div class="col-md-2">
-				  			<input id="minlimit" name="minlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+				  			<input id="d_minlimit" name="d_minlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
 				  		</div>
 
-				  	<label class="col-md-2 control-label" for="maxlimit">Max Limit</label>  
+				  	<label class="col-md-2 control-label" for="d_maxlimit">Max Limit</label>  
 				  		<div class="col-md-2">
-				  			<input id="maxlimit" name="maxlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+				  			<input id="d_maxlimit" name="d_maxlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
 				  		</div>
                 </div>
 			</form>
