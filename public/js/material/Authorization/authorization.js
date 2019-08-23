@@ -67,7 +67,6 @@
 						dialog_deptcodedtl.on();
 					}
 					if(oper!='add'){
-						///toggleFormData('#jqGrid','#formdata');
 						dialog_authorid.check(errorField);
 						dialog_deptcodehd.check(errorField);
 						dialog_deptcodedtl.check(errorField);
@@ -106,17 +105,17 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
-				url:'util/get_table_default',
+				url:'/util/get_table_default',
 				field:'',
-				table_name:'material.authorise as h',
-				table_id:'h_authorid',
+				table_name:'material.authorise',
+				table_id:'authorid',
 				sort_idno:true,
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
-				url:'authorization/form',
+				url:'/authorization/form',
 				field:'',
 				oper:oper,
 				table_name:'material.authorise',
@@ -218,9 +217,7 @@
 			//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-			toogleSearch('#sbut1','#searchForm','on');
 			populateSelect('#jqGrid','#searchForm');
-			searchClick('#jqGrid','#searchForm',urlParam);
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
@@ -317,7 +314,7 @@
 					 editable: true,
                          edittype: "select",
                          editoptions: {
-                             value: "Purchase Request:Purchase Request;Purchase Order:Purchase Order"
+                             value: "PR:Purchase Request;PO:Purchase Order"
                          }
 				},
 				{ label: 'Deptcode', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
@@ -578,7 +575,7 @@
 		function cust_rules(value,name){
 			var temp;
 			switch(name){
-				case 'Deptcode':temp=$('#deptcode');break;
+				case 'Deptcode':temp=$('#dtl_deptcode');break;
 				case 'Deptcode':temp=$('#d_deptcode');break;
 			
 			}
