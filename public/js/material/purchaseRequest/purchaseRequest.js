@@ -259,52 +259,6 @@ $(document).ready(function () {
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 
-/*	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
-		view: false, edit: false, add: false, del: false, search: false,
-		beforeRefresh: function () {
-			refreshGrid("#jqGrid", urlParam, oper);
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-info-sign",
-		title: "View Selected Row",
-		onClickButton: function () {
-			oper = 'view';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
-
-				urlParam2.filterVal[0] = selrowData("#jqGrid").recno;
-				urlParam2.join_filterCol = [['ivt.uomcode', 's.deptcode', 's.year'], []];
-				urlParam2.join_filterVal = [['skip.s.uomcode', "skip.'" + selrowData("#jqGrid").reqdept + "'", "skip.'" + moment(selrowData("#jqGrid").reqdt).year() + "'"], []];
-			
-			refreshGrid("#jqGrid2", urlParam2);
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
-		buttonicon: "glyphicon glyphicon-edit",
-		title: "Edit Selected Row",
-		onClickButton: function () {
-			oper = 'edit';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
-
-				urlParam2.filterVal[0] = selrowData("#jqGrid").recno;
-				urlParam2.join_filterCol = [['ivt.uomcode', 's.deptcode', 's.year'], []];
-				urlParam2.join_filterVal = [['skip.s.uomcode', selrowData("#jqGrid").reqdept, moment(selrowData("#jqGrid").reqdt).year()], []];
-			
-			refreshGrid("#jqGrid2", urlParam2);
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-plus",
-		id: 'glyphicon-plus',
-		title: "Add New Row",
-		onClickButton: function () {
-			oper = 'add';
-			$("#dialogForm").dialog("open");
-		},
-	});*/
-
 
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,

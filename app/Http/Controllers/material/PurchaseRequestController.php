@@ -100,15 +100,14 @@ class PurchaseRequestController extends defaultController
             if(!empty($request->referral)){
                 ////ni kalu dia amik dari po
                 ////amik detail dari po sana, save dkt do detail, amik total amount
-                $totalAmount = $this->save_dt_from_othr_po($request->referral,$recno,$request->delordhd_srcdocno);
+                $totalAmount = $this->save_dt_from_othr_po($request->referral,$recno,$request->purreqhd_purreqno);
 
-                $srcdocno = $request->delordhd_srcdocno;
-                $delordno = $request->delordhd_delordno;
-
+                $purreqno = $request->purreqhd_purreqno;
+/*
                 ////dekat po header sana, save balik delordno dkt situ
                 DB::table('material.purordhd')
-                    ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
-                    ->update(['delordno' => $delordno]);
+                    ->where('purordno','=',$purreqno)->where('compcode','=',session('compcode'))
+                    ->update(['delordno' => $delordno]);*/
             }
 
             $responce = new stdClass();
@@ -136,16 +135,16 @@ class PurchaseRequestController extends defaultController
             $idno = $request->table_id;
         }
 
-        $srcdocno = DB::table('material.purreqhd')
-                    ->select('srcdocno')
+        $purreqno = DB::table('material.purreqhd')
+                    ->select('purreqno')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->delordhd_recno)->first();
+                    ->where('recno','=',$request->purreqhd_recno)->first();
         
-        if($srcdocno->srcdocno == $request->delordhd_srcdocno){
+        if($purreqno->purreqno == $request->purreqhd_purreqno){
             // ni edit macam biasa, nothing special
             DB::beginTransaction();
 
-            $table = DB::table("material.delordhd");
+            $table = DB::table("material.purreqhd");
 
             $array_update = [
                 'unit' => session('unit'),
@@ -160,11 +159,11 @@ class PurchaseRequestController extends defaultController
 
             try {
                 //////////where//////////
-                $table = $table->where('idno','=',$request->delordhd_idno);
+                $table = $table->where('idno','=',$request->purreqhd_idno);
                 $table->update($array_update);
 
                 $responce = new stdClass();
-                $responce->totalAmount = $request->delordhd_totamount;
+                $responce->totalAmount = $request->purreqhd_totamount;
                 echo json_encode($responce);
 
                 DB::commit();
@@ -179,17 +178,17 @@ class PurchaseRequestController extends defaultController
             try{
                 // ni edit kalu copy utk do dari existing po
                 //1. update po.delordno lama jadi 0, kalu do yang dulu pon copy existing po 
-                if($srcdocno->srcdocno != '0'){
+                if($purreqno->purreqno != '0'){
                     DB::table('material.purordhd')
-                    ->where('purordno','=', $srcdocno->srcdocno)->where('compcode','=',session('compcode'))
+                    ->where('purordno','=', $purreqno->purreqno)->where('compcode','=',session('compcode'))
                     ->update(['delordno' => '0']);
                 }
 
                 //2. Delete detail from delorddt
-                DB::table('material.delorddt')->where('recno','=',$request->delordhd_recno);
+                DB::table('material.delorddt')->where('recno','=',$request->purreqhd_recno);
 
-                //3. Update srcdocno_delordhd
-                $table = DB::table("material.delordhd");
+                //3. Update purreqno_purreqhd
+                $table = DB::table("material.purreqhd");
 
                 $array_update = [
                     'compcode' => session('compcode'),
@@ -201,28 +200,27 @@ class PurchaseRequestController extends defaultController
                     $array_update[$value] = $request[$request->field[$key]];
                 }
 
-                $table = $table->where('idno','=',$request->delordhd_idno);
+                $table = $table->where('idno','=',$request->purreqhd_idno);
                 $table->update($array_update);
 
-                $totalAmount = $request->delordhd_totamount;
+                $totalAmount = $request->purreqhd_totamount;
                 //4. Update delorddt
-                if(!empty($request->referral)){
-                    $totalAmount = $this->save_dt_from_othr_po($request->referral,$request->delordhd_recno,$request->delordhd_srcdocno);
+              /*  if(!empty($request->referral)){
+                    $totalAmount = $this->save_dt_from_othr_po($request->referral,$request->purreqhd_recno,$request->purreqhd_purreqno);
 
-                    $srcdocno = $request->delordhd_srcdocno;
-                    $delordno = $request->delordhd_delordno;
+                    $purreqno = $request->purreqhd_purreqno;
 
                     ////dekat po header sana, save balik delordno dkt situ
                     DB::table('material.purordhd')
-                        ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
-                        ->update(['delordno' => $delordno]);
+                        ->where('purordno','=',$purreqno)->where('compcode','=',session('compcode'))
+                        ->update(['purreqno' => $purreqno]);
                 }
 
                 $responce = new stdClass();
                 $responce->totalAmount = $totalAmount;
                 echo json_encode($responce);
 
-                DB::commit();
+                DB::commit();*/
             } catch (\Exception $e) {
                 DB::rollback();
 
@@ -236,7 +234,7 @@ class PurchaseRequestController extends defaultController
 
     }
 
-    public function posted(Request $request){
+   /* public function posted(Request $request){
         DB::beginTransaction();
 
         try{
@@ -498,7 +496,7 @@ class PurchaseRequestController extends defaultController
             return response('Error'.$e, 500);
         }
     }
-
+*/
     public function soft_cancel(Request $request){
 
          DB::beginTransaction();
@@ -506,7 +504,7 @@ class PurchaseRequestController extends defaultController
         try{
 
             //--- 8. change recstatus to cancelled -dd--//
-            DB::table('material.delordhd')
+            DB::table('material.purreqhd')
                 ->where('recno','=',$request->recno)
                 ->where('unit','=',session('unit'))
                 ->where('compcode','=',session('compcode'))
@@ -516,7 +514,7 @@ class PurchaseRequestController extends defaultController
                     'recstatus' => 'CANCELLED' 
                 ]);
 
-            DB::table('material.delorddt')
+            DB::table('material.purreqdt')
                 ->where('recno','=',$request->recno)
                 ->where('unit','=',session('unit'))
                 ->where('compcode','=',session('compcode'))
@@ -534,7 +532,7 @@ class PurchaseRequestController extends defaultController
         }
     }
 
-    public function cancel(Request $request){
+   /* public function cancel(Request $request){
          DB::beginTransaction();
 
         try{
@@ -942,168 +940,8 @@ class PurchaseRequestController extends defaultController
 
             return response('Error'.$e, 500);
         }
-    }
+    }*/
 
-    public function save_dt_from_othr_po($refer_recno,$recno,$srcdocno){
-        $po_dt = DB::table('material.purorddt')
-                ->where('recno', '=', $refer_recno)
-                ->where('compcode', '=', session('compcode'))
-                ->where('recstatus', '<>', 'DELETE')
-                ->get();
-
-        $po_hd = DB::table('material.purordhd')
-                ->where('recno', '=', $refer_recno)
-                ->where('compcode', '=', session('compcode'))
-                ->first();
-
-        foreach ($po_dt as $key => $value) {
-
-
-            $productcat = $this->get_productcat($value->itemcode);
-
-            ///1. insert detail we get from existing purchase order
-            $table = DB::table("material.delorddt");
-            if($value->qtyorder - $value->qtydelivered > 0){
-                $table->insert([
-                    'compcode' => session('compcode'), 
-                    'recno' => $recno, 
-                    'lineno_' => $value->lineno_, 
-                    'polineno' => $value->lineno_,
-                    'pricecode' => $value->pricecode, 
-                    'itemcode' => $value->itemcode, 
-                    'uomcode' => $value->uomcode,
-                    'pouom' => $value->pouom,  
-                    'suppcode' => $po_hd->suppcode,
-                    'trandate' => $po_hd->purdate,
-                    'deldept' => $po_hd->deldept,
-                    'deliverydate' => $po_hd->expecteddate,
-                    'qtyorder' => $value->qtyorder, 
-                    'qtydelivered' => $value->qtydelivered, 
-                    'qtyoutstand' => $value->qtyorder - $value->qtydelivered,
-                    'unitprice' => $value->unitprice, 
-                    'taxcode' => $value->taxcode, 
-                    'perdisc' => $value->perdisc,
-                    'amtdisc' => $value->amtdisc, 
-                    'amtslstax' => $value->amtslstax, 
-                    'netunitprice' => $value->netunitprice,
-                    'amount' => $value->amount, 
-                    'totamount' => $value->totamount,
-                    'productcat' => $productcat,
-                    'srcdocno' => $value->purordno,
-                    'prdept' => $value->prdept, 
-                    'rem_but'=>$value->rem_but,
-                    'unit' => session('unit'), 
-                    'adduser' => session('username'), 
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'A', 
-                    'remarks' => $value->remarks
-                ]);
-            }
-        }
-       
-        ///2. calculate total amount from detail earlier
-        $amount = DB::table('material.delorddt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
-                    ->where('recstatus','<>','DELETE')
-                    ->sum('amount');
-
-        ///3. then update to header
-        $table = DB::table('material.delorddt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno);
-        $table->update([
-                'totamount' => $amount, 
-                //'subamount' => $amount
-            ]);
-
-        return $amount;
-    }
-
-    public function checkIfPOposted($value){
-        $po_hd = DB::table('material.purordhd')
-                ->where('purordno', '=', $value->srcdocno)
-                ->where('compcode', '=', session('compcode'))
-                ->first();
-        // dd($po_hd->recstatus);
-
-        if($po_hd->recstatus == 'CANCELLED'){
-            throw new \Exception("Cannot posted, PO is CANCELLED");
-        }else if($po_hd->recstatus != 'ISSUED'){
-        // dd($po_hd->recstatus);
-            throw new \Exception("Cannot posted, PO not ISSUED yet");
-        }
-    }
-
-    public function refresh_do(Request $request){
-        $do_hd = DB::table('material.delordhd')
-                ->where('idno', '=', $request->idno)
-                ->first();
-
-        $po_hd = DB::table('material.purordhd')
-                ->where('purordno', '=', $do_hd->srcdocno)
-                ->first();
-
-        $po_dt = DB::table('material.purorddt')
-                ->where('recno', '=', $po_hd->recno)
-                ->where('compcode', '=', session('compcode'))
-                ->where('recstatus', '<>', 'DELETE')
-                ->get();
-
-        foreach ($po_dt as $key => $value) {
-
-            $do_dt = DB::table('material.delorddt')
-                        ->where('polineno', '=', $value->lineno_)
-                        ->where('recno', '=', $do_hd->recno);
-
-            if($do_dt->exists()){
-                $do_dt
-                    ->update([
-                        'qtyorder' => $value->qtyorder
-                    ]);
-            }else{
-
-                $productcat = $this->get_productcat($value->itemcode);
-
-                $table = DB::table("material.delorddt");
-                if($value->qtyorder - $value->qtydelivered > 0){
-                    $table->insert([
-                        'compcode' => session('compcode'), 
-                        'recno' => $do_hd->recno, 
-                        'lineno_' => $value->lineno_, 
-                        'polineno' => $value->lineno_,
-                        'pricecode' => $value->pricecode, 
-                        'itemcode' => $value->itemcode, 
-                        'uomcode' => $value->uomcode,
-                        'pouom' => $value->pouom,  
-                        'suppcode' => $po_hd->suppcode,
-                        'trandate' => $po_hd->purdate,
-                        'deldept' => $po_hd->deldept,
-                        'deliverydate' => $po_hd->expecteddate,
-                        'qtyorder' => $value->qtyorder, 
-                        'qtydelivered' => $value->qtydelivered, 
-                        'qtyoutstand' => $value->qtyorder - $value->qtydelivered,
-                        'unitprice' => $value->unitprice, 
-                        'taxcode' => $value->taxcode, 
-                        'perdisc' => $value->perdisc,
-                        'amtdisc' => $value->amtdisc, 
-                        'amtslstax' => $value->amtslstax, 
-                        'netunitprice' => $value->netunitprice,
-                        'amount' => $value->amount, 
-                        'totamount' => $value->totamount,
-                        'productcat' => $productcat,
-                        'srcdocno' => $value->purordno,
-                        'prdept' => $value->prdept, 
-                        'rem_but'=>$value->rem_but,
-                        'unit' => session('unit'), 
-                        'adduser' => session('username'), 
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        'recstatus' => 'A', 
-                        'remarks' => $value->remarks
-                    ]);
-                }
-            }
-        }
-    }
+    
 }
 

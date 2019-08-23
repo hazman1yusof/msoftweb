@@ -43,81 +43,7 @@ class PurchaseRequestDetailController extends defaultController
         }
     }
 
-    public function get_draccno($itemcode,$pricecode){
-        $product = DB::table('material.product')->where('itemcode','=',$itemcode)->first();
-
-        if($pricecode == 'MS' && $product->groupcode == 'Asset'){
-            $query = DB::table('finance.facode')
-                    ->select('facode.glassetccode')
-                    ->join('material.product', 'facode.assetcode', '=', 'product.productcat')
-                    ->where('product.itemcode','=',$itemcode)
-                    ->first();
-            
-            return $query->glassetccode;
-
-        }else if($pricecode == 'MS' && $product->groupcode == 'Others'){
-            $query = DB::table('material.category')
-                    ->select('category.expacct')
-                    ->join('material.product', 'category.catcode', '=', 'product.productcat')
-                    ->where('product.itemcode','=',$itemcode)
-                    ->first();
-            
-            return $query->expacct;
-        }else{
-
-            $query = DB::table('material.category')
-                    ->select('category.stockacct')
-                    ->join('material.product', 'category.catcode', '=', 'product.productcat')
-                    ->where('product.itemcode','=',$itemcode)
-                    ->first();
-            
-            return $query->stockacct;
-        }
-    }
-
-    public function get_drccode($deldept){
-        $query = DB::table('sysdb.department')
-                ->select('costcode')
-                ->where('compcode','=',session('compcode'))
-                ->where('deptcode','=',$deldept)
-                ->first();
-        
-        return $query->costcode;
-    }
-
-    public function 
-    (){
-        $query = DB::table('sysdb.sysparam')
-                ->select('pvalue2')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=','AP')
-                ->where('trantype','=','ACC')
-                ->first();
-        
-        return $query->pvalue2;
-    }
-
-    public function get_crccode(){
-        $query = DB::table('sysdb.sysparam')
-                ->select('pvalue1')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=','AP')
-                ->where('trantype','=','ACC')
-                ->first();
-        
-        return $query->pvalue1;
-    }
-
-    public function get_productcat($itemcode){
-        $query = DB::table('material.product')
-                ->select('productcat')
-                ->where('compcode','=',session('compcode'))
-                ->where('itemcode','=',$itemcode)
-                ->first();
-        
-        return $query->productcat;
-    }
-
+   
     public function chgDate($date){
         if(!empty($date)){
             $newstr=explode("/", $date);
@@ -129,14 +55,8 @@ class PurchaseRequestDetailController extends defaultController
 
     public function add(Request $request){
 
-       /* $draccno = $this->get_draccno($request->itemcode,$request->pricecode);
-        $drccode = $this->get_drccode($request->deldept);
-        $craccno = $this->get_craccno();
-        $crccode = $this->get_crccode();
-        $productcat = $this->get_productcat($request->itemcode);
-*/
         $recno = $request->recno;
-        $suppcode = $request->suppcode;
+      //  $suppcode = $request->suppcode;
         $purreqdt = $request->purreqdt;
         $reqdept = $request->reqdept;
 
@@ -161,7 +81,7 @@ class PurchaseRequestDetailController extends defaultController
                     'itemcode' => $request->itemcode,
                     'uomcode' => $request->uomcode,
                     'pouom' => $request->pouom,
-                    'suppcode' => $request->suppcode,
+                   // 'suppcode' => $request->suppcode,
                     'reqdept' => $request->reqdept,
                     'qtyrequest' => $request->qtyrequest,
                     'unitprice' => $request->unitprice,
