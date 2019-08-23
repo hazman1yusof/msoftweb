@@ -1387,7 +1387,7 @@ $(document).ready(function () {
 	dialog_reqdept.makedialog();
 
 	var dialog_prdept = new ordialog(
-		'prdept','sysdb.department','#purordhd_prdept',errorField,
+		'prdept','sysdb.department','#purreqhd_prdept',errorField,
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
@@ -1416,7 +1416,7 @@ $(document).ready(function () {
 	dialog_prdept.makedialog(false);
 	
 	var dialog_suppcode = new ordialog(
-		'suppcode','material.supplier','#purordhd_suppcode',errorField,
+		'suppcode','material.supplier','#purreqhd_suppcode',errorField,
 		{	colModel:[
 				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
