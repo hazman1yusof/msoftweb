@@ -83,7 +83,6 @@ $(document).ready(function () {
 			},
 			close: function (event, ui) {
 				addmore_jqgrid2.state = false;//reset balik
-			addmore_jqgrid2.state = false;
 			    addmore_jqgrid2.more = false;
 			    //reset balik
 			    parent_close_disabled(false);
@@ -564,7 +563,7 @@ $(document).ready(function () {
 		filterCol: ['prdt.recno', 'prdt.compcode', 'prdt.recstatus'],
 		filterVal: ['', 'session.company', '<>.DELETE']
 	};
-	var addmore_jqgrid2={more:false,state:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
+	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
