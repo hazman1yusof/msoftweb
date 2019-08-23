@@ -70,16 +70,16 @@ class PurchaseRequestController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('PR', $request->delordhd_prdept);
+        $request_no = $this->request_no('PR', $request->purreqhd_reqdept);
         $recno = $this->recno('PUR','PR');
 
         DB::beginTransaction();
 
-        $table = DB::table("material.delordhd");
+        $table = DB::table("material.purreqhd");
 
         $array_insert = [
-            'trantype' => 'GRN', 
-            'docno' => $request_no,
+            'trantype' => 'PR', 
+            'purreqno' => $request_no,
             'recno' => $recno,
             'compcode' => session('compcode'),
             'unit' => session('unit'),
@@ -136,7 +136,7 @@ class PurchaseRequestController extends defaultController
             $idno = $request->table_id;
         }
 
-        $srcdocno = DB::table('material.delordhd')
+        $srcdocno = DB::table('material.purreqhd')
                     ->select('srcdocno')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$request->delordhd_recno)->first();
