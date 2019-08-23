@@ -121,10 +121,14 @@ i.fa {
 				</div>
 
 				<div class="form-group">
-				   	<label class="col-md-2 control-label" for="deptcode">Department Code</label>  
-				  		<div class="col-md-4">
-				  			<input id="deptcode" name="deptcode" type="text" maxlength="15" class="form-control input-sm" rdonly>
-				  		</div>
+					<label class="col-md-2 control-label" for="deptcode">Dept Code</label>
+						<div class="col-md-4">
+							<div class='input-group'>
+								<input id="deptcode" name="deptcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
 				</div>
 
 				<div class="form-group">
@@ -139,23 +143,23 @@ i.fa {
 
 				<div class="form-group data_info">
 					<div class="col-md-6 minuspad-13">
-						<label class="control-label" for="delordhd_upduser">Last Entered By</label>  
-						 	<input id="delordhd_upduser" name="delordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						<label class="control-label" for="upduser">Last Entered By</label>  
+						 	<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					</div>
 					  			
 					<div class="col-md-6 minuspad-13">
-						<label class="control-label" for="delordhd_upddate">Last Entered Date</label>
-						  	<input id="delordhd_upddate" name="delordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						<label class="control-label" for="upddate">Last Entered Date</label>
+						  	<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					</div>
 					    		
 					<div class="col-md-6 minuspad-13">
-						<label class="control-label" for="delordhd_adduser">Check By</label>  
-						  	<input id="delordhd_adduser" name="delordhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						<label class="control-label" for="adduser">Check By</label>  
+						  	<input id="adduser" name="adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					</div>
 
 					<div class="col-md-6 minuspad-13">
-						<label class="control-label" for="delordhd_adddate">Check Date</label>
-						  	<input id="delordhd_adddate" name="delordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						<label class="control-label" for="adddate">Check Date</label>
+						  	<input id="adddate" name="delordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					</div>
 						    	
 				</div>

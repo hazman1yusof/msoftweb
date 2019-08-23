@@ -144,16 +144,16 @@ $(document).ready(function () {
 		$(form+' [name=Stext]').on( "keyup", function() {
 			delay(function(){
 				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-				//$('#ponodepan').text("");//tukar kat depan tu
-				$('#prdeptdepan').text("");
+				$('#reqnodepan').text("");//tukar kat depan tu
+				$('#reqdeptdepan').text("");
 				refreshGrid("#jqGrid3",null,"kosongkan");
 			}, 500 );
 		});
 
 		$(form+' [name=Scol]').on( "change", function() {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-		//	$('#ponodepan').text("");//tukar kat depan tu
-			$('#prdeptdepan').text("");
+			$('#reqnodepan').text("");//tukar kat depan tu
+			$('#reqdeptdepan').text("");
 			refreshGrid("#jqGrid3",null,"kosongkan");
 		});
 	}
@@ -231,8 +231,8 @@ $(document).ready(function () {
 			}
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purreqhd_recno;
 			
-			$('#recnodepan').text(selrowData("#jqGrid").purreqhd_recno);//tukar kat depan tu
-			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
+			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan tu
+			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_prdept);
 			refreshGrid("#jqGrid3", urlParam2);
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
@@ -709,34 +709,7 @@ $(document).ready(function () {
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
-		/*gridComplete: function () {
-
-			$("#jqGrid2_ilcancel").off();
-			$("#jqGrid2_ilcancel").on("click", function (event) {
-				event.preventDefault();
-				event.stopPropagation();
-				bootbox.confirm({
-					message: "Are you sure want to cancel?",
-					buttons: {
-						confirm: { label: 'Yes', className: 'btn-success' },
-						cancel: { label: 'No', className: 'btn-danger' }
-					},
-					callback: function (result) {
-						if (result == true) {
-							$(".noti").empty();
-							refreshGrid("#jqGrid2", urlParam2);
-						}
-						linenotoedit = null;
-					}
-				});
-			});
-
-			$("#jqGrid2").find(".remarks_button").on("click", function (e) {
-				$("#remarks2").data('lineno', $(this).data('lineno'));
-				$("#remarks2").data('grid', "#jqGrid2");
-				$("#dialog_remarks").dialog("open");
-			});
-		},*/
+		
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
 				$("#remarks2").data('rowid',$(this).data('rowid'));
@@ -1051,7 +1024,7 @@ $(document).ready(function () {
     			action: 'purReq_detail_save',
 				_token: $("#_token").val(),
 				recno: $('#purreqhd__recno').val(),
-				action: 'purOrder_detail_save',
+				action: 'purReq_detail_save',
 				purreqno:$('#purreqhd_purreqno').val(),
 				suppcode:$('#purreqhd_suppcode').val(),
 				purdate:$('#purreqhd_purdate').val(),
@@ -1283,7 +1256,7 @@ $(document).ready(function () {
 		var id="#jqGrid2 #"+id_optid+"_qtyrequest";
 		var fail_msg = "Quantity Request must be greater than 0";
 		var name = "quantityrequest";
-		if (qtyorder > 0) {
+		if (qtyrequest > 0) {
 			if($.inArray(id,errorField)!==-1){
 				errorField.splice($.inArray(id,errorField), 1);
 			}

@@ -108,12 +108,12 @@ i.fa {
 		</div>
 
         	<div class='click_row'>
-        		<label class="control-label">Record No</label>
-        		<span id="recnodepan" style="display: block;">&nbsp</span>
+        		<label class="control-label">Request No</label>
+        		<span id="reqnodepan" style="display: block;">&nbsp</span>
         	</div>
         	<div class='click_row'>
-				<label class="control-label">Purchase Dept</label>
-        		<span id="prdeptdepan" style="display: block;">&nbsp</span>
+				<label class="control-label">Request Dept</label>
+        		<span id="reqdeptdepan" style="display: block;">&nbsp</span>
         	</div>
         	<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
 				<label class="control-label" style="margin-top: 10px;">Print Label</label>
