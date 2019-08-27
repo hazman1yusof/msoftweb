@@ -49,7 +49,7 @@
 				width: 9/10 * $(window).width(),
 				modal: true,
 				autoOpen: false,
-				pen: function( event, ui ) {
+				open: function( event, ui ) {
 					parent_close_disabled(true);
 					$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 					/*mycurrency.formatOnBlur();
@@ -67,7 +67,8 @@
 							/*hideatdialogForm(true);*/
 							enableForm('#formdata');
 							rdonly('#formdata');
-							frozeOnEdit("#dialogForm");
+							console.log('test')
+							frozeOnEdit("#formdata");
 							break;
 						case state = 'view':
 							disableForm('#formdata');
@@ -76,13 +77,17 @@
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-						// dialog_dept.on();
-						// dialog_trantype.on();
+						dialog_chggroup.on();
+						dialog_chgclass.on();
+						dialog_chgtype.on();
+						dialog_doctorcode.on();
 					}
 					if(oper!='add'){
 						///toggleFormData('#jqGrid','#formdata');
-						// dialog_dept.check(errorField);
-						// dialog_trantype.check(errorField);
+						dialog_chggroup.check(errorField);
+						dialog_chgclass.check(errorField);
+						dialog_chgtype.check(errorField);
+						dialog_doctorcode.check(errorField);
 					}
 				},
 				close: function( event, ui ) {
@@ -90,8 +95,10 @@
 					emptyFormdata(errorField,'#formdata');
 					//$('.alert').detach();
 					$('#formdata .alert').detach();
-					// dialog_dept.off();
-					// dialog_trantype.off();
+					dialog_chggroup.off();
+					dialog_chgclass.off();
+					dialog_chgtype.off();
+					dialog_doctorcode.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -144,6 +151,8 @@
 					{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
 					{ label: 'UOM', name: 'cm_uom', width: 30,hidden:false },
 					{ label: 'Generic Name', name: 'cm_brandname', width: 60},
+					{ label: 'doctorcode', name: 'doctorcode', hidden:true},
+					{ label: 'deptcode', name: 'deptcode', hidden:true},
 
 					{ label: 'Upd User', name: 'cm_upduser', width: 80,hidden:true}, 
 					{ label: 'Upd Date', name: 'cm_upddate', width: 90,hidden:true},
@@ -549,7 +558,7 @@
 			$('#chggroup ~ a').click();
 		});
 		var chggroup = new ordialog(
-			'cm_chggroup', 'hisdb.chggroup', '#chggroup', 'errorField',
+			'chggroup', 'hisdb.chggroup', '#chggroup', 'errorField',
 			{
 				colModel: [
 					{ label: 'Group Code', name: 'grpcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -579,7 +588,7 @@
 			$('#chgtype ~ a').click();
 		});
 		var chgtype = new ordialog(
-			'cm_chgtype', 'hisdb.chgtype', '#chgtype', 'errorField',
+			'chgtype', 'hisdb.chgtype', '#chgtype', 'errorField',
 			{
 				colModel: [
 					{ label: 'Charge Type', name: 'chgtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -604,6 +613,151 @@
 		);
 		chgtype.makedialog();
 		chgtype.on();
+
+		var dialog_chgclass= new ordialog(
+			'cm_chgclass','hisdb.chgclass','#cm_chgclass',errorField,
+			{	colModel:[
+					{label:'Class Code',name:'classcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			ondblClickRow: function () {
+				$('#cm_constype').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#cm_constype').focus();
+				}
+			}
+			},
+			{
+				title:"Select Class Code",
+				open: function(){
+					dialog_chgclass.urlParam.filterCol=['compcode'];
+					dialog_chgclass.urlParam.filterVal=['session.compcode'];
+					
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_chgclass.makedialog(true);
+
+		var dialog_chggroup= new ordialog(
+			'cm_chggroup','hisdb.chggroup','#cm_chggroup',errorField,
+			{	colModel:[
+					{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			ondblClickRow: function () {
+				$('#cm_chgtype').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#cm_chgtype').focus();
+				}
+			}
+			},
+			{
+				title:"Select Group Code",
+				open: function(){
+					dialog_chggroup.urlParam.filterCol=['compcode'];
+					dialog_chggroup.urlParam.filterVal=['session.compcode'];
+					
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_chggroup.makedialog(true);
+
+		var dialog_chgtype= new ordialog(
+			'cm_chgtype','hisdb.chgtype','#cm_chgtype',errorField,
+			{	colModel:[
+					{label:'Charge Type',name:'chgtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			ondblClickRow: function () {
+				// $('#ipdept').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#ipdept').focus();
+				}
+			}
+			},
+			{
+				title:"Select Charge Type",
+				open: function(){
+					dialog_chgtype.urlParam.filterCol=['compcode'];
+					dialog_chgtype.urlParam.filterVal=['session.compcode'];
+					
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_chgtype.makedialog(true);
+
+		var dialog_doctorcode= new ordialog(
+			'doctorcode','hisdb.doctor','#doctorcode',errorField,
+			{	colModel:[
+					{label:'Doctor Code',name:'doctorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Doctor Name',name:'doctorname',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			ondblClickRow: function () {
+				// $('#ipdept').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#ipdept').focus();
+				}
+			}
+			},
+			{
+				title:"Select Doctor Code",
+				open: function(){
+					dialog_doctorcode.urlParam.filterCol=['compcode'];
+					dialog_doctorcode.urlParam.filterVal=['session.compcode'];
+					
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_doctorcode.makedialog(true);
+
+		var dialog_deptcode= new ordialog(
+			'deptcode','sysdb.department','#deptcode',errorField,
+			{	colModel:[
+					{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			ondblClickRow: function () {
+				// $('#ipdept').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#ipdept').focus();
+				}
+			}
+			},
+			{
+				title:"Select Department Code",
+				open: function(){
+					dialog_deptcode.urlParam.filterCol=['compcode'];
+					dialog_deptcode.urlParam.filterVal=['session.compcode'];
+					
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_deptcode.makedialog(true);
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -31,32 +31,6 @@
 						</div>
 		            </div>
 				</div>
-
-				<!-- <div class="col-md-2">
-					<label class="control-label" for="Status">Status</label>  
-					<select id="Status" name="Status" class="form-control input-sm">
-						<option value="All" selected>ALL</option>
-						<option value="Open">OPEN</option>
-						<option value="Confirmed">CONFIRMED</option>
-						<option value="Posted">POSTED</option>
-						<option value="Cancelled">CANCELLED</option>
-					</select>
-	            </div>
-
-	            <div class="col-md-2">
-			  		<label class="control-label" for="trandept">Purchase Dept</label> 
-					<select id='trandept' class="form-control input-sm">
-				      	<option value="All" selected>ALL</option>
-					</select>
-				</div>
-
-				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
-					<span id="error_infront" style="color: red"></span>
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
-				</div> -->
 			</fieldset> 
 		</form>
 
@@ -69,15 +43,6 @@
         		</div>
 		    </div>
 		</div>
-
-        <!-- <div class='click_row'>
-        	<label class="control-label">Record No</label>
-        	<span id="recnodepan" style="display: block;">&nbsp</span>
-        </div>
-        <div class='click_row'>
-			<label class="control-label">Purchase Dept</label>
-        	<span id="prdeptdepan" style="display: block;">&nbsp</span>
-        </div> -->
     </div>
 	<!-- ***************End Search + table ********************* -->
 
@@ -100,13 +65,6 @@
 							<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
 						</div>
 					</div>
-			                
-					<!-- <div class="form-group">
-						<label class="col-md-2 control-label" for="classlevel">Class Level</label>  
-						<div class="col-md-6">
-							<input id="classlevel" name="classlevel" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>     -->
 			                
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
