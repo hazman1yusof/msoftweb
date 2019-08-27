@@ -190,6 +190,11 @@
 				dialog_delordno.urlParam.join_type = ['LEFT JOIN'];
 				dialog_delordno.urlParam.join_onCol = ['dohd.invoiceno'];
 				dialog_delordno.urlParam.join_onVal = ['ap.document'];
+
+				
+				dialog_delordno.urlParam.url = "/assetregister/table";
+				dialog_delordno.urlParam.suppcode = $("#suppcode").val();
+
 			}
 		},'urlParam','radio','tab'
 	);
@@ -212,7 +217,7 @@
 	dialog_invno.makedialog();
 
 	var dialog_itemcode= new ordialog(
-		'itemcode',['material.delorddt as dodt','material.product as p'],'#itemcode',errorField,
+		'itemcode',['material.delorddt as dodt','material.productmaster as p'],'#itemcode',errorField,
 		{	colModel:[
 				{label:'Itemcode',name:'dodt_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'description',name:'p_description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -463,12 +468,7 @@
 				formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
 				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
 				{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
-				{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center",
-					        editoptions: { value: "True:False" },
-					        editrules: { required: true },
-					        formatter: formatterCheckbox,
-					        formatoptions: { disabled: false },
-					        editable: true  },
+				{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 
 			],
 			autowidth:true,
@@ -487,10 +487,12 @@
 			gridComplete: function(){
 				if (oper == 'add') {
 					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-					}
+				}
 
-					$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-					fdl.set_array().reset();
+				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+				fdl.set_array().reset();
+
+				checkbox_function_on();
 			}
 				
 		});
@@ -532,7 +534,7 @@
 		}
 
 		function formatterCheckbox(cellvalue, options, rowObject){
-			return "<input type='checkbox' name='Checkbox' idno='"+rowObject.idno+"'>";
+			return "<input type='checkbox' name='checkbox_selection' data-idno='"+rowObject.idno+"' data-rowid='"+options.rowId+"' data-select='false'>";
 		}
 
 		//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
@@ -557,7 +559,9 @@
 
 		////////////////////// set label jqGrid right ////////////////////////////////////////////////////
 		jqgrid_label_align_right("#jqGrid");
-		jqgrid_set_label_to_checkbox("#jqGrid",'Checkbox');
+
+		var cbselect = new checkbox_selection("#jqGrid","Checkbox");
+		cbselect.on();
 
 		///////////////////////// REGISTER TYPE SELECTION/////////////////////////////////////
 		/////// if the function chosen is P, certain field will be disabled //////////////////
@@ -847,7 +851,7 @@
 		function gneratetagno(){
 			var idno_array = [];
 
-			$('input[type="checkbox"][name="Checkbox"]:checked').each(function(){
+			$('input[type="checkbox"][name="checkbox_selection"]:checked').each(function(){
 				idno_array.push($(this).attr('idno'));
 			});
 
@@ -893,5 +897,50 @@
 		);
 		search_assetcode.makedialog();
 		search_assetcode.on();
+
+		function checkbox_function_on(){
+			$("#jqGrid input[type='checkbox'][name='checkbox_selection']").on('click',function(){
+				let rowid = $(this).data('rowid');
+				let selected = $(this).data('select');
+				if(selected){//delete from seltable
+					$(this).data('select',false);
+					$('#jqGrid_selection').jqGrid ('delRowData', rowid);
+				}else{//add to seltable
+					$(this).data('select',true);
+					let rowdata = $('#jqGrid').jqGrid ('getRowData', rowid);
+					$('#jqGrid_selection').jqGrid ('addRowData', rowid,rowdata);
+				}
+
+			});
+		}
+
+		$("#jqGrid_selection").jqGrid({
+			datatype: "local",
+			colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
+			shrinkToFit: false,
+			autowidth:true,
+			multiSort: true,
+			viewrecords: true,
+			sortname: 'lineno_',
+			sortorder: "desc",
+			pager: "#jqGridPager3",
+			gridComplete: function(){
+				
+			},
+		})
+		jqgrid_label_align_right("#jqGrid_selection");
+
+		$("#show_sel_tbl").click(function(){
+			let hidden = $(this).data('hide');
+			if(hidden){
+				$('#sel_tbl_div').show('fast');
+				$(this).data('hide',false);
+				$(this).text('Show Selection Table')
+			}else{
+				$('#sel_tbl_div').hide('fast');
+				$(this).data('hide',true);
+				$(this).text('Hide Selection Table')
+			}
+		});
 	
 	});

@@ -23,10 +23,6 @@ use Carbon\Carbon;
     }
 
     public function table(Request $request){
-        $table = DB::table('material.delordhd')
-                ->where('compcode',"=",session('compcode'))
-                ->where('suppcode','=',$request->suppcode)
-                ->where('recstatus','=','POSTED');
 
         DB::insert(
             DB::raw("
@@ -37,10 +33,12 @@ use Carbon\Carbon;
                         WHERE compcode = '".session('compcode')."'
                         AND suppcode = '$request->suppcode'
                         AND recstatus = 'POSTED'
+                        AND invoiceno IS NULL
                     );
             ")
         );
 
+        //grt negative, buat temp table sebab nak negative kan ni
         DB::update("update table_temp_a set totamount = 0-totamount where trantype = 'GRT'");
 
         $table = DB::select("
@@ -54,7 +52,10 @@ use Carbon\Carbon;
                         max(delordhd.recno) as recno,
                         max(delordhd.suppcode) as suppcode
                     FROM table_temp_a
-                    LEFT JOIN material.delordhd on delordhd.delordno = table_temp_a.delordno and delordhd.trantype = 'GRN' and delordhd.suppcode = '$request->suppcode' and delordhd.recstatus = 'POSTED'
+                    LEFT JOIN material.delordhd on delordhd.delordno = table_temp_a.delordno 
+                    AND delordhd.trantype = 'GRN' 
+                    AND delordhd.suppcode = '$request->suppcode' 
+                    AND delordhd.recstatus = 'POSTED'
                     GROUP BY table_temp_a.delordno
                 ");
 
@@ -298,7 +299,7 @@ use Carbon\Carbon;
         //2. check glmastdtl utk debit, kalu ada update kalu xde create
         $gltranAmount =  defaultController::isGltranExist_($debit_obj->drcostcode,$debit_obj->draccno,$yearperiod->year,$yearperiod->period);
 
-        if($gltranAmount!=false){
+        if($gltranAmount!==false){
             DB::table('finance.glmasdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('costcode','=',$debit_obj->drcostcode)
@@ -327,7 +328,7 @@ use Carbon\Carbon;
         //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
         $gltranAmount = defaultController::isGltranExist_($credit_obj->costcode,$credit_obj->glaccno,$yearperiod->year,$yearperiod->period);
 
-        if($gltranAmount!=false){
+        if($gltranAmount!==false){
             DB::table('finance.glmasdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('costcode','=',$credit_obj->costcode)

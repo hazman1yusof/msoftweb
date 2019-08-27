@@ -42,6 +42,57 @@ class assetregisterController extends defaultController
         }
     }
 
+    public function table(Request $request){
+
+        $delordhd = DB::table('material.delordhd as dohd')
+                        ->select(
+                            'dohd.delordno as dohd_delordno',
+                            'dohd.suppcode as dohd_suppcode',
+                            'dohd.recno as dohd_recno',
+                            'dohd.deliverydate as dohd_deliverydate',
+                            'dohd.docno as dohd_docno',
+                            'dohd.invoiceno as dohd_invoiceno',
+                            'dohd.trandate as dohd_trandate',
+                            'ap.actdate as ap_actdate')
+                        ->leftJoin('finance.apacthdr as ap','dohd.invoiceno','=','ap.document')
+                        ->where('dohd.compcode','=', session('compcode'))
+                        ->whereNotNull('dohd.invoiceno')
+                        ->where('dohd.suppcode','=',$request->suppcode)
+                        ->get();
+        foreach ($delordhd as $key => $value) {
+            $delorddt = DB::table('material.delorddt')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$value->dohd_recno)
+                            ->whereColumn('qtytag','<','qtydelivered');
+                            // ->where(function($query) use ($request){
+                            //     $query = $query->whereNotNull('qtytag');
+                            //     $query = $query->where('qtytag','<','qtydelivered');
+                            // });
+
+            // dump($delorddt->get());
+            if(!$delorddt->exists()){
+                $delordhd->forget($key);
+            }
+        }
+
+        if($delordhd->count() == 1){
+            // dump($delordhd);
+            $chunk = [$delordhd->first()];
+        }else{
+
+            $chunk = $delordhd->forPage($request->page,$request->rows);
+        }
+
+        $responce = new stdClass();
+        $responce->rows = $chunk;
+
+        // dump($delordhd);
+
+        return json_encode($responce);
+
+        
+    }
+
     public function gen_tagno(Request $request){
 
         DB::beginTransaction();
@@ -110,6 +161,23 @@ class assetregisterController extends defaultController
                     ->update([
                         'tagnextno' => $tagnextno_counter
                     ]);
+
+                //update qtytag at delorddt
+                $delordhd = DB::table('material.delordhd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('delordno','=',$fatemp->delordno)
+                    ->first();
+
+                DB::table('material.delorddt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$delordhd->recno)
+                    ->where('itemcode','=',$fatemp->itemcode)
+                    ->where('lineno_','=',$fatemp->lineno_)
+                    ->update([
+                        'qtytag' => $fatemp->qty
+                    ]);
+
+
 
             }
 

@@ -535,7 +535,14 @@ abstract class defaultController extends Controller{
             $pvalue1 = $pvalue1->first();
             dump($pvalue1);
             $pvalue1 = (array)$pvalue1;
-            return $pvalue1["actamount".$period];
+
+            if(is_null($pvalue1["actamount".$period])){
+                return 0.00;
+            }else{
+                return $pvalue1["actamount".$period];
+            }
+
+
         }else{
             return false;
         }

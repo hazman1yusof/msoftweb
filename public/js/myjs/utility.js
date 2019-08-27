@@ -531,24 +531,27 @@ function jqgrid_label_align_right(grid){
 	});
 }
 
-function jqgrid_set_label_to_checkbox(grid,checkbox){
-	$(grid).jqGrid('setLabel',checkbox,`
+
+function checkbox_selection(grid,colname){
+	this.on = function(){
+		$(grid).jqGrid('setLabel',colname,`
 			<input type="checkbox" name="checkbox_all_" id="checkbox_all_check" >
 			<input type="checkbox" name="checkbox_all_" id="checkbox_all_uncheck" checked style="display:none">
 			`,
 			{'text-align':'center'});
 
-	$('#checkbox_all_check').click(function(){
-		$(this).hide();
-		$('#checkbox_all_uncheck').show();
-		$('#jqGrid input[name="Checkbox"]').prop('checked', true);
-	});
+		$('#checkbox_all_check').click(function(){
+			$(this).hide();
+			$('#checkbox_all_uncheck').show();
+			$('#jqGrid input[name="checkbox_selection"]').click();
+		});
 
-	$('#checkbox_all_uncheck').click(function(){
-		$(this).hide();
-		$('#checkbox_all_check').show();
-		$('#jqGrid input[name="Checkbox"]').prop('checked', false);
-	});
+		$('#checkbox_all_uncheck').click(function(){
+			$(this).hide();
+			$('#checkbox_all_check').show();
+			$('#jqGrid input[name="checkbox_selection"]').click();
+		});
+	}
 }
 
 function setactdate(target){
