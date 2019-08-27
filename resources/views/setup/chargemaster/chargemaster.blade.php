@@ -178,10 +178,10 @@ legend.scheduler-border {
 						<label class="control-label col-md-2" for="cm_constype">Consultation Type</label>  
 						<div class="col-md-3">
 							<select class="form-control col-md-4" id='cm_constype' name='cm_constype'>
-								<option value='1'>Anaestetics</option>
-								<option value='2'>Consultation</option>
-								<option value='3'>Surgeon</option>
-								<option value='4'>None</option>
+								<option value='A'>Anaestetics</option>
+								<option value='C'>Consultation</option>
+								<option value='S'>Surgeon</option>
+								<option value='N'>None</option>
 							</select> 
 						</div>
 					</div>
@@ -219,39 +219,39 @@ legend.scheduler-border {
 					<fieldset class="scheduler-border">
 						<legend class="scheduler-border">Inventory</legend> 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="UOM">UOM</label>  
+							<label class="col-md-2 control-label" for="cm_uom">UOM</label>  
 							<div class="col-md-3">
-								<input id="UOM" name="UOM" type="text" class="form-control input-sm" rdonly>
+								<input id="cm_uom" name="cm_uom" type="text" class="form-control input-sm" rdonly>
 							</div>
 
-							<label class="col-md-2 control-label" for="invitem">Inventory Item</label>
+							<label class="col-md-2 control-label" for="cm_invflag">Inventory Item</label>
 							<div class="col-md-3">
-								<label class="radio-inline"><input type="radio" name="invitem" value='Yes' checked disabled>Yes</label>
-								<label class="radio-inline"><input type="radio" name="invitem" value='No' disabled>No</label>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="Packing">Packing</label>  
-							<div class="col-md-3">
-								<input id="Packing" name="Packing" type="text" class="form-control input-sm" rdonly>
-							</div>
-
-							<label class="col-md-2 control-label" for="druggrpcode">Drug Group Code</label>  
-							<div class="col-md-3">
-								<input id="druggrpcode" name="druggrpcode" type="text" class="form-control input-sm" rdonly>
+								<label class="radio-inline"><input type="radio" name="invitem" value='Yes' checked dsabled>Yes</label>
+								<label class="radio-inline"><input type="radio" name="invitem" value='No' dsabled>No</label>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="subgrp">Sub Group</label>  
+							<label class="col-md-2 control-label" for="cm_packqty">Packing</label>  
 							<div class="col-md-3">
-								<input id="subgrp" name="subgrp" type="text" class="form-control input-sm" rdonly>
+								<input id="cm_packqty" name="cm_packqty" type="text" class="form-control input-sm" rdonly>
+							</div>
+
+							<label class="col-md-2 control-label" for="cm_druggrcode">Drug Group Code</label>  
+							<div class="col-md-3">
+								<input id="cm_druggrcode" name="cm_druggrcode" type="text" class="form-control input-sm" rdonly>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="cm_subgroup">Sub Group</label>  
+							<div class="col-md-3">
+								<input id="cm_subgroup" name="cm_subgroup" type="text" class="form-control input-sm" rdonly>
 							</div>
 
 							<label class="col-md-2 control-label" for="stockcode">Stock Code</label>  
 							<div class="col-md-3">
-								<input id="stockcode" name="stockcode" type="text" class="form-control input-sm">
+								<input id="stockcode" name="stockcode" type="text" class="form-control input-sm" rdonly>
 							</div>
 						</div>
 					</fieldset>
@@ -259,13 +259,13 @@ legend.scheduler-border {
 					<hr>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="invgrp">Inv. Group</label>
+						<label class="col-md-2 control-label" for="cm_invgroup">Inv. Group</label>
 						<div class="col-md-3">
-							<select class="form-control col-md-4" id='invgrp' name='invgrp'>
-								<option value='1'>Charge Code</option>
-								<option value='2'>Charge Group</option>
-								<option value='3'>Charge Type</option>
-								<option value='4'>Doctor</option>
+							<select class="form-control col-md-4" id='cm_invgroup' name='cm_invgroup'>
+								<option value='CC'>Charge Code</option>
+								<option value='CG'>Charge Group</option>
+								<option value='CT'>Charge Type</option>
+								<option value='DC'>Doctor</option>
 							</select> 
 						</div>
 
@@ -289,22 +289,22 @@ legend.scheduler-border {
 							<span class="help-block"></span>
 						</div>
 
-						<label class="col-md-2 control-label" for="seqno">Sequence No</label>  
+						<label class="col-md-2 control-label" for="cm_seqno">Sequence No</label>  
 						<div class="col-md-3">
-							<input id="seqno" name="seqno" type="text" class="form-control input-sm">
+							<input id="cm_seqno" name="cm_seqno" type="text" class="form-control input-sm">
 						</div>
 					</div>
 
 					<hr>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="priceovr">Price Overwrite</label>  
+						<label class="col-md-2 control-label" for="cm_overwrite">Price Overwrite</label>  
 						<div class="col-md-3">
 							<label class="radio-inline"><input type="radio" name="priceovr" value='Yes' checked>Yes</label>
 							<label class="radio-inline"><input type="radio" name="priceovr" value='No' >No</label>
 						</div>
 
-						<label class="col-md-2 control-label" for="Doctor">Doctor</label>  
+						<label class="col-md-2 control-label" for="cm_doctorstat">Doctor</label>  
 						<div class="col-md-3">
 							<label class="radio-inline"><input type="radio" name="Doctor" value='Yes' checked>Yes</label>
 							<label class="radio-inline"><input type="radio" name="Doctor" value='No' >No</label>
