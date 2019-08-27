@@ -31,6 +31,7 @@
 
 	var mycurrency =new currencymode(['#origcost','#currentcost', '#purprice']);
 	var fdl = new faster_detail_load();
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox");
 
 	var dialog_assetcode= new ordialog(
 		'assetcode','finance.facode','#assetcode',errorField,
@@ -432,7 +433,7 @@
 			datatype: "local",
 			 colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
-				{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', hidden:true}, 
+				{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', hidden:true, key: true}, 
 				{ label: 'Asset Type', name: 'assettype', width: 13, sorttype: 'text', classes: 'wrap'},
 				{ label: 'Category', name: 'assetcode', width: 16, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'Department', name: 'deptcode', width: 15, sorttype: 'text', classes: 'wrap'},			
@@ -492,10 +493,12 @@
 				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 				fdl.set_array().reset();
 
-				checkbox_function_on();
+				cbselect.checkbox_function_on();
 			}
 				
 		});
+
+		cbselect.on();//on lepas jqgrid
 		//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
 		function regtypeformat(cellvalue, options, rowObject) {
 			if (cellvalue == 'P') {
@@ -534,7 +537,11 @@
 		}
 
 		function formatterCheckbox(cellvalue, options, rowObject){
-			return "<input type='checkbox' name='checkbox_selection' data-idno='"+rowObject.idno+"' data-rowid='"+options.rowId+"' data-select='false'>";
+			if(options.gid == "jqGrid"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject.idno+"' data-idno='"+rowObject.idno+"' data-rowid='"+options.rowId+"'>";
+			}else{
+				return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject.idno+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+			}
 		}
 
 		//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
@@ -559,9 +566,6 @@
 
 		////////////////////// set label jqGrid right ////////////////////////////////////////////////////
 		jqgrid_label_align_right("#jqGrid");
-
-		var cbselect = new checkbox_selection("#jqGrid","Checkbox");
-		cbselect.on();
 
 		///////////////////////// REGISTER TYPE SELECTION/////////////////////////////////////
 		/////// if the function chosen is P, certain field will be disabled //////////////////
@@ -850,10 +854,12 @@
 		$('#taggingNoButton').click(gneratetagno);
 		function gneratetagno(){
 			var idno_array = [];
+		
+			idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
 
-			$('input[type="checkbox"][name="checkbox_selection"]:checked').each(function(){
-				idno_array.push($(this).attr('idno'));
-			});
+			// $('input[type="checkbox"][name="checkbox_selection"]:checked').each(function(){
+			// 	idno_array.push($(this).attr('idno'));
+			// });
 
 			obj={};
 			obj.idno_array = idno_array;
@@ -898,22 +904,6 @@
 		search_assetcode.makedialog();
 		search_assetcode.on();
 
-		function checkbox_function_on(){
-			$("#jqGrid input[type='checkbox'][name='checkbox_selection']").on('click',function(){
-				let rowid = $(this).data('rowid');
-				let selected = $(this).data('select');
-				if(selected){//delete from seltable
-					$(this).data('select',false);
-					$('#jqGrid_selection').jqGrid ('delRowData', rowid);
-				}else{//add to seltable
-					$(this).data('select',true);
-					let rowdata = $('#jqGrid').jqGrid ('getRowData', rowid);
-					$('#jqGrid_selection').jqGrid ('addRowData', rowid,rowdata);
-				}
-
-			});
-		}
-
 		$("#jqGrid_selection").jqGrid({
 			datatype: "local",
 			colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
@@ -930,17 +920,5 @@
 		})
 		jqgrid_label_align_right("#jqGrid_selection");
 
-		$("#show_sel_tbl").click(function(){
-			let hidden = $(this).data('hide');
-			if(hidden){
-				$('#sel_tbl_div').show('fast');
-				$(this).data('hide',false);
-				$(this).text('Show Selection Table')
-			}else{
-				$('#sel_tbl_div').hide('fast');
-				$(this).data('hide',true);
-				$(this).text('Hide Selection Table')
-			}
-		});
 	
 	});

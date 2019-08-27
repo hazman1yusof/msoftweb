@@ -533,6 +533,7 @@ function jqgrid_label_align_right(grid){
 
 
 function checkbox_selection(grid,colname){
+	this.checkall_ = false;
 	this.on = function(){
 		$(grid).jqGrid('setLabel',colname,`
 			<input type="checkbox" name="checkbox_all_" id="checkbox_all_check" >
@@ -540,17 +541,86 @@ function checkbox_selection(grid,colname){
 			`,
 			{'text-align':'center'});
 
-		$('#checkbox_all_check').click(function(){
+		let self = this;
+		$('#checkbox_all_check').click(function(){//click will check all
+			self.checkall_ = true;
 			$(this).hide();
 			$('#checkbox_all_uncheck').show();
-			$('#jqGrid input[name="checkbox_selection"]').click();
+			$("#jqGrid input[type='checkbox'][name='checkbox_selection']").prop('checked',true);
+			let rowdatas = $('#jqGrid').jqGrid ('getRowData');
+			rowdatas.forEach(function(rowdata){
+				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata.idno);
+				if($.isEmptyObject(rowdata_jqgridsel)){
+					$('#jqGrid_selection').jqGrid ('addRowData', rowdata.idno,rowdata);
+					self.delete_function_on(rowdata.idno);
+				}
+			});
+
 		});
 
-		$('#checkbox_all_uncheck').click(function(){
+		$('#checkbox_all_uncheck').click(function(){//click will uncheck all
+			self.checkall_ = false;
 			$(this).hide();
 			$('#checkbox_all_check').show();
-			$('#jqGrid input[name="checkbox_selection"]').click();
+			$("#jqGrid input[type='checkbox'][name='checkbox_selection']").prop('checked',false);
+			let rowdatas = $('#jqGrid').jqGrid ('getRowData');
+			rowdatas.forEach(function(rowdata){
+				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata.idno);
+				if(!$.isEmptyObject(rowdata_jqgridsel)){
+					$('#jqGrid_selection').jqGrid ('delRowData', rowdata.idno);
+				}
+			});
+
 		});
+
+		$("#show_sel_tbl").click(function(){
+			let hidden = $(this).data('hide');
+			if(hidden){
+				$('#sel_tbl_div').show('fast');
+				$(this).data('hide',false);
+				$(this).text('Show Selection Table')
+			}else{
+				$('#sel_tbl_div').hide('fast');
+				$(this).data('hide',true);
+				$(this).text('Hide Selection Table')
+			}
+		});
+	}
+
+	this.delete_function_on = function(idno){
+		let self = this;
+		$("#jqGrid_selection #delete_"+idno).click(function(){
+			self.uncheckall_();
+			let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid('getRowData',idno);
+			$('#jqGrid_selection').jqGrid ('delRowData', idno);
+			let rowdata = $('#jqGrid').jqGrid ('getRowData',idno);
+			if(!$.isEmptyObject(rowdata)){
+				$("#jqGrid #checkbox_selection_"+idno).prop('checked',false);
+			}
+		});
+	}
+
+	this.checkbox_function_on = function(){
+		let self = this;
+		$("#jqGrid input[type='checkbox'][name='checkbox_selection']").on('click',function(){
+			let rowid = $(this).data('rowid');
+			let checked = $(this).is(":checked")
+			if(checked){//delete from seltable
+				let rowdata = $('#jqGrid').jqGrid ('getRowData', rowid);
+				$('#jqGrid_selection').jqGrid ('addRowData', rowid, rowdata);
+				self.delete_function_on(rowdata.idno);
+			}else{//add to seltable
+				self.uncheckall_();
+				$('#jqGrid_selection').jqGrid ('delRowData', rowid);
+			}
+
+		});
+	}
+
+	this.uncheckall_ = function(){
+		self.checkall_ = false;
+		$('#checkbox_all_uncheck').hide();
+		$('#checkbox_all_check').show();
 	}
 }
 
@@ -1197,6 +1267,7 @@ function faster_detail_load(){
 		this.array.forEach(function(elem,i){
 			let options = elem.options;
 			let desc = elem.json.description;
+
 			$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+desc+"</span>");
 		});
 		return this;
