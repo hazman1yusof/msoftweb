@@ -181,7 +181,7 @@ legend.scheduler-border {
 								<option value='A'>Anaestetics</option>
 								<option value='C'>Consultation</option>
 								<option value='S'>Surgeon</option>
-								<option value='N'>None</option>
+								<option value=''>None</option>
 							</select> 
 						</div>
 					</div>
@@ -226,8 +226,8 @@ legend.scheduler-border {
 
 							<label class="col-md-2 control-label" for="cm_invflag">Inventory Item</label>
 							<div class="col-md-3">
-								<label class="radio-inline"><input type="radio" name="invitem" value='Yes' checked dsabled>Yes</label>
-								<label class="radio-inline"><input type="radio" name="invitem" value='No' dsabled>No</label>
+								<label class="radio-inline"><input type="radio" name="cm_invflag" value='1' checked dsabled>Yes</label>
+								<label class="radio-inline"><input type="radio" name="cm_invflag" value='0' dsabled>No</label>
 							</div>
 						</div>
 
@@ -272,7 +272,7 @@ legend.scheduler-border {
 						<label class="col-md-2 control-label" for="doctorcode">Doctor Code</label>  
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="doctorcode" name="doctorcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="doctorcode" name="doctorcode" type="text" maxlength="12" class="form-control input-sm">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -300,14 +300,14 @@ legend.scheduler-border {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="cm_overwrite">Price Overwrite</label>  
 						<div class="col-md-3">
-							<label class="radio-inline"><input type="radio" name="priceovr" value='Yes' checked>Yes</label>
-							<label class="radio-inline"><input type="radio" name="priceovr" value='No' >No</label>
+							<label class="radio-inline"><input type="radio" name="cm_overwrite" value='1' checked>Yes</label>
+							<label class="radio-inline"><input type="radio" name="cm_overwrite" value='0' >No</label>
 						</div>
 
 						<label class="col-md-2 control-label" for="cm_doctorstat">Doctor</label>  
 						<div class="col-md-3">
-							<label class="radio-inline"><input type="radio" name="Doctor" value='Yes' checked>Yes</label>
-							<label class="radio-inline"><input type="radio" name="Doctor" value='No' >No</label>
+							<label class="radio-inline"><input type="radio" name="cm_doctorstat" value='1' checked>Yes</label>
+							<label class="radio-inline"><input type="radio" name="cm_doctorstat" value='0' >No</label>
 						</div>
 					</div>
 

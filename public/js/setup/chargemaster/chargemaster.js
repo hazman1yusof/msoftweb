@@ -151,18 +151,19 @@
 					{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
 					{ label: 'UOM', name: 'cm_uom', width: 30,hidden:false },
 					{ label: 'Generic Name', name: 'cm_brandname', width: 60},
-					{ label: 'doctorcode', name: 'doctorcode', hidden:true},
-					{ label: 'deptcode', name: 'deptcode', hidden:true},
 					
-					{ label: 'cm_barcode', name: 'cm_barcode', hidden:true},
 					{ label: 'cm_barcode', name: 'cm_barcode', hidden:true},
 					{ label: 'cm_constype', name: 'cm_constype', hidden:true},
 					{ label: 'cm_invflag', name: 'cm_invflag', hidden:true},
 					{ label: 'cm_packqty', name: 'cm_packqty', hidden:true},
 					{ label: 'cm_druggrcode', name: 'cm_druggrcode', hidden:true},
 					{ label: 'cm_subgroup', name: 'cm_subgroup', hidden:true},
-					
-					
+					{ label: 'cm_invgroup', name: 'cm_invgroup', hidden:true},
+					{ label: 'doctorcode', name: 'doctorcode', hidden:true},
+					{ label: 'deptcode', name: 'deptcode', hidden:true},
+					{ label: 'cm_seqno', name: 'cm_seqno', hidden:true},
+					{ label: 'cm_overwrite', name: 'cm_overwrite', hidden:true},
+					{ label: 'cm_doctorstat', name: 'cm_doctorstat', hidden:true},
 
 					{ label: 'Upd User', name: 'cm_upduser', width: 80,hidden:true}, 
 					{ label: 'Upd Date', name: 'cm_upddate', width: 90,hidden:true},
@@ -539,6 +540,60 @@
 			sortname: 'lineno_',
 			sortorder: "desc",
 			pager: "#jqGridPager3",
+		}).inlineNav('#jqGridPager3',{	
+			add:true,
+			edit:true,
+			cancel: true,
+			//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+			restoreAfterSelect: false,
+			addParams: { 
+				addRowParams: myEditOptions
+			},
+			editParams: myEditOptions
+		}).jqGrid('navButtonAdd',"#jqGridPager3",{
+			id: "jqGridPager3Delete",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-trash",
+			title:"Delete Selected Row",
+			onClickButton: function(){
+				/*selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+				if(!selRowId){
+					bootbox.alert('Please select row');
+				}else{
+					bootbox.confirm({
+						message: "Are you sure you want to delete this row?",
+						buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+						},
+						callback: function (result) {
+							if(result == true){
+								param={
+									action: 'inventoryTransactionDetail_save',
+									recno: $('#recno').val(),
+									lineno_: selrowData('#jqGrid2').lineno_,
+
+								}
+								$.post( "/inventoryTransactionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+								}).fail(function(data) {
+									//////////////////errorText(dialog,data.responseText);
+								}).done(function(data){
+									$('#amount').val(data);
+									refreshGrid("#jqGrid2",urlParam2);
+								});
+							}
+						}
+					});
+				}*/
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager3",{
+			id: "saveHeaderLabel",
+			caption:"Header",cursor: "pointer",position: "last", 
+			buttonicon:"",
+			title:"Header"
+		}).jqGrid('navButtonAdd',"#jqGridPager3",{
+			id: "saveDetailLabel",
+			caption:"Detail",cursor: "pointer",position: "last", 
+			buttonicon:"",
+			title:"Detail"
 		});
 		jqgrid_label_align_right("#jqGrid3");
 
@@ -697,14 +752,14 @@
 					{label:'Doctor Name',name:'doctorname',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
 				ondblClickRow: function () {
-					// $('#ipdept').focus();
+					$('#deptcode').focus();
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
 					if($(gridname).jqGrid('getDataIDs').length == 1){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						// $('#ipdept').focus();
+						$('#deptcode').focus();
 					}
 				}
 			},
