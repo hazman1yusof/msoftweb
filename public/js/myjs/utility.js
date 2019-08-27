@@ -169,6 +169,7 @@ function frozeOnEdit(form){
 
 function rdonly(form){
 	$(form+' input[rdonly]').prop("readonly",true);
+	$(form+' input[dsabled]').prop("disabled",true);
 }
 
 function hideOne(form){
@@ -1239,12 +1240,12 @@ fixPositionsOfFrozenDivs = function () {
     }
 }
 
-function recstatusDisable(){
-	var recstatusvalue = $("#formdata [name='recstatus']:checked").val();
+function recstatusDisable(recstatus = 'recstatus'){
+	var recstatusvalue = $("#formdata [name='"+recstatus+"']:checked").val();
 	if(recstatusvalue == 'A'){
-		$("#formdata input[name='recstatus']").prop('disabled', true);
+		$("#formdata input[name='"+recstatus+"']").prop('disabled', true);
 	}else{
-		$("#formdata input[name='recstatus']").prop('disabled', false);
+		$("#formdata input[name='"+recstatus+"']").prop('disabled', false);
 	}
 }
 

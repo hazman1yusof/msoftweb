@@ -35,4 +35,8 @@ class ChargeMasterController extends defaultController
                 return 'error happen..';
         }
     }
+
+    public function add(Request $request){
+        
+    }
 }
