@@ -24,6 +24,23 @@ i.fa {
 	overflow: auto;
 }
 
+fieldset.scheduler-border {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border {
+	font-size: 1.2em !important;
+	font-weight: bold !important;
+	text-align: left !important;
+	width:auto;
+	padding:0 10px;
+	border-bottom:none;
+}
+
 @endsection
 
 @section('body')
@@ -66,7 +83,7 @@ i.fa {
 							<label class="control-label"></label>
 							<a class='form-control btn btn-primary' id="btn_chggroup"><span class='fa fa-ellipsis-h'></span></a>
 					  	</div>
-					  	<div class="col-md-1" id="div_chgtype" style="padding-left: 30px;padding-right: 30px;display:none">
+					  	<div class="col-md-1" id="div_chgtype" style="padding-left: 30px;padding-right: 30px;display:none;margin: 0px">
 							<label class="control-label"></label>
 							<a class='form-control btn btn-primary' id="btn_chgtype"><span class='fa fa-ellipsis-h'></span></a>
 					  	</div>
@@ -137,76 +154,25 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="cm_barcode">Bar Code</label>  
 						<div class="col-md-3">
-							<input id="cm_barcode" name="cm_barcode" type="text" class="form-control input-sm" data-validation="required">
+							<input id="cm_barcode" name="cm_barcode" type="text" class="form-control input-sm">
 						</div>
 
 						<label class="col-md-2 control-label" for="cm_generic">Generic</label>  
 						<div class="col-md-3">
-							<input id="cm_generic" name="cm_generic" type="text" class="form-control input-sm" data-validation="required">
+							<input id="cm_generic" name="cm_generic" type="text" class="form-control input-sm">
 						</div>
 					</div>
-
-					<!-- <hr>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="cm_chgclass">Class Code</label>  
-						<div class="col-md-3">
-							<input id="cm_chgclass" name="cm_chgclass" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="control-label col-md-2" for="cm_constype">Consultation Type</label>  
-						<div class="col-md-3">
-							<select class="form-control col-md-4" id='cm_constype' name='cm_constype'>
-								<option value='1'>Anaestetics</option>
-								<option value='2'>Consultation</option>
-								<option value='3'>Surgeon</option>
-							</select> 
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="cm_chggroup">Charge Group</label>  
-						<div class="col-md-3">
-							<input id="cm_chggroup" name="cm_chggroup" type="text" class="form-control input-sm" data-validation="number, required">
-						</div>
-
-						<label class="col-md-2 control-label" for="cm_chgtype">Charge Type</label>  
-						<div class="col-md-3">
-							<input id="cm_chgtype" name="cm_chgtype" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="UOM">UOM</label>  
-						<div class="col-md-3">
-							<input id="UOM" name="UOM" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="invitem">Inventory Item</label>  
-						<div class="col-md-3">
-							<input id="invitem" name="invitem" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="Packing">Packing</label>  
-						<div class="col-md-3">
-							<input id="Packing" name="Packing" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="cm_recstatus">Record Status</label>  
-						<div class="col-md-3">
-							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='A' checked>Active</label>
-							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='D' >Deactive</label>
-						</div>
-					</div> -->
 
 					<hr>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="cm_chgclass">Class Code</label>  
+						<label class="col-md-2 control-label" for="cm_chgclass">Class Code</label>
 						<div class="col-md-3">
-							<input id="cm_chgclass" name="cm_chgclass" type="text" class="form-control input-sm" data-validation="required">
+							<div class='input-group'>
+								<input id="cm_chgclass" name="cm_chgclass" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
 						</div>
 
 						<label class="control-label col-md-2" for="cm_constype">Consultation Type</label>  
@@ -215,6 +181,7 @@ i.fa {
 								<option value='1'>Anaestetics</option>
 								<option value='2'>Consultation</option>
 								<option value='3'>Surgeon</option>
+								<option value='4'>None</option>
 							</select> 
 						</div>
 					</div>
@@ -222,14 +189,22 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="cm_chggroup">Charge Group</label>  
 						<div class="col-md-3">
-							<input id="cm_chggroup" name="cm_chggroup" type="text" class="form-control input-sm" data-validation="number, required">
+							<div class='input-group'>
+								<input id="cm_chggroup" name="cm_chggroup" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="cm_chgtype">Charge Type</label>  
+						<label class="col-md-2 control-label" for="cm_chgtype">Charge Type</label>
 						<div class="col-md-3">
-							<input id="cm_chgtype" name="cm_chgtype" type="text" class="form-control input-sm" data-validation="required">
+							<div class='input-group'>
+								<input id="cm_chgtype" name="cm_chgtype" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
 						</div>
 
 						<label class="col-md-2 control-label" for="cm_recstatus">Record Status</label>  
@@ -241,119 +216,98 @@ i.fa {
 
 					<hr>
 
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="UOM">UOM</label>  
-						<div class="col-md-3">
-							<input id="UOM" name="UOM" type="text" class="form-control input-sm" data-validation="required">
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Inventory</legend> 
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="UOM">UOM</label>  
+							<div class="col-md-3">
+								<input id="UOM" name="UOM" type="text" class="form-control input-sm" rdonly>
+							</div>
+
+							<label class="col-md-2 control-label" for="invitem">Inventory Item</label>
+							<div class="col-md-3">
+								<label class="radio-inline"><input type="radio" name="invitem" value='Yes' checked disabled>Yes</label>
+								<label class="radio-inline"><input type="radio" name="invitem" value='No' disabled>No</label>
+							</div>
 						</div>
 
-						<label class="col-md-2 control-label" for="invitem">Inventory Item</label>  
-						<div class="col-md-3">
-							<input id="invitem" name="invitem" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="Packing">Packing</label>  
+							<div class="col-md-3">
+								<input id="Packing" name="Packing" type="text" class="form-control input-sm" rdonly>
+							</div>
 
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="Packing">Packing</label>  
-						<div class="col-md-3">
-							<input id="Packing" name="Packing" type="text" class="form-control input-sm" data-validation="required">
+							<label class="col-md-2 control-label" for="druggrpcode">Drug Group Code</label>  
+							<div class="col-md-3">
+								<input id="druggrpcode" name="druggrpcode" type="text" class="form-control input-sm" rdonly>
+							</div>
 						</div>
-					</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="subgrp">Sub Group</label>  
+							<div class="col-md-3">
+								<input id="subgrp" name="subgrp" type="text" class="form-control input-sm" rdonly>
+							</div>
+
+							<label class="col-md-2 control-label" for="stockcode">Stock Code</label>  
+							<div class="col-md-3">
+								<input id="stockcode" name="stockcode" type="text" class="form-control input-sm">
+							</div>
+						</div>
+					</fieldset>
 
 					<hr>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="druggrpcode">Drug Group Code</label>  
+						<label class="col-md-2 control-label" for="invgrp">Inv. Group</label>
 						<div class="col-md-3">
-							<input id="druggrpcode" name="druggrpcode" type="text" class="form-control input-sm" data-validation="required">
+							<select class="form-control col-md-4" id='invgrp' name='invgrp'>
+								<option value='1'>Charge Code</option>
+								<option value='2'>Charge Group</option>
+								<option value='3'>Charge Type</option>
+								<option value='4'>Doctor</option>
+							</select> 
 						</div>
 
-						<label class="col-md-2 control-label" for="subgrp">Sub Group</label>  
+						<label class="col-md-2 control-label" for="doctorcode">Doctor Code</label>  
 						<div class="col-md-3">
-							<input id="subgrp" name="subgrp" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="invgrp">Inv. Group</label>  
-						<div class="col-md-3">
-							<input id="invgrp" name="invgrp" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="doccode">Doctor Code</label>  
-						<div class="col-md-3">
-							<input id="doccode" name="doccode" type="text" class="form-control input-sm" data-validation="required">
+							<div class='input-group'>
+								<input id="doctorcode" name="doctorcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="rvndeptcode">Revenue Dept. Code</label>  
+						<label class="col-md-2 control-label" for="deptcode">Revenue Dept. Code</label>  
 						<div class="col-md-3">
-							<input id="rvndeptcode" name="rvndeptcode" type="text" class="form-control input-sm" data-validation="required">
+							<div class='input-group'>
+								<input id="deptcode" name="deptcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
 						</div>
 
 						<label class="col-md-2 control-label" for="seqno">Sequence No</label>  
 						<div class="col-md-3">
-							<input id="seqno" name="seqno" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="stockcode">Stock Code</label>  
-						<div class="col-md-3">
-							<input id="stockcode" name="stockcode" type="text" class="form-control input-sm" data-validation="required">
+							<input id="seqno" name="seqno" type="text" class="form-control input-sm">
 						</div>
 					</div>
 
 					<hr>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="ipacccode">IP Acc. Code</label>  
-						<div class="col-md-3">
-							<input id="ipacccode" name="ipacccode" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="opacccode">OP Acc. Code</label>  
-						<div class="col-md-3">
-							<input id="opacccode" name="opacccode" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="appracccode">Appr Acc. Code</label>  
-						<div class="col-md-3">
-							<input id="appracccode" name="appracccode" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="apprcostcode">Appr Cost Code</label>  
-						<div class="col-md-3">
-							<input id="apprcostcode" name="apprcostcode" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
-
-					<hr>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="priceactive">Price Active</label>  
-						<div class="col-md-3">
-							<input id="priceactive" name="priceactive" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="Queue">Queue</label>  
-						<div class="col-md-3">
-							<input id="Queue" name="Queue" type="text" class="form-control input-sm" data-validation="required">
-						</div>
-					</div>
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="priceovr">Price Overwrite</label>  
 						<div class="col-md-3">
-							<input id="priceovr" name="priceovr" type="text" class="form-control input-sm" data-validation="required">
+							<label class="radio-inline"><input type="radio" name="priceovr" value='Yes' checked>Yes</label>
+							<label class="radio-inline"><input type="radio" name="priceovr" value='No' >No</label>
 						</div>
 
 						<label class="col-md-2 control-label" for="Doctor">Doctor</label>  
 						<div class="col-md-3">
-							<input id="Doctor" name="Doctor" type="text" class="form-control input-sm" data-validation="required">
+							<label class="radio-inline"><input type="radio" name="Doctor" value='Yes' checked>Yes</label>
+							<label class="radio-inline"><input type="radio" name="Doctor" value='No' >No</label>
 						</div>
 					</div>
 
@@ -416,3 +370,7 @@ i.fa {
 	<script src="js/setup/chargemaster/chargemaster.js"></script>
 	
 @endsection
+
+
+
+		

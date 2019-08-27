@@ -33,6 +33,7 @@ i.fa {
 @section('body')
 
 	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
+	<input id="reqdept" name="reqdept" type="hidden" value="{{Session::get('reqdept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
@@ -107,12 +108,12 @@ i.fa {
 		</div>
 
         	<div class='click_row'>
-        		<label class="control-label">Record No</label>
-        		<span id="recnodepan" style="display: block;">&nbsp</span>
+        		<label class="control-label">Request No</label>
+        		<span id="reqnodepan" style="display: block;">&nbsp</span>
         	</div>
         	<div class='click_row'>
-				<label class="control-label">Purchase Dept</label>
-        		<span id="prdeptdepan" style="display: block;">&nbsp</span>
+				<label class="control-label">Request Dept</label>
+        		<span id="reqdeptdepan" style="display: block;">&nbsp</span>
         	</div>
         	<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
 				<label class="control-label" style="margin-top: 10px;">Print Label</label>
@@ -145,8 +146,8 @@ i.fa {
 				<div class="panel-body" style="position: relative;">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}
-							<input id="source" name="source" type="hidden">
-							<input id="idno" name="idno" type="hidden">
+							<input id="referral" name="referral" type="hidden">
+							<input id="idno" name="purreqhd_idno" type="hidden">
 							<input id="purreqhd_purordno" name="purreqhd_purordno" type="hidden">
 
 							<div class="form-group">
@@ -265,16 +266,17 @@ i.fa {
 				<div class="panel-heading">Purchase Request Detail</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
+							<!-- <input id="gstpercent" name="gstpercent" type="hidden">
+							<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
+							<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'> -->
+							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
+
 							<div id="jqGrid2_c" class='col-md-12'>
 								<table id="jqGrid2" class="table table-striped"></table>
 					            <div id="jqGridPager2"></div>
 							</div>
 						</form>
 					</div>
-
-					<!-- <input id="gstpercent" name="gstpercent" type="hidden">
-					<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
-					<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'> -->
 
 					<div class="panel-body">
 						<div class="noti"></div>
