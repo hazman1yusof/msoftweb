@@ -42,6 +42,10 @@
 				{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
 				{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
 		],
+		urlParam: {
+			filterCol:['compcode'],
+			filterVal:['session.compcode']
+		},
 		ondblClickRow:function(){
 			let data=selrowData('#'+dialog_assetcode.gridname);
 			$('#assettype').val(data['assettype']);		
@@ -50,10 +54,13 @@
 		},
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1){
+			if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_assetcode.ontabbing){
 				$(gridname+' tr#1').click();
 				$(gridname+' tr#1').dblclick();
+				dialog_assetcode.ontabbing = false;
 				$('#deptcode').focus();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0){
+				$('#'+obj.dialogname).dialog('close');
 			}
 		}
 	},
@@ -72,13 +79,19 @@
 		{	colModel:[
 			    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-		],
+		],urlParam: {
+			filterCol:['compcode'],
+			filterVal:['session.compcode']
+		},
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1){
+			if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_deptcode.ontabbing){
 				$(gridname+' tr#1').click();
 				$(gridname+' tr#1').dblclick();
+				dialog_deptcode.ontabbing = false;
 				$('#loccode').focus();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0){
+				$('#'+obj.dialogname).dialog('close');
 			}
 		}
 	},
@@ -97,15 +110,21 @@
 		{	colModel:[
 				{label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-		],
+		],urlParam: {
+			filterCol:['compcode'],
+			filterVal:['session.compcode']
+		},
 		sortname:'idno',
 		sortorder:'desc',
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1){
+			if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_loccode.ontabbing){
 				$(gridname+' tr#1').click();
 				$(gridname+' tr#1').dblclick();
+				dialog_loccode.ontabbing = false;
 				$('#regtype').focus();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0){
+				$('#'+obj.dialogname).dialog('close');
 			}
 		}
 		},
@@ -125,8 +144,11 @@
 		{	colModel:[
 				{label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-
 			],
+			urlParam: {
+				filterCol:['compcode'],
+				filterVal:['session.compcode']
+			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				dialog_invno.urlParam.filterCol=['compcode','suppcode'];
@@ -135,10 +157,13 @@
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_suppcode.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					dialog_suppcode.ontabbing = false;
 					$('#delordno').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
 				}
 			}
 		},{
@@ -228,8 +253,7 @@
 				{label:'dodt_unitprice',name:'dodt_unitprice',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_amount',name:'dodt_amount',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_srcdocno',name:'dodt_srcdocno',width:100,classes:'pointer',hidden:true},
-				{label:'dodt_lineno_',name:'dodt_lineno_',width:100,classes:'pointer',hidden:true},
-				
+				{label:'dodt_lineno_',name:'dodt_lineno_',width:100,classes:'pointer',hidden:true},				
 			],
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
