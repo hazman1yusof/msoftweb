@@ -26,7 +26,8 @@
 			
 			////////////////////////////////////start dialog///////////////////////////////////////
 
-			var mycurrency =new currencymode(['#minlimit','#maxlimit', '#d_minlimit', '#d_maxlimit']);
+			var mycurrency =new currencymode(['#minlimit','#maxlimit', '#d_minlimit', '#d_maxlimit', '#dtl_minlimit', '#dtl_maxlimit']);
+			var mycurrency2 =new currencymode([]);
 			var fdl = new faster_detail_load();
 
 			var oper;
@@ -64,12 +65,10 @@
 					if(oper!='view'){
 						dialog_authorid.on();
 						dialog_deptcodehd.on();
-						dialog_deptcodedtl.on();
 					}
 					if(oper!='add'){
 						dialog_authorid.check(errorField);
 						dialog_deptcodehd.check(errorField);
-						dialog_deptcodedtl.check(errorField);
 					}
 				},
 				beforeClose: function(event, ui){
@@ -93,7 +92,6 @@
 					$("#formdata a").off();
 					dialog_authorid.off();
 					dialog_deptcodehd.off();
-					dialog_deptcodedtl.off();
 					$(".noti").empty();
 					$("#refresh_jqGrid").click();
 					refreshGrid("#jqGrid2",null,"kosongkan");
@@ -343,13 +341,37 @@
                              value: "Yes:Yes;No:No"
                          }
 				},
+				{ label: 'Min Limit', name: 'dtl_minlimit', width: 150, align: 'right', classes: 'wrap', editable:true,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				editrules:{required: true},edittype:"text",
+						editoptions:{
+						maxlength: 12,
+						dataInit: function(element) {
+							element.style.textAlign = 'right';
+							$(element).keypress(function(e){
+								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+									return false;
+								 }
+							});
+						}
+					},
+				},
+			{ label: 'Max Limit', name: 'dtl_maxlimit', width: 150, align: 'right', classes: 'wrap', editable:true,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				editrules:{required: true},edittype:"text",
+						editoptions:{
+						maxlength: 12,
+						dataInit: function(element) {
+							element.style.textAlign = 'right';
+							$(element).keypress(function(e){
+								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+									return false;
+								 }
+							});
+						}
+					},
+				},
 			
-				{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap', editable: true,
-					edittype:"text",
-				},
-				{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap', editable: true,
-					edittype:"text",
-				},
 			],
 			autowidth: true,
 			shrinkToFit: true,
@@ -371,14 +393,10 @@
 				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 			},
 			gridComplete: function(){
-				
-			
 				fdl.set_array().reset();
 				
 			},
 			beforeSubmit: function(postdata, rowid){ 
-				dialog_authorid.check(errorField);
-				dialog_deptcodehd.check(errorField);
 				dialog_deptcodedtl.check(errorField);
 		 	}
 		});
@@ -398,13 +416,19 @@
 
 	        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
+	        	unsaved = false;
+				mycurrency2.array.length = 0;
+				Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='dtl_maxlimit']","#jqGrid2 input[name='dtl_minlimit']"]);
+
+				mycurrency2.formatOnBlur();//make field to currency on leave cursor
+
 	        	$("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
 					var code = e.keyCode || e.which;
 					if (code == '9')$('#jqGrid2_ilsave').click();
 				})
 	        },
 	        aftersavefunc: function (rowid, response, options) {
-	        	$('#apacthdr_outamount').val(response.responseText);
+	        	//$('#apacthdr_outamount').val(response.responseText);
 	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
 	        	refreshGrid('#jqGrid2',urlParam2,'add');
 		    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
@@ -562,9 +586,9 @@
 		//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 		function showdetail(cellvalue, options, rowObject){
 			var field, table, case_;
-			/*switch(options.colModel.name){
-				case 'document':field=['delordno','srcdocno'];table="material.delordhd";case_='uomcode';break;
-			}*/
+			switch(options.colModel.name){
+				case 'dtl_deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			}
 			var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		
 			fdl.get_array('authorization',options,param,case_,cellvalue);
@@ -593,10 +617,6 @@
 		return $('<div class="input-group"><input jqgrid="gridAuthdtl" optid="'+opt.id+'" id="'+opt.id+'" name="d_deptcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 		}
 
-		/*function formatterSelect(cellvalue, options, rowObject){
-		return "<input type='dropdown' name='dropdown_trantype' >";
-		}
-*/
 		function galGridCustomValue (elem, operation, value){
 			if(operation == 'get') {
 				return $(elem).find("input").val();
@@ -613,7 +633,6 @@
 		unsaved = false;
 		dialog_authorid.off();
 		dialog_deptcodehd.off();
-		dialog_deptcodedtl.off();
 		//radbuts.check();
 		errorField.length = 0;
 	if($('#formdata').isValid({requiredFields:''},conf,true)){
@@ -623,7 +642,6 @@
 			mycurrency.formatOn();
 			dialog_authorid.on();
 			dialog_deptcodehd.on();
-			dialog_deptcodedtl.on();
 		}
 	});
 
@@ -634,7 +652,6 @@
 		hideatdialogForm(true);
 		dialog_authorid.on();
 		dialog_deptcodehd.on();
-		dialog_deptcodedtl.on();
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -739,14 +756,12 @@
 				{label:'Unit',name:'sector'},
 			],
 			ondblClickRow:function(){
-				//$('#delordhd_credcode').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					//$('#delordhd_credcode').focus();
 				}
 			}
 		},{
@@ -839,9 +854,9 @@
 	var urlParam_authdtl={
 		action:'get_table_default',
 			url:'/util/get_table_default',
-			field:[],
+			field:'',
 			table_name:['material.authdtl AS d'],
-			table_id:'lineno_',
+			table_id:'d_lineno_',
 	}
 
 	var saveParam_authdtl={
@@ -849,8 +864,8 @@
 			url:'authorization/form',
 			field:'',
 			oper:oper_authdtl,
-			table_name:'material.authorise',
-			table_id:'authorid',
+			table_name:'material.authdtl',
+			table_id:'d_idno',
 			saveip:'true'
 	};
 
@@ -859,8 +874,9 @@
 	$("#gridAuthdtl").jqGrid({
 		datatype: "local",
 		 colModel: [
-			 	{ label: 'compcode', name: 'd_compcode', width: 20, classes: 'wrap', hidden:true},
-				{ label: 'source', name: 'd_source', width: 20, classes: 'wrap', hidden:true, editable:true},
+			 	//{ label: 'compcode', name: 'd_compcode', width: 20, classes: 'wrap', hidden:true},
+			//	{ label: 'source', name: 'd_source', width: 20, classes: 'wrap', hidden:true, editable:true},
+				{ label: 'idno', name: 'd_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
 				{ label: 'Line No', name: 'd_lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
 				{ label: 'Trantype', name: 'd_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
@@ -960,7 +976,7 @@
 				alert('Please select row');
 				return emptyFormdata(errorField,'#FAuthdtl');
 			}else{
-				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",'del',saveParam_authdtl,urlParam_authdtl,null,{'d_idno':selRowId});
+				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",'del',saveParam_authdtl,urlParam_authdtl,null,{'idno':selRowId});
 			}
 		}, 
 		position: "first", 
@@ -995,7 +1011,7 @@
 		onClickButton: function(){
 			oper_authdtl='add';
 			$( "#Authdtl" ).dialog( "open" );
-			$('#FAuthdtl :input[name=lineno_]').hide();
+			//$('#FAuthdtl :input[name=d_lineno_]').hide();
 			//$("#Fsuppitems :input[name*='SuppCode']").val(selrowData('#jqGrid').SuppCode);
 		}, 
 		position: "first", 

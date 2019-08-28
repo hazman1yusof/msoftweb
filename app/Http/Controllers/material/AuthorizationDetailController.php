@@ -19,7 +19,6 @@ class AuthorizationDetailController extends defaultController
 
     public function form(Request $request)
     {   
-        // return $this->request_no('GRN','2FL');
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -34,69 +33,10 @@ class AuthorizationDetailController extends defaultController
         }
     }
 
- /*   public function get_draccno($itemcode){
-        $query = DB::table('material.category')
-                ->select('category.stockacct')
-                ->join('material.product', 'category.catcode', '=', 'product.productcat')
-                ->where('product.itemcode','=',$itemcode)
-                ->first();
-        
-        return $query->stockacct;
-    }
-
-    public function get_drccode($deldept){
-        $query = DB::table('sysdb.department')
-                ->select('costcode')
-                ->where('compcode','=',session('compcode'))
-                ->where('deptcode','=',$deldept)
-                ->first();
-        
-        return $query->costcode;
-    }
-
-    public function get_craccno(){
-        $query = DB::table('sysdb.sysparam')
-                ->select('pvalue2')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=','AP')
-                ->where('trantype','=','ACC')
-                ->first();
-        
-        return $query->pvalue2;
-    }
-
-    public function get_crccode(){
-        $query = DB::table('sysdb.sysparam')
-                ->select('pvalue1')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=','AP')
-                ->where('trantype','=','ACC')
-                ->first();
-        
-        return $query->pvalue1;
-    }
-
-    public function chgDate($date){
-        if(!empty($date)){
-            $newstr=explode("/", $date);
-            return $newstr[2].'-'.$newstr[1].'-'.$newstr[0];
-        }else{
-           return '0000-00-00';
-        }
-    }*/
 
     public function add(Request $request){
 
-    /*    $draccno = $this->get_draccno($request->itemcode);
-        $drccode = $this->get_drccode($request->deldept);
-        $craccno = $this->get_craccno();
-        $crccode = $this->get_crccode();
 
-        $recno = $request->recno;
-        $suppcode = $request->suppcode;
-        $trandate = $request->trandate;
-        $deldept = $request->deldept;
-        $deliverydate = $request->deliverydate;*/
 
         DB::beginTransaction();
 
@@ -124,30 +64,7 @@ class AuthorizationDetailController extends defaultController
                     'maxlimit' => $request->maxlimit,
                 ]);
 
-           /* ///3. calculate total amount from detail
-            $totalAmount = DB::table('material.delorddt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
-                    ->where('recstatus','!=','DELETE')
-                    ->sum('totamount');
-
-            //calculate tot gst from detail
-            $tot_gst = DB::table('material.delorddt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
-                    ->where('recstatus','!=','DELETE')
-                    ->sum('amtslstax');
-
-            ///4. then update to header
-            DB::table('material.delordhd')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
-                ->update([
-                    'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
-                ]);
-
+       
             echo $totalAmount;*/
 
             DB::commit();
@@ -182,32 +99,6 @@ class AuthorizationDetailController extends defaultController
                     'maxlimit' => $request->maxlimit,
                 ]);
 
-          /*  ///2. recalculate total amount
-            $totalAmount = DB::table('material.delorddt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('totamount');
-
-            //calculate tot gst from detail
-            $tot_gst = DB::table('material.delorddt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amtslstax');
-
-            ///3. update total amount to header
-            DB::table('material.delordhd')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->update([
-                    'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
-                ]);
-            
-            echo $totalAmount;
-*/
             DB::commit();
 
         } catch (\Exception $e) {
@@ -240,32 +131,7 @@ class AuthorizationDetailController extends defaultController
                         'maxlimit' => $value['maxlimit'],
                     ]);
             }
-          /*  
-            ///2. recalculate total amount
-            $totalAmount = DB::table('material.delorddt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('totamount');
-
-            //calculate tot gst from detail
-            $tot_gst = DB::table('material.delorddt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amtslstax');
-
-            ///3. update total amount to header
-            DB::table('material.delordhd')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->update([
-                    'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
-                ]);
-            
-            echo $totalAmount;*/
+         
 
             DB::commit();
 
