@@ -461,8 +461,8 @@
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
 				urlParam: {
-					filterCol:['compcode'],
-					filterVal:['session.compcode']
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
 				},
 				ondblClickRow: function () {
 					$('#opdept').focus();
@@ -482,8 +482,8 @@
 			{
 				title:"Select Department Code",
 				open: function(){
-					dialog_ipdept.urlParam.filterCol=['compcode'];
-					dialog_ipdept.urlParam.filterVal=['session.compcode'];
+					dialog_ipdept.urlParam.filterCol=['compcode','recstatus'];
+					dialog_ipdept.urlParam.filterVal=['session.compcode','A'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -497,8 +497,8 @@
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
 				urlParam: {
-					filterCol:['compcode'],
-					filterVal:['session.compcode']
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
 				},
 				ondblClickRow: function () {
 					$('#ipacccode').focus();
@@ -518,8 +518,8 @@
 			{
 				title:"Select Department Code",
 				open: function(){
-					dialog_opdept.urlParam.filterCol=['compcode'];
-					dialog_opdept.urlParam.filterVal=['session.compcode'];
+					dialog_opdept.urlParam.filterCol=['compcode','recstatus'];
+					dialog_opdept.urlParam.filterVal=['session.compcode','A'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -533,8 +533,8 @@
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
 				urlParam: {
-					filterCol:['compcode'],
-					filterVal:['session.compcode']
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
 				},
 				ondblClickRow: function () {
 					$('#opacccode').focus();
@@ -554,8 +554,8 @@
 			{
 				title:"Select Glaccno",
 				open: function(){
-					dialog_ipacccode.urlParam.filterCol=['compcode'];
-					dialog_ipacccode.urlParam.filterVal=['session.compcode'];
+					dialog_ipacccode.urlParam.filterCol=['compcode','recstatus'];
+					dialog_ipacccode.urlParam.filterVal=['session.compcode','A'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -569,8 +569,8 @@
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
 				urlParam: {
-					filterCol:['compcode'],
-					filterVal:['session.compcode']
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
 				},
 				ondblClickRow: function () {
 					$('#otcacccode').focus();
@@ -590,8 +590,8 @@
 			{
 				title:"Select Glaccno",
 				open: function(){
-					dialog_opacccode.urlParam.filterCol=['compcode'];
-					dialog_opacccode.urlParam.filterVal=['session.compcode'];
+					dialog_opacccode.urlParam.filterCol=['compcode','recstatus'];
+					dialog_opacccode.urlParam.filterVal=['session.compcode','A'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -605,8 +605,8 @@
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
 				urlParam: {
-					filterCol:['compcode'],
-					filterVal:['session.compcode']
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
 				},
 				ondblClickRow: function () {
 					$('#invcategory').focus();
@@ -626,8 +626,8 @@
 			{
 				title:"Select Glaccno",
 				open: function(){
-					dialog_otcacccode.urlParam.filterCol=['compcode'];
-					dialog_otcacccode.urlParam.filterVal=['session.compcode'];
+					dialog_otcacccode.urlParam.filterCol=['compcode','recstatus'];
+					dialog_otcacccode.urlParam.filterVal=['session.compcode','A'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -641,8 +641,8 @@
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
 				urlParam: {
-					filterCol:['compcode'],
-					filterVal:['session.compcode']
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
@@ -659,8 +659,8 @@
 			{
 				title:"Select Category Code",
 				open: function(){
-					dialog_invcategory.urlParam.filterCol=['compcode'];
-					dialog_invcategory.urlParam.filterVal=['session.compcode'];
+					dialog_invcategory.urlParam.filterCol=['compcode','recstatus'];
+					dialog_invcategory.urlParam.filterVal=['session.compcode','A'];
 					
 				}
 			},'urlParam','radio','tab'
