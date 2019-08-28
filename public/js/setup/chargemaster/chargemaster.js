@@ -650,8 +650,8 @@
 			},{
 				title: "Select Charge Type",
 				open: function () {
-					chgtype.urlParam.filterCol = ['compcode'];
-					chgtype.urlParam.filterVal = ['session.compcode'];
+					chgtype.urlParam.filterCol=['compcode', 'recstatus'];
+					chgtype.urlParam.filterVal=['session.compcode', 'A'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -662,25 +662,32 @@
 			'cm_chgclass','hisdb.chgclass','#cm_chgclass',errorField,
 			{	colModel:[
 					{label:'Class Code',name:'classcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true},
 				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
 				ondblClickRow: function () {
 					$('#cm_constype').focus();
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_chgclass.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_chgclass.ontabbing = false;
 						$('#cm_constype').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},
 			{
 				title:"Select Class Code",
 				open: function(){
-					dialog_chgclass.urlParam.filterCol=['compcode'];
-					dialog_chgclass.urlParam.filterVal=['session.compcode'];
+					dialog_chgclass.urlParam.filterCol=['compcode', 'recstatus'];
+					dialog_chgclass.urlParam.filterVal=['session.compcode', 'A'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -698,9 +705,10 @@
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1&& dialog_chggroup.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_chggroup.ontabbing = false;
 						$('#cm_chgtype').focus();
 					}
 				}
@@ -723,22 +731,23 @@
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
 				ondblClickRow: function () {
-					// $('#ipdept').focus();
+					$('#cm_invgroup').focus();
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_chgtype.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						// $('#ipdept').focus();
+						dialog_chgtype.ontabbing = false;
+						$('#cm_invgroup').focus();
 					}
 				}
 			},
 			{
 				title:"Select Charge Type",
 				open: function(){
-					dialog_chgtype.urlParam.filterCol=['compcode'];
-					dialog_chgtype.urlParam.filterVal=['session.compcode'];
+					dialog_chgtype.urlParam.filterCol=['compcode', 'recstatus'];
+					dialog_chgtype.urlParam.filterVal=['session.compcode', 'A'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -756,9 +765,10 @@
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_doctorcode.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_doctorcode.ontabbing = false;
 						$('#deptcode').focus();
 					}
 				}
@@ -785,9 +795,10 @@
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_deptcode.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_deptcode.ontabbing = false;
 						// $('#ipdept').focus();
 					}
 				}

@@ -180,7 +180,7 @@ abstract class defaultController extends Controller{
                 }
 
                 foreach ($searchCol_array as $key => $value) {
-                    $query = $query->where($searchCol_array[$key],'like',$request->searchVal2[$key]);
+                    $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
                 }
             });
         }
@@ -373,7 +373,7 @@ abstract class defaultController extends Controller{
                 }
             }
 
-            dd($array_update);
+            // dd($array_update);
             $table->update($array_update);
 
             $responce = new stdClass();

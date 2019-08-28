@@ -706,6 +706,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	this.textfield=id;
 	this.eventstat='off';
 	this.checkstat=checkstat;
+	this.ontabbing=false;
 	this.urlParam={
 		from:unique,
 		action:'get_table_default',
@@ -713,7 +714,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		table_name:table,
 		field:getfield(jqgrid_.colModel),
 		table_id:getfield(jqgrid_.colModel)[0],
-		filterCol:[],filterVal:[],
+		filterCol:jqgrid_.filterCol,filterVal:jqgrid_.filterVal,
 		searchCol2:null,searchCol2:null,searchCol:null,searchCol:null
 	};
 	this.needTab=needTab;
@@ -742,8 +743,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 	this.makedialog = function(on=false){
 		$("html").append(this.otherdialog);
-		makejqgrid(this);
 		makedialog(this);
+		makejqgrid(this);
 		if(this.dcolrType == 'radio'){
 			othDialog_radio(this);
 		}else{
@@ -821,7 +822,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		renull_search(event.data.data);
 		var textfield = $(event.currentTarget);
 		if(event.key == "Tab" && textfield.val() != ""){
-			
+			event.data.data.ontabbing=true;
 			var obj = event.data.data;
 			$("#"+obj.gridname).jqGrid('setGridParam',{ ondblClickRow: function(id){ 
 				if(!obj.jqgrid_.hasOwnProperty('ondblClickRow_off')){
@@ -922,7 +923,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function renull_search(obj){
-		obj.urlParam.searchCol2=obj.urlParam.searchVal2=obj.urlParam.searchCol=obj.urlParam.searchVal=obj.urlParam.filterCol=obj.urlParam.filterVal=null;
+		obj.urlParam.searchCol2=obj.urlParam.searchVal2=obj.urlParam.searchCol=obj.urlParam.searchVal=null;
 	}
 
 	function makedialog(obj){

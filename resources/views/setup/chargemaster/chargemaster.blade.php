@@ -181,7 +181,7 @@ legend.scheduler-border {
 								<option value='A'>Anaestetics</option>
 								<option value='C'>Consultation</option>
 								<option value='S'>Surgeon</option>
-								<option value=''>None</option>
+								<option value='' selected>None</option>
 							</select> 
 						</div>
 					</div>

@@ -109,6 +109,8 @@
 			table_name: 'hisdb.chggroup',
 			table_id: 'idno',
 			sort_idno: true,
+			filterCol:['compcode'],
+			filterVal:['session.compcode']
 		}
 
 		/////////////////////parameter for saving url////////////////////////////////////////////////

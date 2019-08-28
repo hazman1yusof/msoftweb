@@ -114,6 +114,8 @@
 			table_name: 'hisdb.chgtype',
 			table_id: 'idno',
 			sort_idno: true,
+			filterCol:['compcode'],
+			filterVal:['session.compcode']
 		}
 
 		/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -427,9 +429,10 @@
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_chggroup.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_chggroup.ontabbing = false;
 						$('#ipdept').focus();
 					}
 				}
@@ -456,9 +459,10 @@
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_ipdept.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_ipdept.ontabbing = false;
 						$('#opdept').focus();
 					}
 				}
@@ -485,9 +489,10 @@
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_opdept.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_opdept.ontabbing = false;
 						$('#ipacccode').focus();
 					}
 				}
@@ -514,9 +519,10 @@
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_ipacccode.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_ipacccode.ontabbing = false;
 						$('#opacccode').focus();
 					}
 				}
@@ -543,9 +549,10 @@
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_opacccode.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_opacccode.ontabbing = false;
 						$('#otcacccode').focus();
 					}
 				}
@@ -572,9 +579,10 @@
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_otcacccode.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_otcacccode.ontabbing = false;
 						$('#invcategory').focus();
 					}
 				}
@@ -598,9 +606,10 @@
 				],
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_invcategory.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						dialog_invcategory.ontabbing = false;
 						// $('#regtype').focus();
 					}
 				}
