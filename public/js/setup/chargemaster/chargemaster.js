@@ -160,9 +160,10 @@
 					{ label: 'cm_packqty', name: 'cm_packqty', hidden:true},
 					{ label: 'cm_druggrcode', name: 'cm_druggrcode', hidden:true},
 					{ label: 'cm_subgroup', name: 'cm_subgroup', hidden:true},
+					{ label: 'cm_stockcode', name: 'cm_stockcode', hidden:true},
 					{ label: 'cm_invgroup', name: 'cm_invgroup', hidden:true},
-					{ label: 'doctorcode', name: 'doctorcode', hidden:true},
-					{ label: 'deptcode', name: 'deptcode', hidden:true},
+					{ label: 'cm_costcode', name: 'cm_costcode', hidden:true},
+					{ label: 'cm_revcode', name: 'cm_revcode', hidden:true},
 					{ label: 'cm_seqno', name: 'cm_seqno', hidden:true},
 					{ label: 'cm_overwrite', name: 'cm_overwrite', hidden:true},
 					{ label: 'cm_doctorstat', name: 'cm_doctorstat', hidden:true},
@@ -700,6 +701,10 @@
 					{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
 				ondblClickRow: function () {
 					$('#cm_chgtype').focus();
 				},
@@ -710,6 +715,8 @@
 						$(gridname+' tr#1').dblclick();
 						dialog_chggroup.ontabbing = false;
 						$('#cm_chgtype').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},
@@ -730,6 +737,10 @@
 					{label:'Charge Type',name:'chgtype',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
 				ondblClickRow: function () {
 					$('#cm_invgroup').focus();
 				},
@@ -740,6 +751,8 @@
 						$(gridname+' tr#1').dblclick();
 						dialog_chgtype.ontabbing = false;
 						$('#cm_invgroup').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},
@@ -755,13 +768,17 @@
 		dialog_chgtype.makedialog(true);
 
 		var dialog_doctorcode= new ordialog(
-			'doctorcode','hisdb.doctor','#doctorcode',errorField,
+			'cm_costcode','hisdb.doctor','#cm_costcode',errorField,
 			{	colModel:[
 					{label:'Doctor Code',name:'doctorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Doctor Name',name:'doctorname',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode'],
+					filterVal:['session.compcode']
+				},
 				ondblClickRow: function () {
-					$('#deptcode').focus();
+					$('#cm_revcode').focus();
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
@@ -769,7 +786,9 @@
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
 						dialog_doctorcode.ontabbing = false;
-						$('#deptcode').focus();
+						$('#cm_revcode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},
@@ -785,11 +804,15 @@
 		dialog_doctorcode.makedialog(true);
 
 		var dialog_deptcode= new ordialog(
-			'deptcode','sysdb.department','#deptcode',errorField,
+			'cm_revcode','sysdb.department','#cm_revcode',errorField,
 			{	colModel:[
 					{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode','chgdept'],
+					filterVal:['session.compcode','1']
+				},
 				ondblClickRow: function () {
 					// $('#ipdept').focus();
 				},
@@ -800,6 +823,8 @@
 						$(gridname+' tr#1').dblclick();
 						dialog_deptcode.ontabbing = false;
 						// $('#ipdept').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},

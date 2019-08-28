@@ -424,6 +424,10 @@
 					{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
 				ondblClickRow: function () {
 					$('#ipdept').focus();
 				},
@@ -434,6 +438,8 @@
 						$(gridname+' tr#1').dblclick();
 						dialog_chggroup.ontabbing = false;
 						$('#ipdept').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},
@@ -454,6 +460,10 @@
 					{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode'],
+					filterVal:['session.compcode']
+				},
 				ondblClickRow: function () {
 					$('#opdept').focus();
 				},
@@ -464,6 +474,8 @@
 						$(gridname+' tr#1').dblclick();
 						dialog_ipdept.ontabbing = false;
 						$('#opdept').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},
@@ -484,6 +496,10 @@
 					{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode'],
+					filterVal:['session.compcode']
+				},
 				ondblClickRow: function () {
 					$('#ipacccode').focus();
 				},
@@ -494,6 +510,8 @@
 						$(gridname+' tr#1').dblclick();
 						dialog_opdept.ontabbing = false;
 						$('#ipacccode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},
@@ -514,6 +532,10 @@
 					{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode'],
+					filterVal:['session.compcode']
+				},
 				ondblClickRow: function () {
 					$('#opacccode').focus();
 				},
@@ -524,6 +546,8 @@
 						$(gridname+' tr#1').dblclick();
 						dialog_ipacccode.ontabbing = false;
 						$('#opacccode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},
@@ -544,6 +568,10 @@
 					{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode'],
+					filterVal:['session.compcode']
+				},
 				ondblClickRow: function () {
 					$('#otcacccode').focus();
 				},
@@ -554,6 +582,8 @@
 						$(gridname+' tr#1').dblclick();
 						dialog_opacccode.ontabbing = false;
 						$('#otcacccode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},
@@ -574,6 +604,10 @@
 					{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode'],
+					filterVal:['session.compcode']
+				},
 				ondblClickRow: function () {
 					$('#invcategory').focus();
 				},
@@ -584,6 +618,8 @@
 						$(gridname+' tr#1').dblclick();
 						dialog_otcacccode.ontabbing = false;
 						$('#invcategory').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},
@@ -604,6 +640,10 @@
 					{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
+				urlParam: {
+					filterCol:['compcode'],
+					filterVal:['session.compcode']
+				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
 					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_invcategory.ontabbing){
@@ -611,6 +651,8 @@
 						$(gridname+' tr#1').dblclick();
 						dialog_invcategory.ontabbing = false;
 						// $('#regtype').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},

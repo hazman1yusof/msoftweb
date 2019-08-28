@@ -249,9 +249,9 @@ legend.scheduler-border {
 								<input id="cm_subgroup" name="cm_subgroup" type="text" class="form-control input-sm" rdonly>
 							</div>
 
-							<label class="col-md-2 control-label" for="stockcode">Stock Code</label>  
+							<label class="col-md-2 control-label" for="cm_stockcode">Stock Code</label>  
 							<div class="col-md-3">
-								<input id="stockcode" name="stockcode" type="text" class="form-control input-sm" rdonly>
+								<input id="cm_stockcode" name="cm_stockcode" type="text" class="form-control input-sm" rdonly>
 							</div>
 						</div>
 					</fieldset>
@@ -269,10 +269,10 @@ legend.scheduler-border {
 							</select> 
 						</div>
 
-						<label class="col-md-2 control-label" for="doctorcode">Doctor Code</label>  
+						<label class="col-md-2 control-label" for="cm_costcode">Doctor Code</label>  
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="doctorcode" name="doctorcode" type="text" maxlength="12" class="form-control input-sm">
+								<input id="cm_costcode" name="cm_costcode" type="text" maxlength="12" class="form-control input-sm">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -280,10 +280,10 @@ legend.scheduler-border {
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="deptcode">Revenue Dept. Code</label>  
+						<label class="col-md-2 control-label" for="cm_revcode">Revenue Dept. Code</label>  
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="deptcode" name="deptcode" type="text" maxlength="12" class="form-control input-sm">
+								<input id="cm_revcode" name="cm_revcode" type="text" maxlength="12" class="form-control input-sm">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
