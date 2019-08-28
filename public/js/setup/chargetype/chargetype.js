@@ -411,8 +411,8 @@
 			},{
 				title: "Select Group Code",
 				open: function () {
-					// chggroup.urlParam.filterCol = ['recstatus'];
-					// chggroup.urlParam.filterVal = ['A'];
+					show_chggroup.urlParam.filterCol = ['compcode','recstatus'];
+					show_chggroup.urlParam.filterVal = ['session.compcode','A'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -440,8 +440,8 @@
 			{
 				title:"Select Group Code",
 				open: function(){
-					dialog_chggroup.urlParam.filterCol=['compcode'];
-					dialog_chggroup.urlParam.filterVal=['session.compcode'];
+					dialog_chggroup.urlParam.filterCol=['compcode','recstatus'];
+					dialog_chggroup.urlParam.filterVal=['session.compcode','A'];
 					
 				}
 			},'urlParam','radio','tab'
