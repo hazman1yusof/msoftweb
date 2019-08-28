@@ -306,7 +306,7 @@
 			editurl: "/authorizationDetail/form",
 			colModel: [
 			 	{ label: 'compcode', name: 'dtl_compcode', width: 20, classes: 'wrap', hidden:true},
-				{ label: 'source', name: 'dtl_source', width: 20, classes: 'wrap', hidden:true, editable:true},
+				//{ label: 'source', name: 'dtl_source', width: 20, classes: 'wrap', hidden:true, editable:true},
 				{ label: 'Line No', name: 'dtl_lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
 				{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
@@ -316,7 +316,7 @@
                          }
 				},
 				{ label: 'Deptcode', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},
+					editrules:{required: false,custom:true, custom_func:cust_rules},
 					edittype:'custom',	editoptions:
 						{ custom_element:deptcodeCustomEdit,
 						custom_value:galGridCustomValue },
@@ -608,8 +608,8 @@
 
 		/////////////////////////////////////////////custom input////////////////////////////////////////////
 		function deptcodeCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val;
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="dtl_deptcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="dtl_deptcode" type="text" class="form-control input-sm"  value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 		}
 
 		function deptcodedtlCustomEdit(val,opt){

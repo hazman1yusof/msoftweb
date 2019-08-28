@@ -159,7 +159,7 @@ i.fa {
 
 					<div class="col-md-6 minuspad-13">
 						<label class="control-label" for="adddate">Check Date</label>
-						  	<input id="adddate" name="delordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  	<input id="adddate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					</div>
 						    	
 				</div>

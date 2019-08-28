@@ -43,29 +43,26 @@ class AuthorizationDetailController extends defaultController
         try {
             ////1. calculate lineno_ by idno
             $sqlln = DB::table('material.authdtl')->select('lineno_')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('idno','=',$idno)
-                        ->count('lineno_');
+                        ->where('dtl_compcode','=',session('compcode'))
+                        ->where('dtl_idno','=',$idno)
+                        ->count('dtl_lineno_');
 
             $li=intval($sqlln)+1;
 
             ///2. insert detail
             DB::table('material.authdtl')
                 ->insert([
-                    'compcode' => session('compcode'),
-                    'idno' => $idno,
-                    'lineno_' => $li,
-                    'trantype' => $request->trantype,
-                    'deptcode' => $request->deptcode,
-                    'id' => $request->authorid,
-                    'recstatus' => $request->recstatus,
-                    'cando' => $request->cando,
-                    'minlimit' => $request->minlimit,
-                    'maxlimit' => $request->maxlimit,
+                    'dtl_compcode' => session('compcode'),
+                    'dtl_idno' => $idno,
+                    'dtl_lineno_' => $li,
+                    'dtl_trantype' => $request->trantype,
+                    'dtl_deptcode' => $request->deptcode,
+                    'dtl_id' => $request->authorid,
+                    'dtl_recstatus' => $request->recstatus,
+                    'dtl_cando' => $request->cando,
+                    'dtl_minlimit' => $request->minlimit,
+                    'dtl_maxlimit' => $request->maxlimit,
                 ]);
-
-       
-            echo $totalAmount;*/
 
             DB::commit();
         } catch (\Exception $e) {
@@ -82,7 +79,7 @@ class AuthorizationDetailController extends defaultController
         try {
 
             ///1. update detail
-            DB::table('material.delorddt')
+            DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->where('lineno_','=',$request->lineno_)
@@ -117,7 +114,7 @@ class AuthorizationDetailController extends defaultController
 
             foreach ($request->dataobj as $key => $value) {
                 ///1. update detail
-                DB::table('material.delorddt')
+                DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('idno','=',$request->idno)
                     ->where('lineno_','=',$value['lineno_'])
@@ -150,7 +147,7 @@ class AuthorizationDetailController extends defaultController
         try {
 
             ///1. update detail
-            DB::table('material.delorddt')
+            DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$request->lineno_)
@@ -161,14 +158,14 @@ class AuthorizationDetailController extends defaultController
                 ]);
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('material.delorddt')
+            $totalAmount = DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('totamount');
 
             //calculate tot gst from detail
-            $tot_gst = DB::table('material.delorddt')
+            $tot_gst = DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$recno)
                 ->where('recstatus','!=','DELETE')
