@@ -294,7 +294,7 @@
 		var urlParam2={
 			action:'get_table_default',
 			url:'/util/get_table_default',
-			field:[],
+			field:'',
 			table_name:['material.authdtl AS dtl'],
 			table_id:'lineno_',
 		};
@@ -446,7 +446,7 @@
 				let editurl = "/authorizationDetail/form?"+
 					$.param({
 						action: 'authorizationDetail_save',
-						idno:$('#dtl_idno').val(),
+						idno:$('#idno').val(),
 						/*amount:data.amount,*/
 					});
 				$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
@@ -894,6 +894,13 @@
 				{ label: 'Id', name: 'd_authorid', width: 200, edittype:'text', classes: 'wrap',  
 					editable:true,
 					editrules:{required: true}
+				},
+				{ label: 'Record Status', name: 'd_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
+					 editable: true,
+                         edittype: "select",
+                         editoptions: {
+                             value: "Request:Request;Support:Support;Verify:Verify;Approve:Approve"
+                         }
 				},
 				{ label: 'CanDo', name: 'd_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,

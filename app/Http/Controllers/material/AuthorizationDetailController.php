@@ -43,25 +43,25 @@ class AuthorizationDetailController extends defaultController
         try {
             ////1. calculate lineno_ by idno
             $sqlln = DB::table('material.authdtl')->select('lineno_')
-                        ->where('dtl_compcode','=',session('compcode'))
-                        ->where('dtl_idno','=',$idno)
-                        ->count('dtl_lineno_');
+                        ->where('compcode','=',session('compcode'))
+                        ->where('idno','=',$idno)
+                        ->count('lineno_');
 
             $li=intval($sqlln)+1;
 
             ///2. insert detail
             DB::table('material.authdtl')
                 ->insert([
-                    'dtl_compcode' => session('compcode'),
-                    'dtl_idno' => $idno,
-                    'dtl_lineno_' => $li,
-                    'dtl_trantype' => $request->trantype,
-                    'dtl_deptcode' => $request->deptcode,
-                    'dtl_id' => $request->authorid,
-                    'dtl_recstatus' => $request->recstatus,
-                    'dtl_cando' => $request->cando,
-                    'dtl_minlimit' => $request->minlimit,
-                    'dtl_maxlimit' => $request->maxlimit,
+                    'compcode' => session('compcode'),
+                    'idno' => $idno,
+                    'lineno_' => $li,
+                    'trantype' => $request->trantype,
+                    'deptcode' => $request->deptcode,
+                    'id' => $request->authorid,
+                    'recstatus' => $request->recstatus,
+                    'cando' => $request->cando,
+                    'minlimit' => $request->minlimit,
+                    'maxlimit' => $request->maxlimit,
                 ]);
 
             DB::commit();
