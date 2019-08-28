@@ -373,6 +373,7 @@ abstract class defaultController extends Controller{
                 }
             }
 
+            dd($array_update);
             $table->update($array_update);
 
             $responce = new stdClass();

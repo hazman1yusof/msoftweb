@@ -128,7 +128,6 @@
 				colModel: [
 					{ label: 'idno', name: 'idno', sorttype: 'number', hidden:true },
 					{ label: 'Compcode', name: 'compcode', hidden:true},
-
 					{ label: 'Class Code', name: 'classcode', classes: 'wrap', width: 30, canSearch: true},
 					{ label: 'Description', name: 'description', classes: 'wrap', width: 70, canSearch: true},
 					{ label: 'Class Level', name: 'classlevel', classes: 'wrap', width: 20,checked:true},
@@ -137,7 +136,6 @@
 					{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
 					formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
 					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
-					
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },

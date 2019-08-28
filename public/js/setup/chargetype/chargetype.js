@@ -133,7 +133,6 @@
 				colModel: [
 					{ label: 'idno', name: 'idno', sorttype: 'number', hidden:true },
 					{ label: 'Compcode', name: 'compcode', hidden:true},
-
 					{ label: 'Charge Type', name: 'chgtype', classes: 'wrap', width: 30, canSearch: true},
 					{ label: 'Description', name: 'description', classes: 'wrap', width: 70, canSearch: true},
 					{ label: 'Last User', name: 'upduser', classes: 'wrap', width: 30,checked:true},
@@ -149,8 +148,6 @@
 					{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
 					formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
 					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
-
-					
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
@@ -424,18 +421,18 @@
 			{	colModel:[
 					{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			ondblClickRow: function () {
-				$('#ipdept').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
+				],
+				ondblClickRow: function () {
 					$('#ipdept').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#ipdept').focus();
+					}
 				}
-			}
 			},
 			{
 				title:"Select Group Code",
@@ -453,18 +450,18 @@
 			{	colModel:[
 					{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			ondblClickRow: function () {
-				$('#opdept').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
+				],
+				ondblClickRow: function () {
 					$('#opdept').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#opdept').focus();
+					}
 				}
-			}
 			},
 			{
 				title:"Select Department Code",
@@ -482,18 +479,18 @@
 			{	colModel:[
 					{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			ondblClickRow: function () {
-				$('#ipacccode').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
+				],
+				ondblClickRow: function () {
 					$('#ipacccode').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#ipacccode').focus();
+					}
 				}
-			}
 			},
 			{
 				title:"Select Department Code",
@@ -511,18 +508,18 @@
 			{	colModel:[
 					{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			ondblClickRow: function () {
-				$('#opacccode').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
+				],
+				ondblClickRow: function () {
 					$('#opacccode').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#opacccode').focus();
+					}
 				}
-			}
 			},
 			{
 				title:"Select Glaccno",
@@ -540,18 +537,18 @@
 			{	colModel:[
 					{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			ondblClickRow: function () {
-				$('#otcacccode').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
+				],
+				ondblClickRow: function () {
 					$('#otcacccode').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#otcacccode').focus();
+					}
 				}
-			}
 			},
 			{
 				title:"Select Glaccno",
@@ -569,18 +566,18 @@
 			{	colModel:[
 					{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			ondblClickRow: function () {
-				$('#invcategory').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
+				],
+				ondblClickRow: function () {
 					$('#invcategory').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#invcategory').focus();
+					}
 				}
-			}
 			},
 			{
 				title:"Select Glaccno",
@@ -598,15 +595,15 @@
 			{	colModel:[
 					{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					// $('#regtype').focus();
+				],
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						// $('#regtype').focus();
+					}
 				}
-			}
 			},
 			{
 				title:"Select Category Code",

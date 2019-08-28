@@ -81,13 +81,15 @@
 						dialog_chgclass.on();
 						dialog_chgtype.on();
 						dialog_doctorcode.on();
+						dialog_deptcode.on();
 					}
 					if(oper!='add'){
 						///toggleFormData('#jqGrid','#formdata');
 						dialog_chggroup.check(errorField);
 						dialog_chgclass.check(errorField);
 						dialog_chgtype.check(errorField);
-						dialog_doctorcode.check(errorField);
+						// dialog_doctorcode.check(errorField);
+						// dialog_deptcode.check(errorField);
 					}
 				},
 				close: function( event, ui ) {
@@ -99,6 +101,7 @@
 					dialog_chgclass.off();
 					dialog_chgtype.off();
 					dialog_doctorcode.off();
+					dialog_deptcode.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -151,7 +154,6 @@
 					{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
 					{ label: 'UOM', name: 'cm_uom', width: 30,hidden:false },
 					{ label: 'Generic Name', name: 'cm_brandname', width: 60},
-					
 					{ label: 'cm_barcode', name: 'cm_barcode', hidden:true},
 					{ label: 'cm_constype', name: 'cm_constype', hidden:true},
 					{ label: 'cm_invflag', name: 'cm_invflag', hidden:true},
@@ -164,13 +166,11 @@
 					{ label: 'cm_seqno', name: 'cm_seqno', hidden:true},
 					{ label: 'cm_overwrite', name: 'cm_overwrite', hidden:true},
 					{ label: 'cm_doctorstat', name: 'cm_doctorstat', hidden:true},
-
 					{ label: 'Upd User', name: 'cm_upduser', width: 80,hidden:true}, 
 					{ label: 'Upd Date', name: 'cm_upddate', width: 90,hidden:true},
 					{ label: 'Status', name:'cm_recstatus', width:30, classes:'wrap', hidden:false,
 					formatter: formatterstatus, unformat: unformatstatus, cellattr: function (rowid, cellvalue)
 					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
-					
 					{ label: 'computerid', name: 'cm_computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'cm_ipaddress', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'lastcomputerid', name: 'cm_lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
@@ -692,7 +692,7 @@
 			{	colModel:[
 					{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]	,
+				],
 				ondblClickRow: function () {
 					$('#cm_chgtype').focus();
 				},
@@ -770,7 +770,7 @@
 					dialog_doctorcode.urlParam.filterVal=['session.compcode'];
 					
 				}
-			},'urlParam','radio','tab'
+			},'none','radio','tab'
 		);
 		dialog_doctorcode.makedialog(true);
 
@@ -799,7 +799,7 @@
 					dialog_deptcode.urlParam.filterVal=['session.compcode','1'];
 					
 				}
-			},'urlParam','radio','tab'
+			},'none','radio','tab'
 		);
 		dialog_deptcode.makedialog(true);
 

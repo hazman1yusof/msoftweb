@@ -157,9 +157,9 @@ legend.scheduler-border {
 							<input id="cm_barcode" name="cm_barcode" type="text" class="form-control input-sm">
 						</div>
 
-						<label class="col-md-2 control-label" for="cm_generic">Generic</label>  
+						<label class="col-md-2 control-label" for="cm_brandname">Generic</label>  
 						<div class="col-md-3">
-							<input id="cm_generic" name="cm_generic" type="text" class="form-control input-sm">
+							<input id="cm_brandname" name="cm_brandname" type="text" class="form-control input-sm">
 						</div>
 					</div>
 
@@ -283,7 +283,7 @@ legend.scheduler-border {
 						<label class="col-md-2 control-label" for="deptcode">Revenue Dept. Code</label>  
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="deptcode" name="deptcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="deptcode" name="deptcode" type="text" maxlength="12" class="form-control input-sm">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
