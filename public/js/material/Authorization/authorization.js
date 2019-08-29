@@ -316,7 +316,7 @@
 			datatype: "local",
 			editurl: "/authorizationDetail/form",
 			colModel: [
-			 	{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', editable: true, hidden:true},
+			 	{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', key: true, editable: true, hidden:true},
 			 	{ label: 'compcode', name: 'dtl_compcode', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
@@ -386,7 +386,7 @@
 			width: 1150,
 			height: 200,
 			rowNum: 30,
-			sortname: 'idno',
+			sortname: 'dtl_idno',
 			sortorder: "desc",
 			pager: "#jqGridPager2",
 			loadComplete: function(){
@@ -522,7 +522,6 @@
 
 			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_dtl_minlimit", "#"+ids[i]+"_dtl_maxlimit"]);
 			    }
-			   	onall_editfunc();
 				hideatdialogForm(true,'saveallrow');
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -538,16 +537,15 @@
 			    for (var i = 0; i < ids.length; i++) {
 
 					var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
-
 			    	var obj = 
 			    	{
 			    		'idno' : ids[i],
-			    		'trantype' : $("#jqGrid2 input#"+ids[i]+"_trantype").val(),
-			    		'deptcode' : $("#jqGrid2 input#"+ids[i]+"_deptcode").val(),
-			    		'recstatus' : $("#jqGrid2 input#"+ids[i]+"_recstatus").val(),
-			    		'cando' : $("#jqGrid2 input#"+ids[i]+"_cando").val(),
-			    		'minlimit' : $("#jqGrid2 input#"+ids[i]+"_minlimit").val(),
-	                    'mxlimit' : $("#jqGrid2 input#"+ids[i]+"_maxlimit").val()
+			    		'trantype' : $("#jqGrid2 select#"+ids[i]+"_dtl_trantype option:selected").val(),
+			    		'deptcode' : $("#jqGrid2 input#"+ids[i]+"_dtl_deptcode").val(),
+			    		'recstatus' : $("#jqGrid2 select#"+ids[i]+"_dtl_recstatus option:selected").val(),
+			    		'cando' : $("#jqGrid2 select#"+ids[i]+"_dtl_cando option:selected").val(),
+			    		'minlimit' : $("#jqGrid2 input#"+ids[i]+"_dtl_minlimit").val(),
+	                    'maxlimit' : $("#jqGrid2 input#"+ids[i]+"_dtl_maxlimit").val()
 			    	}
 
 			    	jqgrid2_data.push(obj);
@@ -555,8 +553,7 @@
 
 				var param={
 	    			action: 'authorizationDetail_save',
-					_token: $("#_token").val(),
-					idno: $('#idno').val()
+					_token: $("#_token").val()
 	    		}
 
 	    		$.post( "/authorizationDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
