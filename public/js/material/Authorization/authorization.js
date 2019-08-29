@@ -38,6 +38,7 @@
 				autoOpen: false,
 				open: function( event, ui ) {
 					parent_close_disabled(true);
+					$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 					switch(oper) {
 						case state = 'add':
 							$("#jqGrid2").jqGrid("clearGridData", false);
@@ -150,6 +151,10 @@
 				height: 350,
 				rowNum: 30,
 				pager: "#jqGridPager",
+				onSelectRow:function(rowid, selected){
+					urlParam_authdtl.filterVal[1]=selrowData("#jqGrid").authorid;
+					refreshGrid("#gridAuthdtl",urlParam_authdtl);
+				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
 					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
@@ -295,6 +300,7 @@
 			action:'get_table_default',
 			url:'/util/get_table_default',
 			field:'',
+			fixPost:'true',
 			table_name:['material.authdtl AS dtl'],
 			table_id:'lineno_',
 		};
@@ -305,9 +311,8 @@
 			datatype: "local",
 			editurl: "/authorizationDetail/form",
 			colModel: [
+			 	{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', editable: true, hidden:true},
 			 	{ label: 'compcode', name: 'dtl_compcode', width: 20, classes: 'wrap', hidden:true},
-				//{ label: 'source', name: 'dtl_source', width: 20, classes: 'wrap', hidden:true, editable:true},
-				{ label: 'Line No', name: 'dtl_lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
 				{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
                          edittype: "select",
@@ -321,11 +326,6 @@
 						{ custom_element:deptcodeCustomEdit,
 						custom_value:galGridCustomValue },
 				},
-				{ label: 'Id', name: 'dtl_authorid', width: 200, edittype:'text', classes: 'wrap',  
-					editable:true,
-					editrules:{required: true},
-				},
-
 				{ label: 'Record Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
                          edittype: "select",
@@ -338,7 +338,7 @@
 					 editable: true,
                          edittype: "select",
                          editoptions: {
-                             value: "Yes:Yes;No:No"
+                             value: "A:Active;D:Deactive"
                          }
 				},
 				{ label: 'Min Limit', name: 'dtl_minlimit', width: 150, align: 'right', classes: 'wrap', editable:true,
@@ -381,7 +381,7 @@
 			width: 1150,
 			height: 200,
 			rowNum: 30,
-			sortname: 'dtl_lineno_',
+			sortname: 'dtl_idno',
 			sortorder: "desc",
 			pager: "#jqGridPager2",
 			loadComplete: function(){
@@ -416,6 +416,10 @@
 
 	        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
+	        	dialog_deptcodedtl.on();
+	        	$("#jqGrid2 input[name='dtl_deptcode']").val('ALL');
+
+
 	        	unsaved = false;
 				mycurrency2.array.length = 0;
 				Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='dtl_maxlimit']","#jqGrid2 input[name='dtl_minlimit']"]);
@@ -445,7 +449,7 @@
 				let editurl = "/authorizationDetail/form?"+
 					$.param({
 						action: 'authorizationDetail_save',
-						idno:$('#idno').val(),
+						authorid:$('#authorid').val()
 					});
 				$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
 	        },
@@ -661,31 +665,31 @@
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 
-		var dialog_authorid = new ordialog(
-			'authorid','sysdb.users','#authorid',errorField,
-			{	colModel:[
-					{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
-					{label:'Password',name:'password',width:400,classes:'pointer',canSearch:true,or_search:true},
-					{label:'Dept Code',name:'deptcode',width:400,classes:'pointer',canSearch:true,or_search:true},
-				],
-				ondblClickRow:function(){
-					let data=selrowData('#'+dialog_authorid.gridname);
-						$("#name").val(data['name']);
-						$("#password").val(data['password']).attr('type','password');
-						$("#deptcode").val(data['deptcode']);
-					}	
-				},{
-				title:"Select Author ID",
-				open: function(){
-						dialog_authorid.urlParam.filterCol=['recstatus'],
-						dialog_authorid.urlParam.filterVal=['A']
-					}
-				},'urlParam'
-			);
-		dialog_authorid.makedialog();
+	var dialog_authorid = new ordialog(
+		'authorid','sysdb.users','#authorid',errorField,
+		{	colModel:[
+				{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Password',name:'password',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Dept Code',name:'deptcode',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_authorid.gridname);
+					$("#name").val(data['name']);
+					$("#password").val(data['password']).attr('type','password');
+					$("#deptcode").val(data['deptcode']);
+				}	
+			},{
+			title:"Select Author ID",
+			open: function(){
+					dialog_authorid.urlParam.filterCol=['recstatus'],
+					dialog_authorid.urlParam.filterVal=['A']
+				}
+			},'urlParam'
+		);
+	dialog_authorid.makedialog();
 
-		var dialog_deptcodehd = new ordialog(
+	var dialog_deptcodehd = new ordialog(
 		'deptcode','sysdb.department','#deptcode',errorField,
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -709,12 +713,11 @@
 				dialog_deptcodehd.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 				dialog_deptcodehd.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
 			}
-		},'urlParam','radio','tab'
-	);
+		},'urlParam','radio','tab');
 	dialog_deptcodehd.makedialog();
 
 	var dialog_deptcodedtl = new ordialog(
-		'dtl_deptcode','sysdb.department','#dtl_deptcode',errorField,
+		'dtl_deptcode','sysdb.department',"#jqGrid2 input[name='dtl_deptcode']",errorField,
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
@@ -725,6 +728,13 @@
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
+
+				let str = $(obj.textfield).val() ? $(obj.textfield).val() : '';
+				if(str.toUpperCase() == 'ALL' && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+					obj.ontabbing = false;
+				}
+
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
@@ -737,7 +747,7 @@
 				dialog_deptcodedtl.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 				dialog_deptcodedtl.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
 			}
-		},'urlParam','radio','tab'
+		},'none','radio','tab'
 	);
 	dialog_deptcodedtl.makedialog();
 
@@ -756,6 +766,12 @@
 			ondblClickRow:function(){
 			},
 			gridComplete: function(obj){
+				let str = $(obj.textfield).val() ? $(obj.textfield).val() : '';
+				if(str.toUpperCase() == 'ALL' && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+					obj.ontabbing = false;
+				}
+
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
@@ -768,7 +784,7 @@
 				dialog_deptcodeD.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 				dialog_deptcodeD.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
 			}
-		},'urlParam','radio','tab'
+		},'none','radio','tab'
 	);
 	dialog_deptcodeD.makedialog();
 	
@@ -833,6 +849,7 @@
 
 			}
 			if (oper_authdtl != 'view') {
+				$("#d_authorid").val(selrowData('#jqGrid').authorid);
 				dialog_deptcodeD.on();
 			}
 		},
@@ -853,13 +870,16 @@
 		action:'get_table_default',
 			url:'/util/get_table_default',
 			field:'',
+			fixPost:'true',
 			table_name:['material.authdtl AS d'],
 			table_id:'d_lineno_',
+			filterCol:['compcode','authorid'],
+			filterVal:['session.compcode','']
 	}
 
 	var saveParam_authdtl={
 		action:'save_table_default',
-			url:'authorization/form',
+			url:'authorizationDetail/form',
 			field:'',
 			oper:oper_authdtl,
 			table_name:'material.authdtl',
@@ -875,12 +895,11 @@
 			 	//{ label: 'compcode', name: 'd_compcode', width: 20, classes: 'wrap', hidden:true},
 			//	{ label: 'source', name: 'd_source', width: 20, classes: 'wrap', hidden:true, editable:true},
 				{ label: 'idno', name: 'd_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
-				{ label: 'Line No', name: 'd_lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
 				{ label: 'Trantype', name: 'd_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
                          edittype: "select",
                          editoptions: {
-                             value: "Purchase Request:Purchase Request;Purchase Order:Purchase Order"
+                             value: "PR:Purchase Request;PO:Purchase Order"
                          }
 				},
 				{ label: 'Deptcode', name: 'd_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
@@ -888,10 +907,6 @@
 					edittype:'custom',	editoptions:
 						{ custom_element:deptcodedtlCustomEdit,
 						custom_value:galGridCustomValue },
-				},
-				{ label: 'Id', name: 'd_authorid', width: 200, edittype:'text', classes: 'wrap',  
-					editable:true,
-					editrules:{required: true}
 				},
 				{ label: 'Record Status', name: 'd_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
@@ -904,7 +919,7 @@
 					 editable: true,
                          edittype: "select",
                          editoptions: {
-                             value: "Yes:Yes;No:No"
+                             value: "A:Active;D:Deactive"
                          }
 				},
 			
@@ -1003,9 +1018,15 @@
 		buttonicon:"glyphicon glyphicon-edit", 
 		onClickButton: function(){
 			oper_authdtl='edit';
-			selRowId = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId,'edit');
-			recstatusDisable();
+			var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+			if(!selRowId){
+				alert('Please select row');
+				return emptyFormdata(errorField,'#FAuthdtl');
+			}else{
+				selRowId2 = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
+				populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId2,'edit');
+				recstatusDisable();
+			}
 		}, 
 		position: "first", 
 		title:"Edit Selected Row", 
@@ -1015,13 +1036,24 @@
 		buttonicon:"glyphicon glyphicon-plus", 
 		onClickButton: function(){
 			oper_authdtl='add';
-			$( "#Authdtl" ).dialog( "open" );
+			var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+			if(!selRowId){
+				alert('Please select row');
+				return emptyFormdata(errorField,'#FAuthdtl');
+			}else{
+				$( "#Authdtl" ).dialog( "open" );
+			}
 			//$('#FAuthdtl :input[name=d_lineno_]').hide();
 			//$("#Fsuppitems :input[name*='SuppCode']").val(selrowData('#jqGrid').SuppCode);
 		}, 
 		position: "first", 
 		title:"Add New Row", 
 		cursor: "pointer"
+	});
+
+
+	$("#gridAuthdtl_panel").on("show.bs.collapse", function(){
+		$("#gridAuthdtl").jqGrid ('setGridWidth', Math.floor($("#gridAuthdtl_c")[0].offsetWidth-$("#gridAuthdtl_c")[0].offsetLeft-28));
 	});
 
 	addParamField('#gridAuthdtl',false,urlParam_authdtl);

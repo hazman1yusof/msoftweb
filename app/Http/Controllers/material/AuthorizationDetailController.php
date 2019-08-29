@@ -36,32 +36,21 @@ class AuthorizationDetailController extends defaultController
 
     public function add(Request $request){
 
-
-
         DB::beginTransaction();
 
         try {
-            ////1. calculate lineno_ by idno
-            $sqlln = DB::table('material.authdtl')->select('lineno_')
-                        ->where('dtl_compcode','=',session('compcode'))
-                        ->where('dtl_idno','=',$idno)
-                        ->count('dtl_lineno_');
 
-            $li=intval($sqlln)+1;
-
-            ///2. insert detail
+            ///1. insert detail
             DB::table('material.authdtl')
                 ->insert([
-                    'dtl_compcode' => session('compcode'),
-                    'dtl_idno' => $idno,
-                    'dtl_lineno_' => $li,
-                    'dtl_trantype' => $request->trantype,
-                    'dtl_deptcode' => $request->deptcode,
-                    'dtl_id' => $request->authorid,
-                    'dtl_recstatus' => $request->recstatus,
-                    'dtl_cando' => $request->cando,
-                    'dtl_minlimit' => $request->minlimit,
-                    'dtl_maxlimit' => $request->maxlimit,
+                    'compcode' => session('compcode'),
+                    'trantype' => $request->dtl_trantype,
+                    'deptcode' => $request->dtl_deptcode,
+                    'authorid' => $request->authorid,
+                    'recstatus' => $request->dtl_recstatus,
+                    'cando' => $request->dtl_cando,
+                    'minlimit' => $request->dtl_minlimit,
+                    'maxlimit' => $request->dtl_maxlimit,
                 ]);
 
             DB::commit();
@@ -94,6 +83,8 @@ class AuthorizationDetailController extends defaultController
                     'cando' => $request->cando,
                     'minlimit' => $request->minlimit,
                     'maxlimit' => $request->maxlimit,
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
 
             DB::commit();
