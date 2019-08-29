@@ -104,15 +104,15 @@ class AuthorizationDetailController extends defaultController
                 DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('idno','=',$request->idno)
-                    ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'trantype' => $value['trantype'],
-                        'deptcode' => $value['deptcode'],
-                        'id' => $value['id'],
-                        'recstatus' => $value['recstatus'],
-                        'cando' => $value['cando'],
-                        'minlimit' => $value['minlimit'],
-                        'maxlimit' => $value['maxlimit'],
+                        'trantype' => $value['dtl_trantype'],
+                        'deptcode' => $value['dtl_deptcode'],
+                        'recstatus' => $value['dtl_recstatus'],
+                        'cando' => $value['dtl_cando'],
+                        'minlimit' => $value['dtl_minlimit'],
+                        'maxlimit' => $value['dtl_maxlimit'],
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
          

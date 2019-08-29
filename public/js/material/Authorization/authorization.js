@@ -342,10 +342,10 @@
                          }
 				},
 				{ label: 'Min Limit', name: 'dtl_minlimit', width: 150, align: 'right', classes: 'wrap', editable:true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true},edittype:"text",
 						editoptions:{
-						maxlength: 12,
+						maxlength: 100,
 						dataInit: function(element) {
 							element.style.textAlign = 'right';
 							$(element).keypress(function(e){
@@ -357,10 +357,10 @@
 					},
 				},
 			{ label: 'Max Limit', name: 'dtl_maxlimit', width: 150, align: 'right', classes: 'wrap', editable:true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true},edittype:"text",
 						editoptions:{
-						maxlength: 12,
+						maxlength: 100,
 						dataInit: function(element) {
 							element.style.textAlign = 'right';
 							$(element).keypress(function(e){
@@ -488,7 +488,6 @@
 					    		param={
 					    			action: 'authorizationDetail_save',
 									idno: $('#dtl_idno').val(),
-									lineno_: selrowData('#jqGrid2').dtl_lineno_,
 
 					    		}
 					    		$.post( "/authorizationDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
@@ -504,7 +503,7 @@
 					});
 				}
 			},
-	/*	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
 			id: "jqGridPager2EditAll",
 			caption:"",cursor: "pointer",position: "last", 
 			buttonicon:"glyphicon glyphicon-th-list",
@@ -516,12 +515,12 @@
 
 			        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_dtl_minlimit", "#"+ids[i]+"_dtl_maxlimit"]);
 			    }
-			   // onall_editfunc();
+			   	onall_editfunc();
 				hideatdialogForm(true,'saveallrow');
-			},*/
-	/*	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
 			id: "jqGridPager2SaveAll",
 			caption:"",cursor: "pointer",position: "last", 
 			buttonicon:"glyphicon glyphicon-download-alt",
@@ -537,33 +536,32 @@
 
 			    	var obj = 
 			    	{
-			    		'lineno_' : ids[i],
-			    		'document' : $("#jqGrid2 input#"+ids[i]+"_document").val(),
-			    		'reference' : data.reference,
-			    		'amount' : data.amount,
-			    		'dorecno' : data.dorecno,
-			    		'grnno' : data.grnno,
-	                    'unit' : $("#"+ids[i]+"_unit").val()
+			    		'idno' : ids[i],
+			    		'trantype' : $("#jqGrid2 input#"+ids[i]+"_trantype").val(),
+			    		'deptcode' : $("#jqGrid2 input#"+ids[i]+"_deptcode").val(),
+			    		'recstatus' : $("#jqGrid2 input#"+ids[i]+"_recstatus").val(),
+			    		'cando' : $("#jqGrid2 input#"+ids[i]+"_cando").val(),
+			    		'minlimit' : $("#jqGrid2 input#"+ids[i]+"_minlimit").val(),
+	                    'mxlimit' : $("#jqGrid2 input#"+ids[i]+"_maxlimit").val()
 			    	}
 
 			    	jqgrid2_data.push(obj);
 			    }
 
 				var param={
-	    			action: 'invoiceAPDetail_save',
+	    			action: 'authorizationDetail_save',
 					_token: $("#_token").val(),
-					auditno: $('#apacthdr_auditno').val()
+					idno: $('#idno').val()
 	    		}
 
 	    		$.post( "/authorizationDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 				}).fail(function(data) {
 					//////////////////errorText(dialog,data.responseText);
 				}).done(function(data){
-					// $('#amount').val(data);
 					hideatdialogForm(false);
 					refreshGrid("#jqGrid2",urlParam2);
 				});
-			},*/	
+			},	
 		}).jqGrid('navButtonAdd',"#jqGridPager2",{
 			id: "jqGridPager2CancelAll",
 			caption:"",cursor: "pointer",position: "last", 
