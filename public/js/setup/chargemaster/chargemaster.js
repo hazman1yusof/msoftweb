@@ -544,16 +544,6 @@
 					});
 				}*/
 			},
-		}).jqGrid('navButtonAdd',"#jqGridPager3",{
-			id: "saveHeaderLabel",
-			caption:"Header",cursor: "pointer",position: "last", 
-			buttonicon:"",
-			title:"Header"
-		}).jqGrid('navButtonAdd',"#jqGridPager3",{
-			id: "saveDetailLabel",
-			caption:"Detail",cursor: "pointer",position: "last", 
-			buttonicon:"",
-			title:"Detail"
 		});
 		jqgrid_label_align_right("#jqGrid3");
 
