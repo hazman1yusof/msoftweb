@@ -34,7 +34,26 @@
 				{	colModel:[
 						{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						]
+					],
+					urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					//$('#cm_constype').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_costcode.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_costcode.ontabbing = false;
+						//$('#cm_constype').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				
+			},
 				},{
 					title:"Select Cost Center",
 					open: function(){
@@ -50,7 +69,26 @@
 				{	colModel:[
 						{label:'Code',name:'sectorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						]
+					],
+					urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#chgdept').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_sector.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_sector.ontabbing = false;
+						$('#chgdept').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
+
 				},{
 					title:"Select Sector",
 					open: function(){
@@ -66,7 +104,26 @@
 				{	colModel:[
 						{label:'Code',name:'regioncode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						]
+					],
+					urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#sector').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_region.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_region.ontabbing = false;
+						$('#sector').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
+
 				},{
 					title:"Select Region",
 					open: function(){
@@ -337,7 +394,7 @@
 			addParamField('#jqGrid',true,urlParam);
 			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress','adduser','adddate','upduser','upddate','recstatus']);
 
-			///////////////////////////////start->dialogHandler part////////////////////////////////////////////
+		/*	///////////////////////////////start->dialogHandler part////////////////////////////////////////////
 			function makeDialog(table,id,cols,title){
 				this.table=table;
 				this.id=id;
@@ -470,7 +527,7 @@
 					paramD.searchVal=searchVal;
 				}
 				refreshGrid("#gridDialog",paramD);
-			}
+			}*/
 			///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
 
 });

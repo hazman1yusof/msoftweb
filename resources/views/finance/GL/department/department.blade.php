@@ -4,7 +4,7 @@
 
 @section('body')
 		
-	@include('layouts.default_search_and_table')
+@include('layouts.default_search_and_table')
 <div id="dialogForm" title="Add Form" >
 	<form class='form-horizontal' style='width:99%' id='formdata'>
 			{{ csrf_field() }}
