@@ -38,6 +38,8 @@
 				autoOpen: false,
 				open: function( event, ui ) {
 					parent_close_disabled(true);
+
+					refreshGrid("#jqGrid2", urlParam2);
 					$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 					switch(oper) {
 						case state = 'add':
@@ -153,6 +155,7 @@
 				pager: "#jqGridPager",
 				onSelectRow:function(rowid, selected){
 					urlParam_authdtl.filterVal[1]=selrowData("#jqGrid").authorid;
+					urlParam2.filterVal[1]=selrowData("#jqGrid").authorid;
 					refreshGrid("#gridAuthdtl",urlParam_authdtl);
 				},
 				ondblClickRow: function(rowid, iRow, iCol, e){
@@ -303,6 +306,8 @@
 			fixPost:'true',
 			table_name:['material.authdtl AS dtl'],
 			table_id:'lineno_',
+			filterCol:['compcode','authorid'],
+			filterVal:['session.compcode','']
 		};
 
 		var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -311,7 +316,7 @@
 			datatype: "local",
 			editurl: "/authorizationDetail/form",
 			colModel: [
-			 	{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', editable: true, hidden:true},
+			 	{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', editable: true, hidden:true},
 			 	{ label: 'compcode', name: 'dtl_compcode', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
@@ -381,7 +386,7 @@
 			width: 1150,
 			height: 200,
 			rowNum: 30,
-			sortname: 'dtl_idno',
+			sortname: 'idno',
 			sortorder: "desc",
 			pager: "#jqGridPager2",
 			loadComplete: function(){
@@ -403,7 +408,7 @@
 
 		////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 		jqgrid_label_align_right("#jqGrid2");
-
+		addParamField('#jqGrid2',false,urlParam2);
 		
 		//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 		
