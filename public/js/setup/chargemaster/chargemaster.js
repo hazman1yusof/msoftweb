@@ -88,7 +88,7 @@
 						dialog_chggroup.check(errorField);
 						dialog_chgclass.check(errorField);
 						dialog_chgtype.check(errorField);
-						// dialog_doctorcode.check(errorField);
+						dialog_doctorcode.check(errorField);
 						dialog_deptcode.check(errorField);
 					}
 				},
@@ -748,7 +748,7 @@
 					dialog_doctorcode.urlParam.filterVal=['session.compcode', 'A'];
 					
 				}
-			},'none','radio','tab'
+			},'urlParam','radio','tab'
 		);
 		dialog_doctorcode.makedialog(true);
 
@@ -763,7 +763,7 @@
 					filterVal:['session.compcode','1', 'A']
 				},
 				ondblClickRow: function () {
-					// $('#ipdept').focus();
+					$('#cm_seqno').focus();
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
@@ -771,7 +771,7 @@
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
 						dialog_deptcode.ontabbing = false;
-						// $('#ipdept').focus();
+						$('#cm_seqno').focus();
 					}else if($(gridname).jqGrid('getDataIDs').length == 0){
 						$('#'+obj.dialogname).dialog('close');
 					}
