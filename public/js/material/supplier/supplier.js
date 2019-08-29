@@ -33,16 +33,34 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Code',name:'suppgroup',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#CostCode').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_SuppGroup.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_SuppGroup.ontabbing = false;
+						$('#CostCode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				},	
 		},{
 			title:"Select Supplier Group",
 			open: function(){
-				dialog_SuppGroup.urlParam.filterCol=['recstatus'],
-				dialog_SuppGroup.urlParam.filterVal=['A']
+				dialog_SuppGroup.urlParam.filterCol=['compcode','recstatus'],
+				dialog_SuppGroup.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam'
+		},'urlParam','tab'
 	);
-	dialog_SuppGroup.makedialog();
+	dialog_SuppGroup.makedialog(true);
 
 
 	var dialog_CostCode = new ordialog(
@@ -50,32 +68,67 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#GlAccNo').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_CostCode.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_CostCode.ontabbing = false;
+						$('#GlAccNo').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				},	
 		},{
 			title:"Select Cost Code",
 			open: function(){
-				dialog_CostCode.urlParam.filterCol=['recstatus'],
-				dialog_CostCode.urlParam.filterVal=['A']
+				dialog_CostCode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_CostCode.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam'
+		},'urlParam', 'tab'
 	);
-	dialog_CostCode.makedialog();
+	dialog_CostCode.makedialog(true);
 
 	var dialog_GlAccNo = new ordialog(
 		'GlAccNo','finance.glmasref','#GlAccNo',errorField,
 		{	colModel:[
 				{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_GlAccNo.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_GlAccNo.ontabbing = false;
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				},	
 		},{
 			title:"Select Gl Account No",
 			open: function(){
-				dialog_GlAccNo.urlParam.filterCol=['recstatus'],
-				dialog_GlAccNo.urlParam.filterVal=['A']
+				dialog_GlAccNo.urlParam.filterCol=['compcode','recstatus'],
+				dialog_GlAccNo.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam'
+		},'urlParam', 'tab'
 	);
-	dialog_GlAccNo.makedialog();
+	dialog_GlAccNo.makedialog(true);
 
 	var mycurrency =new currencymode(['#TermDisp', '#TermNonDisp', '#TermOthers', '#si_purqty', '#si_unitprice', '#si_perdiscount', '#si_amtdisc', '#si_perslstax', '#si_amtslstax', '#sb_bonqty']);
 
