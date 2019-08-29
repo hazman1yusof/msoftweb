@@ -871,7 +871,7 @@
 			url:'/util/get_table_default',
 			field:'',
 			fixPost:'true',
-			table_name:['material.authdtl AS d'],
+			table_name:['material.authdtl AS dtl'],
 			table_id:'d_lineno_',
 			filterCol:['compcode','authorid'],
 			filterVal:['session.compcode','']
@@ -893,29 +893,29 @@
 		datatype: "local",
 		 colModel: [
 			 	//{ label: 'compcode', name: 'd_compcode', width: 20, classes: 'wrap', hidden:true},
-			//	{ label: 'source', name: 'd_source', width: 20, classes: 'wrap', hidden:true, editable:true},
-				{ label: 'idno', name: 'd_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
-				{ label: 'Trantype', name: 'd_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
+				{ label: 'dtl_authorid', name: 'dtl_authorid', width: 20, classes: 'wrap', hidden:true},
+				{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
+				{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
                          edittype: "select",
                          editoptions: {
                              value: "PR:Purchase Request;PO:Purchase Order"
                          }
 				},
-				{ label: 'Deptcode', name: 'd_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
+				{ label: 'Deptcode', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					edittype:'custom',	editoptions:
 						{ custom_element:deptcodedtlCustomEdit,
 						custom_value:galGridCustomValue },
 				},
-				{ label: 'Record Status', name: 'd_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
+				{ label: 'Record Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
                          edittype: "select",
                          editoptions: {
                              value: "Request:Request;Support:Support;Verify:Verify;Approve:Approve"
                          }
 				},
-				{ label: 'CanDo', name: 'd_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
+				{ label: 'CanDo', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
 					 editable: true,
                          edittype: "select",
                          editoptions: {
@@ -923,10 +923,10 @@
                          }
 				},
 			
-				{ label: 'Min Limit', name: 'd_minlimit', width: 200, classes: 'wrap', editable: true,
+				{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap', editable: true,
 					edittype:"text",
 				},
-				{ label: 'Max Limit', name: 'd_maxlimit', width: 200, classes: 'wrap', editable: true,
+				{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap', editable: true,
 					edittype:"text",
 				},
 		],
@@ -943,6 +943,8 @@
 		onPaging: function(pgButton){
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
+			$('#d_idno').val(selrowData('#gridAuthdtl').dtl_idno);
+			$('#d_authorid').val(selrowData('#gridAuthdtl').dtl_authorid);
 			$("#jqGridPager3 td[title='Edit Selected Row']").click();
 		},
 		gridComplete: function(){
@@ -950,7 +952,7 @@
 				$("#gridAuthdtl").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 
-			$('#'+$("#gridAuthdtl").jqGrid ('getGridParam', 'selrow')).focus();
+			$('#gridAuthdtl #'+$("#gridAuthdtl").jqGrid ('getGridParam', 'selrow')).focus();
 
 			/////////////////////////////// reccount ////////////////////////////
 			

@@ -195,11 +195,12 @@ i.fa {
 			
 				{{ csrf_field() }}
 				<input type="hidden" id="d_idno" name="idno">
+				<input type="hidden" id="d_authorid" name="authorid">
             
             	<div class="form-group">
 				 	<label class="col-md-2 control-label" for="d_authorid">User ID</label>  
 				  		<div class="col-md-2">
-				  			<input id="d_authorid" name="authorid" type="text" maxlength="12" class="form-control input-sm" rdonly>
+				  			<input name="dtl_authorid" type="text" maxlength="12" class="form-control input-sm" rdonly>
 				  		</div>
 
 				  	<label class="col-md-2 control-label" for="d_deptcode">Dept Code</label>  
