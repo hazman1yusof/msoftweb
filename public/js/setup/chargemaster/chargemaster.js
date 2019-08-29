@@ -338,47 +338,6 @@
 			/*}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
 		        fixPositionsOfFrozenDivs.call(this);*/
 		});
-		/*fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);*/
-
-		/*$("#jqGrid2").jqGrid('bindKeys');
-		var updwnkey_fld;
-		function updwnkey_func(event){
-			var optid = event.currentTarget.id;
-			var fieldname = optid.substring(optid.search("_"));
-			updwnkey_fld = fieldname;
-		}
-
-		$("#jqGrid2").keydown(function(e) {
-			switch (e.which) {
-			case 40: // down
-				var $grid = $(this);
-				var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-				$("#"+selectedRowId+updwnkey_fld).focus();
-
-				e.preventDefault();
-				break;
-
-			case 38: // up
-				var $grid = $(this);
-				var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-				$("#"+selectedRowId+updwnkey_fld).focus();
-
-				e.preventDefault();
-				break;
-
-			default:
-				return;
-			}
-		});
-
-		$("#jqGrid2").jqGrid('setGroupHeaders', {
-		useColSpanStyle: false, 
-			groupHeaders:[
-			{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
-			{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
-			]
-		})
-		*/
 
 		/////////////////////////start grid pager/////////////////////////////////////////////////////////
 
