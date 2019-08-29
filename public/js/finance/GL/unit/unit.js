@@ -161,30 +161,7 @@ $(document).ready(function () {
 
 	});
 
-	/*////////////////////formatter status////////////////////////////////////////
-	function formatterstatus(cellvalue, option, rowObject) {
-		if (cellvalue == 'A') {
-			return 'Active';
-		}
-
-		if (cellvalue == 'D') {
-			return 'Deactive';
-		}
-
-	}
-
-	////////////////////unformatter status////////////////////////////////////////
-	function unformat(cellvalue, option, rowObject) {
-		if (cellvalue == 'Active') {
-			return 'Active';
-		}
-
-		if (cellvalue == 'Deactive') {
-			return 'Deactive';
-		}
-
-	}
-*/
+	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -241,14 +218,32 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Region Code',name:'regioncode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				]
+			],
+				urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#recstatus').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_regioncode.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_regioncode.ontabbing = false;
+						$('#recstatus').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 		},{
 			title:"Select Region Code",
 			open: function(){
 				dialog_regioncode.urlParam.filterCol=['recstatus'],
 				dialog_regioncode.urlParam.filterVal=['A']
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
 	dialog_regioncode.makedialog();
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////

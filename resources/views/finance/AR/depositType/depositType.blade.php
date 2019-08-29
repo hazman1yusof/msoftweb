@@ -34,7 +34,7 @@
 				  <label class="col-md-2 control-label" for="depccode">Deposit Cost</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="depccode" name="depccode" type="text" maxlength="3" class="form-control input-sm" data-validation="required">
+						<input id="depccode" name="depccode" type="text" maxlength="10" class="form-control input-sm" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>

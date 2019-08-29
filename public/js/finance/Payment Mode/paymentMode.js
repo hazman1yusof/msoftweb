@@ -33,48 +33,101 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#glaccno').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_costcode.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_costcode.ontabbing = false;
+						$('#glaccno').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
+
 		},{
 			title:"Select Cost Code",
 			open: function(){
-				dialog_costcode.urlParam.filterCol=['recstatus'],
-				dialog_costcode.urlParam.filterVal=['A']
+				dialog_costcode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_costcode.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam'
+		},'urlParam', 'tab'
 	);
-	dialog_costcode.makedialog();
+	dialog_costcode.makedialog(true);
 
 	var dialog_glaccount = new ordialog(
 		'glaccno','finance.glmasref','#glaccno',errorField,
 		{	colModel:[
 				{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#drpayment').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_glaccount.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_glaccount.ontabbing = false;
+						$('#drpayment').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 		},{
 			title:"Select GL Account",
 			open: function(){
-				dialog_glaccount.urlParam.filterCol=['recstatus'],
-				dialog_glaccount.urlParam.filterVal=['A']
+				dialog_glaccount.urlParam.filterCol=['compcode','recstatus'],
+				dialog_glaccount.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam'
+		},'urlParam', 'tab'
 	);
-	dialog_glaccount.makedialog();
+	dialog_glaccount.makedialog(true);
 
 	var dialog_cardbank = new ordialog(
 		'cardcent','finance.bank','#cardcent',errorField,
 		{	colModel:[
 				{label:'Code',name:'code',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_cardbank.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_cardbank.ontabbing = false;
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 		},{
 			title:"Select Bank",
 			open: function(){
-				dialog_cardbank.urlParam.filterCol=['recstatus'],
-				dialog_cardbank.urlParam.filterVal=['A']
+				dialog_cardbank.urlParam.filterCol=['compcode','recstatus'],
+				dialog_cardbank.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam'
+		},'urlParam', 'tab'
 	);
-	dialog_cardbank.makedialog();
+	dialog_cardbank.makedialog(true);
 	
 	//// to hide bank/card handler////
 

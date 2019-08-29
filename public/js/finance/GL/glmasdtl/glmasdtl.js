@@ -18,12 +18,30 @@
 				{	colModel:[
 						{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						]
+					],
+					urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#year').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_dept.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_dept.ontabbing = false;
+						$('#year').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 				},{
 					title:"Select GL Account",
 					open: function(){
-						dialog_dept.urlParam.filterCol=['recstatus'],
-						dialog_dept.urlParam.filterVal=['A']
+						dialog_dept.urlParam.filterCol=['compcode','recstatus'],
+						dialog_dept.urlParam.filterVal=['session.compcode','A']
 					}
 				},'urlParam','radio','tab'
 			);

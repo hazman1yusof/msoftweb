@@ -33,16 +33,34 @@
 				{	colModel:[
 						{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					]
+					],
+					urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#depglacc').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_depccode.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_depccode.ontabbing = false;
+						$('#depglacc').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 				},{
 					title:"Select Deposit Cost",
 					open: function(){
-						dialog_depccode.urlParam.filterCol=['recstatus'],
-						dialog_depccode.urlParam.filterVal=['A']
+						dialog_depccode.urlParam.filterCol=['compcode','recstatus'],
+						dialog_depccode.urlParam.filterVal=['session.compcode','A']
 					}
-				},'urlParam'
+				},'urlParam','tab'
 			);
-			dialog_depccode.makedialog();
+			dialog_depccode.makedialog(true);
 
 
 			var dialog_depglacc = new ordialog(
@@ -50,16 +68,34 @@
 				{	colModel:[
 						{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					]
+					],
+					urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#updpayername').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_depglacc.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_depglacc.ontabbing = false;
+						$('#updpayername').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 				},{
 					title:"Select Deposit GL Account",
 					open: function(){
-						dialog_depglacc.urlParam.filterCol=['recstatus'],
-						dialog_depglacc.urlParam.filterVal=['A']
+						dialog_depglacc.urlParam.filterCol=['compcode','recstatus'],
+						dialog_depglacc.urlParam.filterVal=['session.compcode','A']
 					}
-				},'urlParam'
+				},'urlParam', 'tab'
 			);
-			dialog_depglacc.makedialog();
+			dialog_depglacc.makedialog(true);
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{

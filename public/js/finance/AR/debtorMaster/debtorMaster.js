@@ -39,20 +39,36 @@
 						{label:'depccode',name:'depccode',hidden:true},
 						{label:'depglacc',name:'depglacc',hidden:true},
 					],
+					urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
 					ondblClickRow: function(){
 						var dataobj = selrowData('#'+dialog_debtortype.gridname);
 						$('#actdebccode').val(dataobj['actdebccode']);
 						$('#actdebglacc').val(dataobj['actdebglacc']);
 						$('#depccode').val(dataobj['depccode']);
 						$('#depglacc').val(dataobj['depglacc']);
+						$('#name').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_debtortype.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							dialog_debtortype.ontabbing = false;
+							$('#name').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
 				},{
 					title:"Select Financial Class",
 					open: function(){
-						dialog_debtortype.urlParam.filterCol=['recstatus'],
-						dialog_debtortype.urlParam.filterVal=['A']
+						dialog_debtortype.urlParam.filterCol=['compcode','recstatus'],
+						dialog_debtortype.urlParam.filterVal=['session.compcode','A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_debtortype.makedialog();
 
@@ -61,14 +77,33 @@
 				{	colModel:[
 						{label:'Code',name:'billtype',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					]
+					],
+					urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#billtypeop').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_billtype.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_billtype.ontabbing = false;
+						$('#billtypeop').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
+
 				},{
 					title:"Select Bill Type IP",
 					open: function(){
-						dialog_billtype.urlParam.filterCol=['recstatus'],
-						dialog_billtype.urlParam.filterVal=['A']
+						dialog_billtype.urlParam.filterCol=['compcode','recstatus'],
+						dialog_billtype.urlParam.filterVal=['session.compcode','A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_billtype.makedialog();
 
@@ -77,14 +112,32 @@
 				{	colModel:[
 						{label:'Code',name:'billtype',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					]
+					],
+					urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#coverageip').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_billtypeop.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_billtypeop.ontabbing = false;
+						$('#coverageip').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 				},{
 					title:"Select Bill Type OP",
 					open: function(){
-						dialog_billtypeop.urlParam.filterCol=['recstatus'],
-						dialog_billtypeop.urlParam.filterVal=['A']
+						dialog_billtypeop.urlParam.filterCol=['compcode','recstatus'],
+						dialog_billtypeop.urlParam.filterVal=['session.compcode','A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_billtypeop.makedialog();
 

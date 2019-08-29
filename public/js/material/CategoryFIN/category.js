@@ -173,25 +173,6 @@ $(document).ready(function () {
 		
 	});
 
-	/*////////////////////////////formatter//////////////////////////////////////////////////////////
-	function formatter(cellvalue, options, rowObject){
-		if(cellvalue == 'A'){
-			return "Active";
-		}
-		if(cellvalue == 'D') { 
-			return "Deactive";
-		}
-	}
-
-	function  unformat(cellvalue, options){
-		if(cellvalue == 'Active'){
-			return "Active";
-		}
-		if(cellvalue == 'Deactive') { 
-			return "Deactive";
-		}
-	}
-*/
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,
@@ -258,23 +239,39 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-				],
-			ondblClickRow:function(){
-				let data=selrowData('#'+dialog_expacct.gridname);
-				$("#stockacct").val(data['glaccno']);
-				$("#cosacct").val(data['glaccno']);
-				$("#adjacct").val(data['glaccno']);
-				$("#woffacct").val(data['glaccno']);
-				$("#loanacct").val(data['glaccno']);
-			}	
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					let data=selrowData('#'+dialog_expacct.gridname);
+					$("#stockacct").val(data['glaccno']);
+					$("#cosacct").val(data['glaccno']);
+					$("#adjacct").val(data['glaccno']);
+					$("#woffacct").val(data['glaccno']);
+					$("#loanacct").val(data['glaccno']);
+					$('#povalidate').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_expacct.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_expacct.ontabbing = false;
+						$('#povalidate').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 		},{
 			title:"Select Account Code",
 			open: function(){
-				dialog_expacct.urlParam.filterCol=['recstatus'],
-				dialog_expacct.urlParam.filterVal=['A']
+				dialog_expacct.urlParam.filterCol=['compcode','recstatus'],
+				dialog_expacct.urlParam.filterVal=['session.compcode','A']
 				
 			}
-		},'urlParam'
+		},'urlParam', 'tab'
 	);
-	dialog_expacct.makedialog();
+	dialog_expacct.makedialog(true);
 });
