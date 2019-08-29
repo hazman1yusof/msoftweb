@@ -428,7 +428,6 @@
 				})
 	        },
 	        aftersavefunc: function (rowid, response, options) {
-	        	//$('#apacthdr_outamount').val(response.responseText);
 	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
 	        	refreshGrid('#jqGrid2',urlParam2,'add');
 		    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
@@ -447,7 +446,6 @@
 					$.param({
 						action: 'authorizationDetail_save',
 						idno:$('#idno').val(),
-						/*amount:data.amount,*/
 					});
 				$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
 	        },
