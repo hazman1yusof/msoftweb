@@ -60,6 +60,7 @@
 							enableForm('#formdata');
 							rdonly('#formdata');
 							frozeOnEdit("#dialogForm");
+							recstatusDisable();
 							break;
 						case state = 'view':
 							disableForm('#formdata');
