@@ -394,6 +394,10 @@
 					{ label: 'Group Code', name: 'grpcode', width: 200, classes: 'pointer',  canSearch: true, or_search: true },
 					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
 				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
 				ondblClickRow: function () {
 					let data = selrowData('#' + show_chggroup.gridname).grpcode;
 
@@ -403,9 +407,12 @@
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && show_chggroup.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
+						show_chggroup.ontabbing = false;
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
 					}
 				}
 			},{

@@ -345,10 +345,6 @@ legend.scheduler-border {
 			<div class="panel-heading">Charge Price Detail</div>
 			<div class="panel-body">
 				<form id='formdata2' class='form-vertical' style='width:99%'>
-					<!-- <input id="gstpercent" name="gstpercent" type="hidden">
-					<input id="convfactoruomcodetrdept" name="convfactoruomcodetrdept" type="hidden" value='1'>
-					<input id="convfactoruomcoderecv" name="convfactoruomcoderecv" type="hidden" value='1'> -->
-
 					<div id="jqGrid2_c" class='col-md-12'>
 						<table id="jqGrid2" class="table table-striped"></table>
 						<div id="jqGridPager2"></div>
