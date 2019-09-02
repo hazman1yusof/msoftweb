@@ -652,13 +652,16 @@
 					filterCol:['compcode','recstatus'],
 					filterVal:['session.compcode','A']
 				},
+				ondblClickRow: function () {
+					$('#recstatus').focus();
+				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
 					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_invcategory.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
 						dialog_invcategory.ontabbing = false;
-						// $('#regtype').focus();
+						$('#recstatus').focus();
 					}else if($(gridname).jqGrid('getDataIDs').length == 0){
 						$('#'+obj.dialogname).dialog('close');
 					}
