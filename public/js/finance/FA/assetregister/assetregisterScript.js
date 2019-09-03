@@ -188,6 +188,10 @@
 				{label:'trandate',name:'dohd_trandate',width:100,classes:'pointer',hidden:false},
 				{label:'ap_actdate',name:'ap_actdate',width:100,classes:'pointer',hidden:false},
 			],
+			urlParam: {
+				filterCol:['dohd.compcode','dohd.invoiceno','dohd.suppcode'],
+				filterVal:['session.compcode','<>.NULL', $("#suppcode").val()]
+			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_delordno.gridname);
 				$('#delorddate').val(data['dohd_deliverydate']);		
@@ -199,10 +203,13 @@
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_delordno.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					dialog_delordno.ontabbing = false;
 					$('#itemcode').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
 				}
 			}
 		},
@@ -231,8 +238,26 @@
 		{	colModel:[
 			    {label:'invno',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
-			]
-		},{
+			],
+			urlParam: {
+				filterCol:['compcode','source','trantype','suppcode','document','recstatus'],
+				filterVal:['session.compcode','AP','IN', $("#suppcode").val(),$("#invno").val(),'POSTED']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_chgclass.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					dialog_chgclass.ontabbing = false;
+					$('#delorddate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},
+		{
 			title:"Select invno",
 			open: function(){
 				dialog_invno.urlParam.filterCol=['compcode','source','trantype','suppcode','document','recstatus'];
@@ -270,7 +295,7 @@
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#individualtag').focus();
+					$('#uomcode').focus();
 				}
 			}
 		},{
@@ -294,9 +319,12 @@
 				{label:'Itemcode',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'uomcode',name:'uomcode',width:100,classes:'pointer',hidden:true},
-				{label:'currprice',name:'currprice',width:100,classes:'pointer',hidden:true},
-				
+				{label:'currprice',name:'currprice',width:100,classes:'pointer',hidden:true},			
 			],
+			urlParam: {
+				filterCol:['dodt.compcode','dodt.recno'],
+				filterVal:['session.compcode',selrowData('#'+dialog_delordno.gridname).dohd_recno]
+			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode_direct.gridname);
 				$('#uomcode').val(data['uomcode']);
@@ -306,10 +334,13 @@
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_itemcode_direct.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#individualtag').focus();
+					dialog_itemcode_direct.ontabbing = false;
+					$('#uomcode').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
 				}
 			}
 		},{
@@ -324,9 +355,25 @@
 		'uomcode','material.product','#uomcode',errorField,
 		{	colModel:[
 				{label:'UOM Code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				
-			]
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},		
+			],
+			urlParam: {
+				filterCol:['compcode','itemcode'],
+				filterVal:['session.compcode',$("#itemcode").val()]
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_chgclass.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					dialog_chgclass.ontabbing = false;
+					$('#purordno').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select uomcode",
 			open: function(){

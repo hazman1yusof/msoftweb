@@ -99,7 +99,7 @@
 					  					<span class="help-block"></span>
 				 		 		</div>
                   
-                  			<label class="col-md-2 control-label" for="pouom">PO OUM</label>  
+                  			<label class="col-md-2 control-label" for="pouom">PO UOM</label>  
 				  				<div class="col-md-3">
 					  				<div class='input-group'>
 										<input id="pouom" name="pouom" type="text" class="form-control input-sm" rdonly>

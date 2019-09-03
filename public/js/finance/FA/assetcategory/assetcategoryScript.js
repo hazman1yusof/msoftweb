@@ -326,7 +326,24 @@ $.jgrid.defaults.responsive = true;
 				{	colModel:[
 						{label:'Asset Type',name:'assettype',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},						
-						]
+					],
+					urlParam: {
+						filterCol:['recstatus'],
+						filterVal:['A']
+					},
+					ondblClickRow: function () {
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_assettype.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							dialog_assettype.ontabbing = false;
+							$('#deptcode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select Asset Type",
 					open: function(){

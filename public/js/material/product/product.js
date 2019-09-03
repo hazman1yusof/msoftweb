@@ -40,13 +40,28 @@ $(document).ready(function () {
 				{label:'groupcode',name:'groupcode',hidden:true},
 				{label:'productcat',name:'productcat',hidden:true}
 			],
+			urlParam: {
+				filterCol:['groupcode', 'Class','recstatus','compcode'],
+				filterVal:[gc2, Class2,'A','session.compcode']
+			},
 			ondblClickRow:function(){
 				data = selrowData('#'+dialog_itemcode.gridname);
 				productcat=data.productcat;
 				groupcode=data.groupcode;
 				description=data.description;
 				Class=data.Class;
-			}	
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_itemcode.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					dialog_itemcode.ontabbing = false;
+					$('#uomcode').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Item Code",
 			open: function(){
@@ -67,7 +82,21 @@ $(document).ready(function () {
 				{label:'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
+			urlParam: {
+				filterCol:['recstatus','compcode'],
+				filterVal:['A','session.compcode']
+			},
 			ondblClickRow:function(){
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_uomcode.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					dialog_uomcode.ontabbing = false;
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
+				}
 			}	
 		},{
 			title:"Select UOM Code",
@@ -79,6 +108,38 @@ $(document).ready(function () {
 	);
 	dialog_uomcode.makedialog();
 
+	var dialog_subcategory = new ordialog(
+		'subcatcode','material.subcategory','#subcatcode',errorField,
+		{	colModel:[
+				{label:'Dept Code',name:'subcatcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode'],
+				filterVal:['A','session.compcode']
+			},
+			ondblClickRow:function(){
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_subcategory.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					dialog_subcategory.ontabbing = false;
+					$('#pouom').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}		
+		},{
+			title:"Select Sub Category",
+			open: function(){
+				dialog_subcategory.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_subcategory.urlParam.filterVal = [ 'A','session.compcode'];	
+			}
+		},'urlParam','radio','notab',false
+	);
+	dialog_subcategory.makedialog();
 
 	var dialog_pouom = new ordialog(
 		'pouom','material.uom','#pouom',errorField,
@@ -86,8 +147,23 @@ $(document).ready(function () {
 				{label:'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
+			urlParam: {
+				filterCol:['recstatus','compcode'],
+				filterVal:['A','session.compcode']
+			},
 			ondblClickRow:function(){
-			}	
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_pouom.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					dialog_pouom.ontabbing = false;
+					$('#suppcode').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}		
 		},{
 			title:"Select PO UOM",
 			open: function(){
@@ -104,8 +180,23 @@ $(document).ready(function () {
 				{label:'Supplier Code',name:'SuppCode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
+			urlParam: {
+				filterCol:['recstatus','compcode'],
+				filterVal:['A','session.compcode']
+			},
 			ondblClickRow:function(){
-			}	
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_suppcode.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					dialog_suppcode.ontabbing = false;
+					$('#mstore').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Supplier Code",
 			open: function(){
@@ -122,8 +213,23 @@ $(document).ready(function () {
 				{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
+			urlParam: {
+				filterCol:['mainstore','recstatus','compcode','sector'],
+				filterVal:['1','A','session.compcode','session.unit']
+			},
 			ondblClickRow:function(){
-			}	
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_mstore.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					dialog_mstore.ontabbing = false;
+					$('#TaxCode').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Main Store",
 			open: function(){
@@ -134,32 +240,29 @@ $(document).ready(function () {
 	);
 	dialog_mstore.makedialog();
 
-	var dialog_subcategory = new ordialog(
-		'subcatcode','material.subcategory','#subcatcode',errorField,
-		{	colModel:[
-				{label:'Dept Code',name:'subcatcode',width:100,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-			],
-			ondblClickRow:function(){
-			}	
-		},{
-			title:"Select Sub Category",
-			open: function(){
-				dialog_subcategory.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_subcategory.urlParam.filterVal = [ 'A','session.compcode'];	
-			}
-		},'urlParam','radio','notab',false
-	);
-	dialog_subcategory.makedialog();
-
 	var dialog_taxCode = new ordialog(
 		'TaxCode','hisdb.taxmast','#TaxCode',errorField,
 		{	colModel:[
 				{label:'Tax Code',name:'taxcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
+			urlParam: {
+				filterCol:['recstatus','taxtype','compcode'],
+				filterVal:['A','Input','session.compcode']
+			},
 			ondblClickRow:function(){
-			}	
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_taxCode.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					dialog_taxCode.ontabbing = false;
+					$('#recstatus').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Tax Code",
 			open: function(){
