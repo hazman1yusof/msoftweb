@@ -54,12 +54,11 @@
 		},
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_assetcode.ontabbing){
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 				$(gridname+' tr#1').click();
 				$(gridname+' tr#1').dblclick();
-				dialog_assetcode.ontabbing = false;
 				$('#deptcode').focus();
-			}else if($(gridname).jqGrid('getDataIDs').length == 0){
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 				$('#'+obj.dialogname).dialog('close');
 			}
 		}
@@ -85,12 +84,11 @@
 		},
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_deptcode.ontabbing){
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 				$(gridname+' tr#1').click();
 				$(gridname+' tr#1').dblclick();
-				dialog_deptcode.ontabbing = false;
 				$('#loccode').focus();
-			}else if($(gridname).jqGrid('getDataIDs').length == 0){
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 				$('#'+obj.dialogname).dialog('close');
 			}
 		}
@@ -157,12 +155,11 @@
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_suppcode.ontabbing){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					dialog_suppcode.ontabbing = false;
 					$('#delordno').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
@@ -203,12 +200,11 @@
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_delordno.ontabbing){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					dialog_delordno.ontabbing = false;
 					$('#itemcode').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
@@ -247,12 +243,11 @@
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_chgclass.ontabbing){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					dialog_chgclass.ontabbing = false;
 					$('#delorddate').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
@@ -296,10 +291,12 @@
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					$('#uomcode').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
 				}
 			}
 		},{
@@ -338,12 +335,11 @@
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_itemcode_direct.ontabbing){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					dialog_itemcode_direct.ontabbing = false;
 					$('#uomcode').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
@@ -369,12 +365,11 @@
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_chgclass.ontabbing){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					dialog_chgclass.ontabbing = false;
 					$('#purordno').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0){
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}

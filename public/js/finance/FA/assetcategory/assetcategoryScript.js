@@ -335,12 +335,11 @@ $.jgrid.defaults.responsive = true;
 					},
 					gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_assettype.ontabbing){
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							dialog_assettype.ontabbing = false;
 							$('#deptcode').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}
 					}
@@ -360,7 +359,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Cost Code',name:'costcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#tagnextno').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Department",
 					open: function(){
@@ -377,7 +392,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#glasset').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Asset",
 					open: function(){
@@ -394,7 +425,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#gldepccode').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Asset",
 					open: function(){
@@ -411,7 +458,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#gldep').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Depreciation Code",
 					open: function(){
@@ -429,7 +492,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#glprovccode').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Depreciation Code",
 					open: function(){
@@ -448,7 +527,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#glprovdep').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Provision for Depr",
 					open: function(){
@@ -466,7 +561,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#glglossccode').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Provision for Depr",
 					open: function(){
@@ -484,7 +595,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#glgainloss').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Gain ",
 					open: function(){
@@ -502,7 +629,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#glrevccode').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Gain ",
 					open: function(){
@@ -512,9 +655,7 @@ $.jgrid.defaults.responsive = true;
 				},'urlParam'
 			);
 			dialog_glgainloss.makedialog();
-
 			// dialog_glgainloss=new makeDialog('finance.glmasref','#glgainloss',['glaccno','description'], 'Gain');
-
 
 			var dialog_glrevccode = new ordialog(
 				'glrevccode','finance.costcenter','#glrevccode',errorField,
@@ -522,7 +663,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Costcode',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#glrevaluation').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Loss",
 					open: function(){
@@ -541,7 +698,23 @@ $.jgrid.defaults.responsive = true;
 						{label:'Glaccno',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Compcode',name:'compcode',width:400,hidden:true},
-						]
+						],
+						urlParam: {
+							filterCol:['recstatus'],
+							filterVal:['A']
+						},
+						ondblClickRow:function(){
+						},
+						gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#glprovccode').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
 				},{
 					title:"Select Loss",
 					open: function(){
@@ -551,8 +724,6 @@ $.jgrid.defaults.responsive = true;
 				},'urlParam'
 			);
 			dialog_glrevaluation.makedialog();
-		
-		
 			// dialog_glrevaluation=new makeDialog('finance.glmasref','#glrevaluation',['glaccno','description'], 'Loss');
 
 		});
