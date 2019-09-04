@@ -558,6 +558,10 @@
 					{ label: 'Group Code', name: 'grpcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
 				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
 				ondblClickRow: function () {
 					let data = selrowData('#' + chggroup.gridname).grpcode;
 					$("#searchForm input[name='Stext']").val($('#chggroup').val());
@@ -588,6 +592,10 @@
 					{ label: 'Charge Type', name: 'chgtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true,  or_search: true },
 				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
 				ondblClickRow: function () {
 					let data = selrowData('#' + chgtype.gridname).chgtype;
 					$("#searchForm input[name='Stext']").val($('#chgtype').val());
