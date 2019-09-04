@@ -292,8 +292,8 @@
 			var dialog_glaccount = new ordialog(
 				'actdebglacc','finance.glmasref','#actdebglacc',errorField,
 				{	colModel:[
-						{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					],
 					urlParam: {
 					filterCol:['compcode','recstatus'],
