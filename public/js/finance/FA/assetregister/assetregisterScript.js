@@ -280,6 +280,10 @@
 				{label:'dodt_srcdocno',name:'dodt_srcdocno',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_lineno_',name:'dodt_lineno_',width:100,classes:'pointer',hidden:true},				
 			],
+			urlParam: {
+				filterCol:['dodt.compcode','dodt.recno'],
+				filterVal:['session.compcode','']
+			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
 				$('#uomcode').val(data['dodt_uomcode']);
@@ -950,20 +954,23 @@
 		var search_assetcode= new ordialog(
 			'search_assetcode','finance.facode','#search_assetcode',errorField,
 			{	colModel:[
-				  {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
 					{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
 					{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
-			],
-			ondblClickRow:function(){
-				let data=selrowData('#'+search_assetcode.gridname);
-				
-				urlParam.searchCol=["assetcode"];
-				urlParam.searchVal=[data.assetcode];
-				refreshGrid('#jqGrid', urlParam);
-			}
-		},
+				],
+				urlParam: {
+					filterCol:['compcode',"assetcode"],
+					filterVal:['session.compcode','']
+				},
+				ondblClickRow:function(){
+					let data=selrowData('#'+search_assetcode.gridname);
+					urlParam.searchCol=["assetcode"];
+					urlParam.searchVal=[data.assetcode];
+					refreshGrid('#jqGrid', urlParam);
+				}
+			},
 			{
 				title:"Select Category",
 				open: function(){

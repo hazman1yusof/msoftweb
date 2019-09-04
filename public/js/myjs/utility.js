@@ -105,7 +105,7 @@ function refreshGrid(grid,urlParam,oper){
 	}else if(oper == 'kosongkan'){
 		$(grid).jqGrid('setGridParam',{datatype:'local'}).trigger('reloadGrid');
 	}else{
-		$(grid).jqGrid('setGridParam',{datatype:'json',url:urlParam.url+'?'+$.param(urlParam)}).trigger('reloadGrid');
+		$(grid).jqGrid('setGridParam',{datatype:'json',url:urlParam.url+'?'+$.param(urlParam)}).trigger('reloadGrid',[{page:1}]);
 	}
 }
 
@@ -714,7 +714,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		table_name:table,
 		field:getfield(jqgrid_.colModel),
 		table_id:getfield(jqgrid_.colModel)[0],
-		filterCol:jqgrid_.filterCol,filterVal:jqgrid_.filterVal,
+		filterCol:jqgrid_.urlParam.filterCol,filterVal:jqgrid_.urlParam.filterVal,
 		searchCol2:null,searchCol2:null,searchCol:null,searchCol:null
 	};
 	this.needTab=needTab;

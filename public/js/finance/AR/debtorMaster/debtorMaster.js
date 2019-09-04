@@ -40,9 +40,9 @@
 						{label:'depglacc',name:'depglacc',hidden:true},
 					],
 					urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-				},
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 					ondblClickRow: function(){
 						var dataobj = selrowData('#'+dialog_debtortype.gridname);
 						$('#actdebccode').val(dataobj['actdebccode']);
@@ -79,9 +79,9 @@
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					],
 					urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-				},
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 				ondblClickRow: function () {
 					$('#billtypeop').focus();
 				},
@@ -114,9 +114,9 @@
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					],
 					urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-				},
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 				ondblClickRow: function () {
 					$('#coverageip').focus();
 				},
@@ -171,6 +171,7 @@
 					toggleFormData('#jqGrid','#formdata',oper);
 					switch(oper) {
 						case state = 'add':
+							dialog_debtortype.on();
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
 							rdonly("#formdata");
@@ -192,7 +193,6 @@
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-						dialog_debtortype.on();
 						dialog_billtype.on();
 						dialog_billtypeop.on();
 					}

@@ -612,7 +612,7 @@
 			'cm_chgclass','hisdb.chgclass','#cm_chgclass',errorField,
 			{	colModel:[
 					{label:'Class Code',name:'classcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true},
+					{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
