@@ -310,24 +310,6 @@ $(document).ready(function () {
 		
 	});
 
-	/*////////////////////////////formatter//////////////////////////////////////////////////////////
-	function formatter(cellvalue, options, rowObject){
-		if(cellvalue == 'A'){
-			return "Active";
-		}
-		if(cellvalue == 'D') { 
-			return "Deactive";
-		}
-	}
-
-	function  unformat(cellvalue, options){
-		if(cellvalue == 'Active'){
-			return "Active";
-		}
-		if(cellvalue == 'Deactive') { 
-			return "Deactive";
-		}
-	}*/
 
 	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -403,39 +385,94 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Code',name:'pricecode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#si_itemcode').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_pricecode.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_pricecode.ontabbing = false;
+						$('#si_itemcode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 		},{
 			title:"Select Price Code",
 			open: function(){
-				dialog_pricecode.urlParam.filterCol=['recstatus'],
-				dialog_pricecode.urlParam.filterVal=['A']
+				dialog_pricecode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_pricecode.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
-	dialog_pricecode.makedialog();
+	dialog_pricecode.makedialog(true);
 
 	var dialog_itemcode = new ordialog(
 		'si_itemcode','material.product',"#Fsuppitems :input[name='si_itemcode']",errorField,
 		{	colModel:[
 				{label:'Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#si_uomcode').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_itemcode.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_itemcode.ontabbing = false;
+						$('#si_uomcode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 		},{
 			title:"Select Supplier Group",
 			open: function(){
-				dialog_itemcode.urlParam.filterCol=['recstatus'],
-				dialog_itemcode.urlParam.filterVal=['A']
+				dialog_itemcode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_itemcode.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
-	dialog_itemcode.makedialog();
+	dialog_itemcode.makedialog(true);
 
 	var dialog_uomcode = new ordialog(
 		'si_uomcode','material.uom',"#Fsuppitems :input[name='si_uomcode']",errorField,
 		{	colModel:[
 				{label:'Code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+					$('#si_uomcode').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_itemcode.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						dialog_itemcode.ontabbing = false;
+						$('#si_uomcode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
+
 		},{
 			title:"Select UOM Code",
 			open: function(){

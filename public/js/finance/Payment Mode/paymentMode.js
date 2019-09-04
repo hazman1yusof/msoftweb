@@ -59,7 +59,7 @@ $(document).ready(function () {
 				dialog_costcode.urlParam.filterCol=['compcode','recstatus'],
 				dialog_costcode.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam', 'tab'
+		},'urlParam', 'radio','tab'
 	);
 	dialog_costcode.makedialog(true);
 
@@ -93,7 +93,7 @@ $(document).ready(function () {
 				dialog_glaccount.urlParam.filterCol=['compcode','recstatus'],
 				dialog_glaccount.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam', 'tab'
+		},'urlParam','radio', 'tab'
 	);
 	dialog_glaccount.makedialog(true);
 
@@ -125,7 +125,7 @@ $(document).ready(function () {
 				dialog_cardbank.urlParam.filterCol=['compcode','recstatus'],
 				dialog_cardbank.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam', 'tab'
+		},'urlParam', 'radio', 'tab'
 	);
 	dialog_cardbank.makedialog(true);
 	

@@ -271,7 +271,7 @@ $(document).ready(function () {
 				dialog_expacct.urlParam.filterVal=['session.compcode','A']
 				
 			}
-		},'urlParam', 'tab'
+		},'urlParam', 'radio', 'tab'
 	);
 	dialog_expacct.makedialog(true);
 });
