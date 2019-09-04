@@ -110,23 +110,23 @@
 		{	colModel:[
 				{label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-		],urlParam: {
-			filterCol:['compcode'],
-			filterVal:['session.compcode']
-		},
-		sortname:'idno',
-		sortorder:'desc',
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_loccode.ontabbing){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-				dialog_loccode.ontabbing = false;
-				$('#regtype').focus();
-			}else if($(gridname).jqGrid('getDataIDs').length == 0){
-				$('#'+obj.dialogname).dialog('close');
+			],
+			urlParam: {
+				filterCol:['compcode'],
+				filterVal:['session.compcode']
+			},
+			sortname:'idno',
+			sortorder:'desc',
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#regtype').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
 			}
-		}
 		},
 		{
 			title:"Select Location",
@@ -135,7 +135,7 @@
 				dialog_loccode.urlParam.filterVal=['session.compcode'];
 				
 			}
-		},'urlParam','tab'
+		},'urlParam','radio','tab'
 	);
 	dialog_loccode.makedialog();		
 

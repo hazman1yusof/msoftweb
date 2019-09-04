@@ -943,6 +943,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			},
 			close: function( event, ui ){
 				$("#Dtext_"+unique).val('');
+				obj.ontabbing = false;
 				if(obj.dialog_.hasOwnProperty('close'))obj.dialog_.close(event);
 			},
 		});

@@ -35,20 +35,19 @@
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					],
 					urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-				},
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 				ondblClickRow: function () {
 					$('#depglacc').focus();
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_depccode.ontabbing){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						dialog_depccode.ontabbing = false;
 						$('#depglacc').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
 				}
@@ -58,7 +57,7 @@
 						dialog_depccode.urlParam.filterCol=['compcode','recstatus'],
 						dialog_depccode.urlParam.filterVal=['session.compcode','A']
 					}
-				},'urlParam','tab'
+				},'urlParam','radio','tab'
 			);
 			dialog_depccode.makedialog(true);
 
@@ -70,20 +69,19 @@
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					],
 					urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-				},
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 				ondblClickRow: function () {
 					$('#updpayername').focus();
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_depglacc.ontabbing){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						dialog_depglacc.ontabbing = false;
 						$('#updpayername').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
 				}
@@ -93,7 +91,7 @@
 						dialog_depglacc.urlParam.filterCol=['compcode','recstatus'],
 						dialog_depglacc.urlParam.filterVal=['session.compcode','A']
 					}
-				},'urlParam', 'tab'
+				},'urlParam','radio','tab'
 			);
 			dialog_depglacc.makedialog(true);
 

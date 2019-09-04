@@ -53,7 +53,7 @@
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="updpayername">Update Payer Name</label>  
 				  <div class="col-md-2">
-					<label class="radio-inline"><input type="radio" name="updpayername" value='1' data-validation="required" checked>Yes</label>
+					<label class="radio-inline"><input id="updpayername" type="radio" name="updpayername" value='1' data-validation="required" checked>Yes</label>
 					<label class="radio-inline"><input type="radio" name="updpayername" value='0' data-validation="">No</label>
 				  </div>
 				  
