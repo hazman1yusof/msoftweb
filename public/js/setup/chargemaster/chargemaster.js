@@ -287,15 +287,15 @@
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
-				{ label: 'Effective date', name: 'effdate', frozen:true, width: 140, classes: 'wrap', editable:false},
-				{ label: 'Price 1', name: 'amt1', frozen:true, width: 140, classes: 'wrap', editable:false},
-				{ label: 'Price 2', name: 'amt2', frozen:true, width: 140, classes: 'wrap', editable:false},
-				{ label: 'Price 3', name: 'amt3', frozen:true, width: 140, classes: 'wrap', editable:false},
-				{ label: 'Cost Price', name: 'costprice', frozen:true, width: 140, classes: 'wrap', editable:false},
-				{ label: 'Inpatient Tax', name: 'iptax', frozen:true, width: 140, classes: 'wrap', editable:false},
-				{ label: 'Outpatient Tax', name: 'optax', frozen:true, width: 140, classes: 'wrap', editable:false},
-				{ label: 'User ID', name: 'lastuser', frozen:true, width: 160, classes: 'wrap', editable:false},
-				{ label: 'Last Updated', name: 'lastupdate', frozen:true, width: 160, classes: 'wrap', editable:false},
+				{ label: 'Effective date', name: 'effdate', frozen:true, width: 130, classes: 'wrap', editable:false},
+				{ label: 'Price 1', name: 'amt1', frozen:true, width: 120, classes: 'wrap', editable:false},
+				{ label: 'Price 2', name: 'amt2', frozen:true, width: 120, classes: 'wrap', editable:false},
+				{ label: 'Price 3', name: 'amt3', frozen:true, width: 120, classes: 'wrap', editable:false},
+				{ label: 'Cost Price', name: 'costprice', frozen:true, width: 120, classes: 'wrap', editable:false},
+				{ label: 'Inpatient Tax', name: 'iptax', frozen:true, width: 130, classes: 'wrap', editable:false},
+				{ label: 'Outpatient Tax', name: 'optax', frozen:true, width: 130, classes: 'wrap', editable:false},
+				{ label: 'User ID', name: 'lastuser', frozen:true, width: 120, classes: 'wrap', editable:false},
+				{ label: 'Last Updated', name: 'lastupdate', frozen:true, width: 130, classes: 'wrap', editable:false},
 				{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
 
 			],
@@ -487,65 +487,246 @@
 			buttonicon:"",
 			title:"Detail"
 		});
-	
-		////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
+
+		/////////////////////parameter for jqgrid3/////////////////////////////////////////////////////////////////////
+		var urlParam3={
+			action:'get_table_default',
+			url:'/util/get_table_default',
+			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.lastuser','cp.lastupdate', 'cp.chgcode','cm.chgcode'],
+			table_name:['hisdb.chgprice AS cp', 'hisdb.chgmast AS cm'],
+			table_id:'lineno_',
+			join_type:['LEFT JOIN'],
+			join_onCol:['cp.chgcode'],
+			join_onVal:['cm.chgcode'],
+			filterCol:['cp.compcode','cp.chgcode'],
+			filterVal:['session.compcode','']
+		};
+
+		// var saveParam3={
+		// 	action:'save_table_default',
+		// 	url:'chargepriceDetail/form',
+		// 	field:'',
+		// 	oper:oper_chgpricedtl,
+		// 	table_name:['hisdb.chgprice', 'hisdb.chgmast'],
+		// 	table_id:'d_idno',
+		// 	saveip:'true'
+		// };
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$("#jqGrid3").jqGrid({
 			datatype: "local",
-			colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
-			shrinkToFit: false,
+				colModel: [
+					// { label: 'compcode', name: 'd_compcode', width: 20, classes: 'wrap', hidden:true},
+					// { label: 'authorid', name: 'authorid', width: 20, classes: 'wrap', hidden:true},
+					{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true, editable:true},
+					{ label: 'Effective date', name: 'effdate', width: 200, classes: 'wrap', editable: true,
+						edittype:"date",
+					},
+					{ label: 'Price 1', name: 'amt1', width: 200, classes: 'wrap', editable: true,
+						edittype:"text",
+					},
+					{ label: 'Price 2', name: 'amt2', width: 200, classes: 'wrap', editable: true,
+						edittype:"text",
+					},
+					{ label: 'Price 3', name: 'amt3', width: 200, classes: 'wrap', editable: true,
+						edittype:"text",
+					},
+					{ label: 'Cost Price', name: 'costprice', width: 200, classes: 'wrap', editable: true,
+						edittype:"text",
+					},
+					{ label: 'Inpatient Tax', name: 'iptax', width: 200, classes: 'wrap', editable: true,
+						edittype:"text",
+					},
+					{ label: 'Outpatient Tax', name: 'optax', width: 200, classes: 'wrap', editable: true,
+						edittype:"text",
+					},
+					{ label: 'User ID', name: 'lastuser', width: 200, classes: 'wrap', editable: false,
+						edittype:"text",
+					},
+					{ label: 'Last Updated', name: 'lastupdate', width: 200, classes: 'wrap', editable: false,
+						edittype:"text",
+					},
+				],
+			viewrecords: true,
+			//shrinkToFit: true,
 			autowidth:true,
 			multiSort: true,
-			viewrecords: true,
+			loadonce:false,
+			width: 900,
+			height: 200,
 			rowNum: 30,
-			sortname: 'lineno_',
-			sortorder: "desc",
+			hidegrid: false,
 			pager: "#jqGridPager3",
-		}).inlineNav('#jqGridPager3',{	
-			add:true,
-			edit:true,
-			cancel: true,
-			//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-			restoreAfterSelect: false,
-			addParams: { 
-				addRowParams: myEditOptions
+			onPaging: function(pgButton){
 			},
-			editParams: myEditOptions
-		}).jqGrid('navButtonAdd',"#jqGridPager3",{
-			id: "jqGridPager3Delete",
-			caption:"",cursor: "pointer",position: "last", 
-			buttonicon:"glyphicon glyphicon-trash",
-			title:"Delete Selected Row",
-			onClickButton: function(){
-				/*selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
-				if(!selRowId){
-					bootbox.alert('Please select row');
-				}else{
-					bootbox.confirm({
-						message: "Are you sure you want to delete this row?",
-						buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-						},
-						callback: function (result) {
-							if(result == true){
-								param={
-									action: 'inventoryTransactionDetail_save',
-									recno: $('#recno').val(),
-									lineno_: selrowData('#jqGrid2').lineno_,
-
-								}
-								$.post( "/inventoryTransactionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-								}).fail(function(data) {
-									//////////////////errorText(dialog,data.responseText);
-								}).done(function(data){
-									$('#amount').val(data);
-									refreshGrid("#jqGrid2",urlParam2);
-								});
-							}
-						}
-					});
+			ondblClickRow: function(rowid, iRow, iCol, e){
+				$('#cp_idno').val(selrowData('#jqGrid3').cp_idno);
+				// $('#d_authorid').val(selrowData('#gridAuthdtl').dtl_authorid);
+				$("#jqGridPager3 td[title='Edit Selected Row']").click();
+			},
+			gridComplete: function(){
+				if(oper == 'add'){
+					$("#jqGrid3").setSelection($("#jqGrid").getDataIDs()[0]);
+				}
+	
+				$('#jqGrid3 #'+$("#jqGrid3").jqGrid ('getGridParam', 'selrow')).focus();
+	
+				/////////////////////////////// reccount ////////////////////////////
+				
+				if($("#jqGrid3").getGridParam("reccount") >= 1){
+					$("#jqGridPagerglyphicon-trash").hide();
+				} 
+	
+				if($("#jqGrid3").getGridParam("reccount") < 1){
+					$("#jqGridPagerglyphicon-trash").show()
+				}
+			},
+			onSelectRow:function(rowid, selected){
+				/*if(rowid != null) {
+					rowData = $('#gridAuthdtl').jqGrid ('getRowData', rowid);
+					//console.log(rowData.svc_billtype);
+					urlParam_suppbonus.filterVal[0]=selrowData("#gridAuthdtl").si_itemcode; 
+	
+					$("#Fsuppbonus :input[name*='sb_suppcode']").val(selrowData("#gridAuthdtl").si_suppcode);
+					$("#Fsuppbonus :input[name*='sb_pricecode']").val(selrowData("#gridAuthdtl").si_pricecode);
+					$("#Fsuppbonus :input[name*='sb_itemcode']").val(selrowData("#gridAuthdtl").si_itemcode);
+					$("#Fsuppbonus :input[name*='sb_uomcode']").val(selrowData("#gridAuthdtl").si_uomcode);
+					$("#Fsuppbonus :input[name*='sb_purqty']").val(selrowData("#gridAuthdtl").si_purqty);
+					refreshGrid('#gridSuppBonus',urlParam_suppbonus);
+					$("#pg_jqGridPager3 table").show();
 				}*/
-			},
+			},	
 		});
-		jqgrid_label_align_right("#jqGrid3");
+
+		$("#jqGrid3").jqGrid('navGrid','#jqGridPager3',{	
+			view:false,edit:false,add:false,del:false,search:false,
+			beforeRefresh: function(){
+				refreshGrid("#jqGrid3",urlParam3);
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager3",{
+			caption:"", 
+			buttonicon:"glyphicon glyphicon-trash", 
+			id:"jqGridPager3glyphicon-trash",
+			onClickButton: function(){
+				oper_chgpricedtl='del';
+				var selRowId = $("#jqGrid3").jqGrid ('getGridParam', 'selrow');
+				if(!selRowId){
+					alert('Please select row');
+					return emptyFormdata(errorField,'#FAuthdtl');
+				}else{
+					saveFormdata("#jqGrid3","#Authdtl","#FAuthdtl",'del',saveParam3,urlParam3,null,{'idno':selRowId});
+				}
+			}, 
+			position: "first", 
+			title:"Delete Selected Row", 
+			cursor: "pointer"
+		}).jqGrid('navButtonAdd',"#jqGridPager3",{
+			caption:"", 
+			buttonicon:"glyphicon glyphicon-info-sign", 
+			onClickButton: function(){
+				oper_chgpricedtl='view';
+				selRowId = $("#jqGrid3").jqGrid ('getGridParam', 'selrow');
+				populateFormdata("#jqGrid3","#Authdtl","#FAuthdtl",selRowId,'view');
+			}, 
+			position: "first", 
+			title:"View Selected Row", 
+			cursor: "pointer"
+		}).jqGrid('navButtonAdd',"#jqGridPager3",{
+			caption:"", 
+			buttonicon:"glyphicon glyphicon-edit", 
+			onClickButton: function(){
+				oper_chgpricedtl='edit';
+				var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+				if(!selRowId){
+					alert('Please select row');
+					return emptyFormdata(errorField,'#FAuthdtl');
+				}else{
+					selRowId2 = $("#jqGrid3").jqGrid ('getGridParam', 'selrow');
+					populateFormdata("#jqGrid3","#Authdtl","#FAuthdtl",selRowId2,'edit');
+					recstatusDisable();
+				}
+			}, 
+			position: "first", 
+			title:"Edit Selected Row", 
+			cursor: "pointer"
+		}).jqGrid('navButtonAdd',"#jqGridPager3",{
+			caption:"", 
+			buttonicon:"glyphicon glyphicon-plus", 
+			onClickButton: function(){
+				oper_chgpricedtl='add';
+				var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+				if(!selRowId){
+					alert('Please select row');
+					return emptyFormdata(errorField,'#FAuthdtl');
+				}else{
+					$( "#Authdtl" ).dialog( "open" );
+				}
+				//$('#FAuthdtl :input[name=d_lineno_]').hide();
+				//$("#Fsuppitems :input[name*='SuppCode']").val(selrowData('#jqGrid').SuppCode);
+			}, 
+			position: "first", 
+			title:"Add New Row", 
+			cursor: "pointer"
+		});
+	
+		////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
+		// $("#jqGrid3").jqGrid({
+		// 	datatype: "local",
+		// 	colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
+		// 	shrinkToFit: false,
+		// 	autowidth:true,
+		// 	multiSort: true,
+		// 	viewrecords: true,
+		// 	rowNum: 30,
+		// 	sortname: 'lineno_',
+		// 	sortorder: "desc",
+		// 	pager: "#jqGridPager3",
+		// }).inlineNav('#jqGridPager3',{	
+		// 	add:true,
+		// 	edit:true,
+		// 	cancel: true,
+		// 	//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		// 	restoreAfterSelect: false,
+		// 	addParams: { 
+		// 		addRowParams: myEditOptions
+		// 	},
+		// 	editParams: myEditOptions
+		// }).jqGrid('navButtonAdd',"#jqGridPager3",{
+		// 	id: "jqGridPager3Delete",
+		// 	caption:"",cursor: "pointer",position: "last", 
+		// 	buttonicon:"glyphicon glyphicon-trash",
+		// 	title:"Delete Selected Row",
+		// 	onClickButton: function(){
+		// 		/*selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+		// 		if(!selRowId){
+		// 			bootbox.alert('Please select row');
+		// 		}else{
+		// 			bootbox.confirm({
+		// 				message: "Are you sure you want to delete this row?",
+		// 				buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+		// 				},
+		// 				callback: function (result) {
+		// 					if(result == true){
+		// 						param={
+		// 							action: 'inventoryTransactionDetail_save',
+		// 							recno: $('#recno').val(),
+		// 							lineno_: selrowData('#jqGrid2').lineno_,
+
+		// 						}
+		// 						$.post( "/inventoryTransactionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+		// 						}).fail(function(data) {
+		// 							//////////////////errorText(dialog,data.responseText);
+		// 						}).done(function(data){
+		// 							$('#amount').val(data);
+		// 							refreshGrid("#jqGrid2",urlParam2);
+		// 						});
+		// 					}
+		// 				}
+		// 			});
+		// 		}*/
+		// 	},
+		// });
+		// jqgrid_label_align_right("#jqGrid3");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		$('#btn_chggroup').on( "click", function() {
