@@ -2028,8 +2028,20 @@ $(document).ready(function () {
 				{label: 'Unit', name:'s_unit'},
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+					open:function(){
+
+						let data = selrowData('#'+dialog_pricecode.gridname);
+
+						if(data.pricecode == 'MS'){
+							filterCol = ['p.compcode', 'p.groupcode', 'p.unit'];
+							filterVal = ['session.compcode',  '<>.Stock', 'session.unit'];
+						}else{
+							filterCol=['s.compcode','s.itemcode','s.deptcode','s.year'];
+							filterVal=['session.compcode',$("#jqGrid2 input[name='itemcode']").val(),$('#delordhd_deldept').val(),moment($('#delordhd_trandate').val()).year()];
+						}
+
+				// dialog_itemcode_init();
+			},
 					},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
