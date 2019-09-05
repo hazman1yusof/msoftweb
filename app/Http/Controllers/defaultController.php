@@ -64,6 +64,16 @@ abstract class defaultController extends Controller{
         return $temp;
     }
 
+    public function index_of_occurance($val,$array) {
+        $occ_idx = [];
+        foreach($array as $key => $value){
+            if($value == $val){
+                array_push($occ_idx, $key);
+            }
+        }   
+        return $occ_idx;
+    }
+
     public function defaultGetter(Request $request){
 
         //////////make table/////////////
@@ -147,11 +157,23 @@ abstract class defaultController extends Controller{
                 $searchCol_array = $request->searchCol;
             }
 
-            $table = $table->Where(function ($table) use ($request,$searchCol_array) {
-                foreach ($searchCol_array as $key => $value) {
-                    $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
-                }
-            });
+            $count = array_count_values($searchCol_array);
+            // dump($count);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+
+            
 
             
         }

@@ -177,7 +177,7 @@ legend.scheduler-border {
 
 						<label class="control-label col-md-2" for="cm_constype">Consultation Type</label>  
 						<div class="col-md-3">
-							<select class="form-control col-md-4" id='cm_constype' name='cm_constype'>
+							<select class="form-control col-md-4" id='cm_constype' name='cm_constype' data-validation="">
 								<option value='A'>Anaestetics</option>
 								<option value='C'>Consultation</option>
 								<option value='S'>Surgeon</option>

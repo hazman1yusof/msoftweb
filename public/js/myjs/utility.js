@@ -693,6 +693,16 @@ function setactdate(target){
 	}
 }
 
+function text_error1(id){
+	$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+	$( id ).removeClass( "valid" ).addClass( "error" );
+}
+
+function text_success1(id){
+	$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+	$( id ).removeClass( "error" ).addClass( "valid" );
+}
+
 function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam',dcolrType='radio',needTab='notab',required=true){
 	this.unique=unique;
 	this.gridname="othergrid_"+unique;
@@ -1112,6 +1122,14 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 						errorField.push( idtopush );
 					}
 				}
+			}else if(self.required == false && value == ''){
+				if($.inArray(idtopush,errorField)!==-1){
+					errorField.splice($.inArray(idtopush,errorField), 1);
+				}
+				$( id ).parent().parent().removeClass( "has-error" );
+				$( id ).removeClass( "error" );
+				$( id ).parent().siblings( ".help-block" ).html('');
+
 			}
 			
 		});

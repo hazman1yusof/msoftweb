@@ -77,6 +77,7 @@
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='cm_lastcomputerid']", "input[name='cm_lastipaddress']", "input[name='cm_computerid']", "input[name='cm_ipaddress']");
+						check_chgclass_on_open();
 						dialog_chggroup.on();
 						dialog_chgclass.on();
 						dialog_chgtype.on();
@@ -132,6 +133,7 @@
 			url:'chargemaster/form',
 			fixPost:'true',
 			field:'',
+			idnoUse:'cm_idno',
 			oper:oper,
 			table_name:'hisdb.chgmast',
 			table_id:'chgcode',
@@ -263,7 +265,7 @@
 
 		//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 		addParamField('#jqGrid',true,urlParam);
-		addParamField('#jqGrid',false,saveParam,['cm_idno', 'cm_compcode', 'cm_ipaddress', 'cm_computerid', 'cm_adddate', 'cm_adduser','cm_upduser','cm_upddate','cm_recstatus']);
+		addParamField('#jqGrid',false,saveParam,['cm_idno','ct_description', 'cc_description','cg_description', 'cm_compcode', 'cm_ipaddress', 'cm_computerid', 'cm_adddate', 'cm_adduser','cm_upduser','cm_upddate','cm_recstatus']);
 
 		/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 		var urlParam2={
@@ -808,7 +810,22 @@
 					filterVal:['session.compcode','A']
 				},
 				ondblClickRow: function () {
-					$('#cm_constype').focus();
+					let data=selrowData('#'+dialog_chgclass.gridname);
+					if(data.classcode == 'C'){
+						$('#cm_constype').data('validation','required')
+						$('#cm_constype').attr('disabled',false)
+						$('#cm_constype').val('A')
+						$('#cm_constype option[value=""]').hide()
+						dialog_doctorcode.required = true;
+						$('#cm_constype').focus();
+					}else{
+						$('#cm_constype').data('validation','')
+						$('#cm_constype').attr('disabled',true)
+						$('#cm_constype').val('')
+						$('#cm_constype option[value=""]').show()
+						dialog_doctorcode.required = false;
+						$('#cm_chggroup').focus();
+					}
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
@@ -831,6 +848,41 @@
 			},'urlParam','radio','tab'
 		);
 		dialog_chgclass.makedialog(true);
+		$('#cm_chgclass').blur(function(){
+			let textval = $(dialog_chgclass.textfield).val();
+			if(textval == 'C'){
+				$('#cm_constype').data('validation','required')
+				$('#cm_constype').attr('disabled',false)
+				$('#cm_constype').val('A')
+				$('#cm_constype option[value=""]').hide()
+				dialog_doctorcode.required = true;
+				$('#cm_constype').focus();
+				text_error1('#cm_constype');
+			}else{
+				$('#cm_constype').data('validation','')
+				$('#cm_constype').attr('disabled',true)
+				$('#cm_constype').val('')
+				$('#cm_constype option[value=""]').show()
+				dialog_doctorcode.required = false;
+				$('#cm_chggroup').focus();
+			}
+		});
+		function check_chgclass_on_open(){
+			let textval = $(dialog_chgclass.textfield).val();
+			if(textval == 'C'){
+				$('#cm_constype').data('validation','required')
+				$('#cm_constype').attr('disabled',false)
+				$('#cm_constype').val('A')
+				$('#cm_constype option[value=""]').hide()
+				dialog_doctorcode.required = true;
+			}else{
+				$('#cm_constype').data('validation','')
+				$('#cm_constype').attr('disabled',true)
+				$('#cm_constype').val('')
+				$('#cm_constype option[value=""]').show()
+				dialog_doctorcode.required = false;
+			}
+		}
 
 		var dialog_chggroup= new ordialog(
 			'cm_chggroup','hisdb.chggroup','#cm_chggroup',errorField,
@@ -933,7 +985,7 @@
 					dialog_doctorcode.urlParam.filterVal=['session.compcode', 'A'];
 					
 				}
-			},'urlParam','radio','tab'
+			},'urlParam','radio','tab',false
 		);
 		dialog_doctorcode.makedialog(true);
 
@@ -968,7 +1020,7 @@
 					dialog_deptcode.urlParam.filterVal=['session.compcode','1', 'A'];
 					
 				}
-			},'urlParam','radio','tab'
+			},'urlParam','radio','tab',false
 		);
 		dialog_deptcode.makedialog(true);
 
