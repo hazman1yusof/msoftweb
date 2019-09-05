@@ -61,7 +61,8 @@ $(document).ready(function () {
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
-		},{
+		},
+		{
 			title:"Select Item Code",
 			open: function(){
 
@@ -69,7 +70,6 @@ $(document).ready(function () {
 				var Class2 = $('#Class2').val();
 				dialog_itemcode.urlParam.filterCol = ['groupcode', 'Class','recstatus','compcode'];
 				dialog_itemcode.urlParam.filterVal = [ gc2, Class2,'A','session.compcode'];
-
 			}
 		},'urlParam'
 	);
@@ -96,7 +96,8 @@ $(document).ready(function () {
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}	
-		},{
+		},
+		{
 			title:"Select UOM Code",
 			open: function(){
 				dialog_uomcode.urlParam.filterCol = ['recstatus','compcode'];
@@ -128,7 +129,8 @@ $(document).ready(function () {
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}		
-		},{
+		},
+		{
 			title:"Select Sub Category",
 			open: function(){
 				dialog_subcategory.urlParam.filterCol = ['recstatus','compcode'];
@@ -160,7 +162,8 @@ $(document).ready(function () {
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}		
-		},{
+		},
+		{
 			title:"Select PO UOM",
 			open: function(){
 				dialog_pouom.urlParam.filterCol = ['recstatus','compcode'];
@@ -192,7 +195,8 @@ $(document).ready(function () {
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
-		},{
+		},
+		{
 			title:"Select Supplier Code",
 			open: function(){
 				dialog_suppcode.urlParam.filterCol = ['recstatus','compcode'];
@@ -224,7 +228,8 @@ $(document).ready(function () {
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
-		},{
+		},
+		{
 			title:"Select Main Store",
 			open: function(){
 				dialog_mstore.urlParam.filterCol = ['mainstore','recstatus','compcode','sector'];
@@ -256,7 +261,8 @@ $(document).ready(function () {
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
-		},{
+		},
+		{
 			title:"Select Tax Code",
 			open: function(){
 				dialog_taxCode.urlParam.filterCol=['recstatus','taxtype','compcode'];

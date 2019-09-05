@@ -28,7 +28,6 @@
 			
 	////////////////////////////////////start dialog///////////////////////////////////////
 
-
 	var mycurrency =new currencymode(['#origcost','#currentcost', '#purprice']);
 	var fdl = new faster_detail_load();
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox");
@@ -36,33 +35,33 @@
 	var dialog_assetcode= new ordialog(
 		'assetcode','finance.facode','#assetcode',errorField,
 		{	colModel:[
-			  {label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
 				{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
 				{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
-		],
-		urlParam: {
-			filterCol:['compcode'],
-			filterVal:['session.compcode']
-		},
-		ondblClickRow:function(){
-			let data=selrowData('#'+dialog_assetcode.gridname);
-			$('#assettype').val(data['assettype']);		
-			$('#method').val(data['method']);
-			$('#rvalue').val(data['residualvalue']);
-		},
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-				$('#deptcode').focus();
-			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-				$('#'+obj.dialogname).dialog('close');
+			],
+			urlParam: {
+				filterCol:['compcode'],
+				filterVal:['session.compcode']
+			},
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_assetcode.gridname);
+				$('#assettype').val(data['assettype']);		
+				$('#method').val(data['method']);
+				$('#rvalue').val(data['residualvalue']);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#deptcode').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
 			}
-		}
-	},
+		},
 		{
 			title:"Select Category",
 			open: function(){
@@ -78,21 +77,22 @@
 		{	colModel:[
 			    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-		],urlParam: {
-			filterCol:['compcode'],
-			filterVal:['session.compcode']
-		},
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-				$('#loccode').focus();
-			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-				$('#'+obj.dialogname).dialog('close');
+			],
+			urlParam: {
+				filterCol:['compcode'],
+				filterVal:['session.compcode']
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#loccode').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
 			}
-		}
-	},
+		},
 		{
 			title:"Select Department",
 			open: function(){
@@ -163,7 +163,8 @@
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
-		},{
+		},
+		{
 			title:"Select Supplier",
 			open: function(){
 				dialog_suppcode.urlParam.filterCol=['compcode'],
@@ -219,11 +220,9 @@
 				dialog_delordno.urlParam.join_type = ['LEFT JOIN'];
 				dialog_delordno.urlParam.join_onCol = ['dohd.invoiceno'];
 				dialog_delordno.urlParam.join_onVal = ['ap.document'];
-
 				
 				dialog_delordno.urlParam.url = "/assetregister/table";
 				dialog_delordno.urlParam.suppcode = $("#suppcode").val();
-
 			}
 		},'urlParam','radio','tab'
 	);
@@ -239,7 +238,7 @@
 				filterCol:['compcode','source','trantype','suppcode','document','recstatus'],
 				filterVal:['session.compcode','AP','IN', $("#suppcode").val(),$("#invno").val(),'POSTED']
 			},
-			ondblClickRow: function () {
+			ondblClickRow: function(){
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -299,7 +298,8 @@
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
-		},{
+		},
+		{
 			title:"Select Itemcode",
 			open: function(){
 				dialog_itemcode.urlParam.filterCol=['dodt.compcode','dodt.recno'];
@@ -322,7 +322,7 @@
 				{label:'uomcode',name:'uomcode',width:100,classes:'pointer',hidden:true},
 				{label:'currprice',name:'currprice',width:100,classes:'pointer',hidden:true},			
 			],
-			urlParam: {
+			urlParam:{
 				filterCol:['dodt.compcode','dodt.recno'],
 				filterVal:['session.compcode',selrowData('#'+dialog_delordno.gridname).dohd_recno]
 			},
@@ -343,7 +343,8 @@
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
-		},{
+		},
+		{
 			title:"Select Itemcode",
 			open: function(){
 			}
@@ -361,7 +362,7 @@
 				filterCol:['compcode','itemcode'],
 				filterVal:['session.compcode',$("#itemcode").val()]
 			},
-			ondblClickRow: function () {
+			ondblClickRow: function(){
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -373,7 +374,8 @@
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
-		},{
+		},
+		{
 			title:"Select uomcode",
 			open: function(){
 				dialog_uomcode.urlParam.filterCol=['compcode','itemcode'],
@@ -385,25 +387,25 @@
 
 
 	var butt1=[{
-			text: "Save",click: function() {
-				mycurrency.formatOff();
-				mycurrency.check0value(errorField);
-				if( checkdate_asset(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-					saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
-				}
+		text: "Save",click: function() {
+			mycurrency.formatOff();
+			mycurrency.check0value(errorField);
+			if( checkdate_asset(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 			}
-		},{
+		}
+	},
+	{
+		text: "Cancel",click: function() {
+			$(this).dialog('close');
+		}
+	}];
 
-			text: "Cancel",click: function() {
-				$(this).dialog('close');
-			}
-		}];
-
-		var butt2=[{
-			text: "Close",click: function() {
-				$(this).dialog('close');
-			}
-		}];
+	var butt2=[{
+		text: "Close",click: function() {
+			$(this).dialog('close');
+		}
+	}];
 
 		var oper;
 		$("#dialogForm")
