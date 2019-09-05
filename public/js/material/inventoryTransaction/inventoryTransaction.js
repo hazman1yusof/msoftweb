@@ -1317,12 +1317,11 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector', hidden:true},
 			],
 			urlParam: {
-						filterCol:['storedept', 'recstatus','compcode','sector'],
-						filterVal:['1', 'A','session.compcode', 'session.unit']
-					},
+					filterCol:['storedept', 'recstatus','compcode','sector'],
+					filterVal:['1', 'A','session.compcode', 'session.unit']
+			},
 			ondblClickRow: function () {
 				$('#trantype').focus();
-
 			},
 			gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
@@ -1342,7 +1341,7 @@ $(document).ready(function () {
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_txndept.makedialog();
+	dialog_txndept.makedialog(true);
 
 	var dialog_trantype = new ordialog(
 		'trantype','material.ivtxntype','#trantype',errorField,

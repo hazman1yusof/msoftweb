@@ -390,8 +390,27 @@
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 					],
 						urlParam: {
-							filterCol:['compcode','recstatus'],
-							filterVal:['session.compcode','A']
+							open: function(){
+							if($('#postGroupcode').val().trim() == 'Stock') {
+								filterCol=['cattype', 'source', 'recstatus'];
+								filterVal=['Stock', 'PO', 'A'];
+							}else if($('#postGroupcode').val().trim() == 'Others') {
+								filterCol=['cattype', 'source', 'recstatus'];
+								filterVal=['Other', 'PO', 'A'];
+							}else if($('#groupcode').val().trim() == 'Stock') {
+								filterCol=['cattype', 'source', 'recstatus'];
+								filterVal=['Stock', 'PO', 'A'];
+							}else if($('#groupcode').val().trim() == 'Others') {
+								filterCol=['cattype', 'source', 'recstatus'];
+								filterVal=['Other', 'PO', 'A'];
+							}else if($('#postGroupcode').val().trim() == 'Asset'){
+								table_name="finance.facode";
+								field=['assetcode as catcode', 'description'];
+							}else {
+								filterCol=['recstatus'];
+								filterVal=['A'];
+							}
+						}
 					},
 					ondblClickRow: function () {
 						$('#recstatus').focus();
