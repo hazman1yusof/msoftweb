@@ -673,19 +673,34 @@
 				{label:'Password',name:'password',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Dept Code',name:'deptcode',width:400,classes:'pointer',canSearch:true,or_search:true},
 			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']
+			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_authorid.gridname);
 					$("#name").val(data['name']);
 					$("#password").val(data['password']).attr('type','password');
 					$("#deptcode").val(data['deptcode']);
-				}	
+					$('#deptcode').focus();
+			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#deptcode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}	
 			},{
 			title:"Select Author ID",
 			open: function(){
 					dialog_authorid.urlParam.filterCol=['recstatus'],
 					dialog_authorid.urlParam.filterVal=['A']
 				}
-			},'urlParam'
+			},'urlParam', 'radio', 'tab'
 		);
 	dialog_authorid.makedialog();
 
@@ -696,17 +711,23 @@
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Unit',name:'sector'},
 			],
+			urlParam: {
+				filterCol:['storedept', 'recstatus','compcode','sector'],
+				filterVal:['1', 'A', 'session.compcode', 'session.unit']
+			},
 			ondblClickRow:function(){
-				//$('#delordhd_credcode').focus();
+				//$('#recstatus').focus();
 			},
 			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					//$('#delordhd_credcode').focus();
-				}
-			}
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#recstatus').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}	
 		},{
 			title:"Select Department",
 			open: function(){
@@ -723,6 +744,10 @@
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Unit',name:'sector'},
 			],
+			urlParam: {
+				filterCol:['storedept', 'recstatus','compcode','sector'],
+				filterVal:['1', 'A', 'session.compcode', 'session.unit']
+			},
 			ondblClickRow:function(){
 				//$('#delordhd_credcode').focus();
 			},
@@ -763,7 +788,12 @@
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Unit',name:'sector'},
 			],
+			urlParam: {
+				filterCol:['storedept', 'recstatus','compcode','sector'],
+				filterVal:['1', 'A', 'session.compcode', 'session.unit']
+			},
 			ondblClickRow:function(){
+				$('#dtl_recstatus').focus();
 			},
 			gridComplete: function(obj){
 				let str = $(obj.textfield).val() ? $(obj.textfield).val() : '';

@@ -949,19 +949,25 @@ $(document).ready(function () {
 				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Name',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_supplier.gridname);
 				$("#apacthdr_payto").val(data['SuppCode']);
 				$('#apacthdr_recdate').focus();
 			},
 			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#apacthdr_recdate').focus();
-				}
-			}
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#apacthdr_recdate').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Select Supplier Code",
 			open: function(){
@@ -970,7 +976,7 @@ $(document).ready(function () {
 				}
 			},'urlParam','radio','tab'
 		);
-	dialog_supplier.makedialog();
+	dialog_supplier.makedialog(true);
 
 	var dialog_payto = new ordialog(
 		'payto','material.supplier','#apacthdr_payto',errorField,
@@ -978,17 +984,23 @@ $(document).ready(function () {
 				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow:function(){
 				$('#apacthdr_actdate').focus();
 			},
 			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#apacthdr_actdate').focus();
-				}
-			}
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#apacthdr_actdate').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Select Supplier Code",
 			open: function(){
@@ -997,7 +1009,7 @@ $(document).ready(function () {
 				}
 			},'urlParam','radio','tab'
 		);
-	dialog_payto.makedialog();
+	dialog_payto.makedialog(true);
 
 	var dialog_category = new ordialog(
 		'category','material.category','#apacthdr_category',errorField,
@@ -1007,17 +1019,24 @@ $(document).ready(function () {
 				{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+		
 			ondblClickRow:function(){
 				$('#apacthdr_deptcode').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#apacthdr_deptcode').focus();
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#apacthdr_deptcode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
 				}
-			}
 		},{	
 			title:"Select Category Code",
 			open: function(){
@@ -1033,7 +1052,7 @@ $(document).ready(function () {
 			},'urlParam','radio','tab'
 		
 	);
-	dialog_category.makedialog();
+	dialog_category.makedialog(true);
 
 	var dialog_department = new ordialog(
 		'department','sysdb.department','#apacthdr_deptcode',errorField,
@@ -1041,17 +1060,23 @@ $(document).ready(function () {
 				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow:function(){
 				$('#apacthdr_remarks').focus();
 			},
 			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#apacthdr_remarks').focus();
-				}
-			}
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#apacthdr_remarks').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Select Department Code",
 			open: function(){
@@ -1060,7 +1085,7 @@ $(document).ready(function () {
 				}
 			},'urlParam','radio','tab'
 		);
-	dialog_department.makedialog();
+	dialog_department.makedialog(true);
 
 	var dialog_document = new ordialog(
 		'document',['material.delordhd'],"#jqGrid2 input[name='document']", errorField,
@@ -1076,6 +1101,10 @@ $(document).ready(function () {
 				{label:'suppcode',name:'suppcode',width:400,classes:'pointer', hidden:true},
 
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_document.gridname);

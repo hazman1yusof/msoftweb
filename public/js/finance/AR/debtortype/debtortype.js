@@ -170,26 +170,6 @@
 				
 			});
 
-			/*////////////////////////////formatter//////////////////////////////////////////////////////////
-			function formatter(cellvalue, options, rowObject){
-				if(cellvalue == 'A'){
-					return "Active";
-				}
-				if(cellvalue == 'D') { 
-					return "Deactive";
-				}
-			}
-
-			function  unformat(cellvalue, options){
-				if(cellvalue == 'Active'){
-					return "Active";
-				}
-				if(cellvalue == 'Deactive') { 
-					return "Deactive";
-				}
-			}*/
-
-
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -268,16 +248,15 @@
 					$('#actdebglacc').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_costcode.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_costcode.ontabbing = false;
-						$('#actdebglacc').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#actdebglacc').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 
 				},{
 					title:"Select Actual Cost",
@@ -303,16 +282,15 @@
 					$('#depccode').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_glaccount.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_glaccount.ontabbing = false;
-						$('#depccode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#depccode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 
 				},{
 					title:"Select Actual Account",
@@ -338,16 +316,15 @@
 					$('#depglacc').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_depccode.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_depccode.ontabbing = false;
-						$('#depglacc').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#depglacc').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 				},{
 					title:"Select Deposit Cost",
 					open: function(){
@@ -372,16 +349,15 @@
 					$('#recstatus').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_depglacc.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_depglacc.ontabbing = false;
-						$('#recstatus').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#recstatus').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 				},{
 					title:"Select Deposit Account",
 					open: function(){

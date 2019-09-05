@@ -38,19 +38,19 @@
 						filterCol:['compcode','recstatus'],
 						filterVal:['session.compcode','A']
 					},
-				ondblClickRow: function () {
-					$('#depglacc').focus();
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
+					ondblClickRow: function () {
 						$('#depglacc').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#depglacc').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 				},{
 					title:"Select Deposit Cost",
 					open: function(){
@@ -72,19 +72,19 @@
 						filterCol:['compcode','recstatus'],
 						filterVal:['session.compcode','A']
 					},
-				ondblClickRow: function () {
-					$('#updpayername').focus();
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
+					ondblClickRow: function () {
 						$('#updpayername').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#updpayername').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 				},{
 					title:"Select Deposit GL Account",
 					open: function(){

@@ -291,14 +291,31 @@
 				{	colModel:[
 						{label:'Status Code',name:'statuscode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-						]
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#doctorname').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#doctorname').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select Doctor Type",
 					open: function(){
 						dialog_doctype.urlParam.filterCol=['recstatus'],
 						dialog_doctype.urlParam.filterVal=['A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_doctype.makedialog();
 
@@ -307,14 +324,31 @@
 				{	colModel:[
 						{label:'Cost Code',name:'costcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-						]
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#specialitycode').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#specialitycode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select Department",
 					open: function(){
 						dialog_department.urlParam.filterCol=['recstatus'],
 						dialog_department.urlParam.filterVal=['A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_department.makedialog();
 
@@ -324,14 +358,31 @@
 				{	colModel:[
 						{label:'Speciality Code',name:'specialitycode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-						]
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#disciplinecode').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#disciplinecode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select Speciality",
 					open: function(){
 						dialog_speciality.urlParam.filterCol=['recstatus'],
 						dialog_speciality.urlParam.filterVal=['A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_speciality.makedialog();
 			
@@ -340,14 +391,31 @@
 				{	colModel:[
 						{label:'Discipline Code',name:'code',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-						]
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#creditorcode').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#creditorcode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select Discipline",
 					open: function(){
 						dialog_discipline.urlParam.filterCol=['recstatus'],
 						dialog_discipline.urlParam.filterVal=['A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_discipline.makedialog();
 			
@@ -356,14 +424,31 @@
 				{	colModel:[
 						{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Supplier Name',name:'Name',width:400,classes:'pointer',canSearch:true,or_search:true},
-						]
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#classcode').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#classcode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select Transaction Department",
 					open: function(){
 						dialog_creditor.urlParam.filterCol=['recstatus'],
 						dialog_creditor.urlParam.filterVal=['A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_creditor.makedialog();
 

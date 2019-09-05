@@ -268,8 +268,23 @@
 				{	colModel:[
 						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#woffacct').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#woffacct').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}	
 				},{
 					title:"Select Stock Account",
@@ -277,7 +292,7 @@
 						dialog_stockacct.urlParam.filterCol=['recstatus', 'compcode'],
 						dialog_stockacct.urlParam.filterVal=['A','session.compcode']
 					}
-				},'urlParam'
+				},'urlParam','radio', 'tab'
 			);
 			dialog_stockacct.makedialog();
 
@@ -286,8 +301,23 @@
 				{	colModel:[
 						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#expacct').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#expacct').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}	
 				},{
 					title:"Select COS Account",
@@ -295,7 +325,7 @@
 						dialog_cosacct.urlParam.filterCol=['recstatus', 'compcode'],
 						dialog_cosacct.urlParam.filterVal=['A','session.compcode']
 					}
-				},'urlParam'
+				},'urlParam','radio','tab'
 			);
 			dialog_cosacct.makedialog();
 
@@ -304,16 +334,31 @@
 				{	colModel:[
 						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
-					}	
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#loanacct').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#loanacct').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
-					title:"Select Adjusment Account",
+					title:"Select Adjustment Account",
 					open: function(){
 						dialog_adjacct.urlParam.filterCol=['recstatus', 'compcode'],
 						dialog_adjacct.urlParam.filterVal=['A','session.compcode']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_adjacct.makedialog();
 
@@ -323,15 +368,30 @@
 						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 						],
-					ondblClickRow:function(){
-					}	
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#cosacct').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#cosacct').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select Write Off Account",
 					open: function(){
 						dialog_woffacct.urlParam.filterCol=['recstatus', 'compcode'],
 						dialog_woffacct.urlParam.filterVal=['A','session.compcode']
 					}
-				},'urlParam'
+				},'urlParam','radio', 'tab'
 			);
 			dialog_woffacct.makedialog();
 
@@ -340,16 +400,31 @@
 				{	colModel:[
 						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
-					}	
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#adjacct').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#adjacct').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select Expenses Account",
 					open: function(){
 						dialog_expacct.urlParam.filterCol=['recstatus', 'compcode'],
 						dialog_expacct.urlParam.filterVal=['A','session.compcode']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_expacct.makedialog();
 
@@ -358,8 +433,23 @@
 				{	colModel:[
 						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#povalidate').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#povalidate').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}	
 				},{
 					title:"Select Loan Account",
@@ -367,7 +457,7 @@
 						dialog_loanacct.urlParam.filterCol=['recstatus', 'compcode'],
 						dialog_loanacct.urlParam.filterVal=['A','session.compcode']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_loanacct.makedialog();
 });

@@ -1,6 +1,33 @@
 @extends('layouts.main')
 
 @section('title', 'Bill Type Setup')
+@section('style')
+
+ .panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+  display: none;
+}
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+  display: inline-block;
+}
+
+i.fa {
+  cursor: pointer;
+  float: right;
+ <!--  margin-right: 5px; -->
+}
+
+.collapsed ~ .panel-body {
+  padding: 0;
+}
+
+.clearfix {
+	overflow: auto;
+}
+
+@endsection
 
 @section('body')
 	 
@@ -26,22 +53,36 @@
 		    </div>
 		</div>
 
-		<div class="panel panel-default">
-		    <div class="panel-body">
-		    	<div class='col-md-12' style="padding:0 0 15px 0">
-            		<table id="jqGridsvc" class="table table-striped"></table>
-            			<div id="jqGridPager2"></div>
-        		</div>
-		    </div>
+	
+
+		<div class="panel panel-default" id="jqGridsvc_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel1">
+				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
+    			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
+    			Service </div>
+				<div id="jqGrid3_panel1" class="panel-collapse collapse">
+					<div class="panel-body">
+					    <div class='col-md-12' style="padding:0 0 15px 0">
+			            	<table id="jqGridsvc" class="table table-striped"></table>
+			            		<div id="jqGridPager2"></div>
+			        	</div>
+					</div>
+				</div>	
 		</div>
 
-		<div class="panel panel-default">
-		    <div class="panel-body">
-		    	<div class='col-md-12' style="padding:0 0 15px 0">
-            		<table id="jqGriditem" class="table table-striped"></table>
-            			<div id="jqGridPager3"></div>
-        		</div>
-		    </div>
+		<div class="panel panel-default" id="jqGriditem_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel2">
+				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
+    			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
+    		Item </div>
+				<div id="jqGrid3_panel2" class="panel-collapse collapse">
+					<div class="panel-body">
+					    <div class='col-md-12' style="padding:0 0 15px 0">
+			            	<table id="jqGriditem" class="table table-striped"></table>
+			            		<div id="jqGridPager3"></div>
+			        	</div>
+					</div>
+				</div>	
 		</div>
 
     </div>

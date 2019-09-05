@@ -43,22 +43,21 @@ $(document).ready(function () {
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_SuppGroup.ontabbing){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						dialog_SuppGroup.ontabbing = false;
 						$('#CostCode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
-				},	
+				}
 		},{
 			title:"Select Supplier Group",
 			open: function(){
 				dialog_SuppGroup.urlParam.filterCol=['compcode','recstatus'],
 				dialog_SuppGroup.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam','tab'
+		},'urlParam','radio','tab'
 	);
 	dialog_SuppGroup.makedialog(true);
 
@@ -78,22 +77,21 @@ $(document).ready(function () {
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_CostCode.ontabbing){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						dialog_CostCode.ontabbing = false;
-						$('#GlAccNo').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						$('#depglacc').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
-				},	
+				}
 		},{
 			title:"Select Cost Code",
 			open: function(){
 				dialog_CostCode.urlParam.filterCol=['compcode','recstatus'],
 				dialog_CostCode.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam', 'tab'
+		},'urlParam','radio', 'tab'
 	);
 	dialog_CostCode.makedialog(true);
 
@@ -112,21 +110,20 @@ $(document).ready(function () {
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_GlAccNo.ontabbing){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						dialog_GlAccNo.ontabbing = false;
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
-				},	
+				}
 		},{
 			title:"Select Gl Account No",
 			open: function(){
 				dialog_GlAccNo.urlParam.filterCol=['compcode','recstatus'],
 				dialog_GlAccNo.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam', 'tab'
+		},'urlParam', 'radio','tab'
 	);
 	dialog_GlAccNo.makedialog(true);
 
@@ -395,12 +392,11 @@ $(document).ready(function () {
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_pricecode.ontabbing){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						dialog_pricecode.ontabbing = false;
 						$('#si_itemcode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
 				}
@@ -429,12 +425,11 @@ $(document).ready(function () {
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_itemcode.ontabbing){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						dialog_itemcode.ontabbing = false;
 						$('#si_uomcode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
 				}
@@ -459,16 +454,15 @@ $(document).ready(function () {
 					filterVal:['session.compcode','A']
 				},
 				ondblClickRow: function () {
-					$('#si_uomcode').focus();
+					
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_itemcode.ontabbing){
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						dialog_itemcode.ontabbing = false;
-						$('#si_uomcode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
 				}
@@ -479,9 +473,9 @@ $(document).ready(function () {
 				dialog_uomcode.urlParam.filterCol=['recstatus'],
 				dialog_uomcode.urlParam.filterVal=['A']
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
-	dialog_uomcode.makedialog();
+	dialog_uomcode.makedialog(true);
 
 	var buttItem1=[{
 		text: "Save",click: function() {
@@ -761,48 +755,98 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Code',name:'pricecode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+			},
+				ondblClickRow: function () {
+					$('#sb_bonitemcode').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#sb_bonitemcode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 		},{
 			title:"Select Bonus Price Code",
 			open: function(){
 				dialog_bonpricecode.urlParam.filterCol=['recstatus'],
 				dialog_bonpricecode.urlParam.filterVal=['A']
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
-	dialog_bonpricecode.makedialog();
+	dialog_bonpricecode.makedialog(true);
 
 	var dialog_bonitemcode = new ordialog(
 		'sb_bonitemcode','material.product',"#Fsuppbonus :input[name='sb_bonitemcode']",errorField,
 		{	colModel:[
 				{label:'Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+			},
+				ondblClickRow: function () {
+					$('#sb_bonuomcode').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#sb_bonuomcode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 		},{
 			title:"Select Bonus Item Code",
 			open: function(){
 				dialog_bonitemcode.urlParam.filterCol=['recstatus'],
 				dialog_bonitemcode.urlParam.filterVal=['A']
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
-	dialog_bonitemcode.makedialog();
+	dialog_bonitemcode.makedialog(true);
 
 	var dialog_bonuomcode = new ordialog(
 		'sb_bonuomcode','material.uom',"#Fsuppbonus :input[name='sb_bonuomcode']",errorField,
 		{	colModel:[
 				{label:'Code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			]
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+			},
+				ondblClickRow: function () {
+					
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 		},{
 			title:"Select Bonus UOM Code",
 			open: function(){
 				dialog_bonuomcode.urlParam.filterCol=['recstatus'],
 				dialog_bonuomcode.urlParam.filterVal=['A']
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
-	dialog_bonuomcode.makedialog();
+	dialog_bonuomcode.makedialog(true);
 	
 	var buttbonus1=[{
 		text: "Save",click: function() {

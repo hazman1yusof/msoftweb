@@ -32,8 +32,23 @@
 				{	colModel:[
 						{label:'Department Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#addr1').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#addr1').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}	
 				},{
 					title:"Select Delivery Store",
@@ -41,7 +56,7 @@
 						dialog_deptcode.urlParam.filterCol=['compcode','recstatus'],
 						dialog_deptcode.urlParam.filterVal=['session.compcode','A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_deptcode.makedialog();
 

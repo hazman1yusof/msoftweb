@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Debtor Type')
+@section('title', 'Category')
 
 @section('body')
 

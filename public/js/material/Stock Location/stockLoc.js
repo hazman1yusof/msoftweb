@@ -329,10 +329,25 @@ $(document).ready(function () {
 				{label:'Class',name:'Class',width:400,classes:'pointer',hidden:true},
 				{label:'Unit',name:'unit',classes:'pointer'},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
 				$("#uomcodeS").val(data['uomcode']);
-			}
+				$('#uomcodeS').focus();
+			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#uomcodeS').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Select Item",
 			open: function(){
@@ -354,7 +369,7 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.filterVal=['A','session.compcode','session.unit'];
 				}
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
 	dialog_itemcode.makedialog();
 	dialog_itemcode.on();
@@ -369,10 +384,25 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'u_description', width: 400, classes: 'pointer', checked:true, canSearch: true, or_search: true },
 				{label:'Unit',name:'p_unit',classes:'pointer'},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_uomcode.gridname);
 				$("#uomcodeS").val(data['p_uomcode']);
-			}
+				$('#select_year').focus();
+			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#select_year').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 
 		}, {
 			title: "Select Uom",
@@ -387,7 +417,7 @@ $(document).ready(function () {
 				dialog_uomcode.urlParam.join_filterCol = [['p.compcode on =']];
 				dialog_uomcode.urlParam.join_filterVal = [['u.compcode']];
 			},
-		}, 'urlParam'
+		}, 'urlParam', 'radio', 'tab'
 	);
 	dialog_uomcode.makedialog();
 	dialog_uomcode.on();
@@ -397,16 +427,31 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-				],
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode','sector'],
+				filterVal:['A','session.compcode','session.unit']
+			},
 			ondblClickRow:function(){
-			}	
+				$('#stocktxntype').focus();
+			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#stocktxntype').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}	
 		},{
 			title:"Select Dept",
 			open: function(){
 				dialog_deptcode.urlParam.filterCol = ['recstatus','compcode','sector'];
 				dialog_deptcode.urlParam.filterVal = [ 'A','session.compcode','session.unit'];
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
 	dialog_deptcode.makedialog();
 

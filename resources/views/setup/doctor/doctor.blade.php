@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Discipline Setup')
+@section('title', 'Doctor Setup')
 
 @section('style')
 

@@ -388,7 +388,24 @@
 				{	colModel:[
 						{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-						]
+					],
+						urlParam: {
+							filterCol:['compcode','recstatus'],
+							filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#recstatus').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#recstatus').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select Category",
 					open: function(){
@@ -412,7 +429,7 @@
 							dialog_category.urlParam.filterVal=['A'];
 						}
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_category.makedialog();
 });

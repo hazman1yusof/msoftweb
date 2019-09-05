@@ -162,26 +162,7 @@
 				},
 				
 			});
-/*
-			////////////////////////////formatter//////////////////////////////////////////////////////////
-			function formatter(cellvalue, options, rowObject){
-				if(cellvalue == 'A'){
-					return "Active";
-				}
-				if(cellvalue == 'D') { 
-					return "Deactive";
-				}
-			}
 
-			function  unformat(cellvalue, options){
-				if(cellvalue == 'Active'){
-					return "Active";
-				}
-				if(cellvalue == 'Deactive') { 
-					return "Deactive";
-				}
-			}
-*/
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -254,8 +235,23 @@
 				{	colModel:[
 						{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-						],
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 					ondblClickRow:function(){
+						$('#trantype').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#trantype').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}	
 				},{
 					title:"Select Department",
@@ -263,26 +259,41 @@
 						dialog_dept.urlParam.filterCol = ['recstatus', 'compcode'];
 						dialog_dept.urlParam.filterVal = ['A', 'session.compcode'];
 					}
-				}, 'urlParam'
+				}, 'urlParam', 'radio', 'tab'
 			);
-			dialog_dept.makedialog();
+			dialog_dept.makedialog(true);
 
 			var dialog_trantype = new ordialog(
 				'trantype','material.ivtxntype','#trantype',errorField,
 				{	colModel:[
 						{label:'Transaction Type',name:'trantype',width:100,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-						],
+					],
+						urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 					ondblClickRow:function(){
-					}	
+						$('#description').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#description').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}		
 				},{
 					title:"Select Transaction Type",
 					open: function(){
 						dialog_trantype.urlParam.filterCol = ['recstatus', 'compcode'];
 						dialog_trantype.urlParam.filterVal = ['A','session.compcode'];
 					}
-				}, 'urlParam'
+				}, 'urlParam', 'radio', 'tab'
 			);
-			dialog_trantype.makedialog();
+			dialog_trantype.makedialog(true);
 
 });

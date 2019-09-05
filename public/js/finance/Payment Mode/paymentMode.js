@@ -42,16 +42,15 @@ $(document).ready(function () {
 					$('#glaccno').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_costcode.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_costcode.ontabbing = false;
-						$('#glaccno').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#glaccno').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 
 		},{
 			title:"Select Cost Code",
@@ -77,16 +76,15 @@ $(document).ready(function () {
 					$('#drpayment').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_glaccount.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_glaccount.ontabbing = false;
-						$('#drpayment').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#drpayment').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 		},{
 			title:"Select GL Account",
 			open: function(){
@@ -106,19 +104,19 @@ $(document).ready(function () {
 			urlParam: {
 					filterCol:['compcode','recstatus'],
 					filterVal:['session.compcode','A']
-				},
+			},
 				ondblClickRow: function () {
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_cardbank.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_cardbank.ontabbing = false;
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+					
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 		},{
 			title:"Select Bank",
 			open: function(){
@@ -343,24 +341,7 @@ $(document).ready(function () {
 		
 	});
 
-	/*///////////////////////////formatter//////////////////////////////////////////////////////////
-	function formatter(cellvalue, options, rowObject){
-		if(cellvalue == 'A'){
-			return "Active";
-		}
-		if(cellvalue == 'D') { 
-			return "Deactive";
-		}
-	}
-
-	function  unformat(cellvalue, options){
-		if(cellvalue == 'Active'){
-			return "Active";
-		}
-		if(cellvalue == 'Deactive') { 
-			return "Deactive";
-		}
-	}*/
+	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,

@@ -33,16 +33,31 @@
 				{	colModel:[
 						{label:'Cost Code',name:'costcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
-					}	
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#glaccno').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#glaccno').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select Cost Code",
 					open: function(){
 						dialog_costcode.urlParam.filterCol=['recstatus'],
 						dialog_costcode.urlParam.filterVal=['A']
 					}
-				},'urlParam'
+				},'urlParam','radio', 'tab'
 			);
 			dialog_costcode.makedialog();
 
@@ -51,16 +66,31 @@
 				{	colModel:[
 						{label:'Account No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
-					}	
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#advccode').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#advccode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 				},{
 					title:"Select GL Account No",
 					open: function(){
 						dialog_glaccno.urlParam.filterCol=['recstatus'],
 						dialog_glaccno.urlParam.filterVal=['A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_glaccno.makedialog();
 
@@ -69,8 +99,23 @@
 				{	colModel:[
 						{label:'Cost Code',name:'costcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#advglaccno').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#advglaccno').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}	
 				},{
 					title:"Select Advance Cost Code",
@@ -78,7 +123,7 @@
 						dialog_advccode.urlParam.filterCol=['recstatus'],
 						dialog_advccode.urlParam.filterVal=['A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_advccode.makedialog();
 
@@ -87,8 +132,23 @@
 				{	colModel:[
 						{label:'Account No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-						],
-					ondblClickRow:function(){
+					],
+					urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
+					ondblClickRow: function () {
+						$('#recstatus').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#recstatus').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}	
 				},{
 					title:"Select Advance Account No",
@@ -96,7 +156,7 @@
 						dialog_advglaccno.urlParam.filterCol=['recstatus'],
 						dialog_advglaccno.urlParam.filterVal=['A']
 					}
-				},'urlParam'
+				},'urlParam', 'radio', 'tab'
 			);
 			dialog_advglaccno.makedialog();
 		

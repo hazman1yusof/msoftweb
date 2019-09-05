@@ -582,13 +582,26 @@ $(document).ready(function () {
 				{ label: 'Supplier Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow: function () {
 				let data = selrowData('#' + supplierkatdepan.gridname).suppcode;
 
 				urlParam.searchCol=["delordhd_suppcode"];
 				urlParam.searchVal=[data];
 				refreshGrid('#jqGrid', urlParam);
-			}
+			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title: "Select Purchase Department",
 			open: function () {
@@ -1551,9 +1564,23 @@ $(document).ready(function () {
 				{label:'Authorize Person',name:'authorid',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true}
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+			},
 			ondblClickRow: function () {
 				$('#delordhd_remarks').focus();
 			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#delordhd_remarks').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Authorize Person",
 			open: function(){
@@ -1571,19 +1598,25 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Unit',name:'sector'},
 			],
+			urlParam: {
+						filterCol:['purdept', 'recstatus','compcode','sector'],
+						filterVal:['1', 'A','session.compcode','session.unit']
+					},
 			ondblClickRow: function () {
 				let data = selrowData('#'+dialog_prdept.gridname);
 				backdated.set_backdate(data.deptcode);
 				$('#delordhd_srcdocno').focus();
 			},
 			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#delordhd_srcdocno').focus();
-				}
-			}
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#delordhd_srcdocno').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Select Transaction Department",
 			open: function(){
@@ -1614,7 +1647,10 @@ $(document).ready(function () {
 			],
 			sortname: 'h_recno',
 			sortorder: "desc",
-
+			urlParam: {
+						filterCol:['h.prdept','h.recstatus','h.compcode'],
+						filterVal:[$("#delordhd_prdept").val(),'ISSUED','session.compcode']
+					},
 		ondblClickRow: function () {
 				let data = selrowData('#' + dialog_srcdocno.gridname);
 				
@@ -1712,19 +1748,25 @@ $(document).ready(function () {
 				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#delordhd_credcode").val(data['suppcode']);
 				$('#delordhd_delordno').focus();
 			},
 			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#delordhd_delordno').focus();
-				}
-			}
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#delordhd_delordno').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Select Transaction Type",
 			open: function(){
@@ -1741,17 +1783,23 @@ $(document).ready(function () {
 				{label:'Creditor Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Creditor Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow:function(){
 				$('#delordhd_invoiceno').focus();//focus ni xjadis
 			},
 			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#delordhd_invoiceno').focus();
-				}
-			}
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#delordhd_invoiceno').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Select Creditor",
 			open: function(){
@@ -1769,17 +1817,23 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Unit',name:'sector'},
 			],
+			urlParam: {
+						filterCol:['storedept', 'recstatus','compcode','sector'],
+						filterVal:['1', 'A', 'session.compcode', 'session.unit']
+					},
 			ondblClickRow:function(){
 				$('#delordhd_credcode').focus();
 			},
 			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#delordhd_credcode').focus();
-				}
-			}
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#delordhd_credcode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Select Receiver Department",
 			open: function(){
@@ -1797,7 +1851,24 @@ $(document).ready(function () {
 				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 				{label:'Unit',name:'sector'},
-			]
+			],
+			urlParam: {
+						filterCol:['recstatus','compcode','sector'],
+						filterVal:['A', 'session.compcode', 'session.unit']
+					},
+					ondblClickRow: function () {
+						$('#depglacc').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#depglacc').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		}, {
 			title: "Select Request Department",
 			open: function(){
@@ -1815,6 +1886,10 @@ $(document).ready(function () {
 				{label:'Price code',name:'pricecode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow:function(event){
 
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
@@ -1952,6 +2027,10 @@ $(document).ready(function () {
 				{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 				{label: 'Unit', name:'s_unit'},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
 
@@ -2079,6 +2158,10 @@ $(document).ready(function () {
 				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
 
@@ -2145,6 +2228,10 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Conversion', name: 'convfactor', width: 100, classes: 'pointer' }
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow: function (event) {
 				if(event.type == 'keydown'){
 
@@ -2198,6 +2285,10 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+					},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
 

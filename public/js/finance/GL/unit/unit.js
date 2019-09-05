@@ -227,25 +227,24 @@ $(document).ready(function () {
 					$('#recstatus').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_regioncode.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_regioncode.ontabbing = false;
-						$('#recstatus').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#recstatus').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 		},{
 			title:"Select Region Code",
 			open: function(){
-				dialog_regioncode.urlParam.filterCol=['recstatus'],
-				dialog_regioncode.urlParam.filterVal=['A']
+				dialog_regioncode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_regioncode.urlParam.filterVal=['session.compcode','A']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
-	dialog_regioncode.makedialog();
+	dialog_regioncode.makedialog(true);
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 
 	toogleSearch('#sbut1', '#searchForm', 'on');

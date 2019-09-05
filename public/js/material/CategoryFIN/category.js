@@ -254,16 +254,15 @@ $(document).ready(function () {
 					$('#povalidate').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_expacct.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_expacct.ontabbing = false;
-						$('#povalidate').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#povalidate').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 		},{
 			title:"Select Account Code",
 			open: function(){

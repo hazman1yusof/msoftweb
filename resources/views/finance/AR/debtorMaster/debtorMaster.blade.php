@@ -134,7 +134,7 @@
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="coverageip">Coverage IP</label>  
 				  <div class="col-md-3">
-				  <input ids="coverageip" name="coverageip" type="text" class="form-control input-sm">
+				  <input ids="coverageip" name="coverageip" id="coverageip" type="text" class="form-control input-sm">
 				  </div>
 				  
 				  <label class="col-md-2 control-label" for="coverageop">Coverage OP</label>  

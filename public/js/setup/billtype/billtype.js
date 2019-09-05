@@ -307,14 +307,31 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				]
+			],
+				urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','A']
+				},
+					ondblClickRow: function () {
+							$('#svc_price').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#svc_price').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}		
 		},{
 			title:"Select Charge Group",
 			open: function(){
-				dialog_ChgGroup.urlParam.filterCol=[],
-				dialog_ChgGroup.urlParam.filterVal=[]
+				dialog_ChgGroup.urlParam.filterCol=['compcode','recstatus'],
+				dialog_ChgGroup.urlParam.filterVal=['session.compcode','A']
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
 	dialog_ChgGroup.makedialog();
 
@@ -605,14 +622,31 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				]
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus','chggroup'],
+						filterVal:['session.compcode','A',$("#Fitem :input[name*='i_chggroup']").val()]
+					},
+					ondblClickRow: function () {
+						$('#i_price').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#i_price').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Select Charge Code",
 			open: function(){
 				dialog_chgcode.urlParam.filterCol=['chggroup'],
 				dialog_chgcode.urlParam.filterVal=[$("#Fitem :input[name*='i_chggroup']").val()]
 			}
-		},'urlParam'
+		},'urlParam', 'radio', 'tab'
 	);
 	dialog_chgcode.makedialog();
 
@@ -862,4 +896,12 @@ $(document).ready(function () {
 	/////////////////Pager Hide/////////////////////////////////////////////////////////////////////////////////////////
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
+
+	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
+		$("#jqGridsvc").jqGrid ('setGridWidth', Math.floor($("#jqGridsvc_c")[0].offsetWidth-$("#jqGridsvc_c")[0].offsetLeft-28));
+	});
+
+	$("#jqGrid3_panel2").on("show.bs.collapse", function(){
+		$("#jqGriditem").jqGrid ('setGridWidth', Math.floor($("#jqGriditem_c")[0].offsetWidth-$("#jqGriditem_c")[0].offsetLeft-28));
+	});
 });

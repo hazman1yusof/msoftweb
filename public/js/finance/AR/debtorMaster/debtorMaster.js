@@ -53,12 +53,11 @@
 					},
 					gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_debtortype.ontabbing){
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							dialog_debtortype.ontabbing = false;
 							$('#name').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0){
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}
 					}
@@ -70,7 +69,7 @@
 					}
 				},'urlParam', 'radio', 'tab'
 			);
-			dialog_debtortype.makedialog();
+			dialog_debtortype.makedialog(true);
 
 			var dialog_billtype = new ordialog(
 				'billtype','hisdb.billtymst','#billtype',errorField,
@@ -86,16 +85,15 @@
 					$('#billtypeop').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_billtype.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_billtype.ontabbing = false;
-						$('#billtypeop').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#billtypeop').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 
 				},{
 					title:"Select Bill Type IP",
@@ -105,7 +103,7 @@
 					}
 				},'urlParam', 'radio', 'tab'
 			);
-			dialog_billtype.makedialog();
+			dialog_billtype.makedialog(true);
 
 			var dialog_billtypeop = new ordialog(
 				'billtypeop','hisdb.billtymst','#billtypeop',errorField,
@@ -121,16 +119,15 @@
 					$('#coverageip').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_billtypeop.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_billtypeop.ontabbing = false;
-						$('#coverageip').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#coverageip').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 				},{
 					title:"Select Bill Type OP",
 					open: function(){
@@ -139,7 +136,7 @@
 					}
 				},'urlParam', 'radio', 'tab'
 			);
-			dialog_billtypeop.makedialog();
+			dialog_billtypeop.makedialog(true);
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -308,30 +305,6 @@
 				},
 				
 			});
-
-			/*////////////////////formatter status////////////////////////////////////////
-				function formatterstatus(cellvalue, option, rowObject){
-					if (cellvalue == 'A'){
-						return 'Active';
-					}
-
-					if (cellvalue == 'D'){
-						return 'Deactive';
-					}
-
-				}
-
-			////////////////////unformatter status////////////////////////////////////////
-				function unformat(cellvalue, option, rowObject){
-					if (cellvalue == 'Active'){
-						return 'Active';
-					}
-
-					if (cellvalue == 'Deactive'){
-						return 'Deactive';
-					}
-
-				}*/
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

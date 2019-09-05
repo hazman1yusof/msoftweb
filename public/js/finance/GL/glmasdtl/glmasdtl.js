@@ -27,16 +27,15 @@
 					$('#year').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_dept.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_dept.ontabbing = false;
-						$('#year').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#year').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 				},{
 					title:"Select GL Account",
 					open: function(){
@@ -45,7 +44,7 @@
 					}
 				},'urlParam','radio','tab'
 			);
-			dialog_dept.makedialog();
+			dialog_dept.makedialog(true);
 			dialog_dept.on();
 
 			////////////////////////////////////start dialog///////////////////////////////////////

@@ -43,17 +43,16 @@
 					$('#category').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_costcode.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_costcode.ontabbing = false;
-						$('#category').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#category').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
 				
-			},
 				},{
 					title:"Select Cost Center",
 					open: function(){
@@ -62,7 +61,7 @@
 					}
 				},'urlParam','radio','tab'
 			);
-			dialog_costcode.makedialog();
+			dialog_costcode.makedialog(true);
 
 			var dialog_sector = new ordialog(
 				'sector','sysdb.sector','#sector',errorField,
@@ -78,16 +77,15 @@
 					$('#chgdept').focus();
 				},
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_sector.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_sector.ontabbing = false;
-						$('#chgdept').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#chgdept').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 
 				},{
 					title:"Select Sector",
@@ -97,7 +95,7 @@
 					}
 				},'urlParam','radio','tab'
 			);
-			dialog_sector.makedialog();
+			dialog_sector.makedialog(true);
 
 			var dialog_region = new ordialog(
 				'region','sysdb.region','#region',errorField,
@@ -112,17 +110,17 @@
 				ondblClickRow: function () {
 					$('#sector').focus();
 				},
+
 				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && dialog_region.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						dialog_region.ontabbing = false;
-						$('#sector').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0){
-						$('#'+obj.dialogname).dialog('close');
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#sector').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
 					}
-				}
 
 				},{
 					title:"Select Region",
@@ -132,7 +130,7 @@
 					}
 				},'urlParam','radio','tab'
 			);
-			dialog_region.makedialog();
+			dialog_region.makedialog(true);
 			
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
