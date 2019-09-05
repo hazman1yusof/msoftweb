@@ -35,11 +35,11 @@
 	var dialog_assetcode= new ordialog(
 		'assetcode','finance.facode','#assetcode',errorField,
 		{	colModel:[
-				{label:'Assetcode',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Asset Code',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'AssetType',name:'assettype',width:100,classes:'pointer',hidden:true},
+				{label:'Asset Type',name:'assettype',width:100,classes:'pointer',hidden:true},
 				{label:'Method',name:'method',width:100,classes:'pointer',hidden:true},
-				{label:'Residualvalue',name:'residualvalue',width:100,classes:'pointer',hidden:true},
+				{label:'Residual Value',name:'residualvalue',width:100,classes:'pointer',hidden:true},
 			],
 			urlParam: {
 				filterCol:['compcode'],
@@ -75,7 +75,7 @@
 	var dialog_deptcode= new ordialog(
 		'deptcode','sysdb.department','#deptcode',errorField,
 		{	colModel:[
-			    {label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+			    {label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
@@ -106,7 +106,7 @@
 	var dialog_loccode= new ordialog(
 		'loccode','sysdb.location','#loccode',errorField,
 		{	colModel:[
-				{label:'Loccode',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Location Code',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
@@ -140,7 +140,7 @@
 	var dialog_suppcode= new ordialog(
 		'suppcode','material.supplier','#suppcode',errorField,
 		{	colModel:[
-				{label:'SuppCode',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Name',name:'name',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
@@ -177,14 +177,14 @@
 	var dialog_delordno= new ordialog(
 		'delordno',['material.delordhd as dohd','finance.apacthdr as ap'],'#delordno',errorField,
 		{	colModel:[
-				{label:'Delordno',name:'dohd_delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Suppcode',name:'dohd_suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Delivery Order No',name:'dohd_delordno',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'dohd_suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
 				{label:'dohd_recno',name:'dohd_recno',width:100,classes:'pointer',hidden:true},
-				{label:'deliverydate',name:'dohd_deliverydate',width:100,classes:'pointer',hidden:true},
-				{label:'Docno',name:'dohd_docno',width:100,classes:'pointer',hidden:true},
-				{label:'invoiceno',name:'dohd_invoiceno',width:100,classes:'pointer',hidden:false},
-				{label:'trandate',name:'dohd_trandate',width:100,classes:'pointer',hidden:false},
-				{label:'ap_actdate',name:'ap_actdate',width:100,classes:'pointer',hidden:false},
+				{label:'Delivery Date',name:'dohd_deliverydate',width:100,classes:'pointer',hidden:true},
+				{label:'Document No',name:'dohd_docno',width:100,classes:'pointer',hidden:true},
+				{label:'Invoice No',name:'dohd_invoiceno',width:100,classes:'pointer',hidden:false},
+				{label:'Transaction Date',name:'dohd_trandate',width:100,classes:'pointer',hidden:false},
+				{label:'AP Actual Date',name:'ap_actdate',width:100,classes:'pointer',hidden:false},
 			],
 			urlParam: {
 				filterCol:['dohd.compcode','dohd.invoiceno','dohd.suppcode'],
@@ -231,8 +231,8 @@
 	var dialog_invno= new ordialog(
 		'invno','finance.apacthdr','#invno',errorField,
 		{	colModel:[
-			    {label:'invno',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Suppcode',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
+			    {label:'Invoice No',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
 			],
 			urlParam: {
 				filterCol:['compcode','source','trantype','suppcode','document','recstatus'],
@@ -264,10 +264,10 @@
 	var dialog_itemcode= new ordialog(
 		'itemcode',['material.delorddt as dodt','material.productmaster as p'],'#itemcode',errorField,
 		{	colModel:[
-				{label:'Itemcode',name:'dodt_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'description',name:'p_description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Item Code',name:'dodt_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'p_description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'dodt_uomcode',name:'dodt_uomcode',width:100,classes:'pointer',hidden:true},
-				{label:'dodt_remarks',name:'dodt_remarks',width:100,classes:'pointer',hidden:false},
+				{label:'Dodt Remarks',name:'dodt_remarks',width:100,classes:'pointer',hidden:false},
 				{label:'dodt_qtydelivered',name:'dodt_qtydelivered',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_unitprice',name:'dodt_unitprice',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_amount',name:'dodt_amount',width:100,classes:'pointer',hidden:true},
@@ -317,7 +317,7 @@
 	var dialog_itemcode_direct= new ordialog(
 		'itemcode_direct',['material.product'],'#itemcode_direct',errorField,
 		{	colModel:[
-				{label:'Itemcode',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Item Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'uomcode',name:'uomcode',width:100,classes:'pointer',hidden:true},
 				{label:'currprice',name:'currprice',width:100,classes:'pointer',hidden:true},			

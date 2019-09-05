@@ -138,9 +138,9 @@
 						<div class="col-md-3">
 							<div class='input-group'>
 								<input id="invno" name="invno" type="text" class="form-control input-sm" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
 							</div>
-							<span class="help-block"></span>
+							<!-- <span class="help-block"></span> -->
 						</div>
 
 					<label class="col-md-2 control-label" for="delorddate">Delivery Order Date</label>

@@ -35,7 +35,7 @@ $(document).ready(function () {
 	var dialog_itemcode = new ordialog(
 		'itemcodesearch','material.productmaster','#itemcodesearch',errorField,
 		{	colModel:[
-				{label:'Dept Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 				{label:'groupcode',name:'groupcode',hidden:true},
 				{label:'productcat',name:'productcat',hidden:true}
@@ -65,7 +65,6 @@ $(document).ready(function () {
 		{
 			title:"Select Item Code",
 			open: function(){
-
 				var gc2 = $('#groupcode2').val();
 				var Class2 = $('#Class2').val();
 				dialog_itemcode.urlParam.filterCol = ['groupcode', 'Class','recstatus','compcode'];
@@ -110,7 +109,7 @@ $(document).ready(function () {
 	var dialog_subcategory = new ordialog(
 		'subcatcode','material.subcategory','#subcatcode',errorField,
 		{	colModel:[
-				{label:'Dept Code',name:'subcatcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department Code',name:'subcatcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			urlParam: {
@@ -209,7 +208,7 @@ $(document).ready(function () {
 	var dialog_mstore = new ordialog(
 		'mstore','sysdb.department','#mstore',errorField,
 		{	colModel:[
-				{label:'Dept Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			urlParam: {
