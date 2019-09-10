@@ -1546,7 +1546,7 @@ $(document).ready(function () {
 	dialog_uomcodetrdept.makedialog(false);
 
 	var dialog_uomcoderecv = new ordialog(
-		'pouom', ['material.uom '], "#jqGrid2 input[name='uomcoderecv']", errorField,
+		'uomcoderecv', ['material.uom'], "#jqGrid2 input[name='uomcoderecv']", errorField,
 		{
 			colModel:
 			[
@@ -1559,7 +1559,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','A']
 					},
 			ondblClickRow: function (event) {
-				if(event.type == 'keydown'){
+		/*		if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
@@ -1571,7 +1571,7 @@ $(document).ready(function () {
 					var id_optid = optid.substring(0,optid.search("_"));
 
 					$(event.currentTarget).parent().next().html('');
-				}
+				}*/
 
 				let data=selrowData('#'+dialog_uomcoderecv.gridname);
 
