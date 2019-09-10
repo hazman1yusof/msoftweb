@@ -579,11 +579,11 @@ function checkbox_selection(grid,colname){
 			if(hidden){
 				$('#sel_tbl_div').show('fast');
 				$(this).data('hide',false);
-				$(this).text('Show Selection Table')
+				$(this).text('Hide Selection Item')
 			}else{
 				$('#sel_tbl_div').hide('fast');
 				$(this).data('hide',true);
-				$(this).text('Hide Selection Table')
+				$(this).text('Show Selection Item')
 			}
 		});
 	}
