@@ -492,7 +492,13 @@ abstract class defaultController extends Controller{
     public function recno($source,$trantype){
         $pvalue1 = DB::table('sysdb.sysparam')
                 ->select('pvalue1')
-                ->where('source','=',$source)->where('trantype','=',$trantype)->first();
+                ->where('source','=',$source)->where('trantype','=',$trantype);
+
+        if(!$pvalue1->exists()){
+            throw new \Exception("Sysparam for source $source and trantype $trantype is not available");
+        }
+
+        $pvalue1 = $pvalue1->first();
 
         DB::table('sysdb.sysparam')
             ->where('source','=',$source)->where('trantype','=',$trantype)

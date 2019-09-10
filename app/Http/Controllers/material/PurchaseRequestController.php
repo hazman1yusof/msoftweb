@@ -95,7 +95,7 @@ class PurchaseRequestController extends defaultController
         try {
 
             $idno = $table->insertGetId($array_insert);
-
+            
             $totalAmount = 0;
             if(!empty($request->referral)){
                 ////ni kalu dia amik dari po
@@ -135,97 +135,35 @@ class PurchaseRequestController extends defaultController
             $idno = $request->table_id;
         }
 
-        $purreqno = DB::table('material.purreqhd')
-                    ->select('purreqno')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->purreqhd_recno)->first();
-        
-        if($purreqno->purreqno == $request->purreqhd_purreqno){
-            // ni edit macam biasa, nothing special
-            DB::beginTransaction();
+        DB::beginTransaction();
 
-            $table = DB::table("material.purreqhd");
+        $table = DB::table("material.purreqhd");
 
-            $array_update = [
-                'unit' => session('unit'),
-                'compcode' => session('compcode'),
-                'upduser' => session('username'),
-                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-            ];
+        $array_update = [
+            'unit' => session('unit'),
+            'compcode' => session('compcode'),
+            'upduser' => session('username'),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+        ];
 
-            foreach ($field as $key => $value) {
-                $array_update[$value] = $request[$request->field[$key]];
-            }
+        foreach ($field as $key => $value) {
+            $array_update[$value] = $request[$request->field[$key]];
+        }
 
-            try {
-                //////////where//////////
-                $table = $table->where('idno','=',$request->purreqhd_idno);
-                $table->update($array_update);
+        try {
+            //////////where//////////
+            $table = $table->where('idno','=',$request->purreqhd_idno);
+            $table->update($array_update);
 
-                $responce = new stdClass();
-                $responce->totalAmount = $request->purreqhd_totamount;
-                echo json_encode($responce);
+            $responce = new stdClass();
+            $responce->totalAmount = $request->purreqhd_totamount;
+            echo json_encode($responce);
 
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollback();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
 
-                return response('Error'.$e, 500);
-            }
-        }else{
-            DB::beginTransaction();
-
-            try{
-                // ni edit kalu copy utk do dari existing po
-                //1. update po.delordno lama jadi 0, kalu do yang dulu pon copy existing po 
-                if($purreqno->purreqno != '0'){
-                    DB::table('material.purordhd')
-                    ->where('purordno','=', $purreqno->purreqno)->where('compcode','=',session('compcode'))
-                    ->update(['delordno' => '0']);
-                }
-
-                //2. Delete detail from delorddt
-                DB::table('material.delorddt')->where('recno','=',$request->purreqhd_recno);
-
-                //3. Update purreqno_purreqhd
-                $table = DB::table("material.purreqhd");
-
-                $array_update = [
-                    'compcode' => session('compcode'),
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ];
-
-                foreach ($field as $key => $value) {
-                    $array_update[$value] = $request[$request->field[$key]];
-                }
-
-                $table = $table->where('idno','=',$request->purreqhd_idno);
-                $table->update($array_update);
-
-                $totalAmount = $request->purreqhd_totamount;
-                //4. Update delorddt
-              /*  if(!empty($request->referral)){
-                    $totalAmount = $this->save_dt_from_othr_po($request->referral,$request->purreqhd_recno,$request->purreqhd_purreqno);
-
-                    $purreqno = $request->purreqhd_purreqno;
-
-                    ////dekat po header sana, save balik delordno dkt situ
-                    DB::table('material.purordhd')
-                        ->where('purordno','=',$purreqno)->where('compcode','=',session('compcode'))
-                        ->update(['purreqno' => $purreqno]);
-                }
-
-                $responce = new stdClass();
-                $responce->totalAmount = $totalAmount;
-                echo json_encode($responce);
-
-                DB::commit();*/
-            } catch (\Exception $e) {
-                DB::rollback();
-
-                return response('Error'.$e, 500);
-            }
+            return response('Error'.$e, 500);
         }
 
     }
