@@ -579,11 +579,11 @@ function checkbox_selection(grid,colname){
 			if(hidden){
 				$('#sel_tbl_div').show('fast');
 				$(this).data('hide',false);
-				$(this).text('Show Selection Table')
+				$(this).text('Hide Selection Item')
 			}else{
 				$('#sel_tbl_div').hide('fast');
 				$(this).data('hide',true);
-				$(this).text('Hide Selection Table')
+				$(this).text('Show Selection Item')
 			}
 		});
 	}
@@ -691,6 +691,16 @@ function setactdate(target){
 		} //Accounting Period Has been Closed
 			//Date not in accounting period setup
 	}
+}
+
+function text_error1(id){
+	$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+	$( id ).removeClass( "valid" ).addClass( "error" );
+}
+
+function text_success1(id){
+	$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+	$( id ).removeClass( "error" ).addClass( "valid" );
 }
 
 function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam',dcolrType='radio',needTab='notab',required=true){
@@ -1112,6 +1122,14 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 						errorField.push( idtopush );
 					}
 				}
+			}else if(self.required == false && value == ''){
+				if($.inArray(idtopush,errorField)!==-1){
+					errorField.splice($.inArray(idtopush,errorField), 1);
+				}
+				$( id ).parent().parent().removeClass( "has-error" );
+				$( id ).removeClass( "error" );
+				$( id ).parent().siblings( ".help-block" ).html('');
+
 			}
 			
 		});

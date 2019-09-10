@@ -59,6 +59,7 @@ class assetregisterController extends defaultController
                         ->whereNotNull('dohd.invoiceno')
                         ->where('dohd.suppcode','=',$request->suppcode)
                         ->get();
+
         foreach ($delordhd as $key => $value) {
             $delorddt = DB::table('material.delorddt')
                             ->where('compcode','=',session('compcode'))
@@ -82,11 +83,14 @@ class assetregisterController extends defaultController
 
             $chunk = $delordhd->forPage($request->page,$request->rows);
         }
+        $chunk_array = [];
+        foreach ($chunk as $key => $value) {
+            array_push($chunk_array, $value);
+        }
 
         $responce = new stdClass();
-        $responce->rows = $chunk;
+        $responce->rows = $chunk_array;
 
-        // dump($delordhd);
 
         return json_encode($responce);
 

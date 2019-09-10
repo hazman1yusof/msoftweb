@@ -6,6 +6,25 @@
 	.noti{
 		color: rgb(185, 74, 72);
 	}
+	.heading_panel_{
+		font-size: larger !important;
+	    font-weight: bold !important;
+	    color: #333 !important;
+	    background-color: #bad5ec !important;
+	    border-color: ##8eb0ce !important;
+
+	}
+
+	.button_custom_hide{
+		color: #333 !important;
+		background-color: #bad5ec !important;
+		border-color: #ffffff !important;
+	}
+
+	.button_custom_tag{
+		color: #333 !important;
+		border-color: #ffffff !important;
+	}
 @endsection
 
 @section('body')
@@ -36,18 +55,24 @@
 				</div>
 
 				<div class="col-md-6 col-md-offset-2 pull-right" style="padding-top: 0; text-align: end;">
-					<button type="button" id='show_sel_tbl' data-hide='false' class='btn btn-primary' >Show Selection Table</button>
-					<button type="button" id='taggingNoButton' class='btn btn-info' >Generate Tagging No</button>
+					<button type="button" id='show_sel_tbl' data-hide='false' class='btn btn-primary button_custom_hide' >Hide Selection Item</button>
+					<button type="button" id='taggingNoButton' class='btn btn-info button_custom_tag' >Generate Tagging No</button>
 				</div>
 			 </fieldset> 
 		</form>
-    	<div class="panel panel-default">
+		<div class="panel panel-default">
+    		<div class="panel-heading heading_panel_">List Of Selected Item</div>
     		<div class="panel-body">
     			<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
     				<table id="jqGrid_selection" class="table table-striped"></table>
     				<div id="jqGrid_selectionPager"></div>
 				</div>
+    		</div>
+		</div>
 
+    	<div class="panel panel-default">
+    		<div class="panel-heading heading_panel_">List of Asset Register</div>
+    		<div class="panel-body">
     			<div class='col-md-12' style="padding:0 0 15px 0">
     				<table id="jqGrid" class="table table-striped"></table>
     				<div id="jqGridPager"></div>
@@ -138,9 +163,9 @@
 						<div class="col-md-3">
 							<div class='input-group'>
 								<input id="invno" name="invno" type="text" class="form-control input-sm" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
 							</div>
-							<span class="help-block"></span>
+							<!-- <span class="help-block"></span> -->
 						</div>
 
 					<label class="col-md-2 control-label" for="delorddate">Delivery Order Date</label>

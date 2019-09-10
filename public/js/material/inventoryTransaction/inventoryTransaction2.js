@@ -637,12 +637,25 @@ $(document).ready(function () {
 				{ label: 'Supplier Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + supplierkatdepan.gridname).suppcode;
 
 				urlParam.searchCol=["suppcode"];
 				urlParam.searchVal=[data];
 				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
 			}
 		},{
 			title: "Select Transaction Department",
@@ -1323,14 +1336,31 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true,},
-				]
+			],
+			urlParam: {
+					filterCol:['storedept', 'recstatus','compcode','sector'],
+					filterVal:['1', 'A','session.compcode', 'session.unit']
+			},
+			ondblClickRow: function () {
+				$('#trantype').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#trantype').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
 		},{
 			title:"Select Transaction Department",
 			open: function(){
-				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus'];
-				dialog_txndept.urlParam.filterVal=['1', 'A'];
+				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
+				dialog_txndept.urlParam.filterVal=['1', 'A','session.compcode', 'session.unit'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_txndept.makedialog();
 
@@ -1341,7 +1371,11 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'isstype',name:'isstype',width:100,classes:'pointer',hidden:true},
 				{label:'crdbfl',name:'crdbfl',width:100,classes:'pointer',hidden:true},
-				],
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']
+			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_trantype.gridname);
 				inputTrantypeValue(data['isstype'],data['crdbfl']);
@@ -1351,17 +1385,32 @@ $(document).ready(function () {
 				reqRecNo(data['isstype']);
 				
 				$("#sndrcvtype").val("");
-			}	
+				$('#trandate').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#trandate').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
 		},{
 			title:"Select Transaction Type",
 			open: function(){
-				dialog_trantype.urlParam.filterInCol=['trantype'];
+			/*	dialog_trantype.urlParam.filterInCol=['trantype'];
 				dialog_trantype.urlParam.filterInType=['NOT IN'];
 				dialog_trantype.urlParam.filterInVal=[['DS1', 'DS']];
 				dialog_trantype.urlParam.filterCol=['recstatus'];
+				dialog_trantype.urlParam.filterVal=['A'];*/
+				dialog_trantype.urlParam.whereNotInCol=['trantype'];
+				dialog_trantype.urlParam.whereNotInVal=[['DS1', 'DS']];
+				dialog_trantype.urlParam.filterCol=['recstatus'];
 				dialog_trantype.urlParam.filterVal=['A'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_trantype.makedialog();
 
@@ -1370,7 +1419,34 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				]
+			],
+			urlParam: {
+				open: function(){
+					if($('#trantype').val().trim() == 'TR') {
+						filterCol:['storedept', 'recstatus'];
+						filterVal:['1', '<>.DELETE'];
+						filterInCol:['deptcode'];
+						filterInType:['NOT IN'];
+						filterInVal:[[$('#txndept').val()]];
+					}else {
+						filterCol:['recstatus'];
+						filterVal:['A'];
+					}
+				}
+			},
+			ondblClickRow:function(){
+				$('#amount').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#amount').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
 		},{
 			title:"Select Receiver Department",
 			open: function(){
@@ -1385,7 +1461,7 @@ $(document).ready(function () {
 					dialog_sndrcv.urlParam.filterVal=['A'];
 				}
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_sndrcv.makedialog();
 
@@ -1401,6 +1477,10 @@ $(document).ready(function () {
 				{label: 'Average Cost', name: 'p_avgcost', width: 100, classes: 'pointer', hidden:false },
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 			],
+			urlParam: {
+				filterCol:['s.compcode','s.year','s.deptcode'],
+				filterVal:['session.compcode', moment($('#trandate').val()).year(),$('#txndept').val()]
+			},
 			ondblClickRow:function(event){
 				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 				var id_optid = optid.substring(0,optid.search("_"));
@@ -1417,6 +1497,14 @@ $(document).ready(function () {
 				getQOHtxndept();
 				checkQOH();
 				
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 		},{
 			title:"Select Item For Stock Transaction",
@@ -1424,7 +1512,7 @@ $(document).ready(function () {
 				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode'];
 				dialog_itemcode.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$('#txndept').val()];
 			}
-		},'urlParam','radio'
+		},'urlParam','radio', 'tab'
 	);
 	dialog_itemcode.makedialog(false);
 	dialog_itemcode._init_func(function(self){
@@ -1451,6 +1539,10 @@ $(document).ready(function () {
 				{label:'Average Cost', name: 'p_avgcost', width: 100, classes: 'pointer'},
 				{label:'Quantity On Hand',name:'s_qtyonhand',width:80,classes:'pointer'},
 			],
+			urlParam: {
+				filterCol:['s.compcode','s.deptcode','s.itemcode','s.year'],
+				filterVal:['session.compcode',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()]
+			},
 			ondblClickRow:function(event){
 				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 				var id_optid = optid.substring(0,optid.search("_"));
@@ -1462,6 +1554,14 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_convfactoruomcodetrdept").val(data['u_convfactor']);
 				$("#jqGrid2 #"+id_optid+"_netprice").val(data['p_avgcost']);
 				checkQOH(event)
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 			
 		},{
@@ -1470,7 +1570,7 @@ $(document).ready(function () {
 				dialog_uomcodetrdept.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
 				dialog_uomcodetrdept.urlParam.filterVal=['session.company',$('#txndept').val(),null,moment($('#trandate').val()).year()];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_uomcodetrdept.makedialog(false);
 	dialog_uomcodetrdept._init_func(function(self){
@@ -1495,6 +1595,12 @@ $(document).ready(function () {
 				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
 			],
+			urlParam: {
+				filterCol:['s.compcode','s.deptcode','s.itemcode','s.year'],
+				filterVal:['session.company','',moment($('#trandate').val()).year()]
+				/*filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']*/
+			},
 			ondblClickRow:function(event){
 				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 				var id_optid = optid.substring(0,optid.search("_"));
@@ -1504,6 +1610,14 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_convfactoruomcoderecv").val(data['u_convfactor']);
 				//$("#jqGrid2 input[name='uomcoderecv']").val(data['s_uomcode']);
 				getQOHsndrcv();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 			
 		},{
@@ -1512,7 +1626,7 @@ $(document).ready(function () {
 				dialog_uomcoderecv.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
 				dialog_uomcoderecv.urlParam.filterVal=['session.company','',moment($('#trandate').val()).year()];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_uomcoderecv.makedialog(false);
 	dialog_uomcoderecv._init_func(function(self){
@@ -1539,6 +1653,10 @@ $(document).ready(function () {
 				{label:'uomcode', name: 'uomcode', width: 50, classes: 'pointer', hidden:true },
 				{label:'deptcode', name: 'deptcode', width: 50, classes: 'pointer', hidden:true },
 			],
+			urlParam: {
+						filterCol:['compcode','year','deptcode', 'uomcode', 'itemcode'],
+						filterVal:['session.compcode',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val(), $("#jqGrid2 input[name='itemcode']").val()]
+			},
 			ondblClickRow:function(event){
 				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 				var id_optid = optid.substring(0,optid.search("_"));
@@ -1546,6 +1664,14 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_expdate.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_batchno").val(data['batchno']);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 		},{
 			title:"Select Expiry Date",
@@ -1554,7 +1680,7 @@ $(document).ready(function () {
 				dialog_expdate.urlParam.filterVal=['session.company',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val(), $("#jqGrid2 input[name='itemcode']").val()];
 			
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_expdate.makedialog(false);
 
@@ -1563,8 +1689,23 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Request RecNo',name:'recno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				//{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				],
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','POSTED']
+			},	
 			ondblClickRow:function(){
+				$('#sndrcvtype').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#sndrcvtype').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
 			}	
 		},{
 			title:"Select Request RecNo",
@@ -1572,7 +1713,7 @@ $(document).ready(function () {
 				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus'];
 				dialog_requestRecNo.urlParam.filterVal=['session.company','POSTED'];
 			}
-		}, 'urlParam'
+		}, 'urlParam','radio','tab'
 	);
 	dialog_requestRecNo.makedialog(false);
 
@@ -1594,6 +1735,9 @@ $(document).ready(function () {
 			}
 		}
 	}
+	$("#jqGrid3_panel").on("show.bs.collapse", function(){
+		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
+	});
 
 	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();

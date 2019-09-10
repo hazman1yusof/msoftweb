@@ -1020,9 +1020,16 @@ $(document).ready(function () {
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
-					},
+					open: function(){
+						if (($('#apacthdr_ttype').val()=="Supplier")) {
+							filterCol:['recstatus', 'compcode', 'source', 'povalidate'];
+							filterVal:['A', 'session.compcode', 'CR', '1'];
+						} else {
+							filterCol:['recstatus', 'compcode', 'source', 'povalidate'];
+							filterVal:['A', 'session.compcode', 'CR', '0'];
+						}	
+					}	
+			},
 		
 			ondblClickRow:function(){
 				$('#apacthdr_deptcode').focus();
@@ -1061,22 +1068,22 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
 					},
 			ondblClickRow:function(){
 				$('#apacthdr_remarks').focus();
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#apacthdr_remarks').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#apacthdr_remarks').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
 					}
+			}
 		},{
 			title:"Select Department Code",
 			open: function(){

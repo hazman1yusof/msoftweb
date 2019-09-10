@@ -1,29 +1,29 @@
 $.jgrid.defaults.responsive = true;
-		$.jgrid.defaults.styleUI = 'Bootstrap';
-		var editedRow=0;
+	$.jgrid.defaults.styleUI = 'Bootstrap';
+	var editedRow=0;
 
-		$(document).ready(function () {
-			$("body").show();
-			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-			/////////////////////////validation//////////////////////////
-			$.validate({
-				modules : 'sanitize',
-				language : {
-					requiredFields: ''
-				},
-			});			
+	$(document).ready(function () {
+		$("body").show();
+		check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+		/////////////////////////validation//////////////////////////
+		$.validate({
+			modules : 'sanitize',
+			language : {
+				requiredFields: ''
+			},
+		});			
 			
-			var errorField=[];
-			conf = {
-				onValidate : function($form) {
-					if(errorField.length>0){
-						return {
-							element : $(errorField[0]),
-							message : ' '
-						}
+		var errorField=[];
+		conf = {
+			onValidate : function($form) {
+				if(errorField.length>0){
+					return {
+						element : $(errorField[0]),
+						message : ' '
 					}
-				},
-			};
+				}
+			},
+		};
 			//////////////////////////////////////////////////////////////
 		
 		/*	$.get("#formdata", "#jqGrid", function() {
@@ -321,7 +321,7 @@ $.jgrid.defaults.responsive = true;
 			addParamField('#jqGrid',false,saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus' ]);
 
 
-			  var dialog_assettype = new ordialog(
+			var dialog_assettype = new ordialog(
 				'assettype','finance.fatype','#assettype',errorField,
 				{	colModel:[
 						{label:'Asset Type',name:'assettype',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -343,7 +343,8 @@ $.jgrid.defaults.responsive = true;
 							$('#'+obj.dialogname).dialog('close');
 						}
 					}
-				},{
+				},
+				{
 					title:"Select Asset Type",
 					open: function(){
 						dialog_assettype.urlParam.filterCol=['recstatus'],
@@ -356,7 +357,7 @@ $.jgrid.defaults.responsive = true;
 			var dialog_deptcode = new ordialog(
 				'deptcode','sysdb.department','#deptcode',errorField,
 				{	colModel:[
-						{label:'Deptcode',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 						{label:'Cost Code',name:'costcode',width:400,hidden:true},
 						],
@@ -376,7 +377,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Department",
 					open: function(){
 						dialog_deptcode.urlParam.filterCol=['recstatus'],
@@ -409,7 +411,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Asset",
 					open: function(){
 						dialog_glassetcode.urlParam.filterCol=['recstatus'],
@@ -442,7 +445,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Asset",
 					open: function(){
 						dialog_glasset.urlParam.filterCol=['recstatus'],
@@ -475,7 +479,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Depreciation Code",
 					open: function(){
 						dialog_gldepccode.urlParam.filterCol=['recstatus'],
@@ -509,7 +514,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Depreciation Code",
 					open: function(){
 						dialog_gldep.urlParam.filterCol=['recstatus'],
@@ -544,7 +550,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Provision for Depr",
 					open: function(){
 						dialog_glprovccode.urlParam.filterCol=['recstatus'],
@@ -578,7 +585,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Provision for Depr",
 					open: function(){
 						dialog_glprovdep.urlParam.filterCol=['recstatus'],
@@ -612,7 +620,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Gain ",
 					open: function(){
 						dialog_glglossccode.urlParam.filterCol=['recstatus'],
@@ -646,7 +655,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Gain ",
 					open: function(){
 						dialog_glgainloss.urlParam.filterCol=['recstatus'],
@@ -680,7 +690,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Loss",
 					open: function(){
 						dialog_glrevccode.urlParam.filterCol=['recstatus'],
@@ -715,7 +726,8 @@ $.jgrid.defaults.responsive = true;
 								$('#'+obj.dialogname).dialog('close');
 							}
 						}
-				},{
+				},
+				{
 					title:"Select Loss",
 					open: function(){
 						dialog_glrevaluation.urlParam.filterCol=['recstatus'],
@@ -727,10 +739,3 @@ $.jgrid.defaults.responsive = true;
 			// dialog_glrevaluation=new makeDialog('finance.glmasref','#glrevaluation',['glaccno','description'], 'Loss');
 
 		});
-			
-		
-
-			
-			
-
-			
