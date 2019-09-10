@@ -536,10 +536,18 @@ abstract class defaultController extends Controller{
         if($pvalue1->exists()){
             $pvalue1 = $pvalue1->first();
             $pvalue1 = (array)$pvalue1;
-            $this->gltranAmount = $pvalue1["actamount".$period];
-        }
 
-        return $pvalue1->exists();
+            if(is_null($pvalue1["actamount".$period])){
+                $this->gltranAmount = 0.00;
+            }else{
+                $this->gltranAmount = $pvalue1["actamount".$period];
+            }
+
+            return true;
+        }else{
+
+            return false;
+        }
     }
 
     //nak check glmasdtl exist ke tak utk sekian costcode, glaccount, year, period
@@ -556,7 +564,6 @@ abstract class defaultController extends Controller{
 
         if($pvalue1->exists()){
             $pvalue1 = $pvalue1->first();
-            dump($pvalue1);
             $pvalue1 = (array)$pvalue1;
 
             if(is_null($pvalue1["actamount".$period])){

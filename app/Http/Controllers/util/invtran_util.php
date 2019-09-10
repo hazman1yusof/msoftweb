@@ -60,7 +60,6 @@ class invtran_util extends defaultController{
                 ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
                 ->where('StockLoc.UomCode','=',$value->uomcode);
 
-
             if($stockloc_obj->exists()){
 
                 $stockloc_obj = $stockloc_obj->first();
@@ -72,6 +71,8 @@ class invtran_util extends defaultController{
                     $draccno = $category_obj->cosacct;
                     $drccode = $dept_obj->costcode;
                 }
+            }else{
+                throw new \Exception("stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->sndrcv." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
             }
 
         }else{
