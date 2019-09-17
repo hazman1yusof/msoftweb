@@ -608,14 +608,6 @@
 			}
 		}
 
-		function formatterCheckbox(cellvalue, options, rowObject){
-			if(options.gid == "jqGrid"){
-				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject.idno+"' data-idno='"+rowObject.idno+"' data-rowid='"+options.rowId+"'>";
-			}else{
-				return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject.idno+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-			}
-		}
-
 		//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 		function showdetail(cellvalue, options, rowObject){
 			var field,table,case_;
@@ -988,7 +980,6 @@
 			viewrecords: true,
 			sortname: 'lineno_',
 			sortorder: "desc",
-			pager: "#jqGridPager3",
 			gridComplete: function(){
 				
 			},

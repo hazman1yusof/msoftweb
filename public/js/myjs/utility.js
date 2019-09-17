@@ -533,7 +533,9 @@ function jqgrid_label_align_right(grid){
 }
 
 
-function checkbox_selection(grid,colname){
+function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
+	this.idno=idno
+	this.recstatus =recstatus;
 	this.checkall_ = false;
 	this.on = function(){
 		$(grid).jqGrid('setLabel',colname,`
@@ -545,76 +547,89 @@ function checkbox_selection(grid,colname){
 		let self = this;
 		$('#checkbox_all_check').click(function(){//click will check all
 			self.checkall_ = true;
+			let idno = self.idno;
+			let recstatus = self.recstatus;
 			$(this).hide();
 			$('#checkbox_all_uncheck').show();
 			$("#jqGrid input[type='checkbox'][name='checkbox_selection']").prop('checked',true);
 			let rowdatas = $('#jqGrid').jqGrid ('getRowData');
-			rowdatas.forEach(function(rowdata){
-				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata.idno);
-				if($.isEmptyObject(rowdata_jqgridsel)){
-					$('#jqGrid_selection').jqGrid ('addRowData', rowdata.idno,rowdata);
-					self.delete_function_on(rowdata.idno);
+			rowdatas.forEach(function(rowdata,index){
+				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata[idno]);
+				if($.isEmptyObject(rowdata_jqgridsel) && rowdata[recstatus] == "OPEN"){
+					$('#jqGrid_selection').jqGrid ('addRowData', rowdata[idno],rowdata);
+					self.delete_function_on(rowdata[idno],index+1);
 				}
 			});
-
+			self.show_hide_table();
 		});
 
 		$('#checkbox_all_uncheck').click(function(){//click will uncheck all
 			self.checkall_ = false;
+			let idno = self.idno;
 			$(this).hide();
 			$('#checkbox_all_check').show();
 			$("#jqGrid input[type='checkbox'][name='checkbox_selection']").prop('checked',false);
 			let rowdatas = $('#jqGrid').jqGrid ('getRowData');
 			rowdatas.forEach(function(rowdata){
-				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata.idno);
+				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata[idno]);
 				if(!$.isEmptyObject(rowdata_jqgridsel)){
-					$('#jqGrid_selection').jqGrid ('delRowData', rowdata.idno);
+					$('#jqGrid_selection').jqGrid ('delRowData', rowdata[idno]);
 				}
 			});
-
+			self.show_hide_table();
 		});
 
 		$("#show_sel_tbl").click(function(){
 			let hidden = $(this).data('hide');
 			if(hidden){
-				$('#sel_tbl_div').show('fast');
+				$('#sel_tbl_panel').show('fast',function(){
+					$("#jqGrid_selection").jqGrid ('setGridWidth', Math.floor($("#sel_tbl_div")[0].offsetWidth-$("#sel_tbl_div")[0].offsetLeft)+20);
+				});
 				$(this).data('hide',false);
 				$(this).text('Hide Selection Item')
 			}else{
-				$('#sel_tbl_div').hide('fast');
+				$('#sel_tbl_panel').hide('fast');
 				$(this).data('hide',true);
 				$(this).text('Show Selection Item')
 			}
 		});
+
+		var newcolmodel = $.extend([], $("#jqGrid").jqGrid('getGridParam','colModel'));
+		newcolmodel.push({ label: 'jqgrid_rowid', name: 'jqgrid_rowid', hidden:false});
+
+		$('#jqGrid_selection').jqGrid('setGridParam',{colModel:newcolmodel}).trigger('reloadGrid');
 	}
 
-	this.delete_function_on = function(idno){
+	this.delete_function_on = function(idno,rowid){
 		let self = this;
 		$("#jqGrid_selection #delete_"+idno).click(function(){
 			self.uncheckall_();
 			let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid('getRowData',idno);
 			$('#jqGrid_selection').jqGrid ('delRowData', idno);
-			let rowdata = $('#jqGrid').jqGrid ('getRowData',idno);
+			let rowdata = $('#jqGrid').jqGrid ('getRowData',rowid);
 			if(!$.isEmptyObject(rowdata)){
 				$("#jqGrid #checkbox_selection_"+idno).prop('checked',false);
 			}
+			self.show_hide_table();
 		});
 	}
 
 	this.checkbox_function_on = function(){
 		let self = this;
+		let idno = self.idno;
 		$("#jqGrid input[type='checkbox'][name='checkbox_selection']").on('click',function(){
 			let rowid = $(this).data('rowid');
-			let checked = $(this).is(":checked")
+			let checked = $(this).is(":checked");
+			let rowdata = $('#jqGrid').jqGrid ('getRowData', rowid);
+			rowdata.jqgrid_rowid = rowid;
 			if(checked){//delete from seltable
-				let rowdata = $('#jqGrid').jqGrid ('getRowData', rowid);
-				$('#jqGrid_selection').jqGrid ('addRowData', rowid, rowdata);
-				self.delete_function_on(rowdata.idno);
+				$('#jqGrid_selection').jqGrid ('addRowData', rowdata[idno], rowdata);
+				self.delete_function_on(rowdata[idno],rowid);
 			}else{//add to seltable
 				self.uncheckall_();
-				$('#jqGrid_selection').jqGrid ('delRowData', rowid);
+				$('#jqGrid_selection').jqGrid ('delRowData', rowdata[idno]);
 			}
-
+			self.show_hide_table();
 		});
 	}
 
@@ -622,6 +637,31 @@ function checkbox_selection(grid,colname){
 		self.checkall_ = false;
 		$('#checkbox_all_uncheck').hide();
 		$('#checkbox_all_check').show();
+	}
+
+	this.show_hide_table = function(){
+		let reccount = $('#jqGrid_selection').jqGrid('getGridParam', 'reccount');
+
+		if($("#show_sel_tbl").is(":hidden") && reccount > 0){
+			$("#show_sel_tbl").show();
+		}else if(reccount == 0){
+			$('#sel_tbl_panel').hide('fast');
+			$("#show_sel_tbl").hide();
+			$("#show_sel_tbl").data('hide',true);
+			$("#show_sel_tbl").text('Show Selection Item')
+		}
+	}
+
+	this.refresh_seltbl = function(){
+		let self = this;
+		let idno = self.idno;
+		let reccount = $('#jqGrid_selection').jqGrid('getGridParam', 'reccount');
+		if(reccount > 0){
+			let rowdatas_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData');
+			rowdatas_jqgridsel.forEach(function(rowdata){
+				$("#jqGrid #checkbox_selection_"+rowdata[idno]).prop('checked',true);
+			});
+		}
 	}
 }
 

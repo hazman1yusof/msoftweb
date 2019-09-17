@@ -55,12 +55,13 @@
 				</div>
 
 				<div class="col-md-6 col-md-offset-2 pull-right" style="padding-top: 0; text-align: end;">
-					<button type="button" id='show_sel_tbl' data-hide='false' class='btn btn-primary button_custom_hide' >Hide Selection Item</button>
+					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-primary button_custom_hide' >Show Selection Item</button>
 					<button type="button" id='taggingNoButton' class='btn btn-info button_custom_tag' >Generate Tagging No</button>
 				</div>
 			 </fieldset> 
 		</form>
-		<div class="panel panel-default">
+
+		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
     		<div class="panel-heading heading_panel_">List Of Selected Item</div>
     		<div class="panel-body">
     			<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">

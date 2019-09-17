@@ -187,7 +187,6 @@ class DeliveryOrderDetailController extends defaultController
                     'deliverydate' => $request->deliverydate,
                     'qtyorder' => $request->qtyorder,
                     'qtydelivered' => $request->qtydelivered,
-                    'qtytag' => $request->qtytag,
                     'unitprice' => $request->unitprice,
                     'taxcode' => $request->taxcode,
                     'perdisc' => $request->perdisc,
@@ -207,7 +206,8 @@ class DeliveryOrderDetailController extends defaultController
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks,
-                    'unit' => session('unit')
+                    'unit' => session('unit'),
+                    'qtytag' => 0
                 ]);
 
             ///3. calculate total amount from detail

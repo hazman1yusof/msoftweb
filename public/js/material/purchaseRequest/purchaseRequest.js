@@ -27,6 +27,7 @@ $(document).ready(function () {
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency = new currencymode(['#purreqhd_amtdisc', '#purreqhd_subamount']);
 	var fdl = new faster_detail_load();
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","purreqhd_idno","purreqhd_recstatus");
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;
@@ -175,20 +176,21 @@ $(document).ready(function () {
 			{ label: 'Status', name: 'purreqhd_recstatus', width: 15 },
 			{ label: 'PerDiscount', name: 'purreqhd_perdisc', width: 90, hidden: true },
 			{ label: 'AmtDiscount', name: 'purreqhd_amtdisc', width: 90, hidden: true },
-			{ laebl: 'Subamount', name: 'purreqhd_subamount', width: 90, hidden: true },
+			{ label: 'Subamount', name: 'purreqhd_subamount', width: 90, hidden: true },
 			{ label: 'authpersonid', name: 'purreqhd_authpersonid', width: 90, hidden: true },
-			{ label: 'authdate', name: 'purreqhd_authdate', width: 40, hidden: 'true' },
+			{ label: 'authdate', name: 'purreqhd_authdate', width: 40, hidden: true },
 			{ label: 'reqpersonid', name: 'purreqhd_reqpersonid', width: 50, hidden: true },
 			{ label: 'adduser', name: 'purreqhd_adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'purreqhd_adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'purreqhd_upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'purreqhd_upddate', width: 90, hidden: true },
-			{ label: 'reopenby', name: 'purreqhd_reopenby', width: 40, hidden:'true'},
-			{ label: 'reopendate', name: 'purreqhd_reopendate', width: 40, hidden:'true'},
-			{ label: 'cancelby', name: 'purreqhd_cancelby', width: 40, hidden:'true'},
-			{ label: 'canceldate', name: 'purreqhd_canceldate', width: 40, hidden:'true'},
-			{ label: 'unit', name: 'purreqhd_unit', width: 40, hidden:'true'},
+			{ label: 'reopenby', name: 'purreqhd_reopenby', width: 40, hidden: true},
+			{ label: 'reopendate', name: 'purreqhd_reopendate', width: 40, hidden:true},
+			{ label: 'cancelby', name: 'purreqhd_cancelby', width: 40, hidden:true},
+			{ label: 'canceldate', name: 'purreqhd_canceldate', width: 40, hidden:true},
+			{ label: 'unit', name: 'purreqhd_unit', width: 40, hidden:true},
 			{ label: 'idno', name: 'purreqhd_idno', width: 90, hidden: true },
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -249,6 +251,10 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
+
+			cbselect.checkbox_function_on();
+			cbselect.refresh_seltbl();
 		},
 
 	});
@@ -321,10 +327,15 @@ $(document).ready(function () {
 	actdateObj.getdata().set();
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
+	$("#but_cancel_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
 		
 		saveParam.oper = $(this).data("oper");
-		let obj={recno:selrowData('#jqGrid').purreqhd_recno,_token:$('#_token').val()};
+		let obj={
+			recno:selrowData('#jqGrid').purreqhd_recno,
+			_token:$('#_token').val(),
+			idno:selrowData('#jqGrid').purreqhd_idno
+
+		};
 		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
@@ -332,6 +343,24 @@ $(document).ready(function () {
 			$('#error_infront').text(data.responseText);
 		}).done(function (data) {
 			//2nd successs?
+		});
+	});
+
+	$("#but_post_jq").click(function(){
+		var idno_array = [];
+	
+		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		obj={};
+		obj.idno_array = idno_array;
+		obj.oper = 'gen_tagno';
+		obj._token = $('#_token').val();
+		
+		$.post( '/assetregister/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+
+		}).success(function(data){
+			
 		});
 	});
 
@@ -575,7 +604,7 @@ $(document).ready(function () {
 		join_onCol: ['prdt.itemcode', 'prdt.taxcode'],
 		join_onVal: ['p.itemcode', 't.taxcode'],
 		filterCol: ['prdt.recno', 'prdt.compcode', 'prdt.recstatus'],
-		filterVal: ['', 'session.company', '<>.DELETE']
+		filterVal: ['', 'session.compcode', '<>.DELETE']
 	};
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
@@ -585,8 +614,8 @@ $(document).ready(function () {
 		editurl: "/purchaseRequestDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden: true },
-			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', editable: true, hidden: true },
-			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable: true, hidden: true },
+			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', hidden: true },
+			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable: false, hidden: true },
 			{
 				label: 'Price Code', name: 'pricecode', width: 110, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
@@ -606,7 +635,7 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: true, editoptions: { readonly: "readonly" } },
+			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" } },
 			{
 				label: 'UOM Code', name: 'uomcode', width: 110, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
@@ -798,6 +827,18 @@ $(document).ready(function () {
 
 	function unformatRemarks(cellvalue, options, rowObject) {
 		return null;
+	}
+
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		if(options.gid == "jqGrid" && rowObject[recstatus] == "OPEN"){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == "OPEN"){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
 	}
 
 	var butt1_rem = 
@@ -1036,7 +1077,7 @@ $(document).ready(function () {
 			var param={
     			action: 'purReq_detail_save',
 				_token: $("#_token").val(),
-				recno: $('#purreqhd__recno').val(),
+				recno: $('#purreqhd_recno').val(),
 				action: 'purReq_detail_save',
 				purreqno:$('#purreqhd_purreqno').val(),
 				suppcode:$('#purreqhd_suppcode').val(),
@@ -1045,7 +1086,7 @@ $(document).ready(function () {
 				purreqdt:$('#purreqhd_purreqdt').val(),
     		}
 
-    		$.post( "/purchaseRequestrDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "/purchaseRequestDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
@@ -1902,10 +1943,29 @@ $(document).ready(function () {
 	);
 	dialog_taxcode.makedialog(false);
 
-		function cari_gstpercent(id){
+	function cari_gstpercent(id){
 		let data = $('#jqGrid2').jqGrid ('getRowData', id);
 		$("#jqGrid2 #"+id+"_pouom_gstpercent").val(data.rate);
 	}
+
+	$("#jqGrid_selection").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
+		shrinkToFit: false,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		sortname: 'purreqhd_idno',
+		sortorder: "desc",
+		onSelectRow: function (rowid, selected) {
+			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
+		},
+		gridComplete: function(){
+			
+		},
+	})
+	jqgrid_label_align_right("#jqGrid_selection");
+	cbselect.on();
 
 	/*var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();*/
