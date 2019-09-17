@@ -72,7 +72,7 @@ class invtran_util extends defaultController{
                     $drccode = $dept_obj->costcode;
                 }
             }else{
-                throw new \Exception("stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->sndrcv." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
+                throw new \Exception("Stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->sndrcv." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
             }
 
         }else{
@@ -232,12 +232,12 @@ class invtran_util extends defaultController{
                 }
 
             }else{
-                throw new \Exception("stockexp xde langsung");
+                throw new \Exception("No stockexp");
             }
 
         }else{
             //ni utk kalu xde stockloc
-            throw new \Exception("stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
+            throw new \Exception("Stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
         }
 
     	// amik stockloc untuk 'IN' //
@@ -465,7 +465,7 @@ class invtran_util extends defaultController{
 
         }else{
             //ni utk kalu xde stockloc
-            throw new \Exception("stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
+            throw new \Exception("Stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
         }
 
         //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
@@ -583,12 +583,12 @@ class invtran_util extends defaultController{
 
             }else{
             	//ni akan jadi mungkin sebab dia "out" pakai expdate dgn batchno, tapi expdate dgn batchno tu x ada dlm stockexp
-                throw new \Exception("stockexp xde langsung");
+                throw new \Exception("No stockexp");
             }
 
         }else{
             //ni utk kalu xde stockloc
-            throw new \Exception("stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
+            throw new \Exception("Stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
         }
 
         //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
