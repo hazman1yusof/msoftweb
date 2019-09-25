@@ -109,7 +109,6 @@
 
 		</div>
 
-		<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 		<input id="app_url" name="app_url" type="hidden" value="{{ env('APP_URL') }}">
 
 		<div id="previewModal" title="Data Preview" >
@@ -173,10 +172,9 @@
 	<script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script>
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_enq/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_enq/biodata.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_enq/episode.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_enq/landing.js"></script>
-
 	</div>
 
 </body>

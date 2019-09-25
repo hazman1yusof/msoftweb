@@ -56,6 +56,22 @@
         });
     }
 
+    function loadlistEmpty(selobj,url,nameattr,descattr){
+        $(selobj).empty();
+        $.getJSON(url,{},function(data)
+        {   
+            console.log(data);
+            $.each(data.data, function(i,obj)
+            {
+                $(selobj).append(
+                    $('<option></option>')
+                        .val(obj[nameattr])
+                        // .html(obj[descattr]));
+                        .html(obj[nameattr] + ' - ' + obj[descattr] ));
+            });
+        });
+    }
+
     function populatecombo1(){
         var urlType = 'pat_mast/get_entry?action=get_patient_idtype';
         loadlist($('select#cmb_pat_idtype').get(0),urlType,'Code','Description');
@@ -72,26 +88,11 @@
         var urlreligion = 'pat_mast/get_entry?action=get_patient_religioncode';
         loadlist($('select#cmb_pat_religion').get(0),urlreligion,'Code','Description');
 
-        // var urlmarital = 'pat_mast/get_entry?action=get_patient_urlmarital';
-        // loadlist($('select#maritalcode').get(0),urlmarital,'Code','Description');
-
         var urllanguagecode = 'pat_mast/get_entry?action=get_patient_language';
         loadlist($('select#cmb_pat_langcode').get(0),urllanguagecode,'Code','Description');
 
-        // var urlrelationship = 'pat_mast/get_entry?action=get_patient_relationship';
-        // loadlist($('select#relatecode').get(0),urlrelationship,'RelationShipCode','Description');
-
-        // var urlactive = 'pat_mast/get_entry?action=get_patient_active';
-        // loadlist($('select#active').get(0),urlactive,'RelationShipCode','Description');
-
-        // var urlconfidential = 'pat_mast/get_entry?action=get_patient_urlconfidential';
-        // loadlist($('select#confidential').get(0),urlactive,'RelationShipCode','Description');
-
-        // var urlmrfolder = 'pat_mast/get_entry?action=get_patient_mrfolder';
-        // loadlist($('select#mrfolder').get(0),urlmrfolder,'RelationShipCode','Description');
-
-        // var urlpatientcat = 'pat_mast/get_entry?action=get_patient_patientcat';
-        // loadlist($('select#patientcat').get(0),urlpatientcat,'RelationShipCode','Description');
+        var urlRel = 'pat_mast/get_entry?action=get_patient_relationship';
+        loadlist($('select#cmb_grtr_relation').get(0),urlRel,'relationshipcode','description');
     }
 
     $("#txt_pat_dob").blur(function(){
@@ -201,7 +202,6 @@
     });
 
     $("#biodata_but").click(function() {
-    	// populatecombo1();
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","add");
         var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
@@ -209,7 +209,6 @@
         var last_visit_val =moment(new Date()).format('DD/MM/YYYY');
         $('#last_visit_date').val(last_visit_val);
         $('#episno').val('1');
-        //patient_empty();
     });
 
     function default_click_register(){

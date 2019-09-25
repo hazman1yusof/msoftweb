@@ -660,4 +660,9 @@ abstract class defaultController extends Controller{
 
     }
 
+    public static function turn_date($from_date,$from_format='d/m/Y'){
+        $carbon = Carbon::createFromFormat($from_format,$from_date);
+        return $carbon;
+    }
+
 }

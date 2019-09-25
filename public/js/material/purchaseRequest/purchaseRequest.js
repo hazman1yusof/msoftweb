@@ -306,7 +306,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'purreqhd_idno', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit']);
+	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'purreqhd_idno', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -352,10 +352,10 @@ $(document).ready(function () {
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
 		obj={};
 		obj.idno_array = idno_array;
-		obj.oper = 'gen_tagno';
+		obj.oper = 'posted';
 		obj._token = $('#_token').val();
 		
-		$.post( '/assetregister/form', obj , function( data ) {
+		$.post( '/purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 
@@ -1958,6 +1958,7 @@ $(document).ready(function () {
 		sortname: 'purreqhd_idno',
 		sortorder: "desc",
 		onSelectRow: function (rowid, selected) {
+			console.log(rowid);
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
 		},
 		gridComplete: function(){

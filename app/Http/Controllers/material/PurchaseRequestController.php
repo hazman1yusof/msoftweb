@@ -93,7 +93,6 @@ class PurchaseRequestController extends defaultController
         }
 
         try {
-
             $idno = $table->insertGetId($array_insert);
             
             $totalAmount = 0;
@@ -177,19 +176,26 @@ class PurchaseRequestController extends defaultController
 
         try{
 
-            DB::table("material.purreqhd")
-                    ->where('idno','=',$request->idno)
-                    ->update([
+            foreach ($request->idno_array as $value){
+
+                $purreqhd = DB::table("material.purreqhd")
+                    ->where('idno','=',$value);
+
+                $purreqhd_get = $purreqhd->first();
+
+                $purreqhd->update([
                         'recstatus' => 'POSTED'
                     ]);
 
-            DB::table("material.purreqdt")
-                    ->where('recno','=',$request->recno)
+                DB::table("material.purreqdt")
+                    ->where('recno','=',$purreqhd_get->recno)
                     ->update([
                         'recstatus' => 'POSTED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+
+            }
 
             DB::commit();
         

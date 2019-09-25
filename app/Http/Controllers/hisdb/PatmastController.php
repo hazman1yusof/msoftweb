@@ -196,13 +196,13 @@ class PatmastController extends defaultController
                 if($request->type == 1){
                     $data = DB::table('debtor.debtormast')
                             ->where('compcode','=',session('compcode'))  
-                            ->where('debtorcode','=',ltrim($request->mrn, '0'))
+                            // ->where('debtorcode','=',ltrim($request->mrn, '0'))
                             ->whereIn('debtortype', ['PR', 'PT'])
                             ->get();
                 }else{
                     $data = DB::table('debtor.debtormast')
                             ->where('compcode','=',session('compcode'))  
-                            ->where('debtorcode','=',ltrim($request->mrn, '0'))
+                            // ->where('debtorcode','=',ltrim($request->mrn, '0'))
                             ->whereNotIn('debtortype', ['PR', 'PT'])
                             ->get();
                 }
@@ -224,6 +224,12 @@ class PatmastController extends defaultController
 
             case 'save_new_episode':
                 $this->save_new_episode($request);
+                break;
+
+
+            case 'check_debtormast':
+                $data = $this->check_debtormast($request);
+                break;
 
             // case 'get_patient_active':
             //     return DB::table('hisdb.title')->select('code','description')->get();
@@ -257,6 +263,9 @@ class PatmastController extends defaultController
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'A'
         ];
+
+        $request['first_visit_date'] = defaultController::turn_date($request->first_visit_date);
+        $request['last_visit_date'] = defaultController::turn_date($request->last_visit_date);
 
         foreach ($request->field as $key => $value) {
             $array_insert[$value] = $request[$request->field[$key]];
@@ -390,7 +399,7 @@ class PatmastController extends defaultController
         }
     }
 
-    public function save_new_episode(Request $request){
+    public function save_episode(Request $request){
 
         $epis_mrn = $request->epis_mrn;
         $epis_no = $request->epis_no;
@@ -425,33 +434,105 @@ class PatmastController extends defaultController
         $epis_nc_preg = $epis_preg;
         $epis_fu_preg = $epis_preg;
 
-        DB::table("hisdb.episode")
-            ->insert([
-                        "epis_compcode" => "9A",
-                        "epis_mrn" => $epis_mrn,
-                        "epis_no" => $epis_no,
-                        "epis_type" => $epis_type,
-                        "epis_newcase" => $epis_newcase,
-                        "epis_followup" => $epis_followup,
-                        "epis_date" => $epis_date,
-                        "epis_time" => $epis_time,
-                        "epis_dept" => $epis_dept,
-                        "epis_src" => $epis_src,
-                        "epis_case" => $epis_case,
-                        "epis_doctor" => $epis_doctor,
-                        "epis_paytype" => $epis_fin,
-                        "epis_paymode" => $epis_paymode,
-                        "epis_billtype" => $epis_billtype,
-                        "epis_fu_preg" => $epis_fu_preg,
-                        "epis_nc_preg" => $epis_nc_preg,
-                        "epis_fee" => $epis_fee,
-                        "epis_createdate" => Carbon::now("Asia/Kuala_Lumpur"),
-                        "epis_createuser" => $session('username'),
-                        "epis_updatedate" => Carbon::now("Asia/Kuala_Lumpur"),
-                        "epis_updatetime" => Carbon::now("Asia/Kuala_Lumpur"),
-                        "epis_upduser" => $session('username'),
-                        "epis_active" => 1,
-                        "epis_allocpayer" => 1
-                     ]);
+
+        DB::beginTransaction();
+        try {
+            DB::table("hisdb.episode")
+                ->insert([
+                            "compcode" => session('compcode'),
+                            "mrn" => $epis_mrn,
+                            "episno" => $epis_no,
+                            "epistycode" => $epis_type,
+                            "newcaseP" => $epis_newcase,
+                            "followupP" => $epis_followup,
+                            "reg_date" => $epis_date,
+                            "reg_time" => $epis_time,
+                            "regdept" => $epis_dept,
+                            "admsrccode" => $epis_src,
+                            "case_code" => $epis_case,
+                            "admdoctor" => $epis_doctor,
+                            "pay_type" => $epis_fin,
+                            "pyrmode" => $epis_paymode,
+                            "billtype" => $epis_billtype,
+                            // "fu_preg" => $epis_fu_preg,
+                            // "nc_preg" => $epis_nc_preg,
+                            "AdminFees" => $epis_fee,
+                            "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
+                            "adduser" => session('username'),
+                            // "updatedate" => Carbon::now("Asia/Kuala_Lumpur"),
+                            // "updatetime" => Carbon::now("Asia/Kuala_Lumpur"),
+                            // "upduser" => session('username'),
+                            "episactive" => 1,
+                            "allocpayer" => 1
+                         ]);
+
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+        
+    }
+
+    public function check_debtormast(Request $request){
+        DB::beginTransaction();
+
+        $debtormast =  DB::table('debtor.debtormast')
+                    ->where('debtorcode','=',$request->mrn_trailzero)
+                    ->where('compcode','=',session('compcode'));
+
+        if($debtormast->exists()){
+            return $debtormast->first();
+        }else{
+
+            try {
+                $debtortype = DB::table("debtor.debtortype")
+                    ->select('actdebccode', 'actdebglacc', 'depccode', 'depglacc')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('debtortycode', '=', 'PT')
+                    ->first();
+
+                DB::table('debtor.debtormast')
+                    ->insert([
+                        'compcode'    =>  session('compcode'),
+                        'debtortype'  =>  "PT",    
+                        'debtorcode'  =>  $request->mrn_trailzero,
+                        'name'        =>  $request->name, 
+                        'address1'    =>  $request->address1,
+                        'address2'    =>  $request->address2,
+                        'address3'    =>  $request->address3,
+                        'address4'    =>  $request->address4,
+                        'postcode'    =>  $request->postcode,
+                        'billtype'    =>  "IP",
+                        'billtypeop'  =>  "OP",
+                        'actdebccode' =>  $debtortype->actdebccode,
+                        'actdebglacc' =>  $debtortype->actdebglacc,
+                        'depccode'    =>  $debtortype->depccode,
+                        'depglacc'    =>  $debtortype->depglacc
+                    ]);
+
+                $debtormast =  DB::table('debtor.debtormast')
+                    ->where('debtorcode','=',$request->mrn_trailzero)
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
+                DB::commit();
+
+                return $debtormast;
+
+            } catch (Exception $e) {
+                DB::rollback();
+
+                return response('Error'.$e, 500);
+            }
+
+        }
+    }
+
+    public function check_last_episode(Request $request){
+
     }
 }
