@@ -26,13 +26,14 @@
 			};
 		//////////////////////////////////////////////////////////////
 			
-	////////////////////////////////////start dialog///////////////////////////////////////
-
-	var mycurrency =new currencymode(['#origcost','#currentcost', '#purprice']);
+	/////////////////////////////////// currency ///////////////////////////////
+	var mycurrency = new currencymode(['#origcost','#currentcost', '#purprice']);
 	var fdl = new faster_detail_load();
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox");
+	var radbuts = new checkradiobutton(['regtype']);
 
-	var dialog_assetcode= new ordialog(
+	////////////////////////////////////start dialog///////////////////////////////////////
+	var dialog_assetcode = new ordialog(
 		'assetcode','finance.facode','#assetcode',errorField,
 		{	colModel:[
 				{label:'Asset Code',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -475,6 +476,7 @@
 				emptyFormdata(errorField,'#formdata');
 				$(".noti ol").empty();
 				$("#formdata a").off();
+				radbuts.reset();
 				if(oper=='view'){
 					$(this).dialog("option", "buttons",butt1);
 				}
@@ -770,7 +772,6 @@
 		});
 
 
-
 		//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 		/////////////////////////////populate data for dropdown search By////////////////////////////
@@ -853,7 +854,6 @@
 			}else{
 				if(nkreturn)return true;
 			}
-
 		}
 
 		function ToggleDisableForm(disable=true){
@@ -933,7 +933,6 @@
 			}).success(function(data){
 				
 			});
-
 		}
 
 		var search_assetcode= new ordialog(
