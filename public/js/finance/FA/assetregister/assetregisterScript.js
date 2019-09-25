@@ -359,8 +359,8 @@
 				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},		
 			],
 			urlParam: {
-				filterCol:['compcode','itemcode'],
-				filterVal:['session.compcode',$("#itemcode").val()]
+				filterCol:['compcode'],
+				filterVal:['session.compcode']
 			},
 			ondblClickRow: function(){
 			},
@@ -378,8 +378,8 @@
 		{
 			title:"Select uomcode",
 			open: function(){
-				dialog_uomcode.urlParam.filterCol=['compcode','itemcode'],
-				dialog_uomcode.urlParam.filterVal=['session.compcode',$("#itemcode").val()]
+				dialog_uomcode.urlParam.filterCol=['compcode'],
+				dialog_uomcode.urlParam.filterVal=['session.compcode']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -518,8 +518,8 @@
 				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
 				{ label: 'Regtype', name: 'regtype', width: 11, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat},	
 				{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
-				{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, hidden:true},
-				{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, hidden:true},
+				{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
+				{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 				{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
 				{ label: 'Purchase Date', name:'purdate', width: 16, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter},
 				{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
@@ -530,8 +530,8 @@
 				{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
 				//method
 				//residual value
-				{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, hidden:true},
-				{ label: 'Post Date', name:'trandate', width:20, classes:'wrap', formatter:dateFormatter, hidden:true},
+				{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
+				{ label: 'Post Date', name:'trandate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 				//accumprev
 				{ label: 'Accum Prev', name:'lstytddep', width:20, classes:'wrap', hidden:true},
 				//accumytd
@@ -566,11 +566,11 @@
 				fdl.set_array().reset();
 
 				cbselect.checkbox_function_on();
+				cbselect.refresh_seltbl();
 			}
 				
 		});
 
-		cbselect.on();//on lepas jqgrid
 		//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
 		function regtypeformat(cellvalue, options, rowObject) {
 			if (cellvalue == 'P') {
@@ -921,10 +921,6 @@
 		
 			idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
 
-			// $('input[type="checkbox"][name="checkbox_selection"]:checked').each(function(){
-			// 	idno_array.push($(this).attr('idno'));
-			// });
-
 			obj={};
 			obj.idno_array = idno_array;
 			obj.oper = 'gen_tagno';
@@ -971,6 +967,18 @@
 		search_assetcode.makedialog();
 		search_assetcode.on();
 
+		function formatterCheckbox(cellvalue, options, rowObject){
+			let idno = cbselect.idno;
+			let recstatus = cbselect.recstatus;
+			if(options.gid == "jqGrid"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}else if(options.gid != "jqGrid"){
+				return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+			}else{
+				return ' ';
+			}
+		}
+
 		$("#jqGrid_selection").jqGrid({
 			datatype: "local",
 			colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
@@ -985,6 +993,7 @@
 			},
 		})
 		jqgrid_label_align_right("#jqGrid_selection");
+		cbselect.on();//on lepas jqgrid
 
 	
 	});
