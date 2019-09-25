@@ -2,6 +2,9 @@
 <div id="editEpisode" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editEpisode" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <form class="form-horizontal" id="episode_form">
+            <input type="hidden" name="rowid" id="rowid">
+            <input type="hidden" name="mrn_episode" id="mrn_episode">
+
             <div class="modal-content">
                 <div class="modal-header label-warning">
                     <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
@@ -107,7 +110,6 @@
                                             <div class="col-md-10">
                                                 <small for="cmb_epis_pay_mode">Pay Mode </small>
                                                 <select id="cmb_epis_pay_mode" name="pyrmode" class="form-control form-disabled">
-                                                    <option value="">- Select Pay Mode -</option>
                                                     <option value='CASH'>Cash</option>
                                                     <option value='CARD'>Card</option>
                                                     <option value='WAITING GL'>Waiting GL</option>
@@ -427,7 +429,7 @@
     </div>
 </div>
 
-<div id="mdl_epis_pay_mode_1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+<div id="mdl_epis_pay_mode" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <form class="form-horizontal">
             <div class="modal-content">
@@ -435,48 +437,18 @@
                     <p align="center"><b>PAYER INFORMATION</b></p>
                 </div>
                 <div class="modal-body">
-                    <table id="tbl_epis_debtor1" class="table table-striped" width="100%">
+                    <table id="tbl_epis_debtor" class="table table-striped" width="100%">
                         <thead>
                         <tr>
                             <th data-column-id="debtor_type" >Debtor Type</th>
                             <th data-column-id="debtor_code" >Debtor Code</th>
-                            <th data-column-id="debtor_name" >Debtor Name</th>
+                            <th data-column-id="debtor_name" >Name</th>
                         </tr>
                         </thead>
 
                     </table>
                     <br />
                     <button id="btngurantor" type="button" class="btn btn-primary" >Guarantor</button>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <!--button type="button" class="btn btn-success">Save</button-->
-                </div>
-            </div>
-        </form>
-
-
-    </div>
-</div>
-<div id="mdl_epis_pay_mode_2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <form class="form-horizontal">
-            <div class="modal-content">
-                <div class="modal-header label-info">
-                    <p align="center"><b>Payer Information</b></p>
-                </div>
-                <div class="modal-body">
-                    <table id="tbl_epis_debtor2" class="table table-striped" width="100%">
-                        <thead>
-                        <tr>
-                            <th data-column-id="debtor_code" >Debtor Code</th>
-                            <th data-column-id="debtor_name" >Debtor Name</th>
-                            <th data-column-id="description" >Description</th>
-                        </tr>
-                        </thead>
-
-                    </table>
                 </div>
 
                 <div class="modal-footer">

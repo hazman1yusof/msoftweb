@@ -136,6 +136,7 @@
 
 
     $('#txt_epis_fin').change(function (e){
+        alert('change');
         var iregin = $('#hid_epis_fin').val();
 
         if (iregin == '0' || iregin == '') {
@@ -317,10 +318,10 @@
             } );
             
         refno_mdl_opened.on('hidden.bs.modal', function () 
-                    {
-                        refno_table_name.html('');
-                        refno_item = null;
-                    });
+        {
+            refno_table_name.html('');
+            refno_item = null;
+        });
     });
 
     $( "#txt_epis_our_refno2").click(function() {
@@ -367,7 +368,6 @@
         // $('#fnp').prop("disabled",status);
 
     }
-
 
     function add_episode()
     {

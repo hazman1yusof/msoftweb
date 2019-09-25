@@ -663,6 +663,10 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 			});
 		}
 	}
+
+	this.get_all_idno = function(){
+
+	}
 }
 
 function setactdate(target){
