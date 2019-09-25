@@ -150,8 +150,8 @@
 			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
-				dialog_invno.urlParam.filterCol=['compcode','suppcode'];
-				dialog_invno.urlParam.filterVal=['session.compcode',data.suppcode];
+				// dialog_invno.urlParam.filterCol=['compcode','suppcode'];
+				// dialog_invno.urlParam.filterVal=['session.compcode',data.suppcode];
 				dialog_delordno.urlParam.filterVal[2]=data.suppcode;
 			},
 			gridComplete: function(obj){
@@ -229,38 +229,38 @@
 	);
 	dialog_delordno.makedialog();
 
-	var dialog_invno= new ordialog(
-		'invno','finance.apacthdr','#invno',errorField,
-		{	colModel:[
-			    {label:'Invoice No',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Supplier Code',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
-			],
-			urlParam: {
-				filterCol:['compcode','source','trantype','suppcode','document','recstatus'],
-				filterVal:['session.compcode','AP','IN', $("#suppcode").val(),$("#invno").val(),'POSTED']
-			},
-			ondblClickRow: function(){
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#delorddate').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},
-		{
-			title:"Select invno",
-			open: function(){
-				dialog_invno.urlParam.filterCol=['compcode','source','trantype','suppcode','document','recstatus'];
-				dialog_invno.urlParam.filterVal=['session.compcode','AP','IN', $("#suppcode").val(),$("#invno").val(),'POSTED']
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_invno.makedialog();
+	// var dialog_invno= new ordialog(
+	// 	'invno','finance.apacthdr','#invno',errorField,
+	// 	{	colModel:[
+	// 		    {label:'Invoice No',name:'document',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+	// 			{label:'Supplier Code',name:'suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','source','trantype','suppcode','document','recstatus'],
+	// 			filterVal:['session.compcode','AP','IN', $("#suppcode").val(),$("#invno").val(),'POSTED']
+	// 		},
+	// 		ondblClickRow: function(){
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$('#delorddate').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	},
+	// 	{
+	// 		title:"Select invno",
+	// 		open: function(){
+	// 			dialog_invno.urlParam.filterCol=['compcode','source','trantype','suppcode','document','recstatus'];
+	// 			dialog_invno.urlParam.filterVal=['session.compcode','AP','IN', $("#suppcode").val(),$("#invno").val(),'POSTED']
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_invno.makedialog();
 
 	var dialog_itemcode= new ordialog(
 		'itemcode',['material.delorddt as dodt','material.productmaster as p'],'#itemcode',errorField,
@@ -311,7 +311,7 @@
 				dialog_itemcode.urlParam.join_onCol = ['dodt.itemcode'];
 				dialog_itemcode.urlParam.join_onVal = ['p.itemcode'];
 			}
-		},'urlParam','tab'
+		},'urlParam','radio','tab'
 	);
 	dialog_itemcode.makedialog();
 
@@ -324,13 +324,12 @@
 				{label:'currprice',name:'currprice',width:100,classes:'pointer',hidden:true},			
 			],
 			urlParam:{
-				filterCol:['dodt.compcode','dodt.recno'],
-				filterVal:['session.compcode',selrowData('#'+dialog_delordno.gridname).dohd_recno]
+				filterCol:['compcode'],
+				filterVal:['session.compcode']
 			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode_direct.gridname);
 				$('#uomcode').val(data['uomcode']);
-				$('#purordno').val(data['dodt_srcdocno']);
 				$('#purprice').val(data['currprice']);
 				$('#description').val(data['itemcode']);
 			},
@@ -349,7 +348,7 @@
 			title:"Select Itemcode",
 			open: function(){
 			}
-		},'urlParam','tab'
+		},'urlParam','radio','tab'
 	);
 	dialog_itemcode_direct.makedialog();
 
@@ -453,12 +452,6 @@
 					dialog_assetcode.on();
 					dialog_deptcode.on();
 					dialog_loccode.on();
-					dialog_suppcode.on();
-					dialog_itemcode.on();
-					dialog_itemcode_direct.on();
-					dialog_uomcode.on();
-					dialog_delordno.on();
-					dialog_invno.off();
 				}
 				if(oper!='add'){
 					dialog_itemcode.check(errorField);
@@ -469,7 +462,7 @@
 					dialog_suppcode.check(errorField);
 					dialog_deptcode.check(errorField);
 					dialog_loccode.check(errorField);
-					dialog_invno.check(errorField);
+					// dialog_invno.check(errorField);
 				}
 			},
 			close: function( event, ui ) {
@@ -480,9 +473,21 @@
 				if(oper=='view'){
 					$(this).dialog("option", "buttons",butt1);
 				}
+				disable_all_event();
 			},
 			buttons :butt1,
 		  });
+
+		  function disable_all_event(){
+		  	dialog_itemcode.off();
+			dialog_itemcode_direct.off();
+			dialog_uomcode.off();
+			dialog_delordno.off();
+			dialog_assetcode.off();
+			dialog_suppcode.off();
+			dialog_deptcode.off();
+			dialog_loccode.off();
+		  }
 		////////////////////////////////////////end dialog///////////////////////////////////////////
 
 		/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -530,6 +535,8 @@
 				{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
 				{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 				{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
+				// { label: 'method', name:'method', width:20, classes:'wrap', hidden:true},
+				// { label: 'rvalue', name:'rvalue', width:20, classes:'wrap', hidden:true},
 				//method
 				//residual value
 				{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
@@ -540,7 +547,7 @@
 				{ label: 'Accum YTD', name:'cuytddep', width:20, classes:'wrap', hidden:true},
 				//nbv
 				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:true,
-				formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
+				formatter: formatterstatus, unformat: unformatstatus, cellattr: function (rowid, cellvalue)
 				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
 				{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
 				{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
@@ -577,36 +584,16 @@
 		function regtypeformat(cellvalue, options, rowObject) {
 			if (cellvalue == 'P') {
 				return "PO";
-			}
-			if (cellvalue == 'D') {
+			}else if (cellvalue == 'D') {
 				return "Direct";
 			}
 		}
 
 		function regtypeunformat(cellvalue, options) {
-			if (cellvalue == 'P') {
-				return "PO";
-			}
-			if (cellvalue == 'D') {
-				return "Direct";
-			}
-		}
-
-		function formatter(cellvalue, options, rowObject) {
-			if (cellvalue == 'A') {
-				return "Active";
-			}
-			if (cellvalue == 'D') {
-				return "Deactive";
-			}
-		}
-
-		function unformat(cellvalue, options) {
-			if (cellvalue == 'Active') {
-				return "Active";
-			}
-			if (cellvalue == 'Deactive') {
-				return "Deactive";
+			if (cellvalue == 'PO') {
+				return "P";
+			}else if (cellvalue == 'Direct') {
+				return "D";
 			}
 		}
 
@@ -646,6 +633,7 @@
 
 		//////// if the function chosen is P ////////////////////////////////////  
 		function disableField() {
+			disable_all_event();
 			dialog_itemcode_direct.off();
 			$('#itemcode_direct_div').hide();
 			$('#itemcode_direct').prop('disabled',true);
@@ -656,7 +644,7 @@
 
 			dialog_delordno.on();
 			dialog_suppcode.on();
-			dialog_invno.off();
+			// dialog_invno.off();
 			dialog_uomcode.on();
 
 			$("#invno").prop('readonly',true);
@@ -678,6 +666,7 @@
 		}
 		//////// if the function chosen is D ////////////////////////////////////  
 		function enableField() {
+			disable_all_event();
 			dialog_itemcode_direct.on();
 			$('#itemcode_direct_div').show();
 			$('#itemcode_direct').prop('disabled',false);
@@ -688,7 +677,7 @@
 
 			dialog_delordno.off();
 			dialog_suppcode.on();
-			dialog_invno.off();
+			// dialog_invno.off();
 			dialog_uomcode.on();
 
 			$("#invno").prop('readonly',false);
@@ -739,12 +728,6 @@
 				oper='view';
 				selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 				populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
-				if(selrowData('#jqGrid').regtype == 'P'){
-					disableField();
-				}else if(selrowData('#jqGrid').regtype == 'D') {
-					enableField();
-					
-				}
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager",{
 			caption:"",cursor: "pointer",position: "first",  
@@ -754,12 +737,6 @@
 				oper='edit';
 				selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 				populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
-				if(selrowData('#jqGrid').regtype == 'P'){
-					disableField();
-				}else if(selrowData('#jqGrid').regtype == 'D') {
-					enableField();
-					
-				}
 			}, 
 		}).jqGrid('navButtonAdd',"#jqGridPager",{
 			caption:"",cursor: "pointer",position: "first",  
@@ -858,10 +835,8 @@
 
 		function ToggleDisableForm(disable=true){
 			if(disable){
-				disableForm('#disableGroup');
 				$('#disableGroup input').on('click',alert_toogle);
 			}else{
-				enableForm('#disableGroup');
 				$("#currentcost").prop("readonly",true);
 				$("#nbv").prop('readonly',true);
 				$('#disableGroup input').off('click',alert_toogle);
@@ -928,6 +903,7 @@
 			
 			$.post( '/assetregister/form', obj , function( data ) {
 				refreshGrid('#jqGrid', urlParam);
+				cbselect.empty_sel_tbl();
 			}).fail(function(data) {
 
 			}).success(function(data){

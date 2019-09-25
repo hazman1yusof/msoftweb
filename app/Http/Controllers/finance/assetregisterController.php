@@ -167,19 +167,24 @@ class assetregisterController extends defaultController
                     ]);
 
                 //update qtytag at delorddt
-                $delordhd = DB::table('material.delordhd')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('delordno','=',$fatemp->delordno)
-                    ->first();
 
-                DB::table('material.delorddt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$delordhd->recno)
-                    ->where('itemcode','=',$fatemp->itemcode)
-                    ->where('lineno_','=',$fatemp->lineno_)
-                    ->update([
-                        'qtytag' => $fatemp->qty
-                    ]);
+
+                if($fatemp->regtype == 'P'){
+                    $delordhd = DB::table('material.delordhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('delordno','=',$fatemp->delordno)
+                        ->first();
+
+                    DB::table('material.delorddt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$delordhd->recno)
+                        ->where('itemcode','=',$fatemp->itemcode)
+                        ->where('lineno_','=',$fatemp->lineno_)
+                        ->update([
+                            'qtytag' => $fatemp->qty
+                        ]);
+                }
+               
 
 
 

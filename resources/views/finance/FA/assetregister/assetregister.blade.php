@@ -89,7 +89,6 @@
 	<div id="dialogForm" title="Add Form">
 		<form class="form-horizontal" style='width: 99%' id="formdata">
 		
-			<input type='hidden' id='recno' name='recno'>
 			<input type='hidden' id='lineno_' name='lineno_'>
 			<input type='hidden' id='recno' name='recno'>
 			<input type='hidden' id='idno' name='idno'>

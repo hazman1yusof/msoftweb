@@ -132,6 +132,7 @@ function populateFormdata(grid,dialog,form,selRowId,state){
 	$.each(rowData, function( index, value ) {
 		var input=$(form+" [name='"+index+"']");
 		if(input.is("[type=radio]")){
+			console.log(value)
 			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
 		}else{
 			input.val(value);
@@ -506,9 +507,7 @@ function timeUNFormatter(cellvalue, options, rowObject){
 function formatterstatus(cellvalue, option, rowObject) {
 	if (cellvalue == 'A') {
 		return 'Active';
-	}
-
-	if (cellvalue == 'D') {
+	}else if (cellvalue == 'D') {
 		return 'Deactive';
 	}
 }
@@ -517,9 +516,7 @@ function formatterstatus(cellvalue, option, rowObject) {
 function unformatstatus(cellvalue, option, rowObject) {
 	if (cellvalue == 'Active') {
 		return 'A';
-	}
-
-	if (cellvalue == 'Deactive') {
+	}else if (cellvalue == 'Deactive') {
 		return 'D';
 	}
 }
@@ -664,6 +661,11 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 		}
 	}
 
+	this.empty_sel_tbl = function(){
+		$("#jqGrid_selection").jqGrid("clearGridData", true);
+		// this.refresh_seltbl();
+	}
+
 	this.get_all_idno = function(){
 
 	}
@@ -758,6 +760,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	this.check=checkInput;
 	this.field=jqgrid_.colModel;
 	this.textfield=id;
+	this.ck_desc=1;
 	this.eventstat='off';
 	this.checkstat=checkstat;
 	this.ontabbing=false;
@@ -776,6 +779,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	this.required=required;
 	this.on = function(){
 		this.eventstat='on';
+
 		if(this.needTab=='tab'){
 			$(this.textfield).on('keydown',{data:this},onTab);
 		}
@@ -1069,7 +1073,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function checkInput(errorField,idtopush,jqgrid=null,optid=null){
-		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=1;
+		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=this.ck_desc;
 
 		if(idtopush){ /// ni nk tgk sama ada from idtopush exist atau tak
 			var idtopush = idtopush,id;
