@@ -316,7 +316,7 @@ abstract class defaultController extends Controller{
             $request->table_id,
             $request[$request->table_id]
         )){
-            return response('duplicate', 500);
+            return response('Item code '.$request[$request->table_id].' already exist', 500);
         };
 
         DB::beginTransaction();
@@ -346,8 +346,7 @@ abstract class defaultController extends Controller{
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-
-            return response('Error'.$e, 500);
+            return response('Error'.$e->errorInfo[2], 500);
         }
 
     }
