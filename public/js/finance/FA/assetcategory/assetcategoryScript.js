@@ -178,7 +178,8 @@ $.jgrid.defaults.responsive = true;
 				field:'',
 				oper:oper,
 				table_name:'finance.facode',
-				table_id:'assetcode'
+				table_id:'assetcode',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

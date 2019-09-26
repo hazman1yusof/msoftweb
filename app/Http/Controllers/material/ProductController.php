@@ -45,8 +45,6 @@ class ProductController extends defaultController
 
     public function save_productmaster(Request $request)
     {   
-        $this->defaultAdd($request);
-
         if($request->Class == 'Asset'){
             DB::beginTransaction();
 
@@ -68,7 +66,14 @@ class ProductController extends defaultController
                 'ipaddress' => $request->ipaddress,
             ];
 
+            $er = $this->defaultAdd($request);
+
+            if(!empty($er)){
+                return $er;
+            }
+
             try {
+
 
                 $table->insert($array_insert);
 

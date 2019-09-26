@@ -33,7 +33,6 @@
 			<div class="prevnext btn-group pull-right">
 				{{ csrf_field() }}
 				<input type="hidden" name="idno">
-				<input type="hidden" name="compcode">
 			</div>
 
 			<div class="form-group">

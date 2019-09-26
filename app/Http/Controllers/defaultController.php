@@ -311,30 +311,30 @@ abstract class defaultController extends Controller{
             $idno = $request->table_id;
         }
 
-        if(!empty($request->checkduplicate) && $this->default_duplicate( ///check duplicate
-            $request->table_name,
-            $request->table_id,
-            $request[$request->table_id]
-        )){
-            return response('Item code '.$request[$request->table_id].' already exist', 500);
-        };
-
-        DB::beginTransaction();
-
-        $table = DB::table($request->table_name);
-
-        $array_insert = [
-        	'compcode' => session('compcode'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'A'
-        ];
-
-        foreach ($field as $key => $value) {
-            $array_insert[$value] = $request[$request->field[$key]];
-        }
-
         try {
+
+            if(!empty($request->checkduplicate) && $this->default_duplicate( ///check duplicate
+                $request->table_name,
+                $request->table_id,
+                $request[$request->table_id]
+            )){
+                throw new \Exception($request->table_id.' '.$request[$request->table_id].' already exist', 500);
+            };
+
+            DB::beginTransaction();
+
+            $table = DB::table($request->table_name);
+
+            $array_insert = [
+            	'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'A'
+            ];
+
+            foreach ($field as $key => $value) {
+                $array_insert[$value] = $request[$request->field[$key]];
+            }
 
             $table->insert($array_insert);
 
@@ -346,7 +346,8 @@ abstract class defaultController extends Controller{
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            return response('Error'.$e->errorInfo[2], 500);
+            
+            return response($e->getMessage(), 500);
         }
 
     }
