@@ -233,8 +233,7 @@
 		}
 
 		//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-		toogleSearch('#sbut1','#searchForm','on');
-		populateSelect('#jqGrid','#searchForm');
+		// populateSelect('#jqGrid','#searchForm');
 		searchClick_('#jqGrid','#searchForm',urlParam);
 
 		function searchClick_(grid,form,urlParam){

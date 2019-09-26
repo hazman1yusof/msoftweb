@@ -26,13 +26,58 @@ class ProductController extends defaultController
     {  
         switch($request->oper){
             case 'add':
-                return $this->defaultAdd($request);
+                if($request->action == 'save_productmaster'){
+                    return $this->save_productmaster($request);
+                }else{
+                    return $this->defaultAdd($request);
+                }
             case 'edit':
                 return $this->defaultEdit($request);
             case 'del':
                 return $this->defaultDel($request);
             default:
                 return 'error happen..';
+        }
+    }
+
+    public function save_productmaster(Request $request)
+    {   
+        $this->defaultAdd($request);
+
+        if($request->Class == 'Asset'){
+            DB::beginTransaction();
+
+            $table = DB::table('material.product');
+
+            $array_insert = [
+                'itemcode' => $request->itemcode,
+                'description' => $request->description,
+                'groupcode' => $request->groupcode,
+                'uomcode' => 'PC',
+                'productcat' => $request->productcat,
+                'Class' => $request->Class,
+                'unit' => session('unit'),
+                'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'A',
+                'computerid' => $request->computerid,
+                'ipaddress' => $request->ipaddress,
+            ];
+
+            try {
+
+                $table->insert($array_insert);
+
+                $responce = new stdClass();
+                $responce->sql = $table->toSql();
+                $responce->sql_bind = $table->getBindings();
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response('Error'.$e->errorInfo[2], 500);
+            }
         }
     }
 }

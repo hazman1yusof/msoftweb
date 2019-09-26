@@ -273,6 +273,103 @@ $(document).ready(function () {
 	);
 	dialog_taxCode.makedialog();
 
+
+	$('#btn_product_infront_asset').on( "click", function() {
+		$('#product_infront_asset ~ a').click();
+	});
+	var dialog_product_infront_asset = new ordialog(
+		'product_infront_asset','finance.facode','#product_infront_asset',errorField,
+		{	colModel:[
+				{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:[ 'recstatus'],
+				filterVal:[ 'A']
+			},
+			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_product_infront_asset.gridname).assetcode;
+				$("#searchForm input[name='Stext']").val($('#product_infront_asset').val());
+
+				urlParam.searchCol=["productcat"];
+				urlParam.searchVal=[data];
+				refreshGrid('#jqGrid', urlParam);
+			}
+		},
+		{
+			title:"Select Category Code",
+			open: function(){
+				dialog_product_infront_asset.urlParam.filterCol=['recstatus'];
+				dialog_product_infront_asset.urlParam.filterVal=['A'];
+			}
+		},'urlParam','radio','notab',false
+	);
+	dialog_product_infront_asset.makedialog(true);
+
+	$('#btn_product_infront_stock').on( "click", function() {
+		$('#product_infront_stock ~ a').click();
+	});
+	var dialog_product_infront_stock = new ordialog(
+		'product_infront_stock','material.category','#product_infront_stock',errorField,
+		{	colModel:[
+				{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['cattype', 'source', 'recstatus'],
+				filterVal:['Stock', 'PO', 'A']
+			},
+			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_product_infront_stock.gridname).catcode;
+				$("#searchForm input[name='Stext']").val($('#product_infront_stock').val());
+
+				urlParam.searchCol=["productcat"];
+				urlParam.searchVal=[data];
+				refreshGrid('#jqGrid', urlParam);
+			}
+		},
+		{
+			title:"Select Category Code",
+			open: function(){
+				dialog_product_infront_stock.urlParam.filterCol=['cattype', 'source', 'recstatus'];
+				dialog_product_infront_stock.urlParam.filterVal=['Stock', 'PO', 'A'];
+			}
+		},'urlParam','radio','notab',false
+	);
+	dialog_product_infront_stock.makedialog(true);
+
+	$('#btn_product_infront_others').on( "click", function() {
+		$('#product_infront_others ~ a').click();
+	});
+	var dialog_product_infront_others = new ordialog(
+		'product_infront_others','material.category','#product_infront_others',errorField,
+		{	colModel:[
+				{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['cattype', 'source', 'recstatus'],
+				filterVal:['Other', 'PO', 'A']
+			},
+			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_product_infront_others.gridname).catcode;
+				$("#searchForm input[name='Stext']").val($('#product_infront_others').val());
+
+				urlParam.searchCol=["productcat"];
+				urlParam.searchVal=[data];
+				refreshGrid('#jqGrid', urlParam);
+			}
+		},
+		{
+			title:"Select Category Code",
+			open: function(){
+				dialog_product_infront_others.urlParam.filterCol=['cattype', 'source', 'recstatus'];
+				dialog_product_infront_others.urlParam.filterVal=['Other', 'PO', 'A'];
+			}
+		},'urlParam','radio','notab',false
+	);
+	dialog_product_infront_others.makedialog(true);
+
 	////////////////////////////////////start dialog////////////////////////////////////////////////////
 
 	var butt1=[{
@@ -423,7 +520,7 @@ $(document).ready(function () {
 			{ label: 'Uom Code', name: 'uomcode', width: 30, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Group Code', name: 'groupcode', width: 30, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Class', name: 'Class', width: 40, sorttype: 'text', classes: 'wrap', hidden:true   },
-			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap'  },
+			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap' ,canSearch: true },
 			{ label: 'Supplier Code', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'avgcost', name: 'avgcost', width: 50, hidden:true },
 			{ label: 'actavgcost', name: 'actavgcost', width: 50, hidden:true },
@@ -514,23 +611,6 @@ $(document).ready(function () {
 	});
 
 	////////////////////////////formatter//////////////////////////////////////////////////////////
-	/*function formatter(cellvalue, options, rowObject){
-		if(cellvalue == 'A'){
-			return "Active";
-		}
-		if(cellvalue == 'D') { 
-			return "Deactive";
-		}
-	}
-
-	function  unformat(cellvalue, options){
-		if(cellvalue == 'Active'){
-			return "Active";
-		}
-		if(cellvalue == 'Deactive') { 
-			return "Deactive";
-		}
-	}*/
 
 	function readonlyRTTrue(){
 		$('#formdata input[rdonly]').prop("readonly",true);
@@ -607,7 +687,6 @@ $(document).ready(function () {
 	}
 
 	var hiderad=new hideradio(['groupcode','Class']);
-
 
 	var searched = false,productcat,groupcode,description,Class;
 	$("#searchBut").click(function(){
@@ -721,9 +800,55 @@ $(document).ready(function () {
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-	toogleSearch('#sbut1','#searchForm','on');
-	populateSelect('#jqGrid','#searchForm');
-	searchClick('#jqGrid','#searchForm',urlParam);
+	// populateSelect('#jqGrid','#searchForm');
+	// searchClick('#jqGrid','#searchForm',urlParam);
+
+	/////////////////////////////populate data for dropdown search By////////////////////////////
+	searchBy();
+	function searchBy(){
+		$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
+			if(value['canSearch']){
+				if(value['checked']){
+					$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+				}else{
+					$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+				}
+			}
+		});
+	}
+
+	$('#Scol').on('change', scolChange);
+
+	function scolChange() {
+		if($('#Scol').val()=='productcat'){
+				console.log($('#groupcode2').val())
+			switch($('#groupcode2').val()) {
+				case 'Asset': $("#div_product_infront_asset").show(); break;
+				case 'Stock': $("#div_product_infront_stock").show(); break;
+				case 'Others': $("#div_product_infront_others").show(); break;
+			}
+		} else {
+			$("#div_product_infront_asset,#div_product_infront_stock,#div_product_infront_others").hide();
+		}
+	}
+
+	searchClick_('#jqGrid','#searchForm',urlParam);
+
+	function searchClick_(grid,form,urlParam){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
+			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+		});
+	}
+
+	$('#searchForm [name=Stext]').on( "keyup", function() {
+		$("#product_infront_asset").val($(this).val());
+	});
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
@@ -731,7 +856,7 @@ $(document).ready(function () {
 
 	////////////////////////////////////////////////////////addNewProduct ///////////////////////////////
 	var adpsaveParam={
-		action:'save_table_default',
+		action:'save_productmaster',
 		url:'product/form',
 		field:['itemcode','description','groupcode', 'productcat', 'Class', 'computerid', 'ipaddress'],
 		oper:'add',
@@ -750,7 +875,6 @@ $(document).ready(function () {
 			$("#adpFormdata [name=Class][value='"+$('#Class2').val()+"']").prop('checked', true).show();
 			$('#adpFormdata [type=radio]:not(:checked)').hide();
 			$('#adpFormdata [type=radio]:not(:checked)').parent('label').hide();
-			console.log('asdasdasd')
 
 			if(gc2=="Stock"){
 				let dialog_cat1 = new ordialog(
