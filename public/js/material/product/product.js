@@ -957,9 +957,20 @@ $(document).ready(function () {
 	var addNew2=[{
 		text: "Save",click: function() {
 			if( $('#adpFormdata').isValid({requiredFields: ''}, {}, true) ) {
-				saveFormdata("#"+dialog_itemcode.gridname,"#addNewProductDialog","#adpFormdata",'add',adpsaveParam,dialog_itemcode.urlParam);
-
-				// refreshGrid('#jqGrid',urlParam,oper);
+				saveFormdata(
+					"#"+dialog_itemcode.gridname,
+					"#addNewProductDialog",
+					"#adpFormdata",
+					'add',
+					adpsaveParam,dialog_itemcode.urlParam,
+					{},
+					function(){
+						$("#"+dialog_itemcode.dialogname ).dialog( "close" );
+						$("#dialogForm").dialog( "close" );
+						delay(function(){
+							$("#jqGridPager td[title='Edit Selected Row']").click();
+						}, 500 );
+					});
 			}
 		}
 	},{

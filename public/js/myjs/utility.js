@@ -211,7 +211,7 @@ function emptyFormdata(errorField,form,except){
 	}
 }
 
-function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,searchForm,obj){
+function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback){
 	if(obj==null){
 		obj={};
 	}
@@ -225,9 +225,13 @@ function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,searchForm,obj){
 		$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
 	}).success(function(data){
 		if(grid!=null){
+			if (callback !== undefined) {
+				callback();
+			}
 			refreshGrid(grid,urlParam,oper);
 			$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
 			$(dialog).dialog('close');
+
 			// addmore($(searchForm+' .StextClass input[type=checkbox]').is(':checked'),grid,oper);
 		}
 	});

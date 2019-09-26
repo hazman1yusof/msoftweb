@@ -225,8 +225,9 @@
 							</div> 
 						</div>
 
+                		@if (request()->get('groupcode') != 'Asset')
             			<hr> 
-            
+            			
             			<div class="form-group">
 				  			<label class="col-md-3 control-label" for="minqty">Min Stock Qty</label>  
 				  				<div class="col-md-2">
@@ -274,7 +275,6 @@
 						</div>
                 
                 		<hr>
-                		@if (request()->get('groupcode') != 'Asset')
 		                <div class="form-group">
 						  	<label class="col-md-2 control-label" for="reuse">Reuse</label>  
 						  		<div class="col-md-2">

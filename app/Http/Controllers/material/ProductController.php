@@ -4,6 +4,9 @@ namespace App\Http\Controllers\material;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use stdClass;
+use DB;
+use Carbon\Carbon;
 
 class ProductController extends defaultController
 {   
