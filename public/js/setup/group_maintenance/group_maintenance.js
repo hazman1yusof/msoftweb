@@ -33,9 +33,9 @@ $(document).ready(function () {
 		text: "Save", click: function () {
 			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
 				if ($('.nav li.active a').attr('href') == '#grp_main') {
-					saveFormdata("#jqGrid_grpmaintenance", "#dialogForm", "#formdata", oper, saveParam, urlParam, null, {});
+					saveFormdata("#jqGrid_grpmaintenance", "#dialogForm", "#formdata", oper, saveParam, urlParam, {});
 				} else {
-					saveFormdata("#jqGrid_grpaccess", "#dialogForm", "#formdata", oper, saveParam2, urlParam2, null,
+					saveFormdata("#jqGrid_grpaccess", "#dialogForm", "#formdata", oper, saveParam2, urlParam2,
 						{
 							yesallold: selrowData('#jqGrid_grpaccess').yesall,
 							canrunold: selrowData('#jqGrid_grpaccess').canrun,
@@ -162,7 +162,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#formdata');
 			} else {
-				saveFormdata("#jqGrid_grpmaintenance", "#dialogForm", "#formdata", oper, saveParam, urlParam, null, { groupid: selRowId });
+				saveFormdata("#jqGrid_grpmaintenance", "#dialogForm", "#formdata", oper, saveParam, urlParam, { groupid: selRowId });
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager_grpmaintenance", {

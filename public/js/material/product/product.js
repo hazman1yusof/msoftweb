@@ -35,10 +35,10 @@ $(document).ready(function () {
 	var dialog_itemcode = new ordialog(
 		'itemcodesearch','material.productmaster','#itemcodesearch',errorField,
 		{	colModel:[
-				{label:'Department Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Item Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 				{label:'groupcode',name:'groupcode',hidden:true},
-				{label:'productcat',name:'productcat',hidden:true}
+				{label:'Category',name:'productcat',hidden:false,canSearch:true}
 			],
 			urlParam: {
 				filterCol:['groupcode', 'Class','recstatus','compcode'],
@@ -623,7 +623,7 @@ $(document).ready(function () {
 	}
 
 	function whenAdd() {
-		$('#formdataSearch').show();
+		$('#formdataSearch_div').show();
 		$("#Save").hide();
 
 		$("#formdata label[for=itemcode]").hide();
@@ -635,7 +635,7 @@ $(document).ready(function () {
 	}
 
 	function whenEdit() {
-		$('#formdataSearch').hide();
+		$('#formdataSearch_div').hide();
 		$("#Save").show();
 
 		$("#formdata label[for=itemcode]").show();
@@ -783,7 +783,6 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper='edit';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			$('#formdataSearch').hide();
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
 			recstatusDisable();
 		}, 
@@ -875,10 +874,10 @@ $(document).ready(function () {
 			$("#adpFormdata [name=Class][value='"+$('#Class2').val()+"']").prop('checked', true).show();
 			$('#adpFormdata [type=radio]:not(:checked)').hide();
 			$('#adpFormdata [type=radio]:not(:checked)').parent('label').hide();
-
-			if(gc2=="Stock"){
+			
+			if($('#groupcode2').val()=="Stock"){
 				let dialog_cat1 = new ordialog(
-					'productcatAddNew1','material.category','#productcatAddNew',errorField,
+					'productcatAddNew1','material.category','#productcatAddNew_stock',errorField,
 					{	colModel:[
 							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 							{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
@@ -901,9 +900,9 @@ $(document).ready(function () {
 				dialog_cat1.makedialog();
 				dialog_cat1.on();
 
-			} else if(gc2=="Asset") {
+			} else if($('#groupcode2').val()=="Asset") {
 				let dialog_cat2 = new ordialog(
-					'productcatAddNew2','finance.facode','#productcatAddNew',errorField,
+					'productcatAddNew2','finance.facode','#productcatAddNew_asset',errorField,
 					{	colModel:[
 							{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -925,9 +924,9 @@ $(document).ready(function () {
 				dialog_cat2.makedialog();
 				dialog_cat2.on();
 
-			} else if(gc2=="Others") {
+			} else if($('#groupcode2').val()=="Others") {
 				let dialog_cat3 = new ordialog(
-					'productcatAddNew3','material.category','#productcatAddNew',errorField,
+					'productcatAddNew3','material.category','#productcatAddNew_other',errorField,
 					{	colModel:[
 							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},

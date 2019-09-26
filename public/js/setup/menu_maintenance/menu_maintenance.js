@@ -31,7 +31,7 @@
 			var butt1=[{
 				text: "Save",click: function() {
 					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,null,
+						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,
 							{
 								programmenu:arraybtngrp[arraybtngrp.length-1]
 							});
@@ -174,7 +174,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,null,
+						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,
 							{
 								programmenu:arraybtngrp[arraybtngrp.length-1],
 								lineno:selrowData("#jqGrid").lineno,

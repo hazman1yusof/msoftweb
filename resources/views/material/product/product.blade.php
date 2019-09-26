@@ -77,7 +77,7 @@
 	<input id="groupcode2" name="groupcode" type="hidden" value="{{ $_GET['groupcode'] }}">
 
 	<div id="dialogForm" title="Add Form" >
-		<div class='col-md-12'>
+		<div class='col-md-12' id="formdataSearch_div">
 			<div class='panel panel-info'>
 				<div class="panel-heading"></div>
 				<div class="panel-body">
@@ -377,9 +377,19 @@
                   <label class="col-md-2 control-label" for="productcat">Product Category</label>  
 				  	<div class="col-md-3">
 				  		<div class='input-group'>
-				  			<input id="productcatAddNew" name="productcat" type="text" class="form-control input-sm" data-validation="required">
+
+                			@if (request()->get('groupcode') == 'Stock')
+				  			<input id="productcatAddNew_stock" name="productcat" type="text" class="form-control input-sm" data-validation="required">
 				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
-					  </div>
+				  			@elseif (request()->get('groupcode') == 'Asset')
+				  			<input id="productcatAddNew_asset" name="productcat" type="text" class="form-control input-sm" data-validation="required">
+				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
+				  			@else
+				  			<input id="productcatAddNew_other" name="productcat" type="text" class="form-control input-sm" data-validation="required">
+				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
+				  			@endif
+
+					  	</div>
 					  <span class="help-block"></span>
                       
 				  </div>
