@@ -117,8 +117,8 @@
 				field:'',
 				table_name:'material.category',
 				table_id:'catcode',
-				filterCol:['source', 'cattype'],
-				filterVal:[$('#source').val(), $('#cattype').val()],
+				filterCol:['source', 'cattype','class'],
+				filterVal:[$('#source').val(), $('#cattype').val(), $('#class').val()],
 				sort_idno: true,
 			}
 
@@ -145,7 +145,8 @@
 					{label: 'Category Code', name: 'catcode', width: 70, classes: 'wrap', checked:true, canSearch: true},
 					{label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true},					
 					{label: 'Category Type', name: 'cattype', width: 90 , hidden: true},					
-					{label: 'Source', name: 'source', width: 90 , hidden: true},					
+					{label: 'Source', name: 'source', width: 90 , hidden: true},								
+					{label: 'Class', name: 'class', width: 90 , hidden: true},				
 					{label: 'Stock Account', name: 'stockacct', width: 90 ,  hidden: true},					
 					{label: 'COS Account', name: 'cosacct', width: 90, hidden: true,},					
 					{label: 'Adjustment Account', name: 'adjacct', width: 90, hidden: true},					
