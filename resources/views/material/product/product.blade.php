@@ -3,8 +3,75 @@
 @section('title', 'Fixed Asset Product Setup')
 
 @section('body')
+	<div class='row'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
+			<fieldset>
+				<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
 
-	@include('layouts.default_search_and_table')
+				<div class='col-md-12' style="padding:0 0 15px 0;">
+					<div class="form-group"> 
+						<div class="col-md-2">
+							<label class="control-label" for="Scol">Search By : </label>  
+					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
+		              	</div>
+
+					  	<div class="col-md-5">
+					  		<label class="control-label"></label>  
+							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+
+							<div  id="show_product_infront_asset" style="display:none">
+								<div class='input-group'>
+									<input id="product_infront_asset" name="product_infront_asset" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+
+							<div  id="show_product_infront_stock" style="display:none">
+								<div class='input-group'>
+									<input id="product_infront_stock" name="product_infront_stock" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+
+							<div  id="show_product_infront_others" style="display:none">
+								<div class='input-group'>
+									<input id="product_infront_others" name="product_infront_others" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+
+						</div>
+
+					  	<div class="col-md-1" id="div_product_infront_asset" style="width: fit-content;display:none">
+							<label class="control-label"></label>
+							<a class='form-control btn btn-primary' id="btn_product_infront_asset"><span class='fa fa-ellipsis-h'></span></a>
+					  	</div>
+					  	<div class="col-md-1" id="div_product_infront_stock" style="width: fit-content;display:none">
+							<label class="control-label"></label>
+							<a class='form-control btn btn-primary' id="btn_product_infront_stock"><span class='fa fa-ellipsis-h'></span></a>
+					  	</div>
+					  	<div class="col-md-1" id="div_product_infront_others" style="width: fit-content;display:none">
+							<label class="control-label"></label>
+							<a class='form-control btn btn-primary' id="btn_product_infront_others"><span class='fa fa-ellipsis-h'></span></a>
+					  	</div>
+		            </div>
+				</div>
+			</fieldset> 
+		</form>
+
+		<div class="panel panel-default">
+		    <div class="panel-heading">Charge Master Header</div>
+		    <div class="panel-body">
+		    	<div class='col-md-12' style="padding:0 0 15px 0">
+	        		<table id="jqGrid" class="table table-striped"></table>
+	        		<div id="jqGridPager"></div>
+	    		</div>
+		    </div>
+		</div>
+	</div>
 
 	<input id="Class2" name="Class" type="hidden" value="{{ $_GET['Class'] }}">
 	<input id="groupcode2" name="groupcode" type="hidden" value="{{ $_GET['groupcode'] }}">
@@ -207,7 +274,7 @@
 						</div>
                 
                 		<hr>
-                
+                		@if (request()->get('groupcode') != 'Asset')
 		                <div class="form-group">
 						  	<label class="col-md-2 control-label" for="reuse">Reuse</label>  
 						  		<div class="col-md-2">
@@ -247,6 +314,7 @@
 									<label class="radio-inline"><input type="radio" name="itemtype" value='Poison'>Poison</label>
 						  		</div>
 						</div>
+						@endif
 
 						<div class="form-group" hideOne>
 							<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
