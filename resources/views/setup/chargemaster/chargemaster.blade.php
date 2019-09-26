@@ -356,6 +356,72 @@ legend.scheduler-border {
 				<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 			</div>
 		</div>	
+
+		<!--------------------------------Charge Price Form-------------------------------->
+		<div id="ChgPriceDtl" title="Charge Price Detail">
+        	<form class='form-horizontal' style='width:99%' id='FChgPriceDtl'>
+				{{ csrf_field() }}
+				<input type="hidden" id="d_idno" name="idno">
+				<!-- <input type="hidden" id="d_authorid" name="authorid"> -->
+            
+            	<div class="form-group">
+				 	<label class="col-md-2 control-label" for="effdate">Effective Date</label>  
+					<div class="col-md-2">
+						<input name="effdate" type="date" maxlength="12" class="form-control input-sm">
+					</div>
+
+				  	<label class="col-md-2 control-label" for="amt1">Price 1</label>  
+					<div class="col-md-2">
+						<input name="amt1" type="text" maxlength="12" class="form-control input-sm">
+					</div>
+                </div>
+            
+            	<div class="form-group">
+					<label class="col-md-2 control-label" for="amt2">Price 2</label>  
+					<div class="col-md-2">
+						<input name="amt2" type="text" maxlength="12" class="form-control input-sm">
+					</div>	
+
+					<label class="col-md-2 control-label" for="amt3">Price 3</label>  
+					<div class="col-md-2">
+						<input name="amt3" type="text" maxlength="12" class="form-control input-sm">
+					</div>
+                </div>		
+                 
+                <div class="form-group">
+					<label class="col-md-2 control-label" for="costprice">Cost Price</label>  
+					<div class="col-md-2">
+						<input name="costprice" type="text" maxlength="12" class="form-control input-sm">
+					</div>
+                </div>	
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="iptax">Inpatient Tax</label>  
+					<div class="col-md-2">
+						<input name="iptax" type="text" maxlength="12" class="form-control input-sm">
+					</div>	
+
+					<label class="col-md-2 control-label" for="optax">Outpatient Tax</label>  
+					<div class="col-md-2">
+						<input name="optax" type="text" maxlength="12" class="form-control input-sm">
+					</div>
+                </div>
+                
+                <div class="form-group">
+					<label class="col-md-2 control-label" for="lastuser">User ID</label>  
+					<div class="col-md-2">
+						<input name="lastuser" type="text" maxlength="12" class="form-control input-sm" rdonly>
+					</div>	
+
+					<label class="col-md-2 control-label" for="lastupdate">Last Updated</label>  
+					<div class="col-md-2">
+						<input name="lastupdate" type="text" maxlength="12" class="form-control input-sm" rdonly>
+					</div>
+                </div>
+			</form>
+		</div>
+		<!--------------------------------Charge Price Form-------------------------------->	
+
 	</div>
 
 @endsection

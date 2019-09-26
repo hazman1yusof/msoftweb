@@ -45,70 +45,69 @@
 
 		var oper='add';
 		$("#dialogForm")
-			.dialog({ 
-				width: 9/10 * $(window).width(),
-				modal: true,
-				autoOpen: false,
-				open: function( event, ui ) {
-					parent_close_disabled(true);
-					$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
-					/*mycurrency.formatOnBlur();
-					mycurrency.formatOn();*/
-					switch(oper) {
-						case state = 'add':
-							$("#jqGrid2").jqGrid("clearGridData", false);
-							$("#pg_jqGridPager2 table").show();
-							/*hideatdialogForm(true);*/
-							enableForm('#formdata');
-							rdonly('#formdata');
-							break;
-						case state = 'edit':
-							$("#pg_jqGridPager2 table").show();
-							/*hideatdialogForm(true);*/
-							enableForm('#formdata');
-							rdonly('#formdata');
-							frozeOnEdit("#formdata");
-							recstatusDisable("cm_recstatus");
-							break;
-						case state = 'view':
-							disableForm('#formdata');
-							$("#pg_jqGridPager2 table").hide();
-							break;
-					}
-					if(oper!='view'){
-						set_compid_from_storage("input[name='cm_lastcomputerid']", "input[name='cm_lastipaddress']", "input[name='cm_computerid']", "input[name='cm_ipaddress']");
-						check_chgclass_on_open();
-						dialog_chggroup.on();
-						dialog_chgclass.on();
-						dialog_chgtype.on();
-						dialog_doctorcode.on();
-						dialog_deptcode.on();
-					}
-					if(oper!='add'){
-						///toggleFormData('#jqGrid','#formdata');
-						dialog_chggroup.check(errorField);
-						dialog_chgclass.check(errorField);
-						dialog_chgtype.check(errorField);
-						dialog_doctorcode.check(errorField);
-						dialog_deptcode.check(errorField);
-					}
-				},
-				close: function( event, ui ) {
-					parent_close_disabled(false);
-					emptyFormdata(errorField,'#formdata');
-					//$('.alert').detach();
-					$('#formdata .alert').detach();
-					dialog_chggroup.off();
-					dialog_chgclass.off();
-					dialog_chgtype.off();
-					dialog_doctorcode.off();
-					dialog_deptcode.off();
-					if(oper=='view'){
-						$(this).dialog("option", "buttons",butt1);
-					}
-				},
-				buttons :butt1,
-			});
+		  .dialog({ 
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function( event, ui ) {
+				parent_close_disabled(true);
+				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+				switch(oper) {
+					case state = 'add':
+						$("#jqGrid2").jqGrid("clearGridData", false);
+						$("#pg_jqGridPager2 table").show();
+						/*hideatdialogForm(true);*/
+						enableForm('#formdata');
+						rdonly('#formdata');
+						break;
+					case state = 'edit':
+						$("#pg_jqGridPager2 table").show();
+						/*hideatdialogForm(true);*/
+						enableForm('#formdata');
+						rdonly('#formdata');
+						frozeOnEdit("#formdata");
+						recstatusDisable("cm_recstatus");
+						break;
+					case state = 'view':
+						disableForm('#formdata');
+						$("#pg_jqGridPager2 table").hide();
+						break;
+				}
+				if(oper!='view'){
+					set_compid_from_storage("input[name='cm_lastcomputerid']", "input[name='cm_lastipaddress']", "input[name='cm_computerid']", "input[name='cm_ipaddress']");
+					check_chgclass_on_open();
+					dialog_chggroup.on();
+					dialog_chgclass.on();
+					dialog_chgtype.on();
+					dialog_doctorcode.on();
+					dialog_deptcode.on();
+				}
+				if(oper!='add'){
+					///toggleFormData('#jqGrid','#formdata');
+					dialog_chggroup.check(errorField);
+					dialog_chgclass.check(errorField);
+					dialog_chgtype.check(errorField);
+					dialog_doctorcode.check(errorField);
+					dialog_deptcode.check(errorField);
+				}
+			},
+			close: function( event, ui ) {
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#formdata');
+				emptyFormdata(errorField,'#formdata2');
+				//$('.alert').detach();
+				$('#formdata .alert').detach();
+				dialog_chggroup.off();
+				dialog_chgclass.off();
+				dialog_chgtype.off();
+				dialog_doctorcode.off();
+				dialog_deptcode.off();
+				if(oper=='view'){
+					$(this).dialog("option", "buttons",butt1);
+				}
+			},
+			buttons :butt1,
+		});
 		////////////////////////////////////////end dialog///////////////////////////////////////////
 
 		/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -143,66 +142,65 @@
 		/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 		$("#jqGrid").jqGrid({
 			datatype: "local",
-				colModel: [
-					{ label: 'idno', name: 'cm_idno', sorttype: 'number', hidden:true },
-					{ label: 'Compcode', name: 'cm_compcode', hidden:true},
-					{ label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
-					{ label: 'Description', name: 'cm_description', classes: 'wrap', width: 60, canSearch: true},
-					{ label: 'Class', name: 'cm_chgclass', classes: 'wrap', width: 20,checked:true},
-					{ label: 'Class Name', name: 'cc_description', classes: 'wrap', width: 30,checked:true},
-					{ label: 'Group', name: 'cm_chggroup', classes: 'wrap', width: 20, canSearch: true},
-					{ label: 'Description', name: 'cg_description', classes: 'wrap', width: 40},
-					{ label: 'Charge Type', name: 'cm_chgtype', classes: 'wrap', width: 30, canSearch: true},
-					{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
-					{ label: 'UOM', name: 'cm_uom', width: 30,hidden:false },
-					{ label: 'Generic Name', name: 'cm_brandname', width: 60},
-					{ label: 'cm_barcode', name: 'cm_barcode', hidden:true},
-					{ label: 'cm_constype', name: 'cm_constype', hidden:true},
-					{ label: 'cm_invflag', name: 'cm_invflag', hidden:true},
-					{ label: 'cm_packqty', name: 'cm_packqty', hidden:true},
-					{ label: 'cm_druggrcode', name: 'cm_druggrcode', hidden:true},
-					{ label: 'cm_subgroup', name: 'cm_subgroup', hidden:true},
-					{ label: 'cm_stockcode', name: 'cm_stockcode', hidden:true},
-					{ label: 'cm_invgroup', name: 'cm_invgroup', hidden:true},
-					{ label: 'cm_costcode', name: 'cm_costcode', hidden:true},
-					{ label: 'cm_revcode', name: 'cm_revcode', hidden:true},
-					{ label: 'cm_seqno', name: 'cm_seqno', hidden:true},
-					{ label: 'cm_overwrite', name: 'cm_overwrite', hidden:true},
-					{ label: 'cm_doctorstat', name: 'cm_doctorstat', hidden:true},
-					{ label: 'Upd User', name: 'cm_upduser', width: 80,hidden:true}, 
-					{ label: 'Upd Date', name: 'cm_upddate', width: 90,hidden:true},
-					{ label: 'Status', name:'cm_recstatus', width:30, classes:'wrap', hidden:false,
-					formatter: formatterstatus, unformat: unformatstatus, cellattr: function (rowid, cellvalue)
-					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
-					{ label: 'computerid', name: 'cm_computerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'ipaddress', name: 'cm_ipaddress', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'lastcomputerid', name: 'cm_lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'lastipaddress', name: 'cm_lastipaddress', width: 90, hidden: true, classes: 'wrap' },
-				],
-				autowidth:true,
-				multiSort: true,
-				viewrecords: true,
-				loadonce:false,
-				width: 900,
-				height: 250,
-				rowNum: 30,
-				pager: "#jqGridPager",
-				onSelectRow:function(rowid, selected){
-					urlParam2.filterVal[1]=selrowData("#jqGrid").cm_chgcode;
-					refreshGrid("#jqGrid3",urlParam2);
-				},
-				ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#jqGridPager td[title='Edit Selected Row']").click();
-				},
-				gridComplete: function(){
-					if(oper == 'add'){
-						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-					}
+			  colModel: [
+				{ label: 'idno', name: 'cm_idno', sorttype: 'number', hidden:true },
+				{ label: 'Compcode', name: 'cm_compcode', hidden:true},
+				{ label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
+				{ label: 'Description', name: 'cm_description', classes: 'wrap', width: 60, canSearch: true},
+				{ label: 'Class', name: 'cm_chgclass', classes: 'wrap', width: 20,checked:true},
+				{ label: 'Class Name', name: 'cc_description', classes: 'wrap', width: 30,checked:true},
+				{ label: 'Group', name: 'cm_chggroup', classes: 'wrap', width: 20, canSearch: true},
+				{ label: 'Description', name: 'cg_description', classes: 'wrap', width: 40},
+				{ label: 'Charge Type', name: 'cm_chgtype', classes: 'wrap', width: 30, canSearch: true},
+				{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
+				{ label: 'UOM', name: 'cm_uom', width: 30,hidden:false },
+				{ label: 'Generic Name', name: 'cm_brandname', width: 60},
+				{ label: 'cm_barcode', name: 'cm_barcode', hidden:true},
+				{ label: 'cm_constype', name: 'cm_constype', hidden:true},
+				{ label: 'cm_invflag', name: 'cm_invflag', hidden:true},
+				{ label: 'cm_packqty', name: 'cm_packqty', hidden:true},
+				{ label: 'cm_druggrcode', name: 'cm_druggrcode', hidden:true},
+				{ label: 'cm_subgroup', name: 'cm_subgroup', hidden:true},
+				{ label: 'cm_stockcode', name: 'cm_stockcode', hidden:true},
+				{ label: 'cm_invgroup', name: 'cm_invgroup', hidden:true},
+				{ label: 'cm_costcode', name: 'cm_costcode', hidden:true},
+				{ label: 'cm_revcode', name: 'cm_revcode', hidden:true},
+				{ label: 'cm_seqno', name: 'cm_seqno', hidden:true},
+				{ label: 'cm_overwrite', name: 'cm_overwrite', hidden:true},
+				{ label: 'cm_doctorstat', name: 'cm_doctorstat', hidden:true},
+				{ label: 'Upd User', name: 'cm_upduser', width: 80,hidden:true}, 
+				{ label: 'Upd Date', name: 'cm_upddate', width: 90,hidden:true},
+				{ label: 'Status', name:'cm_recstatus', width:30, classes:'wrap', hidden:false,
+				formatter: formatterstatus, unformat: unformatstatus, cellattr: function (rowid, cellvalue)
+				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+				{ label: 'computerid', name: 'cm_computerid', width: 90, hidden: true, classes: 'wrap' },
+				{ label: 'ipaddress', name: 'cm_ipaddress', width: 90, hidden: true, classes: 'wrap' },
+				{ label: 'lastcomputerid', name: 'cm_lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
+				{ label: 'lastipaddress', name: 'cm_lastipaddress', width: 90, hidden: true, classes: 'wrap' },
+			],
+			autowidth:true,
+			multiSort: true,
+			viewrecords: true,
+			loadonce:false,
+			width: 900,
+			height: 250,
+			rowNum: 30,
+			pager: "#jqGridPager",
+			onSelectRow:function(rowid, selected){
+				urlParam2.filterVal[1]=selrowData("#jqGrid").cm_chgcode;
+				refreshGrid("#jqGrid3",urlParam2);
+			},
+			ondblClickRow: function(rowid, iRow, iCol, e){
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+			},
+			gridComplete: function(){
+				if(oper == 'add'){
+					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+				}
 
-					// $('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
-				},
+				// $('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			},
 		});
-
 
 		/////////////////////////////populate data for dropdown search By////////////////////////////
 		searchBy();
@@ -233,8 +231,7 @@
 		}
 
 		//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-		toogleSearch('#sbut1','#searchForm','on');
-		populateSelect('#jqGrid','#searchForm');
+		// populateSelect('#jqGrid','#searchForm');
 		searchClick_('#jqGrid','#searchForm',urlParam);
 
 		function searchClick_(grid,form,urlParam){
@@ -267,6 +264,60 @@
 		addParamField('#jqGrid',true,urlParam);
 		addParamField('#jqGrid',false,saveParam,['cm_idno','ct_description', 'cc_description','cg_description', 'cm_compcode', 'cm_ipaddress', 'cm_computerid', 'cm_adddate', 'cm_adduser','cm_upduser','cm_upddate','cm_recstatus']);
 
+		////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
+		function hideatdialogForm(hide,saveallrow){
+			if(saveallrow == 'saveallrow'){
+				$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
+				$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
+			}else if(hide){
+				$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
+				$("#saveDetailLabel").show();
+			}else{
+				$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
+				$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+			}
+		}
+
+		/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
+		function saveHeader(form,selfoper,saveParam,obj){
+			if(obj==null){
+				obj={};
+			}
+			saveParam.oper=selfoper;
+
+			$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
+
+			},'json').fail(function (data) {
+				alert(data.responseText);
+			}).done(function (data) {
+				unsaved = false;
+				hideatdialogForm(false);
+
+				if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
+					addmore_jqgrid2.state = true;
+					$('#jqGrid2_iladd').click();
+				}
+				if(selfoper=='add'){
+					oper='edit';//sekali dia add terus jadi edit lepas tu
+					$('#idno').val(data.idno);
+				
+					urlParam2.filterVal[0]=data.idno; 
+				}else if(selfoper=='edit'){
+					//doesnt need to do anything
+				}
+				disableForm('#formdata');
+
+			});
+		}
+		
+		$("#dialogForm").on('change keypress','#formdata :input','#formdata :textarea',function(){
+			unsaved = true; //kalu dia change apa2 bagi prompt
+		});
+
+		$("#dialogForm").on('click','#formdata a.input-group-addon',function(){
+			unsaved = true; //kalu dia change apa2 bagi prompt
+		});
+
 		/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 		var urlParam2={
 			action:'get_table_default',
@@ -282,6 +333,7 @@
 		};
 
 		var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
+		
 		////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 		$("#jqGrid2").jqGrid({
 			datatype: "local",
@@ -289,21 +341,64 @@
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
-				{ label: 'Effective date', name: 'effdate', frozen:true, width: 130, classes: 'wrap', editable:false},
-				{ label: 'Price 1', name: 'amt1', frozen:true, width: 120, classes: 'wrap', editable:false},
-				{ label: 'Price 2', name: 'amt2', frozen:true, width: 120, classes: 'wrap', editable:false},
-				{ label: 'Price 3', name: 'amt3', frozen:true, width: 120, classes: 'wrap', editable:false},
-				{ label: 'Cost Price', name: 'costprice', frozen:true, width: 120, classes: 'wrap', editable:false},
-				{ label: 'Inpatient Tax', name: 'iptax', frozen:true, width: 130, classes: 'wrap', editable:false},
-				{ label: 'Outpatient Tax', name: 'optax', frozen:true, width: 130, classes: 'wrap', editable:false},
-				{ label: 'User ID', name: 'lastuser', frozen:true, width: 120, classes: 'wrap', editable:false},
-				{ label: 'Last Updated', name: 'lastupdate', frozen:true, width: 130, classes: 'wrap', editable:false},
-				{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
-
+				{ label: 'Effective date', name: 'effdate', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"date",
+					editoptions:{
+						maxlength: 10,
+					},
+				},
+				{ label: 'Price 1', name: 'amt1', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Price 2', name: 'amt2', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Price 3', name: 'amt3', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Cost Price', name: 'costprice', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Inpatient Tax', name: 'iptax', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Outpatient Tax', name: 'optax', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'User ID', name: 'lastuser', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Last Updated', name: 'lastupdate', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', key: true, editable: true, hidden:true},
 			],
-			scroll: false,
-			autowidth: false,
-			shrinkToFit: false,
+			autowidth: true,
+			shrinkToFit: true,
 			multiSort: true,
 			viewrecords: true,
 			loadonce:false,
@@ -314,31 +409,20 @@
 			sortorder: "desc",
 			pager: "#jqGridPager2",
 			loadComplete: function(){
-				/*if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
+				if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 				else{
 					$('#jqGrid2').jqGrid ('setSelection', "1");
 				}
-				addmore_jqgrid2.edit = addmore_jqgrid2.more = false;*/ //reset
+
+				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 			},
 			gridComplete: function(){
-			/*	$("#jqGrid2").find(".remarks_button").on("click", function(e){
-					$("#remarks2").data('rowid',$(this).data('rowid'));
-					$("#remarks2").data('grid',$(this).data('grid'));
-					$("#dialog_remarks").dialog( "open" );
-				});
-			/*	fdl.set_array().reset();
-				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);*/
-			},
-			afterShowForm: function (rowid) {
-				// $("#expdate").datepicker();
+				// fdl.set_array().reset();
+				
 			},
 			beforeSubmit: function(postdata, rowid){ 
-			/*	dialog_itemcode.check(errorField);
-				dialog_uomcode.check(errorField);
-				dialog_pouom.check(errorField);*/
-			}
-			/*}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-		        fixPositionsOfFrozenDivs.call(this);*/
+				// dialog_deptcodedtl.check(errorField);
+		 	}
 		});
 
 		/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -396,44 +480,151 @@
 		//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 		//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	
+		// var myEditOptions = {
+		// 	keys: true,
+		// 	extraparam:{
+		// 		"_token": $("#_token").val()
+		// 	},
+		// 	oneditfunc: function (rowid) {
+		// 		//console.log(rowid);
+		// 		/*linenotoedit = rowid;
+		// 		$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
+		// 		$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
+		// 	},
+		// 	aftersavefunc: function (rowid, response, options) {
+		// 		$('#amount').val(response.responseText);
+		// 		if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+		// 		if(addmore_jqgrid2.edit == false)linenotoedit = null; 
+		// 		//linenotoedit = null;
+
+		// 		refreshGrid('#jqGrid2',urlParam2,'add');
+		// 		$("#jqGridPager2Delete").show();
+		// 	}, 
+		// 	beforeSaveRow: function(options, rowid) {
+		// 		/*if(errorField.length>0)return false;
+
+		// 		let data = selrowData('#jqGrid2');
+		// 		let editurl = "/inventoryTransactionDetail/form?"+
+		// 			$.param({
+		// 				action: 'invTranDetail_save',
+		// 				docno:$('#docno').val(),
+		// 				recno:$('#recno').val(),
+		// 			});*/
+		// 		$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
+		// 	},
+		// 	afterrestorefunc : function( response ) {
+		// 		/*hideatdialogForm(false);*/
+		// 	}
+		// };
+
 		var myEditOptions = {
-			keys: true,
-			extraparam:{
-				"_token": $("#_token").val()
-			},
-			oneditfunc: function (rowid) {
-				//console.log(rowid);
-				/*linenotoedit = rowid;
-				$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
-				$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
-			},
-			aftersavefunc: function (rowid, response, options) {
-				$('#amount').val(response.responseText);
-				if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-				if(addmore_jqgrid2.edit == false)linenotoedit = null; 
-				//linenotoedit = null;
+	        keys: true,
+	        extraparam:{
+			    "_token": $("#_token").val()
+	        },
+	        oneditfunc: function (rowid) {
 
-				refreshGrid('#jqGrid2',urlParam2,'add');
-				$("#jqGridPager2Delete").show();
-			}, 
-			beforeSaveRow: function(options, rowid) {
-				/*if(errorField.length>0)return false;
+	        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
-				let data = selrowData('#jqGrid2');
-				let editurl = "/inventoryTransactionDetail/form?"+
+	        	// dialog_deptcodedtl.on();
+	        	// $("#jqGrid2 input[name='dtl_deptcode']").val('ALL');
+
+
+	        	unsaved = false;
+				mycurrency2.array.length = 0;
+				// Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='dtl_maxlimit']","#jqGrid2 input[name='dtl_minlimit']"]);
+
+				mycurrency2.formatOnBlur();//make field to currency on leave cursor
+
+	        	// $("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
+				// 	var code = e.keyCode || e.which;
+				// 	if (code == '9')$('#jqGrid2_ilsave').click();
+				// })
+	        },
+	        aftersavefunc: function (rowid, response, options) {
+	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+	        	refreshGrid('#jqGrid2',urlParam2,'add');
+		    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
+	        }, 
+	        errorfunc: function(rowid,response){
+	        	alert(response.responseText);
+	        	refreshGrid('#jqGrid2',urlParam2,'add');
+		    	$("#jqGridPager2Delete").show();
+	        },
+	        beforeSaveRow: function(options, rowid) {
+
+	        	//if(errorField.length>0)return false;  
+
+				let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
+				let editurl = "/chargemasterDetail/form?"+
 					$.param({
-						action: 'invTranDetail_save',
-						docno:$('#docno').val(),
-						recno:$('#recno').val(),
-					});*/
+						action: 'chargemasterDetail_save',
+						// authorid:$('#authorid').val()
+					});
 				$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
-			},
-			afterrestorefunc : function( response ) {
-				/*hideatdialogForm(false);*/
-			}
-		};
+	        },
+	        afterrestorefunc : function( response ) {
+				hideatdialogForm(false);
+		    }
+	    };
 
 		//////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
+		// $("#jqGrid2").inlineNav('#jqGridPager2',{	
+		// 	add:true,
+		// 	edit:true,
+		// 	cancel: true,
+		// 	//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		// 	restoreAfterSelect: false,
+		// 	addParams: { 
+		// 		addRowParams: myEditOptions
+		// 	},
+		// 	editParams: myEditOptions
+		// }).jqGrid('navButtonAdd',"#jqGridPager2",{
+		// 	id: "jqGridPager2Delete",
+		// 	caption:"",cursor: "pointer",position: "last", 
+		// 	buttonicon:"glyphicon glyphicon-trash",
+		// 	title:"Delete Selected Row",
+		// 	onClickButton: function(){
+		// 		/*selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+		// 		if(!selRowId){
+		// 			bootbox.alert('Please select row');
+		// 		}else{
+		// 			bootbox.confirm({
+		// 				message: "Are you sure you want to delete this row?",
+		// 				buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+		// 				},
+		// 				callback: function (result) {
+		// 					if(result == true){
+		// 						param={
+		// 							action: 'inventoryTransactionDetail_save',
+		// 							recno: $('#recno').val(),
+		// 							lineno_: selrowData('#jqGrid2').lineno_,
+
+		// 						}
+		// 						$.post( "/inventoryTransactionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+		// 						}).fail(function(data) {
+		// 							//////////////////errorText(dialog,data.responseText);
+		// 						}).done(function(data){
+		// 							$('#amount').val(data);
+		// 							refreshGrid("#jqGrid2",urlParam2);
+		// 						});
+		// 					}
+		// 				}
+		// 			});
+		// 		}*/
+		// 	},
+		// }).jqGrid('navButtonAdd',"#jqGridPager2",{
+		// 	id: "saveHeaderLabel",
+		// 	caption:"Header",cursor: "pointer",position: "last", 
+		// 	buttonicon:"",
+		// 	title:"Header"
+		// }).jqGrid('navButtonAdd',"#jqGridPager2",{
+		// 	id: "saveDetailLabel",
+		// 	caption:"Detail",cursor: "pointer",position: "last", 
+		// 	buttonicon:"",
+		// 	title:"Detail"
+		// });
+
 		$("#jqGrid2").inlineNav('#jqGridPager2',{	
 			add:true,
 			edit:true,
@@ -450,34 +641,102 @@
 			buttonicon:"glyphicon glyphicon-trash",
 			title:"Delete Selected Row",
 			onClickButton: function(){
-				/*selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+				selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
 				if(!selRowId){
 					bootbox.alert('Please select row');
 				}else{
 					bootbox.confirm({
-						message: "Are you sure you want to delete this row?",
-						buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-						},
-						callback: function (result) {
-							if(result == true){
-								param={
-									action: 'inventoryTransactionDetail_save',
-									recno: $('#recno').val(),
-									lineno_: selrowData('#jqGrid2').lineno_,
+					    message: "Are you sure you want to delete this row?",
+					    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+					    },
+					    callback: function (result) {
+					    	if(result == true){
+					    		param={
+					    			action: 'chargemasterDetail_save',
+									idno: $('#lineno_').val(),
 
-								}
-								$.post( "/inventoryTransactionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+					    		}
+					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 								}).fail(function(data) {
 									//////////////////errorText(dialog,data.responseText);
 								}).done(function(data){
-									$('#amount').val(data);
 									refreshGrid("#jqGrid2",urlParam2);
 								});
-							}
-						}
+					    	}else{
+	        					$("#jqGridPager2EditAll").show();
+					    	}
+					    }
 					});
-				}*/
+				}
 			},
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2EditAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-th-list",
+			title:"Edit All Row",
+			onClickButton: function(){
+				mycurrency2.array.length = 0;
+				var ids = $("#jqGrid2").jqGrid('getDataIDs');
+			    for (var i = 0; i < ids.length; i++) {
+
+			        $("#jqGrid2").jqGrid('editRow',ids[i]);
+
+			        // Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_dtl_minlimit", "#"+ids[i]+"_dtl_maxlimit"]);
+			    }
+				hideatdialogForm(true,'saveallrow');
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2SaveAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-download-alt",
+			title:"Save All Row",
+			onClickButton: function(){
+				var ids = $("#jqGrid2").jqGrid('getDataIDs');
+
+				var jqgrid2_data = [];
+				mycurrency2.formatOff();
+			    for (var i = 0; i < ids.length; i++) {
+
+					var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
+			    	var obj = 
+			    	{
+			    		'idno' : ids[i],
+			    		'effdate' : $("#jqGrid2 input#"+ids[i]+"effdate").val(),
+						'amt1' : $("#jqGrid2 input#"+ids[i]+"amt1").val(),
+						'amt2' : $("#jqGrid2 input#"+ids[i]+"amt2").val(),
+						'amt3' : $("#jqGrid2 input#"+ids[i]+"amt3").val(),
+						'costprice' : $("#jqGrid2 input#"+ids[i]+"costprice").val(),
+						'iptax' : $("#jqGrid2 input#"+ids[i]+"iptax").val(),
+						'optax' : $("#jqGrid2 input#"+ids[i]+"optax").val(),
+						'lastuser' : $("#jqGrid2 input#"+ids[i]+"lastuser").val(),
+						'lastupdate' : $("#jqGrid2 input#"+ids[i]+"lastupdate").val()
+			    	}
+
+			    	jqgrid2_data.push(obj);
+			    }
+
+				var param={
+	    			action: 'chargemasterDetail_save',
+					_token: $("#_token").val()
+	    		}
+
+	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+				}).fail(function(data) {
+					//////////////////errorText(dialog,data.responseText);
+				}).done(function(data){
+					hideatdialogForm(false);
+					refreshGrid("#jqGrid2",urlParam2);
+				});
+			},	
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2CancelAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-remove-circle",
+			title:"Cancel",
+			onClickButton: function(){
+				hideatdialogForm(false);
+				refreshGrid("#jqGrid2",urlParam2);
+			},	
 		}).jqGrid('navButtonAdd',"#jqGridPager2",{
 			id: "saveHeaderLabel",
 			caption:"Header",cursor: "pointer",position: "last", 
@@ -488,6 +747,118 @@
 			caption:"Detail",cursor: "pointer",position: "last", 
 			buttonicon:"",
 			title:"Detail"
+		});
+
+		//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
+		$("#saveDetailLabel").click(function () {
+			mycurrency.formatOff();
+			mycurrency.check0value(errorField);
+			unsaved = false;
+			// dialog_authorid.off();
+			// dialog_deptcodehd.off();
+			//radbuts.check();
+			errorField.length = 0;
+		if($('#formdata').isValid({requiredFields:''},conf,true)){
+				saveHeader("#formdata",oper,saveParam);
+				unsaved = false;
+			} else {
+				mycurrency.formatOn();
+				// dialog_authorid.on();
+				// dialog_deptcodehd.on();
+			}
+		});
+
+		//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
+		$("#saveHeaderLabel").click(function () {
+			emptyFormdata(errorField, '#formdata2');
+			hideatdialogForm(true);
+			// dialog_authorid.on();
+			// dialog_deptcodehd.on();
+
+			enableForm('#formdata');
+			rdonly('#formdata');
+			$(".noti").empty();
+			refreshGrid("#jqGrid2", urlParam2);
+		});
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////Chg Price Detail//////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		var buttItem1=[{
+			text: "Save",click: function() {
+				mycurrency.formatOff();
+				mycurrency.check0value(errorField);
+				if( $('#FChgPriceDtl').isValid({requiredFields: ''}, {}, true) ) {
+					saveFormdata("#gridAuthdtl","#ChgPriceDtl","#FChgPriceDtl",oper_chgpricedtl,saveParam3,urlParam3,'#searchForm2');
+				}else{
+					mycurrency.formatOn();
+				}
+			}
+		},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}];
+
+		var oper_chgpricedtl;
+		$("#ChgPriceDtl")
+		  .dialog({ 
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function( event, ui ) {
+				parent_close_disabled(true);
+				switch(oper_chgpricedtl) {
+					case state = 'add':
+						mycurrency.formatOnBlur();
+						$( this ).dialog( "option", "title", "Add" );
+						enableForm('#FChgPriceDtl');
+						hideOne('#FChgPriceDtl');
+						rdonly('#FChgPriceDtl');
+						$(this).dialog("option", "buttons",buttItem1);
+						break;
+					case state = 'edit':
+						mycurrency.formatOnBlur();
+						$( this ).dialog( "option", "title", "Edit" );
+						enableForm('#FChgPriceDtl');
+						frozeOnEdit("#ChgPriceDtl");
+						$('#FChgPriceDtl :input[hideOne]').show();
+						rdonly('#FChgPriceDtl');
+						$(this).dialog("option", "buttons",buttItem1);
+						break;
+					case state = 'view':
+						mycurrency.formatOnBlur();
+						$( this ).dialog( "option", "title", "View" );
+						disableForm('#FChgPriceDtl');
+						$('#FChgPriceDtl :input[hideOne]').show();
+						$(this).dialog("option", "buttons",butt2);
+						break;
+				}
+				
+				if(oper_chgpricedtl == 'edit'){
+					// dialog_deptcodeD.on();
+				}
+				
+				if(oper_chgpricedtl!='add'){
+					// dialog_deptcodeD.check(errorField);
+
+				}
+				if (oper_chgpricedtl != 'view') {
+					$("#d_authorid").val(selrowData('#jqGrid').authorid);
+					// dialog_deptcodeD.on();
+				}
+			},
+			close: function( event, ui ) {
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#FChgPriceDtl');
+				$('#FChgPriceDtl .alert').detach();
+				// dialog_deptcodeD.off();
+				if(oper=='view'){
+					$(this).dialog("option", "buttons",buttItem1);
+				}
+			},
+			buttons :buttItem1,
 		});
 
 		/////////////////////parameter for jqgrid3/////////////////////////////////////////////////////////////////////
@@ -504,51 +875,51 @@
 			filterVal:['session.compcode','']
 		};
 
-		// var saveParam3={
-		// 	action:'save_table_default',
-		// 	url:'chargepriceDetail/form',
-		// 	field:'',
-		// 	oper:oper_chgpricedtl,
-		// 	table_name:['hisdb.chgprice', 'hisdb.chgmast'],
-		// 	table_id:'d_idno',
-		// 	saveip:'true'
-		// };
+		var saveParam3={
+			action:'save_table_default',
+			url:'chargepriceDetail/form',
+			field:'',
+			oper:oper_chgpricedtl,
+			table_name:['hisdb.chgprice', 'hisdb.chgmast'],
+			table_id:'d_idno',
+			saveip:'true'
+		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$("#jqGrid3").jqGrid({
 			datatype: "local",
-				colModel: [
-					// { label: 'compcode', name: 'd_compcode', width: 20, classes: 'wrap', hidden:true},
-					// { label: 'authorid', name: 'authorid', width: 20, classes: 'wrap', hidden:true},
-					{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true, editable:true},
-					{ label: 'Effective date', name: 'effdate', width: 200, classes: 'wrap', editable: true,
-						edittype:"date",
-					},
-					{ label: 'Price 1', name: 'amt1', width: 200, classes: 'wrap', editable: true,
-						edittype:"text",
-					},
-					{ label: 'Price 2', name: 'amt2', width: 200, classes: 'wrap', editable: true,
-						edittype:"text",
-					},
-					{ label: 'Price 3', name: 'amt3', width: 200, classes: 'wrap', editable: true,
-						edittype:"text",
-					},
-					{ label: 'Cost Price', name: 'costprice', width: 200, classes: 'wrap', editable: true,
-						edittype:"text",
-					},
-					{ label: 'Inpatient Tax', name: 'iptax', width: 200, classes: 'wrap', editable: true,
-						edittype:"text",
-					},
-					{ label: 'Outpatient Tax', name: 'optax', width: 200, classes: 'wrap', editable: true,
-						edittype:"text",
-					},
-					{ label: 'User ID', name: 'lastuser', width: 200, classes: 'wrap', editable: false,
-						edittype:"text",
-					},
-					{ label: 'Last Updated', name: 'lastupdate', width: 200, classes: 'wrap', editable: false,
-						edittype:"text",
-					},
-				],
+			  colModel: [
+				// { label: 'compcode', name: 'd_compcode', width: 20, classes: 'wrap', hidden:true},
+				// { label: 'authorid', name: 'authorid', width: 20, classes: 'wrap', hidden:true},
+				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true, editable:true},
+				{ label: 'Effective date', name: 'effdate', width: 200, classes: 'wrap', editable: true,
+					edittype:"date",
+				},
+				{ label: 'Price 1', name: 'amt1', width: 200, classes: 'wrap', editable: true,
+					edittype:"text",
+				},
+				{ label: 'Price 2', name: 'amt2', width: 200, classes: 'wrap', editable: true,
+					edittype:"text",
+				},
+				{ label: 'Price 3', name: 'amt3', width: 200, classes: 'wrap', editable: true,
+					edittype:"text",
+				},
+				{ label: 'Cost Price', name: 'costprice', width: 200, classes: 'wrap', editable: true,
+					edittype:"text",
+				},
+				{ label: 'Inpatient Tax', name: 'iptax', width: 200, classes: 'wrap', editable: true,
+					edittype:"text",
+				},
+				{ label: 'Outpatient Tax', name: 'optax', width: 200, classes: 'wrap', editable: true,
+					edittype:"text",
+				},
+				{ label: 'User ID', name: 'lastuser', width: 200, classes: 'wrap', editable: false,
+					edittype:"text",
+				},
+				{ label: 'Last Updated', name: 'lastupdate', width: 200, classes: 'wrap', editable: false,
+					edittype:"text",
+				},
+			],
 			viewrecords: true,
 			//shrinkToFit: true,
 			autowidth:true,
@@ -614,9 +985,9 @@
 				var selRowId = $("#jqGrid3").jqGrid ('getGridParam', 'selrow');
 				if(!selRowId){
 					alert('Please select row');
-					return emptyFormdata(errorField,'#FAuthdtl');
+					return emptyFormdata(errorField,'#FChgPriceDtl');
 				}else{
-					saveFormdata("#jqGrid3","#Authdtl","#FAuthdtl",'del',saveParam3,urlParam3,null,{'idno':selRowId});
+					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",'del',saveParam3,urlParam3,null,{'idno':selRowId});
 				}
 			}, 
 			position: "first", 
@@ -628,28 +999,10 @@
 			onClickButton: function(){
 				oper_chgpricedtl='view';
 				selRowId = $("#jqGrid3").jqGrid ('getGridParam', 'selrow');
-				populateFormdata("#jqGrid3","#Authdtl","#FAuthdtl",selRowId,'view');
+				populateFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",selRowId,'view');
 			}, 
 			position: "first", 
 			title:"View Selected Row", 
-			cursor: "pointer"
-		}).jqGrid('navButtonAdd',"#jqGridPager3",{
-			caption:"", 
-			buttonicon:"glyphicon glyphicon-edit", 
-			onClickButton: function(){
-				oper_chgpricedtl='edit';
-				var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-				if(!selRowId){
-					alert('Please select row');
-					return emptyFormdata(errorField,'#FAuthdtl');
-				}else{
-					selRowId2 = $("#jqGrid3").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid3","#Authdtl","#FAuthdtl",selRowId2,'edit');
-					recstatusDisable();
-				}
-			}, 
-			position: "first", 
-			title:"Edit Selected Row", 
 			cursor: "pointer"
 		}).jqGrid('navButtonAdd',"#jqGridPager3",{
 			caption:"", 
@@ -659,11 +1012,11 @@
 				var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 				if(!selRowId){
 					alert('Please select row');
-					return emptyFormdata(errorField,'#FAuthdtl');
+					return emptyFormdata(errorField,'#FChgPriceDtl');
 				}else{
-					$( "#Authdtl" ).dialog( "open" );
+					$( "#ChgPriceDtl" ).dialog( "open" );
 				}
-				//$('#FAuthdtl :input[name=d_lineno_]').hide();
+				//$('#FChgPriceDtl :input[name=d_lineno_]').hide();
 				//$("#Fsuppitems :input[name*='SuppCode']").val(selrowData('#jqGrid').SuppCode);
 			}, 
 			position: "first", 

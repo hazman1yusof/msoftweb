@@ -45,65 +45,65 @@
 
 		var oper='add';
 		$("#dialogForm")
-			.dialog({ 
-				width: 9/10 * $(window).width(),
-				modal: true,
-				autoOpen: false,
-				open: function( event, ui ) {
-					parent_close_disabled(true);
-					switch(oper) {
-						case state = 'add':
-							enableForm('#formdata');
-							rdonly('#formdata');
-							break;
-						case state = 'edit':
-							enableForm('#formdata');
-							rdonly('#formdata');
-							frozeOnEdit("#dialogForm");
-							recstatusDisable();
-							break;
-						case state = 'view':
-							disableForm('#formdata');
-							break;
-					}
-					if(oper!='view'){
-						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-						dialog_chggroup.on();
-						dialog_ipdept.on();
-						dialog_opdept.on();
-						dialog_ipacccode.on();
-						dialog_opacccode.on();
-						dialog_otcacccode.on();
-						dialog_invcategory.on();
-					}
-					if(oper!='add'){
-						dialog_chggroup.check(errorField);
-						dialog_ipdept.check(errorField);
-						dialog_opdept.check(errorField);
-						dialog_ipacccode.check(errorField);
-						dialog_opacccode.check(errorField);
-						dialog_otcacccode.check(errorField);
-						dialog_invcategory.check(errorField);
-					}
-				},
-				close: function( event, ui ) {
-					parent_close_disabled(false);
-					emptyFormdata(errorField,'#formdata');
-					//$('.alert').detach();
-					$('#formdata .alert').detach();
-					dialog_chggroup.off();
-					dialog_ipdept.off();
-					dialog_opdept.off();
-					dialog_ipacccode.off();
-					dialog_opacccode.off();
-					dialog_otcacccode.off();
-					dialog_invcategory.off();
-					if(oper=='view'){
-						$(this).dialog("option", "buttons",butt1);
-					}
-				},
-				buttons :butt1,
-			});
+		  .dialog({ 
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function( event, ui ) {
+				parent_close_disabled(true);
+				switch(oper) {
+					case state = 'add':
+						enableForm('#formdata');
+						rdonly('#formdata');
+						break;
+					case state = 'edit':
+						enableForm('#formdata');
+						rdonly('#formdata');
+						frozeOnEdit("#dialogForm");
+						recstatusDisable();
+						break;
+					case state = 'view':
+						disableForm('#formdata');
+						break;
+				}
+				if(oper!='view'){
+					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+					dialog_chggroup.on();
+					dialog_ipdept.on();
+					dialog_opdept.on();
+					dialog_ipacccode.on();
+					dialog_opacccode.on();
+					dialog_otcacccode.on();
+					dialog_invcategory.on();
+				}
+				if(oper!='add'){
+					dialog_chggroup.check(errorField);
+					dialog_ipdept.check(errorField);
+					dialog_opdept.check(errorField);
+					dialog_ipacccode.check(errorField);
+					dialog_opacccode.check(errorField);
+					dialog_otcacccode.check(errorField);
+					dialog_invcategory.check(errorField);
+				}
+			},
+			close: function( event, ui ) {
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#formdata');
+				//$('.alert').detach();
+				$('#formdata .alert').detach();
+				dialog_chggroup.off();
+				dialog_ipdept.off();
+				dialog_opdept.off();
+				dialog_ipacccode.off();
+				dialog_opacccode.off();
+				dialog_otcacccode.off();
+				dialog_invcategory.off();
+				if(oper=='view'){
+					$(this).dialog("option", "buttons",butt1);
+				}
+			},
+			buttons :butt1,
+		});
 		////////////////////////////////////////end dialog///////////////////////////////////////////
 
 		/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -133,51 +133,51 @@
 		/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 		$("#jqGrid").jqGrid({
 			datatype: "local",
-				colModel: [
-					{ label: 'idno', name: 'idno', sorttype: 'number', hidden:true },
-					{ label: 'Compcode', name: 'compcode', hidden:true},
-					{ label: 'Charge Type', name: 'chgtype', classes: 'wrap', width: 30, canSearch: true},
-					{ label: 'Description', name: 'description', classes: 'wrap', width: 70, canSearch: true},
-					{ label: 'Last User', name: 'upduser', classes: 'wrap', width: 30,checked:true},
-					{ label: 'Last Update', name: 'upddate', classes: 'wrap', width: 20},
-					{ label: 'Sequence Number', name: 'seqno', classes: 'wrap', width: 20,checked:true},
-					{ label: 'Charge Group', name: 'chggroup', classes: 'wrap', width: 20,checked:true, canSearch: true},
-					{ label: 'ipacccode', name: 'ipacccode', hidden:true},
-					{ label: 'opacccode', name: 'opacccode', hidden:true},
-					{ label: 'otcacccode', name: 'otcacccode', hidden:true},
-					{ label: 'ipdept', name: 'ipdept', hidden:true},
-					{ label: 'opdept', name: 'opdept', hidden:true},
-					{ label: 'invcategory', name: 'invcategory', hidden:true},
-					{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
-					formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
-					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
-					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
-				],
-				autowidth:true,
-				multiSort: true,
-				viewrecords: true,
-				loadonce:false,
-				width: 900,
-				height: 250,
-				rowNum: 30,
-				pager: "#jqGridPager",
-				onSelectRow:function(rowid, selected){
-					//urlParam2.filterVal[1]=selrowData("#jqGrid").cm_chgcode;
-					// refreshGrid("#jqGrid3",urlParam2);
-				},
-				ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#jqGridPager td[title='Edit Selected Row']").click();
-				},
-				gridComplete: function(){
-					if(oper == 'add'){
-						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-					}
+			  colModel: [
+				{ label: 'idno', name: 'idno', sorttype: 'number', hidden:true },
+				{ label: 'Compcode', name: 'compcode', hidden:true},
+				{ label: 'Charge Type', name: 'chgtype', classes: 'wrap', width: 30, canSearch: true},
+				{ label: 'Description', name: 'description', classes: 'wrap', width: 70, canSearch: true},
+				{ label: 'Last User', name: 'upduser', classes: 'wrap', width: 30,checked:true},
+				{ label: 'Last Update', name: 'upddate', classes: 'wrap', width: 20},
+				{ label: 'Sequence Number', name: 'seqno', classes: 'wrap', width: 20,checked:true},
+				{ label: 'Charge Group', name: 'chggroup', classes: 'wrap', width: 20,checked:true, canSearch: true},
+				{ label: 'ipacccode', name: 'ipacccode', hidden:true},
+				{ label: 'opacccode', name: 'opacccode', hidden:true},
+				{ label: 'otcacccode', name: 'otcacccode', hidden:true},
+				{ label: 'ipdept', name: 'ipdept', hidden:true},
+				{ label: 'opdept', name: 'opdept', hidden:true},
+				{ label: 'invcategory', name: 'invcategory', hidden:true},
+				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
+				formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
+				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+				{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
+				{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
+				{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
+				{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
+			],
+			autowidth:true,
+			multiSort: true,
+			viewrecords: true,
+			loadonce:false,
+			width: 900,
+			height: 250,
+			rowNum: 30,
+			pager: "#jqGridPager",
+			onSelectRow:function(rowid, selected){
+				//urlParam2.filterVal[1]=selrowData("#jqGrid").cm_chgcode;
+				// refreshGrid("#jqGrid3",urlParam2);
+			},
+			ondblClickRow: function(rowid, iRow, iCol, e){
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+			},
+			gridComplete: function(){
+				if(oper == 'add'){
+					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+				}
 
-					// $('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
-				},
+				// $('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			},
 		});
 
 		//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
