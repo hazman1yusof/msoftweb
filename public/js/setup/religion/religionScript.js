@@ -100,14 +100,23 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/religion/table',
+		url: '/util/get_table_default',
+		field: '',
+		table_name: 'hisdb.religion',
+		table_id: 'Code',
+		sort_idno: true
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
 		url: '/religion/form',
-		oper: oper
+		field: '',
+		oper: oper,
+		table_name: 'hisdb.religion',
+		table_id: 'Code',
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({

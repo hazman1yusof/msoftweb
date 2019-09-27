@@ -124,7 +124,9 @@ $(document).ready(function () {
 		field: '',
 		oper: oper,
 		table_name: 'hisdb.billtymst',
-		table_id: 'billtype'
+		table_id: 'billtype',
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	//////////////////////////start grid/////////////////////////////////////////////////////////
@@ -443,7 +445,8 @@ $(document).ready(function () {
 		idnoUse: 'svc_idno',
 		filterCol: ['billtype'],
 		filterVal: [''],
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -751,7 +754,8 @@ $(document).ready(function () {
 		idnoUse: 'i_idno',
 		filterCol: ['billtype'],
 		filterVal: [''],
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////

@@ -113,7 +113,9 @@ $(document).ready(function () {
 		field: '',
 		oper: oper,
 		table_name: 'hisdb.relationship',
-		table_id: 'RelationShipCode'
+		table_id: 'RelationShipCode',
+		saveip: 'true',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({

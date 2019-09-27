@@ -118,7 +118,8 @@
 				oper:oper,
 				table_name:'hisdb.docstatus',
 				table_id:'statuscode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

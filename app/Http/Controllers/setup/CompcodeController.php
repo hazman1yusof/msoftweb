@@ -1,6 +1,40 @@
 <?php
+namespace App\Http\Controllers\setup;
 
-namespace App\Http\Controllers\serup;
+use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
+
+class CompcodeController extends defaultController
+{   
+
+    var $table;
+    var $duplicateCode;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->duplicateCode = "Code";
+    }
+
+    public function show(Request $request)
+    {   
+        return view('setup.compcode.compcode');
+    }
+
+    public function form(Request $request)
+    {   
+        switch($request->oper){
+            case 'add':
+                return $this->defaultAdd($request);
+            case 'edit':
+                return $this->defaultEdit($request);
+            case 'del':
+                return $this->defaultDel($request);
+            default:
+                return 'error happen..';
+        }
+    }
+/*namespace App\Http\Controllers\serup;
 
 use Illuminate\Http\Request;
 use stdClass;
@@ -155,5 +189,5 @@ class CompcodeController extends defaultController
             return response('Error'.$e, 500);
         }
 
-    }
+    }*/
 }

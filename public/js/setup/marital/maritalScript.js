@@ -115,7 +115,8 @@ $(document).ready(function () {
 		oper: oper,
 		table_name: 'hisdb.marital',
 		table_id: 'code',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({

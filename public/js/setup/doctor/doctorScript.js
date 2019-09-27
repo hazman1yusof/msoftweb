@@ -127,7 +127,8 @@
 				oper:oper,
 				table_name:'hisdb.doctor',
 				table_id:'doctorcode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 				//sysparam: {source: 'doc'} 
 			};
 			

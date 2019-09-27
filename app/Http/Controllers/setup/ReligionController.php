@@ -1,6 +1,40 @@
 <?php
-
 namespace App\Http\Controllers\setup;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
+
+class ReligionController extends defaultController
+{   
+
+    var $table;
+    var $duplicateCode;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->duplicateCode = "Code";
+    }
+
+    public function show(Request $request)
+    {   
+        return view('setup.religion.religion');
+    }
+
+    public function form(Request $request)
+    {   
+        switch($request->oper){
+            case 'add':
+                return $this->defaultAdd($request);
+            case 'edit':
+                return $this->defaultEdit($request);
+            case 'del':
+                return $this->defaultDel($request);
+            default:
+                return 'error happen..';
+        }
+    }
+/*namespace App\Http\Controllers\setup;
 
 use App\model\sysdb\religion;
 use Illuminate\Http\Request;
@@ -160,5 +194,5 @@ class ReligionController extends defaultController
             DB::rollback();
         }
 
-    }
+    }*/
 }

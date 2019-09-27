@@ -115,7 +115,8 @@ $(document).ready(function () {
 		oper: oper,
 		table_name: 'hisdb.bloodgroup',
 		table_id: 'bloodcode',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({

@@ -113,7 +113,8 @@ $(document).ready(function () {
 		oper: oper,
 		table_name: 'hisdb.areacode',
 		table_id: 'areacode',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({

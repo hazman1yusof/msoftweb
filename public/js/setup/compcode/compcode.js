@@ -109,7 +109,8 @@ $(document).ready(function () {
 		oper: oper,
 		table_name: 'sysdb.company',
 		table_id: 'compcode',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({
@@ -127,7 +128,7 @@ $(document).ready(function () {
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 			{ label: 'Logo', name: 'logo1', width: 90, hidden: true },
-			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{ label: 'Record Status', name: 'recstatus', width: 90, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
 		],

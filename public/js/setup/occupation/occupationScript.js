@@ -113,7 +113,8 @@ $(document).ready(function () {
 		oper: oper,
 		table_name: 'hisdb.occupation',
 		table_id: 'occupcode',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({

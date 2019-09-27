@@ -118,7 +118,8 @@
 				oper:oper,
 				table_name:'hisdb.speciality',
 				table_id:'specialitycode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

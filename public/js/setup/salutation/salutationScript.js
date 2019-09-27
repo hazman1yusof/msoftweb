@@ -111,7 +111,9 @@
 				field:'',
 				oper:oper,
 				table_name:'hisdb.title',
-				table_id:'Code'
+				table_id:'Code',
+				saveip: 'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

@@ -117,7 +117,8 @@
 				oper:oper,
 				table_name:'material.sequence',
 				table_id:'idno',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

@@ -60,12 +60,12 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
 						<div class="col-md-3">
-						  	<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+						  	<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" frozeOnEdit rdonly>
 						</div>
 
 						<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
 						  	<div class="col-md-3">
-								<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+								<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
 						  	</div>
 				</div>    
 

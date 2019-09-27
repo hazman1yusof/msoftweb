@@ -117,7 +117,8 @@
 				oper:oper,
 				table_name:'hisdb.discipline',
 				table_id:'code',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({
