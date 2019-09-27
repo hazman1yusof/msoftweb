@@ -130,7 +130,8 @@
 				oper:oper,
 				table_name:'material.productmaster',
 				table_id:'itemcode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

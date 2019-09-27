@@ -127,7 +127,8 @@ $(document).ready(function () {
 		oper: oper,
 		table_name: 'material.stockloc',
 		table_id: 'idno',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({

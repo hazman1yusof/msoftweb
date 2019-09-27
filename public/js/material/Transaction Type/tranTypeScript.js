@@ -115,7 +115,8 @@
 				oper:oper,
 				table_name:'material.ivtxntype',
 				table_id:'trantype',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

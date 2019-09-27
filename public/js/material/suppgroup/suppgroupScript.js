@@ -258,7 +258,8 @@
 				oper:oper,
 				table_name:'material.suppgroup',
 				table_id:'suppgroup',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

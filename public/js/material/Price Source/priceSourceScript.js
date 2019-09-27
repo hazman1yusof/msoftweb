@@ -113,7 +113,8 @@
 				oper:oper,
 				table_name:'material.pricesource',
 				table_id:'pricecode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

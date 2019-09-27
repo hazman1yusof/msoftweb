@@ -114,7 +114,8 @@
 				oper:oper,
 				table_name:'material.potype',
 				table_id:'potype',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

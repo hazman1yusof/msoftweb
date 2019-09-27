@@ -230,7 +230,8 @@ $(document).ready(function () {
 		oper:oper,
 		table_name:'material.supplier',
 		table_id:'SuppCode',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 	
 	//////////////////////////start grid/////////////////////////////////////////////////////////

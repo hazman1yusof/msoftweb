@@ -113,7 +113,8 @@
 				oper:oper,
 				table_name:'material.uom',
 				table_id:'uomcode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({
