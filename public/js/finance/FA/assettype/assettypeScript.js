@@ -107,9 +107,10 @@
                 url:"/assettype/form",
 				field:'',
 				oper:oper,
-				table_name:'finance.fatype',  ////////////////////
-				table_id:'assettype'    ,
-				saveip:'true'            ////////////////////
+				table_name:'finance.fatype',
+				table_id:'assettype',
+				saveip:'true',
+				checkduplicate:'true'            
 			};
 			
 			$("#jqGrid").jqGrid({

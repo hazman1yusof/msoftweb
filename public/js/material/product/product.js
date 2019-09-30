@@ -508,7 +508,8 @@ $(document).ready(function () {
 		oper:oper,
 		table_name:'material.product',
 		table_id:'idno',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 	
 	$("#jqGrid").jqGrid({
