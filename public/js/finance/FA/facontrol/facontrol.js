@@ -121,7 +121,8 @@ $(document).ready(function () {
 		field:'',
 		oper:oper,
 		table_name:'finance.facontrol',
-		table_id:'idno'
+		table_id:'idno',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({
