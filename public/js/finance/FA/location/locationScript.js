@@ -114,7 +114,8 @@
 				oper:oper,
 				table_name:'sysdb.location',
 				table_id:'loccode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({
@@ -172,7 +173,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':idno});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':idno});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
