@@ -24,6 +24,8 @@
 			},
 		};
 			
+		var mycurrency2 =new currencymode([]);
+		var fdl = new faster_detail_load();
 		////////////////////////////////////start dialog///////////////////////////////////////
 		var butt1=[{
 			text: "Save",click: function() {
@@ -56,13 +58,13 @@
 					case state = 'add':
 						$("#jqGrid2").jqGrid("clearGridData", false);
 						$("#pg_jqGridPager2 table").show();
-						/*hideatdialogForm(true);*/
+						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
 						break;
 					case state = 'edit':
 						$("#pg_jqGridPager2 table").show();
-						/*hideatdialogForm(true);*/
+						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
 						frozeOnEdit("#formdata");
@@ -341,11 +343,20 @@
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
-				{ label: 'Effective date', name: 'effdate', width: 150, align: 'right', classes: 'wrap', editable:true,
-					edittype:"date",
-					editoptions:{
-						maxlength: 10,
-					},
+				{ label: 'Effective date', name: 'effdate', width: 100, classes: 'wrap', editable:true,
+					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+					editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).datepicker({
+	                            id: 'expdate_datePicker',
+	                            dateFormat: 'dd/mm/yy',
+	                            minDate: 1,
+	                            showOn: 'focus',
+	                            changeMonth: true,
+			  					changeYear: true,
+	                        });
+	                    }
+	                }
 				},
 				{ label: 'Price 1', name: 'amt1', width: 150, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
@@ -371,30 +382,32 @@
 						maxlength: 100,
 					},
 				},
-				{ label: 'Inpatient Tax', name: 'iptax', width: 150, align: 'right', classes: 'wrap', editable:true,
-					edittype:"text",
-					editoptions:{
-						maxlength: 100,
-					},
+				{ label: 'Inpatient Tax', name: 'iptax', width: 150,align: 'right' , classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:iptaxCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
 				},
-				{ label: 'Outpatient Tax', name: 'optax', width: 150, align: 'right', classes: 'wrap', editable:true,
-					edittype:"text",
-					editoptions:{
-						maxlength: 100,
-					},
+				{ label: 'Outpatient Tax', name: 'optax', width: 150,align: 'right' , classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:optaxCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
 				},
-				{ label: 'User ID', name: 'lastuser', width: 150, align: 'right', classes: 'wrap', editable:true,
-					edittype:"text",
-					editoptions:{
-						maxlength: 100,
-					},
-				},
-				{ label: 'Last Updated', name: 'lastupdate', width: 150, align: 'right', classes: 'wrap', editable:true,
-					edittype:"text",
-					editoptions:{
-						maxlength: 100,
-					},
-				},
+				// { label: 'User ID', name: 'lastuser', width: 150, align: 'right', classes: 'wrap', editable:false,
+				// 	edittype:"text",
+				// 	editoptions:{
+				// 		maxlength: 100,
+				// 	},
+				// },
+				// { label: 'Last Updated', name: 'lastupdate', width: 150, align: 'right', classes: 'wrap', editable:false,
+				// 	edittype:"text",
+				// 	editoptions:{
+				// 		maxlength: 100,
+				// 	},
+				// },
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', key: true, editable: true, hidden:true},
 			],
 			autowidth: true,
@@ -417,13 +430,56 @@
 				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 			},
 			gridComplete: function(){
-				// fdl.set_array().reset();
+				fdl.set_array().reset();
 				
 			},
 			beforeSubmit: function(postdata, rowid){ 
 				// dialog_deptcodedtl.check(errorField);
 		 	}
 		});
+
+		///////////////////////////////////////cust_rules//////////////////////////////////////////////
+		function cust_rules(value,name){
+			var temp;
+			switch(name){
+				case 'Inpatient Tax':temp=$('#iptax');break;
+				case 'Outpatient Tax':temp=$('#optax');break;
+					break;
+			}
+			return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+		}
+
+		function showdetail(cellvalue, options, rowObject){
+			var field,table,case_;
+			switch(options.colModel.name){
+				case 'iptax':field=['taxcode','description'];table="hisdb.taxmast";case_='iptax';break;
+				case 'optax': field = ['taxcode', 'description']; table = "hisdb.taxmast";case_='optax';break;
+			}
+			var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+			fdl.get_array('chargemaster',options,param,case_,cellvalue);
+			
+			return cellvalue;
+		}
+
+		function iptaxCustomEdit(val, opt) {
+			val = (val == "undefined") ? "" : val;
+			return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="iptax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		}
+
+		function optaxCustomEdit(val, opt) {
+			val = (val == "undefined") ? "" : val;
+			return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="optax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		}
+		function galGridCustomValue (elem, operation, value){
+			if(operation == 'get') {
+				return $(elem).find("input").val();
+			} 
+			else if(operation == 'set') {
+				$('input',elem).val(value);
+			}
+		}
+
 
 		/////////////////////////start grid pager/////////////////////////////////////////////////////////
 
@@ -525,6 +581,9 @@
 	        oneditfunc: function (rowid) {
 
 	        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
+
+	        	dialog_optax.on();
+				dialog_iptax.on();
 
 	        	// dialog_deptcodedtl.on();
 	        	// $("#jqGrid2 input[name='dtl_deptcode']").val('ALL');
@@ -751,8 +810,6 @@
 
 		//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 		$("#saveDetailLabel").click(function () {
-			mycurrency.formatOff();
-			mycurrency.check0value(errorField);
 			unsaved = false;
 			// dialog_authorid.off();
 			// dialog_deptcodehd.off();
@@ -762,7 +819,6 @@
 				saveHeader("#formdata",oper,saveParam);
 				unsaved = false;
 			} else {
-				mycurrency.formatOn();
 				// dialog_authorid.on();
 				// dialog_deptcodehd.on();
 			}
@@ -774,7 +830,6 @@
 			hideatdialogForm(true);
 			// dialog_authorid.on();
 			// dialog_deptcodehd.on();
-
 			enableForm('#formdata');
 			rdonly('#formdata');
 			$(".noti").empty();
@@ -1376,6 +1431,74 @@
 			},'urlParam','radio','tab',false
 		);
 		dialog_deptcode.makedialog(true);
+
+		var dialog_iptax = new ordialog(
+		'iptax','hisdb.taxmast',"#jqGrid2 input[name='iptax']",errorField,
+		{	colModel:[
+				{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode'],
+				filterVal:['A', 'session.compcode']
+					},
+			ondblClickRow:function(){
+				$('#delordhd_credcode').focus();
+			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#delordhd_credcode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+		},{
+			title:"Select Receiver Department",
+			open: function(){
+				dialog_iptax.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_iptax.urlParam.filterVal = ['A', 'session.compcode'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_iptax.makedialog();
+
+	var dialog_optax = new ordialog(
+		'optax','hisdb.taxmast',"#jqGrid2 input[name='optax']",errorField,
+		{	colModel:[
+				{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode'],
+				filterVal:['A', 'session.compcode']
+					},
+			ondblClickRow:function(){
+				$('#delordhd_credcode').focus();
+			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#delordhd_credcode').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+		},{
+			title:"Select Receiver Department",
+			open: function(){
+				dialog_optax.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_optax.urlParam.filterVal = ['A', 'session.compcode'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_optax.makedialog();
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 

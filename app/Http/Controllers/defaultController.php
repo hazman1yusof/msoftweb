@@ -303,6 +303,7 @@ abstract class defaultController extends Controller{
 
     public function defaultAdd(Request $request){
 
+        DB::enableQueryLog();
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
             $idno = $request[$request->idnoUse];
@@ -337,10 +338,10 @@ abstract class defaultController extends Controller{
             }
 
             $table->insert($array_insert);
+            $queries = DB::getQueryLog();
 
             $responce = new stdClass();
-            $responce->sql = $table->toSql();
-            $responce->sql_bind = $table->getBindings();
+            $responce->queries = $queries;
             echo json_encode($responce);
 
             DB::commit();
@@ -354,6 +355,7 @@ abstract class defaultController extends Controller{
 
     public function defaultEdit(Request $request){
 
+        DB::enableQueryLog();
         DB::beginTransaction();
 
         $table = DB::table($request->table_name);
@@ -398,9 +400,10 @@ abstract class defaultController extends Controller{
             // dd($array_update);
             $table->update($array_update);
 
+            $queries = DB::getQueryLog();
+
             $responce = new stdClass();
-            $responce->sql = $table->toSql();
-            $responce->sql_bind = $table->getBindings();
+            $responce->queries = $queries;
             echo json_encode($responce);
 
             DB::commit();
