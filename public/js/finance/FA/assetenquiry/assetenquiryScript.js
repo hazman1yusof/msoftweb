@@ -32,7 +32,7 @@ $(document).ready(function () {
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,null,{idno:selrowData("#jqGrid").idno});
+				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,{idno:selrowData("#jqGrid").idno});
 			}else{
 				mycurrency.formatOn();
 			}
