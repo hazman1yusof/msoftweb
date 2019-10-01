@@ -115,7 +115,8 @@ $(document).ready(function () {
 		oper:oper,
 		table_name:'material.category',
 		table_id:'catcode',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	//////////////////////////////// jQgrid /////////////////////////////////////////////////////

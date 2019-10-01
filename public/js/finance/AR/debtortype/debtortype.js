@@ -122,7 +122,8 @@
 				oper:oper,
 				table_name:'debtor.debtortype',
 				table_id:'debtortycode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

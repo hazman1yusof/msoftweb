@@ -113,7 +113,8 @@
 				oper:oper,
 				table_name:'finance.glmasref',
 				table_id:'glaccno',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

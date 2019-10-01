@@ -286,7 +286,8 @@ $(document).ready(function () {
 		table_id:'paymode',
 		filterCol:['source'],
 		filterVal:[$('#source2').val()],
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 
 	};
 	

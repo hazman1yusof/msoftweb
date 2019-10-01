@@ -187,7 +187,8 @@
 				oper:oper,
 				table_name:'debtor.hdrtypmst',
 				table_id:'hdrtype',
-				saveip:'true' 
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

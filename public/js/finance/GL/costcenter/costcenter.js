@@ -114,7 +114,8 @@
 				oper:oper,
 				table_name:'finance.costcenter',
 				table_id:'costcode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

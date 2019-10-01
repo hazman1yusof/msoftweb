@@ -232,7 +232,8 @@
 				oper:oper,
 				table_name:'debtor.debtormast',
 				table_id:'debtorcode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

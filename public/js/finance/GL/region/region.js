@@ -116,7 +116,8 @@ $(document).ready(function () {
 		oper: oper,
 		table_name: 'sysdb.region',
 		table_id: 'regioncode',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({

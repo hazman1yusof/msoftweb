@@ -117,7 +117,8 @@ $(document).ready(function () {
 		oper: oper,
 		table_name: 'sysdb.sector',
 		table_id: 'sectorcode',
-		saveip:'true'
+		saveip:'true',
+		checkduplicate:'true'
 	};
 
 	$("#jqGrid").jqGrid({
@@ -224,14 +225,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','A']
 				},
 				ondblClickRow: function () {
-					$('#recstatus').focus();
+					//$('#recstatus').focus();
 				},
 				gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							$('#recstatus').focus();
+							//$('#recstatus').focus();
 						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}

@@ -226,7 +226,8 @@
 				oper:oper,
 				table_name:'sysdb.department',
 				table_id:'deptcode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({
