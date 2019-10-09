@@ -276,7 +276,7 @@ $.jgrid.defaults.responsive = true;
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'assetcode':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, {'assetcode':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
