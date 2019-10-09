@@ -141,7 +141,8 @@
 			oper:oper,
 			table_name:'hisdb.chgmast',
 			table_id:'chgcode',
-			saveip:'true'
+			saveip:'true',
+			checkduplicate:'true'
 		};
 			
 		/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
