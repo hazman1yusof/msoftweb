@@ -875,80 +875,6 @@ $(document).ready(function () {
 			$("#adpFormdata [name=Class][value='"+$('#Class2').val()+"']").prop('checked', true).show();
 			$('#adpFormdata [type=radio]:not(:checked)').hide();
 			$('#adpFormdata [type=radio]:not(:checked)').parent('label').hide();
-			
-			if($('#groupcode2').val()=="Stock"){
-				let dialog_cat1 = new ordialog(
-					'productcatAddNew1','material.category','#productcatAddNew_stock',errorField,
-					{	colModel:[
-							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
-							{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-						],
-						urlParam: {
-							filterCol:['cattype', 'source', 'recstatus'],
-							filterVal:['Stock', 'PO', 'A']
-						},
-						ondblClickRow:function(){
-						}	
-					},{
-						title:"Select Product Category",
-						open: function(){
-							var gc2 = $('#groupcode2').val();
-							dialog_cat1.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-							dialog_cat1.urlParam.filterVal=['Stock', 'PO', 'A',$('#Class2').val()];
-						}
-					},'urlParam'
-				);
-				dialog_cat1.makedialog();
-				dialog_cat1.on();
-
-			} else if($('#groupcode2').val()=="Asset") {
-				let dialog_cat2 = new ordialog(
-					'productcatAddNew2','finance.facode','#productcatAddNew_asset',errorField,
-					{	colModel:[
-							{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,or_search:true},
-							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						],
-						urlParam: {
-							filterCol:[ 'recstatus'],
-							filterVal:[ 'A']
-						},
-						ondblClickRow:function(){
-						}	
-					},{
-						title:"Select Product Category",
-						open: function(){
-							dialog_cat2.urlParam.filterCol=['recstatus'];
-							dialog_cat2.urlParam.filterVal=['A'];
-						}
-					},'urlParam'
-				);
-				dialog_cat2.makedialog();
-				dialog_cat2.on();
-
-			} else if($('#groupcode2').val()=="Others") {
-				let dialog_cat3 = new ordialog(
-					'productcatAddNew3','material.category','#productcatAddNew_other',errorField,
-					{	colModel:[
-							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
-							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						],
-						urlParam: {
-							filterCol:['cattype', 'source', 'recstatus'],
-							filterVal:['Other', 'PO', 'A']
-						},
-						ondblClickRow:function(){
-						}	
-					},{
-						title:"Select Product Category",
-						open: function(){
-							dialog_cat3.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-							dialog_cat3.urlParam.filterVal=['Other', 'PO', 'A',$('#Class2').val()];
-						}
-					},'urlParam'
-				);
-				dialog_cat3.makedialog();
-				dialog_cat3.on();
-			}
 		}
 	}];
 
@@ -987,11 +913,90 @@ $(document).ready(function () {
 		open: function( event, ui ) {
 			rdonly("#addNewProductDialog");
 			set_compid_from_storage("input[name='computerid']", "input[name='ipaddress']");
+
+			if($('#groupcode2').val()=="Stock"){
+				console.log('addnew')
+					let dialog_cat1 = new ordialog(
+						'productcatAddNew1','material.category','#productcatAddNew_stock',errorField,
+						{	colModel:[
+								{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+								{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+							],
+							urlParam: {
+								filterCol:['cattype', 'source', 'recstatus'],
+								filterVal:['Stock', 'PO', 'A']
+							},
+							ondblClickRow:function(){
+							}	
+						},{
+							title:"Select Product Category",
+							open: function(){
+								var gc2 = $('#groupcode2').val();
+								dialog_cat1.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
+								dialog_cat1.urlParam.filterVal=['Stock', 'PO', 'A',$('#Class2').val()];
+							}
+						},'urlParam'
+					);
+					dialog_cat1.makedialog();
+					dialog_cat1.on();
+
+				} else if($('#groupcode2').val()=="Asset") {
+					let dialog_cat2 = new ordialog(
+						'productcatAddNew2','finance.facode','#productcatAddNew_asset',errorField,
+						{	colModel:[
+								{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+								{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							],
+							urlParam: {
+								filterCol:[ 'recstatus'],
+								filterVal:[ 'A']
+							},
+							ondblClickRow:function(){
+							}	
+						},{
+							title:"Select Product Category",
+							open: function(){
+								dialog_cat2.urlParam.filterCol=['recstatus'];
+								dialog_cat2.urlParam.filterVal=['A'];
+							}
+						},'urlParam'
+					);
+					dialog_cat2.makedialog();
+					dialog_cat2.on();
+
+				} else if($('#groupcode2').val()=="Others") {
+					let dialog_cat3 = new ordialog(
+						'productcatAddNew3','material.category','#productcatAddNew_other',errorField,
+						{	colModel:[
+								{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+								{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							],
+							urlParam: {
+								filterCol:['cattype', 'source', 'recstatus'],
+								filterVal:['Other', 'PO', 'A']
+							},
+							ondblClickRow:function(){
+							}	
+						},{
+							title:"Select Product Category",
+							open: function(){
+								dialog_cat3.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
+								dialog_cat3.urlParam.filterVal=['Other', 'PO', 'A',$('#Class2').val()];
+							}
+						},'urlParam'
+					);
+					dialog_cat3.makedialog();
+					dialog_cat3.on();
+				}
 		},
 		close: function( event, ui ) {
 			emptyFormdata([],'#adpFormdata');
 			$('.alert').detach();
 			$("#adpFormdata a").off();
+
+			// dialog_cat1.off();
+			// dialog_cat2.off();
+			// dialog_cat3.off();
 		},
 		buttons :addNew2,
 	});
