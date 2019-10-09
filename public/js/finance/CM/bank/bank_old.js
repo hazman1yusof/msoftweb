@@ -1,9 +1,9 @@
 
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
+		var editedRow=0;
 
 		$(document).ready(function () {
-			$("body").show();
 			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
@@ -25,74 +25,9 @@
 			};
 			//////////////////////////////////////////////////////////////
 
-
 			////////////////////object for dialog handler//////////////////
-
-			var dialog_depccode = new ordialog(
-				'glccode','finance.costcenter','#glccode',errorField,
-				{	colModel:[
-						{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					],
-					urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
-					},
-					ondblClickRow: function () {
-						$('#glaccno').focus();
-					},
-					gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#glaccno').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
-				},{
-					title:"Select Deposit Cost",
-					open: function(){
-						dialog_depccode.urlParam.filterCol=['compcode','recstatus'],
-						dialog_depccode.urlParam.filterVal=['session.compcode','A']
-					}
-				},'urlParam','radio','tab'
-			);
-			dialog_depccode.makedialog(true);
-
-
-			var dialog_depglacc = new ordialog(
-				'glaccno','finance.glmasref','#glaccno',errorField,
-				{	colModel:[
-						{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					],
-					urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
-					},
-					ondblClickRow: function () {
-						
-					},
-					gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
-				},{
-					title:"Select Deposit GL Account",
-					open: function(){
-						dialog_depglacc.urlParam.filterCol=['compcode','recstatus'],
-						dialog_depglacc.urlParam.filterVal=['session.compcode','A']
-					}
-				},'urlParam','radio','tab'
-			);
-			dialog_depglacc.makedialog(true);
+			dialog_glaccno=new makeDialog('finance.glmasref','#glaccno',['glaccno','description'],'GL Account');
+			dialog_glccode=new makeDialog('finance.costcenter','#glccode',['costcode','description'], 'Cost Center');			
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -126,13 +61,12 @@
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
 							rdonly("#formdata");
-							hideOne("#formdata");
+							hideOne('#formdata');
 							break;
 						case state = 'edit':
 							$( this ).dialog( "option", "title", "Edit" );
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
-							rdonly("#formdata");
 							$('#formdata :input[hideOne]').show();
 							break;
 						case state = 'view':
@@ -144,22 +78,20 @@
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-						dialog_depccode.on();
-						dialog_depglacc.on();
-						
+						dialog_glaccno.handler(errorField);
+						dialog_glccode.handler(errorField);
 					}
 					if(oper!='add'){
-						dialog_depccode.check(errorField);
-						dialog_depglacc.check(errorField);
-					
+						dialog_glaccno.check(errorField);
+						dialog_glccode.check(errorField);
 					}
 				},
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
+					//$('.alert').detach();
 					$('#formdata .alert').detach();
-					dialog_depccode.off();
-					dialog_depglacc.off();
+					$("#formdata a").off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -171,23 +103,20 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
-				url:'util/get_table_default',
 				field:'',
 				table_name:'finance.bank',
 				table_id:'bankcode',
-				sort_idno: true
+				sort_idno:true,
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
-				url:'bank/form',
 				field:'',
 				oper:oper,
 				table_name:'finance.bank',
 				table_id:'bankcode',
-				saveip:'true',
-				checkduplicate:'true'
+				saveip:'true'
 			};
 			
 			$("#jqGrid").jqGrid({
@@ -224,6 +153,7 @@
 						formatter:formatter, unformat:unformat, cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 					{label: 'idno', name: 'idno', hidden: true},
+					
 				],
 				autowidth:true,
                 multiSort: true,
@@ -244,21 +174,24 @@
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 				},
 				
-				
 			});
 
+			////////////////////////////formatter//////////////////////////////////////////////////////////
 			function formatter(cellvalue, options, rowObject){
-				return parseInt(cellvalue) ? "Yes" : "No";
+				if(cellvalue == 'A'){
+					return "Active";
+				}
+				if(cellvalue == 'D') { 
+					return "Deactive";
+				}
 			}
 
-			function unformat(cellvalue, options){
-				//return parseInt(cellvalue) ? "Yes" : "No";
-
-				if (cellvalue == 'Yes') {
-					return "1";
+			function  unformat(cellvalue, options){
+				if(cellvalue == 'Active'){
+					return "Active";
 				}
-				else {
-					return "0";
+				if(cellvalue == 'Deactive') { 
+					return "Deactive";
 				}
 			}
 
@@ -279,7 +212,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'bankcode':selRowId});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -299,7 +232,6 @@
 					oper='edit';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
-					recstatusDisable();
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  
@@ -308,7 +240,6 @@
 				onClickButton: function(){
 					oper='add';
 					$( "#dialogForm" ).dialog( "open" );
-
 				},
 			});
 
@@ -321,8 +252,6 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
-
-	
+			addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress']);
 		});
 		
