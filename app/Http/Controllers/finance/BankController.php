@@ -5,21 +5,17 @@ namespace App\Http\Controllers\finance;
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 
-class UnitController extends defaultController
+class BankController extends defaultController
 {   
-    var $table;
-    var $duplicateCode;
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "sectorcode";
     }
 
     public function show(Request $request)
     {   
-        return view('finance.GL.unit.unit');
-        
+        return view('finance.CM.bank.bank');
     }
 
     public function form(Request $request)

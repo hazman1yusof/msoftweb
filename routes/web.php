@@ -44,6 +44,8 @@ Route::get('/user_maintenance','setup\UserMaintenanceController@show');
 Route::get('/user_maintenance/table','setup\UserMaintenanceController@table');
 Route::post('/user_maintenance/form','setup\UserMaintenanceController@form');
 
+///////////////file setup//////////////////////////////////////////////////
+
 //// Religion setup page ///
 Route::get('/religion','setup\ReligionController@show');
 Route::get('/religion/table','setup\ReligionController@table');
@@ -165,6 +167,8 @@ Route::post('/doctor_maintenance/save_session','hisdb\DoctorMaintenanceControlle
 Route::post('/doctor_maintenance/save_bgleave','hisdb\DoctorMaintenanceController@save_bgleave');
 Route::post('/doctor_maintenance/save_colorph','hisdb\DoctorMaintenanceController@save_colorph');
 
+////////////////////////////////inventory setup///////////////////////////////////////////////////////////
+
 //// inventory Transaction setup page ///
 Route::get('/inventoryTransaction','material\InventoryTransactionController@show');
 Route::get('/inventoryTransaction/table','material\InventoryTransactionController@table');
@@ -200,132 +204,6 @@ Route::get('/goodReturn/table','material\GoodReturnController@table');
 Route::post('/goodReturn/form','material\GoodReturnController@form');
 Route::get('/goodReturn/form','material\GoodReturnController@form');
 Route::post('/goodReturnDetail/form','material\GoodReturnDetailController@form');
-
-//// appointment resource setup page ///
-Route::get('/apptrsc','hisdb\AppointmentController@show');
-Route::get('/apptrsc/table','hisdb\AppointmentController@table');
-Route::post('/apptrsc/form','hisdb\AppointmentController@form');
-Route::get('/apptrsc/getEvent','hisdb\AppointmentController@getEvent');
-Route::post('/apptrsc/addEvent','hisdb\AppointmentController@addEvent');
-Route::post('/apptrsc/editEvent','hisdb\AppointmentController@editEvent');
-Route::post('/apptrsc/delEvent','hisdb\AppointmentController@delEvent');
-
-//// debtortype ////
-Route::get('/debtortype','finance\debtortypeController@show');
-Route::get('/debtortype/table','finance\debtortypeController@table');
-Route::post('/debtortype/form','finance\debtortypeController@form');
-
-//// pat_mast registration ////
-Route::get('/pat_mast','hisdb\PatmastController@show');
-Route::get('/pat_mast/get_entry','hisdb\PatmastController@get_entry');
-Route::post('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
-Route::post('/pat_mast/save_patient','hisdb\PatmastController@save_patient');
-Route::post('/pat_mast/save_episode','hisdb\PatmastController@save_episode');
-
-//// Emergency setup page ///
-Route::get('/emergency','hisdb\EmergencyController@show');
-Route::get('/emergency/table','hisdb\EmergencyController@table');
-Route::post('/emergency/form','hisdb\EmergencyController@form');
-
-//// Fixed Asset Location setup page ///
-Route::get('/location','finance\LocationController@show');
-Route::get('/location/table','finance\LocationController@table');
-Route::post('/location/form','finance\LocationController@form');
-
-//// Fixed Asset assettype setup page ///
-Route::get('/assettype','finance\assettypeController@show');
-Route::get('/assettype/table','finance\assettypeController@table');
-Route::post('/assettype/form','finance\assettypeController@form');
-
-/// assetcategory ///
-Route::get('/assetcategory','finance\assetcategoryController@show');
-Route::get('/assetcategory/table','finance\assetcategoryController@table');
-Route::post('/assetcategory/form','finance\assetcategoryController@form');
-
-/// Fixed Asset Inquiry /// 
-Route::get('/assetenquiry','finance\assetenquiryController@show');
-Route::get('/assetenquiry/table','finance\assetenquiryController@table');
-Route::post('/assetenquiry/form','finance\assetenquiryController@form');
-
-/// Asset Transfer /// 
-Route::get('/assettransfer','finance\assettransferController@show');
-Route::get('/assettransfer/table','finance\assettransferController@table');
-Route::post('/assettransfer/form','finance\assettransferController@form');
-
-/// Register setup /// 
-Route::get('/assetregister','finance\assetregisterController@show');
-Route::get('/assetregister/table','finance\assetregisterController@table');
-Route::post('/assetregister/form','finance\assetregisterController@form'); 
-
-//// facontrol ///
-Route::get('/facontrol','finance\facontrolController@show');
-Route::get('/facontrol/table','finance\facontrolController@table');
-Route::post('/facontrol/form','finance\facontrolController@form');
-
-// //// facontrol2 ///
-// Route::get('/facontrol2','finance\facontrolController2@show');
-// Route::get('/facontrol2/table','finance\facontrolController2@table');
-// Route::post('/facontrol2/form','finance\facontrolController2@form');
-
-//// fadepricate ///
-Route::get('/fadepricate','finance\fadepricateController@show');
-Route::get('/fadepricate/table','finance\fadepricateController@table');
-Route::post('/fadepricate/form','finance\fadepricateController@form');
-
-//// GL Enquiry ///
-Route::get('/glenquiry','finance\GlenquiryController@show');
-Route::get('/glenquiry/table','finance\GlenquiryController@table');
-Route::post('/glenquiry/form','finance\GlenquiryController@form');
-
-//// Department setup ///
-Route::get('/department','finance\DepartmentController@show');
-Route::get('/department/table','finance\DepartmentController@table');
-Route::post('/department/form','finance\DepartmentController@form');
-
-//// Sector setup page ///
-Route::get('/region','finance\SectionController@show');
-Route::get('/region/table','finance\SectionController@table');
-Route::post('/region/form','finance\SectionController@form');
-
-//// Unit setup page ///
-Route::get('/unit','finance\UnitController@show');
-Route::get('/unit/table','finance\UnitController@table');
-Route::post('/unit/form','finance\UnitController@form');
-
-//// costcenter setup ///
-Route::get('/costcenter','finance\CostcenterController@show');
-Route::get('/costcenter/table','finance\CostcenterController@table');
-Route::post('/costcenter/form','finance\CostcenterController@form');
-
-//// GlMaster setup ///
-Route::get('/glmaster','finance\GlmasterController@show');
-Route::get('/glmaster/table','finance\GlmasterController@table');
-Route::post('/glmaster/form','finance\GlmasterController@form');
-
-//// period setup ///
-Route::get('/period','finance\PeriodController@show');
-Route::get('/period/table','finance\PeriodController@table');
-Route::post('/period/form','finance\PeriodController@form');
-
-//// Debtor Master setup ///
-Route::get('/debtorMaster','finance\DebtorMasterController@show');
-Route::get('/debtorMaster/table','finance\DebtorMasterController@table');
-Route::post('/debtorMaster/form','finance\DebtorMasterController@form');
-
-//// Deposit Type setup ///
-Route::get('/depositType','finance\DepositTypeController@show');
-Route::get('/depositType/table','finance\DepositTypeController@table');
-Route::post('/depositType/form','finance\DepositTypeController@form');
-
-//// Payment Mode setup ///
-Route::get('/paymentMode','finance\PaymentModeController@show');
-Route::get('/paymentMode/table','finance\PaymentModeController@table');
-Route::post('/paymentMode/form','finance\PaymentModeController@form');
-
-//// categoryFIN Mode setup ///
-Route::get('/categoryfin','finance\CategoryFinController@show');
-Route::get('/categoryfin/table','finance\CategoryFinController@table');
-Route::post('/categoryfin/form','finance\CategoryFinController@form');
 
 //// sequence material setup ///
 Route::get('/sequence','material\SequenceController@show');
@@ -412,6 +290,96 @@ Route::get('/product','material\ProductController@show');
 Route::get('/product/table','material\ProductController@table');
 Route::post('/product/form','material\ProductController@form');
 
+/////////// appointment resource setup page ////////////////////////////////////
+Route::get('/apptrsc','hisdb\AppointmentController@show');
+Route::get('/apptrsc/table','hisdb\AppointmentController@table');
+Route::post('/apptrsc/form','hisdb\AppointmentController@form');
+Route::get('/apptrsc/getEvent','hisdb\AppointmentController@getEvent');
+Route::post('/apptrsc/addEvent','hisdb\AppointmentController@addEvent');
+Route::post('/apptrsc/editEvent','hisdb\AppointmentController@editEvent');
+Route::post('/apptrsc/delEvent','hisdb\AppointmentController@delEvent');
+
+//////////////////////////////finance setup///////////////////////////////////////
+
+//// debtortype ////
+Route::get('/debtortype','finance\debtortypeController@show');
+Route::get('/debtortype/table','finance\debtortypeController@table');
+Route::post('/debtortype/form','finance\debtortypeController@form');
+
+//// GL Enquiry ///
+Route::get('/glenquiry','finance\GlenquiryController@show');
+Route::get('/glenquiry/table','finance\GlenquiryController@table');
+Route::post('/glenquiry/form','finance\GlenquiryController@form');
+
+//// Department setup ///
+Route::get('/department','finance\DepartmentController@show');
+Route::get('/department/table','finance\DepartmentController@table');
+Route::post('/department/form','finance\DepartmentController@form');
+
+//// Sector setup page ///
+Route::get('/region','finance\SectionController@show');
+Route::get('/region/table','finance\SectionController@table');
+Route::post('/region/form','finance\SectionController@form');
+
+//// Unit setup page ///
+Route::get('/unit','finance\UnitController@show');
+Route::get('/unit/table','finance\UnitController@table');
+Route::post('/unit/form','finance\UnitController@form');
+
+//// costcenter setup ///
+Route::get('/costcenter','finance\CostcenterController@show');
+Route::get('/costcenter/table','finance\CostcenterController@table');
+Route::post('/costcenter/form','finance\CostcenterController@form');
+
+//// GlMaster setup ///
+Route::get('/glmaster','finance\GlmasterController@show');
+Route::get('/glmaster/table','finance\GlmasterController@table');
+Route::post('/glmaster/form','finance\GlmasterController@form');
+
+//// period setup ///
+Route::get('/period','finance\PeriodController@show');
+Route::get('/period/table','finance\PeriodController@table');
+Route::post('/period/form','finance\PeriodController@form');
+
+//// Debtor Master setup ///
+Route::get('/debtorMaster','finance\DebtorMasterController@show');
+Route::get('/debtorMaster/table','finance\DebtorMasterController@table');
+Route::post('/debtorMaster/form','finance\DebtorMasterController@form');
+
+//// Deposit Type setup ///
+Route::get('/depositType','finance\DepositTypeController@show');
+Route::get('/depositType/table','finance\DepositTypeController@table');
+Route::post('/depositType/form','finance\DepositTypeController@form');
+
+//// Payment Mode setup ///
+Route::get('/paymentMode','finance\PaymentModeController@show');
+Route::get('/paymentMode/table','finance\PaymentModeController@table');
+Route::post('/paymentMode/form','finance\PaymentModeController@form');
+
+//// categoryFIN Mode setup ///
+Route::get('/categoryfin','finance\CategoryFinController@show');
+Route::get('/categoryfin/table','finance\CategoryFinController@table');
+Route::post('/categoryfin/form','finance\CategoryFinController@form');
+
+//// Bank setup ///
+Route::get('/bank','finance\BankController@show');
+Route::get('/bank/table','finance\BankController@table');
+Route::post('/bank/form','finance\BankController@form');
+
+////////////////patient mgt setup/////////////////////////////////////////
+
+//// pat_mast registration ////
+Route::get('/pat_mast','hisdb\PatmastController@show');
+Route::get('/pat_mast/get_entry','hisdb\PatmastController@get_entry');
+Route::post('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
+Route::post('/pat_mast/save_patient','hisdb\PatmastController@save_patient');
+Route::post('/pat_mast/save_episode','hisdb\PatmastController@save_episode');
+
+//// Emergency setup page ///
+Route::get('/emergency','hisdb\EmergencyController@show');
+Route::get('/emergency/table','hisdb\EmergencyController@table');
+Route::post('/emergency/form','hisdb\EmergencyController@form');
+
 //// pat_mgmt Current Patient ///
 Route::get('/currentPt','hisdb\CurrentPatientController@show');
 Route::get('/currentPt/get_entry','hisdb\CurrentPatientController@get_entry');
@@ -422,6 +390,54 @@ Route::get('/pat_enq','hisdb\PatEnqController@show');
 Route::get('/pat_enq/get_entry','hisdb\PatEnqController@get_entry');
 Route::post('/pat_enq/post_entry','hisdb\PatEnqController@post_entry');
 Route::post('/pat_enq/save_patient','hisdb\PatEnqController@save_patient');
+
+///////////////////fixed asset setup////////////////////////////////////
+
+//// Fixed Asset Location setup page ///
+Route::get('/location','finance\LocationController@show');
+Route::get('/location/table','finance\LocationController@table');
+Route::post('/location/form','finance\LocationController@form');
+
+//// Fixed Asset assettype setup page ///
+Route::get('/assettype','finance\assettypeController@show');
+Route::get('/assettype/table','finance\assettypeController@table');
+Route::post('/assettype/form','finance\assettypeController@form');
+
+/// assetcategory ///
+Route::get('/assetcategory','finance\assetcategoryController@show');
+Route::get('/assetcategory/table','finance\assetcategoryController@table');
+Route::post('/assetcategory/form','finance\assetcategoryController@form');
+
+/// Fixed Asset Inquiry /// 
+Route::get('/assetenquiry','finance\assetenquiryController@show');
+Route::get('/assetenquiry/table','finance\assetenquiryController@table');
+Route::post('/assetenquiry/form','finance\assetenquiryController@form');
+
+/// Asset Transfer /// 
+Route::get('/assettransfer','finance\assettransferController@show');
+Route::get('/assettransfer/table','finance\assettransferController@table');
+Route::post('/assettransfer/form','finance\assettransferController@form');
+
+/// Register setup /// 
+Route::get('/assetregister','finance\assetregisterController@show');
+Route::get('/assetregister/table','finance\assetregisterController@table');
+Route::post('/assetregister/form','finance\assetregisterController@form'); 
+
+//// facontrol ///
+Route::get('/facontrol','finance\facontrolController@show');
+Route::get('/facontrol/table','finance\facontrolController@table');
+Route::post('/facontrol/form','finance\facontrolController@form');
+
+// //// facontrol2 ///
+// Route::get('/facontrol2','finance\facontrolController2@show');
+// Route::get('/facontrol2/table','finance\facontrolController2@table');
+// Route::post('/facontrol2/form','finance\facontrolController2@form');
+
+//// fadepricate ///
+Route::get('/fadepricate','finance\fadepricateController@show');
+Route::get('/fadepricate/table','finance\fadepricateController@table');
+Route::post('/fadepricate/form','finance\fadepricateController@form');
+
 
 Route::get('/preview','hisdb\ReviewController@review');
 Route::get('/upload','hisdb\ReviewController@upload');
