@@ -44,6 +44,7 @@ legend.scheduler-border {
 @endsection
 
 @section('body')
+	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
@@ -367,43 +368,43 @@ legend.scheduler-border {
             	<div class="form-group">
 				 	<label class="col-md-2 control-label" for="effdate">Effective Date</label>  
 					<div class="col-md-2">
-						<input name="effdate" type="date" maxlength="12" class="form-control input-sm">
+						<input id="dtl_effdate" name="effdate" type="date" maxlength="12" class="form-control input-sm">
 					</div>
 
 				  	<label class="col-md-2 control-label" for="amt1">Price 1</label>  
 					<div class="col-md-2">
-						<input name="amt1" type="text" maxlength="12" class="form-control input-sm">
+						<input id="dtl_amt1" name="amt1" type="text" maxlength="12" class="form-control input-sm">
 					</div>
                 </div>
             
             	<div class="form-group">
 					<label class="col-md-2 control-label" for="amt2">Price 2</label>  
 					<div class="col-md-2">
-						<input name="amt2" type="text" maxlength="12" class="form-control input-sm">
+						<input id="dtl_amt2" name="amt2" type="text" maxlength="12" class="form-control input-sm">
 					</div>	
 
 					<label class="col-md-2 control-label" for="amt3">Price 3</label>  
 					<div class="col-md-2">
-						<input name="amt3" type="text" maxlength="12" class="form-control input-sm">
+						<input id="dtl_amt3" name="amt3" type="text" maxlength="12" class="form-control input-sm">
 					</div>
                 </div>		
                  
                 <div class="form-group">
 					<label class="col-md-2 control-label" for="costprice">Cost Price</label>  
 					<div class="col-md-2">
-						<input name="costprice" type="text" maxlength="12" class="form-control input-sm">
+						<input id="dtl_costprice" name="costprice" type="text" maxlength="12" class="form-control input-sm">
 					</div>
                 </div>	
 
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="iptax">Inpatient Tax</label>  
 					<div class="col-md-2">
-						<input name="iptax" type="text" maxlength="12" class="form-control input-sm">
+						<input id="dtl_iptax" name="iptax" type="text" maxlength="12" class="form-control input-sm">
 					</div>	
 
 					<label class="col-md-2 control-label" for="optax">Outpatient Tax</label>  
 					<div class="col-md-2">
-						<input name="optax" type="text" maxlength="12" class="form-control input-sm">
+						<input id="dtl_optax" name="optax" type="text" maxlength="12" class="form-control input-sm">
 					</div>
                 </div>
                 

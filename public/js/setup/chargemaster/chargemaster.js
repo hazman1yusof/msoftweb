@@ -23,7 +23,10 @@
 				}
 			},
 		};
-			
+
+
+		
+		var mycurrency =new currencymode(['#dtl_amt1','#dtl_amt2','#dtl_amt3','#dtl_costprice']);	
 		var mycurrency2 =new currencymode([]);
 		var fdl = new faster_detail_load();
 		////////////////////////////////////start dialog///////////////////////////////////////
@@ -324,7 +327,7 @@
 		var urlParam2={
 			action:'get_table_default',
 			url:'/util/get_table_default',
-			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.lastuser','cp.lastupdate', 'cp.chgcode','cm.chgcode'],
+			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate', 'cp.chgcode','cm.chgcode'],
 			table_name:['hisdb.chgprice AS cp', 'hisdb.chgmast AS cm'],
 			table_id:'lineno_',
 			join_type:['LEFT JOIN'],
@@ -618,6 +621,9 @@
 				let editurl = "/chargemasterDetail/form?"+
 					$.param({
 						action: 'chargemasterDetail_save',
+						oper: 'add',
+						chgcode: $('#cm_chgcode').val(),
+						uom: $('#cm_uom').val(),
 						// authorid:$('#authorid').val()
 					});
 				$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
@@ -767,8 +773,8 @@
 						'costprice' : $("#jqGrid2 input#"+ids[i]+"costprice").val(),
 						'iptax' : $("#jqGrid2 input#"+ids[i]+"iptax").val(),
 						'optax' : $("#jqGrid2 input#"+ids[i]+"optax").val(),
-						'lastuser' : $("#jqGrid2 input#"+ids[i]+"lastuser").val(),
-						'lastupdate' : $("#jqGrid2 input#"+ids[i]+"lastupdate").val()
+						'adduser' : $("#jqGrid2 input#"+ids[i]+"adduser").val(),
+						'adddate' : $("#jqGrid2 input#"+ids[i]+"adddate").val()
 			    	}
 
 			    	jqgrid2_data.push(obj);
@@ -845,7 +851,10 @@
 				mycurrency.formatOff();
 				mycurrency.check0value(errorField);
 				if( $('#FChgPriceDtl').isValid({requiredFields: ''}, {}, true) ) {
-					saveFormdata("#gridAuthdtl","#ChgPriceDtl","#FChgPriceDtl",oper_chgpricedtl,saveParam3,urlParam3,'#searchForm2');
+					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",oper_chgpricedtl,saveParam3,urlParam3,{
+							chgcode: selrowData("#jqGrid").cm_chgcode,
+							uom: selrowData("#jqGrid").cm_uom,
+						});
 				}else{
 					mycurrency.formatOn();
 				}
@@ -920,7 +929,7 @@
 		var urlParam3={
 			action:'get_table_default',
 			url:'/util/get_table_default',
-			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.lastuser','cp.lastupdate', 'cp.chgcode','cm.chgcode'],
+			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate', 'cp.chgcode','cm.chgcode'],
 			table_name:['hisdb.chgprice AS cp', 'hisdb.chgmast AS cm'],
 			table_id:'lineno_',
 			join_type:['LEFT JOIN'],
@@ -932,10 +941,9 @@
 
 		var saveParam3={
 			action:'save_table_default',
-			url:'chargepriceDetail/form',
+			url:'chargemasterDetail/form',
 			field:'',
 			oper:oper_chgpricedtl,
-			table_name:['hisdb.chgprice', 'hisdb.chgmast'],
 			table_id:'d_idno',
 			saveip:'true'
 		};
