@@ -23,8 +23,6 @@
 				}
 			},
 		};
-
-
 		
 		var mycurrency =new currencymode(['#dtl_amt1','#dtl_amt2','#dtl_amt3','#dtl_costprice']);	
 		var mycurrency2 =new currencymode([]);
@@ -539,43 +537,6 @@
 
 		//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 		//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
-	
-		// var myEditOptions = {
-		// 	keys: true,
-		// 	extraparam:{
-		// 		"_token": $("#_token").val()
-		// 	},
-		// 	oneditfunc: function (rowid) {
-		// 		//console.log(rowid);
-		// 		/*linenotoedit = rowid;
-		// 		$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
-		// 		$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
-		// 	},
-		// 	aftersavefunc: function (rowid, response, options) {
-		// 		$('#amount').val(response.responseText);
-		// 		if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-		// 		if(addmore_jqgrid2.edit == false)linenotoedit = null; 
-		// 		//linenotoedit = null;
-
-		// 		refreshGrid('#jqGrid2',urlParam2,'add');
-		// 		$("#jqGridPager2Delete").show();
-		// 	}, 
-		// 	beforeSaveRow: function(options, rowid) {
-		// 		/*if(errorField.length>0)return false;
-
-		// 		let data = selrowData('#jqGrid2');
-		// 		let editurl = "/inventoryTransactionDetail/form?"+
-		// 			$.param({
-		// 				action: 'invTranDetail_save',
-		// 				docno:$('#docno').val(),
-		// 				recno:$('#recno').val(),
-		// 			});*/
-		// 		$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
-		// 	},
-		// 	afterrestorefunc : function( response ) {
-		// 		/*hideatdialogForm(false);*/
-		// 	}
-		// };
 
 		var myEditOptions = {
 	        keys: true,
@@ -635,61 +596,6 @@
 	    };
 
 		//////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
-		// $("#jqGrid2").inlineNav('#jqGridPager2',{	
-		// 	add:true,
-		// 	edit:true,
-		// 	cancel: true,
-		// 	//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-		// 	restoreAfterSelect: false,
-		// 	addParams: { 
-		// 		addRowParams: myEditOptions
-		// 	},
-		// 	editParams: myEditOptions
-		// }).jqGrid('navButtonAdd',"#jqGridPager2",{
-		// 	id: "jqGridPager2Delete",
-		// 	caption:"",cursor: "pointer",position: "last", 
-		// 	buttonicon:"glyphicon glyphicon-trash",
-		// 	title:"Delete Selected Row",
-		// 	onClickButton: function(){
-		// 		/*selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
-		// 		if(!selRowId){
-		// 			bootbox.alert('Please select row');
-		// 		}else{
-		// 			bootbox.confirm({
-		// 				message: "Are you sure you want to delete this row?",
-		// 				buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-		// 				},
-		// 				callback: function (result) {
-		// 					if(result == true){
-		// 						param={
-		// 							action: 'inventoryTransactionDetail_save',
-		// 							recno: $('#recno').val(),
-		// 							lineno_: selrowData('#jqGrid2').lineno_,
-
-		// 						}
-		// 						$.post( "/inventoryTransactionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-		// 						}).fail(function(data) {
-		// 							//////////////////errorText(dialog,data.responseText);
-		// 						}).done(function(data){
-		// 							$('#amount').val(data);
-		// 							refreshGrid("#jqGrid2",urlParam2);
-		// 						});
-		// 					}
-		// 				}
-		// 			});
-		// 		}*/
-		// 	},
-		// }).jqGrid('navButtonAdd',"#jqGridPager2",{
-		// 	id: "saveHeaderLabel",
-		// 	caption:"Header",cursor: "pointer",position: "last", 
-		// 	buttonicon:"",
-		// 	title:"Header"
-		// }).jqGrid('navButtonAdd',"#jqGridPager2",{
-		// 	id: "saveDetailLabel",
-		// 	caption:"Detail",cursor: "pointer",position: "last", 
-		// 	buttonicon:"",
-		// 	title:"Detail"
-		// });
 
 		$("#jqGrid2").inlineNav('#jqGridPager2',{	
 			add:true,
@@ -1087,65 +993,6 @@
 			title:"Add New Row", 
 			cursor: "pointer"
 		});
-	
-		////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
-		// $("#jqGrid3").jqGrid({
-		// 	datatype: "local",
-		// 	colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
-		// 	shrinkToFit: false,
-		// 	autowidth:true,
-		// 	multiSort: true,
-		// 	viewrecords: true,
-		// 	rowNum: 30,
-		// 	sortname: 'lineno_',
-		// 	sortorder: "desc",
-		// 	pager: "#jqGridPager3",
-		// }).inlineNav('#jqGridPager3',{	
-		// 	add:true,
-		// 	edit:true,
-		// 	cancel: true,
-		// 	//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-		// 	restoreAfterSelect: false,
-		// 	addParams: { 
-		// 		addRowParams: myEditOptions
-		// 	},
-		// 	editParams: myEditOptions
-		// }).jqGrid('navButtonAdd',"#jqGridPager3",{
-		// 	id: "jqGridPager3Delete",
-		// 	caption:"",cursor: "pointer",position: "last", 
-		// 	buttonicon:"glyphicon glyphicon-trash",
-		// 	title:"Delete Selected Row",
-		// 	onClickButton: function(){
-		// 		/*selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
-		// 		if(!selRowId){
-		// 			bootbox.alert('Please select row');
-		// 		}else{
-		// 			bootbox.confirm({
-		// 				message: "Are you sure you want to delete this row?",
-		// 				buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-		// 				},
-		// 				callback: function (result) {
-		// 					if(result == true){
-		// 						param={
-		// 							action: 'inventoryTransactionDetail_save',
-		// 							recno: $('#recno').val(),
-		// 							lineno_: selrowData('#jqGrid2').lineno_,
-
-		// 						}
-		// 						$.post( "/inventoryTransactionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-		// 						}).fail(function(data) {
-		// 							//////////////////errorText(dialog,data.responseText);
-		// 						}).done(function(data){
-		// 							$('#amount').val(data);
-		// 							refreshGrid("#jqGrid2",urlParam2);
-		// 						});
-		// 					}
-		// 				}
-		// 			});
-		// 		}*/
-		// 	},
-		// });
-		// jqgrid_label_align_right("#jqGrid3");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		$('#btn_chggroup').on( "click", function() {
