@@ -753,6 +753,74 @@
 		/////////////////////////////////////////Chg Price Detail//////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		var dialog_dtliptax = new ordialog(
+			'dtl_iptax','hisdb.taxmast','#dtl_iptax',errorField,
+			{	colModel:[
+					{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+				],
+				urlParam: {
+					filterCol:['recstatus','compcode'],
+					filterVal:['A', 'session.compcode']
+						},
+				ondblClickRow:function(){
+					$('#dtl_optax').focus();
+				},
+				gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#dtl_optax').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
+			},{
+				title:"Select Receiver Department",
+				open: function(){
+					dialog_dtliptax.urlParam.filterCol = ['recstatus','compcode'];
+					dialog_dtliptax.urlParam.filterVal = ['A', 'session.compcode'];
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_dtliptax.makedialog();
+
+		var dialog_dtloptax = new ordialog(
+			'dtl_optax','hisdb.taxmast','#dtl_optax',errorField,
+			{	colModel:[
+					{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+				],
+				urlParam: {
+					filterCol:['recstatus','compcode'],
+					filterVal:['A', 'session.compcode']
+						},
+				ondblClickRow:function(){
+					$('#lastuser').focus();
+				},
+				gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#lastuser').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
+			},{
+				title:"Select Receiver Department",
+				open: function(){
+					dialog_dtloptax.urlParam.filterCol = ['recstatus','compcode'];
+					dialog_dtloptax.urlParam.filterVal = ['A', 'session.compcode'];
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_dtloptax.makedialog();
+
 		var buttItem1=[{
 			text: "Save",click: function() {
 				mycurrency.formatOff();
@@ -808,23 +876,26 @@
 				}
 				
 				if(oper_chgpricedtl == 'edit'){
-					// dialog_deptcodeD.on();
+					dialog_dtliptax.on();
+					dialog_dtloptax.on();
 				}
 				
 				if(oper_chgpricedtl!='add'){
-					// dialog_deptcodeD.check(errorField);
-
+					dialog_dtliptax.check(errorField);
+					dialog_dtloptax.check(errorField);
 				}
 				if (oper_chgpricedtl != 'view') {
 					$("#d_authorid").val(selrowData('#jqGrid').authorid);
-					// dialog_deptcodeD.on();
+					dialog_dtliptax.on();
+					dialog_dtloptax.on();
 				}
 			},
 			close: function( event, ui ) {
 				parent_close_disabled(false);
 				emptyFormdata(errorField,'#FChgPriceDtl');
 				$('#FChgPriceDtl .alert').detach();
-				// dialog_deptcodeD.off();
+				dialog_dtliptax.off();
+				dialog_dtloptax.off();
 				if(oper=='view'){
 					$(this).dialog("option", "buttons",buttItem1);
 				}
@@ -1293,21 +1364,21 @@
 		{	colModel:[
 				{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
 				filterVal:['A', 'session.compcode']
 					},
 			ondblClickRow:function(){
-				$('#delordhd_credcode').focus();
+				$('#optax').focus();
 			},
 			gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							$('#delordhd_credcode').focus();
+							$('#optax').focus();
 						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}
@@ -1327,7 +1398,7 @@
 		{	colModel:[
 				{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
