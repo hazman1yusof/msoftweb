@@ -522,6 +522,7 @@
 
 			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_dtl_minlimit", "#"+ids[i]+"_dtl_maxlimit"]);
 			    }
+			    mycurrency2.formatOnBlur();
 				hideatdialogForm(true,'saveallrow');
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager2",{

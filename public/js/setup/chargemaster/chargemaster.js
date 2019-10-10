@@ -466,12 +466,12 @@
 		}
 
 		function iptaxCustomEdit(val, opt) {
-			val = (val == "undefined") ? "" : val;
+			val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
 			return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="iptax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 		}
 
 		function optaxCustomEdit(val, opt) {
-			val = (val == "undefined") ? "" : val;
+			val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
 			return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="optax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 		}
 		function galGridCustomValue (elem, operation, value){
@@ -588,17 +588,14 @@
 	        	dialog_optax.on();
 				dialog_iptax.on();
 
-	        	// dialog_deptcodedtl.on();
-	        	// $("#jqGrid2 input[name='dtl_deptcode']").val('ALL');
-
 
 	        	unsaved = false;
 				mycurrency2.array.length = 0;
-				// Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='dtl_maxlimit']","#jqGrid2 input[name='dtl_minlimit']"]);
+				Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amt1']","#jqGrid2 input[name='amt2']","#jqGrid2 input[name='amt3']","#jqGrid2 input[name='costprice']"]);
 
 				mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-	        	// $("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
+	   //      	$("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
 				// 	var code = e.keyCode || e.which;
 				// 	if (code == '9')$('#jqGrid2_ilsave').click();
 				// })
@@ -746,8 +743,9 @@
 
 			        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-			        // Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_dtl_minlimit", "#"+ids[i]+"_dtl_maxlimit"]);
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amt1","#"+ids[i]+"_amt2","#"+ids[i]+"_amt3","#"+ids[i]+"_costprice"]);
 			    }
+			    mycurrency2.formatOnBlur();
 				hideatdialogForm(true,'saveallrow');
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -772,9 +770,7 @@
 						'amt3' : $("#jqGrid2 input#"+ids[i]+"amt3").val(),
 						'costprice' : $("#jqGrid2 input#"+ids[i]+"costprice").val(),
 						'iptax' : $("#jqGrid2 input#"+ids[i]+"iptax").val(),
-						'optax' : $("#jqGrid2 input#"+ids[i]+"optax").val(),
-						'adduser' : $("#jqGrid2 input#"+ids[i]+"adduser").val(),
-						'adddate' : $("#jqGrid2 input#"+ids[i]+"adddate").val()
+						'optax' : $("#jqGrid2 input#"+ids[i]+"optax").val()
 			    	}
 
 			    	jqgrid2_data.push(obj);
