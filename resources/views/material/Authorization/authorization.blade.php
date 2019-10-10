@@ -232,16 +232,14 @@ i.fa {
 							</select>
 						</div>
                 </div>		
-                 
+
                 <div class="form-group">
-					<label class="col-md-2 control-label" for="d_cando">CanDo</label> 
-						<div class="col-md-2"> 
-							<select id="d_cando" name="dtl_cando" class="form-control input-sm">
-							    <option value="A">Active</option>
-							    <option value="D">Deactive</option>
-							</select>
-						</div>
-                </div>	
+				  <label class="col-md-2 control-label" for="d_cando">CanDo</label> 
+				  <div class="col-md-2">
+					<label class="radio-inline"><input type="radio" name="dtl_cando" value='A' checked>Active</label>
+					<label class="radio-inline"><input type="radio" name="dtl_cando" value='D' >Deactive</label>
+				  </div>
+				</div> 
                 
                 <div class="form-group">
 				  	<label class="col-md-2 control-label" for="d_minlimit">Min Limit</label>  

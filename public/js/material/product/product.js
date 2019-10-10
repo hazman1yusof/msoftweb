@@ -276,7 +276,7 @@ $(document).ready(function () {
 				dialog_taxCode.urlParam.filterCol=['recstatus','taxtype','compcode'];
 				dialog_taxCode.urlParam.filterVal=['A','Input','session.compcode'];
 			}
-		},'urlParam'
+		},'urlParam','radio','notab',false
 	);
 	dialog_taxCode.makedialog();
 

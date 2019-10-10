@@ -1613,10 +1613,10 @@ $(document).ready(function () {
 				{label:'recno',name:'h_recno',width:400,classes:'pointer',hidden:true}
 
 				],
-				urlParam: {
-						filterCol:['h.reqdept','h.recstatus', 'h.purordno'],
-						filterVal:[$("#purordhd_reqdept").val(),'POSTED', '0']
-					},
+			urlParam: {
+					filterCol:['h.reqdept','h.recstatus', 'h.purordno'],
+					filterVal:[$("#purordhd_reqdept").val(),'POSTED', '0']
+				},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_purreqno.gridname);
 				$("#purordhd_purreqno").val(data['h.purreqno']);
@@ -1683,15 +1683,15 @@ $(document).ready(function () {
 				
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#purordhd_suppcode').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purordhd_suppcode').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 
 		},{
 			title:"Select Request No",

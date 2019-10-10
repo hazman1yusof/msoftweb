@@ -372,8 +372,10 @@ $(document).ready(function () {
 		saveParam.oper = selfoper;
 
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
-			},'json').fail(function (data) {
-			alert(data.responseText);
+			},'json')
+		.fail(function (data) {
+			console.log(data.responseText);
+			alert(data);
 		}).done(function (data) {
 			unsaved = false;
 			hideatdialogForm(false);
@@ -967,6 +969,9 @@ $(document).ready(function () {
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			}, 500 );
 			hideatdialogForm(false);
+	    },
+	    errorTextFormat: function (data) {
+	    	alert(data);
 	    }
 	};
 

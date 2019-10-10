@@ -210,12 +210,26 @@ function emptyFormdata(errorField,form,except){
 	}
 }
 
+function trimmall(form){
+	var serializedForm =  $( form ).serializeArray();
+	$.each( serializedForm, function( i, field ) {
+    	field.value=field.value.trim();
+    });
+	//turn it into a string if you wish
+	let serializedForm_ = $.param(serializedForm);
+
+	return serializedForm_;
+}
+
 function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback){
 	if(obj==null){
 		obj={};
 	}
 	$('.ui-dialog-buttonset button[role=button]').prop('disabled',true);
 	saveParam.oper=oper;
+
+	let serializedForm = trimmall(form);
+	console.log(serializedForm);
 	
 	$.post( saveParam.url+'?'+$.param(saveParam), $( form ).serialize()+'&'+$.param(obj) , function( data ) {
 		
