@@ -121,7 +121,8 @@
 			oper:oper,
 			table_name:'hisdb.chggroup',
 			table_id:'idno',
-			saveip:'true'
+			saveip:'true',
+			checkduplicate:'true'
 		};
 			
 		/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Fixed Asset Category Setup')
+@section('title', 'Category Setup')
 
 @section('body')
 	<!-------------------------------- Search + table ---------------------->

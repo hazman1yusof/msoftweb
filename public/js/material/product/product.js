@@ -71,6 +71,13 @@ $(document).ready(function () {
 				var Class2 = $('#Class2').val();
 				dialog_itemcode.urlParam.filterCol = ['groupcode', 'Class','recstatus','compcode'];
 				dialog_itemcode.urlParam.filterVal = [ gc2, Class2,'A','session.compcode'];
+
+				$('#Dcol_itemcodesearch input[type="radio"][value="productcat"]').on('click',dialog_cat_selection_event);
+				$('#Dcol_itemcodesearch input[type="radio"]:not([value="productcat"])').on('click',function(){
+					$('#dialog_cat_selection_div').hide();
+					$('#productcatAddNew_asset').val('');
+				});
+
 			}
 		},'urlParam'
 	);
@@ -269,10 +276,9 @@ $(document).ready(function () {
 				dialog_taxCode.urlParam.filterCol=['recstatus','taxtype','compcode'];
 				dialog_taxCode.urlParam.filterVal=['A','Input','session.compcode'];
 			}
-		},'urlParam'
+		},'urlParam','radio','notab',false
 	);
 	dialog_taxCode.makedialog();
-
 
 	$('#btn_product_infront_asset').on( "click", function() {
 		$('#product_infront_asset ~ a').click();
@@ -370,6 +376,132 @@ $(document).ready(function () {
 	);
 	dialog_product_infront_others.makedialog(true);
 
+
+
+	function dialog_cat_selection_event(){
+		$('#dialog_cat_selection_div').show();
+		if($('#dialog_cat_selection_div').length == 0){
+			let dialog_cat_selection = null;
+			if($('#groupcode2').val()=="Stock"){
+				dialog_cat_selection = new ordialog(
+					'dialog_cat_selection','material.category','#dialog_cat_selection',errorField,
+					{	colModel:[
+							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						],
+						urlParam: {
+							filterCol:['cattype', 'source', 'recstatus'],
+							filterVal:['Stock', 'PO', 'A']
+						},
+						ondblClickRow:function(){
+							let data = selrowData('#' + dialog_cat_selection.gridname);
+							$("#Dtext_itemcodesearch").val(data.catcode);
+
+							dialog_itemcode.urlParam.searchCol=["productcat"];
+							dialog_itemcode.urlParam.searchVal=[data.catcode];
+
+							refreshGrid("#"+dialog_itemcode.gridname,dialog_itemcode.urlParam);
+						}	
+					},{
+						title:"Select Product Category",
+						open: function(){
+							dialog_cat_selection.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
+							dialog_cat_selection.urlParam.filterVal=['Stock', 'PO', 'A',$('#Class2').val()];
+						}
+					},'urlParam'
+				);
+				dialog_cat_selection.makedialog(false);
+
+			}else if($('#groupcode2').val()=="Asset") {
+
+			    dialog_cat_selection = new ordialog(
+					'dialog_cat_selection','finance.facode','#dialog_cat_selection',errorField,
+					{	colModel:[
+							{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						],
+						urlParam: {
+							filterCol:[ 'recstatus'],
+							filterVal:[ 'A']
+						},
+						ondblClickRow:function(){
+							let data = selrowData('#' + dialog_cat_selection.gridname);
+							$("#Dtext_itemcodesearch").val(data.assetcode);
+
+							dialog_itemcode.urlParam.searchCol=["productcat"];
+							dialog_itemcode.urlParam.searchVal=[data.assetcode];
+
+							refreshGrid("#"+dialog_itemcode.gridname,dialog_itemcode.urlParam);
+						}	
+					},{
+						title:"Select Product Category",
+						open: function(){
+							dialog_cat_selection.urlParam.filterCol=['recstatus'];
+							dialog_cat_selection.urlParam.filterVal=['A',];
+						}
+					},'urlParam'
+				);
+				dialog_cat_selection.makedialog(false);
+
+			}else if($('#groupcode2').val()=="Others") {
+
+				dialog_cat_selection = new ordialog(
+					'dialog_cat_selection','material.category','#dialog_cat_selection',errorField,
+					{	colModel:[
+							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						],
+						urlParam: {
+							filterCol:['cattype', 'source', 'recstatus'],
+							filterVal:['Other', 'PO', 'A']
+						},
+						ondblClickRow:function(){
+							let data = selrowData('#' + dialog_cat_selection.gridname);
+							$("#Dtext_itemcodesearch").val(data.catcode);
+
+							dialog_itemcode.urlParam.searchCol=["productcat"];
+							dialog_itemcode.urlParam.searchVal=[data.catcode];
+
+							refreshGrid("#"+dialog_itemcode.gridname,dialog_itemcode.urlParam);
+						}	
+					},{
+						title:"Select Product Category",
+						open: function(){
+							dialog_cat_selection.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
+							dialog_cat_selection.urlParam.filterVal=['Other', 'PO', 'A',$('#Class2').val()];
+						}
+					},'urlParam'
+				);
+				dialog_cat_selection.makedialog(false);
+			}
+
+			$("#Dparentdiv_itemcodesearch").after(`
+				<div class='form-group' style='width:25%' id='dialog_cat_selection_div'>
+					<div style="padding-left: 30px;padding-right: 30px;display:block">
+						<label class="control-label"></label>
+						<a class='form-control btn btn-primary' id="btn_dialog_cat_selection"><span class='fa fa-ellipsis-h'></span></a>
+				  	</div>
+
+				  	<div  id="show_dialog_cat_selection" style="display:none">
+						<div class='input-group'>
+							<input id="dialog_cat_selection" name="dialog_cat_selection" type="text" maxlength="12" class="form-control input-sm">
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+						</div>
+						<span class="help-block"></span>
+					</div>
+
+			  	</div>
+			`);
+
+			dialog_cat_selection.on();
+
+			$('#btn_dialog_cat_selection').click(function(){
+				$('#dialog_cat_selection ~ a').click();
+			});
+		}
+		
+	}
+
 	////////////////////////////////////start dialog////////////////////////////////////////////////////
 
 	var butt1=[{
@@ -388,7 +520,6 @@ $(document).ready(function () {
 		text: "Cancel",click: function() {
 			emptyFormdata(errorField,'#formdataSearch');
 			emptyFormdata(errorField,'#formdata');
-			forCancelAndExit();
 			$("#itemcodesearch").focus();
 		}
 	}];
@@ -425,6 +556,7 @@ $(document).ready(function () {
 					//rdonly("#dialogForm");
 					whenEdit();
 					getgcforAdd();
+					errorField.length=0;
 					$("#Cancel").hide();
 					break;
 				case state = 'view':
@@ -439,7 +571,6 @@ $(document).ready(function () {
 			}
 			if(oper!='view'){
 				set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
-				dialog_itemcode.on();
 				dialog_uomcode.on();
 				dialog_pouom.on();
 				dialog_suppcode.on();
@@ -453,6 +584,7 @@ $(document).ready(function () {
 				dialog_subcategory.check(errorField);
 				dialog_taxCode.check(errorField);		 
 			}if(oper == 'add') {
+				dialog_itemcode.on();
 				dialog_pouom.off();
 				dialog_suppcode.off();
 				dialog_mstore.off();
@@ -469,6 +601,7 @@ $(document).ready(function () {
 			urlParam.filterVal=[$('#groupcode2').val(), $('#Class2').val()];
 			refreshGrid('#jqGrid',urlParam,oper);
 
+			dialog_itemcode.off();
 			dialog_pouom.off();
 			dialog_suppcode.off();
 			dialog_mstore.off();
@@ -476,12 +609,9 @@ $(document).ready(function () {
 			dialog_taxCode.off();
 
 			$('#formdata .alert').detach();
-			$("#formdata a").off();
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
 			}
-			
-			forCancelAndExit();
 		},
 		buttons :butt1,
 	  });
@@ -821,7 +951,6 @@ $(document).ready(function () {
 
 	function scolChange() {
 		if($('#Scol').val()=='productcat'){
-				console.log($('#groupcode2').val())
 			switch($('#groupcode2').val()) {
 				case 'Asset': $("#div_product_infront_asset").show(); break;
 				case 'Stock': $("#div_product_infront_stock").show(); break;
@@ -868,87 +997,15 @@ $(document).ready(function () {
 
 	var addNew=[{
 		id: 'addnp',
-		text: "Add New",click: function() {
+		text: "Add New",
+		click: function() {
 			$("#addNewProductDialog" ).dialog( "open" );
 
 			$("#adpFormdata [name=groupcode][value='"+$('#groupcode2').val()+"']").prop('checked', true).show();
 			$("#adpFormdata [name=Class][value='"+$('#Class2').val()+"']").prop('checked', true).show();
 			$('#adpFormdata [type=radio]:not(:checked)').hide();
 			$('#adpFormdata [type=radio]:not(:checked)').parent('label').hide();
-			
-			if($('#groupcode2').val()=="Stock"){
-				let dialog_cat1 = new ordialog(
-					'productcatAddNew1','material.category','#productcatAddNew_stock',errorField,
-					{	colModel:[
-							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
-							{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-						],
-						urlParam: {
-							filterCol:['cattype', 'source', 'recstatus'],
-							filterVal:['Stock', 'PO', 'A']
-						},
-						ondblClickRow:function(){
-						}	
-					},{
-						title:"Select Product Category",
-						open: function(){
-							var gc2 = $('#groupcode2').val();
-							dialog_cat1.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-							dialog_cat1.urlParam.filterVal=['Stock', 'PO', 'A',$('#Class2').val()];
-						}
-					},'urlParam'
-				);
-				dialog_cat1.makedialog();
-				dialog_cat1.on();
-
-			} else if($('#groupcode2').val()=="Asset") {
-				let dialog_cat2 = new ordialog(
-					'productcatAddNew2','finance.facode','#productcatAddNew_asset',errorField,
-					{	colModel:[
-							{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,or_search:true},
-							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						],
-						urlParam: {
-							filterCol:[ 'recstatus'],
-							filterVal:[ 'A']
-						},
-						ondblClickRow:function(){
-						}	
-					},{
-						title:"Select Product Category",
-						open: function(){
-							dialog_cat2.urlParam.filterCol=['recstatus'];
-							dialog_cat2.urlParam.filterVal=['A'];
-						}
-					},'urlParam'
-				);
-				dialog_cat2.makedialog();
-				dialog_cat2.on();
-
-			} else if($('#groupcode2').val()=="Others") {
-				let dialog_cat3 = new ordialog(
-					'productcatAddNew3','material.category','#productcatAddNew_other',errorField,
-					{	colModel:[
-							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
-							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						],
-						urlParam: {
-							filterCol:['cattype', 'source', 'recstatus'],
-							filterVal:['Other', 'PO', 'A']
-						},
-						ondblClickRow:function(){
-						}	
-					},{
-						title:"Select Product Category",
-						open: function(){
-							dialog_cat3.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-							dialog_cat3.urlParam.filterVal=['Other', 'PO', 'A',$('#Class2').val()];
-						}
-					},'urlParam'
-				);
-				dialog_cat3.makedialog();
-				dialog_cat3.on();
-			}
+			$('#productcatAddNew_asset').val(selrowData('#' + dialog_itemcode.gridname).productcat);
 		}
 	}];
 
@@ -968,6 +1025,7 @@ $(document).ready(function () {
 						$("#"+dialog_itemcode.dialogname ).dialog( "close" );
 						$("#dialogForm").dialog( "close" );
 						delay(function(){
+							errorField.length = 0;
 							$("#jqGridPager td[title='Edit Selected Row']").click();
 						}, 500 );
 					});
@@ -987,11 +1045,90 @@ $(document).ready(function () {
 		open: function( event, ui ) {
 			rdonly("#addNewProductDialog");
 			set_compid_from_storage("input[name='computerid']", "input[name='ipaddress']");
+
+			if($('#groupcode2').val()=="Stock" && $('#othergrid_productcatAddNew1').length == 0){
+					let dialog_cat1 = new ordialog(
+						'productcatAddNew1','material.category','#productcatAddNew_stock',errorField,
+						{	colModel:[
+								{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+								{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+							],
+							urlParam: {
+								filterCol:['cattype', 'source', 'recstatus'],
+								filterVal:['Stock', 'PO', 'A']
+							},
+							ondblClickRow:function(){
+							}	
+						},{
+							title:"Select Product Category",
+							open: function(){
+								var gc2 = $('#groupcode2').val();
+								dialog_cat1.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
+								dialog_cat1.urlParam.filterVal=['Stock', 'PO', 'A',$('#Class2').val()];
+							}
+						},'urlParam'
+					);
+					dialog_cat1.makedialog();
+					dialog_cat1.on();
+
+				} else if($('#groupcode2').val()=="Asset" && $('#othergrid_productcatAddNew2').length == 0) {
+
+					let dialog_cat2 = new ordialog(
+						'productcatAddNew2','finance.facode','#productcatAddNew_asset',errorField,
+						{	colModel:[
+								{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+								{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							],
+							urlParam: {
+								filterCol:[ 'recstatus'],
+								filterVal:[ 'A']
+							},
+							ondblClickRow:function(){
+							}	
+						},{
+							title:"Select Product Category",
+							open: function(){
+								dialog_cat2.urlParam.filterCol=['recstatus'];
+								dialog_cat2.urlParam.filterVal=['A'];
+							}
+						},'urlParam'
+					);
+					dialog_cat2.makedialog();
+					dialog_cat2.on();
+
+				} else if($('#groupcode2').val()=="Others" && $('#othergrid_productcatAddNew3').length == 0) {
+					let dialog_cat3 = new ordialog(
+						'productcatAddNew3','material.category','#productcatAddNew_other',errorField,
+						{	colModel:[
+								{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+								{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							],
+							urlParam: {
+								filterCol:['cattype', 'source', 'recstatus'],
+								filterVal:['Other', 'PO', 'A']
+							},
+							ondblClickRow:function(){
+							}	
+						},{
+							title:"Select Product Category",
+							open: function(){
+								dialog_cat3.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
+								dialog_cat3.urlParam.filterVal=['Other', 'PO', 'A',$('#Class2').val()];
+							}
+						},'urlParam'
+					);
+					dialog_cat3.makedialog();
+					dialog_cat3.on();
+				}
 		},
 		close: function( event, ui ) {
 			emptyFormdata([],'#adpFormdata');
 			$('.alert').detach();
-			$("#adpFormdata a").off();
+			// $("#adpFormdata a").off();
+
+			// dialog_cat1.off();
+			// dialog_cat2.off();
+			// dialog_cat3.off();
 		},
 		buttons :addNew2,
 	});

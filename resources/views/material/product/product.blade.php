@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Fixed Asset Product Setup')
+@section('title', 'Product Setup')
 
 @section('body')
 	<div class='row'>
@@ -200,7 +200,7 @@
 						  	<label class="col-md-2 control-label" for="TaxCode">Tax Code</label>  
 						  		<div class="col-md-3">
 							  		<div class='input-group'>
-										<input id="TaxCode" name="TaxCode" type="text" class="form-control input-sm" data-validation="required" rdonly>
+										<input id="TaxCode" name="TaxCode" type="text" class="form-control input-sm" rdonly>
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  		</div>
 							  			<span class="help-block"></span>

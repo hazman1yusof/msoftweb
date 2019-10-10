@@ -394,17 +394,25 @@ legend.scheduler-border {
 					<div class="col-md-2">
 						<input id="dtl_costprice" name="costprice" type="text" maxlength="12" class="form-control input-sm">
 					</div>
+
+					<label class="col-md-2 control-label" for="iptax">Inpatient Tax</label>  
+					<div class="col-md-2">
+						<div class='input-group'>
+							<input id="dtl_iptax" name="iptax" type="text" class="form-control input-sm" data-validation="required">
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+						</div>
+						<span class="help-block"></span>
+					</div>
                 </div>	
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="iptax">Inpatient Tax</label>  
-					<div class="col-md-2">
-						<input id="dtl_iptax" name="iptax" type="text" maxlength="12" class="form-control input-sm">
-					</div>	
-
 					<label class="col-md-2 control-label" for="optax">Outpatient Tax</label>  
 					<div class="col-md-2">
-						<input id="dtl_optax" name="optax" type="text" maxlength="12" class="form-control input-sm">
+						<div class='input-group'>
+							<input id="dtl_optax" name="optax" type="text" class="form-control input-sm" data-validation="required">
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+						</div>
+						<span class="help-block"></span>
 					</div>
                 </div>
                 

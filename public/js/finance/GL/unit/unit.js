@@ -112,7 +112,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
-		url: '/sector/form',
+		url: 'sector/form',
 		field: '',
 		oper: oper,
 		table_name: 'sysdb.sector',

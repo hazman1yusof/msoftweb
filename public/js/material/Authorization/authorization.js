@@ -265,9 +265,6 @@
 					}
 					if(selfoper=='add'){
 						oper='edit';//sekali dia add terus jadi edit lepas tu
-						$('#idno').val(data.idno);
-					
-						urlParam2.filterVal[0]=data.idno; 
 					}else if(selfoper=='edit'){
 						//doesnt need to do anything
 					}
@@ -523,6 +520,7 @@
 			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_dtl_minlimit", "#"+ids[i]+"_dtl_maxlimit"]);
 			    }
 			    mycurrency2.formatOnBlur();
+		    	onall_editfunc();
 				hideatdialogForm(true,'saveallrow');
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -611,7 +609,7 @@
 
 		/////////////////////////////////////////////custom input////////////////////////////////////////////
 		function deptcodeCustomEdit(val, opt) {
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val=="undefined")? "" : val;
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="dtl_deptcode" type="text" class="form-control input-sm"  value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 		}
 
@@ -661,8 +659,6 @@
 		$(".noti").empty();
 		refreshGrid("#jqGrid2", urlParam2);
 	});
-
-	
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 
@@ -777,6 +773,12 @@
 	);
 	dialog_deptcodedtl.makedialog();
 
+	function onall_editfunc(){
+		dialog_deptcodedtl.on();
+		
+		mycurrency2.formatOnBlur();//make field to currency on leave cursor
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////Auth Detail////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -825,7 +827,7 @@
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			if( $('#FAuthdtl').isValid({requiredFields: ''}, {}, true) ) {
-				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",oper_authdtl,saveParam_authdtl,urlParam_authdtl,'#searchForm2');
+				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",oper_authdtl,saveParam_authdtl,urlParam_authdtl);
 			}else{
 				mycurrency.formatOn();
 			}
@@ -876,7 +878,7 @@
 			}
 			
 			if(oper_authdtl!='add'){
-				dialog_deptcodeD.check(errorField);
+				// dialog_deptcodeD.check(errorField);
 
 			}
 			if (oper_authdtl != 'view') {
@@ -1029,7 +1031,7 @@
 				alert('Please select row');
 				return emptyFormdata(errorField,'#FAuthdtl');
 			}else{
-				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",'del',saveParam_authdtl,urlParam_authdtl,null,{'idno':selRowId});
+				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",'del',saveParam_authdtl,urlParam_authdtl,{'idno':selrowData('#jqGrid').idno});
 			}
 		}, 
 		position: "first", 
@@ -1058,7 +1060,13 @@
 			}else{
 				selRowId2 = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
 				populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId2,'edit');
-				recstatusDisable();
+				
+				var recstatusvalue = $("#FAuthdtl [name='dtl_cando']:checked").val();
+				if(recstatusvalue == 'A'){
+					$("#FAuthdtl [name='dtl_cando']").prop('disabled', true);
+				}else{
+					$("#FAuthdtl [name='dtl_cando']").prop('disabled', false);
+				}
 			}
 		}, 
 		position: "first", 

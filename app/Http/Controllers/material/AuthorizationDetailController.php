@@ -51,6 +51,8 @@ class AuthorizationDetailController extends defaultController
                     'cando' => $request->dtl_cando,
                     'minlimit' => $request->dtl_minlimit,
                     'maxlimit' => $request->dtl_maxlimit,
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
 
             DB::commit();
@@ -136,12 +138,11 @@ class AuthorizationDetailController extends defaultController
             ///1. update detail
             DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('lineno_','=',$request->lineno_)
+                ->where('idno','=',$request->idno)
                 ->update([ 
                     'deluser' => session('username'), 
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'DELETE'
+                    'cando' => 'D'
                 ]);
 
        
