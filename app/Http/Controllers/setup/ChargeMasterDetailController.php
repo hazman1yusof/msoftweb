@@ -68,6 +68,8 @@ class ChargeMasterDetailController extends defaultController
                     'units' => session('unit'),
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'), 
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
 
             DB::commit();
@@ -79,11 +81,57 @@ class ChargeMasterDetailController extends defaultController
     }
 
     public function edit_all(Request $request){
-        
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->dataobj as $key => $value) {
+                ///1. update detail
+                DB::table('hisdb.chgprice')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$value['idno'])
+                    ->update([
+                        'effdate' => $this->turn_date($value['effdate']),
+                        'amt1' => $value['amt1'],
+                        'amt2' => $value['amt2'],
+                        'amt3' => $value['amt3'],
+                        'iptax' => $value['iptax'],
+                        'optax' => $value['optax'],
+                        'costprice' => $value['costprice'],
+                        'lastuser' => session('username'), 
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }
+         
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
     }
 
     public function del(Request $request){
-        
+        DB::beginTransaction();
+
+        try {
+
+            ///1. update detail
+            DB::table('hisdb.chgprice')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
+
+       
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
     }
 
 }

@@ -326,7 +326,7 @@
 		var urlParam2={
 			action:'get_table_default',
 			url:'/util/get_table_default',
-			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate', 'cp.chgcode','cm.chgcode'],
+			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate', 'cp.chgcode','cm.chgcode','cp.idno'],
 			table_name:['hisdb.chgprice AS cp', 'hisdb.chgmast AS cm'],
 			table_id:'lineno_',
 			join_type:['LEFT JOIN'],
@@ -398,19 +398,7 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
-				// { label: 'User ID', name: 'lastuser', width: 150, align: 'right', classes: 'wrap', editable:false,
-				// 	edittype:"text",
-				// 	editoptions:{
-				// 		maxlength: 100,
-				// 	},
-				// },
-				// { label: 'Last Updated', name: 'lastupdate', width: 150, align: 'right', classes: 'wrap', editable:false,
-				// 	edittype:"text",
-				// 	editoptions:{
-				// 		maxlength: 100,
-				// 	},
-				// },
-				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', key: true, editable: true, hidden:true},
+				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
 			autowidth: true,
 			shrinkToFit: true,
@@ -420,7 +408,7 @@
 			width: 1150,
 			height: 200,
 			rowNum: 30,
-			sortname: 'lineno_',
+			sortname: 'idno',
 			sortorder: "desc",
 			pager: "#jqGridPager2",
 			loadComplete: function(){
@@ -622,7 +610,7 @@
 					    	if(result == true){
 					    		param={
 					    			action: 'chargemasterDetail_save',
-									idno: $('#lineno_').val(),
+									idno: selrowData('#jqGrid2').idno,
 
 					    		}
 					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
@@ -653,6 +641,7 @@
 			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amt1","#"+ids[i]+"_amt2","#"+ids[i]+"_amt3","#"+ids[i]+"_costprice"]);
 			    }
 			    mycurrency2.formatOnBlur();
+		    	onall_editfunc();
 				hideatdialogForm(true,'saveallrow');
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -670,14 +659,14 @@
 					var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
 			    	var obj = 
 			    	{
-			    		'idno' : ids[i],
-			    		'effdate' : $("#jqGrid2 input#"+ids[i]+"effdate").val(),
-						'amt1' : $("#jqGrid2 input#"+ids[i]+"amt1").val(),
-						'amt2' : $("#jqGrid2 input#"+ids[i]+"amt2").val(),
-						'amt3' : $("#jqGrid2 input#"+ids[i]+"amt3").val(),
-						'costprice' : $("#jqGrid2 input#"+ids[i]+"costprice").val(),
-						'iptax' : $("#jqGrid2 input#"+ids[i]+"iptax").val(),
-						'optax' : $("#jqGrid2 input#"+ids[i]+"optax").val()
+			    		'idno' : data.idno,
+			    		'effdate' : $("#jqGrid2 input#"+ids[i]+"_effdate").val(),
+						'amt1' : $("#jqGrid2 input#"+ids[i]+"_amt1").val(),
+						'amt2' : $("#jqGrid2 input#"+ids[i]+"_amt2").val(),
+						'amt3' : $("#jqGrid2 input#"+ids[i]+"_amt3").val(),
+						'costprice' : $("#jqGrid2 input#"+ids[i]+"_costprice").val(),
+						'iptax' : $("#jqGrid2 input#"+ids[i]+"_iptax").val(),
+						'optax' : $("#jqGrid2 input#"+ids[i]+"_optax").val()
 			    	}
 
 			    	jqgrid2_data.push(obj);
@@ -744,6 +733,14 @@
 			$(".noti").empty();
 			refreshGrid("#jqGrid2", urlParam2);
 		});
+
+		function onall_editfunc(){
+	        dialog_optax.on();
+			dialog_iptax.on();
+
+			
+			mycurrency2.formatOnBlur();//make field to currency on leave cursor
+		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////Chg Price Detail//////////////////////////////////////////////////////
@@ -1356,72 +1353,72 @@
 		dialog_deptcode.makedialog(true);
 
 		var dialog_iptax = new ordialog(
-		'iptax','hisdb.taxmast',"#jqGrid2 input[name='iptax']",errorField,
-		{	colModel:[
-				{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
-			],
-			urlParam: {
-				filterCol:['recstatus','compcode'],
-				filterVal:['A', 'session.compcode']
-					},
-			ondblClickRow:function(){
-				$('#optax').focus();
-			},
-			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#optax').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
+			'iptax','hisdb.taxmast',"#jqGrid2 input[name='iptax']",errorField,
+			{	colModel:[
+					{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+				],
+				urlParam: {
+					filterCol:['recstatus','compcode','taxtype'],
+					filterVal:['A', 'session.compcode','Input']
+						},
+				ondblClickRow:function(){
+					$('#optax').focus();
+				},
+				gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#optax').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
 						}
-					}
-		},{
-			title:"Select Receiver Department",
-			open: function(){
-				dialog_iptax.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_iptax.urlParam.filterVal = ['A', 'session.compcode'];
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_iptax.makedialog();
+			},{
+				title:"Select Receiver Department",
+				open: function(){
+					dialog_iptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+					dialog_iptax.urlParam.filterVal = ['A', 'session.compcode','Input'];
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_iptax.makedialog();
 
-	var dialog_optax = new ordialog(
-		'optax','hisdb.taxmast',"#jqGrid2 input[name='optax']",errorField,
-		{	colModel:[
-				{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
-			],
-			urlParam: {
-				filterCol:['recstatus','compcode'],
-				filterVal:['A', 'session.compcode']
-					},
-			ondblClickRow:function(){
-				$('#delordhd_credcode').focus();
-			},
-			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#delordhd_credcode').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
+		var dialog_optax = new ordialog(
+			'optax','hisdb.taxmast',"#jqGrid2 input[name='optax']",errorField,
+			{	colModel:[
+					{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+				],
+				urlParam: {
+					filterCol:['recstatus','compcode','taxtype'],
+					filterVal:['A', 'session.compcode','Output']
+						},
+				ondblClickRow:function(){
+					$('#delordhd_credcode').focus();
+				},
+				gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#delordhd_credcode').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
 						}
-					}
-		},{
-			title:"Select Receiver Department",
-			open: function(){
-				dialog_optax.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_optax.urlParam.filterVal = ['A', 'session.compcode'];
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_optax.makedialog();
+			},{
+				title:"Select Receiver Department",
+				open: function(){
+					dialog_optax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+					dialog_optax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_optax.makedialog();
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 
