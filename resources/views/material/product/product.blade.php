@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Fixed Asset Product Setup')
+@section('title', 'Product Setup')
 
 @section('body')
 	<div class='row'>
