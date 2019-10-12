@@ -1,10 +1,11 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
+var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language: {
@@ -77,7 +78,7 @@ $(document).ready(function () {
 						break;
 				}
 				if(oper!='view'){
-					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
+					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']","input[name='computerid']", "input[name='ipaddress']");
 					dialog_regioncode.on();
 				}
 				if(oper!='add'){
@@ -124,9 +125,9 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'idno', name: 'idno', width: 5, hidden: true },
+			{ label: 'idno', name: 'idno', width: 10, hidden: true },
 			{ label: 'Unit', name: 'sectorcode', width: 20, classes: 'wrap', canSearch: true},
-			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true,checked:true,},
+			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true,checked:true},
 			{ label: 'Section', name: 'regioncode', width: 50, classes: 'wrap'},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
@@ -135,9 +136,10 @@ $(document).ready(function () {
 			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
+			{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
+			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-
 		],
 		autowidth: true,
 		multiSort: true,
@@ -181,7 +183,7 @@ $(document).ready(function () {
 				return emptyFormdata(errorField, '#formdata');
 				//return emptyFormdata('#formdata');
 			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'idno': selrowData('#jqGrid').idno });
+				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, { 'idno': selrowData('#jqGrid').idno });
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -221,18 +223,16 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 				urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
 				},
 				ondblClickRow: function () {
-					//$('#recstatus').focus();
 				},
 				gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							//$('#recstatus').focus();
 						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}
@@ -254,5 +254,5 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus']);
+	addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus', 'computerid', 'ipaddress']);
 });

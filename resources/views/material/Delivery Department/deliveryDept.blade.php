@@ -22,9 +22,14 @@
 					  </div>
 					  <span class="help-block"></span>
 				</div>
+
+				<div class="form-group">
+					 <label class="col-md-2 control-label" for="description">Description</label>  
+					  <div class="col-md-3">
+					  	<input id="description" name="description" type="text" class="form-control input-sm" >
+					  </div>
 				</div>
 
-			
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="addr1">Address</label>  
 				  <div class="col-md-8">

@@ -13,7 +13,7 @@ class UnitController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        //$this->duplicateCode = "sectorcode";
+        $this->duplicateCode = "sectorcode";
     }
 
     public function show(Request $request)

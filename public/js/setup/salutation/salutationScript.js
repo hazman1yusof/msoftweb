@@ -204,7 +204,7 @@
 						alert('Please select row');
 						return emptyFormdata('#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selrowData('#jqGrid').idno});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':selrowData('#jqGrid').idno});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{

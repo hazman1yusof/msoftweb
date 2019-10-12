@@ -132,11 +132,12 @@
 				</div>
 
 				 <div class="form-group">
-				  <label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-				  <div class="col-md-3">
-					<input id="recstatus" name="recstatus" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-				  </div>
-				</div>
+					  <label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+					  <div class="col-md-3">
+						<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
+						<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
+					  </div>
+				</div>  
 				
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="adduser">Created By</label>  

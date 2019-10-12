@@ -220,6 +220,8 @@
 				autowidth:true,
                 multiSort: true,
 				viewrecords: true,
+				sortname:'idno',
+				sortorder:'desc',
 				loadonce:false,
 				width: 900,
 				height: 350,
@@ -294,7 +296,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':selrowData('#jqGrid').idno});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{

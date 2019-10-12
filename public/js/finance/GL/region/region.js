@@ -4,7 +4,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']","input[name='computerid']", "input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language: {
@@ -77,11 +77,11 @@ $(document).ready(function () {
 						break;
 				}
 				if(oper!='view'){
-					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
-					dialog_regioncode.on();
+					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+					//dialog_regioncode.on();
 				}
 				if(oper!='add'){
-					dialog_regioncode.check(errorField);
+					//dialog_regioncode.check(errorField);
 				}
 			},
 			close: function (event, ui) {
@@ -134,8 +134,11 @@ $(document).ready(function () {
 			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
 			},
+			{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
+			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
+
 
 		],
 		autowidth: true,
@@ -203,7 +206,7 @@ $(document).ready(function () {
 				return emptyFormdata(errorField, '#formdata');
 				//return emptyFormdata('#formdata');
 			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, null, { 'idno': selrowData('#jqGrid').idno });
+				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam,{ 'idno': selrowData('#jqGrid').idno });
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {

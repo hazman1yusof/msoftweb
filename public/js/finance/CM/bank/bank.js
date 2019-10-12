@@ -220,15 +220,17 @@
 					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},					
 					{ label: 'Open Balance', name: 'openbal', width: 90,  hidden:true},					
-					{ label: 'Record Status', name: 'recstatus', width: 15, classes: 'wrap', 
-						formatter:formatter, unformat:unformat, cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+					{ label: 'Record Status', name: 'recstatus', width: 15, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					},
 					{label: 'idno', name: 'idno', hidden: true},
 				],
 				autowidth:true,
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
+				sortname:'idno',
+				sortorder:'desc',
 				width: 900,
 				height: 350,
 				rowNum: 30,
@@ -246,7 +248,7 @@
 				
 				
 			});
-
+/*
 			function formatter(cellvalue, options, rowObject){
 				return parseInt(cellvalue) ? "Yes" : "No";
 			}
@@ -260,7 +262,7 @@
 				else {
 					return "0";
 				}
-			}
+			}*/
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -279,7 +281,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':selrowData('#jqGrid').idno});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
