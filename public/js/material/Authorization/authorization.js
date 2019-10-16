@@ -98,6 +98,7 @@
 					$(".noti").empty();
 					$("#refresh_jqGrid").click();
 					refreshGrid("#jqGrid2",null,"kosongkan");
+					refreshGrid("#gridAuthdtl",null,"kosongkan");
 					
 				},
 			  });
@@ -630,7 +631,7 @@
 		//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function () {
 		mycurrency.formatOff();
-		mycurrency.check0value(errorField);
+		// mycurrency.check0value(errorField);
 		unsaved = false;
 		dialog_authorid.off();
 		dialog_deptcodehd.off();
@@ -825,7 +826,7 @@
 	var buttItem1=[{
 		text: "Save",click: function() {
 			mycurrency.formatOff();
-			mycurrency.check0value(errorField);
+			// mycurrency.check0value(errorField);
 			if( $('#FAuthdtl').isValid({requiredFields: ''}, {}, true) ) {
 				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",oper_authdtl,saveParam_authdtl,urlParam_authdtl);
 			}else{
@@ -883,6 +884,7 @@
 			}
 			if (oper_authdtl != 'view') {
 				$("#d_authorid").val(selrowData('#jqGrid').authorid);
+				$("input[name='dtl_authorid']").val(selrowData('#jqGrid').authorid);
 				dialog_deptcodeD.on();
 			}
 		},
@@ -1061,7 +1063,8 @@
 				selRowId2 = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
 				populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId2,'edit');
 				
-				var recstatusvalue = $("#FAuthdtl [name='dtl_cando']:checked").val();
+				var recstatusvalue = selrowData('#gridAuthdtl').dtl_cando;
+
 				if(recstatusvalue == 'A'){
 					$("#FAuthdtl [name='dtl_cando']").prop('disabled', true);
 				}else{

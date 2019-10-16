@@ -39,21 +39,32 @@ class AuthorizationDetailController extends defaultController
         DB::beginTransaction();
 
         try {
+            ///1. check duplicate
+            $duplicate = DB::table('material.authdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('trantype','=',$request->dtl_trantype)
+                            ->where('deptcode','=',$request->dtl_deptcode)
+                            ->where('recstatus','=',$request->dtl_recstatus)
+                            ->exists();
 
-            ///1. insert detail
-            DB::table('material.authdtl')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'trantype' => $request->dtl_trantype,
-                    'deptcode' => $request->dtl_deptcode,
-                    'authorid' => $request->authorid,
-                    'recstatus' => $request->dtl_recstatus,
-                    'cando' => $request->dtl_cando,
-                    'minlimit' => $request->dtl_minlimit,
-                    'maxlimit' => $request->dtl_maxlimit,
-                    'adduser' => session('username'), 
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                ]);
+            if(!$duplicate){
+                ///2. insert detail
+                DB::table('material.authdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'trantype' => $request->dtl_trantype,
+                        'deptcode' => $request->dtl_deptcode,
+                        'authorid' => $request->authorid,
+                        'recstatus' => $request->dtl_recstatus,
+                        'cando' => $request->dtl_cando,
+                        'minlimit' => $request->dtl_minlimit,
+                        'maxlimit' => $request->dtl_maxlimit,
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }else{
+                
+            }
 
             DB::commit();
         } catch (\Exception $e) {

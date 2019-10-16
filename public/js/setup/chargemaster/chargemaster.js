@@ -489,7 +489,7 @@
 					alert('Please select row');
 					return emptyFormdata(errorField,'#formdata');
 				}else{
-					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':cm_idno});
+					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':cm_idno});
 				}
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -754,8 +754,8 @@
 					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
 				],
 				urlParam: {
-					filterCol:['recstatus','compcode'],
-					filterVal:['A', 'session.compcode']
+					filterCol:['recstatus','compcode','taxtype'],
+					filterVal:['A', 'session.compcode','Input']
 						},
 				ondblClickRow:function(){
 					$('#dtl_optax').focus();
@@ -773,8 +773,8 @@
 			},{
 				title:"Select Receiver Department",
 				open: function(){
-					dialog_dtliptax.urlParam.filterCol = ['recstatus','compcode'];
-					dialog_dtliptax.urlParam.filterVal = ['A', 'session.compcode'];
+					dialog_dtliptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+					dialog_dtliptax.urlParam.filterVal = ['A', 'session.compcode','Input'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -788,8 +788,8 @@
 					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
 				],
 				urlParam: {
-					filterCol:['recstatus','compcode'],
-					filterVal:['A', 'session.compcode']
+					filterCol:['recstatus','compcode','taxtype'],
+					filterVal:['A', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
 					$('#lastuser').focus();
@@ -807,8 +807,8 @@
 			},{
 				title:"Select Receiver Department",
 				open: function(){
-					dialog_dtloptax.urlParam.filterCol = ['recstatus','compcode'];
-					dialog_dtloptax.urlParam.filterVal = ['A', 'session.compcode'];
+					dialog_dtloptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+					dialog_dtloptax.urlParam.filterVal = ['A', 'session.compcode','Output'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -819,7 +819,7 @@
 				mycurrency.formatOff();
 				mycurrency.check0value(errorField);
 				if( $('#FChgPriceDtl').isValid({requiredFields: ''}, {}, true) ) {
-					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",oper_chgpricedtl,saveParam3,urlParam3,{
+					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",oper_chgpricedtl,saveParam3,urlParam2,{
 							chgcode: selrowData("#jqGrid").cm_chgcode,
 							uom: selrowData("#jqGrid").cm_uom,
 						});
@@ -1008,7 +1008,7 @@
 		$("#jqGrid3").jqGrid('navGrid','#jqGridPager3',{	
 			view:false,edit:false,add:false,del:false,search:false,
 			beforeRefresh: function(){
-				refreshGrid("#jqGrid3",urlParam3);
+				refreshGrid("#jqGrid3",urlParam2);
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager3",{
 			caption:"", 
@@ -1021,7 +1021,7 @@
 					alert('Please select row');
 					return emptyFormdata(errorField,'#FChgPriceDtl');
 				}else{
-					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",'del',saveParam3,urlParam3,null,{'idno':selRowId});
+					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",'del',saveParam3,urlParam2,{'idno':selrowData('#jqGrid3').idno});
 				}
 			}, 
 			position: "first", 
