@@ -140,6 +140,8 @@
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
+				sortname:'idno',
+				sortorder:'desc',
 				width: 900,
 				height: 350,
 				rowNum: 30,
@@ -156,26 +158,6 @@
 				},
 				
 			});
-
-			/*////////////////////////////formatter//////////////////////////////////////////////////////////
-			function formatter(cellvalue, options, rowObject){
-				if(cellvalue == 'A'){
-					return "Active";
-				}
-				if(cellvalue == 'D') { 
-					return "Deactive";
-				}
-			}
-
-			function  unformat(cellvalue, options){
-				if(cellvalue == 'Active'){
-					return "Active";
-				}
-				if(cellvalue == 'Deactive') { 
-					return "Deactive";
-				}
-			}*/
-
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
