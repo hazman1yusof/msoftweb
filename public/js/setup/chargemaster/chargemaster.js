@@ -754,8 +754,8 @@
 					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
 				],
 				urlParam: {
-					filterCol:['recstatus','compcode'],
-					filterVal:['A', 'session.compcode']
+					filterCol:['recstatus','compcode','taxtype'],
+					filterVal:['A', 'session.compcode','Input']
 						},
 				ondblClickRow:function(){
 					$('#dtl_optax').focus();
@@ -773,8 +773,8 @@
 			},{
 				title:"Select Receiver Department",
 				open: function(){
-					dialog_dtliptax.urlParam.filterCol = ['recstatus','compcode'];
-					dialog_dtliptax.urlParam.filterVal = ['A', 'session.compcode'];
+					dialog_dtliptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+					dialog_dtliptax.urlParam.filterVal = ['A', 'session.compcode','Input'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -788,8 +788,8 @@
 					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
 				],
 				urlParam: {
-					filterCol:['recstatus','compcode'],
-					filterVal:['A', 'session.compcode']
+					filterCol:['recstatus','compcode','taxtype'],
+					filterVal:['A', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
 					$('#lastuser').focus();
@@ -807,8 +807,8 @@
 			},{
 				title:"Select Receiver Department",
 				open: function(){
-					dialog_dtloptax.urlParam.filterCol = ['recstatus','compcode'];
-					dialog_dtloptax.urlParam.filterVal = ['A', 'session.compcode'];
+					dialog_dtloptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+					dialog_dtloptax.urlParam.filterVal = ['A', 'session.compcode','Output'];
 				}
 			},'urlParam','radio','tab'
 		);
