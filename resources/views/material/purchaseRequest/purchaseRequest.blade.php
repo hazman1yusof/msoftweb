@@ -290,7 +290,7 @@ i.fa {
 					</div>
 
 					<div class="panel-body">
-						<div class="noti"></div>
+						<div class="noti" style="color:red"></div>
 					</div>
 
 			</div>

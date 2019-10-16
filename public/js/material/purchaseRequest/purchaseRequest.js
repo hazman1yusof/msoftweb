@@ -374,8 +374,8 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			},'json')
 		.fail(function (data) {
-			console.log(data.responseText);
-			alert(data);
+			alert(data.responseJSON.message);
+			$('.noti').text(data.responseJSON.message);
 		}).done(function (data) {
 			unsaved = false;
 			hideatdialogForm(false);
