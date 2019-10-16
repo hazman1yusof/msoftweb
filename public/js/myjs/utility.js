@@ -815,6 +815,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		$("#Dtext_"+unique).off('keyup',onChange);
 		$("#Dcol_"+unique).off('change',onChange);
 		$(this.textfield).off('blur',onBlur);
+		$("#Dtext_"+unique).off('keydown',onTabSearchfield)
 	}
 	this.makedialog = function(on=false){
 		$("html").append(this.otherdialog);
@@ -834,8 +835,20 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			$("#Dtext_"+unique).on('keyup',{data:this},onChange);
 			$("#Dcol_"+unique).on('change',{data:this},onChange);
 			$(this.textfield).on('blur',{data:this,errorField:errorField},onBlur);
+			$("#Dtext_"+unique).on('keydown',{data:this},onTabSearchfield);
 		}
 	}
+
+	function onTabSearchfield(event){
+		var obj = event.data.data;
+		var code = event.keyCode || event.which;
+
+		if (code == '9'){
+			event.preventDefault();
+			$("#"+obj.gridname+' tr#1').click().focus();
+		}
+	}
+
 
 	function onClick(event){
 		var textfield = $(event.currentTarget).siblings("input[type='text']");
@@ -1054,7 +1067,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				}
 			},
 			loadComplete: function(data) {
-				$("#"+obj.gridname+' tr#1').click().focus();
 				if(obj.jqgrid_.hasOwnProperty('loadComplete'))obj.jqgrid_.loadComplete(data,obj);
 		    },
 			gridComplete: function() {

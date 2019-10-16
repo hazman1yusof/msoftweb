@@ -489,7 +489,7 @@
 					alert('Please select row');
 					return emptyFormdata(errorField,'#formdata');
 				}else{
-					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':cm_idno});
+					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':cm_idno});
 				}
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -819,7 +819,7 @@
 				mycurrency.formatOff();
 				mycurrency.check0value(errorField);
 				if( $('#FChgPriceDtl').isValid({requiredFields: ''}, {}, true) ) {
-					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",oper_chgpricedtl,saveParam3,urlParam3,{
+					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",oper_chgpricedtl,saveParam3,urlParam2,{
 							chgcode: selrowData("#jqGrid").cm_chgcode,
 							uom: selrowData("#jqGrid").cm_uom,
 						});
@@ -1008,7 +1008,7 @@
 		$("#jqGrid3").jqGrid('navGrid','#jqGridPager3',{	
 			view:false,edit:false,add:false,del:false,search:false,
 			beforeRefresh: function(){
-				refreshGrid("#jqGrid3",urlParam3);
+				refreshGrid("#jqGrid3",urlParam2);
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager3",{
 			caption:"", 
@@ -1021,7 +1021,7 @@
 					alert('Please select row');
 					return emptyFormdata(errorField,'#FChgPriceDtl');
 				}else{
-					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",'del',saveParam3,urlParam3,null,{'idno':selRowId});
+					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",'del',saveParam3,urlParam2,{'idno':selrowData('#jqGrid3').idno});
 				}
 			}, 
 			position: "first", 
