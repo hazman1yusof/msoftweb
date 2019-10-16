@@ -108,7 +108,7 @@
 							i++;
 						};
 						if (word!='') word = word.toUpperCase();
-						if (word2!='') word2 = ' AND ' + word2.toUpperCase() + ' CENTS';
+						if (word2!='') word2 = ' AND CENTS ' + word2.toUpperCase() + ' ONLY';
 						return word+word2;
 
 					}
