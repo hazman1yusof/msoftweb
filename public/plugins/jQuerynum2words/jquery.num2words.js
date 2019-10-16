@@ -107,7 +107,7 @@
 							};
 							i++;
 						};
-						if (word!='') word = word.toUpperCase() + ' RINGGIT';
+						if (word!='') word = word.toUpperCase();
 						if (word2!='') word2 = ' AND ' + word2.toUpperCase() + ' CENTS';
 						return word+word2;
 
