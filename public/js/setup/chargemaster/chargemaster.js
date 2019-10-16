@@ -304,8 +304,8 @@
 				if(selfoper=='add'){
 					oper='edit';//sekali dia add terus jadi edit lepas tu
 					$('#idno').val(data.idno);
-				
-					urlParam2.filterVal[0]=data.idno; 
+					
+					urlParam2.filterVal[1]=$('#cm_chgcode').val();
 				}else if(selfoper=='edit'){
 					//doesnt need to do anything
 				}
