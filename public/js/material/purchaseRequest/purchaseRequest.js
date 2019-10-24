@@ -327,32 +327,50 @@ $(document).ready(function () {
 	actdateObj.getdata().set();
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
+	// $("#but_cancel_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
 		
-		saveParam.oper = $(this).data("oper");
-		let obj={
-			recno:selrowData('#jqGrid').purreqhd_recno,
-			_token:$('#_token').val(),
-			idno:selrowData('#jqGrid').purreqhd_idno
+	// 	saveParam.oper = $(this).data("oper");
+	// 	let obj={
+	// 		recno:selrowData('#jqGrid').purreqhd_recno,
+	// 		_token:$('#_token').val(),
+	// 		idno:selrowData('#jqGrid').purreqhd_idno
 
-		};
-		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			// alert(data.responseText);
-			$('#error_infront').text(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
+	// 	};
+	// 	$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
+	// 		refreshGrid("#jqGrid", urlParam);
+	// 	}).fail(function (data) {
+	// 		// alert(data.responseText);
+	// 		$('#error_infront').text(data.responseText);
+	// 	}).done(function (data) {
+	// 		//2nd successs?
+	// 	});
+	// });
+	$("#but_reopen_jq").click(function(){
+
+		var idno = selrowData('#jqGrid').purreqhd_idno;
+		console.log(idno);
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = $(this).data('oper');
+
+		$.post( '/purchaseRequest/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+
+		}).success(function(data){
+			
 		});
 	});
 
-	$("#but_post_jq").click(function(){
+
+	$("#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq").click(function(){
 		var idno_array = [];
 	
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
-		obj={};
+		var obj={};
 		obj.idno_array = idno_array;
-		obj.oper = 'posted';
+		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		
 		$.post( '/purchaseRequest/form', obj , function( data ) {

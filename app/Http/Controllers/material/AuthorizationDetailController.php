@@ -42,6 +42,7 @@ class AuthorizationDetailController extends defaultController
             ///1. check duplicate
             $duplicate = DB::table('material.authdtl')
                             ->where('compcode','=',session('compcode'))
+                            ->where('authorid','=',$request->dtl_authorid)
                             ->where('trantype','=',$request->dtl_trantype)
                             ->where('deptcode','=',$request->dtl_deptcode)
                             ->where('recstatus','=',$request->dtl_recstatus)
@@ -54,7 +55,7 @@ class AuthorizationDetailController extends defaultController
                         'compcode' => session('compcode'),
                         'trantype' => $request->dtl_trantype,
                         'deptcode' => $request->dtl_deptcode,
-                        'authorid' => $request->authorid,
+                        'authorid' => $request->dtl_authorid,
                         'recstatus' => $request->dtl_recstatus,
                         'cando' => $request->dtl_cando,
                         'minlimit' => $request->dtl_minlimit,
@@ -63,7 +64,7 @@ class AuthorizationDetailController extends defaultController
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }else{
-                
+                throw new \Exception("Duplicate entry");
             }
 
             DB::commit();
@@ -83,8 +84,8 @@ class AuthorizationDetailController extends defaultController
             ///1. update detail
             DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->where('authorid','=',$request->authorid)
+                ->where('idno','=',$request->dtl_idno)
+                ->where('authorid','=',$request->dtl_authorid)
                 ->update([
                     'trantype' => $request->dtl_trantype,
                     'deptcode' => $request->dtl_deptcode,

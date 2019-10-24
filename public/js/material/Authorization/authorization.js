@@ -1033,7 +1033,8 @@
 				alert('Please select row');
 				return emptyFormdata(errorField,'#FAuthdtl');
 			}else{
-				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",'del',saveParam_authdtl,urlParam_authdtl,{'idno':selrowData('#jqGrid').idno});
+				emptyFormdata(errorField,'#FAuthdtl');
+				saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",'del',saveParam_authdtl,urlParam_authdtl,{'idno':selrowData('#gridAuthdtl').dtl_idno});
 			}
 		}, 
 		position: "first", 

@@ -194,8 +194,8 @@ i.fa {
         	<form class='form-horizontal' style='width:99%' id='FAuthdtl'>
 			
 				{{ csrf_field() }}
-				<input type="hidden" id="d_idno" name="idno">
-				<input type="hidden" id="d_authorid" name="authorid">
+				<input type="hidden" id="d_idno" name="dtl_idno">
+				<input type="hidden" id="d_authorid" name="dtl_authorid">
             
             	<div class="form-group">
 				 	<label class="col-md-2 control-label" for="d_authorid">User ID</label>  
