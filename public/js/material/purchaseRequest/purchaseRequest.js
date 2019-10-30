@@ -236,6 +236,8 @@ $(document).ready(function () {
 			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan tu
 			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_prdept);
 			refreshGrid("#jqGrid3", urlParam2);
+
+			$("#pdfgen1").attr('href','./testpdf2?recno='+selrowData("#jqGrid").purreqhd_recno);
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").purreqhd_recstatus;

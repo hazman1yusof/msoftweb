@@ -450,6 +450,9 @@ Route::get('/download/{folder}/{image_path}','hisdb\ReviewController@download');
 
 /// Test route /// 
 Route::get('/test','util\TestController@show');
+Route::get('/test2','util\TestController@show2');
+Route::get('/testpdf','util\TestController@pdf');
+Route::get('/testpdf2','util\TestController@pdf2');
 Route::post('/test/form','util\TestController@form');
 
 Route::get('/barcode','util\BarcodeController@show');

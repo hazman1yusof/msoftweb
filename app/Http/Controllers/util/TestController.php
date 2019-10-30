@@ -8,6 +8,7 @@ use stdClass;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use PDF;
 
 class TestController extends defaultController
 {   
@@ -23,8 +24,91 @@ class TestController extends defaultController
 
     public function show(Request $request)
     {   
+        return view('test.testpdf');
+
+    }
+
+    public function show2(Request $request)
+    {   
+        $recno = $request->recno;
+        if(!$recno){
+            abort(404);
+        }
+
+        $purreqhd = DB::table('material.purreqhd')
+            ->where('recno','=',$recno)
+            ->first();
+
+        $purreqdt = DB::table('material.purreqdt AS prdt', 'material.productmaster AS p', 'material.uom as u')
+            ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 'u.description as uom_desc')
+            ->leftJoin('material.productmaster as p', 'prdt.itemcode', '=', 'p.itemcode')
+            ->leftJoin('material.uom as u', 'prdt.uomcode', '=', 'u.uomcode')
+            ->where('recno','=',$recno)
+            ->get();
+            // dd($purreqdt);
+
+        $totamount_expld = explode(".", (float)$purreqhd->totamount);
+
+        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
+        $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        if(count($totamount_expld) > 1){
+            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
+            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        }
+
+        return view('test.testpdf2',compact('purreqhd','purreqdt','totamt_bm'));
+
+    }
+
+    public function pdf(Request $request)
+    {   
         // dd($request);
-        return view('test.testexpdateloop');
+        // return view('test.testexpdateloop');
+        $pdf = PDF::loadView('test.testpdf');
+        return $pdf->stream();      
+        // return $pdf->download('invoice.pdf');
+
+    }
+
+
+
+    public function pdf2(Request $request)
+    {   
+
+        $recno = $request->recno;
+        if(!$recno){
+            abort(404);
+        }
+
+        $purreqhd = DB::table('material.purreqhd')
+            ->where('recno','=',$recno)
+            ->first();
+
+        $purreqdt = DB::table('material.purreqdt AS prdt', 'material.productmaster AS p', 'material.uom as u')
+            ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 'u.description as uom_desc')
+            ->leftJoin('material.productmaster as p', 'prdt.itemcode', '=', 'p.itemcode')
+            ->leftJoin('material.uom as u', 'prdt.uomcode', '=', 'u.uomcode')
+            ->where('recno','=',$recno)
+            ->get();
+            // dd($purreqdt);
+
+        $totamount_expld = explode(".", (float)$purreqhd->totamount);
+
+        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
+        $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        if(count($totamount_expld) > 1){
+            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
+            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        }
+
+        // dd($request);
+        // return view('test.testexpdateloop');
+        $pdf = PDF::loadView('test.testpdf2',compact('purreqhd','purreqdt','totamt_bm'));
+        return $pdf->stream();      
+        // return $pdf->download('invoice.pdf');
+
     }
 
     public function form(Request $request)
@@ -66,5 +150,50 @@ class TestController extends defaultController
 
 
     }
+
+    public function convertNumberToWord($num = false)
+    {
+        $num = str_replace(array(',', ' '), '' , trim($num));
+        if(! $num) {
+            return false;
+        }
+        $num = (int) $num;
+        $words = array();
+        $list1 = array('', 'SATU', 'DUA', 'TIGA', 'EMPAT', 'LIMA', 'ENAM', 'TUJUH', 'LAPAN', 'SEMBILAN', 'SEPULUH', 'SEBELAS',
+            'DUA BELAS', 'TIGA BELAS', 'EMPAT BELAS', 'LIMA BELAS', 'ENAM BELAS', 'TUJUH BELAS', 'LAPAN BELAS', 'SEMBILAN BELAS'
+        );
+        $list2 = array('', 'SEPULUH', 'DUA PULUH', 'TIGA PULUH', 'EMPAT PULUH', 'LIMA PULUH', 'ENAM PULUH', 'TUJUH PULUH', 'LAPAN PULUH', 'SEMBILAN PULUH', 'SERATUS');
+        $list3 = array('', 'RIBU', 'JUTA', 'BILLION', 'TRILLION', 'quadrillion', 'quintillion', 'sextillion', 'septillion',
+            'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quattuordecillion',
+            'quindecillion', 'sexdecillion', 'septendecillion', 'octodecillion', 'novemdecillion', 'vigintillion'
+        );
+        $num_length = strlen($num);
+        $levels = (int) (($num_length + 2) / 3);
+        $max_length = $levels * 3;
+        $num = substr('00' . $num, -$max_length);
+        $num_levels = str_split($num, 3);
+        for ($i = 0; $i < count($num_levels); $i++) {
+            $levels--;
+            $hundreds = (int) ($num_levels[$i] / 100);
+            $hundreds = ($hundreds ? ' ' . $list1[$hundreds] . ' RATUS' . ' ' : '');
+            $tens = (int) ($num_levels[$i] % 100);
+            $singles = '';
+            if ( $tens < 20 ) {
+                $tens = ($tens ? ' ' . $list1[$tens] . ' ' : '' );
+            } else {
+                $tens = (int)($tens / 10);
+                $tens = ' ' . $list2[$tens] . ' ';
+                $singles = (int) ($num_levels[$i] % 10);
+                $singles = ' ' . $list1[$singles] . ' ';
+            }
+            $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? ' ' . $list3[$levels] . ' ' : '' );
+        } //end for loop
+        $commas = count($words);
+        if ($commas > 1) {
+            $commas = $commas - 1;
+        }
+        return implode(' ', $words);
+    }
+
 
 }
