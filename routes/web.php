@@ -181,6 +181,7 @@ Route::get('/purchaseRequest','material\PurchaseRequestController@show');
 Route::get('/purchaseRequest/table','material\PurchaseRequestController@table');
 Route::post('/purchaseRequest/form','material\PurchaseRequestController@form');
 Route::get('/purchaseRequest/form','material\PurchaseRequestController@form');
+Route::get('/purchaseRequest/showpdf','material\PurchaseRequestController@showpdf');
 Route::post('/purchaseRequestDetail/form','material\PurchaseRequestDetailController@form');
 
 //// purchase Order setup page ///

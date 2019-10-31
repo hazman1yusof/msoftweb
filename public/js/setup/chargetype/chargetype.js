@@ -492,7 +492,7 @@
 					dialog_ipdept.urlParam.filterVal=['session.compcode','A'];
 					
 				}
-			},'urlParam','radio','tab'
+			},'urlParam','radio','tab',false
 		);
 		dialog_ipdept.makedialog();	
 
@@ -667,7 +667,7 @@
 					dialog_invcategory.urlParam.filterVal=['session.compcode','A'];
 					
 				}
-			},'urlParam','radio','tab'
+			},'urlParam','radio','tab',false
 		);
 		dialog_invcategory.makedialog();
 	
