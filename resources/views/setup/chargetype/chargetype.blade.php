@@ -86,7 +86,7 @@
 						<label class="col-md-2 control-label" for="ipdept">IP Dept</label>  
 						<div class="col-md-3" >
 							<div class='input-group'>
-								<input id="ipdept" name="ipdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="ipdept" name="ipdept" type="text" maxlength="12" class="form-control input-sm">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -95,7 +95,7 @@
 						<label class="col-md-2 control-label" for="opdept">OP Dept</label>  
 						<div class="col-md-3" >
 							<div class='input-group'>
-								<input id="opdept" name="opdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="opdept" name="opdept" type="text" maxlength="12" class="form-control input-sm">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
