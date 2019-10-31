@@ -527,7 +527,7 @@
 					dialog_opdept.urlParam.filterVal=['session.compcode','A'];
 					
 				}
-			},'urlParam','radio','tab'
+			},'urlParam','radio','tab',false
 		);
 		dialog_opdept.makedialog();
 
