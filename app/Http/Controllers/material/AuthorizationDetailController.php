@@ -80,12 +80,19 @@ class AuthorizationDetailController extends defaultController
         DB::beginTransaction();
 
         try {
+            $authdtl = DB::table('material.authdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('idno','=',$request->dtl_idno)
+                        ->where('authorid','=',$request->dtl_authorid);
+
+            $authdtl_get = $authdtl->first();
+
+            if(empty($request->dtl_cando)){
+                $request->dtl_cando = $authdtl_get->cando;
+            }
 
             ///1. update detail
-            DB::table('material.authdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->dtl_idno)
-                ->where('authorid','=',$request->dtl_authorid)
+            $authdtl
                 ->update([
                     'trantype' => $request->dtl_trantype,
                     'deptcode' => $request->dtl_deptcode,
