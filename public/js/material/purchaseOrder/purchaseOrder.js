@@ -28,6 +28,7 @@ $(document).ready(function () {
 	var mycurrency = new currencymode(['#purordhd_amount', '#purordhd_subamount']);
 	var radbuts=new checkradiobutton(['purordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","purordhd_idno","purordhd_recstatus");
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#purdate"]);
@@ -351,6 +352,8 @@ $(document).ready(function () {
 			$('#prdeptdepan').text(selrowData("#jqGrid").purordhd_prdept);
 			
             refreshGrid("#jqGrid3", urlParam2);
+
+            $("#pdfgen1").attr('href','./purchaseOrder/showpdf?recno='+selrowData("#jqGrid").purordhd_recno);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
@@ -366,6 +369,10 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
+
+			cbselect.checkbox_function_on();
+			cbselect.refresh_seltbl();
 		},
 
 
@@ -434,7 +441,7 @@ $(document).ready(function () {
 	}
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
+	/*$("#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
 		
 		saveParam.oper = $(this).data("oper");
 		let obj={recno:selrowData('#jqGrid').purordhd_recno,_token:$('#_token').val()};
@@ -446,7 +453,7 @@ $(document).ready(function () {
 		}).done(function (data) {
 			//2nd successs?
 		});
-	});
+	});*/
 
 	/*$("#but_reopen_jq").click(function(){
 
@@ -466,6 +473,42 @@ $(document).ready(function () {
 		});
 	});*/
 
+	$("#but_reopen_jq").click(function(){
+
+		var idno = selrowData('#jqGrid').purreqhd_idno;
+		console.log(idno);
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = $(this).data('oper');
+
+		$.post( '/purchaseOrder/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+
+		}).success(function(data){
+			
+		});
+	});
+
+
+	$("#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq").click(function(){
+		var idno_array = [];
+	
+		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		var obj={};
+		obj.idno_array = idno_array;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		
+		$.post( '/purchaseOrder/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+
+		}).success(function(data){
+			
+		});
+	});
 
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
@@ -959,10 +1002,20 @@ $(document).ready(function () {
 		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'></i> remark</button>";
 	}
 
-
-
 	function unformatRemarks(cellvalue, options, rowObject){
 		return null;
+	}
+
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		if(options.gid == "jqGrid" && rowObject[recstatus] == "OPEN"){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == "OPEN"){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
 	}
 
 	var butt1_rem = 
@@ -2303,8 +2356,28 @@ $(document).ready(function () {
 		$("#jqGrid2 #"+id+"_pouom_gstpercent").val(data.rate);
 	}
 
-	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
-	genpdf.printEvent();
+	$("#jqGrid_selection").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
+		shrinkToFit: false,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		sortname: 'purreqhd_idno',
+		sortorder: "desc",
+		onSelectRow: function (rowid, selected) {
+			console.log(rowid);
+			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
+		},
+		gridComplete: function(){
+			
+		},
+	})
+	jqgrid_label_align_right("#jqGrid_selection");
+	cbselect.on();
+
+	/*var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
+	genpdf.printEvent();*/
 
 	/*var barcode = new gen_barcode('#_token','#but_print_dtl',);
 	barcode.init();*/
