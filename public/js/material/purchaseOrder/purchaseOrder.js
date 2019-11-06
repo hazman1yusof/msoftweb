@@ -329,7 +329,7 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
-			if(stat=='ISSUED'){
+			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
