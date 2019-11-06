@@ -106,7 +106,7 @@ class PurchaseRequestController extends defaultController
         foreach ($field as $key => $value) {
             $array_insert[$value] = $request[$request->field[$key]];
         }
-
+        
         try {
             $idno = $table->insertGetId($array_insert);
             

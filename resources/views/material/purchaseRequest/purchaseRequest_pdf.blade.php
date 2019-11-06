@@ -7,7 +7,7 @@
 
 	  	<tr>
 	      <td colspan="4">
-	      	<img src="http://laravel.test/img/MSLetterHead.jpg" height="75px">
+	      	<img src="./img/MSLetterHead.jpg" height="75px">
 	      </td>
 	      <td colspan="4" style="text-align: center;">
 	      		<p><h2>Purchase Order</h2></p>

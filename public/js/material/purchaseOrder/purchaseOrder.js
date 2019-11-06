@@ -159,21 +159,42 @@ $(document).ready(function () {
 
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
+
+	var recstatus_filter = [['OPEN','POSTED']];
+	if($("#recstatus_use").val() == 'POSTED'){
+		recstatus_filter = [['OPEN','POSTED']];
+		filterCol_urlParam = ['purordhd.compcode'];
+		filterVal_urlParam = ['session.compcode'];
+	}else if($("#recstatus_use").val() == 'SUPPORT'){
+		recstatus_filter = [['POSTED','SUPPORT']];
+		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'VERIFY'){
+		recstatus_filter = [['SUPPORT','VERIFY']];
+		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'APPROVED'){
+		recstatus_filter = [['VERIFY','APPROVED']];
+		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}
+
 	var urlParam = {
 		action: 'get_table_default',
 		url:'/util/get_table_default',
 		field:'',
 		fixPost: 'true',
-		// field: ['purordhd.recno', 'purordhd.prdept', 'purordhd.purordno'],
-		table_name: ['material.purordhd', 'material.supplier'],
+		table_name: ['material.purordhd', 'material.supplier','material.queuepo'],
 		table_id: 'purordhd_idno',
-		join_type: ['LEFT JOIN'],
-		join_onCol: ['supplier.SuppCode'],
-		join_onVal: ['purordhd.suppcode'],
-		filterCol:['purordhd.prdept'],
-		filterVal:[$('#deptcode').val()],
-	
-		
+		join_type: ['LEFT JOIN','LEFT JOIN'],
+		join_onCol: ['supplier.SuppCode','queuepo.recno'],
+		join_onVal: ['purordhd.suppcode','purordhd.recno'],
+		// filterCol:['purordhd.prdept'],
+		// filterVal:[$('#deptcode').val()],
+		filterCol: filterCol_urlParam,
+		filterVal: filterVal_urlParam,
+		WhereInCol:['purordhd.recstatus'],
+		WhereInVal: recstatus_filter,
 				
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -247,19 +268,20 @@ $(document).ready(function () {
 			{ label: 'authdate', name: 'purordhd_authdate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Remark', name: 'purordhd_remarks', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Status', name: 'purordhd_recstatus', width: 10 },
-			{ label: 'postedby', name: 'purordhd_postedby', width: 40, hidden:'true'},
-			{ label: 'postdate', name: 'purordhd_postdate', width: 40, hidden:'true'},
-			{ label: 'taxclaimable', name: 'purordhd_taxclaimable', width: 40, hidden:'true'},
+			{ label: 'postedby', name: 'purordhd_postedby', width: 40, hidden:true},
+			{ label: 'postdate', name: 'purordhd_postdate', width: 40, hidden:true},
+			{ label: 'taxclaimable', name: 'purordhd_taxclaimable', width: 40, hidden:true},
 			{ label: 'adduser', name: 'purordhd_adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'purordhd_adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'purordhd_upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'purordhd_upddate', width: 90, hidden: true },
-			{ label: 'reopenby', name: 'purordhd_reopenby', width: 40, hidden:'true'},
-			{ label: 'reopendate', name: 'purordhd_reopendate', width: 40, hidden:'true'},
-			{ label: 'cancelby', name: 'purordhd_cancelby', width: 40, hidden:'true'},
-			{ label: 'canceldate', name: 'purordhd_canceldate', width: 40, hidden:'true'},
+			{ label: 'reopenby', name: 'purordhd_reopenby', width: 40, hidden:true},
+			{ label: 'reopendate', name: 'purordhd_reopendate', width: 40, hidden:true},
+			{ label: 'cancelby', name: 'purordhd_cancelby', width: 40, hidden:true},
+			{ label: 'canceldate', name: 'purordhd_canceldate', width: 40, hidden:true},
 			{ label: 'idno', name: 'purordhd_idno', width: 90, hidden: true },
-			{ label: 'unit', name: 'purordhd_unit', width: 40, hidden:'true'},
+			{ label: 'unit', name: 'purordhd_unit', width: 40, hidden:true},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox ,hidden:false},
 
 		],
 		autowidth: true,
@@ -276,75 +298,19 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
-			let delordno = selrowData("#jqGrid").purordhd_delordno;
-			let qtyOutstand = selrowData("#jqGrid2").purorddt_qtyOutstand;
-			let recstatus = selrowData("#jqGrid").purorddt_recstatus;
-			switch($("#scope").val()){
-				case "dataentry":
-					let data = $('#jqGrid').jqGrid ('getRowData', recstatus);
-					break;
+			let scope = $("#recstatus_use").val();
 
-				case "cancel": 
-					if(stat=='ISSUED'){
-						$('#but_cancel_jq,#but_reopen_jq').show();
-						$('#but_post_jq').hide();
-					}else if(stat=="CANCELLED"){
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-					}else{
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-					}
-					break;
-
-				case "all":
-					if(stat=='ISSUED'){
-						if(qtyOutstand != '0'){
-							//alert('Please cancel the DO');
-							$('#but_reopen_jq').show();
-							
-						}else{
-							$('#but_reopen_jq').show();
-						}
-
-						$('#but_post_jq,#but_cancel_jq').hide();
-
-					}else if(stat=="CANCELLED"){
-						$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq').hide();
-					}else if(stat=='OPEN'){
-						$('#but_soft_cancel_jq,#but_post_jq').show();
-						$('#but_reopen_jq,#but_cancel_jq').hide();
-					}
-					break;
-
-				case "ISSUED":
-					if(stat=='ISSUED'){
-						if(qtyOutstand != '0'){
-							//alert('Please cancel the DO');
-							$('#but_reopen_jq').show();
-							
-						}else{
-							$('#but_reopen_jq').show();
-						}
-
-						$('#but_post_jq,#but_cancel_jq').hide();
-					}	
-					break;
-
-				case "reopen":
-					if(stat=='ISSUED'){
-						/*if(purorddt_qtyOutstand == 0 && purorddt_recstatus != 'CANCELLED'){
-							$('#but_reopen_jq').show();
-							alert('Please cancel the DO');
-						}else{
-							$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq').hide();
-						}*/
-						$('#but_cancel_jq,#but_reopen_jq').show();
-						$('#but_post_jq,#but_soft_cancel_jq').hide();
-					}else{
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-					}
-					break;	
+			if (stat == scope) {
+				$('#but_reopen_jq').show();
+				$('#but_post_single_jq,#but_cancel_jq').hide();
+			} else if (stat == "CANCELLED") {
+				$('#but_reopen_jq').show();
+				$('#but_post_single_jq,#but_cancel_jq').hide();
+			} else {
+				if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+					$('#but_cancel_jq,#but_post_single_jq').show();
+				}
+				$('#but_reopen_jq').hide();
 			}
 
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purordhd_recno;
@@ -354,6 +320,12 @@ $(document).ready(function () {
             refreshGrid("#jqGrid3", urlParam2);
 
             $("#pdfgen1").attr('href','./purchaseOrder/showpdf?recno='+selrowData("#jqGrid").purordhd_recno);
+
+            if(stat=='OPEN'){
+				$("#jqGridPager td[title='Edit Selected Row']").show();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").hide();
+			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
@@ -424,7 +396,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['purordhd_recno','purordhd_purordno','purordhd_adduser', 'purordhd_adddate','purordhd_upduser','purordhd_upddate','purordhd_deluser', 'purordhd_idno', 'supplier_name','purordhd_recstatus','purordhd_unit']);
+	addParamField('#jqGrid', false, saveParam, ['purordhd_recno','purordhd_purordno','purordhd_adduser', 'purordhd_adddate','purordhd_upduser','purordhd_upddate','purordhd_deluser', 'purordhd_idno', 'supplier_name','purordhd_recstatus','purordhd_unit','Checkbox']);
 	
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -473,14 +445,13 @@ $(document).ready(function () {
 		});
 	});*/
 
-	$("#but_reopen_jq").click(function(){
+	$("#but_reopen_jq,#but_post_single_jq").click(function(){
 
 		var idno = selrowData('#jqGrid').purreqhd_idno;
-		console.log(idno);
 		var obj={};
 		obj.idno = idno;
 		obj._token = $('#_token').val();
-		obj.oper = $(this).data('oper');
+		obj.oper = $(this).data('oper')+'_single';
 
 		$.post( '/purchaseOrder/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
@@ -1009,9 +980,12 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
-		if(options.gid == "jqGrid" && rowObject[recstatus] == "OPEN"){
+		console.log(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0])
+		console.log(recstatus_filter[0][0])
+		console.log(rowObject[recstatus])
+		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[recstatus] == "OPEN"){
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
 			return ' ';
@@ -2363,10 +2337,9 @@ $(document).ready(function () {
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
-		sortname: 'purreqhd_idno',
+		sortname: 'purordhd_idno',
 		sortorder: "desc",
 		onSelectRow: function (rowid, selected) {
-			console.log(rowid);
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
 		},
 		gridComplete: function(){

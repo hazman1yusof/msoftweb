@@ -225,35 +225,84 @@ class PurchaseOrderController extends defaultController
 
         try{
 
-            DB::table('material.purordhd')
-                ->where('recno','=',$request->recno)
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'postedby' => session('username'),
-                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'ISSUED' 
-                ]);
+            foreach ($request->idno_array as $value){
 
-            $po_dt = DB::table('material.purorddt')
-                ->where('recno', '=', $request->recno)
-                ->where('compcode', '=', session('compcode'))
-                ->where('recstatus', '<>', 'DELETE')
-                ->get();
+                $purordhd = DB::table('material.purordhd')
+                    ->where('idno','=',$value)
+                    ->where('compcode','=',session('compcode'));
 
+                $purordhd_get = $purordhd->first();
 
-            foreach ($po_dt as $key => $value) {
-                DB::table('material.purorddt')
-                    ->where('recno','=',$request->recno)
-                    ->where('lineno_', '=', $value->lineno_)
+                 // 1. check authorization
+                $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recstatus','!=','DELETE')
-                    ->update([
-                        'recstatus' => 'ISSUED' ,
-                        'qtyoutstand' => $value->qtyorder
-                    ]);
-            }
+                    ->where('trantype','=','PR')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','Support')
+                    ->where('deptcode','=',$purordhd_get->prdept)
+                    ->orWhere('deptcode','=','ALL')
+                    ->orWhere('deptcode','=','all');
 
-            
+                if(!$authorise->exists()){
+                    throw new \Exception("Authorization for this purchase request doesnt exists");
+                }
+
+                $authorise = $authorise->get();
+                $totamount = $purordhd_get->totamount;
+                $idno_auth;
+
+                foreach ($authorise as $value) {
+                    $idno_auth = $value->idno;
+                    if($totamount>$value->maxlimit){
+                        continue;
+                    }else{
+                        break;
+                    }
+                }
+
+                $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
+
+                // 2. make queue
+                DB::table("material.queuepo")
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'recno' => $purordhd_get->recno,
+                        'AuthorisedID' => $authorise_use->authorid,
+                        'deptcode' => $purordhd_get->reqdept,
+                        'recstatus' => 'POSTED',
+                        'trantype' => 'SUPPORT',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                // 3. change recstatus to posted
+                $purordhd
+                    ->update([
+                        'postedby' => session('username'),
+                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'POSTED' 
+                    ]);
+
+                $po_dt = DB::table('material.purorddt')
+                    ->where('recno', '=', $purordhd_get->recno)
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('recstatus', '<>', 'DELETE')
+                    ->get();
+
+                foreach ($po_dt as $key => $value) {
+                    DB::table('material.purorddt')
+                        ->where('recno','=',$purordhd_get->recno)
+                        ->where('lineno_', '=', $value->lineno_)
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recstatus','!=','DELETE')
+                        ->update([
+                            'recstatus' => 'POSTED' ,
+                            'qtyoutstand' => $value->qtyorder
+                        ]);
+                }
+
+
+            }
            
             DB::commit();
         
