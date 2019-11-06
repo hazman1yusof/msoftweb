@@ -667,7 +667,7 @@
 					dialog_invcategory.urlParam.filterVal=['session.compcode','A'];
 					
 				}
-			},'urlParam','radio','tab',false
+			},'urlParam','radio','tab', false
 		);
 		dialog_invcategory.makedialog();
 	

@@ -657,12 +657,14 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 		let reccount = $('#jqGrid_selection').jqGrid('getGridParam', 'reccount');
 
 		if($("#show_sel_tbl").is(":hidden") && reccount > 0){
-			$("#show_sel_tbl").show();
+			$("#show_sel_tbl,#but_post_jq").show();
+			$("#but_post_single_jq").hide();
 		}else if(reccount == 0){
 			$('#sel_tbl_panel').hide('fast');
-			$("#show_sel_tbl").hide();
+			$("#but_post_single_jq").show();
+			$("#show_sel_tbl,#but_post_jq").hide();
 			$("#show_sel_tbl").data('hide',true);
-			$("#show_sel_tbl").text('Show Selection Item')
+			$("#show_sel_tbl").text('Show Selection Item');
 		}
 	}
 
