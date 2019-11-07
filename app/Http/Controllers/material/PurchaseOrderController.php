@@ -330,6 +330,82 @@ class PurchaseOrderController extends defaultController
             return response('Error'.$e, 500);
         }
     }       
+
+    public function posted_single(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+
+            $purordhd = DB::table("material.purordhd")
+                ->where('idno','=',$request->idno);
+
+            $purordhd_get = $purordhd->first();
+
+            // 1. check authorization
+            $authorise = DB::table('material.authdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('trantype','=','PR')
+                ->where('cando','=', 'A')
+                ->where('recstatus','=','Support')
+                ->where('deptcode','=',$purordhd_get->prdept)
+                ->orWhere('deptcode','=','ALL')
+                ->orWhere('deptcode','=','all');
+
+            if(!$authorise->exists()){
+                throw new \Exception("Authorization for this purchase request doesnt exists");
+            }
+
+            $authorise = $authorise->get();
+            $totamount = $purordhd_get->totamount;
+            $idno_auth;
+
+            foreach ($authorise as $value) {
+                $idno_auth = $value->idno;
+                if($totamount>$value->maxlimit){
+                    continue;
+                }else{
+                    break;
+                }
+            }
+
+            $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
+
+            // 2. make queue
+            DB::table("material.queuepo")
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'recno' => $purordhd_get->recno,
+                    'AuthorisedID' => $authorise_use->authorid,
+                    'deptcode' => $purordhd_get->reqdept,
+                    'recstatus' => 'POSTED',
+                    'trantype' => 'SUPPORT',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            // 3. update status to posted
+            $purreqhd->update([
+                    'recstatus' => 'POSTED'
+                ]);
+
+            DB::table("material.purorddt")
+                ->where('recno','=',$purordhd_get->recno)
+                ->update([
+                    'recstatus' => 'POSTED',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
     
      public function reopen(Request $request){
         DB::beginTransaction();
@@ -377,6 +453,44 @@ class PurchaseOrderController extends defaultController
             return response('Error'.$e, 500);
         }
     }
+
+     public function soft_cancel(Request $request){
+
+         DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $value){
+
+                $purordhd = DB::table("material.purordhd")
+                    ->where('idno','=',$value);
+
+                $purordhd_get = $purordhd->first();
+
+                $purordhd->update([
+                        'recstatus' => 'CANCELLED'
+                    ]);
+
+                DB::table("material.purorddt")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'recstatus' => 'CANCELLED',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+            }
+
+
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
     public function cancel(Request $request){
         DB::beginTransaction();
 
@@ -425,6 +539,214 @@ class PurchaseOrderController extends defaultController
             return response('Error'.$e, 500);
         }
     }                      
+
+    public function support(Request $request){
+         DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $value){
+
+                $purordhd = DB::table("material.purordhd")
+                    ->where('idno','=',$value);
+
+                $purordhd_get = $purordhd->first();
+
+                $purordhd->update([
+                        'recstatus' => 'SUPPORT'
+                    ]);
+
+                DB::table("material.purorddt")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'recstatus' => 'SUPPORT',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+            }
+
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function support_single(Request $request){
+         DB::beginTransaction();
+
+        try{
+
+
+            $purordhd = DB::table("material.purordhd")
+                ->where('idno','=',$request->idno);
+
+            $purordhd_get = $purordhd->first();
+
+            $purordhd->update([
+                    'recstatus' => 'SUPPORT'
+                ]);
+
+            DB::table("material.purorddt")
+                ->where('recno','=',$purordhd_get->recno)
+                ->update([
+                    'recstatus' => 'SUPPORT',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+public function verify(Request $request){
+         DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $value){
+
+                $purordhd = DB::table("material.purordhd")
+                    ->where('idno','=',$value);
+
+                $purordhd_get = $purordhd->first();
+
+                $purordhd->update([
+                        'recstatus' => 'VERIFY'
+                    ]);
+
+                DB::table("material.purorddt")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'recstatus' => 'VERIFY',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+            }
+
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function verify_single(Request $request){
+         DB::beginTransaction();
+
+        try{
+
+
+            $purordhd = DB::table("material.purordhd")
+                ->where('idno','=',$request->idno);
+
+            $purordhd_get = $purordhd->first();
+
+            $purordhd->update([
+                    'recstatus' => 'VERIFY'
+                ]);
+
+            DB::table("material.purorddt")
+                ->where('recno','=',$purordhd_get->recno)
+                ->update([
+                    'recstatus' => 'VERIFY',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function approved(Request $request){
+         DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $value){
+
+                $purordhdpurordhd = DB::table("material.purordhdpurordhd")
+                    ->where('idno','=',$value);
+
+                $purordhdpurordhd_get = $purordhdpurordhd->first();
+
+                $purordhdpurordhd->update([
+                        'recstatus' => 'APPROVED'
+                    ]);
+
+                DB::table("material.purorddt")
+                    ->where('recno','=',$purordhdpurordhd_get->recno)
+                    ->update([
+                        'recstatus' => 'APPROVED',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+            }
+
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function approved_single(Request $request){
+         DB::beginTransaction();
+
+        try{
+
+            $purordhd = DB::table("material.purordhd")
+                ->where('idno','=',$request->idno);
+
+            $purordhd_get = $purordhd->first();
+
+            $purordhd->update([
+                    'recstatus' => 'APPROVED'
+                ]);
+
+            DB::table("material.purorddt")
+                ->where('recno','=',$purordhd_get->recno)
+                ->update([
+                    'recstatus' => 'APPROVED',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
     public function recno($source,$trantype){
         $pvalue1 = DB::table('sysdb.sysparam')
                 ->select('pvalue1')
@@ -448,6 +770,40 @@ class PurchaseOrderController extends defaultController
         
         return $seqno->seqno;
 
+    }
+
+     public function showpdf(Request $request){
+        $recno = $request->recno;
+        if(!$recno){
+            abort(404);
+        }
+
+        $purordhd = DB::table('material.purordhd')
+            ->where('recno','=',$recno)
+            ->first();
+
+        $purorddt = DB::table('material.purorddt AS podt', 'material.productmaster AS p', 'material.uom as u')
+            ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 'u.description as uom_desc')
+            ->leftJoin('material.productmaster as p', 'prdt.itemcode', '=', 'p.itemcode')
+            ->leftJoin('material.uom as u', 'prdt.uomcode', '=', 'u.uomcode')
+            ->where('recno','=',$recno)
+            ->get();
+
+        $totamount_expld = explode(".", (float)$purordhd->totamount);
+
+        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
+        $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        if(count($totamount_expld) > 1){
+            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
+            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        }
+
+        $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm'));
+        return $pdf->stream();      
+
+        
+        return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm'));
     }
 
      // public function toGetAllpurreqhd($recno){
