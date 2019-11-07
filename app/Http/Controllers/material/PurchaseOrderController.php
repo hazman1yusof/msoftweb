@@ -783,9 +783,9 @@ public function verify(Request $request){
             ->first();
 
         $purorddt = DB::table('material.purorddt AS podt', 'material.productmaster AS p', 'material.uom as u')
-            ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 'u.description as uom_desc')
-            ->leftJoin('material.productmaster as p', 'prdt.itemcode', '=', 'p.itemcode')
-            ->leftJoin('material.uom as u', 'prdt.uomcode', '=', 'u.uomcode')
+            ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.pricecode', 'podt.itemcode', 'p.description', 'podt.uomcode', 'podt.pouom', 'podt.qtyrequest', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc', 'podt.amtslstax as tot_gst','podt.netunitprice', 'podt.totamount','podt.amount', 'podt.rem_but AS remarks_button', 'podt.remarks', 'podt.recstatus', 'podt.unit', 'u.description as uom_desc')
+            ->leftJoin('material.productmaster as p', 'podt.itemcode', '=', 'p.itemcode')
+            ->leftJoin('material.uom as u', 'podt.uomcode', '=', 'u.uomcode')
             ->where('recno','=',$recno)
             ->get();
 
