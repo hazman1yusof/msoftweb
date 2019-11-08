@@ -29,6 +29,7 @@
 			var mycurrency =new currencymode(['#minlimit','#maxlimit', '#d_minlimit', '#d_maxlimit', '#dtl_minlimit', '#dtl_maxlimit']);
 			var mycurrency2 =new currencymode([]);
 			var fdl = new faster_detail_load();
+			var cbselect = new checkbox_selection("#jqGrid","Checkbox","dtl_idno","dtl_cando");
 
 			var oper;
 			$("#dialogForm")
@@ -297,6 +298,14 @@
 			}
 
 		/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
+		var cando_filter = [['A','D']];
+			if($("#dtl_cando").val() == 'D'){
+				cando_filter = [['ACTIVE','DEACTIVE']];
+				filterCol_urlParam = ['authdtl.compcode'];
+				filterVal_urlParam = ['session.compcode'];
+			
+		}
+
 		var urlParam2={
 			action:'get_table_default',
 			url:'/util/get_table_default',
@@ -348,6 +357,8 @@
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true},edittype:"text",
 						editoptions:{
+						readonly: "readonly",
+						value: "1.00",
 						maxlength: 100,
 						dataInit: function(element) {
 							element.style.textAlign = 'right';
@@ -374,6 +385,7 @@
 						}
 					},
 				},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },	
 			
 			],
 			autowidth: true,
@@ -627,6 +639,18 @@
 				$('input',elem).val(value);
 			}
 		}
+
+		function formatterCheckbox(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let cando = cbselect.cando;
+		if(options.gid == "jqGrid" && rowObject[cando] == cando_filter[0][0]){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[cando] == cando_filter[0][0]){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
+	}
 
 		//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function () {

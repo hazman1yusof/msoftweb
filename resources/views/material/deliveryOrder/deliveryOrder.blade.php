@@ -37,6 +37,13 @@ i.fa {
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
+	@if (Request::get('scope') == 'ALL')
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="POSTED">
+	@else
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
+	@endif
+
+
 	 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
@@ -87,15 +94,40 @@ i.fa {
 				</div>
 
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
+					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">
+						@if (Request::get('scope') == 'ALL')
+							{{'POST ALL'}}
+						@else
+							{{Request::get('scope').' ALL'}}
+						@endif
+					</button>
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
+						@if (Request::get('scope') == 'ALL')
+							{{'POST'}}
+						@else
+							{{Request::get('scope')}}
+						@endif
+					</button>
+
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 
 		</form>
+
+		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
+    		<div class="panel-heading heading_panel_">List Of Selected Item</div>
+    		<div class="panel-body">
+    			<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
+    				<table id="jqGrid_selection" class="table table-striped"></table>
+    				<div id="jqGrid_selectionPager"></div>
+				</div>
+    		</div>
+		</div>
 
         <div class="panel panel-default">
 		    	<div class="panel-heading">Delivery Order DataEntry Header</div>

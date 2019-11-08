@@ -69,11 +69,16 @@ i.fa {
 		    	</div>
 		</div>
 
+		<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
+				<label class="control-label" style="margin-top: 10px;">Active</label>
+        	</div>
+
 	    <div class="panel panel-default" id="gridAuthdtl_c">
 		<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridAuthdtl_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>Authorization Detail</div>
-				<div id="gridAuthdtl_panel" class="panel-collapse collapse">
+		
+		<div id="gridAuthdtl_panel" class="panel-collapse collapse">
 					<div class="panel-body">
 						<div class='col-md-12' style="padding:0 0 15px 0">
 							<table id="gridAuthdtl" class="table table-striped"></table>
@@ -244,7 +249,7 @@ i.fa {
                 <div class="form-group">
 				  	<label class="col-md-2 control-label" for="d_minlimit">Min Limit</label>  
 				  		<div class="col-md-2">
-				  			<input id="d_minlimit" name="dtl_minlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+				  			<input id="d_minlimit" name="dtl_minlimit" type="text" class="form-control input-sm" value="1.00" rdonly>
 				  		</div>
 
 				  	<label class="col-md-2 control-label" for="d_maxlimit">Max Limit</label>  

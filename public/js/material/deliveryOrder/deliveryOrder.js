@@ -30,6 +30,7 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#delordhd_subamount','#delordhd_totamount', '#delordhd_TaxAmt', '#delordhd_amtdisc']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","purreqhd_idno","purreqhd_recstatus");
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#trandate"]);
@@ -167,6 +168,25 @@ $(document).ready(function () {
 
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
+	/*var recstatus_filter = [['OPEN','POSTED']];
+		if($("#recstatus_use").val() == 'POSTED'){
+			recstatus_filter = [['OPEN','POSTED']];
+			filterCol_urlParam = ['delordhd.compcode'];
+			filterVal_urlParam = ['session.compcode'];
+		}else if($("#recstatus_use").val() == 'SUPPORT'){
+			recstatus_filter = [['POSTED','SUPPORT']];
+			filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+			filterVal_urlParam = ['session.compcode','session.username'];
+		}else if($("#recstatus_use").val() == 'VERIFY'){
+			recstatus_filter = [['SUPPORT','VERIFY']];
+			filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+			filterVal_urlParam = ['session.compcode','session.username'];
+		}else if($("#recstatus_use").val() == 'APPROVED'){
+			recstatus_filter = [['VERIFY','APPROVED']];
+			filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+			filterVal_urlParam = ['session.compcode','session.username'];
+		}*/
+	
 	var urlParam={
 		action:'get_table_default',
 		url:'/util/get_table_default',
@@ -240,12 +260,13 @@ $(document).ready(function () {
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'delordhd_recstatus', width: 200},
 			{ label: ' ', name: 'Refresh', width: 120,formatter: formatterRefresh,unformat: unformatRemarks},
-			{ label: ' ', name: 'Checkbox', width: 80,align: "center",
+			/*{ label: ' ', name: 'Checkbox', width: 80,align: "center",
 					        editoptions: { value: "True:False" },
 					        editrules: { required: true },
 					        formatter: formatterCheckbox,
 					        formatoptions: { disabled: false },
-					        editable: true  },
+					        editable: true  },*/
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },		        
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 250, classes: 'wrap', hidden:true},
 			{ label: 'perdisc', name: 'delordhd_perdisc', width: 90, hidden:true, classes: 'wrap'},
@@ -275,6 +296,7 @@ $(document).ready(function () {
 			{ label: 'reopenby', name: 'delordhd_reopenby', width: 40, hidden:'true'},
 			{ label: 'reopendate', name: 'delordhd_reopendate', width: 40, hidden:'true'},
 			{ label: 'unit', name: 'delordhd_unit', width: 40, hidden:'true'},
+
 
 		],
 /*		multiselect:true,*/
@@ -928,8 +950,20 @@ $(document).ready(function () {
 		return "<button class='refresh_button btn btn-success btn-xs' type='button' data-idno='"+rowObject.delordhd_idno+"' data-grid='#"+options.gid+"' ><i class='fa fa-refresh'></i></button>";
 	}
 
-	function formatterCheckbox(cellvalue, options, rowObject){
+	/*function formatterCheckbox(cellvalue, options, rowObject){
 		return "<input type='checkbox' name='Checkbox' >";
+	}
+*/
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
 	}
 
 	function unformatRemarks(cellvalue, options, rowObject){
