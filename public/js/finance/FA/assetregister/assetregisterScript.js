@@ -547,7 +547,10 @@
 				//nbv
 				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:true,
 				formatter: formatterstatus, unformat: unformatstatus, cellattr: function (rowid, cellvalue)
-				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+					{ 
+						return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' 
+					},
+				},
 				{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
 				{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 

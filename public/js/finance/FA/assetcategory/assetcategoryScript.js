@@ -207,9 +207,10 @@ $.jgrid.defaults.responsive = true;
 					{ label: 'Loss', name: 'glrevaluation', width: 50, hidden:true },
 					{
 						label: 'Record Status', name: 'recstatus', width: 10, formatter: formatterstatus,
-						unformat: unformatstatus, cellattr: function (rowid, cellvalue) {
+						unformat: unformatstatus, cellattr: function (rowid, cellvalue) 
+						{
 							return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : ''
-						}
+						},
 					},
 
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
