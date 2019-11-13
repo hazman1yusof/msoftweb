@@ -29,7 +29,7 @@
 			var mycurrency =new currencymode(['#minlimit','#maxlimit', '#d_minlimit', '#d_maxlimit', '#dtl_minlimit', '#dtl_maxlimit']);
 			var mycurrency2 =new currencymode([]);
 			var fdl = new faster_detail_load();
-			var cbselect = new checkbox_selection("#jqGrid","Checkbox","dtl_idno","dtl_cando");
+			var cbselect = new checkbox_selection("#gridAuthdtl","Checkbox","dtl_idno","dtl_cando");
 
 			var oper;
 			$("#dialogForm")
@@ -358,7 +358,7 @@
 				editrules:{required: true},edittype:"text",
 						editoptions:{
 						readonly: "readonly",
-						value: "1.00",
+						defaultValue: '1.00',
 						maxlength: 100,
 						dataInit: function(element) {
 							element.style.textAlign = 'right';
@@ -385,7 +385,7 @@
 						}
 					},
 				},
-			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },	
+				
 			
 			],
 			autowidth: true,
@@ -640,17 +640,7 @@
 			}
 		}
 
-		function formatterCheckbox(cellvalue, options, rowObject){
-		let idno = cbselect.idno;
-		let cando = cbselect.cando;
-		if(options.gid == "jqGrid" && rowObject[cando] == cando_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[cando] == cando_filter[0][0]){
-			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}else{
-			return ' ';
-		}
-	}
+		
 
 		//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function () {
@@ -988,6 +978,7 @@
 				{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap', editable: true,
 					edittype:"text",
 				},
+				{ label: ' ', name: 'Checkbox',sortable:false, width: 80,align: "center", formatter: formatterCheckbox },
 		],
 		viewrecords: true,
 		//shrinkToFit: true,
@@ -1022,6 +1013,9 @@
 			if($("#gridAuthdtl").getGridParam("reccount") < 1){
 				$("#jqGridPagerglyphicon-trash").show()
 			}
+
+			cbselect.checkbox_function_on();
+			cbselect.refresh_seltbl();
 		},
 		onSelectRow:function(rowid, selected){
 			/*if(rowid != null) {
@@ -1040,6 +1034,18 @@
 		},
 		
 	});
+
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let dtl_idno = cbselect.idno;
+		let dtl_cando = cbselect.cando;
+		if(options.gid == "jqGrid" && rowObject[dtl_cando] == cando_filter[0][0]){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[dtl_idno]+"' data-idno='"+rowObject[dtl_idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[dtl_cando] == cando_filter[0][0]){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[dtl_idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
+	}
 	
 	$("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{	
 		view:false,edit:false,add:false,del:false,search:false,

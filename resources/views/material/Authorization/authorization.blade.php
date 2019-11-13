@@ -71,7 +71,7 @@ i.fa {
 
 		<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
 				<label class="control-label" style="margin-top: 10px;">Active</label>
-        	</div>
+        </div>
 
 	    <div class="panel panel-default" id="gridAuthdtl_c">
 		<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridAuthdtl_panel">

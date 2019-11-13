@@ -266,7 +266,7 @@ $(document).ready(function () {
 					        formatter: formatterCheckbox,
 					        formatoptions: { disabled: false },
 					        editable: true  },*/
-			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },		        
+			/*{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },	*/	        
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 250, classes: 'wrap', hidden:true},
 			{ label: 'perdisc', name: 'delordhd_perdisc', width: 90, hidden:true, classes: 'wrap'},
@@ -954,7 +954,7 @@ $(document).ready(function () {
 		return "<input type='checkbox' name='Checkbox' >";
 	}
 */
-	function formatterCheckbox(cellvalue, options, rowObject){
+	/*function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
 		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
@@ -964,7 +964,7 @@ $(document).ready(function () {
 		}else{
 			return ' ';
 		}
-	}
+	}*/
 
 	function unformatRemarks(cellvalue, options, rowObject){
 		return null;
