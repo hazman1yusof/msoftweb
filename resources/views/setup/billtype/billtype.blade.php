@@ -94,21 +94,19 @@ i.fa {
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="billtype">Bill Type</label>  
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<input id="billtype" name="billtype" type="text" maxlength="5" class="form-control input-sm" data-validation="required" frozeOnEdit>
 				</div>
-			</div>
 
-			<div class="form-group">
 				<label class="col-md-2 control-label" for="a.description">Description</label>  
-				<div class="col-md-8">
+				<div class="col-md-3">
 					<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="price">Price</label>  
-				<div class="col-md-7">
+				<div class="col-md-3">
 					<table>
 						<tr>
 							<td><label class="radio-inline"><input type="radio" name="price" value='PRICE1' data-validation="required">Price 1</label></td>
@@ -118,40 +116,38 @@ i.fa {
 						</tr>
 					</table> 
 				</div>
-			</div> 
 
-			<div class="form-group">
 				<label class="col-md-2 control-label" for="service">All Service</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="service" value='1' data-validation="required">Yes</label>
 					<label class="radio-inline"><input type="radio" name="service" value='0' data-validation="">No</label>
 				</div>
-
-				<label class="col-md-1 control-label" for="opprice">OP Price</label>  
-				<div class="col-md-2">
-					<label class="radio-inline"><input type="radio" name="opprice" value='1' data-validation="required">Yes</label>
-					<label class="radio-inline"><input type="radio" name="opprice" value='0' data-validation="">No</label>
-				</div>
 			</div> 
 
 			<div class="form-group">
+				<label class="col-md-2 control-label" for="opprice">OP Price</label>  
+				<div class="col-md-3">
+					<label class="radio-inline"><input type="radio" name="opprice" value='1' data-validation="required">Yes</label>
+					<label class="radio-inline"><input type="radio" name="opprice" value='0' data-validation="">No</label>
+				</div>
+
 				<label class="col-md-2 control-label" for="percent_">Percentage</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<div class='input-group'>
 						<input id="percent_" name="percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
 						<span class="input-group-addon">%</span>
 					</div>
 				</div>
-				
+			</div> 
+
+			<div class="form-group">
 				<label class="col-md-2 control-label" for="amount">Amount</label>  
 				<div class="col-md-3">
 					<input id="amount" name="amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
 				</div>
-			</div>
 
-			<div class="form-group">
 				<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
 					<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
 				</div>
@@ -159,12 +155,12 @@ i.fa {
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="adduser">Created By</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="adduser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 
-				<label class="col-md-3 control-label" for="upduser">Last Entered</label>  
-				<div class="col-md-2">
+				<label class="col-md-2 control-label" for="upduser">Last Entered</label>  
+				<div class="col-md-3">
 					<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 			</div>  
@@ -183,12 +179,12 @@ i.fa {
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 				</div>
 
-				<label class="col-md-3 control-label" for="lastcomputerid">Last Computer Id</label>  
-				<div class="col-md-2">
+				<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
+				<div class="col-md-3">
 					<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 				</div>
 			</div>    
@@ -219,30 +215,28 @@ i.fa {
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_billtype">Bill Type</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="svc_billtype" name="svc_billtype" type="text" class="form-control input-sm" rdonly>
 				</div>
 				
 				<label class="col-md-2 control-label" for="m_description">Description</label>  
-				<div class="col-md-6">
+				<div class="col-md-3">
 					<input id="m_description" name="m_description" type="text" class="form-control input-sm" rdonly>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_chggroup">Chg. Group</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<div class='input-group'>
 						<input id="svc_chggroup" name="svc_chggroup" type="text" class="form-control input-sm" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
 				</div>
-			</div>
 
-            <div class="form-group">
-                <label class="col-md-2 control-label" for="svc_price">Price</label>  
-				<div class="col-md-4">
+				<label class="col-md-2 control-label" for="svc_price">Price</label>  
+				<div class="col-md-3">
 					<table>
 						<tr>
 							<td><label class="radio-inline"><input type="radio" name="svc_price" value='PRICE1' data-validation="required">Price 1</label></td>
@@ -252,29 +246,37 @@ i.fa {
 						</tr>
 					</table> 
 				</div>
+			</div>
 
-				<label class="col-md-1 control-label" for="svc_allitem'">All Item</label>  
-				<div class="col-md-2">
+            <div class="form-group">
+    			<label class="col-md-2 control-label" for="svc_allitem'">All Item</label>  
+				<div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="svc_allitem" value='1' data-validation="required">Yes</label>
 					<label class="radio-inline"><input type="radio" name="svc_allitem" value='0' data-validation="">No</label>
 				</div>
+
+				<!-- <label class="col-md-2 control-label" for="svc_alltype'">All Type</label>  
+				<div class="col-md-3">
+					<label class="radio-inline"><input type="radio" name="svc_alltype" value='1' data-validation="required">Yes</label>
+					<label class="radio-inline"><input type="radio" name="svc_alltype" value='0' data-validation="">No</label>
+				</div> -->
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_amount">Amount</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="svc_amount" name="svc_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
 				</div>
 				  
-				<label class="col-md-3 control-label" for="svc_discchgcode">Disc Chg Code</label>  
-				<div class="col-md-2">
+				<label class="col-md-2 control-label" for="svc_discchgcode">Disc Chg Code</label>  
+				<div class="col-md-3">
 					<input id="svc_discchgcode" name="svc_discchgcode" type="text" class="form-control input-sm" data-validation="number" data-validation-allowing="float">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_percent_">Percentage</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<div class='input-group'>
 						<input id="svc_percent_" name="svc_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
 						<!--data-validation="number" data-validation-allowing="float"-->
@@ -282,20 +284,20 @@ i.fa {
 					</div>
 				</div>
 
-				<label class="col-md-3 control-label" for="svc_recstatus">Record Status</label>  
-				<div class="col-md-2">
+				<label class="col-md-2 control-label" for="svc_recstatus">Record Status</label>  
+				<div class="col-md-3">
 					<input id="svc_recstatus" name="svc_recstatus" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>		
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_adduser">Created By</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="svc_adduser" name="svc_adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 
-				<label class="col-md-3 control-label" for="svc_upduser">Last Entered</label>  
-				<div class="col-md-2">
+				<label class="col-md-2 control-label" for="svc_upduser">Last Entered</label>  
+				<div class="col-md-3">
 					<input id="svc_upduser" name="svc_upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 			</div> 
@@ -314,24 +316,24 @@ i.fa {
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_computerid">Computer Id</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="svc_computerid" name="svc_computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 				</div>
 
-				<label class="col-md-3 control-label" for="svc_lastcomputerid">Last Computer Id</label>  
-				<div class="col-md-2">
+				<label class="col-md-2 control-label" for="svc_lastcomputerid">Last Computer Id</label>  
+				<div class="col-md-3">
 					<input id="svc_lastcomputerid" name="svc_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 				</div>
 			</div>    
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_ipaddress">IP Address</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="svc_ipaddress" name="svc_ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 				</div>
 
-				<label class="col-md-3 control-label" for="svc_lastipaddress">Last IP Address</label>  
-				<div class="col-md-2">
+				<label class="col-md-2 control-label" for="svc_lastipaddress">Last IP Address</label>  
+				<div class="col-md-3">
 					<input id="svc_lastipaddress" name="svc_lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 				</div>
 			</div>
@@ -350,19 +352,19 @@ i.fa {
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_chggroup">Chg Group</label>   
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="i_chggroup" name="i_chggroup" type="text" class="form-control input-sm" rdonly>
 				</div>
 				
 				<label class="col-md-2 control-label" for="c_description">Description</label>  
-				<div class="col-md-6">
+				<div class="col-md-3">
 					<input id="c_description" name="c_description" type="text" class="form-control input-sm" rdonly>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_chgcode">Chg. Code</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<div class='input-group'>
 						<input id="i_chgcode" name="i_chgcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -371,7 +373,7 @@ i.fa {
 				</div>
 
 				<label class="col-md-2 control-label" for="i_price">Price</label>  
-				<div class="col-md-6">
+				<div class="col-md-3">
 					<table>
 						<tr>
 							<td><label class="radio-inline"><input type="radio" name="i_price" value='PRICE1' data-validation="required">Price 1</label></td>
@@ -385,12 +387,12 @@ i.fa {
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_amount">Amount</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="i_amount" name="i_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
 				</div>
 					
 				<label class="col-md-2 control-label" for="i_percent_">Percentage</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<div class='input-group'>
 						<input id="i_percent_" name="i_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
 						<span class="input-group-addon">%</span>
@@ -400,19 +402,19 @@ i.fa {
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_recstatus">Record Status</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="i_recstatus" name="i_recstatus" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 			</div> 
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_adduser">Created By</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="i_adduser" name="i_adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 
-				<label class="col-md-3 control-label" for="i_upduser">Last Entered</label>  
-				<div class="col-md-2">
+				<label class="col-md-2 control-label" for="i_upduser">Last Entered</label>  
+				<div class="col-md-3">
 					<input id="i_upduser" name="i_upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 			</div> 
@@ -431,24 +433,24 @@ i.fa {
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_computerid">Computer Id</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="i_computerid" name="i_computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 				</div>
 
-				<label class="col-md-3 control-label" for="i_lastcomputerid">Last Computer Id</label>  
-				<div class="col-md-2">
+				<label class="col-md-2 control-label" for="i_lastcomputerid">Last Computer Id</label>  
+				<div class="col-md-3">
 					<input id="i_lastcomputerid" name="i_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 				</div>
 			</div>    
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_ipaddress">IP Address</label>  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<input id="i_ipaddress" name="i_ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 				</div>
 
-				<label class="col-md-3 control-label" for="i_lastipaddress">Last IP Address</label>  
-				<div class="col-md-2">
+				<label class="col-md-2 control-label" for="i_lastipaddress">Last IP Address</label>  
+				<div class="col-md-3">
 					<input id="i_lastipaddress" name="i_lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
 				</div>
 			</div> 

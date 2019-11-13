@@ -341,7 +341,8 @@ $(document).ready(function () {
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			if ($('#Fsvc').isValid({ requiredFields: '' }, {}, true)) {
-				saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", oper_svc, saveParam_svc, urlParam_svc, '#searchForm2');
+				// saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", oper_svc, saveParam_svc, urlParam_svc, '#searchForm2');
+				saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", oper_svc, saveParam_svc, urlParam_svc);
 			} else {
 				mycurrency.formatOn();
 			}
