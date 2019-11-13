@@ -148,8 +148,7 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
-			},
+			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -310,23 +309,23 @@ $(document).ready(function () {
 				{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 			],
-				urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
-				},
-					ondblClickRow: function () {
-							$('#svc_price').focus();
-					},
-					gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#svc_price').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}		
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']
+			},
+			ondblClickRow: function () {
+				$('#svc_price').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#svc_price').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}		
 		},{
 			title:"Select Charge Group",
 			open: function(){
@@ -427,10 +426,10 @@ $(document).ready(function () {
 		table_name: ['hisdb.billtysvc AS svc', 'hisdb.billtymst AS m', 'hisdb.chggroup AS cc'],
 		table_id: 'svc_chggroup',
 		join_type: ['JOIN', 'JOIN'],
-		join_onCol: ['svc.billtype', 'cc.grpcode'],
-		join_onVal: ['m.billtype', 'svc.chggroup'],
+		join_onCol: ['svc.billtype', 'svc.chggroup'],
+		join_onVal: ['m.billtype', 'cc.grpcode'],
 		filterCol: ['svc.billtype', 'svc.compcode', 'm.compcode', 'm.service'],
-		filterVal: ['', 'session.company', 'session.company', '0'],
+		filterVal: ['', 'session.compcode', 'session.compcode', '0'],
 		sort_idno: true,
 	}
 
@@ -462,6 +461,7 @@ $(document).ready(function () {
 			{ label: 'Amount', name: 'svc_amount', width: 90, classes: 'wrap', },
 			{ label: 'Percentage', name: 'svc_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
 			{ label: 'All Item', name: 'svc_allitem', width: 50, classes: 'wrap', formatter: formatter, unformat: unformat },
+			// { label: 'All Type', name: 'svc_alltype', width: 50, classes: 'wrap', formatter: formatter, unformat: unformat },
 			{ label: 'Discount Charge Code', name: 'svc_discchgcode', width: 50, classes: 'wrap', },
 			{ label: 'discrate', name: 'svc_discrate', width: 60, hidden: true },
 			{ label: 'adduser', name: 'svc_adduser', width: 90, hidden: true, classes: 'wrap' },
@@ -469,8 +469,7 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'svc_upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'svc_upddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Record Status', name: 'svc_recstatus', width: 30, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
-			},
+			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'No', name: 'svc_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'svc_computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'svc_ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -627,22 +626,22 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus','chggroup'],
-						filterVal:['session.compcode','A',$("#Fitem :input[name*='i_chggroup']").val()]
-					},
-					ondblClickRow: function () {
-						$('#i_price').focus();
-					},
-					gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#i_price').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				filterCol:['compcode','recstatus','chggroup'],
+				filterVal:['session.compcode','A',$("#Fitem :input[name*='i_chggroup']").val()]
+			},
+			ondblClickRow: function () {
+				$('#i_price').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#i_price').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Charge Code",
 			open: function(){
@@ -739,7 +738,7 @@ $(document).ready(function () {
 		join_onCol: ['i.chggroup', 'c.grpcode'],
 		join_onVal: ['svc.chggroup', 'i.chggroup'],
 		filterCol: ['i.billtype', 'i.compcode', 'i.chggroup', 'svc.allitem', 'svc.compcode'],
-		filterVal: ['', 'session.company', '', '0', 'session.company'],
+		filterVal: ['', 'session.compcode', '', '0', 'session.compcode'],
 		sort_idno: true,
 	}
 
@@ -776,8 +775,7 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'i_upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'i_upddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Record Status', name: 'i_recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
-			},
+			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'No', name: 'i_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'i_computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'i_ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -812,8 +810,7 @@ $(document).ready(function () {
 			if ($("#jqGriditem").getGridParam("reccount") < 1) {
 				$("#jqGridPager2glyphicon-trash").show()
 			}
-
-
+			
 		},
 		onSelectRow: function (rowid, selected) {
 			if (rowid != null) {
