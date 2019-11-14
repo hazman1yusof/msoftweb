@@ -230,9 +230,9 @@ $.jgrid.defaults.responsive = true;
 					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
 				gridComplete: function(){
-					/*if(editedRow!=0){
+					if(editedRow!=0){
 						$("#jqGrid").jqGrid('setSelection',editedRow,false);
-					}*/
+					}
 				},
 				
 			});
@@ -272,12 +272,12 @@ $.jgrid.defaults.responsive = true;
 				title:"Delete Selected Row",
 				onClickButton: function(){
 					oper='del';
-					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					if(!selRowId){
+					let idno = selrowData('#jqGrid').idno;
+					if(!idno){
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, {'assetcode':selRowId});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':idno});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -297,6 +297,7 @@ $.jgrid.defaults.responsive = true;
 					oper='edit';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+					recstatusDisable();
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  

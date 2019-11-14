@@ -28,11 +28,12 @@
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1 = [{
 		    	text: "Save", click: function () {
-					if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
+					if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) 
+					{
 						saveFormdata("#jqGrid", "#dialogForm", "#formdata", oper, saveParam, urlParam);
 					}
 				}
-			}, {
+			},{
 				text: "Cancel", click: function () {
 					$(this).dialog('close');
 				}
@@ -120,7 +121,9 @@
 					{ label: 'Asset Type', name: 'assettype', width: 10, classes: 'wrap', canSearch: true},   ////////
 					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true,checked:true,},
 					{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-						{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+						{
+							return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''
+						}, 
 					},
 					
 					{ label: 'idno', name:'idno', width: 10, hidden:true},
