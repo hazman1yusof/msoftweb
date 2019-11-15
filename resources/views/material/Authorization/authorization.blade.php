@@ -69,11 +69,13 @@ i.fa {
 		    	</div>
 		</div>
 
-		<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
-				<label class="control-label" style="margin-top: 10px;">Active</label>
-        </div>
+
+		
 
 	    <div class="panel panel-default" id="gridAuthdtl_c">
+	    	<div type="button" class="click_row pull-right" id="but_cando" style="display: none;background: #337ab7;color: white;min-height: 39px">
+				<label class="control-label" style="margin-top: 10px;">Active</label>
+        </div>
 		<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridAuthdtl_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>Authorization Detail</div>

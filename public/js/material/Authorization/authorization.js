@@ -298,13 +298,6 @@
 			}
 
 		/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
-		var cando_filter = [['A','D']];
-			if($("#dtl_cando").val() == 'D'){
-				cando_filter = [['ACTIVE','DEACTIVE']];
-				filterCol_urlParam = ['authdtl.compcode'];
-				filterVal_urlParam = ['session.compcode'];
-			
-		}
 
 		var urlParam2={
 			action:'get_table_default',
@@ -315,6 +308,8 @@
 			table_id:'lineno_',
 			filterCol:['compcode','authorid'],
 			filterVal:['session.compcode','']
+			/*WhereInCol:['authdtl.cando'],
+			WhereInVal: cando_filter,*/
 		};
 
 		var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -915,6 +910,15 @@
 	  });
 	
 	/////////////////////parameter for jqgrid url SVC/////////////////////////////////////////////////
+
+	var cando_filter = [['A','D']];
+			if($("#dtl_cando").val() == 'D'){
+				cando_filter = [['ACTIVE','DEACTIVE']];
+				filterCol_urlParam = ['authdtl.compcode'];
+				filterVal_urlParam = ['session.compcode'];
+			
+	}
+
 	var urlParam_authdtl={
 		action:'get_table_default',
 			url:'/util/get_table_default',
@@ -1003,6 +1007,8 @@
 			}
 
 			$('#gridAuthdtl #'+$("#gridAuthdtl").jqGrid ('getGridParam', 'selrow')).focus();
+			cbselect.checkbox_function_on();
+			cbselect.refresh_seltbl();
 
 			/////////////////////////////// reccount ////////////////////////////
 			
@@ -1014,10 +1020,16 @@
 				$("#jqGridPagerglyphicon-trash").show()
 			}
 
-			cbselect.checkbox_function_on();
-			cbselect.refresh_seltbl();
+			
 		},
 		onSelectRow:function(rowid, selected){
+			let stat = selrowData("#gridAuthdtl").dtl_cando;
+			if(stat=='A'){
+						$('#but_cando').show();
+						//$('#but_post_jq,#but_reopen_jq').hide();
+					}else{
+						$('#but_cando').hide();
+					}
 			/*if(rowid != null) {
 				rowData = $('#gridAuthdtl').jqGrid ('getRowData', rowid);
 				//console.log(rowData.svc_billtype);
@@ -1036,15 +1048,18 @@
 	});
 
 	function formatterCheckbox(cellvalue, options, rowObject){
-		let dtl_idno = cbselect.idno;
+		/*let dtl_idno = cbselect.idno;
 		let dtl_cando = cbselect.cando;
-		if(options.gid == "jqGrid" && rowObject[dtl_cando] == cando_filter[0][0]){
+		if(options.gid == "gridAuthdtl" && rowObject[dtl_cando] == cando_filter[0][0]){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[dtl_idno]+"' data-idno='"+rowObject[dtl_idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[dtl_cando] == cando_filter[0][0]){
+		}else if(options.gid != "gridAuthdtl" && rowObject[dtl_cando] == cando_filter[0][0]){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[dtl_idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
 			return ' ';
-		}
+		}*/
+		let dtl_idno = cbselect.idno;
+		let dtl_cando = cbselect.cando;
+		return "<input type='checkbox' name='Checkbox' id='checkbox_selection_'>";
 	}
 	
 	$("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{	
@@ -1077,6 +1092,12 @@
 			oper_authdtl='view';
 			selRowId = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId,'view');
+
+			var recstatusvalue = selrowData('#gridAuthdtl').dtl_cando;
+
+				if(recstatusvalue == 'D'){
+					
+				}
 		}, 
 		position: "first", 
 		title:"View Selected Row", 
@@ -1125,6 +1146,41 @@
 		title:"Add New Row", 
 		cursor: "pointer"
 	});
+
+	/*$("#jqGrid_selection").jqGrid({
+		datatype: "local",
+		colModel: $("#gridAuthdtl").jqGrid('getGridParam','colModel'),
+		shrinkToFit: false,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		sortname: 'dtl_idno',
+		sortorder: "desc",
+		onSelectRow: function (rowid, selected) {
+			console.log(rowid);
+			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
+		},
+		gridComplete: function(){
+			
+		},
+	})
+	jqgrid_label_align_right("#jqGrid_selection");*/
+	/*$("#but_cando").click(function(){
+		var idno = selrowData('#gridAuthdtl').dtl_idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = $(this).data('oper')+'_single';
+
+		$.post( '/authorization/form', obj , function( data ) {
+			refreshGrid('#gridAuthdtl', urlParam);
+		}).fail(function(data) {
+
+		}).success(function(data){
+			
+		});
+	});*/
+	cbselect.on();
 
 
 	$("#gridAuthdtl_panel").on("show.bs.collapse", function(){
