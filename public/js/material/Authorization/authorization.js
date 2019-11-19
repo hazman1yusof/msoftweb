@@ -1117,7 +1117,7 @@
 				
 				var recstatusvalue = selrowData('#gridAuthdtl').dtl_cando;
 
-				if(recstatusvalue == 'A'){
+				if(recstatusvalue == 'D'){
 					$("#FAuthdtl [name='dtl_cando']").prop('disabled', true);
 				}else{
 					$("#FAuthdtl [name='dtl_cando']").prop('disabled', false);
@@ -1165,6 +1165,7 @@
 		},
 	})
 	jqgrid_label_align_right("#jqGrid_selection");*/
+
 	/*$("#but_cando").click(function(){
 		var idno = selrowData('#gridAuthdtl').dtl_idno;
 		var obj={};
@@ -1180,6 +1181,17 @@
 			
 		});
 	});*/
+
+	$('#but_cando').on('click', function() { 
+
+        var array = []; 
+        $("input:checkbox[name=Checkbox]:checked").each(function() { 
+        	alert($array);
+       		//array.push($(this).val()); 
+     
+        }); 
+   	});    
+
 	cbselect.on();
 
 
