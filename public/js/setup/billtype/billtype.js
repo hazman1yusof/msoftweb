@@ -891,6 +891,39 @@ $(document).ready(function () {
 	////////////// billtytype /////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	var dialog_chgtype = new ordialog(
+		'chgtype','hisdb.chgtype',"#Ftype :input[name*='t_chgtype']",errorField,
+		{	colModel:[
+				{label:'Charge Type',name:'chgtype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus','chggroup'],
+				filterVal:['session.compcode','A',$("#Ftype :input[name*='t_chggroup']").val()]
+			},
+			ondblClickRow: function () {
+				$('#t_price').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#t_price').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Charge Type",
+			open: function(){
+				dialog_chgtype.urlParam.filterCol=['chggroup'],
+				dialog_chgtype.urlParam.filterVal=[$("#Ftype :input[name*='t_chggroup']").val()]
+			}
+		},'urlParam', 'radio', 'tab'
+	);
+	dialog_chgtype.makedialog();
+	
 	var butttype1 = [{
 		text: "Save", click: function () {
 			mycurrency.formatOff();
@@ -941,16 +974,16 @@ $(document).ready(function () {
 						break;
 				}
 				if (oper_type == 'add') {
-					// dialog_chgcode.on();
+					dialog_chgtype.on();
 				}
 				if (oper_type != 'add') {
-					// dialog_chgcode.check(errorField);
+					dialog_chgtype.check(errorField);
 				}
 				if(oper_type!='view'){
 					set_compid_from_storage("input[name='t_lastcomputerid']","input[name='t_lastipaddress']","input[name='t_computerid']","input[name='t_ipaddress']");
 				}
 				/*if(oper_item!='add'){
-					dialog_chgcode.check(errorField);
+					dialog_chgtype.check(errorField);
 				}*/
 			},
 			close: function (event, ui) {
@@ -958,7 +991,7 @@ $(document).ready(function () {
 				parent_close_disabled(false);
 				$('#Ftype .alert').detach();
 				//$('.alert').detach();
-				// dialog_chgcode.off();
+				dialog_chgtype.off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", butttype1);
 				}

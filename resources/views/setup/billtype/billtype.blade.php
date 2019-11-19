@@ -494,9 +494,13 @@ i.fa {
 			</div>
 
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="t_chgtype">Chg Type</label>   
+				<label class="col-md-2 control-label" for="t_chgtype">Chg. Type</label>  
 				<div class="col-md-3">
-					<input id="t_chgtype" name="t_chgtype" type="text" class="form-control input-sm" rdonly>
+					<div class='input-group'>
+						<input id="t_chgtype" name="t_chgtype" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					</div>
+					<span class="help-block"></span>
 				</div>
 				
 				<label class="col-md-2 control-label" for="t_price">Price</label>  
