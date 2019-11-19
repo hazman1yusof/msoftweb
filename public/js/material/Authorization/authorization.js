@@ -1186,7 +1186,7 @@
 
         var array = []; 
         $("input:checkbox[name=Checkbox]:checked").each(function() { 
-        	alert($array);
+        	//alert($array);
        		//array.push($(this).val()); 
      
         }); 
