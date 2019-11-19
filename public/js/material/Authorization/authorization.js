@@ -1166,30 +1166,14 @@
 	})
 	jqgrid_label_align_right("#jqGrid_selection");*/
 
-	/*$("#but_cando").click(function(){
-		var idno = selrowData('#gridAuthdtl').dtl_idno;
-		var obj={};
-		obj.idno = idno;
-		obj._token = $('#_token').val();
-		obj.oper = $(this).data('oper')+'_single';
-
-		$.post( '/authorization/form', obj , function( data ) {
-			refreshGrid('#gridAuthdtl', urlParam);
-		}).fail(function(data) {
-
-		}).success(function(data){
-			
-		});
-	});*/
-
 	$('#but_cando').on('click', function() { 
 
         var array = []; 
         $("input:checkbox[name=Checkbox]:checked").each(function() { 
-        	//alert($array);
-       		//array.push($(this).val()); 
+        	array.push($(this).val()); 
      
         }); 
+        alert(array);
    	});    
 
 	cbselect.on();
