@@ -81,6 +81,20 @@ i.fa {
 				</div>
 			</div>	
 		</div>
+
+		<div class="panel panel-default" id="jqGridtype_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel3">
+				<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i> Type 
+			</div>
+			<div id="jqGrid3_panel3" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGridtype" class="table table-striped"></table>
+						<div id="jqGridPager4"></div>
+					</div>
+				</div>
+			</div>	
+		</div>
     </div>
 	<!-------------------------------- End Search + table ------------------>
 		
@@ -255,11 +269,11 @@ i.fa {
 					<label class="radio-inline"><input type="radio" name="svc_allitem" value='0' data-validation="">No</label>
 				</div>
 
-				<!-- <label class="col-md-2 control-label" for="svc_alltype'">All Type</label>  
+				<label class="col-md-2 control-label" for="svc_alltype'">All Type</label>  
 				<div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="svc_alltype" value='1' data-validation="required">Yes</label>
 					<label class="radio-inline"><input type="radio" name="svc_alltype" value='0' data-validation="">No</label>
-				</div> -->
+				</div>
 			</div>
 
 			<div class="form-group">
@@ -458,6 +472,113 @@ i.fa {
 		</form>
 	</div>
 	<!--------------------------------END Bill Type Item Form ------------------>
+
+	<!----------------------------------Bill Charge Type Form -------------------->
+	<div id="Dtype" title="Bill Charge Type" >
+		<form class='form-horizontal' style='width:99%' id='Ftype'>
+			{{ csrf_field() }}
+			<input type="hidden" name="t_idno">
+
+			<input id="billtype" name="t_billtype" type="hidden" class="form-control input-sm">
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="t_chgtype">Chg Type</label>   
+				<div class="col-md-3">
+					<input id="t_chgtype" name="t_chgtype" type="text" class="form-control input-sm" rdonly>
+				</div>
+				
+				<label class="col-md-2 control-label" for="t_price">Price</label>  
+				<div class="col-md-3">
+					<table>
+						<tr>
+							<td><label class="radio-inline"><input type="radio" name="t_price" value='PRICE1' data-validation="required">Price 1</label></td>
+							<td><label class="radio-inline"><input type="radio" name="t_price" value='PRICE2' data-validation="">Price 2</label></td>
+							<td><label class="radio-inline"><input type="radio" name="t_price" value='PRICE3' data-validation="">Price 3</label></td>
+							<td><label class="radio-inline"><input type="radio" name="t_price" value='COST PRICE' data-validation="">Cost Price</label></td>
+						</tr>
+					</table> 
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="t_amount">Amount</label>  
+				<div class="col-md-3">
+					<input id="t_amount" name="t_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+				</div>
+				
+				<label class="col-md-2 control-label" for="t_discchgcode">Disc Chg Code</label>  
+				<div class="col-md-3">
+					<input id="t_discchgcode" name="t_discchgcode" type="text" class="form-control input-sm" data-validation="number" data-validation-allowing="float">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="t_percent_">Percentage</label>  
+				<div class="col-md-3">
+					<div class='input-group'>
+						<input id="t_percent_" name="t_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
+						<span class="input-group-addon">%</span>
+					</div>
+				</div>
+
+				<label class="col-md-2 control-label" for="t_allitem">All Item</label>  
+				<div class="col-md-3">
+					<label class="radio-inline"><input type="radio" name="t_allitem" value='1' data-validation="required">Yes</label>
+					<label class="radio-inline"><input type="radio" name="t_allitem" value='0' data-validation="">No</label>
+				</div>
+			</div> 
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="t_adduser">Created By</label>  
+				<div class="col-md-3">
+					<input id="t_adduser" name="t_adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+				</div>
+
+				<label class="col-md-2 control-label" for="t_upduser">Last Entered</label>  
+				<div class="col-md-3">
+					<input id="t_upduser" name="t_upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+				</div>
+			</div> 
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="t_adddate">Created Date</label>  
+				<div class="col-md-3">
+					<input id="t_adddate" name="t_adddate" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+				</div>
+
+				<label class="col-md-2 control-label" for="t_upddate">Last Entered Date</label>  
+				<div class="col-md-3">
+					<input id="t_upddate" name="t_upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+				</div>
+			</div>  
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="t_computerid">Computer Id</label>  
+				<div class="col-md-3">
+					<input id="t_computerid" name="t_computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+				</div>
+
+				<label class="col-md-2 control-label" for="t_lastcomputerid">Last Computer Id</label>  
+				<div class="col-md-3">
+					<input id="t_lastcomputerid" name="t_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+				</div>
+			</div>    
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="t_ipaddress">IP Address</label>  
+				<div class="col-md-3">
+					<input id="t_ipaddress" name="t_ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+				</div>
+
+				<label class="col-md-2 control-label" for="t_lastipaddress">Last IP Address</label>  
+				<div class="col-md-3">
+					<input id="t_lastipaddress" name="t_lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+				</div>
+			</div> 
+
+		</form>
+	</div>
+	<!--------------------------------END Bill Charge Type Form ------------------>
 
 @endsection
 

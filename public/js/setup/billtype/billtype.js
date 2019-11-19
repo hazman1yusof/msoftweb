@@ -462,7 +462,7 @@ $(document).ready(function () {
 			{ label: 'Amount', name: 'svc_amount', width: 90, classes: 'wrap', },
 			{ label: 'Percentage', name: 'svc_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
 			{ label: 'All Item', name: 'svc_allitem', width: 50, classes: 'wrap', formatter: formatter, unformat: unformat },
-			// { label: 'All Type', name: 'svc_alltype', width: 50, classes: 'wrap', formatter: formatter, unformat: unformat },
+			{ label: 'All Type', name: 'svc_alltype', width: 50, classes: 'wrap', formatter: formatter, unformat: unformat },
 			{ label: 'Discount Charge Code', name: 'svc_discchgcode', width: 50, classes: 'wrap', },
 			{ label: 'discrate', name: 'svc_discrate', width: 60, hidden: true },
 			{ label: 'adduser', name: 'svc_adduser', width: 90, hidden: true, classes: 'wrap' },
@@ -533,6 +533,10 @@ $(document).ready(function () {
 					$("#pg_jqGridPager3 table").hide();
 				}
 
+				if (rowData['svc_alltype'] == '1') {
+					refreshGrid('#jqGridtype', urlParam_type);
+					$("#pg_jqGridPager4 table").hide();
+				}
 
 			}
 		},
@@ -892,12 +896,250 @@ $(document).ready(function () {
 	//searchClick('#gridSuppBonus','#searchForm3',urlParam_item);
 	//toogleSearch('#sbut3','#searchForm3','off');
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////// billtytype /////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	var butttype1 = [{
+		text: "Save", click: function () {
+			mycurrency.formatOff();
+			mycurrency.check0value(errorField);
+			if ($('#Ftype').isValid({ requiredFields: '' }, {}, true)) {
+				saveFormdata("#jqGridtype", "#Dtype", "#Ftype", oper_type, saveParam_type, urlParam_type);
+			} else {
+				mycurrency.formatOn();
+			}
+		}
+	}, {
+		text: "Cancel", click: function () {
+			$(this).dialog('close');
+		}
+	}];
+
+	var oper_type;
+	$("#Dtype")
+		.dialog({
+			width: 9 / 10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function (event, ui) {
+				parent_close_disabled(true);
+				switch (oper_type) {
+					case state = 'add':
+						mycurrency.formatOnBlur();
+						$(this).dialog("option", "title", "Add");
+						enableForm('#Ftype');
+						('#Ftype');
+						hideOne('#Ftype');
+						break;
+					case state = 'edit':
+						mycurrency.formatOnBlur();
+						$(this).dialog("option", "title", "Edit");
+						$("#Ftype a").off();
+						enableForm('#Ftype');
+						frozeOnEdit("#Dtype");
+						rdonly('#Ftype');
+						$('#Ftype :input[hideOne]').show();
+						break;
+					case state = 'view':
+						mycurrency.formatOnBlur();
+						$(this).dialog("option", "title", "View");
+						disableForm('#Ftype');
+						$('#Ftype :input[hideOne]').show();
+						$(this).dialog("option", "buttons", butt2);
+						break;
+				}
+				if (oper_type == 'add') {
+					// dialog_chgcode.on();
+				}
+				if (oper_type != 'add') {
+					// dialog_chgcode.check(errorField);
+				}
+				if(oper_type!='view'){
+					set_compid_from_storage("input[name='t_lastcomputerid']","input[name='t_lastipaddress']","input[name='t_computerid']","input[name='t_ipaddress']");
+				}
+				/*if(oper_item!='add'){
+					dialog_chgcode.check(errorField);
+				}*/
+			},
+			close: function (event, ui) {
+				emptyFormdata(errorField, '#Ftype');
+				parent_close_disabled(false);
+				$('#Ftype .alert').detach();
+				//$('.alert').detach();
+				// dialog_chgcode.off();
+				if (oper == 'view') {
+					$(this).dialog("option", "buttons", butttype1);
+				}
+			},
+			buttons: butttype1,
+		});
+
+	/////////////////////parameter for jqgrid url Type/////////////////////////////////////////////////
+	var urlParam_type = {
+		action: 'get_table_default',
+		url: '/util/get_table_default',
+		field: '',
+		fixPost: 'true',//replace underscore with dot
+		table_name: ['hisdb.billtytype AS t', 'hisdb.billtysvc AS svc', 'hisdb.chgtype AS ct', 'hisdb.chggroup as cg'],
+		table_id: 't_chgtype',
+		join_type: ['JOIN', 'JOIN', 'JOIN'],
+		join_onCol: ['t.chggroup', 'ct.chgtype', 'cg.grpcode'],
+		join_onVal: ['svc.chggroup', 't.chgtype', 't.chggroup'],
+		filterCol: ['t.billtype', 't.compcode', 't.chggroup', 'svc.alltype', 'svc.compcode'],
+		filterVal: ['', 'session.compcode', '', '0', 'session.compcode'],
+		sort_idno: true,
+	}
+
+	var saveParam_type = {
+		action: 'save_table_default',
+		url: '/billtype/form',
+		field: '',
+		oper: oper_type,
+		table_name: 'hisdb.billtytype ',
+		fixPost: 'true',//throw out dot in the field name
+		table_id: 't_chgtype',
+		idnoUse: 't_idno',
+		filterCol: ['billtype'],
+		filterVal: [''],
+		saveip:'true',
+		checkduplicate:'true'
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+
+	$("#jqGridtype").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'Bill Type', name: 't_billtype', width: 50, hidden: true },
+			{ label: 'Chg. Group', name: 't_chggroup', width: 90, hidden: true },
+			{ label: 'Description', name: 'cg_description', width: 90, hidden: true },
+			// { label: 'Chg Code', name: 'i_chgcode', width: 90, classes: 'wrap', canSearch: true, checked: true },
+			{ label: 'Chg Type', name: 't_chgtype', width: 90, classes: 'wrap'},
+			{ label: 'Description', name: 'ct_description', width: 90, classes: 'wrap'},
+			{ label: 'Price', name: 't_price', width: 50, classes: 'wrap'},
+			{ label: 'Percentage', name: 't_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
+			{ label: 'Amount', name: 't_amount', width: 50, classes: 'wrap'},
+			{ label: 'All Item', name: 't_allitem', width: 50, classes: 'wrap'},
+			{ label: 'Discount Charge Code', name: 't_discchgcode', width: 50, classes: 'wrap'},
+			{ label: 'discrate', name: 't_discrate', width: 50, hidden: true },
+			{ label: 'adduser', name: 't_adduser', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'adddate', name: 't_adddate', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'upduser', name: 't_upduser', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'upddate', name: 't_upddate', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'No', name: 't_idno', width: 50, hidden: true },
+			{ label: 'computerid', name: 't_computerid', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'ipaddress', name: 't_ipaddress', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'lastcomputerid', name: 't_lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'lastipaddress', name: 't_lastipaddress', width: 90, hidden: true, classes: 'wrap' },
+		],
+		viewrecords: true,
+		autowidth: true,
+		multiSort: true,
+		loadonce: false,
+		width: 900,
+		height: 100,
+		rowNum: 30,
+		hidegrid: false,
+		caption: caption('searchForm4', 'Bill Charge Type'),
+		pager: "#jqGridPager4",
+		ondblClickRow: function (rowid, iRow, iCol, e) {
+			$("#jqGridPager4 td[title='Edit Selected Row']").click();
+		},
+		gridComplete: function () {
+			if (oper == 'add') {
+				$("#jqGridtype").setSelection($("#jqGrid").getDataIDs()[0]);
+			}
+
+			$('#' + $("#jqGridtype").jqGrid('getGridParam', 'selrow')).focus();
+
+			/////////////////////////////// reccount ////////////////////////////
+			if ($("#jqGridtype").getGridParam("reccount") >= 1) {
+				$("#jqGridPager2glyphicon-trash").hide();
+			}
+
+			if ($("#jqGridtype").getGridParam("reccount") < 1) {
+				$("#jqGridPager2glyphicon-trash").show()
+			}
+			
+		},
+		onSelectRow: function (rowid, selected) {
+			if (rowid != null) {
+				rowData = $('#jqGridsvc').jqGrid('getRowData', rowid);
+				//console.log(rowData['svc.billtype']);
+			}
+		},
+	});
+
+	$("#jqGridtype").jqGrid('navGrid', '#jqGridPager4', {
+		view: false, edit: false, add: false, del: false, search: false,
+		beforeRefresh: function () {
+			refreshGrid("#jqGridtype", urlParam_type);
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPager4", {
+		caption: "",
+		buttonicon: "glyphicon glyphicon-trash",
+		onClickButton: function () {
+			// oper_suppitems = 'del';
+			var selRowId = $("#jqGridtype").jqGrid('getGridParam', 'selrow');
+			if (!selRowId) {
+				alert('Please select row');
+				return emptyFormdata(errorField, '#Ftype');
+			} else {
+				saveFormdata("#jqGridtype", "#Dtype", "#Ftype", 'del', saveParam_type, urlParam_type, null, { 'idno': selrowData('#jqGridtype').t_idno });
+				//saveFormdata("#jqGriditem","#Ditem","#Fitem",'del',saveParam_item,{"chgcode":selRowId});
+			}
+		},
+		position: "first",
+		title: "Delete Selected Row",
+		cursor: "pointer"
+	}).jqGrid('navButtonAdd', "#jqGridPager4", {
+		caption: "",
+		buttonicon: "glyphicon glyphicon-info-sign",
+		onClickButton: function () {
+			oper_type = 'view';
+			selRowId = $("#jqGridtype").jqGrid('getGridParam', 'selrow');
+			populateFormdata("#jqGridtype", "#Dtype", "#Ftype", selRowId, 'view');
+		},
+		position: "first",
+		title: "View Selected Row",
+		cursor: "pointer"
+	}).jqGrid('navButtonAdd', "#jqGridPager4", {
+		caption: "",
+		buttonicon: "glyphicon glyphicon-edit",
+		onClickButton: function () {
+			oper_type = 'edit';
+			selRowId = $("#jqGridtype").jqGrid('getGridParam', 'selrow');
+			populateFormdata("#jqGridtype", "#Dtype", "#Ftype", selRowId, 'edit');
+			// recstatusDisable();
+		},
+		position: "first",
+		title: "Edit Selected Row",
+		cursor: "pointer"
+	}).jqGrid('navButtonAdd', "#jqGridPager4", {
+		caption: "",
+		buttonicon: "glyphicon glyphicon-plus",
+		onClickButton: function (rowid, selected) {
+			oper_type = 'add';
+			//rowData = $('#jqGridsvc').jqGrid ('getRowData', rowid);
+			$("#Dtype").dialog("open");
+			//var xx= 
+			$("#Ftype :input[name*='t_billtype']").val(selrowData('#jqGridsvc').svc_billtype);
+			$("#Ftype :input[name*='t_chggroup']").val(selrowData('#jqGridsvc').svc_chggroup);
+			$("#Ftype :input[name*='cg_description']").val(selrowData('#jqGridsvc').cc_description);
+		},
+		position: "first",
+		title: "Add New Row",
+		cursor: "pointer"
+	});
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////Pager Hide/////////////////////////////////////////////////////////////////////////////////////////
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
+	$("#pg_jqGridPager4 table").hide();
 
 	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
 		$("#jqGridsvc").jqGrid ('setGridWidth', Math.floor($("#jqGridsvc_c")[0].offsetWidth-$("#jqGridsvc_c")[0].offsetLeft-28));
@@ -905,5 +1147,9 @@ $(document).ready(function () {
 
 	$("#jqGrid3_panel2").on("show.bs.collapse", function(){
 		$("#jqGriditem").jqGrid ('setGridWidth', Math.floor($("#jqGriditem_c")[0].offsetWidth-$("#jqGriditem_c")[0].offsetLeft-28));
+	});
+
+	$("#jqGrid3_panel3").on("show.bs.collapse", function(){
+		$("#jqGridtype").jqGrid ('setGridWidth', Math.floor($("#jqGridtype_c")[0].offsetWidth-$("#jqGridtype_c")[0].offsetLeft-28));
 	});
 });
