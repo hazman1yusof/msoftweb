@@ -1186,10 +1186,10 @@
 
         var array = []; 
         $("input:checkbox[name=Checkbox]:checked").each(function() { 
-        	//alert($array);
-       		//array.push($(this).val()); 
+        	array.push($(this).val()); 
      
         }); 
+        alert($array);
    	});    
 
 	cbselect.on();
