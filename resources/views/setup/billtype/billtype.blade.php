@@ -482,6 +482,18 @@ i.fa {
 			<input id="billtype" name="t_billtype" type="hidden" class="form-control input-sm">
 
 			<div class="form-group">
+				<label class="col-md-2 control-label" for="t_chggroup">Chg Group</label>   
+				<div class="col-md-3">
+					<input id="i_chggroup" name="t_chggroup" type="text" class="form-control input-sm" rdonly>
+				</div>
+				
+				<label class="col-md-2 control-label" for="cg_description">Description</label>  
+				<div class="col-md-3">
+					<input id="cg_description" name="cg_description" type="text" class="form-control input-sm" rdonly>
+				</div>
+			</div>
+
+			<div class="form-group">
 				<label class="col-md-2 control-label" for="t_chgtype">Chg Type</label>   
 				<div class="col-md-3">
 					<input id="t_chgtype" name="t_chgtype" type="text" class="form-control input-sm" rdonly>

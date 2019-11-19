@@ -446,7 +446,7 @@ $(document).ready(function () {
 		filterCol: ['billtype'],
 		filterVal: [''],
 		saveip:'true',
-		checkduplicate:'true'
+		// checkduplicate:'true'
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -512,30 +512,21 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			if (rowid != null) {
 				rowData = $('#jqGridsvc').jqGrid('getRowData', rowid);
-				$("#Fitem a").off();
-				//console.log(rowData.svc_billtype);
-				urlParam_item.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
-				urlParam_item.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
-				$("#Fitem :input[name*='i_billtype']").val(selrowData("#jqGridsvc").svc_billtype);
-				$("#Fitem :input[name*='i_chggroup']").val(selrowData("#jqGridsvc").svc_chggroup);
-				$("#Fitem :input[name*='c_description']").val(selrowData("#jqGridsvc").cc_description);
-				//urlParam_item.filterVal[0]=rowData['svc_billtype'];
-				//urlParam_item.filterVal[2]=rowData['svc_chggroup'];  
-				//$("#Fitem :input[name*='i_billtype']").val(rowData['svc_billtype']);
-				//$("#Fitem :input[name*='i_chggroup']").val(rowData['svc_chggroup']);
-				//$("#Fitem :input[name*='c_description']").val(rowData['cc_description']);
-				refreshGrid('#jqGriditem', urlParam_item);
-				$("#pg_jqGridPager3 table").show();
 
-
-				if (rowData['svc_allitem'] == '1') {
+				if (rowData['svc_allitem'] == '0') {
+					$("#Fitem a").off();
+					//console.log(rowData.svc_billtype);
+					urlParam_item.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
+					urlParam_item.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
 					refreshGrid('#jqGriditem', urlParam_item);
-					$("#pg_jqGridPager3 table").hide();
+					$("#pg_jqGridPager3 table").show();
 				}
 
-				if (rowData['svc_alltype'] == '1') {
+				if (rowData['svc_alltype'] == '0') {
+					urlParam_type.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
+					urlParam_type.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
 					refreshGrid('#jqGridtype', urlParam_type);
-					$("#pg_jqGridPager4 table").hide();
+					$("#pg_jqGridPager4 table").show();
 				}
 
 			}
@@ -686,7 +677,7 @@ $(document).ready(function () {
 						mycurrency.formatOnBlur();
 						$(this).dialog("option", "title", "Add");
 						enableForm('#Fitem');
-						('#Fitem');
+						rdonly('#Fitem');
 						hideOne('#Fitem');
 						break;
 					case state = 'edit':
@@ -759,7 +750,7 @@ $(document).ready(function () {
 		filterCol: ['billtype'],
 		filterVal: [''],
 		saveip:'true',
-		checkduplicate:'true'
+		// checkduplicate:'true'
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -929,7 +920,7 @@ $(document).ready(function () {
 						mycurrency.formatOnBlur();
 						$(this).dialog("option", "title", "Add");
 						enableForm('#Ftype');
-						('#Ftype');
+						rdonly('#Ftype');
 						hideOne('#Ftype');
 						break;
 					case state = 'edit':
@@ -1003,7 +994,7 @@ $(document).ready(function () {
 		filterCol: ['billtype'],
 		filterVal: [''],
 		saveip:'true',
-		checkduplicate:'true'
+		// checkduplicate:'true'
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
