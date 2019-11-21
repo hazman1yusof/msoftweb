@@ -512,6 +512,10 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			if (rowid != null) {
 				rowData = $('#jqGridsvc').jqGrid('getRowData', rowid);
+				refreshGrid('#jqGriditem', urlParam_item);
+				$("#pg_jqGridPager3 table").hide();
+				refreshGrid('#jqGridtype', urlParam_type);
+				$("#pg_jqGridPager4 table").hide();
 
 				if (rowData['svc_allitem'] == '0') {
 					$("#Fitem a").off();
@@ -550,7 +554,8 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#Fsvc');
 			} else {
-				saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", 'del', saveParam_svc, urlParam_svc, null, { 'idno': selrowData('#jqGridsvc').svc_idno });
+				saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", 'del', saveParam_svc, urlParam_svc, { 'idno': selrowData('#jqGridsvc').svc_idno });
+				// saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", 'del', saveParam_svc, urlParam_svc, null, { 'idno': selrowData('#jqGridsvc').svc_idno });
 				//saveFormdata("#jqGridsvc","#Dsvc","#Fsvc",'del',saveParam_svc,{'svc_chggroup':selRowId});
 			}
 		},
