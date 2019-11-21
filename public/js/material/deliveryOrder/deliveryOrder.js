@@ -954,10 +954,6 @@ $(document).ready(function () {
 		return "<button class='refresh_button btn btn-success btn-xs' type='button' data-idno='"+rowObject.delordhd_idno+"' data-grid='#"+options.gid+"' ><i class='fa fa-refresh'></i></button>";
 	}
 
-	/*function formatterCheckbox(cellvalue, options, rowObject){
-		return "<input type='checkbox' name='Checkbox' >";
-	}
-*/
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
