@@ -31,6 +31,7 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#amount']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","delordhd_idno","delordhd_recstatus");
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#trandate"]);
@@ -163,6 +164,13 @@ $(document).ready(function () {
 	}
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
+	var recstatus_filter = [['OPEN','POSTED']];
+		if($("#recstatus_use").val() == 'POSTED'){
+			recstatus_filter = [['OPEN','POSTED']];
+			filterCol_urlParam = ['delordhd.compcode'];
+			filterVal_urlParam = ['session.compcode'];
+		}
+
 	var urlParam={
 		action:'get_table_default',
 		url:'/util/get_table_default',
@@ -234,6 +242,7 @@ $(document).ready(function () {
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 20, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 20, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'delordhd_recstatus', width: 20},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 120,align: "center", formatter: formatterCheckbox },
 			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 25, classes: 'wrap',hidden:true},
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 25, classes: 'wrap', hidden:true},
@@ -277,7 +286,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
-			switch($("#scope").val()){
+			/*switch($("#scope").val()){
 				case "dataentry":
 					$("label[for=delordhd_reqdept]").hide();
 					$("#delordhd_reqdept_parent").hide();
@@ -305,6 +314,21 @@ $(document).ready(function () {
 						$('#but_reopen_jq').hide();
 					}
 				break;
+			}*/
+
+			let scope = $("#recstatus_use").val();
+
+			if (stat == scope) {
+				$('#but_reopen_jq').show();
+				$('#but_post_single_jq,#but_cancel_jq').hide();
+			} else if (stat == "CANCELLED") {
+				$('#but_reopen_jq').show();
+				$('#but_post_single_jq,#but_cancel_jq').hide();
+			} else {
+				if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+					$('#but_cancel_jq,#but_post_single_jq').show();
+				}
+				$('#but_reopen_jq').hide();
 			}
 
 			urlParam2.filterVal[0]=selrowData("#jqGrid").delordhd_recno;
@@ -322,6 +346,10 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+
+			cbselect.checkbox_function_on();
+			cbselect.refresh_seltbl();
+
 		},
 		
 	});

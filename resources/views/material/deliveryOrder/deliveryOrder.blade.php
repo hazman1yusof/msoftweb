@@ -37,7 +37,7 @@ i.fa {
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
-	@if (Request::get('scope') == 'ALL')
+	@if (Request::get('scope') == 'all')
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="POSTED">
 	@else
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
@@ -98,14 +98,14 @@ i.fa {
 					<span id="error_infront" style="color: red"></span>
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">
-						@if (Request::get('scope') == 'ALL')
+						@if (Request::get('scope') == 'all')
 							{{'POST ALL'}}
 						@else
-							{{Request::get('scope').' ALL'}}
+							{{Request::get('scope').' all'}}
 						@endif
 					</button>
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
-						@if (Request::get('scope') == 'ALL')
+						@if (Request::get('scope') == 'all')
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}

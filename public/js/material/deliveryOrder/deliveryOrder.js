@@ -361,7 +361,7 @@ $(document).ready(function () {
 						$('#but_reopen_jq,#but_cancel_jq,#but_print_dtl').hide();
 					}
 					break;*/
-					let scope = $("#recstatus_use").val();
+			let scope = $("#recstatus_use").val();
 
 			if (stat == scope) {
 				$('#but_reopen_jq').show();
