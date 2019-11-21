@@ -40,9 +40,16 @@ class AuthorizationDetailController extends defaultController
 
         try {
             ///1. check duplicate
+
+            if(!empty($request->dtl_authorid)){
+                $authorid_ = $request->dtl_authorid;
+            }else{
+                $authorid_ = $request->authorid;
+            }
+
             $duplicate = DB::table('material.authdtl')
                             ->where('compcode','=',session('compcode'))
-                            ->where('authorid','=',$request->dtl_authorid)
+                            ->where('authorid','=',$authorid_)
                             ->where('trantype','=',$request->dtl_trantype)
                             ->where('deptcode','=',$request->dtl_deptcode)
                             ->where('recstatus','=',$request->dtl_recstatus)
@@ -55,7 +62,7 @@ class AuthorizationDetailController extends defaultController
                         'compcode' => session('compcode'),
                         'trantype' => $request->dtl_trantype,
                         'deptcode' => $request->dtl_deptcode,
-                        'authorid' => $request->dtl_authorid,
+                        'authorid' => $authorid_,
                         'recstatus' => $request->dtl_recstatus,
                         'cando' => $request->dtl_cando,
                         'minlimit' => $request->dtl_minlimit,
@@ -80,10 +87,16 @@ class AuthorizationDetailController extends defaultController
         DB::beginTransaction();
 
         try {
+            if(!empty($request->dtl_authorid)){
+                $authorid_ = $request->dtl_authorid;
+            }else{
+                $authorid_ = $request->authorid;
+            }
+
             $authdtl = DB::table('material.authdtl')
                         ->where('compcode','=',session('compcode'))
                         ->where('idno','=',$request->dtl_idno)
-                        ->where('authorid','=',$request->dtl_authorid);
+                        ->where('authorid','=',$authorid_);
 
             $authdtl_get = $authdtl->first();
 

@@ -455,6 +455,8 @@ var myEditOptions = {
 
     	//if(errorField.length>0)return false;
 
+		mycurrency2.formatOff();
+
 		let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 		let editurl = "/authorizationDetail/form?"+
 			$.param({
@@ -719,27 +721,27 @@ var dialog_deptcodehd = new ordialog(
 			{label:'Unit',name:'sector'},
 		],
 		urlParam: {
-			filterCol:['storedept', 'recstatus','compcode','sector'],
-			filterVal:['1', 'A', 'session.compcode', 'session.unit']
+			filterCol:[ 'recstatus','compcode','sector'],
+			filterVal:[ 'A', 'session.compcode', 'session.unit']
 		},
 		ondblClickRow:function(){
 			//$('#recstatus').focus();
 		},
 		gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#recstatus').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-				}	
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				$('#recstatus').focus();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+			}
+		}	
 	},{
 		title:"Select Department",
 		open: function(){
-			dialog_deptcodehd.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
-			dialog_deptcodehd.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
+			dialog_deptcodehd.urlParam.filterCol=['recstatus','compcode','sector'];
+			dialog_deptcodehd.urlParam.filterVal=['A', 'session.compcode', 'session.unit'];
 		}
 	},'urlParam','radio','tab');
 dialog_deptcodehd.makedialog();
@@ -979,8 +981,7 @@ $("#gridAuthdtl").jqGrid({
 			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap', editable: true,
 				edittype:"text",
 			},
-			{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap', editable: true,
-				edittype:"text",
+			{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
 			},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 80,align: "center", formatter: formatterCheckbox },
 	],
@@ -1059,7 +1060,7 @@ $("#but_show_deactive").click(function(){
 		refreshGrid("#gridAuthdtl",urlParam_authdtl);
 		$(this).val('Show Deactive')
 	}
-	
+
 	$( this ).toggleClass( "show_deactive" );
 })
 

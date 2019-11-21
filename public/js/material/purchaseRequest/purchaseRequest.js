@@ -665,7 +665,7 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Item Code', name: 'itemcode', width: 110, classes: 'wrap', editable: true,
+				label: 'Item Code', name: 'itemcode', width: 180, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				edittype: 'custom', editoptions:
 				{
@@ -1327,6 +1327,7 @@ $(document).ready(function () {
 	function calculate_line_totgst_and_totamt(event) {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
+		mycurrency2.formatOff();
        
 		let qtyrequest = parseFloat($("#"+id_optid+"_qtyrequest").val());
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());

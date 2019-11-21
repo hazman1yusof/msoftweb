@@ -204,12 +204,22 @@ class PurchaseRequestController extends defaultController
                     ->where('trantype','=','PR')
                     ->where('cando','=', 'A')
                     ->where('recstatus','=','Support')
-                    ->where('deptcode','=',$purreqhd_get->reqdept)
-                    ->orWhere('deptcode','=','ALL')
-                    ->orWhere('deptcode','=','all');
+                    ->where('deptcode','=',$purreqhd_get->reqdept);
 
                 if(!$authorise->exists()){
-                    throw new \Exception("Authorization for this purchase request doesnt exists");
+
+                    $authorise = DB::table('material.authdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PR')
+                        ->where('cando','=', 'A')
+                        ->where('recstatus','=','Support')
+                        ->where('deptcode','=','ALL')
+                        ->where('deptcode','=','all');
+
+                        if(!$authorise->exists()){
+                            throw new \Exception("Authorization for this purchase request doesnt exists");
+                        }
+
                 }
 
                 $authorise = $authorise->get();
@@ -281,12 +291,22 @@ class PurchaseRequestController extends defaultController
                 ->where('trantype','=','PR')
                 ->where('cando','=', 'A')
                 ->where('recstatus','=','Support')
-                ->where('deptcode','=',$purreqhd_get->reqdept)
-                ->orWhere('deptcode','=','ALL')
-                ->orWhere('deptcode','=','all');
+                ->where('deptcode','=',$purreqhd_get->reqdept);
 
             if(!$authorise->exists()){
-                throw new \Exception("Authorization for this purchase request doesnt exists");
+
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PR')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','Support')
+                    ->where('deptcode','=','ALL')
+                    ->where('deptcode','=','all');
+
+                    if(!$authorise->exists()){
+                        throw new \Exception("Authorization for this purchase request doesnt exists");
+                    }
+                    
             }
 
             $authorise = $authorise->get();

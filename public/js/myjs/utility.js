@@ -474,6 +474,10 @@ function currencymode(arraycurrency){
 	}
 }
 
+function currencyRealval(v){
+	return numeral().unformat($(v).val());
+}
+
 function modal(){
 	this.style={
 		display:"block",
