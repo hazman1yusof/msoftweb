@@ -921,23 +921,23 @@
 
 	var urlParam_authdtl={
 		action:'get_table_default',
-			url:'/util/get_table_default',
-			field:'',
-			fixPost:'true',
-			table_name:['material.authdtl AS dtl'],
-			table_id:'d_lineno_',
-			filterCol:['compcode','authorid'],
-			filterVal:['session.compcode','']
+		url:'/util/get_table_default',
+		field:'',
+		fixPost:'true',
+		table_name:['material.authdtl AS dtl'],
+		table_id:'d_lineno_',
+		filterCol:['compcode','authorid','cando'],
+		filterVal:['session.compcode','','A']
 	}
 
 	var saveParam_authdtl={
 		action:'save_table_default',
-			url:'authorizationDetail/form',
-			field:'',
-			oper:oper_authdtl,
-			table_name:'material.authdtl',
-			table_id:'d_idno',
-			saveip:'true'
+		url:'authorizationDetail/form',
+		field:'',
+		oper:oper_authdtl,
+		table_name:'material.authdtl',
+		table_id:'d_idno',
+		saveip:'true'
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1023,13 +1023,13 @@
 			
 		},
 		onSelectRow:function(rowid, selected){
-			let stat = selrowData("#gridAuthdtl").dtl_cando;
-			if(stat=='A'){
-						$('#but_cando').show();
-						//$('#but_post_jq,#but_reopen_jq').hide();
-					}else{
-						$('#but_cando').hide();
-					}
+			// let stat = selrowData("#gridAuthdtl").dtl_cando;
+			// if(stat=='A'){
+			// 			$('#but_cando').show();
+			// 			//$('#but_post_jq,#but_reopen_jq').hide();
+			// 		}else{
+			// 			$('#but_cando').hide();
+			// 		}
 			/*if(rowid != null) {
 				rowData = $('#gridAuthdtl').jqGrid ('getRowData', rowid);
 				//console.log(rowData.svc_billtype);
@@ -1044,8 +1044,24 @@
 				$("#pg_jqGridPager3 table").show();
 			}*/
 		},
-		
 	});
+
+	$("#but_show_deactive").click(function(){
+		let show = $(this).hasClass( "show_deactive" );
+		if(show){
+			urlParam_authdtl.filterCol.pop();
+			urlParam_authdtl.filterVal.pop();
+			refreshGrid("#gridAuthdtl",urlParam_authdtl);
+			$(this).val('Hide Deactive')
+		}else{
+			urlParam_authdtl.filterCol[2] = 'cando'
+			urlParam_authdtl.filterVal[2] = 'A'
+			refreshGrid("#gridAuthdtl",urlParam_authdtl);
+			$(this).val('Show Deactive')
+		}
+		
+		$( this ).toggleClass( "show_deactive" );
+	})
 
 	function formatterCheckbox(cellvalue, options, rowObject){
 		/*let dtl_idno = cbselect.idno;

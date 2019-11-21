@@ -72,22 +72,25 @@ i.fa {
 
 		
 
-	    <div class="panel panel-default" id="gridAuthdtl_c">
-	    	<div type="button" class="click_row pull-right" id="but_cando" style="display: none;background: #337ab7;color: white;min-height: 39px">
-				<label class="control-label" style="margin-top: 10px;">Active</label>
-        </div>
-		<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridAuthdtl_panel">
+	    <div class="panel panel-default" id="gridAuthdtl_c" style="position: relative;">
+	    <!-- t=input type="button" class="click_row pull-right btn btn-primary" id="but_cando">
+			<label class="control-label" style="margin-top: 10px;">Active</label>
+        </input> -->
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridAuthdtl_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
-    			<i class="fa fa-angle-double-down" style="font-size:24px"></i>Authorization Detail</div>
+				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Authorization Detail
+		    </div>
+
+	    	<input type="button" class="btn btn-sm btn-primary pull-right show_deactive" style="position:absolute;right:60px;top: 8px" id="but_show_deactive" value="Show Deactive">
 		
-		<div id="gridAuthdtl_panel" class="panel-collapse collapse">
-					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="gridAuthdtl" class="table table-striped"></table>
-							<div id="jqGridPager3"></div>
-						</div>'
-					</div>
-				</div>	
+			<div id="gridAuthdtl_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="gridAuthdtl" class="table table-striped"></table>
+						<div id="jqGridPager3"></div>
+					</div>'
+				</div>
+			</div>	
 		</div>
         
     </div>
