@@ -152,8 +152,8 @@ $(document).ready(function () {
 		sortname: 'idno',
 		sortorder: 'desc',
 		loadonce:false,
-		height: 450,
-		rowNum: 100,
+		height: 350,
+		rowNum: 80,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 
