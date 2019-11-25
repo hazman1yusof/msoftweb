@@ -132,7 +132,7 @@ $(document).ready(function () {
                          value: "Request:Request;Support:Support;Verify:Verify;Approve:Approve"
                      }
 			},
-			{ label: 'CanDo', name: 'cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
+			{ label: 'CanDo', name: 'cando', width: 150, classes: 'wrap', canSearch: false, editable: true,
 				 editable: true,
                      edittype: "select",
                      editoptions: {
@@ -152,8 +152,8 @@ $(document).ready(function () {
 		sortname: 'idno',
 		sortorder: 'desc',
 		loadonce:false,
-		height: 124,
-		rowNum: 30,
+		height: 450,
+		rowNum: 100,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 
