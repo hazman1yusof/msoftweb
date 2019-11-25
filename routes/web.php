@@ -244,6 +244,11 @@ Route::post('/authorization/form','material\AuthorizationController@form');
 Route::get('/authorization/form','material\authorizationDetailController@form');
 Route::post('/authorizationDetail/form','material\authorizationDetailController@form');
 
+//// Authorization Detail ///
+Route::get('/authorizationDtl','material\AuthorizationDtlController@show');
+Route::get('/authorizationDtl/table','material\AuthorizationDtlController@table');
+Route::post('/authorizationDtl/form','material\AuthorizationDtlController@form');
+
 //// UOM material setup ///
 Route::get('/uom','material\UomController@show');
 Route::get('/uom/table','material\UomController@table');
