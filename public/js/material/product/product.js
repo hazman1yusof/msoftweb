@@ -608,7 +608,7 @@ $(document).ready(function () {
 			dialog_subcategory.off();
 			dialog_taxCode.off();
 
-			$('#formdata .alert').detach();
+			$('.my-alert').detach();
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
 			}
