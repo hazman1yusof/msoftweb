@@ -134,17 +134,6 @@ i.fa {
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="deptcode">Dept Code</label>
-						<div class="col-md-3">
-							<div class='input-group'>
-								<input id="deptcode" name="deptcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							</div>
-							<span class="help-block"></span>
-						</div>
-				</div>
-
-				<div class="form-group">
 				  	<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
 				  		<div class="col-md-2">
 							<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
@@ -227,10 +216,10 @@ i.fa {
 					<label class="col-md-2 control-label" for="d_recstatus">Record Status</label>  
 						<div class="col-md-2">
 							<select id="d_recstatus" name="dtl_recstatus" class="form-control input-sm">
-							    <option value="Request">Request</option>
-							    <option value="Support">Support</option>
-							    <option value="Verify">Verify</option>
-							    <option value="Approve">Approve</option>
+							    <option value="REQUEST">REQUEST</option>
+							    <option value="SUPPORT">SUPPORT</option>
+							    <option value="VERIFY">VERIFY</option>
+							    <option value="APPROVED">APPROVED</option>
 							</select>
 						</div>	
 

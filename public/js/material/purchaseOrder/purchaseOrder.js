@@ -101,7 +101,7 @@ $(document).ready(function () {
 			    parent_close_disabled(false);
 				emptyFormdata(errorField, '#formdata');
 				emptyFormdata(errorField, '#formdata2');
-				$('.alert').detach();
+				$('.my-alert').detach();
 				$("#formdata a").off();
 				dialog_reqdept.off();
 				dialog_purreqno.off();

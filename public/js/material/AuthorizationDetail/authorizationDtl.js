@@ -101,8 +101,8 @@ $(document).ready(function () {
 		//fixPost:'true',
 		table_name:'material.authdtl',
 		table_id:'idno',
-		filterCol:['compcode'],
-		filterVal:['session.compcode']
+		filterCol:['compcode', 'cando'],
+		filterVal:['session.compcode', 'A']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -114,7 +114,7 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Trantype', name: 'trantype', width: 200, classes: 'wrap', canSearch: true},
 			{ label: 'Deptcode', name: 'deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true},
-			{ label: 'Record Status', name: 'recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true},
+			{ label: 'Status', name: 'recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true},
 			{ label: 'CanDo', name: 'cando', width: 150, classes: 'wrap', canSearch: false, editable: true},
 			{ label: 'Min Limit', name: 'minlimit', width: 200, classes: 'wrap',  align: 'right', editable: true},
 			{ label: 'Max Limit', name: 'maxlimit', width: 200, classes: 'wrap', align: 'right',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }

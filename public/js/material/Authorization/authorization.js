@@ -29,7 +29,6 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#minlimit','#maxlimit', '#d_minlimit', '#d_maxlimit', '#dtl_minlimit', '#dtl_maxlimit']);
 	var mycurrency2 =new currencymode([]);
 	var fdl = new faster_detail_load();
-	var cbselect = new checkbox_selection("#gridAuthdtl","Checkbox","dtl_idno","dtl_cando");
 
 	var oper;
 	$("#dialogForm")
@@ -333,7 +332,7 @@ $("#jqGrid2").jqGrid({
 				{ custom_element:deptcodeCustomEdit,
 				custom_value:galGridCustomValue },
 		},
-		{ label: 'Record Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
+		{ label: 'Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
 			 editable: true,
                  edittype: "select",
                  editoptions: {
@@ -902,7 +901,7 @@ $("#Authdtl")
 	close: function( event, ui ) {
 		parent_close_disabled(false);
 		emptyFormdata(errorField,'#FAuthdtl');
-		$('#FAuthdtl .alert').detach();
+		$('.my-alert').detach();
 		dialog_deptcodeD.off();
 		if(oper=='view'){
 			$(this).dialog("option", "buttons",buttItem1);
@@ -914,10 +913,10 @@ $("#Authdtl")
 /////////////////////parameter for jqgrid url SVC/////////////////////////////////////////////////
 
 var cando_filter = [['A','D']];
-		if($("#dtl_cando").val() == 'D'){
-			cando_filter = [['ACTIVE','DEACTIVE']];
-			filterCol_urlParam = ['authdtl.compcode'];
-			filterVal_urlParam = ['session.compcode'];
+if($("#dtl_cando").val() == 'D'){
+	cando_filter = [['ACTIVE','DEACTIVE']];
+	filterCol_urlParam = ['authdtl.compcode'];
+	filterVal_urlParam = ['session.compcode'];
 		
 }
 
@@ -963,7 +962,7 @@ $("#gridAuthdtl").jqGrid({
 					{ custom_element:deptcodedtlCustomEdit,
 					custom_value:galGridCustomValue },
 			},
-			{ label: 'Record Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
+			{ label: 'Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
 				 editable: true,
                      edittype: "select",
                      editoptions: {
@@ -983,7 +982,7 @@ $("#gridAuthdtl").jqGrid({
 			},
 			{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
 			},
-			{ label: ' ', name: 'Checkbox',sortable:false, width: 80,align: "center", formatter: formatterCheckbox },
+			
 	],
 	viewrecords: true,
 	//shrinkToFit: true,
@@ -1008,8 +1007,7 @@ $("#gridAuthdtl").jqGrid({
 		}
 
 		$('#gridAuthdtl #'+$("#gridAuthdtl").jqGrid ('getGridParam', 'selrow')).focus();
-		cbselect.checkbox_function_on();
-		cbselect.refresh_seltbl();
+	
 
 		/////////////////////////////// reccount ////////////////////////////
 		
@@ -1064,20 +1062,7 @@ $("#but_show_deactive").click(function(){
 	$( this ).toggleClass( "show_deactive" );
 })
 
-function formatterCheckbox(cellvalue, options, rowObject){
-	/*let dtl_idno = cbselect.idno;
-	let dtl_cando = cbselect.cando;
-	if(options.gid == "gridAuthdtl" && rowObject[dtl_cando] == cando_filter[0][0]){
-		return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[dtl_idno]+"' data-idno='"+rowObject[dtl_idno]+"' data-rowid='"+options.rowId+"'>";
-	}else if(options.gid != "gridAuthdtl" && rowObject[dtl_cando] == cando_filter[0][0]){
-		return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[dtl_idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-	}else{
-		return ' ';
-	}*/
-	let dtl_idno = cbselect.idno;
-	let dtl_cando = cbselect.cando;
-	return "<input type='checkbox' name='Checkbox' id='checkbox_selection_'>";
-}
+
 
 $("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{	
 	view:false,edit:false,add:false,del:false,search:false,
@@ -1164,36 +1149,6 @@ $("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{
 	cursor: "pointer"
 });
 
-/*$("#jqGrid_selection").jqGrid({
-	datatype: "local",
-	colModel: $("#gridAuthdtl").jqGrid('getGridParam','colModel'),
-	shrinkToFit: false,
-	autowidth:true,
-	multiSort: true,
-	viewrecords: true,
-	sortname: 'dtl_idno',
-	sortorder: "desc",
-	onSelectRow: function (rowid, selected) {
-		console.log(rowid);
-		let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
-	},
-	gridComplete: function(){
-		
-	},
-})
-jqgrid_label_align_right("#jqGrid_selection");*/
-
-$('#but_cando').on('click', function() { 
-
-    var array = []; 
-    $("input:checkbox[name=Checkbox]:checked").each(function() { 
-    	array.push($(this).val()); 
- 
-    }); 
-    alert(array);
-	});    
-
-cbselect.on();
 
 
 $("#gridAuthdtl_panel").on("show.bs.collapse", function(){

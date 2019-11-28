@@ -72,6 +72,11 @@ i.fa {
 							
 						</div>
 
+
+					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
+					  		<p id="p_error"></p>
+					  	</div>
+
 		             </div>
 				</div>
 

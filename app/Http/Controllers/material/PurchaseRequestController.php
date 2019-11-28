@@ -203,8 +203,9 @@ class PurchaseRequestController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PR')
                     ->where('cando','=', 'A')
-                    ->where('recstatus','=','Support')
-                    ->where('deptcode','=',$purreqhd_get->reqdept);
+                    ->where('recstatus','=','SUPPORT')
+                    ->where('deptcode','=',$purreqhd_get->reqdept)
+                    ->where('maxlimit','>=',$purreqhd_get->totamount);
 
                 if(!$authorise->exists()){
 
@@ -212,9 +213,10 @@ class PurchaseRequestController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('trantype','=','PR')
                         ->where('cando','=', 'A')
-                        ->where('recstatus','=','Support')
+                        ->where('recstatus','=','SUPPORT')
                         ->where('deptcode','=','ALL')
-                        ->where('deptcode','=','all');
+                        ->where('deptcode','=','all')
+                        ->where('maxlimit','>=',$purreqhd_get->totamount);
 
                         if(!$authorise->exists()){
                             throw new \Exception("Authorization for this purchase request doesnt exists");
@@ -222,20 +224,22 @@ class PurchaseRequestController extends defaultController
 
                 }
 
-                $authorise = $authorise->get();
-                $totamount = $purreqhd_get->totamount;
-                $idno_auth;
+                $authorise_use = $authorise->first();
 
-                foreach ($authorise as $value) {
-                    $idno_auth = $value->idno;
-                    if($totamount>$value->maxlimit){
-                        continue;
-                    }else{
-                        break;
-                    }
-                }
 
-                $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
+                // $totamount = $purreqhd_get->totamount;
+                // $idno_auth;
+
+                // foreach ($authorise as $value) {
+                //     $idno_auth = $value->idno;
+                //     if($totamount>$value->maxlimit){
+                //         continue;
+                //     }else{
+                //         break;
+                //     }
+                // }
+
+                // $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
 
                 // 2. make queue
                 DB::table("material.queuepr")
@@ -285,13 +289,15 @@ class PurchaseRequestController extends defaultController
 
             $purreqhd_get = $purreqhd->first();
 
+
             // 1. check authorization
             $authorise = DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('trantype','=','PR')
                 ->where('cando','=', 'A')
-                ->where('recstatus','=','Support')
-                ->where('deptcode','=',$purreqhd_get->reqdept);
+                ->where('recstatus','=','SUPPORT')
+                ->where('deptcode','=',$purreqhd_get->reqdept)
+                ->where('maxlimit','>=',$purreqhd_get->totamount);
 
             if(!$authorise->exists()){
 
@@ -299,30 +305,31 @@ class PurchaseRequestController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PR')
                     ->where('cando','=', 'A')
-                    ->where('recstatus','=','Support')
+                    ->where('recstatus','=','SUPPORT')
                     ->where('deptcode','=','ALL')
-                    ->where('deptcode','=','all');
+                    ->where('deptcode','=','all')
+                    ->where('maxlimit','>=',$purreqhd_get->totamount);
 
                     if(!$authorise->exists()){
-                        throw new \Exception("Authorization for this purchase request doesnt exists");
+                        throw new \Exception("Authorization for this purchase request doesnt exists",500);
                     }
                     
             }
 
-            $authorise = $authorise->get();
-            $totamount = $purreqhd_get->totamount;
-            $idno_auth;
+            $authorise_use = $authorise->first();
+            // $totamount = $purreqhd_get->totamount;
+            // $idno_auth;
 
-            foreach ($authorise as $value) {
-                $idno_auth = $value->idno;
-                if($totamount>$value->maxlimit){
-                    continue;
-                }else{
-                    break;
-                }
-            }
+            // foreach ($authorise as $value) {
+            //     $idno_auth = $value->idno;
+            //     if($totamount>$value->maxlimit){
+            //         continue;
+            //     }else{
+            //         break;
+            //     }
+            // }
 
-            $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
+            // $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
 
             // 2. make queue
             DB::table("material.queuepr")
@@ -383,7 +390,7 @@ class PurchaseRequestController extends defaultController
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-             DB::table("material.queuepr")
+            DB::table("material.queuepr")
                 ->where('recno','=',$purreqhd_get->recno)
                 ->delete();
 

@@ -718,7 +718,7 @@ $(document).ready(function () {
 			close: function (event, ui) {
 				emptyFormdata(errorField, '#Fitem');
 				parent_close_disabled(false);
-				$('#Fitem .alert').detach();
+				$('.my-alert').detach();
 				//$('.alert').detach();
 				dialog_chgcode.off();
 				if (oper == 'view') {

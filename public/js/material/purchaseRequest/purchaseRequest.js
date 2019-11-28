@@ -89,7 +89,7 @@ $(document).ready(function () {
 			    parent_close_disabled(false);
 				emptyFormdata(errorField, '#formdata');
 				emptyFormdata(errorField, '#formdata2');
-				$('.alert').detach();
+				$('.my-alert').detach();
 				$("#formdata a").off();
 				dialog_reqdept.off();
 				dialog_prdept.off();
@@ -239,6 +239,8 @@ $(document).ready(function () {
 			} else {
 				if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
 					$('#but_cancel_jq,#but_post_single_jq').show();
+				}else{
+					$('#but_cancel_jq,#but_post_jq').show();
 				}
 				$('#but_reopen_jq').hide();
 			}
@@ -375,7 +377,10 @@ $(document).ready(function () {
 		$.post( '/purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
-
+			$('#p_error').text(data.responseText);
+			delay(function(){
+				$('#p_error').text('');
+			}, 2000 );
 		}).success(function(data){
 			
 		});
@@ -394,7 +399,10 @@ $(document).ready(function () {
 		$.post( '/purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
-
+			$('#p_error').text(data.responseText);
+			delay(function(){
+				$('#p_error').text('');
+			}, 2000 );
 		}).success(function(data){
 			
 		});
@@ -667,13 +675,14 @@ $(document).ready(function () {
 			{
 				label: 'Item Code', name: 'itemcode', width: 180, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
+				formatter: showdetail,
 				edittype: 'custom', editoptions:
 				{
 					custom_element: itemcodeCustomEdit,
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" } },
+			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
 			{
 				label: 'UOM Code', name: 'uomcode', width: 110, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
@@ -695,19 +704,19 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Quantity Request', name: 'qtyrequest', width: 80, align: 'right', classes: 'wrap',
+				label: 'Quantity Request', name: 'qtyrequest', width: 70, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
 			},
 			{
-				label: 'Unit Price', name: 'unitprice', width: 80, classes: 'wrap', align: 'right',
+				label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap', align: 'right',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules: { required: true }
 			},
 			{
-				label: 'Tax Code', name: 'taxcode', width: 110, classes: 'wrap', editable: true,
+				label: 'Tax Code', name: 'taxcode', width: 100, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -764,7 +773,7 @@ $(document).ready(function () {
 			},
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 80, formatter: formatterRemarks, unformat: unformatRemarks },
-			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden: true },
+			{ label: 'Remarks', name: 'remarks', width: 500, classes: 'wrap', hidden: false },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'prdept', name: 'prdept', width: 20, classes: 'wrap', hidden:true},
@@ -1161,6 +1170,7 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table, case_;
 		switch(options.colModel.name){
+			case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
 			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
