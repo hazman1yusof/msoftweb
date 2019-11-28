@@ -101,8 +101,8 @@ $(document).ready(function () {
 		//fixPost:'true',
 		table_name:'material.authdtl',
 		table_id:'idno',
-		filterCol:['compcode','cando'],
-		filterVal:['session.compcode','A']
+		filterCol:['compcode'],
+		filterVal:['session.compcode']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
