@@ -99,7 +99,7 @@
 				emptyFormdata(errorField,'#formdata');
 				emptyFormdata(errorField,'#formdata2');
 				//$('.alert').detach();
-				$('#formdata .alert').detach();
+				$('.my-alert').detach();
 				dialog_chggroup.off();
 				dialog_chgclass.off();
 				dialog_chgtype.off();
@@ -886,7 +886,7 @@
 			close: function( event, ui ) {
 				parent_close_disabled(false);
 				emptyFormdata(errorField,'#FChgPriceDtl');
-				$('#FChgPriceDtl .alert').detach();
+				$('.my-alert').detach();
 				dialog_dtliptax.off();
 				dialog_dtloptax.off();
 				if(oper=='view'){
