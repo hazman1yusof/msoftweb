@@ -1627,18 +1627,17 @@ $(document).ready(function () {
 	var dialog_purreqno = new ordialog(
 		'purreqno',['material.purreqhd AS h'],'#purordhd_purreqno',errorField,
 		{	colModel:[
-				{label:'Request No',name:'h_purreqno',width:10,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Request Department', name: 'h_reqdept', width: 100, classes: 'pointer',hidden:true },
-				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer',hidden:true},
-				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer',hidden:true},
+				{label:'Request No',name:'h_purreqno',width:50,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Request Department', name: 'h_reqdept', width: 100, classes: 'pointer' },
+				{label:'Supplier Code',name:'h_suppcode',width:100,classes:'pointer'},
+				{label:'Purchase Department',name:'h_prdept',width:200,classes:'pointer'},
 				{label:'PerDisc',name:'h_perdisc',width:400,classes:'pointer',hidden:true},
 				{label:'AmtDisc',name:'h_amtdisc',width:400,classes:'pointer',hidden:true},
-				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer',hidden:true},
+				{label:'Total Amount',name:'h_totamount',width:80,classes:'pointer',formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
 				{label:'Sub Amount',name:'h_subamount',width:400,classes:'pointer',hidden:true},
 				{label:'Status',name:'h_recstatus',width:400,classes:'pointer',hidden:true},
 				{label:'Remark',name:'h_remarks',width:400,classes:'pointer',hidden:true},
-				{label:'recno',name:'h_recno',width:400,classes:'pointer',hidden:true}
-
+				{label:'recno',name:'h_recno',width:50,classes:'pointer',hidden:false}
 				],
 			urlParam: {
 					filterCol:['h.reqdept','h.recstatus', 'h.purordno'],
@@ -1646,30 +1645,30 @@ $(document).ready(function () {
 				},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_purreqno.gridname);
-				$("#purordhd_purreqno").val(data['h.purreqno']);
-				$("#purordhd_reqdept").val(data['h.reqdept']);
-				$("#purordhd_suppcode").val(data['h.suppcode']);
-				$("#purordhd_credcode").val(data['h.suppcode']);
-				$("#purordhd_prdept").val(data['h.prdept']);
-				$("#purordhd_perdisc").val(data['h.perdisc']);
-				$("#purordhd_amtdisc").val(data['h.amtdisc']);
-				$("#purordhd_totamount").val(data['h.totamount']);
-				$("#purordhd_subamount").val(data['h.subamount']);
-				$("#purordhd_recstatus").val(data['h.recstatus']);
-				$("#purordhd_remarks").val(data['h.remarks']);
-				$('#referral').val(data['h.recno']);
+				$("#purordhd_purreqno").val(data['h_purreqno']);
+				$("#purordhd_reqdept").val(data['h_reqdept']);
+				$("#purordhd_suppcode").val(data['h_suppcode']);
+				$("#purordhd_credcode").val(data['h_suppcode']);
+				$("#purordhd_prdept").val(data['h_prdept']);
+				$("#purordhd_perdisc").val(data['h_perdisc']);
+				$("#purordhd_amtdisc").val(data['h_.amtdisc']);
+				$("#purordhd_totamount").val(data['h_totamount']);
+				$("#purordhd_subamount").val(data['h_subamount']);
+				$("#purordhd_recstatus").val(data['h_recstatus']);
+				$("#purordhd_remarks").val(data['h_remarks']);
+				$('#referral').val(data['h_recno']);
 
 				var urlParam2 = {
 					action: 'get_value_default',
 					url: '/util/get_value_default',
-					field: ['prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode','prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax', 'prdt.amount','NULL AS remarks_button','prdt.remarks','prdt.recstatus','t.rate'],
-					table_name: ['material.purreqdt prdt', 'material.productmaster p', 'hisdb.taxmast t'],
+					field: ['prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode','prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax', 'prdt.amount','rem_but AS remarks_button','prdt.remarks','prdt.recstatus','t.rate'],
+					table_name: ['material.purreqdt AS prdt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
 					table_id: 'lineno_',
 					join_type: ['LEFT JOIN', 'LEFT JOIN'],
 					join_onCol: ['prdt.itemcode','prdt.taxcode'],
 					join_onVal: ['p.itemcode', 't.taxcode'],
 					filterCol: ['prdt.recno', 'prdt.compcode', 'prdt.recstatus'],
-					filterVal: [data['h.recno'], 'session.compcode', '<>.DELETE']
+					filterVal: [data['h_recno'], 'session.compcode', '<>.DELETE']
 				};
 
 				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {

@@ -820,8 +820,8 @@ public function verify(Request $request){
      //    }
 
     public function save_dt_from_othr_pr($refer_recno,$recno){
-        $po_dt = DB::table('material.purreqdt')
-                ->select('compcode, recno, lineno_, pricecode, itemcode, uomcode, qtyrequest, unitprice, taxcode,perdisc,amtdisc, amtslstax,amount,recstatus,remarks')
+        $pr_dt = DB::table('material.purreqdt')
+                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'qtyrequest', 'unitprice', 'taxcode','perdisc','amtdisc', 'amtslstax','amount','recstatus','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
@@ -837,7 +837,7 @@ public function verify(Request $request){
                 'pricecode' => $value->pricecode, 
                 'itemcode' => $value->itemcode, 
                 'uomcode' => $value->uomcode, 
-                'qtyrequest' => $value->qtyrequest, 
+                'qtyorder' => $value->qtyrequest, 
                 'unitprice' => $value->unitprice, 
                 'taxcode' => $value->taxcode, 
                 'perdisc' => $value->perdisc, 
@@ -858,7 +858,7 @@ public function verify(Request $request){
                     ->sum('amount');
 
         ///3. then update to header
-        $table = DB::table('material.purorddt')
+        $table = DB::table('material.purordhd')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$recno);
         $table->update([
