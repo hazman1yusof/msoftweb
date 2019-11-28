@@ -112,37 +112,11 @@ $(document).ready(function () {
 		 colModel: [
            	{ label: 'Author ID', name: 'authorid', width: 200, classes: 'wrap', hidden:false},
 			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'Trantype', name: 'trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
-				 editable: true,
-                     edittype: "select",
-                     editoptions: {
-                         value: "PR:Purchase Request;PO:Purchase Order"
-                     }
-			},
-			{ label: 'Deptcode', name: 'deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
-				editrules:{required: true,custom:true, custom_func:cust_rules},
-				edittype:'custom',	editoptions:
-					{ custom_element:deptcodedtlCustomEdit,
-					custom_value:galGridCustomValue },
-			},
-			{ label: 'Record Status', name: 'recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
-				 editable: true,
-                     edittype: "select",
-                     editoptions: {
-                         value: "Request:Request;Support:Support;Verify:Verify;Approve:Approve"
-                     }
-			},
-			{ label: 'CanDo', name: 'cando', width: 150, classes: 'wrap', canSearch: false, editable: true,
-				 editable: true,
-                     edittype: "select",
-                     editoptions: {
-                         value: "A:Active;D:Deactive"
-                     }
-			},
-		
-			{ label: 'Min Limit', name: 'minlimit', width: 200, classes: 'wrap',  align: 'right', editable: true,
-				edittype:"text",
-			},
+			{ label: 'Trantype', name: 'trantype', width: 200, classes: 'wrap', canSearch: true},
+			{ label: 'Deptcode', name: 'deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true},
+			{ label: 'Record Status', name: 'recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true},
+			{ label: 'CanDo', name: 'cando', width: 150, classes: 'wrap', canSearch: false, editable: true},
+			{ label: 'Min Limit', name: 'minlimit', width: 200, classes: 'wrap',  align: 'right', editable: true},
 			{ label: 'Max Limit', name: 'maxlimit', width: 200, classes: 'wrap', align: 'right',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
 			},
 		],
@@ -156,12 +130,6 @@ $(document).ready(function () {
 		rowNum: 80,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-
-			/*var jg=$("#jqGrid").jqGrid('getRowData',rowid);
-			if(rowid != null) {
-				populateSummary('#details',selrowData('#jqGrid').s_itemcode, selrowData('#jqGrid').s_uomcode, selrowData('#jqGrid').s_deptcode);
-			}
-*/
 		},
 	});
 	
@@ -174,41 +142,6 @@ $(document).ready(function () {
 			
 		}	
 	);
-
-	///////////////////////////////////////cust_rules//////////////////////////////////////////////
-	function cust_rules(value,name){
-		var temp;
-		switch(name){
-			case 'Deptcode':temp=$('#deptcode');break;
-		
-		}
-		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
-	}
-
-	/////////////////////////////////////////////custom input///////////////////////////////////////////
-
-	function deptcodedtlCustomEdit(val,opt){
-	val = (val=="undefined")? "" : val;	
-	return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="deptcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-
-	function galGridCustomValue (elem, operation, value){
-		if(operation == 'get') {
-			return $(elem).find("input").val();
-		} 
-		else if(operation == 'set') {
-			$('input',elem).val(value);
-		}
-	}
-
-   /*  $("#jqGrid").jqGrid('setLabel', 'qtyonhand', 'Quantity on Hand', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'avgcost', 'Average Cost', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'currprice', 'Current Price', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'minqty', 'Min Stock Qty', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'maxqty', 'Max Stock Qty', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'reordqty', 'Reorder Qty', {'text-align':'right'});
-*/
-
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();
 	function searchBy(){
@@ -239,12 +172,8 @@ $(document).ready(function () {
 			$('#searchText').prop('disabled',true);
 			urlParam.searchCol=null;
 			urlParam.searchVal=null;
-			//urlParam.filterCol=['source','trantype'];
-			//urlParam.filterVal=['PB','IN'];
 		}else{
 			$('#searchText').prop('disabled',false);
-			//urlParam.filterCol=['source'];
-			//urlParam.filterVal=['PB'];
 
 			urlParam.searchCol=null;
 			urlParam.searchVal=null;
@@ -261,7 +190,5 @@ $(document).ready(function () {
      	refreshGrid('#jqGrid',urlParam);
 	}
 
-
-	
 	addParamField('#jqGrid',true,urlParam);
 });
