@@ -94,7 +94,7 @@ $(document).ready(function () {
 			close: function (event, ui) {
 				emptyFormdata(errorField, '#formdata');
 				parent_close_disabled(false);
-				$('#formdata .alert').detach();
+				$('.my-alert').detach();
 				//$('.alert').detach();
 				$("#formdata a").off();
 				if (oper == 'view') {
@@ -407,7 +407,7 @@ $(document).ready(function () {
 			close: function (event, ui) {
 				parent_close_disabled(false);
 				emptyFormdata(errorField, '#Fsvc');
-				$('#Fsvc .alert').detach();
+				$('.my-alert').detach();
 				//$('.alert').detach();
 				dialog_ChgGroup.off();
 				// $("#Fsvc a").off();
@@ -994,7 +994,7 @@ $(document).ready(function () {
 			close: function (event, ui) {
 				emptyFormdata(errorField, '#Ftype');
 				parent_close_disabled(false);
-				$('#Ftype .alert').detach();
+				$('.my-alert').detach();
 				//$('.alert').detach();
 				dialog_chgtype.off();
 				if (oper == 'view') {
