@@ -2,6 +2,13 @@
 
 @section('title', 'Cost Center')
 
+@section('style')
+
+input.uppercase {
+  text-transform: uppercase;
+}
+
+@endsection
 
 @section('body')
 		
@@ -17,14 +24,14 @@
 		<div class="form-group">
     		<label class="col-md-3 control-label" for="costcode">Cost Code</label>  
               <div class="col-md-2">
-              	<input id="costcode" name="costcode" type="text" maxlength="5" class="form-control input-sm" data-validation="required" frozeOnEdit>
+              	<input id="costcode" name="costcode" type="text" maxlength="5" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
               </div>
 		</div>
         
         <div class="form-group">
         	<label class="col-md-3 control-label" for="description">Description</label>  
               <div class="col-md-7">
-              <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+              <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm uppercase" data-validation="required">
               </div>
 		</div>
                         

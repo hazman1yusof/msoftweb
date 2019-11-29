@@ -2,6 +2,13 @@
 
 @section('title', 'Region')
 
+@section('style')
+
+input.uppercase {
+  text-transform: uppercase;
+}
+
+@endsection
 
 @section('body')
 		
@@ -14,14 +21,14 @@
 		<div class="form-group">
         	<label class="col-md-2 control-label" for="regioncode">Section</label>  
               <div class="col-md-4">
-              <input id="regioncode" name="regioncode" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
+              <input id="regioncode" name="regioncode" type="text" maxlength="30" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
               </div>
 		</div>
         
         <div class="form-group">
         	<label class="col-md-2 control-label" for="description">Description</label>  
               <div class="col-md-8">
-              <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+              <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm uppercase" data-validation="required">
               </div>
 		</div>
 

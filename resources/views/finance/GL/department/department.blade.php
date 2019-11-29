@@ -2,6 +2,14 @@
 
 @section('title', 'Department')
 
+@section('style')
+
+input.uppercase {
+  text-transform: uppercase;
+}
+
+@endsection
+
 @section('body')
 		
 @include('layouts.default_search_and_table')
@@ -13,14 +21,14 @@
 		<div class="form-group">
         	<label class="col-md-2 control-label" for="deptcode">Department</label>  
               <div class="col-md-4">
-              <input id="deptcode" name="deptcode" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
+              <input id="deptcode" name="deptcode" type="text" maxlength="30" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
               </div>
 		</div>
         
         <div class="form-group">
         	<label class="col-md-2 control-label" for="description">Description</label>  
               <div class="col-md-8">
-              <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+              <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm uppercase" data-validation="required">
               </div>
 		</div>
 
@@ -28,7 +36,7 @@
 		  	<label class="col-md-2 control-label" for="costcode">Cost Center</label>  
 		  		<div class="col-md-3">
 			  		<div class='input-group'>
-						<input id="costcode" name="costcode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="costcode" name="costcode" type="text" class="form-control input-sm uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 			  		</div>
 			  		<span class="help-block"></span>
@@ -46,7 +54,7 @@
         	<label class="col-md-2 control-label" for="region">Section</label>  
 		  		<div class="col-md-3">
 			  		<div class='input-group'>
-						<input id="region" name="region" type="text" class="form-control input-sm" data-validation="required">
+						<input id="region" name="region" type="text" class="form-control input-sm uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 			  		</div>
 			  		<span class="help-block"></span>
@@ -55,7 +63,7 @@
 		  	<label class="col-md-2 control-label" for="sector">Unit</label>  
 		  		<div class="col-md-3">
 			  		<div class='input-group'>
-						<input id="sector" name="sector" type="text" class="form-control input-sm" data-validation="required">
+						<input id="sector" name="sector" type="text" class="form-control input-sm uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 			  		</div>
 			  		<span class="help-block"></span>

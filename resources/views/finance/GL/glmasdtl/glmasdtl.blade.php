@@ -52,6 +52,11 @@
 	.bg-info{
 		background-color: white;
 	}
+
+	input.uppercase {
+  		text-transform: uppercase;
+	}
+
 @endsection
 
 @section('body')
@@ -63,7 +68,7 @@
 			  <div class="col-md-7">
 			  	<label class="control-label" for="glaccount">GL Account</label>  
 	  			<div class='input-group'>
-					<input id="glaccount" name="glaccount" type="text" class="form-control input-sm" autocomplete="off"/>
+					<input id="glaccount" name="glaccount" type="text" class="form-control input-sm uppercase" autocomplete="off"/>
 					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 	  			</div>
 					<span class="help-block"></span>

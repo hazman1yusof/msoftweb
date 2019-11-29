@@ -3,6 +3,7 @@
 @section('title', 'Debtor Master')
 
 
+
 @section('body')
 	
 	@include('layouts.default_search_and_table')
@@ -33,7 +34,7 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="name">Debtor Name</label>  
 				  <div class="col-md-8">
-				  <input id="name" name="name" type="text" class="form-control input-sm" data-validation="required">
+				  <input id="name" name="name" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
 				</div>
 				
