@@ -77,7 +77,7 @@
 				},
 				close: function( event, ui ) {
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
+					$('.my-alert').detach();
 					$("#formdata a").off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
@@ -105,7 +105,8 @@
 				//skipduplicate: true,
 				oper:oper,
 				table_name:'sysdb.period',
-				table_id:'year'
+				table_id:'year',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({
@@ -309,7 +310,7 @@
 				if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 					saveForm("#formdata",oper,saveParam,urlParam);
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
+					$('.my-alert').detach();
 					$("#jqGrid").trigger('reloadGrid');
 				}
 			});
