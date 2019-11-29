@@ -67,11 +67,9 @@ $(document).ready(function () {
 			}
 			if(oper!='view'){
 				dialog_authorid.on();
-				dialog_deptcodehd.on();
 			}
 			if(oper!='add'){
 				dialog_authorid.check(errorField);
-				dialog_deptcodehd.check(errorField);
 			}
 		},
 		beforeClose: function(event, ui){
@@ -94,7 +92,6 @@ $(document).ready(function () {
 			$('.alert').detach();
 			$("#formdata a").off();
 			dialog_authorid.off();
-			dialog_deptcodehd.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
 			refreshGrid("#jqGrid2",null,"kosongkan");
@@ -336,7 +333,7 @@ $("#jqGrid2").jqGrid({
 			 editable: true,
                  edittype: "select",
                  editoptions: {
-                     value: "Request:Request;Support:Support;Verify:Verify;Approve:Approve"
+                     value: "REQUEST:REQUEST;SUPPORT:SUPPORT;VERIFIED:VERIFIED;APPROVED:APPROVED"
                  }
 		},
 	
@@ -644,7 +641,6 @@ $("#saveDetailLabel").click(function () {
 	// mycurrency.check0value(errorField);
 	unsaved = false;
 	dialog_authorid.off();
-	dialog_deptcodehd.off();
 	//radbuts.check();
 	errorField.length = 0;
 if($('#formdata').isValid({requiredFields:''},conf,true)){
@@ -653,7 +649,6 @@ if($('#formdata').isValid({requiredFields:''},conf,true)){
 	} else {
 		mycurrency.formatOn();
 		dialog_authorid.on();
-		dialog_deptcodehd.on();
 	}
 });
 
@@ -663,7 +658,6 @@ $("#saveHeaderLabel").click(function () {
 	emptyFormdata(errorField, '#formdata2');
 	hideatdialogForm(true);
 	dialog_authorid.on();
-	dialog_deptcodehd.on();
 
 	enableForm('#formdata');
 	rdonly('#formdata');
@@ -676,10 +670,10 @@ $("#saveHeaderLabel").click(function () {
 var dialog_authorid = new ordialog(
 	'authorid','sysdb.users','#authorid',errorField,
 	{	colModel:[
-			{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
-			{label:'Password',name:'password',width:400,classes:'pointer',canSearch:true,or_search:true},
-			{label:'Dept Code',name:'deptcode',width:400,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true},
+			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true},
+			{label:'Password',name:'password',width:400,classes:'pointer'},
+			{label:'Dept Code',name:'deptcode',width:400,classes:'pointer'},
 		],
 		urlParam: {
 			filterCol:['compcode','recstatus'],
@@ -711,39 +705,6 @@ var dialog_authorid = new ordialog(
 		},'urlParam', 'radio', 'tab'
 	);
 dialog_authorid.makedialog();
-
-var dialog_deptcodehd = new ordialog(
-	'deptcode','sysdb.department','#deptcode',errorField,
-	{	colModel:[
-			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-			{label:'Unit',name:'sector'},
-		],
-		urlParam: {
-			filterCol:[ 'recstatus','compcode','sector'],
-			filterVal:[ 'A', 'session.compcode', 'session.unit']
-		},
-		ondblClickRow:function(){
-			//$('#recstatus').focus();
-		},
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-				$('#recstatus').focus();
-			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-				$('#'+obj.dialogname).dialog('close');
-			}
-		}	
-	},{
-		title:"Select Department",
-		open: function(){
-			dialog_deptcodehd.urlParam.filterCol=['recstatus','compcode','sector'];
-			dialog_deptcodehd.urlParam.filterVal=['A', 'session.compcode', 'session.unit'];
-		}
-	},'urlParam','radio','tab');
-dialog_deptcodehd.makedialog();
 
 var dialog_deptcodedtl = new ordialog(
 	'dtl_deptcode','sysdb.department',"#jqGrid2 input[name='dtl_deptcode']",errorField,
@@ -966,7 +927,7 @@ $("#gridAuthdtl").jqGrid({
 				 editable: true,
                      edittype: "select",
                      editoptions: {
-                         value: "Request:Request;Support:Support;Verify:Verify;Approve:Approve"
+                         value: "REQUEST:REQUEST;SUPPORT:SUPPORT;VERIFIED:VERIFIED;APPROVED:APPROVED"
                      }
 			},
 			{ label: 'CanDo', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,

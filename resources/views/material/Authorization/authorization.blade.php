@@ -99,14 +99,12 @@ i.fa {
 		
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Authorization Header
-					<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
-					</div>
-				<div class="panel-body" style="position: relative;">
-					<form class='form-horizontal' style='width:99%' id='formdata'>
+			<div class="panel-body" style="position: relative;">
+			<form class='form-horizontal' style='width:99%' id='formdata'>
 
 				{{ csrf_field() }}
 				<input type="hidden" name="idno">
+				<input type="hidden" name="deptcode" id="deptcode">
 
 				<div class="form-group">
 				  	<label class="col-md-2 control-label" for="authorid">Author ID</label>  
@@ -115,11 +113,11 @@ i.fa {
 								<input id="authorid" name="authorid" type="text" maxlength="15" class="form-control input-sm" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					 		 </div>
-					  <!--<span class="help-block"></span>-->
+					  		<span class="help-block"></span>
 				 		</div>
                 </div>
                 
-                <div class="form-group">                  
+            <div class="form-group">                  
                   	<label class="col-md-2 control-label" for="name">Name</label>  
 				  		<div class="col-md-5">
 				  			<input id="name" name="name" type="text" maxlength="100" class="form-control input-sm" rdonly>
@@ -129,7 +127,7 @@ i.fa {
                 <div class="form-group">
 				   	<label class="col-md-2 control-label" for="password">Password</label>  
 				 		<div class="col-md-3">
-				  			<input id="password" name="password" type="password" maxlength="15" class="form-control input-sm" rdonly>
+				  			<input id="password" name="password" type="text" maxlength="15" class="form-control input-sm" rdonly>
 				  		</div>
 				</div>
 
@@ -164,10 +162,10 @@ i.fa {
 						  	<input id="adddate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					</div>
 						    	
-				</div>
-			</div>			         
-        </div>        
+				</div>   
 			</form>
+			</div>			         
+        </div>     
 
 			<div class='panel panel-info'>
 				<div class="panel-heading">Authorization Detail</div>
@@ -185,7 +183,7 @@ i.fa {
 						</div>
 					</div>
 			</div>	
-		</div>
+	</div>
 
 		 <!--------------------------------Authdtl Form ------------------>
 
@@ -218,7 +216,7 @@ i.fa {
 							<select id="d_recstatus" name="dtl_recstatus" class="form-control input-sm">
 							    <option value="REQUEST">REQUEST</option>
 							    <option value="SUPPORT">SUPPORT</option>
-							    <option value="VERIFY">VERIFY</option>
+							    <option value="VERIFIED">VERIFIED</option>
 							    <option value="APPROVED">APPROVED</option>
 							</select>
 						</div>	

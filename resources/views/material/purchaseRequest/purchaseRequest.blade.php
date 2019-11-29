@@ -28,6 +28,10 @@ i.fa {
 	overflow: auto;
 }
 
+.whtspc_wrap{
+	white-space: pre-wrap !important;
+}
+
 @endsection
 
 @section('body')
@@ -38,7 +42,7 @@ i.fa {
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 	@if (Request::get('scope') == 'ALL')
-		<input id="recstatus_use" name="recstatus_use" type="hidden" value="POSTED">
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="REQUEST">
 	@else
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
 	@endif
@@ -98,18 +102,37 @@ i.fa {
 						</select>
 				</div>
 
+				<?php 
+					$scope_use = 'posted';
+
+					if(Request::get('scope') == 'ALL'){
+						$scope_use = 'posted';
+					}else if(Request::get('scope') == 'SUPPORT'){
+						$scope_use = 'support';
+					}else if(Request::get('scope') == 'VERIFIED'){
+						$scope_use = 'verify';
+					}else if(Request::get('scope') == 'APPROVED'){
+						$scope_use = 'approved';
+					}
+				?>
+
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">
+					<button 
+						type="button" 
+						class="btn btn-primary btn-sm" 
+						id="but_post_jq" 
+						data-oper="{{$scope_use}}" 
+						style="display: none;">
 						@if (Request::get('scope') == 'ALL')
 							{{'POST ALL'}}
 						@else
 							{{Request::get('scope').' ALL'}}
 						@endif
 					</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="{{$scope_use}}" style="display: none;">
 						@if (Request::get('scope') == 'ALL')
 							{{'POST'}}
 						@else

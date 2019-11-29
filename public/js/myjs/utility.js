@@ -913,6 +913,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function onTab(event){
+		console.log('tab')
 		renull_search(event.data.data);
 		var textfield = $(event.currentTarget);
 		if(event.key == "Tab" && textfield.val() != ""){
