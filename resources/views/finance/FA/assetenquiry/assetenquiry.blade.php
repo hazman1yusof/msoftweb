@@ -98,33 +98,33 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="assetcode">Category</label>
 					<div class="col-md-2">
-						<input id="assetcode" name="assetcode" type="text" class="form-control input-sm" data-validation="required"  frozeOnEdit>
+						<input id="assetcode" name="assetcode" type="text" class="form-control input-sm text-uppercase" data-validation="required"  frozeOnEdit>
 					</div>
 				<label class="col-md-2 control-label" for="assettype">Type</label>  
 				  	<div class="col-md-2">
-				  		<input id="assettype" name="assettype" type="text" maxlength="100" class="form-control input-sm" rdonly frozeOnEdit>
+				  		<input id="assettype" name="assettype" type="text" maxlength="100" class="form-control input-sm text-uppercase" rdonly frozeOnEdit>
 					  </div>
 				<label class="col-md-2 control-label" for="assetno">NO</label>  
 				  	<div class="col-md-2">
-				  		<input id="assetno" name="assetno" type="text" maxlength="100" class="form-control input-sm" rdonly frozeOnEdit>
+				  		<input id="assetno" name="assetno" type="text" maxlength="100" class="form-control input-sm text-uppercase" rdonly frozeOnEdit>
 				  	</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="description">Description</label>  
 					<div class="col-md-3">
-						<textarea class="form-control input-sm" name="description" rows="3" cols="55" maxlength="100" id="description"></textarea>
+						<textarea class="form-control input-sm text-uppercase" name="description" rows="3" cols="55" maxlength="100" id="description"></textarea>
 					</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="deptcode">Department</label>
 					<div class="col-md-2">
-						<input id="deptcode" name="deptcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 					</div>
 				<label class="col-md-2 control-label" for="loccode">Location</label>
 					<div class="col-md-2">
-						<input id="loccode" name="loccode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						<input id="loccode" name="loccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 					</div>
 			</div>
 
@@ -133,18 +133,18 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="suppcode">Supplier</label>
 					<div class="col-md-2">
-						<input id="suppcode" name="suppcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						<input id="suppcode" name="suppcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 					</div>
 				<label class="col-md-2 control-label" for="delordno">Delivery Order No.</label>
 					<div class="col-md-2">
-						<input id="delordno" name="delordno" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						<input id="delordno" name="delordno" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 					</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="invno">Invoice No.</label>
 					<div class="col-md-2">
-						<input id="invno" name="invno" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						<input id="invno" name="invno" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 					</div>
 				<label class="col-md-2 control-label" for="delorddate">Delivery Order Date</label>
 					<div class="col-md-2">
@@ -180,11 +180,11 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="purordno">Purchase No.</label>
 					<div class="col-md-2">
-						<input id="purordno" type="text" name="purordno" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						<input id="purordno" type="text" name="purordno" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 					</div>
 				<label class="col-md-2 control-label" for="purdate">Purchase Date</label>
 					<div class="col-md-2">
-						<input id="purdate" type="text" name="purdate" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						<input id="purdate" type="text" name="purdate" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 					</div>
 			</div>
 
@@ -205,25 +205,25 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="serialno">Serial No</label>  
 					<div class="col-md-2">
-						<input id="serialno" type="text" name="serialno" maxlength="12" class="form-control input-sm" >
+						<input id="serialno" type="text" name="serialno" maxlength="12" class="form-control input-sm text-uppercase">
 					</div>
 				<label class="col-md-2 control-label" for="lotno">Lot No</label>  
 					<div class="col-md-2">
-						<input id="lotno" type="text" name="lotno" maxlength="12" class="form-control input-sm" >
+						<input id="lotno" type="text" name="lotno" maxlength="12" class="form-control input-sm text-uppercase">
 					</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="casisno">Casis No</label>  
 					<div class="col-md-2">
-						<input id="casisno" name="casisno" type="text" class="form-control input-sm" 	data-validation="required">
+						<input id="casisno" name="casisno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
 			
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="engineno">Engine No</label>  
 					<div class="col-md-2">
-						<input id="engineno" name="engineno" maxlength="12" class="form-control input-sm" data-sanitize="required" >  
+						<input id="engineno" name="engineno" maxlength="12" class="form-control input-sm text-uppercase" data-sanitize="required" >  
 				 	</div>
 			</div>
 	

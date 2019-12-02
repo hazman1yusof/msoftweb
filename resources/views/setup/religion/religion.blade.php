@@ -12,16 +12,16 @@
 			<input type="hidden" name="idno">
 			
 			<div class="form-group">
-	        	<label class="col-md-2 control-label" for="Code">Code</label>  
+	        	<label class="col-md-2 control-label" for="Code">Religion Code</label>  
 	              <div class="col-md-3">
-	              <input id="Code" name="Code" type="text" maxlength="10" class="form-control input-sm" data-validation="required" frozeOnEdit>
+	              <input id="Code" name="Code" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 	              </div>
 			</div>
 	        
 	        <div class="form-group">
 	        	<label class="col-md-2 control-label" for="Description">Description</label>  
 	              <div class="col-md-8">
-	              <input id="Description" name="Description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+	              <input id="Description" name="Description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
 	              </div>
 			</div>
 	        

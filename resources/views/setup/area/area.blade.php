@@ -14,19 +14,19 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="areacode">Area Code</label>  
                       <div class="col-md-3">
-                      <input id="areacode" name="areacode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                      <input id="areacode" name="areacode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                       </div>
 				
                 	<label class="col-md-2 control-label" for="description">Area Group</label>  
                       <div class="col-md-3">
-                      <input id="areagroup" name="areagroup" type="text" class="form-control input-sm" data-validation="number, required">
+                      <input id="areagroup" name="areagroup" type="text" class="form-control input-sm text-uppercase" data-validation="number, required">
                       </div>
 				</div>
                 
                 <div class="form-group">
                 	<label class="col-md-2 control-label" for="description">Description</label>  
                       <div class="col-md-6">
-                      <input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
+                      <input id="description" name="description" type="text" class="form-control input-sm text-uppercase" data-validation="required">
                       </div>
 				</div>    
                 

@@ -21,14 +21,14 @@
 				  <div class="form-group">
 				  <label class="col-md-2 control-label" for="name">Name</label>  
 				  <div class="col-md-8">
-				  <input id="name" name="name" type="text" class="form-control input-sm" data-validation="required">
+				  <input id="name" name="name" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
 				</div>
 
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="address1">Address</label>  
 				  <div class="col-md-8">
-				  <input id="address1" name="address1" type="text" class="form-control input-sm" data-validation="required">
+				  <input id="address1" name="address1" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
 				</div>
 				
@@ -57,7 +57,7 @@
  				<div class="form-group">
 				  <label class="col-md-2 control-label" for="bmppath1">Bmppath</label>  
 				  <div class="col-md-4">
-				  <input id="bmppath1" name="bmppath1" type="text" class="form-control input-sm" data-validation="required">
+				  <input id="bmppath1" name="bmppath1" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
 				 </div>
 				

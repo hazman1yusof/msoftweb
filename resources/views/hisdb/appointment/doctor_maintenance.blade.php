@@ -232,7 +232,7 @@
 					<label class="col-md-2 control-label" for="dateto">To</label>
 					<div class="col-md-2">
 					<div class='input-group'>
-						<input id="dateto"" name="dateto" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
+						<input id="dateto" name="dateto" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
 	                    <span class="input-group-addon">
 	                        <span class="glyphicon-calendar glyphicon"></span>
 	                    </span>						
@@ -246,7 +246,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="remark">Remark</label>   
 			  			<div class="col-md-5">
-			  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm" data-validation="required" ></textarea>
+			  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm text-uppercase" data-validation="required" ></textarea>
 			  			</div>
 					</div>
 				</div>
@@ -279,7 +279,7 @@
 					<label class="col-md-2 control-label" for="dateto">To</label>
 					<div class="col-md-2">
 					<div class='input-group'>
-						<input id="dateto"" name="dateto" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
+						<input id="dateto" name="dateto" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
                     <span class="input-group-addon">
                         <span class="glyphicon-calendar glyphicon"></span>
                     </span>						
@@ -296,7 +296,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="remark">Remark</label>   
 		  			<div class="col-md-5">
-		  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm" ></textarea>
+		  				<textarea rows="5" id='_remark' name='remark' class="form-control input-sm text-uppercase"></textarea>
 		  			</div>
 				</div>
 				</div>
@@ -314,12 +314,12 @@
 	            <div class="form-group">
 					<label class="col-md-3 control-label" for="resourcecode">Resource Code</label>
 					<div class="col-md-3">
-						<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm" data-validation="required" >
+						<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
 
 					<label class="col-md-2 control-label" for="description">Description</label>
 					<div class="col-md-4">
-						<input type="text" name="description" id="description" class="form-control input-sm"   data-validation="required"  >
+						<input type="text" name="description" id="description" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
 				</div>
 			</form>
