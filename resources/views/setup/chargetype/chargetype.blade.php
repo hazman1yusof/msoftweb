@@ -2,6 +2,14 @@
 
 @section('title', 'Charge Type Setup')
 
+@section('style')
+
+input.uppercase {
+	text-transform: uppercase;
+}
+
+@endsection
+
 @section('body')
 
 	<!--***************************** Search + table ******************-->
@@ -57,25 +65,25 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="chgtype">Charge Type</label>  
 						<div class="col-md-3">
-							<input id="chgtype" name="chgtype" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+							<input id="chgtype" name="chgtype" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 						</div>
 					
 						<label class="col-md-2 control-label" for="description">Description</label>  
 						<div class="col-md-3">
-							<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
+							<input id="description" name="description" type="text" class="form-control input-sm uppercase" data-validation="required">
 						</div>
 					</div>
 			                
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="seqno">Sequence Number</label>  
 						<div class="col-md-3">
-							<input id="seqno" name="seqno" type="text" class="form-control input-sm">
+							<input id="seqno" name="seqno" type="text" class="form-control input-sm uppercase">
 						</div>
 
 						<label class="col-md-2 control-label" for="chggroup">Charge Group</label>  
 						<div class="col-md-3" >
 							<div class='input-group'>
-								<input id="chggroup" name="chggroup" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="chggroup" name="chggroup" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -86,7 +94,7 @@
 						<label class="col-md-2 control-label" for="ipdept">IP Dept</label>  
 						<div class="col-md-3" >
 							<div class='input-group'>
-								<input id="ipdept" name="ipdept" type="text" maxlength="12" class="form-control input-sm">
+								<input id="ipdept" name="ipdept" type="text" maxlength="12" class="form-control input-sm uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -95,7 +103,7 @@
 						<label class="col-md-2 control-label" for="opdept">OP Dept</label>  
 						<div class="col-md-3" >
 							<div class='input-group'>
-								<input id="opdept" name="opdept" type="text" maxlength="12" class="form-control input-sm">
+								<input id="opdept" name="opdept" type="text" maxlength="12" class="form-control input-sm uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -106,7 +114,7 @@
 						<label class="col-md-2 control-label" for="ipacccode">IP Account</label>  
 						<div class="col-md-3" >
 							<div class='input-group'>
-								<input id="ipacccode" name="ipacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="ipacccode" name="ipacccode" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -115,7 +123,7 @@
 						<label class="col-md-2 control-label" for="opacccode">OP Account</label>  
 						<div class="col-md-3" >
 							<div class='input-group'>
-								<input id="opacccode" name="opacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="opacccode" name="opacccode" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -136,7 +144,7 @@
 						<label class="col-md-2 control-label" for="otcacccode">OTC Account</label>   
 						<div class="col-md-3" >
 							<div class='input-group'>
-								<input id="otcacccode" name="otcacccode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="otcacccode" name="otcacccode" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -145,7 +153,7 @@
 						<label class="col-md-2 control-label" for="invcategory">Inventory Category</label>  
 						<div class="col-md-3" >
 							<div class='input-group'>
-								<input id="invcategory" name="invcategory" type="text" maxlength="12" class="form-control input-sm">
+								<input id="invcategory" name="invcategory" type="text" maxlength="12" class="form-control input-sm uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -163,12 +171,12 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="upduser">Last User</label>  
 						<div class="col-md-3">
-							<input id="upduser" name="upduser" type="text" class="form-control input-sm" rdonly>
+							<input id="upduser" name="upduser" type="text" class="form-control input-sm uppercase" rdonly>
 						</div>
 
 						<label class="col-md-2 control-label" for="upddate">Last Update</label>  
 						<div class="col-md-3">
-							<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+							<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm uppercase" rdonly>
 						</div>
 					</div> 
 					
@@ -176,7 +184,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
 						<div class="col-md-3">
-							<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly >
+							<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm uppercase" data-validation="required" rdonly >
 						</div>
 
 						<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  

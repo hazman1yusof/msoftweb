@@ -29,7 +29,7 @@ i.fa {
 }
 
 input.uppercase {
-  text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 @endsection

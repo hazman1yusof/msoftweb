@@ -2,6 +2,14 @@
 
 @section('title', 'Charge Group Setup')
 
+@section('style')
+
+input.uppercase {
+	text-transform: uppercase;
+}
+
+@endsection
+
 @section('body')
 
 	<!--***************************** Search + table ******************-->
@@ -84,12 +92,12 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="grpcode">Group Code</label>  
 						<div class="col-md-3">
-							<input id="grpcode" name="grpcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+							<input id="grpcode" name="grpcode" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 						</div>
 					
 						<label class="col-md-2 control-label" for="description">Description</label>  
 						<div class="col-md-3">
-							<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
+							<input id="description" name="description" type="text" class="form-control input-sm uppercase" data-validation="required">
 						</div>
 					</div>
 			                
@@ -103,7 +111,7 @@
 					<div class="form-group">
 						<label class="control-label col-md-2" for="seqno">Sequence Number</label>  
 						<div class="col-md-3">
-							<input id="seqno" name="seqno" type="text" class="form-control input-sm">
+							<input id="seqno" name="seqno" type="text" class="form-control input-sm uppercase">
 						</div>
 
 						<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
@@ -116,12 +124,12 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="lastuser">Add User</label>  
 						<div class="col-md-3">
-							<input id="lastuser" name="adduser" type="text" class="form-control input-sm" rdonly>
+							<input id="lastuser" name="adduser" type="text" class="form-control input-sm uppercase" rdonly>
 						</div>
 
 						<label class="col-md-2 control-label" for="lastupdate">Add Update</label>  
 						<div class="col-md-3">
-							<input id="lastupdate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+							<input id="lastupdate" name="adddate" type="text" maxlength="30" class="form-control input-sm uppercase" rdonly>
 						</div>
 					</div> 
 					<!-- <div class="form-group">
@@ -139,7 +147,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
 						<div class="col-md-3">
-							<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly >
+							<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm uppercase" data-validation="required" rdonly >
 						</div>
 
 						<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
