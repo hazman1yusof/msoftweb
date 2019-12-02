@@ -189,7 +189,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="purordhd_prdept">Purchase Department</label>
 									<div class="col-md-2">
 									  <div class='input-group'>
-										<input id="purordhd_prdept" name="purordhd_prdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="purordhd_prdept" name="purordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -210,7 +210,7 @@ i.fa {
                             	<label class="col-md-2 control-label" for="purordhd_deldept">Delivery Department</label>	 
 								<div class="col-md-2">
 								  <div class='input-group'>
-									<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
 								  <span class="help-block"></span>
@@ -219,7 +219,7 @@ i.fa {
 						        <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
 							    <div class="col-md-2">
 								  <div class='input-group'>
-									<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm" >
+									<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
 							    </div>
@@ -227,7 +227,7 @@ i.fa {
                                 <label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 
 							 	<div class="col-md-2">
 								  <div class='input-group'>
-									<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm" >
+									<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
 							  	</div>
@@ -238,7 +238,7 @@ i.fa {
                               <label class="col-md-2 control-label" for="purordhd_suppcode">Supplier Code</label>	 
 								 <div class="col-md-2">
 									  <div class='input-group'>
-										<input id="purordhd_suppcode" name="purordhd_suppcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="purordhd_suppcode" name="purordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -247,7 +247,7 @@ i.fa {
                                   <label class="col-md-2 control-label" for="credcode">Creditor</label>	  
 								  <div class="col-md-2">
 									  <div class='input-group'>
-										<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -315,7 +315,7 @@ i.fa {
 							   <div class="form-group">
 								<label class="col-md-2 control-label" for="purordhd_remarks">Remark</label>   
 						  			<div class="col-md-5">
-						  				<textarea rows="5" id='purordhd_remarks' name='purordhd_remarks' class="form-control input-sm" ></textarea>
+						  				<textarea rows="5" id='purordhd_remarks' name='purordhd_remarks' class="form-control input-sm text-uppercase"></textarea>
 						  			</div>
 					    		</div>
 

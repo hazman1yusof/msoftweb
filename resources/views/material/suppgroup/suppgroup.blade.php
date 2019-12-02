@@ -15,14 +15,14 @@
 				<div class="form-group">
                 	<label class="col-md-2 control-label" for="suppgroup">Supplier Group</label>  
                       <div class="col-md-3">
-                      <input id="suppgroup" name="suppgroup" type="text" maxlength="100" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                      <input id="suppgroup" name="suppgroup" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                       </div>
 				</div>
                 
                 <div class="form-group">
                 	<label class="col-md-2 control-label" for="description">Description</label>  
                       <div class="col-md-8">
-                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
                       </div>
 				</div>
 
@@ -30,7 +30,7 @@
 				  <label class="col-md-2 control-label" for="costcode">Cost Code</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="costcode" name="costcode" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+						<input id="costcode" name="costcode" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -39,7 +39,7 @@
 				  <label class="col-md-2 control-label" for="glaccno">GL Account No</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="glaccno" name="glaccno" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+						<input id="glaccno" name="glaccno" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -50,7 +50,7 @@
 				  <label class="col-md-2 control-label" for="advccode">Advance Cost Code</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="advccode" name="advccode" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+						<input id="advccode" name="advccode" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -59,7 +59,7 @@
 				  <label class="col-md-2 control-label" for="advglaccno">Advance Account No</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="advglaccno" name="advglaccno" type="text" maxlength="100" class="form-control input-sm">
+						<input id="advglaccno" name="advglaccno" type="text" maxlength="100" class="form-control input-sm text-uppercase">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>

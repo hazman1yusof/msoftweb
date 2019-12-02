@@ -110,7 +110,7 @@ i.fa {
 				  	<label class="col-md-2 control-label" for="authorid">Author ID</label>  
 				  		<div class="col-md-3">
 					 		 <div class='input-group'>
-								<input id="authorid" name="authorid" type="text" maxlength="15" class="form-control input-sm" data-validation="required">
+								<input id="authorid" name="authorid" type="text" maxlength="15" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					 		 </div>
 					  		<span class="help-block"></span>
@@ -203,7 +203,7 @@ i.fa {
 				  	<label class="col-md-2 control-label" for="d_deptcode">Dept Code</label>  
 				  		<div class="col-md-2">
 					  		<div class='input-group'>
-								<input id="d_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm" data-validation="required">
+								<input id="d_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					 		<span class="help-block"></span>

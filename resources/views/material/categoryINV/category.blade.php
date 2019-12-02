@@ -23,7 +23,7 @@
 				                  
 				  <label class="col-md-2 control-label" for="description">Description</label>  
 				  <div class="col-md-4">
-				  <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+				  <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
 				</div>
                 
@@ -32,7 +32,7 @@
 				  <label class="col-md-2 control-label" for="stockacct">Stock Account</label>  
 				  <div class="col-md-4">
 					  <div class='input-group'>
-						<input id="stockacct" name="stockacct" type="text" class="form-control input-sm" data-validation="required">
+						<input id="stockacct" name="stockacct" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -41,7 +41,7 @@
                   <label class="col-md-2 control-label" for="woffacct">Write Off Account</label>  
 				  <div class="col-md-4">
 					  <div class='input-group'>
-						<input id="woffacct" name="woffacct" type="text" class="form-control input-sm" data-validation="required">
+						<input id="woffacct" name="woffacct" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -53,7 +53,7 @@
 				  <label class="col-md-2 control-label" for="cosacct">COS Account</label>  
 				  <div class="col-md-4">
 					  <div class='input-group'>
-						<input id="cosacct" name="cosacct" type="text" class="form-control input-sm" data-validation="required">
+						<input id="cosacct" name="cosacct" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -62,7 +62,7 @@
                   <label class="col-md-2 control-label" for="expacct">Expenses Account</label>  
 				  <div class="col-md-4">
 					  <div class='input-group'>
-						<input id="expacct" name="expacct" type="text" class="form-control input-sm" data-validation="required">
+						<input id="expacct" name="expacct" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -74,7 +74,7 @@
 				  <label class="col-md-2 control-label" for="adjacct">Adjustment Account</label>  
 				  <div class="col-md-4">
 					  <div class='input-group'>
-						<input id="adjacct" name="adjacct" type="text" class="form-control input-sm" data-validation="required">
+						<input id="adjacct" name="adjacct" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -83,7 +83,7 @@
                   <label class="col-md-2 control-label" for="loanacct">Loan Account</label>  
 				  <div class="col-md-4">
 					  <div class='input-group'>
-						<input id="loanacct" name="loanacct" type="text" class="form-control input-sm" data-validation="required">
+						<input id="loanacct" name="loanacct" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>

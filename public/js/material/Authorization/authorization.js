@@ -325,9 +325,13 @@ $("#jqGrid2").jqGrid({
 		},
 		{ label: 'Deptcode', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
 			editrules:{required: false,custom:true, custom_func:cust_rules},
-			edittype:'custom',	editoptions:
-				{ custom_element:deptcodeCustomEdit,
-				custom_value:galGridCustomValue },
+			edittype:'custom',	
+			editoptions:
+				{ 
+					custom_element:deptcodeCustomEdit,
+					custom_value:galGridCustomValue, 
+					dataInit: function (element) { $(element).css('text-transform', 'uppercase'); }
+				},
 		},
 		{ label: 'Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
 			 editable: true,
@@ -404,6 +408,8 @@ $("#jqGrid2").jqGrid({
 	},
 	beforeSubmit: function(postdata, rowid){ 
 		dialog_deptcodedtl.check(errorField);
+	    postdata.dtl_deptcode = postdata.dtl_deptcode.toUpperCase();
+	    return [true, ''];
  	}
 });
 

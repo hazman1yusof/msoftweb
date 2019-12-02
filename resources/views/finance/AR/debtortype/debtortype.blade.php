@@ -16,7 +16,7 @@
 			<div class="form-group">
 			  <label class="col-md-2 control-label" for="debtortycode">Financial Class</label>  
 			  <div class="col-md-3">
-			  <input id="debtortycode" name="debtortycode" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
+			  <input id="debtortycode" name="debtortycode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 			  </div>
             </div>
 			
@@ -24,7 +24,7 @@
 			<div class="form-group">
 			  <label class="col-md-2 control-label" for="description">Description</label>  
 			  <div class="col-md-8">
-			  <input id="description" name="description" type="text" maxlength="40" class="form-control input-sm" data-validation="required">
+			  <input id="description" name="description" type="text" maxlength="40" class="form-control input-sm text-uppercase" data-validation="required">
 			  </div>
             </div>
             
@@ -32,7 +32,7 @@
 				<label class="col-md-2 control-label" for="actdebccode">Actual Cost</label>  
 				<div class="col-md-3">
 				  <div class='input-group'>
-					<input id="actdebccode" name="actdebccode" type="text" class="form-control input-sm" data-validation="required"/>
+					<input id="actdebccode" name="actdebccode" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
 					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 				  </div>
 				  <span class="help-block"></span>
@@ -41,7 +41,7 @@
 				<label class="col-md-2 control-label" for="actdebglacc">Actual Account</label>  
 				<div class="col-md-3">
 				  <div class='input-group'>
-					<input id="actdebglacc" name="actdebglacc" type="text" class="form-control input-sm" data-validation="required"/>
+					<input id="actdebglacc" name="actdebglacc" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
 					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 				  </div>
 				  <span class="help-block"></span>
@@ -52,7 +52,7 @@
 				<label class="col-md-2 control-label" for="depccode">Deposit Cost</label>  
 				<div class="col-md-3">
 				  <div class='input-group'>
-					<input id="depccode" name="depccode" type="text" class="form-control input-sm" data-validation="required"/>
+					<input id="depccode" name="depccode" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
 					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 				  </div>
 				  <span class="help-block"></span>
@@ -61,7 +61,7 @@
 				<label class="col-md-2 control-label" for="depglacc">Deposit Account</label>  
 				<div class="col-md-3">
 				  <div class='input-group'>
-					<input id="depglacc" name="depglacc" type="text" class="form-control input-sm" data-validation="required"/>
+					<input id="depglacc" name="depglacc" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
 					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 				  </div>
 				  <span class="help-block"></span>

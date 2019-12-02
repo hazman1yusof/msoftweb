@@ -154,7 +154,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_suppcode">Creditor</label>	 
 						 	<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -170,7 +170,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>	  
 							<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -185,13 +185,13 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_document">Document No</label>  
 				  			<div class="col-md-3">
-								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm">
+								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
 				  			</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_category">Category</label>	  
 				  			<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_category" name="apacthdr_category" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<input id="apacthdr_category" name="apacthdr_category" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -202,7 +202,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>
 							<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -212,7 +212,7 @@ i.fa {
 					<div class="form-group">
 			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
 			    			<div class="col-md-8"> 
-			    				<textarea class="form-control input-sm" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
+			    				<textarea class="form-control input-sm text-uppercase" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
 			    			</div>
 			   		</div>
 

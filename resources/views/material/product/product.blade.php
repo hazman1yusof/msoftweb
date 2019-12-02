@@ -85,7 +85,7 @@
 						<div class="col-md-4">
 						  	<label class="control-label" for="itemcode">Item Code</label>  
 				  			<div class='input-group'>
-								<input id="itemcodesearch" name="itemcode" type="text" class="form-control input-sm" data-validation="required">
+								<input id="itemcodesearch" name="itemcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 				  			</div>
 								<span class="help-block"></span>
@@ -94,7 +94,7 @@
 						<div class="col-md-4">
 						  	<label class="control-label" for="uomcode">UOM Code</label>  
 				  				<div class='input-group' id="uomcodesearch_parent">
-									<input id="uomcodesearch" name="uomcode" type="text" class="form-control input-sm" data-validation="required">
+									<input id="uomcodesearch" name="uomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 				  				</div>
 									<span class="help-block"></span>
@@ -121,24 +121,24 @@
 						<div class="form-group">
 						  	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
 						  		<div class="col-md-2" id="itemcode_parent">
-									<input id="itemcode" name="itemcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required" frozeOnEdit>
+									<input id="itemcode" name="itemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 						 		 </div>
 
 						 	<label class="col-md-3 control-label" for="description">Item Description</label>  
 						  		<div class="col-md-5" id="description_parent">
-						  			<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						  			<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 						  		</div>
 					    </div>
 
 						<div class="form-group">                   
                   			<label class="col-md-2 control-label" for="generic">Generic Name</label>  
 				 				<div class="col-md-3">
-				  					<input id="generic" name="generic" type="text" maxlength="40" class="form-control input-sm" rdonly>
+				  					<input id="generic" name="generic" type="text" maxlength="40" class="form-control input-sm text-uppercase" rdonly>
 				  				</div>
 
 				  			<label class="col-md-2 control-label" for="uomcode">UOM Code</label>  
 						  		<div class="col-md-2" id="uomcode_parent">
-									<input id="uomcode" name="uomcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required" frozeOnEdit>
+									<input id="uomcode" name="uomcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 						 		 </div>
 						</div>
 
@@ -152,7 +152,7 @@
 
                   			<label class="col-md-2 control-label" for="productcat">Product Category</label>  
 				  				<div class="col-md-2" id="uomcode_parent">
-									<input id="productcat" name="productcat" type="text" maxlength="12" class="form-control input-sm" data-validation="required" frozeOnEdit rdonly>
+									<input id="productcat" name="productcat" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit rdonly>
 						 		 </div>
 						</div>
                 
@@ -160,7 +160,7 @@
 				 			<label class="col-md-2 control-label" for="subcatcode">Sub Category</label>  
 				  				<div class="col-md-3">
 				  					<div class='input-group'>
-				  						<input id="subcatcode" name="subcatcode" type="text" maxlength="15" class="form-control input-sm" rdonly>
+				  						<input id="subcatcode" name="subcatcode" type="text" maxlength="15" class="form-control input-sm text-uppercase" rdonly>
 				  						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  				</div>
 					  					<span class="help-block"></span>
@@ -169,7 +169,7 @@
                   			<label class="col-md-2 control-label" for="pouom">PO UOM</label>  
 				  				<div class="col-md-3">
 					  				<div class='input-group'>
-										<input id="pouom" name="pouom" type="text" class="form-control input-sm" rdonly>
+										<input id="pouom" name="pouom" type="text" class="form-control input-sm text-uppercase" rdonly>
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  				</div>
 					  					<span class="help-block"></span>
@@ -180,7 +180,7 @@
 						  	<label class="col-md-2 control-label" for="suppcode">Supplier Code</label>  
 						  		<div class="col-md-3">
 							  		<div class='input-group'>
-										<input id="suppcode" name="suppcode" type="text" class="form-control input-sm" rdonly>
+										<input id="suppcode" name="suppcode" type="text" class="form-control input-sm text-uppercase" rdonly>
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  		</div>
 							  			<span class="help-block"></span>
@@ -189,7 +189,7 @@
                   			<label class="col-md-2 control-label" for="mstore">Main Store</label>  
 				 				<div class="col-md-3">
 					  				<div class='input-group'>
-										<input id="mstore" name="mstore" type="text" class="form-control input-sm" rdonly>
+										<input id="mstore" name="mstore" type="text" class="form-control input-sm text-uppercase" rdonly>
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  				</div>
 					  					<span class="help-block"></span>
@@ -200,7 +200,7 @@
 						  	<label class="col-md-2 control-label" for="TaxCode">Tax Code</label>  
 						  		<div class="col-md-3">
 							  		<div class='input-group'>
-										<input id="TaxCode" name="TaxCode" type="text" class="form-control input-sm" rdonly>
+										<input id="TaxCode" name="TaxCode" type="text" class="form-control input-sm text-uppercase" rdonly>
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  		</div>
 							  			<span class="help-block"></span>
@@ -355,14 +355,14 @@
 				<div class="form-group">
                 	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
                     	<div class="col-md-4">
-                      		<input id="itemcodeAddNew" name="itemcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                      		<input id="itemcodeAddNew" name="itemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                       	</div>
 				</div>
                 
                 <div class="form-group">
                 	<label class="col-md-2 control-label" for="description">Description</label>  
                       <div class="col-md-8">
-                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
                       </div>
 				</div>
 
@@ -379,13 +379,13 @@
 				  		<div class='input-group'>
 
                 			@if (request()->get('groupcode') == 'Stock')
-				  			<input id="productcatAddNew_stock" name="productcat" type="text" class="form-control input-sm" data-validation="required">
+				  			<input id="productcatAddNew_stock" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
 				  			@elseif (request()->get('groupcode') == 'Asset')
-				  			<input id="productcatAddNew_asset" name="productcat" type="text" class="form-control input-sm" data-validation="required">
+				  			<input id="productcatAddNew_asset" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
 				  			@else
-				  			<input id="productcatAddNew_other" name="productcat" type="text" class="form-control input-sm" data-validation="required">
+				  			<input id="productcatAddNew_other" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
 				  			@endif
 

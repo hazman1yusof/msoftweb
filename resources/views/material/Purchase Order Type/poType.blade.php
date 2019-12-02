@@ -15,14 +15,14 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="potype">PO Type</label>  
                       <div class="col-md-4">
-                      <input id="potype" name="potype" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                      <input id="potype" name="potype" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                       </div>
 				</div>
                 
                 <div class="form-group">
                 	<label class="col-md-2 control-label" for="typedec">Description</label>  
                       <div class="col-md-8">
-                      <input id="typedec" name="typedec" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+                      <input id="typedec" name="typedec" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
                       </div>
 				</div>
 

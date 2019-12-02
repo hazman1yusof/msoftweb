@@ -213,7 +213,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="purreqhd_reqdept">Request Department</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="purreqhd_reqdept" name="purreqhd_reqdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="purreqhd_reqdept" name="purreqhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -229,7 +229,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="purreqhd_prdept">Purchase Department</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="purreqhd_prdept" name="purreqhd_prdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="purreqhd_prdept" name="purreqhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -245,7 +245,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="purreqhd_suppcode">Supplier Code</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="purreqhd_suppcode" name="purreqhd_suppcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="purreqhd_suppcode" name="purreqhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -293,7 +293,7 @@ i.fa {
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="purreqhd_remarks">Remark</label>   
 						  			<div class="col-md-6">
-						  				<textarea rows="5" id='purreqhd_remarks' name='purreqhd_remarks' class="form-control input-sm" ></textarea>
+						  				<textarea rows="5" id='purreqhd_remarks' name='purreqhd_remarks' class="form-control input-sm text-uppercase" ></textarea>
 						  			</div>
 					    	</div>
 

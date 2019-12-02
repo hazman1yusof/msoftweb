@@ -2,8 +2,6 @@
 
 @section('title', 'Debtor Master')
 
-
-
 @section('body')
 	
 	@include('layouts.default_search_and_table')
@@ -41,25 +39,25 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="address1">Address</label>  
 				  <div class="col-md-8">
-				  <input id="address1" name="address1" type="text" class="form-control input-sm" data-validation="required">
+				  <input id="address1" name="address1" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address2" name="address2" type="text" class="form-control input-sm">
+				  <input id="address2" name="address2" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address4" name="address4" type="text" class="form-control input-sm">
+				  <input id="address4" name="address4" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
                 
                 <div class="form-group">
 				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address4" name="address4" type="text" class="form-control input-sm">
+				  <input id="address4" name="address4" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
                 
@@ -71,7 +69,7 @@
 				
 				  <label class="col-md-2 control-label" for="payto">Payable To</label>  
 				  <div class="col-md-3">
-				  <input id="payto" name="payto" type="text" class="form-control input-sm">
+				  <input id="payto" name="payto" type="text" class="form-control input-sm text-uppercase">
 				</div>
 				</div>
 				
@@ -90,12 +88,12 @@
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="contact">Contact</label>  
                   <div class="col-md-3">
-				  <input id="contact" name="contact" type="text" class="form-control input-sm">
+				  <input id="contact" name="contact" type="text" class="form-control input-sm text-uppercase">
 				  </div>
                  
 				  <label class="col-md-2 control-label" for="position">Position</label>  
                   <div class="col-md-3">
-				  <input id="position" name="position" type="text" class="form-control input-sm">
+				  <input id="position" name="position" type="text" class="form-control input-sm text-uppercase">
 				  </div>
                 </div>
                   
@@ -135,12 +133,12 @@
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="coverageip">Coverage IP</label>  
 				  <div class="col-md-3">
-				  <input ids="coverageip" name="coverageip" id="coverageip" type="text" class="form-control input-sm">
+				  <input ids="coverageip" name="coverageip" id="coverageip" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				  
 				  <label class="col-md-2 control-label" for="coverageop">Coverage OP</label>  
 				  <div class="col-md-3">
-				  <input id="coverageop" name="coverageop" type="text" class="form-control input-sm">
+				  <input id="coverageop" name="coverageop" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
 				  
@@ -179,12 +177,12 @@
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="crgroup">Credit Control Group</label>  
                   <div class="col-md-3">
-				  <input id="crgroup" name="crgroup" type="text" class="form-control input-sm">
+				  <input id="crgroup" name="crgroup" type="text" class="form-control input-sm text-uppercase">
 				  </div>
                  
 				  <label class="col-md-2 control-label" for="debtorgroup">Debtor Group</label>  
                   <div class="col-md-3">
-				  <input id="debtorgroup" name="debtorgroup" type="text" class="form-control input-sm">
+				  <input id="debtorgroup" name="debtorgroup" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
 					
