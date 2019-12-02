@@ -28,6 +28,10 @@ i.fa {
 	overflow: auto;
 }
 
+input.uppercase {
+  text-transform: uppercase;
+}
+
 @endsection
 
 @section('body') 
@@ -109,12 +113,12 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="billtype">Bill Type</label>  
 				<div class="col-md-3">
-					<input id="billtype" name="billtype" type="text" maxlength="5" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+					<input id="billtype" name="billtype" type="text" maxlength="5" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 				</div>
 
 				<label class="col-md-2 control-label" for="a.description">Description</label>  
 				<div class="col-md-3">
-					<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
+					<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm uppercase" data-validation="required">
 				</div>
 			</div>
 
@@ -230,12 +234,12 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_billtype">Bill Type</label>  
 				<div class="col-md-3">
-					<input id="svc_billtype" name="svc_billtype" type="text" class="form-control input-sm text-uppercase" rdonly>
+					<input id="svc_billtype" name="svc_billtype" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 				
 				<label class="col-md-2 control-label" for="m_description">Description</label>  
 				<div class="col-md-3">
-					<input id="m_description" name="m_description" type="text" class="form-control input-sm text-uppercase" rdonly>
+					<input id="m_description" name="m_description" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 			</div>
 
@@ -243,7 +247,7 @@ i.fa {
 				<label class="col-md-2 control-label" for="svc_chggroup">Chg. Group</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="svc_chggroup" name="svc_chggroup" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="svc_chggroup" name="svc_chggroup" type="text" class="form-control input-sm uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
@@ -284,7 +288,7 @@ i.fa {
 				  
 				<label class="col-md-2 control-label" for="svc_discchgcode">Disc Chg Code</label>  
 				<div class="col-md-3">
-					<input id="svc_discchgcode" name="svc_discchgcode" type="text" class="form-control input-sm" data-validation="number" data-validation-allowing="float">
+					<input id="svc_discchgcode" name="svc_discchgcode" type="text" class="form-control input-sm uppercase" data-validation="number" data-validation-allowing="float">
 				</div>
 			</div>
 
@@ -367,12 +371,12 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_chggroup">Chg Group</label>   
 				<div class="col-md-3">
-					<input id="i_chggroup" name="i_chggroup" type="text" class="form-control input-sm text-uppercase" rdonly>
+					<input id="i_chggroup" name="i_chggroup" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 				
 				<label class="col-md-2 control-label" for="c_description">Description</label>  
 				<div class="col-md-3">
-					<input id="c_description" name="c_description" type="text" class="form-control input-sm text-uppercase" rdonly>
+					<input id="c_description" name="c_description" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 			</div>
 
@@ -380,7 +384,7 @@ i.fa {
 				<label class="col-md-2 control-label" for="i_chgcode">Chg. Code</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="i_chgcode" name="i_chgcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+						<input id="i_chgcode" name="i_chgcode" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
@@ -484,12 +488,12 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="t_chggroup">Chg Group</label>   
 				<div class="col-md-3">
-					<input id="i_chggroup" name="t_chggroup" type="text" class="form-control input-sm text-uppercase" rdonly>
+					<input id="i_chggroup" name="t_chggroup" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 				
 				<label class="col-md-2 control-label" for="cg_description">Description</label>  
 				<div class="col-md-3">
-					<input id="cg_description" name="cg_description" type="text" class="form-control input-sm text-uppercase" rdonly>
+					<input id="cg_description" name="cg_description" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 			</div>
 
@@ -497,7 +501,7 @@ i.fa {
 				<label class="col-md-2 control-label" for="t_chgtype">Chg. Type</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="t_chgtype" name="t_chgtype" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+						<input id="t_chgtype" name="t_chgtype" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
@@ -524,7 +528,7 @@ i.fa {
 				
 				<label class="col-md-2 control-label" for="t_discchgcode">Disc Chg Code</label>  
 				<div class="col-md-3">
-					<input id="t_discchgcode" name="t_discchgcode" type="text" class="form-control input-sm" data-validation="number" data-validation-allowing="float">
+					<input id="t_discchgcode" name="t_discchgcode" type="text" class="form-control input-sm uppercase" data-validation="number" data-validation-allowing="float">
 				</div>
 			</div>
 
