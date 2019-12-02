@@ -158,7 +158,7 @@
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('#formdata .alert').detach();
+					$('.my-alert').detach();
 					dialog_depccode.off();
 					dialog_depglacc.off();
 					if(oper=='view'){

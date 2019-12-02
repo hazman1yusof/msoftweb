@@ -91,7 +91,7 @@
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					$('#formdata .alert').detach();
+					$('.my-alert').detach();
 					dialog_costcode.off();
 					dialog_glaccount.off();
 					dialog_depccode.off();

@@ -105,6 +105,7 @@ $(document).ready(function () {
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdata2');
 			// $('.alert').detach();
+			$('.my-alert').detach();
 			// $("#formdata a").off();
 			dialog_authorise.off();
 			dialog_prdept.off();
@@ -192,7 +193,8 @@ $(document).ready(function () {
 		fixPost:'true',
 		oper:oper,
 		table_name:'material.delordhd',
-		table_id:'delordhd_recno'
+		table_id:'delordhd_recno',
+		checkduplicate:'true'
 	};
 	function padzero(cellvalue, options, rowObject){
 		let padzero = 5, str="";

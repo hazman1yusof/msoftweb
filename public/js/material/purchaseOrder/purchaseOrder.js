@@ -206,6 +206,7 @@ $(document).ready(function () {
 		oper: oper,
 		table_name: 'material.purordhd',
 		table_id: 'purordhd_recno',
+		checkduplicate:'true'
 
 	};
 

@@ -196,7 +196,8 @@ $(document).ready(function () {
 		fixPost:'true',
 		oper:oper,
 		table_name:'material.delordhd',
-		table_id:'delordhd_recno'
+		table_id:'delordhd_recno',
+		checkduplicate: 'true'
 	};
 	function padzero(cellvalue, options, rowObject){
 		let padzero = 5, str="";

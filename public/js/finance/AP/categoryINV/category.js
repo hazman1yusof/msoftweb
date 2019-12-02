@@ -95,7 +95,7 @@
 				},
 				close: function( event, ui ) {
 					emptyFormdata('#formdata');
-					$('.alert').detach();
+					$('.my-alert').detach();
 					$("#formdata a").off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
