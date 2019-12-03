@@ -89,7 +89,7 @@ $(document).ready(function () {
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdata2');
-			$('.my-alert').detach(););
+			$('.my-alert').detach();
 			$("#formdata a").off();
 			dialog_authorid.off();
 			$(".noti").empty();
