@@ -837,6 +837,7 @@ public function verify(Request $request){
                 'pricecode' => $value->pricecode, 
                 'itemcode' => $value->itemcode, 
                 'uomcode' => $value->uomcode, 
+                'pouom' => $value->pouom, 
                 'qtyorder' => $value->qtyrequest, 
                 'unitprice' => $value->unitprice, 
                 'taxcode' => $value->taxcode, 
