@@ -1642,7 +1642,7 @@ $(document).ready(function () {
 				],
 			urlParam: {
 					filterCol:['h.reqdept','h.recstatus', 'h.purordno'],
-					filterVal:[$("#purordhd_reqdept").val(),'POSTED', '0']
+					filterVal:[$("#purordhd_reqdept").val(),'APPROVED', '0']
 				},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_purreqno.gridname);
@@ -1726,7 +1726,7 @@ $(document).ready(function () {
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_purreqno.urlParam.fixPost = "true";
 				dialog_purreqno.urlParam.filterCol = ['h.reqdept','h.recstatus', 'h.purordno'];
-				dialog_purreqno.urlParam.filterVal = [$("#purordhd_reqdept").val(),'POSTED', '0'];
+				dialog_purreqno.urlParam.filterVal = [$("#purordhd_reqdept").val(),'APPROVED', '0'];
 			}
 		},'none'
 	);

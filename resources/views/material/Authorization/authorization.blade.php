@@ -246,7 +246,7 @@ i.fa {
 
 				  	<label class="col-md-2 control-label" for="d_maxlimit">Max Limit</label>  
 				  		<div class="col-md-2">
-				  			<input id="d_maxlimit" name="dtl_maxlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+				  			<input id="d_maxlimit" name="dtl_maxlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation="required">
 				  		</div>
                 </div>
 			</form>

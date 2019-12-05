@@ -644,7 +644,7 @@ function galGridCustomValue (elem, operation, value){
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 $("#saveDetailLabel").click(function () {
 	mycurrency.formatOff();
-	// mycurrency.check0value(errorField);
+	mycurrency.check0value(errorField);
 	unsaved = false;
 	dialog_authorid.off();
 	//radbuts.check();
@@ -803,7 +803,7 @@ dialog_deptcodeD.makedialog();
 var buttItem1=[{
 	text: "Save",click: function() {
 		mycurrency.formatOff();
-		// mycurrency.check0value(errorField);
+		mycurrency.check0value(errorField);
 		if( $('#FAuthdtl').isValid({requiredFields: ''}, {}, true) ) {
 			saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",oper_authdtl,saveParam_authdtl,urlParam_authdtl);
 		}else{

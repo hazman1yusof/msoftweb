@@ -19,6 +19,7 @@ class AuthorizationDetailController extends defaultController
 
     public function form(Request $request)
     {   
+        DB::enableQueryLog();
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -47,13 +48,22 @@ class AuthorizationDetailController extends defaultController
                 $authorid_ = $request->authorid;
             }
 
-            $duplicate = DB::table('material.authdtl')
+            if($request->dtl_deptcode == 'ALL' || $request->dtl_deptcode == 'all'){
+                $duplicate = DB::table('material.authdtl')
                             ->where('compcode','=',session('compcode'))
                             ->where('authorid','=',$authorid_)
                             ->where('trantype','=',$request->dtl_trantype)
-                            ->where('deptcode','=',$request->dtl_deptcode)
                             ->where('recstatus','=',$request->dtl_recstatus)
                             ->exists();
+            }else{
+                $duplicate = DB::table('material.authdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('authorid','=',$authorid_)
+                            ->where('trantype','=',$request->dtl_trantype)
+                            ->whereIn('deptcode', [$request->dtl_deptcode, "ALL", "all"])
+                            ->where('recstatus','=',$request->dtl_recstatus)
+                            ->exists();
+            }
 
             if(!$duplicate){
                 $duplicate2 = DB::table('material.authdtl')
@@ -119,6 +129,44 @@ class AuthorizationDetailController extends defaultController
 
             if(empty($request->dtl_cando)){
                 $request->dtl_cando = $authdtl_get->cando;
+            }
+
+            $duplicate = false;
+
+            if($request->dtl_deptcode == 'ALL' || $request->dtl_deptcode == 'all'){
+                $duplicate = DB::table('material.authdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('authorid','=',$authorid_)
+                            ->where('deptcode','!=',$authdtl_get->deptcode)
+                            ->where('trantype','=',$request->dtl_trantype)
+                            ->where('recstatus','=',$request->dtl_recstatus)
+                            ->exists();
+
+            }else if($authdtl_get->deptcode=='all' || $authdtl_get->deptcode=='ALL'){
+                $duplicate = DB::table('material.authdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('authorid','=',$authorid_)
+                            ->where('trantype','=',$request->dtl_trantype)
+                            ->where('deptcode','==',$request->deptcode)
+                            ->where('recstatus','=',$request->dtl_recstatus)
+                            ->exists();
+            }  
+
+            if($duplicate){
+                throw new \Exception("Duplicate entry", 500);
+            }
+
+            $duplicate2 = DB::table('material.authdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('authorid','!=',$authorid_)
+                        ->where('maxlimit','=',$request->dtl_maxlimit)
+                        ->where('trantype','=',$request->dtl_trantype)
+                        ->where('deptcode','=',$request->dtl_deptcode)
+                        ->where('recstatus','=',$request->dtl_recstatus);
+
+            if($duplicate2->exists()){
+                $first_get = $duplicate2->first();
+                throw new \Exception("Authorise Entry has been entered by ".$first_get->authorid, 500);
             }
 
             ///1. update detail
