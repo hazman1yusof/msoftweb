@@ -306,8 +306,8 @@ $(document).ready(function () {
 	var dialog_ChgGroup = new ordialog(
 		'chggroup','hisdb.chggroup',"#Fsvc :input[name='svc_chggroup']",errorField,
 		{	colModel:[
-				{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -335,6 +335,39 @@ $(document).ready(function () {
 		},'urlParam', 'radio', 'tab'
 	);
 	dialog_ChgGroup.makedialog();
+
+	var dialog_discChargeCode = new ordialog(
+		'svc_discchgcode','hisdb.chgmast',"#Fsvc :input[name='svc_discchgcode']",errorField,
+		{	colModel:[
+				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']
+			},
+			ondblClickRow: function () {
+				$('#svc_percent_').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#svc_percent_').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}		
+		},{
+			title:"Select Charge Code",
+			open: function(){
+				dialog_discChargeCode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_discChargeCode.urlParam.filterVal=['session.compcode','A']
+			}
+		},'urlParam', 'radio', 'tab', false
+	);
+	dialog_discChargeCode.makedialog();
 
 	var buttsvc1 = [{
 		text: "Save", click: function () {
@@ -388,9 +421,11 @@ $(document).ready(function () {
 				}
 				if (oper_svc == 'add') {
 					dialog_ChgGroup.on();
+					dialog_discChargeCode.on();
 				}
 				if (oper_svc == 'edit' && $('#jqGriditem').jqGrid('getGridParam', 'reccount') < 1) {
 					dialog_ChgGroup.on();
+					dialog_discChargeCode.on();
 
 				}
 				if (oper_svc == 'edit' && $('#jqGriditem').jqGrid('getGridParam', 'reccount') >= 1) {
@@ -398,6 +433,7 @@ $(document).ready(function () {
 				}
 				if (oper_svc != 'add') {
 					dialog_ChgGroup.check(errorField);
+					dialog_discChargeCode.check(errorField);
 				}
 				if (oper_svc != 'view') {
 					set_compid_from_storage("input[name='svc_lastcomputerid']","input[name='svc_lastipaddress']","input[name='svc_computerid']","input[name='svc_ipaddress']");
@@ -410,6 +446,7 @@ $(document).ready(function () {
 				$('.my-alert').detach();
 				//$('.alert').detach();
 				dialog_ChgGroup.off();
+				dialog_discChargeCode.off();
 				// $("#Fsvc a").off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", buttsvc1);
@@ -630,8 +667,8 @@ $(document).ready(function () {
 	var dialog_chgcode = new ordialog(
 		'chgmast','hisdb.chgmast',"#Fitem :input[name*='i_chgcode']",errorField,
 		{	colModel:[
-				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus','chggroup'],
@@ -740,11 +777,11 @@ $(document).ready(function () {
 		url: '/util/get_table_default',
 		field: '',
 		fixPost: 'true',//replace underscore with dot
-		table_name: ['hisdb.billtyitem AS i', 'hisdb.billtysvc AS svc', 'hisdb.chggroup AS c'],
+		table_name: ['hisdb.billtyitem AS i', 'hisdb.billtysvc AS svc', 'hisdb.chggroup AS c', 'hisdb.chgmast as m'],
 		table_id: 'i_chgcode',
-		join_type: ['JOIN', 'JOIN'],
-		join_onCol: ['i.chggroup', 'c.grpcode'],
-		join_onVal: ['svc.chggroup', 'i.chggroup'],
+		join_type: ['JOIN', 'JOIN', 'JOIN'],
+		join_onCol: ['i.chggroup', 'c.grpcode', 'i.chgcode'],
+		join_onVal: ['svc.chggroup', 'i.chggroup', 'm.chgcode'],
 		filterCol: ['i.billtype', 'i.compcode', 'i.chggroup', 'svc.allitem', 'svc.compcode'],
 		filterVal: ['', 'session.compcode', '', '0', 'session.compcode'],
 		sort_idno: true,
@@ -773,7 +810,8 @@ $(document).ready(function () {
 			{ label: 'Bill Type', name: 'i_billtype', width: 50, hidden: true },
 			{ label: 'Chg. Group', name: 'i_chggroup', width: 90, hidden: true },
 			{ label: 'Description', name: 'c_description', width: 90, hidden: true },
-			{ label: 'Chg Code', name: 'i_chgcode', width: 90, classes: 'wrap', canSearch: true, checked: true },
+			{ label: 'Chg Code', name: 'i_chgcode', width: 90, classes: 'wrap', canSearch: true },
+			{ label: 'Description', name: 'm_description', width: 90, classes: 'wrap', canSearch: true, checked: true },
 			{ label: 'Price', name: 'i_price', width: 50, classes: 'wrap', },
 			{ label: 'Amount', name: 'i_amount', width: 50, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'discrate', name: 'i_discrate', width: 50, hidden: true },
@@ -906,8 +944,8 @@ $(document).ready(function () {
 	var dialog_chgtype = new ordialog(
 		'chgtype','hisdb.chgtype',"#Ftype :input[name*='t_chgtype']",errorField,
 		{	colModel:[
-				{label:'Charge Type',name:'chgtype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Charge Type',name:'chgtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus','chggroup'],
@@ -935,6 +973,39 @@ $(document).ready(function () {
 		},'urlParam', 'radio', 'tab'
 	);
 	dialog_chgtype.makedialog();
+
+	var dialog_discChgCode = new ordialog(
+		't_discchgcode','hisdb.chgmast',"#Ftype :input[name='t_discchgcode']",errorField,
+		{	colModel:[
+				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']
+			},
+			ondblClickRow: function () {
+				$('#t_percent_').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#t_percent_').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Charge Code",
+			open: function(){
+				dialog_discChgCode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_discChgCode.urlParam.filterVal=['session.compcode','A']
+			}
+		},'urlParam', 'radio', 'tab', false
+	);
+	dialog_discChgCode.makedialog();
 	
 	var butttype1 = [{
 		text: "Save", click: function () {
@@ -987,12 +1058,16 @@ $(document).ready(function () {
 				}
 				if (oper_type == 'add') {
 					dialog_chgtype.on();
+					dialog_discChgCode.on();
 				}
 				if (oper_type != 'add') {
 					dialog_chgtype.check(errorField);
+					dialog_discChgCode.check(errorField);
 				}
 				if(oper_type!='view'){
 					set_compid_from_storage("input[name='t_lastcomputerid']","input[name='t_lastipaddress']","input[name='t_computerid']","input[name='t_ipaddress']");
+					// dialog_chgtype.on();
+					dialog_discChgCode.on();
 				}
 				/*if(oper_item!='add'){
 					dialog_chgtype.check(errorField);
@@ -1004,6 +1079,7 @@ $(document).ready(function () {
 				$('.my-alert').detach();
 				//$('.alert').detach();
 				dialog_chgtype.off();
+				dialog_discChgCode.off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", butttype1);
 				}
@@ -1048,11 +1124,11 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'Bill Type', name: 't_billtype', width: 50, hidden: true },
-			{ label: 'Chg. Group', name: 't_chggroup', width: 90, hidden: true, canSearch: true, checked: true },
+			{ label: 'Chg. Group', name: 't_chggroup', width: 90, hidden: true},
 			{ label: 'Description', name: 'cg_description', width: 90, hidden: true },
 			// { label: 'Chg Code', name: 'i_chgcode', width: 90, classes: 'wrap', canSearch: true, checked: true },
-			{ label: 'Chg Type', name: 't_chgtype', width: 90, classes: 'wrap'},
-			{ label: 'Description', name: 'ct_description', width: 90, classes: 'wrap'},
+			{ label: 'Chg Type', name: 't_chgtype', width: 90, classes: 'wrap', canSearch: true },
+			{ label: 'Description', name: 'ct_description', width: 90, classes: 'wrap', canSearch: true, checked: true },
 			{ label: 'Price', name: 't_price', width: 50, classes: 'wrap'},
 			{ label: 'Percentage', name: 't_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
 			{ label: 'Amount', name: 't_amount', width: 50, classes: 'wrap', align: 'right', formatter: 'currency'},

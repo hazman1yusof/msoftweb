@@ -288,7 +288,11 @@ input.uppercase {
 				  
 				<label class="col-md-2 control-label" for="svc_discchgcode">Disc Chg Code</label>  
 				<div class="col-md-3">
-					<input id="svc_discchgcode" name="svc_discchgcode" type="text" class="form-control input-sm uppercase" data-validation="number" data-validation-allowing="float">
+					<div class='input-group'>
+						<input id="svc_discchgcode" name="svc_discchgcode" type="text" class="form-control input-sm uppercase">
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					</div>
+					<span class="help-block"></span>
 				</div>
 			</div>
 
@@ -526,9 +530,13 @@ input.uppercase {
 					<input id="t_amount" name="t_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
 				</div>
 				
-				<label class="col-md-2 control-label" for="t_discchgcode">Disc Chg Code</label>  
+				<label class="col-md-2 control-label" for="t_discchgcode">Disc Chg Code</label>
 				<div class="col-md-3">
-					<input id="t_discchgcode" name="t_discchgcode" type="text" class="form-control input-sm uppercase" data-validation="number" data-validation-allowing="float">
+					<div class='input-group'>
+						<input id="t_discchgcode" name="t_discchgcode" type="text" class="form-control input-sm uppercase">
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					</div>
+					<span class="help-block"></span>
 				</div>
 			</div>
 
