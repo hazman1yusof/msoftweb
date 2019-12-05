@@ -488,7 +488,7 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="t_chggroup">Chg Group</label>   
 				<div class="col-md-3">
-					<input id="i_chggroup" name="t_chggroup" type="text" class="form-control input-sm uppercase" rdonly>
+					<input id="t_chggroup" name="t_chggroup" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 				
 				<label class="col-md-2 control-label" for="cg_description">Description</label>  
@@ -545,6 +545,13 @@ input.uppercase {
 				<div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="t_allitem" value='1' data-validation="required">Yes</label>
 					<label class="radio-inline"><input type="radio" name="t_allitem" value='0' data-validation="">No</label>
+				</div>
+			</div> 
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="t_recstatus">Record Status</label>  
+				<div class="col-md-3">
+					<input id="t_recstatus" name="t_recstatus" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 			</div> 
 

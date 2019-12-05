@@ -137,7 +137,7 @@ $(document).ready(function () {
 			{ label: 'opprice', name: 'opprice', width: 90, hidden: true },
 			{ label: 'Description', name: 'description', width: 90, classes: 'wrap', canSearch: true, checked: true  },
 			{ label: 'Price', name: 'price', width: 40, classes: 'wrap' },
-			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap' },
+			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter: 'currency'  },
 			{ label: 'Percentage', name: 'percent_', width: 40, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
 			{ label: 'All Service', name: 'service', width: 40, classes: 'wrap', formatter: formatter, unformat: unformat },
 			{ label: 'discchgcode', name: 'discchgcode', width: 90, hidden: true },
@@ -179,9 +179,9 @@ $(document).ready(function () {
 			if (rowid != null) {
 				$("#Fsvc a").off();
 				urlParam_svc.filterVal[0] = selrowData("#jqGrid").billtype;
-				saveParam_svc.filterVal[0] = selrowData("#jqGrid").billtype;
+				// saveParam_svc.filterVal[0] = selrowData("#jqGrid").billtype;
 				urlParam_item.filterVal[0] = selrowData("#jqGrid").billtype;
-				saveParam_item.filterVal[0] = selrowData("#jqGrid").billtype;
+				// saveParam_item.filterVal[0] = selrowData("#jqGrid").billtype;
 				$("#Fsvc :input[name='billtype']").val(selrowData("#jqGrid").billtype);
 				$("#Fsvc :input[name='description']").val(selrowData("#jqGrid").description);
 				refreshGrid('#jqGridsvc', urlParam_svc);
@@ -443,8 +443,8 @@ $(document).ready(function () {
 		fixPost: 'true',//throw out dot in the field name
 		table_id: 'svc_chggroup',//ni utk tgk duplicate
 		idnoUse: 'svc_idno',
-		filterCol: ['billtype'],
-		filterVal: [''],
+		// filterCol: ['billtype'],
+		// filterVal: [''],
 		saveip:'true',
 		// checkduplicate:'true'
 	};
@@ -459,7 +459,7 @@ $(document).ready(function () {
 			{ label: 'Chg. Group', name: 'svc_chggroup', width: 50, classes: 'wrap', canSearch: true },
 			{ label: 'Description', name: 'cc_description', width: 90, classes: 'wrap', canSearch: true , checked: true},
 			{ label: 'Price', name: 'svc_price', width: 90, classes: 'wrap', checked: true },
-			{ label: 'Amount', name: 'svc_amount', width: 90, classes: 'wrap', },
+			{ label: 'Amount', name: 'svc_amount', width: 90, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Percentage', name: 'svc_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
 			{ label: 'All Item', name: 'svc_allitem', width: 50, classes: 'wrap', formatter: formatter, unformat: unformat },
 			{ label: 'All Type', name: 'svc_alltype', width: 50, classes: 'wrap', formatter: formatter, unformat: unformat },
@@ -512,9 +512,9 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			if (rowid != null) {
 				rowData = $('#jqGridsvc').jqGrid('getRowData', rowid);
-				refreshGrid('#jqGriditem', urlParam_item);
+				refreshGrid('#jqGriditem', urlParam_item,'kosongkan');
 				$("#pg_jqGridPager3 table").hide();
-				refreshGrid('#jqGridtype', urlParam_type);
+				refreshGrid('#jqGridtype', urlParam_type,'kosongkan');
 				$("#pg_jqGridPager4 table").hide();
 
 				if (rowData['svc_allitem'] == '0') {
@@ -532,6 +532,13 @@ $(document).ready(function () {
 					refreshGrid('#jqGridtype', urlParam_type);
 					$("#pg_jqGridPager4 table").show();
 				}
+
+
+				dialog_chgtype.urlParam.filterCol=['chggroup'];
+				dialog_chgtype.urlParam.filterVal=[selrowData("#jqGridsvc").svc_chggroup];
+
+				dialog_chgcode.urlParam.filterCol=['chggroup'];
+				dialog_chgcode.urlParam.filterVal=[selrowData("#jqGridsvc").svc_chggroup];
 
 			}
 		},
@@ -752,8 +759,8 @@ $(document).ready(function () {
 		fixPost: 'true',//throw out dot in the field name
 		table_id: 'i_chgcode',
 		idnoUse: 'i_idno',
-		filterCol: ['billtype'],
-		filterVal: [''],
+		// filterCol: ['billtype'],
+		// filterVal: [''],
 		saveip:'true',
 		// checkduplicate:'true'
 	}
@@ -768,14 +775,14 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'c_description', width: 90, hidden: true },
 			{ label: 'Chg Code', name: 'i_chgcode', width: 90, classes: 'wrap', canSearch: true, checked: true },
 			{ label: 'Price', name: 'i_price', width: 50, classes: 'wrap', },
-			{ label: 'Amount', name: 'i_amount', width: 50, classes: 'wrap', },
+			{ label: 'Amount', name: 'i_amount', width: 50, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'discrate', name: 'i_discrate', width: 50, hidden: true },
 			{ label: 'Percentage', name: 'i_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
 			{ label: 'adduser', name: 'i_adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 'i_adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'i_upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'i_upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Record Status', name: 'i_recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{ label: 'Record Status', name: 'i_recstatus', width: 90, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'No', name: 'i_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'i_computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -836,7 +843,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#Fitem');
 			} else {
-				saveFormdata("#jqGriditem", "#Ditem", "#Fitem", 'del', saveParam_item, urlParam_item, null, { 'idno': selrowData('#jqGriditem').i_idno });
+				saveFormdata("#jqGriditem", "#Ditem", "#Fitem", 'del', saveParam_item, urlParam_item, { 'idno': selrowData('#jqGriditem').i_idno });
 				//saveFormdata("#jqGriditem","#Ditem","#Fitem",'del',saveParam_item,{"chgcode":selRowId});
 			}
 		},
@@ -1015,8 +1022,8 @@ $(document).ready(function () {
 		join_type: ['JOIN', 'JOIN', 'JOIN'],
 		join_onCol: ['t.chggroup', 'ct.chgtype', 'cg.grpcode'],
 		join_onVal: ['svc.chggroup', 't.chgtype', 't.chggroup'],
-		filterCol: ['t.billtype', 't.compcode', 't.chggroup', 'svc.alltype', 'svc.compcode'],
-		filterVal: ['', 'session.compcode', '', '0', 'session.compcode'],
+		filterCol: ['t.billtype', 't.compcode', 't.chggroup', 'svc.compcode'],//, 'svc.alltype'
+		filterVal: ['', 'session.compcode', '', 'session.compcode'],//, '0'
 		sort_idno: true,
 	}
 
@@ -1029,8 +1036,8 @@ $(document).ready(function () {
 		fixPost: 'true',//throw out dot in the field name
 		table_id: 't_chgtype',
 		idnoUse: 't_idno',
-		filterCol: ['billtype'],
-		filterVal: [''],
+		// filterCol: ['billtype'],
+		// filterVal: [''],
 		saveip:'true',
 		// checkduplicate:'true'
 	}
@@ -1041,17 +1048,19 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'Bill Type', name: 't_billtype', width: 50, hidden: true },
-			{ label: 'Chg. Group', name: 't_chggroup', width: 90, hidden: true },
+			{ label: 'Chg. Group', name: 't_chggroup', width: 90, hidden: true, canSearch: true, checked: true },
 			{ label: 'Description', name: 'cg_description', width: 90, hidden: true },
 			// { label: 'Chg Code', name: 'i_chgcode', width: 90, classes: 'wrap', canSearch: true, checked: true },
 			{ label: 'Chg Type', name: 't_chgtype', width: 90, classes: 'wrap'},
 			{ label: 'Description', name: 'ct_description', width: 90, classes: 'wrap'},
 			{ label: 'Price', name: 't_price', width: 50, classes: 'wrap'},
 			{ label: 'Percentage', name: 't_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
-			{ label: 'Amount', name: 't_amount', width: 50, classes: 'wrap'},
-			{ label: 'All Item', name: 't_allitem', width: 50, classes: 'wrap'},
+			{ label: 'Amount', name: 't_amount', width: 50, classes: 'wrap', align: 'right', formatter: 'currency'},
+			{ label: 'All Item', name: 't_allitem', width: 50, classes: 'wrap', hidden: true},
 			{ label: 'Discount Charge Code', name: 't_discchgcode', width: 50, classes: 'wrap'},
 			{ label: 'discrate', name: 't_discrate', width: 50, hidden: true },
+			{ label: 'Record Status', name: 't_recstatus', width: 90, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'adduser', name: 't_adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 't_adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 't_upduser', width: 90, hidden: true, classes: 'wrap' },
@@ -1115,7 +1124,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#Ftype');
 			} else {
-				saveFormdata("#jqGridtype", "#Dtype", "#Ftype", 'del', saveParam_type, urlParam_type, null, { 'idno': selrowData('#jqGridtype').t_idno });
+				saveFormdata("#jqGridtype", "#Dtype", "#Ftype", 'del', saveParam_type, urlParam_type, { 'idno': selrowData('#jqGridtype').t_idno });
 				//saveFormdata("#jqGriditem","#Ditem","#Fitem",'del',saveParam_item,{"chgcode":selRowId});
 			}
 		},
@@ -1162,6 +1171,13 @@ $(document).ready(function () {
 		cursor: "pointer"
 	});
 
+	addParamField('#jqGridtype', false, urlParam_type);
+	addParamField('#jqGridtype', false, saveParam_type, ["cg_description","ct_description", "t_discrate", "t_idno",'t_adduser', 't_adddate', 't_upduser', 't_upddate', 't_recstatus']);
+
+	//populateSelect('#jqGriditem');
+	populateSelect('#jqGridtype', '#searchForm4');
+	searchClick('#jqGridtype', '#searchForm4', urlParam_type);
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1169,6 +1185,12 @@ $(document).ready(function () {
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
 	$("#pg_jqGridPager4 table").hide();
+
+	jqgrid_label_align_right("#jqGrid");
+	jqgrid_label_align_right("#jqGridsvc");
+	jqgrid_label_align_right("#jqGriditem");
+	jqgrid_label_align_right("#jqGridtype");
+
 
 	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
 		$("#jqGridsvc").jqGrid ('setGridWidth', Math.floor($("#jqGridsvc_c")[0].offsetWidth-$("#jqGridsvc_c")[0].offsetLeft-28));
