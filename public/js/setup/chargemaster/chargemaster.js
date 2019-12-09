@@ -345,7 +345,7 @@
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
-				{ label: 'Effective date', name: 'effdate', width: 180, classes: 'wrap', editable:true,
+				{ label: 'Effective date', name: 'effdate', width: 130, classes: 'wrap', editable:true,
 					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 					editoptions: {
 	                    dataInit: function (element) {
