@@ -944,7 +944,7 @@ $(document).ready(function () {
 	});
 
 	addParamField('#jqGriditem', false, urlParam_item);
-	addParamField('#jqGriditem', false, saveParam_item, ["c_description", "i_discrate", "i_idno",'i_adduser', 'i_adddate', 'i_upduser', 'i_upddate', 'i_recstatus']);
+	addParamField('#jqGriditem', false, saveParam_item, ["c_description", "m_description", "i_discrate", "i_idno",'i_adduser', 'i_adddate', 'i_upduser', 'i_upddate', 'i_recstatus']);
 
 	//populateSelect('#jqGriditem');
 	populateSelect('#jqGriditem', '#searchForm3');

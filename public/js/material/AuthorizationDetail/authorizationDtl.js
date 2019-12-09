@@ -23,7 +23,7 @@ $(document).ready(function () {
 			}
 		},
 	};
-	//var Class2 = $('#Class2').val();
+
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var mycurrency =new currencymode(['#minlimit','#maxlimit']);
 
@@ -129,7 +129,15 @@ $(document).ready(function () {
 		height: 350,
 		rowNum: 80,
 		pager: "#jqGridPager",
-		onSelectRow:function(rowid, selected){
+		ondblClickRow: function (rowid, iRow, iCol, e) {
+			$("#jqGridPager td[title='Edit Selected Row']").click();
+		},
+		gridComplete: function () {
+			if (oper == 'add') {
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}
+
+			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 		},
 	});
 	
@@ -142,6 +150,59 @@ $(document).ready(function () {
 			
 		}	
 	);
+
+	
+	/////////////////////////start grid pager/////////////////////////////////////////////////////////
+	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
+		view: false, edit: false, add: false, del: false, search: false,
+		beforeRefresh: function () {
+			refreshGrid("#jqGrid", urlParam);
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPager", {
+		caption: "", cursor: "pointer", position: "first",
+		buttonicon: "glyphicon glyphicon-trash",
+		title: "Delete Selected Row",
+		onClickButton: function () {
+			oper = 'del';
+			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			if (!selRowId) {
+				alert('Please select row');
+				return emptyFormdata(errorField, '#formdata');
+			} else {
+				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, { 'idno': selrowData('#jqGrid').idno });
+			}
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPager", {
+		caption: "", cursor: "pointer", position: "first",
+		buttonicon: "glyphicon glyphicon-info-sign",
+		title: "View Selected Row",
+		onClickButton: function () {
+			oper = 'view';
+			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPager", {
+		caption: "", cursor: "pointer", position: "first",
+		buttonicon: "glyphicon glyphicon-edit",
+		title: "Edit Selected Row",
+		onClickButton: function () {
+			oper = 'edit';
+			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+			recstatusDisable();
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPager", {
+		caption: "", cursor: "pointer", position: "first",
+		buttonicon: "glyphicon glyphicon-plus",
+		title: "Add New Row",
+		onClickButton: function () {
+			oper = 'add';
+			$("#dialogForm").dialog("open");
+		},
+	});
+
+	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+	
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();
 	function searchBy(){
