@@ -42,7 +42,7 @@ i.fa {
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 	@if (Request::get('scope') == 'ALL')
-		<input id="recstatus_use" name="recstatus_use" type="hidden" value="REQUEST">
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
 	@else
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
 	@endif
@@ -88,10 +88,11 @@ i.fa {
 				  	<label class="control-label" for="Status">Status</label>  
 					  	<select id="Status" name="Status" class="form-control input-sm">
 					      <option value="All" selected>ALL</option>
-					      <option value="Open">OPEN</option>
-					      <option value="Confirmed">CONFIRMED</option>
-					      <option value="Posted">POSTED</option>
-					      <option value="Cancelled">CANCELLED</option>
+					      <option value="OPEN">OPEN</option>
+					      <option value="REQUEST">REQUEST</option>
+					      <option value="SUPPORT">SUPPORT</option>
+					      <option value="VERIFIED">VERIFIED</option>
+					      <option value="APPROVED">APPROVED</option>
 					    </select>
 	            </div>
 
@@ -106,6 +107,8 @@ i.fa {
 					$scope_use = 'posted';
 
 					if(Request::get('scope') == 'ALL'){
+						$scope_use = 'posted';
+					}else if(Request::get('scope') == 'REQUEST'){
 						$scope_use = 'posted';
 					}else if(Request::get('scope') == 'SUPPORT'){
 						$scope_use = 'support';
@@ -202,7 +205,7 @@ i.fa {
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Purchase Request Header</div>
-				<div class="panel-body" style="position: relative;">
+				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}
 							<input id="referral" name="referral" type="hidden">
@@ -298,23 +301,42 @@ i.fa {
 					    	</div>
 
 					    	<div class="form-group data_info">
-						    	<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purreqhd_upduser">Last Entered By</label>  
-						  			<input id="purreqhd_upduser" name="purreqhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						    	<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purreqhd_requestby">Request By</label>  
+						  			<input id="purreqhd_upduser" name="purreqhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
-					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purreqhd_upddate">Last Entered Date</label>
-						  			<input id="purreqhd_upddate" name="purreqhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					    		<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purreqhd_authpersonid">Authorized By</label>  
-						  			<input id="purreqhd_authpersonid" name="purreqhd_authpersonid" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purreqhd_supportby">Support By</label>
+						  			<input id="purreqhd_upddate" name="purreqhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
-					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purreqhd_authdate">Authorized Date</label>
-						  			<input id="purreqhd_authdate" name="purreqhd_authdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					    		<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purreqhd_verifiedby">Verified By</label>  
+						  			<input id="purreqhd_authpersonid" name="purreqhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purreqhd_approvedby">Approved By</label>
+						  			<input id="purreqhd_authdate" name="purreqhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purreqhd_requestdate">Request Date</label>  
+						  			<input id="purreqhd_authpersonid" name="purreqhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purreqhd_supportdate">Support Date</label>
+						  			<input id="purreqhd_authdate" name="purreqhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purreqhd_verifieddate">Verified Date</label>  
+						  			<input id="purreqhd_authpersonid" name="purreqhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purreqhd_approveddate">Approved Date</label>
+						  			<input id="purreqhd_authdate" name="purreqhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 							</div>
 					</form>

@@ -105,7 +105,11 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 
 	var recstatus_filter = [['OPEN','REQUEST']];
-	if($("#recstatus_use").val() == 'REQUEST'){
+	if($("#recstatus_use").val() == 'ALL'){
+		recstatus_filter = [['OPEN','REQUEST','SUPPORT','VERIFIED','APPROVED']];
+		filterCol_urlParam = ['purreqhd.compcode'];
+		filterVal_urlParam = ['session.compcode'];
+	}else if($("#recstatus_use").val() == 'REQUEST'){
 		recstatus_filter = [['OPEN','REQUEST']];
 		filterCol_urlParam = ['purreqhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
@@ -208,6 +212,16 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'purreqhd_upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'purreqhd_upddate', width: 90, hidden: true },
 			{ label: 'reopenby', name: 'purreqhd_reopenby', width: 40, hidden: true},
+
+			{ label: 'requestby', name: 'purreqhd_requestby', width: 90, hidden: true },
+			{ label: 'requestdate', name: 'purreqhd_requestdate', width: 90, hidden: true },
+			{ label: 'supportby', name: 'purreqhd_supportby', width: 90, hidden: true },
+			{ label: 'supportdate', name: 'purreqhd_supportdate', width: 40, hidden: true},
+			{ label: 'verifiedby', name: 'purreqhd_verifiedby', width: 90, hidden: true },
+			{ label: 'verifieddate', name: 'purreqhd_verifieddate', width: 90, hidden: true },
+			{ label: 'approvedby', name: 'purreqhd_approvedby', width: 90, hidden: true },
+			{ label: 'approveddate', name: 'purreqhd_approveddate', width: 40, hidden: true},
+
 			{ label: 'reopendate', name: 'purreqhd_reopendate', width: 40, hidden:true},
 			{ label: 'cancelby', name: 'purreqhd_cancelby', width: 40, hidden:true},
 			{ label: 'canceldate', name: 'purreqhd_canceldate', width: 40, hidden:true},
@@ -230,19 +244,25 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").purreqhd_recstatus;
 			let scope = $("#recstatus_use").val();
 
-			if (stat == scope) {
+			$('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			if (stat == scope || stat == "CANCELLED") {
 				$('#but_reopen_jq').show();
-				$('#but_post_single_jq,#but_cancel_jq').hide();
-			} else if (stat == "CANCELLED") {
-				$('#but_reopen_jq').show();
-				$('#but_post_single_jq,#but_cancel_jq').hide();
 			} else {
-				if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-					$('#but_cancel_jq,#but_post_single_jq').show();
+				if(scope == 'ALL'){
+					if(stat=='OPEN'){
+						if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+							$('#but_cancel_jq,#but_post_single_jq').show();
+						}else{
+							$('#but_cancel_jq,#but_post_jq').show();
+						}
+					}
 				}else{
-					$('#but_cancel_jq,#but_post_jq').show();
+					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+						$('#but_cancel_jq,#but_post_single_jq').show();
+					}else{
+						$('#but_cancel_jq,#but_post_jq').show();
+					}
 				}
-				$('#but_reopen_jq').hide();
 			}
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purreqhd_recno;
 			

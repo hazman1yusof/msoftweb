@@ -248,7 +248,7 @@ class PurchaseRequestController extends defaultController
                         'recno' => $purreqhd_get->recno,
                         'AuthorisedID' => $authorise_use->authorid,
                         'deptcode' => $purreqhd_get->reqdept,
-                        'recstatus' => 'POSTED',
+                        'recstatus' => 'REQUEST',
                         'trantype' => 'SUPPORT',
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -256,13 +256,16 @@ class PurchaseRequestController extends defaultController
 
                 // 3. update status to posted
                 $purreqhd->update([
-                        'recstatus' => 'POSTED'
+                        'requestby' => session('username'),
+                        'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'supportby' => $authorise_use->authorid,
+                        'recstatus' => 'REQUEST'
                     ]);
 
                 DB::table("material.purreqdt")
                     ->where('recno','=',$purreqhd_get->recno)
                     ->update([
-                        'recstatus' => 'POSTED',
+                        'recstatus' => 'REQUEST',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -333,6 +336,9 @@ class PurchaseRequestController extends defaultController
 
             // 3. update status to posted
             $purreqhd->update([
+                    'requestby' => session('username'),
+                    'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'supportby' => $authorise_use->authorid,
                     'recstatus' => 'REQUEST'
                 ]);
 
@@ -475,18 +481,6 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
-                $purreqhd->update([
-                        'recstatus' => 'SUPPORT'
-                    ]);
-
-                DB::table("material.purreqdt")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'SUPPORT',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PR')
@@ -513,6 +507,20 @@ class PurchaseRequestController extends defaultController
                 }
 
                 $authorise_use = $authorise->first();
+
+                $purreqhd->update([
+                        'verifiedby' => $authorise_use->authorid,
+                        'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'SUPPORT'
+                    ]);
+
+                DB::table("material.purreqdt")
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->update([
+                        'recstatus' => 'SUPPORT',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
 
                 DB::table("material.queuepr")
                     ->where('recno','=',$purreqhd_get->recno)
@@ -547,18 +555,6 @@ class PurchaseRequestController extends defaultController
 
             $purreqhd_get = $purreqhd->first();
 
-            $purreqhd->update([
-                    'recstatus' => 'SUPPORT'
-                ]);
-
-            DB::table("material.purreqdt")
-                ->where('recno','=',$purreqhd_get->recno)
-                ->update([
-                    'recstatus' => 'SUPPORT',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
             $authorise = DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('trantype','=','PR')
@@ -585,6 +581,20 @@ class PurchaseRequestController extends defaultController
             }
             
             $authorise_use = $authorise->first();
+
+            $purreqhd->update([
+                    'verifiedby' => $authorise_use->authorid,
+                    'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'SUPPORT'
+                ]);
+
+            DB::table("material.purreqdt")
+                ->where('recno','=',$purreqhd_get->recno)
+                ->update([
+                    'recstatus' => 'SUPPORT',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
 
             DB::table("material.queuepr")
                 ->where('recno','=',$purreqhd_get->recno)
@@ -619,18 +629,6 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
-                $purreqhd->update([
-                        'recstatus' => 'VERIFIED'
-                    ]);
-
-                DB::table("material.purreqdt")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'VERIFIED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PR')
@@ -657,6 +655,20 @@ class PurchaseRequestController extends defaultController
                 }
 
                 $authorise_use = $authorise->first();
+
+                $purreqhd->update([
+                        'approvedby' => $authorise_use->authorid,
+                        'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'VERIFIED'
+                    ]);
+
+                DB::table("material.purreqdt")
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->update([
+                        'recstatus' => 'VERIFIED',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
 
                 DB::table("material.queuepr")
                     ->where('recno','=',$purreqhd_get->recno)
@@ -691,18 +703,6 @@ class PurchaseRequestController extends defaultController
 
             $purreqhd_get = $purreqhd->first();
 
-            $purreqhd->update([
-                    'recstatus' => 'VERIFIED'
-                ]);
-
-            DB::table("material.purreqdt")
-                ->where('recno','=',$purreqhd_get->recno)
-                ->update([
-                    'recstatus' => 'VERIFIED',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
             $authorise = DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('trantype','=','PR')
@@ -729,6 +729,20 @@ class PurchaseRequestController extends defaultController
             }
 
             $authorise_use = $authorise->first();
+
+            $purreqhd->update([
+                    'approvedby' => $authorise_use->authorid,
+                    'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'VERIFIED'
+                ]);
+
+            DB::table("material.purreqdt")
+                ->where('recno','=',$purreqhd_get->recno)
+                ->update([
+                    'recstatus' => 'VERIFIED',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
 
             DB::table("material.queuepr")
                 ->where('recno','=',$purreqhd_get->recno)
@@ -764,6 +778,7 @@ class PurchaseRequestController extends defaultController
                 $purreqhd_get = $purreqhd->first();
 
                 $purreqhd->update([
+                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'APPROVED'
                     ]);
 

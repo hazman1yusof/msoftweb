@@ -7,7 +7,7 @@ $(document).ready(function () {
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']","input[name='computerid']","input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
-		modules: 'sanitize',
+		modules: 'sanitize,logic',
 		language: {
 			requiredFields: ''
 		},
@@ -26,12 +26,18 @@ $(document).ready(function () {
 	};
 	//////////////////////////////////////////////////////////////
 	var mycurrency = new currencymode(['#percent_', '#amount', '#svc_amount', '#svc_percent_', '#i_amount', '#i_percent_']);
+	var radbuts = new checkradiobutton(['price','service','opprice']);
+	var radbuts_svc = new checkradiobutton(['svc_price','svc_allitem','svc_alltype']);
+	var radbuts_item = new checkradiobutton(['i_price']);
+	var radbuts_type = new checkradiobutton(['t_price','t_allitem']);
+	$("#jqGriditem_c, #jqGridtype_c").hide();
 
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1 = [{
 		text: "Save", click: function () {
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
+			radbuts.check();
 			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
 				saveFormdata("#jqGrid", "#dialogForm", "#formdata", oper, saveParam, urlParam);
 			} else {
@@ -95,6 +101,7 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#formdata');
 				parent_close_disabled(false);
 				$('.my-alert').detach();
+				radbuts.reset();
 				//$('.alert').detach();
 				$("#formdata a").off();
 				if (oper == 'view') {
@@ -188,6 +195,8 @@ $(document).ready(function () {
 				$('#jqGriditem').jqGrid('clearGridData');
 				$("#pg_jqGridPager3 table").hide();
 				$("#pg_jqGridPager2 table").show();
+
+				$("#jqGriditem_c, #jqGridtype_c").hide();
 
 				if (selrowData("#jqGrid").service == 1) {
 					refreshGrid('#jqGridsvc', urlParam_svc);
@@ -372,6 +381,7 @@ $(document).ready(function () {
 	var buttsvc1 = [{
 		text: "Save", click: function () {
 			mycurrency.formatOff();
+			radbuts_svc.check();
 			mycurrency.check0value(errorField);
 			if ($('#Fsvc').isValid({ requiredFields: '' }, {}, true)) {
 				// saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", oper_svc, saveParam_svc, urlParam_svc, '#searchForm2');
@@ -444,6 +454,7 @@ $(document).ready(function () {
 				parent_close_disabled(false);
 				emptyFormdata(errorField, '#Fsvc');
 				$('.my-alert').detach();
+				radbuts_svc.reset();
 				//$('.alert').detach();
 				dialog_ChgGroup.off();
 				dialog_discChargeCode.off();
@@ -550,9 +561,11 @@ $(document).ready(function () {
 			if (rowid != null) {
 				rowData = $('#jqGridsvc').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGriditem', urlParam_item,'kosongkan');
-				$("#pg_jqGridPager3 table").hide();
+				$("#pg_jqGridPager3 table, #jqGriditem_c").hide();
+
+
 				refreshGrid('#jqGridtype', urlParam_type,'kosongkan');
-				$("#pg_jqGridPager4 table").hide();
+				$("#pg_jqGridPager4 table, #jqGridtype_c").hide();
 
 				if (rowData['svc_allitem'] == '0') {
 					$("#Fitem a").off();
@@ -560,14 +573,14 @@ $(document).ready(function () {
 					urlParam_item.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
 					urlParam_item.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
 					refreshGrid('#jqGriditem', urlParam_item);
-					$("#pg_jqGridPager3 table").show();
+					$("#pg_jqGridPager3 table, #jqGriditem_c").show();
 				}
 
 				if (rowData['svc_alltype'] == '0') {
 					urlParam_type.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
 					urlParam_type.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
 					refreshGrid('#jqGridtype', urlParam_type);
-					$("#pg_jqGridPager4 table").show();
+					$("#pg_jqGridPager4 table, #jqGridtype_c").show();
 				}
 
 
@@ -700,6 +713,7 @@ $(document).ready(function () {
 	var buttitem1 = [{
 		text: "Save", click: function () {
 			mycurrency.formatOff();
+			radbuts_item.check();
 			mycurrency.check0value(errorField);
 			if ($('#Fitem').isValid({ requiredFields: '' }, {}, true)) {
 				saveFormdata("#jqGriditem", "#Ditem", "#Fitem", oper_item, saveParam_item, urlParam_item);
@@ -763,6 +777,7 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#Fitem');
 				parent_close_disabled(false);
 				$('.my-alert').detach();
+				radbuts_item.reset();
 				//$('.alert').detach();
 				dialog_chgcode.off();
 				if (oper == 'view') {
@@ -1010,6 +1025,7 @@ $(document).ready(function () {
 	var butttype1 = [{
 		text: "Save", click: function () {
 			mycurrency.formatOff();
+			radbuts_type.check();
 			mycurrency.check0value(errorField);
 			if ($('#Ftype').isValid({ requiredFields: '' }, {}, true)) {
 				saveFormdata("#jqGridtype", "#Dtype", "#Ftype", oper_type, saveParam_type, urlParam_type);
@@ -1077,6 +1093,7 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#Ftype');
 				parent_close_disabled(false);
 				$('.my-alert').detach();
+				radbuts_type.reset();
 				//$('.alert').detach();
 				dialog_chgtype.off();
 				dialog_discChgCode.off();

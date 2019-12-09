@@ -345,14 +345,14 @@
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
-				{ label: 'Effective date', name: 'effdate', width: 100, classes: 'wrap', editable:true,
+				{ label: 'Effective date', name: 'effdate', width: 180, classes: 'wrap', editable:true,
 					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 					editoptions: {
 	                    dataInit: function (element) {
 	                        $(element).datepicker({
 	                            id: 'expdate_datePicker',
 	                            dateFormat: 'dd/mm/yy',
-	                            minDate: 1,
+	                            minDate: "dateToday",
 	                            showOn: 'focus',
 	                            changeMonth: true,
 			  					changeYear: true,
@@ -751,7 +751,8 @@
 			{	colModel:[
 					{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer', hidden:true},
+					{label:'Rate',name:'rate',width:200,classes:'pointer'},
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
@@ -785,11 +786,12 @@
 			{	colModel:[
 					{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer', hidden:true},
+					{label:'Rate',name:'rate',width:200,classes:'pointer'},
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
-					filterVal:['A', 'session.compcode','Output']
+					filterVal:['A', 'session.compcode','Input']
 						},
 				ondblClickRow:function(){
 					$('#lastuser').focus();
@@ -808,7 +810,7 @@
 				title:"Select Receiver Department",
 				open: function(){
 					dialog_dtloptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-					dialog_dtloptax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+					dialog_dtloptax.urlParam.filterVal = ['A', 'session.compcode','Input'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -817,7 +819,7 @@
 		var buttItem1=[{
 			text: "Save",click: function() {
 				mycurrency.formatOff();
-				mycurrency.check0value(errorField);
+				// mycurrency.check0value(errorField);
 				if( $('#FChgPriceDtl').isValid({requiredFields: ''}, {}, true) ) {
 					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",oper_chgpricedtl,saveParam3,urlParam2,{
 							chgcode: selrowData("#jqGrid").cm_chgcode,
@@ -1357,7 +1359,8 @@
 			{	colModel:[
 					{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer', hidden:true},
+					{label:'Rate',name:'rate',width:200,classes:'pointer'},
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
@@ -1391,11 +1394,12 @@
 			{	colModel:[
 					{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer', hidden:true},
+					{label:'Rate',name:'rate',width:200,classes:'pointer'},
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
-					filterVal:['A', 'session.compcode','Output']
+					filterVal:['A', 'session.compcode','Input']
 						},
 				ondblClickRow:function(){
 					$('#delordhd_credcode').focus();
@@ -1414,7 +1418,7 @@
 				title:"Select Receiver Department",
 				open: function(){
 					dialog_optax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-					dialog_optax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+					dialog_optax.urlParam.filterVal = ['A', 'session.compcode','Input'];
 				}
 			},'urlParam','radio','tab'
 		);

@@ -140,6 +140,7 @@ class AuthorizationDetailController extends defaultController
                             ->where('deptcode','!=',$authdtl_get->deptcode)
                             ->where('trantype','=',$request->dtl_trantype)
                             ->where('recstatus','=',$request->dtl_recstatus)
+                            ->where('cando','=','A')
                             ->exists();
 
             }else if($authdtl_get->deptcode=='all' || $authdtl_get->deptcode=='ALL'){

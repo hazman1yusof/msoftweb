@@ -152,7 +152,8 @@ input.uppercase {
 				<label class="col-md-2 control-label" for="percent_">Percentage</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="percent_" name="percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
+						<input id="percent_" name="percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0"
+						data-validation-optional-if-answered="amount" data-validation="number">
 						<span class="input-group-addon">%</span>
 					</div>
 				</div>
@@ -161,7 +162,8 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="amount">Amount</label>  
 				<div class="col-md-3">
-					<input id="amount" name="amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					<input id="amount" name="amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" 
+					data-validation-optional-if-answered="percent_" data-validation="number">
 				</div>
 
 				<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
@@ -267,13 +269,13 @@ input.uppercase {
 			</div>
 
             <div class="form-group">
-    			<label class="col-md-2 control-label" for="svc_allitem'">All Item</label>  
+    			<label class="col-md-2 control-label" for="svc_allitem">All Item</label>  
 				<div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="svc_allitem" value='1' data-validation="required">Yes</label>
 					<label class="radio-inline"><input type="radio" name="svc_allitem" value='0' data-validation="">No</label>
 				</div>
 
-				<label class="col-md-2 control-label" for="svc_alltype'">All Type</label>  
+				<label class="col-md-2 control-label" for="svc_alltype">All Type</label>  
 				<div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="svc_alltype" value='1' data-validation="required">Yes</label>
 					<label class="radio-inline"><input type="radio" name="svc_alltype" value='0' data-validation="">No</label>
@@ -283,7 +285,7 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_amount">Amount</label>  
 				<div class="col-md-3">
-					<input id="svc_amount" name="svc_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					<input id="svc_amount" name="svc_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation-optional-if-answered="svc_percent_" data-validation="number">
 				</div>
 				  
 				<label class="col-md-2 control-label" for="svc_discchgcode">Disc Chg Code</label>  
@@ -300,7 +302,7 @@ input.uppercase {
 				<label class="col-md-2 control-label" for="svc_percent_">Percentage</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="svc_percent_" name="svc_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
+						<input id="svc_percent_" name="svc_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" data-validation-optional-if-answered="svc_amount" data-validation="number">
 						<!--data-validation="number" data-validation-allowing="float"-->
 						<span class="input-group-addon">%</span>
 					</div>
@@ -410,13 +412,15 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_amount">Amount</label>  
 				<div class="col-md-3">
-					<input id="i_amount" name="i_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					<input id="i_amount" name="i_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00"
+					data-validation-optional-if-answered="i_percent_" data-validation="number">
 				</div>
 					
 				<label class="col-md-2 control-label" for="i_percent_">Percentage</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="i_percent_" name="i_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
+						<input id="i_percent_" name="i_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0"
+						data-validation-optional-if-answered="i_amount" data-validation="number">
 						<span class="input-group-addon">%</span>
 					</div>
 				</div>
@@ -527,7 +531,8 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="t_amount">Amount</label>  
 				<div class="col-md-3">
-					<input id="t_amount" name="t_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					<input id="t_amount" name="t_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00"
+					data-validation-optional-if-answered="t_percent_" data-validation="number">
 				</div>
 				
 				<label class="col-md-2 control-label" for="t_discchgcode">Disc Chg Code</label>
@@ -544,7 +549,8 @@ input.uppercase {
 				<label class="col-md-2 control-label" for="t_percent_">Percentage</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="t_percent_" name="t_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
+						<input id="t_percent_" name="t_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0"
+						data-validation-optional-if-answered="t_amount" data-validation="number">
 						<span class="input-group-addon">%</span>
 					</div>
 				</div>
