@@ -50,12 +50,22 @@ input.uppercase {
 		</form>
     	
     	<div class="panel panel-default">
+			<div class="panel-heading">Bill Type Header</div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
             		<table id="jqGrid" class="table table-striped"></table>
 					<div id="jqGridPager"></div>
         		</div>
 		    </div>
+		</div>
+
+		<div class='click_row'>
+			<label class="control-label">Bill Type</label>
+			<span id="showbilltype" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row'>
+			<label class="control-label">Description</label>
+			<span id="showbilldesc" style="display: block;">&nbsp</span>
 		</div>
 
 		<div class="panel panel-default" id="jqGridsvc_c">
@@ -72,6 +82,15 @@ input.uppercase {
 			</div>	
 		</div>
 
+		<div class='click_row' id="click_row2">
+			<label class="control-label">Charge Group</label>
+			<span id="showchggroup" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row' id="click_row2">
+			<label class="control-label">Description</label>
+			<span id="showgroupdesc" style="display: block;">&nbsp</span>
+		</div>
+
 		<div class="panel panel-default" id="jqGriditem_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel2">
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i> Item 
@@ -84,6 +103,15 @@ input.uppercase {
 					</div>
 				</div>
 			</div>	
+		</div>
+
+		<div class='click_row' id="click_row3">
+			<label class="control-label">Charge Group</label>
+			<span id="showchggroup2" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row' id="click_row3">
+			<label class="control-label">Description</label>
+			<span id="showgroupdesc2" style="display: block;">&nbsp</span>
 		</div>
 
 		<div class="panel panel-default" id="jqGridtype_c">
