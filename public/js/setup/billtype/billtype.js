@@ -29,7 +29,7 @@ $(document).ready(function () {
 	var radbuts = new checkradiobutton(['price','service','opprice']);
 	var radbuts_svc = new checkradiobutton(['svc_price','svc_allitem','svc_alltype']);
 	var radbuts_item = new checkradiobutton(['i_price']);
-	var radbuts_type = new checkradiobutton(['t_price','t_allitem']);
+	var radbuts_type = new checkradiobutton(['t_price']);
 	$("#jqGriditem_c, #jqGridtype_c").hide();
 
 	////////////////////////////////////start dialog///////////////////////////////////////
@@ -988,39 +988,6 @@ $(document).ready(function () {
 		},'urlParam', 'radio', 'tab'
 	);
 	dialog_chgtype.makedialog();
-
-	var dialog_discChgCode = new ordialog(
-		't_discchgcode','hisdb.chgmast',"#Ftype :input[name='t_discchgcode']",errorField,
-		{	colModel:[
-				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
-			},
-			ondblClickRow: function () {
-				$('#t_percent_').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#t_percent_').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},{
-			title:"Select Charge Code",
-			open: function(){
-				dialog_discChgCode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_discChgCode.urlParam.filterVal=['session.compcode','A']
-			}
-		},'urlParam', 'radio', 'tab', false
-	);
-	dialog_discChgCode.makedialog();
 	
 	var butttype1 = [{
 		text: "Save", click: function () {
@@ -1074,16 +1041,13 @@ $(document).ready(function () {
 				}
 				if (oper_type == 'add') {
 					dialog_chgtype.on();
-					dialog_discChgCode.on();
 				}
 				if (oper_type != 'add') {
 					dialog_chgtype.check(errorField);
-					dialog_discChgCode.check(errorField);
 				}
 				if(oper_type!='view'){
 					set_compid_from_storage("input[name='t_lastcomputerid']","input[name='t_lastipaddress']","input[name='t_computerid']","input[name='t_ipaddress']");
 					// dialog_chgtype.on();
-					dialog_discChgCode.on();
 				}
 				/*if(oper_item!='add'){
 					dialog_chgtype.check(errorField);
@@ -1096,7 +1060,6 @@ $(document).ready(function () {
 				radbuts_type.reset();
 				//$('.alert').detach();
 				dialog_chgtype.off();
-				dialog_discChgCode.off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", butttype1);
 				}
