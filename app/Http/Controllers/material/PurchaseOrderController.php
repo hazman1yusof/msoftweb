@@ -821,7 +821,7 @@ public function verify(Request $request){
 
     public function save_dt_from_othr_pr($refer_recno,$recno){
         $pr_dt = DB::table('material.purreqdt')
-                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'qtyrequest', 'unitprice', 'taxcode','perdisc','amtdisc', 'amtslstax','amount','recstatus','remarks')
+                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'pouom', 'qtyrequest', 'unitprice', 'taxcode','perdisc','amtdisc', 'amtslstax','amount','recstatus','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')

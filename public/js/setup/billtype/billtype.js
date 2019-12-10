@@ -797,6 +797,8 @@ $(document).ready(function () {
 		join_type: ['JOIN', 'JOIN', 'JOIN'],
 		join_onCol: ['i.chggroup', 'c.grpcode', 'i.chgcode'],
 		join_onVal: ['svc.chggroup', 'i.chggroup', 'm.chgcode'],
+		join_filterCol:[['i.billtype on =']],
+		join_filterVal:[['svc.billtype']],
 		filterCol: ['i.billtype', 'i.compcode', 'i.chggroup', 'svc.allitem', 'svc.compcode'],
 		filterVal: ['', 'session.compcode', '', '0', 'session.compcode'],
 		sort_idno: true,
@@ -1078,6 +1080,8 @@ $(document).ready(function () {
 		join_type: ['JOIN', 'JOIN', 'JOIN'],
 		join_onCol: ['t.chggroup', 'ct.chgtype', 'cg.grpcode'],
 		join_onVal: ['svc.chggroup', 't.chgtype', 't.chggroup'],
+		join_filterCol:[['t.billtype on =']],
+		join_filterVal:[['svc.billtype']],
 		filterCol: ['t.billtype', 't.compcode', 't.chggroup', 'svc.compcode'],//, 'svc.alltype'
 		filterVal: ['', 'session.compcode', '', 'session.compcode'],//, '0'
 		sort_idno: true,

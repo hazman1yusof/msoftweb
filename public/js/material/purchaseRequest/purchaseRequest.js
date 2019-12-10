@@ -110,9 +110,9 @@ $(document).ready(function () {
 		filterCol_urlParam = ['purreqhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
 	}else if($("#recstatus_use").val() == 'REQUEST'){
-		recstatus_filter = [['OPEN','REQUEST']];
-		filterCol_urlParam = ['purreqhd.compcode'];
-		filterVal_urlParam = ['session.compcode'];
+		recstatus_filter = [['OPEN']];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
 	}else if($("#recstatus_use").val() == 'SUPPORT'){
 		recstatus_filter = [['REQUEST']];
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
@@ -249,13 +249,13 @@ $(document).ready(function () {
 				$('#but_reopen_jq').show();
 			} else {
 				if(scope == 'ALL'){
-					if(stat=='OPEN'){
-						if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-							$('#but_cancel_jq,#but_post_single_jq').show();
-						}else{
-							$('#but_cancel_jq,#but_post_jq').show();
-						}
-					}
+					// if(stat=='OPEN'){
+					// 	if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+					// 		$('#but_cancel_jq,#but_post_single_jq').show();
+					// 	}else{
+					// 		$('#but_cancel_jq,#but_post_jq').show();
+					// 	}
+					// }
 				}else{
 					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
 						$('#but_cancel_jq,#but_post_single_jq').show();
@@ -899,9 +899,9 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
-		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		if($("#recstatus_use").val() != 'ALL' && options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		}else if($("#recstatus_use").val() != 'ALL' && options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
 			return ' ';

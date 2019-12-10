@@ -1641,7 +1641,7 @@ $(document).ready(function () {
 				{label:'recno',name:'h_recno',width:50,classes:'pointer',hidden:false}
 				],
 			urlParam: {
-					filterCol:['h.reqdept','h.recstatus', 'h.purordno'],
+					filterCol:['h.prdept','h.recstatus', 'h.purordno'],
 					filterVal:[$("#purordhd_reqdept").val(),'APPROVED', '0']
 				},
 			ondblClickRow: function () {
@@ -1725,7 +1725,7 @@ $(document).ready(function () {
 			open: function(){
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_purreqno.urlParam.fixPost = "true";
-				dialog_purreqno.urlParam.filterCol = ['h.reqdept','h.recstatus', 'h.purordno'];
+				dialog_purreqno.urlParam.filterCol = ['h.prdept','h.recstatus', 'h.purordno'];
 				dialog_purreqno.urlParam.filterVal = [$("#purordhd_reqdept").val(),'APPROVED', '0'];
 			}
 		},'none'
