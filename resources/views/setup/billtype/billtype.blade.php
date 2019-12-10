@@ -535,17 +535,6 @@ input.uppercase {
 					data-validation-optional-if-answered="t_percent_" data-validation="number">
 				</div>
 				
-				<label class="col-md-2 control-label" for="t_discchgcode">Disc Chg Code</label>
-				<div class="col-md-3">
-					<div class='input-group'>
-						<input id="t_discchgcode" name="t_discchgcode" type="text" class="form-control input-sm uppercase">
-						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					</div>
-					<span class="help-block"></span>
-				</div>
-			</div>
-
-			<div class="form-group">
 				<label class="col-md-2 control-label" for="t_percent_">Percentage</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
@@ -554,13 +543,7 @@ input.uppercase {
 						<span class="input-group-addon">%</span>
 					</div>
 				</div>
-
-				<label class="col-md-2 control-label" for="t_allitem">All Item</label>  
-				<div class="col-md-3">
-					<label class="radio-inline"><input type="radio" name="t_allitem" value='1' data-validation="required">Yes</label>
-					<label class="radio-inline"><input type="radio" name="t_allitem" value='0' data-validation="">No</label>
-				</div>
-			</div> 
+			</div>
 
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="t_recstatus">Record Status</label>  
