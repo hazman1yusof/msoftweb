@@ -72,23 +72,29 @@ $(document).ready(function () {
 					$(this).dialog("option", "buttons",butt2);
 					break;
 			}
-			if(oper!='view'){
-				
+
+			if(oper == 'edit'){
+				dialog_deptcode.on();
 			}
+			
 			if(oper!='add'){
-				toggleFormData('#jqGrid','#formdata');
-				
+
+			}
+			if (oper != 'view') {
+			/*	$("#authorid").val(selrowData('#jqGrid').authorid);
+				$("input[name='authorid']").val(selrowData('#jqGrid').authorid);*/
+				dialog_deptcode.on();
 			}
 		},
 		close: function( event, ui ) {
-			parent_close_disabled(false);
-			emptyFormdata(errorField,'#formdata');
-			$('#formdata .alert').detach();
-			$("#formdata a").off();
-			if(oper=='view'){
-				$(this).dialog("option", "buttons",butt1);
-			}
-		},
+		parent_close_disabled(false);
+		emptyFormdata(errorField,'#formdata');
+		$('.my-alert').detach();
+		dialog_deptcode.off();
+		if(oper=='view'){
+			$(this).dialog("option", "buttons",buttItem1);
+		}
+	},
 		buttons :butt1,
 	  });
 
@@ -98,7 +104,6 @@ $(document).ready(function () {
 	   	action:'get_table_default',
 		url:'/util/get_table_default',
 		field:'',
-		//fixPost:'true',
 		table_name:'material.authdtl',
 		table_id:'idno',
 		filterCol:['compcode', 'cando'],
@@ -106,6 +111,17 @@ $(document).ready(function () {
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
+
+	var saveParam = {
+		action: 'save_table_default',
+		url: '/authorizationDtl/form',
+		field: '',
+		oper: oper,
+		table_name: 'material.authdtl',
+		table_id: 'idno',
+		saveip:'true',
+		checkduplicate:'true'
+	};
 	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
@@ -189,7 +205,7 @@ $(document).ready(function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
-			recstatusDisable();
+			candoDisable();
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -202,6 +218,64 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+
+	function candoDisable(cando = 'cando'){
+		var candovalue = $("#formdata [name='"+cando+"']:checked").val();
+		if(candovalue == 'A'){
+			$("#formdata input[name='"+cando+"']").prop('disabled', true);
+		}else{
+			$("#formdata input[name='"+cando+"']").prop('disabled', false);
+		}
+	}
+
+	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
+
+	toogleSearch('#sbut1', '#searchForm', 'on');
+	populateSelect('#jqGrid', '#searchForm');
+	searchClick('#jqGrid', '#searchForm', urlParam);
+
+	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
+	addParamField('#jqGrid', true, urlParam);
+	addParamField('#jqGrid',false,saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus', 'cando']);
+
+	/////////////////////dialog handler///////////////////////////////////////////////////////
+
+	var dialog_deptcode = new ordialog(
+	'deptcode','sysdb.department','#deptcode',errorField,
+	{	colModel:[
+			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Unit',name:'sector'},
+		],
+		urlParam: {
+			filterCol:['storedept', 'recstatus','compcode','sector'],
+			filterVal:['1', 'A', 'session.compcode', 'session.unit']
+		},
+		ondblClickRow:function(){
+			
+		},
+		gridComplete: function(obj){
+			let str = $(obj.textfield).val() ? $(obj.textfield).val() : '';
+			if(str.toUpperCase() == 'ALL' && obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+				obj.ontabbing = false;
+			}
+
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+			}
+		}
+	},{
+		title:"Select Department",
+		open: function(){
+			dialog_deptcode.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
+			dialog_deptcode.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
+		}
+	},'none','radio','tab'
+);
+dialog_deptcode.makedialog();
 	
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();

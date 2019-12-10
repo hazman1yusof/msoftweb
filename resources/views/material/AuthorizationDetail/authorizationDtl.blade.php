@@ -60,7 +60,7 @@
                 </div>
             
             	<div class="form-group">
-					<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+					<label class="col-md-2 control-label" for="recstatus">Status</label>  
 						<div class="col-md-2">
 							<select id="recstatus" name="recstatus" class="form-control input-sm">
 							    <option value="REQUEST">REQUEST</option>
