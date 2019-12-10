@@ -30,7 +30,7 @@ $(document).ready(function () {
 	var radbuts_svc = new checkradiobutton(['svc_price','svc_allitem','svc_alltype']);
 	var radbuts_item = new checkradiobutton(['i_price']);
 	var radbuts_type = new checkradiobutton(['t_price']);
-	$("#jqGriditem_c, #jqGridtype_c").hide();
+	$("#jqGriditem_c, #jqGridtype_c, #click_row2, #click_row3").hide();
 
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1 = [{
@@ -136,6 +136,24 @@ $(document).ready(function () {
 		checkduplicate:'true'
 	};
 
+	function searchClick2(grid,form,urlParam){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				$('#showbilltype').text("");//tukar kat depan tu
+				$('#showbilldesc').text("");
+				refreshGrid("#jqGridsvc",null,"kosongkan");
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
+			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+			$('#showbilltype').text("");//tukar kat depan tu
+			$('#showbilldesc').text("");
+			refreshGrid("#jqGridsvc",null,"kosongkan");
+		});
+	}
+
 	//////////////////////////start grid/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
 		datatype: "local",
@@ -196,13 +214,17 @@ $(document).ready(function () {
 				$("#pg_jqGridPager3 table").hide();
 				$("#pg_jqGridPager2 table").show();
 
-				$("#jqGriditem_c, #jqGridtype_c").hide();
+				$("#jqGriditem_c, #jqGridtype_c, #click_row2, #click_row3").hide();
 
 				if (selrowData("#jqGrid").service == 1) {
 					refreshGrid('#jqGridsvc', urlParam_svc);
 					$("#pg_jqGridPager2 table").hide();
 				}
 			}
+
+			$('#showbilltype').text(selrowData("#jqGrid").billtype);//tukar kat depan tu
+			$('#showbilldesc').text(selrowData("#jqGrid").description);
+			refreshGrid("#jqGridsvc", urlParam_svc);
 		},
 
 	});
@@ -497,6 +519,28 @@ $(document).ready(function () {
 		// checkduplicate:'true'
 	};
 
+	function searchClick2(grid,form,urlParam_svc){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam_svc);
+				$('#showchggroup').text("");//tukar kat depan tu
+				$('#showgroupdesc').text("");
+				$('#showchggroup2').text("");
+				$('#showgroupdesc2').text("");
+				refreshGrid("#jqGriditem, #jqGridtype",null,"kosongkan");
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
+			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam_svc);
+			$('#showchggroup').text("");//tukar kat depan tu
+			$('#showgroupdesc').text("");
+			$('#showchggroup2').text("");
+			$('#showgroupdesc2').text("");
+			refreshGrid("#jqGriditem, #jqGridtype",null,"kosongkan");
+		});
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	$("#jqGridsvc").jqGrid({
@@ -561,11 +605,11 @@ $(document).ready(function () {
 			if (rowid != null) {
 				rowData = $('#jqGridsvc').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGriditem', urlParam_item,'kosongkan');
-				$("#pg_jqGridPager3 table, #jqGriditem_c").hide();
+				$("#pg_jqGridPager3 table, #jqGriditem_c, #click_row2").hide();
 
 
 				refreshGrid('#jqGridtype', urlParam_type,'kosongkan');
-				$("#pg_jqGridPager4 table, #jqGridtype_c").hide();
+				$("#pg_jqGridPager4 table, #jqGridtype_c, #click_row3").hide();
 
 				if (rowData['svc_allitem'] == '0') {
 					$("#Fitem a").off();
@@ -573,14 +617,14 @@ $(document).ready(function () {
 					urlParam_item.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
 					urlParam_item.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
 					refreshGrid('#jqGriditem', urlParam_item);
-					$("#pg_jqGridPager3 table, #jqGriditem_c").show();
+					$("#pg_jqGridPager3 table, #jqGriditem_c, #click_row2").show();
 				}
 
 				if (rowData['svc_alltype'] == '0') {
 					urlParam_type.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
 					urlParam_type.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
 					refreshGrid('#jqGridtype', urlParam_type);
-					$("#pg_jqGridPager4 table, #jqGridtype_c").show();
+					$("#pg_jqGridPager4 table, #jqGridtype_c, #click_row3").show();
 				}
 
 
@@ -591,6 +635,12 @@ $(document).ready(function () {
 				dialog_chgcode.urlParam.filterVal=[selrowData("#jqGridsvc").svc_chggroup];
 
 			}
+
+			$('#showchggroup').text(selrowData("#jqGridsvc").svc_chggroup);//tukar kat depan tu
+			$('#showgroupdesc').text(selrowData("#jqGridsvc").cc_description);
+			$('#showchggroup2').text(selrowData("#jqGridsvc").svc_chggroup);
+			$('#showgroupdesc2').text(selrowData("#jqGridsvc").cc_description);
+			// refreshGrid("#jqGridsvc", urlParam_svc);
 		},
 
 	});
