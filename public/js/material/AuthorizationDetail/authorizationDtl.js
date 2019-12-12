@@ -73,7 +73,7 @@ $(document).ready(function () {
 					break;
 			}
 
-<<<<<<< HEAD
+
 			if(oper == 'add'){
 				$('#dtl_authorid').prop('readonly',false);
 				dialog_deptcode.on();
@@ -83,28 +83,24 @@ $(document).ready(function () {
 			if(oper=='edit'){
 				$('#dtl_authorid').prop('readonly',true);
 				dialog_deptcode.on();
-=======
-			if(oper == 'edit'){
-				/*dialog_deptcode.on();
-				dialog_authorid.on();*/
+
 			}
 			
 			if(oper!='add'){
 				dialog_deptcode.check(errorField);
 				dialog_authorid.check(errorField);
 
->>>>>>> 9b2bb227697fd35f7c30b82ff84002727179f63b
 			}
 			if (oper != 'view') {
 			/*	$("#authorid").val(selrowData('#jqGrid').authorid);
 				$("input[name='authorid']").val(selrowData('#jqGrid').authorid);*/
-<<<<<<< HEAD
+
 				// dialog_deptcode.on();
 				// dialog_authorid.on();
-=======
+
 				dialog_deptcode.on();
 				dialog_authorid.on();
->>>>>>> 9b2bb227697fd35f7c30b82ff84002727179f63b
+
 			}
 		},
 		close: function( event, ui ) {
@@ -118,7 +114,7 @@ $(document).ready(function () {
 		}
 	},
 		buttons :butt1,
-	  });
+	});
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	
@@ -148,7 +144,7 @@ $(document).ready(function () {
 	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		 colModel: [
+		colModel: [
            	{ label: 'Author ID', name: 'dtl_authorid', width: 200, classes: 'wrap', hidden:false},
 			{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true},
@@ -265,7 +261,8 @@ $(document).ready(function () {
 
 	var dialog_deptcode = new ordialog(
 	'deptcode','sysdb.department','#dtl_deptcode',errorField,
-	{	colModel:[
+	{	
+		colModel:[
 			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 			{label:'Unit',name:'sector'},
@@ -296,13 +293,14 @@ $(document).ready(function () {
 			dialog_deptcode.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 			dialog_deptcode.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
 		}
-<<<<<<< HEAD
+
 	},'none','radio','tab');
 	dialog_deptcode.makedialog();
 
 	var dialog_authorid = new ordialog(
 	'authorid','material.authorise','#dtl_authorid',errorField,
-	{	colModel:[
+	{	
+		colModel:[
 			{label:'Authorise ID',name:'authorid',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
 		],
@@ -334,50 +332,7 @@ $(document).ready(function () {
 		}
 	},'none','radio','tab');
 	dialog_authorid.makedialog();
-=======
-	},'none','radio','tab'
-);
-dialog_deptcode.makedialog();
 
-var dialog_authorid = new ordialog(
-	'authorid','sysdb.users','#authorid',errorField,
-	{	colModel:[
-			{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true},
-			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true},
-			{label:'Password',name:'password',width:400,classes:'pointer', hidden:true},
-			{label:'Dept Code',name:'deptcode',width:400,classes:'pointer', hidden:true},
-		],
-		urlParam: {
-			filterCol:['compcode','recstatus'],
-			filterVal:['session.compcode','A']
-		},
-		ondblClickRow:function(){
-			let data=selrowData('#'+dialog_authorid.gridname);
-				/*$("#name").val(data['name']);
-				$("#password").val(data['password']).attr('type','password');
-				$("#deptcode").val(data['deptcode']);
-				$('#deptcode').focus();*/
-		},
-		gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						//$('#deptcode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-				}	
-		},{
-		title:"Select Author ID",
-		open: function(){
-				dialog_authorid.urlParam.filterCol=['recstatus'],
-				dialog_authorid.urlParam.filterVal=['A']
-			}
-		},'urlParam', 'radio', 'tab'
-	);
-dialog_authorid.makedialog();
->>>>>>> 9b2bb227697fd35f7c30b82ff84002727179f63b
 	
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();

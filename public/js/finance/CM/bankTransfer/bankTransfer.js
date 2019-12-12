@@ -28,12 +28,16 @@
 			/////////////////////////////////// currency ///////////////////////////////
 			var mycurrency =new currencymode(['#amount']);
 
+			///////////////////////////////// trandate check date validate from period////////// ////////////////
+			var actdateObj = new setactdate(["#actdate"]);
+			actdateObj.getdata().set();
+
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
 				id: "saveBut", 
 				text: "Save",click: function() {
-					/*mycurrency.formatOff();
-					mycurrency.check0value(errorField);*/
+					mycurrency.formatOff();
+					mycurrency.check0value(errorField);
 						if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 							if ($("#formdata :input[name='payto']").val() === $("#formdata :input[name='bankcode']").val()) {
 									
@@ -43,9 +47,9 @@
 							else {
 								saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 							}
-						}/*else{
+						}else{
 							mycurrency.formatOn();
-						}*/
+						}
 					}
 			},{
 				id: "canBut",
@@ -60,7 +64,9 @@
 				}
 			}];
 
+			/////////////////////////start dialog//////////////////////////////////////////	
 			var oper;
+			var unsaved = false;
 			$("#dialogForm")
 			  .dialog({ 
 				width: 9/10 * $(window).width(),
@@ -68,26 +74,76 @@
 				autoOpen: false,
 				open: function( event, ui ) {
 					parent_close_disabled(true);
+					mycurrency.formatOnBlur();
+					mycurrency.formatOn();
 					switch(oper) {
 						case state = 'add':
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
 							rdonly("#formdata");
 							hideOne("#formdata");
-							break;
+							$("#saveBut").show();
+							$("#canBut").show();
+							
+							var paymode = $("#paymode").val();
+								if(paymode == "CHEQUE"){
+									$("#cheqno").prop("readonly",true);
+									$("#saveBut").show();
+									$("#canBut").show();
+									enableChequeD();
+								}
+								else if(paymode == "CASH"){
+									disableChequeD();
+									disableFiledCash();
+								} else{
+									disableFiledCheqNo();
+								}
+
+						break;
+
 						case state = 'edit':
 							$( this ).dialog( "option", "title", "Edit" );
 							enableForm('#formdata');
 							frozeOnEdit("#dialogForm");
 							rdonly("#formdata");
 							$('#formdata :input[hideOne]').show();
-							break;
+
+							var paymode = $("#paymode").val();
+								if(paymode == "CHEQUE"){
+									$("#cheqno").prop("readonly",true);
+									enableChequeD();
+								}
+								else if (paymode == "CASH"){
+									disableChequeD();
+									disableFiledCash();
+
+								}
+								else {
+									$("label[for=cheqno]").text(paymode+" No");
+									$("#cheqno").prop("readonly",false);
+									disableChequeD();
+								} 
+						break;
+
 						case state = 'view':
 							$( this ).dialog( "option", "title", "View" );
 							disableForm('#formdata');
 							$(this).dialog("option", "buttons",butt2);
 							$('#formdata :input[hideOne]').show();
-							break;
+							paymode = $("#paymode").val();
+								if(paymode == "CHEQUE"){
+									$("#cheqno").prop("readonly",true);
+									enableChequeD();
+								} 
+								else if (paymode == "CASH"){
+									disableChequeD();
+									disableFiledCash();
+
+								}
+								else {
+									$("label[for=cheqno]").text(paymode+" No");
+								}
+						break;
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
@@ -120,6 +176,79 @@
 				buttons :butt1,
 			  });
 			////////////////////////////////////////end dialog///////////////////////////////////////////
+
+			//////change label///////
+
+
+			function disableChequeD() {
+				dialog_cheqno.off();
+				$("#cheqno_a").hide();
+			}
+
+			function enableChequeD() {
+				/*dialog_cheqno.updateField('finance.chqtran','#cheqno',['cheqno'],'Cheque No', '--','--', 'Cheque No');*/
+				//dialog_cheqno.off();
+				dialog_cheqno.on(errorField);
+				$("#cheqno_a").show();
+			}
+
+			function disableFiledCheqNo() {
+				$("label[for=cheqno]").hide();
+				$("#cheqno_parent").hide();
+
+				$("label[for=bankcode]").hide();
+				$("#bankcode_parent").hide();
+			}
+
+			function disableFiledCash() {
+				$("label[for=cheqno]").hide();
+				$("#cheqno_parent").hide();
+
+				$("label[for=bankcode]").show();
+				$("#bankcode_parent").show();
+			}
+
+			function enableFiledCheqNo() {
+				$("label[for=cheqno]").show();
+				$("#cheqno_parent").show();
+
+				$("label[for=bankcode]").show();
+				$("#bankcode_parent").show();
+				
+			}
+
+			$('#dialog').on('dblclick',function(){
+				unsaved = true;
+				
+				if(selText == "#paymode"){
+					enableFiledCheqNo();
+					var paymode = $('#paymode').val();
+					if(paymode == "CHEQUE"){
+						$("label[for=cheqno]").text(paymode+" No");
+						//$("#cheqno").prop("readonly",true);
+						enableChequeD();
+					}
+					else if(paymode == "CASH"){
+						disableChequeD();
+						disableFiledCash();
+					}
+					else {
+						$("label[for=cheqno]").text(paymode+" No");
+						$("#cheqno").prop("readonly",false);
+						disableChequeD();
+					}
+
+					$('#bankcode').val('');
+					$('#bc').html('');
+					$('#cheqno').val('');
+					$('#cn').html('');
+				}
+
+				if(selText == "#bankcode") {
+					$('#cheqno').val('');
+					$('#cn').html('');
+				}
+			});
 
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
@@ -196,7 +325,7 @@
 					recstatus=buts.recstatus;
 
 
-					if (recstatus=='Open'){
+					if (recstatus=='OPEN'){
 						$("#postedBut").show();
 						$("#cancelBut").show();
 						$("#saveBut").show();
@@ -205,7 +334,7 @@
 
 					}
 
-					else if (recstatus==='Posted'){
+					else if (recstatus==='POSTED'){
 						$("#postedBut").hide();
 						$("#cancelBut").hide();
 						$("#saveBut").hide();
@@ -214,7 +343,7 @@
 						//$("#glyphicon-plus").hide();
 					} 
 
-					else if (recstatus==='Cancel'){
+					else if (recstatus==='CANCEL'){
 						$("#postedBut").hide();
 						$("#cancelBut").hide();
 						$("#saveBut").hide();
@@ -292,15 +421,15 @@
 			////////////////////formatter status////////////////////////////////////////
 				function formatterPost(cellvalue, option, rowObject){
 					if (cellvalue == 'O'){
-						return 'Open';
+						return 'OPEN';
 					}
 
 					else if (cellvalue == 'P'){
-						return 'Posted';
+						return 'POSTED';
 					}
 
 					else if (cellvalue == 'C'){
-						return 'Cancel';
+						return 'CANCEL';
 					}
 				}
 
@@ -332,7 +461,7 @@
 						alert('Please select row');
 						return emptyFormdata(errorField,'#formdata');
 					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':selrowData('#jqGrid').idno});
+						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'auditno':selrowData('#jqGrid').auditno});
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -376,7 +505,7 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
+			addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress', 'auditno']);
 
 
 			////////////////////object for dialog handler//////////////////
@@ -484,10 +613,11 @@
 				'cheqno','finance.chqtran','#cheqno',errorField,
 				{	colModel:[
 						{label:'Cheque No',name:'cheqno',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+						{label:'bankcode',name:'bankcode',width:200,classes:'pointer',hidden:true},
 						
 					],
 					urlParam: {
-						filterCol:['compcode','recstatus'],
+						filterCol:['compcode','stat'],
 						filterVal:['session.compcode','A']
 					},
 					ondblClickRow: function () {
