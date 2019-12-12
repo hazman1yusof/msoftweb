@@ -83,12 +83,21 @@ input.uppercase {
 		</div>
 
 		<div class='click_row' id="click_row2">
-			<label class="control-label">Charge Group</label>
-			<span id="showchggroup" style="display: block;">&nbsp</span>
+			<label class="control-label">Bill Type</label>
+			<span id="showbilltype2" style="display: block;">&nbsp</span>
 		</div>
 		<div class='click_row' id="click_row2">
 			<label class="control-label">Description</label>
-			<span id="showgroupdesc" style="display: block;">&nbsp</span>
+			<span id="showbilldesc2" style="display: block;">&nbsp</span>
+		</div>
+		<br>
+		<div class='click_row' id="click_row2">
+			<label class="control-label">Charge Group</label>
+			<span id="showchggroup2" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row' id="click_row2">
+			<label class="control-label">Description</label>
+			<span id="showgroupdesc2" style="display: block;">&nbsp</span>
 		</div>
 
 		<div class="panel panel-default" id="jqGriditem_c">
@@ -106,12 +115,21 @@ input.uppercase {
 		</div>
 
 		<div class='click_row' id="click_row3">
-			<label class="control-label">Charge Group</label>
-			<span id="showchggroup2" style="display: block;">&nbsp</span>
+			<label class="control-label">Bill Type</label>
+			<span id="showbilltype3" style="display: block;">&nbsp</span>
 		</div>
 		<div class='click_row' id="click_row3">
 			<label class="control-label">Description</label>
-			<span id="showgroupdesc2" style="display: block;">&nbsp</span>
+			<span id="showbilldesc3" style="display: block;">&nbsp</span>
+		</div>
+		<br>
+		<div class='click_row' id="click_row3">
+			<label class="control-label">Charge Group</label>
+			<span id="showchggroup3" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row' id="click_row3">
+			<label class="control-label">Description</label>
+			<span id="showgroupdesc3" style="display: block;">&nbsp</span>
 		</div>
 
 		<div class="panel panel-default" id="jqGridtype_c">

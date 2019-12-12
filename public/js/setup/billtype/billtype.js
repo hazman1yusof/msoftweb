@@ -67,7 +67,7 @@ $(document).ready(function () {
 				switch (oper) {
 					case state = 'add':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Add");
+						$(this).dialog("option", "title", "Add Bill Type Master");
 						enableForm('#formdata');
 						hideOne('#formdata');
 						rdonly("#formdata");
@@ -75,7 +75,7 @@ $(document).ready(function () {
 						break;
 					case state = 'edit':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Edit");
+						$(this).dialog("option", "title", "Edit Bill Type Master");
 						enableForm('#formdata');
 						frozeOnEdit("#dialogForm");
 						$('#formdata :input[hideOne]').show();
@@ -84,7 +84,7 @@ $(document).ready(function () {
 						break;
 					case state = 'view':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "View");
+						$(this).dialog("option", "title", "View Bill Type Master");
 						disableForm('#formdata');
 						$('#formdata :input[hideOne]').show();
 						$(this).dialog("option", "buttons", butt2);
@@ -430,14 +430,14 @@ $(document).ready(function () {
 				switch (oper_svc) {
 					case state = 'add':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Add");
+						$(this).dialog("option", "title", "Add Bill Type Service");
 						enableForm('#Fsvc');
 						rdonly('#Fsvc');
 						hideOne('#Fsvc');
 						break;
 					case state = 'edit':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Edit");
+						$(this).dialog("option", "title", "Edit Bill Type Service");
 						enableForm('#Fsvc');
 						frozeOnEdit("#Dsvc");
 						rdonly('#Fsvc');
@@ -445,7 +445,7 @@ $(document).ready(function () {
 						break;
 					case state = 'view':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "View");
+						$(this).dialog("option", "title", "View Bill Type Service");
 						disableForm('#Fsvc');
 						$('#Fsvc :input[hideOne]').show();
 						$(this).dialog("option", "buttons", butt2);
@@ -525,20 +525,28 @@ $(document).ready(function () {
 		$(form+' [name=Stext]').on( "keyup", function() {
 			delay(function(){
 				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam_svc);
-				$('#showchggroup').text("");//tukar kat depan tu
-				$('#showgroupdesc').text("");
+				$('#showbilltype2').text("");//tukar kat depan tu
+				$('#showbilldesc2').text("");
 				$('#showchggroup2').text("");
 				$('#showgroupdesc2').text("");
+				$('#showbilltype3').text("");
+				$('#showbilldesc3').text("");
+				$('#showchggroup3').text("");
+				$('#showgroupdesc3').text("");
 				refreshGrid("#jqGriditem, #jqGridtype",null,"kosongkan");
 			}, 500 );
 		});
 
 		$(form+' [name=Scol]').on( "change", function() {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam_svc);
-			$('#showchggroup').text("");//tukar kat depan tu
-			$('#showgroupdesc').text("");
+			$('#showbilltype2').text("");//tukar kat depan tu
+			$('#showbilldesc2').text("");
 			$('#showchggroup2').text("");
 			$('#showgroupdesc2').text("");
+			$('#showbilltype3').text("");
+			$('#showbilldesc3').text("");
+			$('#showchggroup3').text("");
+			$('#showgroupdesc3').text("");
 			refreshGrid("#jqGriditem, #jqGridtype",null,"kosongkan");
 		});
 	}
@@ -638,10 +646,14 @@ $(document).ready(function () {
 
 			}
 
-			$('#showchggroup').text(selrowData("#jqGridsvc").svc_chggroup);//tukar kat depan tu
-			$('#showgroupdesc').text(selrowData("#jqGridsvc").cc_description);
+			$('#showbilltype2').text(selrowData("#jqGridsvc").svc_billtype);//tukar kat depan tu
+			$('#showbilldesc2').text(selrowData("#jqGridsvc").m_description);
 			$('#showchggroup2').text(selrowData("#jqGridsvc").svc_chggroup);
 			$('#showgroupdesc2').text(selrowData("#jqGridsvc").cc_description);
+			$('#showbilltype3').text(selrowData("#jqGridsvc").svc_billtype);//tukar kat depan tu
+			$('#showbilldesc3').text(selrowData("#jqGridsvc").m_description);
+			$('#showchggroup3').text(selrowData("#jqGridsvc").svc_chggroup);
+			$('#showgroupdesc3').text(selrowData("#jqGridsvc").cc_description);
 			// refreshGrid("#jqGridsvc", urlParam_svc);
 		},
 
@@ -790,14 +802,14 @@ $(document).ready(function () {
 				switch (oper_item) {
 					case state = 'add':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Add");
+						$(this).dialog("option", "title", "Add Bill Type Item");
 						enableForm('#Fitem');
 						rdonly('#Fitem');
 						hideOne('#Fitem');
 						break;
 					case state = 'edit':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Edit");
+						$(this).dialog("option", "title", "Edit Bill Type Item");
 						$("#Fitem a").off();
 						enableForm('#Fitem');
 						frozeOnEdit("#Ditem");
@@ -806,7 +818,7 @@ $(document).ready(function () {
 						break;
 					case state = 'view':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "View");
+						$(this).dialog("option", "title", "View Bill Type Item");
 						disableForm('#Fitem');
 						$('#Fitem :input[hideOne]').show();
 						$(this).dialog("option", "buttons", butt2);
@@ -1073,14 +1085,14 @@ $(document).ready(function () {
 				switch (oper_type) {
 					case state = 'add':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Add");
+						$(this).dialog("option", "title", "Add Bill Charge Type");
 						enableForm('#Ftype');
 						rdonly('#Ftype');
 						hideOne('#Ftype');
 						break;
 					case state = 'edit':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Edit");
+						$(this).dialog("option", "title", "Edit Bill Charge Type");
 						$("#Ftype a").off();
 						enableForm('#Ftype');
 						frozeOnEdit("#Dtype");
@@ -1089,7 +1101,7 @@ $(document).ready(function () {
 						break;
 					case state = 'view':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "View");
+						$(this).dialog("option", "title", "View Bill Charge Type");
 						disableForm('#Ftype');
 						$('#Ftype :input[hideOne]').show();
 						$(this).dialog("option", "buttons", butt2);
