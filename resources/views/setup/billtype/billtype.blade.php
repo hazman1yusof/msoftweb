@@ -90,7 +90,6 @@ input.uppercase {
 			<label class="control-label">Description</label>
 			<span id="showbilldesc2" style="display: block;">&nbsp</span>
 		</div>
-		<br>
 		<div class='click_row' id="click_row2">
 			<label class="control-label">Charge Group</label>
 			<span id="showchggroup2" style="display: block;">&nbsp</span>
@@ -122,7 +121,6 @@ input.uppercase {
 			<label class="control-label">Description</label>
 			<span id="showbilldesc3" style="display: block;">&nbsp</span>
 		</div>
-		<br>
 		<div class='click_row' id="click_row3">
 			<label class="control-label">Charge Group</label>
 			<span id="showchggroup3" style="display: block;">&nbsp</span>
