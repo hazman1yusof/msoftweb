@@ -178,7 +178,7 @@ i.fa {
 					Purchase Order Header
 					
 				</div>
-					<div class="panel-body" style="position: relative;">
+					<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 						<form class='form-horizontal' style='width:99%' id='formdata'>
 						{{ csrf_field() }}
 							<input id="purordhd_idno" name="purordhd_idno" type="hidden">
@@ -323,23 +323,42 @@ i.fa {
 
 
 					    	<div class="form-group data_info">
-						    	<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purordhd_upduser">Last Entered By</label>  
-						  			<input id="purordhd_upduser" name="purordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						    	<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_requestby">Request By</label>  
+						  			<input id="purordhd_upduser" name="purordhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
-					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purordhd_upddate">Last Entered Date</label>
-						  			<input id="purordhd_upddate" name="purordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					    		<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purordhd_authpersonid">Authorized By</label>  
-						  			<input id="purordhd_authpersonid" name="purordhd_authpersonid" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_supportby">Support By</label>
+						  			<input id="purordhd_upddate" name="purordhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
-					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purordhd_authdate">Authorized Date</label>
-						  			<input id="purordhd_authdate" name="purordhd_authdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					    		<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_verifiedby">Verified By</label>  
+						  			<input id="purordhd_authpersonid" name="purordhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_approvedby">Approved By</label>
+						  			<input id="purordhd_authdate" name="purordhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_requestdate">Request Date</label>  
+						  			<input id="purordhd_authpersonid" name="purordhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_supportdate">Support Date</label>
+						  			<input id="purordhd_authdate" name="purordhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_verifieddate">Verified Date</label>  
+						  			<input id="purordhd_authpersonid" name="purordhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_approveddate">Approved Date</label>
+						  			<input id="purordhd_authdate" name="purordhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 							</div>
 					</form>

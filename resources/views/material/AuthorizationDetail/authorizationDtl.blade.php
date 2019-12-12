@@ -40,19 +40,23 @@
         	<form class='form-horizontal' style='width:99%' id='formdata'>
 			
 				{{ csrf_field() }}
-				<input type="hidden" id="idno" name="idno">
-				<input type="hidden" id="authorid" name="authorid">
+				<input type="hidden" id="dtl_idno" name="dtl_idno">
+				<!-- <input type="hidden" id="authorid" name="authorid"> -->
             
             	<div class="form-group">
-				 	<label class="col-md-2 control-label" for="authorid">User ID</label>  
+				 	<label class="col-md-2 control-label" for="dtl_authorid">User ID</label>  
 				  		<div class="col-md-2">
-				  			<input name="authorid" type="text" maxlength="12" class="form-control input-sm" rdonly>
+				  			<div class='input-group'>
+								<input id="dtl_authorid" name="dtl_authorid" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  		</div>
+					 		<span class="help-block"></span>
 				  		</div>
 
-				  	<label class="col-md-2 control-label" for="deptcode">Dept Code</label>  
+				  	<label class="col-md-2 control-label" for="dtl_deptcode">Dept Code</label>  
 				  		<div class="col-md-2">
 					  		<div class='input-group'>
-								<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="dtl_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					 		<span class="help-block"></span>
@@ -60,9 +64,9 @@
                 </div>
             
             	<div class="form-group">
-					<label class="col-md-2 control-label" for="recstatus">Status</label>  
+					<label class="col-md-2 control-label" for="dtl_recstatus">Status</label>  
 						<div class="col-md-2">
-							<select id="recstatus" name="recstatus" class="form-control input-sm">
+							<select id="dtl_recstatus" name="dtl_recstatus" class="form-control input-sm">
 							    <option value="REQUEST">REQUEST</option>
 							    <option value="SUPPORT">SUPPORT</option>
 							    <option value="VERIFIED">VERIFIED</option>
@@ -70,9 +74,9 @@
 							</select>
 						</div>	
 
-					<label class="col-md-2 control-label" for="trantype">Trantype</label>  
+					<label class="col-md-2 control-label" for="dtl_trantype">Trantype</label>  
 						<div class="col-md-2">
-							<select id="trantype" name="trantype" class="form-control input-sm">
+							<select id="dtl_trantype" name="dtl_trantype" class="form-control input-sm">
 							    <option value="PR">Purchase Request</option>
 							    <option value="PO">Purchase Order</option>
 							</select>
@@ -80,22 +84,22 @@
                 </div>		
 
                 <div class="form-group">
-				  <label class="col-md-2 control-label" for="cando">CanDo</label> 
+				  <label class="col-md-2 control-label" for="dtl_cando">CanDo</label> 
 				  <div class="col-md-2">
-					<label class="radio-inline"><input type="radio" name="cando" value='A' checked>Active</label>
-					<label class="radio-inline"><input type="radio" name="cando" value='D' >Deactive</label>
+					<label class="radio-inline"><input type="radio" name="dtl_cando" value='A' checked>Active</label>
+					<label class="radio-inline"><input type="radio" name="dtl_cando" value='D' >Deactive</label>
 				  </div>
 				</div> 
                 
                 <div class="form-group">
-				  	<label class="col-md-2 control-label" for="minlimit">Min Limit</label>  
+				  	<label class="col-md-2 control-label" for="dtl_minlimit">Min Limit</label>  
 				  		<div class="col-md-2">
-				  			<input id="minlimit" name="minlimit" type="text" class="form-control input-sm" value="1.00" rdonly>
+				  			<input id="dtl_minlimit" name="dtl_minlimit" type="text" class="form-control input-sm" value="1.00" rdonly>
 				  		</div>
 
-				  	<label class="col-md-2 control-label" for="maxlimit">Max Limit</label>  
+				  	<label class="col-md-2 control-label" for="dtl_maxlimit">Max Limit</label>  
 				  		<div class="col-md-2">
-				  			<input id="maxlimit" name="maxlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation="required">
+				  			<input id="dtl_maxlimit" name="dtl_maxlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation="required">
 				  		</div>
                 </div>
 			</form>

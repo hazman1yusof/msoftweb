@@ -73,17 +73,21 @@ $(document).ready(function () {
 					break;
 			}
 
-			if(oper == 'edit'){
+			if(oper == 'add'){
+				$('#dtl_authorid').prop('readonly',false);
 				dialog_deptcode.on();
+				dialog_authorid.on();
 			}
 			
-			if(oper!='add'){
-
+			if(oper=='edit'){
+				$('#dtl_authorid').prop('readonly',true);
+				dialog_deptcode.on();
 			}
 			if (oper != 'view') {
 			/*	$("#authorid").val(selrowData('#jqGrid').authorid);
 				$("input[name='authorid']").val(selrowData('#jqGrid').authorid);*/
-				dialog_deptcode.on();
+				// dialog_deptcode.on();
+				// dialog_authorid.on();
 			}
 		},
 		close: function( event, ui ) {
@@ -91,6 +95,7 @@ $(document).ready(function () {
 		emptyFormdata(errorField,'#formdata');
 		$('.my-alert').detach();
 		dialog_deptcode.off();
+		dialog_authorid.off();
 		if(oper=='view'){
 			$(this).dialog("option", "buttons",buttItem1);
 		}
@@ -104,7 +109,8 @@ $(document).ready(function () {
 	   	action:'get_table_default',
 		url:'/util/get_table_default',
 		field:'',
-		table_name:'material.authdtl',
+		fixPost:'true',
+		table_name:['material.authdtl as dtl'],
 		table_id:'idno',
 		filterCol:['compcode', 'cando'],
 		filterVal:['session.compcode', 'A']
@@ -117,7 +123,7 @@ $(document).ready(function () {
 		url: '/authorizationDtl/form',
 		field: '',
 		oper: oper,
-		table_name: 'material.authdtl',
+		table_name: ['material.authdtl as dtl'],
 		table_id: 'idno',
 		saveip:'true',
 		checkduplicate:'true'
@@ -126,20 +132,20 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-           	{ label: 'Author ID', name: 'authorid', width: 200, classes: 'wrap', hidden:false},
-			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'Trantype', name: 'trantype', width: 200, classes: 'wrap', canSearch: true},
-			{ label: 'Deptcode', name: 'deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true},
-			{ label: 'Status', name: 'recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true},
-			{ label: 'CanDo', name: 'cando', width: 150, classes: 'wrap', canSearch: false, editable: true},
-			{ label: 'Min Limit', name: 'minlimit', width: 200, classes: 'wrap',  align: 'right', editable: true},
-			{ label: 'Max Limit', name: 'maxlimit', width: 200, classes: 'wrap', align: 'right',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
+           	{ label: 'Author ID', name: 'dtl_authorid', width: 200, classes: 'wrap', hidden:false},
+			{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true},
+			{ label: 'Deptcode', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true},
+			{ label: 'Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true},
+			{ label: 'CanDo', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: false, editable: true},
+			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap',  align: 'right', editable: true},
+			{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap', align: 'right',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
 			},
 		],
 		autowidth:true,
         multiSort: true,
 		viewrecords: true,
-		sortname: 'idno',
+		sortname: 'dtl_idno',
 		sortorder: 'desc',
 		loadonce:false,
 		height: 350,
@@ -236,12 +242,12 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid',false,saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus', 'cando']);
+	addParamField('#jqGrid',false,saveParam, ['dtl_idno','dtl_compcode','dtl_adduser','dtl_adddate','dtl_upduser','dtl_upddate','dtl_recstatus', 'dtl_cando']);
 
 	/////////////////////dialog handler///////////////////////////////////////////////////////
 
 	var dialog_deptcode = new ordialog(
-	'deptcode','sysdb.department','#deptcode',errorField,
+	'deptcode','sysdb.department','#dtl_deptcode',errorField,
 	{	colModel:[
 			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
@@ -273,9 +279,43 @@ $(document).ready(function () {
 			dialog_deptcode.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 			dialog_deptcode.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
 		}
-	},'none','radio','tab'
-);
-dialog_deptcode.makedialog();
+	},'none','radio','tab');
+	dialog_deptcode.makedialog();
+
+	var dialog_authorid = new ordialog(
+	'authorid','material.authorise','#dtl_authorid',errorField,
+	{	colModel:[
+			{label:'Authorise ID',name:'authorid',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
+		],
+		urlParam: {
+			filterCol:['recstatus','compcode'],
+			filterVal:['A', 'session.compcode']
+		},
+		ondblClickRow:function(){
+			
+		},
+		gridComplete: function(obj){
+			let str = $(obj.textfield).val() ? $(obj.textfield).val() : '';
+			if(obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+				obj.ontabbing = false;
+			}
+
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+			}
+		}
+	},{
+		title:"Select Department",
+		open: function(){
+			dialog_authorid.urlParam.filterCol=['recstatus','compcode'];
+			dialog_authorid.urlParam.filterVal=['A', 'session.compcode'];
+		}
+	},'none','radio','tab');
+	dialog_authorid.makedialog();
 	
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();

@@ -454,6 +454,8 @@ $(document).ready(function () {
 				if (oper_svc == 'add') {
 					dialog_ChgGroup.on();
 					dialog_discChargeCode.on();
+					let priceval = selrowData("#jqGrid").price
+					$("#Fsvc [name='svc_price'][value='"+priceval+"']").prop('checked', true);
 				}
 				if (oper_svc == 'edit' && $('#jqGriditem').jqGrid('getGridParam', 'reccount') < 1) {
 					dialog_ChgGroup.on();
@@ -812,6 +814,8 @@ $(document).ready(function () {
 				}
 				if (oper_item == 'add') {
 					dialog_chgcode.on();
+					let priceval = selrowData("#jqGrid").price
+					$("#Fitem [name='i_price'][value='"+priceval+"']").prop('checked', true);
 				}
 				if (oper_item != 'add') {
 					dialog_chgcode.check(errorField);
@@ -1093,6 +1097,8 @@ $(document).ready(function () {
 				}
 				if (oper_type == 'add') {
 					dialog_chgtype.on();
+					let priceval = selrowData("#jqGrid").price
+					$("#Ftype [name='t_price'][value='"+priceval+"']").prop('checked', true);
 				}
 				if (oper_type != 'add') {
 					dialog_chgtype.check(errorField);

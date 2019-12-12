@@ -258,21 +258,6 @@ class PurchaseRequestController extends defaultController
 
                 $authorise_use = $authorise->first();
 
-
-                // $totamount = $purreqhd_get->totamount;
-                // $idno_auth;
-
-                // foreach ($authorise as $value) {
-                //     $idno_auth = $value->idno;
-                //     if($totamount>$value->maxlimit){
-                //         continue;
-                //     }else{
-                //         break;
-                //     }
-                // }
-
-                // $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
-
                 // 2. update queue
                 DB::table("material.queuepr")
                     ->where('recno','=',$purreqhd_get->recno)

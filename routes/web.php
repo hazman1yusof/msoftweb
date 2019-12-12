@@ -247,7 +247,7 @@ Route::post('/authorizationDetail/form','material\authorizationDetailController@
 //// Authorization Detail ///
 Route::get('/authorizationDtl','material\AuthorizationDtlController@show');
 Route::get('/authorizationDtl/table','material\AuthorizationDtlController@table');
-Route::post('/authorizationDtl/form','material\AuthorizationDtlController@form');
+Route::post('/authorizationDtl/form','material\authorizationDetailController@form');
 
 //// UOM material setup ///
 Route::get('/uom','material\UomController@show');
