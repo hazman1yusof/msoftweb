@@ -7,223 +7,159 @@
 <!--***************************** Search + table ******************-->
 	 
 <div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
-			<fieldset>
-				<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+	<form id="searchForm" class="formclass" style='width:99%; position:relative'>
+		<fieldset>
+			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
 
-					<div class='col-md-12' style="padding:0 0 15px 0;">
-						<div class="form-group"> 
-						  <div class="col-md-2">
+				<div class='col-md-12' style="padding:0 0 15px 0;">
+					<div class="form-group"> 
+						<div class="col-md-2">
 						  	<label class="control-label" for="Scol">Search By : </label>  
 						  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
-			              </div>
+			            </div>
 
-						  	<div class="col-md-5">
-						  		<label class="control-label"></label>  
-									<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-								
-							</div>
+						<div class="col-md-5">
+						  	<label class="control-label"></label>  
+							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+						</div>
 
-			             </div>
-					</div>
+			        </div>
+				</div>
 
-					<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
-						<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-						<button type="button" class="btn btn-default btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
-					</div>
+				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
+					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
+				</div>
+		</fieldset> 
+	</form>
 
-			</fieldset> 
-		</form>
-        
-    </div>
+		<div class="panel panel-default">
+		    <div class="panel-heading">Bank Transfer</div>
+		    	<div class="panel-body">
+		    		<div class='col-md-12' style="padding:0 0 15px 0">
+            			<table id="jqGrid" class="table table-striped"></table>
+            				<div id="jqGridPager"></div>
+        			</div>
+		    	</div>
+			</div>
+		</div>
+
 	<!-- ***************End Search + table ********************* -->
 		
 		<div id="dialogForm" title="Add Form" >
-			<form class='form-horizontal' style='width:99%' id='formdata'>
-
+			<form class='form-horizontal' style='width:100%' id='formdata'>
 				{{ csrf_field() }}
-				<input type="hidden" name="idno">
+				<div class='col-md-12'>
+					<div class='panel panel-info'>
+						<div id="detail" class="panel-heading" style="padding: 10px 90px"><b>CREDIT</b></div>
+							<div class="panel-body">
 
-				<input id="trantype" name="trantype" type="hidden">
-				<input id="source" name="source" type="hidden">
-			
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="bankcode">Bank Code</label>  
-				  <div class="col-md-3">
-					<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-				  </div>
-				</div>
+								<div class="prevnext btn-group pull-right"></div>
+									<input id="source" name="source" type="hidden">
+									<input id="trantype" name="trantype" type="hidden">
 
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="bankname">Name</label>  
-				  <div class="col-md-8">
-				  <input id="bankname" name="bankname" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-				  </div>
-				</div>
-				
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="address1">Address</label>  
-				  <div class="col-md-8">
-				  <input id="address1" name="address1" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-				  </div>
-				</div>
-				
-				<div class="form-group">
-				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address2" name="address2" type="text" class="form-control input-sm text-uppercase">
-				  </div>
-				</div>
-				
-				<div class="form-group">
-				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address3" name="address3" type="text" class="form-control input-sm text-uppercase">
-				  </div>
-				</div>
-				
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="statecode">State Code</label>  
-				  <div class="col-md-3">
-				  <input id="statecode" name="statecode" type="text" class="form-control input-sm">
-				  </div>
-				  
-				  <label class="col-md-2 control-label" for="postcode">Post Code</label>  
-				  <div class="col-md-3">
-				  <input id="postcode" name="postcode" type="text" class="form-control input-sm">
-				  </div>
-				</div>
-				
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="country">Standard Code</label>  
-				  <div class="col-md-3">
-				  <input id="country" name="country" type="text" class="form-control input-sm text-uppercase">
-				  </div>
-				  
-				  <label class="col-md-2 control-label" for="contact">Contact Person</label>  
-				  <div class="col-md-3">
-				  <input id="contact" name="contact" type="text" class="form-control input-sm text-uppercase">
-				  </div>
-				</div>
-				
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="telno">Telephone No.</label>  
-				  <div class="col-md-3">
-				  <input id="telno" name="telno" type="text" class="form-control input-sm" >
-				  </div>
-				  
-				  <label class="col-md-2 control-label" for="clearday">Clearing Days</label>  
-				  <div class="col-md-3">
-				  <input id="clearday" name="clearday" type="text" class="form-control input-sm">
-				  </div>
-				</div>
-				
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="faxno">Fax No.</label>  
-				  <div class="col-md-3">
-				  <input id="faxno" name="faxno" type="text" class="form-control input-sm">
-				  </div>
-				  
-				  <label class="col-md-2 control-label" for="effectdate">Effective Date</label>  
-				  <div class="col-md-3">
-				  <input id="effectdate" name="effectdate" type="date" data-date="" data-date-format="DD MMMM YYYY" class="form-control input-sm"
-                   data-validation="date" >
-				  </div>
-				</div>
-				
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="bankaccount">Bank Account No.</label>  
-				  <div class="col-md-3">
-				  <input id="bankaccount" name="bankaccount" type="text" class="form-control input-sm" data-validation="required">
-				  </div>
-				  
-				  <label class="col-md-2 control-label" for="pctype">Petty Cash</label>  
-				  <div class="col-md-3">
-					<label class="radio-inline"><input type="radio" name="pctype" value='1'>Yes</label>
-					<label class="radio-inline"><input type="radio" name="pctype" value='0' checked>No</label>
-				  </div>
-				</div>
-				
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="glccode">Cost Center</label>  
-				  <div class="col-md-3">
-					  <div class='input-group'>
-						<input id="glccode" name="glccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					  </div>
-					  <span class="help-block"></span>
-				  </div>
-				  
-				  <label class="col-md-2 control-label" for="glaccno">GL Account</label>  
-				  <div class="col-md-3">
-					  <div class='input-group'>
-						<input id="glaccno" name="glaccno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					  </div>
-					  <span class="help-block"></span>
-				    </div>
-				</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="auditno">Audit No</label>  
+											<div class="col-md-3">
+												<input id="auditno" name="auditno" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit rdonly>
+											</div>
+									
+										<label class="col-md-2 control-label" for="pvno">Payment No</label>  
+									  		<div class="col-md-3">
+									  			<input id="pvno" name="pvno" type="text" maxlength="40" class="form-control input-sm text-uppercase" rdonly>
+									  		</div>
+					                </div>
+					                
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="actdate">Payment Date</label>  
+											<div class="col-md-3">
+										  		<div class='input-group'>
+													<input id="actdate" name="actdate" type="date"  maxlength="30"  class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>"> 
+										  		</div>
+											</div>
+										
+										<label class="col-md-2 control-label" for="paymode">Payment Mode</label>  
+											<div class="col-md-3">
+										  		<div class='input-group'>
+													<input id="paymode" name="paymode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required"/>
+										  			<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										  		</div>
+										   		<span class="help-block"></span>
+											</div>
+									</div>
+					                
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="bankcode">Bank Code</label>  
+											<div class="col-md-3" id="bankcode_parent">
+										 		<div class='input-group'>
+													<input id="bankcode" name="bankcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required"/>
+													<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										  		</div>
+												<span id='bc' class="help-block"></span>
+											</div>
+										
+									  	<label class="col-md-2 control-label" for="cheqno">Cheque No</label>  
+						  					<div class="col-md-3" id="cheqno_parent">
+							 					<div class='input-group'>
+													<input id="cheqno" name="cheqno" type="text" class="form-control input-sm text-uppercase">
+													<a class='input-group-addon btn btn-primary' id="cheqno_a"><span class='fa fa-ellipsis-h' ></span></a>
+							  					</div>
+							 					<span id='cn' class="help-block"></span>
+		                      				</div>
+					    			</div>
 
-				 <div class="form-group">
-					  <label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-					  <div class="col-md-3">
-						<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
-						<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
-					  </div>
-				</div>  
-				
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="adduser">Created By</label>  
-						<div class="col-md-3">
-						  	<input id="adduser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="cheqdate">Cheque Date</label>  
+											<div class="col-md-3">
+										  		<div class='input-group'>
+													<input id="cheqdate" name="cheqdate" type="date" maxlength="30"  class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
+										  		</div>
+										 	</div>
+
+										<label class="col-md-2 control-label" for="amount">Amount</label>  
+											<div class="col-md-3">
+												<input id="amount" name="amount" type="text" maxlength="30" class="form-control input-sm" data-validation="required"/>
+											</div>
+									</div>
+								</div>
+							</div>
 						</div>
 
-						<label class="col-md-2 control-label" for="upduser">Last Entered</label>  
-						  	<div class="col-md-3">
-								<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						  	</div>
+
+				<div class='col-md-12'>
+					<div class='panel panel-info'>
+						<div id="detail" class="panel-heading"  style="padding: 10px 65px"><b>DEBIT</b></div>
+							<div class="panel-body">
+
+
+								<div class="form-group">
+									<label class="col-md-2 control-label" for="payto">Bank Code</label>  
+										<div class="col-md-3">
+										  <div class='input-group'>
+											<input id="payto" name="payto" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required"/>
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										  </div>
+										  <span class="help-block"></span>
+										</div>		
+								</div>
+
+								<div class="form-group">
+										<label class="col-md-2 control-label" for="remarks">Remarks</label>  
+											<div class="col-md-8">
+												<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="300" id="remarks"></textarea>
+											</div>
+								</div>	
+
+							</div>
+						</div>
+					</div>
 				</div>
 
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="adddate">Created Date</label>  
-						<div class="col-md-3">
-						  	<input id="adddate" name="adddate" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-						</div>
-
-						<label class="col-md-2 control-label" for="upddate">Last Entered Date</label>  
-						  	<div class="col-md-3">
-								<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						  	</div>
-				</div>  
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
-						<div class="col-md-3">
-						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne >
-						</div>
-
-						<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
-						<div class="col-md-3">
-						  	<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne >
-						</div>
-
-				</div> 
-
-				<div class="form-group">
-				<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
-						  	<div class="col-md-3">
-								<input id="ipaddress" name="ipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
-						  	</div>
-					
-
-						<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
-						  	<div class="col-md-3">
-								<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
-						  	</div>
-				</div>
 			</form>
 		</div>
-
 	@endsection
 
 @section('scripts')
-	<script src="js/finance/CM/bankTransfer/bankTransfer.js"></script>
+	<script src="js/finance/CM/directPayment/directPayment.js"></script>
 @endsection
