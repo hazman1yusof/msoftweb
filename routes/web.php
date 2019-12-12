@@ -371,6 +371,16 @@ Route::get('/bank','finance\BankController@show');
 Route::get('/bank/table','finance\BankController@table');
 Route::post('/bank/form','finance\BankController@form');
 
+//// Bank Transfer ///
+Route::get('/bankTransfer','finance\BankTransferController@show');
+Route::get('/bankTransfer/table','finance\BankTransferController@table');
+Route::post('/bankTransfer/form','finance\BankTransferController@form');
+
+//// Direct Payment ///
+Route::get('/directPayment','finance\DirectPaymentController@show');
+Route::get('/directPayment/table','finance\DirectPaymentController@table');
+Route::post('/directPayment/form','finance\DirectPaymentController@form');
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////

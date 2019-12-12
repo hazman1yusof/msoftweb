@@ -27,28 +27,16 @@
 
 			/////////////////////////////////// currency ///////////////////////////////
 			var mycurrency =new currencymode(['#amount']);
+			var radbuts=new checkradiobutton(['TaxClaimable']);
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
-				id: "saveBut", 
 				text: "Save",click: function() {
-					/*mycurrency.formatOff();
-					mycurrency.check0value(errorField);*/
-						if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-							if ($("#formdata :input[name='payto']").val() === $("#formdata :input[name='bankcode']").val()) {
-									
-										bootbox.alert("Bank Code Credit cannot be same with Bank Code Debit");
-									
-									}
-							else {
-								saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
-							}
-						}/*else{
-							mycurrency.formatOn();
-						}*/
+					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 					}
+				}
 			},{
-				id: "canBut",
 				text: "Cancel",click: function() {
 					$(this).dialog('close');
 				}
@@ -129,20 +117,20 @@
 				table_name:'finance.apacthdr',
 				table_id:'auditno',
 				filterCol: ['source', 'trantype'],
-				filterVal: ['CM', 'FT'],
+				filterVal: ['CM', 'DP'],
 				sort_idno: true
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
-				action:'save_table_default',
-				url:'bankTransfer/form',
+				action:'dpHeader_Save',
+				url:'directPayment/form',
 				field:'',
 				oper:oper,
 				table_name:'finance.apacthdr',
 				table_id:'auditno',
-				sysparam: {source: 'CM', trantype: 'FT', useOn: 'auditno'},
-				sysparam2: {source: 'HIS', trantype: 'PV', useOn: 'pvno'},
+				sysparam:{source:'CM',trantype:'DP',useOn:'auditno'},
+				sysparam2:{source:'HIS',trantype:'PV',useOn:'pvno'},
 				saveip:'true',
 				checkduplicate:'true'
 			};
@@ -151,22 +139,25 @@
 				datatype: "local",
 				 colModel: [
 				 	{label: 'compcode', name: 'compcode', width: 10 , hidden: true,  classes: 'wrap'},
-				 	{label: 'idno', name: 'idno', width: 10 , hidden: true,  classes: 'wrap'},
-				 	{label: 'source', name: 'source', width: 10, hidden: true, classes: 'wrap'},
-				 	{label: 'trantype', name: 'trantype', width: 10, hidden: true, classes: 'wrap'},
-					{label: 'Audit No', name: 'auditno', width: 27, classes: 'wrap'},
-					{label: 'Payment No', name: 'pvno', width: 40, hidden: true, classes: 'wrap'},
-					{label: 'Transfer Date', name: 'actdate', width: 25, canSearch:true, checked:true, classes: 'wrap'},
-					{label: 'Bank Code From', name: 'bankcode', width: 35, classes: 'wrap', canSearch:true},
-					{label: 'Bank Code To', name: 'payto', width: 35, classes: 'wrap', canSearch:true},
-					{label: 'Cheque Date', name: 'cheqdate', width: 90, classes: 'wrap', hidden:true},
-					{label: 'Amount', name: 'amount', width: 30, classes: 'wrap', formatter:'currency'},
-					{label: 'Remarks', name: 'remarks', width: 40, classes: 'wrap'},
-					{label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', formatter:formatterPost,},
-					{label: 'Entered By', name: 'adduser', width: 30, classes: 'wrap'},
-					{label: 'Entered Date', name: 'adddate', width: 30, classes: 'wrap'},
-					{label: 'Paymode', name: 'paymode', width: 30, classes: 'wrap', canSearch:true},
-					{label: 'Cheq No', name: 'cheqno', width: 30, classes: 'wrap', formatter:formatterCheqnno, unformat:unformatterCheqnno},
+				 	{ label: 'Audit No', name: 'auditno', width: 27, classes: 'wrap', canSearch: true, checked: true},
+					{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', canSearch: true},
+					{ label: 'Pay To', name: 'payto', width: 35, classes: 'wrap',},
+					{ label: 'Post Date', name: 'actdate', width: 25, classes: 'wrap', 
+						//formatter : 'date', formatoptions : {newformat : 'd/m/Y'}
+					},
+					{ label: 'Amount', name: 'amount', width: 30, classes: 'wrap', formatter:'currency'} ,//unformat:unformat2}
+					{ label: 'Remarks', name: 'remarks', width: 40, classes: 'wrap',},
+					{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap',formatter:formatterPost, unformat:unformatterPost,},
+					{ label: 'Entered By', name: 'adduser', width: 35, classes: 'wrap',},
+					{ label: 'Entered Date', name: 'adddate', width: 40, classes: 'wrap',},
+					{ label: 'Payment Mode', name: 'paymode', width: 25, classes: 'wrap'},
+					{ label: 'Cheq No', name: 'cheqno', width: 40, classes: 'wrap',formatter:formatterCheqnno, unformat:unformatterCheqnno},
+					{ label: 'GST', name: 'TaxClaimable', width: 40},
+					{ label: 'Pv No', name: 'pvno', width: 40, hidden:'true'},
+					{ label: 'Cheq Date', name: 'cheqdate', width: 40, hidden:'true'},
+					{ label: 'source', name: 'source', width: 40, hidden:'true'},
+				 	{ label: 'trantype', name: 'trantype', width: 40, hidden:'true'},
+				 	{ label: 'idno', name: 'idno', width: 40, hidden:'true'},
 				],
 				autowidth:true,
                 multiSort: true,
@@ -304,6 +295,16 @@
 					}
 				}
 
+				function  unformatterPost(cellvalue, options){
+				if(cellvalue == 'Open'){
+					return "O";
+				}else if(cellvalue == 'Posted') { 
+					return "P";
+				}else if (cellvalue == 'Cancel'){
+					return "C";
+				}
+			}
+
 				function formatterCheqnno  (cellValue, options, rowObject) {
 					//return rowObject[9] != "CHEQUE" ? "&nbsp;" : $.jgrid.htmlEncode(cellValue);
 					return rowObject[15] != "CHEQUE" ? "<span cheqno='"+cellValue+"'></span>" : "<span cheqno='"+cellValue+"'>"+cellValue+"</span>";
@@ -372,7 +373,7 @@
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 			
 			populateSelect('#jqGrid','#searchForm');
-			//searchClick('#jqGrid','#searchForm',urlParam);
+			searchClick('#jqGrid','#searchForm',urlParam);
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);

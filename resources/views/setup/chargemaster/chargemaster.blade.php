@@ -124,10 +124,12 @@ input.uppercase {
     			</div>
     			<div id="jqGrid3_panel" class="panel-collapse collapse">
 					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="jqGrid3" class="table table-striped"></table>
-							<div id="jqGridPager3"></div>
-						</div>
+						<form id='formdata3' class='form-vertical' style='width:99%'>
+							<div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGrid3" class="table table-striped"></table>
+								<div id="jqGridPager3"></div>
+							</div>
+						</form>
 					</div>
     			</div>
   			</div>
@@ -361,80 +363,6 @@ input.uppercase {
 				<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 			</div>
 		</div>	
-
-		<!--------------------------------Charge Price Form-------------------------------->
-		<div id="ChgPriceDtl" title="Charge Price Detail">
-        	<form class='form-horizontal' style='width:99%' id='FChgPriceDtl'>
-				{{ csrf_field() }}
-				<input type="hidden" id="d_idno" name="idno">
-				<!-- <input type="hidden" id="d_authorid" name="authorid"> -->
-            
-            	<div class="form-group">
-				 	<label class="col-md-2 control-label" for="effdate">Effective Date</label>  
-					<div class="col-md-2">
-						<input id="dtl_effdate" name="effdate" type="date" maxlength="12" class="form-control input-sm">
-					</div>
-
-				  	<label class="col-md-2 control-label" for="amt1">Price 1</label>  
-					<div class="col-md-2">
-						<input id="dtl_amt1" name="amt1" type="text" maxlength="12" class="form-control input-sm">
-					</div>
-                </div>
-            
-            	<div class="form-group">
-					<label class="col-md-2 control-label" for="amt2">Price 2</label>  
-					<div class="col-md-2">
-						<input id="dtl_amt2" name="amt2" type="text" maxlength="12" class="form-control input-sm">
-					</div>	
-
-					<label class="col-md-2 control-label" for="amt3">Price 3</label>  
-					<div class="col-md-2">
-						<input id="dtl_amt3" name="amt3" type="text" maxlength="12" class="form-control input-sm">
-					</div>
-                </div>		
-                 
-                <div class="form-group">
-					<label class="col-md-2 control-label" for="costprice">Cost Price</label>  
-					<div class="col-md-2">
-						<input id="dtl_costprice" name="costprice" type="text" maxlength="12" class="form-control input-sm">
-					</div>
-
-					<label class="col-md-2 control-label" for="iptax">Inpatient Tax</label>  
-					<div class="col-md-2">
-						<div class='input-group'>
-							<input id="dtl_iptax" name="iptax" type="text" class="form-control input-sm uppercase" data-validation="required">
-							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-						</div>
-						<span class="help-block"></span>
-					</div>
-                </div>	
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="optax">Outpatient Tax</label>  
-					<div class="col-md-2">
-						<div class='input-group'>
-							<input id="dtl_optax" name="optax" type="text" class="form-control input-sm uppercase" data-validation="required">
-							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-						</div>
-						<span class="help-block"></span>
-					</div>
-                </div>
-                
-                <div class="form-group">
-					<label class="col-md-2 control-label" for="lastuser">User ID</label>  
-					<div class="col-md-2">
-						<input name="lastuser" type="text" maxlength="12" class="form-control input-sm uppercase" rdonly>
-					</div>	
-
-					<label class="col-md-2 control-label" for="lastupdate">Last Updated</label>  
-					<div class="col-md-2">
-						<input name="lastupdate" type="text" maxlength="12" class="form-control input-sm uppercase" rdonly>
-					</div>
-                </div>
-			</form>
-		</div>
-		<!--------------------------------Charge Price Form-------------------------------->	
-
 	</div>
 
 @endsection
