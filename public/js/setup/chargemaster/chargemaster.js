@@ -832,19 +832,6 @@
 			buttons :buttItem1,
 		});
 
-		function hideatdialogForm2(hide,saveallrow){
-			if(saveallrow == 'saveallrow'){
-				$("#jqGrid3_iledit,#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll").hide();
-				$("#jqGridPager3SaveAll,#jqGridPager3CancelAll").show();
-			}else if(hide){
-				$("#jqGrid3_iledit,#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll,#jqGridPager3SaveAll,#jqGridPager3CancelAll").hide();
-				// $("#saveDetailLabel").show();
-			}else{
-				$("#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll").show();
-				$("#jqGridPager3SaveAll,#jqGrid3_iledit,#jqGridPager3CancelAll").hide();
-			}
-		}
-
 		/////////////////////parameter for jqgrid3/////////////////////////////////////////////////////////////////////
 		// var urlParam3={
 		// 	action:'get_table_default',
@@ -1149,7 +1136,7 @@
 				$("#jqGrid3").jqGrid('setGridParam',{editurl:editurl});
 	        },
 	        afterrestorefunc : function( response ) {
-				hideatdialogForm2(false);
+				hideatdialogForm(false);
 		    }
 	    };
 
@@ -1215,7 +1202,7 @@
 			    }
 			    mycurrency2.formatOnBlur();
 		    	onall_editfunc();
-				hideatdialogForm2(true,'saveallrow');
+				hideatdialogForm(true,'saveallrow');
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager3",{
 			id: "jqGridPager3SaveAll",
@@ -1254,7 +1241,7 @@
 				}).fail(function(data) {
 					//////////////////errorText(dialog,data.responseText);
 				}).done(function(data){
-					hideatdialogForm2(false);
+					hideatdialogForm(false);
 					refreshGrid("#jqGrid3",urlParam2);
 				});
 			},	
@@ -1264,7 +1251,7 @@
 			buttonicon:"glyphicon glyphicon-remove-circle",
 			title:"Cancel",
 			onClickButton: function(){
-				hideatdialogForm2(false);
+				hideatdialogForm(false);
 				refreshGrid("#jqGrid3",urlParam2);
 			},	
 		});
