@@ -4,6 +4,9 @@
 
 @section('body')
 
+	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
+	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+
 <!--***************************** Search + table ******************-->
 	 
 <div class='row'>
@@ -27,8 +30,8 @@
 				</div>
 
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 				</div>
 		</fieldset> 
 	</form>
@@ -51,17 +54,18 @@
 				{{ csrf_field() }}
 				<div class='col-md-12'>
 					<div class='panel panel-info'>
-						<div id="detail" class="panel-heading" style="padding: 10px 90px"><b>CREDIT</b></div>
+						<div id="detail" class="panel-heading"><b>CREDIT</b></div>
 							<div class="panel-body">
 
 								<div class="prevnext btn-group pull-right"></div>
 									<input id="source" name="source" type="hidden">
 									<input id="trantype" name="trantype" type="hidden">
+									<input type="hidden" name="auditno" id="auditno"></ins>
 
 									<div class="form-group">
 										<label class="col-md-2 control-label" for="auditno">Audit No</label>  
 											<div class="col-md-3">
-												<input id="auditno" name="auditno" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit rdonly>
+												<input id="auditno" name="auditno" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
 											</div>
 									
 										<label class="col-md-2 control-label" for="pvno">Payment No</label>  
@@ -129,7 +133,7 @@
 
 				<div class='col-md-12'>
 					<div class='panel panel-info'>
-						<div id="detail" class="panel-heading"  style="padding: 10px 65px"><b>DEBIT</b></div>
+						<div id="detail" class="panel-heading"><b>DEBIT</b></div>
 							<div class="panel-body">
 
 
@@ -161,5 +165,5 @@
 	@endsection
 
 @section('scripts')
-	<script src="js/finance/CM/directPayment/directPayment.js"></script>
+	<script src="js/finance/CM/bankTransfer/bankTransfer.js"></script>
 @endsection

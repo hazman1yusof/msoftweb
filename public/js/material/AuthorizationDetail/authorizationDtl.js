@@ -101,7 +101,7 @@ $(document).ready(function () {
 			}
 		},
 		buttons :butt1,
-	  });
+	});
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	
@@ -131,7 +131,7 @@ $(document).ready(function () {
 	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		 colModel: [
+		colModel: [
            	{ label: 'Author ID', name: 'dtl_authorid', width: 200, classes: 'wrap', hidden:false},
 			{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true},
@@ -248,7 +248,8 @@ $(document).ready(function () {
 
 	var dialog_deptcode = new ordialog(
 	'deptcode','sysdb.department','#dtl_deptcode',errorField,
-	{	colModel:[
+	{	
+		colModel:[
 			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 			{label:'Unit',name:'sector'},
@@ -279,12 +280,14 @@ $(document).ready(function () {
 			dialog_deptcode.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 			dialog_deptcode.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
 		}
+		
 	},'none','radio','tab');
 	dialog_deptcode.makedialog();
 
 	var dialog_authorid = new ordialog(
 	'authorid','material.authorise','#dtl_authorid',errorField,
-	{	colModel:[
+	{	
+		colModel:[
 			{label:'Authorise ID',name:'authorid',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
 		],
