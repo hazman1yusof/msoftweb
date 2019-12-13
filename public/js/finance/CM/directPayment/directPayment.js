@@ -1013,63 +1013,63 @@ $(document).ready(function () {
 			dialog_category.makedialog(true);
 
 			var dialog_GSTCode = new ordialog(
-			'GSTCode',['hisdb.taxmast'],"#jqGrid2 input[name='GSTCode']",errorField,
-			{	colModel:
-				[
-					{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-					{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
-				],
-				urlParam: {
-							filterCol:['compcode','recstatus'],
-							filterVal:['session.compcode','A']
-						},
-				ondblClickRow:function(event){
-					if(event.type == 'keydown'){
+				'GSTCode',['hisdb.taxmast'],"#jqGrid2 input[name='GSTCode']",errorField,
+				{	colModel:
+					[
+						{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
+					],
+					urlParam: {
+								filterCol:['compcode','recstatus'],
+								filterVal:['session.compcode','A']
+							},
+					ondblClickRow:function(event){
+						if(event.type == 'keydown'){
 
-						var optid = $(event.currentTarget).get(0).getAttribute("optid");
-						var id_optid = optid.substring(0,optid.search("_"));
+							var optid = $(event.currentTarget).get(0).getAttribute("optid");
+							var id_optid = optid.substring(0,optid.search("_"));
 
-						$(event.currentTarget).parent().next().html('');
-					}else{
+							$(event.currentTarget).parent().next().html('');
+						}else{
 
-						var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-						var id_optid = optid.substring(0,optid.search("_"));
+							var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+							var id_optid = optid.substring(0,optid.search("_"));
 
-						$(event.currentTarget).parent().next().html('');
+							$(event.currentTarget).parent().next().html('');
+						}
+
+						let data=selrowData('#'+dialog_GSTCode.gridname);
+
+						$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['rate']);
+						$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+						}
 					}
-
-					let data=selrowData('#'+dialog_GSTCode.gridname);
-
-					$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['rate']);
-					$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				},{
+					title:"Select Tax Code For Item",
+					open: function(){
+						dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
+						dialog_GSTCode.urlParam.filterVal=['session.compcode','A', 'Input'];
+					},
+					close: function(){
+						if($('#jqGridPager2SaveAll').css("display") == "none"){
+							$(dialog_GSTCode.textfield)			//lepas close dialog focus on next textfield 
+							.closest('td')						//utk dialog dalam jqgrid jer
+							.next()
+							.find("input[type=text]").focus();
+						}
+						
 					}
-				}
-			},{
-				title:"Select Tax Code For Item",
-				open: function(){
-					dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
-					dialog_GSTCode.urlParam.filterVal=['session.compcode','A', 'Input'];
-				},
-				close: function(){
-					if($('#jqGridPager2SaveAll').css("display") == "none"){
-						$(dialog_GSTCode.textfield)			//lepas close dialog focus on next textfield 
-						.closest('td')						//utk dialog dalam jqgrid jer
-						.next()
-						.find("input[type=text]").focus();
-					}
-					
-				}
-			},'urlParam','radio','tab'
-		);
-		dialog_GSTCode.makedialog(false);
+				},'urlParam','radio','tab'
+			);
+			dialog_GSTCode.makedialog(false);
 
 		$("#jqGrid3_panel").on("show.bs.collapse", function(){
 			$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
