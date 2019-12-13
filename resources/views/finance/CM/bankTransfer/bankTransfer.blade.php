@@ -4,6 +4,9 @@
 
 @section('body')
 
+	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
+	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+
 <!--***************************** Search + table ******************-->
 	 
 <div class='row'>
@@ -27,8 +30,8 @@
 				</div>
 
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 				</div>
 		</fieldset> 
 	</form>

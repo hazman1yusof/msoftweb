@@ -33,17 +33,17 @@
 			actdateObj.getdata().set();
 
 			////////////////////////////////////start dialog///////////////////////////////////////
+
 			var butt1=[{
 				id: "saveBut", 
 				text: "Save",click: function() {
+					unsaved = false;
 					mycurrency.formatOff();
 					mycurrency.check0value(errorField);
-						if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+						if($('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 							if ($("#formdata :input[name='payto']").val() === $("#formdata :input[name='bankcode']").val()) {
-									
-										bootbox.alert("Bank Code Credit cannot be same with Bank Code Debit");
-									
-									}
+								bootbox.alert("Bank Code Credit cannot be same with Bank Code Debit");
+							}
 							else {
 								saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 							}
@@ -51,6 +51,8 @@
 							mycurrency.formatOn();
 						}
 					}
+
+
 			},{
 				id: "canBut",
 				text: "Cancel",click: function() {
@@ -85,7 +87,7 @@
 							$("#saveBut").show();
 							$("#canBut").show();
 							
-							var paymode = $("#paymode").val();
+							/*var paymode = $("#paymode").val();
 								if(paymode == "CHEQUE"){
 									$("#cheqno").prop("readonly",true);
 									$("#saveBut").show();
@@ -97,7 +99,7 @@
 									disableFiledCash();
 								} else{
 									disableFiledCheqNo();
-								}
+								}*/
 
 						break;
 
@@ -264,14 +266,14 @@
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
-				action:'save_table_default',
+				action:'ftheader_save',
 				url:'bankTransfer/form',
 				field:'',
 				oper:oper,
 				table_name:'finance.apacthdr',
 				table_id:'auditno',
-				sysparam: {source: 'CM', trantype: 'FT', useOn: 'auditno'},
-				sysparam2: {source: 'HIS', trantype: 'PV', useOn: 'pvno'},
+				/*sysparam: {source: 'CM', trantype: 'FT', useOn: 'auditno'},
+				sysparam2: {source: 'HIS', trantype: 'PV', useOn: 'pvno'},*/
 				saveip:'true',
 				checkduplicate:'true'
 			};
@@ -291,11 +293,12 @@
 					{label: 'Cheque Date', name: 'cheqdate', width: 90, classes: 'wrap', hidden:true},
 					{label: 'Amount', name: 'amount', width: 30, classes: 'wrap', formatter:'currency'},
 					{label: 'Remarks', name: 'remarks', width: 40, classes: 'wrap'},
-					{label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', formatter:formatterPost,},
+					{label: 'Status', name: 'recstatus', width: 30, classes: 'wrap'},
 					{label: 'Entered By', name: 'adduser', width: 30, classes: 'wrap'},
 					{label: 'Entered Date', name: 'adddate', width: 30, classes: 'wrap'},
 					{label: 'Paymode', name: 'paymode', width: 30, classes: 'wrap', canSearch:true},
 					{label: 'Cheq No', name: 'cheqno', width: 30, classes: 'wrap', formatter:formatterCheqnno, unformat:unformatterCheqnno},
+					{ label: 'unit', name: 'unit', width: 40, hidden:'true'},
 				],
 				autowidth:true,
                 multiSort: true,
@@ -320,48 +323,21 @@
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 				},
 				onSelectRow: function(rowid, selected) {
-					var buts = $('#jqGrid').jqGrid('getRowData', rowid);
-					auditno=rowid;
-					recstatus=buts.recstatus;
-
-
-					if (recstatus=='OPEN'){
-						$("#postedBut").show();
-						$("#cancelBut").show();
-						$("#saveBut").show();
-						$("#canBut").show();
-						$("#glyphicon-edit").show();
-
-					}
-
-					else if (recstatus==='POSTED'){
-						$("#postedBut").hide();
-						$("#cancelBut").hide();
-						$("#saveBut").hide();
-						$("#canBut").hide();
-						$("#glyphicon-edit").hide();
-						//$("#glyphicon-plus").hide();
-					} 
-
-					else if (recstatus==='CANCEL'){
-						$("#postedBut").hide();
-						$("#cancelBut").hide();
-						$("#saveBut").hide();
-						$("#canBut").hide();
-						$("#glyphicon-edit").hide();
-						//$("#glyphicon-plus").hide();
-					} 
-					else {
-						$("#postedBut").hide();
-						$("#cancelBut").hide();
-					}
-				}
+					let recstatus = selrowData("#jqGrid").recstatus;
+						if(recstatus=='OPEN'){
+							$('#but_cancel_jq,#but_post_jq').show();
+							
+						}else if(recstatus=="POSTED"){
+							$('#but_post_jq').hide();
+							$('#but_cancel_jq').show();
+						}else if (recstatus == "CANCELLED"){
+							$('#but_cancel_jq,#but_post_jq').hide();
+							
+						}
+				},
+			
 				
 			});
-
-				$("#postedBut").hide();
-				$("#cancelBut").hide();
-
 
 				/*$("#postedBut").click(function(){
 					var param={
@@ -418,20 +394,10 @@
 					});
 				});*/
 			
+				
+
 			////////////////////formatter status////////////////////////////////////////
-				function formatterPost(cellvalue, option, rowObject){
-					if (cellvalue == 'O'){
-						return 'OPEN';
-					}
-
-					else if (cellvalue == 'P'){
-						return 'POSTED';
-					}
-
-					else if (cellvalue == 'C'){
-						return 'CANCEL';
-					}
-				}
+				
 
 				function formatterCheqnno  (cellValue, options, rowObject) {
 					//return rowObject[9] != "CHEQUE" ? "&nbsp;" : $.jgrid.htmlEncode(cellValue);
