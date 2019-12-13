@@ -473,6 +473,23 @@ $(document).ready(function () {
 	addParamField('#jqGrid',true,urlParam);
 	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress', 'auditno','pvno','trantype','source']);
 
+	$("#but_post_jq").click(function(){
+		var idno = selrowData('#jqGrid').idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = "posted";
+
+		$.post( '/bankTransfer/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			// $('#p_error').text(data.responseText);
+		}).success(function(data){
+			
+		});
+
+	});
+
 
 	////////////////////object for dialog handler//////////////////
 
