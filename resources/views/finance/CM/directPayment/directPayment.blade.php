@@ -27,6 +27,7 @@ i.fa {
 .clearfix {
 	overflow: auto;
 }
+@endsection
 
 
 @section('body')
