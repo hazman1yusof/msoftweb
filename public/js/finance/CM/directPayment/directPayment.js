@@ -32,7 +32,6 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#apacthdr_amount']);
 	var radbuts=new checkradiobutton(['TaxClaimable']);
 	var fdl = new faster_detail_load();
-	
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 
@@ -159,7 +158,7 @@ $(document).ready(function () {
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
-				sortname:'idno',
+				sortname:'apacthdr_idno',
 				sortorder:'desc',
 				width: 900,
 				height: 350,
@@ -806,8 +805,8 @@ $(document).ready(function () {
 			});
 
 			////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
-			var amntb4gst = parseFloat($("input[id*='_AmtB4GST']").val());
-			var amount = amntb4gst+(amntb4gst*(rate/100));//.toFixed(2);
+			// var amntb4gst = parseFloat($("input[id*='_AmtB4GST']").val());
+			// var amount = amntb4gst+(amntb4gst*(rate/100));//.toFixed(2);
 
 			function cari_gstpercent(id){
 				let data = $('#jqGrid2').jqGrid ('getRowData', id);
@@ -859,7 +858,6 @@ $(document).ready(function () {
 				},
 			});
 			jqgrid_label_align_right("#jqGrid3");
-
 
 
 			////////////////////object for dialog handler//////////////////
