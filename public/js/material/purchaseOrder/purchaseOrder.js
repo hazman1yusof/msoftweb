@@ -160,21 +160,25 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 
-	var recstatus_filter = [['OPEN','POSTED']];
-	if($("#recstatus_use").val() == 'POSTED'){
-		recstatus_filter = [['OPEN','POSTED']];
+	var recstatus_filter = [['OPEN','REQUEST']];
+	if($("#recstatus_use").val() == 'ALL'){
+		recstatus_filter = [['OPEN','REQUEST','SUPPORT','VERIFIED','APPROVED']];
 		filterCol_urlParam = ['purordhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
-	}else if($("#recstatus_use").val() == 'SUPPORT'){
-		recstatus_filter = [['POSTED','SUPPORT']];
+	}else if($("#recstatus_use").val() == 'REQUEST'){
+		recstatus_filter = [['OPEN']];
 		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
-	}else if($("#recstatus_use").val() == 'VERIFY'){
-		recstatus_filter = [['SUPPORT','VERIFY']];
+	}else if($("#recstatus_use").val() == 'SUPPORT'){
+		recstatus_filter = [['REQUEST']];
+		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'VERIFIED'){
+		recstatus_filter = [['SUPPORT']];
 		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}else if($("#recstatus_use").val() == 'APPROVED'){
-		recstatus_filter = [['VERIFY','APPROVED']];
+		recstatus_filter = [['VERIFIED','APPROVED']];
 		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}
@@ -301,20 +305,22 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
 			let scope = $("#recstatus_use").val();
 
-			if (stat == scope) {
+			$('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			if (stat == scope || stat == "CANCELLED") {
 				$('#but_reopen_jq').show();
-				$('#but_post_single_jq,#but_cancel_jq').hide();
-			} else if (stat == "CANCELLED") {
-				$('#but_reopen_jq').show();
-				$('#but_post_single_jq,#but_cancel_jq').hide();
 			} else {
-				if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-					$('#but_cancel_jq,#but_post_single_jq').show();
+				if(scope == 'ALL'){
+				}else{
+					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+						$('#but_cancel_jq,#but_post_single_jq').show();
+					}else{
+						$('#but_cancel_jq,#but_post_jq').show();
+					}
 				}
-				$('#but_reopen_jq').hide();
 			}
 
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purordhd_recno;
+
 			$('#ponodepan').text(selrowData("#jqGrid").purordhd_purordno);//tukar kat depan tu
 			$('#prdeptdepan').text(selrowData("#jqGrid").purordhd_prdept);
 			
@@ -448,7 +454,7 @@ $(document).ready(function () {
 
 	$("#but_reopen_jq,#but_post_single_jq").click(function(){
 
-		var idno = selrowData('#jqGrid').purreqhd_idno;
+		var idno = selrowData('#jqGrid').purordhd_idno;
 		var obj={};
 		obj.idno = idno;
 		obj._token = $('#_token').val();
@@ -457,7 +463,7 @@ $(document).ready(function () {
 		$.post( '/purchaseOrder/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
-
+			$('#p_error').text(data.responseText);
 		}).success(function(data){
 			
 		});
@@ -476,7 +482,7 @@ $(document).ready(function () {
 		$.post( '/purchaseOrder/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
-
+			$('#p_error').text(data.responseText);
 		}).success(function(data){
 			
 		});
@@ -981,12 +987,9 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
-		console.log(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0])
-		console.log(recstatus_filter[0][0])
-		console.log(rowObject[recstatus])
-		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		if($("#recstatus_use").val() != 'ALL' && options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		}else if($("#recstatus_use").val() != 'ALL' && options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
 			return ' ';
@@ -1641,7 +1644,7 @@ $(document).ready(function () {
 				{label:'recno',name:'h_recno',width:50,classes:'pointer',hidden:false}
 				],
 			urlParam: {
-					filterCol:['h.prdept','h.recstatus', 'h.purordno'],
+					filterCol:['h.reqdept','h.recstatus', 'h.purordno'],
 					filterVal:[$("#purordhd_reqdept").val(),'APPROVED', '0']
 				},
 			ondblClickRow: function () {
@@ -1725,7 +1728,7 @@ $(document).ready(function () {
 			open: function(){
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_purreqno.urlParam.fixPost = "true";
-				dialog_purreqno.urlParam.filterCol = ['h.prdept','h.recstatus', 'h.purordno'];
+				dialog_purreqno.urlParam.filterCol = ['h.reqdept','h.recstatus', 'h.purordno'];
 				dialog_purreqno.urlParam.filterVal = [$("#purordhd_reqdept").val(),'APPROVED', '0'];
 			}
 		},'none'

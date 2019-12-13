@@ -47,17 +47,10 @@
 				 	<label class="col-md-2 control-label" for="dtl_authorid">User ID</label>  
 				  		<div class="col-md-2">
 				  			<div class='input-group'>
-<<<<<<< HEAD
 								<input id="dtl_authorid" name="dtl_authorid" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					 		<span class="help-block"></span>
-=======
-								<input id="authorid" name="authorid" type="text" maxlength="15" class="form-control input-sm text-uppercase" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					 		 </div>
-					  		<span class="help-block"></span>
->>>>>>> 9b2bb227697fd35f7c30b82ff84002727179f63b
 				  		</div>
 
 				  	<label class="col-md-2 control-label" for="dtl_deptcode">Dept Code</label>  

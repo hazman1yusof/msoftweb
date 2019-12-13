@@ -73,7 +73,6 @@ $(document).ready(function () {
 					break;
 			}
 
-<<<<<<< HEAD
 			if(oper == 'add'){
 				$('#dtl_authorid').prop('readonly',false);
 				dialog_deptcode.on();
@@ -83,40 +82,24 @@ $(document).ready(function () {
 			if(oper=='edit'){
 				$('#dtl_authorid').prop('readonly',true);
 				dialog_deptcode.on();
-=======
-			if(oper == 'edit'){
-				/*dialog_deptcode.on();
-				dialog_authorid.on();*/
 			}
 			
-			if(oper!='add'){
+			if(oper=='view'){
 				dialog_deptcode.check(errorField);
 				dialog_authorid.check(errorField);
 
->>>>>>> 9b2bb227697fd35f7c30b82ff84002727179f63b
-			}
-			if (oper != 'view') {
-			/*	$("#authorid").val(selrowData('#jqGrid').authorid);
-				$("input[name='authorid']").val(selrowData('#jqGrid').authorid);*/
-<<<<<<< HEAD
-				// dialog_deptcode.on();
-				// dialog_authorid.on();
-=======
-				dialog_deptcode.on();
-				dialog_authorid.on();
->>>>>>> 9b2bb227697fd35f7c30b82ff84002727179f63b
 			}
 		},
 		close: function( event, ui ) {
-		parent_close_disabled(false);
-		emptyFormdata(errorField,'#formdata');
-		$('.my-alert').detach();
-		dialog_deptcode.off();
-		dialog_authorid.off();
-		if(oper=='view'){
-			$(this).dialog("option", "buttons",buttItem1);
-		}
-	},
+			parent_close_disabled(false);
+			emptyFormdata(errorField,'#formdata');
+			$('.my-alert').detach();
+			dialog_deptcode.off();
+			dialog_authorid.off();
+			if(oper=='view'){
+				$(this).dialog("option", "buttons",buttItem1);
+			}
+		},
 		buttons :butt1,
 	  });
 
@@ -296,7 +279,6 @@ $(document).ready(function () {
 			dialog_deptcode.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 			dialog_deptcode.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
 		}
-<<<<<<< HEAD
 	},'none','radio','tab');
 	dialog_deptcode.makedialog();
 
@@ -333,51 +315,9 @@ $(document).ready(function () {
 			dialog_authorid.urlParam.filterVal=['A', 'session.compcode'];
 		}
 	},'none','radio','tab');
-	dialog_authorid.makedialog();
-=======
-	},'none','radio','tab'
-);
-dialog_deptcode.makedialog();
 
-var dialog_authorid = new ordialog(
-	'authorid','sysdb.users','#authorid',errorField,
-	{	colModel:[
-			{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true},
-			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true},
-			{label:'Password',name:'password',width:400,classes:'pointer', hidden:true},
-			{label:'Dept Code',name:'deptcode',width:400,classes:'pointer', hidden:true},
-		],
-		urlParam: {
-			filterCol:['compcode','recstatus'],
-			filterVal:['session.compcode','A']
-		},
-		ondblClickRow:function(){
-			let data=selrowData('#'+dialog_authorid.gridname);
-				/*$("#name").val(data['name']);
-				$("#password").val(data['password']).attr('type','password');
-				$("#deptcode").val(data['deptcode']);
-				$('#deptcode').focus();*/
-		},
-		gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						//$('#deptcode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-				}	
-		},{
-		title:"Select Author ID",
-		open: function(){
-				dialog_authorid.urlParam.filterCol=['recstatus'],
-				dialog_authorid.urlParam.filterVal=['A']
-			}
-		},'urlParam', 'radio', 'tab'
-	);
-dialog_authorid.makedialog();
->>>>>>> 9b2bb227697fd35f7c30b82ff84002727179f63b
+	dialog_authorid.makedialog();
+
 	
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();

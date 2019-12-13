@@ -249,13 +249,6 @@ $(document).ready(function () {
 				$('#but_reopen_jq').show();
 			} else {
 				if(scope == 'ALL'){
-					// if(stat=='OPEN'){
-					// 	if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-					// 		$('#but_cancel_jq,#but_post_single_jq').show();
-					// 	}else{
-					// 		$('#but_cancel_jq,#but_post_jq').show();
-					// 	}
-					// }
 				}else{
 					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
 						$('#but_cancel_jq,#but_post_single_jq').show();
@@ -398,9 +391,6 @@ $(document).ready(function () {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#p_error').text(data.responseText);
-			delay(function(){
-				$('#p_error').text('');
-			}, 2000 );
 		}).success(function(data){
 			
 		});
@@ -420,9 +410,6 @@ $(document).ready(function () {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#p_error').text(data.responseText);
-			delay(function(){
-				$('#p_error').text('');
-			}, 2000 );
 		}).success(function(data){
 			
 		});
