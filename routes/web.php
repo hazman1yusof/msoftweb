@@ -383,6 +383,13 @@ Route::post('/directPayment/form','finance\DirectPaymentController@form');
 Route::get('/directPayment/form','finance\DirectPaymentController@form');
 Route::post('/directPaymentDetail/form','finance\DirectPaymentDetailController@form');
 
+//// Credit Debit Transaction ///
+Route::get('/creditDebitTrans','finance\CreditDebitTransController@show');
+Route::get('/creditDebitTrans/table','finance\CreditDebitTransController@table');
+Route::post('/creditDebitTrans/form','finance\CreditDebitTransController@form');
+Route::get('/creditDebitTrans/form','finance\CreditDebitTransController@form');
+Route::post('/creditDebitTransDetail/form','finance\CreditDebitTransDetailController@form');
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
