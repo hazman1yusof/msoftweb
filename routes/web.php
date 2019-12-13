@@ -380,6 +380,8 @@ Route::post('/bankTransfer/form','finance\BankTransferController@form');
 Route::get('/directPayment','finance\DirectPaymentController@show');
 Route::get('/directPayment/table','finance\DirectPaymentController@table');
 Route::post('/directPayment/form','finance\DirectPaymentController@form');
+Route::get('/directPayment/form','finance\DirectPaymentController@form');
+Route::post('/directPaymentDetail/form','finance\DirectPaymentDetailController@form');
 
 ////////////////patient mgt setup/////////////////////////////////////////
 
