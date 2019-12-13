@@ -36,7 +36,7 @@ class BankTransferController extends defaultController
         }
     }
 
-   public function add(Request $request){
+    public function add(Request $request){
 
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
@@ -46,8 +46,8 @@ class BankTransferController extends defaultController
             $idno = $request->table_id;
         }
 
-        $auditno = $this->auditno('CM','FT');
-        $pvno = $this->pvno('HIS','PV');
+        $auditno = $this->recno('CM','FT');
+        $pvno = $this->recno('HIS','PV');
 
         DB::beginTransaction();
 
@@ -87,6 +87,29 @@ class BankTransferController extends defaultController
 
             return response('Error'.$e, 500);
         }
+
+    }
+
+    public function posted(Request $request){
+        //1st step add cbtran -
+        $prepare = "INSERT INTO finance.cbtran (compcode,bankcode,source,trantype,auditno,postdate,year,period,cheqno,amount,remarks,lastuser,lastupdate,bitype,reference,stat,refsrc,reftrantype,refauditno) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW(),?,?,?,?,?,?)";
+
+        $arrayValue = array($_SESSION['company'],$seldata['bankcode'],$seldata['source'],$seldata['trantype'],$seldata['auditno'],$seldata['actdate'],$tempobj->year,$tempobj->period,$seldata['cheqno'],-$seldata['amount'],$seldata['remarks'],$_SESSION['username'],null,'Transfer from :'. ' ' .$seldata['bankcode']  . ' ' . 'to'. ' '. $seldata[ 'payto'],'A',null,null,null);
+
+        //$arrayValue = array($_SESSION['company'],$seldata['bankcode'],$seldata['source'],$seldata['trantype'],$seldata['auditno'],$seldata['actdate'],$tempobj->year,$tempobj->period,$seldata['cheqno'],-$seldata['amount'],$seldata['remarks'],$_SESSION['username'],null,null,'A',null,null,null);
+
+        $this->save($prepare,$arrayValue);
+
+        $apacthdr = DB::table('finance.apacthdr')
+                        ->where('idno','=',$request->idno);
+
+        $apacthdr_get = $apacthdr->first();
+
+        DB::table('finance.cbtran')
+            ->insert(['compcode' =>,
+                        'bankcode' =>,
+                        'source' =>,
+                        'trantype','auditno','postdate','year','period','cheqno','amount','remarks','lastuser','lastupdate','bitype','reference','stat','refsrc','reftrantype','refauditno']);
 
     }
 }
