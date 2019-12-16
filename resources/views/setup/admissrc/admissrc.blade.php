@@ -16,7 +16,7 @@ input.uppercase {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
-				<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
@@ -53,128 +53,6 @@ input.uppercase {
 		</div>
     </div>
 	<!-- ***************End Search + table ********************* -->
-
-	<div id="dialogForm" title="Add Form">
-		<div class='panel panel-info'>
-			<div class="panel-heading">Admission Source</div>
-			<div class="panel-body" style="position: relative;">
-				<form class='form-horizontal' style='width:99%' id='formdata'>
-					{{ csrf_field() }}
-					<input id="idno" name="idno" type="hidden">
-						
-					<div class="form-group">
-						<!-- <label class="col-md-2 control-label" for="description">Description</label>  
-						<div class="col-md-3">
-							<input id="description" name="description" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
-						</div> -->
-					
-						<label class="col-md-2 control-label" for="description">Description</label>  
-						<div class="col-md-3">
-							<input id="description" name="description" type="text" class="form-control input-sm uppercase" data-validation="required">
-						</div>
-					</div>
-			                
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="addr1">Address 1</label>  
-						<div class="col-md-3">
-							<input id="addr1" name="addr1" type="text" class="form-control input-sm uppercase" data-validation="required">
-						</div>
-
-						<!-- <label class="col-md-2 control-label" for="chggroup">Charge Group</label>  
-						<div class="col-md-3" >
-							<div class='input-group'>
-								<input id="chggroup" name="chggroup" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							</div>
-							<span class="help-block"></span>
-						</div> -->
-					</div> 
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="addr2">Address 2</label>  
-						<div class="col-md-3">
-							<input id="addr2" name="addr2" type="text" class="form-control input-sm uppercase">
-						</div>
-					</div> 
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="addr3">Address 3</label>  
-						<div class="col-md-3">
-							<input id="addr3" name="addr3" type="text" class="form-control input-sm uppercase">
-						</div>
-					</div> 
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="addr4">Address 4</label>  
-						<div class="col-md-3">
-							<input id="addr4" name="addr4" type="text" class="form-control input-sm uppercase">
-						</div>
-					</div> 
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="telno">Contact</label>  
-						<div class="col-md-2">
-							<input id="telno" name="telno" type="text" class="form-control input-sm uppercase" data-validation="required">
-						</div>
-
-						<label class="col-md-2 control-label" for="email">Email</label>  
-						<div class="col-md-3" >
-							<div class='input-group'>
-								<input id="email" name="email" type="text" maxlength="40" class="form-control input-sm uppercase" data-validation="required">
-							</div>
-							<span class="help-block"></span>
-						</div>
-					</div> 
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-						<div class="col-md-6">
-							<label class="radio-inline"><input id="recstatus" type="radio" name="recstatus" value='A' checked>Active</label>
-							<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
-						</div>
-					</div> 
-
-					<div class="form-group">
-					<label class="col-md-2 control-label" for="type">Source Type</label>
-						<div class="col-md-2">
-						<select id='sex' class="form-control input-sm" data-validation="required">
-							<option value="" selected>Please Choose</option>
-	      					<option value="GP">GP</option>
-		        			<option value="DOCTOR">DOCTOR</option>
-							<option value="HOSPITAL">HOSPITAL</option>
-							<option value="OTHERS">OTHERS</option>
-			    			</select>
-						</div>
-					</div>	
-
-					<!-- <div class="form-group">
-						<label class="col-md-2 control-label" for="lastuser">Last User</label>  
-						<div class="col-md-3">
-							<input id="lastuser" name="lastuser" type="text" class="form-control input-sm uppercase" rdonly>
-						</div>
-
-						<label class="col-md-2 control-label" for="lastupdate">Last Update</label>  
-						<div class="col-md-3">
-							<input id="lastupdate" name="lastupdate" type="text" maxlength="30" class="form-control input-sm uppercase" rdonly>
-						</div>
-					</div>  -->
-					
-
-					<!-- <div class="form-group">
-						<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
-						<div class="col-md-3">
-							<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm uppercase" data-validation="required" rdonly >
-						</div>
-
-						<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
-						<div class="col-md-3">
-							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" rdonly >
-						</div>
-					</div>   -->
-				</form>
-			</div>
-		</div>		
-	</div>
 
 @endsection
 
