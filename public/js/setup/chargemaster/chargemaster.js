@@ -269,17 +269,28 @@
 		addParamField('#jqGrid',false,saveParam,['cm_idno','ct_description', 'cc_description','cg_description', 'cm_compcode', 'cm_ipaddress', 'cm_computerid', 'cm_adddate', 'cm_adduser','cm_upduser','cm_upddate','cm_recstatus']);
 
 		////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
+
 		function hideatdialogForm(hide,saveallrow){
 			if(saveallrow == 'saveallrow'){
 				$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
 				$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
+
+
+				$("#jqGrid3_iledit,#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll").hide();
+				$("#jqGridPager3SaveAll,#jqGridPager3CancelAll").show();
 			}else if(hide){
 				$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
 				$("#saveDetailLabel").show();
+
+				$("#jqGrid3_iledit,#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll,#jqGridPager3SaveAll,#jqGridPager3CancelAll").hide();
 			}else{
 				$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
 				$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+
+				$("#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll").show();
+				$("#jqGridPager3SaveAll,#jqGrid3_iledit,#jqGridPager3CancelAll").hide();
 			}
+			
 		}
 
 		/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
@@ -749,251 +760,6 @@
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////Chg Price Detail//////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		var buttItem1=[{
-			text: "Save",click: function() {
-				mycurrency.formatOff();
-				// mycurrency.check0value(errorField);
-				if( $('#FChgPriceDtl').isValid({requiredFields: ''}, {}, true) ) {
-					saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",oper_chgpricedtl,saveParam3,urlParam2,{
-							chgcode: selrowData("#jqGrid").cm_chgcode,
-							uom: selrowData("#jqGrid").cm_uom,
-						});
-				}else{
-					mycurrency.formatOn();
-				}
-			}
-		},{
-			text: "Cancel",click: function() {
-				$(this).dialog('close');
-			}
-		}];
-
-		var oper_chgpricedtl;
-		$("#ChgPriceDtl")
-		  .dialog({ 
-			width: 9/10 * $(window).width(),
-			modal: true,
-			autoOpen: false,
-			open: function( event, ui ) {
-				parent_close_disabled(true);
-				switch(oper_chgpricedtl) {
-					case state = 'add':
-						mycurrency.formatOnBlur();
-						$( this ).dialog( "option", "title", "Add" );
-						enableForm('#FChgPriceDtl');
-						hideOne('#FChgPriceDtl');
-						rdonly('#FChgPriceDtl');
-						$(this).dialog("option", "buttons",buttItem1);
-						break;
-					case state = 'edit':
-						mycurrency.formatOnBlur();
-						$( this ).dialog( "option", "title", "Edit" );
-						enableForm('#FChgPriceDtl');
-						frozeOnEdit("#ChgPriceDtl");
-						$('#FChgPriceDtl :input[hideOne]').show();
-						rdonly('#FChgPriceDtl');
-						$(this).dialog("option", "buttons",buttItem1);
-						break;
-					case state = 'view':
-						mycurrency.formatOnBlur();
-						$( this ).dialog( "option", "title", "View" );
-						disableForm('#FChgPriceDtl');
-						$('#FChgPriceDtl :input[hideOne]').show();
-						$(this).dialog("option", "buttons",butt2);
-						break;
-				}
-				
-				if(oper_chgpricedtl == 'edit'){
-					dialog_dtliptax.on();
-					dialog_dtloptax.on();
-				}
-				
-				if(oper_chgpricedtl!='add'){
-					dialog_dtliptax.check(errorField);
-					dialog_dtloptax.check(errorField);
-				}
-				if (oper_chgpricedtl != 'view') {
-					$("#d_authorid").val(selrowData('#jqGrid').authorid);
-					dialog_dtliptax.on();
-					dialog_dtloptax.on();
-				}
-			},
-			close: function( event, ui ) {
-				parent_close_disabled(false);
-				emptyFormdata(errorField,'#FChgPriceDtl');
-				$('.my-alert').detach();
-				dialog_dtliptax.off();
-				dialog_dtloptax.off();
-				if(oper=='view'){
-					$(this).dialog("option", "buttons",buttItem1);
-				}
-			},
-			buttons :buttItem1,
-		});
-
-		/////////////////////parameter for jqgrid3/////////////////////////////////////////////////////////////////////
-		// var urlParam3={
-		// 	action:'get_table_default',
-		// 	url:'/util/get_table_default',
-		// 	field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate', 'cp.chgcode','cm.chgcode'],
-		// 	table_name:['hisdb.chgprice AS cp', 'hisdb.chgmast AS cm'],
-		// 	table_id:'lineno_',
-		// 	join_type:['LEFT JOIN'],
-		// 	join_onCol:['cp.chgcode'],
-		// 	join_onVal:['cm.chgcode'],
-		// 	filterCol:['cp.compcode','cp.chgcode'],
-		// 	filterVal:['session.compcode','']
-		// };
-
-		var saveParam3={
-			action:'save_table_default',
-			url:'chargemasterDetail/form',
-			field:'',
-			oper:oper_chgpricedtl,
-			table_id:'d_idno',
-			saveip:'true'
-		};
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// $("#jqGrid3").jqGrid({
-		// 	datatype: "local",
-		// 	  colModel: [
-		// 		// { label: 'compcode', name: 'd_compcode', width: 20, classes: 'wrap', hidden:true},
-		// 		// { label: 'authorid', name: 'authorid', width: 20, classes: 'wrap', hidden:true},
-		// 		{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true, editable:true},
-		// 		{ label: 'Effective date', name: 'effdate', width: 200, classes: 'wrap', editable: true,
-		// 			edittype:"date",
-		// 		},
-		// 		{ label: 'Price 1', name: 'amt1', width: 200, classes: 'wrap', editable: true,
-		// 			edittype:"text",
-		// 		},
-		// 		{ label: 'Price 2', name: 'amt2', width: 200, classes: 'wrap', editable: true,
-		// 			edittype:"text",
-		// 		},
-		// 		{ label: 'Price 3', name: 'amt3', width: 200, classes: 'wrap', editable: true,
-		// 			edittype:"text",
-		// 		},
-		// 		{ label: 'Cost Price', name: 'costprice', width: 200, classes: 'wrap', editable: true,
-		// 			edittype:"text",
-		// 		},
-		// 		{ label: 'Inpatient Tax', name: 'iptax', width: 200, classes: 'wrap', editable: true,
-		// 			edittype:"text",
-		// 		},
-		// 		{ label: 'Outpatient Tax', name: 'optax', width: 200, classes: 'wrap', editable: true,
-		// 			edittype:"text",
-		// 		},
-		// 		{ label: 'User ID', name: 'lastuser', width: 200, classes: 'wrap', editable: false,
-		// 			edittype:"text",
-		// 		},
-		// 		{ label: 'Last Updated', name: 'lastupdate', width: 200, classes: 'wrap', editable: false,
-		// 			edittype:"text",
-		// 		},
-		// 	],
-		// 	viewrecords: true,
-		// 	//shrinkToFit: true,
-		// 	autowidth:true,
-		// 	multiSort: true,
-		// 	loadonce:false,
-		// 	width: 900,
-		// 	height: 200,
-		// 	rowNum: 30,
-		// 	hidegrid: false,
-		// 	pager: "#jqGridPager3",
-		// 	onPaging: function(pgButton){
-		// 	},
-		// 	ondblClickRow: function(rowid, iRow, iCol, e){
-		// 		$('#cp_idno').val(selrowData('#jqGrid3').cp_idno);
-		// 		// $('#d_authorid').val(selrowData('#gridAuthdtl').dtl_authorid);
-		// 		$("#jqGridPager3 td[title='Edit Selected Row']").click();
-		// 	},
-		// 	gridComplete: function(){
-		// 		if(oper == 'add'){
-		// 			$("#jqGrid3").setSelection($("#jqGrid").getDataIDs()[0]);
-		// 		}
-	
-		// 		$('#jqGrid3 #'+$("#jqGrid3").jqGrid ('getGridParam', 'selrow')).focus();
-	
-		// 		/////////////////////////////// reccount ////////////////////////////
-				
-		// 		if($("#jqGrid3").getGridParam("reccount") >= 1){
-		// 			$("#jqGridPagerglyphicon-trash").hide();
-		// 		} 
-	
-		// 		if($("#jqGrid3").getGridParam("reccount") < 1){
-		// 			$("#jqGridPagerglyphicon-trash").show()
-		// 		}
-		// 	},
-		// 	onSelectRow:function(rowid, selected){
-		// 		/*if(rowid != null) {
-		// 			rowData = $('#gridAuthdtl').jqGrid ('getRowData', rowid);
-		// 			//console.log(rowData.svc_billtype);
-		// 			urlParam_suppbonus.filterVal[0]=selrowData("#gridAuthdtl").si_itemcode; 
-	
-		// 			$("#Fsuppbonus :input[name*='sb_suppcode']").val(selrowData("#gridAuthdtl").si_suppcode);
-		// 			$("#Fsuppbonus :input[name*='sb_pricecode']").val(selrowData("#gridAuthdtl").si_pricecode);
-		// 			$("#Fsuppbonus :input[name*='sb_itemcode']").val(selrowData("#gridAuthdtl").si_itemcode);
-		// 			$("#Fsuppbonus :input[name*='sb_uomcode']").val(selrowData("#gridAuthdtl").si_uomcode);
-		// 			$("#Fsuppbonus :input[name*='sb_purqty']").val(selrowData("#gridAuthdtl").si_purqty);
-		// 			refreshGrid('#gridSuppBonus',urlParam_suppbonus);
-		// 			$("#pg_jqGridPager3 table").show();
-		// 		}*/
-		// 	},	
-		// });
-
-		// $("#jqGrid3").jqGrid('navGrid','#jqGridPager3',{	
-		// 	view:false,edit:false,add:false,del:false,search:false,
-		// 	beforeRefresh: function(){
-		// 		refreshGrid("#jqGrid3",urlParam2);
-		// 	},
-		// }).jqGrid('navButtonAdd',"#jqGridPager3",{
-		// 	caption:"", 
-		// 	buttonicon:"glyphicon glyphicon-trash", 
-		// 	id:"jqGridPager3glyphicon-trash",
-		// 	onClickButton: function(){
-		// 		oper_chgpricedtl='del';
-		// 		var selRowId = $("#jqGrid3").jqGrid ('getGridParam', 'selrow');
-		// 		if(!selRowId){
-		// 			alert('Please select row');
-		// 			return emptyFormdata(errorField,'#FChgPriceDtl');
-		// 		}else{
-		// 			saveFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",'del',saveParam3,urlParam2,{'idno':selrowData('#jqGrid3').idno});
-		// 		}
-		// 	}, 
-		// 	position: "first", 
-		// 	title:"Delete Selected Row", 
-		// 	cursor: "pointer"
-		// }).jqGrid('navButtonAdd',"#jqGridPager3",{
-		// 	caption:"", 
-		// 	buttonicon:"glyphicon glyphicon-info-sign", 
-		// 	onClickButton: function(){
-		// 		oper_chgpricedtl='view';
-		// 		selRowId = $("#jqGrid3").jqGrid ('getGridParam', 'selrow');
-		// 		populateFormdata("#jqGrid3","#ChgPriceDtl","#FChgPriceDtl",selRowId,'view');
-		// 	}, 
-		// 	position: "first", 
-		// 	title:"View Selected Row", 
-		// 	cursor: "pointer"
-		// }).jqGrid('navButtonAdd',"#jqGridPager3",{
-		// 	caption:"", 
-		// 	buttonicon:"glyphicon glyphicon-plus", 
-		// 	onClickButton: function(){
-		// 		oper_chgpricedtl='add';
-		// 		var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-		// 		if(!selRowId){
-		// 			alert('Please select row');
-		// 			return emptyFormdata(errorField,'#FChgPriceDtl');
-		// 		}else{
-		// 			$( "#ChgPriceDtl" ).dialog( "open" );
-		// 		}
-		// 		//$('#FChgPriceDtl :input[name=d_lineno_]').hide();
-		// 		//$("#Fsuppitems :input[name*='SuppCode']").val(selrowData('#jqGrid').SuppCode);
-		// 	}, 
-		// 	position: "first", 
-		// 	title:"Add New Row", 
-		// 	cursor: "pointer"
-		// });
-
 		////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 
 		$("#jqGrid3").jqGrid({
@@ -1075,15 +841,21 @@
 				}
 
 				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+				
 			},
 			gridComplete: function(){
+
 				fdl.set_array().reset();
-				
+				if(!hide_init){
+					hide_init=1;
+					hideatdialogForm(false);
+				}
 			},
 			beforeSubmit: function(postdata, rowid){ 
 				// dialog_deptcodedtl.check(errorField);
 		 	}
 		});
+		var hide_init=0;
 
 		//////////////////////////////////////////myEditOptions2/////////////////////////////////////////////
 
@@ -1129,8 +901,8 @@
 					$.param({
 						action: 'chargemasterDetail_save',
 						oper: 'add',
-						chgcode: $('#cm_chgcode').val(),
-						uom: $('#cm_uom').val(),
+						chgcode: selrowData('#jqGrid').cm_chgcode,//$('#cm_chgcode').val(),
+						uom: selrowData('#jqGrid').cm_uom//$('#cm_uom').val(),
 						// authorid:$('#authorid').val()
 					});
 				$("#jqGrid3").jqGrid('setGridParam',{editurl:editurl});
@@ -1212,7 +984,7 @@
 			onClickButton: function(){
 				var ids = $("#jqGrid3").jqGrid('getDataIDs');
 
-				var jqgrid2_data = [];
+				var jqgrid3_data = [];
 				mycurrency2.formatOff();
 			    for (var i = 0; i < ids.length; i++) {
 
@@ -1229,7 +1001,7 @@
 						'optax' : $("#jqGrid3 input#"+ids[i]+"_optax").val()
 			    	}
 
-			    	jqgrid2_data.push(obj);
+			    	jqgrid3_data.push(obj);
 			    }
 
 				var param={
@@ -1237,7 +1009,7 @@
 					_token: $("#_token").val()
 	    		}
 
-	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid3_data}, function( data ){
 				}).fail(function(data) {
 					//////////////////errorText(dialog,data.responseText);
 				}).done(function(data){
