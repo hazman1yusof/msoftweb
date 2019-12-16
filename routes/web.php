@@ -167,6 +167,51 @@ Route::post('/doctor_maintenance/save_session','hisdb\DoctorMaintenanceControlle
 Route::post('/doctor_maintenance/save_bgleave','hisdb\DoctorMaintenanceController@save_bgleave');
 Route::post('/doctor_maintenance/save_colorph','hisdb\DoctorMaintenanceController@save_colorph');
 
+//// Admission Source setup page ///
+Route::get('/admissrc','setup\AdmisSrcController@show');
+Route::get('/admissrc/table','setup\AdmisSrcController@table');
+Route::post('/admissrc/form','setup\AdmisSrcController@form');
+
+//// Case Type setup page ///
+Route::get('/casetype','setup\CaseTypeController@show');
+Route::get('/casetype/table','setup\CaseTypeController@table');
+Route::post('/casetype/form','setup\CaseTypeController@form');
+
+//// Episode Type setup page ///
+Route::get('/episodetype','setup\EpisodeTypeController@show');
+Route::get('/episodetype/table','setup\EpisodeTypeController@table');
+Route::post('/episodetype/form','setup\EpisodeTypeController@form');
+
+//// Discharge Destination setup page ///
+Route::get('/dischargedestination','setup\DischargeDestinationController@show');
+Route::get('/dischargedestination/table','setup\DischargeDestinationController@table');
+Route::post('/dischargedestination/form','setup\DischargeDestinationController@form');
+
+// //// Address Type setup page ///
+// Route::get('/addresstype','setup\AddressTypeController@show');
+// Route::get('/addresstype/table','setup\AddressTypeController@table');
+// Route::post('/addresstype/form','setup\AddressTypeController@form');
+
+//// Country setup page ///
+Route::get('/country','setup\CountryController@show');
+Route::get('/country/table','setup\CountryController@table');
+Route::post('/country/form','setup\CountryController@form');
+
+//// State setup page ///
+Route::get('/state','setup\StateController@show');
+Route::get('/state/table','setup\StateController@table');
+Route::post('/state/form','setup\StateController@form');
+
+//// Postcode setup page ///
+Route::get('/postcode','setup\PostcodeController@show');
+Route::get('/postcode/table','setup\PostcodeController@table');
+Route::post('/postcode/form','setup\PostcodeController@form');
+
+//// Citizen setup page ///
+Route::get('/citizen','setup\CitizenController@show');
+Route::get('/citizen/table','setup\CitizenController@table');
+Route::post('/citizen/form','setup\CitizenController@form');
+
 ////////////////////////////////inventory setup///////////////////////////////////////////////////////////
 
 //// inventory Transaction setup page ///
