@@ -45,10 +45,22 @@
 					editoptions:{
 						value:"GP:GP;DOCTOR:DOCTOR;HOSPITAL:HOSPITAL;OTHERS:OTHERS"
 					}},
-				{ label: 'Address 1', name: 'addr1', width: 50, classes: 'wrap', editable: true,editrules: { required: true }},
-				{ label: 'Address 2', name: 'addr2', width: 50, classes: 'wrap', editable: true,editrules: { required: true }},
-				{ label: 'Address 3', name: 'addr3', width: 50, classes: 'wrap', editable: true,editrules: { required: true }},
-				{ label: 'Address 4', name: 'addr4', width: 50, classes: 'wrap', editable: true,editrules: { required: true }},
+				{ label: 'Address 1', name: 'addr1', width: 50, classes: 'wrap', editable: true, edittype:"textarea", editrules: { required: true }, 
+					editoptions: {
+						style: "text-transform: uppercase" 
+					}},
+				{ label: 'Address 2', name: 'addr2', width: 50, classes: 'wrap', editable: true, edittype:"textarea", editrules: { required: true },
+					editoptions: {
+						style: "text-transform: uppercase" 
+					}},
+				{ label: 'Address 3', name: 'addr3', width: 50, classes: 'wrap', editable: true, edittype:"textarea", editrules: { required: true },
+					editoptions: {
+						style: "text-transform: uppercase" 
+					}},
+				{ label: 'Address 4', name: 'addr4', width: 50, classes: 'wrap', editable: true, edittype:"textarea", editrules: { required: true },
+					editoptions: {
+						style: "text-transform: uppercase" 
+					}},
 				{ label: 'Tel No', name: 'telno', width: 50, classes: 'wrap', editable: true,editrules: { required: true }},
 				{ label: 'Email', name: 'email', width: 50, classes: 'wrap', editable: true,editrules: { required: true }},
 				

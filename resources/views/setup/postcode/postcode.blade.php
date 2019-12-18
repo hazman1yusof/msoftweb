@@ -2,6 +2,37 @@
 
 @section('title', 'Postcode Setup')
 
+@section('style')
+
+<!-- .panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+	display: none;
+}  /////////////////// untuk hide second header //////////////////////
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+	display: inline-block;
+} -->
+
+<!-- i.fa {
+	cursor: pointer;
+	float: right;
+}
+
+.collapsed ~ .panel-body {
+	padding: 0;
+} -->
+
+.clearfix {
+	overflow: auto;
+}
+
+input.uppercase {
+	text-transform: uppercase;
+} <!--/////////////////huruf besar ////////////////-->
+
+@endsection
+
 @section('body')
 
 	@include('layouts.default_search_and_table')
