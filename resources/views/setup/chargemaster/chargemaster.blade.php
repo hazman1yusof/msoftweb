@@ -135,6 +135,24 @@ input.uppercase {
   			</div>
 		</div>
 
+		<div class="panel-group">
+  			<div class="panel panel-default" id="jqGrid4_c">
+    			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid4_panel">
+					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Package Deal Maintenance Details
+    			</div>
+    			<div id="jqGrid4_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<form id='formdata4' class='form-vertical' style='width:99%'>
+							<div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGrid4" class="table table-striped"></table>
+								<div id="jqGridPager4"></div>
+							</div>
+						</form>
+					</div>
+    			</div>
+  			</div>
+		</div>
+
     </div>
 	<!-- ***************End Search + table ********************* -->
 
