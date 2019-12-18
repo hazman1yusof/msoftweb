@@ -213,7 +213,8 @@ function emptyFormdata(errorField,form,except){
 function trimmall(form){
 	var serializedForm =  $( form ).serializeArray();
 	$.each( serializedForm, function( i, field ) {
-    	field.value=field.value.trim();
+    	field.value=field.value.trim().toUpperCase();
+    	//turn uppercase and trim
     });
 	//turn it into a string if you wish
 	let serializedForm_ = $.param(serializedForm);
@@ -229,7 +230,6 @@ function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback){
 	saveParam.oper=oper;
 
 	let serializedForm = trimmall(form);
-	console.log(serializedForm);
 	
 	$.post( saveParam.url+'?'+$.param(saveParam), $( form ).serialize()+'&'+$.param(obj) , function( data ) {
 		

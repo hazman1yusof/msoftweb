@@ -73,7 +73,7 @@ $(document).ready(function () {
 					dialog_suppcode.check(errorField);
 					dialog_deldept.check(errorField);
 
-				} if (oper != 'view') {
+				}if (oper != 'view') {
 					backdated.set_backdate($('#purordhd_prdept').val());
 					dialog_reqdept.on();
 					dialog_purreqno.on();
@@ -81,6 +81,13 @@ $(document).ready(function () {
 					dialog_suppcode.on();
 					dialog_deldept.on();
 					dialog_credcode.on();
+				}
+
+				if(oper == 'edit'){
+					dialog_reqdept.off();
+					dialog_purreqno.off();
+
+					$("#purordhd_reqdept,#purordhd_purreqno").prop('disabled',true);
 				}
 			},
 			beforeClose: function (event, ui) {
@@ -111,6 +118,7 @@ $(document).ready(function () {
 				dialog_credcode.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
+				$("#purordhd_reqdept,#purordhd_purreqno").prop('disabled',false);
 				refreshGrid("#jqGrid2",null,"kosongkan");
 				radbuts.reset();
 				errorField.length=0;
@@ -1658,9 +1666,15 @@ $(document).ready(function () {
 				$("#purordhd_amtdisc").val(data['h_.amtdisc']);
 				$("#purordhd_totamount").val(data['h_totamount']);
 				$("#purordhd_subamount").val(data['h_subamount']);
-				$("#purordhd_recstatus").val(data['h_recstatus']);
+				$("#purordhd_recstatus").val("OPEN");
 				$("#purordhd_remarks").val(data['h_remarks']);
 				$('#referral').val(data['h_recno']);
+
+
+				dialog_credcode.check(errorField);
+				dialog_suppcode.check(errorField);
+				dialog_deldept.check(errorField);
+
 
 				var urlParam2 = {
 					action: 'get_value_default',
