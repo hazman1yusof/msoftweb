@@ -28,14 +28,6 @@ input.uppercase {
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
-
-							<div  id="show_chggroup_div" style="display:none">
-								<div class='input-group'>
-									<input id="show_chggroup" seltext='false' name="show_chggroup" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div>
 						</div>
 		            </div>
 				</div>

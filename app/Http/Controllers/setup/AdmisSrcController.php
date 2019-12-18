@@ -55,14 +55,14 @@ class AdmisSrcController extends defaultController
             DB::table('hisdb.admissrc')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'admsrccode' => $request->admsrccode,
-                    'description' => $request->description,
-                    'addr1' => $request->addr1,
-                    'addr2' => $request->addr2,
-                    'addr3' => $request->addr3,
-                    'addr4' => $request->addr4,
-                    'telno' => $request->telno,
-                    'email' => $request->email,
+                    'admsrccode' => strtoupper($request->admsrccode),
+                    'description' => strtoupper($request->description),
+                    'addr1' => strtoupper($request->addr1),
+                    'addr2' => strtoupper($request->addr2),
+                    'addr3' => strtoupper($request->addr3),
+                    'addr4' => strtoupper($request->addr4),
+                    'telno' => strtoupper($request->telno),
+                    'email' => strtoupper($request->email),
                     'type' => $request->type,
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -84,14 +84,14 @@ class AdmisSrcController extends defaultController
             DB::table('hisdb.admissrc')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'admsrccode' => $request->admsrccode,
-                    'description' => $request->description,
-                    'addr1' => $request->addr1,
-                    'addr2' => $request->addr2,
-                    'addr3' => $request->addr3,
-                    'addr4' => $request->addr4,
-                    'telno' => $request->telno,
-                    'email' => $request->email,
+                    'admsrccode' => strtoupper($request->admsrccode),
+                    'description' => strtoupper($request->description),
+                    'addr1' => strtoupper($request->addr1),
+                    'addr2' => strtoupper($request->addr2),
+                    'addr3' => strtoupper($request->addr3),
+                    'addr4' => strtoupper($request->addr4),
+                    'telno' => strtoupper($request->telno),
+                    'email' => strtoupper($request->email),
                     'type' => $request->type,
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")

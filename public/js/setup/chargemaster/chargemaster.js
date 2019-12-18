@@ -275,19 +275,27 @@
 				$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
 				$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
 
-
-				$("#jqGrid3_iledit,#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll").hide();
-				$("#jqGridPager3SaveAll,#jqGridPager3CancelAll").show();
 			}else if(hide){
 				$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
 				$("#saveDetailLabel").show();
-
-				$("#jqGrid3_iledit,#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll,#jqGridPager3SaveAll,#jqGridPager3CancelAll").hide();
 			}else{
 				$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
 				$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+			}
+			
+		}
 
-				$("#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll").show();
+		function hideatdialogForm_jqGrid3(hide,saveallrow){
+			if(saveallrow == 'saveallrow'){
+
+				$("#jqGrid3_iledit,#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll,#jqGridPager3Refresh").hide();
+				$("#jqGridPager3SaveAll,#jqGridPager3CancelAll").show();
+			}else if(hide){
+
+				$("#jqGrid3_iledit,#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll,#jqGridPager3SaveAll,#jqGridPager3CancelAll,#jqGridPager3Refresh").hide();
+			}else{
+
+				$("#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll,#jqGridPager3Refresh").show();
 				$("#jqGridPager3SaveAll,#jqGrid3_iledit,#jqGridPager3CancelAll").hide();
 			}
 			
@@ -848,7 +856,7 @@
 				fdl.set_array().reset();
 				if(!hide_init){
 					hide_init=1;
-					hideatdialogForm(false);
+					hideatdialogForm_jqGrid3(false);
 				}
 			},
 			beforeSubmit: function(postdata, rowid){ 
@@ -866,7 +874,7 @@
 	        },
 	        oneditfunc: function (rowid) {
 
-	        	$("#jqGridPager3EditAll,#jqGridPager3Delete").hide();
+	        	$("#jqGridPager3EditAll,#jqGridPager3Delete,#jqGridPager3Refresh").hide();
 
 				dialog_dtliptax.on();
 				dialog_dtloptax.on();
@@ -885,12 +893,12 @@
 	        aftersavefunc: function (rowid, response, options) {
 	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
 	        	refreshGrid('#jqGrid3',urlParam2,'add');
-		    	$("#jqGridPager3EditAll,#jqGridPager3Delete").show();
+		    	$("#jqGridPager3EditAll,#jqGridPager3Delete,#jqGridPager3Refresh").show();
 	        }, 
 	        errorfunc: function(rowid,response){
 	        	alert(response.responseText);
 	        	refreshGrid('#jqGrid3',urlParam2,'add');
-		    	$("#jqGridPager3Delete").show();
+		    	$("#jqGridPager3Delete,#jqGridPager3Refresh").show();
 	        },
 	        beforeSaveRow: function(options, rowid) {
 
@@ -908,7 +916,7 @@
 				$("#jqGrid3").jqGrid('setGridParam',{editurl:editurl});
 	        },
 	        afterrestorefunc : function( response ) {
-				hideatdialogForm(false);
+				hideatdialogForm_jqGrid3(false);
 		    }
 	    };
 
@@ -974,7 +982,7 @@
 			    }
 			    mycurrency2.formatOnBlur();
 		    	onall_editfunc();
-				hideatdialogForm(true,'saveallrow');
+				hideatdialogForm_jqGrid3(true,'saveallrow');
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager3",{
 			id: "jqGridPager3SaveAll",
@@ -1013,7 +1021,7 @@
 				}).fail(function(data) {
 					//////////////////errorText(dialog,data.responseText);
 				}).done(function(data){
-					hideatdialogForm(false);
+					hideatdialogForm_jqGrid3(false);
 					refreshGrid("#jqGrid3",urlParam2);
 				});
 			},	
@@ -1023,9 +1031,17 @@
 			buttonicon:"glyphicon glyphicon-remove-circle",
 			title:"Cancel",
 			onClickButton: function(){
-				hideatdialogForm(false);
+				hideatdialogForm_jqGrid3(false);
 				refreshGrid("#jqGrid3",urlParam2);
 			},	
+		}).jqGrid('navButtonAdd', "#jqGridPager3", {
+			id: "jqGridPager3Refresh",
+			caption: "", cursor: "pointer", position: "last",
+			buttonicon: "glyphicon glyphicon-refresh",
+			title: "Refresh Table",
+			onClickButton: function () {
+				refreshGrid("#jqGrid3", urlParam2);
+			},
 		});
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////

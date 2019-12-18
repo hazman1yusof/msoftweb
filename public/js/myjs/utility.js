@@ -213,7 +213,9 @@ function emptyFormdata(errorField,form,except){
 function trimmall(form){
 	var serializedForm =  $( form ).serializeArray();
 	$.each( serializedForm, function( i, field ) {
-    	field.value=field.value.trim().toUpperCase();
+		if(field.name!='_token'){
+    		field.value=field.value.trim().toUpperCase();
+    	}
     	//turn uppercase and trim
     });
 	//turn it into a string if you wish
@@ -230,8 +232,8 @@ function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback){
 	saveParam.oper=oper;
 
 	let serializedForm = trimmall(form);
-	
-	$.post( saveParam.url+'?'+$.param(saveParam), $( form ).serialize()+'&'+$.param(obj) , function( data ) {
+
+	$.post( saveParam.url+'?'+$.param(saveParam), serializedForm+'&'+$.param(obj) , function( data ) {
 		
 	}).fail(function(data) {
 		errorText(dialog.substr(1),data.responseText);
@@ -279,6 +281,19 @@ function populateSelect(grid,form){
 			}
 			else{
 				$( form+" [name=Scol]" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+value['name']+"'>"+value['label']+"</input></label>" );
+			}
+		}
+	});
+}
+
+function populateSelect2(grid,form){
+
+	$.each($(grid).jqGrid('getGridParam','colModel'), function( index, value ) {
+		if(value['canSearch']){
+			if(value['selected']){
+				$( form+" [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+			}else{
+				$( form+" [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
 			}
 		}
 	});

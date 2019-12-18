@@ -87,6 +87,9 @@
 
 				addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 			},
+			ondblClickRow: function(rowid, iRow, iCol, e){
+				$("#jqGrid_iledit").click();
+			},
 		});
 
 		var myEditOptions = {
@@ -95,7 +98,7 @@
 			    "_token": $("#_token").val()
 	        },
 			oneditfunc: function (rowid) {
-				$("#jqGridPagerDelete").hide();
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 				$("input[name='email']").keydown(function(e) {//when click tab at totamount, auto save
 					var code = e.keyCode || e.which;
 					if (code == '9')$('#jqGrid_ilsave').click();
@@ -109,18 +112,17 @@
 		    	//state true maksudnyer ada isi, tak kosong
 				refreshGrid('#jqGrid',urlParam,'add');
 				errorField.length=0;
-				$("#jqGridPagerDelete").show();
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 			},
 			errorfunc: function(rowid,response){
 	        	alert(response.responseText);
 	        	refreshGrid('#jqGrid',urlParam,'add');
 	        },
 			beforeSaveRow: function (options, rowid) {
-				console.log(errorField)
 	        	if(errorField.length>0)return false;
 
 				let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-				// console.log(data);
+				console.log(data);
 
 				let editurl = "/admissrc/form?"+
 					$.param({
@@ -129,7 +131,7 @@
 				$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 			},
 			afterrestorefunc : function( response ) {
-				$("#jqGridPagerDelete").show();
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		    },
 		    errorTextFormat: function (data) {
 		    	alert(data);
@@ -142,7 +144,7 @@
 			    "_token": $("#_token").val()
 	        },
 			oneditfunc: function (rowid) {
-				$("#jqGridPagerDelete").hide();
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 				$("input[name='admsrccode']").attr('disabled','disabled');
 				$("input[name='email']").keydown(function(e) {//when click tab at totamount, auto save
 					var code = e.keyCode || e.which;
@@ -157,7 +159,7 @@
 		    	//state true maksudnyer ada isi, tak kosong
 				refreshGrid('#jqGrid',urlParam,'add');
 				errorField.length=0;
-				$("#jqGridPagerDelete").show();
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 			},
 			errorfunc: function(rowid,response){
 	        	alert(response.responseText);
@@ -177,7 +179,7 @@
 				$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 			},
 			afterrestorefunc : function( response ) {
-				$("#jqGridPagerDelete").show();
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		    },
 		    errorTextFormat: function (data) {
 		    	alert(data);
@@ -222,11 +224,19 @@
 									refreshGrid("#jqGrid", urlParam);
 								});
 							}else{
-        						$("#jqGridPagerDelete").show();
+        						$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 					    	}
 						}
 					});
 				}
+			},
+		}).jqGrid('navButtonAdd', "#jqGridPager", {
+			id: "jqGridPagerRefresh",
+			caption: "", cursor: "pointer", position: "last",
+			buttonicon: "glyphicon glyphicon-refresh",
+			title: "Refresh Table",
+			onClickButton: function () {
+				refreshGrid("#jqGrid", urlParam);
 			},
 		});
 
@@ -234,8 +244,8 @@
 
 		//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 		//toogleSearch('#sbut1','#searchForm','on');
-		populateSelect('#jqGrid','#searchForm');
-		searchClick('#jqGrid','#searchForm',urlParam);
+		populateSelect2('#jqGrid','#searchForm');
+		searchClick2('#jqGrid','#searchForm',urlParam);
 
 		//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 		addParamField('#jqGrid',true,urlParam);
