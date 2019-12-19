@@ -301,6 +301,22 @@
 			
 		}
 
+		function hideatdialogForm_jqGrid4(hide,saveallrow){
+			if(saveallrow == 'saveallrow'){
+
+				$("#jqGrid4_iledit,#jqGrid4_iladd,#jqGrid4_ilcancel,#jqGrid4_ilsave,#jqGridPager4Delete,#jqGridPager4EditAll,#jqGridPager4Refresh").hide();
+				$("#jqGridPager4SaveAll,#jqGridPager4CancelAll").show();
+			}else if(hide){
+
+				$("#jqGrid4_iledit,#jqGrid4_iladd,#jqGrid4_ilcancel,#jqGrid4_ilsave,#jqGridPager4Delete,#jqGridPager4EditAll,#jqGridPager4SaveAll,#jqGridPager4CancelAll,#jqGridPager4Refresh").hide();
+			}else{
+
+				$("#jqGrid4_iladd,#jqGrid4_ilcancel,#jqGrid4_ilsave,#jqGridPager4Delete,#jqGridPager4EditAll,#jqGridPager4Refresh").show();
+				$("#jqGridPager4SaveAll,#jqGrid4_iledit,#jqGridPager4CancelAll").hide();
+			}
+			
+		}
+
 		/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 		function saveHeader(form,selfoper,saveParam,obj){
 			if(obj==null){
@@ -453,6 +469,7 @@
 			switch(name){
 				case 'Inpatient Tax':temp=$('#iptax');break;
 				case 'Outpatient Tax':temp=$('#optax');break;
+				case 'Charge Code':temp=$('#chgcode');break;
 					break;
 			}
 			return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -463,6 +480,7 @@
 			switch(options.colModel.name){
 				case 'iptax':field=['taxcode','description'];table="hisdb.taxmast";case_='iptax';break;
 				case 'optax': field = ['taxcode', 'description']; table = "hisdb.taxmast";case_='optax';break;
+				case 'chgcode': field = ['chgcode', 'description']; table = "hisdb.chgmast";case_='chgcode';break;
 			}
 			var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -480,6 +498,12 @@
 			val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
 			return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="optax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 		}
+
+		function chgcodeCustomEdit(val, opt) {
+			val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+			return $('<div class="input-group"><input jqgrid="jqGrid4" optid="'+opt.id+'" id="'+opt.id+'" name="chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		}
+
 		function galGridCustomValue (elem, operation, value){
 			if(operation == 'get') {
 				return $(elem).find("input").val();
@@ -556,9 +580,6 @@
 
 	        	dialog_optax.on();
 				dialog_iptax.on();
-				// dialog_dtliptax.on();
-				// dialog_dtloptax.on();
-
 
 	        	unsaved = false;
 				mycurrency2.array.length = 0;
@@ -760,8 +781,8 @@
 			dialog_iptax.on();
 			dialog_dtliptax.on();
 			dialog_dtloptax.on();
+			dialog_dtlchgcode.on();
 
-			
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		}
 
@@ -1041,6 +1062,292 @@
 			title: "Refresh Table",
 			onClickButton: function () {
 				refreshGrid("#jqGrid3", urlParam2);
+			},
+		});
+
+		/////////////////////////////parameter for jqgrid4 url///////////////////////////////////////////////
+		var urlParam4={
+			action:'get_table_default',
+			url:'/util/get_table_default',
+			field:['pd.chgcode','cm.description','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.price','pd.totprice','pd.uom', 'pd.effectdate','cm.chgcode','pd.idno'],
+			table_name:['hisdb.pkgdet AS pd', 'hisdb.chgmast AS cm'],
+			table_id:'lineno_',
+			join_type:['LEFT JOIN'],
+			join_onCol:['pd.chgcode'],
+			join_onVal:['cm.chgcode'],
+			filterCol:['pd.compcode','pd.chgcode'],
+			filterVal:['session.compcode','']
+		};
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////Package Deal Maintenance Details//////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////jqgrid4////////////////////////////////////////////////////////
+
+		$("#jqGrid4").jqGrid({
+			datatype: "local",
+			editurl: "/chargemasterDetail/form",
+			colModel: [
+				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+				{ label: 'Charge Code', name: 'chgcode', width: 150,align: 'right' , classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:chgcodeCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
+				{ label: 'Quantity', name: 'quantity', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Act Price', name: 'actprice1', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Price', name: 'price', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Tot Price', name: 'totprice', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'UOM', name: 'uom', width: 50, classes: 'wrap', editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+				{ label: 'Effective date', name: 'effectdate', width: 130, classes: 'wrap', editable:true,
+					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+					editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).datepicker({
+	                            id: 'expdate_datePicker',
+	                            dateFormat: 'dd/mm/yy',
+	                            minDate: "dateToday",
+	                            showOn: 'focus',
+	                            changeMonth: true,
+			  					changeYear: true,
+	                        });
+	                    }
+	                }
+				},
+				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
+			],
+			autowidth: true,
+			shrinkToFit: true,
+			multiSort: true,
+			viewrecords: true,
+			loadonce:false,
+			width: 1150,
+			height: 200,
+			rowNum: 30,
+			sortname: 'idno',
+			sortorder: "desc",
+			pager: "#jqGridPager4",
+			loadComplete: function(){
+				if(addmore_jqgrid2.more == true){$('#jqGrid4_iladd').click();}
+				else{
+					$('#jqGrid4').jqGrid ('setSelection', "1");
+				}
+
+				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+				
+			},
+			gridComplete: function(){
+
+				fdl.set_array().reset();
+				if(!hide_init){
+					hide_init=1;
+					hideatdialogForm_jqGrid4(false);
+				}
+			},
+			beforeSubmit: function(postdata, rowid){ 
+				// dialog_deptcodedtl.check(errorField);
+		 	}
+		});
+		var hide_init=0;
+
+		//////////////////////////////////////////myEditOptions3/////////////////////////////////////////////
+
+		var myEditOptions3 = {
+	        keys: true,
+	        extraparam:{
+			    "_token": $("#_token").val()
+	        },
+	        oneditfunc: function (rowid) {
+
+	        	$("#jqGridPager4EditAll,#jqGridPager4Delete,#jqGridPager4Refresh").hide();
+
+				dialog_dtlchgcode.on();
+
+	        	unsaved = false;
+				mycurrency2.array.length = 0;
+				Array.prototype.push.apply(mycurrency2.array, ["#jqGrid4 input[name='quantity']","#jqGrid4 input[name='actprice1']","#jqGrid4 input[name='price']","#jqGrid4 input[name='totprice']"]);
+
+				mycurrency2.formatOnBlur();//make field to currency on leave cursor
+
+	   //      	$("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
+				// 	var code = e.keyCode || e.which;
+				// 	if (code == '9')$('#jqGrid2_ilsave').click();
+				// })
+	        },
+	        aftersavefunc: function (rowid, response, options) {
+	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+	        	refreshGrid('#jqGrid4',urlParam4,'add');
+		    	$("#jqGridPager4EditAll,#jqGridPager4Delete,#jqGridPager4Refresh").show();
+	        }, 
+	        errorfunc: function(rowid,response){
+	        	alert(response.responseText);
+	        	refreshGrid('#jqGrid4',urlParam4,'add');
+		    	$("#jqGridPager4Delete,#jqGridPager4Refresh").show();
+	        },
+	        beforeSaveRow: function(options, rowid) {
+
+	        	//if(errorField.length>0)return false;  
+
+				let data = $('#jqGrid4').jqGrid ('getRowData', rowid);
+				let editurl = "/chargemasterDetail/form?"+
+					$.param({
+						action: 'chargemasterDetail_save',
+						oper: 'add',
+						chgcode: selrowData('#jqGrid').cm_chgcode,//$('#cm_chgcode').val(),
+						uom: selrowData('#jqGrid').cm_uom//$('#cm_uom').val(),
+						// authorid:$('#authorid').val()
+					});
+				$("#jqGrid4").jqGrid('setGridParam',{editurl:editurl});
+	        },
+	        afterrestorefunc : function( response ) {
+				hideatdialogForm_jqGrid4(false);
+		    }
+	    };
+
+		//////////////////////////////////////////pager jqgrid4/////////////////////////////////////////////
+
+		$("#jqGrid4").inlineNav('#jqGridPager4',{	
+			add:true,
+			edit:true,
+			cancel: true,
+			//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+			restoreAfterSelect: false,
+			addParams: { 
+				addRowParams: myEditOptions3
+			},
+			editParams: myEditOptions3
+		}).jqGrid('navButtonAdd',"#jqGridPager4",{
+			id: "jqGridPager4Delete",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-trash",
+			title:"Delete Selected Row",
+			onClickButton: function(){
+				selRowId = $("#jqGrid4").jqGrid ('getGridParam', 'selrow');
+				if(!selRowId){
+					bootbox.alert('Please select row');
+				}else{
+					bootbox.confirm({
+					    message: "Are you sure you want to delete this row?",
+					    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+					    },
+					    callback: function (result) {
+					    	if(result == true){
+					    		param={
+					    			action: 'chargemasterDetail_save',
+									idno: selrowData('#jqGrid4').idno,
+
+					    		}
+					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+								}).fail(function(data) {
+									//////////////////errorText(dialog,data.responseText);
+								}).done(function(data){
+									refreshGrid("#jqGrid4",urlParam4);
+								});
+					    	}else{
+	        					$("#jqGridPager4EditAll").show();
+					    	}
+					    }
+					});
+				}
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager4",{
+			id: "jqGridPager4EditAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-th-list",
+			title:"Edit All Row",
+			onClickButton: function(){
+				mycurrency2.array.length = 0;
+				var ids = $("#jqGrid4").jqGrid('getDataIDs');
+			    for (var i = 0; i < ids.length; i++) {
+
+			        $("#jqGrid4").jqGrid('editRow',ids[i]);
+
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_quantity","#"+ids[i]+"_actprice1","#"+ids[i]+"_price","#"+ids[i]+"_totprice"]);
+			    }
+			    mycurrency2.formatOnBlur();
+		    	onall_editfunc();
+				hideatdialogForm_jqGrid4(true,'saveallrow');
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager4",{
+			id: "jqGridPager4SaveAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-download-alt",
+			title:"Save All Row",
+			onClickButton: function(){
+				var ids = $("#jqGrid4").jqGrid('getDataIDs');
+
+				var jqGrid4_data = [];
+				mycurrency2.formatOff();
+			    for (var i = 0; i < ids.length; i++) {
+
+					var data = $('#jqGrid4').jqGrid('getRowData',ids[i]);
+			    	var obj = 
+			    	{
+			    		'idno' : data.idno,
+			    		'chgcode' : $("#jqGrid4 input#"+ids[i]+"_chgcode").val(),
+						'quantity' : $("#jqGrid4 input#"+ids[i]+"_quantity").val(),
+						'actprice1' : $("#jqGrid4 input#"+ids[i]+"_actprice1").val(),
+						'price' : $("#jqGrid4 input#"+ids[i]+"_price").val(),
+						'totprice' : $("#jqGrid4 input#"+ids[i]+"_totprice").val(),
+						'uom' : $("#jqGrid4 input#"+ids[i]+"_uom").val(),
+						'effectdate' : $("#jqGrid4 input#"+ids[i]+"_effectdate").val()
+			    	}
+
+			    	jqGrid4_data.push(obj);
+			    }
+
+				var param={
+	    			action: 'chargemasterDetail_save',
+					_token: $("#_token").val()
+	    		}
+
+	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqGrid4_data}, function( data ){
+				}).fail(function(data) {
+					//////////////////errorText(dialog,data.responseText);
+				}).done(function(data){
+					hideatdialogForm_jqGrid4(false);
+					refreshGrid("#jqGrid4",urlParam4);
+				});
+			},	
+		}).jqGrid('navButtonAdd',"#jqGridPager4",{
+			id: "jqGridPager4CancelAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-remove-circle",
+			title:"Cancel",
+			onClickButton: function(){
+				hideatdialogForm_jqGrid4(false);
+				refreshGrid("#jqGrid4",urlParam4);
+			},	
+		}).jqGrid('navButtonAdd', "#jqGridPager4", {
+			id: "jqGridPager4Refresh",
+			caption: "", cursor: "pointer", position: "last",
+			buttonicon: "glyphicon glyphicon-refresh",
+			title: "Refresh Table",
+			onClickButton: function () {
+				refreshGrid("#jqGrid4", urlParam4);
 			},
 		});
 
@@ -1477,6 +1784,39 @@
 			},'urlParam','radio','tab'
 		);
 		dialog_dtloptax.makedialog();
+
+		var dialog_dtlchgcode = new ordialog(
+			'chgcode','hisdb.chgmast',"#jqGrid4 input[name='chgcode']",errorField,
+			{	colModel:[
+					{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				],
+				urlParam: {
+					filterCol:['recstatus','compcode'],
+					filterVal:['A', 'session.compcode']
+						},
+				ondblClickRow:function(){
+					// $('#lastuser').focus();
+				},
+				gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								// $('#lastuser').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
+			},{
+				title:"Select Charge Code",
+				open: function(){
+					dialog_dtlchgcode.urlParam.filterCol = ['recstatus','compcode'];
+					dialog_dtlchgcode.urlParam.filterVal = ['A', 'session.compcode'];
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_dtlchgcode.makedialog();
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 
