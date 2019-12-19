@@ -9,6 +9,9 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use PDF;
+use Mail;
+
+use App\Jobs\SendEmailPR;
 
 class TestController extends defaultController
 {   
@@ -193,6 +196,17 @@ class TestController extends defaultController
             $commas = $commas - 1;
         }
         return implode(' ', $words);
+    }
+
+    public function show_email(Request $request)
+    {   
+        return view('email.show_email');
+
+    }
+
+    public function send_email(Request $request)
+    {   
+        SendEmailPR::dispatch('SUPPORT');
     }
 
 
