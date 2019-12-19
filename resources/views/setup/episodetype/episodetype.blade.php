@@ -16,7 +16,7 @@ input.uppercase {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
-				<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
@@ -28,14 +28,6 @@ input.uppercase {
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
-
-							<div  id="show_chggroup_div" style="display:none">
-								<div class='input-group'>
-									<input id="show_chggroup" seltext='false' name="show_chggroup" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div>
 						</div>
 		            </div>
 				</div>
@@ -54,63 +46,6 @@ input.uppercase {
     </div>
 	<!-- ***************End Search + table ********************* -->
 
-	<div id="dialogForm" title="Add Form">
-		<div class='panel panel-info'>
-			<div class="panel-heading">Episode Type</div>
-			<div class="panel-body" style="position: relative;">
-				<form class='form-horizontal' style='width:99%' id='formdata'>
-					{{ csrf_field() }}
-					<input id="idno" name="idno" type="hidden">
-						
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="epistycode">Episode Code</label>  
-						<div class="col-md-3">
-							<input id="epistycode" name="epistycode" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
-						</div>
-                    </div>
-
-                    <div class="form-group">
-						<label class="col-md-2 control-label" for="description">Type</label>  
-						<div class="col-md-3">
-							<input id="description" name="description" type="text" class="form-control input-sm uppercase" data-validation="required">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="activatedate">Activate Date</label>  
-						<div class="col-md-3">
-							<input id="activatedate" name="activatedate" type="date" class="form-control input-sm" data-validation="required" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-						</div>
-                    </div> 
-
-					<!-- <div class="form-group">
-						<label class="col-md-2 control-label" for="lastuser">Last User</label>  
-						<div class="col-md-3">
-							<input id="lastuser" name="lastuser" type="text" class="form-control input-sm uppercase" rdonly>
-						</div>
-
-						<label class="col-md-2 control-label" for="lastupdate">Last Update</label>  
-						<div class="col-md-3">
-							<input id="lastupdate" name="lastupdate" type="text" maxlength="30" class="form-control input-sm uppercase" rdonly>
-						</div>
-					</div>  -->
-					
-
-					<!-- <div class="form-group">
-						<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
-						<div class="col-md-3">
-							<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm uppercase" data-validation="required" rdonly >
-						</div>
-
-						<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
-						<div class="col-md-3">
-							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" rdonly >
-						</div>
-					</div>   -->
-				</form>
-			</div>
-		</div>		
-	</div>
 
 @endsection
 
