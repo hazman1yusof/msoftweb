@@ -210,11 +210,15 @@ function emptyFormdata(errorField,form,except){
 	}
 }
 
-function trimmall(form){
+function trimmall(form,uppercase){
 	var serializedForm =  $( form ).serializeArray();
 	$.each( serializedForm, function( i, field ) {
 		if(field.name!='_token'){
-    		field.value=field.value.trim().toUpperCase();
+			if(uppercase){
+    			field.value=field.value.trim().toUpperCase();
+			}else{
+				field.value=field.value.trim();
+			}
     	}
     	//turn uppercase and trim
     });
@@ -224,14 +228,14 @@ function trimmall(form){
 	return serializedForm_;
 }
 
-function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback){
+function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback,uppercase=true){
 	if(obj==null){
 		obj={};
 	}
 	$('.ui-dialog-buttonset button[role=button]').prop('disabled',true);
 	saveParam.oper=oper;
 
-	let serializedForm = trimmall(form);
+	let serializedForm = trimmall(form,uppercase);
 
 	$.post( saveParam.url+'?'+$.param(saveParam), serializedForm+'&'+$.param(obj) , function( data ) {
 		

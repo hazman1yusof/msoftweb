@@ -127,7 +127,7 @@ $(document).ready(function () {
         oneditfunc: function (rowid) {
             $("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
             $("input[name='case_code']").attr('disabled','disabled');
-            $("input[name='grpcasetype']").keydown(function(e) {//when click tab at totamount, auto save
+            $("select[name='grpcasetype']").keydown(function(e) {//when click tab at totamount, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGrid_ilsave').click();
                 /*addmore_jqgrid.state = true;
