@@ -72,22 +72,25 @@ i.fa {
 
 		
 
-	    <div class="panel panel-default" id="gridAuthdtl_c">
-	    	<div type="button" class="click_row pull-right" id="but_cando" style="display: none;background: #337ab7;color: white;min-height: 39px">
-				<label class="control-label" style="margin-top: 10px;">Active</label>
-        </div>
-		<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridAuthdtl_panel">
+	    <div class="panel panel-default" id="gridAuthdtl_c" style="position: relative;">
+	    <!-- t=input type="button" class="click_row pull-right btn btn-primary" id="but_cando">
+			<label class="control-label" style="margin-top: 10px;">Active</label>
+        </input> -->
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridAuthdtl_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
-    			<i class="fa fa-angle-double-down" style="font-size:24px"></i>Authorization Detail</div>
+				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Authorization Detail
+		    </div>
+
+	    	<input type="button" class="btn btn-sm btn-primary pull-right show_deactive" style="position:absolute;right:60px;top: 8px" id="but_show_deactive" value="Show Deactive">
 		
-		<div id="gridAuthdtl_panel" class="panel-collapse collapse">
-					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="gridAuthdtl" class="table table-striped"></table>
-							<div id="jqGridPager3"></div>
-						</div>'
-					</div>
-				</div>	
+			<div id="gridAuthdtl_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="gridAuthdtl" class="table table-striped"></table>
+						<div id="jqGridPager3"></div>
+					</div>'
+				</div>
+			</div>	
 		</div>
         
     </div>
@@ -96,27 +99,25 @@ i.fa {
 		
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Authorization Header
-					<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
-					</div>
-				<div class="panel-body" style="position: relative;">
-					<form class='form-horizontal' style='width:99%' id='formdata'>
+			<div class="panel-body" style="position: relative;">
+			<form class='form-horizontal' style='width:99%' id='formdata'>
 
 				{{ csrf_field() }}
 				<input type="hidden" name="idno">
+				<input type="hidden" name="deptcode" id="deptcode">
 
 				<div class="form-group">
 				  	<label class="col-md-2 control-label" for="authorid">Author ID</label>  
 				  		<div class="col-md-3">
 					 		 <div class='input-group'>
-								<input id="authorid" name="authorid" type="text" maxlength="15" class="form-control input-sm" data-validation="required">
+								<input id="authorid" name="authorid" type="text" maxlength="15" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					 		 </div>
-					  <!--<span class="help-block"></span>-->
+					  		<span class="help-block"></span>
 				 		</div>
                 </div>
                 
-                <div class="form-group">                  
+            <div class="form-group">                  
                   	<label class="col-md-2 control-label" for="name">Name</label>  
 				  		<div class="col-md-5">
 				  			<input id="name" name="name" type="text" maxlength="100" class="form-control input-sm" rdonly>
@@ -126,19 +127,8 @@ i.fa {
                 <div class="form-group">
 				   	<label class="col-md-2 control-label" for="password">Password</label>  
 				 		<div class="col-md-3">
-				  			<input id="password" name="password" type="password" maxlength="15" class="form-control input-sm" rdonly>
+				  			<input id="password" name="password" type="text" maxlength="15" class="form-control input-sm" rdonly>
 				  		</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="deptcode">Dept Code</label>
-						<div class="col-md-3">
-							<div class='input-group'>
-								<input id="deptcode" name="deptcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							</div>
-							<span class="help-block"></span>
-						</div>
 				</div>
 
 				<div class="form-group">
@@ -172,10 +162,10 @@ i.fa {
 						  	<input id="adddate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					</div>
 						    	
-				</div>
-			</div>			         
-        </div>        
+				</div>   
 			</form>
+			</div>			         
+        </div>     
 
 			<div class='panel panel-info'>
 				<div class="panel-heading">Authorization Detail</div>
@@ -193,7 +183,7 @@ i.fa {
 						</div>
 					</div>
 			</div>	
-		</div>
+	</div>
 
 		 <!--------------------------------Authdtl Form ------------------>
 
@@ -213,7 +203,7 @@ i.fa {
 				  	<label class="col-md-2 control-label" for="d_deptcode">Dept Code</label>  
 				  		<div class="col-md-2">
 					  		<div class='input-group'>
-								<input id="d_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm" data-validation="required">
+								<input id="d_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					 		<span class="help-block"></span>
@@ -224,10 +214,10 @@ i.fa {
 					<label class="col-md-2 control-label" for="d_recstatus">Record Status</label>  
 						<div class="col-md-2">
 							<select id="d_recstatus" name="dtl_recstatus" class="form-control input-sm">
-							    <option value="Request">Request</option>
-							    <option value="Support">Support</option>
-							    <option value="Verify">Verify</option>
-							    <option value="Approve">Approve</option>
+							    <option value="REQUEST">REQUEST</option>
+							    <option value="SUPPORT">SUPPORT</option>
+							    <option value="VERIFIED">VERIFIED</option>
+							    <option value="APPROVED">APPROVED</option>
 							</select>
 						</div>	
 
@@ -256,7 +246,7 @@ i.fa {
 
 				  	<label class="col-md-2 control-label" for="d_maxlimit">Max Limit</label>  
 				  		<div class="col-md-2">
-				  			<input id="d_maxlimit" name="dtl_maxlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+				  			<input id="d_maxlimit" name="dtl_maxlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation="required">
 				  		</div>
                 </div>
 			</form>

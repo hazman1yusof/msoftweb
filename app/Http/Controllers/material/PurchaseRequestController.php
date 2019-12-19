@@ -111,18 +111,50 @@ class PurchaseRequestController extends defaultController
             $idno = $table->insertGetId($array_insert);
             
             $totalAmount = 0;
-            if(!empty($request->referral)){
-                ////ni kalu dia amik dari po
-                ////amik detail dari po sana, save dkt do detail, amik total amount
-                $totalAmount = $this->save_dt_from_othr_po($request->referral,$recno,$request->purreqhd_purreqno);
 
-                $purreqno = $request->purreqhd_purreqno;
-/*
-                ////dekat po header sana, save balik delordno dkt situ
-                DB::table('material.purordhd')
-                    ->where('purordno','=',$purreqno)->where('compcode','=',session('compcode'))
-                    ->update(['delordno' => $delordno]);*/
+            $purreqhd = DB::table("material.purreqhd")
+                ->where('idno','=',$idno);
+
+            $purreqhd_get = $purreqhd->first();
+
+            // 1. check authorization
+            $authorise = DB::table('material.authdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('trantype','=','PR')
+                ->where('cando','=', 'A')
+                ->where('recstatus','=','REQUEST')
+                ->where('deptcode','=',$purreqhd_get->reqdept)
+                ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+            if(!$authorise->exists()){
+
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PR')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','REQUEST')
+                    ->where('deptcode','=','ALL')
+                    ->where('deptcode','=','all')
+                    ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                    if(!$authorise->exists()){
+                        throw new \Exception("Authorization for this purchase request doesnt exists");
+                    }
+
             }
+
+            $authorise_use = $authorise->first();
+            DB::table("material.queuepr")
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'recno' => $purreqhd_get->recno,
+                    'AuthorisedID' => $authorise_use->authorid,
+                    'deptcode' => $purreqhd_get->reqdept,
+                    'recstatus' => 'OPEN',
+                    'trantype' => 'REQUEST',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
 
             $responce = new stdClass();
             $responce->docno = $request_no;
@@ -203,52 +235,50 @@ class PurchaseRequestController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PR')
                     ->where('cando','=', 'A')
-                    ->where('recstatus','=','Support')
+                    ->where('recstatus','=','SUPPORT')
                     ->where('deptcode','=',$purreqhd_get->reqdept)
-                    ->orWhere('deptcode','=','ALL')
-                    ->orWhere('deptcode','=','all');
+                    ->where('maxlimit','>=',$purreqhd_get->totamount);
 
                 if(!$authorise->exists()){
-                    throw new \Exception("Authorization for this purchase request doesnt exists");
+
+                    $authorise = DB::table('material.authdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PR')
+                        ->where('cando','=', 'A')
+                        ->where('recstatus','=','SUPPORT')
+                        ->where('deptcode','=','ALL')
+                        ->where('deptcode','=','all')
+                        ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                        if(!$authorise->exists()){
+                            throw new \Exception("Authorization for this purchase request doesnt exists");
+                        }
+
                 }
 
-                $authorise = $authorise->get();
-                $totamount = $purreqhd_get->totamount;
-                $idno_auth;
+                $authorise_use = $authorise->first();
 
-                foreach ($authorise as $value) {
-                    $idno_auth = $value->idno;
-                    if($totamount>$value->maxlimit){
-                        continue;
-                    }else{
-                        break;
-                    }
-                }
-
-                $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
-
-                // 2. make queue
+                // 2. update queue
                 DB::table("material.queuepr")
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'recno' => $purreqhd_get->recno,
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->update([
                         'AuthorisedID' => $authorise_use->authorid,
-                        'deptcode' => $purreqhd_get->reqdept,
-                        'recstatus' => 'POSTED',
-                        'trantype' => 'SUPPORT',
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        'recstatus' => 'REQUEST',
+                        'trantype' => 'SUPPORT'
                     ]);
 
                 // 3. update status to posted
                 $purreqhd->update([
-                        'recstatus' => 'POSTED'
+                        'requestby' => session('username'),
+                        'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'supportby' => $authorise_use->authorid,
+                        'recstatus' => 'REQUEST'
                     ]);
 
                 DB::table("material.purreqdt")
                     ->where('recno','=',$purreqhd_get->recno)
                     ->update([
-                        'recstatus' => 'POSTED',
+                        'recstatus' => 'REQUEST',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -280,52 +310,50 @@ class PurchaseRequestController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('trantype','=','PR')
                 ->where('cando','=', 'A')
-                ->where('recstatus','=','Support')
+                ->where('recstatus','=','SUPPORT')
                 ->where('deptcode','=',$purreqhd_get->reqdept)
-                ->orWhere('deptcode','=','ALL')
-                ->orWhere('deptcode','=','all');
+                ->where('maxlimit','>=',$purreqhd_get->totamount);
 
             if(!$authorise->exists()){
-                throw new \Exception("Authorization for this purchase request doesnt exists");
+
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PR')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','SUPPORT')
+                    ->where('deptcode','=','ALL')
+                    ->where('deptcode','=','all')
+                    ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                    if(!$authorise->exists()){
+                        throw new \Exception("Authorization for this purchase request doesnt exists",500);
+                    }
+                    
             }
 
-            $authorise = $authorise->get();
-            $totamount = $purreqhd_get->totamount;
-            $idno_auth;
+            $authorise_use = $authorise->first();
 
-            foreach ($authorise as $value) {
-                $idno_auth = $value->idno;
-                if($totamount>$value->maxlimit){
-                    continue;
-                }else{
-                    break;
-                }
-            }
-
-            $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
-
-            // 2. make queue
+            // 2. update queue
             DB::table("material.queuepr")
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'recno' => $purreqhd_get->recno,
+                ->where('recno','=',$purreqhd_get->recno)
+                ->update([
                     'AuthorisedID' => $authorise_use->authorid,
-                    'deptcode' => $purreqhd_get->reqdept,
-                    'recstatus' => 'POSTED',
-                    'trantype' => 'SUPPORT',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'recstatus' => 'REQUEST',
+                    'trantype' => 'SUPPORT'
                 ]);
 
             // 3. update status to posted
             $purreqhd->update([
-                    'recstatus' => 'POSTED'
+                    'requestby' => session('username'),
+                    'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'supportby' => $authorise_use->authorid,
+                    'recstatus' => 'REQUEST'
                 ]);
 
             DB::table("material.purreqdt")
                 ->where('recno','=',$purreqhd_get->recno)
                 ->update([
-                    'recstatus' => 'POSTED',
+                    'recstatus' => 'REQUEST',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -363,7 +391,7 @@ class PurchaseRequestController extends defaultController
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-             DB::table("material.queuepr")
+            DB::table("material.queuepr")
                 ->where('recno','=',$purreqhd_get->recno)
                 ->delete();
 
@@ -461,7 +489,36 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PR')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','VERIFIED')
+                    ->where('deptcode','=',$purreqhd_get->reqdept)
+                    ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                if(!$authorise->exists()){
+
+                    $authorise = DB::table('material.authdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PR')
+                        ->where('cando','=', 'A')
+                        ->where('recstatus','=','VERIFIED')
+                        ->where('deptcode','=','ALL')
+                        ->where('deptcode','=','all')
+                        ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                        if(!$authorise->exists()){
+                            throw new \Exception("Authorization for this purchase request doesnt exists",500);
+                        }
+                        
+                }
+
+                $authorise_use = $authorise->first();
+
                 $purreqhd->update([
+                        'verifiedby' => $authorise_use->authorid,
+                        'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'SUPPORT'
                     ]);
 
@@ -471,6 +528,16 @@ class PurchaseRequestController extends defaultController
                         'recstatus' => 'SUPPORT',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                DB::table("material.queuepr")
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->update([
+                        'AuthorisedID' => $authorise_use->authorid,
+                        'recstatus' => 'SUPPORT',
+                        'trantype' => 'VERIFIED',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
             }
@@ -496,7 +563,36 @@ class PurchaseRequestController extends defaultController
 
             $purreqhd_get = $purreqhd->first();
 
+            $authorise = DB::table('material.authdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('trantype','=','PR')
+                ->where('cando','=', 'A')
+                ->where('recstatus','=','VERIFIED')
+                ->where('deptcode','=',$purreqhd_get->reqdept)
+                ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+            if(!$authorise->exists()){
+
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PR')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','VERIFIED')
+                    ->where('deptcode','=','ALL')
+                    ->where('deptcode','=','all')
+                    ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                    if(!$authorise->exists()){
+                        throw new \Exception("Authorization for this purchase request doesnt exists",500);
+                    }
+                    
+            }
+            
+            $authorise_use = $authorise->first();
+
             $purreqhd->update([
+                    'verifiedby' => $authorise_use->authorid,
+                    'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'SUPPORT'
                 ]);
 
@@ -506,6 +602,16 @@ class PurchaseRequestController extends defaultController
                     'recstatus' => 'SUPPORT',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::table("material.queuepr")
+                ->where('recno','=',$purreqhd_get->recno)
+                ->update([
+                    'AuthorisedID' => $authorise_use->authorid,
+                    'recstatus' => 'SUPPORT',
+                    'trantype' => 'VERIFIED',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
 
@@ -531,16 +637,55 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PR')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','APPROVED')
+                    ->where('deptcode','=',$purreqhd_get->reqdept)
+                    ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                if(!$authorise->exists()){
+
+                    $authorise = DB::table('material.authdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PR')
+                        ->where('cando','=', 'A')
+                        ->where('recstatus','=','APPROVED')
+                        ->where('deptcode','=','ALL')
+                        ->where('deptcode','=','all')
+                        ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                        if(!$authorise->exists()){
+                            throw new \Exception("Authorization for this purchase request doesnt exists",500);
+                        }
+                        
+                }
+
+                $authorise_use = $authorise->first();
+
                 $purreqhd->update([
-                        'recstatus' => 'VERIFY'
+                        'approvedby' => $authorise_use->authorid,
+                        'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'VERIFIED'
                     ]);
 
                 DB::table("material.purreqdt")
                     ->where('recno','=',$purreqhd_get->recno)
                     ->update([
-                        'recstatus' => 'VERIFY',
+                        'recstatus' => 'VERIFIED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                DB::table("material.queuepr")
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->update([
+                        'AuthorisedID' => $authorise_use->authorid,
+                        'recstatus' => 'VERIFIED',
+                        'trantype' => 'APPROVED',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
             }
@@ -566,16 +711,55 @@ class PurchaseRequestController extends defaultController
 
             $purreqhd_get = $purreqhd->first();
 
+            $authorise = DB::table('material.authdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('trantype','=','PR')
+                ->where('cando','=', 'A')
+                ->where('recstatus','=','APPROVED')
+                ->where('deptcode','=',$purreqhd_get->reqdept)
+                ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+            if(!$authorise->exists()){
+
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PR')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','APPROVED')
+                    ->where('deptcode','=','ALL')
+                    ->where('deptcode','=','all')
+                    ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                    if(!$authorise->exists()){
+                        throw new \Exception("Authorization for this purchase request doesnt exists",500);
+                    }
+                    
+            }
+
+            $authorise_use = $authorise->first();
+
             $purreqhd->update([
-                    'recstatus' => 'VERIFY'
+                    'approvedby' => $authorise_use->authorid,
+                    'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'VERIFIED'
                 ]);
 
             DB::table("material.purreqdt")
                 ->where('recno','=',$purreqhd_get->recno)
                 ->update([
-                    'recstatus' => 'VERIFY',
+                    'recstatus' => 'VERIFIED',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::table("material.queuepr")
+                ->where('recno','=',$purreqhd_get->recno)
+                ->update([
+                    'AuthorisedID' => $authorise_use->authorid,
+                    'recstatus' => 'VERIFIED',
+                    'trantype' => 'APPROVED',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
 
@@ -602,6 +786,7 @@ class PurchaseRequestController extends defaultController
                 $purreqhd_get = $purreqhd->first();
 
                 $purreqhd->update([
+                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'APPROVED'
                     ]);
 
@@ -611,6 +796,15 @@ class PurchaseRequestController extends defaultController
                         'recstatus' => 'APPROVED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                DB::table("material.queuepr")
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->update([
+                        'recstatus' => 'APPROVED',
+                        'trantype' => 'DONE',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
             }
@@ -645,6 +839,15 @@ class PurchaseRequestController extends defaultController
                     'recstatus' => 'APPROVED',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::table("material.queuepr")
+                ->where('recno','=',$purreqhd_get->recno)
+                ->update([
+                    'recstatus' => 'APPROVED',
+                    'trantype' => 'DONE',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
            
             DB::commit();

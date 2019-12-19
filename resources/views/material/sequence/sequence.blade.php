@@ -16,7 +16,7 @@
 				  <label class="col-md-2 control-label" for="dept">Department Code</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="dept" name="dept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+						<input id="dept" name="dept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -27,7 +27,7 @@
 				  <label class="col-md-2 control-label" for="trantype">Transaction Type</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="trantype" name="trantype" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+						<input id="trantype" name="trantype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -35,7 +35,7 @@
                   
                   <label class="col-md-2 control-label" for="description">Description</label>  
 				  <div class="col-md-5">
-				  <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+				  <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
                 </div>
                 

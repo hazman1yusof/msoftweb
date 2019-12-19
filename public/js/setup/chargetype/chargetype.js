@@ -90,7 +90,7 @@
 				parent_close_disabled(false);
 				emptyFormdata(errorField,'#formdata');
 				//$('.alert').detach();
-				$('#formdata .alert').detach();
+				$('.my-alert').detach();
 				dialog_chggroup.off();
 				dialog_ipdept.off();
 				dialog_opdept.off();
@@ -311,7 +311,7 @@
 					alert('Please select row');
 					return emptyFormdata(errorField,'#formdata');
 				}else{
-					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,null,{'idno':idno});
+					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':idno});
 				}
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager",{

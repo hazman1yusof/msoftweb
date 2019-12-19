@@ -86,7 +86,7 @@
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata',["input[name='lastcomputerid']","input[name='lastipaddress']"]);
 					//$('.alert').detach();
-					$('#formdata .alert').detach();
+					$('.my-alert').detach();
 					$("#formdata a").off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);

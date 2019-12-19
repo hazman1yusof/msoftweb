@@ -7,7 +7,7 @@ $(document).ready(function () {
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']","input[name='computerid']","input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
-		modules: 'sanitize',
+		modules: 'sanitize,logic',
 		language: {
 			requiredFields: ''
 		},
@@ -26,12 +26,18 @@ $(document).ready(function () {
 	};
 	//////////////////////////////////////////////////////////////
 	var mycurrency = new currencymode(['#percent_', '#amount', '#svc_amount', '#svc_percent_', '#i_amount', '#i_percent_']);
+	var radbuts = new checkradiobutton(['price','service','opprice']);
+	var radbuts_svc = new checkradiobutton(['svc_price','svc_allitem','svc_alltype']);
+	var radbuts_item = new checkradiobutton(['i_price']);
+	var radbuts_type = new checkradiobutton(['t_price']);
+	$("#jqGriditem_c, #jqGridtype_c, #click_row2, #click_row3").hide();
 
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1 = [{
 		text: "Save", click: function () {
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
+			radbuts.check();
 			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
 				saveFormdata("#jqGrid", "#dialogForm", "#formdata", oper, saveParam, urlParam);
 			} else {
@@ -61,7 +67,7 @@ $(document).ready(function () {
 				switch (oper) {
 					case state = 'add':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Add");
+						$(this).dialog("option", "title", "Add Bill Type Master");
 						enableForm('#formdata');
 						hideOne('#formdata');
 						rdonly("#formdata");
@@ -69,7 +75,7 @@ $(document).ready(function () {
 						break;
 					case state = 'edit':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Edit");
+						$(this).dialog("option", "title", "Edit Bill Type Master");
 						enableForm('#formdata');
 						frozeOnEdit("#dialogForm");
 						$('#formdata :input[hideOne]').show();
@@ -78,7 +84,7 @@ $(document).ready(function () {
 						break;
 					case state = 'view':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "View");
+						$(this).dialog("option", "title", "View Bill Type Master");
 						disableForm('#formdata');
 						$('#formdata :input[hideOne]').show();
 						$(this).dialog("option", "buttons", butt2);
@@ -94,7 +100,8 @@ $(document).ready(function () {
 			close: function (event, ui) {
 				emptyFormdata(errorField, '#formdata');
 				parent_close_disabled(false);
-				$('#formdata .alert').detach();
+				$('.my-alert').detach();
+				radbuts.reset();
 				//$('.alert').detach();
 				$("#formdata a").off();
 				if (oper == 'view') {
@@ -129,6 +136,24 @@ $(document).ready(function () {
 		checkduplicate:'true'
 	};
 
+	function searchClick2(grid,form,urlParam){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				$('#showbilltype').text("");//tukar kat depan tu
+				$('#showbilldesc').text("");
+				refreshGrid("#jqGridsvc",null,"kosongkan");
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
+			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+			$('#showbilltype').text("");//tukar kat depan tu
+			$('#showbilldesc').text("");
+			refreshGrid("#jqGridsvc",null,"kosongkan");
+		});
+	}
+
 	//////////////////////////start grid/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
 		datatype: "local",
@@ -137,7 +162,7 @@ $(document).ready(function () {
 			{ label: 'opprice', name: 'opprice', width: 90, hidden: true },
 			{ label: 'Description', name: 'description', width: 90, classes: 'wrap', canSearch: true, checked: true  },
 			{ label: 'Price', name: 'price', width: 40, classes: 'wrap' },
-			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap' },
+			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter: 'currency'  },
 			{ label: 'Percentage', name: 'percent_', width: 40, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
 			{ label: 'All Service', name: 'service', width: 40, classes: 'wrap', formatter: formatter, unformat: unformat },
 			{ label: 'discchgcode', name: 'discchgcode', width: 90, hidden: true },
@@ -179,9 +204,9 @@ $(document).ready(function () {
 			if (rowid != null) {
 				$("#Fsvc a").off();
 				urlParam_svc.filterVal[0] = selrowData("#jqGrid").billtype;
-				saveParam_svc.filterVal[0] = selrowData("#jqGrid").billtype;
+				// saveParam_svc.filterVal[0] = selrowData("#jqGrid").billtype;
 				urlParam_item.filterVal[0] = selrowData("#jqGrid").billtype;
-				saveParam_item.filterVal[0] = selrowData("#jqGrid").billtype;
+				// saveParam_item.filterVal[0] = selrowData("#jqGrid").billtype;
 				$("#Fsvc :input[name='billtype']").val(selrowData("#jqGrid").billtype);
 				$("#Fsvc :input[name='description']").val(selrowData("#jqGrid").description);
 				refreshGrid('#jqGridsvc', urlParam_svc);
@@ -189,11 +214,17 @@ $(document).ready(function () {
 				$("#pg_jqGridPager3 table").hide();
 				$("#pg_jqGridPager2 table").show();
 
+				$("#jqGriditem_c, #jqGridtype_c, #click_row2, #click_row3").hide();
+
 				if (selrowData("#jqGrid").service == 1) {
 					refreshGrid('#jqGridsvc', urlParam_svc);
 					$("#pg_jqGridPager2 table").hide();
 				}
 			}
+
+			$('#showbilltype').text(selrowData("#jqGrid").billtype);//tukar kat depan tu
+			$('#showbilldesc').text(selrowData("#jqGrid").description);
+			refreshGrid("#jqGridsvc", urlParam_svc);
 		},
 
 	});
@@ -292,8 +323,8 @@ $(document).ready(function () {
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 
-	populateSelect('#jqGrid', '#searchForm');
-	searchClick('#jqGrid', '#searchForm', urlParam);
+	populateSelect2('#jqGrid', '#searchForm');
+	searchClick2('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
@@ -306,8 +337,8 @@ $(document).ready(function () {
 	var dialog_ChgGroup = new ordialog(
 		'chggroup','hisdb.chggroup',"#Fsvc :input[name='svc_chggroup']",errorField,
 		{	colModel:[
-				{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Group Code',name:'grpcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -336,9 +367,43 @@ $(document).ready(function () {
 	);
 	dialog_ChgGroup.makedialog();
 
+	var dialog_discChargeCode = new ordialog(
+		'svc_discchgcode','hisdb.chgmast',"#Fsvc :input[name='svc_discchgcode']",errorField,
+		{	colModel:[
+				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']
+			},
+			ondblClickRow: function () {
+				$('#svc_percent_').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#svc_percent_').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}		
+		},{
+			title:"Select Charge Code",
+			open: function(){
+				dialog_discChargeCode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_discChargeCode.urlParam.filterVal=['session.compcode','A']
+			}
+		},'urlParam', 'radio', 'tab', false
+	);
+	dialog_discChargeCode.makedialog();
+
 	var buttsvc1 = [{
 		text: "Save", click: function () {
 			mycurrency.formatOff();
+			radbuts_svc.check();
 			mycurrency.check0value(errorField);
 			if ($('#Fsvc').isValid({ requiredFields: '' }, {}, true)) {
 				// saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", oper_svc, saveParam_svc, urlParam_svc, '#searchForm2');
@@ -365,14 +430,14 @@ $(document).ready(function () {
 				switch (oper_svc) {
 					case state = 'add':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Add");
+						$(this).dialog("option", "title", "Add Bill Type Service");
 						enableForm('#Fsvc');
 						rdonly('#Fsvc');
 						hideOne('#Fsvc');
 						break;
 					case state = 'edit':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Edit");
+						$(this).dialog("option", "title", "Edit Bill Type Service");
 						enableForm('#Fsvc');
 						frozeOnEdit("#Dsvc");
 						rdonly('#Fsvc');
@@ -380,7 +445,7 @@ $(document).ready(function () {
 						break;
 					case state = 'view':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "View");
+						$(this).dialog("option", "title", "View Bill Type Service");
 						disableForm('#Fsvc');
 						$('#Fsvc :input[hideOne]').show();
 						$(this).dialog("option", "buttons", butt2);
@@ -388,9 +453,13 @@ $(document).ready(function () {
 				}
 				if (oper_svc == 'add') {
 					dialog_ChgGroup.on();
+					dialog_discChargeCode.on();
+					let priceval = selrowData("#jqGrid").price
+					$("#Fsvc [name='svc_price'][value='"+priceval+"']").prop('checked', true);
 				}
 				if (oper_svc == 'edit' && $('#jqGriditem').jqGrid('getGridParam', 'reccount') < 1) {
 					dialog_ChgGroup.on();
+					dialog_discChargeCode.on();
 
 				}
 				if (oper_svc == 'edit' && $('#jqGriditem').jqGrid('getGridParam', 'reccount') >= 1) {
@@ -398,6 +467,7 @@ $(document).ready(function () {
 				}
 				if (oper_svc != 'add') {
 					dialog_ChgGroup.check(errorField);
+					dialog_discChargeCode.check(errorField);
 				}
 				if (oper_svc != 'view') {
 					set_compid_from_storage("input[name='svc_lastcomputerid']","input[name='svc_lastipaddress']","input[name='svc_computerid']","input[name='svc_ipaddress']");
@@ -407,9 +477,11 @@ $(document).ready(function () {
 			close: function (event, ui) {
 				parent_close_disabled(false);
 				emptyFormdata(errorField, '#Fsvc');
-				$('#Fsvc .alert').detach();
+				$('.my-alert').detach();
+				radbuts_svc.reset();
 				//$('.alert').detach();
 				dialog_ChgGroup.off();
+				dialog_discChargeCode.off();
 				// $("#Fsvc a").off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", buttsvc1);
@@ -443,11 +515,41 @@ $(document).ready(function () {
 		fixPost: 'true',//throw out dot in the field name
 		table_id: 'svc_chggroup',//ni utk tgk duplicate
 		idnoUse: 'svc_idno',
-		filterCol: ['billtype'],
-		filterVal: [''],
+		// filterCol: ['billtype'],
+		// filterVal: [''],
 		saveip:'true',
 		// checkduplicate:'true'
 	};
+
+	function searchClick2(grid,form,urlParam_svc){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam_svc);
+				$('#showbilltype2').text("");//tukar kat depan tu
+				$('#showbilldesc2').text("");
+				$('#showchggroup2').text("");
+				$('#showgroupdesc2').text("");
+				$('#showbilltype3').text("");
+				$('#showbilldesc3').text("");
+				$('#showchggroup3').text("");
+				$('#showgroupdesc3').text("");
+				refreshGrid("#jqGriditem, #jqGridtype",null,"kosongkan");
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
+			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam_svc);
+			$('#showbilltype2').text("");//tukar kat depan tu
+			$('#showbilldesc2').text("");
+			$('#showchggroup2').text("");
+			$('#showgroupdesc2').text("");
+			$('#showbilltype3').text("");
+			$('#showbilldesc3').text("");
+			$('#showchggroup3').text("");
+			$('#showgroupdesc3').text("");
+			refreshGrid("#jqGriditem, #jqGridtype",null,"kosongkan");
+		});
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -459,7 +561,7 @@ $(document).ready(function () {
 			{ label: 'Chg. Group', name: 'svc_chggroup', width: 50, classes: 'wrap', canSearch: true },
 			{ label: 'Description', name: 'cc_description', width: 90, classes: 'wrap', canSearch: true , checked: true},
 			{ label: 'Price', name: 'svc_price', width: 90, classes: 'wrap', checked: true },
-			{ label: 'Amount', name: 'svc_amount', width: 90, classes: 'wrap', },
+			{ label: 'Amount', name: 'svc_amount', width: 90, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Percentage', name: 'svc_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
 			{ label: 'All Item', name: 'svc_allitem', width: 50, classes: 'wrap', formatter: formatter, unformat: unformat },
 			{ label: 'All Type', name: 'svc_alltype', width: 50, classes: 'wrap', formatter: formatter, unformat: unformat },
@@ -512,6 +614,12 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			if (rowid != null) {
 				rowData = $('#jqGridsvc').jqGrid('getRowData', rowid);
+				refreshGrid('#jqGriditem', urlParam_item,'kosongkan');
+				$("#pg_jqGridPager3 table, #jqGriditem_c, #click_row2").hide();
+
+
+				refreshGrid('#jqGridtype', urlParam_type,'kosongkan');
+				$("#pg_jqGridPager4 table, #jqGridtype_c, #click_row3").hide();
 
 				if (rowData['svc_allitem'] == '0') {
 					$("#Fitem a").off();
@@ -519,17 +627,34 @@ $(document).ready(function () {
 					urlParam_item.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
 					urlParam_item.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
 					refreshGrid('#jqGriditem', urlParam_item);
-					$("#pg_jqGridPager3 table").show();
+					$("#pg_jqGridPager3 table, #jqGriditem_c, #click_row2").show();
 				}
 
 				if (rowData['svc_alltype'] == '0') {
 					urlParam_type.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
 					urlParam_type.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
 					refreshGrid('#jqGridtype', urlParam_type);
-					$("#pg_jqGridPager4 table").show();
+					$("#pg_jqGridPager4 table, #jqGridtype_c, #click_row3").show();
 				}
 
+
+				dialog_chgtype.urlParam.filterCol=['chggroup'];
+				dialog_chgtype.urlParam.filterVal=[selrowData("#jqGridsvc").svc_chggroup];
+
+				dialog_chgcode.urlParam.filterCol=['chggroup'];
+				dialog_chgcode.urlParam.filterVal=[selrowData("#jqGridsvc").svc_chggroup];
+
 			}
+
+			$('#showbilltype2').text(selrowData("#jqGridsvc").svc_billtype);//tukar kat depan tu
+			$('#showbilldesc2').text(selrowData("#jqGridsvc").m_description);
+			$('#showchggroup2').text(selrowData("#jqGridsvc").svc_chggroup);
+			$('#showgroupdesc2').text(selrowData("#jqGridsvc").cc_description);
+			$('#showbilltype3').text(selrowData("#jqGridsvc").svc_billtype);//tukar kat depan tu
+			$('#showbilldesc3').text(selrowData("#jqGridsvc").m_description);
+			$('#showchggroup3').text(selrowData("#jqGridsvc").svc_chggroup);
+			$('#showgroupdesc3').text(selrowData("#jqGridsvc").cc_description);
+			// refreshGrid("#jqGridsvc", urlParam_svc);
 		},
 
 	});
@@ -550,7 +675,8 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#Fsvc');
 			} else {
-				saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", 'del', saveParam_svc, urlParam_svc, null, { 'idno': selrowData('#jqGridsvc').svc_idno });
+				saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", 'del', saveParam_svc, urlParam_svc, { 'idno': selrowData('#jqGridsvc').svc_idno });
+				// saveFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", 'del', saveParam_svc, urlParam_svc, null, { 'idno': selrowData('#jqGridsvc').svc_idno });
 				//saveFormdata("#jqGridsvc","#Dsvc","#Fsvc",'del',saveParam_svc,{'svc_chggroup':selRowId});
 			}
 		},
@@ -618,8 +744,8 @@ $(document).ready(function () {
 	var dialog_chgcode = new ordialog(
 		'chgmast','hisdb.chgmast',"#Fitem :input[name*='i_chgcode']",errorField,
 		{	colModel:[
-				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus','chggroup'],
@@ -651,6 +777,7 @@ $(document).ready(function () {
 	var buttitem1 = [{
 		text: "Save", click: function () {
 			mycurrency.formatOff();
+			radbuts_item.check();
 			mycurrency.check0value(errorField);
 			if ($('#Fitem').isValid({ requiredFields: '' }, {}, true)) {
 				saveFormdata("#jqGriditem", "#Ditem", "#Fitem", oper_item, saveParam_item, urlParam_item);
@@ -675,14 +802,14 @@ $(document).ready(function () {
 				switch (oper_item) {
 					case state = 'add':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Add");
+						$(this).dialog("option", "title", "Add Bill Type Item");
 						enableForm('#Fitem');
 						rdonly('#Fitem');
 						hideOne('#Fitem');
 						break;
 					case state = 'edit':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Edit");
+						$(this).dialog("option", "title", "Edit Bill Type Item");
 						$("#Fitem a").off();
 						enableForm('#Fitem');
 						frozeOnEdit("#Ditem");
@@ -691,7 +818,7 @@ $(document).ready(function () {
 						break;
 					case state = 'view':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "View");
+						$(this).dialog("option", "title", "View Bill Type Item");
 						disableForm('#Fitem');
 						$('#Fitem :input[hideOne]').show();
 						$(this).dialog("option", "buttons", butt2);
@@ -699,6 +826,8 @@ $(document).ready(function () {
 				}
 				if (oper_item == 'add') {
 					dialog_chgcode.on();
+					let priceval = selrowData("#jqGrid").price
+					$("#Fitem [name='i_price'][value='"+priceval+"']").prop('checked', true);
 				}
 				if (oper_item != 'add') {
 					dialog_chgcode.check(errorField);
@@ -713,7 +842,8 @@ $(document).ready(function () {
 			close: function (event, ui) {
 				emptyFormdata(errorField, '#Fitem');
 				parent_close_disabled(false);
-				$('#Fitem .alert').detach();
+				$('.my-alert').detach();
+				radbuts_item.reset();
 				//$('.alert').detach();
 				dialog_chgcode.off();
 				if (oper == 'view') {
@@ -728,11 +858,13 @@ $(document).ready(function () {
 		url: '/util/get_table_default',
 		field: '',
 		fixPost: 'true',//replace underscore with dot
-		table_name: ['hisdb.billtyitem AS i', 'hisdb.billtysvc AS svc', 'hisdb.chggroup AS c'],
+		table_name: ['hisdb.billtyitem AS i', 'hisdb.billtysvc AS svc', 'hisdb.chggroup AS c', 'hisdb.chgmast as m'],
 		table_id: 'i_chgcode',
-		join_type: ['JOIN', 'JOIN'],
-		join_onCol: ['i.chggroup', 'c.grpcode'],
-		join_onVal: ['svc.chggroup', 'i.chggroup'],
+		join_type: ['JOIN', 'JOIN', 'JOIN'],
+		join_onCol: ['i.chggroup', 'c.grpcode', 'i.chgcode'],
+		join_onVal: ['svc.chggroup', 'i.chggroup', 'm.chgcode'],
+		join_filterCol:[['i.billtype on =']],
+		join_filterVal:[['svc.billtype']],
 		filterCol: ['i.billtype', 'i.compcode', 'i.chggroup', 'svc.allitem', 'svc.compcode'],
 		filterVal: ['', 'session.compcode', '', '0', 'session.compcode'],
 		sort_idno: true,
@@ -747,8 +879,8 @@ $(document).ready(function () {
 		fixPost: 'true',//throw out dot in the field name
 		table_id: 'i_chgcode',
 		idnoUse: 'i_idno',
-		filterCol: ['billtype'],
-		filterVal: [''],
+		// filterCol: ['billtype'],
+		// filterVal: [''],
 		saveip:'true',
 		// checkduplicate:'true'
 	}
@@ -761,16 +893,17 @@ $(document).ready(function () {
 			{ label: 'Bill Type', name: 'i_billtype', width: 50, hidden: true },
 			{ label: 'Chg. Group', name: 'i_chggroup', width: 90, hidden: true },
 			{ label: 'Description', name: 'c_description', width: 90, hidden: true },
-			{ label: 'Chg Code', name: 'i_chgcode', width: 90, classes: 'wrap', canSearch: true, checked: true },
+			{ label: 'Chg Code', name: 'i_chgcode', width: 90, classes: 'wrap', canSearch: true },
+			{ label: 'Description', name: 'm_description', width: 90, classes: 'wrap', canSearch: true, checked: true },
 			{ label: 'Price', name: 'i_price', width: 50, classes: 'wrap', },
-			{ label: 'Amount', name: 'i_amount', width: 50, classes: 'wrap', },
+			{ label: 'Amount', name: 'i_amount', width: 50, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'discrate', name: 'i_discrate', width: 50, hidden: true },
 			{ label: 'Percentage', name: 'i_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
 			{ label: 'adduser', name: 'i_adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 'i_adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'i_upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'i_upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Record Status', name: 'i_recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{ label: 'Record Status', name: 'i_recstatus', width: 90, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'No', name: 'i_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'i_computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -831,7 +964,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#Fitem');
 			} else {
-				saveFormdata("#jqGriditem", "#Ditem", "#Fitem", 'del', saveParam_item, urlParam_item, null, { 'idno': selrowData('#jqGriditem').i_idno });
+				saveFormdata("#jqGriditem", "#Ditem", "#Fitem", 'del', saveParam_item, urlParam_item, { 'idno': selrowData('#jqGriditem').i_idno });
 				//saveFormdata("#jqGriditem","#Ditem","#Fitem",'del',saveParam_item,{"chgcode":selRowId});
 			}
 		},
@@ -879,7 +1012,7 @@ $(document).ready(function () {
 	});
 
 	addParamField('#jqGriditem', false, urlParam_item);
-	addParamField('#jqGriditem', false, saveParam_item, ["c_description", "i_discrate", "i_idno",'i_adduser', 'i_adddate', 'i_upduser', 'i_upddate', 'i_recstatus']);
+	addParamField('#jqGriditem', false, saveParam_item, ["c_description", "m_description", "i_discrate", "i_idno",'i_adduser', 'i_adddate', 'i_upduser', 'i_upddate', 'i_recstatus']);
 
 	//populateSelect('#jqGriditem');
 	populateSelect('#jqGriditem', '#searchForm3');
@@ -891,9 +1024,43 @@ $(document).ready(function () {
 	////////////// billtytype /////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	var dialog_chgtype = new ordialog(
+		'chgtype','hisdb.chgtype',"#Ftype :input[name*='t_chgtype']",errorField,
+		{	colModel:[
+				{label:'Charge Type',name:'chgtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus','chggroup'],
+				filterVal:['session.compcode','A',$("#Ftype :input[name*='t_chggroup']").val()]
+			},
+			ondblClickRow: function () {
+				$('#t_price').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#t_price').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Charge Type",
+			open: function(){
+				dialog_chgtype.urlParam.filterCol=['chggroup'],
+				dialog_chgtype.urlParam.filterVal=[$("#Ftype :input[name*='t_chggroup']").val()]
+			}
+		},'urlParam', 'radio', 'tab'
+	);
+	dialog_chgtype.makedialog();
+	
 	var butttype1 = [{
 		text: "Save", click: function () {
 			mycurrency.formatOff();
+			radbuts_type.check();
 			mycurrency.check0value(errorField);
 			if ($('#Ftype').isValid({ requiredFields: '' }, {}, true)) {
 				saveFormdata("#jqGridtype", "#Dtype", "#Ftype", oper_type, saveParam_type, urlParam_type);
@@ -918,14 +1085,14 @@ $(document).ready(function () {
 				switch (oper_type) {
 					case state = 'add':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Add");
+						$(this).dialog("option", "title", "Add Bill Charge Type");
 						enableForm('#Ftype');
 						rdonly('#Ftype');
 						hideOne('#Ftype');
 						break;
 					case state = 'edit':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "Edit");
+						$(this).dialog("option", "title", "Edit Bill Charge Type");
 						$("#Ftype a").off();
 						enableForm('#Ftype');
 						frozeOnEdit("#Dtype");
@@ -934,31 +1101,35 @@ $(document).ready(function () {
 						break;
 					case state = 'view':
 						mycurrency.formatOnBlur();
-						$(this).dialog("option", "title", "View");
+						$(this).dialog("option", "title", "View Bill Charge Type");
 						disableForm('#Ftype');
 						$('#Ftype :input[hideOne]').show();
 						$(this).dialog("option", "buttons", butt2);
 						break;
 				}
 				if (oper_type == 'add') {
-					// dialog_chgcode.on();
+					dialog_chgtype.on();
+					let priceval = selrowData("#jqGrid").price
+					$("#Ftype [name='t_price'][value='"+priceval+"']").prop('checked', true);
 				}
 				if (oper_type != 'add') {
-					// dialog_chgcode.check(errorField);
+					dialog_chgtype.check(errorField);
 				}
 				if(oper_type!='view'){
 					set_compid_from_storage("input[name='t_lastcomputerid']","input[name='t_lastipaddress']","input[name='t_computerid']","input[name='t_ipaddress']");
+					// dialog_chgtype.on();
 				}
 				/*if(oper_item!='add'){
-					dialog_chgcode.check(errorField);
+					dialog_chgtype.check(errorField);
 				}*/
 			},
 			close: function (event, ui) {
 				emptyFormdata(errorField, '#Ftype');
 				parent_close_disabled(false);
-				$('#Ftype .alert').detach();
+				$('.my-alert').detach();
+				radbuts_type.reset();
 				//$('.alert').detach();
-				// dialog_chgcode.off();
+				dialog_chgtype.off();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", butttype1);
 				}
@@ -977,8 +1148,10 @@ $(document).ready(function () {
 		join_type: ['JOIN', 'JOIN', 'JOIN'],
 		join_onCol: ['t.chggroup', 'ct.chgtype', 'cg.grpcode'],
 		join_onVal: ['svc.chggroup', 't.chgtype', 't.chggroup'],
-		filterCol: ['t.billtype', 't.compcode', 't.chggroup', 'svc.alltype', 'svc.compcode'],
-		filterVal: ['', 'session.compcode', '', '0', 'session.compcode'],
+		join_filterCol:[['t.billtype on =']],
+		join_filterVal:[['svc.billtype']],
+		filterCol: ['t.billtype', 't.compcode', 't.chggroup', 'svc.compcode'],//, 'svc.alltype'
+		filterVal: ['', 'session.compcode', '', 'session.compcode'],//, '0'
 		sort_idno: true,
 	}
 
@@ -991,8 +1164,8 @@ $(document).ready(function () {
 		fixPost: 'true',//throw out dot in the field name
 		table_id: 't_chgtype',
 		idnoUse: 't_idno',
-		filterCol: ['billtype'],
-		filterVal: [''],
+		// filterCol: ['billtype'],
+		// filterVal: [''],
 		saveip:'true',
 		// checkduplicate:'true'
 	}
@@ -1003,17 +1176,19 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'Bill Type', name: 't_billtype', width: 50, hidden: true },
-			{ label: 'Chg. Group', name: 't_chggroup', width: 90, hidden: true },
+			{ label: 'Chg. Group', name: 't_chggroup', width: 90, hidden: true},
 			{ label: 'Description', name: 'cg_description', width: 90, hidden: true },
 			// { label: 'Chg Code', name: 'i_chgcode', width: 90, classes: 'wrap', canSearch: true, checked: true },
-			{ label: 'Chg Type', name: 't_chgtype', width: 90, classes: 'wrap'},
-			{ label: 'Description', name: 'ct_description', width: 90, classes: 'wrap'},
+			{ label: 'Chg Type', name: 't_chgtype', width: 90, classes: 'wrap', canSearch: true },
+			{ label: 'Description', name: 'ct_description', width: 90, classes: 'wrap', canSearch: true, checked: true },
 			{ label: 'Price', name: 't_price', width: 50, classes: 'wrap'},
 			{ label: 'Percentage', name: 't_percent_', width: 50, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
-			{ label: 'Amount', name: 't_amount', width: 50, classes: 'wrap'},
-			{ label: 'All Item', name: 't_allitem', width: 50, classes: 'wrap'},
+			{ label: 'Amount', name: 't_amount', width: 50, classes: 'wrap', align: 'right', formatter: 'currency'},
+			{ label: 'All Item', name: 't_allitem', width: 50, classes: 'wrap', hidden: true},
 			{ label: 'Discount Charge Code', name: 't_discchgcode', width: 50, classes: 'wrap'},
 			{ label: 'discrate', name: 't_discrate', width: 50, hidden: true },
+			{ label: 'Record Status', name: 't_recstatus', width: 90, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'adduser', name: 't_adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 't_adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 't_upduser', width: 90, hidden: true, classes: 'wrap' },
@@ -1077,7 +1252,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#Ftype');
 			} else {
-				saveFormdata("#jqGridtype", "#Dtype", "#Ftype", 'del', saveParam_type, urlParam_type, null, { 'idno': selrowData('#jqGridtype').t_idno });
+				saveFormdata("#jqGridtype", "#Dtype", "#Ftype", 'del', saveParam_type, urlParam_type, { 'idno': selrowData('#jqGridtype').t_idno });
 				//saveFormdata("#jqGriditem","#Ditem","#Fitem",'del',saveParam_item,{"chgcode":selRowId});
 			}
 		},
@@ -1124,6 +1299,13 @@ $(document).ready(function () {
 		cursor: "pointer"
 	});
 
+	addParamField('#jqGridtype', false, urlParam_type);
+	addParamField('#jqGridtype', false, saveParam_type, ["cg_description","ct_description", "t_discrate", "t_idno",'t_adduser', 't_adddate', 't_upduser', 't_upddate', 't_recstatus']);
+
+	//populateSelect('#jqGriditem');
+	populateSelect('#jqGridtype', '#searchForm4');
+	searchClick('#jqGridtype', '#searchForm4', urlParam_type);
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1131,6 +1313,12 @@ $(document).ready(function () {
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
 	$("#pg_jqGridPager4 table").hide();
+
+	jqgrid_label_align_right("#jqGrid");
+	jqgrid_label_align_right("#jqGridsvc");
+	jqgrid_label_align_right("#jqGriditem");
+	jqgrid_label_align_right("#jqGridtype");
+
 
 	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
 		$("#jqGridsvc").jqGrid ('setGridWidth', Math.floor($("#jqGridsvc_c")[0].offsetWidth-$("#jqGridsvc_c")[0].offsetLeft-28));

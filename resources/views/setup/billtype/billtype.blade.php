@@ -28,6 +28,10 @@ i.fa {
 	overflow: auto;
 }
 
+input.uppercase {
+	text-transform: uppercase;
+}
+
 @endsection
 
 @section('body') 
@@ -36,22 +40,41 @@ i.fa {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
-				<div class="ScolClass" style="padding:0 0 0 15px">
-					<div name='Scol'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+
+				<div class='col-md-12' style="padding:0 0 15px 0;">
+					<div class="form-group"> 
+						<div class="col-md-2">
+							<label class="control-label" for="Scol">Search By : </label>  
+					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
+		              	</div>
+
+					  	<div class="col-md-5">
+					  		<label class="control-label"></label>  
+							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
+						</div>
+		            </div>
 				</div>
 			</fieldset> 
 		</form>
     	
     	<div class="panel panel-default">
+			<div class="panel-heading">Bill Type Header</div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
             		<table id="jqGrid" class="table table-striped"></table>
 					<div id="jqGridPager"></div>
         		</div>
 		    </div>
+		</div>
+
+		<div class='click_row'>
+			<label class="control-label">Bill Type</label>
+			<span id="showbilltype" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row'>
+			<label class="control-label">Description</label>
+			<span id="showbilldesc" style="display: block;">&nbsp</span>
 		</div>
 
 		<div class="panel panel-default" id="jqGridsvc_c">
@@ -68,6 +91,23 @@ i.fa {
 			</div>	
 		</div>
 
+		<div class='click_row' id="click_row2">
+			<label class="control-label">Bill Type</label>
+			<span id="showbilltype2" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row' id="click_row2">
+			<label class="control-label">Description</label>
+			<span id="showbilldesc2" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row' id="click_row2">
+			<label class="control-label">Charge Group</label>
+			<span id="showchggroup2" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row' id="click_row2">
+			<label class="control-label">Description</label>
+			<span id="showgroupdesc2" style="display: block;">&nbsp</span>
+		</div>
+
 		<div class="panel panel-default" id="jqGriditem_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel2">
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i> Item 
@@ -80,6 +120,23 @@ i.fa {
 					</div>
 				</div>
 			</div>	
+		</div>
+
+		<div class='click_row' id="click_row3">
+			<label class="control-label">Bill Type</label>
+			<span id="showbilltype3" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row' id="click_row3">
+			<label class="control-label">Description</label>
+			<span id="showbilldesc3" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row' id="click_row3">
+			<label class="control-label">Charge Group</label>
+			<span id="showchggroup3" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row' id="click_row3">
+			<label class="control-label">Description</label>
+			<span id="showgroupdesc3" style="display: block;">&nbsp</span>
 		</div>
 
 		<div class="panel panel-default" id="jqGridtype_c">
@@ -109,12 +166,12 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="billtype">Bill Type</label>  
 				<div class="col-md-3">
-					<input id="billtype" name="billtype" type="text" maxlength="5" class="form-control input-sm" data-validation="required" frozeOnEdit>
+					<input id="billtype" name="billtype" type="text" maxlength="5" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 				</div>
 
 				<label class="col-md-2 control-label" for="a.description">Description</label>  
 				<div class="col-md-3">
-					<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+					<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm uppercase" data-validation="required">
 				</div>
 			</div>
 
@@ -148,7 +205,8 @@ i.fa {
 				<label class="col-md-2 control-label" for="percent_">Percentage</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="percent_" name="percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
+						<input id="percent_" name="percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0"
+						data-validation-optional-if-answered="amount" data-validation="number">
 						<span class="input-group-addon">%</span>
 					</div>
 				</div>
@@ -157,7 +215,8 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="amount">Amount</label>  
 				<div class="col-md-3">
-					<input id="amount" name="amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					<input id="amount" name="amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" 
+					data-validation-optional-if-answered="percent_" data-validation="number">
 				</div>
 
 				<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
@@ -230,12 +289,12 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_billtype">Bill Type</label>  
 				<div class="col-md-3">
-					<input id="svc_billtype" name="svc_billtype" type="text" class="form-control input-sm" rdonly>
+					<input id="svc_billtype" name="svc_billtype" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 				
 				<label class="col-md-2 control-label" for="m_description">Description</label>  
 				<div class="col-md-3">
-					<input id="m_description" name="m_description" type="text" class="form-control input-sm" rdonly>
+					<input id="m_description" name="m_description" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 			</div>
 
@@ -243,7 +302,7 @@ i.fa {
 				<label class="col-md-2 control-label" for="svc_chggroup">Chg. Group</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="svc_chggroup" name="svc_chggroup" type="text" class="form-control input-sm" data-validation="required">
+						<input id="svc_chggroup" name="svc_chggroup" type="text" class="form-control input-sm uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
@@ -263,13 +322,13 @@ i.fa {
 			</div>
 
             <div class="form-group">
-    			<label class="col-md-2 control-label" for="svc_allitem'">All Item</label>  
+    			<label class="col-md-2 control-label" for="svc_allitem">All Item</label>  
 				<div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="svc_allitem" value='1' data-validation="required">Yes</label>
 					<label class="radio-inline"><input type="radio" name="svc_allitem" value='0' data-validation="">No</label>
 				</div>
 
-				<label class="col-md-2 control-label" for="svc_alltype'">All Type</label>  
+				<label class="col-md-2 control-label" for="svc_alltype">All Type</label>  
 				<div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="svc_alltype" value='1' data-validation="required">Yes</label>
 					<label class="radio-inline"><input type="radio" name="svc_alltype" value='0' data-validation="">No</label>
@@ -279,12 +338,16 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_amount">Amount</label>  
 				<div class="col-md-3">
-					<input id="svc_amount" name="svc_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					<input id="svc_amount" name="svc_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation-optional-if-answered="svc_percent_" data-validation="number">
 				</div>
 				  
 				<label class="col-md-2 control-label" for="svc_discchgcode">Disc Chg Code</label>  
 				<div class="col-md-3">
-					<input id="svc_discchgcode" name="svc_discchgcode" type="text" class="form-control input-sm" data-validation="number" data-validation-allowing="float">
+					<div class='input-group'>
+						<input id="svc_discchgcode" name="svc_discchgcode" type="text" class="form-control input-sm uppercase">
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					</div>
+					<span class="help-block"></span>
 				</div>
 			</div>
 
@@ -292,7 +355,7 @@ i.fa {
 				<label class="col-md-2 control-label" for="svc_percent_">Percentage</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="svc_percent_" name="svc_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
+						<input id="svc_percent_" name="svc_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" data-validation-optional-if-answered="svc_amount" data-validation="number">
 						<!--data-validation="number" data-validation-allowing="float"-->
 						<span class="input-group-addon">%</span>
 					</div>
@@ -367,12 +430,12 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_chggroup">Chg Group</label>   
 				<div class="col-md-3">
-					<input id="i_chggroup" name="i_chggroup" type="text" class="form-control input-sm" rdonly>
+					<input id="i_chggroup" name="i_chggroup" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 				
 				<label class="col-md-2 control-label" for="c_description">Description</label>  
 				<div class="col-md-3">
-					<input id="c_description" name="c_description" type="text" class="form-control input-sm" rdonly>
+					<input id="c_description" name="c_description" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 			</div>
 
@@ -380,7 +443,7 @@ i.fa {
 				<label class="col-md-2 control-label" for="i_chgcode">Chg. Code</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="i_chgcode" name="i_chgcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						<input id="i_chgcode" name="i_chgcode" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
@@ -402,13 +465,15 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_amount">Amount</label>  
 				<div class="col-md-3">
-					<input id="i_amount" name="i_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					<input id="i_amount" name="i_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00"
+					data-validation-optional-if-answered="i_percent_" data-validation="number">
 				</div>
 					
 				<label class="col-md-2 control-label" for="i_percent_">Percentage</label>  
 				<div class="col-md-3">
 					<div class='input-group'>
-						<input id="i_percent_" name="i_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
+						<input id="i_percent_" name="i_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0"
+						data-validation-optional-if-answered="i_amount" data-validation="number">
 						<span class="input-group-addon">%</span>
 					</div>
 				</div>
@@ -484,19 +549,23 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="t_chggroup">Chg Group</label>   
 				<div class="col-md-3">
-					<input id="i_chggroup" name="t_chggroup" type="text" class="form-control input-sm" rdonly>
+					<input id="t_chggroup" name="t_chggroup" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 				
 				<label class="col-md-2 control-label" for="cg_description">Description</label>  
 				<div class="col-md-3">
-					<input id="cg_description" name="cg_description" type="text" class="form-control input-sm" rdonly>
+					<input id="cg_description" name="cg_description" type="text" class="form-control input-sm uppercase" rdonly>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="t_chgtype">Chg Type</label>   
+				<label class="col-md-2 control-label" for="t_chgtype">Chg. Type</label>  
 				<div class="col-md-3">
-					<input id="t_chgtype" name="t_chgtype" type="text" class="form-control input-sm" rdonly>
+					<div class='input-group'>
+						<input id="t_chgtype" name="t_chgtype" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					</div>
+					<span class="help-block"></span>
 				</div>
 				
 				<label class="col-md-2 control-label" for="t_price">Price</label>  
@@ -515,28 +584,24 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="t_amount">Amount</label>  
 				<div class="col-md-3">
-					<input id="t_amount" name="t_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+					<input id="t_amount" name="t_amount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00"
+					data-validation-optional-if-answered="t_percent_" data-validation="number">
 				</div>
 				
-				<label class="col-md-2 control-label" for="t_discchgcode">Disc Chg Code</label>  
+				<label class="col-md-2 control-label" for="t_percent_">Percentage</label>  
 				<div class="col-md-3">
-					<input id="t_discchgcode" name="t_discchgcode" type="text" class="form-control input-sm" data-validation="number" data-validation-allowing="float">
+					<div class='input-group'>
+						<input id="t_percent_" name="t_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0"
+						data-validation-optional-if-answered="t_amount" data-validation="number">
+						<span class="input-group-addon">%</span>
+					</div>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="t_percent_">Percentage</label>  
+				<label class="col-md-2 control-label" for="t_recstatus">Record Status</label>  
 				<div class="col-md-3">
-					<div class='input-group'>
-						<input id="t_percent_" name="t_percent_" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0">
-						<span class="input-group-addon">%</span>
-					</div>
-				</div>
-
-				<label class="col-md-2 control-label" for="t_allitem">All Item</label>  
-				<div class="col-md-3">
-					<label class="radio-inline"><input type="radio" name="t_allitem" value='1' data-validation="required">Yes</label>
-					<label class="radio-inline"><input type="radio" name="t_allitem" value='0' data-validation="">No</label>
+					<input id="t_recstatus" name="t_recstatus" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 			</div> 
 

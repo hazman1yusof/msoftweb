@@ -166,14 +166,16 @@
 			text-align: center;
 			color: #286090;
 			background: #d9edf7;
-			width: 400px;
-			height: 120px;
-		    margin: 0px !important;
-		    padding: 5px !important;
+			width: 60%;
+		    margin: auto !important;
+		    padding: 5px 5px 15px 5px !important;
 		    border-top-left-radius: 30px;
-		    position: absolute;
+		    border-top-right-radius: 30px;
+		    /*border-bottom-left-radius: 30px;
+		    border-bottom-right-radius: 30px;*/
+		    /*position: absolute;
 		    bottom: 0px;
-		    right: 0px;
+		    right: 0px;*/
 		    cursor: pointer;
 		    display: block;
 		}

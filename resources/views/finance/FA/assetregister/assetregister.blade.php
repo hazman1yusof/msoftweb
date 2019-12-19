@@ -99,7 +99,7 @@
 				<label class="col-md-2 control-label" for="assetcode">Category</label>
 					<div class="col-md-3">
 						<div class='input-group'>
-							<input id="assetcode" name="assetcode" type="text" class="form-control input-sm" data-validation="required">
+							<input id="assetcode" name="assetcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 						</div>
 						<span class="help-block"></span>
@@ -114,7 +114,7 @@
 				<label class="col-md-2 control-label" for="deptcode">Department</label>
 					<div class="col-md-3">
 						<div class='input-group'>
-							<input id="deptcode" name="deptcode" type="text" class="form-control input-sm" data-validation="required">
+							<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 						</div>
 						<span class="help-block"></span>
@@ -122,7 +122,7 @@
 				<label class="col-md-2 control-label" for="loccode">Location</label>
 					<div class="col-md-3">
 						<div class='input-group'>
-							<input id="loccode" name="loccode" type="text" class="form-control input-sm" data-validation="required">
+							<input id="loccode" name="loccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 						</div>
 						<span class="help-block"></span>
@@ -143,7 +143,7 @@
 					<label class="col-md-2 control-label" for="suppcode">Supplier</label>
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="suppcode" name="suppcode" type="text" class="form-control input-sm" data-validation="required">
+								<input id="suppcode" name="suppcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -151,7 +151,7 @@
 					<label class="col-md-2 control-label" for="delordno">Delivery Order No.</label>
 						<div class="col-md-3">
 							<div class="input-group">
-								<input id="delordno" name="delordno" type="text" class="form-control input-sm" data-validation="required">
+								<input id="delordno" name="delordno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary' id="delordno_btn"><span class='fa fa-ellipsis-h' id="delordno_dh"></span></a>
 							</div>
 							<span id="dn" class="help-block"></span>
@@ -162,7 +162,7 @@
 						<label class="col-md-2 control-label" for="invno">Invoice No</label>
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="invno" name="invno" type="text" class="form-control input-sm" data-validation="required">
+								<input id="invno" name="invno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
 							</div>
 							<!-- <span class="help-block"></span> -->
@@ -182,7 +182,7 @@
 					
 					<label class="col-md-2 control-label" for="docno">GRN No</label>  
 						<div class="col-md-3">
-							<input id="docno" name="docno" type="text" class="form-control input-sm" data-validation="required">
+							<input id="docno" name="docno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						</div>
 				</div>
 
@@ -192,7 +192,7 @@
 					<label class="col-md-2 control-label" for="itemcode">Item Code</label>
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="itemcode" name="itemcode" type="text" class="form-control input-sm" data-validation="required">
+								<input id="itemcode" name="itemcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -203,7 +203,7 @@
 					<label class="col-md-2 control-label" for="itemcode">Item Code</label>
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="itemcode_direct" name="itemcode" type="text" class="form-control input-sm" >
+								<input id="itemcode_direct" name="itemcode" type="text" class="form-control input-sm text-uppercase" >
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -214,7 +214,7 @@
 					<label class="col-md-2 control-label" for="uomcode">UOM Code</label>
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="uomcode" name="uomcode" type="text" class="form-control input-sm" data-validation="required">
+								<input id="uomcode" name="uomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -224,7 +224,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="purordno">Purchase No.</label>
 						<div class="col-md-3">
-							<input id="purordno" type="text" name="purordno" class="form-control input-sm">
+							<input id="purordno" type="text" name="purordno" class="form-control input-sm text-uppercase">
 						</div>
 					<label class="col-md-2 control-label" for="purdate">Purchase Date</label>
 						<div class="col-md-3">
@@ -263,7 +263,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="method">Method</label>  
 						<div class="col-md-3">
-							<input id="method" type="text" name="method" maxlength="15" class="form-control input-sm">
+							<input id="method" type="text" name="method" maxlength="15" class="form-control input-sm text-uppercase">
 						</div>
 					<label class="col-md-2 control-label" for="rvalue">Residual Value</label>  
 						<div class="col-md-3">

@@ -89,6 +89,7 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#formdata');
 				// $('.alert').detach();
 				$("#formdata a").off();
+				$('.my-alert').detach();
 				if (oper == 'view') {
 					$(this).dialog("option", "buttons", butt1);
 				}

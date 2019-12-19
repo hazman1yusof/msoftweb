@@ -199,7 +199,7 @@ $(document).ready(function () {
 		close: function( event, ui ) {
 			emptyFormdata(errorField,'#formdata');
 			parent_close_disabled(false);
-			$('#formdata .alert').detach();
+			$('.my-alert').detach();
 			dialog_SuppGroup.off();
 			dialog_CostCode.off();
 			dialog_GlAccNo.off();

@@ -40,14 +40,14 @@
 				<div class="form-group">
 				  	<label class="col-md-2 control-label" for="doctorcode">Doctor Code</label>  
 						  <div class="col-md-4">
-						  <input id="doctorcode" name="doctorcode" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						  <input id="doctorcode" name="doctorcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 						  </div>
                
 			
 				  	<label class="col-md-2 control-label" for="doctype">Doctor Type</label>  
 						<div class="col-md-4">
 						  <div class='input-group'>
-							<input id="doctype" name="doctype" type="text" class="form-control input-sm" data-validation="required"/>
+							<input id="doctype" name="doctype" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 						<span class="help-block"></span>
@@ -59,7 +59,7 @@
 					
 				  <label class="col-md-2 control-label" for="doctorname">Doctor Name</label>  
 				  <div class="col-md-10">
-				  <input id="doctorname" name="doctorname" type="text" maxlength="200" class="form-control input-sm" data-validation="required">
+				  <input id="doctorname" name="doctorname" type="text" maxlength="200" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
                 </div>
 
@@ -67,7 +67,7 @@
 					<label class="col-md-2 control-label" for="department">Costcenter</label>  
 					<div class="col-md-4">
 					  <div class='input-group'>
-						<input id="department" name="department" type="text" class="form-control input-sm" data-validation="required"/>
+						<input id="department" name="department" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -76,7 +76,7 @@
 					<label class="col-md-2 control-label" for="specialitycode">Speciality</label>  
 					<div class="col-md-4">
 					  <div class='input-group'>
-						<input id="specialitycode" name="specialitycode" type="text" class="form-control input-sm" data-validation="required"/>
+						<input id="specialitycode" name="specialitycode" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -87,7 +87,7 @@
 					<label class="col-md-2 control-label" for="disciplinecode">Discipline</label>  
 					<div class="col-md-4">
 					  <div class='input-group'>
-						<input id="disciplinecode" name="disciplinecode" type="text" class="form-control input-sm" data-validation="required"/>
+						<input id="disciplinecode" name="disciplinecode" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -96,7 +96,7 @@
 					<label class="col-md-2 control-label" for="creditorcode">Creditor</label>  
 					<div class="col-md-4">
 					  <div class='input-group'>
-						<input id="creditorcode" name="creditorcode" type="text" class="form-control input-sm" data-validation="required"/>
+						<input id="creditorcode" name="creditorcode" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -177,26 +177,26 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="company">Company</label>  
 				  <div class="col-md-8">
-				  <input id="company" name="company" type="text" maxlength="100" class="form-control input-sm" >
+				  <input id="company" name="company" type="text" maxlength="100" class="form-control input-sm text-uppercase">
 				  </div>
                 </div>
 
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="address1">Address</label>  
 				  <div class="col-md-8">
-				  <input id="address1" name="address1" type="text" class="form-control input-sm" >
+				  <input id="address1" name="address1" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address2" name="address2" type="text" class="form-control input-sm">
+				  <input id="address2" name="address2" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address3" name="address3" type="text" class="form-control input-sm">
+				  <input id="address3" name="address3" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
                 
@@ -208,19 +208,19 @@
 				
 				  <label class="col-md-2 control-label" for="statecode">State</label>  
 				  <div class="col-md-3">
-				  <input id="statecode" name="statecode" type="text" class="form-control input-sm">
+				  <input id="statecode" name="statecode" type="text" class="form-control input-sm text-uppercase">
 				 </div>
 				 </div>
 
 				 <div class="form-group">
 				  <label class="col-md-2 control-label" for="countrycode">Country</label>  
 				  <div class="col-md-3">
-				  <input id="countrycode" name="countrycode" type="text" class="form-control input-sm" >
+				  <input id="countrycode" name="countrycode" type="text" class="form-control input-sm text-uppercase">
 				 </div>
 				 
 				  <label class="col-md-2 control-label" for="gstno">GST No</label>  
 				  <div class="col-md-3">
-				  <input id="gstno" name="gstno" type="text" class="form-control input-sm" >
+				  <input id="gstno" name="gstno" type="text" class="form-control input-sm text-uppercase">
 				 </div>
 				 </div>
 
@@ -239,7 +239,7 @@
 				  <div class="form-group">
 				  <label class="col-md-2 control-label" for="off_tel">Office</label>  
 				  <div class="col-md-3">
-				  <input id="off_tel" name="off_tel" type="text" class="form-control input-sm">
+				  <input id="off_tel" name="off_tel" type="text" class="form-control input-sm text-uppercase">
 				 </div>
 				
 				  <label class="col-md-2 control-label" for="operationtheatre">Operation Theatre (OT)</label>  

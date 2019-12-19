@@ -41,6 +41,10 @@ legend.scheduler-border {
 	border-bottom:none;
 }
 
+input.uppercase {
+	text-transform: uppercase;
+}
+
 @endsection
 
 @section('body')
@@ -120,10 +124,30 @@ legend.scheduler-border {
     			</div>
     			<div id="jqGrid3_panel" class="panel-collapse collapse">
 					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="jqGrid3" class="table table-striped"></table>
-							<div id="jqGridPager3"></div>
-						</div>
+						<form id='formdata3' class='form-vertical' style='width:99%'>
+							<div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGrid3" class="table table-striped"></table>
+								<div id="jqGridPager3"></div>
+							</div>
+						</form>
+					</div>
+    			</div>
+  			</div>
+		</div>
+
+		<div class="panel-group">
+  			<div class="panel panel-default" id="jqGrid4_c">
+    			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid4_panel">
+					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Package Deal Maintenance Details
+    			</div>
+    			<div id="jqGrid4_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<form id='formdata4' class='form-vertical' style='width:99%'>
+							<div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGrid4" class="table table-striped"></table>
+								<div id="jqGridPager4"></div>
+							</div>
+						</form>
 					</div>
     			</div>
   			</div>
@@ -143,24 +167,24 @@ legend.scheduler-border {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="cm_chgcode">Charge Code</label>  
 						<div class="col-md-3">
-							<input id="cm_chgcode" name="cm_chgcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+							<input id="cm_chgcode" name="cm_chgcode" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 						</div>
 
 						<label class="col-md-2 control-label" for="cm_description">Description</label>  
 						<div class="col-md-3">
-							<input id="cm_description" name="cm_description" type="text" class="form-control input-sm" data-validation="required">
+							<input id="cm_description" name="cm_description" type="text" class="form-control input-sm uppercase" data-validation="required">
 						</div>
 					</div>   
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="cm_barcode">Bar Code</label>  
 						<div class="col-md-3">
-							<input id="cm_barcode" name="cm_barcode" type="text" class="form-control input-sm">
+							<input id="cm_barcode" name="cm_barcode" type="text" class="form-control input-sm uppercase">
 						</div>
 
 						<label class="col-md-2 control-label" for="cm_brandname">Generic</label>  
 						<div class="col-md-3">
-							<input id="cm_brandname" name="cm_brandname" type="text" class="form-control input-sm">
+							<input id="cm_brandname" name="cm_brandname" type="text" class="form-control input-sm uppercase">
 						</div>
 					</div>
 
@@ -170,7 +194,7 @@ legend.scheduler-border {
 						<label class="col-md-2 control-label" for="cm_chgclass">Class Code</label>
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="cm_chgclass" name="cm_chgclass" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="cm_chgclass" name="cm_chgclass" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -191,7 +215,7 @@ legend.scheduler-border {
 						<label class="col-md-2 control-label" for="cm_chggroup">Charge Group</label>  
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="cm_chggroup" name="cm_chggroup" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="cm_chggroup" name="cm_chggroup" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -202,7 +226,7 @@ legend.scheduler-border {
 						<label class="col-md-2 control-label" for="cm_chgtype">Charge Type</label>
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="cm_chgtype" name="cm_chgtype" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+								<input id="cm_chgtype" name="cm_chgtype" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -222,7 +246,7 @@ legend.scheduler-border {
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="cm_uom">UOM</label>  
 							<div class="col-md-3">
-								<input id="cm_uom" name="cm_uom" type="text" class="form-control input-sm" rdonly>
+								<input id="cm_uom" name="cm_uom" type="text" class="form-control input-sm uppercase" rdonly>
 							</div>
 
 							<label class="col-md-2 control-label" for="cm_invflag">Inventory Item</label>
@@ -235,24 +259,24 @@ legend.scheduler-border {
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="cm_packqty">Packing</label>  
 							<div class="col-md-3">
-								<input id="cm_packqty" name="cm_packqty" type="text" class="form-control input-sm" rdonly>
+								<input id="cm_packqty" name="cm_packqty" type="text" class="form-control input-sm uppercase" rdonly>
 							</div>
 
 							<label class="col-md-2 control-label" for="cm_druggrcode">Drug Group Code</label>  
 							<div class="col-md-3">
-								<input id="cm_druggrcode" name="cm_druggrcode" type="text" class="form-control input-sm" rdonly>
+								<input id="cm_druggrcode" name="cm_druggrcode" type="text" class="form-control input-sm uppercase" rdonly>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="cm_subgroup">Sub Group</label>  
 							<div class="col-md-3">
-								<input id="cm_subgroup" name="cm_subgroup" type="text" class="form-control input-sm" rdonly>
+								<input id="cm_subgroup" name="cm_subgroup" type="text" class="form-control input-sm uppercase" rdonly>
 							</div>
 
 							<label class="col-md-2 control-label" for="cm_stockcode">Stock Code</label>  
 							<div class="col-md-3">
-								<input id="cm_stockcode" name="cm_stockcode" type="text" class="form-control input-sm" rdonly>
+								<input id="cm_stockcode" name="cm_stockcode" type="text" class="form-control input-sm uppercase" rdonly>
 							</div>
 						</div>
 					</fieldset>
@@ -273,7 +297,7 @@ legend.scheduler-border {
 						<label class="col-md-2 control-label" for="cm_costcode">Doctor Code</label>  
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="cm_costcode" name="cm_costcode" type="text" maxlength="12" class="form-control input-sm">
+								<input id="cm_costcode" name="cm_costcode" type="text" maxlength="12" class="form-control input-sm uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -284,7 +308,7 @@ legend.scheduler-border {
 						<label class="col-md-2 control-label" for="cm_revcode">Revenue Dept. Code</label>  
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="cm_revcode" name="cm_revcode" type="text" maxlength="12" class="form-control input-sm">
+								<input id="cm_revcode" name="cm_revcode" type="text" maxlength="12" class="form-control input-sm uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -292,7 +316,7 @@ legend.scheduler-border {
 
 						<label class="col-md-2 control-label" for="cm_seqno">Sequence No</label>  
 						<div class="col-md-3">
-							<input id="cm_seqno" name="cm_seqno" type="text" class="form-control input-sm">
+							<input id="cm_seqno" name="cm_seqno" type="text" class="form-control input-sm uppercase">
 						</div>
 					</div>
 
@@ -317,12 +341,12 @@ legend.scheduler-border {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="cm_upduser">Last User</label>  
 						<div class="col-md-3">
-							<input id="cm_upduser" name="cm_upduser" type="text" class="form-control input-sm" rdonly>
+							<input id="cm_upduser" name="cm_upduser" type="text" class="form-control input-sm uppercase" rdonly>
 						</div>
 
 						<label class="col-md-2 control-label" for="cm_upddate">Last Update</label>  
 						<div class="col-md-3">
-							<input id="cm_upddate" name="cm_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+							<input id="cm_upddate" name="cm_upddate" type="text" maxlength="30" class="form-control input-sm uppercase" rdonly>
 						</div>
 					</div> 
 					
@@ -330,7 +354,7 @@ legend.scheduler-border {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="cm_lastcomputerid">Computer Id</label>  
 						<div class="col-md-3">
-							<input id="cm_lastcomputerid" name="cm_lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly>
+							<input id="cm_lastcomputerid" name="cm_lastcomputerid" type="text" class="form-control input-sm uppercase" data-validation="required" rdonly>
 						</div>
 
 						<label class="col-md-2 control-label" for="cm_lastipaddress">IP Address</label>  
@@ -357,80 +381,6 @@ legend.scheduler-border {
 				<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 			</div>
 		</div>	
-
-		<!--------------------------------Charge Price Form-------------------------------->
-		<div id="ChgPriceDtl" title="Charge Price Detail">
-        	<form class='form-horizontal' style='width:99%' id='FChgPriceDtl'>
-				{{ csrf_field() }}
-				<input type="hidden" id="d_idno" name="idno">
-				<!-- <input type="hidden" id="d_authorid" name="authorid"> -->
-            
-            	<div class="form-group">
-				 	<label class="col-md-2 control-label" for="effdate">Effective Date</label>  
-					<div class="col-md-2">
-						<input id="dtl_effdate" name="effdate" type="date" maxlength="12" class="form-control input-sm">
-					</div>
-
-				  	<label class="col-md-2 control-label" for="amt1">Price 1</label>  
-					<div class="col-md-2">
-						<input id="dtl_amt1" name="amt1" type="text" maxlength="12" class="form-control input-sm">
-					</div>
-                </div>
-            
-            	<div class="form-group">
-					<label class="col-md-2 control-label" for="amt2">Price 2</label>  
-					<div class="col-md-2">
-						<input id="dtl_amt2" name="amt2" type="text" maxlength="12" class="form-control input-sm">
-					</div>	
-
-					<label class="col-md-2 control-label" for="amt3">Price 3</label>  
-					<div class="col-md-2">
-						<input id="dtl_amt3" name="amt3" type="text" maxlength="12" class="form-control input-sm">
-					</div>
-                </div>		
-                 
-                <div class="form-group">
-					<label class="col-md-2 control-label" for="costprice">Cost Price</label>  
-					<div class="col-md-2">
-						<input id="dtl_costprice" name="costprice" type="text" maxlength="12" class="form-control input-sm">
-					</div>
-
-					<label class="col-md-2 control-label" for="iptax">Inpatient Tax</label>  
-					<div class="col-md-2">
-						<div class='input-group'>
-							<input id="dtl_iptax" name="iptax" type="text" class="form-control input-sm" data-validation="required">
-							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-						</div>
-						<span class="help-block"></span>
-					</div>
-                </div>	
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="optax">Outpatient Tax</label>  
-					<div class="col-md-2">
-						<div class='input-group'>
-							<input id="dtl_optax" name="optax" type="text" class="form-control input-sm" data-validation="required">
-							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-						</div>
-						<span class="help-block"></span>
-					</div>
-                </div>
-                
-                <div class="form-group">
-					<label class="col-md-2 control-label" for="lastuser">User ID</label>  
-					<div class="col-md-2">
-						<input name="lastuser" type="text" maxlength="12" class="form-control input-sm" rdonly>
-					</div>	
-
-					<label class="col-md-2 control-label" for="lastupdate">Last Updated</label>  
-					<div class="col-md-2">
-						<input name="lastupdate" type="text" maxlength="12" class="form-control input-sm" rdonly>
-					</div>
-                </div>
-			</form>
-		</div>
-		<!--------------------------------Charge Price Form-------------------------------->	
-
 	</div>
 
 @endsection

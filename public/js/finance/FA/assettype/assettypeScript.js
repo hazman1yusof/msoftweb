@@ -83,7 +83,7 @@
 				close: function (event, ui) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField, '#formdata');
-					$('#formdata .alert').detach();
+					$('.my-alert').detach();
 					$("#formdata a").off();
 					if (oper == 'view') {
 						$(this).dialog("option", "buttons", butt1);

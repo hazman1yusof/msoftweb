@@ -210,10 +210,17 @@ function emptyFormdata(errorField,form,except){
 	}
 }
 
-function trimmall(form){
+function trimmall(form,uppercase){
 	var serializedForm =  $( form ).serializeArray();
 	$.each( serializedForm, function( i, field ) {
-    	field.value=field.value.trim();
+		if(field.name!='_token'){
+			if(uppercase){
+    			field.value=field.value.trim().toUpperCase();
+			}else{
+				field.value=field.value.trim();
+			}
+    	}
+    	//turn uppercase and trim
     });
 	//turn it into a string if you wish
 	let serializedForm_ = $.param(serializedForm);
@@ -221,17 +228,16 @@ function trimmall(form){
 	return serializedForm_;
 }
 
-function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback){
+function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback,uppercase=true){
 	if(obj==null){
 		obj={};
 	}
 	$('.ui-dialog-buttonset button[role=button]').prop('disabled',true);
 	saveParam.oper=oper;
 
-	let serializedForm = trimmall(form);
-	console.log(serializedForm);
-	
-	$.post( saveParam.url+'?'+$.param(saveParam), $( form ).serialize()+'&'+$.param(obj) , function( data ) {
+	let serializedForm = trimmall(form,uppercase);
+
+	$.post( saveParam.url+'?'+$.param(saveParam), serializedForm+'&'+$.param(obj) , function( data ) {
 		
 	}).fail(function(data) {
 		errorText(dialog.substr(1),data.responseText);
@@ -260,7 +266,7 @@ function addmore(addmore,grid,oper){
 }
 
 function errorText(dialog,text){///?
-	$("div[aria-describedby="+dialog+"] .ui-dialog-buttonpane" ).prepend("<div class='alert alert-warning'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Error!</strong> "+text+"</div>");
+	$("div[aria-describedby="+dialog+"] .ui-dialog-buttonpane" ).prepend("<div class='alert alert-warning my-alert'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Error!</strong> "+text+"</div>");
 }
 
 var delay = (function(){
@@ -279,6 +285,19 @@ function populateSelect(grid,form){
 			}
 			else{
 				$( form+" [name=Scol]" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+value['name']+"'>"+value['label']+"</input></label>" );
+			}
+		}
+	});
+}
+
+function populateSelect2(grid,form){
+
+	$.each($(grid).jqGrid('getGridParam','colModel'), function( index, value ) {
+		if(value['canSearch']){
+			if(value['selected']){
+				$( form+" [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+			}else{
+				$( form+" [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
 			}
 		}
 	});
@@ -472,6 +491,10 @@ function currencymode(arraycurrency){
 	function currencyRealval(v){
 		return numeral().unformat($(v).val());
 	}
+}
+
+function currencyRealval(v){
+	return numeral().unformat($(v).val());
 }
 
 function modal(){
@@ -909,6 +932,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function onTab(event){
+		console.log('tab')
 		renull_search(event.data.data);
 		var textfield = $(event.currentTarget);
 		if(event.key == "Tab" && textfield.val() != ""){

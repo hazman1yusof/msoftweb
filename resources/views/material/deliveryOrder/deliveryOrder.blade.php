@@ -37,7 +37,7 @@ i.fa {
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
-	@if (Request::get('scope') == 'ALL')
+	@if (Request::get('scope') == 'all')
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="POSTED">
 	@else
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
@@ -98,14 +98,14 @@ i.fa {
 					<span id="error_infront" style="color: red"></span>
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">
-						@if (Request::get('scope') == 'ALL')
+						@if (Request::get('scope') == 'all')
 							{{'POST ALL'}}
 						@else
-							{{Request::get('scope').' ALL'}}
+							{{Request::get('scope').' all'}}
 						@endif
 					</button>
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
-						@if (Request::get('scope') == 'ALL')
+						@if (Request::get('scope') == 'all')
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}
@@ -186,7 +186,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="delordhd_prdept">Purchase Department</label>	 
 								<div class="col-md-4">
 									<div class='input-group'>
-									<input id="delordhd_prdept" name="delordhd_prdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<input id="delordhd_prdept" name="delordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									  <span class="help-block"></span>
@@ -195,7 +195,7 @@ i.fa {
 						  		<label class="col-md-1 control-label" for="delordhd_srcdocno">PO No</label>  
 						  		<div class="col-md-2"> 
 						  			<div class='input-group'>
-										<input id="delordhd_srcdocno" name="delordhd_srcdocno" type="text" maxlength="12" class="form-control input-sm" >
+										<input id="delordhd_srcdocno" name="delordhd_srcdocno" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 								  </div>
@@ -210,7 +210,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="delordhd_suppcode">Supplier Code</label>	 
 								 <div class="col-md-4">
 									  <div class='input-group'>
-										<input id="delordhd_suppcode" name="delordhd_suppcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="delordhd_suppcode" name="delordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -218,7 +218,7 @@ i.fa {
 
 								<label class="col-md-1 control-label" for="delordhd_delordno">DO No</label>  
 						  		<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
-						  			<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm" data-validation="required">
+						  			<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						  		</div>
 
 						  		<label class="col-md-1 control-label" for="delordhd_recno">Record No</label>  
@@ -231,7 +231,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="delordhd_deldept">Delivery Department</label>
 								<div class="col-md-4">
 									  <div class='input-group'>
-										<input id="delordhd_deldept" name="delordhd_deldept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="delordhd_deldept" name="delordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -240,7 +240,7 @@ i.fa {
 								<label class="col-md-1 control-label" for="delordhd_credcode">Creditor</label>	  
 								<div class="col-md-2">
 									  <div class='input-group'>
-										<input id="delordhd_credcode" name="delordhd_credcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="delordhd_credcode" name="delordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -256,7 +256,7 @@ i.fa {
 						  	<label class="col-md-2 control-label" for="delordhd_reqdept">Request Department</label>	  
 								<div class="col-md-4" id="delordhd_reqdept_parent">
 									  <div class='input-group'>
-										<input id="delordhd_reqdept" name="delordhd_reqdept" type="text" maxlength="12" class="form-control input-sm" >
+										<input id="delordhd_reqdept" name="delordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -326,7 +326,7 @@ i.fa {
 							  <label class="col-md-2 control-label" for="delordhd_respersonid">Certified By</label> 
 							  <div class="col-md-2">
 								  <div class='input-group'>
-									<input id="delordhd_respersonid" name="delordhd_respersonid" type="text" maxlength="12" class="form-control input-sm">
+									<input id="delordhd_respersonid" name="delordhd_respersonid" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
 								  <span class="help-block"></span>
@@ -336,7 +336,7 @@ i.fa {
 							<div class="form-group">
 					    		<label class="col-md-2 control-label" for="delordhd_remarks">Remarks</label> 
 					    		<div class="col-md-5"> 
-					    		<textarea class="form-control input-sm" name="delordhd_remarks" rows="2" cols="55" maxlength="400" id="delordhd_remarks" ></textarea>
+					    		<textarea class="form-control input-sm text-uppercase" name="delordhd_remarks" rows="2" cols="55" maxlength="400" id="delordhd_remarks" ></textarea>
 					    		</div>
 					    	
 					   		</div>
@@ -388,7 +388,7 @@ i.fa {
 			<div id="dialog_remarks" title="Remarks">
 			  <div class="panel panel-default">
 			    <div class="panel-body">
-			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm" style="width:100%;"></textarea>
+			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
 			    </div>
 			  </div>
 			</div>

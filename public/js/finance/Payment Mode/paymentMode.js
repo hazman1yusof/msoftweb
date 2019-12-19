@@ -255,7 +255,7 @@ $(document).ready(function () {
 			dialog_cardbank.off();
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
-			$('#formdata .alert').detach();
+			$('.my-alert').detach();
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
 			}

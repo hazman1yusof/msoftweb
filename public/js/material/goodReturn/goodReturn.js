@@ -31,6 +31,7 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#amount']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","delordhd_idno","delordhd_recstatus");
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#trandate"]);
@@ -104,6 +105,7 @@ $(document).ready(function () {
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdata2');
 			// $('.alert').detach();
+			$('.my-alert').detach();
 			// $("#formdata a").off();
 			dialog_authorise.off();
 			dialog_prdept.off();
@@ -163,6 +165,13 @@ $(document).ready(function () {
 	}
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
+	var recstatus_filter = [['OPEN','POSTED']];
+		if($("#recstatus_use").val() == 'POSTED'){
+			recstatus_filter = [['OPEN','POSTED']];
+			filterCol_urlParam = ['delordhd.compcode'];
+			filterVal_urlParam = ['session.compcode'];
+		}
+
 	var urlParam={
 		action:'get_table_default',
 		url:'/util/get_table_default',
@@ -184,7 +193,8 @@ $(document).ready(function () {
 		fixPost:'true',
 		oper:oper,
 		table_name:'material.delordhd',
-		table_id:'delordhd_recno'
+		table_id:'delordhd_recno',
+		checkduplicate:'true'
 	};
 	function padzero(cellvalue, options, rowObject){
 		let padzero = 5, str="";
@@ -234,6 +244,7 @@ $(document).ready(function () {
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 20, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 20, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'delordhd_recstatus', width: 20},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
 			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 25, classes: 'wrap',hidden:true},
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 25, classes: 'wrap', hidden:true},
@@ -277,7 +288,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
-			switch($("#scope").val()){
+			/*switch($("#scope").val()){
 				case "dataentry":
 					$("label[for=delordhd_reqdept]").hide();
 					$("#delordhd_reqdept_parent").hide();
@@ -305,6 +316,21 @@ $(document).ready(function () {
 						$('#but_reopen_jq').hide();
 					}
 				break;
+			}*/
+
+			let scope = $("#recstatus_use").val();
+
+			if (stat == scope) {
+				$('#but_reopen_jq').show();
+				$('#but_post_single_jq,#but_cancel_jq').hide();
+			} else if (stat == "CANCELLED") {
+				$('#but_reopen_jq').show();
+				$('#but_post_single_jq,#but_cancel_jq').hide();
+			} else {
+				if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+					$('#but_cancel_jq,#but_post_single_jq').show();
+				}
+				$('#but_reopen_jq').hide();
 			}
 
 			urlParam2.filterVal[0]=selrowData("#jqGrid").delordhd_recno;
@@ -322,6 +348,10 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+
+			cbselect.checkbox_function_on();
+			cbselect.refresh_seltbl();
+
 		},
 		
 	});
@@ -1128,6 +1158,19 @@ $(document).ready(function () {
 			$('input',elem).val(value);
 		}
 	}
+
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
+	}
+
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){ //actually saving the header
@@ -2085,6 +2128,26 @@ $(document).ready(function () {
 		let data = $('#jqGrid2').jqGrid ('getRowData', id);
 		$("#jqGrid2 #"+id+"_pouom_gstpercent").val(data.rate);
 	}
+
+	$("#jqGrid_selection").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
+		shrinkToFit: false,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		sortname: 'delordhd_idno',
+		sortorder: "desc",
+		onSelectRow: function (rowid, selected) {
+			console.log(rowid);
+			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
+		},
+		gridComplete: function(){
+			
+		},
+	})
+	jqgrid_label_align_right("#jqGrid_selection");
+	cbselect.on();
 
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));

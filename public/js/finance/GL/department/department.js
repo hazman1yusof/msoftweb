@@ -196,7 +196,7 @@
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
 					//$('.alert').detach();
-					$('#formdata .alert').detach();
+					$('.my-alert').detach();
 					dialog_costcode.off();
 					dialog_sector.off();
 					dialog_region.off();

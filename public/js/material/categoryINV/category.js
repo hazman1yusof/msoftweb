@@ -95,7 +95,7 @@
 					emptyFormdata(errorField,'#formdata');
 					parent_close_disabled(false);
 					//$('.alert').detach();
-					$('#formdata .alert').detach();
+					$('.my-alert').detach();
 					dialog_stockacct.off();
 					dialog_cosacct.off();
 					dialog_adjacct.off();
@@ -130,7 +130,8 @@
 				oper:oper,
 				table_name:'material.category',
 				table_id:'catcode',
-				saveip:'true'
+				saveip:'true',
+				checkduplicate: 'true'
 			};
 
 			//////////////////////////////////////////////////////////////////////////////////////////////

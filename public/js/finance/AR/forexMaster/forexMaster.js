@@ -67,7 +67,7 @@
 				},
 				close: function( event, ui ) {
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
+					$('.my-alert').detach();
 					$("#formdata a").off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
@@ -93,6 +93,7 @@
 				table_name:'debtor.forexmaster',
 				table_id:'forexcode',
 				sort_idno:true,
+				checkduplicate:'true'
 
 			};
 			

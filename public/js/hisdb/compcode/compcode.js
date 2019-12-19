@@ -79,7 +79,8 @@
 				},
 				close: function( event, ui ) {
 					emptyFormdata(errorField,'#formdata');
-					$('.alert').detach();
+					//$('.alert').detach();
+					$('.my-alert').detach();
 					$("#formdata a").off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
@@ -105,7 +106,8 @@
 				field:'',
 				oper:oper,
 				table_name:'sysdb.company',
-				table_id:'compcode'
+				table_id:'compcode',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

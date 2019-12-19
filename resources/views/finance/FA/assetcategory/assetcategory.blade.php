@@ -38,12 +38,12 @@
 			<div class="form-group">
 				<label class="col-md-3 control-label" for="assetcode">Category</label>  
 				<div class="col-md-2">
-                    <input id="assetcode" name="assetcode" type="text" maxlength="100" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                    <input id="assetcode" name="assetcode" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                 </div>
 					   
 				<label class="col-md-3 control-label" for="description" hidden="">Description</label>  
                 <div class="col-md-5">
-                    <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" >
+                    <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase">
                 </div>
 			</div>
                 
@@ -51,7 +51,7 @@
 				<label class="col-md-3 control-label" for="assettype">Type</label>  
 				<div class="col-md-2">
 					<div class='input-group'>
-						<input id="assettype" name="assettype" type="text" maxlength="8" class="form-control input-sm" data-validation="required"/>
+						<input id="assettype" name="assettype" type="text" maxlength="8" class="form-control input-sm text-uppercase" data-validation="required"/>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
@@ -62,7 +62,7 @@
 				<label class="col-md-3 control-label" for="deptcode">Department</label>  
 				<div class="col-md-2">
 					<div class='input-group'>
-						<input id="deptcode" name="deptcode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
@@ -128,7 +128,7 @@
 				<label class="col-md-3 control-label" for="glassetccode">Asset</label>  
 				<div class="col-md-2">
 					<div class='input-group'>
-						<input id="glassetccode" name="glassetccode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="glassetccode" name="glassetccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
@@ -136,7 +136,7 @@
 				
 				<div class="col-md-2">
 					<div class='input-group'>
-						<input id="glasset" name="glasset" type="text" class="form-control input-sm" data-validation="required">
+						<input id="glasset" name="glasset" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
@@ -147,7 +147,7 @@
 				<label class="col-md-3 control-label" for="gldepccode">Depreciation Code</label>  
 				<div class="col-md-2">
 					<div class='input-group'>
-						<input id="gldepccode" name="gldepccode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="gldepccode" name="gldepccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
@@ -156,7 +156,7 @@
 				<label class="col-md-3 control-label" for="gldep" hidden="">Depreciation</label>  
                     <div class="col-md-2">
 					  	<div class='input-group'>
-							<input id="gldep" name="gldep" type="text" class="form-control input-sm" data-validation="required">
+							<input id="gldep" name="gldep" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  	</div>
 					  	<span class="help-block"></span>
@@ -167,7 +167,7 @@
 				<label class="col-md-3 control-label" for="glprovccode">Provision for Depriciation Code</label>  
 				  	<div class="col-md-2">
 					  	<div class='input-group'>
-							<input id="glprovccode" name="glprovccode" type="text" class="form-control input-sm" data-validation="required">
+							<input id="glprovccode" name="glprovccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -176,7 +176,7 @@
 				<label class="col-md-3 control-label" for="glprovdep" hidden="">Provision for Depriciation</label>
                     <div class="col-md-2">
 					  	<div class='input-group'>
-							<input id="glprovdep" name="glprovdep" type="text" class="form-control input-sm" data-validation="required">
+							<input id="glprovdep" name="glprovdep" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  	</div>
 					  	<span class="help-block"></span>
@@ -187,7 +187,7 @@
 				  	<label class="col-md-3 control-label" for="glglossccode">Gain Code</label>  
 				 	<div class="col-md-2">
 					  	<div class='input-group'>
-							<input id="glglossccode" name="glglossccode" type="text" class="form-control input-sm" data-validation="required">
+							<input id="glglossccode" name="glglossccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  	</div>
 					  	<span class="help-block"></span>
@@ -196,7 +196,7 @@
 					<label class="col-md-3 control-label" for="glgainloss" hidden="">Gain</label>  
                     <div class="col-md-2">
 					  	<div class='input-group'>
-							<input id="glgainloss" name="glgainloss" type="text" class="form-control input-sm" data-validation="required">
+							<input id="glgainloss" name="glgainloss" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  	</div>
 					  	<span class="help-block"></span>
@@ -207,7 +207,7 @@
 				  	<label class="col-md-3 control-label" for="glrevccode">Loss Code</label>  
 				  	<div class="col-md-2">
 					  	<div class='input-group'>
-							<input id="glrevccode" name="glrevccode" type="text" class="form-control input-sm" data-validation="required">
+							<input id="glrevccode" name="glrevccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  	</div>
 					  	<span class="help-block"></span>
@@ -216,7 +216,7 @@
 					<label class="col-md-3 control-label" for="glrevaluation" hidden="">Loss</label> 
                       	<div class="col-md-2">
 					  		<div class='input-group'>
-								<input id="glrevaluation" name="glrevaluation" type="text" class="form-control input-sm" data-validation="required">
+								<input id="glrevaluation" name="glrevaluation" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					  		<span class="help-block"></span>

@@ -151,7 +151,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="txndept">Transaction Department</label>
 									<div class="col-md-2">
 									  <div class='input-group'>
-										<input id="txndept" name="txndept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="txndept" name="txndept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -172,7 +172,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="trantype">Transaction Type</label>
 									<div class="col-md-2">
 									  <div class='input-group'>
-										<input id="trantype" name="trantype" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="trantype" name="trantype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -186,7 +186,7 @@ i.fa {
 						  		<label class="col-md-2 control-label" for="srcdocno">Request No</label>  
 						  			<div class="col-md-2" id="srcdocno_parent">
 									  	<div class='input-group'>
-											<input id="srcdocno" name="srcdocno" type="text" class="form-control input-sm" >
+											<input id="srcdocno" name="srcdocno" type="text" class="form-control input-sm text-uppercase">
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										</div>
 						  			</div>
@@ -206,7 +206,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="sndrcv">Receiver</label>	  
 									<div class="col-md-2" id="sndrcv_parent">
 										  <div class='input-group'>
-											<input id="sndrcv" name="sndrcv" type="text" class="form-control input-sm" data-validation="required">
+											<input id="sndrcv" name="sndrcv" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										  </div>
 										  <span class="help-block"></span>
@@ -228,7 +228,7 @@ i.fa {
 							<div class="form-group">
 					    		<label class="col-md-2 control-label" for="remarks">Remarks</label> 
 						    		<div class="col-md-6"> 
-						    			<textarea class="form-control input-sm" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" ></textarea>
+						    			<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" ></textarea>
 						    		</div>
 						    	
 					   		</div>

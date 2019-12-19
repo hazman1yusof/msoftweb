@@ -19,14 +19,14 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="hdrtype">Header Type</label>  
 				  <div class="col-md-3">
-						<input id="hdrtype" name="hdrtype" type="text" maxlength="2" class="form-control input-sm" data-validation="required" frozeOnEdit>
+						<input id="hdrtype" name="hdrtype" type="text" maxlength="2" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 				  </div>
 				</div>
 
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="description">Description</label>  
 				  <div class="col-md-8">
-				  <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+				  <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
 				</div>
                 
@@ -34,7 +34,7 @@
 				  <label class="col-md-2 control-label" for="depccode">Deposit Cost</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="depccode" name="depccode" type="text" maxlength="10" class="form-control input-sm" data-validation="required">
+						<input id="depccode" name="depccode" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -43,7 +43,7 @@
 				  <label class="col-md-2 control-label" for="depglacc">Deposit GL Account</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="depglacc" name="depglacc" type="text" class="form-control input-sm" data-validation="required">
+						<input id="depglacc" name="depglacc" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>

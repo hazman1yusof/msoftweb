@@ -104,14 +104,61 @@ class PurchaseOrderController extends defaultController
                 $totalAmount = $this->save_dt_from_othr_pr($request->referral,$recno);
 
                 $purreqno = $request->purordhd_purreqno;
-                $purordno = $request->purordhd_purordno;
+                // $purordno = $request->purordhd_purordno;
 
                 ////dekat po header sana, save balik delordno dkt situ
                 DB::table('material.purreqhd')
-                ->where('purreqno','=',$purreqno)->where('compcode','=',session('compcode'))
-                ->update(['purordno' => $purordno]);
+                    ->where('purreqno','=',$purreqno)
+                    ->where('compcode','=',session('compcode'))
+                    ->update(['purordno' => $purordno]);
 
             }
+
+
+            /////////////part utk authorization/////////
+            $purordhd = DB::table("material.purordhd")
+                        ->where('idno','=',$idno);
+
+            $purordhd_get = $purordhd->first();
+
+            // 1. check authorization
+            $authorise = DB::table('material.authdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('trantype','=','PO')
+                ->where('cando','=', 'A')
+                ->where('recstatus','=','REQUEST')
+                ->where('deptcode','=',$purordhd_get->prdept)
+                ->where('maxlimit','>=',$purordhd_get->totamount);
+
+            if(!$authorise->exists()){
+
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PO')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','REQUEST')
+                    ->where('deptcode','=','ALL')
+                    ->where('deptcode','=','all')
+                    ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                    if(!$authorise->exists()){
+                        throw new \Exception("Authorization for this Purchase Order doesnt exists");
+                    }
+
+            }
+
+            $authorise_use = $authorise->first();
+            DB::table("material.queuepo")
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'recno' => $purordhd_get->recno,
+                    'AuthorisedID' => $authorise_use->authorid,
+                    'deptcode' => $purordhd_get->prdept,
+                    'recstatus' => 'OPEN',
+                    'trantype' => 'REQUEST',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
 
             $responce = new stdClass();
             $responce->purordno = $purordno;
@@ -246,79 +293,63 @@ class PurchaseOrderController extends defaultController
             foreach ($request->idno_array as $value){
 
                 $purordhd = DB::table('material.purordhd')
-                    ->where('idno','=',$value)
-                    ->where('compcode','=',session('compcode'));
+                    ->where('idno','=',$value);
 
                 $purordhd_get = $purordhd->first();
 
                  // 1. check authorization
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('trantype','=','PR')
+                    ->where('trantype','=','PO')
                     ->where('cando','=', 'A')
-                    ->where('recstatus','=','Support')
+                    ->where('recstatus','=','SUPPORT')
                     ->where('deptcode','=',$purordhd_get->prdept)
-                    ->orWhere('deptcode','=','ALL')
-                    ->orWhere('deptcode','=','all');
+                    ->where('maxlimit','>=',$purordhd_get->totamount);
 
                 if(!$authorise->exists()){
-                    throw new \Exception("Authorization for this purchase request doesnt exists");
+
+                    $authorise = DB::table('material.authdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PO')
+                        ->where('cando','=', 'A')
+                        ->where('recstatus','=','SUPPORT')
+                        ->where('deptcode','=','ALL')
+                        ->where('deptcode','=','all')
+                        ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                        if(!$authorise->exists()){
+                            throw new \Exception("Authorization for this Purchase Order doesnt exists");
+                        }
+
                 }
 
-                $authorise = $authorise->get();
-                $totamount = $purordhd_get->totamount;
-                $idno_auth;
+                $authorise_use = $authorise->first();
 
-                foreach ($authorise as $value) {
-                    $idno_auth = $value->idno;
-                    if($totamount>$value->maxlimit){
-                        continue;
-                    }else{
-                        break;
-                    }
-                }
-
-                $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
-
-                // 2. make queue
+                // 2. update queue
                 DB::table("material.queuepo")
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'recno' => $purordhd_get->recno,
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
                         'AuthorisedID' => $authorise_use->authorid,
-                        'deptcode' => $purordhd_get->reqdept,
-                        'recstatus' => 'POSTED',
-                        'trantype' => 'SUPPORT',
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        'recstatus' => 'REQUEST',
+                        'trantype' => 'SUPPORT'
                     ]);
 
                 // 3. change recstatus to posted
                 $purordhd
                     ->update([
-                        'postedby' => session('username'),
-                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        'recstatus' => 'POSTED' 
+                        'requestby' => session('username'),
+                        'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'supportby' => $authorise_use->authorid,
+                        'recstatus' => 'REQUEST'
                     ]);
 
-                $po_dt = DB::table('material.purorddt')
-                    ->where('recno', '=', $purordhd_get->recno)
-                    ->where('compcode', '=', session('compcode'))
-                    ->where('recstatus', '<>', 'DELETE')
-                    ->get();
-
-                foreach ($po_dt as $key => $value) {
-                    DB::table('material.purorddt')
-                        ->where('recno','=',$purordhd_get->recno)
-                        ->where('lineno_', '=', $value->lineno_)
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recstatus','!=','DELETE')
-                        ->update([
-                            'recstatus' => 'POSTED' ,
-                            'qtyoutstand' => $value->qtyorder
-                        ]);
-                }
-
+                DB::table("material.purorddt")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'recstatus' => 'REQUEST',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
 
             }
            
@@ -344,55 +375,53 @@ class PurchaseOrderController extends defaultController
 
             // 1. check authorization
             $authorise = DB::table('material.authdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('trantype','=','PR')
-                ->where('cando','=', 'A')
-                ->where('recstatus','=','Support')
-                ->where('deptcode','=',$purordhd_get->prdept)
-                ->orWhere('deptcode','=','ALL')
-                ->orWhere('deptcode','=','all');
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PO')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','SUPPORT')
+                    ->where('deptcode','=',$purordhd_get->prdept)
+                    ->where('maxlimit','>=',$purordhd_get->totamount);
 
             if(!$authorise->exists()){
-                throw new \Exception("Authorization for this purchase request doesnt exists");
+
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PO')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','SUPPORT')
+                    ->where('deptcode','=','ALL')
+                    ->where('deptcode','=','all')
+                    ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                    if(!$authorise->exists()){
+                        throw new \Exception("Authorization for this Purchase Order doesnt exists");
+                    }
             }
 
-            $authorise = $authorise->get();
-            $totamount = $purordhd_get->totamount;
-            $idno_auth;
+            $authorise_use = $authorise->first();
 
-            foreach ($authorise as $value) {
-                $idno_auth = $value->idno;
-                if($totamount>$value->maxlimit){
-                    continue;
-                }else{
-                    break;
-                }
-            }
-
-            $authorise_use = DB::table('material.authdtl')->where('idno','=',$idno_auth)->first();
-
-            // 2. make queue
+            // 2. update queue
             DB::table("material.queuepo")
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'recno' => $purordhd_get->recno,
+                ->where('recno','=',$purordhd_get->recno)
+                ->update([
                     'AuthorisedID' => $authorise_use->authorid,
-                    'deptcode' => $purordhd_get->reqdept,
-                    'recstatus' => 'POSTED',
-                    'trantype' => 'SUPPORT',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'recstatus' => 'REQUEST',
+                    'trantype' => 'SUPPORT'
                 ]);
 
-            // 3. update status to posted
-            $purreqhd->update([
-                    'recstatus' => 'POSTED'
+            // 3. change recstatus to posted
+            $purordhd
+                ->update([
+                    'requestby' => session('username'),
+                    'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'supportby' => $authorise_use->authorid,
+                    'recstatus' => 'REQUEST'
                 ]);
 
             DB::table("material.purorddt")
                 ->where('recno','=',$purordhd_get->recno)
                 ->update([
-                    'recstatus' => 'POSTED',
+                    'recstatus' => 'REQUEST',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -552,7 +581,36 @@ class PurchaseOrderController extends defaultController
 
                 $purordhd_get = $purordhd->first();
 
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PO')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','VERIFIED')
+                    ->where('deptcode','=',$purordhd_get->prdept)
+                    ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                if(!$authorise->exists()){
+
+                    $authorise = DB::table('material.authdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PO')
+                        ->where('cando','=', 'A')
+                        ->where('recstatus','=','VERIFIED')
+                        ->where('deptcode','=','ALL')
+                        ->where('deptcode','=','all')
+                        ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                        if(!$authorise->exists()){
+                            throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                        }
+                        
+                }
+
+                $authorise_use = $authorise->first();
+
                 $purordhd->update([
+                        'verifiedby' => $authorise_use->authorid,
+                        'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'SUPPORT'
                     ]);
 
@@ -562,6 +620,16 @@ class PurchaseOrderController extends defaultController
                         'recstatus' => 'SUPPORT',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                DB::table("material.queuepo")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'AuthorisedID' => $authorise_use->authorid,
+                        'recstatus' => 'SUPPORT',
+                        'trantype' => 'VERIFIED',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
             }
@@ -580,14 +648,42 @@ class PurchaseOrderController extends defaultController
          DB::beginTransaction();
 
         try{
-
-
+            
             $purordhd = DB::table("material.purordhd")
                 ->where('idno','=',$request->idno);
 
             $purordhd_get = $purordhd->first();
 
+            $authorise = DB::table('material.authdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('trantype','=','PO')
+                ->where('cando','=', 'A')
+                ->where('recstatus','=','VERIFIED')
+                ->where('deptcode','=',$purordhd_get->prdept)
+                ->where('maxlimit','>=',$purordhd_get->totamount);
+
+            if(!$authorise->exists()){
+
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PO')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','VERIFIED')
+                    ->where('deptcode','=','ALL')
+                    ->where('deptcode','=','all')
+                    ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                    if(!$authorise->exists()){
+                        throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                    }
+                    
+            }
+
+            $authorise_use = $authorise->first();
+
             $purordhd->update([
+                    'verifiedby' => $authorise_use->authorid,
+                    'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'SUPPORT'
                 ]);
 
@@ -599,7 +695,15 @@ class PurchaseOrderController extends defaultController
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-
+            DB::table("material.queuepo")
+                ->where('recno','=',$purordhd_get->recno)
+                ->update([
+                    'AuthorisedID' => $authorise_use->authorid,
+                    'recstatus' => 'SUPPORT',
+                    'trantype' => 'VERIFIED',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
            
             DB::commit();
         
@@ -622,16 +726,55 @@ public function verify(Request $request){
 
                 $purordhd_get = $purordhd->first();
 
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PO')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','APPROVED')
+                    ->where('deptcode','=',$purordhd_get->reqdept)
+                    ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                if(!$authorise->exists()){
+
+                    $authorise = DB::table('material.authdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PO')
+                        ->where('cando','=', 'A')
+                        ->where('recstatus','=','APPROVED')
+                        ->where('deptcode','=','ALL')
+                        ->where('deptcode','=','all')
+                        ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                        if(!$authorise->exists()){
+                            throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                        }
+                        
+                }
+
+                $authorise_use = $authorise->first();
+
                 $purordhd->update([
-                        'recstatus' => 'VERIFY'
+                        'approvedby' => $authorise_use->authorid,
+                        'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'VERIFIED'
                     ]);
 
                 DB::table("material.purorddt")
                     ->where('recno','=',$purordhd_get->recno)
                     ->update([
-                        'recstatus' => 'VERIFY',
+                        'recstatus' => 'VERIFIED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                DB::table("material.queuepo")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'AuthorisedID' => $authorise_use->authorid,
+                        'recstatus' => 'VERIFIED',
+                        'trantype' => 'APPROVED',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
             }
@@ -650,26 +793,62 @@ public function verify(Request $request){
          DB::beginTransaction();
 
         try{
-
-
+            
             $purordhd = DB::table("material.purordhd")
                 ->where('idno','=',$request->idno);
 
             $purordhd_get = $purordhd->first();
 
+            $authorise = DB::table('material.authdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('trantype','=','PO')
+                ->where('cando','=', 'A')
+                ->where('recstatus','=','APPROVED')
+                ->where('deptcode','=',$purordhd_get->reqdept)
+                ->where('maxlimit','>=',$purordhd_get->totamount);
+
+            if(!$authorise->exists()){
+
+                $authorise = DB::table('material.authdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PO')
+                    ->where('cando','=', 'A')
+                    ->where('recstatus','=','APPROVED')
+                    ->where('deptcode','=','ALL')
+                    ->where('deptcode','=','all')
+                    ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                    if(!$authorise->exists()){
+                        throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                    }
+                    
+            }
+
+            $authorise_use = $authorise->first();
+
             $purordhd->update([
-                    'recstatus' => 'VERIFY'
+                    'approvedby' => $authorise_use->authorid,
+                    'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'VERIFIED'
                 ]);
 
             DB::table("material.purorddt")
                 ->where('recno','=',$purordhd_get->recno)
                 ->update([
-                    'recstatus' => 'VERIFY',
+                    'recstatus' => 'VERIFIED',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-
+            DB::table("material.queuepo")
+                ->where('recno','=',$purordhd_get->recno)
+                ->update([
+                    'AuthorisedID' => $authorise_use->authorid,
+                    'recstatus' => 'VERIFIED',
+                    'trantype' => 'APPROVED',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
            
             DB::commit();
         
@@ -687,21 +866,31 @@ public function verify(Request $request){
 
             foreach ($request->idno_array as $value){
 
-                $purordhdpurordhd = DB::table("material.purordhdpurordhd")
+                $purordhd = DB::table("material.purordhd")
                     ->where('idno','=',$value);
 
-                $purordhdpurordhd_get = $purordhdpurordhd->first();
+                $purordhd_get = $purordhd->first();
 
-                $purordhdpurordhd->update([
+                $purordhd->update([
+                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'APPROVED'
                     ]);
 
                 DB::table("material.purorddt")
-                    ->where('recno','=',$purordhdpurordhd_get->recno)
+                    ->where('recno','=',$purordhd_get->recno)
                     ->update([
                         'recstatus' => 'APPROVED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                DB::table("material.queuepo")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'recstatus' => 'APPROVED',
+                        'trantype' => 'DONE',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
             }
@@ -722,11 +911,12 @@ public function verify(Request $request){
         try{
 
             $purordhd = DB::table("material.purordhd")
-                ->where('idno','=',$request->idno);
+                    ->where('idno','=',$request->idno);
 
             $purordhd_get = $purordhd->first();
 
             $purordhd->update([
+                    'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'APPROVED'
                 ]);
 
@@ -736,6 +926,15 @@ public function verify(Request $request){
                     'recstatus' => 'APPROVED',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::table("material.queuepo")
+                ->where('recno','=',$purordhd_get->recno)
+                ->update([
+                    'recstatus' => 'APPROVED',
+                    'trantype' => 'DONE',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
            
             DB::commit();
@@ -820,8 +1019,8 @@ public function verify(Request $request){
      //    }
 
     public function save_dt_from_othr_pr($refer_recno,$recno){
-        $po_dt = DB::table('material.purreqdt')
-                ->select('compcode, recno, lineno_, pricecode, itemcode, uomcode, qtyrequest, unitprice, taxcode,perdisc,amtdisc, amtslstax,amount,recstatus,remarks')
+        $pr_dt = DB::table('material.purreqdt')
+                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'pouom', 'qtyrequest', 'unitprice', 'taxcode','perdisc','amtdisc', 'amtslstax','amount','recstatus','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
@@ -837,7 +1036,8 @@ public function verify(Request $request){
                 'pricecode' => $value->pricecode, 
                 'itemcode' => $value->itemcode, 
                 'uomcode' => $value->uomcode, 
-                'qtyrequest' => $value->qtyrequest, 
+                'pouom' => $value->pouom, 
+                'qtyorder' => $value->qtyrequest, 
                 'unitprice' => $value->unitprice, 
                 'taxcode' => $value->taxcode, 
                 'perdisc' => $value->perdisc, 
@@ -858,7 +1058,7 @@ public function verify(Request $request){
                     ->sum('amount');
 
         ///3. then update to header
-        $table = DB::table('material.purorddt')
+        $table = DB::table('material.purordhd')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$recno);
         $table->update([

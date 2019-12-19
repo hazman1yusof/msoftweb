@@ -33,7 +33,7 @@ $(document).ready(function () {
 		text: "Save", click: function () {
 			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
 				if ($('.nav li.active a').attr('href') == '#grp_main') {
-					saveFormdata("#jqGrid_grpmaintenance", "#dialogForm", "#formdata", oper, saveParam, urlParam, {});
+					saveFormdata("#jqGrid_grpmaintenance", "#dialogForm", "#formdata", oper, saveParam, urlParam, {},undefined,false);
 				} else {
 					saveFormdata("#jqGrid_grpaccess", "#dialogForm", "#formdata", oper, saveParam2, urlParam2,
 						{
@@ -43,7 +43,7 @@ $(document).ready(function () {
 							lineno: selrowData('#jqGrid_grpaccess').lineno,
 							groupid: selrowData('#jqGrid_grpmaintenance').groupid,
 							programmenu: arraybtngrp[arraybtngrp.length - 1]
-						});
+						},undefined,false);
 
 				}
 			}
@@ -162,7 +162,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField, '#formdata');
 			} else {
-				saveFormdata("#jqGrid_grpmaintenance", "#dialogForm", "#formdata", oper, saveParam, urlParam, { groupid: selRowId });
+				saveFormdata("#jqGrid_grpmaintenance", "#dialogForm", "#formdata", oper, saveParam, urlParam, { groupid: selRowId },undefined,false);
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager_grpmaintenance", {

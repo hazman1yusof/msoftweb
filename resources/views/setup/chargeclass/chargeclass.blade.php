@@ -2,6 +2,14 @@
 
 @section('title', 'Charge Class Setup')
 
+@section('style')
+
+input.uppercase {
+	text-transform: uppercase;
+}
+
+@endsection
+
 @section('body')
 
 	<!--***************************** Search + table ******************-->
@@ -84,12 +92,12 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="classcode">Class Code</label>  
 						<div class="col-md-3">
-							<input id="classcode" name="classcode" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+							<input id="classcode" name="classcode" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 						</div>
 					
 						<label class="col-md-2 control-label" for="description">Description</label>  
 						<div class="col-md-3">
-							<input id="description" name="description" type="text" class="form-control input-sm" data-validation="required">
+							<input id="description" name="description" type="text" class="form-control input-sm uppercase" data-validation="required">
 						</div>
 					</div>  
 
@@ -113,12 +121,12 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="lastuser">Last User</label>  
 						<div class="col-md-3">
-							<input id="lastuser" name="adduser" type="text" class="form-control input-sm" rdonly>
+							<input id="lastuser" name="adduser" type="text" class="form-control input-sm uppercase" rdonly>
 						</div>
 
 						<label class="col-md-2 control-label" for="lastupdate">Last Update</label>  
 						<div class="col-md-3">
-							<input id="lastupdate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+							<input id="lastupdate" name="adddate" type="text" maxlength="30" class="form-control input-sm uppercase" rdonly>
 						</div>
 					</div> 
 
@@ -137,7 +145,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
 						<div class="col-md-3">
-							<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly >
+							<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm uppercase" data-validation="required" rdonly >
 						</div>
 
 						<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  

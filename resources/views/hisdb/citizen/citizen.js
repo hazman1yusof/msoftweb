@@ -76,7 +76,8 @@
 				},
 				close: function( event, ui ) {
 					emptyFormdata('#formdata');
-					$('.alert').detach();
+					//$('.alert').detach();
+					$('.my-alert').detach();
 					$("#formdata a").off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
@@ -100,7 +101,8 @@
 				field:'',
 				oper:oper,
 				table_name:'hisdb.citizen',
-				table_id:'Code'
+				table_id:'Code',
+				checkduplicate:'true'
 			};
 			
 			$("#jqGrid").jqGrid({

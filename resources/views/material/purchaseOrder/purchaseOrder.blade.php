@@ -38,7 +38,7 @@ i.fa {
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 	@if (Request::get('scope') == 'ALL')
-		<input id="recstatus_use" name="recstatus_use" type="hidden" value="POSTED">
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
 	@else
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
 	@endif
@@ -71,6 +71,11 @@ i.fa {
 							</div>
 							
 						</div>
+
+					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
+					  		<p id="p_error"></p>
+					  	</div>
+
 		             </div>
 				</div>
 
@@ -78,10 +83,11 @@ i.fa {
 				  	<label class="control-label" for="Status">Status :</label>  
 					  	<select id="Status" name="Status" class="form-control input-sm">
 					      <option value="All" selected>ALL</option>
-					      <option value="Open">OPEN</option>
-					      <option value="Confirmed">CONFIRMED</option>
-					      <option value="Issued">ISSUED</option>
-					      <option value="Cancelled">CANCELLED</option>
+					      <option value="OPEN">OPEN</option>
+					      <option value="REQUEST">REQUEST</option>
+					      <option value="SUPPORT">SUPPORT</option>
+					      <option value="VERIFIED">VERIFIED</option>
+					      <option value="APPROVED">APPROVED</option>
 					    </select>
 	            </div>
 
@@ -92,18 +98,39 @@ i.fa {
 						</select>
 				</div>
 
+				<?php 
+					$scope_use = 'posted';
+
+					if(Request::get('scope') == 'ALL'){
+						$scope_use = 'posted';
+					}else if(Request::get('scope') == 'REQUEST'){
+						$scope_use = 'posted';
+					}else if(Request::get('scope') == 'SUPPORT'){
+						$scope_use = 'support';
+					}else if(Request::get('scope') == 'VERIFIED'){
+						$scope_use = 'verify';
+					}else if(Request::get('scope') == 'APPROVED'){
+						$scope_use = 'approved';
+					}
+				?>
+
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">
+					<button 
+						type="button" 
+						class="btn btn-primary btn-sm" 
+						id="but_post_jq" 
+						data-oper="{{$scope_use}}" 
+						style="display: none;">
 						@if (Request::get('scope') == 'ALL')
 							{{'POST ALL'}}
 						@else
 							{{Request::get('scope').' ALL'}}
 						@endif
 					</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="{{$scope_use}}" style="display: none;">
 						@if (Request::get('scope') == 'ALL')
 							{{'POST'}}
 						@else
@@ -178,7 +205,7 @@ i.fa {
 					Purchase Order Header
 					
 				</div>
-					<div class="panel-body" style="position: relative;">
+					<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 						<form class='form-horizontal' style='width:99%' id='formdata'>
 						{{ csrf_field() }}
 							<input id="purordhd_idno" name="purordhd_idno" type="hidden">
@@ -189,7 +216,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="purordhd_prdept">Purchase Department</label>
 									<div class="col-md-2">
 									  <div class='input-group'>
-										<input id="purordhd_prdept" name="purordhd_prdept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="purordhd_prdept" name="purordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -210,7 +237,7 @@ i.fa {
                             	<label class="col-md-2 control-label" for="purordhd_deldept">Delivery Department</label>	 
 								<div class="col-md-2">
 								  <div class='input-group'>
-									<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+									<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
 								  <span class="help-block"></span>
@@ -219,7 +246,7 @@ i.fa {
 						        <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
 							    <div class="col-md-2">
 								  <div class='input-group'>
-									<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm" >
+									<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
 							    </div>
@@ -227,7 +254,7 @@ i.fa {
                                 <label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 
 							 	<div class="col-md-2">
 								  <div class='input-group'>
-									<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm" >
+									<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
 							  	</div>
@@ -238,7 +265,7 @@ i.fa {
                               <label class="col-md-2 control-label" for="purordhd_suppcode">Supplier Code</label>	 
 								 <div class="col-md-2">
 									  <div class='input-group'>
-										<input id="purordhd_suppcode" name="purordhd_suppcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="purordhd_suppcode" name="purordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -247,7 +274,7 @@ i.fa {
                                   <label class="col-md-2 control-label" for="credcode">Creditor</label>	  
 								  <div class="col-md-2">
 									  <div class='input-group'>
-										<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+										<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -315,7 +342,7 @@ i.fa {
 							   <div class="form-group">
 								<label class="col-md-2 control-label" for="purordhd_remarks">Remark</label>   
 						  			<div class="col-md-5">
-						  				<textarea rows="5" id='purordhd_remarks' name='purordhd_remarks' class="form-control input-sm" ></textarea>
+						  				<textarea rows="5" id='purordhd_remarks' name='purordhd_remarks' class="form-control input-sm text-uppercase"></textarea>
 						  			</div>
 					    		</div>
 
@@ -323,23 +350,42 @@ i.fa {
 
 
 					    	<div class="form-group data_info">
-						    	<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purordhd_upduser">Last Entered By</label>  
-						  			<input id="purordhd_upduser" name="purordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						    	<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_requestby">Request By</label>  
+						  			<input id="purordhd_upduser" name="purordhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
-					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purordhd_upddate">Last Entered Date</label>
-						  			<input id="purordhd_upddate" name="purordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					    		<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purordhd_authpersonid">Authorized By</label>  
-						  			<input id="purordhd_authpersonid" name="purordhd_authpersonid" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_supportby">Support By</label>
+						  			<input id="purordhd_upddate" name="purordhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
-					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="purordhd_authdate">Authorized Date</label>
-						  			<input id="purordhd_authdate" name="purordhd_authdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					    		<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_verifiedby">Verified By</label>  
+						  			<input id="purordhd_authpersonid" name="purordhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_approvedby">Approved By</label>
+						  			<input id="purordhd_authdate" name="purordhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_requestdate">Request Date</label>  
+						  			<input id="purordhd_authpersonid" name="purordhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_supportdate">Support Date</label>
+						  			<input id="purordhd_authdate" name="purordhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_verifieddate">Verified Date</label>  
+						  			<input id="purordhd_authpersonid" name="purordhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-3 minuspad-13">
+									<label class="control-label" for="purordhd_approveddate">Approved Date</label>
+						  			<input id="purordhd_authdate" name="purordhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 							</div>
 					</form>

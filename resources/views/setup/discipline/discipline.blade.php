@@ -15,14 +15,14 @@
 				<div class="form-group">
                 	<label class="col-md-2 control-label" for="code">Discipline Code</label>  
                       <div class="col-md-3">
-                      <input id="code" name="code" type="text" maxlength="10" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                      <input id="code" name="code" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                       </div>
 				</div>
                 
                 <div class="form-group">
                 	<label class="col-md-2 control-label" for="description">Description</label>  
                       <div class="col-md-8">
-                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
                       </div>
 				</div>
                 

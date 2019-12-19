@@ -101,39 +101,39 @@ i.fa {
 				<div class="form-group">
 				  		<label class="col-md-2 control-label" for="SuppCode">Supplier Code</label>  
                             <div class="col-md-2">
-                                <input id="SuppCode" name="SuppCode" type="text" maxlength="6" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                                <input id="SuppCode" name="SuppCode" type="text" maxlength="6" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                             </div>
 					</div>
                     
                     <div class="form-group">
 				  		<label class="col-md-2 control-label" for="Name">Name</label>  
 				  			<div class="col-md-8">
-				  				<input id="Name" name="Name" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+				  				<input id="Name" name="Name" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
 				 			</div>
 					</div>
                     
                     <div class="form-group">
 				  		<label class="col-md-2 control-label" for="Addr1">Address</label>  
 				  			<div class="col-md-8">
-				  				<input id="Addr1" name="Addr1" type="text" maxlength="40" class="form-control input-sm" data-validation="required">
+				  				<input id="Addr1" name="Addr1" type="text" maxlength="40" class="form-control input-sm text-uppercase" data-validation="required">
 				  			</div>
 					</div>
 				
 					<div class="form-group">
 				  		<div class="col-md-offset-2 col-md-8">
-				  			<input id="Addr2" name="Addr2" type="text" maxlength="40" class="form-control input-sm">
+				  			<input id="Addr2" name="Addr2" type="text" maxlength="40" class="form-control input-sm text-uppercase">
 				  		</div>
 					</div>
 				
 					<div class="form-group">
 				  		<div class="col-md-offset-2 col-md-8">
-				  			<input id="Addr3" name="Addr3" type="text" maxlength="40" class="form-control input-sm">
+				  			<input id="Addr3" name="Addr3" type="text" maxlength="40" class="form-control input-sm text-uppercase">
 				  		</div>
 					</div>
                 
                 	<div class="form-group">
 				  		<div class="col-md-offset-2 col-md-8">
-				  			<input id="Addr4" name="Addr4" type="text" maxlength="40" class="form-control input-sm">
+				  			<input id="Addr4" name="Addr4" type="text" maxlength="40" class="form-control input-sm text-uppercase">
 				  		</div>
 					</div>
                     
@@ -152,13 +152,13 @@ i.fa {
                     <div class="form-group">
 				  		<label class="col-md-2 control-label" for="ContPers">Contact Person</label>  
 				  			<div class="col-md-3">
-				  				<input id="ContPers" name="ContPers" type="text" maxlength="40" class="form-control input-sm">
+				  				<input id="ContPers" name="ContPers" type="text" maxlength="40" class="form-control input-sm text-uppercase">
 				  			</div>
 				  
 				   		<label class="col-md-2 control-label" for="SuppGroup">Supplier Group</label>  
 				 			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="SuppGroup" name="SuppGroup" type="text" class="form-control input-sm" data-validation="required">
+									<input id="SuppGroup" name="SuppGroup" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -169,7 +169,7 @@ i.fa {
 				  		<label class="col-md-2 control-label" for="CostCode">Cost Code</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="CostCode" name="CostCode" type="text" class="form-control input-sm" data-validation="required">
+									<input id="CostCode" name="CostCode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -178,7 +178,7 @@ i.fa {
 				 		<label class="col-md-2 control-label" for="GlAccNo">Gl Account No</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="GlAccNo" name="GlAccNo" type="text" class="form-control input-sm" data-validation="required">
+									<input id="GlAccNo" name="GlAccNo" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -296,7 +296,7 @@ i.fa {
 				  <label class="col-md-3 control-label" for="si_pricecode">Price Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="si_pricecode" name="si_pricecode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="si_pricecode" name="si_pricecode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -307,7 +307,7 @@ i.fa {
 				  <label class="col-md-3 control-label" for="si_itemcode">Item Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="si_itemcode" name="si_itemcode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="si_itemcode" name="si_itemcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -318,7 +318,7 @@ i.fa {
 				   	<label class="col-md-3 control-label" for="si_uomcode">UOM Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="si_uomcode" name="si_uomcode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="si_uomcode" name="si_uomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -369,7 +369,7 @@ i.fa {
 
 				  	<label class="col-md-2 control-label" for="si_sitemcode">Item Code at Supplier's Site</label>  
 				  		<div class="col-md-2">
-				  		<input id="si_sitemcode" name="si_sitemcode" type="text" maxlength="12" class="form-control input-sm">
+				  		<input id="si_sitemcode" name="si_sitemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 				  		</div>
                 </div>
 
@@ -441,7 +441,7 @@ i.fa {
 				  <label class="col-md-3 control-label" for="sb_bonpricecode">Bonus Price Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="sb_bonpricecode" name="sb_bonpricecode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="sb_bonpricecode" name="sb_bonpricecode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -452,7 +452,7 @@ i.fa {
 				  <label class="col-md-3 control-label" for="sb_bonitemcode">Bonus Item Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="sb_bonitemcode" name="sb_bonitemcode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="sb_bonitemcode" name="sb_bonitemcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -463,7 +463,7 @@ i.fa {
 				  <label class="col-md-3 control-label" for="sb_bonuomcode">Bonus UOM Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="sb_bonuomcode" name="sb_bonuomcode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="sb_bonuomcode" name="sb_bonuomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -478,7 +478,7 @@ i.fa {
 
 				  	<label class="col-md-2 control-label" for="sb_bonsitemcode">Bonus Item Code at Supplier Site</label>  
 				  		<div class="col-md-2">
-				  		<input id="sb_bonsitemcode" name="sb_bonsitemcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required">
+				  		<input id="sb_bonsitemcode" name="sb_bonsitemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 				  		</div>
                 </div>	
                 

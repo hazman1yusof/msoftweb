@@ -89,7 +89,7 @@ $(document).ready(function () {
 			    parent_close_disabled(false);
 				emptyFormdata(errorField, '#formdata');
 				emptyFormdata(errorField, '#formdata2');
-				$('.alert').detach();
+				$('.my-alert').detach();
 				$("#formdata a").off();
 				dialog_reqdept.off();
 				dialog_prdept.off();
@@ -104,21 +104,25 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 
-	var recstatus_filter = [['OPEN','POSTED']];
-	if($("#recstatus_use").val() == 'POSTED'){
-		recstatus_filter = [['OPEN','POSTED']];
+	var recstatus_filter = [['OPEN','REQUEST']];
+	if($("#recstatus_use").val() == 'ALL'){
+		recstatus_filter = [['OPEN','REQUEST','SUPPORT','VERIFIED','APPROVED']];
 		filterCol_urlParam = ['purreqhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
-	}else if($("#recstatus_use").val() == 'SUPPORT'){
-		recstatus_filter = [['POSTED','SUPPORT']];
+	}else if($("#recstatus_use").val() == 'REQUEST'){
+		recstatus_filter = [['OPEN']];
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
-	}else if($("#recstatus_use").val() == 'VERIFY'){
-		recstatus_filter = [['SUPPORT','VERIFY']];
+	}else if($("#recstatus_use").val() == 'SUPPORT'){
+		recstatus_filter = [['REQUEST']];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'VERIFIED'){
+		recstatus_filter = [['SUPPORT']];
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}else if($("#recstatus_use").val() == 'APPROVED'){
-		recstatus_filter = [['VERIFY','APPROVED']];
+		recstatus_filter = [['VERIFIED','APPROVED']];
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}
@@ -208,6 +212,16 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'purreqhd_upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'purreqhd_upddate', width: 90, hidden: true },
 			{ label: 'reopenby', name: 'purreqhd_reopenby', width: 40, hidden: true},
+
+			{ label: 'requestby', name: 'purreqhd_requestby', width: 90, hidden: true },
+			{ label: 'requestdate', name: 'purreqhd_requestdate', width: 90, hidden: true },
+			{ label: 'supportby', name: 'purreqhd_supportby', width: 90, hidden: true },
+			{ label: 'supportdate', name: 'purreqhd_supportdate', width: 40, hidden: true},
+			{ label: 'verifiedby', name: 'purreqhd_verifiedby', width: 90, hidden: true },
+			{ label: 'verifieddate', name: 'purreqhd_verifieddate', width: 90, hidden: true },
+			{ label: 'approvedby', name: 'purreqhd_approvedby', width: 90, hidden: true },
+			{ label: 'approveddate', name: 'purreqhd_approveddate', width: 40, hidden: true},
+
 			{ label: 'reopendate', name: 'purreqhd_reopendate', width: 40, hidden:true},
 			{ label: 'cancelby', name: 'purreqhd_cancelby', width: 40, hidden:true},
 			{ label: 'canceldate', name: 'purreqhd_canceldate', width: 40, hidden:true},
@@ -230,17 +244,18 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").purreqhd_recstatus;
 			let scope = $("#recstatus_use").val();
 
-			if (stat == scope) {
+			$('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			if (stat == scope || stat == "CANCELLED") {
 				$('#but_reopen_jq').show();
-				$('#but_post_single_jq,#but_cancel_jq').hide();
-			} else if (stat == "CANCELLED") {
-				$('#but_reopen_jq').show();
-				$('#but_post_single_jq,#but_cancel_jq').hide();
 			} else {
-				if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-					$('#but_cancel_jq,#but_post_single_jq').show();
+				if(scope == 'ALL'){
+				}else{
+					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+						$('#but_cancel_jq,#but_post_single_jq').show();
+					}else{
+						$('#but_cancel_jq,#but_post_jq').show();
+					}
 				}
-				$('#but_reopen_jq').hide();
 			}
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purreqhd_recno;
 			
@@ -375,7 +390,7 @@ $(document).ready(function () {
 		$.post( '/purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
-
+			$('#p_error').text(data.responseText);
 		}).success(function(data){
 			
 		});
@@ -394,7 +409,7 @@ $(document).ready(function () {
 		$.post( '/purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
-
+			$('#p_error').text(data.responseText);
 		}).success(function(data){
 			
 		});
@@ -665,15 +680,16 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Item Code', name: 'itemcode', width: 110, classes: 'wrap', editable: true,
+				label: 'Item Code', name: 'itemcode', width: 180, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
+				formatter: showdetail,
 				edittype: 'custom', editoptions:
 				{
 					custom_element: itemcodeCustomEdit,
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" } },
+			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
 			{
 				label: 'UOM Code', name: 'uomcode', width: 110, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
@@ -695,19 +711,19 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Quantity Request', name: 'qtyrequest', width: 80, align: 'right', classes: 'wrap',
+				label: 'Quantity Request', name: 'qtyrequest', width: 70, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
 			},
 			{
-				label: 'Unit Price', name: 'unitprice', width: 80, classes: 'wrap', align: 'right',
+				label: 'Unit Price', name: 'unitprice', width: 150, classes: 'wrap', align: 'right',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules: { required: true }
 			},
 			{
-				label: 'Tax Code', name: 'taxcode', width: 110, classes: 'wrap', editable: true,
+				label: 'Tax Code', name: 'taxcode', width: 100, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -751,20 +767,20 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Total GST Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable: true,
+				label: 'Total GST Amount', name: 'tot_gst', width: 150, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
 			},
 			{ label: 'rate', name: 'rate', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'netunitprice', name: 'netunitprice', width: 20, classes: 'wrap', hidden:true},
 			{
-				label: 'Total Line Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap', editable: true,
+				label: 'Total Line Amount', name: 'totamount', width: 150, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true }, editoptions: { readonly: "readonly" },
 			},
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 80, formatter: formatterRemarks, unformat: unformatRemarks },
-			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden: true },
+			{ label: 'Remarks', name: 'remarks', width: 320, classes: 'whtspc_wrap', hidden: false },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'prdept', name: 'prdept', width: 20, classes: 'wrap', hidden:true},
@@ -870,9 +886,9 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
-		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		if($("#recstatus_use").val() != 'ALL' && options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		}else if($("#recstatus_use").val() != 'ALL' && options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
 			return ' ';
@@ -1161,6 +1177,7 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table, case_;
 		switch(options.colModel.name){
+			case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
 			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
@@ -1193,7 +1210,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function itemcodeCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val;
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){
@@ -1327,6 +1344,7 @@ $(document).ready(function () {
 	function calculate_line_totgst_and_totamt(event) {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
+		mycurrency2.formatOff();
        
 		let qtyrequest = parseFloat($("#"+id_optid+"_qtyrequest").val());
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
@@ -1545,7 +1563,7 @@ $(document).ready(function () {
 
 				if(data.pricecode == 'MS'){
 					let newcolmodel = [
-							{label: 'Item Codex',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
 							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
 							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
@@ -1591,7 +1609,7 @@ $(document).ready(function () {
 
 				}else{
 					let newcolmodel = [
-							{label: 'Item Codex',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+							{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
 							{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
 							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
@@ -1666,7 +1684,7 @@ $(document).ready(function () {
 		'itemcode',['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u'],"#jqGrid2 input[name='itemcode']",errorField,
 		{	colModel:
 			[
-				{label: 'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
 				{label: 'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
@@ -1728,6 +1746,14 @@ $(document).ready(function () {
 		},{
 			title:"Select Item For Purchase Order",
 			open:function(){
+				let data = selrowData('#'+dialog_pricecode.gridname);
+				if(data.pricecode == 'MS'){
+					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode', 'p.unit'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '<>.Stock', 'session.unit'];
+				}else{
+					dialog_uomcode.urlParam.filterCol=['s.compcode','s.itemcode','s.deptcode','s.year'];
+					dialog_uomcode.urlParam.filterVal=['session.compcode',$("#jqGrid2 input[name='itemcode']").val(),$('#purreqhd_reqdept').val(),moment($('#purreqhd_purreqdt').val()).year()];
+				}
 			},
 			close: function(){
 				$(dialog_itemcode.textfield)			//lepas close dialog focus on next textfield 
@@ -1735,7 +1761,7 @@ $(document).ready(function () {
 					.next()
 					.find("input[type=text]").focus();
 			}
-		},'none','radio','tab'//urlParam means check() using urlParam not check_input
+		},'urlParam','radio','tab'//urlParam means check() using urlParam not check_input
 	);
 	dialog_itemcode.makedialog(false);
 	dialog_itemcode._init_func(function(self){
@@ -1743,7 +1769,7 @@ $(document).ready(function () {
 		$(self.textfield).keyup(function(event){
 
 			if($(this).val().length >= 9){
-
+				alert('init')
 				let optid = $(this).attr("optid")
 				let id_optid = optid.substring(0,optid.search("_"));
 				let itemcode = $(this).val();

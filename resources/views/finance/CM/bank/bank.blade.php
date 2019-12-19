@@ -19,40 +19,40 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="bankcode">Bank Code</label>  
 				  <div class="col-md-3">
-					<input id="bankcode" name="bankcode" type="text" class="form-control input-sm" data-validation="required">
+					<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
 				</div>
 
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="bankname">Name</label>  
 				  <div class="col-md-8">
-				  <input id="bankname" name="bankname" type="text" class="form-control input-sm" data-validation="required">
+				  <input id="bankname" name="bankname" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="address1">Address</label>  
 				  <div class="col-md-8">
-				  <input id="address1" name="address1" type="text" class="form-control input-sm" data-validation="required">
+				  <input id="address1" name="address1" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address2" name="address2" type="text" class="form-control input-sm">
+				  <input id="address2" name="address2" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address3" name="address3" type="text" class="form-control input-sm">
+				  <input id="address3" name="address3" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="statecode">State Code</label>  
 				  <div class="col-md-3">
-				  <input id="statecode" name="statecode" type="text" class="form-control input-sm" >
+				  <input id="statecode" name="statecode" type="text" class="form-control input-sm">
 				  </div>
 				  
 				  <label class="col-md-2 control-label" for="postcode">Post Code</label>  
@@ -64,12 +64,12 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="country">Standard Code</label>  
 				  <div class="col-md-3">
-				  <input id="country" name="country" type="text" class="form-control input-sm">
+				  <input id="country" name="country" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				  
 				  <label class="col-md-2 control-label" for="contact">Contact Person</label>  
 				  <div class="col-md-3">
-				  <input id="contact" name="contact" type="text" class="form-control input-sm">
+				  <input id="contact" name="contact" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				</div>
 				
@@ -115,7 +115,7 @@
 				  <label class="col-md-2 control-label" for="glccode">Cost Center</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="glccode" name="glccode" type="text" class="form-control input-sm" data-validation="required">
+						<input id="glccode" name="glccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -124,7 +124,7 @@
 				  <label class="col-md-2 control-label" for="glaccno">GL Account</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="glaccno" name="glaccno" type="text" class="form-control input-sm" data-validation="required">
+						<input id="glaccno" name="glaccno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>

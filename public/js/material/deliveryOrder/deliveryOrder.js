@@ -106,7 +106,7 @@ $(document).ready(function () {
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdata2');
-			$('.alert').detach();
+			$('.my-alert').detach();
 			$("#formdata a").off();
 			dialog_authorise.off();
 			dialog_prdept.off();
@@ -196,7 +196,8 @@ $(document).ready(function () {
 		fixPost:'true',
 		oper:oper,
 		table_name:'material.delordhd',
-		table_id:'delordhd_recno'
+		table_id:'delordhd_recno',
+		checkduplicate: 'true'
 	};
 	function padzero(cellvalue, options, rowObject){
 		let padzero = 5, str="";
@@ -361,7 +362,7 @@ $(document).ready(function () {
 						$('#but_reopen_jq,#but_cancel_jq,#but_print_dtl').hide();
 					}
 					break;*/
-					let scope = $("#recstatus_use").val();
+			let scope = $("#recstatus_use").val();
 
 			if (stat == scope) {
 				$('#but_reopen_jq').show();
@@ -954,10 +955,6 @@ $(document).ready(function () {
 		return "<button class='refresh_button btn btn-success btn-xs' type='button' data-idno='"+rowObject.delordhd_idno+"' data-grid='#"+options.gid+"' ><i class='fa fa-refresh'></i></button>";
 	}
 
-	/*function formatterCheckbox(cellvalue, options, rowObject){
-		return "<input type='checkbox' name='Checkbox' >";
-	}
-*/
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;

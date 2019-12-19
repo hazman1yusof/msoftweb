@@ -34,7 +34,7 @@
 						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,
 							{
 								programmenu:arraybtngrp[arraybtngrp.length-1]
-							});
+							},undefined,false);
 					}
 				}
 			},{
@@ -179,7 +179,7 @@
 								programmenu:arraybtngrp[arraybtngrp.length-1],
 								lineno:selrowData("#jqGrid").lineno,
 								programid:selrowData("#jqGrid").programid,
-							});
+							},undefined,false);
 					}
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{

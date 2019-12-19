@@ -18,14 +18,14 @@
 				<div class="form-group">
             		<label class="col-md-3 control-label" for="assettype">Asset Type</label>  
                       <div class="col-md-2">
-                      	<input id="assettype" name="assettype" type="text" maxlength="8" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                      	<input id="assettype" name="assettype" type="text" maxlength="8" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                       </div>
 				</div>
                 
                 <div class="form-group">
                 	<label class="col-md-3 control-label" for="description">Description</label>  
                       <div class="col-md-7">
-                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
                       </div>
 				</div>
                                 

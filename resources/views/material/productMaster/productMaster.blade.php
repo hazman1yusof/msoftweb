@@ -59,14 +59,14 @@
 				<div class="form-group">
                 	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
                     	<div class="col-md-4">
-                      		<input id="itemcode" name="itemcode" type="text" maxlength="12" class="form-control input-sm" data-validation="required" frozeOnEdit>
+                      		<input id="itemcode" name="itemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                       	</div>
 				</div>
                 
                 <div class="form-group">
                 	<label class="col-md-2 control-label" for="description">Description</label>  
                       <div class="col-md-8">
-                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm" data-validation="required">
+                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
                       </div>
 				</div>
 
@@ -79,7 +79,7 @@
 				  	<label class="col-md-2 control-label" for="productcat">Product Category</label>  
 				  		<div class="col-md-3">
 					  		<div class='input-group'>
-								<input id="productcat" name="productcat" type="text" class="form-control input-sm" data-validation="required">
+								<input id="productcat" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					  		<span class="help-block"></span>
