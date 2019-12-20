@@ -188,9 +188,9 @@ Route::get('/dischargedestination/table','setup\DischargeDestinationController@t
 Route::post('/dischargedestination/form','setup\DischargeDestinationController@form');
 
 // //// Address Type setup page ///
-// Route::get('/addresstype','setup\AddressTypeController@show');
-// Route::get('/addresstype/table','setup\AddressTypeController@table');
-// Route::post('/addresstype/form','setup\AddressTypeController@form');
+Route::get('/addresstype','setup\AddressTypeController@show');
+Route::get('/addresstype/table','setup\AddressTypeController@table');
+Route::post('/addresstype/form','setup\AddressTypeController@form');
 
 //// Country setup page ///
 Route::get('/country','setup\CountryController@show');

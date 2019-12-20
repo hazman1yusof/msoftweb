@@ -9,7 +9,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 
-class PostcodeController extends defaultController
+class AddressTypeController extends defaultController
 {   
 
     var $table;
@@ -23,7 +23,7 @@ class PostcodeController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('setup.postcode.postcode');
+        return view('setup.addresstype.addresstype');
     }
 
     public function form(Request $request)
@@ -45,27 +45,20 @@ class PostcodeController extends defaultController
         DB::beginTransaction();
         try {
 
-            $postcode = DB::table('hisdb.postcode')
-                            ->where('postcode','=',$request->postcode);
+            $addresstype = DB::table('hisdb.addcode')
+                            ->where('addtype','=',$request->addtype);
 
-            if($admissrc->exists()){
+            if($addresstype->exists()){
                 throw new \Exception("record duplicate");
             }
 
-            DB::table('hisdb.postcode')
+            DB::table('hisdb.addcode')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'postcode' => strtoupper($request->postcode),
-                    'place_name' => strtoupper($request->place_name),
-                    'countrycode' => strtoupper($request->countrycode),
-                    'statecode' => strtoupper($request->statecode),
-                    'district' => strtoupper($request->district),
-                    'effectivedate' => strtoupper($request->effectivedate),
+                    'addtype' => strtoupper($request->addtype),
+                    'description' => strtoupper($request->description),
                     'idno' => strtoupper($request->idno),
                     'recstatus' => strtoupper($request->recstatus),
-                    // 'discharge' => strtoupper($request->discharge),
-                    // 'discharge' => strtoupper($request->discharge),
-
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -83,21 +76,13 @@ class PostcodeController extends defaultController
         DB::beginTransaction();
         try {
 
-            DB::table('hisdb.postcode')
+            DB::table('hisdb.addcode')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'compcode' => session('compcode'),
-                    'postcode' => strtoupper($request->postcode),
-                    'place_name' => strtoupper($request->place_name),
-                    'countrycode' => strtoupper($request->countrycode),
-                    'statecode' => strtoupper($request->statecode),
-                    'district' => strtoupper($request->district),
-                    'effectivedate' => strtoupper($request->effectivedate),
+                    'addtype' => strtoupper($request->addtype),
+                    'description' => strtoupper($request->description),
                     'idno' => strtoupper($request->idno),
                     'recstatus' => strtoupper($request->recstatus),
-                    // 'discharge' => strtoupper($request->discharge),
-                    // 'discharge' => strtoupper($request->discharge),
-
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -111,7 +96,7 @@ class PostcodeController extends defaultController
     }
 
     public function del(Request $request){
-        DB::table('hisdb.postcode')
+        DB::table('hisdb.addcode')
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'D',

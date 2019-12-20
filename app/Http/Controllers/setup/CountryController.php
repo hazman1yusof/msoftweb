@@ -4,6 +4,10 @@ namespace App\Http\Controllers\setup;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use stdClass;
+use DB;
+use DateTime;
+use Carbon\Carbon;
 
 class CountryController extends defaultController
 {   
@@ -26,13 +30,74 @@ class CountryController extends defaultController
     {  
         switch($request->oper){
             case 'add':
-                return $this->defaultAdd($request);
+                return $this->add($request);
             case 'edit':
-                return $this->defaultEdit($request);
+                return $this->edit($request);
             case 'del':
-                return $this->defaultDel($request);
+                return $this->del($request);
             default:
                 return 'error happen..';
         }
+    }
+
+    public function add(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            $country = DB::table('hisdb.country')
+                            ->where('Code','=',$request->Code);
+
+            if($country->exists()){
+                throw new \Exception("record duplicate");
+            }
+
+            DB::table('hisdb.country')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'Code' => strtoupper($request->Code),
+                    'Description' => strtoupper($request->Description),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+             DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function edit(Request $request){
+        
+        DB::beginTransaction();
+        try {
+
+            DB::table('hisdb.country')
+                ->where('idno','=',$request->idno)
+                ->update([  
+                    'Code' => strtoupper($request->Code),
+                    'Description' => strtoupper($request->Description),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]); 
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function del(Request $request){
+        DB::table('hisdb.country')
+            ->where('idno','=',$request->idno)
+            ->update([  
+                'recstatus' => 'D',
+                'lastuser' => session('username'),
+                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+            ]);
     }
 }

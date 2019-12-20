@@ -1,13 +1,15 @@
 @extends('layouts.main')
 
-@section('title', 'State Setup')
+@section('title', 'Address Type Setup')
 
 @section('style')
 
 input.uppercase {
 	text-transform: uppercase;
 }
+
 @endsection
+
 @section('body')
 
 	<!--***************************** Search + table ******************-->
@@ -33,7 +35,7 @@ input.uppercase {
 		</form>
 
         <div class="panel panel-default">
-		    <div class="panel-heading">State Setup Header</div>
+		    <div class="panel-heading">Address Type Setup Header</div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
             		<table id="jqGrid" class="table table-striped"></table>
@@ -49,6 +51,6 @@ input.uppercase {
 
 @section('scripts')
 
-	<script src="js/setup/state/state.js"></script>
+	<script src="js/setup/addresstype/addresstype.js"></script>
 	
 @endsection

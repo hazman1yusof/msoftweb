@@ -39,14 +39,29 @@ $(document).ready(function () {
 			editurl: "/episodetype/form",
 			colModel: [
                 { label: 'compcode', name: 'compcode', width: 20, hidden:true},
-                { label: 'Episode Code', name: 'epistycode', width: 30, classes: 'wrap',editable: true, edittype:"select",formatter:'select', 
-                editoptions:{
-                    value:"DP:DP;IP:IP;OP:OP;OTC:OTC"
-                }},						
-				//{ label: 'Episode Code', name: 'epistycode', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+                // { label: 'Episode Code', name: 'epistycode', width: 30, classes: 'wrap',editable: true, edittype:"select",formatter:'select', 
+                // editoptions:{
+                //     value:"DP:DP;IP:IP;OP:OP;OTC:OTC"
+                // }},						
+				{ label: 'Episode Code', name: 'epistycode', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 				{ label: 'Description', name: 'description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, 
 					editoptions: {style: "text-transform: uppercase" }},
-                { label: 'Activate Date', name:'activatedate', width: 20, classes:'wrap',formatter:dateFormatter, unformat:dateUNFormatter},
+				{ label: 'Activate Date', name: 'activatedate', width: 30, classes: 'wrap', editable:true,
+					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+					editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).datepicker({
+	                            id: 'expdate_datePicker',
+	                            dateFormat: 'dd/mm/yy',
+	                            minDate: "dateToday",
+	                            showOn: 'focus',
+	                            changeMonth: true,
+			  					changeYear: true,
+	                        });
+	                    }
+	                }
+				},
+                //{ label: 'Activate Date', name:'activatedate', width: 20, classes:'wrap',formatter:dateFormatter, unformat:dateUNFormatter},
 				{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', hidden: true, formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, editoptions: {style: "text-transform: uppercase" }
 				},

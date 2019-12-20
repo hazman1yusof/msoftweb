@@ -32,7 +32,8 @@
 			table_name:'hisdb.admissrc',
 			table_id:'idno'
 		}
-		
+
+	/////////////////////parameter for saving url////////////////////////////////////////////////
 		var addmore_jqgrid={more:false,state:false,edit:false}
 		$("#jqGrid").jqGrid({
 			datatype: "local",
@@ -40,8 +41,7 @@
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, hidden:true},						
 				{ label: 'Adm Source', name: 'admsrccode', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }},
-				{ label: 'Description', name: 'description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, 
-					editoptions: {style: "text-transform: uppercase" }},
+				{ label: 'Description', name: 'description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 				{ label: 'Src Type', name: 'type', width: 30, classes: 'wrap',editable: true, edittype:"select",formatter:'select', 
 					editoptions:{
 						value:"GP:GP;DOCTOR:DOCTOR;HOSPITAL:HOSPITAL;OTHERS:OTHERS"
@@ -88,7 +88,7 @@
 	        },
 			oneditfunc: function (rowid) {
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-				$("input[name='email']").keydown(function(e) {//when click tab at totamount, auto save
+				$("input[name='email']").keydown(function(e) {//when click tab at last column in header, auto save
 					var code = e.keyCode || e.which;
 					if (code == '9')$('#jqGrid_ilsave').click();
 					/*addmore_jqgrid.state = true;
@@ -135,7 +135,7 @@
 			oneditfunc: function (rowid) {
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 				$("input[name='admsrccode']").attr('disabled','disabled');
-				$("input[name='email']").keydown(function(e) {//when click tab at totamount, auto save
+				$("input[name='email']").keydown(function(e) {//when click tab at last column in header, auto save
 					var code = e.keyCode || e.which;
 					if (code == '9')$('#jqGrid_ilsave').click();
 					/*addmore_jqgrid.state = true;
