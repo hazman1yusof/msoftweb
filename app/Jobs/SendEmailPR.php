@@ -13,17 +13,17 @@ class SendEmailPR implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $status;
+    protected $data;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($status)
+    public function __construct($data)
     {
         //
-        $this->status = $status;
+        $this->data = $data;
     }
 
     /**
@@ -34,11 +34,12 @@ class SendEmailPR implements ShouldQueue
     public function handle()
     {
 
-        $data = ['status' => $this->status];
+        $data_ = ['data' => $this->data];
+        $data = $this->data;
 
-        Mail::send('email.mail', $data, function($message) {
+        Mail::send('email.mail', $data_, function($message) use ($data) {
             $message->from('me@gmail.com', 'Christian Nwmaba');
-            $message->to('hazman.yusof@gmail.com');
+            $message->to($data->email_to);
             // $message->from(‘SENDER_EMAIL_ADDRESS’,’Test Mail’);
             // $message->to($to_email, $to_name)->subject(Laravel Test Mail’);
         });

@@ -206,7 +206,13 @@ class TestController extends defaultController
 
     public function send_email(Request $request)
     {   
-        SendEmailPR::dispatch('SUPPORT');
+
+        $data = new stdClass();
+        $data->status = 'SUPPORT';
+        $data->deptcode = 'A1001';
+        $data->recno = 34;
+
+        SendEmailPR::dispatch($data);
     }
 
 

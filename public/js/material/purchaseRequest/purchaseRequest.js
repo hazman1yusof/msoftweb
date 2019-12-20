@@ -106,13 +106,9 @@ $(document).ready(function () {
 
 	var recstatus_filter = [['OPEN','REQUEST']];
 	if($("#recstatus_use").val() == 'ALL'){
-		recstatus_filter = [['OPEN','REQUEST','SUPPORT','VERIFIED','APPROVED']];
+		recstatus_filter = [['OPEN','REQUEST','SUPPORT','VERIFIED','APPROVED','CANCELLED']];
 		filterCol_urlParam = ['purreqhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
-	}else if($("#recstatus_use").val() == 'REQUEST'){
-		recstatus_filter = [['OPEN']];
-		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
-		filterVal_urlParam = ['session.compcode','session.username'];
 	}else if($("#recstatus_use").val() == 'SUPPORT'){
 		recstatus_filter = [['REQUEST']];
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
@@ -249,18 +245,23 @@ $(document).ready(function () {
 				$('#but_reopen_jq').show();
 			} else {
 				if(scope == 'ALL'){
+					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
+						$('#but_cancel_jq,#but_post_single_jq').show();
+					}else if(stat=='OPEN'){
+						$('#but_post_jq').show();
+					}
 				}else{
 					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
 						$('#but_cancel_jq,#but_post_single_jq').show();
 					}else{
-						$('#but_cancel_jq,#but_post_jq').show();
+						$('#but_post_jq').show();
 					}
 				}
 			}
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purreqhd_recno;
 			
 			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan tu
-			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_prdept);
+			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
 			refreshGrid("#jqGrid3", urlParam2);
 
 			$("#pdfgen1").attr('href','./purchaseRequest/showpdf?recno='+selrowData("#jqGrid").purreqhd_recno);
@@ -379,7 +380,7 @@ $(document).ready(function () {
 	// 		//2nd successs?
 	// 	});
 	// });
-	$("#but_reopen_jq,#but_post_single_jq").click(function(){
+	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
 
 		var idno = selrowData('#jqGrid').purreqhd_idno;
 		var obj={};
@@ -397,7 +398,7 @@ $(document).ready(function () {
 	});
 
 
-	$("#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq").click(function(){
+	$("#but_post_jq").click(function(){
 		var idno_array = [];
 	
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');

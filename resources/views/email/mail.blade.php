@@ -18,7 +18,7 @@ tr:nth-child(even) {
 </style>
 </head>
 
-Please <strong>{{ $status }}</strong> Purchase Request of Deptcode and RequestNo
+Please <strong>{{ $data->status }}</strong> Purchase Request of Deptcode and RequestNo
 
 <table>
   <tr>
@@ -26,7 +26,7 @@ Please <strong>{{ $status }}</strong> Purchase Request of Deptcode and RequestNo
     <th>RequestNo</th>
   </tr>
   <tr>
-    <td>app1234</td>
-    <td>23</td>
+    <td>{{$data->deptcode}}</td>
+    <td>{{$data->purreqno}}</td>
   </tr>
 </table>
