@@ -48,7 +48,7 @@ class CitizenController extends defaultController
             $citizen = DB::table('hisdb.citizen')
                             ->where('Code','=',$request->Code);
 
-            if($admissrc->exists()){
+            if($citizen->exists()){
                 throw new \Exception("record duplicate");
             }
 

@@ -112,8 +112,11 @@
 					{ label: 'compcode', name: 'compcode', hidden:true},						
 					{ label: 'Code', name: 'Code', width: 10, canSearch: true},
 					{ label: 'Description', name: 'Description',width: 80, canSearch: true, checked: true },
-					{ label: 'recstatus', name: 'recstatus', width: 80,hidden:true, cellattr: function(rowid, cellvalue){
-						return cellvalue == 'D' ? ' class="alert alert-danger"' : ''},},
+					{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', hidden:true, editable: true, edittype:"select",formatter:'select', 
+						editoptions:{
+							value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
+						}},
+					{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 					//{ label: 'createdBy', name: 'createdBy', width: 80,hidden:true},					
 					//{ label: 'lastUser', name: 'lastUser', width: 90,hidden:true},					
 					//{ label: 'upduser', name: 'upduser', width: 80,hidden:true},					
