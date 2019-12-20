@@ -193,6 +193,13 @@
 			onSelectRow:function(rowid, selected){
 				urlParam2.filterVal[1]=selrowData("#jqGrid").cm_chgcode;
 				refreshGrid("#jqGrid3",urlParam2);
+
+				$("#jqGrid4_c").hide();
+				if(selrowData('#jqGrid').cm_chgtype == 'pkg' || selrowData('#jqGrid').cm_chgtype == 'PKG' ){
+					refreshGrid("#jqGrid4",urlParam4);
+					$("#jqGrid4_c").show();
+					colmodel_change_jq2(true);
+				}
 			},
 			ondblClickRow: function(rowid, iRow, iCol, e){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -434,6 +441,9 @@
 						    },
 				},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
+				{ label: 'Autopull', name: 'autopull', width: 20, classes: 'wrap'},
+				{ label: 'Add chg', name: 'addchg', width: 20, classes: 'wrap'},
+				{ label: 'Pkg type', name: 'pkgtype', width: 20, classes: 'wrap'},
 			],
 			autowidth: true,
 			shrinkToFit: true,
@@ -812,25 +822,25 @@
 	                    }
 	                }
 				},
-				{ label: 'Price 1', name: 'amt1', width: 150, align: 'right', classes: 'wrap', editable:true,
+				{ label: 'Price 1', name: 'amt1', width: 100, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
 						maxlength: 100,
 					},
 				},
-				{ label: 'Price 2', name: 'amt2', width: 150, align: 'right', classes: 'wrap', editable:true,
+				{ label: 'Price 2', name: 'amt2', width: 100, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
 						maxlength: 100,
 					},
 				},
-				{ label: 'Price 3', name: 'amt3', width: 150, align: 'right', classes: 'wrap', editable:true,
+				{ label: 'Price 3', name: 'amt3', width: 100, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
 						maxlength: 100,
 					},
 				},
-				{ label: 'Cost Price', name: 'costprice', width: 150, align: 'right', classes: 'wrap', editable:true,
+				{ label: 'Cost Price', name: 'costprice', width: 100, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
 						maxlength: 100,
@@ -1162,8 +1172,8 @@
 			gridComplete: function(){
 
 				fdl.set_array().reset();
-				if(!hide_init){
-					hide_init=1;
+				if(!hide_init_jq4){
+					hide_init_jq4=1;
 					hideatdialogForm_jqGrid4(false);
 				}
 			},
@@ -1171,7 +1181,7 @@
 				// dialog_deptcodedtl.check(errorField);
 		 	}
 		});
-		var hide_init=0;
+		var hide_init_jq4=0;
 
 		//////////////////////////////////////////myEditOptions3/////////////////////////////////////////////
 
@@ -1820,8 +1830,148 @@
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+		$("#jqGrid4_c").hide();
+
 		$("#jqGrid3_panel").on("show.bs.collapse", function(){
 			$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 		});
+
+		$("#jqGrid4_panel").on("show.bs.collapse", function(){
+			$("#jqGrid4").jqGrid ('setGridWidth', Math.floor($("#jqGrid4_c")[0].offsetWidth-$("#jqGrid4_c")[0].offsetLeft-28));
+		});
+
+		function colmodel_change_jq2(change){
+				let colmodel =[
+							{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+							{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+							{ label: 'Effective date', name: 'effdate', width: 130, classes: 'wrap', editable:true,
+								formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+								editoptions: {
+				                    dataInit: function (element) {
+				                        $(element).datepicker({
+				                            id: 'expdate_datePicker',
+				                            dateFormat: 'dd/mm/yy',
+				                            minDate: "dateToday",
+				                            showOn: 'focus',
+				                            changeMonth: true,
+						  					changeYear: true,
+				                        });
+				                    }
+				                }
+							},
+							{ label: 'Price 1', name: 'amt1', width: 150, align: 'right', classes: 'wrap', editable:true,
+								edittype:"text",
+								editoptions:{
+									maxlength: 100,
+								},
+							},
+							{ label: 'Price 2', name: 'amt2', width: 150, align: 'right', classes: 'wrap', editable:true,
+								edittype:"text",
+								editoptions:{
+									maxlength: 100,
+								},
+							},
+							{ label: 'Price 3', name: 'amt3', width: 150, align: 'right', classes: 'wrap', editable:true,
+								edittype:"text",
+								editoptions:{
+									maxlength: 100,
+								},
+							},
+							{ label: 'Cost Price', name: 'costprice', width: 150, align: 'right', classes: 'wrap', editable:true,
+								edittype:"text",
+								editoptions:{
+									maxlength: 100,
+								},
+							},
+							{ label: 'Inpatient Tax', name: 'iptax', width: 150,align: 'right' , classes: 'wrap', editable:true,
+								editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+									edittype:'custom',	editoptions:
+									    {  custom_element:iptaxCustomEdit,
+									       custom_value:galGridCustomValue 	
+									    },
+							},
+							{ label: 'Outpatient Tax', name: 'optax', width: 150,align: 'right' , classes: 'wrap', editable:true,
+								editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+									edittype:'custom',	editoptions:
+									    {  custom_element:optaxCustomEdit,
+									       custom_value:galGridCustomValue 	
+									    },
+							},
+							{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
+						];
+
+				let colmodel_pkg = [
+							{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+							{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+							{ label: 'Effective date', name: 'effdate', width: 130, classes: 'wrap', editable:true,
+								formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+								editoptions: {
+				                    dataInit: function (element) {
+				                        $(element).datepicker({
+				                            id: 'expdate_datePicker',
+				                            dateFormat: 'dd/mm/yy',
+				                            minDate: "dateToday",
+				                            showOn: 'focus',
+				                            changeMonth: true,
+						  					changeYear: true,
+				                        });
+				                    }
+				                }
+							},
+							{ label: 'Price 1', name: 'amt1', width: 150, align: 'right', classes: 'wrap', editable:true,
+								edittype:"text",
+								editoptions:{
+									maxlength: 100,
+								},
+							},
+							{ label: 'Price 2', name: 'amt2', width: 150, align: 'right', classes: 'wrap', editable:true,
+								edittype:"text",
+								editoptions:{
+									maxlength: 100,
+								},
+							},
+							{ label: 'Price 3', name: 'amt3', width: 150, align: 'right', classes: 'wrap', editable:true,
+								edittype:"text",
+								editoptions:{
+									maxlength: 100,
+								},
+							},
+							{ label: 'Cost Price', name: 'costprice', width: 150, align: 'right', classes: 'wrap', editable:true,
+								edittype:"text",
+								editoptions:{
+									maxlength: 100,
+								},
+							},
+							{ label: 'Inpatient Tax', name: 'iptax', width: 150,align: 'right' , classes: 'wrap', editable:true,
+								editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+									edittype:'custom',	editoptions:
+									    {  custom_element:iptaxCustomEdit,
+									       custom_value:galGridCustomValue 	
+									    },
+							},
+							{ label: 'Outpatient Tax', name: 'optax', width: 150,align: 'right' , classes: 'wrap', editable:true,
+								editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+									edittype:'custom',	editoptions:
+									    {  custom_element:optaxCustomEdit,
+									       custom_value:galGridCustomValue 	
+									    },
+							},
+							{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
+							{ label: 'Autopull', name: 'autopull', width: 100, classes: 'wrap'},
+							{ label: 'Add chg', name: 'addchg', width: 100, classes: 'wrap'},
+							{ label: 'Pkg type', name: 'pkgtype', width: 100, classes: 'wrap'},
+						];
+
+
+			if(change){
+				$('#jqGrid2').jqGrid('setGridParam',{colModel:colmodel_pkg}).trigger('reloadGrid');
+				$('#jqGrid3').jqGrid('setGridParam',{colModel:colmodel_pkg})
+				$('#jqGrid3').jqGrid('setColWidth','autopull',120);
+			}else{
+				$('#jqGrid2').jqGrid('setGridParam',{colModel:colmodel}).trigger('reloadGrid');;
+				$('#jqGrid3').jqGrid('setGridParam',{colModel:colmodel}).trigger('reloadGrid');;
+			}
+		}
 
 	});

@@ -42,16 +42,14 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Country Code', name: 'Code', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'Description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap',editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', hidden:true, editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
 					value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
 				}},
 			// { label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
 			// 		formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
 			// 		{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
-			{ label: 'idno', name: 'idno', hidden: true },
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
+			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 		],
 		autowidth: true,
 		multiSort: true,

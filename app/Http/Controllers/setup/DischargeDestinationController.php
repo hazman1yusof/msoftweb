@@ -57,6 +57,7 @@ class DischargeDestinationController extends defaultController
                     'compcode' => session('compcode'),
                     'code' => strtoupper($request->code),
                     'discharge' => strtoupper($request->discharge),
+                    'recstatus' => strtoupper($request->recstatus),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -79,6 +80,7 @@ class DischargeDestinationController extends defaultController
                 ->update([  
                     'code' => strtoupper($request->code),
                     'discharge' => strtoupper($request->discharge),
+                    'recstatus' => strtoupper($request->recstatus),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 

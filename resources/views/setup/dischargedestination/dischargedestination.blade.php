@@ -16,7 +16,7 @@ input.uppercase {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
-				<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 

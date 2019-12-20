@@ -37,7 +37,7 @@ $(document).ready(function () {
     var addmore_jqgrid={more:false,state:false,edit:false}
     $("#jqGrid").jqGrid({
         datatype: "local",
-        editurl: "/discharge/form",
+        editurl: "/dischargedestination/form",
         colModel: [
             { label: 'Compcode', name: 'compcode', width: 20, hidden:true},						
             { label: 'Discharge Code', name: 'code', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -103,7 +103,7 @@ $(document).ready(function () {
             let data = $('#jqGrid').jqGrid ('getRowData', rowid);
             console.log(data);
 
-            let editurl = "/discharge/form?"+
+            let editurl = "/dischargedestination/form?"+
                 $.param({
                     action: 'discharge_save',
                 });
@@ -151,7 +151,7 @@ $(document).ready(function () {
             let data = $('#jqGrid').jqGrid ('getRowData', rowid);
             // console.log(data);
 
-            let editurl = "/discharge/form?"+
+            let editurl = "/dischargedestination/form?"+
                 $.param({
                     action: 'discharge_save',
                 });
@@ -196,7 +196,7 @@ $(document).ready(function () {
                             param = {
                                 action: 'discharge_save'
                             }
-                            $.post( "/discharge/form?"+$.param(param),{oper:'del'}, function( data ){
+                            $.post( "/dischargedestination/form?"+$.param(param),{oper:'del'}, function( data ){
                             }).fail(function (data) {
                                 //////////////////errorText(dialog,data.responseText);
                             }).done(function (data) {

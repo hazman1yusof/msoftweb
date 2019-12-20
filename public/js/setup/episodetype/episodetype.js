@@ -29,7 +29,7 @@ $(document).ready(function () {
 			action:'get_table_default',
 			url: '/util/get_table_default',
 			field:'',
-			table_name:'hisdb.episodetype',
+			table_name:'hisdb.epistype',
 			table_id:'idno'
 		}
 		

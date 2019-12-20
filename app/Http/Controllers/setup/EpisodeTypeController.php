@@ -45,20 +45,20 @@ class EpisodeTypeController extends defaultController
         DB::beginTransaction();
         try {
 
-            $episodetype = DB::table('hisdb.episodetype')
-                            ->where('admsrccode','=',$request->admsrccode);
+            $episodetype = DB::table('hisdb.epistype')
+                            ->where('epistycode','=',$request->epistycode);
 
             if($episodetype->exists()){
                 throw new \Exception("record duplicate");
             }
 
-            DB::table('hisdb.episodetype')
+            DB::table('hisdb.epistype')
                 ->insert([  
                     'compcode' => session('compcode'),
                     'epistycode' => strtoupper($request->epistycode),
                     'description' => strtoupper($request->description),
-                    'activatedate' => strtoupper($request->activatedate),
-
+                    'activatedate' => $this->turn_date($request->activatedate),
+                    'recstatus' => strtoupper($request->recstatus),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -76,13 +76,13 @@ class EpisodeTypeController extends defaultController
         DB::beginTransaction();
         try {
 
-            DB::table('hisdb.episodetype')
+            DB::table('hisdb.epistype')
                 ->where('idno','=',$request->idno)
                 ->update([  
                     'epistycode' => strtoupper($request->epistycode),
                     'description' => strtoupper($request->description),
-                    'activatedate' => strtoupper($request->activatedate),
-
+                    'activatedate' => $this->turn_date($request->activatedate),
+                    'recstatus' => strtoupper($request->recstatus),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 

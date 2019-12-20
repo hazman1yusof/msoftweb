@@ -1458,4 +1458,34 @@ function recstatusDisable(recstatus = 'recstatus'){
 	}
 }
 
+$.jgrid.extend({
+    setColWidth: function (iCol, newWidth, adjustGridWidth) {
+        return this.each(function () {
+            var $self = $(this), grid = this.grid, p = this.p, colName, colModel = p.colModel, i, nCol;
+            if (typeof iCol === "string") {
+                // the first parametrer is column name instead of index
+                colName = iCol;
+                for (i = 0, nCol = colModel.length; i < nCol; i++) {
+                    if (colModel[i].name === colName) {
+                        iCol = i;
+                        break;
+                    }
+                }
+                if (i >= nCol) {
+                    return; // error: non-existing column name specified as the first parameter
+                }
+            } else if (typeof iCol !== "number") {
+                return; // error: wrong parameters
+            }
+            grid.resizing = { idx: iCol };
+            grid.headers[iCol].newWidth = newWidth;
+            grid.newWidth = p.tblwidth + newWidth - grid.headers[iCol].width;
+            grid.dragEnd();   // adjust column width
+            if (adjustGridWidth !== false) {
+                $self.jqGrid("setGridWidth", grid.newWidth, false); // adjust grid width too
+            }
+        });
+    }
+});
+
 /////////////////////////////////End utility function////////////////////////////////////////////////

@@ -46,7 +46,7 @@ class CaseTypeController extends defaultController
         try {
 
             $casetype = DB::table('hisdb.casetype')
-                            ->where('casetype','=',$request->casetype);
+                            ->where('case_code','=',$request->case_code);
 
             if($casetype->exists()){
                 throw new \Exception("record duplicate");
@@ -60,7 +60,6 @@ class CaseTypeController extends defaultController
                     'grpcasetype' => strtoupper($request->grpcasetype),
                     'recstatus' => strtoupper($request->recstatus),
                     'units' => strtoupper($request->units),
-                    'idno' => strtoupper($request->idno),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);

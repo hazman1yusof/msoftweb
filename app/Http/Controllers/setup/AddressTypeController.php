@@ -57,7 +57,6 @@ class AddressTypeController extends defaultController
                     'compcode' => session('compcode'),
                     'addtype' => strtoupper($request->addtype),
                     'description' => strtoupper($request->description),
-                    'idno' => strtoupper($request->idno),
                     'recstatus' => strtoupper($request->recstatus),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")

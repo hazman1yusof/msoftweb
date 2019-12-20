@@ -48,7 +48,7 @@ class PostcodeController extends defaultController
             $postcode = DB::table('hisdb.postcode')
                             ->where('postcode','=',$request->postcode);
 
-            if($admissrc->exists()){
+            if($postcode->exists()){
                 throw new \Exception("record duplicate");
             }
 
@@ -57,10 +57,11 @@ class PostcodeController extends defaultController
                     'compcode' => session('compcode'),
                     'postcode' => strtoupper($request->postcode),
                     'place_name' => strtoupper($request->place_name),
+                    'recstatus' => strtoupper($request->recstatus),
                     'countrycode' => strtoupper($request->countrycode),
                     'statecode' => strtoupper($request->statecode),
                     'district' => strtoupper($request->district),
-                    'effectivedate' => strtoupper($request->effectivedate),
+                    //'effectivedate' => strtoupper($request->effectivedate),
                     'idno' => strtoupper($request->idno),
                     'recstatus' => strtoupper($request->recstatus),
                     // 'discharge' => strtoupper($request->discharge),
@@ -89,10 +90,11 @@ class PostcodeController extends defaultController
                     'compcode' => session('compcode'),
                     'postcode' => strtoupper($request->postcode),
                     'place_name' => strtoupper($request->place_name),
+                    'recstatus' => strtoupper($request->recstatus),
                     'countrycode' => strtoupper($request->countrycode),
                     'statecode' => strtoupper($request->statecode),
                     'district' => strtoupper($request->district),
-                    'effectivedate' => strtoupper($request->effectivedate),
+                    //'effectivedate' => strtoupper($request->effectivedate),
                     'idno' => strtoupper($request->idno),
                     'recstatus' => strtoupper($request->recstatus),
                     // 'discharge' => strtoupper($request->discharge),

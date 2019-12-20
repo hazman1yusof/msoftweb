@@ -39,7 +39,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/state/form",
 		colModel: [
-            { label: 'compcode', name: 'compcode', hidden: true, editable: true, editrules: { required: true } },
+			{ label: 'compcode', name: 'compcode', width: 20, hidden:true},		
             { label: 'Country Code', name: 'countryCode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }},
 			{ label: 'State Code', name: 'StateCode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true } },
 			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true } },
@@ -47,10 +47,11 @@ $(document).ready(function () {
 			// { label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:true,
-					formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
-					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
-			{ label: 'idno', name: 'idno', hidden: true },
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', hidden:true, editable: true, edittype:"select",formatter:'select', 
+				editoptions:{
+					value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
+				}},
+			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 		],

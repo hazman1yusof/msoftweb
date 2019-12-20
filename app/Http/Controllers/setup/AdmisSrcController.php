@@ -57,6 +57,7 @@ class AdmisSrcController extends defaultController
                     'compcode' => session('compcode'),
                     'admsrccode' => strtoupper($request->admsrccode),
                     'description' => strtoupper($request->description),
+                    'recstatus' => strtoupper($request->recstatus),
                     'addr1' => strtoupper($request->addr1),
                     'addr2' => strtoupper($request->addr2),
                     'addr3' => strtoupper($request->addr3),
@@ -86,6 +87,7 @@ class AdmisSrcController extends defaultController
                 ->update([  
                     'admsrccode' => strtoupper($request->admsrccode),
                     'description' => strtoupper($request->description),
+                    'recstatus' => strtoupper($request->recstatus),
                     'addr1' => strtoupper($request->addr1),
                     'addr2' => strtoupper($request->addr2),
                     'addr3' => strtoupper($request->addr3),

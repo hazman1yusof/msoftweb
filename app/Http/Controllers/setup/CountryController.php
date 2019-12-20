@@ -57,6 +57,7 @@ class CountryController extends defaultController
                     'compcode' => session('compcode'),
                     'Code' => strtoupper($request->Code),
                     'Description' => strtoupper($request->Description),
+                    'recstatus' => strtoupper($request->recstatus),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -79,6 +80,7 @@ class CountryController extends defaultController
                 ->update([  
                     'Code' => strtoupper($request->Code),
                     'Description' => strtoupper($request->Description),
+                    'recstatus' => strtoupper($request->recstatus),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
