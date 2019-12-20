@@ -9,6 +9,10 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use PDF;
+use Mail;
+
+
+use App\Jobs\SendEmailPR;
 // use App\Http\Controllers\util\do_util;
 
 class PurchaseRequestController extends defaultController
@@ -56,7 +60,7 @@ class PurchaseRequestController extends defaultController
                 return $this->approved($request);
             case 'approved_single':
                 return $this->approved_single($request);
-            case 'cancel':
+            case 'cancel_single':
                 return $this->cancel($request);
             case 'refresh_do':
                 return $this->refresh_do($request);
@@ -111,50 +115,6 @@ class PurchaseRequestController extends defaultController
             $idno = $table->insertGetId($array_insert);
             
             $totalAmount = 0;
-
-            $purreqhd = DB::table("material.purreqhd")
-                ->where('idno','=',$idno);
-
-            $purreqhd_get = $purreqhd->first();
-
-            // 1. check authorization
-            $authorise = DB::table('material.authdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('trantype','=','PR')
-                ->where('cando','=', 'A')
-                ->where('recstatus','=','REQUEST')
-                ->where('deptcode','=',$purreqhd_get->reqdept)
-                ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-            if(!$authorise->exists()){
-
-                $authorise = DB::table('material.authdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('trantype','=','PR')
-                    ->where('cando','=', 'A')
-                    ->where('recstatus','=','REQUEST')
-                    ->where('deptcode','=','ALL')
-                    ->where('deptcode','=','all')
-                    ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    if(!$authorise->exists()){
-                        throw new \Exception("Authorization for this purchase request doesnt exists");
-                    }
-
-            }
-
-            $authorise_use = $authorise->first();
-            DB::table("material.queuepr")
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'recno' => $purreqhd_get->recno,
-                    'AuthorisedID' => $authorise_use->authorid,
-                    'deptcode' => $purreqhd_get->reqdept,
-                    'recstatus' => 'OPEN',
-                    'trantype' => 'REQUEST',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
 
             $responce = new stdClass();
             $responce->docno = $request_no;
@@ -257,14 +217,16 @@ class PurchaseRequestController extends defaultController
                 }
 
                 $authorise_use = $authorise->first();
-
-                // 2. update queue
                 DB::table("material.queuepr")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'recno' => $purreqhd_get->recno,
                         'AuthorisedID' => $authorise_use->authorid,
+                        'deptcode' => $purreqhd_get->reqdept,
                         'recstatus' => 'REQUEST',
-                        'trantype' => 'SUPPORT'
+                        'trantype' => 'SUPPORT',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
                 // 3. update status to posted
@@ -283,6 +245,16 @@ class PurchaseRequestController extends defaultController
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
+                // 4. email and whatsapp
+                $data = new stdClass();
+                $data->status = 'SUPPORT';
+                $data->deptcode = $purreqhd_get->reqdept;
+                $data->purreqno = $purreqhd_get->purreqno;
+                $data->email_to = 'hazman.yusof@gmail.com';
+                $data->whatsapp = '01123090948';
+
+                $this->sendemail($data);
+
             }
 
             DB::commit();
@@ -296,9 +268,7 @@ class PurchaseRequestController extends defaultController
 
     public function posted_single(Request $request){
         DB::beginTransaction();
-
         try{
-
 
             $purreqhd = DB::table("material.purreqhd")
                 ->where('idno','=',$request->idno);
@@ -326,20 +296,22 @@ class PurchaseRequestController extends defaultController
                     ->where('maxlimit','>=',$purreqhd_get->totamount);
 
                     if(!$authorise->exists()){
-                        throw new \Exception("Authorization for this purchase request doesnt exists",500);
+                        throw new \Exception("Authorization for this purchase request doesnt exists");
                     }
-                    
+
             }
 
             $authorise_use = $authorise->first();
-
-            // 2. update queue
             DB::table("material.queuepr")
-                ->where('recno','=',$purreqhd_get->recno)
-                ->update([
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'recno' => $purreqhd_get->recno,
                     'AuthorisedID' => $authorise_use->authorid,
+                    'deptcode' => $purreqhd_get->reqdept,
                     'recstatus' => 'REQUEST',
-                    'trantype' => 'SUPPORT'
+                    'trantype' => 'SUPPORT',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
             // 3. update status to posted
@@ -358,6 +330,15 @@ class PurchaseRequestController extends defaultController
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
+            // 4. email and whatsapp
+            $data = new stdClass();
+            $data->status = 'SUPPORT';
+            $data->deptcode = $purreqhd_get->reqdept;
+            $data->purreqno = $purreqhd_get->purreqno;
+            $data->email_to = 'hazman.yusof@gmail.com';
+            $data->whatsapp = '01123090948';
+
+            $this->sendemail($data);
 
             DB::commit();
         
@@ -446,27 +427,26 @@ class PurchaseRequestController extends defaultController
 
         try{
 
-            foreach ($request->idno_array as $value){
+            $purreqhd = DB::table("material.purreqhd")
+                ->where('idno','=',$request->idno);
 
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
+            $purreqhd_get = $purreqhd->first();
 
-                $purreqhd_get = $purreqhd->first();
+            $purreqhd->update([
+                    'recstatus' => 'CANCELLED'
+                ]);
 
-                $purreqhd->update([
-                        'recstatus' => 'CANCELLED'
-                    ]);
+            DB::table("material.purreqdt")
+                ->where('recno','=',$purreqhd_get->recno)
+                ->update([
+                    'recstatus' => 'CANCELLED',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
 
-                DB::table("material.purreqdt")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-            }
-
+            DB::table("material.queuepr")
+                ->where('recno','=',$purreqhd_get->recno)
+                ->delete();
            
             DB::commit();
         
@@ -539,6 +519,17 @@ class PurchaseRequestController extends defaultController
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+
+
+                // 4. email and whatsapp
+                $data = new stdClass();
+                $data->status = 'SUPPORT';
+                $data->deptcode = $purreqhd_get->reqdept;
+                $data->purreqno = $purreqhd_get->purreqno;
+                $data->email_to = 'hazman.yusof@gmail.com';
+                $data->whatsapp = '01123090948';
+            
+                $this->sendemail($data);
 
             }
 
@@ -614,7 +605,15 @@ class PurchaseRequestController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
+            // 4. email and whatsapp
+            $data = new stdClass();
+            $data->status = 'VERIFIED';
+            $data->deptcode = $purreqhd_get->reqdept;
+            $data->purreqno = $purreqhd_get->purreqno;
+            $data->email_to = 'hazman.yusof@gmail.com';
+            $data->whatsapp = '01123090948';
 
+            $this->sendemail($data);
            
             DB::commit();
         
@@ -687,6 +686,17 @@ class PurchaseRequestController extends defaultController
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+
+
+                // 4. email and whatsapp
+                $data = new stdClass();
+                $data->status = 'APPROVED';
+                $data->deptcode = $purreqhd_get->reqdept;
+                $data->purreqno = $purreqhd_get->purreqno;
+                $data->email_to = 'hazman.yusof@gmail.com';
+                $data->whatsapp = '01123090948';
+
+                $this->sendemail($data);
 
             }
 
@@ -761,8 +771,16 @@ class PurchaseRequestController extends defaultController
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
+                    
+            // 4. email and whatsapp
+            $data = new stdClass();
+            $data->status = 'APPROVED';
+            $data->deptcode = $purreqhd_get->reqdept;
+            $data->purreqno = $purreqhd_get->purreqno;
+            $data->email_to = 'hazman.yusof@gmail.com';
+            $data->whatsapp = '01123090948';
 
-
+            $this->sendemail($data);
            
             DB::commit();
         
@@ -891,6 +909,17 @@ class PurchaseRequestController extends defaultController
 
         
         return view('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm'));
+    }
+
+    function sendemail($data){
+        SendEmailPR::dispatch($data);
+
+        // $data_ = ['data' => $data];
+
+        // Mail::send('email.mail', $data_, function($message) use ($data) {
+        //     $message->from('me@gmail.com', 'Christian Nwmaba');
+        //     $message->to($data->email_to);
+        // });
     }
 
     

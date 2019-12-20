@@ -525,6 +525,9 @@ Route::get('/testpdf','util\TestController@pdf');
 Route::get('/testpdf2','util\TestController@pdf2');
 Route::post('/test/form','util\TestController@form');
 
+Route::get('/test_email','util\TestController@show_email');
+Route::post('/test_email_send','util\TestController@send_email');
+
 Route::get('/barcode','util\BarcodeController@show');
 Route::post('/barcode/form','util\BarcodeController@form');
 Route::post('/barcode/print','util\BarcodeController@print');
