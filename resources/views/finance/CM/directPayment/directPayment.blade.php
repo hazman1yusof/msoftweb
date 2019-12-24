@@ -102,7 +102,7 @@ i.fa {
 
 								<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="CM">
 								<input id="apacthdr_trantype" name="apacthdr_trantype" value = "DP" type="hidden">
-								<input id="auditno" name="auditno" type="hidden">
+								<input id="auditno" name="apacthdr_auditno" type="hidden">
 								<input id="idno" name="idno" type="hidden">
 
 

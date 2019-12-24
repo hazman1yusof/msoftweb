@@ -863,7 +863,7 @@ $(document).ready(function () {
 			////////////////////object for dialog handler//////////////////
 
 			var dialog_paymode = new ordialog(
-				'paymode','debtor.paymode','#paymode',errorField,
+				'paymode','debtor.paymode','#apacthdr_paymode',errorField,
 				{	colModel:[
 						{label:'Pay Mode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -896,7 +896,7 @@ $(document).ready(function () {
 			dialog_paymode.makedialog(true);
 
 			var dialog_bankcode = new ordialog(
-				'bankcode','finance.bank','#bankcode',errorField,
+				'bankcode','finance.bank','#apacthdr_bankcode',errorField,
 				{	colModel:[
 						{label:'Bank Code',name:'bankcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'bankname',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -929,7 +929,7 @@ $(document).ready(function () {
 			dialog_bankcode.makedialog(true);
 
 			var dialog_payto = new ordialog(
-				'payto','material.supplier','#payto',errorField,
+				'payto','material.supplier','#apacthdr_payto',errorField,
 				{	colModel:[
 						{label:'Pay To',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -962,7 +962,7 @@ $(document).ready(function () {
 			dialog_payto.makedialog(true);
 
 			var dialog_cheqno = new ordialog(
-				'cheqno','finance.chqtran','#cheqno',errorField,
+				'cheqno','finance.chqtran','#apacthdr_cheqno',errorField,
 				{	colModel:[
 						{label:'Cheque No',name:'cheqno',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
 						
@@ -988,7 +988,7 @@ $(document).ready(function () {
 					title:"Select Cheque No",
 					open: function(){
 						dialog_cheqno.urlParam.filterCol=['compcode','stat', 'bankcode'],
-						dialog_cheqno.urlParam.filterVal=['session.compcode','A', $('#bankcode').val()]
+						dialog_cheqno.urlParam.filterVal=['session.compcode','A', $('#apacthdr_bankcode').val()]
 					}
 				},'urlParam','radio','tab'
 			);
