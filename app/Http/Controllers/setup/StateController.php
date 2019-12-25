@@ -46,7 +46,7 @@ class StateController extends defaultController
         try {
 
             $state = DB::table('hisdb.state')
-                            ->where('code','=',$request->code);
+                            ->where('countryCode','=',$request->countryCode);
 
             if($state->exists()){
                 throw new \Exception("record duplicate");
@@ -59,7 +59,7 @@ class StateController extends defaultController
                     'StateCode' => strtoupper($request->StateCode),
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
-                    'idno' => strtoupper($request->idno),
+                    //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
                     'lastuser' => session('username'),

@@ -40,9 +40,9 @@ $(document).ready(function () {
 		editurl: "/state/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, hidden:true},		
-            { label: 'Country Code', name: 'countryCode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }},
-			{ label: 'State Code', name: 'StateCode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true } },
-			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true } },
+            { label: 'Country Code', name: 'countryCode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'State Code', name: 'StateCode', width: 15, canSearch: true, checked: true, editable: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			// { label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },

@@ -58,7 +58,7 @@ class CitizenController extends defaultController
                     'Code' => strtoupper($request->Code),
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
-                    'idno' => strtoupper($request->idno),
+                    //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
                     'lastuser' => session('username'),

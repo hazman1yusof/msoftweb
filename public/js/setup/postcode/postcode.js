@@ -29,9 +29,14 @@ $(document).ready(function () {
 		action: 'get_table_default',
 		url: '/util/get_table_default',
 		field: '',
-		table_name: 'hisdb.postcode',
-		table_id: 'compcode',
+		table_name: ['hisdb.postcode AS PC', 'hisdb.state AS ST', 'hisdb.country AS CN'],
+		table_id: 'pc_compcode',
 		sort_idno: true,
+		join_type:['LEFT JOIN', 'LEFT JOIN'],
+		join_onCol:['pc.state', 'pc.country'],
+		join_onVal:['st.StateCode', 'cn.Code'],
+		filterCol:['pc.compcode'],
+		filterVal:['session.compcode']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -40,32 +45,30 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/postcode/form",
 		colModel: [
-            { label: 'compcode', name: 'compcode', hidden: true },
-            { label: 'Postode', name: 'postcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'Place Name', name: 'place_name', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            //statecode
-            //countrycode
-            { label: 'District', name: 'district', width: 80, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'State', name: 'state', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-			{ label: 'Country', name: 'country', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'compcode', name: 'pc_compcode', hidden: true },
+            { label: 'Postode', name: 'pc_postcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'Place Name', name: 'pc_place_name', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'District', name: 'pc_district', width: 80, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'State', name: 'st_StateCode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+			{ label: 'Country', name: 'cn_Code', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
 			// { label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', hidden:true, editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'pc_recstatus', width: 30, classes: 'wrap', hidden:true, editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
 					value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
 				}},
-			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
+			{ label: 'id', name: 'pc_idno', width:10, hidden: true, key:true},
+			{ label: 'lastcomputerid', name: 'pc_lastcomputerid', width: 90, hidden:true},
+			{ label: 'lastipaddress', name: 'pc_lastipaddress', width: 90, hidden:true},
 		],
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
-		sortname: 'idno',
-		sortorder: 'desc',
+		sortname: 'pc_idno',
+		//sortorder: 'desc',
 		width: 900,
 		height: 350,
 		rowNum: 30,
@@ -90,7 +93,7 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("input[name='country']").keydown(function(e) {//when click tab at totamount, auto save
+			$("input[name='cn_Code']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -136,8 +139,8 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("input[name='postcode']").attr('disabled','disabled');
-			$("input[name='country']").keydown(function(e) {//when click tab at totamount, auto save
+			$("input[name='pc_postcode']").attr('disabled','disabled');
+			$("input[name='cn_Code']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
