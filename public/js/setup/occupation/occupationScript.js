@@ -1,12 +1,14 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
+var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+	//check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
+		modules : 'sanitize',
 		language: {
 			requiredFields: ''
 		},
@@ -23,78 +25,6 @@ $(document).ready(function () {
 			}
 		},
 	};
-	//////////////////////////////////////////////////////////////
-
-
-	////////////////////object for dialog handler//////////////////
-
-	////////////////////////////////////start dialog///////////////////////////////////////
-	var butt1 = [{
-		text: "Save", click: function () {
-			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", oper, saveParam, urlParam);
-			}
-		}
-	}, {
-		text: "Cancel", click: function () {
-			$(this).dialog('close');
-		}
-	}];
-
-	var butt2 = [{
-		text: "Close", click: function () {
-			$(this).dialog('close');
-		}
-	}];
-
-	var oper;
-	$("#dialogForm")
-		.dialog({
-			width: 9 / 10 * $(window).width(),
-			modal: true,
-			autoOpen: false,
-			open: function (event, ui) {
-				parent_close_disabled(true);
-				switch (oper) {
-					case state = 'add':
-						$(this).dialog("option", "title", "Add");
-						enableForm('#formdata');
-						rdonly("#formdata");
-						hideOne("#formdata");
-						rdonly("#dialogForm");
-						break;
-					case state = 'edit':
-						$(this).dialog("option", "title", "Edit");
-						enableForm('#formdata');
-						frozeOnEdit("#dialogForm");
-						rdonly("#dialogForm");
-						$('#formdata :input[hideOne]').show();
-						break;
-					case state = 'view':
-						$(this).dialog("option", "title", "View");
-						disableForm('#formdata');
-						$('#formdata :input[hideOne]').show();
-						$(this).dialog("option", "buttons", butt2);
-						break;
-				}
-				if(oper!='view'){
-						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
-						//dialog_dept.handler(errorField);
-					}
-			},
-			close: function (event, ui) {
-				parent_close_disabled(false);
-				emptyFormdata(errorField, '#formdata');
-				//$('.alert').detach();
-				$('.my-alert').detach();
-				$("#formdata a").off();
-				if (oper == 'view') {
-					$(this).dialog("option", "buttons", butt1);
-				}
-			},
-			buttons: butt1,
-		});
-	////////////////////////////////////////end dialog///////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
@@ -103,44 +33,25 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'hisdb.occupation',
 		table_id: 'occupcode',
-		sort_idno: true,
+		//sort_idno: true,
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
-	var saveParam = {
-		action: 'save_table_default',
-		url: '/occupation/form',
-		field: '',
-		oper: oper,
-		table_name: 'hisdb.occupation',
-		table_id: 'occupcode',
-		saveip:'true',
-		checkduplicate:'true'
-	};
-
+	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
+		editurl: "/occupation/form",
 		colModel: [
-			{ label: 'idno', name: 'idno', width: 5, hidden: true },
-			{
-				label: 'Occupation Code', name: 'occupcode', width: 10, classes: 'wrap', canSearch: true, editable: true,
-				editrules: { required: true },
-				editoptions: { maxlength: 2 },
-			},
-			{
-				label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, editable: true, checked:true,
-				editrules: { required: true },
-				editoptions: { maxlength: 100 },
-			},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
+			{ label: 'idno', name: 'idno', width: 5, hidden: true, key:true},
+			{ label: 'Code', name: 'occupcode', width: 10, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			/*{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
-			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
+			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },*/
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
-			},
+			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: true, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
 
 		],
 		autowidth: true,
@@ -153,86 +64,165 @@ $(document).ready(function () {
 		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPager",
-		ondblClickRow: function (rowid, iRow, iCol, e) {
-			$("#jqGridPager td[title='Edit Selected Row']").click();
-		},
-		gridComplete: function () {
-			if (oper == 'add') {
-				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+		loadComplete: function(){
+			if(addmore_jqgrid.more == true){$('#jqGrid2_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 		},
-
-
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGrid_iledit").click();
+		},
 	});
 
-	/*////////////////////////////formatter//////////////////////////////////////////////////////////
-	function formatter(cellvalue, options, rowObject) {
-		if (cellvalue == 'A') {
-			return "Active";
-		}
-		if (cellvalue == 'D') {
-			return "Deactive";
-		}
-	}
+	//////////////////////////My edit options /////////////////////////////////////////////////////////
+	var myEditOptions = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+			$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid_ilsave').click();
+				/*addmore_jqgrid.state = true;
+				$('#jqGrid_ilsave').click();*/
+			});
 
-	function unformat(cellvalue, options) {
-		if (cellvalue == 'Active') {
-			return "Active";
-		}
-		if (cellvalue == 'Deactive') {
-			return "Deactive";
-		}
-	}*/
+		},
+		aftersavefunc: function (rowid, response, options) {
+			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			//state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGrid',urlParam,'add');
+			errorField.length=0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorfunc: function(rowid,response){
+			alert(response.responseText);
+			refreshGrid('#jqGrid',urlParam,'add');
+		},
+		beforeSaveRow: function (options, rowid) {
+			if(errorField.length>0)return false;
 
+			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			console.log(data);
+
+			let editurl = "/occupation/form?"+
+				$.param({
+					action: 'occupation_save',
+				});
+			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function( response ) {
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
+		}
+	};
+
+	var myEditOptions_edit = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+			$("input[name='occupcode']").attr('disabled','disabled');
+			$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid_ilsave').click();
+				/*addmore_jqgrid.state = true;
+				$('#jqGrid_ilsave').click();*/
+			});
+
+		},
+		aftersavefunc: function (rowid, response, options) {
+			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			//state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGrid',urlParam,'add');
+			errorField.length=0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorfunc: function(rowid,response){
+			alert(response.responseText);
+			refreshGrid('#jqGrid',urlParam2,'add');
+		},
+		beforeSaveRow: function (options, rowid) {
+			console.log(errorField)
+			if(errorField.length>0)return false;
+
+			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			// console.log(data);
+
+			let editurl = "/occupation/form?"+
+				$.param({
+					action: 'occupation_save',
+				});
+			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function( response ) {
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
+		}
+	};
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
-	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
-		view: false, edit: false, add: false, del: false, search: false,
-		beforeRefresh: function () {
-			refreshGrid("#jqGrid", urlParam);
+	$("#jqGrid").inlineNav('#jqGridPager', {
+		add: true,
+		edit: true,
+		cancel: true,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions
 		},
+		editParams: myEditOptions_edit
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
+		id: "jqGridPagerDelete",
+		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-trash",
 		title: "Delete Selected Row",
 		onClickButton: function () {
-			oper = 'del';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			if (!selRowId) {
-				alert('Please select row');
-				return emptyFormdata(errorField, '#formdata');
+				bootbox.alert('Please select row');
 			} else {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", 'del', saveParam, urlParam, { 'idno': selrowData('#jqGrid').idno });
+				bootbox.confirm({
+					message: "Are you sure you want to delete this row?",
+					buttons: {
+						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
+					},
+					callback: function (result) {
+						if (result == true) {
+							param = {
+								action: 'occupation_save'
+							}
+							$.post( "/occupation/form?"+$.param(param),{oper:'del'}, function( data ){
+							}).fail(function (data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function (data) {
+								refreshGrid("#jqGrid", urlParam);
+							});
+						}else{
+							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+						}
+					}
+				});
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-info-sign",
-		title: "View Selected Row",
+		id: "jqGridPagerRefresh",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
 		onClickButton: function () {
-			oper = 'view';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-edit",
-		title: "Edit Selected Row",
-		onClickButton: function () {
-			oper = 'edit';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
-			recstatusDisable();
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-plus",
-		title: "Add New Row",
-		onClickButton: function () {
-			oper = 'add';
-			$("#dialogForm").dialog("open");
+			refreshGrid("#jqGrid", urlParam);
 		},
 	});
 
@@ -240,11 +230,11 @@ $(document).ready(function () {
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 
-	toogleSearch('#sbut1', '#searchForm', 'on');
-	populateSelect('#jqGrid', '#searchForm');
+	//toogleSearch('#sbut1', '#searchForm', 'on');
+	populateSelect2('#jqGrid', '#searchForm');
 	searchClick('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid',false,saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
+	//addParamField('#jqGrid',false,saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 });
