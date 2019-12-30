@@ -9,7 +9,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 
-class AreaController extends defaultController
+class IDTypeController extends defaultController
 {   
 
     var $table;
@@ -18,12 +18,12 @@ class AreaController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "bloodcode";
+        $this->duplicateCode = "Code";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.area.area');
+        return view('setup.idtype.idtype');
     }
 
     public function form(Request $request)
@@ -45,24 +45,19 @@ class AreaController extends defaultController
         DB::beginTransaction();
         try {
 
-            $citizen = DB::table('hisdb.areacode')
-                            ->where('areacode','=',$request->areacode);
+            $addresstype = DB::table('hisdb.idtype')
+                            ->where('idtype','=',$request->idtype);
 
-            if($citizen->exists()){
+            if($addresstype->exists()){
                 throw new \Exception("record duplicate");
             }
 
-            DB::table('hisdb.areacode')
+            DB::table('hisdb.idtype')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'areacode' => strtoupper($request->areacode),
-                    'Description' => strtoupper($request->Description),
+                    'idtype' => strtoupper($request->idtype),
+                    'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
-                    'areagroup' => strtoupper($request->areagroup),
-                    'citizen' => strtoupper($request->citizen),
-                    //'createdby' => strtoupper($request->createdby),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -80,17 +75,13 @@ class AreaController extends defaultController
         DB::beginTransaction();
         try {
 
-            DB::table('hisdb.areacode')
+            DB::table('hisdb.idtype')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'areacode' => strtoupper($request->areacode),
-                    'Description' => strtoupper($request->Description),
+                    'idtype' => strtoupper($request->idtype),
+                    'description' => strtoupper($request->description),
+                    'idno' => strtoupper($request->idno),
                     'recstatus' => strtoupper($request->recstatus),
-                    'areagroup' => strtoupper($request->areagroup),
-                    'citizen' => strtoupper($request->citizen),
-                    //'createdby' => strtoupper($request->createdby),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -104,7 +95,7 @@ class AreaController extends defaultController
     }
 
     public function del(Request $request){
-        DB::table('hisdb.areacode')
+        DB::table('hisdb.idtype')
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'D',

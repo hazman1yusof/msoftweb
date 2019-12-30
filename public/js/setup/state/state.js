@@ -47,7 +47,7 @@ $(document).ready(function () {
 			// { label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', hidden:true, editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
 					value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
 				}},

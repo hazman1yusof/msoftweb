@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Discipline Setup')
+@section('title', 'ID Type Setup')
 
 @section('style')
 
@@ -35,7 +35,7 @@ input.uppercase {
 		</form>
 
         <div class="panel panel-default">
-		    <div class="panel-heading">Doctor Discipline Setup Header</div>
+		    <div class="panel-heading">ID Type Setup Header</div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
             		<table id="jqGrid" class="table table-striped"></table>
@@ -51,6 +51,6 @@ input.uppercase {
 
 @section('scripts')
 
-	<script src="js/setup/discipline/disciplineScript.js"></script>
+	<script src="js/setup/idtype/idtype.js"></script>
 	
 @endsection

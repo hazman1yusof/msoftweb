@@ -187,6 +187,11 @@ Route::get('/dischargedestination','setup\DischargeDestinationController@show');
 Route::get('/dischargedestination/table','setup\DischargeDestinationController@table');
 Route::post('/dischargedestination/form','setup\DischargeDestinationController@form');
 
+// //// ID Type setup page ///
+Route::get('/idtype','setup\IDTypeController@show');
+Route::get('/idtype/table','setup\IDTypeController@table');
+Route::post('/idtype/form','setup\IDTypeController@form');
+
 // //// Address Type setup page ///
 Route::get('/addresstype','setup\AddressTypeController@show');
 Route::get('/addresstype/table','setup\AddressTypeController@table');

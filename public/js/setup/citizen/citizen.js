@@ -44,7 +44,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Code', name: 'Code', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: true, editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
 			}},

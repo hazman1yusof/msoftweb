@@ -29,7 +29,7 @@ $(document).ready(function () {
         action:'get_table_default',
         url: '/util/get_table_default',
         field:'',
-        table_name:'hisdb.addcode',
+        table_name:'hisdb.idtype',
         table_id:'idno'
     }
 
@@ -37,14 +37,14 @@ $(document).ready(function () {
     var addmore_jqgrid={more:false,state:false,edit:false}
     $("#jqGrid").jqGrid({
         datatype: "local",
-        editurl: "/addresstype/form",
+        editurl: "/idtype/form",
         colModel: [
             { label: 'compcode', name: 'compcode', width: 20, hidden:true},						
-            //{ label: 'Address Type', name: 'addtype', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }},
-            { label: 'Address Type', name: 'addtype', width: 30, classes: 'wrap', canSearch: true,editable: true, edittype:"select",formatter:'select', 
-                editoptions:{
-                    value:"CURRENT:CURRENT;OFFICE:OFFICE;HOME:HOME"
-                }},
+            { label: 'ID Type', name: 'idtype', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+            // { label: 'ID Type', name: 'idtype', width: 30, classes: 'wrap', canSearch: true,editable: true, edittype:"select",formatter:'select', 
+            //     editoptions:{
+            //         value:"CURRENT:CURRENT;OFFICE:OFFICE;HOME:HOME"
+            //     }},
             { label: 'Description', name: 'description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
             { label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
@@ -107,9 +107,9 @@ $(document).ready(function () {
             let data = $('#jqGrid').jqGrid ('getRowData', rowid);
             console.log(data);
 
-            let editurl = "/addresstype/form?"+
+            let editurl = "/idtype/form?"+
                 $.param({
-                    action: 'addresstype_save',
+                    action: 'idtype_save',
                 });
             $("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
         },
@@ -128,7 +128,7 @@ $(document).ready(function () {
         },
         oneditfunc: function (rowid) {
             $("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-            $("input[name='addtype']").attr('disabled','disabled');
+            $("input[name='idtype']").attr('disabled','disabled');
             $("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGrid_ilsave').click();
@@ -155,9 +155,9 @@ $(document).ready(function () {
             let data = $('#jqGrid').jqGrid ('getRowData', rowid);
             // console.log(data);
 
-            let editurl = "/addresstype/form?"+
+            let editurl = "/idtype/form?"+
                 $.param({
-                    action: 'addresstype_save',
+                    action: 'idtype_save',
                 });
             $("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
         },
@@ -198,9 +198,9 @@ $(document).ready(function () {
                     callback: function (result) {
                         if (result == true) {
                             param = {
-                                action: 'addresstype_save'
+                                action: 'idtype_save'
                             }
-                            $.post( "/addresstype/form?"+$.param(param),{oper:'del'}, function( data ){
+                            $.post( "/idtype/form?"+$.param(param),{oper:'del'}, function( data ){
                             }).fail(function (data) {
                                 //////////////////errorText(dialog,data.responseText);
                             }).done(function (data) {
