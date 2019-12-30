@@ -13,6 +13,7 @@ use Mail;
 
 
 use App\Jobs\SendEmailPR;
+use App\Jobs\ProcessPodcast;
 // use App\Http\Controllers\util\do_util;
 
 class PurchaseRequestController extends defaultController
@@ -913,11 +914,12 @@ class PurchaseRequestController extends defaultController
 
     function sendemail($data){
         SendEmailPR::dispatch($data);
+        ProcessPodcast::dispatch();
 
         // $data_ = ['data' => $data];
 
         // Mail::send('email.mail', $data_, function($message) use ($data) {
-        //     $message->from('me@gmail.com', 'Christian Nwmaba');
+        //     $message->from('me@gmail.com', 'medicsoft');
         //     $message->to($data->email_to);
         // });
     }

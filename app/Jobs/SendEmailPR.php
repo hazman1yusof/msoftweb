@@ -38,7 +38,7 @@ class SendEmailPR implements ShouldQueue
         $data = $this->data;
 
         Mail::send('email.mail', $data_, function($message) use ($data) {
-            $message->from('me@gmail.com', 'Christian Nwmaba');
+            $message->from('me@gmail.com', 'medicsoft');
             $message->to($data->email_to);
             // $message->from(‘SENDER_EMAIL_ADDRESS’,’Test Mail’);
             // $message->to($to_email, $to_name)->subject(Laravel Test Mail’);
