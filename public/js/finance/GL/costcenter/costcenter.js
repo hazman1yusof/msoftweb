@@ -59,7 +59,7 @@
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
-				sortname:'costcode',
+				sortname:'idno',
 				sortorder:'desc',
 				width: 900,
 				height: 350,
