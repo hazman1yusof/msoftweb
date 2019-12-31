@@ -47,7 +47,7 @@ $(document).ready(function () {
 		 colModel: [
 			//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
 			{label: 'Category Code', name: 'catcode', width: 30, canSearch: true,  editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{label: 'Description', name: 'description', width: 100, classes: 'wrap',checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},					
+			{label: 'Description', name: 'description', width: 80, classes: 'wrap',checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},					
 			{label: 'Category Type', name: 'cattype', width: 90 , hidden: true},					
 			{label: 'Source', name: 'source', width: 90 , hidden: true},					
 			{label: 'Stock Account', name: 'stockacct', width: 90 ,  hidden: true},					
@@ -208,8 +208,6 @@ $(document).ready(function () {
 				var temp;
 				switch(name){
 					case 'Expenses Account':temp=$('#expacct');break;
-					
-				break;
 				}
 				return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 			}
@@ -334,7 +332,7 @@ $(document).ready(function () {
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							$('#povalidate').focus();
+							//$('#povalidate').focus();
 						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}
