@@ -14,7 +14,7 @@ class BilltypeController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "Code";
+        $this->duplicateCode = "billtype";
     }
 
     public function show(Request $request)

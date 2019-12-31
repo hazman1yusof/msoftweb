@@ -14,7 +14,7 @@ class ChargeTypeController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "bloodcode";
+        $this->duplicateCode = "chgtype";
     }
 
     public function show(Request $request)
