@@ -51,7 +51,7 @@ $(document).ready(function () {
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },*/
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: true, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
+			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
 
 		],
 		autowidth: true,
@@ -201,7 +201,9 @@ $(document).ready(function () {
 					callback: function (result) {
 						if (result == true) {
 							param = {
-								action: 'occupation_save'
+								_token: $("#_token").val(),
+								action: 'occupation_save',
+								occupcode: $('#occupcode').val(),
 							}
 							$.post( "/occupation/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
