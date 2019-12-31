@@ -1,6 +1,7 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
+var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
@@ -23,77 +24,8 @@ $(document).ready(function () {
 			}
 		},
 	};
-	
-	////////////////////////////////////start dialog///////////////////////////////////////
-	var butt1=[{
-		text: "Save",click: function() {
-			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
-				//saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,'#searchForm',$(tabform).serializeArray());
-			}
-		}
-	},{
-		text: "Cancel",click: function() {
-			$(this).dialog('close');
-		}
-	}];
 
-	var butt2=[{
-		text: "Close",click: function() {
-			$(this).dialog('close');
-		}
-	}];
-
-	var oper;
-	$("#dialogForm")
-	  .dialog({ 
-		width: 9/10 * $(window).width(),
-		modal: true,
-		autoOpen: false,
-		open: function( event, ui ) {
-			parent_close_disabled(true);
-			switch(oper) {
-				case state = 'add':
-					$( this ).dialog( "option", "title", "Add" );
-					enableForm('#formdata');
-					hideOne('#formdata');
-					rdonly("#dialogForm");
-					break;
-				case state = 'edit':
-					$( this ).dialog( "option", "title", "Edit" );
-					enableForm('#formdata');
-					frozeOnEdit("#dialogForm");
-					$('#formdata :input[hideOne]').show();
-					rdonly("#dialogForm");
-					break;
-				case state = 'view':
-					$( this ).dialog( "option", "title", "View" );
-					disableForm('#formdata');
-					$('#formdata :input[hideOne]').show();
-					$(this).dialog("option", "buttons",butt2);
-					break;
-			}
-			if(oper!='view'){
-				set_compid_from_storage("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
-				dialog_expacct.on();
-			}
-			if(oper!='add'){
-				dialog_expacct.check(errorField);
-			}
-		},
-		close: function( event, ui ) {
-			parent_close_disabled(false);
-			emptyFormdata(errorField,'#formdata');
-			$('#formdata .alert').detach();
-			//$('.alert').detach();
-			$("#formdata a").off();
-			if(oper=='view'){
-				$(this).dialog("option", "buttons",butt1);
-			}
-		},
-		buttons :butt1,
-	  });
-	////////////////////////////////////////end dialog///////////////////////////////////////////
+	var fdl = new faster_detail_load();
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
@@ -107,35 +39,30 @@ $(document).ready(function () {
 		sort_idno: true,
 	}
 
-	/////////////////////parameter for saving url////////////////////////////////////////////////
-	var saveParam={
-		action:'save_table_default',
-		url:'categoryfin/form',
-		field:'',
-		oper:oper,
-		table_name:'material.category',
-		table_id:'catcode',
-		saveip:'true',
-		checkduplicate:'true'
-	};
-
 	//////////////////////////////// jQgrid /////////////////////////////////////////////////////
-	
+	var addmore_jqgrid={more:false,state:false,edit:false}	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
+		editurl: "/categoryfin/form",
 		 colModel: [
 			//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
-			{label: 'Category Code', name: 'catcode', width: 70, canSearch: true},
-			{label: 'Description', name: 'description', width: 100, classes: 'wrap',checked:true, canSearch: true},					
+			{label: 'Category Code', name: 'catcode', width: 30, canSearch: true,  editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{label: 'Description', name: 'description', width: 100, classes: 'wrap',checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},					
 			{label: 'Category Type', name: 'cattype', width: 90 , hidden: true},					
 			{label: 'Source', name: 'source', width: 90 , hidden: true},					
 			{label: 'Stock Account', name: 'stockacct', width: 90 ,  hidden: true},					
 			{label: 'COS Account', name: 'cosacct', width: 90, hidden: true,},					
 			{label: 'Adjustment Account', name: 'adjacct', width: 90, hidden: true},					
 			{label: 'Write Off Account', name: 'woffacct', width: 90, hidden: true},					
-			{label: 'Expenses Account', name: 'expacct', width: 90, hidden: true},					
+			{label: 'Expenses Account', name: 'expacct', width: 80, hidden: false, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:expacctCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+			},					
 			{label: 'Loan Account', name: 'loanacct', width: 90, hidden: true},					
-			{label: 'PO Validate', name: 'povalidate', width: 90, hidden: true},					
+			{label: 'PO Validate', name: 'povalidate', width: 25, hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"1:YES;2:NO"}},					
 			{label: 'accrualacc', name: 'accrualacc', width: 90, hidden: true},					
 			{label: 'stktakeadjacct', name: 'stktakeadjacct', width: 90, hidden: true},					
 			{label: 'adduser', name: 'adduser', width: 90 , hidden: true},					
@@ -144,10 +71,8 @@ $(document).ready(function () {
 			{label: 'upddate', name: 'upddate', width: 90 , hidden: true},
 			{label: 'deluser', name: 'deluser', width: 90 , hidden: true},					
 			{label: 'deldate', name: 'deldate', width: 90 , hidden: true},					
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
-			},
-			{label: 'idno', name: 'idno', hidden:true},
+			{label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
+			{label: 'idno', name: 'idno', hidden:true, key:true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true, classes: 'wrap'},
@@ -163,77 +88,225 @@ $(document).ready(function () {
 		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPager",
-		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager td[title='Edit Selected Row']").click();
-		},
-		gridComplete: function(){
-			if(oper == 'add'){
-				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			}
+		loadComplete: function(){
+			if(addmore_jqgrid.more == true){$('#jqGrid2_iladd').click();}
+				else{
+						$('#jqGrid2').jqGrid ('setSelection', "1");
+					}
 
-			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+				addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGrid_iledit").click();
 		},
 		
 	});
 
-	/////////////////////////start grid pager/////////////////////////////////////////////////////////
-	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
-		view:false,edit:false,add:false,del:false,search:false,
-		beforeRefresh: function(){
-			refreshGrid("#jqGrid",urlParam);
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first", 
-		buttonicon:"glyphicon glyphicon-trash",
-		title:"Delete Selected Row",
-		onClickButton: function(){
-			oper='del';
-			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			if(!selRowId){
-				alert('Please select row');
-				return emptyFormdata(errorField,'#formdata');
-			}else{
-				saveFormdata("#jqGrid","#dialogForm","#formdata", oper,saveParam,urlParam,{'idno':selrowData('#jqGrid').idno});
+			//////////////////////////My edit options /////////////////////////////////////////////////////////
+			var myEditOptions = {
+				keys: true,
+				extraparam:{
+					"_token": $("#_token").val()
+				},
+				oneditfunc: function (rowid) {
+					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+
+					dialog_expacct.on();
+
+					$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
+						var code = e.keyCode || e.which;
+						if (code == '9')$('#jqGrid_ilsave').click();
+						/*addmore_jqgrid.state = true;
+						$('#jqGrid_ilsave').click();*/
+					});
+
+				},
+				aftersavefunc: function (rowid, response, options) {
+					if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+					//state true maksudnyer ada isi, tak kosong
+					refreshGrid('#jqGrid',urlParam,'add');
+					errorField.length=0;
+					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+				},
+				errorfunc: function(rowid,response){
+					alert(response.responseText);
+					refreshGrid('#jqGrid',urlParam,'add');
+				},
+				beforeSaveRow: function (options, rowid) {
+					if(errorField.length>0)return false;
+
+					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+					console.log(data);
+
+					let editurl = "/categoryfin/form?"+
+						$.param({
+							action: 'categoryfin_save',
+						});
+					$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+				},
+				afterrestorefunc : function( response ) {
+					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+				},
+				errorTextFormat: function (data) {
+					alert(data);
+				}
+			};
+
+			var myEditOptions_edit = {
+				keys: true,
+				extraparam:{
+					"_token": $("#_token").val()
+				},
+				oneditfunc: function (rowid) {
+					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+
+					dialog_expacct.on();
+
+					$("input[name='catcode']").attr('disabled','disabled');
+					$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
+						var code = e.keyCode || e.which;
+						if (code == '9')$('#jqGrid_ilsave').click();
+						/*addmore_jqgrid.state = true;
+						$('#jqGrid_ilsave').click();*/
+					});
+
+				},
+				aftersavefunc: function (rowid, response, options) {
+					if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+					//state true maksudnyer ada isi, tak kosong
+					refreshGrid('#jqGrid',urlParam,'add');
+					errorField.length=0;
+					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+				},
+				errorfunc: function(rowid,response){
+					alert(response.responseText);
+					refreshGrid('#jqGrid',urlParam2,'add');
+				},
+				beforeSaveRow: function (options, rowid) {
+					console.log(errorField)
+					if(errorField.length>0)return false;
+
+					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+					// console.log(data);
+
+					let editurl = "/categoryfin/form?"+
+						$.param({
+							action: 'categoryfin_save',
+						});
+					$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+				},
+				afterrestorefunc : function( response ) {
+					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+				},
+				errorTextFormat: function (data) {
+					alert(data);
+				}
+			};
+
+			///////////////////////////////////////cust_rules//////////////////////////////////////////////
+			function cust_rules(value,name){
+				var temp;
+				switch(name){
+					case 'Expenses Account':temp=$('#expacct');break;
+					
+				break;
+				}
+				return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 			}
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first", 
-		buttonicon:"glyphicon glyphicon-info-sign",
-		title:"View Selected Row",  
-		onClickButton: function(){
-			oper='view';
-			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first",  
-		buttonicon:"glyphicon glyphicon-edit",
-		title:"Edit Selected Row",  
-		onClickButton: function(){
-			oper='edit';
-			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
-			recstatusDisable();
-		}, 
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first",  
-		buttonicon:"glyphicon glyphicon-plus", 
-		title:"Add New Row", 
-		onClickButton: function(){
-			oper='add';
-			$( "#dialogForm" ).dialog( "open" );
-		},
-	});
+
+			function showdetail(cellvalue, options, rowObject){
+				var field,table,case_;
+				switch(options.colModel.name){
+					case 'expacct':field=['glaccno','description'];table="finance.glmasref";case_='expacct';break;
+					
+				}
+				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+				fdl.get_array('categoryfin',options,param,case_,cellvalue);
+				
+				return cellvalue;
+			}
+
+			function expacctCustomEdit(val, opt) {
+				val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+				return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="expacct" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+			}
+
+			function galGridCustomValue (elem, operation, value){
+				if(operation == 'get') {
+					return $(elem).find("input").val();
+				} 
+				else if(operation == 'set') {
+					$('input',elem).val(value);
+				}
+			}
+
+			/////////////////////////start grid pager/////////////////////////////////////////////////////////
+			$("#jqGrid").inlineNav('#jqGridPager', {
+				add: true,
+				edit: true,
+				cancel: true,
+				//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+				restoreAfterSelect: false,
+				addParams: {
+					addRowParams: myEditOptions
+				},
+				editParams: myEditOptions_edit
+			}).jqGrid('navButtonAdd', "#jqGridPager", {
+				id: "jqGridPagerDelete",
+				caption: "", cursor: "pointer", position: "last",
+				buttonicon: "glyphicon glyphicon-trash",
+				title: "Delete Selected Row",
+				onClickButton: function () {
+					selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+					if (!selRowId) {
+						bootbox.alert('Please select row');
+					} else {
+						bootbox.confirm({
+							message: "Are you sure you want to delete this row?",
+							buttons: {
+								confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
+							},
+							callback: function (result) {
+								if (result == true) {
+									param = {
+										_token: $("#_token").val(),
+										action: 'categoryfin_save',
+										idno: selrowData('#jqGrid').idno,
+									}
+									$.post( "/categoryfin/form?"+$.param(param),{oper:'del'}, function( data ){
+									}).fail(function (data) {
+										//////////////////errorText(dialog,data.responseText);
+									}).done(function (data) {
+										refreshGrid("#jqGrid", urlParam);
+									});
+								}else{
+									$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+								}
+							}
+						});
+					}
+				},
+			}).jqGrid('navButtonAdd', "#jqGridPager", {
+				id: "jqGridPagerRefresh",
+				caption: "", cursor: "pointer", position: "last",
+				buttonicon: "glyphicon glyphicon-refresh",
+				title: "Refresh Table",
+				onClickButton: function () {
+					refreshGrid("#jqGrid", urlParam);
+				},
+			});
+
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-	populateSelect('#jqGrid','#searchForm');
+	populateSelect2('#jqGrid','#searchForm');
 	searchClick('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
+	//addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 

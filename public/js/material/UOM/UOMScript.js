@@ -206,7 +206,10 @@
 							callback: function (result) {
 								if (result == true) {
 									param = {
-										action: 'uom_save'
+										_token: $("#_token").val(),
+										action: 'uom_save',
+										uomcode: $('#uomcode').val(),
+										idno: selrowData('#jqGrid').idno,
 									}
 									$.post( "/uom/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {

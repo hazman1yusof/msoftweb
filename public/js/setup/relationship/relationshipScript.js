@@ -44,7 +44,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Code', name: 'RelationShipCode', width: 20, classes: 'wrap', canSearch: true,  editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"} },
 			{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: true, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}},
+			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
 			{ label: 'idno', name: 'idno', width: 5, hidden: true, key:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
@@ -201,7 +201,10 @@ $(document).ready(function () {
 					callback: function (result) {
 						if (result == true) {
 							param = {
-								action: 'relationship_save'
+								_token: $("#_token").val(),
+								action: 'relationship_save',
+								RelationShipCode: $('#RelationShipCode').val(),
+								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/relationship/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {

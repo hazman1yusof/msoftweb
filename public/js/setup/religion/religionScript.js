@@ -204,7 +204,10 @@ $(document).ready(function () {
 					callback: function (result) {
 						if (result == true) {
 							param = {
-								action: 'religion_save'
+								_token: $("#_token").val(),
+								action: 'religion_save',
+								Code: $('#Code').val(),
+								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/religion/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {

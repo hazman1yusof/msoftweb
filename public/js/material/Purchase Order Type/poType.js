@@ -203,7 +203,10 @@
 							callback: function (result) {
 								if (result == true) {
 									param = {
-										action: 'potype_save'
+										_token: $("#_token").val(),
+										action: 'potype_save',
+										potype: $('#potype').val(),
+										idno: selrowData('#jqGrid').idno,
 									}
 									$.post( "/potype/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {

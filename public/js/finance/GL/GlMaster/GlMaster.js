@@ -206,7 +206,10 @@
 							callback: function (result) {
 								if (result == true) {
 									param = {
-										action: 'glmasref_save'
+										_token: $("#_token").val(),
+										action: 'glmasref_save',
+										glaccno: $('#glaccno').val(),
+										idno: selrowData('#jqGrid').idno,
 									}
 									$.post( "/glmasref/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {

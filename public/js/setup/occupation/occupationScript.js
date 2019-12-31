@@ -204,6 +204,7 @@ $(document).ready(function () {
 								_token: $("#_token").val(),
 								action: 'occupation_save',
 								occupcode: $('#occupcode').val(),
+								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/occupation/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {

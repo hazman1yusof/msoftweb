@@ -4,6 +4,10 @@ namespace App\Http\Controllers\finance;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use stdClass;
+use DB;
+use DateTime;
+use Carbon\Carbon;
 
 class SectionController extends defaultController
 {   
@@ -14,7 +18,7 @@ class SectionController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "sectorcode";
+        $this->duplicateCode = "regioncode";
     }
 
     public function show(Request $request)
@@ -26,13 +30,82 @@ class SectionController extends defaultController
     {   
         switch($request->oper){
             case 'add':
-                return $this->defaultAdd($request);
+                return $this->add($request);
             case 'edit':
-                return $this->defaultEdit($request);
+                return $this->edit($request);
             case 'del':
-                return $this->defaultDel($request);
+                return $this->del($request);
             default:
                 return 'error happen..';
         }
+    }
+
+     public function add(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            $region = DB::table('sysdb.region')
+                            ->where('regioncode','=',$request->regioncode);
+
+            if($region->exists()){
+                throw new \Exception("record duplicate");
+            }
+
+            DB::table('sysdb.region')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'regioncode' => strtoupper($request->regioncode),
+                    'description' => strtoupper($request->description),
+                    'recstatus' => strtoupper($request->recstatus),
+                    //'idno' => strtoupper($request->idno),
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+             DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function edit(Request $request){
+        
+        DB::beginTransaction();
+        try {
+
+            DB::table('sysdb.region')
+                ->where('idno','=',$request->idno)
+                ->update([  
+                    'regioncode' => strtoupper($request->regioncode),
+                    'description' => strtoupper($request->description),
+                    'recstatus' => strtoupper($request->recstatus),
+                    'idno' => strtoupper($request->idno),
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]); 
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+    }
+
+    public function del(Request $request){
+        DB::table('sysdb.region')
+            ->where('idno','=',$request->idno)
+            ->update([  
+                'recstatus' => 'D',
+                'lastuser' => session('username'),
+                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+            ]);
     }
 }

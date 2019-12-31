@@ -204,7 +204,10 @@ $(document).ready(function () {
 					callback: function (result) {
 						if (result == true) {
 							param = {
-								action: 'marital_save'
+								_token: $("#_token").val(),
+								action: 'marital_save',
+								code: $('#code').val(),
+								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/marital/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {

@@ -50,7 +50,7 @@
 				{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
 				{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 				{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-				{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: true, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}},
+				{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
 			],
 			autowidth:true,
             multiSort: true,
@@ -199,7 +199,10 @@
 					callback: function (result) {
 						if (result == true) {
 							param = {
-								action: 'salutation_save'
+								_token: $("#_token").val(),
+								action: 'salutation_save',
+								Code: $('#Code').val(),
+								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/salutation/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {

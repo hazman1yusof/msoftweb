@@ -204,7 +204,10 @@
 							callback: function (result) {
 								if (result == true) {
 									param = {
-										action: 'costcenter_save'
+										_token: $("#_token").val(),
+										action: 'costcenter_save',
+										costcode: $('#costcode').val(),
+										idno: selrowData('#jqGrid').idno,
 									}
 									$.post( "/costcenter/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {
