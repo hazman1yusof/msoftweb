@@ -48,7 +48,7 @@ $(document).ready(function () {
             { label: 'Description', name: 'description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
             { label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
-                    value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
+                    value:"A:ACTIVE;D:DEACTIVE"
                 }},
             { label: 'id', name: 'idno', width:10, hidden: true, key:true},
         ],
@@ -198,7 +198,10 @@ $(document).ready(function () {
                     callback: function (result) {
                         if (result == true) {
                             param = {
-                                action: 'addresstype_save'
+                                _token: $("#_token").val(),
+                                action: 'addresstype_save',
+                                addtype: $('#addtype').val(),
+                                idno: selrowData('#jqGrid').idno,
                             }
                             $.post( "/addresstype/form?"+$.param(param),{oper:'del'}, function( data ){
                             }).fail(function (data) {

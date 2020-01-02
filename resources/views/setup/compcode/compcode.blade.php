@@ -2,108 +2,51 @@
 
 @section('title', 'Company Setup')
 
-@section('body')
+@section('style')
 
-	@include('layouts.default_search_and_table')
-		
-		<div id="dialogForm" title="Add Form" >
-			<form class='form-horizontal' style='width:99%' id='formdata'>
-				{{ csrf_field() }}
-				<!-- <input type="hidden" name="idno"> -->
-
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="compcode">Company Code</label>  
-				  <div class="col-md-4">
-				  <input id="compcode" name="compcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-				  </div>
-				</div>
-				                  
-				  <div class="form-group">
-				  <label class="col-md-2 control-label" for="name">Name</label>  
-				  <div class="col-md-8">
-				  <input id="name" name="name" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-				  </div>
-				</div>
-
-				<div class="form-group">
-				  <label class="col-md-2 control-label" for="address1">Address</label>  
-				  <div class="col-md-8">
-				  <input id="address1" name="address1" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-				  </div>
-				</div>
-				
-
-				<!--------------------------------
-				<div class="form-group">
-				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address2" name="address2" type="text" class="form-control input-sm">
-				  </div>
-				</div>
-				
-				<div class="form-group">
-				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address3" name="address3" type="text" class="form-control input-sm">
-				  </div>
-				</div>
-                
-                <div class="form-group">
-				  <div class="col-md-offset-2 col-md-8">
-				  <input id="address4" name="address4" type="text" class="form-control input-sm">
-				  </div>
-				</div>
-
-				 ------------------>
-                				
- 				<div class="form-group">
-				  <label class="col-md-2 control-label" for="bmppath1">Bmppath</label>  
-				  <div class="col-md-4">
-				  <input id="bmppath1" name="bmppath1" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-				  </div>
-				 </div>
-				
-				<!--------------------------------
-				<div class="form-group">
-				<div class="col-md-offset-2 col-md-4">
-				  <input id="bmppath2" name="bmppath2" type="text" class="form-control input-sm">
-				  </div>
-				</div>
-						 ------------------>
-
-				 <div class="form-group">
-				 <label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
-						<div class="col-md-2">
-						  	<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" rdonly >
-						</div>
-				  <label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
-				  <div class="col-md-4">
-				  <input ids="lastipaddress" name="lastipaddress" type="text" class="form-control input-sm" data-validation="required" rdonly>
-				  </div>
-				  
-				  
-				</div>
-				  
-				 <div class="form-group">
-				 	<label class="col-md-2 control-label" for="logo1">Logo</label>  
-				  <div class="col-md-4">
-				  <input id="logo1" name="logo1" type="text" class="form-control input-sm">
-				  </div>
-
-
-				  <label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-				  <div class="col-md-2">
-				    <label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
-					<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
-                </div>
-				</div>
-
-
-
-
-			</form>
-		</div>
+input.uppercase {
+	text-transform: uppercase;
+}
 
 @endsection
 
+@section('body')
+
+	<!--***************************** Search + table ******************-->
+	<div class='row'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
+			<fieldset>
+				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+
+				<div class='col-md-12' style="padding:0 0 15px 0;">
+					<div class="form-group"> 
+						<div class="col-md-2">
+							<label class="control-label" for="Scol">Search By : </label>  
+					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
+		              	</div>
+
+					  	<div class="col-md-5">
+					  		<label class="control-label"></label>  
+							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
+						</div>
+		            </div>
+				</div>
+			</fieldset> 
+		</form>
+
+        <div class="panel panel-default">
+		    <div class="panel-heading">Company Code Setup Header</div>
+		    <div class="panel-body">
+		    	<div class='col-md-12' style="padding:0 0 15px 0">
+            		<table id="jqGrid" class="table table-striped"></table>
+            		<div id="jqGridPager"></div>
+        		</div>
+		    </div>
+		</div>
+    </div>
+	<!-- ***************End Search + table ********************* -->
+
+@endsection
 
 @section('scripts')
 

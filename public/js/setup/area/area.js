@@ -205,7 +205,10 @@ $(document).ready(function () {
 					callback: function (result) {
 						if (result == true) {
 							param = {
-								action: 'area_save'
+								_token: $("#_token").val(),
+								action: 'area_save',
+								areacode: $('#areacode').val(),
+								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/area/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {

@@ -43,9 +43,10 @@ $(document).ready(function () {
             { label: 'Discharge Code', name: 'code', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
             { label: 'Description', name: 'discharge', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, 
                 editoptions: {style: "text-transform: uppercase" }},
-            { label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', hidden: true, formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-                {return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, editoptions: {style: "text-transform: uppercase" }
-            },
+            { label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+                editoptions:{
+                    value:"A:ACTIVE;D:DEACTIVE"
+                }},
             { label: 'id', name: 'idno', width:10, hidden: true, key:true},
         ],
         autowidth:true,
@@ -78,7 +79,7 @@ $(document).ready(function () {
         },
         oneditfunc: function (rowid) {
             $("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-            $("input[name='discharge']").keydown(function(e) {//when click tab at last column, auto save
+            $("select[name='recstatus']").keydown(function(e) {//when click tab at last column, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGrid_ilsave').click();
                 /*addmore_jqgrid.state = true;
@@ -125,7 +126,7 @@ $(document).ready(function () {
         oneditfunc: function (rowid) {
             $("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
             $("input[name='code']").attr('disabled','disabled');
-            $("input[name='discharge']").keydown(function(e) {//when click tab at last column, auto save
+            $("select[name='recstatus']").keydown(function(e) {//when click tab at last column, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGrid_ilsave').click();
                 /*addmore_jqgrid.state = true;
@@ -194,7 +195,10 @@ $(document).ready(function () {
                     callback: function (result) {
                         if (result == true) {
                             param = {
-                                action: 'discharge_save'
+                                _token: $("#_token").val(),
+                                action: 'discharge_save',
+                                code: $('#code').val(),
+                                idno: selrowData('#jqGrid').idno,
                             }
                             $.post( "/dischargedestination/form?"+$.param(param),{oper:'del'}, function( data ){
                             }).fail(function (data) {

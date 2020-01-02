@@ -207,7 +207,10 @@
 							callback: function (result) {
 								if (result == true) {
 									param = {
-										action: 'discipline_save'
+										_token: $("#_token").val(),
+										action: 'discipline_save',
+										code: $('#code').val(),
+										idno: selrowData('#jqGrid').idno,
 									}
 									$.post( "/discipline/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {

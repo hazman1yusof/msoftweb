@@ -51,11 +51,11 @@
 				{ label: 'Address 3', name: 'addr3', width: 50, classes: 'wrap', editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 				{ label: 'Address 4', name: 'addr4', width: 50, classes: 'wrap', editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 				{ label: 'Tel No', name: 'telno', width: 50, classes: 'wrap', editable: true, editrules: { required: true }},
-				{ label: 'Email', name: 'email', width: 50, classes: 'wrap', editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-				
-				{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', hidden: true, formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, editoptions: {style: "text-transform: uppercase" }
-				},
+				{ label: 'Email', name: 'email', width: 50, classes: 'wrap', editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},	
+				{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+				editoptions:{
+					value:"A:ACTIVE;D:DEACTIVE"
+				}},
 				{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			],
 			autowidth:true,
@@ -88,7 +88,7 @@
 	        },
 			oneditfunc: function (rowid) {
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-				$("input[name='email']").keydown(function(e) {//when click tab at last column in header, auto save
+				$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 					var code = e.keyCode || e.which;
 					if (code == '9')$('#jqGrid_ilsave').click();
 					/*addmore_jqgrid.state = true;
@@ -135,7 +135,7 @@
 			oneditfunc: function (rowid) {
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 				$("input[name='admsrccode']").attr('disabled','disabled');
-				$("input[name='email']").keydown(function(e) {//when click tab at last column in header, auto save
+				$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 					var code = e.keyCode || e.which;
 					if (code == '9')$('#jqGrid_ilsave').click();
 					/*addmore_jqgrid.state = true;
@@ -204,7 +204,10 @@
 						callback: function (result) {
 							if (result == true) {
 								param = {
-									action: 'admissrc_save'
+									_token: $("#_token").val(),
+									action: 'admissrc_save',
+									admsrccode: $('#admsrccode').val(),
+									idno: selrowData('#jqGrid').idno,
 								}
 								$.post( "/admissrc/form?"+$.param(param),{oper:'del'}, function( data ){
 								}).fail(function (data) {

@@ -207,7 +207,10 @@
 							callback: function (result) {
 								if (result == true) {
 									param = {
-										action: 'doctorStatus_save'
+										_token: $("#_token").val(),
+										action: 'doctorStatus_save',
+										statuscode: $('#statuscode').val(),
+										idno: selrowData('#jqGrid').idno,
 									}
 									$.post( "/doctorStatus/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {

@@ -61,10 +61,10 @@ $(document).ready(function () {
 	                    }
 	                }
 				},
-                //{ label: 'Activate Date', name:'activatedate', width: 20, classes:'wrap',formatter:dateFormatter, unformat:dateUNFormatter},
-				{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', hidden: true, formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, editoptions: {style: "text-transform: uppercase" }
-				},
+				{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+				editoptions:{
+					value:"A:ACTIVE;D:DEACTIVE"
+				}},
 				{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			],
 			autowidth:true,
@@ -97,7 +97,7 @@ $(document).ready(function () {
 	        },
 			oneditfunc: function (rowid) {
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-				$("input[name='activatedate']").keydown(function(e) {//when click tab at totamount, auto save
+				$("select[name='recstatus']").keydown(function(e) {//when click tab at totamount, auto save
 					var code = e.keyCode || e.which;
 					if (code == '9')$('#jqGrid_ilsave').click();
 					/*addmore_jqgrid.state = true;
@@ -144,7 +144,7 @@ $(document).ready(function () {
 			oneditfunc: function (rowid) {
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 				$("input[name='episodetype']").attr('disabled','disabled');
-				$("input[name='activatedate']").keydown(function(e) {//when click tab at totamount, auto save
+				$("select[name='recstatus']").keydown(function(e) {//when click tab at totamount, auto save
 					var code = e.keyCode || e.which;
 					if (code == '9')$('#jqGrid_ilsave').click();
 					/*addmore_jqgrid.state = true;
@@ -212,8 +212,11 @@ $(document).ready(function () {
 						},
 						callback: function (result) {
 							if (result == true) {
-								param = {
-									action: 'episodetype_save'
+								param = { 
+									_token: $("#_token").val(),
+									action: 'episodetype_save',
+									epistycode: $('#epistycode').val(),
+									idno: selrowData('#jqGrid').idno,
 								}
 								$.post( "/episodetype/form?"+$.param(param),{oper:'del'}, function( data ){
 								}).fail(function (data) {

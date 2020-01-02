@@ -47,7 +47,7 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
-				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
+				value:"A:ACTIVE;D:DEACTIVE"
 			}},
 
 			// { label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
@@ -207,7 +207,10 @@ $(document).ready(function () {
 					callback: function (result) {
 						if (result == true) {
 							param = {
-								action: 'race_save'
+								_token: $("#_token").val(),
+								action: 'race_save',
+								Code: $('#Code').val(),
+								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/race/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {

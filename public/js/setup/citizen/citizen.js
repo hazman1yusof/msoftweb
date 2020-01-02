@@ -46,7 +46,7 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
-				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
+				value:"A:ACTIVE;D:DEACTIVE"
 			}},
 			// { label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
@@ -89,7 +89,7 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("input[name='Description']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -136,7 +136,7 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			$("input[name='Code']").attr('disabled','disabled');
-			$("input[name='Description']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -205,7 +205,10 @@ $(document).ready(function () {
 					callback: function (result) {
 						if (result == true) {
 							param = {
-								action: 'citizen_save'
+								_token: $("#_token").val(),
+								action: 'citizen_save',
+								Code: $('#Code').val(),
+								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/citizen/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {

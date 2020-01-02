@@ -42,10 +42,10 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Country Code', name: 'Code', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'Description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
-				editoptions:{
-					value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
-				}},
+			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			editoptions:{
+				value:"A:ACTIVE;D:DEACTIVE"
+			}},
 			// { label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
 			// 		formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
 			// 		{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
@@ -198,7 +198,10 @@ $(document).ready(function () {
 					callback: function (result) {
 						if (result == true) {
 							param = {
-								action: 'country_save'
+								_token: $("#_token").val(),
+								action: 'country_save',
+								Code: $('#Code').val(),
+								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/country/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {

@@ -96,7 +96,7 @@ class EpisodeTypeController extends defaultController
     }
 
     public function del(Request $request){
-        DB::table('hisdb.episodetype')
+        DB::table('hisdb.epistype')
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'D',
