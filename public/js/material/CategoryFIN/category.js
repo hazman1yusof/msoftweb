@@ -73,10 +73,10 @@ $(document).ready(function () {
 			{label: 'deldate', name: 'deldate', width: 90 , hidden: true},					
 			{label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
 			{label: 'idno', name: 'idno', hidden:true, key:true},
-			{ label: 'computerid', name: 'computerid', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true, classes: 'wrap'},
+			{label: 'computerid', name: 'computerid', width: 90, hidden:true, classes: 'wrap'},
+			{label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true, classes: 'wrap'},
+			{label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true, classes: 'wrap'},
+			{label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true, classes: 'wrap'},
 		],
 		autowidth:true,
         multiSort: true,
@@ -325,7 +325,7 @@ $(document).ready(function () {
 					$("#adjacct").val(data['glaccno']);
 					$("#woffacct").val(data['glaccno']);
 					$("#loanacct").val(data['glaccno']);
-					$('#povalidate').focus();
+					//$('#povalidate').focus();
 				},
 				gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
@@ -340,11 +340,11 @@ $(document).ready(function () {
 		},{
 			title:"Select Account Code",
 			open: function(){
-				dialog_expacct.urlParam.filterCol=['compcode','recstatus'],
-				dialog_expacct.urlParam.filterVal=['session.compcode','A']
+				dialog_expacct.urlParam.filterCol=['compcode','recstatus'];
+				dialog_expacct.urlParam.filterVal=['session.compcode','A'];
 				
 			}
 		},'urlParam', 'radio', 'tab'
 	);
-	dialog_expacct.makedialog(true);
+	dialog_expacct.makedialog();
 });
