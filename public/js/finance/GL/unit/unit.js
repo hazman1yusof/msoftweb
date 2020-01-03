@@ -25,80 +25,8 @@ $(document).ready(function () {
 			}
 		},
 	};
-	//////////////////////////////////////////////////////////////
 
-	var butt1 = [{
-		text: "Save", click: function () {
-			if ($('#formdata').isValid({ requiredFields: '' }, conf, true)) {
-				saveFormdata("#jqGrid", "#dialogForm", "#formdata", oper, saveParam, urlParam);
-			}
-		}
-	}, {
-		text: "Cancel", click: function () {
-			$(this).dialog('close');
-		}
-	}];
-
-	var butt2 = [{
-		text: "Close", click: function () {
-			$(this).dialog('close');
-		}
-	}];
-
-	var oper;
-	$("#dialogForm")
-		.dialog({
-			width: 9 / 10 * $(window).width(),
-			modal: true,
-			autoOpen: false,
-			open: function (event, ui) {
-				parent_close_disabled(true);
-				//toggleFormData('#jqGrid','#formdata');
-				switch (oper) {
-					case state = 'add':
-						$(this).dialog("option", "title", "Add");
-						enableForm('#formdata');
-						rdonly("#formdata");
-						hideOne("#formdata");
-						rdonly("#dialogForm");
-						break;
-					case state = 'edit':
-						$(this).dialog("option", "title", "Edit");
-						enableForm('#formdata');
-						frozeOnEdit("#dialogForm");
-						rdonly("#formdata");
-						rdonly("#dialogForm");
-						$('#formdata :input[hideOne]').show();
-						break;
-					case state = 'view':
-						$(this).dialog("option", "title", "View");
-						disableForm('#formdata');
-						$('#formdata :input[hideOne]').show();
-						$(this).dialog("option", "buttons", butt2);
-						break;
-				}
-				if(oper!='view'){
-					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']","input[name='computerid']", "input[name='ipaddress']");
-					dialog_regioncode.on();
-				}
-				if(oper!='add'){
-					dialog_regioncode.check(errorField);
-				}
-				
-			},
-			close: function (event, ui) {
-				parent_close_disabled(false);
-				emptyFormdata(errorField, '#formdata');
-				//$('.alert').detach();
-				$('.my-alert').detach();
-				$("#formdata a").off();
-				if (oper == 'view') {
-					$(this).dialog("option", "buttons", butt1);
-				}
-			},
-			buttons: butt1,
-		});
-	////////////////////////////////////////end dialog///////////////////////////////////////////
+	var fdl = new faster_detail_load();
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
@@ -111,23 +39,14 @@ $(document).ready(function () {
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
-	var saveParam = {
-		action: 'save_table_default',
-		url: 'sector/form',
-		field: '',
-		oper: oper,
-		table_name: 'sysdb.sector',
-		table_id: 'sectorcode',
-		saveip:'true',
-		checkduplicate:'true'
-	};
-
+	var addmore_jqgrid={more:false,state:false,edit:false}	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
+		editurl: "/unit/form",
 		colModel: [
-			{ label: 'idno', name: 'idno', width: 10, hidden: true },
-			{ label: 'Unit', name: 'sectorcode', width: 20, classes: 'wrap', canSearch: true},
-			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true,checked:true},
+			{ label: 'idno', name: 'idno', width: 10, hidden: true, key:true},
+			{ label: 'Unit', name: 'sectorcode', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 			{ label: 'Section', name: 'regioncode', width: 50, classes: 'wrap'},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },

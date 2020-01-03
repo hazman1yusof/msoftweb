@@ -34,7 +34,7 @@ input.uppercase {
 		</form>
 
 		 <div class="panel panel-default">
-		    <div class="panel-heading">Purchase Order Setup Header</div>
+		    <div class="panel-heading">Category Finance Setup Header</div>
 		    <div class="panel-body">
 
 		    	<div class='col-md-12' style="padding:0 0 15px 0">

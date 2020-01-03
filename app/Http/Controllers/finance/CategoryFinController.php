@@ -40,7 +40,7 @@ class CategoryFinController extends defaultController
         }
     }
 
-     public function add(Request $request){
+    public function add(Request $request){
 
         DB::beginTransaction();
         try {
@@ -64,7 +64,7 @@ class CategoryFinController extends defaultController
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
                     'adduser' => session('username'),
-                    'addupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
