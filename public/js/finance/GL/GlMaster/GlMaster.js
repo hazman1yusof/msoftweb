@@ -40,7 +40,7 @@
 			var addmore_jqgrid={more:false,state:false,edit:false}	
 			$("#jqGrid").jqGrid({
 				datatype: "local",
-				editurl: "/glmasref/form",
+				editurl: "/glmaster/form",
 				 colModel: [					
 					{ label: 'Gl Account', name: 'glaccno', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 					{ label: 'Description', name: 'description', width: 80, classes: 'wrap', checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
@@ -116,7 +116,7 @@
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					console.log(data);
 
-					let editurl = "/glmasref/form?"+
+					let editurl = "/glmaster/form?"+
 						$.param({
 							action: 'glmasref_save',
 						});
@@ -164,7 +164,7 @@
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					// console.log(data);
 
-					let editurl = "/glmasref/form?"+
+					let editurl = "/glmaster/form?"+
 						$.param({
 							_token: $("#_token").val(),
 							action: 'glmasref_save',
@@ -214,7 +214,7 @@
 										glaccno: $('#glaccno').val(),
 										idno: selrowData('#jqGrid').idno,
 									}
-									$.post( "/glmasref/form?"+$.param(param),{oper:'del'}, function( data ){
+									$.post( "/glmaster/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {
 										//////////////////errorText(dialog,data.responseText);
 									}).done(function (data) {

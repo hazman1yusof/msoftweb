@@ -309,7 +309,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 
 	var dialog_expacct = new ordialog(
-		'expacct','finance.glmasref','#expacct',errorField,
+		'expacct','finance.glmasref',"#jqGrid input[name='expacct']",errorField,
 		{	colModel:[
 				{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
