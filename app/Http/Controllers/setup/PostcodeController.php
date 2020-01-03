@@ -46,7 +46,7 @@ class PostcodeController extends defaultController
         try {
 
             $postcode = DB::table('hisdb.postcode')
-                            ->where('pc_postcode','=',$request->pc_postcode);
+                            ->where('postcode','=',$request->pc_postcode);
 
             if($postcode->exists()){
                 throw new \Exception("record duplicate");
@@ -54,20 +54,15 @@ class PostcodeController extends defaultController
 
             DB::table('hisdb.postcode')
                 ->insert([  
-                    'pc_compcode' => session('pc_compcode'),
-                    'pc_postcode' => strtoupper($request->pc_postcode),
-                    'pc_place_name' => strtoupper($request->pc_place_name),
-                    'pc_recstatus' => strtoupper($request->pc_recstatus),
-                    'cn_Code' => strtoupper($request->cn_Code),
-                    'st_StateCode' => strtoupper($request->st_StateCode),
-                    'pc_district' => strtoupper($request->pc_district),
-                    //'effectivedate' => strtoupper($request->effectivedate),
-                    'pc_idno' => strtoupper($request->pc_idno),
-                    // 'discharge' => strtoupper($request->discharge),
-                    // 'discharge' => strtoupper($request->discharge),
-
-                    'pc_lastuser' => session('username'),
-                    'pc_lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'compcode' => session('compcode'),
+                    'postcode' => strtoupper($request->pc_postcode),
+                    'place_name' => strtoupper($request->pc_place_name),
+                    'recstatus' => strtoupper($request->pc_recstatus),
+                    'countrycode' => strtoupper($request->cn_Code),
+                    'statecode' => strtoupper($request->st_StateCode),
+                    'district' => strtoupper($request->pc_district),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
@@ -84,22 +79,16 @@ class PostcodeController extends defaultController
         try {
 
             DB::table('hisdb.postcode')
-                ->where('pc_idno','=',$request->pc_idno)
+                ->where('idno','=',$request->pc_idno)
                 ->update([  
-                    'pc_compcode' => session('pc_compcode'),
-                    'pc_postcode' => strtoupper($request->pc_postcode),
-                    'pc_place_name' => strtoupper($request->pc_place_name),
-                    'pc_recstatus' => strtoupper($request->pc_recstatus),
-                    'cn_Code' => strtoupper($request->cn_Code),
-                    'st_StateCode' => strtoupper($request->st_StateCode),
-                    'pc_district' => strtoupper($request->pc_district),
-                    //'effectivedate' => strtoupper($request->effectivedate),
-                    'pc_idno' => strtoupper($request->pc_idno),
-                    // 'discharge' => strtoupper($request->discharge),
-                    // 'discharge' => strtoupper($request->discharge),
-
-                    'pc_lastuser' => session('username'),
-                    'pc_lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'postcode' => strtoupper($request->pc_postcode),
+                    'place_name' => strtoupper($request->pc_place_name),
+                    'recstatus' => strtoupper($request->pc_recstatus),
+                    'countrycode' => strtoupper($request->cn_Code),
+                    'statecode' => strtoupper($request->st_StateCode),
+                    'district' => strtoupper($request->pc_district),
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
             DB::commit();
@@ -112,11 +101,11 @@ class PostcodeController extends defaultController
 
     public function del(Request $request){
         DB::table('hisdb.postcode')
-            ->where('pc_idno','=',$request->pc_idno)
+            ->where('idno','=',$request->pc_idno)
             ->update([  
-                'pc_recstatus' => 'D',
-                'pc_lastuser' => session('username'),
-                'pc_lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                'recstatus' => 'D',
+                'deluser' => session('username'),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }
 }

@@ -24,6 +24,9 @@ $(document).ready(function () {
 		},
 	};
 
+
+	var fdl = new faster_detail_load();
+
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
@@ -32,8 +35,9 @@ $(document).ready(function () {
 		table_name: ['hisdb.postcode AS PC', 'hisdb.state AS ST', 'hisdb.country AS CN'],
 		table_id: 'pc_compcode',
 		sort_idno: true,
+		fixPost: 'true',
 		join_type:['LEFT JOIN', 'LEFT JOIN'],
-		join_onCol:['pc.state', 'pc.country'],
+		join_onCol:['pc.statecode', 'pc.countrycode'],
 		join_onVal:['st.StateCode', 'cn.Code'],
 		filterCol:['pc.compcode'],
 		filterVal:['session.compcode']
@@ -49,8 +53,20 @@ $(document).ready(function () {
             { label: 'Postode', name: 'pc_postcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
             { label: 'Place Name', name: 'pc_place_name', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
             { label: 'District', name: 'pc_district', width: 80, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'State', name: 'st_StateCode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-			{ label: 'Country', name: 'cn_Code', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'State', name: 'st_StateCode', width: 15, canSearch: true, checked: true, editable: true, 
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:StateCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+			},
+			{ label: 'Country', name: 'cn_Code', width: 15, canSearch: true, checked: true, editable: true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:CountryCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+			},
 			// { label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			// { label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
@@ -93,6 +109,10 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+
+			dialog_state.on();
+			dialog_country.on();
+
 			$("input[name='cn_Code']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -139,6 +159,10 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+
+			dialog_state.on();
+			dialog_country.on();
+
 			$("input[name='pc_postcode']").attr('disabled','disabled');
 			$("input[name='cn_Code']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
@@ -243,4 +267,118 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
+
+
+
+	///////////////////////////////////////cust_rules//////////////////////////////////////////////
+	function cust_rules(value,name){
+		var temp;
+		switch(name){
+			case 'State':temp=$("#jqGrid input[name='state']");break;
+			case 'Country':temp=$("#jqGrid input[name='country']");break;
+		}
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+	}
+
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'st_StateCode':field=['StateCode','Description'];table="hisdb.state";case_='expacct';break;
+			case 'cn_Code':field=['Code','Description'];table="hisdb.country";case_='expacct';break;
+
+		}
+
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('postcode',options,param,case_,cellvalue);
+		
+		return cellvalue;
+	}
+
+	function StateCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="state" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function CountryCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="country" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function galGridCustomValue (elem, operation, value){
+		if(operation == 'get') {
+			return $(elem).find("input").val();
+		} 
+		else if(operation == 'set') {
+			$('input',elem).val(value);
+		}
+	}
+
+	var dialog_state = new ordialog(
+		'state','hisdb.state',"#jqGrid input[name='state']",errorField,
+		{	colModel:[
+				{label:'State Code',name:'StateCode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'Description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+
+				},
+				gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							//$('#povalidate').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+		},{
+			title:"Select Account Code",
+			open: function(){
+				dialog_state.urlParam.filterCol=['compcode','recstatus'];
+				dialog_state.urlParam.filterVal=['session.compcode','A'];
+				
+			}
+		},'urlParam', 'radio', 'tab'
+	);
+	dialog_state.makedialog();
+
+	var dialog_country = new ordialog(
+		'country','hisdb.country',"#jqGrid input[name='country']",errorField,
+		{	colModel:[
+				{label:'Country Code',name:'Code',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'Description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','A']
+				},
+				ondblClickRow: function () {
+
+				},
+				gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							//$('#povalidate').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+		},{
+			title:"Select Account Code",
+			open: function(){
+				dialog_country.urlParam.filterCol=['compcode','recstatus'];
+				dialog_country.urlParam.filterVal=['session.compcode','A'];
+				
+			}
+		},'urlParam', 'radio', 'tab'
+	);
+	dialog_country.makedialog();
 });
