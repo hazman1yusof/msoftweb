@@ -440,10 +440,7 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
-				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
-				{ label: 'Autopull', name: 'autopull', width: 20, classes: 'wrap'},
-				{ label: 'Add chg', name: 'addchg', width: 20, classes: 'wrap'},
-				{ label: 'Pkg type', name: 'pkgtype', width: 20, classes: 'wrap'},
+				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}
 			],
 			autowidth: true,
 			shrinkToFit: true,
@@ -1842,136 +1839,6 @@
 		});
 
 		function colmodel_change_jq2(change){
-				let colmodel =[
-							{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
-							{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
-							{ label: 'Effective date', name: 'effdate', width: 130, classes: 'wrap', editable:true,
-								formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-								editoptions: {
-				                    dataInit: function (element) {
-				                        $(element).datepicker({
-				                            id: 'expdate_datePicker',
-				                            dateFormat: 'dd/mm/yy',
-				                            minDate: "dateToday",
-				                            showOn: 'focus',
-				                            changeMonth: true,
-						  					changeYear: true,
-				                        });
-				                    }
-				                }
-							},
-							{ label: 'Price 1', name: 'amt1', width: 150, align: 'right', classes: 'wrap', editable:true,
-								edittype:"text",
-								editoptions:{
-									maxlength: 100,
-								},
-							},
-							{ label: 'Price 2', name: 'amt2', width: 150, align: 'right', classes: 'wrap', editable:true,
-								edittype:"text",
-								editoptions:{
-									maxlength: 100,
-								},
-							},
-							{ label: 'Price 3', name: 'amt3', width: 150, align: 'right', classes: 'wrap', editable:true,
-								edittype:"text",
-								editoptions:{
-									maxlength: 100,
-								},
-							},
-							{ label: 'Cost Price', name: 'costprice', width: 150, align: 'right', classes: 'wrap', editable:true,
-								edittype:"text",
-								editoptions:{
-									maxlength: 100,
-								},
-							},
-							{ label: 'Inpatient Tax', name: 'iptax', width: 150,align: 'right' , classes: 'wrap', editable:true,
-								editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-									edittype:'custom',	editoptions:
-									    {  custom_element:iptaxCustomEdit,
-									       custom_value:galGridCustomValue 	
-									    },
-							},
-							{ label: 'Outpatient Tax', name: 'optax', width: 150,align: 'right' , classes: 'wrap', editable:true,
-								editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-									edittype:'custom',	editoptions:
-									    {  custom_element:optaxCustomEdit,
-									       custom_value:galGridCustomValue 	
-									    },
-							},
-							{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
-						];
-
-				let colmodel_pkg = [
-							{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
-							{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
-							{ label: 'Effective date', name: 'effdate', width: 130, classes: 'wrap', editable:true,
-								formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-								editoptions: {
-				                    dataInit: function (element) {
-				                        $(element).datepicker({
-				                            id: 'expdate_datePicker',
-				                            dateFormat: 'dd/mm/yy',
-				                            minDate: "dateToday",
-				                            showOn: 'focus',
-				                            changeMonth: true,
-						  					changeYear: true,
-				                        });
-				                    }
-				                }
-							},
-							{ label: 'Price 1', name: 'amt1', width: 150, align: 'right', classes: 'wrap', editable:true,
-								edittype:"text",
-								editoptions:{
-									maxlength: 100,
-								},
-							},
-							{ label: 'Price 2', name: 'amt2', width: 150, align: 'right', classes: 'wrap', editable:true,
-								edittype:"text",
-								editoptions:{
-									maxlength: 100,
-								},
-							},
-							{ label: 'Price 3', name: 'amt3', width: 150, align: 'right', classes: 'wrap', editable:true,
-								edittype:"text",
-								editoptions:{
-									maxlength: 100,
-								},
-							},
-							{ label: 'Cost Price', name: 'costprice', width: 150, align: 'right', classes: 'wrap', editable:true,
-								edittype:"text",
-								editoptions:{
-									maxlength: 100,
-								},
-							},
-							{ label: 'Inpatient Tax', name: 'iptax', width: 150,align: 'right' , classes: 'wrap', editable:true,
-								editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-									edittype:'custom',	editoptions:
-									    {  custom_element:iptaxCustomEdit,
-									       custom_value:galGridCustomValue 	
-									    },
-							},
-							{ label: 'Outpatient Tax', name: 'optax', width: 150,align: 'right' , classes: 'wrap', editable:true,
-								editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-									edittype:'custom',	editoptions:
-									    {  custom_element:optaxCustomEdit,
-									       custom_value:galGridCustomValue 	
-									    },
-							},
-							{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
-							{ label: 'Autopull', name: 'autopull', width: 100, classes: 'wrap'},
-							{ label: 'Add chg', name: 'addchg', width: 100, classes: 'wrap'},
-							{ label: 'Pkg type', name: 'pkgtype', width: 100, classes: 'wrap'},
-						];
-
-
-			if(change){
-				$('#jqGrid2').jqGrid('setGridParam',{colModel:colmodel_pkg}).trigger('reloadGrid');
-				$('#jqGrid3').jqGrid('setGridParam',{colModel:colmodel_pkg})
-				$('#jqGrid3').jqGrid('setColWidth','autopull',120);
-			}else{
-				$('#jqGrid2').jqGrid('setGridParam',{colModel:colmodel}).trigger('reloadGrid');;
-				$('#jqGrid3').jqGrid('setGridParam',{colModel:colmodel}).trigger('reloadGrid');;
-			}
 		}
 
 	});
