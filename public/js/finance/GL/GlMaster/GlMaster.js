@@ -8,6 +8,7 @@
 			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
+				modules : 'sanitize',
 				language : {
 					requiredFields: ''
 				},
@@ -32,7 +33,7 @@
 				field:'',
 				table_name:'finance.glmasref',
 				table_id:'glaccno',
-				sort_idno:true,
+				//sort_idno:true,
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -46,11 +47,11 @@
 					{ label: 'Act Type', name: 'acttype', width: 80, hidden:true},
 					{ label: 'Rep Group', name: 'repgroup', width: 90, hidden:true},
 					{ label: 'Type', name: 'accgroup', width: 10, classes: 'wrap', editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ASSET;C:CAPITAL;E:EXPENSES;H:HEADER;L:LIABILITY;R:REVENUE"}},
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
 					{ label: 'nprefid', name: 'nprefid', width: 90,hidden:true},
 					{ label: 'idno', name: 'idno', hidden: true, key:true},
 					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
