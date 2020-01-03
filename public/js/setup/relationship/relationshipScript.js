@@ -235,7 +235,7 @@ $(document).ready(function () {
 
 	//toogleSearch('#sbut1', '#searchForm', 'on');
 	populateSelect2('#jqGrid', '#searchForm');
-	searchClick('#jqGrid', '#searchForm', urlParam);
+	searchClick2('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);

@@ -90,7 +90,7 @@
 				},
 				oneditfunc: function (rowid) {
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-					$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
+					$("input[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 						var code = e.keyCode || e.which;
 						if (code == '9')$('#jqGrid_ilsave').click();
 						/*addmore_jqgrid.state = true;
@@ -165,7 +165,9 @@
 
 					let editurl = "/glmasref/form?"+
 						$.param({
+							_token: $("#_token").val(),
 							action: 'glmasref_save',
+							idno: selrowData('#jqGrid').idno,
 						});
 					$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 				},
@@ -239,7 +241,7 @@
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 			//toogleSearch('#sbut1','#searchForm','on');
 			populateSelect2('#jqGrid','#searchForm');
-			searchClick('#jqGrid','#searchForm',urlParam);
+			searchClick2('#jqGrid','#searchForm',urlParam);
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
