@@ -46,8 +46,6 @@ input.uppercase {
 @endsection
 
 
-
-
 @section('scripts')
 
 	<script src="js/setup/speciality/specialityScript.js"></script>

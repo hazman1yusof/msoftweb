@@ -5,7 +5,6 @@
 
 		$(document).ready(function () {
 			$("body").show();
-			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
 				modules : 'sanitize',
@@ -100,7 +99,7 @@
 
 					dialog_disciplinecode.on();
 
-					$("input[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
+					$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 						var code = e.keyCode || e.which;
 						if (code == '9')$('#jqGrid_ilsave').click();
 						/*addmore_jqgrid.state = true;
@@ -150,7 +149,7 @@
 					dialog_disciplinecode.on();
 
 					$("input[name='specialitycode']").attr('disabled','disabled');
-					$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
+					$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 						var code = e.keyCode || e.which;
 						if (code == '9')$('#jqGrid_ilsave').click();
 						/*addmore_jqgrid.state = true;
