@@ -66,7 +66,7 @@ class PurchaseRequestController extends defaultController
             case 'refresh_do':
                 return $this->refresh_do($request);
             default:
-                return 'error happen..';
+                return 'Errors happen';
         }
     }
 
@@ -128,7 +128,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -170,7 +170,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -382,7 +382,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -419,7 +419,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -454,7 +454,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -540,7 +540,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -621,7 +621,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -707,7 +707,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -788,7 +788,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -834,7 +834,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -874,7 +874,7 @@ class PurchaseRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -914,7 +914,7 @@ class PurchaseRequestController extends defaultController
 
     function sendemail($data){
         SendEmailPR::dispatch($data);
-        ProcessPodcast::dispatch();
+        // ProcessPodcast::dispatch();
 
         // $data_ = ['data' => $data];
 

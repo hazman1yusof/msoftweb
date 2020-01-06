@@ -237,6 +237,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
+			$('#p_error').text('');
 			let stat = selrowData("#jqGrid").purreqhd_recstatus;
 			let scope = $("#recstatus_use").val();
 
@@ -703,7 +704,7 @@ $(document).ready(function () {
 			},
 			{
 				label: 'PO UOM', name: 'pouom', width: 110, classes: 'wrap', editable: true,
-				editrules: { required: true, custom: true, custom_func: cust_rules },
+				editrules: { required: false, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
 				{
@@ -1187,6 +1188,8 @@ $(document).ready(function () {
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('purchaseRequest',options,param,case_,cellvalue);
+		
+		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
 
@@ -1198,7 +1201,7 @@ $(document).ready(function () {
 		switch (name) {
 			case 'Item Code': temp = $('#itemcode'); break;
 			case 'UOM Code': temp = $('#uomcode'); break;
-			case 'PO UOM': temp = $('#pouom'); break;
+			// case 'PO UOM': temp = $('#pouom'); break;
 			case 'Price Code': temp = $('#pricecode'); break;
 			case 'Tax Code': temp = $('#taxcode'); break;
 			case 'Quantity Request': temp = $("#jqGrid2 input[name='qtyrequest']"); 
@@ -1386,24 +1389,25 @@ $(document).ready(function () {
 			}
 		}
 
-		var id2="#jqGrid2 #"+id_optid+"_unitprice";
-		var fail_msg2 = "Unitprice cannot be 0";
-		var name2 = "unitprice";
-		if($("input#"+id_optid+"_pricecode").val() != 'BO' && unitprice == 0 ) {
-			$( id2 ).parent().removeClass( "has-success" ).addClass( "has-error" );
-			$( id2 ).removeClass( "valid" ).addClass( "error" );
-			if(!$('.noti').find("li[data-errorid='"+name2+"']").length)$('.noti').prepend("<li data-errorid='"+name2+"'>"+fail_msg2+"</li>");
-			if($.inArray(id2,errorField)===-1){
-				errorField.push( id2 );
-			}
-		} else {
-			if($.inArray(id2,errorField)!==-1){
-				errorField.splice($.inArray(id2,errorField), 1);
-			}
-			$( id2 ).parent().removeClass( "has-error" ).addClass( "has-success" );
-			$( id2 ).removeClass( "error" ).addClass( "valid" );
-			$('.noti').find("li[data-errorid='"+name2+"']").detach();
-		}
+		// var id2="#jqGrid2 #"+id_optid+"_unitprice";
+		// var fail_msg2 = "Unitprice cannot be 0";
+		// var name2 = "unitprice";
+		// if($("input#"+id_optid+"_pricecode").val() != 'BO' && unitprice == 0 ) {
+		// 	$( id2 ).parent().removeClass( "has-success" ).addClass( "has-error" );
+		// 	$( id2 ).removeClass( "valid" ).addClass( "error" );
+		// 	if(!$('.noti').find("li[data-errorid='"+name2+"']").length)$('.noti').prepend("<li data-errorid='"+name2+"'>"+fail_msg2+"</li>");
+		// 	if($.inArray(id2,errorField)===-1){
+		// 		errorField.push( id2 );
+		// 	}
+		// } 
+		// else {
+		// 	if($.inArray(id2,errorField)!==-1){
+		// 		errorField.splice($.inArray(id2,errorField), 1);
+		// 	}
+		// 	$( id2 ).parent().removeClass( "has-error" ).addClass( "has-success" );
+		// 	$( id2 ).removeClass( "error" ).addClass( "valid" );
+		// 	$('.noti').find("li[data-errorid='"+name2+"']").detach();
+		// }
 
 		event.data.currency.formatOn();//change format to currency on each calculation
 
@@ -1945,7 +1949,7 @@ $(document).ready(function () {
 				// 	.next()
 				// 	.find("input[type=text]").focus();
 			}
-		}, 'urlParam', 'radio', 'tab' 
+		}, 'urlParam', 'radio', 'tab', false
 	);
 	dialog_pouom.makedialog(false);
 

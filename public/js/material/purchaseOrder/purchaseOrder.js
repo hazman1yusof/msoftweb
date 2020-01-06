@@ -170,13 +170,9 @@ $(document).ready(function () {
 
 	var recstatus_filter = [['OPEN','REQUEST']];
 	if($("#recstatus_use").val() == 'ALL'){
-		recstatus_filter = [['OPEN','REQUEST','SUPPORT','VERIFIED','APPROVED']];
+		recstatus_filter = [['OPEN','REQUEST','SUPPORT','VERIFIED','APPROVED','CANCELLED']];
 		filterCol_urlParam = ['purordhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
-	}else if($("#recstatus_use").val() == 'REQUEST'){
-		recstatus_filter = [['OPEN']];
-		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
-		filterVal_urlParam = ['session.compcode','session.username'];
 	}else if($("#recstatus_use").val() == 'SUPPORT'){
 		recstatus_filter = [['REQUEST']];
 		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
@@ -318,11 +314,16 @@ $(document).ready(function () {
 				$('#but_reopen_jq').show();
 			} else {
 				if(scope == 'ALL'){
+					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
+						$('#but_cancel_jq,#but_post_single_jq').show();
+					}else if(stat=='OPEN'){
+						$('#but_post_jq').show();
+					}
 				}else{
 					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
 						$('#but_cancel_jq,#but_post_single_jq').show();
 					}else{
-						$('#but_cancel_jq,#but_post_jq').show();
+						$('#but_post_jq').show();
 					}
 				}
 			}

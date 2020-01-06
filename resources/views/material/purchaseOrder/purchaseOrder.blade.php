@@ -137,6 +137,7 @@ i.fa {
 							{{Request::get('scope')}}
 						@endif
 					</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 				</div>
 

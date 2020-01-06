@@ -18,7 +18,7 @@ tr:nth-child(even) {
 </style>
 </head>
 
-Please <strong>{{ $data->status }}</strong> Purchase Request of Deptcode and RequestNo
+Please <strong>{{ $data->status }}</strong> Purchase Request below
 
 <table>
   <tr>
