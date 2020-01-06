@@ -9,6 +9,9 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 
+
+use App\Jobs\SendEmailPR;
+
 class PurchaseOrderController extends defaultController
 {   
     public function __construct()
@@ -126,7 +129,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
 
     }
@@ -174,7 +177,7 @@ class PurchaseOrderController extends defaultController
             } catch (\Exception $e) {
                 DB::rollback();
 
-                return response('Error'.$e, 500);
+                return response($e->getMessage().$e, 500);
             }
         }else{
             DB::beginTransaction();
@@ -229,7 +232,7 @@ class PurchaseOrderController extends defaultController
             } catch (\Exception $e) {
                 DB::rollback();
 
-                return response('Error'.$e, 500);
+                return response($e->getMessage().$e, 500);
             }
         }
 
@@ -313,6 +316,18 @@ class PurchaseOrderController extends defaultController
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
+
+                // 4. email and whatsapp
+                $data = new stdClass();
+                $data->status = 'SUPPORT';
+                $data->deptcode = $purordhd_get->reqdept;
+                $data->purreqno = $purordhd_get->purreqno;
+                $data->email_to = 'hazman.yusof@gmail.com';
+                $data->whatsapp = '01123090948';
+
+                $this->sendemail($data);
+
+
             }
            
             DB::commit();
@@ -320,7 +335,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
     }       
 
@@ -392,6 +407,18 @@ class PurchaseOrderController extends defaultController
                 ]);
 
 
+            // 4. email and whatsapp
+            $data = new stdClass();
+            $data->status = 'SUPPORT';
+            $data->deptcode = $purordhd_get->reqdept;
+            $data->purreqno = $purordhd_get->purreqno;
+            $data->email_to = 'hazman.yusof@gmail.com';
+            $data->whatsapp = '01123090948';
+
+            $this->sendemail($data);
+
+
+
             DB::commit();
         
         } catch (\Exception $e) {
@@ -447,7 +474,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
     }
 
@@ -484,7 +511,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
     }
 
@@ -534,7 +561,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
     }                      
 
@@ -603,13 +630,25 @@ class PurchaseOrderController extends defaultController
 
             }
 
+
+            // 4. email and whatsapp
+            $data = new stdClass();
+            $data->status = 'VERIFIED';
+            $data->deptcode = $purordhd_get->reqdept;
+            $data->purreqno = $purordhd_get->purreqno;
+            $data->email_to = 'hazman.yusof@gmail.com';
+            $data->whatsapp = '01123090948';
+
+            $this->sendemail($data);
+
+
            
             DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
     }
 
@@ -675,11 +714,22 @@ class PurchaseOrderController extends defaultController
                 ]);
            
             DB::commit();
+
+            // 4. email and whatsapp
+            $data = new stdClass();
+            $data->status = 'VERIFIED';
+            $data->deptcode = $purordhd_get->reqdept;
+            $data->purreqno = $purordhd_get->purreqno;
+            $data->email_to = 'hazman.yusof@gmail.com';
+            $data->whatsapp = '01123090948';
+
+            $this->sendemail($data);
+
         
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
     }
 
@@ -748,13 +798,23 @@ public function verify(Request $request){
 
             }
 
+            // 4. email and whatsapp
+            $data = new stdClass();
+            $data->status = 'APPROVED';
+            $data->deptcode = $purordhd_get->reqdept;
+            $data->purreqno = $purordhd_get->purreqno;
+            $data->email_to = 'hazman.yusof@gmail.com';
+            $data->whatsapp = '01123090948';
+
+            $this->sendemail($data);
+
            
             DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
     }
 
@@ -820,11 +880,22 @@ public function verify(Request $request){
                 ]);
            
             DB::commit();
+
+            // 4. email and whatsapp
+            $data = new stdClass();
+            $data->status = 'APPROVED';
+            $data->deptcode = $purordhd_get->reqdept;
+            $data->purreqno = $purordhd_get->purreqno;
+            $data->email_to = 'hazman.yusof@gmail.com';
+            $data->whatsapp = '01123090948';
+
+            $this->sendemail($data);
+
         
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
     }
 
@@ -870,7 +941,7 @@ public function verify(Request $request){
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
     }
 
@@ -911,7 +982,7 @@ public function verify(Request $request){
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage().$e, 500);
         }
     }
 
@@ -1036,6 +1107,18 @@ public function verify(Request $request){
             ]);
 
         return $amount;
+    }
+
+    function sendemail($data){
+        SendEmailPR::dispatch($data);
+        // ProcessPodcast::dispatch();
+
+        // $data_ = ['data' => $data];
+
+        // Mail::send('email.mail', $data_, function($message) use ($data) {
+        //     $message->from('me@gmail.com', 'medicsoft');
+        //     $message->to($data->email_to);
+        // });
     }
 }
 

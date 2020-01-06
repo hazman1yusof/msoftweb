@@ -472,7 +472,7 @@ $(document).ready(function () {
 		$.post( '/purchaseOrder/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
-			$('#p_error').text(data.responseText);
+			$('#error_infront').text(data.responseText);
 		}).success(function(data){
 			
 		});
@@ -491,7 +491,7 @@ $(document).ready(function () {
 		$.post( '/purchaseOrder/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
-			$('#p_error').text(data.responseText);
+			$('#error_infront').text(data.responseText);
 		}).success(function(data){
 			
 		});
