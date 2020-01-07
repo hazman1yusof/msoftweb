@@ -200,7 +200,7 @@ class PurchaseOrderController extends defaultController
                 $array_update = [
                     'compcode' => session('compcode'),
                     'upduser' => session('username'),
-                    'upddate' => Carbon::now()
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ];
 
                 foreach ($field as $key => $value) {

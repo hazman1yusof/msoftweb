@@ -125,10 +125,10 @@ $(document).ready(function () {
 			oper:oper,
 			table_name:'finance.apacthdr',
 			table_id:'apacthdr_auditno',
-		/*	sysparam:{source:'CM',trantype:'DP',useOn:'auditno'},
-			sysparam2:{source:'HIS',trantype:'PV',useOn:'pvno'},*/
+			// sysparam:{source:'CM',trantype:'DP',useOn:'auditno'},
+			// sysparam2:{source:'HIS',trantype:'PV',useOn:'pvno'},
 			saveip:'true',
-			checkduplicate:'true',
+			checkduplicate:'false',
 			fixPost: 'true',
 		};
 			
