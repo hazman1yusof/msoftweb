@@ -29,7 +29,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////////////////
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#apacthdr_amount']);
+	var mycurrency =new currencymode(['#amount']);
 	var radbuts=new checkradiobutton(['TaxClaimable']);
 	var fdl = new faster_detail_load();
 
@@ -111,7 +111,7 @@ $(document).ready(function () {
 			url:'util/get_table_default',
 			field:'',
 			table_name:'finance.apacthdr',
-			table_id:'apacthdr_auditno',
+			table_id:'auditno',
 			filterCol: ['source', 'trantype'],
 			filterVal: ['CM', 'DP'],
 			sort_idno: true
@@ -124,7 +124,7 @@ $(document).ready(function () {
 			field:'',
 			oper:oper,
 			table_name:'finance.apacthdr',
-			table_id:'apacthdr_auditno',
+			table_id:'auditno',
 			// sysparam:{source:'CM',trantype:'DP',useOn:'auditno'},
 			// sysparam2:{source:'HIS',trantype:'PV',useOn:'pvno'},
 			saveip:'true',
@@ -135,37 +135,37 @@ $(document).ready(function () {
 		$("#jqGrid").jqGrid({
 			datatype: "local",
 			colModel: [
-				{ label: 'compcode', name: 'apacthdr_compcode', width: 10 , hidden: true,  classes: 'wrap'},
-				{ label: 'Audit No', name: 'apacthdr_auditno', width: 27, classes: 'wrap', canSearch: true, checked: true},
-				{ label: 'Bank Code', name: 'apacthdr_bankcode', width: 35, classes: 'wrap', canSearch: true},
-				{ label: 'Pay To', name: 'apacthdr_payto', width: 35, classes: 'wrap',},
-				{ label: 'Post Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap'},
-				{ label: 'Amount', name: 'apacthdr_amount', width: 30, classes: 'wrap', align: 'right',formatter:'currency'} ,//unformat:unformat2}
-				{ label: 'Status', name: 'apacthdr_recstatus', width: 20, classes: 'wrap'},
-				{ label: 'Payment Mode', name: 'apacthdr_paymode', width: 30, classes: 'wrap'},
-				{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 40, classes: 'wrap',formatter:formatterCheqnno, unformat:unformatterCheqnno},
-				{ label: 'Entered By', name: 'apacthdr_adduser', width: 35, classes: 'wrap'},
-				{ label: 'Entered Date', name: 'apacthdr_adddate', width: 40, classes: 'wrap',},
-				{ label: 'Remarks', name: 'apacthdr_remarks', width: 40, classes: 'wrap',},
-				{ label: 'GST', name: 'apacthdr_TaxClaimable', width: 40},
-				{ label: 'Pv No', name: 'apacthdr_pvno', width: 40, hidden:'true'},
-				{ label: 'Cheq Date', name: 'apacthdr_cheqdate', width: 40, hidden:'true'},
-				{ label: 'source', name: 'apacthdr_source', width: 40, hidden:'true'},
-			 	{ label: 'trantype', name: 'apacthdr_trantype', width: 40, hidden:'true'},
-			 	{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true'},
+				{ label: 'compcode', name: 'compcode', width: 10 , hidden: true,  classes: 'wrap'},
+				{ label: 'Audit No', name: 'auditno', width: 27, classes: 'wrap', canSearch: true, checked: true},
+				{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', canSearch: true},
+				{ label: 'Pay To', name: 'payto', width: 35, classes: 'wrap',},
+				{ label: 'Post Date', name: 'actdate', width: 25, classes: 'wrap'},
+				{ label: 'Amount', name: 'amount', width: 30, classes: 'wrap', align: 'right',formatter:'currency'} ,//unformat:unformat2}
+				{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap',},
+				{ label: 'Payment Mode', name: 'paymode', width: 30, classes: 'wrap',},
+				{ label: 'Cheque No', name: 'cheqno', width: 40, classes: 'wrap',},//formatter:formatterCheqnno, unformat:unformatterCheqnno
+				{ label: 'Entered By', name: 'adduser', width: 35, classes: 'wrap', hidden:true},
+				{ label: 'Entered Date', name: 'adddate', width: 40, classes: 'wrap', hidden:true},
+				{ label: 'Remarks', name: 'remarks', width: 40, classes: 'wrap', hidden:true},
+				{ label: 'GST', name: 'TaxClaimable', width: 40, hidden:true},
+				{ label: 'Pv No', name: 'pvno', width: 40, hidden:'true'},
+				{ label: 'Cheq Date', name: 'cheqdate', width: 40, hidden:'true'},
+				{ label: 'source', name: 'source', width: 40, hidden:'true'},
+			 	{ label: 'trantype', name: 'trantype', width: 40, hidden:'true'},
+			 	{ label: 'idno', name: 'idno', width: 40, hidden:'true'},
 			],
 				autowidth:true,
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
-				sortname:'apacthdr_idno',
+				sortname:'idno',
 				sortorder:'desc',
 				width: 900,
 				height: 350,
 				rowNum: 30,
 				pager: "#jqGridPager",
 				ondblClickRow: function(rowid, iRow, iCol, e){
-				let stat = selrowData("#jqGrid").apacthdr_recstatus;
+				let stat = selrowData("#jqGrid").recstatus;
 					if(stat=='POSTED'){
 						$("#jqGridPager td[title='View Selected Row']").click();
 						$('#save').hide();
@@ -181,7 +181,7 @@ $(document).ready(function () {
 						$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 				},
 				onSelectRow: function(rowid, selected) {
-				let recstatus = selrowData("#jqGrid").apacthdr_recstatus;
+				let recstatus = selrowData("#jqGrid").recstatus;
 					if(recstatus=='OPEN'){
 						$('#but_cancel_jq,#but_post_jq').show();
 						
@@ -193,21 +193,19 @@ $(document).ready(function () {
 						
 					}
 
-					urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+					urlParam2.filterVal[1]=selrowData("#jqGrid").auditno;
 
 					refreshGrid("#jqGrid3",urlParam2);
 				}
 		});
 			
-		
-
-			function formatterCheqnno  (cellValue, options, rowObject) {
+			/*function formatterCheqnno  (cellValue, options, rowObject) {
 				return rowObject[9] != "CHEQUE" ? "<span cheqno='"+cellValue+"'></span>" : "<span cheqno='"+cellValue+"'>"+cellValue+"</span>";
 			}
 
 			function unformatterCheqnno (cellValue, options, rowObject) {
 				return $(rowObject).find('span').attr('cheqno');
-			}
+			}*/
 
 
 			////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
@@ -258,7 +256,7 @@ $(document).ready(function () {
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['apacthdr_idno','apacthdr_compcode','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','apacthdr_computerid','apacthdr_ipaddress']);
+			addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
 
 			////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
@@ -279,7 +277,7 @@ $(document).ready(function () {
 				$("#but_cancel_jq,#but_post_jq").click(function(){
 					saveParam.oper = $(this).data('oper');
 					let obj={
-						auditno:selrowData('#jqGrid').apacthdr_auditno,
+						auditno:selrowData('#jqGrid').auditno,
 						_token:$('#_token').val(),
 					};
 					$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
@@ -315,13 +313,13 @@ $(document).ready(function () {
 
 						oper='edit';//sekali dia add terus jadi edit lepas tu
 						
-						$('#apacthdr_auditno,#auditno').val(data.auditno);
+						$('#auditno,#auditno').val(data.auditno);
 						$('#idno').val(data.idno);
-						// $('#apacthdr_outamount').val(data.outamount);//just save idno for edit later
+						// $('#outamount').val(data.outamount);//just save idno for edit later
 						
 						urlParam2.filterVal[1]=data.auditno;
 					}else if(selfoper=='edit'){
-						urlParam2.filterVal[1]=$('#apacthdr_auditno').val();
+						urlParam2.filterVal[1]=$('#auditno').val();
 						//doesnt need to do anything
 					}
 					disableForm('#formdata');
@@ -378,7 +376,7 @@ $(document).ready(function () {
 					{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
 					{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 					{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
-					{ label: 'Department', name: 'deptcode', width: 25, classes: 'wrap', canSearch: true, editable: true,
+					{ label: 'Department', name: 'deptcode', width: 100, classes: 'wrap', canSearch: true, editable: true,
 						editrules:{required: true,custom:true, custom_func:cust_rules},
 						formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -387,7 +385,7 @@ $(document).ready(function () {
 								custom_value:galGridCustomValue 	
 							},
 					},
-					{ label: 'Category', name: 'category', width: 25, edittype:'text', classes: 'wrap', editable: true,
+					{ label: 'Category', name: 'category', width: 100, edittype:'text', classes: 'wrap', editable: true,
 								editrules:{required: true,custom:true, custom_func:cust_rules},
 								formatter: showdetail,
 								edittype:'custom',	editoptions:
@@ -395,11 +393,11 @@ $(document).ready(function () {
 								       custom_value:galGridCustomValue 	
 								    },
 					},
-					{ label: 'Document', name: 'document', width: 29, classes: 'wrap', editable: true,
+					{ label: 'Document', name: 'document', width: 100, classes: 'wrap', editable: true,
 								//editrules:{required: true},
 								edittype:"text",
 					},
-					{ label: 'GST Code', name: 'GSTCode', width: 25, edittype:'text', classes: 'wrap', editable: true,
+					{ label: 'GST Code', name: 'GSTCode', width: 100, edittype:'text', classes: 'wrap', editable: true,
 							editrules:{required: true,custom:true, custom_func:cust_rules},
 							formatter: showdetail,
 							edittype:'custom',	editoptions:
@@ -408,7 +406,7 @@ $(document).ready(function () {
 								    custom_value:galGridCustomValue 	
 								},
 					},
-					{ label: 'Amount Before GST', name: 'AmtB4GST', width: 100, classes: 'wrap',
+					{ label: 'Amount Before GST', name: 'AmtB4GST', width: 80, classes: 'wrap',
 						formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 						editable: true,
 						align: "right",
@@ -427,7 +425,7 @@ $(document).ready(function () {
 						},
 					},
 					
-					{ label: 'Total GST Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:true,
+					{ label: 'Total GST Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable:true,
 						formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 						editrules:{required: true},
 						editoptions:{
@@ -444,7 +442,7 @@ $(document).ready(function () {
 						},
 					},
 					{ label: 'rate', name: 'rate', width: 20, classes: 'wrap', hidden:true},
-					{ label: 'Amount', name: 'amount', width: 25, classes: 'wrap', 
+					{ label: 'Amount', name: 'amount', width: 80, classes: 'wrap', 
 						formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 						editable: true,
 						align: "right",
@@ -517,10 +515,11 @@ $(document).ready(function () {
 					})
 		        },
 		        aftersavefunc: function (rowid, response, options) {
-		        	$('#apacthdr_amount').val(response.responseText);
+		        	$('#amount').val(response.responseText);
 		        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
 		        	refreshGrid('#jqGrid2',urlParam2,'add');
 			    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
+			    	errorField.length=0;
 		        }, 
 		        errorfunc: function(rowid,response){
 		        	alert(response.responseText);
@@ -535,8 +534,9 @@ $(document).ready(function () {
 					let editurl = "/directPaymentDetail/form?"+
 						$.param({
 							action: 'directPaymentDetail_save',
-							auditno:$('#apacthdr_auditno').val(),
+							auditno:$('#auditno').val(),
 							amount:data.amount,
+							lineno_:data.lineno_,
 						});
 					$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
 		        },
@@ -574,7 +574,7 @@ $(document).ready(function () {
 						    	if(result == true){
 						    		param={
 						    			action: 'directPaymentDetail_save',
-										auditno: $('#apacthdr_auditno').val(),
+										auditno: $('#auditno').val(),
 										lineno_: selrowData('#jqGrid2').lineno_,
 
 						    		}
@@ -582,7 +582,7 @@ $(document).ready(function () {
 									}).fail(function(data) {
 										//////////////////errorText(dialog,data.responseText);
 									}).done(function(data){
-										$('#apacthdr_amount').val(data);
+										$('#amount').val(data);
 										refreshGrid("#jqGrid2",urlParam2);
 									});
 						    	}else{
@@ -638,7 +638,7 @@ $(document).ready(function () {
 					var param={
 		    			action: 'directPaymentDetail_save',
 						_token: $("#_token").val(),
-						auditno: $('#apacthdr_auditno').val()
+						auditno: $('#auditno').val()
 		    		}
 
 		    		$.post( "/directPaymentDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
@@ -752,6 +752,7 @@ $(document).ready(function () {
 				dialog_bankcode.on();
 				dialog_cheqno.on();
 				dialog_payto.on();
+
 				enableForm('#formdata');
 				rdonly('#formdata');
 				$(".noti").empty();
@@ -780,7 +781,7 @@ $(document).ready(function () {
 			///////////////////////////////////////////////////////////////////////////////
 
 			function onall_editfunc(){
-				if($('#apacthdr_auditno').val()!=''){
+				if($('#auditno').val()!=''){
 		    		$("#jqGrid2 input[name='deptcode'],#jqGrid2 input[name='category'],#jqGrid2 input[name='document'],#jqGrid2 input[name='AmtB4GST'],#jqGrid2 input[name='GSTCode'],#jqGrid2 input[name='amount']").attr('readonly','readonly');
 
 				}else{
@@ -863,7 +864,7 @@ $(document).ready(function () {
 			////////////////////object for dialog handler//////////////////
 
 			var dialog_paymode = new ordialog(
-				'paymode','debtor.paymode','#apacthdr_paymode',errorField,
+				'paymode','debtor.paymode','#paymode',errorField,
 				{	colModel:[
 						{label:'Pay Mode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -896,7 +897,7 @@ $(document).ready(function () {
 			dialog_paymode.makedialog(true);
 
 			var dialog_bankcode = new ordialog(
-				'bankcode','finance.bank','#apacthdr_bankcode',errorField,
+				'bankcode','finance.bank','#bankcode',errorField,
 				{	colModel:[
 						{label:'Bank Code',name:'bankcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'bankname',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -929,7 +930,7 @@ $(document).ready(function () {
 			dialog_bankcode.makedialog(true);
 
 			var dialog_payto = new ordialog(
-				'payto','material.supplier','#apacthdr_payto',errorField,
+				'payto','material.supplier','#payto',errorField,
 				{	colModel:[
 						{label:'Pay To',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -962,13 +963,14 @@ $(document).ready(function () {
 			dialog_payto.makedialog(true);
 
 			var dialog_cheqno = new ordialog(
-				'cheqno','finance.chqtran','#apacthdr_cheqno',errorField,
+				'cheqno','finance.chqtran','#cheqno',errorField,
 				{	colModel:[
 						{label:'Cheque No',name:'cheqno',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+						{label:'Bank Code',name:'bankcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
 						
 					],
 					urlParam: {
-						filterCol:['compcode','recstatus'],
+						filterCol:['compcode','stat'],
 						filterVal:['session.compcode','A']
 					},
 					ondblClickRow: function () {
@@ -988,7 +990,7 @@ $(document).ready(function () {
 					title:"Select Cheque No",
 					open: function(){
 						dialog_cheqno.urlParam.filterCol=['compcode','stat', 'bankcode'],
-						dialog_cheqno.urlParam.filterVal=['session.compcode','A', $('#apacthdr_bankcode').val()]
+						dialog_cheqno.urlParam.filterVal=['session.compcode','A', $('#bankcode').val()]
 					}
 				},'urlParam','radio','tab'
 			);
@@ -1021,8 +1023,8 @@ $(document).ready(function () {
 				},{
 					title:"Select Department Code",
 					open: function(){
-						dialog_deptcode.urlParam.filterCol=['compcode','stat', 'bankcode'],
-						dialog_deptcode.urlParam.filterVal=['session.compcode','A', $('#bankcode').val()]
+						dialog_deptcode.urlParam.filterCol=['compcode','recstatus'],
+						dialog_deptcode.urlParam.filterVal=['session.compcode','A']
 					}
 				},'urlParam','radio','tab'
 			);

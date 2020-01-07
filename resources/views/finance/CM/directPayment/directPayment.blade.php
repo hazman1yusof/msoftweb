@@ -100,35 +100,35 @@ i.fa {
 						<div id="detail" class="panel-heading">Direct Payment Header</div>
 							<div class="panel-body">
 
-								<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="CM">
-								<input id="apacthdr_trantype" name="apacthdr_trantype" value = "DP" type="hidden">
-								<input id="auditno" name="apacthdr_auditno" type="hidden">
+								<input id="source" name="source" type="hidden" value="CM">
+								<input id="trantype" name="trantype" value = "DP" type="hidden">
+								<input id="auditno" name="auditno" type="hidden">
 								<input id="idno" name="idno" type="hidden">
 
 
 								<div class="form-group" style="position: relative">
-						  			<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
+						  			<label class="col-md-2 control-label" for="auditno">Audit No</label>  
 						  				<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
-						  					<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+						  					<input id="auditno" name="auditno" type="text" class="form-control input-sm" frozeOnEdit rdonly>
 						  				</div>
 
-						  			<label class="col-md-3 control-label" for="apacthdr_pvno">PV No</label>  
+						  			<label class="col-md-3 control-label" for="pvno">PV No</label>  
 						  				<div class="col-md-3">
-											<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+											<input id="pvno" name="pvno" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
 						  				</div>
 						  				<div id="recstatus"></div>
 								</div>
 
 								<div class="form-group">
-						  			<label class="col-md-2 control-label" for="apacthdr_actdate">Payment Date</label>  
+						  			<label class="col-md-2 control-label" for="actdate">Payment Date</label>  
 						  				<div class="col-md-3">
-											<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
+											<input id="actdate" name="actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
 						  				</div>
 
-						  			<label class="col-md-2 control-label" for="apacthdr_paymode">Payment Mode</label>  
+						  			<label class="col-md-2 control-label" for="paymode">Payment Mode</label>  
 						  				<div class="col-md-3">
 							 				<div class='input-group'>
-												<input id="apacthdr_paymode" name="apacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" >
+												<input id="paymode" name="paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" >
 												<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  				</div>
 							 				<span class="help-block"></span>
@@ -136,19 +136,19 @@ i.fa {
 					    		</div>
 
 					    		<div class="form-group">
-					    			<label class="col-md-2 control-label" for="apacthdr_bankcode">Bank Code</label>  
+					    			<label class="col-md-2 control-label" for="bankcode">Bank Code</label>  
 						  				<div class="col-md-3" id="bankcode_parent">
 							 				<div class='input-group'>
-												<input id="apacthdr_bankcode" name="apacthdr_bankcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+												<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 												<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  				</div>
 							 				<span id='bc' class="help-block"></span>
 		                      			</div>
 
-		                    		<label class="col-md-2 control-label" for="apacthdr_cheqno">Cheque No</label>  
+		                    		<label class="col-md-2 control-label" for="cheqno">Cheque No</label>  
 						  				<div class="col-md-3" id="cheqno_parent">
 							 				<div class='input-group'>
-												<input id="apacthdr_cheqno" name="apacthdr_cheqno" type="text" class="form-control input-sm">
+												<input id="cheqno" name="cheqno" type="text" class="form-control input-sm">
 													<a class='input-group-addon btn btn-primary' id="cheqno_a"><span class='fa fa-ellipsis-h' ></span></a>
 							  				</div>
 							 				<span id='cn' class="help-block"></span>
@@ -156,39 +156,39 @@ i.fa {
 					    		</div>
 
 							    <div class="form-group">
-							    	<label class="col-md-2 control-label" for="apacthdr_cheqdate">Cheque Date</label>  
+							    	<label class="col-md-2 control-label" for="cheqdate">Cheque Date</label>  
 									  	<div class="col-md-3">
-											<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date"  maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
+											<input id="cheqdate" name="cheqdate" type="date"  maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
 									  	</div>
 
-									 <label class="col-md-2 control-label" for="apacthdr_amount">Amount</label>  
+									 <label class="col-md-2 control-label" for="amount">Amount</label>  
 									  	<div class="col-md-2">
-												<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" rdonly>  <!--data-validation-allowing="float" -->
+												<input id="amount" name="amount" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" rdonly>  <!--data-validation-allowing="float" -->
 						 				</div>
 							    </div>
 
 							    <div class="form-group">
-							    	<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>  
+							    	<label class="col-md-2 control-label" for="payto">Pay To</label>  
 								  		<div class="col-md-3">
 									 		<div class='input-group'>
-												<input id="apacthdr_payto" name="apacthdr_payto" type="text" class="form-control input-sm text-uppercase" data-validation="required"><!---->
+												<input id="payto" name="payto" type="text" class="form-control input-sm text-uppercase" data-validation="required"><!---->
 													<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  		</div>
 									 		<span class="help-block"></span>
 				                      	</div>
 				                      	
 							        
-									<label class="col-md-2 control-label" for="apacthdr_TaxClaimable">GST</label>  
+									<label class="col-md-2 control-label" for="TaxClaimable">GST</label>  
 									  <div class="col-md-3">
-										<label class="radio-inline"><input type="radio" data-validation="required" name="apacthdr_TaxClaimable" value='Claimable'>Claimable</label><br>
-										<label class="radio-inline"><input type="radio" data-validation="required" name="apacthdr_TaxClaimable" value='Non-Claimable'>Non-Claimable</label>
+										<label class="radio-inline"><input type="radio" data-validation="required" name="TaxClaimable" value='Claimable'>Claimable</label><br>
+										<label class="radio-inline"><input type="radio" data-validation="required" name="TaxClaimable" value='Non-Claimable'>Non-Claimable</label>
 									  </div>
 							    </div>
 
 							    <div class="form-group">
-							    	<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
+							    	<label class="col-md-2 control-label" for="remarks">Remarks</label> 
 							    		<div class="col-md-8"> 
-							    		<textarea class="form-control input-sm text-uppercase" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="remarks" ></textarea>
+							    		<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" ></textarea>
 							    		</div>
 							    </div>
 							</div>
