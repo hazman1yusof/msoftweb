@@ -1201,7 +1201,7 @@ $(document).ready(function () {
 		switch (name) {
 			case 'Item Code': temp = $('#itemcode'); break;
 			case 'UOM Code': temp = $('#uomcode'); break;
-			// case 'PO UOM': temp = $('#pouom'); break;
+			case 'PO UOM': temp = $('#pouom'); break;
 			case 'Price Code': temp = $('#pricecode'); break;
 			case 'Tax Code': temp = $('#taxcode'); break;
 			case 'Quantity Request': temp = $("#jqGrid2 input[name='qtyrequest']"); 
