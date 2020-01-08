@@ -684,7 +684,7 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 			$("#but_post_single_jq").hide();
 		}else if(reccount == 0){
 			$('#sel_tbl_panel').hide('fast');
-			$("#but_post_single_jq").show();
+			// $("#but_post_single_jq").show();
 			$("#show_sel_tbl,#but_post_jq").hide();
 			$("#show_sel_tbl").data('hide',true);
 			$("#show_sel_tbl").text('Show Selection Item');

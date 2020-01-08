@@ -282,7 +282,7 @@ $(document).ready(function () {
 			}
 		},
 		gridComplete: function () {
-			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			$('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			if (oper == 'add' || oper == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
