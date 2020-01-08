@@ -317,7 +317,6 @@
 
 				$("#jqGrid3_pkg_iledit,#jqGrid3_pkg_iladd,#jqGrid3_pkg_ilcancel,#jqGrid3_pkg_ilsave,#jqGridPager3_pkgDelete,#jqGridPager3_pkgEditAll,#jqGridPager3_pkgSaveAll,#jqGridPager3_pkgCancelAll,#jqGridPager3_pkgRefresh").hide();
 			}else{
-
 				$("#jqGrid3_pkg_iladd,#jqGrid3_pkg_ilcancel,#jqGrid3_pkg_ilsave,#jqGridPager3_pkgDelete,#jqGridPager3_pkgEditAll,#jqGridPager3_pkgRefresh").show();
 				$("#jqGridPager3_pkgSaveAll,#jqGrid3_pkg_iledit,#jqGridPager3_pkgCancelAll").hide();
 			}
@@ -1133,8 +1132,8 @@
 			gridComplete: function(){
 
 				fdl.set_array().reset();
-				if(!hide_init){
-					hide_init=1;
+				if(!hide_init_pkg){
+					hide_init_pkg=1;
 					hideatdialogForm_jqGrid3_pkg(false);
 				}
 			},
@@ -1142,7 +1141,7 @@
 				// dialog_deptcodedtl.check(errorField);
 		 	}
 		});
-		var hide_init=0;
+		var hide_init_pkg=0;
 
 		//////////////////////////////////////////myEditOptions2_pkg/////////////////////////////////////////////
 
@@ -2080,6 +2079,10 @@
 
 		$("#jqGrid3_panel").on("show.bs.collapse", function(){
 			$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
+		});
+
+		$("#jqGrid3_pkg_panel").on("show.bs.collapse", function(){
+			$("#jqGrid3_pkg").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_pkg_c")[0].offsetWidth-$("#jqGrid3_pkg_c")[0].offsetLeft-28));
 		});
 
 		$("#jqGrid4_panel").on("show.bs.collapse", function(){
