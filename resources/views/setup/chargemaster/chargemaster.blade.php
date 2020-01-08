@@ -136,16 +136,16 @@ input.uppercase {
 		</div>
 
 		<div class="panel-group">
-  			<div class="panel panel-default" id="jqGrid3_pkg_c">
-    			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_pkg_panel">
-					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Package
+  			<div class="panel panel-default" id="jqGridPkg3_c">
+    			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGridPkg3_panel">
+					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Charge Price
     			</div>
-    			<div id="jqGrid3_pkg_panel" class="panel-collapse collapse">
+    			<div id="jqGridPkg3_panel" class="panel-collapse collapse">
 					<div class="panel-body">
-						<form id='formdata3_pkg' class='form-vertical' style='width:99%'>
+						<form id='formdataPkg3' class='form-vertical' style='width:99%'>
 							<div class='col-md-12' style="padding:0 0 15px 0">
-								<table id="jqGrid3_pkg" class="table table-striped"></table>
-								<div id="jqGridPager3_pkg"></div>
+								<table id="jqGridPkg3" class="table table-striped"></table>
+								<div id="jqGridPagerPkg3"></div>
 							</div>
 						</form>
 					</div>
