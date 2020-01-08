@@ -194,19 +194,15 @@
 				urlParam2.filterVal[1]=selrowData("#jqGrid").cm_chgcode;
 				refreshGrid("#jqGrid3",urlParam2);
 
-				$("#jqGrid4_c").hide();
+				$("#jqGrid4_c,#jqGridPkg3_c").hide();
 				if(selrowData('#jqGrid').cm_chgtype == 'pkg' || selrowData('#jqGrid').cm_chgtype == 'PKG' ){
 					refreshGrid("#jqGrid4",urlParam4);
-					$("#jqGrid4_c").show();
+					refreshGrid("#jqGridPkg3",urlParam2);
+					$("#jqGrid4_c,#jqGridPkg3_c").show();
+					$("#jqGrid3_c").hide();
 					colmodel_change_jq2(true);
 				}
 
-				$("#jqGridPkg3_c").hide();
-				if(selrowData('#jqGrid').cm_chgtype == 'pkg' || selrowData('#jqGrid').cm_chgtype == 'PKG' ){
-					refreshGrid("#jqGridPkg3",urlParam2);
-					$("#jqGridPkg3_c").show();
-					colmodel_change_jq2(true);
-				}
 			},
 			ondblClickRow: function(rowid, iRow, iCol, e){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
