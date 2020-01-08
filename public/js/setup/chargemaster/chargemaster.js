@@ -308,6 +308,22 @@
 			
 		}
 
+		function hideatdialogForm_jqGrid3_pkg(hide,saveallrow){
+			if(saveallrow == 'saveallrow'){
+
+				$("#jqGrid3_pkg_iledit,#jqGrid3_pkg_iladd,#jqGrid3_pkg_ilcancel,#jqGrid3_pkg_ilsave,#jqGridPager3_pkgDelete,#jqGridPager3_pkgEditAll,#jqGridPager3_pkgRefresh").hide();
+				$("#jqGridPager3_pkgSaveAll,#jqGridPager3_pkgCancelAll").show();
+			}else if(hide){
+
+				$("#jqGrid3_pkg_iledit,#jqGrid3_pkg_iladd,#jqGrid3_pkg_ilcancel,#jqGrid3_pkg_ilsave,#jqGridPager3_pkgDelete,#jqGridPager3_pkgEditAll,#jqGridPager3_pkgSaveAll,#jqGridPager3_pkgCancelAll,#jqGridPager3_pkgRefresh").hide();
+			}else{
+
+				$("#jqGrid3_pkg_iladd,#jqGrid3_pkg_ilcancel,#jqGrid3_pkg_ilsave,#jqGridPager3_pkgDelete,#jqGridPager3_pkgEditAll,#jqGridPager3_pkgRefresh").show();
+				$("#jqGridPager3_pkgSaveAll,#jqGrid3_pkg_iledit,#jqGridPager3_pkgCancelAll").hide();
+			}
+			
+		}
+
 		function hideatdialogForm_jqGrid4(hide,saveallrow){
 			if(saveallrow == 'saveallrow'){
 
@@ -368,7 +384,7 @@
 		var urlParam2={
 			action:'get_table_default',
 			url:'/util/get_table_default',
-			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate', 'cp.chgcode','cm.chgcode','cp.idno'],
+			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate','cp.chgcode','cm.chgcode','cp.idno','cp.autopull','cp.addchg','cp.pkgtype'],
 			table_name:['hisdb.chgprice AS cp', 'hisdb.chgmast AS cm'],
 			table_id:'lineno_',
 			join_type:['LEFT JOIN'],
@@ -1069,6 +1085,238 @@
 			title: "Refresh Table",
 			onClickButton: function () {
 				refreshGrid("#jqGrid3", urlParam2);
+			},
+		});
+
+		/////////////////////////////////////////////////Package/////////////////////////////////////////////////
+		////////////////////////////////////////////////jqGrid3_pkg//////////////////////////////////////////////
+
+		$("#jqGrid3_pkg").jqGrid({
+			datatype: "local",
+			editurl: "/chargemasterDetail/form",
+			colModel: [
+				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+				{ label: 'AutoPull', name: 'autopull', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+					editoptions:{
+						value:"1:YES;0:NO"
+					}
+				},
+				{ label: 'Charge If More', name: 'addchg', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+					editoptions:{
+						value:"1:YES;0:NO"
+					}
+				},
+				{ label: 'Package Type', name: 'pkgtype', width: 30, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
+			],
+			autowidth: true,
+			shrinkToFit: true,
+			multiSort: true,
+			viewrecords: true,
+			loadonce:false,
+			width: 1150,
+			height: 200,
+			rowNum: 30,
+			sortname: 'idno',
+			sortorder: "desc",
+			pager: "#jqGridPager3_pkg",
+			loadComplete: function(){
+				if(addmore_jqgrid2.more == true){$('#jqGrid3_pkg_iladd').click();}
+				else{
+					$('#jqGrid3_pkg').jqGrid ('setSelection', "1");
+				}
+
+				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+				
+			},
+			gridComplete: function(){
+
+				fdl.set_array().reset();
+				if(!hide_init){
+					hide_init=1;
+					hideatdialogForm_jqGrid3_pkg(false);
+				}
+			},
+			beforeSubmit: function(postdata, rowid){ 
+				// dialog_deptcodedtl.check(errorField);
+		 	}
+		});
+		var hide_init=0;
+
+		//////////////////////////////////////////myEditOptions2_pkg/////////////////////////////////////////////
+
+		var myEditOptions2_pkg = {
+	        keys: true,
+	        extraparam:{
+			    "_token": $("#_token").val()
+	        },
+	        oneditfunc: function (rowid) {
+
+	        	$("#jqGridPager3_pkgEditAll,#jqGridPager3_pkgDelete,#jqGridPager3_pkgRefresh").hide();
+
+				// dialog_dtliptax.on();
+				// dialog_dtloptax.on();
+
+	        	unsaved = false;
+				mycurrency2.array.length = 0;
+				// Array.prototype.push.apply(mycurrency2.array, ["#jqGrid3 input[name='amt1']","#jqGrid3 input[name='amt2']","#jqGrid3 input[name='amt3']","#jqGrid3 input[name='costprice']"]);
+
+				mycurrency2.formatOnBlur();//make field to currency on leave cursor
+
+	   //      	$("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
+				// 	var code = e.keyCode || e.which;
+				// 	if (code == '9')$('#jqGrid2_ilsave').click();
+				// })
+	        },
+	        aftersavefunc: function (rowid, response, options) {
+	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+	        	refreshGrid('#jqGrid3_pkg',urlParam2,'add');
+		    	$("#jqGridPager3_pkgEditAll,#jqGridPager3_pkgDelete,#jqGridPager3_pkgRefresh").show();
+	        }, 
+	        errorfunc: function(rowid,response){
+	        	alert(response.responseText);
+	        	refreshGrid('#jqGrid3_pkg',urlParam2,'add');
+		    	$("#jqGridPager3_pkgDelete,#jqGridPager3_pkgRefresh").show();
+	        },
+	        beforeSaveRow: function(options, rowid) {
+
+	        	//if(errorField.length>0)return false;  
+
+				let data = $('#jqGrid3_pkg').jqGrid ('getRowData', rowid);
+				let editurl = "/chargemasterDetail/form?"+
+					$.param({
+						action: 'chargemasterDetail_save',
+						oper: 'add',
+						chgcode: selrowData('#jqGrid').cm_chgcode,//$('#cm_chgcode').val(),
+						uom: selrowData('#jqGrid').cm_uom//$('#cm_uom').val(),
+						// authorid:$('#authorid').val()
+					});
+				$("#jqGrid3_pkg").jqGrid('setGridParam',{editurl:editurl});
+	        },
+	        afterrestorefunc : function( response ) {
+				hideatdialogForm_jqGrid3_pkg(false);
+		    }
+	    };
+
+
+		//////////////////////////////////////////pager jqGrid3_pkg/////////////////////////////////////////////
+
+		$("#jqGrid3_pkg").inlineNav('#jqGridPager3_pkg',{	
+			add:true,
+			edit:true,
+			cancel: true,
+			//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+			restoreAfterSelect: false,
+			addParams: { 
+				addRowParams: myEditOptions2_pkg
+			},
+			editParams: myEditOptions2_pkg
+		}).jqGrid('navButtonAdd',"#jqGridPager3_pkg",{
+			id: "jqGridPager3_pkgDelete",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-trash",
+			title:"Delete Selected Row",
+			onClickButton: function(){
+				selRowId = $("#jqGrid3_pkg").jqGrid ('getGridParam', 'selrow');
+				if(!selRowId){
+					bootbox.alert('Please select row');
+				}else{
+					bootbox.confirm({
+					    message: "Are you sure you want to delete this row?",
+					    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+					    },
+					    callback: function (result) {
+					    	if(result == true){
+					    		param={
+					    			action: 'chargemasterDetail_save',
+									idno: selrowData('#jqGrid3_pkg').idno,
+
+					    		}
+					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+								}).fail(function(data) {
+									//////////////////errorText(dialog,data.responseText);
+								}).done(function(data){
+									refreshGrid("#jqGrid3_pkg",urlParam2);
+								});
+					    	}else{
+	        					$("#jqGridPager3_pkgEditAll").show();
+					    	}
+					    }
+					});
+				}
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager3_pkg",{
+			id: "jqGridPager3_pkgEditAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-th-list",
+			title:"Edit All Row",
+			onClickButton: function(){
+				mycurrency2.array.length = 0;
+				var ids = $("#jqGrid3_pkg").jqGrid('getDataIDs');
+			    for (var i = 0; i < ids.length; i++) {
+
+			        $("#jqGrid3_pkg").jqGrid('editRow',ids[i]);
+
+			        // Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amt1","#"+ids[i]+"_amt2","#"+ids[i]+"_amt3","#"+ids[i]+"_costprice"]);
+			    }
+			    mycurrency2.formatOnBlur();
+		    	onall_editfunc();
+				hideatdialogForm_jqGrid3_pkg(true,'saveallrow');
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager3_pkg",{
+			id: "jqGridPager3_pkgSaveAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-download-alt",
+			title:"Save All Row",
+			onClickButton: function(){
+				var ids = $("#jqGrid3_pkg").jqGrid('getDataIDs');
+
+				var jqGrid3_pkg_data = [];
+				mycurrency2.formatOff();
+			    for (var i = 0; i < ids.length; i++) {
+
+					var data = $('#jqGrid3_pkg').jqGrid('getRowData',ids[i]);
+			    	var obj = 
+			    	{
+			    		'idno' : data.idno,
+						'autopull' : $("#jqGrid3_pkg input#"+ids[i]+"_autopull").val(),
+						'addchg' : $("#jqGrid3_pkg input#"+ids[i]+"_addchg").val(),
+						'pkgtype' : $("#jqGrid3_pkg input#"+ids[i]+"_pkgtype").val()
+			    	}
+
+			    	jqGrid3_pkg_data.push(obj);
+			    }
+
+				var param={
+	    			action: 'chargemasterDetail_save',
+					_token: $("#_token").val()
+	    		}
+
+	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqGrid3_pkg_data}, function( data ){
+				}).fail(function(data) {
+					//////////////////errorText(dialog,data.responseText);
+				}).done(function(data){
+					hideatdialogForm_jqGrid3_pkg(false);
+					refreshGrid("#jqGrid3_pkg",urlParam2);
+				});
+			},	
+		}).jqGrid('navButtonAdd',"#jqGridPager3_pkg",{
+			id: "jqGridPager3_pkgCancelAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-remove-circle",
+			title:"Cancel",
+			onClickButton: function(){
+				hideatdialogForm_jqGrid3_pkg(false);
+				refreshGrid("#jqGrid3_pkg",urlParam2);
+			},	
+		}).jqGrid('navButtonAdd', "#jqGridPager3_pkg", {
+			id: "jqGridPager3_pkgRefresh",
+			caption: "", cursor: "pointer", position: "last",
+			buttonicon: "glyphicon glyphicon-refresh",
+			title: "Refresh Table",
+			onClickButton: function () {
+				refreshGrid("#jqGrid3_pkg", urlParam2);
 			},
 		});
 
