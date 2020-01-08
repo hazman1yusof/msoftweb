@@ -58,8 +58,10 @@ class CountryController extends defaultController
                     'Code' => strtoupper($request->Code),
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
@@ -81,8 +83,10 @@ class CountryController extends defaultController
                     'Code' => strtoupper($request->Code),
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
             DB::commit();
@@ -98,8 +102,8 @@ class CountryController extends defaultController
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'D',
-                'lastuser' => session('username'),
-                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deluser' => session('username'),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }
 }

@@ -107,8 +107,8 @@ class CompcodeController extends defaultController
             ->where('compcode','=',$request->compcode)
             ->update([  
                 'recstatus' => 'D',
-                'lastuser' => session('username'),
-                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deluser' => session('username'),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }
 }

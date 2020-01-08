@@ -49,16 +49,14 @@ $(document).ready(function () {
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"
 			}},
-
-			// { label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
-			// { label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			// { label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-			// 				{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
-			// },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
+			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
+			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
 
 		],
 		autowidth: true,

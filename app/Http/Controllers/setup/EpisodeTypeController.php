@@ -59,8 +59,10 @@ class EpisodeTypeController extends defaultController
                     'description' => strtoupper($request->description),
                     'activatedate' => $this->turn_date($request->activatedate),
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
@@ -83,8 +85,10 @@ class EpisodeTypeController extends defaultController
                     'description' => strtoupper($request->description),
                     'activatedate' => $this->turn_date($request->activatedate),
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
             DB::commit();
@@ -100,8 +104,8 @@ class EpisodeTypeController extends defaultController
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'D',
-                'lastuser' => session('username'),
-                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deluser' => session('username'),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }
 }

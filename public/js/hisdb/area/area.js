@@ -43,21 +43,23 @@
 					{ label: 'compcode', name: 'compcode', hidden: true },
 					{ label: 'Area Code', name: 'areacode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 					{ label: 'Description', name: 'Description', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-					{ label: 'Area Group', name: 'areagroup', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-		
+					{ label: 'Area Group', name: 'areagroup', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},	
 		
 					//{ label: 'Area Group', name: 'areagroup', width: 20, classes: 'wrap',},
 					//{ label: 'createdby', name: 'createdby', width: 80,hidden:true},
 					//{ label: 'createddate', name: 'createddate', width: 90,hidden:true},
-					{ label: 'lastupdater', name: 'lastupdate', width: 80,hidden:true},
-					{ label: 'lastuser', name: 'lastuser', width: 90,hidden:true},
-					// { label: 'recstatus', name: 'recstatus', width: 80, hidden:true, classes: 'wrap',cellattr: function(rowid, cellvalue){
-					// 	return cellvalue == 'D' ? ' class="alert alert-danger"' : ''},},					
-					{ label: 'UpdDate', name: 'upddate', width: 90,hidden:true},
 					{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 					editoptions:{
 						value:"A:ACTIVE;D:DEACTIVE"
 					}},
+					{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
+					{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
+					{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
+					{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
+					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
+					{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
+					{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
 							
 				],
 				autowidth:true,

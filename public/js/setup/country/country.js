@@ -46,10 +46,15 @@ $(document).ready(function () {
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"
 			}},
-			// { label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
-			// 		formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
-			// 		{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
+			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
+			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
+			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
+			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
+			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
+			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
 		],
 		autowidth: true,
 		multiSort: true,

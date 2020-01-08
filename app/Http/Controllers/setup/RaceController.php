@@ -89,8 +89,6 @@ class RaceController extends defaultController
                     'lastipaddress' => strtoupper($request->lastipaddress),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    // 'adddate' => strtoupper($request->adddate),
-                    // 'adduser' => strtoupper($request->adduser)
                 ]); 
 
             DB::commit();

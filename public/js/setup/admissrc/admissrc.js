@@ -40,7 +40,7 @@
 			editurl: "/admissrc/form",
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, hidden:true},						
-				{ label: 'Adm Source', name: 'admsrccode', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }},
+				{ label: 'Adm Source', name: 'admsrccode', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 				{ label: 'Description', name: 'description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 				{ label: 'Src Type', name: 'type', width: 30, classes: 'wrap',editable: true, edittype:"select",formatter:'select', 
 					editoptions:{
@@ -57,6 +57,14 @@
 					value:"A:ACTIVE;D:DEACTIVE"
 				}},
 				{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
+				{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
+				{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
+				{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
+				{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
+				{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+				{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
+				{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
+				{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
 			],
 			autowidth:true,
             multiSort: true,
