@@ -410,13 +410,17 @@
 			}).done(function (data) {
 				unsaved = false;
 
+				if($("#cm_chgtype").val()=="PKG" || $("#cm_chgtype").val()=="pkg"){
+					hideatdialogForm_jqGridPkg2(false);
+				}else{
+					hideatdialogForm(false);
+				}
+
 				if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
 					addmore_jqgrid2.state = true;
 					if($("#cm_chgtype").val()=="PKG" || $("#cm_chgtype").val()=="pkg"){
-						hideatdialogForm_jqGridPkg2(false);
 						$('#jqGridPkg2_iladd').click();
 					}else{
-						hideatdialogForm(false);
 						$('#jqGrid2_iladd').click();
 					}
 				}
