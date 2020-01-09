@@ -151,7 +151,7 @@ $(document).ready(function () {
 	        },
 			oneditfunc: function (rowid) {
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-				$("input[name='episodetype']").attr('disabled','disabled');
+				$("input[name='epistycode']").attr('disabled','disabled');
 				$("select[name='recstatus']").keydown(function(e) {//when click tab at totamount, auto save
 					var code = e.keyCode || e.which;
 					if (code == '9')$('#jqGrid_ilsave').click();

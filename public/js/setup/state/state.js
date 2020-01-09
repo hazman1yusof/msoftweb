@@ -40,12 +40,12 @@ $(document).ready(function () {
 		editurl: "/state/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, hidden:true},		
-            { label: 'Country Code', name: 'countryCode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'State Code', name: 'StateCode', width: 15, canSearch: true, checked: true, editable: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Country Code', name: 'countryCode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
-					value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
+					value:"A:ACTIVE;D:DEACTIVE"
 				}},
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
@@ -76,7 +76,7 @@ $(document).ready(function () {
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
-			$("#jqGridPager td[title='Edit Selected Row']").click();
+			$("#jqGrid_iledit").click();
 		},
 	});
 
@@ -133,7 +133,7 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("input[name='countryCode']").attr('disabled','disabled');
+			$("input[name='StateCode']").attr('disabled','disabled');
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -205,7 +205,7 @@ $(document).ready(function () {
 							param = {
 								_token: $("#_token").val(),
 								action: 'state_save',
-								countryCode: $('#countryCode').val(),
+								StateCode: $('#StateCode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/state/form?"+$.param(param),{oper:'del'}, function( data ){
