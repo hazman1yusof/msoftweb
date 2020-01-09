@@ -53,28 +53,58 @@
 			modal: true,
 			autoOpen: false,
 			open: function( event, ui ) {
+				
+				$("#jqGrid2_c,#jqGridPkg2_c").hide();
 				parent_close_disabled(true);
-				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
-				$("#jqGridPkg2").jqGrid ('setGridWidth', Math.floor($("#jqGridPkg2_c")[0].offsetWidth-$("#jqGridPkg2_c")[0].offsetLeft));
+
 				switch(oper) {
 					case state = 'add':
 						$("#jqGrid2").jqGrid("clearGridData", false);
 						$("#pg_jqGridPager2 table").show();
+
 						hideatdialogForm(true);
+						$("#jqGrid2_c").show();
+						$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+
 						enableForm('#formdata');
 						rdonly('#formdata');
 						break;
 					case state = 'edit':
 						$("#pg_jqGridPager2 table").show();
-						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
 						frozeOnEdit("#formdata");
 						recstatusDisable("cm_recstatus");
+
+						if(selrowData('#jqGrid').cm_chgtype == 'pkg' || selrowData('#jqGrid').cm_chgtype == 'PKG' ){
+							hideatdialogForm_jqGridPkg2(true)
+							refreshGrid("#jqGridPkg2",urlParam2);
+							$("#jqGridPkg2_c").show();
+							$("#jqGridPkg2").jqGrid ('setGridWidth', Math.floor($("#jqGridPkg2_c")[0].offsetWidth-$("#jqGridPkg2_c")[0].offsetLeft));
+						} else {
+							hideatdialogForm(true);
+							refreshGrid("#jqGrid2",urlParam2);
+							$("#jqGrid2_c").show();
+							$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+						}
+						
 						break;
 					case state = 'view':
 						disableForm('#formdata');
-						$("#pg_jqGridPager2 table").hide();
+						$("#pg_jqGridPager2 table, #pg_jqGridPagerPkg2 table").hide();
+
+						if(selrowData('#jqGrid').cm_chgtype == 'pkg' || selrowData('#jqGrid').cm_chgtype == 'PKG' ){
+							hideatdialogForm_jqGridPkg2(true)
+							refreshGrid("#jqGridPkg2",urlParam2);
+							$("#jqGridPkg2_c").show();
+							$("#jqGridPkg2").jqGrid ('setGridWidth', Math.floor($("#jqGridPkg2_c")[0].offsetWidth-$("#jqGridPkg2_c")[0].offsetLeft));
+						} else {
+							hideatdialogForm(true);
+							refreshGrid("#jqGrid2",urlParam2);
+							$("#jqGrid2_c").show();
+							$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+						}
+
 						break;
 				}
 				if(oper!='view'){
@@ -302,15 +332,15 @@
 
 		function hideatdialogForm_jqGridPkg2(hide,saveallrow){
 			if(saveallrow == 'saveallrow'){
-				$("#jqGridPkg2_iledit,#jqGridPkg2_iladd,#jqGridPkg2_ilcancel,#jqGridPkg2_ilsave,#saveHeaderLabel,#jqGridPagerPkg2Delete,#jqGridPagerPkg2EditAll,#saveDetailLabel").hide();
+				$("#jqGridPkg2_iledit,#jqGridPkg2_iladd,#jqGridPkg2_ilcancel,#jqGridPkg2_ilsave,#Pkg2saveHeaderLabel,#jqGridPagerPkg2Delete,#jqGridPagerPkg2EditAll,#Pkg2saveDetailLabel").hide();
 				$("#jqGridPagerPkg2SaveAll,#jqGridPagerPkg2CancelAll").show();
 
 			}else if(hide){
-				$("#jqGridPkg2_iledit,#jqGridPkg2_iladd,#jqGridPkg2_ilcancel,#jqGridPkg2_ilsave,#saveHeaderLabel,#jqGridPagerPkg2Delete,#jqGridPagerPkg2EditAll,#jqGridPagerPkg2SaveAll,#jqGridPagerPkg2CancelAll").hide();
-				$("#saveDetailLabel").show();
+				$("#jqGridPkg2_iledit,#jqGridPkg2_iladd,#jqGridPkg2_ilcancel,#jqGridPkg2_ilsave,#Pkg2saveHeaderLabel,#jqGridPagerPkg2Delete,#jqGridPagerPkg2EditAll,#jqGridPagerPkg2SaveAll,#jqGridPagerPkg2CancelAll").hide();
+				$("#Pkg2saveDetailLabel").show();
 			}else{
-				$("#jqGridPkg2_iladd,#jqGridPkg2_ilcancel,#jqGridPkg2_ilsave,#saveHeaderLabel,#jqGridPagerPkg2Delete,#jqGridPagerPkg2EditAll").show();
-				$("#saveDetailLabel,#jqGridPagerPkg2SaveAll,#jqGridPkg2_iledit,#jqGridPagerPkg2CancelAll").hide();
+				$("#jqGridPkg2_iladd,#jqGridPkg2_ilcancel,#jqGridPkg2_ilsave,#Pkg2saveHeaderLabel,#jqGridPagerPkg2Delete,#jqGridPagerPkg2EditAll").show();
+				$("#Pkg2saveDetailLabel,#jqGridPagerPkg2SaveAll,#jqGridPkg2_iledit,#jqGridPagerPkg2CancelAll").hide();
 			}
 			
 		}
@@ -365,7 +395,11 @@
 		/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 		function saveHeader(form,selfoper,saveParam,obj){
 			if(obj==null){
-				obj={};
+				if($("#cm_chgtype").val()=="PKG" || $("#cm_chgtype").val()=="pkg"){
+					obj={cm_recstatus:'D'};
+				}else{
+					obj={};
+				}
 			}
 			saveParam.oper=selfoper;
 
@@ -375,11 +409,16 @@
 				alert(data.responseText);
 			}).done(function (data) {
 				unsaved = false;
-				hideatdialogForm(false);
 
 				if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
 					addmore_jqgrid2.state = true;
-					$('#jqGrid2_iladd').click();
+					if($("#cm_chgtype").val()=="PKG" || $("#cm_chgtype").val()=="pkg"){
+						hideatdialogForm_jqGridPkg2(false);
+						$('#jqGridPkg2_iladd').click();
+					}else{
+						hideatdialogForm(false);
+						$('#jqGrid2_iladd').click();
+					}
 				}
 				if(selfoper=='add'){
 					oper='edit';//sekali dia add terus jadi edit lepas tu
@@ -619,6 +658,7 @@
 				selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
 				populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
 				refreshGrid("#jqGrid2",urlParam2);
+				refreshGrid("#jqGridPkg2",urlParam2);
 			}, 
 		}).jqGrid('navButtonAdd',"#jqGridPager",{
 			caption:"",cursor: "pointer",position: "first",  
@@ -924,7 +964,7 @@
 	        },
 	        oneditfunc: function (rowid) {
 
-	        	$("#jqGridPagerPkg2EditAll,#saveHeaderLabel,#jqGridPagerPkg2Delete").hide();
+	        	$("#jqGridPagerPkg2EditAll,#Pkg2saveHeaderLabel,#jqGridPagerPkg2Delete").hide();
 
 	        	dialog_pkg2iptax.on();
 				dialog_pkg2optax.on();
@@ -1088,25 +1128,25 @@
 				refreshGrid("#jqGridPkg2",urlParam2);
 			},	
 		}).jqGrid('navButtonAdd',"#jqGridPagerPkg2",{
-			id: "saveHeaderLabel",
+			id: "Pkg2saveHeaderLabel",
 			caption:"Header",cursor: "pointer",position: "last", 
 			buttonicon:"",
 			title:"Header"
 		}).jqGrid('navButtonAdd',"#jqGridPagerPkg2",{
-			id: "saveDetailLabel",
+			id: "Pkg2saveDetailLabel",
 			caption:"Detail",cursor: "pointer",position: "last", 
 			buttonicon:"",
 			title:"Detail"
 		});
 
 		//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
-		$("#saveDetailLabel").click(function () {
+		$("#saveDetailLabel,#Pkg2saveDetailLabel").click(function () {
 			unsaved = false;
 			// dialog_authorid.off();
 			// dialog_deptcodehd.off();
 			//radbuts.check();
 			errorField.length = 0;
-		if($('#formdata').isValid({requiredFields:''},conf,true)){
+			if($('#formdata').isValid({requiredFields:''},conf,true)){
 				saveHeader("#formdata",oper,saveParam);
 				unsaved = false;
 			} else {
@@ -1116,7 +1156,7 @@
 		});
 
 		//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
-		$("#saveHeaderLabel").click(function () {
+		$("#saveHeaderLabel,#Pkg2saveHeaderLabel").click(function () {
 			emptyFormdata(errorField, '#formdata2');
 			hideatdialogForm(true);
 			hideatdialogForm_jqGridPkg2(true);
@@ -2201,6 +2241,23 @@
 				},
 				ondblClickRow: function () {
 					$('#cm_invgroup').focus();
+
+					let data=selrowData('#'+dialog_chgtype.gridname);
+
+					if(data.chgtype == 'pkg' || data.chgtype == 'PKG' ){
+						hideatdialogForm_jqGridPkg2(true)
+						$("#jqGridPkg2_c").show();
+						$("#jqGrid2_c").hide();
+						if(oper=='edit')refreshGrid("#jqGridPkg2",urlParam2);
+						$("#jqGridPkg2").jqGrid ('setGridWidth', Math.floor($("#jqGridPkg2_c")[0].offsetWidth-$("#jqGridPkg2_c")[0].offsetLeft));
+					} else {
+						hideatdialogForm(true);
+						$("#jqGrid2_c").show();
+						$("#jqGridPkg2_c").hide();
+						if(oper=='edit')refreshGrid("#jqGridPkg2",urlParam2);
+						$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+					}
+					
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
