@@ -392,13 +392,34 @@ input.uppercase {
 						<table id="jqGrid2" class="table table-striped"></table>
 						<div id="jqGridPager2"></div>
 					</div>
+
+					<div id="jqGridPkg2_c" class='col-md-12'>
+						<table id="jqGridPkg2" class="table table-striped"></table>
+						<div id="jqGridPagerPkg2"></div>
+					</div>
 				</form>
 			</div>
 
 			<div class="panel-body">
 				<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 			</div>
-		</div>	
+		</div>
+
+		<!-- <div class='panel panel-info'>
+			<div class="panel-heading">Charge Price Detail</div>
+			<div class="panel-body">
+				<form id='formdataPkg2' class='form-vertical' style='width:99%'>
+					<div id="jqGridPkg2_c" class='col-md-12'>
+						<table id="jqGridPkg2" class="table table-striped"></table>
+						<div id="jqGridPagerPkg2"></div>
+					</div>
+				</form>
+			</div>
+
+			<div class="panel-body">
+				<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+			</div>
+		</div>	 -->
 	</div>
 
 @endsection
