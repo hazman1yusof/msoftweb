@@ -88,31 +88,41 @@ class DirectPaymentController extends defaultController
     }
 
     public function edit(Request $request){
-        DB::beginTransaction();
 
-        try{
+        $table = DB::table("finance.apacthdr");
 
-            DB::table('finance.apacthdr')
-                    ->where('idno','=',$request->idno)
-                    ->update([
-                        'bankcode' => $request->bankcode,
-                        'payto' => $request->payto,
-                        'actdate' => $request->actdate,
-                        'paymode' => $request->paymode,
-                        'cheqno' => $request->cheqno,
-                        'remarks' => $request->remarks,
-                        'TaxClaimable' => $request->TaxClaimable,
-                        'cheqdate' => $request->cheqdate,
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
+        $array_update = [
+            'bankcode' => $request->bankcode,
+            'payto' => $request->payto,
+            'actdate' => $request->actdate,
+            'paymode' => $request->paymode,
+            'cheqno' => $request->cheqno,
+            'remarks' => $request->remarks,
+            'TaxClaimable' => $request->TaxClaimable,
+            'cheqdate' => $request->cheqdate,
+            'unit' => session('unit'),
+            'compcode' => session('compcode'),
+            'upduser' => session('username'),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+        ];
+
+        try {
+            //////////where//////////
+            $table = $table->where('idno','=',$request->idno);
+            $table->update($array_update);
+
+            $responce = new stdClass();
+            $responce->amount = $request->apacthdr_amount;
+            echo json_encode($responce);
+
+            // $queries = DB::getQueryLog();
+            // dump($queries);
 
             DB::commit();
-        
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response('Error'.$e, 500);
         }
     }
 

@@ -3,8 +3,7 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
-	$("body").show();/*
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");*/
+	$("body").show();
 	
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -71,7 +70,6 @@ $(document).ready(function () {
 						break;
 				}
 					if(oper!='view'){
-						//set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 						dialog_paymode.on();
 						dialog_bankcode.on();
 						dialog_payto.on();
@@ -130,12 +128,13 @@ $(document).ready(function () {
 			table_id:'auditno',
 			//saveip:'true',
 			checkduplicate:'false',
-			fixPost: 'true',
+			//fixPost: 'true',
 		};
 			
 		$("#jqGrid").jqGrid({
 			datatype: "local",
 			colModel: [
+				{ label: 'idno', name: 'idno', width: 40, hidden:'true'},
 				{ label: 'compcode', name: 'compcode', width: 10 , hidden: true,  classes: 'wrap'},
 				{ label: 'Audit No', name: 'auditno', width: 27, classes: 'wrap', canSearch: true, checked: true},
 				{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', canSearch: true},
@@ -153,7 +152,7 @@ $(document).ready(function () {
 				{ label: 'Cheq Date', name: 'cheqdate', width: 40, hidden:'true'},
 				{ label: 'source', name: 'source', width: 40, hidden:'true'},
 			 	{ label: 'trantype', name: 'trantype', width: 40, hidden:'true'},
-			 	{ label: 'idno', name: 'idno', width: 40, hidden:'true'},
+			 	
 			],
 				autowidth:true,
                 multiSort: true,
@@ -165,6 +164,21 @@ $(document).ready(function () {
 				height: 350,
 				rowNum: 30,
 				pager: "#jqGridPager",
+				onSelectRow: function(rowid, selected) {
+				let recstatus = selrowData("#jqGrid").recstatus;
+					if(recstatus=='OPEN'){
+						$('#but_cancel_jq,#but_post_jq').show();			
+					}else if(recstatus=="POSTED"){
+						$('#but_post_jq').hide();
+						$('#but_cancel_jq').show();
+					}else if (recstatus == "CANCELLED"){
+						$('#but_cancel_jq,#but_post_jq').hide();			
+					}
+
+					urlParam2.filterVal[1]=selrowData("#jqGrid").auditno;
+					refreshGrid("#jqGrid3",urlParam2);
+				}
+
 				ondblClickRow: function(rowid, iRow, iCol, e){
 				let stat = selrowData("#jqGrid").recstatus;
 					if(stat=='POSTED'){
@@ -181,34 +195,9 @@ $(document).ready(function () {
 						}
 						$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 				},
-				onSelectRow: function(rowid, selected) {
-				let recstatus = selrowData("#jqGrid").recstatus;
-					if(recstatus=='OPEN'){
-						$('#but_cancel_jq,#but_post_jq').show();
-						
-					}else if(recstatus=="POSTED"){
-						$('#but_post_jq').hide();
-						$('#but_cancel_jq').show();
-					}else if (recstatus == "CANCELLED"){
-						$('#but_cancel_jq,#but_post_jq').hide();
-						
-					}
-
-					urlParam2.filterVal[1]=selrowData("#jqGrid").auditno;
-
-					refreshGrid("#jqGrid3",urlParam2);
-				}
+				
 		});
-			
-			/*function formatterCheqnno  (cellValue, options, rowObject) {
-				return rowObject[9] != "CHEQUE" ? "<span cheqno='"+cellValue+"'></span>" : "<span cheqno='"+cellValue+"'>"+cellValue+"</span>";
-			}
-
-			function unformatterCheqnno (cellValue, options, rowObject) {
-				return $(rowObject).find('span').attr('cheqno');
-			}*/
-
-
+		
 			////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
 			jqgrid_label_align_right("#jqGrid2");	
 
@@ -414,7 +403,7 @@ $(document).ready(function () {
 						align: "right",
 						editrules:{required: true},edittype:"text",
 						editoptions:{
-							readonly: "readonly",
+							//readonly: "readonly",
 							maxlength: 12,
 							dataInit: function(element) {
 								element.style.textAlign = 'right';
@@ -615,7 +604,7 @@ $(document).ready(function () {
 
 				        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
 				    }*/
-				   // onall_editfunc();
+				    onall_editfunc();
 					hideatdialogForm(true,'saveallrow');
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager2",{

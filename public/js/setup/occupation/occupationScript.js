@@ -5,7 +5,7 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
-	//check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -49,7 +49,7 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true,editoptions: {style: "text-transform: uppercase"}},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
 
@@ -65,6 +65,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		loadComplete: function(){
+			
 			if(addmore_jqgrid.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
@@ -82,6 +83,7 @@ $(document).ready(function () {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
+
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
