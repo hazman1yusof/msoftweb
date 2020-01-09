@@ -99,7 +99,6 @@
 				parent_close_disabled(false);
 				emptyFormdata(errorField,'#formdata');
 				emptyFormdata(errorField,'#formdata2');
-				emptyFormdata(errorField,'#formdataPkg2');
 				//$('.alert').detach();
 				$('.my-alert').detach();
 				dialog_chggroup.off();
@@ -1119,7 +1118,6 @@
 		//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
 		$("#saveHeaderLabel").click(function () {
 			emptyFormdata(errorField, '#formdata2');
-			emptyFormdata(errorField, '#formdataPkg2');
 			hideatdialogForm(true);
 			hideatdialogForm_jqGridPkg2(true);
 			// dialog_authorid.on();
