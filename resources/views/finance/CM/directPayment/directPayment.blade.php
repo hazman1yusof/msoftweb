@@ -108,11 +108,11 @@ i.fa {
 
 								<div class="form-group" style="position: relative">
 						  			<label class="col-md-2 control-label" for="auditno">Audit No</label>  
-						  				<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
+						  				<div class="col-md-3"> <!--- value="<?php// echo "auditno";?>" -->
 						  					<input id="auditno" name="auditno" type="text" class="form-control input-sm" frozeOnEdit rdonly>
 						  				</div>
 
-						  			<label class="col-md-3 control-label" for="pvno">PV No</label>  
+						  			<label class="col-md-2 control-label" for="pvno">PV No</label>  
 						  				<div class="col-md-3">
 											<input id="pvno" name="pvno" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
 						  				</div>

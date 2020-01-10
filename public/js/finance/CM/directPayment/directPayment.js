@@ -726,9 +726,7 @@ $(document).ready(function () {
 				<span class="help-block"></span>
 				<div class="input-group">
 					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
-				</div>
-
-			`);
+				</div>`);
 			}
 
 
@@ -742,7 +740,7 @@ $(document).ready(function () {
 			}
 
 			//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
-			$("#saveDetailLabel").click(function(){
+			$("#saveDetailLabel").click(function () {
 				mycurrency.formatOff();
 				mycurrency.check0value(errorField);
 				unsaved = false;
@@ -750,12 +748,11 @@ $(document).ready(function () {
 				dialog_bankcode.off();
 				dialog_cheqno.off();
 				dialog_payto.off();
-				radbuts.check();
 				errorField.length = 0;
 				if($('#formdata').isValid({requiredFields:''},conf,true)){
 					saveHeader("#formdata",oper,saveParam);
 					unsaved = false;
-				}else{
+				} else {
 					mycurrency.formatOn();
 					dialog_paymode.on();
 					dialog_bankcode.on();
@@ -763,6 +760,7 @@ $(document).ready(function () {
 					dialog_payto.on();
 				}
 			});
+
 
 			//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
 			$("#saveHeaderLabel").click(function(){
@@ -813,7 +811,7 @@ $(document).ready(function () {
 				
 				mycurrency2.formatOnBlur();//make field to currency on leave cursor
 				
-				$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST'], #jqGrid2 input[name='amtdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+				$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 				//$("#jqGrid2 input[name='qtydelivered'],#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='expdate'],#jqGrid2 input[name='batchno']").on('focus',updwnkey_func);
 			}
