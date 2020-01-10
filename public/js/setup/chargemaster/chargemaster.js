@@ -110,6 +110,7 @@
 				if(oper!='view'){
 					set_compid_from_storage("input[name='cm_lastcomputerid']", "input[name='cm_lastipaddress']", "input[name='cm_computerid']", "input[name='cm_ipaddress']");
 					check_chgclass_on_open();
+					check_recstatus_on_open();
 					dialog_chggroup.on();
 					dialog_chgclass.on();
 					dialog_chgtype.on();
@@ -140,7 +141,7 @@
 					$(this).dialog("option", "buttons",butt1);
 				}
 			},
-			buttons :butt1,
+			// buttons :butt1,
 		});
 		////////////////////////////////////////end dialog///////////////////////////////////////////
 
@@ -907,14 +908,14 @@
 				{ label: 'Inpatient Tax', name: 'iptax', width: 60,align: 'right' , classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
-						    {  custom_element:iptaxCustomEdit,
+						    {  custom_element:iptaxPkg2CustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 				},
 				{ label: 'Outpatient Tax', name: 'optax', width: 60,align: 'right' , classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
-						    {  custom_element:optaxCustomEdit,
+						    {  custom_element:optaxPkg2CustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 				},
@@ -2284,6 +2285,37 @@
 			},'urlParam','radio','tab'
 		);
 		dialog_chgtype.makedialog(true);
+		$('#cm_chgtype').blur(function(){
+			let textval = $(dialog_chgtype.textfield).val();
+			if(textval == 'pkg' || textval == 'PKG'){
+				$('#cm_recstatus').data('validation','required')
+				// $('#cm_recstatus').attr('disabled',false)
+				$('#cm_recstatus').val('D')
+				$('#cm_recstatus option[value=""]').hide()
+				// $('#cm_recstatus').focus();
+				text_error1('#cm_recstatus');
+			}else{
+				$('#cm_recstatus').data('validation','')
+				// $('#cm_recstatus').attr('disabled',true)
+				$('#cm_recstatus').val('')
+				$('#cm_recstatus option[value=""]').show()
+				// $('#cm_chggroup').focus();
+			}
+		});
+		function check_recstatus_on_open(){
+			let textval = $(dialog_chgtype.textfield).val();
+			if(textval == 'pkg' || textval == 'PKG'){
+				$('#cm_recstatus').data('validation','required')
+				// $('#cm_recstatus').attr('disabled',false)
+				$('#cm_recstatus').val('D')
+				$('#cm_recstatus option[value=""]').hide()
+			}else{
+				$('#cm_recstatus').data('validation','')
+				// $('#cm_recstatus').attr('disabled',true)
+				$('#cm_recstatus').val('')
+				$('#cm_recstatus option[value=""]').show()
+			}
+		}
 
 		var dialog_doctorcode= new ordialog(
 			'cm_costcode','hisdb.doctor','#cm_costcode',errorField,
