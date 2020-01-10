@@ -108,14 +108,11 @@ class DirectPaymentDetailController extends defaultController
                     'source' => 'CM',
                     'trantype' => 'DP',
                     'document' => $request->document,
-                    'reference' => $request->reference,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
-                    'dorecno' => $request->dorecno,
                     'category' => $request->category,
                     'deptcode' => $request->deptcode,
-                    'grnno'=> $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -135,7 +132,7 @@ class DirectPaymentDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$auditno)
                 ->update([
-                    'outamount' => $totalAmount
+                    'amount' => $totalAmount
                   
                 ]);
             DB::commit();
@@ -160,18 +157,14 @@ class DirectPaymentDetailController extends defaultController
                 ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
-                    'compcode' => session('compcode'),
                     'source' => 'CM',
                     'trantype' => 'DP',
                     'document' => $request->document,
-                    'reference' => $request->reference,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
-                    'dorecno' => $request->dorecno,
                     'category' => $request->category,
                     'deptcode' => $request->deptcode,
-                    'grnno'=> $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -190,7 +183,7 @@ class DirectPaymentDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'outamount' => $totalAmount
+                    'amount' => $totalAmount
                 ]);
 
             DB::commit();
@@ -230,7 +223,7 @@ class DirectPaymentDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'outamount' => $totalAmount
+                    'amount' => $totalAmount
                   
                 ]);
 
@@ -262,12 +255,9 @@ class DirectPaymentDetailController extends defaultController
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
                         'document' => $value['document'],
-                        'reference' => $value['reference'],
                         'amount' => $value['amount'],
-                        'dorecno' => $value['dorecno'],
                         'category' => $value['category'],
                         'deptcode' => $value['deptcode'],
-                        'grnno' => $value['grnno'],
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                        

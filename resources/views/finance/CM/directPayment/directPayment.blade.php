@@ -57,9 +57,9 @@ i.fa {
 			        </div>
 				</div>
 
-				<div id="div_for_but_post" class="col-md-6 col-md-offset-7" style="text-align: end;">
+				<div id="div_for_but_post" class="col-md-3 col-md-offset-7" style="text-align: end;">
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 				</div>
 		</fieldset> 
 	</form>
@@ -108,11 +108,11 @@ i.fa {
 
 								<div class="form-group" style="position: relative">
 						  			<label class="col-md-2 control-label" for="auditno">Audit No</label>  
-						  				<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
+						  				<div class="col-md-3"> <!--- value="<?php// echo "auditno";?>" -->
 						  					<input id="auditno" name="auditno" type="text" class="form-control input-sm" frozeOnEdit rdonly>
 						  				</div>
 
-						  			<label class="col-md-3 control-label" for="pvno">PV No</label>  
+						  			<label class="col-md-2 control-label" for="pvno">PV No</label>  
 						  				<div class="col-md-3">
 											<input id="pvno" name="pvno" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
 						  				</div>
