@@ -17,6 +17,7 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
+				console.log(errorField);
 				return {
 					element : $(errorField[0]),
 					message : ' '
@@ -74,14 +75,13 @@ $(document).ready(function () {
 						dialog_bankcode.on();
 						dialog_payto.on();
 						dialog_cheqno.on();
-						
 					}
+
 					if(oper!='add'){
 						dialog_paymode.check(errorField);
 						dialog_bankcode.check(errorField);
 						dialog_payto.check(errorField);
 						dialog_cheqno.check(errorField);
-					
 					}
 			},
 
@@ -177,7 +177,7 @@ $(document).ready(function () {
 
 					urlParam2.filterVal[1]=selrowData("#jqGrid").auditno;
 					refreshGrid("#jqGrid3",urlParam2);
-				}
+				},
 
 				ondblClickRow: function(rowid, iRow, iCol, e){
 				let stat = selrowData("#jqGrid").recstatus;
@@ -306,11 +306,11 @@ $(document).ready(function () {
 						$('#auditno').val(data.auditno);
 						$('#idno').val(data.idno);
 						$('#pvno').val(data.pvno);
-						// $('#outamount').val(data.outamount);//just save idno for edit later
+						$('#amount').val(data.amount);//just save idno for edit later
 						
 						urlParam2.filterVal[1]=data.auditno;
 					}else if(selfoper=='edit'){
-						//urlParam2.filterVal[1]=$('#auditno').val();
+						urlParam2.filterVal[1]=$('#auditno').val();
 						//doesnt need to do anything
 					}
 					disableForm('#formdata');
@@ -439,6 +439,7 @@ $(document).ready(function () {
 						align: "right",
 						editrules:{required: true},edittype:"text",
 						editoptions:{
+						readonly: "readonly",
 						maxlength: 12,
 							dataInit: function(element) {
 								element.style.textAlign = 'right';
@@ -486,7 +487,6 @@ $(document).ready(function () {
 			////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 			jqgrid_label_align_right("#jqGrid2");
 
-			
 			//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 			
 			var myEditOptions = {
@@ -498,7 +498,7 @@ $(document).ready(function () {
 
 		        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
-		        	if($('#document').val()!='' && $("#jqGrid2_iladd").css('display') == 'none' ){
+		        	if($('#auditno').val()!='' && $("#jqGrid2_iladd").css('display') == 'none' ){
 		        		$("#jqGrid2 input[name='deptcode'],#jqGrid2 input[name='category'],#jqGrid2 input[name='document'],#jqGrid2 input[name='GSTCode'],#jqGrid2 input[name='AmtB4GST'],#jqGrid2 input[name='tot_gst'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='amount']").attr('readonly','readonly');
 
 					}else{
@@ -506,6 +506,13 @@ $(document).ready(function () {
 						dialog_category.on();
 						dialog_GSTCode.on();
 					}
+
+					unsaved = false;
+					mycurrency2.array.length = 0;
+					Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='AmtB4GST']"]);
+					
+					$("input[name='gstpercent']").val('0')//reset gst to 0
+					mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
 		        	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 						var code = e.keyCode || e.which;
@@ -596,14 +603,16 @@ $(document).ready(function () {
 				buttonicon:"glyphicon glyphicon-th-list",
 				title:"Edit All Row",
 				onClickButton: function(){
-					/*mycurrency2.array.length = 0;
+					mycurrency2.array.length = 0;
 					var ids = $("#jqGrid2").jqGrid('getDataIDs');
 				    for (var i = 0; i < ids.length; i++) {
 
 				        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-				        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
-				    }*/
+				        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst"]);
+
+				        cari_gstpercent(ids[i]);
+				    }
 				    onall_editfunc();
 					hideatdialogForm(true,'saveallrow');
 				},
@@ -624,8 +633,13 @@ $(document).ready(function () {
 				    	var obj = 
 				    	{
 				    		'lineno_' : ids[i],
-				    		'document' : $("#jqGrid2 input#"+ids[i]+"_document").val(),/*
-				    		'reference' : data.reference,*/
+				    		'idno' : data.idno,
+				    		'deptcode' : $("#jqGrid2 input#"+ids[i]+"_deptcode").val(),
+				    		'category' : $("#jqGrid2 input#"+ids[i]+"_category").val(),
+				    		'document' : $('#'+ids[i]+"_document").val(),
+				    		'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
+				    		'AmtB4GST' : $('#'+ids[i]+"_AmtB4GST").val(),
+				    		'tot_gst' : $('#'+ids[i]+"_tot_gst").val(),
 				    		'amount' : data.amount,
 		                    'unit' : $("#"+ids[i]+"_unit").val()
 				    	}
@@ -706,7 +720,15 @@ $(document).ready(function () {
 			}
 			function GSTCodeCustomEdit(val,opt){
 				val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-				return $('<div class="input-group"><input id="GSTCode" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+				return $(`<div class="input-group">
+					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+				</div>
+				<span class="help-block"></span>
+				<div class="input-group">
+					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
+				</div>
+
+			`);
 			}
 
 
@@ -830,7 +852,7 @@ $(document).ready(function () {
 				$("#"+id_optid+"_totamount").val(totalAmount);
 
 				$("#jqGrid2").jqGrid('setRowData', id_optid ,{amount:amount});
-				$("#jqGrid2").jqGrid('setRowData', id_optid ,{netunitprice:netunitprice});
+				//$("#jqGrid2").jqGrid('setRowData', id_optid ,{netunitprice:netunitprice});
 
 				
 				event.data.currency.formatOn();//change format to currency on each calculation
@@ -1075,7 +1097,7 @@ $(document).ready(function () {
 								filterVal:['session.compcode','A']
 							},
 					ondblClickRow:function(event){
-						if(event.type == 'keydown'){
+						/*if(event.type == 'keydown'){
 
 							var optid = $(event.currentTarget).get(0).getAttribute("optid");
 							var id_optid = optid.substring(0,optid.search("_"));
@@ -1092,14 +1114,16 @@ $(document).ready(function () {
 						let data=selrowData('#'+dialog_GSTCode.gridname);
 
 						$("#jqGrid2 #"+id_optid+"_GSTCode").val(data['rate']);
-						$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
+						$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();*/
 					},
 					gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1){
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+							//$('#cheqdate').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
 						}
 					}
 				},{

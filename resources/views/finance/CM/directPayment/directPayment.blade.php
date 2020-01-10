@@ -57,9 +57,9 @@ i.fa {
 			        </div>
 				</div>
 
-				<div id="div_for_but_post" class="col-md-6 col-md-offset-7" style="text-align: end;">
+				<div id="div_for_but_post" class="col-md-3 col-md-offset-7" style="text-align: end;">
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 				</div>
 		</fieldset> 
 	</form>
