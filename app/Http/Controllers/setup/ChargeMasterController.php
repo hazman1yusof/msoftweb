@@ -36,7 +36,7 @@ class ChargeMasterController extends defaultController
         }
     }
 
-    public function add(Request $request){
-        
+    public function chgpricelatest(Request $request){
+        dd('test');
     }
 }

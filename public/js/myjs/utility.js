@@ -809,7 +809,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	this.urlParam={
 		from:unique,
 		action:'get_table_default',
-		url:'./util/get_table_default',
+		url:geturl(jqgrid_.urlParam),
 		table_name:table,
 		field:getfield(jqgrid_.colModel),
 		table_id:getfield(jqgrid_.colModel)[0],
@@ -1113,6 +1113,16 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			}
 		})
 		addParamField("#"+obj.gridname,false,obj.urlParam);
+	}
+
+	function geturl(urlParam){
+		let returl = './util/get_table_default';
+		if(urlParam.url === undefined){
+			returl = './util/get_table_default';
+		}else{
+			returl = urlParam.url;
+		}
+		return returl;
 	}
 
 	function getfield(field,or_search){
