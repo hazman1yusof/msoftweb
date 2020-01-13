@@ -110,7 +110,6 @@
 				if(oper!='view'){
 					set_compid_from_storage("input[name='cm_lastcomputerid']", "input[name='cm_lastipaddress']", "input[name='cm_computerid']", "input[name='cm_ipaddress']");
 					check_chgclass_on_open();
-					check_recstatus_on_open();
 					dialog_chggroup.on();
 					dialog_chgclass.on();
 					dialog_chgtype.on();
@@ -312,7 +311,7 @@
 
 		//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 		addParamField('#jqGrid',true,urlParam);
-		addParamField('#jqGrid',false,saveParam,['cm_idno','ct_description', 'cc_description','cg_description', 'cm_compcode', 'cm_ipaddress', 'cm_computerid', 'cm_adddate', 'cm_adduser','cm_upduser','cm_upddate','cm_recstatus']);
+		addParamField('#jqGrid',false,saveParam,['cm_idno','ct_description', 'cc_description','cg_description', 'cm_compcode', 'cm_ipaddress', 'cm_computerid', 'cm_adddate', 'cm_adduser','cm_upduser','cm_upddate']);
 
 		////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
@@ -398,6 +397,7 @@
 			if(obj==null){
 				if($("#cm_chgtype").val()=="PKG" || $("#cm_chgtype").val()=="pkg"){
 					obj={cm_recstatus:'D'};
+					saveParam.field.push("cm_recstatus");
 				}else{
 					obj={};
 				}
@@ -1797,39 +1797,50 @@
 						maxlength: 100,
 					},
 				},
-				{ label: 'Act Price', name: 'actprice1', width: 150, align: 'right', classes: 'wrap', editable:true,
+				{ label: 'Act Price 1', name: 'actprice1', width: 150, align: 'right', classes: 'wrap', editable:false
+				},
+				{ label: 'Price 1', name: 'pkgprice1', width: 150, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
 						maxlength: 100,
 					},
 				},
-				{ label: 'Price', name: 'price', width: 150, align: 'right', classes: 'wrap', editable:true,
+				{ label: 'Tot Price 1', name: 'totprice1', width: 150, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
 						maxlength: 100,
 					},
 				},
-				{ label: 'Tot Price', name: 'totprice', width: 150, align: 'right', classes: 'wrap', editable:true,
+				{ label: 'Act Price 2', name: 'actprice2', width: 150, align: 'right', classes: 'wrap', editable:false,
+				},
+				{ label: 'Price 2', name: 'pkgprice2', width: 150, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
 						maxlength: 100,
 					},
 				},
-				{ label: 'UOM', name: 'uom', width: 50, classes: 'wrap', editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-				{ label: 'Effective date', name: 'effectdate', width: 130, classes: 'wrap', editable:true,
-					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-					editoptions: {
-	                    dataInit: function (element) {
-	                        $(element).datepicker({
-	                            id: 'expdate_datePicker',
-	                            dateFormat: 'dd/mm/yy',
-	                            minDate: "dateToday",
-	                            showOn: 'focus',
-	                            changeMonth: true,
-			  					changeYear: true,
-	                        });
-	                    }
-	                }
+				{ label: 'Tot Price 2', name: 'totprice2', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Act Price 3', name: 'actprice3', width: 150, align: 'right', classes: 'wrap', editable:false,
+				},
+				{ label: 'Price 3', name: 'pkgprice3', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Tot Price 3', name: 'totprice3', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Effective date', name: 'effectdate', width: 130, classes: 'wrap', editable:false,
+					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 				},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
@@ -2285,37 +2296,17 @@
 			},'urlParam','radio','tab'
 		);
 		dialog_chgtype.makedialog(true);
+
 		$('#cm_chgtype').blur(function(){
 			let textval = $(dialog_chgtype.textfield).val();
 			if(textval == 'pkg' || textval == 'PKG'){
-				$('#cm_recstatus').data('validation','required')
-				// $('#cm_recstatus').attr('disabled',false)
-				$('#cm_recstatus').val('D')
-				$('#cm_recstatus option[value=""]').hide()
-				// $('#cm_recstatus').focus();
-				text_error1('#cm_recstatus');
+				$('#cm_recstatus').val('D');
+				$("#formdata [name='cm_recstatus'][value='D']").prop('checked', true);
 			}else{
-				$('#cm_recstatus').data('validation','')
-				// $('#cm_recstatus').attr('disabled',true)
-				$('#cm_recstatus').val('')
-				$('#cm_recstatus option[value=""]').show()
-				// $('#cm_chggroup').focus();
+				$('#cm_recstatus').val('A');
+				$("#formdata [name='cm_recstatus'][value='A']").prop('checked', true);
 			}
 		});
-		function check_recstatus_on_open(){
-			let textval = $(dialog_chgtype.textfield).val();
-			if(textval == 'pkg' || textval == 'PKG'){
-				$('#cm_recstatus').data('validation','required')
-				// $('#cm_recstatus').attr('disabled',false)
-				$('#cm_recstatus').val('D')
-				$('#cm_recstatus option[value=""]').hide()
-			}else{
-				$('#cm_recstatus').data('validation','')
-				// $('#cm_recstatus').attr('disabled',true)
-				$('#cm_recstatus').val('')
-				$('#cm_recstatus option[value=""]').show()
-			}
-		}
 
 		var dialog_doctorcode= new ordialog(
 			'cm_costcode','hisdb.doctor','#cm_costcode',errorField,
@@ -2643,7 +2634,7 @@
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
 					filterVal:['A', 'session.compcode','Input']
-						},
+				},
 				ondblClickRow:function(){
 					// $('#lastuser').focus();
 				},
@@ -2674,11 +2665,31 @@
 					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 				],
 				urlParam: {
+					url:'./chargemaster/chgpricelatest',
 					filterCol:['recstatus','compcode'],
 					filterVal:['A', 'session.compcode']
-						},
-				ondblClickRow:function(){
-					// $('#lastuser').focus();
+				},
+				ondblClickRow:function(event){
+					
+					// if(event.type == 'keydown'){
+
+					// 	var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					// 	var id_optid = optid.substring(0,optid.search("_"));
+
+					// 	$(event.currentTarget).parent().next().html('');
+					// }else{
+
+					// 	var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					// 	var id_optid = optid.substring(0,optid.search("_"));
+
+					// 	$(event.currentTarget).parent().next().html('');
+					// }
+					
+
+					// let data=selrowData('#'+dialog_taxcode.gridname);
+
+					// $("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['rate']);
+
 				},
 				gridComplete: function(obj){
 							var gridname = '#'+obj.gridname;

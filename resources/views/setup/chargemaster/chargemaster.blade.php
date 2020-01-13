@@ -166,6 +166,9 @@ input.uppercase {
 								<div id="jqGridPager4"></div>
 							</div>
 						</form>
+						<label>Grand total 1 &nbsp;</label><input type="input" name="grandtot1" id="grandtot1">&nbsp;
+						<label>Grand total 2 &nbsp;</label><input type="input" name="grandtot2" id="grandtot2">&nbsp;
+						<label>Grand total 3 &nbsp;</label><input type="input" name="grandtot3" id="grandtot3">&nbsp;
 					</div>
     			</div>
   			</div>
