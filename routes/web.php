@@ -217,6 +217,11 @@ Route::get('/citizen','setup\CitizenController@show');
 Route::get('/citizen/table','setup\CitizenController@table');
 Route::post('/citizen/form','setup\CitizenController@form');
 
+//// Bed Type setup page ///
+Route::get('/bedtype','setup\BedTypeController@show');
+Route::get('/bedtype/table','setup\BedTypeController@table');
+Route::post('/bedtype/form','setup\BedTypeController@form');
+
 ////////////////////////////////inventory setup///////////////////////////////////////////////////////////
 
 //// inventory Transaction setup page ///
