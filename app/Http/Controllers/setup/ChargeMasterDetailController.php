@@ -19,12 +19,21 @@ class ChargeMasterDetailController extends defaultController
     {   
         switch($request->oper){
             case 'add':
+                if (!empty($request->pkg_dtl)) {
+                    return $this->add_pkgdtl($request);
+                }
                 return $this->add($request);
 
             case 'edit_all':
+                if (!empty($request->pkg_dtl)) {
+                    return $this->edit_all_pkgdtl($request);
+                }
                 return $this->edit_all($request);
 
             case 'del':
+                if (!empty($request->pkg_dtl)) {
+                    return $this->del_pkgdtl($request);
+                }
                 return $this->del($request);
 
             default:
@@ -44,7 +53,7 @@ class ChargeMasterDetailController extends defaultController
 
             $li=intval($sqlln)+1;
 
-            if($request->action == 'save_table_default'){
+            if($request->action == 'save_table_default'){ //ada yang save from form , ada yang save inline
                 $effdate_chg = $request->effdate;
             }else{
                 $effdate_chg = $this->turn_date($request->effdate);
@@ -66,7 +75,6 @@ class ChargeMasterDetailController extends defaultController
                     'costprice' => $request->costprice,
                     'autopull' => $request->autopull,
                     'addchg' => $request->addchg,
-                    'pkgtype' => $request->pkgtype,
                     'uom' => $request->uom,
                     'units' => session('unit'),
                     'adduser' => session('username'), 
@@ -79,7 +87,7 @@ class ChargeMasterDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -103,7 +111,6 @@ class ChargeMasterDetailController extends defaultController
                         'costprice' => $value['costprice'],
                         'autopull' => $value['autopull'],
                         'addchg' => $value['addchg'],
-                        'pkgtype' => $value['pkgtype'],
                         'lastuser' => session('username'), 
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
@@ -115,7 +122,7 @@ class ChargeMasterDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -136,8 +143,173 @@ class ChargeMasterDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
+    }
+
+
+    public function add_pkgdtl(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $sqlln = DB::table('hisdb.pkgdet')->select('lineno_')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('pkgcode','=',$request->pkgcode)
+                        ->whereDate('effectdate', $request->effectdate)
+                        // ->where('effectdate','=',$request->effectdate)
+                        ->count('lineno_');
+
+            $li=intval($sqlln)+1;
+
+            DB::table('hisdb.pkgdet')
+                ->insert([
+                    'lineno_' => $li,
+                    'compcode' => session('compcode'),
+                    'pkgcode' => $request->pkgcode,
+                    'effectdate' =>  $this->turn_date($request->effectdate),
+                    'chgcode' => $request->chgcode,
+                    'quantity' => $request->quantity,
+                    'actprice1' => $request->actprice1,
+                    'pkgprice1' => $request->pkgprice1,
+                    'totprice1' => $request->totprice1,
+                    'actprice2' => $request->actprice2,
+                    'pkgprice2' => $request->pkgprice2,
+                    'totprice2' => $request->totprice2,
+                    'actprice3' => $request->actprice3,
+                    'pkgprice3' => $request->pkgprice3,
+                    'totprice3' => $request->totprice3,
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'), 
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+
+            $this->check_to_active_chgmast($request);
+
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+
+    }
+
+    public function edit_all_pkgdtl(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->dataobj as $key => $value) {
+                ///1. update detail
+                DB::table('hisdb.pkgdet')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$value['idno'])
+                    ->update([
+                        'chgcode' => $request->chgcode,
+                        'quantity' => $value['quantity'],
+                        'actprice1' => $value['actprice1'],
+                        'pkgprice1' => $value['pkgprice1'],
+                        'totprice1' => $value['totprice1'],
+                        'actprice2' => $value['actprice2'],
+                        'pkgprice2' => $value['pkgprice2'],
+                        'totprice2' => $value['totprice2'],
+                        'actprice3' => $value['actprice3'],
+                        'pkgprice3' => $value['pkgprice3'],
+                        'totprice3' => $value['totprice3'],
+                        'lastuser' => session('username'), 
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }
+
+            $this->check_to_active_chgmast($request);
+         
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+
+    }
+
+    public function del_pkgdtl(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('hisdb.pkgdet')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+
+    }
+
+    public function check_to_active_chgmast(Request $request){
+        DB::enableQueryLog();
+        $pkgcode = $request->pkgcode;
+        $effectdate = $this->turn_date($request->effectdate)->toDateString();
+
+        $chgprice = DB::table('hisdb.chgprice')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('chgcode', '=', $pkgcode)
+                        ->whereDate('effdate','=', $effectdate);
+
+        if(!$chgprice->exists()){
+            throw new \Exception('chgprice not exist', 500);
+        };
+
+        $chgprice_get = $chgprice->first();
+
+        $pkgdet = DB::table('hisdb.pkgdet')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('pkgcode', '=', $pkgcode)
+                    ->where('effectdate', '=', $effectdate);
+
+        if(!$pkgdet->exists()){
+            throw new \Exception('pkgdet not exist', 500);
+        };
+
+        $pkgdet_get = $pkgdet->get();
+
+        $grnd_tot1=$grnd_tot2=$grnd_tot3=0;
+        foreach ($pkgdet_get as $key => $value) {
+            $grnd_tot1 = $grnd_tot1 + $value->totprice1;
+            $grnd_tot2 = $grnd_tot2 + $value->totprice2;
+            $grnd_tot3 = $grnd_tot3 + $value->totprice3;
+        }
+
+        if(
+            $chgprice_get->amt1 == $grnd_tot1 &&
+            $chgprice_get->amt2 == $grnd_tot2 &&
+            $chgprice_get->amt3 == $grnd_tot3 
+        ){
+            DB::table('hisdb.chgmast')
+                ->where('compcode','=',session('compcode'))
+                ->where('chgcode','=',$request->pkgcode)
+                ->update([
+                    'recstatus' => 'A'
+                ]);
+        }else{
+            DB::table('hisdb.chgmast')
+                ->where('compcode','=',session('compcode'))
+                ->where('chgcode','=',$request->pkgcode)
+                ->update([
+                    'recstatus' => 'D'
+                ]);
+        }
+
     }
 
 }

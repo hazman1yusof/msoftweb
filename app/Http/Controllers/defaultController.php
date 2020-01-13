@@ -655,7 +655,7 @@ abstract class defaultController extends Controller{
     }
 
     public static function mydump($obj,$line='null'){
-        dd([
+        dump([
             $line,
             $obj->toSql(),
             $obj->getBindings()
