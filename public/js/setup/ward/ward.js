@@ -33,6 +33,8 @@ $(document).ready(function () {
 		table_name: 'sysdb.department',
 		table_id: 'idno',
 		//sort_idno: true,
+		filterCol:['compcode', 'warddept'],
+		filterVal:['session.compcode', '1']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
