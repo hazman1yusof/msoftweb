@@ -57,7 +57,27 @@ class ChargeMasterController extends defaultController
 
             if($request->cm_chgtype == 'PKG' || $request->cm_chgtype == 'pkg'){
                 $recstatus_use = 'D';
+
+                DB::table('hisdb.chgprice')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('chgcode','=',strtoupper($request->cm_chgcode))
+                    ->update([
+                        'pkgstatus' => 1,
+                        'lastuser' => session('username'), 
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+
             }else{
+
+                DB::table('hisdb.chgprice')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('chgcode','=',strtoupper($request->cm_chgcode))
+                    ->update([
+                        'pkgstatus' => 0,
+                        'lastuser' => session('username'), 
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+
                 $recstatus_use = 'A';
             }
 
@@ -117,7 +137,27 @@ class ChargeMasterController extends defaultController
 
             if($request->cm_chgtype == 'PKG' || $request->cm_chgtype == 'pkg'){
                 $recstatus_use = 'D';
+
+                DB::table('hisdb.chgprice')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('chgcode','=',strtoupper($request->cm_chgcode))
+                    ->update([
+                        'pkgstatus' => 1,
+                        'lastuser' => session('username'), 
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+
             }else{
+
+                DB::table('hisdb.chgprice')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('chgcode','=',strtoupper($request->cm_chgcode))
+                    ->update([
+                        'pkgstatus' => 0,
+                        'lastuser' => session('username'), 
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+
                 $recstatus_use = 'A';
             }
 
@@ -146,7 +186,7 @@ class ChargeMasterController extends defaultController
                     'doctorstat' => $request->cm_doctorstat, 
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => $request->cm_recstatus,
+                    'recstatus' => $recstatus_use,
                     'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
                     'lastipaddress' => strtoupper($request->cm_lastipaddress),
                 ]);
@@ -174,7 +214,7 @@ class ChargeMasterController extends defaultController
         try {
 
             DB::table('hisdb.chgmast')
-                ->where('idno','=',$request->cm_idno)
+                ->where('idno','=',$request->idno)
                 ->update([
                     'deluser' => session('username'),
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -200,17 +240,50 @@ class ChargeMasterController extends defaultController
     }
 
     public function chgpricelatest(Request $request){
-        $chgmast = DB::table('hisdb.chgmast')
-                        ->where('compcode','=',session('compcode'))
-                        ->paginate($request->rows);
+        $table = DB::table('hisdb.chgmast');
 
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
 
-        foreach ($chgmast->items() as $key => $value) {
+            $count = array_count_values($searchCol_array);
+            // dump($count);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+        }
+
+        if(!empty($request->searchCol2)){
+
+            $table = $table->where(function($query) use ($request){
+                $searchCol_array = $request->searchCol2;
+
+                foreach ($searchCol_array as $key => $value) {
+                    $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
+                }
+            });
+        }
+
+        $table = $table->where('compcode','=',session('compcode'));
+
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
             $chgprice = DB::table('hisdb.chgprice')
                         ->where('compcode','=',session('compcode'))
                         ->where('chgcode','=',$value->chgcode)
                         ->whereDate('effdate', '<', Carbon::now())
                         ->orderBy('effdate', 'DESC');
+
             if($chgprice->exists()){
                 $chgprice_get = $chgprice->first();
                 $value->chgprice_amt1 = $chgprice_get->amt1;
@@ -230,10 +303,12 @@ class ChargeMasterController extends defaultController
         //////////paginate/////////
 
         $responce = new stdClass();
-        $responce->page = $chgmast->currentPage();
-        $responce->total = $chgmast->lastPage();
-        $responce->records = $chgmast->total();
-        $responce->rows = $chgmast->items();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
         return json_encode($responce);
     }
 }

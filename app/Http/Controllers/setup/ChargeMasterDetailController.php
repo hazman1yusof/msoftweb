@@ -59,6 +59,14 @@ class ChargeMasterDetailController extends defaultController
                 $effdate_chg = $this->turn_date($request->effdate);
             }
 
+            if(empty($request->autopull)){
+                    $request->autopull = null;
+            }
+
+            if(empty($request->addchg)){
+                $request->addchg = null;
+            }
+
             DB::table('hisdb.chgprice')
                 ->insert([
                     'lineno_' => $li,
@@ -98,6 +106,15 @@ class ChargeMasterDetailController extends defaultController
 
             foreach ($request->dataobj as $key => $value) {
                 ///1. update detail
+
+                if( !isset($value['autopull'])){
+                    $value['autopull'] = null;
+                }
+
+                if( !isset($value['addchg'])){
+                    $value['addchg'] = null;
+                }
+
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
                     ->where('idno','=',$value['idno'])
@@ -209,7 +226,7 @@ class ChargeMasterDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('idno','=',$value['idno'])
                     ->update([
-                        'chgcode' => $request->chgcode,
+                        'chgcode' => $value['chgcode'],
                         'quantity' => $value['quantity'],
                         'actprice1' => $value['actprice1'],
                         'pkgprice1' => $value['pkgprice1'],
@@ -224,6 +241,7 @@ class ChargeMasterDetailController extends defaultController
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
+
 
             $this->check_to_active_chgmast($request);
          

@@ -928,7 +928,7 @@
 						value:"1:YES;0:NO"
 					}
 				},
-				{ label: 'Package Status', name: 'pkgstatus', width: 60},
+				{ label: 'Package Status', name: 'pkgstatus', hidden:true, width: 60},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}
 			],
 			autowidth: true,
@@ -1101,9 +1101,8 @@
 						'costprice' : $("#jqGridPkg2 input#"+ids[i]+"_costprice").val(),
 						'iptax' : $("#jqGridPkg2 input#"+ids[i]+"_iptax").val(),
 						'optax' : $("#jqGridPkg2 input#"+ids[i]+"_optax").val(),
-						'autopull' : $("#jqGridPkg2 input#"+ids[i]+"_autopull").val(),
-						'addchg' : $("#jqGridPkg2 input#"+ids[i]+"_addchg").val(),
-						'pkgstatus' : $("#jqGridPkg2 input#"+ids[i]+"_pkgstatus").val()
+						'autopull' : $("#jqGridPkg2 select#"+ids[i]+"_autopull").val(),
+						'addchg' : $("#jqGridPkg2 select#"+ids[i]+"_addchg").val()
 			    	}
 
 			    	jqGridPkg2_data.push(obj);
@@ -1542,7 +1541,7 @@
 						value:"1:YES;0:NO"
 					}
 				},
-				{ label: 'Package Status', name: 'pkgstatus', width: 60},
+				{ label: 'Package Status', name: 'pkgstatus', hidden:true, width: 60},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
 			autowidth: true,
@@ -1732,12 +1731,12 @@
 						'costprice' : $("#jqGridPkg3 input#"+ids[i]+"_costprice").val(),
 						'iptax' : $("#jqGridPkg3 input#"+ids[i]+"_iptax").val(),
 						'optax' : $("#jqGridPkg3 input#"+ids[i]+"_optax").val(),
-						'autopull' : $("#jqGridPkg3 input#"+ids[i]+"_autopull").val(),
-						'addchg' : $("#jqGridPkg3 input#"+ids[i]+"_addchg").val(),
-						'pkgstatus' : $("#jqGridPkg3 input#"+ids[i]+"_pkgstatus").val()
+						'autopull' : $("#jqGridPkg3 select#"+ids[i]+"_autopull").val(),
+						'addchg' : $("#jqGridPkg3 select#"+ids[i]+"_addchg").val()
 			    	}
 
 			    	jqGridPkg3_data.push(obj);
+
 			    }
 
 				var param={
@@ -1936,7 +1935,7 @@
 						action: 'chargemasterDetail_save',
 						oper: 'add',
 						pkgcode: selrowData("#jqGrid").cm_chgcode,//$('#cm_chgcode').val(),
-						effectdate: selrowData("#jqGridPkg3").effdate,//$('#cm_uom').val(),
+						effectdate:selrowData("#jqGridPkg3").effdate,//$('#cm_uom').val(),
 						actprice1:selrowData('#jqGrid4').actprice1,
 						actprice2:selrowData('#jqGrid4').actprice2,
 						actprice3:selrowData('#jqGrid4').actprice3,
@@ -2029,15 +2028,19 @@
 
 					var data = $('#jqGrid4').jqGrid('getRowData',ids[i]);
 			    	var obj = 
-			    	{
+			    	{	
 			    		'idno' : data.idno,
 			    		'chgcode' : $("#jqGrid4 input#"+ids[i]+"_chgcode").val(),
 						'quantity' : $("#jqGrid4 input#"+ids[i]+"_quantity").val(),
-						'actprice1' : $("#jqGrid4 input#"+ids[i]+"_actprice1").val(),
-						'price' : $("#jqGrid4 input#"+ids[i]+"_price").val(),
-						'totprice' : $("#jqGrid4 input#"+ids[i]+"_totprice").val(),
-						'uom' : $("#jqGrid4 input#"+ids[i]+"_uom").val(),
-						'effectdate' : $("#jqGrid4 input#"+ids[i]+"_effectdate").val()
+						'actprice1' : selrowData('#jqGrid4').actprice1,
+						'pkgprice1' : $("#jqGrid4 input#"+ids[i]+"_pkgprice1").val(),
+						'totprice1' : $("#jqGrid4 input#"+ids[i]+"_totprice1").val(),
+						'actprice2' : selrowData('#jqGrid4').actprice2,
+						'pkgprice2' : $("#jqGrid4 input#"+ids[i]+"_pkgprice2").val(),
+						'totprice2' : $("#jqGrid4 input#"+ids[i]+"_totprice2").val(),
+						'actprice3' : selrowData('#jqGrid4').actprice3,
+						'pkgprice3' : $("#jqGrid4 input#"+ids[i]+"_pkgprice3").val(),
+						'totprice3' : $("#jqGrid4 input#"+ids[i]+"_totprice3").val(),
 			    	}
 
 			    	jqGrid4_data.push(obj);
@@ -2045,7 +2048,10 @@
 
 				var param={
 	    			action: 'chargemasterDetail_save',
-					_token: $("#_token").val()
+					_token: $("#_token").val(),
+					pkgcode: selrowData("#jqGrid").cm_chgcode,//$('#cm_chgcode').val(),
+					effectdate:selrowData("#jqGridPkg3").effdate,//$('#cm_uom').val(),
+					"pkg_dtl": "pkg_dtl"
 	    		}
 
 	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqGrid4_data}, function( data ){
