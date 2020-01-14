@@ -218,10 +218,20 @@ Route::get('/citizen','setup\CitizenController@show');
 Route::get('/citizen/table','setup\CitizenController@table');
 Route::post('/citizen/form','setup\CitizenController@form');
 
+//// Ward setup page ///
+Route::get('/ward','setup\WardController@show');
+Route::get('/ward/table','setup\WardController@table');
+Route::post('/ward/form','setup\WardController@form');
+
 //// Bed Type setup page ///
 Route::get('/bedtype','setup\BedTypeController@show');
 Route::get('/bedtype/table','setup\BedTypeController@table');
 Route::post('/bedtype/form','setup\BedTypeController@form');
+
+//// Bed setup page ///
+Route::get('/bed','setup\BedController@show');
+Route::get('/bed/table','setup\BedController@table');
+Route::post('/bed/form','setup\BedController@form');
 
 ////////////////////////////////inventory setup///////////////////////////////////////////////////////////
 

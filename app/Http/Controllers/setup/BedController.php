@@ -9,7 +9,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 
-class BedTypeController extends defaultController
+class BedController extends defaultController
 {   
 
     var $table;
@@ -18,12 +18,12 @@ class BedTypeController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "bedtype";
+        $this->duplicateCode = "bednum";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.bedtype.bedtype');
+        return view('setup.bed.bed');
     }
 
     public function form(Request $request)
@@ -45,21 +45,27 @@ class BedTypeController extends defaultController
         DB::beginTransaction();
         try {
 
-            $bedtype = DB::table('hisdb.bedtype')
-                            ->where('bedtype','=',$request->bedtype);
+            $bednum = DB::table('hisdb.bed')
+                            ->where('bednum','=',$request->b_bednum);
 
-            if($bedtype->exists()){
+            if($bednum->exists()){
                 throw new \Exception("record duplicate");
             }
 
-            DB::table('hisdb.bedtype')
+            DB::table('hisdb.bed')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'bedtype' => strtoupper($request->bedtype),
-                    'description' => strtoupper($request->description),
-                    'bedchgcode' => strtoupper($request->bedchgcode),
-                    'lodchgcode' => strtoupper($request->lodchgcode),
-                    'recstatus' => strtoupper($request->recstatus),
+                    'bednum' => strtoupper($request->b_bednum),
+                    'bedtype' => strtoupper($request->b_bedtype),  
+                    'room' => strtoupper($request->c_room),  
+                    'ward' => strtoupper($request->c_ward),  
+                    'roomstatus' => strtoupper($request->c_roomstatus),  
+                    'mrn' => strtoupper($request->c_mrn),  
+                    'episno' => strtoupper($request->c_episno),  
+                    //'patname' => strtoupper($request-c_>patname),  
+
+                    //'description' => strtoupper($request->description),
+                    'recstatus' => strtoupper($request->b_recstatus),
                     //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
@@ -80,15 +86,21 @@ class BedTypeController extends defaultController
         DB::beginTransaction();
         try {
 
-            DB::table('hisdb.bedtype')
-                ->where('idno','=',$request->idno)
+            DB::table('hisdb.bed')
+                ->where('idno','=',$request->b_idno)
                 ->update([  
-                    'bedtype' => strtoupper($request->bedtype),
-                    'description' => strtoupper($request->description),
-                    'bedchgcode' => strtoupper($request->bedchgcode),
-                    'lodchgcode' => strtoupper($request->lodchgcode),
-                    'recstatus' => strtoupper($request->recstatus),
-                    'idno' => strtoupper($request->idno),
+                    'bednum' => strtoupper($request->b_bednum),
+                    'bedtype' => strtoupper($request->b_bedtype),  
+                    'room' => strtoupper($request->c_room),  
+                    'ward' => strtoupper($request->c_ward),  
+                    'roomstatus' => strtoupper($request->c_roomstatus),  
+                    'mrn' => strtoupper($request->c_mrn),  
+                    'episno' => strtoupper($request->c_episno),  
+                    //'patname' => strtoupper($request->c_patname),  
+
+                    //'description' => strtoupper($request->description),
+                    'recstatus' => strtoupper($request->b_recstatus),
+                    //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
                     'upduser' => session('username'),
@@ -104,8 +116,8 @@ class BedTypeController extends defaultController
     }
 
     public function del(Request $request){
-        DB::table('hisdb.bedtype')
-            ->where('idno','=',$request->idno)
+        DB::table('hisdb.bed')
+            ->where('idno','=',$request->b_idno)
             ->update([  
                 'recstatus' => 'D',
                 'deluser' => session('username'),
