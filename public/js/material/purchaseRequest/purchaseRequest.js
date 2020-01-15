@@ -232,7 +232,6 @@ $(document).ready(function () {
 		sortname:'purreqhd_idno',
 		sortorder:'desc',
 		width: 900,
-		width: 900,
 		height: 200,
 		rowNum: 30,
 		pager: "#jqGridPager",
