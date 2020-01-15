@@ -499,7 +499,7 @@ $(document).ready(function () {
 		        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
 		        	if($('#auditno').val()!='' && $("#jqGrid2_iladd").css('display') == 'none' ){
-		        		$("#jqGrid2 input[name='deptcode'],#jqGrid2 input[name='category'],#jqGrid2 input[name='document'],#jqGrid2 input[name='GSTCode'],#jqGrid2 input[name='AmtB4GST'],#jqGrid2 input[name='tot_gst'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='amount']").attr('readonly','readonly');
+		        		$("#jqGrid2 input[name='deptcode'],#jqGrid2 input[name='category'],#jqGrid2 input[name='document'],#jqGrid2 input[name='GSTCode']").attr('readonly','readonly');
 
 					}else{
 						dialog_deptcode.on();//start binding event on jqgrid2
@@ -779,7 +779,7 @@ $(document).ready(function () {
 			});
 
 
-			////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
+			/*////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
 			$("#jqGrid2_iladd, #jqGrid2_iledit").click(function(){
 
 				unsaved = false;
@@ -794,7 +794,7 @@ $(document).ready(function () {
 					
 				});
 
-			});	
+			});	*/
 
 			///////////////////////////////////////////////////////////////////////////////
 
