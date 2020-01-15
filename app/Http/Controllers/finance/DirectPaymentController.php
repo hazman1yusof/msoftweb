@@ -66,7 +66,7 @@ class DirectPaymentController extends defaultController
                         'unit' => session('unit'),
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'recstatus' => 'A'
+                        'recstatus' => 'OPEN'
                     ]);
 
 

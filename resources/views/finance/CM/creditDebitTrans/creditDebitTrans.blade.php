@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Direct Payment')
+@section('title', 'Credit Debit Transaction')
 
 @section('style')
 
@@ -68,15 +68,15 @@ i.fa {
 		              </div>
             	</div>
 
-				<div id="div_for_but_post" class="col-md-6 col-md-offset-7" style="text-align: end;">
+				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 				</div>
 		</fieldset> 
 	</form>
 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Direct Payment Header</div>
+		    <div class="panel-heading">Credit/Debit Header</div>
 		    	<div class="panel-body">
 		    		<div class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid" class="table table-striped"></table>
@@ -88,7 +88,7 @@ i.fa {
 		<div class="panel panel-default" id="jqGrid3_c">
 	    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
 	    		<i class="fa fa-angle-double-up" style="font-size:24px"></i>
-				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Direct Payment Detail
+				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Credit/Debit Detail
 			</div>
 
     		<div id="jqGrid3_panel" class="panel-collapse collapse">
@@ -108,11 +108,11 @@ i.fa {
 				{{ csrf_field() }}
 				<div class='col-md-12'>
 					<div class='panel panel-info'>
-						<div id="detail" class="panel-heading">Direct Payment Header</div>
+						<div id="detail" class="panel-heading">Credit/Debit Header</div>
 							<div class="panel-body">
 
-								<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="CM">
-								<input id="apacthdr_trantype" name="apacthdr_trantype" value = "DP" type="hidden">
+								<input id="source" name="source" type="text" value="CM">
+								<input id="trantype" name="trantype" type="text">
 								<input id="auditno" name="apacthdr_auditno" type="hidden">
 								<input id="idno" name="idno" type="hidden">
 
@@ -120,12 +120,12 @@ i.fa {
 								<div class="form-group" style="position: relative">
 						  	<label class="col-md-2 control-label" for="auditno">Audit No</label>  
 						  		<div class="col-md-3"> <!--- value="<?php// echo "auditno";?>" -->
-						  			<input id="auditno" name="auditno" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+						  			<input id="auditno" name="auditno" type="text" class="form-control input-sm text-uppercase" frozeOnEdit hideOne>
 						  		</div>
 
 						  		<label class="col-md-3 control-label" for="pvno" type="hidden"></label>  
 						  		<div class="col-md-3">
-									<input id="pvno" name="pvno" type="hidden" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+									<input id="pvno" name="pvno" type="hidden" maxlength="30" class="form-control input-sm text-uppercase" frozeOnEdit hideOne>
 						  		</div>
 
 						  	<div id="recstatus"></div>
@@ -141,7 +141,7 @@ i.fa {
 					    	<label class="col-md-2 control-label" for="bankcode">Bank Code</label>  
 						  		<div class="col-md-3">
 							 		<div class='input-group'>
-										<input id="bankcode" name="bankcode" type="text" class="form-control input-sm" data-validation="required">
+										<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  		</div>
 							 		<span class="help-block"></span>
@@ -164,21 +164,21 @@ i.fa {
 
 					    	<label class="col-md-2 control-label" for="refsource">Reference</label>  
 								<div class="col-md-8">
-									<input id="refsource" class="form-control input-sm" name="refsource" rows="1" cols="55" maxlength="100" id="remarks">
+									<input id="refsource" class="form-control input-sm text-uppercase" name="refsource" rows="1" cols="55" maxlength="100" id="remarks">
 									</div>
 						</div>
 
 					    <div class="form-group">
 					    	<label class="col-md-2 control-label" for="remarks">Remarks</label> 
 					    		<div class="col-md-8"> 
-					    		<textarea class="form-control input-sm" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" ></textarea>
+					    		<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" ></textarea>
 					    		</div>
 					    	
 					    </div>
 			</form>
 
 			<div class='panel panel-info'>
-				<div class="panel-heading">Direct Payment Detail</div>
+				<div class="panel-heading">Credit/Debit Detail</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							

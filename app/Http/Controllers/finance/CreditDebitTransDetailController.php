@@ -105,10 +105,9 @@ class CreditDebitTransDetailController extends defaultController
                     'compcode' => session('compcode'),
                     'auditno' => $auditno,
                     'lineno_' => $li,
-                    'source' => 'AP',
-                    'trantype' => 'IN',
+                    'source' => 'CM',
+                    'trantype' => $request->trantype,
                     'document' => $request->document,
-                    'reference' => $request->reference,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
@@ -133,7 +132,7 @@ class CreditDebitTransDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$auditno)
                 ->update([
-                    'outamount' => $totalAmount
+                    'amount' => $totalAmount
                   
                 ]);
             DB::commit();
@@ -159,10 +158,9 @@ class CreditDebitTransDetailController extends defaultController
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
                     'compcode' => session('compcode'),
-                    'source' => 'AP',
-                    'trantype' => 'IN',
+                    'source' => 'CM',
+                    'trantype' => $request->trantype,
                     'document' => $request->document,
-                    'reference' => $request->reference,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
@@ -186,7 +184,7 @@ class CreditDebitTransDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'outamount' => $totalAmount
+                    'amount' => $totalAmount
                 ]);
 
             DB::commit();
@@ -226,7 +224,7 @@ class CreditDebitTransDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'outamount' => $totalAmount
+                    'amount' => $totalAmount
                   
                 ]);
 
