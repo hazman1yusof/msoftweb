@@ -113,7 +113,7 @@ i.fa {
 
 								<input id="source" name="source" type="text" value="CM">
 								<input id="trantype" name="trantype" type="text">
-								<input id="auditno" name="apacthdr_auditno" type="hidden">
+								<input id="auditno" name="auditno" type="hidden">
 								<input id="idno" name="idno" type="hidden">
 
 
@@ -123,11 +123,10 @@ i.fa {
 								  			<input id="auditno" name="auditno" type="text" class="form-control input-sm text-uppercase" frozeOnEdit hideOne>
 								  		</div>
 
-							  		<label class="col-md-3 control-label" for="pvno" type="hidden"></label>  
-								  		<div class="col-md-3">
-											<input id="pvno" name="pvno" type="hidden" maxlength="30" class="form-control input-sm text-uppercase" frozeOnEdit hideOne>
-								  		</div>
-
+							  		<label class="col-md-2 control-label" for="pvno">PV No</label>  
+						  				<div class="col-md-3">
+											<input id="pvno" name="pvno" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
+						  				</div>
 						  				<div id="recstatus"></div>
 								</div>
 
