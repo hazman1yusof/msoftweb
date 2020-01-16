@@ -111,9 +111,15 @@ i.fa {
 						<div id="detail" class="panel-heading">Credit/Debit Header</div>
 							<div class="panel-body">
 
+<<<<<<< HEAD
 								<input id="source" name="source" type="hidden" value="CM">
 								<input id="trantype" name="trantype" type="hidden">
 								<input id="auditno" name="apacthdr_auditno" type="hidden">
+=======
+								<input id="source" name="source" type="text" value="CM">
+								<input id="trantype" name="trantype" type="text">
+								<input id="auditno" name="auditno" type="hidden">
+>>>>>>> c304e2a20ef5b3752d606f5333c12192c58edbac
 								<input id="idno" name="idno" type="hidden">
 
 
@@ -123,11 +129,10 @@ i.fa {
 								  			<input id="auditno" name="auditno" type="text" class="form-control input-sm text-uppercase" frozeOnEdit hideOne>
 								  		</div>
 
-							  		<label class="col-md-3 control-label" for="pvno" type="hidden"></label>  
-								  		<div class="col-md-3">
-											<input id="pvno" name="pvno" type="hidden" maxlength="30" class="form-control input-sm text-uppercase" frozeOnEdit hideOne>
-								  		</div>
-
+							  		<label class="col-md-2 control-label" for="pvno">PV No</label>  
+						  				<div class="col-md-3">
+											<input id="pvno" name="pvno" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
+						  				</div>
 						  				<div id="recstatus"></div>
 								</div>
 
