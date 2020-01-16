@@ -181,7 +181,7 @@ $(document).ready(function () {
 
 
 	$("#jqGrid").inlineNav('#jqGridPager', {
-		add: true,
+		add: false,  //tak payah button add sebab nak display dari sysdb.department shj//
 		edit: true,
 		cancel: true,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
