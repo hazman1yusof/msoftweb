@@ -251,13 +251,11 @@ class CreditDebitTransDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('auditno','=',$request->auditno)
                     ->where('lineno_','=',$value['lineno_'])
-                    ->where('trantype','=',$request->trantype)
                     ->update([
-                        'document' => $value['itemcode'],
-                        'reference' => $value['uomcode'],
+                        'document' => $value['document'],
                         'amount' => $value['amount'],
-                        'dorecno' => $value['dorecno'],
-                        'grnno' => $value['grnno'],
+                        'category' => $value['category'],
+                        'deptcode' => $value['deptcode'],
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                        
