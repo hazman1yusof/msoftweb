@@ -1468,6 +1468,22 @@ function recstatusDisable(recstatus = 'recstatus'){
 	}
 }
 
+function my_remark_Function() {
+	var dots = document.getElementById("dots");
+	var moreText = document.getElementById("more");
+	var btnText = document.getElementById("myBtn");
+
+	if (dots.style.display === "none") {
+		dots.style.display = "inline";
+		btnText.innerHTML = "Read more"; 
+		moreText.style.display = "none";
+	} else {
+		dots.style.display = "none";
+		btnText.innerHTML = "Read less"; 
+		moreText.style.display = "inline";
+	}
+}
+
 $.jgrid.extend({
     setColWidth: function (iCol, newWidth, adjustGridWidth) {
         return this.each(function () {
