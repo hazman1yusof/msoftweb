@@ -124,7 +124,7 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: true, checked: true},
-			{ label: 'TT', name: 'trantype', width: 10},
+			{ label: 'Trantype', name: 'trantype', width: 10},
 			{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', canSearch: true},
 			{ label: 'Reference', name: 'refsource', width: 43, classes: 'wrap',},
 			{ label: 'Post Date', name: 'actdate', width: 25, classes: 'wrap'},
@@ -570,7 +570,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			let editurl = "/creditDebitTransDetail/form?"+
 				$.param({
-					action: 'directPaymentDetail_save',
+					action: 'creditDebitTransDetail_save',
 					auditno:$('#auditno').val(),
 					trantype:$('#trantype').val(),
 				});
@@ -686,7 +686,7 @@ $(document).ready(function () {
     			trantype: $('#trantype').val(),
     		}
 
-    		$.post( "/directPaymentDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "/creditDebitTransDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
