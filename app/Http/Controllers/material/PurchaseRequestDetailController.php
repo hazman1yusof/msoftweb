@@ -77,15 +77,15 @@ class PurchaseRequestDetailController extends defaultController
                     'compcode' => session('compcode'),
                     'recno' => $recno,
                     'lineno_' => $li,
-                    'pricecode' => $request->pricecode,
-                    'itemcode' => $request->itemcode,
-                    'uomcode' => $request->uomcode,
-                    'pouom' => $request->pouom,
+                    'pricecode' => strtoupper($request->pricecode),
+                    'itemcode' => strtoupper($request->itemcode),
+                    'uomcode' => strtoupper($request->uomcode),
+                    'pouom' => strtoupper($request->pouom),
                    // 'suppcode' => $request->suppcode,
-                    'reqdept' => $request->reqdept,
+                    'reqdept' => strtoupper($request->reqdept),
                     'qtyrequest' => $request->qtyrequest,
                     'unitprice' => $request->unitprice,
-                    'taxcode' => $request->taxcode,
+                    'taxcode' => strtoupper($request->taxcode),
                     'perdisc' => $request->perdisc,
                     'amtdisc' => $request->amtdisc,
                     'amtslstax' => $request->tot_gst,
@@ -95,7 +95,7 @@ class PurchaseRequestDetailController extends defaultController
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN', 
-                    'remarks' => $request->remarks,
+                    'remarks' => strtoupper($request->remarks),
                     'unit' => session('unit')
                 ]);
 
@@ -146,10 +146,10 @@ class PurchaseRequestDetailController extends defaultController
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
-                    'pricecode' => $request->pricecode, 
-                    'itemcode'=> $request->itemcode, 
-                    'uomcode'=> $request->uomcode, 
-                    'pouom'=> $request->pouom, 
+                    'pricecode' => strtoupper($request->pricecode), 
+                    'itemcode'=> strtoupper($request->itemcode), 
+                    'uomcode'=> strtoupper($request->uomcode), 
+                    'pouom'=> strtoupper($request->pouom), 
                     'qtyrequest'=> $request->qtyrequest, 
                     'unitprice'=> $request->unitprice,
                     'taxcode'=> $request->taxcode, 
@@ -161,7 +161,7 @@ class PurchaseRequestDetailController extends defaultController
                     'totamount'=> $request->totamount, 
                     'upduser'=> session('username'), 
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
-                    'remarks'=> $request->remarks,
+                    'remarks'=> strtoupper($request->remarks),
                     'unit' => session('unit')
                 ]);
 
@@ -214,13 +214,13 @@ class PurchaseRequestDetailController extends defaultController
                     ->where('recno','=',$request->recno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'pricecode' => $value['pricecode'], 
-                        'itemcode'=> $value['itemcode'], 
-                        'uomcode'=> $value['uomcode'], 
-                        'pouom'=> $value['pouom'], 
-                        'qtyrequest'=> $value['qtyrequest'],  
+                        'pricecode' => strtoupper($value['pricecode']), 
+                        'itemcode'=> strtoupper($value['itemcode']), 
+                        'uomcode'=> strtoupper($value['uomcode']), 
+                        'pouom'=> strtoupper($value['pouom']), 
+                        'qtyrequest'=> strtoupper($value['qtyrequest']),  
                         'unitprice'=> $value['unitprice'],
-                        'taxcode'=> $value['taxcode'], 
+                        'taxcode'=> strtoupper($value['taxcode']), 
                         'perdisc'=> $value['perdisc'], 
                         'amtdisc'=> $value['amtdisc'], 
                         'amtslstax'=> $value['tot_gst'], 
@@ -229,7 +229,7 @@ class PurchaseRequestDetailController extends defaultController
                         'totamount'=> $value['totamount'], 
                         'upduser'=> session('username'), 
                         'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
-                        'remarks'=> $value['remarks'],
+                        'remarks'=> strtoupper($value['remarks']),
                         'unit' => session('unit')
                     ]);
             }

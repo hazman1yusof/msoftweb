@@ -248,7 +248,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="purreqhd_suppcode">Supplier Code</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="purreqhd_suppcode" name="purreqhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="purreqhd_suppcode" name="purreqhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -368,7 +368,7 @@ i.fa {
 			<div id="dialog_remarks" title="Remarks">
 			  <div class="panel panel-default">
 			    <div class="panel-body">
-			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm" style="width:100%;"></textarea>
+			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
 			    </div>
 			  </div>
 			</div>

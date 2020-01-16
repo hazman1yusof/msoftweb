@@ -111,15 +111,9 @@ i.fa {
 						<div id="detail" class="panel-heading">Credit/Debit Header</div>
 							<div class="panel-body">
 
-<<<<<<< HEAD
 								<input id="source" name="source" type="hidden" value="CM">
 								<input id="trantype" name="trantype" type="hidden">
-								<input id="auditno" name="apacthdr_auditno" type="hidden">
-=======
-								<input id="source" name="source" type="text" value="CM">
-								<input id="trantype" name="trantype" type="text">
 								<input id="auditno" name="auditno" type="hidden">
->>>>>>> c304e2a20ef5b3752d606f5333c12192c58edbac
 								<input id="idno" name="idno" type="hidden">
 
 

@@ -212,11 +212,11 @@ $(document).ready(function () {
 	});
 	
 	$('#adjustment').on('change', function() {
-		adjustment1  = $("#adjustment option:selected" ).val();
+		let adjustment1  = $("#adjustment option:selected" ).val();
 		$("#jqGridplus").show();
 		urlParam.filterCol = ['trantype'];
 		urlParam.filterVal = [$('#adjustment').val()];
-		saveParam.sysparam.trantype = adjustment1;
+		urlParam2.filterVal[4] = $('#adjustment').val();
 		refreshGrid('#jqGrid',urlParam);
 	})
 
@@ -256,17 +256,17 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'add';
 			$( "#dialogForm" ).dialog( "open" );
-					adjustment1  = $("#adjustment option:selected" ).val();
-					$('#recstatus').text("");
-					if(adjustment1 == 'CA') {
-						$( "#dialogForm" ).dialog( "option", "title", "Credit Transaction" );
-						$("#formdata :input[name='source']").val("CM");
-						$("#formdata :input[name='trantype']").val("CA");
-					}else if(adjustment1 == 'DA') {
-						$( "#dialogForm" ).dialog( "option", "title", "Debit Transaction" );
-						$("#formdata :input[name='source']").val("CM");
-					    $("#formdata :input[name='trantype']").val("DA");
-					}
+			let adjustment1  = $("#adjustment option:selected" ).val();
+			$('#recstatus').text("");
+			if(adjustment1 == 'CA') {
+				$( "#dialogForm" ).dialog( "option", "title", "Credit Transaction" );
+				$("#formdata :input[name='source']").val("CM");
+				$("#formdata :input[name='trantype']").val("CA");
+			}else if(adjustment1 == 'DA') {
+				$( "#dialogForm" ).dialog( "option", "title", "Debit Transaction" );
+				$("#formdata :input[name='source']").val("CM");
+			    $("#formdata :input[name='trantype']").val("DA");
+			}
 		},
 	});
 
@@ -386,7 +386,7 @@ $(document).ready(function () {
 		table_name:['finance.apactdtl AS apactdtl'],
 		table_id:'lineno_',
 		filterCol:['apactdtl.compcode','apactdtl.auditno', 'apactdtl.recstatus','apactdtl.source','apactdtl.trantype'],
-		filterVal:['session.compcode', '', '<>.DELETE', 'CM', '']
+		filterVal:['session.compcode', '', '<>.DELETE', 'CM', $('#adjustment').val()]
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -395,11 +395,12 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/creditDebitTransDetail/form",
 		colModel: [
+			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, //canSearch: true, checked: true},
 			{ label: 'Department', name: 'deptcode', width: 100, classes: 'wrap', canSearch: true, editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				formatter: showdetail,
@@ -565,14 +566,12 @@ $(document).ready(function () {
 
         	if(errorField.length>0)return false;
 
-
 			mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-			let editurl = "/directPaymentDetail/form?"+
+			let editurl = "/creditDebitTransDetail/form?"+
 				$.param({
 					action: 'directPaymentDetail_save',
 					auditno:$('#auditno').val(),
-					lineno_:data.lineno_,
 					trantype:$('#trantype').val(),
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});

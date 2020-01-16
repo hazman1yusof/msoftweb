@@ -1265,6 +1265,7 @@ $(document).ready(function () {
 		dialog_suppcode.off();
 		errorField.length = 0;
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
+			mycurrency.formatOn();
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		} else {
@@ -1545,7 +1546,7 @@ $(document).ready(function () {
 				dialog_suppcode.urlParam.filterCol=['recstatus', 'compcode'];
 				dialog_suppcode.urlParam.filterVal=['A', 'session.compcode'];
 			}
-		},'urlParam','radio','tab'
+		},'urlParam','radio','tab',false
 	);
 	dialog_suppcode.makedialog();
 
