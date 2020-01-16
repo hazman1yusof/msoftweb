@@ -449,14 +449,14 @@
 		var urlParam2={
 			action:'get_table_default',
 			url:'/util/get_table_default',
-			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate','cp.chgcode','cm.chgcode','cp.idno','cp.autopull','cp.addchg','cp.pkgstatus'],
+			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate','cp.chgcode','cm.chgcode','cp.idno','cp.autopull','cp.addchg','cp.pkgstatus','cp.recstatus'],
 			table_name:['hisdb.chgprice AS cp', 'hisdb.chgmast AS cm'],
 			table_id:'lineno_',
 			join_type:['LEFT JOIN'],
 			join_onCol:['cp.chgcode'],
 			join_onVal:['cm.chgcode'],
-			filterCol:['cp.compcode','cp.chgcode'],
-			filterVal:['session.compcode','']
+			filterCol:['cp.compcode','cp.chgcode','cp.recstatus'],
+			filterVal:['session.compcode','','A']
 		};
 
 		var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
@@ -521,6 +521,7 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
+				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}
 			],
 			autowidth: true,
@@ -929,6 +930,7 @@
 					}
 				},
 				{ label: 'Package Status', name: 'pkgstatus', hidden:true, width: 60},
+				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}
 			],
 			autowidth: true,
@@ -1254,6 +1256,7 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
+				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
 			autowidth: true,
@@ -1542,6 +1545,7 @@
 					}
 				},
 				{ label: 'Package Status', name: 'pkgstatus', hidden:true, width: 60},
+				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
 			autowidth: true,
@@ -1775,11 +1779,11 @@
 		var urlParam4={
 			action:'get_table_default',
 			url:'/util/get_table_default',
-			field:['pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno'],
+			field:['pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno','pd.recstatus'],
 			table_name:['hisdb.pkgdet AS pd'],
 			table_id:'lineno_',
-			filterCol:['pd.compcode','pd.pkgcode','pd.effectdate'],
-			filterVal:['session.compcode','','']
+			filterCol:['pd.compcode','pd.pkgcode','pd.effectdate','pd.recstatus'],
+			filterVal:['session.compcode','','','A']
 		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1850,6 +1854,7 @@
 				},
 				{ label: 'pkgcode', name: 'pkgcode', hidden:true},
 				{ label: 'Effective date', name: 'effectdate', hidden:true},
+				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
 			autowidth: true,
@@ -1981,8 +1986,9 @@
 					    		param={
 					    			action: 'chargemasterDetail_save',
 									idno: selrowData('#jqGrid4').idno,
-
-					    		}
+									_token: $("#_token").val(),
+									"pkg_dtl": "pkg_dtl"
+								}
 					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 								}).fail(function(data) {
 									//////////////////errorText(dialog,data.responseText);
