@@ -104,12 +104,26 @@ class PurchaseRequestController extends defaultController
             'unit' => session('unit'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'OPEN'
+            'recstatus' => 'OPEN',
+            'reqdept' => strtoupper($request->purreqhd_reqdept),
+            'prdept' => strtoupper($request->purreqhd_prdept),
+            'purreqdt' => strtoupper($request->purreqhd_purreqdt),
+            'suppcode' => strtoupper($request->purreqhd_suppcode),
+            'totamount' => $request->purreqhd_totamount,
+            'remarks' => strtoupper($request->purreqhd_remarks),
+            'perdisc' => $request->purreqhd_perdisc,
+            'amtdisc' => $request->purreqhd_amtdisc,
+            'subamount' => $request->purreqhd_subamount
+
         ];
 
-        foreach ($field as $key => $value) {
-            $array_insert[$value] = $request[$request->field[$key]];
-        }
+        // foreach ($field as $key => $value) {
+        //     if($value =='remarks' || $value =='prdept' || $value =='suppcode' || $value =='reqdept'){
+        //         $array_insert[$value] = strtoupper($request[$request->field[$key]]);
+        //     }else{
+        //         $array_insert[$value] = $request[$request->field[$key]];
+        //     }
+        // }
         
         try {
             $idno = $table->insertGetId($array_insert);
@@ -149,12 +163,22 @@ class PurchaseRequestController extends defaultController
             'unit' => session('unit'),
             'compcode' => session('compcode'),
             'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'reqdept' => strtoupper($request->purreqhd_reqdept),
+            'prdept' => strtoupper($request->purreqhd_prdept),
+            'purreqdt' => strtoupper($request->purreqhd_purreqdt),
+            'suppcode' => strtoupper($request->purreqhd_suppcode),
+            'totamount' => $request->purreqhd_totamount,
+            'remarks' => strtoupper($request->purreqhd_remarks),
+            'perdisc' => $request->purreqhd_perdisc,
+            'amtdisc' => $request->purreqhd_amtdisc,
+            'subamount' => $request->purreqhd_subamount
+
         ];
 
-        foreach ($field as $key => $value) {
-            $array_update[$value] = $request[$request->field[$key]];
-        }
+        // foreach ($field as $key => $value) {
+        //     $array_update[$value] = strtoupper($request[$request->field[$key]]);
+        // }
 
         try {
             //////////where//////////

@@ -86,7 +86,7 @@ class CreditDebitTransDetailController extends defaultController
 
     public function add(Request $request){
         DB::beginTransaction();
-
+dd('test');
         try {
            
             $auditno = $request->query('auditno');
@@ -105,15 +105,12 @@ class CreditDebitTransDetailController extends defaultController
                     'compcode' => session('compcode'),
                     'auditno' => $auditno,
                     'lineno_' => $li,
-                    'source' => 'AP',
-                    'trantype' => 'IN',
+                    'source' => 'CM',
+                    'trantype' => $request->trantype,
                     'document' => $request->document,
-                    'reference' => $request->reference,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
-                    'dorecno' => $request->dorecno,
-                    'grnno'=> $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -133,7 +130,7 @@ class CreditDebitTransDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$auditno)
                 ->update([
-                    'outamount' => $totalAmount
+                    'amount' => $totalAmount
                   
                 ]);
             DB::commit();
@@ -159,15 +156,12 @@ class CreditDebitTransDetailController extends defaultController
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
                     'compcode' => session('compcode'),
-                    'source' => 'AP',
-                    'trantype' => 'IN',
+                    'source' => 'CM',
+                    'trantype' => $trantype,
                     'document' => $request->document,
-                    'reference' => $request->reference,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
-                    'dorecno' => $request->dorecno,
-                    'grnno'=> $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -186,7 +180,7 @@ class CreditDebitTransDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'outamount' => $totalAmount
+                    'amount' => $totalAmount
                 ]);
 
             DB::commit();
@@ -226,7 +220,7 @@ class CreditDebitTransDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'outamount' => $totalAmount
+                    'amount' => $totalAmount
                   
                 ]);
 
@@ -257,11 +251,10 @@ class CreditDebitTransDetailController extends defaultController
                     ->where('auditno','=',$request->auditno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'document' => $value['itemcode'],
-                        'reference' => $value['uomcode'],
+                        'document' => $value['document'],
                         'amount' => $value['amount'],
-                        'dorecno' => $value['dorecno'],
-                        'grnno' => $value['grnno'],
+                        'category' => $value['category'],
+                        'deptcode' => $value['deptcode'],
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                        

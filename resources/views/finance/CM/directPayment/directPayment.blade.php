@@ -89,6 +89,7 @@ i.fa {
 	    		</div>
 	    	</div>	
 		</div>
+</div>
 
 	<!-- ***************End Search + table ********************* -->
 		
@@ -192,11 +193,13 @@ i.fa {
 							    		</div>
 							    </div>
 							</div>
-						</div>
+					</div>
+				</div>
 			</form>
 
-			<div class='panel panel-info'>
-				<div class="panel-heading">Direct Payment Detail</div>
+			<div class='col-md-12'>
+				<div class='panel panel-info'>
+					<div class="panel-heading">Direct Payment Detail</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							
@@ -206,14 +209,13 @@ i.fa {
 							</div>
 						</form>
 					</div>
-
-					<div class="panel-body">
-						<div class="noti"><ol></ol>
-						</div>
-					</div>
+				</div>
 			</div>
+
 		</div>
-	@endsection
+
+
+@endsection
 
 @section('scripts')
 	<script src="js/finance/CM/directPayment/directPayment.js"></script>

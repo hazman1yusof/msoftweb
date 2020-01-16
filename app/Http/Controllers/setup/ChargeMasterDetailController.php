@@ -84,6 +84,7 @@ class ChargeMasterDetailController extends defaultController
                     'autopull' => $request->autopull,
                     'addchg' => $request->addchg,
                     'uom' => $request->uom,
+                    'recstatus' => 'A',
                     'units' => session('unit'),
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -152,7 +153,13 @@ class ChargeMasterDetailController extends defaultController
             DB::table('hisdb.chgprice')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                ->delete();
+                ->update([
+                    'deluser' => session('username'),
+                    'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'D',
+                    'lastcomputerid' => $request->lastcomputerid, 
+                    'lastipaddress' => $request->lastipaddress, 
+                ]);
 
        
             DB::commit();
@@ -196,6 +203,7 @@ class ChargeMasterDetailController extends defaultController
                     'actprice3' => $request->actprice3,
                     'pkgprice3' => $request->pkgprice3,
                     'totprice3' => $request->totprice3,
+                    'recstatus' => 'A',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser' => session('username'), 
@@ -261,10 +269,23 @@ class ChargeMasterDetailController extends defaultController
 
         try {
 
+            // DB::table('hisdb.pkgdet')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('idno','=',$request->idno)
+            //     ->delete();
+
             DB::table('hisdb.pkgdet')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                ->delete();
+                ->update([
+                    'deluser' => session('username'),
+                    'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'D',
+                    'lastcomputerid' => $request->lastcomputerid, 
+                    'lastipaddress' => $request->lastipaddress, 
+                ]);
+
+            DB::commit();
 
         } catch (\Exception $e) {
             DB::rollback();

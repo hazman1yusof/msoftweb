@@ -195,6 +195,7 @@
 		.help-block{
 			margin: 0 !important;
 		}
+		#remarks_more {display: none;}
 		@yield('style')
  	</style>	
     <title>@yield('title')</title>
