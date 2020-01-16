@@ -103,7 +103,7 @@ $(document).ready(function () {
 		table_name:'finance.apacthdr',
 		table_id:'auditno',
 		filterCol: ['trantype'],
-		filterVal: ['CA'],
+		filterVal: [$('#adjustment').val()],
 		sort_idno: 'true'
 	}
 
@@ -215,7 +215,7 @@ $(document).ready(function () {
 		adjustment1  = $("#adjustment option:selected" ).val();
 		$("#jqGridplus").show();
 		urlParam.filterCol = ['trantype'];
-		urlParam.filterVal = [adjustment1];
+		urlParam.filterVal = [$('#adjustment').val()];
 		saveParam.sysparam.trantype = adjustment1;
 		refreshGrid('#jqGrid',urlParam);
 	})
@@ -573,6 +573,7 @@ $(document).ready(function () {
 					action: 'directPaymentDetail_save',
 					auditno:$('#auditno').val(),
 					lineno_:data.lineno_,
+					trantype:$('#trantype').val(),
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
@@ -612,6 +613,7 @@ $(document).ready(function () {
 				    			action: 'creditDebitTransDetail_save',
 								auditno: $('#auditno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
+								trantype: $('#trantype').val(),
 
 				    		}
 				    		$.post( "/creditDebitTransDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
@@ -681,7 +683,8 @@ $(document).ready(function () {
 			var param={
     			action: 'creditDebitTransDetail_save',
 				_token: $("#_token").val(),
-				auditno: $('#auditno').val()
+				auditno: $('#auditno').val(),
+    			trantype: $('#trantype').val(),
     		}
 
     		$.post( "/directPaymentDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){

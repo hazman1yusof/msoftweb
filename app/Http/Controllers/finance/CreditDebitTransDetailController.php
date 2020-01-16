@@ -90,11 +90,13 @@ class CreditDebitTransDetailController extends defaultController
         try {
            
             $auditno = $request->query('auditno');
+            $trantype = $request->query('trantype');
 
             ////1. calculate lineno_ by auditno
             $sqlln = DB::table('finance.apactdtl')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('auditno','=',$auditno)
+                         ->where('trantype','=',$trantype)
                         ->count('lineno_');
 
             $li=intval($sqlln)+1;
@@ -106,13 +108,12 @@ class CreditDebitTransDetailController extends defaultController
                     'auditno' => $auditno,
                     'lineno_' => $li,
                     'source' => 'CM',
-                    'trantype' => $request->trantype,
+                  //  'trantype' => $request->trantype,
+                      'trantype' => $trantype,
                     'document' => $request->document,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
-                    'dorecno' => $request->dorecno,
-                    'grnno'=> $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -156,16 +157,15 @@ class CreditDebitTransDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
+                ->where('trantype','=',$request->trantype)
                 ->update([
                     'compcode' => session('compcode'),
                     'source' => 'CM',
-                    'trantype' => $request->trantype,
+                   // 'trantype' => $request->trantype,
                     'document' => $request->document,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
-                    'dorecno' => $request->dorecno,
-                    'grnno'=> $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -254,6 +254,7 @@ class CreditDebitTransDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('auditno','=',$request->auditno)
                     ->where('lineno_','=',$value['lineno_'])
+                    ->where('trantype','=',$request->trantype)
                     ->update([
                         'document' => $value['itemcode'],
                         'reference' => $value['uomcode'],
