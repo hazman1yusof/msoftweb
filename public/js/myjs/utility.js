@@ -502,7 +502,7 @@ function modal(){
 		display:"block",
 		position:"absolute",
 		"z-index":"1000",
-		background:"rgba( 255, 255, 255, .8 ) url('../../../../assets/img/pIkfp.gif') 50% 50% no-repeat"
+		background:"rgba( 255, 255, 255, .8 ) url('img/pIkfp.gif') 50% 50% no-repeat"
 	}
 	this.modal = "<div id='mahmodal'></div>";
 	this.button = null;

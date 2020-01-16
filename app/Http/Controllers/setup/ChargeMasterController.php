@@ -273,7 +273,9 @@ class ChargeMasterController extends defaultController
             });
         }
 
-        $table = $table->where('compcode','=',session('compcode'));
+        $table = $table
+                ->where('recstatus','=','A')
+                ->where('compcode','=',session('compcode'));
 
         $paginate = $table->paginate($request->rows);
 

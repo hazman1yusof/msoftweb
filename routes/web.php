@@ -442,6 +442,11 @@ Route::get('/bankTransfer','finance\BankTransferController@show');
 Route::get('/bankTransfer/table','finance\BankTransferController@table');
 Route::post('/bankTransfer/form','finance\BankTransferController@form');
 
+//// Bank setup ///
+Route::get('/bankEnquiry','finance\BankEnquiryController@show');
+Route::get('/bankEnquiry/table','finance\BankEnquiryController@table');
+Route::post('/bankEnquiry/form','finance\BankEnquiryController@form');
+
 //// Direct Payment ///
 Route::get('/directPayment','finance\DirectPaymentController@show');
 Route::get('/directPayment/table','finance\DirectPaymentController@table');
