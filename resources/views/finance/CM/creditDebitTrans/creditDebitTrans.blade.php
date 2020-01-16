@@ -111,8 +111,8 @@ i.fa {
 						<div id="detail" class="panel-heading">Credit/Debit Header</div>
 							<div class="panel-body">
 
-								<input id="source" name="source" type="text" value="CM">
-								<input id="trantype" name="trantype" type="text">
+								<input id="source" name="source" type="hidden" value="CM">
+								<input id="trantype" name="trantype" type="hidden">
 								<input id="auditno" name="apacthdr_auditno" type="hidden">
 								<input id="idno" name="idno" type="hidden">
 
@@ -183,8 +183,8 @@ i.fa {
 				<div class='panel panel-info'>
 					<div class="panel-heading">Credit/Debit Detail</div>
 						<div class="panel-body">
-							<input id="source" name="source" type="text" value="CM">
-								<input id="trantype" name="trantype" type="text" >
+							<input id="source" name="source" type="hidden" value="CM">
+								<input id="trantype" name="trantype" type="hidden" >
 							<form id='formdata2' class='form-vertical' style='width:99%'>
 								
 								<div id="jqGrid2_c" class='col-md-12'>
