@@ -90,13 +90,11 @@ class CreditDebitTransDetailController extends defaultController
         try {
            
             $auditno = $request->query('auditno');
-            $trantype = $request->query('trantype');
 
             ////1. calculate lineno_ by auditno
             $sqlln = DB::table('finance.apactdtl')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('auditno','=',$auditno)
-                         ->where('trantype','=',$trantype)
                         ->count('lineno_');
 
             $li=intval($sqlln)+1;
@@ -157,11 +155,10 @@ class CreditDebitTransDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
-                ->where('trantype','=',$request->trantype)
                 ->update([
                     'compcode' => session('compcode'),
                     'source' => 'CM',
-                   // 'trantype' => $request->trantype,
+                    'trantype' => $trantype,
                     'document' => $request->document,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
