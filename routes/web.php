@@ -106,6 +106,16 @@ Route::get('/occupation','setup\OccupationController@show');
 Route::get('/occupation/table','setup\OccupationController@table');
 Route::post('/occupation/form','setup\OccupationController@form');
 
+//// icd setup page ///
+Route::get('/icd','setup\icdController@show');
+Route::get('/icd/table','setup\icdController@table');
+Route::post('/icd/form','setup\icdController@form');
+
+//// mma setup page ///
+Route::get('/mma','setup\mmaController@show');
+Route::get('/mma/table','setup\mmaController@table');
+Route::post('/mma/form','setup\mmaController@form');
+
 //// speciality setup page ///
 Route::get('/speciality','setup\SpecialityController@show');
 Route::get('/speciality/table','setup\SpecialityController@table');
