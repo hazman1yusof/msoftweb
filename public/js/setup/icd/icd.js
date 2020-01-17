@@ -30,7 +30,7 @@ $(document).ready(function () {
 		action: 'get_table_default',
 		url: '/util/get_table_default',
 		field: '',
-		table_name: 'hisdb.racecode',
+		table_name: 'hisdb.diagtab',
 		table_id: 'idno',
 	}
 
@@ -42,16 +42,13 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'Race Code', name: 'Code', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'ICD Code', name: 'icdcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, editoptions: {style: "text-transform: uppercase;width: -webkit-fill-available;" ,rows: 5}},
+			{ label: 'type', name: 'type', hidden: true },
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"
 			}},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
@@ -113,9 +110,9 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
 
-			let editurl = "/race/form?"+
+			let editurl = "/icd/form?"+
 				$.param({
-					action: 'race_save',
+					action: 'icd_save',
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -161,9 +158,9 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/race/form?"+
+			let editurl = "/icd/form?"+
 				$.param({
-					action: 'race_save',
+					action: 'icd_save',
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -205,11 +202,10 @@ $(document).ready(function () {
 						if (result == true) {
 							param = {
 								_token: $("#_token").val(),
-								action: 'race_save',
-								Code: $('#Code').val(),
+								action: 'icd_save',
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/race/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "/icd/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

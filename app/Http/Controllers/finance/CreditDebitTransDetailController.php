@@ -86,7 +86,7 @@ class CreditDebitTransDetailController extends defaultController
 
     public function add(Request $request){
         DB::beginTransaction();
-dd('test');
+/*dd('test');*/
         try {
            
             $auditno = $request->query('auditno');
@@ -107,6 +107,8 @@ dd('test');
                     'lineno_' => $li,
                     'source' => 'CM',
                     'trantype' => $request->trantype,
+                    'category' => $request->category,
+                    'deptcode' => $request->deptcode,
                     'document' => $request->document,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
@@ -158,6 +160,8 @@ dd('test');
                     'compcode' => session('compcode'),
                     'source' => 'CM',
                     'trantype' => $trantype,
+                    'category' => $request->category,
+                    'deptcode' => $request->deptcode,
                     'document' => $request->document,
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
