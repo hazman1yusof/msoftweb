@@ -466,7 +466,7 @@ $(document).ready(function () {
 	
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 	
-	populateSelect('#jqGrid','#searchForm');
+	populateSelect2('#jqGrid','#searchForm');
 	//searchClick('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
