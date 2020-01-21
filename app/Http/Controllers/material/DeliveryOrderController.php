@@ -392,7 +392,7 @@ class DeliveryOrderController extends defaultController
                 do_util::postingGL($value,$delordhd_obj,$productcat);
 
             //--- 7. posting GL gst punya---//
-                do_util::postingGL_GST($value,$delordhd_obj);
+                do_util::postingGL_GST($value,$delordhd_obj); 
 
             //---- 8. update po kalu ada srcdocno ---//
                 if($delordhd_obj->srcdocno != 0){
@@ -407,7 +407,7 @@ class DeliveryOrderController extends defaultController
                         ->where('lineno_','=',$value->polineno);
 
                     $podt_obj_lama = $podt_obj->first();
-                    $this->checkIfPOposted($value);
+                    $this->checkIfPOposted($value); //dd('test');
 
                     $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
                     $qtyoutstand = $podt_obj_lama->qtyorder - $jumlah_qtydelivered;
@@ -421,8 +421,7 @@ class DeliveryOrderController extends defaultController
                         'qtyoutstand' => $qtyoutstand
                     ]);
 
-
-                    //update qtyoutstand utk suma DO pulak
+                    //update qtyoutstand utk suma DO pulak 
                     $delordhd = DB::table('material.delorddt')
                         ->where('compcode','=',session('compcode'))
                         ->where('itemcode','=',$value->itemcode)
@@ -995,7 +994,7 @@ class DeliveryOrderController extends defaultController
                     'amount' => $value->amount, 
                     'totamount' => $value->totamount,
                     'productcat' => $productcat,
-                    'srcdocno' => $value->purordno,
+                    'srcdocno' => $po_hd->purordno,
                     'prdept' => $value->prdept, 
                     'rem_but'=>$value->rem_but,
                     'unit' => session('unit'), 
@@ -1031,13 +1030,13 @@ class DeliveryOrderController extends defaultController
                 ->where('purordno', '=', $value->srcdocno)
                 ->where('compcode', '=', session('compcode'))
                 ->first();
-        // dd($po_hd->recstatus);
+         //dd($po_hd);
 
         if($po_hd->recstatus == 'CANCELLED'){
             throw new \Exception("Cannot posted, PO is CANCELLED");
-        }else if($po_hd->recstatus != 'ISSUED'){
-        // dd($po_hd->recstatus);
-            throw new \Exception("Cannot posted, PO not ISSUED yet");
+        }else if($po_hd->recstatus != 'APPROVED'){
+        // dd('test');
+            throw new \Exception("Cannot posted, PO not APPROVED yet");
         }
     }
 

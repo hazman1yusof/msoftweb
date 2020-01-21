@@ -1684,7 +1684,7 @@ $(document).ready(function () {
 			sortorder: "desc",
 			urlParam: {
 						filterCol:['h.prdept','h.recstatus','h.compcode'],
-						filterVal:[$("#delordhd_prdept").val(),'ISSUED','session.compcode']
+						filterVal:[$("#delordhd_prdept").val(),'APPROVED','session.compcode']
 					},
 		ondblClickRow: function () {
 				let data = selrowData('#' + dialog_srcdocno.gridname);
@@ -1770,7 +1770,7 @@ $(document).ready(function () {
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_srcdocno.urlParam.fixPost = "true";
 				dialog_srcdocno.urlParam.filterCol = ['h.prdept','h.recstatus','h.compcode'];
-				dialog_srcdocno.urlParam.filterVal = [$("#delordhd_prdept").val(),'ISSUED','session.compcode'];
+				dialog_srcdocno.urlParam.filterVal = [$("#delordhd_prdept").val(),'APPROVED','session.compcode'];
 			}
 		},'none'
 	);

@@ -182,7 +182,7 @@ class do_util extends defaultController{
 
         //amik department,category dgn sysparam pvalue1 dgn pvalue2
         //utk debit costcode
-        if($product_obj->groupcode == "Stock" || $product_obj->groupcode == "Others" ){
+        if(strtoupper($product_obj->groupcode) == "STOCK" || strtoupper($product_obj->groupcode) == "OTHERS" ){
             $row_dept = DB::table('sysdb.department')
                 ->select('costcode')
                 ->where('compcode','=',session('compcode'))
@@ -206,7 +206,7 @@ class do_util extends defaultController{
                 ->where('trantype','=','ACC')
                 ->first();
 
-        }else if($product_obj->groupcode == "Asset"){
+        }else if(strtoupper($product_obj->groupcode) == "ASSET"){
             $facode = DB::table('finance.facode')
                 ->where('compcode','=', $value->compcode)
                 ->where('assetcode','=', $product_obj->productcat)
@@ -224,7 +224,7 @@ class do_util extends defaultController{
                 ->first();
 
         }else{
-            throw new \Exception("Item at delorddt doesnt have groupcode at table poduct");
+            throw new \Exception("Item at delorddt doesn't have groupcode at table product");
         }
 
 
