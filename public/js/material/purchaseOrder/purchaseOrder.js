@@ -743,8 +743,8 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid2 url///////////////////////////////////////////////////////
 	var urlParam2 = {
-		action: 'get_table_default',
-		url:'/util/get_table_default',
+		action: 'get_table_dtl',
+		url:'/purchaseOrderDetail/table',
 		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder',
 		 'podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount',
 		 'podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate'],
@@ -904,7 +904,8 @@ $(document).ready(function () {
 			},
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
-			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
+			{ label: 'Remarks', name: 'remarks', hidden:true},
+			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap', hidden: false },
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'prdept', name: 'prdept', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'purordno', name: 'purordno', width: 20, classes: 'wrap', hidden:true},

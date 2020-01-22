@@ -32,6 +32,8 @@ i.fa {
 	white-space: pre-wrap !important;
 }
 
+#more {display: none;}
+
 @endsection
 
 @section('body')

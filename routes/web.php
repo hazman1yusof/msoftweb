@@ -259,6 +259,7 @@ Route::post('/purchaseRequest/form','material\PurchaseRequestController@form');
 Route::get('/purchaseRequest/form','material\PurchaseRequestController@form');
 Route::get('/purchaseRequest/showpdf','material\PurchaseRequestController@showpdf');
 Route::post('/purchaseRequestDetail/form','material\PurchaseRequestDetailController@form');
+Route::get('/purchaseRequestDetail/table','material\PurchaseRequestDetailController@table');
 
 //// purchase Order setup page ///
 Route::get('/purchaseOrder','material\PurchaseOrderController@show');
@@ -266,6 +267,7 @@ Route::get('/purchaseOrder/table','material\PurchaseOrderController@table');
 Route::post('/purchaseOrder/form','material\PurchaseOrderController@form');
 Route::get('/purchaseOrder/form','material\PurchaseOrderController@form');
 Route::post('/purchaseOrderDetail/form','material\PurchaseOrderDetailController@form');
+Route::get('/purchaseOrderDetail/table','material\PurchaseOrderDetailController@table');
 
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');
@@ -273,6 +275,7 @@ Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
 Route::post('/deliveryOrder/form','material\DeliveryOrderController@form');
 Route::get('/deliveryOrder/form','material\DeliveryOrderController@form');
 Route::post('/deliveryOrderDetail/form','material\DeliveryOrderDetailController@form');
+Route::get('/deliveryOrderDetail/table','material\DeliveryOrderDetailController@table');
 
 //// good Return setup page ///
 Route::get('/goodReturn','material\GoodReturnController@show');

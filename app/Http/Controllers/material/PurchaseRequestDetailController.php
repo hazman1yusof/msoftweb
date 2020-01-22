@@ -43,6 +43,52 @@ class PurchaseRequestDetailController extends defaultController
         }
     }
 
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'get_table_dtl':
+                // dd('asd');
+                return $this->get_table_dtl($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function get_table_dtl(Request $request){
+        $table = DB::table('material.purreqdt as prdt')
+                    ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 't.rate')
+                    ->leftJoin('material.productmaster AS p', function($join) use ($request){
+                        $join = $join->on("prdt.itemcode", '=', 'p.itemcode');    
+                    })
+                    ->leftJoin('hisdb.taxmast AS t', function($join) use ($request){
+                        $join = $join->on("prdt.taxcode", '=', 't.taxcode');    
+                    })
+                    ->where('prdt.recno','=',$request->filterVal[0])
+                    ->where('prdt.compcode','=',session('compcode'))
+                    ->where('prdt.recstatus','<>','DELETE');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
+            $value->remarks_show = $value->remarks;
+            if(mb_strlen($value->remarks)>120){
+
+                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots">...</span><span id="more">'.mb_substr($value->remarks_show,120).'</span><a onclick="seemoreFunction()" id="moreBtn">Read more</a>';
+            }
+            
+        }
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
+    }
    
     public function chgDate($date){
         if(!empty($date)){

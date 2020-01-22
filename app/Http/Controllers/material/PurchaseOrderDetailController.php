@@ -42,6 +42,53 @@ class PurchaseOrderDetailController extends defaultController
         }
     }
 
+    public function table(Request $request)
+    {   
+        switch($request->oper){
+            case 'PurchaseOrderDetail':
+                // dd('asd');
+                return $this->PurchaseOrderDetail($request);
+            default:
+                return 'error happen..';
+        }
+    }
+    
+    public function PurchaseOrderDetail(Request $request){
+        $table = DB::table('material.purorddt AS podt')
+                ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate')
+                ->leftJoin('material.productmaster AS p', function($join) use ($request){
+                    $join = $join->on("podt.itemcode", '=', 'p.itemcode');    
+                })
+                ->leftJoin('hisdb.taxmast AS t', function($join) use ($request){
+                    $join = $join->on("podt.taxcode", '=', 't.taxcode');    
+                })
+                ->where('podt.recno','=',$request->filterVal[0])
+                ->where('podt.compcode','=',session('compcode'))
+                ->where('podt.recstatus','<>','DELETE');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
+            $value->remarks_show = $value->remarks;
+            if(mb_strlen($value->remarks)>120){
+
+                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots">...</span><span id="more">'.mb_substr($value->remarks_show,120).'</span><a onclick="seemoreFunction()" id="moreBtn">Read more</a>';
+            }
+            
+        }
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
+    }
+
     public function chgDate($date){
         if(!empty($date)){
             $newstr=explode("/", $date);

@@ -662,8 +662,8 @@ $(document).ready(function () {
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
-		action:'get_table_default',
-		url:'/util/get_table_default',
+		action:'get_table_dtl',
+		url:'/deliveryOrderDetail/table',
 		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno'],
 		table_name:['material.delorddt AS dodt','material.productmaster AS p','hisdb.taxmast AS t'],
 		table_id:'lineno_',
@@ -838,8 +838,9 @@ $(document).ready(function () {
 					maxlength: 30,
 			},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
-			{ label: ' ', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
-			{ label: 'Remarks', name: 'remarks', width: 500, classes: 'preline', hidden:false},
+			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
+			{ label: 'Remarks', name: 'remarks', hidden:true},
+			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap', hidden: false },
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
 		],

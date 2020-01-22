@@ -63,6 +63,53 @@ class DeliveryOrderDetailController extends defaultController
         }
     }
 
+    public function table(Request $request)
+    {   
+        switch($request->oper){
+            case 'PurchaseOrderDetail':
+                // dd('asd');
+                return $this->DeliveryOrderDetail($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function DeliveryOrderDetail(Request $request){
+        $table = DB::table('material.delorddt AS dodt')
+                ->select('dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno')
+                ->leftJoin('material.productmaster AS p', function($join) use ($request){
+                    $join = $join->on("dodt.itemcode", '=', 'p.itemcode');    
+                })
+                ->leftJoin('hisdb.taxmast AS t', function($join) use ($request){
+                    $join = $join->on("dodt.taxcode", '=', 't.taxcode');    
+                })
+                ->where('dodt.recno','=',$request->filterVal[0])
+                ->where('dodt.compcode','=',session('compcode'))
+                ->where('dodt.recstatus','<>','DELETE');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
+            $value->remarks_show = $value->remarks;
+            if(mb_strlen($value->remarks)>120){
+
+                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots">...</span><span id="more">'.mb_substr($value->remarks_show,120).'</span><a onclick="seemoreFunction()" id="moreBtn">Read more</a>';
+            }
+            
+        }
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
+    }
+
     public function get_draccno($itemcode,$pricecode){
         $product = DB::table('material.product')->where('itemcode','=',$itemcode)->first();
 
