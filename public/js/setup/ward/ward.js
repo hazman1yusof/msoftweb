@@ -61,7 +61,6 @@ $(document).ready(function () {
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-
 		],
 		autowidth: true,
 		multiSort: true,
