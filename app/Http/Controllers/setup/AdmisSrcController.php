@@ -49,7 +49,7 @@ class AdmisSrcController extends defaultController
                             ->where('admsrccode','=',$request->admsrccode);
 
             if($admissrc->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('hisdb.admissrc')
@@ -75,7 +75,7 @@ class AdmisSrcController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -107,7 +107,7 @@ class AdmisSrcController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 

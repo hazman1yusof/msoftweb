@@ -49,7 +49,7 @@ class StateController extends defaultController
                             ->where('StateCode','=',$request->StateCode);
 
             if($state->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('hisdb.state')
@@ -70,7 +70,7 @@ class StateController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -97,7 +97,7 @@ class StateController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 

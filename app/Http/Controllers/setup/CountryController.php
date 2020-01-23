@@ -49,7 +49,7 @@ class CountryController extends defaultController
                             ->where('Code','=',$request->Code);
 
             if($country->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('hisdb.country')
@@ -68,7 +68,7 @@ class CountryController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -93,7 +93,7 @@ class CountryController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 

@@ -49,7 +49,7 @@ class DischargeDestinationController extends defaultController
                             ->where('code','=',$request->code);
 
             if($discharge->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('hisdb.discharge')
@@ -68,7 +68,7 @@ class DischargeDestinationController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -94,7 +94,7 @@ class DischargeDestinationController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 

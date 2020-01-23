@@ -49,7 +49,7 @@ class EpisodeTypeController extends defaultController
                             ->where('epistycode','=',$request->epistycode);
 
             if($episodetype->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('hisdb.epistype')
@@ -69,7 +69,7 @@ class EpisodeTypeController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -95,7 +95,7 @@ class EpisodeTypeController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 

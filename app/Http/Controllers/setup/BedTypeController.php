@@ -49,7 +49,7 @@ class BedTypeController extends defaultController
                             ->where('bedtype','=',$request->bedtype);
 
             if($bedtype->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("RECORD DUPLICATE");
             }
 
             DB::table('hisdb.bedtype')
@@ -71,7 +71,7 @@ class BedTypeController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -99,7 +99,7 @@ class BedTypeController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
