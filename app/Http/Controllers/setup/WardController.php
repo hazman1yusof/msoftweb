@@ -63,7 +63,7 @@ class WardController extends defaultController
                     //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
-                    'adduser' => session('username'),
+                    'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
@@ -91,7 +91,7 @@ class WardController extends defaultController
                     'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
-                    'upduser' => session('username'),
+                    'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
