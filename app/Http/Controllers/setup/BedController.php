@@ -53,7 +53,7 @@ class BedController extends defaultController
 
     public function get_table(Request $request){
         $table = DB::table('hisdb.bed')
-                    ->select('compcode','bednum','bedtype','room','ward','occup','recstatus')
+                    ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
                     ->where('compcode','=',session('compcode'));
 
         //////////paginate/////////
@@ -137,7 +137,6 @@ class BedController extends defaultController
             DB::table('hisdb.bed')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'bednum' => strtoupper($request->bednum),
                     'bedtype' => strtoupper($request->bedtype),  
                     'room' => strtoupper($request->room),  
                     'ward' => strtoupper($request->ward),  
@@ -157,12 +156,23 @@ class BedController extends defaultController
     }
 
     public function del(Request $request){
-        DB::table('hisdb.bed')
-            ->where('idno','=',$request->idno)
-            ->update([  
-                'recstatus' => 'D',
-                'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
-            ]);
+        DB::beginTransaction();
+        try {
+
+            DB::table('hisdb.bed')
+                ->where('idno','=',$request->idno)
+                ->update([  
+                    'recstatus' => 'D',
+                    'deluser' => strtoupper(session('username')),
+                    'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+        
     }
 }
