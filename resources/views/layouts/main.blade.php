@@ -159,9 +159,6 @@
 			background: rgba(51, 122, 183, 0.3);
 			outline: none;
 		}
-		html{
-			height:100%;
-		}
 		.data_info{
 			text-align: center;
 			color: #286090;
@@ -195,7 +192,6 @@
 		.help-block{
 			margin: 0 !important;
 		}
-		#remarks_more {display: none;}
 		@yield('style')
  	</style>	
     <title>@yield('title')</title>

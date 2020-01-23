@@ -87,7 +87,7 @@ $(document).ready(function () {
 					dialog_reqdept.off();
 					dialog_purreqno.off();
 
-					$("#purordhd_reqdept,#purordhd_purreqno").prop('disabled',true);
+					$("#purordhd_reqdept,#purordhd_purreqno").prop('readonly',true);
 				}
 			},
 			beforeClose: function (event, ui) {
@@ -118,7 +118,7 @@ $(document).ready(function () {
 				dialog_credcode.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
-				$("#purordhd_reqdept,#purordhd_purreqno").prop('disabled',false);
+				$("#purordhd_reqdept,#purordhd_purreqno").prop('readonly',false);
 				refreshGrid("#jqGrid2",null,"kosongkan");
 				radbuts.reset();
 				errorField.length=0;
@@ -1073,7 +1073,10 @@ $(document).ready(function () {
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
         	if($('#purordhd_purreqno').val()!=''&& $("#jqGrid2_iladd").css('display') == 'none' ){
-        		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
+        		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
+
+
+				dialog_pouom.on();
 
 			}else{
 				dialog_pricecode.on();//start binding event on jqgrid2
@@ -1410,7 +1413,7 @@ $(document).ready(function () {
 		dialog_deldept.off();
 		radbuts.check();
 		errorField.length = 0;
-	if($('#formdata').isValid({requiredFields:''},conf,true)){
+		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		} else {
@@ -1439,6 +1442,12 @@ $(document).ready(function () {
 
 		enableForm('#formdata');
 		rdonly('#formdata');
+
+		dialog_reqdept.off();
+		dialog_purreqno.off();
+
+		$("#purordhd_reqdept,#purordhd_purreqno").prop('readonly',true);
+
 		$(".noti").empty();
 		refreshGrid("#jqGrid2", urlParam2);
 	});
@@ -1494,7 +1503,9 @@ $(document).ready(function () {
 
 	function onall_editfunc(){
 		if($('#purordhd_purreqno').val()!=''){
-    		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
+    		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
+
+			dialog_pouom.on();
 
 		}else{
 			dialog_pricecode.on();//start binding event on jqgrid2

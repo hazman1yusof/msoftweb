@@ -247,6 +247,10 @@
 
 				// $('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 			},
+			beforeRequest: function(){
+				refreshGrid("#jqGrid3",null,"kosongkan");
+				refreshGrid("#jqGridPkg3",null,"kosongkan");
+			}
 		});
 
 		/////////////////////////////populate data for dropdown search By////////////////////////////
@@ -1286,10 +1290,7 @@
 					hide_init=1;
 					hideatdialogForm_jqGrid3(false);
 				}
-			},
-			beforeSubmit: function(postdata, rowid){ 
-				// dialog_deptcodedtl.check(errorField);
-		 	}
+			}
 		});
 		var hide_init=0;
 
@@ -1583,9 +1584,9 @@
 					hideatdialogForm_jqGridPkg3(false);
 				}
 			},
-			beforeSubmit: function(postdata, rowid){ 
-				// dialog_deptcodedtl.check(errorField);
-		 	}
+		 	beforeRequest: function(){
+				refreshGrid("#jqGrid4",null,"kosongkan");
+			}
 		});
 		var hide_init_pkg=0;
 

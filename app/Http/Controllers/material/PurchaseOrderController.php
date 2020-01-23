@@ -102,6 +102,7 @@ class PurchaseOrderController extends defaultController
 
             $totalAmount = 0;
             if(!empty($request->referral)){
+
                 ////ni kalu dia amik dari pr
                 ////amik detail dari pr sana, save dkt po detail, amik total amount
                 $totalAmount = $this->save_dt_from_othr_pr($request->referral,$recno);
@@ -181,7 +182,6 @@ class PurchaseOrderController extends defaultController
             }
         }else{
             DB::beginTransaction();
-
             try{
                 // ni edit kalu copy utk do dari existing po
                 //1. update po.delordno lama jadi 0, kalu do yang dulu pon copy existing po 
@@ -228,7 +228,7 @@ class PurchaseOrderController extends defaultController
                 $responce->totalAmount = $totalAmount;
                 echo json_encode($responce);
 
-                DB::commit();
+                // DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
 
@@ -733,7 +733,7 @@ class PurchaseOrderController extends defaultController
         }
     }
 
-public function verify(Request $request){
+    public function verify(Request $request){
          DB::beginTransaction();
 
         try{

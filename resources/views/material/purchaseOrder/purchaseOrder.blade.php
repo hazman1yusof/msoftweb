@@ -28,6 +28,12 @@ i.fa {
 	overflow: auto;
 }
 
+.whtspc_wrap{
+	white-space: pre-wrap !important;
+}
+
+#more {display: none;}
+
 @endsection
 
 @section('body')

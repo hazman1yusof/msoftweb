@@ -67,6 +67,22 @@ class ChargeMasterDetailController extends defaultController
                 $request->addchg = null;
             }
 
+            $chgmast = DB::table('hisdb.chgmast')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('chgcode','=',$request->chgcode);
+
+            if(!$chgmast->exists()){
+                throw new \Exception('chgmast not exist', 500);
+            }
+
+            $chgmast_chgtype = strtoupper($chgmast->first()->chgtype);
+
+            if($chgmast_chgtype == 'PKG'){
+                $pkgstatus = 1;
+            }else{
+                $pkgstatus = 0;
+            }
+
             DB::table('hisdb.chgprice')
                 ->insert([
                     'lineno_' => $li,
@@ -84,6 +100,7 @@ class ChargeMasterDetailController extends defaultController
                     'autopull' => $request->autopull,
                     'addchg' => $request->addchg,
                     'uom' => $request->uom,
+                    'pkgstatus' => $pkgstatus,
                     'recstatus' => 'A',
                     'units' => session('unit'),
                     'adduser' => session('username'), 

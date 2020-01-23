@@ -44,8 +44,8 @@ class PurchaseOrderDetailController extends defaultController
 
     public function table(Request $request)
     {   
-        switch($request->oper){
-            case 'PurchaseOrderDetail':
+        switch($request->action){
+            case 'get_table_dtl':
                 // dd('asd');
                 return $this->PurchaseOrderDetail($request);
             default:
@@ -77,6 +77,7 @@ class PurchaseOrderDetailController extends defaultController
             }
             
         }
+        // dd($paginate->items());
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
