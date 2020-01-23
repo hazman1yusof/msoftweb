@@ -26,11 +26,10 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
-		action: 'get_table_default',
-		url: '/util/get_table_default',
+		action: 'get_table',
+		url: '/bed/table',
 		field: '',
 		table_name: ['hisdb.bed AS b', 'hisdb.episode AS c'],
-
 		table_id: 'b_compcode',
 		sort_idno: true,
 		fixPost: 'true',
@@ -47,21 +46,20 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/bed/form",
 		colModel: [
-            { label: 'compcode', name: 'b_compcode', hidden: true },
-            { label: 'Bed Number', name: 'b_bednum', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Bed Type', name: 'b_bedtype', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Room', name: 'c_room', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Ward', name: 'c_ward', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Room Status', name: 'c_roomstatus', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'MRN', name: 'c_mrn', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Episode No', name: 'c_episno', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Patient Name', name: 'patname', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			//patient name nak baca daro table mana??
-            { label: 'Record Status', name: 'b_recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+            { label: 'compcode', name: 'compcode', hidden: true },
+            { label: 'Bed Number', name: 'bednum', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Bed Type', name: 'bedtype', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Room', name: 'room', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Ward', name: 'ward', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Room Status', name: 'occup', width: 15, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
+			{ label: 'MRN', name: 'mrn', width: 15, canSearch: true},
+			{ label: 'Episode No', name: 'episno', width: 15, canSearch: true},
+			{ label: 'Patient Name', name: 'name', width: 15, canSearch: true, classes: 'wrap'},
+            { label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"
 			}},
-			{ label: 'id', name: 'b_idno', width:10, hidden: true, key:true},
+			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
@@ -73,7 +71,7 @@ $(document).ready(function () {
 		],
 		autowidth: true,
 		multiSort: true,
-		sortname: 'b_idno',
+		sortname: 'idno',
 		sortorder: 'desc',
 		viewrecords: true,
 		loadonce: false,
@@ -93,6 +91,27 @@ $(document).ready(function () {
 			$("#jqGrid_iledit").click();
 		},
 	});
+
+	function formatteroccup(cellvalue, option, rowObject) {
+		if (cellvalue == '1') {
+			return 'OCCUPIED';
+		}else if (cellvalue == '0') {
+			return 'VACANT';
+		}else{
+			return 'VACANT';
+		}
+	}
+
+	////////////////////unformatter status////////////////////////////////////////
+	function unformatoccup(cellvalue, option, rowObject) {
+		if (cellvalue == 'OCCUPIED') {
+			return '1';
+		}else if (cellvalue == 'VACANT') {
+			return '0';
+		}else{
+			return '0';
+		}
+	}
 
 	var myEditOptions = {
 		keys: true,
@@ -117,14 +136,14 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
+			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-			console.log(data);
 
 			let editurl = "/bed/form?"+
 				$.param({
@@ -164,11 +183,11 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
+			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam2,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
-			console.log(errorField)
+			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
