@@ -62,7 +62,7 @@ class CompcodeController extends defaultController
                     //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
 //'lastipaddress' => strtoupper($request->lastipaddress),
-                    //'lastuser' => session('username'),
+                    //'lastuser' => strtoupper(session('username')),
                     //'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
@@ -90,7 +90,7 @@ class CompcodeController extends defaultController
                     'compcode' => strtoupper($request->compcode),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     //'lastipaddress' => strtoupper($request->lastipaddress),
-                    //'lastuser' => session('username'),
+                    //'lastuser' => strtoupper(session('username')),
                     //'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
@@ -107,7 +107,7 @@ class CompcodeController extends defaultController
             ->where('compcode','=',$request->compcode)
             ->update([  
                 'recstatus' => 'D',
-                'deluser' => session('username'),
+                'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }

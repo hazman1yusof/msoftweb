@@ -149,7 +149,7 @@ class assetregisterController extends defaultController
                         'nprefid' => $fatemp->nprefid,
                         'trandate' => $fatemp->trandate,
                         'compcode' => session('compcode'),
-                        'adduser' => session('username'),
+                        'adduser' => strtoupper(session('username')),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 

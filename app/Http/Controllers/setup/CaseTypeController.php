@@ -60,7 +60,7 @@ class CaseTypeController extends defaultController
                     'grpcasetype' => strtoupper($request->grpcasetype),
                     'recstatus' => strtoupper($request->recstatus),
                     'units' => strtoupper($request->units),
-                    'lastuser' => session('username'),
+                    'lastuser' => strtoupper(session('username')),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
@@ -86,8 +86,8 @@ class CaseTypeController extends defaultController
                     'recstatus' => strtoupper($request->recstatus),
                     'units' => strtoupper($request->units),
                     'idno' => strtoupper($request->idno),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'upduser' => strtoupper(session('username')),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
             DB::commit();
@@ -103,8 +103,8 @@ class CaseTypeController extends defaultController
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'D',
-                'lastuser' => session('username'),
-                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deluser' => strtoupper(session('username')),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }
 }

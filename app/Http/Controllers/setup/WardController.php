@@ -108,7 +108,7 @@ class WardController extends defaultController
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'D',
-                'deluser' => session('username'),
+                'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }
