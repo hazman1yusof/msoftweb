@@ -140,8 +140,8 @@ $(document).ready(function () {
 			{ label: 'Post Date', name: 'actdate', width: 25, },
 			{ label: 'Amount', name: 'amount', width: 30,  align: 'right',formatter:'currency'} ,//unformat:unformat2}
 			{ label: 'Status', name: 'recstatus', width: 20, },
-			{ label: 'Payment Mode', name: 'paymode', width: 30, },
-			{ label: 'Cheque No', name: 'cheqno', width: 40, },//formatter:formatterCheqnno, unformat:unformatterCheqnno
+			{ label: 'Payment Mode', name: 'paymode', width: 30, hidden:true },
+			{ label: 'Cheque No', name: 'cheqno', width: 40, hidden:true},//formatter:formatterCheqnno, unformat:unformatterCheqnno
 			{ label: 'Entered By', name: 'adduser', width: 35,  hidden:true},
 			{ label: 'Entered Date', name: 'adddate', width: 40,  hidden:true},
 			{ label: 'Remarks', name: 'remarks', width: 40, hidden:true},
