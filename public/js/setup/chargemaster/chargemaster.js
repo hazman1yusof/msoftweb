@@ -243,7 +243,7 @@
 				urlParam2.filterVal[1]=selrowData("#jqGrid").cm_chgcode;
 				refreshGrid("#jqGrid3",urlParam2);
 
-				$("#jqGrid4_c,#jqGridPkg3_c").hide();
+				$("#jqGrid4_c,#jqGridPkg3_c,#click_row").hide();
 				if(selrowData('#jqGrid').cm_chgtype == 'pkg' || selrowData('#jqGrid').cm_chgtype == 'PKG' ){
 					refreshGrid("#jqGridPkg3",urlParam2);
 					$("#jqGridPkg3_c").show();
@@ -251,7 +251,7 @@
 				} else {
 					refreshGrid("#jqGrid3",urlParam2);
 					$("#jqGrid3_c").show();
-					$("#jqGrid4_c,#jqGridPkg3_c").hide();
+					$("#jqGrid4_c,#jqGridPkg3_c,#click_row").hide();
 				}
 
 				$('#showpkgcode').text(selrowData("#jqGrid").cm_chgcode);//tukar kat depan tu
@@ -1595,7 +1595,7 @@
 				urlParam4.filterVal[2] = moment(selrowData("#jqGridPkg3").effdate, "DD/MM/YYYY").format("YYYY-MM-DD");
 
 				refreshGrid("#jqGrid4",urlParam4);
-				$("#jqGrid4_c").show();
+				$("#jqGrid4_c,#click_row").show();
 			},
 			gridComplete: function(){
 
@@ -2826,7 +2826,7 @@
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-		$("#jqGrid4_c,#jqGridPkg3_c").hide();
+		$("#jqGrid4_c,#jqGridPkg3_c,#click_row").hide();
 
 		$("#jqGrid3_panel").on("show.bs.collapse", function(){
 			$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));

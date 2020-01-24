@@ -153,11 +153,11 @@ input.uppercase {
   			</div>
 		</div>
 
-		<div class='click_row'>
+		<div class='click_row' id="click_row">
 			<label class="control-label">Package Code</label>
 			<span id="showpkgcode" style="display: block;">&nbsp</span>
 		</div>
-		<div class='click_row'>
+		<div class='click_row' id="click_row">
 			<label class="control-label">Description</label>
 			<span id="showpkgdesc" style="display: block;">&nbsp</span>
 		</div>
