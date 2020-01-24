@@ -153,6 +153,15 @@ input.uppercase {
   			</div>
 		</div>
 
+		<div class='click_row'>
+			<label class="control-label">Package Code</label>
+			<span id="showpkgcode" style="display: block;">&nbsp</span>
+		</div>
+		<div class='click_row'>
+			<label class="control-label">Description</label>
+			<span id="showpkgdesc" style="display: block;">&nbsp</span>
+		</div>
+
 		<div class="panel-group">
   			<div class="panel panel-default" id="jqGrid4_c">
     			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid4_panel">
