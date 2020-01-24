@@ -173,6 +173,24 @@
 			saveip:'true',
 			checkduplicate:'true'
 		};
+
+		function searchClick2(grid,form,urlParam){
+			$(form+' [name=Stext]').on( "keyup", function() {
+				delay(function(){
+					search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+					$('#showpkgcode').text("");//tukar kat depan tu
+					$('#showpkgdesc').text("");
+					refreshGrid("#jqGrid4",null,"kosongkan");
+				}, 500 );
+			});
+	
+			$(form+' [name=Scol]').on( "change", function() {
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				$('#showpkgcode').text("");//tukar kat depan tu
+				$('#showpkgdesc').text("");
+				refreshGrid("#jqGrid4",null,"kosongkan");
+			});
+		}
 			
 		/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 		$("#jqGrid").jqGrid({
@@ -235,6 +253,9 @@
 					$("#jqGrid3_c").show();
 					$("#jqGrid4_c,#jqGridPkg3_c").hide();
 				}
+
+				$('#showpkgcode').text(selrowData("#jqGrid").cm_chgcode);//tukar kat depan tu
+				$('#showpkgdesc').text(selrowData("#jqGrid").cm_description);
 
 			},
 			ondblClickRow: function(rowid, iRow, iCol, e){

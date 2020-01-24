@@ -139,7 +139,7 @@ $(document).ready(function () {
 	function searchClick2(grid,form,urlParam){
 		$(form+' [name=Stext]').on( "keyup", function() {
 			delay(function(){
-				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlPParam);
 				$('#showbilltype').text("");//tukar kat depan tu
 				$('#showbilldesc').text("");
 				refreshGrid("#jqGridsvc",null,"kosongkan");
