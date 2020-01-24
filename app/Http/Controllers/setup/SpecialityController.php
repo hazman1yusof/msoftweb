@@ -49,7 +49,7 @@ class SpecialityController extends defaultController
                             ->where('specialitycode','=',$request->specialitycode);
 
             if($speciality->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('hisdb.speciality')
@@ -71,7 +71,7 @@ class SpecialityController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -99,7 +99,7 @@ class SpecialityController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 

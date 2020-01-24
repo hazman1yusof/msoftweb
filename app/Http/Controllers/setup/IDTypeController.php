@@ -49,7 +49,7 @@ class IDTypeController extends defaultController
                             ->where('idtype','=',$request->idtype);
 
             if($addresstype->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('hisdb.idtype')
@@ -68,7 +68,7 @@ class IDTypeController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -94,7 +94,7 @@ class IDTypeController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
