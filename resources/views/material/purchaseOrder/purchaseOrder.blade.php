@@ -256,6 +256,7 @@ i.fa {
 									<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
+								  <span class="help-block"></span>
 							    </div>
 
                                 <label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 

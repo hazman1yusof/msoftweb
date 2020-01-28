@@ -25,7 +25,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency = new currencymode(['#purordhd_amount', '#purordhd_subamount']);
+	var mycurrency = new currencymode(['#purordhd_amount', '#purordhd_subamount','#purordhd_totamount']);
 	var radbuts=new checkradiobutton(['purordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
 
@@ -276,7 +276,7 @@ $(document).ready(function () {
 			{ label: 'authpersonid', name: 'purordhd_authpersonid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'authdate', name: 'purordhd_authdate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Remark', name: 'purordhd_remarks', width: 50, classes: 'wrap', hidden: true },
-			{ label: 'Status', name: 'purordhd_recstatus', width: 10 },
+			{ label: 'Status', name: 'purordhd_recstatus', width: 14 },
 			{ label: 'postedby', name: 'purordhd_postedby', width: 40, hidden:true},
 			{ label: 'postdate', name: 'purordhd_postdate', width: 40, hidden:true},
 			{ label: 'taxclaimable', name: 'purordhd_taxclaimable', width: 40, hidden:true},
@@ -1107,6 +1107,7 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			$('#purordhd_totamount').val(response.responseText);
 			$('#purordhd_subamount').val(response.responseText);
+			mycurrency.formatOn();
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
 	    	//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'add');
@@ -1280,10 +1281,10 @@ $(document).ready(function () {
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
-				// $('#amount').val(data);
-				console.log(data)
+
 				$('#purordhd_totamount').val(data);
 				$('#purordhd_subamount').val(data);
+				mycurrency.formatOn();
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
 			});
@@ -1642,22 +1643,22 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector'},
 			],
 			urlParam: {
-						filterCol:['recstatus', 'compcode', 'sector'],
-						filterVal:['A', 'session.compcode', 'session.unit']
-					},
-					ondblClickRow: function () {
-						$('#purordhd_purreqno').focus();
-					},
-					gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#purordhd_purreqno').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				filterCol:['recstatus', 'compcode', 'sector'],
+				filterVal:['A', 'session.compcode', 'session.unit']
+			},
+			ondblClickRow: function () {
+				$('#purordhd_purreqno').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purordhd_purreqno').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		}, {
 			title: "Select Request Department",
 			open: function(){
@@ -1862,14 +1863,15 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#purordhd_credcode").val(data['suppcode']);
-				$('#purordhd_credcode').focus();
+				dialog_credcode.check(errorField);
+				$('#purordhd_purdate').focus();
 			},
 			gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							$('#purordhd_credcode').focus();
+							$('#purordhd_purdate').focus();
 						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}

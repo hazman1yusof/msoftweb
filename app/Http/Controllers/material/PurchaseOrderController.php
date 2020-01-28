@@ -105,7 +105,7 @@ class PurchaseOrderController extends defaultController
 
                 ////ni kalu dia amik dari pr
                 ////amik detail dari pr sana, save dkt po detail, amik total amount
-                $totalAmount = $this->save_dt_from_othr_pr($request->referral,$recno);
+                $totalAmount = $this->save_dt_from_othr_pr($request->referral,$recno,$purordno);
 
                 $purreqno = $request->purordhd_purreqno;
                 // $purordno = $request->purordhd_purordno;
@@ -1044,9 +1044,9 @@ class PurchaseOrderController extends defaultController
 
      //    }
 
-    public function save_dt_from_othr_pr($refer_recno,$recno){
+    public function save_dt_from_othr_pr($refer_recno,$recno,$purordno){
         $pr_dt = DB::table('material.purreqdt')
-                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'pouom', 'qtyrequest', 'unitprice', 'taxcode','perdisc','amtdisc', 'amtslstax','amount','recstatus','remarks')
+                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'pouom', 'qtyrequest', 'unitprice', 'taxcode','perdisc','amtdisc', 'amtslstax','amount','netunitprice','totamount','recstatus','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
@@ -1070,6 +1070,9 @@ class PurchaseOrderController extends defaultController
                 'amtdisc' => $value->amtdisc, 
                 'amtslstax' => $value->amtslstax, 
                 'amount' => $value->amount, 
+                'totamount' => $value->totamount, 
+                'netunitprice' => $value->netunitprice, 
+                'purordno' => $purordno,
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now(), 
                 'recstatus' => 'A', 
@@ -1106,14 +1109,14 @@ class PurchaseOrderController extends defaultController
                             ->where('recno','=',$recno)
                             ->where('recstatus','<>','DELETE')
                             ->whereNull('unitprice')
-                            ->whereNull('pouom');
+                            ->orWhereNull('pouom');
 
         $purorddt_empty = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
                             ->where('recstatus','<>','DELETE')
                             ->where('unitprice','=','0')
-                            ->where('pouom','=','');
+                            ->orWhere('pouom','=','');
 
 
 

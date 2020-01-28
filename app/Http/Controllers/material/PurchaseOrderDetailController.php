@@ -399,22 +399,21 @@ class PurchaseOrderDetailController extends defaultController
     }
 
     function check_incompleted($recno){
+
         $incompleted = false;
         $purorddt_null = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
                             ->where('recstatus','<>','DELETE')
                             ->whereNull('unitprice')
-                            ->whereNull('pouom');
+                            ->orWhereNull('pouom');
 
         $purorddt_empty = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
                             ->where('recstatus','<>','DELETE')
-                            ->where('unitprice','=','0')
-                            ->where('pouom','=','');
-
-
+                            ->where('unitprice','=','0.00')
+                            ->orWhere('pouom','=','');              
 
         if($purorddt_null->exists() || $purorddt_empty->exists()){
             $incompleted = true;

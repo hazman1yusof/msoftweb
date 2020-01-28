@@ -722,7 +722,7 @@ $(document).ready(function () {
 			},
 			{
 				label: 'Tax Code', name: 'taxcode', width: 100, classes: 'wrap', editable: true,
-				editrules: { required: true, custom: true, custom_func: cust_rules },
+				editrules: { required: false, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
 				{
@@ -2008,7 +2008,7 @@ $(document).ready(function () {
 				}
 				
 			}
-		},'urlParam', 'radio', 'tab'
+		},'urlParam', 'radio', 'tab', false
 	);
 	dialog_taxcode.makedialog(false);
 
