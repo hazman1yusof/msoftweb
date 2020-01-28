@@ -570,7 +570,7 @@ function jqgrid_label_align_right(grid){
 }
 
 
-function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
+function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus",curr_recst = "OPEN"){
 	this.idno=idno
 	this.recstatus =recstatus;
 	this.checkall_ = false;
@@ -592,7 +592,7 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 			let rowdatas = $('#jqGrid').jqGrid ('getRowData');
 			rowdatas.forEach(function(rowdata,index){
 				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata[idno]);
-				if($.isEmptyObject(rowdata_jqgridsel) && rowdata[recstatus] == "OPEN"){
+				if($.isEmptyObject(rowdata_jqgridsel) && rowdata[recstatus] == curr_recst){
 					$('#jqGrid_selection').jqGrid ('addRowData', rowdata[idno],rowdata);
 					self.delete_function_on(rowdata[idno],index+1);
 				}

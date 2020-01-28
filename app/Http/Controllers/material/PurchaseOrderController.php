@@ -53,7 +53,7 @@ class PurchaseOrderController extends defaultController
                 return $this->approved($request);
             case 'approved_single':
                 return $this->approved_single($request);
-            case 'cancel':
+            case 'cancel_single':
                 return $this->cancel($request);
             case 'refresh_do':
                 return $this->refresh_do($request);
@@ -256,7 +256,7 @@ class PurchaseOrderController extends defaultController
 
                 /////////////part utk authorization/////////
                 $purordhd = DB::table("material.purordhd")
-                            ->where('idno','=',$idno);
+                            ->where('idno','=',$value);
 
                 $purordhd_get = $purordhd->first();
 
@@ -433,21 +433,6 @@ class PurchaseOrderController extends defaultController
 
         try{
 
-            $po_dt = DB::table('material.purorddt')
-                ->where('recno', '=', $request->recno)
-                ->where('compcode', '=', session('compcode'))
-                ->where('recstatus', '<>', 'DELETE')
-                ->get();
-
-            foreach ($po_dt as $key => $value) {
-                if($value->qtyorder != $value->qtyoutstand){
-                    DB::rollback();
-                        
-                    return response('Error: Please Cancel all DO before reopen', 500)
-                        ->header('Content-Type', 'text/plain');
-                }
-            }
-
             $purordhd = DB::table("material.purordhd")
                 ->where('idno','=',$request->idno);
 
@@ -520,25 +505,26 @@ class PurchaseOrderController extends defaultController
 
         try{
 
-            $po_dt = DB::table('material.purorddt')
-                ->where('recno', '=', $request->recno)
-                ->where('compcode', '=', session('compcode'))
-                ->where('recstatus', '<>', 'DELETE')
-                ->get();
-
-            foreach ($po_dt as $key => $value) {
-                if($value->qtyorder != $value->qtyoutstand){
-                    DB::rollback();
-                        
-                    return response('Error: Please Cancel all DO before reopen', 500)
-                        ->header('Content-Type', 'text/plain');
-                }
-            }
-
             $purordhd = DB::table("material.purordhd")
                 ->where('idno','=',$request->idno);
 
             $purordhd_get = $purordhd->first();
+
+
+            // $po_dt = DB::table('material.purorddt')
+            //     ->where('recno', '=', $purordhd_get->recno)
+            //     ->where('compcode', '=', session('compcode'))
+            //     ->where('recstatus', '<>', 'DELETE')
+            //     ->get();
+
+            // foreach ($po_dt as $key => $value) {
+            //     if($value->qtyorder != $value->qtyoutstand){
+            //         DB::rollback();
+                        
+            //         return response('Error: Please Cancel all DO before CANCEL', 500)
+            //             ->header('Content-Type', 'text/plain');
+            //     }
+            // }
 
             $purordhd->update([
                     'recstatus' => 'CANCELLED'
@@ -1089,6 +1075,8 @@ class PurchaseOrderController extends defaultController
                 'recstatus' => 'A', 
                 'remarks' => $value->remarks
             ]);
+
+            
         }
         ///2. calculate total amount from detail erlier
         $amount = DB::table('material.purorddt')
@@ -1106,7 +1094,48 @@ class PurchaseOrderController extends defaultController
                 'subamount' => $amount
             ]);
 
+        $this->check_incompleted($recno);
+
         return $amount;
+    }
+
+    function check_incompleted($recno){
+        $incompleted = false;
+        $purorddt_null = DB::table('material.purorddt')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$recno)
+                            ->where('recstatus','<>','DELETE')
+                            ->whereNull('unitprice')
+                            ->whereNull('pouom');
+
+        $purorddt_empty = DB::table('material.purorddt')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$recno)
+                            ->where('recstatus','<>','DELETE')
+                            ->where('unitprice','=','0')
+                            ->where('pouom','=','');
+
+
+
+        if($purorddt_null->exists() || $purorddt_empty->exists()){
+            $incompleted = true;
+        }
+
+        if($incompleted){
+            DB::table('material.purordhd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$recno)
+                    ->update([
+                        'recstatus' => 'INCOMPLETED'
+                    ]);
+        }else{
+            DB::table('material.purordhd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$recno)
+                    ->update([
+                        'recstatus' => 'OPEN'
+                    ]);
+        }
     }
 
     function sendemail($data){
