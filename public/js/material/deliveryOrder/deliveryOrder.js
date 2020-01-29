@@ -30,7 +30,6 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#delordhd_subamount','#delordhd_totamount', '#delordhd_TaxAmt', '#delordhd_amtdisc']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
-	var cbselect = new checkbox_selection("#jqGrid","Checkbox","delordhd_idno","delordhd_recstatus");
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#trandate"]);
@@ -174,6 +173,8 @@ $(document).ready(function () {
 			filterCol_urlParam = ['delordhd.compcode'];
 			filterVal_urlParam = ['session.compcode'];
 		}
+
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","delordhd_idno","delordhd_recstatus",recstatus_filter[0][0]);
 	
 	var urlParam={
 		action:'get_table_default',
@@ -387,10 +388,10 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
-			if(stat=='POSTED'){
-				$("#jqGridPager td[title='View Selected Row']").click();
-			}else{
+			if(stat=='OPEN' || stat=='INCOMPLETED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
+			}else{
+				$("#jqGridPager td[title='View Selected Row']").click();
 			}
 		},
 		gridComplete: function () {
@@ -484,6 +485,7 @@ $(document).ready(function () {
 		saveParam.oper = $(this).data("oper");
 		let obj={recno:selrowData('#jqGrid').delordhd_recno,_token:$('#_token').val()};
 		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
+			cbselect.empty_sel_tbl();
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
 			// alert(data.responseText);
@@ -959,6 +961,7 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
+		
 		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){

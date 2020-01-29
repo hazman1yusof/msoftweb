@@ -25,10 +25,9 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency = new currencymode(['#purordhd_amount', '#purordhd_subamount']);
+	var mycurrency = new currencymode(['#purordhd_amount', '#purordhd_subamount','#purordhd_totamount']);
 	var radbuts=new checkradiobutton(['purordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
-	var cbselect = new checkbox_selection("#jqGrid","Checkbox","purordhd_idno","purordhd_recstatus");
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#purdate"]);
@@ -170,7 +169,7 @@ $(document).ready(function () {
 
 	var recstatus_filter = [['OPEN','REQUEST']];
 	if($("#recstatus_use").val() == 'ALL'){
-		recstatus_filter = [['OPEN','REQUEST','SUPPORT','VERIFIED','APPROVED','CANCELLED']];
+		recstatus_filter = [['OPEN','REQUEST','SUPPORT','INCOMPLETED','VERIFIED','APPROVED','CANCELLED']];
 		filterCol_urlParam = ['purordhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
 	}else if($("#recstatus_use").val() == 'SUPPORT'){
@@ -182,10 +181,11 @@ $(document).ready(function () {
 		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}else if($("#recstatus_use").val() == 'APPROVED'){
-		recstatus_filter = [['VERIFIED','APPROVED']];
+		recstatus_filter = [['VERIFIED']];
 		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","purordhd_idno","purordhd_recstatus",recstatus_filter[0][0]);
 
 	var urlParam = {
 		action: 'get_table_default',
@@ -276,7 +276,7 @@ $(document).ready(function () {
 			{ label: 'authpersonid', name: 'purordhd_authpersonid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'authdate', name: 'purordhd_authdate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Remark', name: 'purordhd_remarks', width: 50, classes: 'wrap', hidden: true },
-			{ label: 'Status', name: 'purordhd_recstatus', width: 10 },
+			{ label: 'Status', name: 'purordhd_recstatus', width: 14 },
 			{ label: 'postedby', name: 'purordhd_postedby', width: 40, hidden:true},
 			{ label: 'postdate', name: 'purordhd_postdate', width: 40, hidden:true},
 			{ label: 'taxclaimable', name: 'purordhd_taxclaimable', width: 40, hidden:true},
@@ -349,19 +349,15 @@ $(document).ready(function () {
 
             $("#pdfgen1").attr('href','./purchaseOrder/showpdf?recno='+selrowData("#jqGrid").purordhd_recno);
 
-            if(stat=='OPEN'){
-				$("#jqGridPager td[title='Edit Selected Row']").show();
-			}else{
-				$("#jqGridPager td[title='Edit Selected Row']").hide();
-			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
-			if(stat=='POSTED'){
-				$("#jqGridPager td[title='View Selected Row']").click();
-			}else{
+			if(stat=='OPEN' || stat=='INCOMPLETED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
+			}else{
+				$("#jqGridPager td[title='View Selected Row']").click();
 			}
+
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
@@ -473,7 +469,7 @@ $(document).ready(function () {
 		});
 	});*/
 
-	$("#but_reopen_jq,#but_post_single_jq").click(function(){
+	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
 
 		var idno = selrowData('#jqGrid').purordhd_idno;
 		var obj={};
@@ -491,7 +487,7 @@ $(document).ready(function () {
 	});
 
 
-	$("#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq").click(function(){
+	$("#but_post_jq").click(function(){
 		var idno_array = [];
 	
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
@@ -501,6 +497,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		
 		$.post( '/purchaseOrder/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
@@ -1009,9 +1006,10 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
-		if($("#recstatus_use").val() != 'ALL' && options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+
+		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if($("#recstatus_use").val() != 'ALL' && options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
 			return ' ';
@@ -1075,7 +1073,6 @@ $(document).ready(function () {
         	if($('#purordhd_purreqno').val()!=''&& $("#jqGrid2_iladd").css('display') == 'none' ){
         		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
 
-
 				dialog_pouom.on();
 
 			}else{
@@ -1110,6 +1107,7 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			$('#purordhd_totamount').val(response.responseText);
 			$('#purordhd_subamount').val(response.responseText);
+			mycurrency.formatOn();
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
 	    	//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'add');
@@ -1234,6 +1232,11 @@ $(document).ready(function () {
 
 			var jqgrid2_data = [];
 			mycurrency2.formatOff();
+
+			if(errorField.length>0){
+				return false;
+			}
+
 		    for (var i = 0; i < ids.length; i++) {
 
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
@@ -1278,7 +1281,10 @@ $(document).ready(function () {
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
-				// $('#amount').val(data);
+
+				$('#purordhd_totamount').val(data);
+				$('#purordhd_subamount').val(data);
+				mycurrency.formatOn();
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
 			});
@@ -1527,6 +1533,8 @@ $(document).ready(function () {
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
 	var mycurrency2 =new currencymode([]);
 	function calculate_line_totgst_and_totamt(event) {
+
+        mycurrency2.formatOff();
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
        
@@ -1635,22 +1643,22 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector'},
 			],
 			urlParam: {
-						filterCol:['recstatus', 'compcode', 'sector'],
-						filterVal:['A', 'session.compcode', 'session.unit']
-					},
-					ondblClickRow: function () {
-						$('#purordhd_purreqno').focus();
-					},
-					gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#purordhd_purreqno').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				filterCol:['recstatus', 'compcode', 'sector'],
+				filterVal:['A', 'session.compcode', 'session.unit']
+			},
+			ondblClickRow: function () {
+				$('#purordhd_purreqno').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purordhd_purreqno').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		}, {
 			title: "Select Request Department",
 			open: function(){
@@ -1855,14 +1863,15 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#purordhd_credcode").val(data['suppcode']);
-				$('#purordhd_credcode').focus();
+				dialog_credcode.check(errorField);
+				$('#purordhd_purdate').focus();
 			},
 			gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							$('#purordhd_credcode').focus();
+							$('#purordhd_purdate').focus();
 						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}

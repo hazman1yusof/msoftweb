@@ -48,7 +48,7 @@ class LocationController extends defaultController
                             ->where('loccode','=',$request->loccode);
 
             if($location->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('sysdb.location')
@@ -68,7 +68,7 @@ class LocationController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -94,7 +94,7 @@ class LocationController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 

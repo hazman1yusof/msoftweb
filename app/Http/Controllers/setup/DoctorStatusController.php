@@ -49,7 +49,7 @@ class DoctorStatusController extends defaultController
                             ->where('statuscode','=',$request->statuscode);
 
             if($docstatus->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('hisdb.docstatus')
@@ -69,7 +69,7 @@ class DoctorStatusController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -95,7 +95,7 @@ class DoctorStatusController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 

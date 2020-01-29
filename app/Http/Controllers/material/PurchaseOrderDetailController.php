@@ -255,6 +255,8 @@ class PurchaseOrderDetailController extends defaultController
                     'subamount'=> $totalAmount, 
                     'TaxAmt' => $tot_gst
                 ]);
+
+            $this->check_incompleted($request->recno);
             
             echo $totalAmount;
 
@@ -329,6 +331,8 @@ class PurchaseOrderDetailController extends defaultController
                     'subamount'=> $totalAmount, 
                     'TaxAmt' => $tot_gst
                 ]);
+
+            $this->check_incompleted($request->recno);
             
             echo $totalAmount;
 
@@ -379,6 +383,8 @@ class PurchaseOrderDetailController extends defaultController
                     'TaxAmt' => $tot_gst
                 ]);
 
+            $this->check_incompleted($request->recno);
+
             echo $totalAmount;
 
             DB::commit();
@@ -390,6 +396,44 @@ class PurchaseOrderDetailController extends defaultController
         }
 
         
+    }
+
+    function check_incompleted($recno){
+
+        $incompleted = false;
+        $purorddt_null = DB::table('material.purorddt')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$recno)
+                            ->where('recstatus','<>','DELETE')
+                            ->whereNull('unitprice')
+                            ->orWhereNull('pouom');
+
+        $purorddt_empty = DB::table('material.purorddt')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$recno)
+                            ->where('recstatus','<>','DELETE')
+                            ->where('unitprice','=','0.00')
+                            ->orWhere('pouom','=','');              
+
+        if($purorddt_null->exists() || $purorddt_empty->exists()){
+            $incompleted = true;
+        }
+
+        if($incompleted){
+            DB::table('material.purordhd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$recno)
+                    ->update([
+                        'recstatus' => 'INCOMPLETED'
+                    ]);
+        }else{
+            DB::table('material.purordhd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$recno)
+                    ->update([
+                        'recstatus' => 'OPEN'
+                    ]);
+        }
     }
 
 }
