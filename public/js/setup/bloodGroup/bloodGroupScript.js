@@ -104,10 +104,11 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
+			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
@@ -151,11 +152,12 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
-			console.log(errorField)
+			$('#p_error').text('');
+		//	console.log(errorField)
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
@@ -244,6 +246,4 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam);
-	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 });

@@ -28,6 +28,10 @@ input.uppercase {
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
 						</div>
+
+						<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
+					  		<p id="p_error"></p>
+					  	</div>
 		            </div>
 				</div>
 			</fieldset> 
