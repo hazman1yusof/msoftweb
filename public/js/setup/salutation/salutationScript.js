@@ -99,10 +99,11 @@
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
+			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
@@ -146,10 +147,11 @@
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
 			console.log(errorField)
 			if(errorField.length>0)return false;
 

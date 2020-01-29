@@ -377,15 +377,16 @@ $(document).ready(function () {
 	// 	});
 	// });
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+		$(this).attr('disabled',true);
 
 		var idno = selrowData('#jqGrid').purreqhd_idno;
 		var obj={};
 		obj.idno = idno;
 		obj._token = $('#_token').val();
 		obj.oper = $(this).data('oper')+'_single';
-
 		$.post( '/purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
+			$(this).attr('disabled',false);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
 		}).success(function(data){
@@ -395,6 +396,7 @@ $(document).ready(function () {
 
 
 	$("#but_post_jq").click(function(){
+		$(this).attr('disabled',true);
 		var idno_array = [];
 	
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
@@ -405,6 +407,7 @@ $(document).ready(function () {
 		
 		$.post( '/purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
+			$(this).attr('disabled',false);
 			cbselect.empty_sel_tbl();
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
@@ -426,6 +429,7 @@ $(document).ready(function () {
 			alert(data.responseJSON.message);
 			$('.noti').text(data.responseJSON.message);
 		}).done(function (data) {
+			$("#saveDetailLabel").attr('disabled',false)
 			unsaved = false;
 			hideatdialogForm(false);
 
@@ -779,7 +783,7 @@ $(document).ready(function () {
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 80, formatter: formatterRemarks, unformat: unformatRemarks },
 			{ label: 'Remarks', name: 'remarks', hidden: true },
-			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap', hidden: false },
+			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'wrap', hidden: false },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'prdept', name: 'prdept', width: 20, classes: 'wrap', hidden:true},
@@ -796,7 +800,18 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
-		loadComplete: function(){
+		loadComplete: function(data){
+			data.rows.forEach(function(element){
+				$('input').on('beforeValidation', function(value, lang, config) {
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+								element.callback_param[0],
+								element.callback_param[1],
+								element.callback_param[2]
+						)
+					});
+				});
+			});
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
@@ -1256,6 +1271,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function () {
+		$("#saveDetailLabel").attr('disabled',true)
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -1277,17 +1293,17 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
 	$("#saveHeaderLabel").click(function () {
-			emptyFormdata(errorField, '#formdata2');
-			hideatdialogForm(true);
-			dialog_reqdept.on();
-			dialog_prdept.on();
-			dialog_suppcode.on();
+		emptyFormdata(errorField, '#formdata2');
+		hideatdialogForm(true);
+		dialog_reqdept.on();
+		dialog_prdept.on();
+		dialog_suppcode.on();
 
-			enableForm('#formdata');
-			rdonly('#formdata');
-			$(".noti").empty();
-			refreshGrid("#jqGrid2", urlParam2);
-		});
+		enableForm('#formdata');
+		rdonly('#formdata');
+		$(".noti").empty();
+		refreshGrid("#jqGrid2", urlParam2);
+	});
 
 	/////////////calculate conv fac//////////////////////////////////
 	function calculate_conversion_factor(event) {

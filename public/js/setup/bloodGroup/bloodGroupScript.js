@@ -32,14 +32,14 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'hisdb.bloodgroup',
 		table_id: 'bloodcode',
-		//sort_idno: true
+		
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/bloodgroup/form",
+		editurl: "/bloodGroup/form",
 		colModel: [
 
 			{ label: 'compcode', name: 'compcode', hidden: true },
@@ -104,16 +104,17 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
+			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
 
-			let editurl = "/bloodgroup/form?"+
+			let editurl = "/bloodGroup/form?"+
 				$.param({
 					action: 'bloodgroup_save',
 				});
@@ -151,17 +152,18 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
-			console.log(errorField)
+			$('#p_error').text('');
+		//	console.log(errorField)
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/bloodgroup/form?"+
+			let editurl = "/bloodGroup/form?"+
 				$.param({
 					action: 'bloodgroup_save',
 				});
@@ -211,7 +213,7 @@ $(document).ready(function () {
 								bloodcode: $('#bloodcode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/bloodgroup/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "/bloodGroup/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
@@ -244,6 +246,4 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam);
-	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 });
