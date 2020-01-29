@@ -1515,10 +1515,10 @@ $.jgrid.extend({
 });
 
 
-function seemoreFunction() {
-  var dots = document.getElementById("dots");
-  var moreText = document.getElementById("more");
-  var btnText = document.getElementById("moreBtn");
+function seemoreFunction(dots,more,morebtn) {
+  var dots = document.getElementById(dots);
+  var moreText = document.getElementById(more);
+  var btnText = document.getElementById(morebtn);
 
   if (dots.style.display === "none") {
     dots.style.display = "inline";
