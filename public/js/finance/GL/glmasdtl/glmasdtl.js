@@ -307,7 +307,7 @@
 					mymodal.hide();
 					if(!$.isEmptyObject(data.rows)){
 						data.rows.forEach(function(obj){
-							obj.open="<i class='fa fa-folder-open-o fa-2x' </i>"
+							obj.open="<i class='fa fa-folder-open-o' </i>"
 							obj.postdate = moment(obj.postdate).format("DD-MM-YYYY");
 							obj.dramount = numeral(obj.dramount).format('0,0.00');
 							obj.cramount = numeral('0').format('0,0.00');
@@ -344,7 +344,7 @@
 					mymodal.hide();
 					if(!$.isEmptyObject(data.rows)){
 						data.rows.forEach(function(obj){
-							obj.open="<i class='fa fa-folder-open-o fa-2x' </i>"
+							obj.open="<i class='fa fa-folder-open-o' </i>"
 							obj.postdate = moment(obj.postdate).format("DD-MM-YYYY");
 							obj.cramount = numeral(obj.cramount).format('0,0.00');
 							obj.dramount = numeral('0').format('0,0.00');

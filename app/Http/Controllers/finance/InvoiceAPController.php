@@ -264,7 +264,13 @@ use Carbon\Carbon;
 
     public function gltran($auditno){
         $apacthdr_obj = DB::table('finance.apacthdr')
+                            ->where('compcode','=',session('compcode'))
                             ->where('auditno','=',$auditno)
+                            ->first();
+
+        $supp_obj = DB::table('material.supplier')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('suppcode','=',$apacthdr_obj->suppcode)
                             ->first();
 
         //amik yearperiod dari delordhd
@@ -284,7 +290,7 @@ use Carbon\Carbon;
                 'source' => $apacthdr_obj->source,
                 'trantype' => $apacthdr_obj->trantype,
                 'reference' => $apacthdr_obj->document,
-                'description' => $apacthdr_obj->remarks, //suppliercode + suppliername
+                'description' => $supp_obj->SuppCode.' '.$supp_obj->Name, //suppliercode + suppliername
                 'postdate' => $apacthdr_obj->recdate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,
