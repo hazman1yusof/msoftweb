@@ -266,10 +266,11 @@ $(document).ready(function () {
 	$("#but_cancel_jq,#but_post_jq").click(function(){
 		saveParam.oper = $(this).data('oper');
 		let obj={
+			idno:selrowData('#jqGrid').idno,
 			auditno:selrowData('#jqGrid').auditno,
 			_token:$('#_token').val(),
 		};
-		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
+		$.post("directPayment/form?" + $.param(saveParam),obj,function (data) {
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
 			alert(data.responseText);
