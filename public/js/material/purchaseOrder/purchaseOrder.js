@@ -169,7 +169,7 @@ $(document).ready(function () {
 
 	var recstatus_filter = [['OPEN','REQUEST']];
 	if($("#recstatus_use").val() == 'ALL'){
-		recstatus_filter = [['OPEN','REQUEST','SUPPORT','INCOMPLETED','VERIFIED','APPROVED','CANCELLED']];
+		recstatus_filter = [['OPEN','REQUEST','SUPPORT','INCOMPLETED','VERIFIED','APPROVED','CANCELLED','COMPLETED','PARTIAL']];
 		filterCol_urlParam = ['purordhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
 	}else if($("#recstatus_use").val() == 'SUPPORT'){

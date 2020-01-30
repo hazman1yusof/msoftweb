@@ -264,6 +264,17 @@ $(document).ready(function () {
 				{	label: 'RaceCode', name: 'pt_RaceCode', width: 200, classes: 'pointer',hidden:true},
 				{	label: 'Description', name: 'rc_description', width: 200, classes: 'pointer',hidden:true},
 			],
+			urlParam: {
+				fixPost:"true",
+				table_id : "none_",
+				filterCol : ['pt.compcode'],
+				filterVal : ['9A'],
+				join_type : ['LEFT JOIN'],
+				join_onCol : ['pt.RaceCode'],
+				join_onVal : ['rc.code'],
+				join_filterCol : [['pt.compcode on = '],[]],
+				join_filterVal : [['rc.compcode'],[]],
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_mrn.gridname);
 				$("#registerform input[name='MRN']").val(data['pt_MRN']);
@@ -290,7 +301,7 @@ $(document).ready(function () {
 				dialog_mrn.urlParam.join_filterCol = [['pt.compcode on ='],[]];
 				dialog_mrn.urlParam.join_filterVal = [['rc.compcode'],[]];
 			},
-		}, 'none','dropdown'
+		}, 'none','dropdown','tab'
 	);
 	dialog_mrn.makedialog(true);
 
@@ -303,6 +314,12 @@ $(document).ready(function () {
 				// {	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
+			urlParam:{
+
+				filterCol : ['compcode'],
+				filterVal : ['9A']
+
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_race.gridname);
 				$("#registerform input[name='description_race']").val(data['description']);
@@ -328,6 +345,12 @@ $(document).ready(function () {
 				{	label: 'Debtor', name: 'debtortycode', width: 100, classes: 'pointer', canSearch: true, or_search: true },
 				{	label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 			],
+			urlParam:{
+
+				filterCol : ['compcode'],
+				filterVal : ['9A']
+				
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_financeclass.gridname);
 				if(data['debtortycode'] == "PT"){
@@ -361,6 +384,11 @@ $(document).ready(function () {
 				{	label: 'recstatus', name: 'recstatus', width: 200, classes: 'pointer',hidden:true},
 				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
+			urlParam:{
+				
+				filterCol : ['debtortype','compcode'],
+				filterVal : ['PT','9A']
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_payer.gridname);
 				$("#registerform input[name='payername']").val(data['name']);
@@ -405,6 +433,12 @@ $(document).ready(function () {
 				// {	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
+			urlParam:{
+
+				filterCol : ['compcode'],
+				filterVal : ['9A']
+				
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_billtype.gridname);
 				$("#registerform input[name='description_bt']").val(data['description']);
@@ -432,6 +466,12 @@ $(document).ready(function () {
 				// {	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				// {	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
+			urlParam:{
+
+				filterCol : ['compcode'],
+				filterVal : ['9A']
+				
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_doctor.gridname);
 				$("#registerform input[name='docname']").val(data['doctorname']);

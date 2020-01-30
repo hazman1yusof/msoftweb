@@ -284,7 +284,7 @@ use Carbon\Carbon;
                 'source' => $apacthdr_obj->source,
                 'trantype' => $apacthdr_obj->trantype,
                 'reference' => $apacthdr_obj->document,
-                'description' => $apacthdr_obj->remarks,
+                'description' => $apacthdr_obj->remarks, //suppliercode + suppliername
                 'postdate' => $apacthdr_obj->recdate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,

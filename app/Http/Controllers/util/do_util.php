@@ -239,7 +239,7 @@ class do_util extends defaultController{
                 'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
                 'trantype' => $delordhd_obj->trantype,
                 'reference' => $delordhd_obj->deldept .' '. $delordhd_obj->docno,
-                'description' => $delordhd_obj->suppcode,
+                'description' => $delordhd_obj->suppcode, //itemcode + product description
                 'postdate' => $delordhd_obj->trandate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,
