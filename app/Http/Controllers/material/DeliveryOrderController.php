@@ -436,7 +436,8 @@ class DeliveryOrderController extends defaultController
             } // habis looping untuk delorddt
 
             //--- 8. change recstatus to posted -dd--//
-            $this->chg_recstatus($request);
+            $this->chg_recstatus_do_then_po($request);
+
            
 
             $queries = DB::getQueryLog();
@@ -1099,6 +1100,11 @@ class DeliveryOrderController extends defaultController
                 ->where('recno', '=', $request->recno)
                 ->where('compcode', '=' ,session('compcode'))
                 ->first();
+
+        $do_hd = DB::table('material.delordhd')
+                ->where('recno', '=', $request->recno)
+                ->where('compcode', '=' ,session('compcode'))
+                ->update(['recstatus'  => 'POSTED']);
 
         if(!empty($do_hd->srcdocno)){
             $do_dt = DB::table('material.delorddt')
