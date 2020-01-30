@@ -436,25 +436,8 @@ class DeliveryOrderController extends defaultController
             } // habis looping untuk delorddt
 
             //--- 8. change recstatus to posted -dd--//
-            DB::table('material.delordhd')
-                ->where('recno','=',$request->recno)
-                ->where('unit','=',session('unit'))
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'postedby' => session('username'),
-                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'POSTED' 
-                ]);
-
-            DB::table('material.delorddt')
-                ->where('recno','=',$request->recno)
-                ->where('unit','=',session('unit'))
-                ->where('compcode','=',session('compcode'))
-                ->where('recstatus','!=','DELETE')
-                ->update([
-                    'recstatus' => 'POSTED' 
-                ]);
-            
+            $this->chg_recstatus($request);
+           
 
             $queries = DB::getQueryLog();
             dump($queries);
@@ -471,7 +454,7 @@ class DeliveryOrderController extends defaultController
 
     public function reopen(Request $request){
 
-         DB::beginTransaction();
+        DB::beginTransaction();
 
         try{
 
@@ -506,7 +489,7 @@ class DeliveryOrderController extends defaultController
 
     public function soft_cancel(Request $request){
 
-         DB::beginTransaction();
+        DB::beginTransaction();
 
         try{
 
@@ -540,7 +523,7 @@ class DeliveryOrderController extends defaultController
     }
 
     public function cancel(Request $request){
-         DB::beginTransaction();
+        DB::beginTransaction();
 
         try{
 
@@ -1108,6 +1091,38 @@ class DeliveryOrderController extends defaultController
                     ]);
                 }
             }
+        }
+    }
+
+    public function chg_recstatus_do_then_po(Request $request){
+        $do_hd = DB::table('material.delordhd')
+                ->where('recno', '=', $request->recno)
+                ->where('compcode', '=' ,session('compcode'))
+                ->first();
+
+        if(!empty($do_hd->srcdocno)){
+            $do_dt = DB::table('material.delorddt')
+                    ->where('recno', '=', $request->recno)
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('recstatus', '<>', 'DELETE')
+                    ->get();
+
+            $partial = false;
+            foreach ($do_dt as $key => $dodt) {
+                if($dodt->qtydelivered < $dodt->qtyorder){
+                    $partial = true;
+                }
+            }
+
+            if($partial = true){
+                $recstatus = 'PARTIAL';
+            }else{
+                $recstatus = 'COMPLETED';
+            }
+
+            $po_hd = DB::table('material.purordhd')
+                    ->where('purordno', '=', $do_hd->srcdocno)
+                    ->update(['recstatus'  => $recstatus]);
         }
     }
 }

@@ -918,6 +918,10 @@ class PurchaseRequestController extends defaultController
             ->where('recno','=',$recno)
             ->get();
 
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
         $totamount_expld = explode(".", (float)$purreqhd->totamount);
 
         $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
@@ -928,11 +932,11 @@ class PurchaseRequestController extends defaultController
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
 
-        $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm'));
+        $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company'));
         return $pdf->stream();      
 
         
-        return view('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm'));
+        return view('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company'));
     }
 
     function sendemail($data){

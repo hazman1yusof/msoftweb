@@ -519,6 +519,7 @@ $(document).ready(function () {
 		},'json').fail(function (data) {
 			alert(data.responseText);
 		}).done(function (data) {
+			$("#saveDetailLabel").attr('disabled',false)
 			unsaved = false;
 			hideatdialogForm(false);
 
@@ -538,6 +539,8 @@ $(document).ready(function () {
 			} else if (selfoper == 'edit') {
 				//doesnt need to do anything
 			}
+			
+			refreshGrid('#jqGrid2', urlParam2);
 			disableForm('#formdata');
 			
 		});
@@ -1408,6 +1411,7 @@ $(document).ready(function () {
 	}
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function () {
+		$("#saveDetailLabel").attr('disabled',true)
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
