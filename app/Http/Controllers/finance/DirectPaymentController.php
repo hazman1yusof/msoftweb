@@ -240,7 +240,7 @@ class DirectPaymentController extends defaultController
                             'dracc' => $gst->pvalue2,
                             'cracc' => $creditbank->glaccno,
                             'amount' => $amountgst,
-                            'idno' => $idno,
+                           // 'idno' => $idno,
                             'postdate' => $apacthdr_get->actdate,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),

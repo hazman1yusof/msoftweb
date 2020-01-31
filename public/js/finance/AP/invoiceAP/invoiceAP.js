@@ -1100,7 +1100,7 @@ $(document).ready(function () {
 				{label:'DO No',name:'delordno',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter },
-				{label:'pono',name:'srcdocno',width:400,classes:'pointer', hidden:true},
+				{label:'PO No',name:'srcdocno',width:400,classes:'pointer', hidden:false},
 				{label:'Amount',name:'amount',width:400,classes:'pointer',formatter: 'currency'},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},

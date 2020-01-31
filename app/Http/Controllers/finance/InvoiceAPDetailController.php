@@ -105,7 +105,7 @@ class InvoiceAPDetailController extends defaultController
                         ->where('document','=',$request->document);
 
             if($dupli->exists()){
-                throw new \Exception("document Number duplicate");
+                throw new \Exception("Document number duplicate");
             }
 
             ///2. insert detail
