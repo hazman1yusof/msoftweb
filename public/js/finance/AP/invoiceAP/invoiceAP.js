@@ -361,18 +361,19 @@ $(document).ready(function () {
 		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("IN");
+			
 		}else if(ttype1 == 'Debit_Note') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("DN");
 		}
 		
-		// if(($("#apacthdr_ttype option:selected" ).text()=='Supplier')){
-		// 	$('#save').hide();
-		// 	$('#ap_parent').show();
-		// }else {
-		// 	$('#save').show();
-		// 	$('#ap_parent').hide();
-		// }
+		if(($("#apacthdr_ttype option:selected" ).text()=='Supplier')){
+			$('#save').hide();
+			$('#ap_parent').show();
+		}else {
+			$('#save').show();
+			$('#ap_parent').hide();
+		}
 	});
 	
 	
