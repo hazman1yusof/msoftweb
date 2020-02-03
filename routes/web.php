@@ -499,6 +499,11 @@ Route::get('/pat_enq/get_entry','hisdb\PatEnqController@get_entry');
 Route::post('/pat_enq/post_entry','hisdb\PatEnqController@post_entry');
 Route::post('/pat_enq/save_patient','hisdb\PatEnqController@save_patient');
 
+//// Nursing page ///
+Route::get('/nursing','hisdb\NursingController@show');
+Route::get('/nursing/table','hisdb\NursingController@table');
+Route::post('/nursing/form','hisdb\NursingController@form');
+
 ///////////////////fixed asset setup////////////////////////////////////
 
 //// Fixed Asset Location setup page ///
