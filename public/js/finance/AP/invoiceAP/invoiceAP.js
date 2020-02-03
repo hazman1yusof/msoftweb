@@ -361,7 +361,7 @@ $(document).ready(function () {
 		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("IN");
-			
+
 		}else if(ttype1 == 'Debit_Note') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("DN");
@@ -512,9 +512,9 @@ $(document).ready(function () {
 					{ custom_element:documentCustomEdit,
 					custom_value:galGridCustomValue },
 			},
-			{ label: 'Purchase Order Number', name: 'reference', width: 200, edittype:'text', classes: 'wrap',  
-				editable:true,
-				editrules:{required: false},editoptions:{readonly: "readonly"},
+	
+			{ label: 'Purchase Order Number', name: 'reference', width: 200, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+				edittype:"text",
 			},
 			{ label: 'Amount', name: 'amount', width: 100, classes: 'wrap',
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
