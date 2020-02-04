@@ -357,7 +357,7 @@ $(document).ready(function () {
 	////////////////////selected///////////////
 
 	$('#apacthdr_ttype').on('change', function() {
-		let ttype1 = $("#apacthdr_ttype option:selected" ).val();
+		let ttype1 = $("#apacthdr_ttype option:selected").val();
 	
 		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
@@ -368,13 +368,14 @@ $(document).ready(function () {
 			$("#formdata :input[name='apacthdr_trantype']").val("DN");
 		}
 		
-		if(($("#apacthdr_ttype option:selected" ).text()=='Supplier')){
+		if(ttype1 == 'Supplier') {
 			$('#save').hide();
 			$('#ap_parent').show();
 		}else {
 			$('#save').show();
 			$('#ap_parent').hide();
 		}
+		
 	});
 	
 	

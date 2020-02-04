@@ -125,6 +125,8 @@ use Carbon\Carbon;
             'auditno' => $auditno,
             'trantype' => $request->trantype,
             'suppgroup' => $suppgroup,
+            'document' => strtoupper($request->apacthdr_document),
+            'remarks' => strtoupper($request->apacthdr_remarks),
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -173,6 +175,8 @@ use Carbon\Carbon;
         $array_update = [
             'unit' => session('unit'),
             'compcode' => session('compcode'),
+            'document' => strtoupper($request->apacthdr_document),
+            'remarks' => strtoupper($request->apacthdr_remarks),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
         ];
