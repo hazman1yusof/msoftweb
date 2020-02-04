@@ -170,332 +170,325 @@ legend.scheduler-border {
 						<div id="jqGridPagerTriageInfo"></div> -->
 
 						<form class='form-horizontal' style='width:99%' id='formdata2'>
+
 							<div class='col-md-6'>
-
-								<fieldset class="scheduler-border">
-
-									<legend class="scheduler-border">Information</legend> 
-
-									<div class="form-group">
-										<label class="col-md-1 control-label" for="time">Time</label>  
-										<div class="col-md-2">
-											<input id="time" name="time" type="text" class="form-control input-sm uppercase">
-										</div>
-
-										<label class="col-md-1 control-label" for="date">Date</label>  
-										<div class="col-md-2">
-											<input id="date" name="date" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-										</div>
-
-										<label class="col-md-3 control-label" for="tricolorzone">Triage Color Zone</label>  
-										<div class="col-md-3">
-											<div class='input-group'>
-												<input id="tricolorzone" name="tricolorzone" type="text" class="form-control input-sm uppercase">
-												<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-											</div>
-											<span class="help-block"></span>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-3 control-label" for="chiefcomplain">Chief Complain</label>  
-										<div class="col-md-9">
-											<textarea id="chiefcomplain" name="chiefcomplain" type="text" class="form-control input-sm uppercase"></textarea>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-3 control-label" for="medichistory">Medical History</label>  
-										<div class="col-md-9">
-											<textarea id="medichistory" name="medichistory" type="text" class="form-control input-sm uppercase"></textarea>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-3 control-label" for="surghistory">Surgical History</label>  
-										<div class="col-md-9">
-											<textarea id="surghistory" name="surghistory" type="text" class="form-control input-sm uppercase"></textarea>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-3 control-label" for="fammedichistory">Family Medical History</label>  
-										<div class="col-md-9">
-											<textarea id="fammedichistory" name="fammedichistory" type="text" class="form-control input-sm uppercase"></textarea>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-3 control-label" for="currmedic">Current Medication</label>  
-										<div class="col-md-9">
-											<textarea id="currmedic" name="currmedic" type="text" class="form-control input-sm uppercase"></textarea>
-										</div>
-									</div>
-
-									<fieldset class="scheduler-border">
-
-										<legend class="scheduler-border">Allergies</legend> 
+								<div class="panel panel-info">
+									<div class="panel-heading text-center">Information</div>
+									<div class="panel-body">
 
 										<div class="form-group">
-											<div class="form-check form-check-inline checkbox-inline" style="margin-left: 60px">
-												<input class="form-check-input" type="checkbox" id="drugs" value="drugs">
-												<label class="form-check-label" for="drugs">Drugs</label>
+											<label class="col-md-1 control-label" for="time">Time</label>  
+											<div class="col-md-2">
+												<input id="time" name="time" type="text" class="form-control input-sm uppercase">
 											</div>
 
-											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" id="plaster" value="plaster">
-												<label class="form-check-label" for="plaster">Plaster</label>
+											<label class="col-md-1 control-label" for="date">Date</label>  
+											<div class="col-md-2">
+												<input id="date" name="date" type="text" class="form-control input-sm uppercase" frozeOnEdit>
 											</div>
 
-											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" id="food" value="food">
-												<label class="form-check-label" for="food">Food</label>
-											</div>
-
-											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" id="environment" value="environment">
-												<label class="form-check-label" for="environment">Environment</label>
-											</div>
-
-											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" id="others" value="others">
-												<label class="form-check-label" for="others">Others</label>
+											<label class="col-md-3 control-label" for="tricolorzone">Triage Color Zone</label>  
+											<div class="col-md-3">
+												<div class='input-group'>
+													<input id="tricolorzone" name="tricolorzone" type="text" class="form-control input-sm uppercase">
+													<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+												</div>
+												<span class="help-block"></span>
 											</div>
 										</div>
 
 										<div class="form-group">
-											<label class="col-md-4 control-label" for="specify">If Others, Please specify:</label>  
-											<div class="col-md-8">
-												<textarea id="specify" name="specify" type="text" class="form-control input-sm uppercase"></textarea>
+											<label class="col-md-3 control-label" for="chiefcomplain">Chief Complain</label>  
+											<div class="col-md-9">
+												<textarea id="chiefcomplain" name="chiefcomplain" type="text" class="form-control input-sm uppercase"></textarea>
 											</div>
 										</div>
-										
-									</fieldset>
-									
-								</fieldset>
 
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="medichistory">Medical History</label>  
+											<div class="col-md-9">
+												<textarea id="medichistory" name="medichistory" type="text" class="form-control input-sm uppercase"></textarea>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="surghistory">Surgical History</label>  
+											<div class="col-md-9">
+												<textarea id="surghistory" name="surghistory" type="text" class="form-control input-sm uppercase"></textarea>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="fammedichistory">Family Medical History</label>  
+											<div class="col-md-9">
+												<textarea id="fammedichistory" name="fammedichistory" type="text" class="form-control input-sm uppercase"></textarea>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="currmedic">Current Medication</label>  
+											<div class="col-md-9">
+												<textarea id="currmedic" name="currmedic" type="text" class="form-control input-sm uppercase"></textarea>
+											</div>
+										</div>
+
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">Allergies</div>
+											<div class="panel-body">
+
+												<div class="form-group">
+													<div class="form-check form-check-inline checkbox-inline" style="margin-left: 60px">
+														<input class="form-check-input" type="checkbox" id="drugs" value="drugs">
+														<label class="form-check-label" for="drugs">Drugs</label>
+													</div>
+
+													<div class="form-check form-check-inline checkbox-inline">
+														<input class="form-check-input" type="checkbox" id="plaster" value="plaster">
+														<label class="form-check-label" for="plaster">Plaster</label>
+													</div>
+
+													<div class="form-check form-check-inline checkbox-inline">
+														<input class="form-check-input" type="checkbox" id="food" value="food">
+														<label class="form-check-label" for="food">Food</label>
+													</div>
+
+													<div class="form-check form-check-inline checkbox-inline">
+														<input class="form-check-input" type="checkbox" id="environment" value="environment">
+														<label class="form-check-label" for="environment">Environment</label>
+													</div>
+
+													<div class="form-check form-check-inline checkbox-inline">
+														<input class="form-check-input" type="checkbox" id="others" value="others">
+														<label class="form-check-label" for="others">Others</label>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label class="col-md-4 control-label" for="specify">If Others, Please specify:</label>  
+													<div class="col-md-8">
+														<textarea id="specify" name="specify" type="text" class="form-control input-sm uppercase"></textarea>
+													</div>
+												</div>
+
+											</div>
+										</div>
+
+									</div>
+								</div>
 							</div>
 
 							<div class='col-md-6'>
+								<div class="panel panel-info">
+									<div class="panel-heading text-center">Condition on Admission</div>
+									<div class="panel-body">
 
-								<fieldset class="scheduler-border">
+										<div class='col-md-6'>
+											<div class="panel panel-info">
+												<div class="panel-heading text-center">VITAL SIGN</div>
+												<div class="panel-body">
 
-									<legend class="scheduler-border">Condition on Admission</legend> 
-
-									<div class='col-md-6'>
-
-										<fieldset class="scheduler-border">
-
-											<legend class="scheduler-border">VITAL SIGN</legend> 
-											
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="temperature">Temperature</label>  
-												<div class="col-md-6 input-group" style="margin-left: 100px">
-													<input id="temperature" name="temperature" type="text" class="form-control input-sm uppercase">
-													<span class="input-group-addon">°C</span>
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="pulse">Pulse</label>  
-												<div class="col-md-6 input-group" style="margin-left: 100px">
-													<input id="pulse" name="pulse" type="text" class="form-control input-sm uppercase">
-													<span class="input-group-addon">/min</span>
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="respiration">Respiration</label>  
-												<div class="col-md-6 input-group" style="margin-left: 100px">
-													<input id="respiration" name="respiration" type="text" class="form-control input-sm uppercase">
-													<span class="input-group-addon">/min</span>
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="bloodpressure">Blood Pressure</label>
-												<!-- <div class="col-md-2 input-group" style="margin-left: 100px">
-													<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase"> 
-													<span class="input-group-addon">/mmHg</span>
-												</div> -->
-
-												<div class="row input-group" style="margin-left: 95px">
-													<div class="col-md-4" style="padding: 0 0 0 0">
-														<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase">
+													<div class="form-group">
+														<label class="col-md-3 control-label" for="temperature">Temperature</label>  
+														<div class="col-md-6 input-group" style="margin-left: 100px">
+															<input id="temperature" name="temperature" type="text" class="form-control input-sm uppercase">
+															<span class="input-group-addon">°C</span>
+														</div>
 													</div>
-													<label class="col-md-1 control-label">/</label> 
-													<div class="col-md-4" style="padding: 0 0 0 0">
-														<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase"> 
+
+													<div class="form-group">
+														<label class="col-md-3 control-label" for="pulse">Pulse</label>  
+														<div class="col-md-6 input-group" style="margin-left: 100px">
+															<input id="pulse" name="pulse" type="text" class="form-control input-sm uppercase">
+															<span class="input-group-addon">/min</span>
+														</div>
 													</div>
-													<span class="input-group-addon">/mmHg</span>
-												</div>
 
-											</div>
+													<div class="form-group">
+														<label class="col-md-3 control-label" for="respiration">Respiration</label>  
+														<div class="col-md-6 input-group" style="margin-left: 100px">
+															<input id="respiration" name="respiration" type="text" class="form-control input-sm uppercase">
+															<span class="input-group-addon">/min</span>
+														</div>
+													</div>
 
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="height">Height</label>  
-												<div class="col-md-6 input-group" style="margin-left: 100px">
-													<input id="height" name="height" type="text" class="form-control input-sm uppercase">
-													<span class="input-group-addon">cm</span>
+													<div class="form-group">
+														<label class="col-md-3 control-label" for="bloodpressure">Blood Pressure</label>
+														<!-- <div class="col-md-2 input-group" style="margin-left: 100px">
+															<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase"> 
+															<span class="input-group-addon">/mmHg</span>
+														</div> -->
+
+														<div class="row input-group" style="margin-left: 95px">
+															<div class="col-md-4" style="padding: 0 0 0 0">
+																<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase">
+															</div>
+															<label class="col-md-1 control-label">/</label> 
+															<div class="col-md-4" style="padding: 0 0 0 0">
+																<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase"> 
+															</div>
+															<span class="input-group-addon">/mmHg</span>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="col-md-3 control-label" for="height">Height</label>  
+														<div class="col-md-6 input-group" style="margin-left: 100px">
+															<input id="height" name="height" type="text" class="form-control input-sm uppercase">
+															<span class="input-group-addon">cm</span>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="col-md-3 control-label" for="weight">Weight</label>  
+														<div class="col-md-6 input-group" style="margin-left: 100px">
+															<input id="weight" name="weight" type="text" class="form-control input-sm uppercase">
+															<span class="input-group-addon">kg</span>
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<label class="col-md-3 control-label" for="GXT">GXT</label>  
+														<div class="col-md-6 input-group" style="margin-left: 100px">
+															<input id="GXT" name="GXT" type="text" class="form-control input-sm uppercase">
+															<span class="input-group-addon">mmOL</span>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="col-md-4 control-label" for="painscore">Pain Score</label>  
+														<div class="col-md-6 input-group" style="margin-left: 100px">
+															<input id="painscore" name="painscore" type="text" class="form-control input-sm uppercase">
+															<span class="input-group-addon">/10</span>
+														</div>
+													</div>
+
 												</div>
 											</div>
+										</div>
 
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="weight">Weight</label>  
-												<div class="col-md-6 input-group" style="margin-left: 100px">
-													<input id="weight" name="weight" type="text" class="form-control input-sm uppercase">
-													<span class="input-group-addon">kg</span>
+										<div class='col-md-6'>
+											<div class="panel panel-info">
+												<div class="panel-heading text-center">MODE OF ADMISSION</div>
+												<div class="panel-body">
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="walkIn" id="walkIn">
+														<label class="form-check-label" for="walkIn">Walk In</label>
+													</div>
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="wheelchair" id="wheelchair">
+														<label class="form-check-label" for="wheelchair">Wheel Chair</label>
+													</div>
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="trolley" id="trolley">
+														<label class="form-check-label" for="trolley">Trolley</label>
+													</div>
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="others" id="others">
+														<label class="form-check-label" for="others">Others</label>
+													</div>
+
 												</div>
 											</div>
-											
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="GXT">GXT</label>  
-												<div class="col-md-6 input-group" style="margin-left: 100px">
-													<input id="GXT" name="GXT" type="text" class="form-control input-sm uppercase">
-													<span class="input-group-addon">mmOL</span>
+										</div>
+
+										<div class='col-md-12'>
+											<div class="panel panel-info">
+												<div class="panel-heading text-center">LEVEL OF CONSCIOUSNESS</div>
+												<div class="panel-body">
+
+													<div class="form-group">
+														<div class="form-check form-check-inline checkbox-inline" style="margin-left: 80px">
+															<input class="form-check-input" type="checkbox" id="conscious" value="conscious">
+															<label class="form-check-label" for="conscious">Conscious</label>
+														</div>
+
+														<div class="form-check form-check-inline checkbox-inline">
+															<input class="form-check-input" type="checkbox" id="semiconscious" value="semiconscious">
+															<label class="form-check-label" for="semiconscious">SemiConscious</label>
+														</div>
+
+														<div class="form-check form-check-inline checkbox-inline">
+															<input class="form-check-input" type="checkbox" id="unconscious" value="unconscious">
+															<label class="form-check-label" for="unconscious">UnConscious</label>
+														</div>
+													</div>
+
 												</div>
 											</div>
+										</div>
 
-											<div class="form-group">
-												<label class="col-md-4 control-label" for="painscore">Pain Score</label>  
-												<div class="col-md-6 input-group" style="margin-left: 100px">
-													<input id="painscore" name="painscore" type="text" class="form-control input-sm uppercase">
-													<span class="input-group-addon">/10</span>
+										<div class='col-md-6'>
+											<div class="panel panel-info">
+												<div class="panel-heading text-center">MENTAL STATUS</div>
+												<div class="panel-body">
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="orientated" id="orientated">
+														<label class="form-check-label" for="orientated">Orientated</label>
+													</div>
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="confused" id="confused">
+														<label class="form-check-label" for="confused">Confused</label>
+													</div>
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="restless" id="restless">
+														<label class="form-check-label" for="restless">Restless</label>
+													</div>
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="aggressive" id="aggressive">
+														<label class="form-check-label" for="aggressive">Aggressive</label>
+													</div>
+
 												</div>
 											</div>
+										</div>
 
-										</fieldset>
-									
+										<div class='col-md-6'>
+											<div class="panel panel-info">
+												<div class="panel-heading text-center">EMOTIONAL STATUS</div>
+												<div class="panel-body">
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="calm" id="calm">
+														<label class="form-check-label" for="calm">Calm</label>
+													</div>
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="anxious" id="anxious">
+														<label class="form-check-label" for="anxious">Anxious</label>
+													</div>
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="distress" id="distress">
+														<label class="form-check-label" for="distress">Distress</label>
+													</div>
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="depressed" id="depressed">
+														<label class="form-check-label" for="depressed">Depressed</label>
+													</div>
+
+													<div class="form-check" style="margin-left: 80px">
+														<input class="form-check-input" type="checkbox" value="irritable" id="irritable">
+														<label class="form-check-label" for="irritable">Irritable</label>
+													</div>
+
+												</div>
+											</div>
+										</div>
+																		
 									</div>
-
-									<div class='col-md-6'>
-
-										<fieldset class="scheduler-border">
-
-											<legend class="scheduler-border">MODE OF ADMISSION</legend> 
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="walkIn" id="walkIn">
-												<label class="form-check-label" for="walkIn">Walk In</label>
-											</div>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="wheelchair" id="wheelchair">
-												<label class="form-check-label" for="wheelchair">Wheel Chair</label>
-											</div>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="trolley" id="trolley">
-												<label class="form-check-label" for="trolley">Trolley</label>
-											</div>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="others" id="others">
-												<label class="form-check-label" for="others">Others</label>
-											</div>
-
-										</fieldset>
-
-									</div>
-
-									<div class='col-md-12'>
-
-										<fieldset class="scheduler-border">
-
-											<legend class="scheduler-border">LEVEL OF CONSCIOUSNESS</legend> 
-
-											<div class="form-group">
-												<div class="form-check form-check-inline checkbox-inline" style="margin-left: 80px">
-													<input class="form-check-input" type="checkbox" id="conscious" value="conscious">
-													<label class="form-check-label" for="conscious">Conscious</label>
-												</div>
-
-												<div class="form-check form-check-inline checkbox-inline">
-													<input class="form-check-input" type="checkbox" id="semiconscious" value="semiconscious">
-													<label class="form-check-label" for="semiconscious">SemiConscious</label>
-												</div>
-
-												<div class="form-check form-check-inline checkbox-inline">
-													<input class="form-check-input" type="checkbox" id="unconscious" value="unconscious">
-													<label class="form-check-label" for="unconscious">UnConscious</label>
-												</div>
-											</div>
-
-										</fieldset>
-
-									</div>
-
-									<div class='col-md-6'>
-
-										<fieldset class="scheduler-border">
-
-											<legend class="scheduler-border">MENTAL STATUS</legend> 
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="orientated" id="orientated">
-												<label class="form-check-label" for="orientated">Orientated</label>
-											</div>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="confused" id="confused">
-												<label class="form-check-label" for="confused">Confused</label>
-											</div>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="restless" id="restless">
-												<label class="form-check-label" for="restless">Restless</label>
-											</div>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="aggressive" id="aggressive">
-												<label class="form-check-label" for="aggressive">Aggressive</label>
-											</div>
-
-										</fieldset>
-
-									</div>
-
-									<div class='col-md-6'>
-
-										<fieldset class="scheduler-border">
-
-											<legend class="scheduler-border">EMOTIONAL STATUS</legend>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="calm" id="calm">
-												<label class="form-check-label" for="calm">Calm</label>
-											</div>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="anxious" id="anxious">
-												<label class="form-check-label" for="anxious">Anxious</label>
-											</div>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="distress" id="distress">
-												<label class="form-check-label" for="distress">Distress</label>
-											</div>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="depressed" id="depressed">
-												<label class="form-check-label" for="depressed">Depressed</label>
-											</div>
-
-											<div class="form-check" style="margin-left: 80px">
-												<input class="form-check-input" type="checkbox" value="irritable" id="irritable">
-												<label class="form-check-label" for="irritable">Irritable</label>
-											</div>
-
-										</fieldset>
-
-									</div>
-
-								</fieldset>
-							
+								</div>
 							</div>
 
 						</form>
-
 
 					</div>
 				</div>
