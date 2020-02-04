@@ -123,7 +123,8 @@ use Carbon\Carbon;
         $array_insert = [
             'source' => 'AP',
             'auditno' => $auditno,
-            'trantype' => $request->trantype,
+            'trantype' => $request->apacthdr_trantype,
+            'ttype' => $request->apacthdr_ttype,
             'suppgroup' => $suppgroup,
             'document' => strtoupper($request->apacthdr_document),
             'remarks' => strtoupper($request->apacthdr_remarks),
@@ -134,6 +135,9 @@ use Carbon\Carbon;
         ];
 
         foreach ($field as $key => $value){
+            if($key == 'remarks' || $key == 'document'){
+                continue;
+            }
             $array_insert[$value] = $request[$request->field[$key]];
         }
 
@@ -175,6 +179,7 @@ use Carbon\Carbon;
         $array_update = [
             'unit' => session('unit'),
             'compcode' => session('compcode'),
+            'ttype' => $request->apacthdr_ttype,
             'document' => strtoupper($request->apacthdr_document),
             'remarks' => strtoupper($request->apacthdr_remarks),
             'upduser' => session('username'),
@@ -182,6 +187,9 @@ use Carbon\Carbon;
         ];
 
         foreach ($field as $key => $value) {
+            if($value == 'remarks' || $value == 'document'){
+                continue;
+            }
             $array_update[$value] = $request[$request->field[$key]];
         }
 

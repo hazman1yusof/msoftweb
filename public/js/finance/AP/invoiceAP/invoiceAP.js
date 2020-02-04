@@ -49,6 +49,7 @@ $(document).ready(function () {
 				counter_save=0;
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+				refreshGrid("#jqGrid2",urlParam2);
 				mycurrency.formatOnBlur();
 				switch (oper) {
 					case state = 'add':
@@ -120,24 +121,24 @@ $(document).ready(function () {
 				
 			},
 			close: function( event, ui ) {
-			addmore_jqgrid2.state = false;
-			addmore_jqgrid2.more = false;
-			//reset balik
-			parent_close_disabled(false);
-			emptyFormdata(errorField,'#formdata');
-			emptyFormdata(errorField,'#formdata2');
-			$('.my-alert').detach();
-			$("#formdata a").off();
-			dialog_supplier.off();
-			dialog_payto.off();
-			dialog_category.off();
-			dialog_department.off();
-			$(".noti").empty();
-			$("#refresh_jqGrid").click();
-			refreshGrid("#jqGrid2",null,"kosongkan");
-			//radbuts.reset();
-			errorField.length=0;
-		},
+				addmore_jqgrid2.state = false;
+				addmore_jqgrid2.more = false;
+				//reset balik
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#formdata');
+				emptyFormdata(errorField,'#formdata2');
+				$('.my-alert').detach();
+				$("#formdata a").off();
+				dialog_supplier.off();
+				dialog_payto.off();
+				dialog_category.off();
+				dialog_department.off();
+				$(".noti").empty();
+				$("#refresh_jqGrid").click();
+				refreshGrid("#jqGrid2",null,"kosongkan");
+				//radbuts.reset();
+				errorField.length=0;
+			},
 	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
@@ -204,6 +205,7 @@ $(document).ready(function () {
 		//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
+		{ label: 'ttype', name: 'apacthdr_ttype', width: 10, classes: 'wrap', hidden:true},
 		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 20, classes: 'wrap', canSearch: true},
 		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true},
 		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
@@ -490,7 +492,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['apdt.compcode','apdt.source','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
+		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
 		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
@@ -1025,15 +1027,8 @@ $(document).ready(function () {
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
 			],
 			urlParam: {
-					open: function(){
-						if (($('#apacthdr_ttype').val()=="Supplier")) {
-							filterCol:['recstatus', 'compcode', 'source', 'povalidate'];
-							filterVal:['A', 'session.compcode', 'CR', '1'];
-						} else {
-							filterCol:['recstatus', 'compcode', 'source', 'povalidate'];
-							filterVal:['A', 'session.compcode', 'CR', '0'];
-						}	
-					}	
+				filterCol:['recstatus', 'compcode', 'source', 'povalidate'],
+				filterVal:['A', 'session.compcode', 'CR', '0']
 			},
 		
 			ondblClickRow:function(){
