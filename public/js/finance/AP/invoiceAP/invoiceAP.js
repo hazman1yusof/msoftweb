@@ -28,6 +28,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#amount','#apacthdr_amount','#apacthdr_outamount']);
+	var mycurrency2 =new currencymode([]);
 	var fdl = new faster_detail_load();
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
@@ -611,6 +612,9 @@ $(document).ready(function () {
 
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
+        	mycurrency2.array.length = 0;
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']"]);
+
         	$("input[name='document']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
@@ -630,7 +634,7 @@ $(document).ready(function () {
         beforeSaveRow: function(options, rowid) {
 
         	//if(errorField.length>0)return false;
-
+        	mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			let editurl = "/invoiceAPDetail/form?"+
 				$.param({
@@ -698,15 +702,15 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-th-list",
 		title:"Edit All Row",
 		onClickButton: function(){
-			/*mycurrency2.array.length = 0;
+			mycurrency2.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 		    for (var i = 0; i < ids.length; i++) {
 
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
 		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
-		    }*/
-		   // onall_editfunc();
+		    }
+		   	onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -777,11 +781,12 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
-			case 'document':field=['delordno','srcdocno'];table="material.delordhd";case_='uomcode';break;
+			case 'document':field=['delordno','srcdocno'];table="material.delordhd";case_='document';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('invoiceAP',options,param,case_,cellvalue);
+		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
 
@@ -914,15 +919,13 @@ $(document).ready(function () {
 
 	});	
 
-	/*function onall_editfunc(){
+	function onall_editfunc(){
 		
+		dialog_document.on();//start binding event on jqgrid2
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		
-		
-		
 	}
-*/
 	
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
@@ -1099,9 +1102,10 @@ $(document).ready(function () {
 		'document',['material.delordhd'],"#jqGrid2 input[name='document']", errorField,
 		{	colModel:[
 				{label:'DO No',name:'delordno',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'PO No',name:'srcdocno',width:400,classes:'pointer'},
 				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter },
-				{label:'PO No',name:'srcdocno',width:400,classes:'pointer', hidden:false},
+				
 				{label:'Amount',name:'amount',width:400,classes:'pointer',formatter: 'currency'},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
@@ -1138,7 +1142,7 @@ $(document).ready(function () {
 			}
 		},'none'
 	);
-	dialog_document.makedialog(false);
+	dialog_document.makedialog(true);
 
 	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();

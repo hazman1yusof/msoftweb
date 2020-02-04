@@ -267,7 +267,7 @@ class InvoiceAPDetailController extends defaultController
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
                         'document' => $value['itemcode'],
-                        'reference' => $value['uomcode'],
+                        'reference' => $value['reference'],
                         'amount' => $value['amount'],
                         'dorecno' => $value['dorecno'],
                         'grnno' => $value['grnno'],
