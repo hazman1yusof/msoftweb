@@ -508,6 +508,7 @@ legend.scheduler-border {
 						<form class='form-horizontal' style='width:99%' id='formdata3'>
 
 							<div class='col-md-6'>
+
 								<div class='col-md-12'>
 									<div class="panel panel-info">
 										<div class="panel-heading text-center">BREATHING</div>
@@ -567,6 +568,7 @@ legend.scheduler-border {
 										</div>
 									</div>
 								</div>
+
 								<div class='col-md-12'>
 									<div class="panel panel-info">
 										<div class="panel-heading text-center">EATING/DRINKING</div>
@@ -592,6 +594,7 @@ legend.scheduler-border {
 										</div>
 									</div>
 								</div>
+
 								<div class='col-md-12'>
 									<div class="panel panel-info">
 										<div class="panel-heading text-center">ELIMINATION BOWEL</div>
@@ -627,6 +630,7 @@ legend.scheduler-border {
 										</div>
 									</div>
 								</div>
+
 								<div class='col-md-12'>
 									<div class="panel panel-info">
 										<div class="panel-heading text-center">BLADDER</div>
@@ -659,9 +663,11 @@ legend.scheduler-border {
 										</div>
 									</div>
 								</div>
+
 							</div>
 
 							<div class='col-md-6'>
+
 								<div class='col-md-12'>
 									<div class="panel panel-info">
 										<div class="panel-heading text-center">SLEEPING</div>
@@ -700,6 +706,7 @@ legend.scheduler-border {
 													</div>
 												</div>
 											</div>
+
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Personal Hygiene</div>
@@ -723,6 +730,7 @@ legend.scheduler-border {
 													</div>
 												</div>
 											</div>
+
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Safe Environment</div>
@@ -745,6 +753,7 @@ legend.scheduler-border {
 										</div>
 									</div>
 								</div>
+
 								<div class='col-md-12'>
 									<div class="panel panel-info">
 										<div class="panel-heading text-center">COMMUNICATION</div>
@@ -778,6 +787,7 @@ legend.scheduler-border {
 													</div>
 												</div>
 											</div>
+
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Vision</div>
@@ -811,6 +821,7 @@ legend.scheduler-border {
 													</div>
 												</div>
 											</div>
+
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Hearing</div>
@@ -843,6 +854,7 @@ legend.scheduler-border {
 										</div>
 									</div>
 								</div>
+
 							</div>
 						
 						</form>
