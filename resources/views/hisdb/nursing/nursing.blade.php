@@ -686,7 +686,7 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Mobility</div>
-													<div class="panel-body">
+													<div class="panel-body" style="height: 120px">
 													
 														<div class="form-check" style="margin-left: 30px">
 															<input class="form-check-input" type="checkbox" value="ambulant" id="ambulant">
@@ -710,7 +710,7 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Personal Hygiene</div>
-													<div class="panel-body">
+													<div class="panel-body" style="height: 120px">
 
 														<div class="form-check" style="margin-left: 20px">
 															<input class="form-check-input" type="checkbox" value="self" id="self">
@@ -734,7 +734,7 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Safe Environment</div>
-													<div class="panel-body">
+													<div class="panel-body" style="height: 120px">
 
 														<div class="form-check" style="margin-left: 20px">
 															<input class="form-check-input" type="checkbox" value="siderail" id="siderail">
@@ -762,7 +762,7 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Speech</div>
-													<div class="panel-body">
+													<div class="panel-body" style="height: 170px">
 
 														<div class="form-check" style="margin-left: 20px">
 															<input class="form-check-input" type="checkbox" value="normal" id="normal">
@@ -791,7 +791,7 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Vision</div>
-													<div class="panel-body">
+													<div class="panel-body" style="height: 170px">
 
 														<div class="form-check" style="margin-left: 20px">
 															<input class="form-check-input" type="checkbox" value="normal" id="normal">
@@ -825,7 +825,7 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Hearing</div>
-													<div class="panel-body">
+													<div class="panel-body" style="height: 170px">
 
 														<div class="form-check" style="margin-left: 20px">
 															<input class="form-check-input" type="checkbox" value="normal" id="normal">
