@@ -871,8 +871,111 @@ legend.scheduler-border {
 			<div id="jqGridTriPhysical_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div class='col-md-12' style="padding:0 0 15px 0">
-						<table id="jqGridTriPhysical" class="table table-striped"></table>
-						<div id="jqGridPagerTriPhysical"></div>
+						<!-- <table id="jqGridTriPhysical" class="table table-striped"></table>
+						<div id="jqGridPagerTriPhysical"></div> -->
+
+						<form class='form-horizontal' style='width:99%' id='formdata4'>
+
+							<div class='col-md-12'>
+								<div class="panel panel-info">
+									<div class="panel-heading text-center">PHYSICAL ASSESSMENT - GENERAL</div>
+									<div class="panel-body">
+
+										<div class='col-md-6'>
+
+											<div class='col-md-12'>
+												<div class="panel panel-info">
+													<div class="panel-body">
+
+														<div class='col-md-6'>
+															<div class="panel panel-info">
+																<div class="panel-heading text-center">SKIN CONDITION</div>
+																<div class="panel-body" style="height: 150px">
+
+																	<div class="form-check" style="margin-left: 80px">
+																		<input class="form-check-input" type="checkbox" value="dry" id="dry">
+																		<label class="form-check-label" for="dry">Dry</label>
+																	</div>
+
+																	<div class="form-check" style="margin-left: 80px">
+																		<input class="form-check-input" type="checkbox" value="odema" id="odema">
+																		<label class="form-check-label" for="odema">Odema</label>
+																	</div>
+
+																	<div class="form-check" style="margin-left: 80px">
+																		<input class="form-check-input" type="checkbox" value="jaundice" id="jaundice">
+																		<label class="form-check-label" for="jaundice">Jaundice</label>
+																	</div>
+
+																</div>
+															</div>
+														</div>
+
+														<div class='col-md-6'>
+															<div class="panel panel-info">
+																<div class="panel-heading text-center">OTHERS</div>
+																<div class="panel-body" style="height: 150px">
+
+																
+																	<div class="form-check" style="margin-left: 70px">
+																		<input class="form-check-input" type="checkbox" value="bruises" id="bruises">
+																		<label class="form-check-label" for="bruises">Bruises</label>
+																	</div>
+
+																	<div class="form-check" style="margin-left: 70px">
+																		<input class="form-check-input" type="checkbox" value="decubituesulcer" id="decubituesulcer">
+																		<label class="form-check-label" for="decubituesulcer">Decubitues Ulcer</label>
+																	</div>
+
+																	<div class="form-check" style="margin-left: 70px">
+																		<input class="form-check-input" type="checkbox" value="laceration" id="laceration">
+																		<label class="form-check-label" for="laceration">Laceration</label>
+																	</div>
+
+																	<div class="form-check" style="margin-left: 70px">
+																		<input class="form-check-input" type="checkbox" value="discolouration" id="discolouration">
+																		<label class="form-check-label" for="discolouration">Discolouration</label>
+																	</div>
+
+																</div>
+															</div>
+														</div>
+														
+													</div>
+												</div>
+											</div>
+
+											<div class='col-md-12'>
+												<div class="panel panel-info">
+													<div class="panel-body">
+
+														<div class="form-group">
+															<label class="col-md-1 control-label" for="notes" >Notes:</label>  
+															<div class="row">
+																<textarea id="notes" name="notes" type="text" class="form-control input-sm uppercase" rows="6"></textarea>
+															</div>
+														</div>														
+
+													</div>
+												</div>
+											</div>
+
+										</div>
+
+										<div class='col-md-6'>
+											<div class="panel panel-info">
+												<div class="panel-heading text-center">EXAMINATION</div>
+												<div class="panel-body">
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+						</form>
+						
 					</div>
 				</div>
 			</div>	
