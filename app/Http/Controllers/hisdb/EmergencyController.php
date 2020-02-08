@@ -150,7 +150,7 @@ class EmergencyController extends defaultController
                         'mrn' => $sysparam_mrn,
                         'Oldic' => $request->Oldic,
                         'Name' => $request->patname,
-                        'DOB' => $request->DOB,
+                        'DOB' => $this->null_date($request->DOB),
                         'ID_Type'  => $request->ID_Type,
                         'Sex'  => $request->sex,
                         'RaceCode'  => $request->race,
@@ -185,7 +185,7 @@ class EmergencyController extends defaultController
                 
                 //2. tukar pat status dgn episno
             $patmast_obj->update(['PatStatus' => 'yes', 'EpisNo' => $patmast_data->Episno + 1]);
-
+            // dd($request->financeclass);
                 //3. tambah episode
             DB::table('hisdb.episode')
                 ->insert([
@@ -197,7 +197,7 @@ class EmergencyController extends defaultController
                     'AdmSrcCode' => "WIN",
                     'Case_Code'  => "MED",
                     'PyrMode' => "CASH",   
-                    'Pay_type' => $request->financeclass,
+                    'pay_type' => $request->financeclass,
                     'BillType' => $request->billtype,
                     'AdmDoctor' => $request->doctor, 
                     'CompCode' => session('compcode'),  
@@ -388,7 +388,7 @@ class EmergencyController extends defaultController
                         'Room' => '',
                         'QueueNo' => $current_pvalue1+1,
                         'Deptcode' => 'ALL',
-                        'DOB' => $patmast_data->DOB,
+                        'DOB' => $this->null_date($patmast_data->DOB),
                         'NAME' => $patmast_data->Name,
                         'Newic' => $patmast_data->Newic,
                         'Oldic' => $patmast_data->Oldic,
@@ -428,7 +428,7 @@ class EmergencyController extends defaultController
                         'Room' => '',
                         'QueueNo' => $current_pvalue1+1,
                         'Deptcode' => 'SPEC',
-                        'DOB' => $patmast_data->DOB,
+                        'DOB' => $this->null_date($patmast_data->DOB),
                         'NAME' => $patmast_data->Name,
                         'Newic' => $patmast_data->Newic,
                         'Oldic' => $patmast_data->Oldic,

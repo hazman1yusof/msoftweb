@@ -1298,9 +1298,14 @@ class DeliveryOrderController extends defaultController
                 ->where('compcode', '=' ,session('compcode'))
                 ->first();
 
-        $do_hd = DB::table('material.delordhd')
-                ->where('recno', '=', $delordhd_obj->recno)
+        DB::table('material.delordhd')
+                ->where('recno', '=', $request->recno)
                 ->where('compcode', '=' ,session('compcode'))
+                ->update(['recstatus'  => 'POSTED']);
+
+        DB::table('material.delorddt')
+                ->where('recno', '=', $request->recno)
+                ->where('compcode', '=', session('compcode'))
                 ->update(['recstatus'  => 'POSTED']);
 
         if(!empty($do_hd->srcdocno)){
@@ -1311,13 +1316,14 @@ class DeliveryOrderController extends defaultController
                     ->get();
 
             $partial = false;
+            
             foreach ($do_dt as $key => $dodt) {
-                if($dodt->qtydelivered < $dodt->qtyorder){
+                if(floatval($dodt->qtydelivered) < floatval($dodt->qtyorder)){
                     $partial = true;
                 }
             }
 
-            if($partial = true){
+            if($partial == true){
                 $recstatus = 'PARTIAL';
             }else{
                 $recstatus = 'COMPLETED';

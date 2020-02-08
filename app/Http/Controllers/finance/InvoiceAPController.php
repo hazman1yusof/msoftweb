@@ -123,8 +123,11 @@ use Carbon\Carbon;
         $array_insert = [
             'source' => 'AP',
             'auditno' => $auditno,
-            'trantype' => $request->trantype,
+            'trantype' => $request->apacthdr_trantype,
+            'ttype' => $request->apacthdr_ttype,
             'suppgroup' => $suppgroup,
+            'document' => strtoupper($request->apacthdr_document),
+            'remarks' => strtoupper($request->apacthdr_remarks),
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -132,6 +135,9 @@ use Carbon\Carbon;
         ];
 
         foreach ($field as $key => $value){
+            if($key == 'remarks' || $key == 'document'){
+                continue;
+            }
             $array_insert[$value] = $request[$request->field[$key]];
         }
 
@@ -173,11 +179,17 @@ use Carbon\Carbon;
         $array_update = [
             'unit' => session('unit'),
             'compcode' => session('compcode'),
+            'ttype' => $request->apacthdr_ttype,
+            'document' => strtoupper($request->apacthdr_document),
+            'remarks' => strtoupper($request->apacthdr_remarks),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
         ];
 
         foreach ($field as $key => $value) {
+            if($value == 'remarks' || $value == 'document'){
+                continue;
+            }
             $array_update[$value] = $request[$request->field[$key]];
         }
 
@@ -264,7 +276,13 @@ use Carbon\Carbon;
 
     public function gltran($auditno){
         $apacthdr_obj = DB::table('finance.apacthdr')
+                            ->where('compcode','=',session('compcode'))
                             ->where('auditno','=',$auditno)
+                            ->first();
+
+        $supp_obj = DB::table('material.supplier')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('suppcode','=',$apacthdr_obj->suppcode)
                             ->first();
 
         //amik yearperiod dari delordhd
@@ -284,7 +302,7 @@ use Carbon\Carbon;
                 'source' => $apacthdr_obj->source,
                 'trantype' => $apacthdr_obj->trantype,
                 'reference' => $apacthdr_obj->document,
-                'description' => $apacthdr_obj->remarks,
+                'description' => $supp_obj->SuppCode.' '.$supp_obj->Name, //suppliercode + suppliername
                 'postdate' => $apacthdr_obj->recdate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,

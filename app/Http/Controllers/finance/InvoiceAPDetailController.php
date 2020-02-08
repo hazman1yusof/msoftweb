@@ -99,6 +99,15 @@ class InvoiceAPDetailController extends defaultController
 
             $li=intval($sqlln)+1;
 
+            //check duplicate
+            $dupli = DB::table('finance.apactdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('document','=',$request->document);
+
+            if($dupli->exists()){
+                throw new \Exception("Document number duplicate");
+            }
+
             ///2. insert detail
             DB::table('finance.apactdtl')
                 ->insert([
@@ -142,7 +151,7 @@ class InvoiceAPDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -195,7 +204,7 @@ class InvoiceAPDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -237,7 +246,7 @@ class InvoiceAPDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
         
     }
@@ -258,7 +267,7 @@ class InvoiceAPDetailController extends defaultController
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
                         'document' => $value['itemcode'],
-                        'reference' => $value['uomcode'],
+                        'reference' => $value['reference'],
                         'amount' => $value['amount'],
                         'dorecno' => $value['dorecno'],
                         'grnno' => $value['grnno'],
@@ -289,7 +298,7 @@ class InvoiceAPDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }

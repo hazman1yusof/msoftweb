@@ -303,7 +303,7 @@ $(document).ready(function () {
 			auditno:selrowData('#jqGrid').auditno,
 			_token:$('#_token').val(),
 		};
-		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
+		$.post("creditDebitTrans/form?" + $.param(saveParam),obj,function (data) { 
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
 			alert(data.responseText);

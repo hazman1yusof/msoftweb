@@ -95,7 +95,7 @@
 
 		<div class='panel panel-default'>
 		<div class='panel-body'>
-			<div class='col-xs-3'>
+			<div class='col-xs-2'>
 				<table class="table table-hover" id='TableGlmasdtl'>
 				<thead>
 					<tr>
@@ -165,14 +165,14 @@
 				</tbody>
 				</table>
 			</div>
-			<div id='TableGlmasTran_c' class='col-xs-9 modalx'>
+			<div id='TableGlmasTran_c' class='col-xs-10 modalx'>
 				<table class="table table-hover  table-bordered" id='TableGlmasTran'>
 				<thead>
 					<tr>
 						<th> </th>
-						<th>Source</th>
-						<th>Trantype</th>
-						<th>Auditno</th>
+						<th>Src</th>
+						<th>TT</th>
+						<th>No</th>
 						<th>Post Date</th>
 						<th>Description</th>
 						<th>Reference</th>
