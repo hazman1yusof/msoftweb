@@ -437,37 +437,6 @@ $(document).ready(function () {
 	}
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	/*$("#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
-		
-		saveParam.oper = $(this).data("oper");
-		let obj={recno:selrowData('#jqGrid').purordhd_recno,_token:$('#_token').val()};
-		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			// alert(data.responseText);
-			$('#error_infront').text(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
-		});
-	});*/
-
-	/*$("#but_reopen_jq").click(function(){
-
-		let qtyOutstand = selrowData("#jqGrid3").purorddt_qtyOutstand;
-		if (qtyOutstand != '0'){
-			alert("aa");
-		}
-		
-		saveParam.oper = $(this).data("oper");
-		let obj={recno:selrowData('#jqGrid').purordhd_recno,_token:$('#_token').val()};
-		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
-		});
-	});*/
 
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
 
@@ -576,7 +545,7 @@ $(document).ready(function () {
 			url: '/util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
-			filterCol:['storedept'],
+			filterCol:['purdept'],
 			filterVal:['1']
 		}
 		$.get( param.url+"?"+$.param(param), function( data ) {
@@ -662,7 +631,7 @@ $(document).ready(function () {
 	function searchChange() {
 		var arrtemp = ['session.compcode', $('#Status option:selected').val(), $('#trandept option:selected').val()];
 		var filter = arrtemp.reduce(function (a, b, c) {
-			if (b == 'All') {
+			if (b.toUpperCase() == 'ALL') {
 				return a;
 			} else {
 				a.fc = a.fc.concat(a.fct[c]);
@@ -673,6 +642,8 @@ $(document).ready(function () {
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
+		urlParam.WhereInCol = null;
+		urlParam.WhereInVal = null;
 		refreshGrid('#jqGrid', urlParam);
 	}
 

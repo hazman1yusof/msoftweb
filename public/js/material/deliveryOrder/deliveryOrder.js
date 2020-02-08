@@ -319,66 +319,29 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
-			/*switch($("#scope").val()){
-				case "dataentry":
-					if($('#delordhd_srcdocno')=='0' && $('#delordhd_srcdocno')=='null'){
-						$("label[for=delordhd_reqdept]").show();
-						$("#delordhd_reqdept_parent").show();
-						$("#delordhd_reqdept").attr('required',false);
-					}else{
-						$("label[for=delordhd_reqdept]").hide();
-						$("#delordhd_reqdept_parent").hide();
-						$("#delordhd_reqdept").removeAttr('required');
-					}
-					break;
-				case "cancel": 
-					if(stat=='POSTED'){
-						$('#but_cancel_jq,#but_print_dtl').show();
-						$('#but_post_jq,#but_reopen_jq').hide();
-					}else if(stat=="CANCELLED"){
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_print_dtl').hide();
-					}else{
-						$('#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_print_dtl').hide();
-					}
-					break;
-				case "all": 
-					if($('#delordhd_srcdocno')=='0' && $('#delordhd_srcdocno')=='null'){
-						$("label[for=delordhd_reqdept]").show();
-						$("#delordhd_reqdept_parent").show();
-						$("#delordhd_reqdept").attr('required',true);
-					}else{
-						$("label[for=delordhd_reqdept]").hide();
-						$("#delordhd_reqdept_parent").hide();
-						$("#delordhd_reqdept").removeAttr('required');
-					}
-
-					if(stat=='POSTED'){
-						$('#but_cancel_jq,#but_print_dtl').show();
-						$('#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq').hide();
-					}else if(stat=="CANCELLED"){
-						$('#but_reopen_jq').show();
-						$('#but_post_jq,#but_cancel_jq,#but_soft_cancel_jq,#but_print_dtl').hide();
-					}else if(stat=='OPEN'){
-						$('#but_soft_cancel_jq,#but_post_jq').show();
-						$('#but_reopen_jq,#but_cancel_jq,#but_print_dtl').hide();
-					}
-					break;*/
 			let scope = $("#recstatus_use").val();
 
-			if (stat == scope) {
+			$('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			if (stat == scope || stat == "CANCELLED") {
 				$('#but_reopen_jq').show();
-				$('#but_post_single_jq,#but_cancel_jq').hide();
-			} else if (stat == "CANCELLED") {
-				$('#but_reopen_jq').show();
-				$('#but_post_single_jq,#but_cancel_jq').hide();
 			} else {
-				if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-					$('#but_cancel_jq,#but_post_single_jq').show();
+				if(scope.toUpperCase() == 'ALL'){
+					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
+						$('#but_cancel_jq,#but_post_single_jq').show();
+					}else if(stat=='OPEN'){
+						$('#but_post_jq').show();
+					}
+				}else{
+					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+						$('#but_cancel_jq,#but_post_single_jq').show();
+					}else{
+						$('#but_post_jq').show();
+					}
 				}
-				$('#but_reopen_jq').hide();
 			}
 
 			urlParam2.filterVal[0]=selrowData("#jqGrid").delordhd_recno;
+
 			$('#recnodepan').text(selrowData("#jqGrid").delordhd_recno);//tukar kat depan tu
 			$('#prdeptdepan').text(selrowData("#jqGrid").delordhd_prdept);
 
@@ -481,17 +444,41 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
-		saveParam.oper = $(this).data("oper");
-		let obj={recno:selrowData('#jqGrid').delordhd_recno,_token:$('#_token').val()};
-		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
-			cbselect.empty_sel_tbl();
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			// alert(data.responseText);
+	
+	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+
+		var idno = selrowData('#jqGrid').delordhd_idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = $(this).data('oper')+'_single';
+
+		$.post( '/deliveryOrder/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
+		}).success(function(data){
+			
+		});
+	});
+
+
+	$("#but_post_jq").click(function(){
+		var idno_array = [];
+	
+		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		var obj={};
+		obj.idno_array = idno_array;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		
+		$.post( '/deliveryOrder/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
 		});
 	});
 	

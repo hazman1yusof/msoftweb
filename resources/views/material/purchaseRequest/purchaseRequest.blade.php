@@ -89,12 +89,20 @@ i.fa {
 				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
 					  	<select id="Status" name="Status" class="form-control input-sm">
-					      <option value="All" selected>ALL</option>
-					      <option value="OPEN">OPEN</option>
-					      <option value="REQUEST">REQUEST</option>
-					      <option value="SUPPORT">SUPPORT</option>
-					      <option value="VERIFIED">VERIFIED</option>
-					      <option value="APPROVED">APPROVED</option>
+						  	@if (Request::get('scope') == 'ALL')
+						      <option value="All" selected>ALL</option>
+						      <option value="OPEN">OPEN</option>
+						      <option value="REQUEST">REQUEST</option>
+						      <option value="SUPPORT">SUPPORT</option>
+						      <option value="VERIFIED">VERIFIED</option>
+						      <option value="APPROVED">APPROVED</option>
+							@elseif (Request::get('scope') == 'SUPPORT')
+								<option value="REQUEST">REQUEST</option>
+							@elseif (Request::get('scope') == 'VERIFIED')
+								<option value="SUPPORT">SUPPORT</option>
+							@elseif (Request::get('scope') == 'APPROVED')
+								<option value="VERIFIED">VERIFIED</option>
+							@endif
 					    </select>
 	            </div>
 

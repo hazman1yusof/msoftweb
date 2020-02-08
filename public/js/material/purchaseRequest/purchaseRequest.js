@@ -483,7 +483,7 @@ $(document).ready(function () {
 			url: '/util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
-			filterCol:['storedept'],
+			filterCol:['purdept'],
 			filterVal:['1']
 		}
 		$.get( param.url+"?"+$.param(param), function( data ) {
@@ -567,8 +567,9 @@ $(document).ready(function () {
 
 	function searchChange() {
 		var arrtemp = ['session.compcode', $('#Status option:selected').val(), $('#trandept option:selected').val()];
+
 		var filter = arrtemp.reduce(function (a, b, c) {
-			if (b == 'ALL') {
+			if (b.toUpperCase() == 'ALL') {
 				return a;
 			} else {
 				a.fc = a.fc.concat(a.fct[c]);
@@ -579,6 +580,8 @@ $(document).ready(function () {
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
+		urlParam.WhereInCol = null;
+		urlParam.WhereInVal = null;
 		refreshGrid('#jqGrid', urlParam);
 	}
 
