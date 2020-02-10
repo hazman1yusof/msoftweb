@@ -117,7 +117,6 @@ $(document).ready(function () {
 		table_id:'idno',
 		//saveip:'true',
 		checkduplicate:'false',
-		//fixPost: 'true',
 	};
 		
 	$("#jqGrid").jqGrid({
@@ -279,7 +278,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
+	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress', 'actdate']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
@@ -804,24 +803,6 @@ $(document).ready(function () {
 		errorField.length=0;
 	});
 
-
-	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
-	// $("#jqGrid2_iladd, #jqGrid2_iledit").click(function(){
-
-	// 	unsaved = false;
-	// 	$("#jqGridPager2Delete,#saveHeaderLabel").hide();
-	// 	dialog_deptcode.on();
-	// 	dialog_category.on();
-	// 	dialog_GSTCode.on();//start binding event on jqgrid2
-
-	// 	$("input[name='amount']").keydown(function(e) {//when click tab at batchno, auto save
-	// 		var code = e.keyCode || e.which;
-	// 		if (code == '9')$('#jqGrid2_ilsave').click();
-			
-	// 	});
-
-	// });	
-
 	///////////////////////////////////////////////////////////////////////////////
 
 	function onall_editfunc(){
@@ -850,9 +831,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
-	// var amntb4gst = parseFloat($("input[id*='_AmtB4GST']").val());
-	// var amount = amntb4gst+(amntb4gst*(rate/100));//.toFixed(2);
-
+	
 	function cari_gstpercent(id){
 		let data = $('#jqGrid2').jqGrid ('getRowData', id);
 		$("#jqGrid2 #"+id+"_gstpercent").val(data.rate);
@@ -865,7 +844,6 @@ $(document).ready(function () {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
 
-		// let amount = parseFloat($("#"+id_optid+"_amount").val());
 		let amntb4gst = parseFloat($("#"+id_optid+"_AmtB4GST").val());
 		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_gstpercent").val());
 		
@@ -875,13 +853,10 @@ $(document).ready(function () {
 		$("#"+id_optid+"_tot_gst").val(tot_gst);
 
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
-		// $("#jqGrid2").jqGrid('setRowData', id_optid ,{amount:amount});
-		//$("#jqGrid2").jqGrid('setRowData', id_optid ,{netunitprice:netunitprice});
 
 		
 		event.data.currency.formatOn();//change format to currency on each calculation
 
-		//fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 	}
 
 
@@ -952,14 +927,12 @@ $(document).ready(function () {
 				filterVal:['session.compcode','A']
 			},
 			ondblClickRow: function () {
-				//$('#cheqdate').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					//$('#cheqdate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -986,14 +959,12 @@ $(document).ready(function () {
 				filterVal:['session.compcode','CR', 'Other', 'A']
 			},
 			ondblClickRow: function () {
-				//$('#cheqdate').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					//$('#cheqdate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1045,7 +1016,6 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					//$('#cheqdate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
