@@ -64,8 +64,51 @@ class EmergencyController extends defaultController
         $paginate = $table->paginate($request->rows);
         $rows = $paginate->items();
 
+
         foreach ($rows as $key => $value) {
             $apptdatefr = Carbon::createFromFormat('Y-m-d H:i:s', $value->apptdatefr, 'Asia/Kuala_Lumpur');
+
+            $patmast_obj = DB::table('hisdb.pat_mast AS p')
+                        ->select(['p.Newic','p.id_type','p.oldic','p.dob','p.idnumber', 'p.racecode', 'r.description', 'p.sex', 'p.DOB'])
+                        ->join('hisdb.racecode AS r', function($join) use ($request){
+                            $join = $join->on('r.code','=','p.racecode');
+                            $join = $join->on('r.compcode','=','p.compcode');
+                        })
+                        ->where('p.mrn','=',$value->a_mrn)
+                        ->where('p.compcode','=',session('compcode'))
+                        ->first();
+
+            $rows[$key]->newic = $patmast_obj->Newic;
+            $rows[$key]->racecode = $patmast_obj->racecode;
+            $rows[$key]->race = $patmast_obj->description;
+            $rows[$key]->sex = $patmast_obj->sex;
+            $rows[$key]->id_type = $patmast_obj->id_type;
+            $rows[$key]->oldic = $patmast_obj->oldic;
+            $rows[$key]->dob = $patmast_obj->dob;
+            $rows[$key]->idnumber = $patmast_obj->idnumber;
+            $rows[$key]->age = Carbon::parse($patmast_obj->DOB)->age;
+
+            $episode_obj = DB::table('hisdb.episode as e')
+                        ->select(['e.pay_type','dt.description as dt_desc','e.billtype','bm.description as bm_desc','e.admdoctor','doc.doctorname'])
+                        ->join('debtor.debtortype AS dt', function($join) use ($request){
+                            $join = $join->on('e.pay_type','=','dt.debtortycode');
+                        })
+                        ->join('hisdb.billtymst AS bm', function($join) use ($request){
+                            $join = $join->on('e.billtype','=','bm.billtype');
+                        })
+                        ->join('hisdb.doctor AS doc', function($join) use ($request){
+                            $join = $join->on('e.admdoctor','=','doc.doctorcode');
+                        })
+                        ->where('e.mrn','=',$value->a_mrn)
+                        ->where('e.episno','=',$value->a_Episno)
+                        ->first();
+
+            $rows[$key]->pay_type = $episode_obj->pay_type;
+            $rows[$key]->pay_type_desc = $episode_obj->dt_desc;
+            $rows[$key]->billtype = $episode_obj->billtype;
+            $rows[$key]->billtype_desc = $episode_obj->bm_desc;
+            $rows[$key]->admdoctor = $episode_obj->admdoctor;
+            $rows[$key]->admdoctor_desc = $episode_obj->doctorname;
 
             $rows[$key]->reg_date = $apptdatefr->toDateString();
             $rows[$key]->reg_time = $apptdatefr->toTimeString();
@@ -102,7 +145,7 @@ class EmergencyController extends defaultController
                     case 'add':
                         return $this->add($request);
                     case 'edit':
-                        return $this->defaultEdit($request);
+                        return $this->edit($request);
                     case 'del':
                         return $this->defaultDel($request);
                     case 'savecolor':
@@ -445,6 +488,85 @@ class EmergencyController extends defaultController
             // $responce = new stdClass();
             // $responce->sql = $queries;
             // echo json_encode($responce);
+            dump($queries);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error DB rollback!'.$e, 500);
+        }
+    }
+
+    public function edit(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('hisdb.pat_mast')
+                ->where('mrn','=',$request->mrn_edit)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'Newic'   => $request->Newic_edit,
+                    'Oldic' => $request->Oldic_edit,
+                    'Name' => $request->patname_edit,
+                    'DOB' => $this->null_date($request->DOB_edit),
+                    'ID_Type'  => $request->ID_Type_edit,
+                    'Sex'  => $request->sex_edit,
+                    'RaceCode'  => $request->race_edit,
+                    'Lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'LastUser'  => session('username'),
+                ]);
+
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn_edit)
+                ->where('EpisNo','=',$request->episno_edit)
+                ->update([
+                    'pay_type' => $request->financeclass_edit,
+                    'BillType' => $request->billtype_edit,
+                    'AdmDoctor' => $request->doctor_edit, 
+                ]);
+
+            DB::table('hisdb.apptbook')
+                ->where('idno','=',$request->apptbookidno_edit)
+                ->update([
+                    'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'LocCode' => $request->doctor_edit,
+                    'pat_name' => $request->patname_edit,
+                    'icnum' => $request->Newic_edit,
+                ]);
+
+            $queueAll_obj=DB::table('hisdb.queue')
+                ->where('mrn','=',$request->mrn_edit)
+                ->where('episno','=',$request->episno_edit)
+                ->where('deptcode','=','ALL');
+
+            $queueSPEC_obj=DB::table('hisdb.queue')
+                ->where('mrn','=',$request->mrn_edit)
+                ->where('episno','=',$request->episno_edit)
+                ->where('deptcode','=','SPEC');
+
+            $queueAll_obj->update([
+                'pat_name' => $request->patname_edit,
+                'DOB' => $this->null_date($request->DOB_edit),
+                'Newic' => $request->Newic_edit,
+                'Oldic' => $request->Oldic_edit,
+                'Sex' => $request->sex_edit,
+                'RaceCode' => $request->race_edit,
+                'chggroup' => $request->billtype_edit
+            ]);
+
+            $queueSPEC_obj->update([
+                'pat_name' => $request->patname_edit,
+                'DOB' => $this->null_date($request->DOB_edit),
+                'Newic' => $request->Newic_edit,
+                'Oldic' => $request->Oldic_edit,
+                'Sex' => $request->sex_edit,
+                'RaceCode' => $request->race_edit,
+                'chggroup' => $request->billtype_edit
+            ]);
+
+            $queries = DB::getQueryLog();
             dump($queries);
 
             DB::commit();

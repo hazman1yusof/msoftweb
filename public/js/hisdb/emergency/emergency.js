@@ -29,6 +29,7 @@ $(document).ready(function () {
 		onClick: function(target, cell, date, data) {
 			urlParam.apptdatefr = moment(date).format('YYYY-MM-DD');
 			refreshGrid("#jqGrid", urlParam);
+			empty_registerformdata_edit();
 	    }
 	}).glDatePicker(true);
 
@@ -211,6 +212,23 @@ $(document).ready(function () {
 			{ label: 'Name', name: 'a_pat_name', width: 30 ,canSearch: true,classes: 'wrap' },
 			{ label: 'Doctor', name: 'd_doctorname', width: 20 ,classes: 'wrap' },
 			{ label: 'Status', name: 'a_episstatus', width: 10 ,classes: 'wrap',hidden:true },
+
+			{ label: 'Doctor', name: 'newic', hidden: true },
+			{ label: 'Doctor', name: 'id_type', hidden: true },
+			{ label: 'Doctor', name: 'oldic', hidden: true },
+			{ label: 'Doctor', name: 'dob', hidden: true },
+			{ label: 'Doctor', name: 'idnumber', hidden: true },
+			{ label: 'Doctor', name: 'sex', hidden: true },
+			{ label: 'Doctor', name: 'racecode', hidden: true },
+			{ label: 'Doctor', name: 'race', hidden: true },
+			{ label: 'Doctor', name: 'age', hidden: true },
+
+			{ label: 'Doctor', name: 'pay_type', hidden: true },
+			{ label: 'Doctor', name: 'pay_type_desc', hidden: true },
+			{ label: 'Doctor', name: 'billtype', hidden: true },
+			{ label: 'Doctor', name: 'billtype_desc', hidden: true },
+			{ label: 'Doctor', name: 'admdoctor', hidden: true },
+			{ label: 'Doctor', name: 'admdoctor_desc', hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -223,6 +241,8 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			$('#biodata_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
 			$('#episode_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
+
+			populate_registerformdata_edit(selrowData("#jqGrid"));
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 		},
@@ -230,6 +250,9 @@ $(document).ready(function () {
 			set_grid_color();
 		},
 	});
+
+	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
+	addParamField('#jqGrid', true, urlParam,['reg_date','reg_time','newic','id_type','oldic','dob','sex','racecode','race','age','pay_type', 'pay_type_desc' ,'billtype' ,'billtype_desc' ,'admdoctor','admdoctor_desc']);
 
 	function set_grid_color(){
 		var rows = $("#jqGrid").getDataIDs();
@@ -326,6 +349,14 @@ $(document).ready(function () {
 				// $("#addForm input[name='telh']").val(data['telh']);
 				// $("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_race.textfield).parent().next().text(" ");
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 		},
 		{
@@ -334,7 +365,7 @@ $(document).ready(function () {
 				dialog_race.urlParam.filterCol = ['compcode'];
 				dialog_race.urlParam.filterVal = ['9A'];
 			},
-		}, 'none'
+		},'none','radio','tab'
 	);
 	dialog_race.makedialog(true);
 
@@ -362,6 +393,14 @@ $(document).ready(function () {
 					$("#registerform input[name='fName']").val(data['description']);
 				}
 				$(dialog_financeclass.textfield).parent().next().text(" ");
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 		},
 		{
@@ -370,7 +409,7 @@ $(document).ready(function () {
 				dialog_financeclass.urlParam.filterCol = ['compcode'];
 				dialog_financeclass.urlParam.filterVal = ['9A'];
 			},
-		}, 'none'
+		},'none','radio','tab'
 	);
 	dialog_financeclass.makedialog(true);
 
@@ -403,6 +442,14 @@ $(document).ready(function () {
 					    className: 'alertmodal'
 					});
 				}
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 		},
 		{
@@ -420,7 +467,7 @@ $(document).ready(function () {
 					dialog_payer.urlParam.filterVal = ['9A'];
 				}
 			},
-		}, 'none'
+		}, 'none','radio','tab'
 	);
 	dialog_payer.makedialog(true);
 
@@ -435,8 +482,8 @@ $(document).ready(function () {
 			],
 			urlParam:{
 
-				filterCol : ['compcode'],
-				filterVal : ['9A']
+				filterCol : ['compcode','opprice'],
+				filterVal : ['9A','1']
 				
 			},
 			ondblClickRow: function () {
@@ -445,15 +492,23 @@ $(document).ready(function () {
 				// $("#addForm input[name='telh']").val(data['telh']);
 				// $("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_billtype.textfield).parent().next().text(" ");
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 		},
 		{
 			title: "Select Bill Type",
 			open: function () {
-				dialog_billtype.urlParam.filterCol = ['compcode'];
-				dialog_billtype.urlParam.filterVal = ['9A'];
+				dialog_billtype.urlParam.filterCol = ['compcode','opprice'];
+				dialog_billtype.urlParam.filterVal = ['9A','1'];
 			},
-		}, 'none'
+		},'none','radio','tab'
 	);
 	dialog_billtype.makedialog(true);
 
@@ -478,6 +533,14 @@ $(document).ready(function () {
 				// $("#addForm input[name='telh']").val(data['telh']);
 				// $("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_doctor.textfield).parent().next().text(" ");
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
 			}
 		},
 		{
@@ -486,7 +549,7 @@ $(document).ready(function () {
 				dialog_doctor.urlParam.filterCol = ['compcode'];
 				dialog_doctor.urlParam.filterVal = ['9A'];
 			},
-		}, 'none'
+		},'none','radio','tab'
 	);
 	dialog_doctor.makedialog(true);
 	////////////////////formatter status////////////////////////////////////////
@@ -527,9 +590,6 @@ $(document).ready(function () {
 	toogleSearch('#sbut1', '#searchForm', 'on');
 	populateSelect('#jqGrid', '#searchForm');
 	searchClick('#jqGrid', '#searchForm', urlParam);
-
-	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam,['reg_date','reg_time']);
 
 	//////////////////////////// background color//////////////////////////////
 	$(".colorpointer").click(function(){
@@ -672,7 +732,7 @@ $(document).ready(function () {
             field:"*",
             table_name:'hisdb.episode',
             table_id:'_none',
-            filterCol:['compcode','mrn','episno'],filterVal:['session.company',data.a_mrn,data.a_Episno]
+            filterCol:['compcode','mrn','episno'],filterVal:['session.compcode',data.a_mrn,data.a_Episno]
         };
 
         $.get( "/util/get_value_default?"+$.param(param), function( data ) {

@@ -1,7 +1,28 @@
 @extends('layouts.main')
 
 @section('style')
-	.ui-dialog { z-index: 250 !important ;}
+
+	.panel-heading.collapsed .fa-angle-double-up,
+	.panel-heading .fa-angle-double-down {
+		display: none;
+	}
+
+	.panel-heading.collapsed .fa-angle-double-down,
+	.panel-heading .fa-angle-double-up {
+		display: inline-block;
+	}
+
+	i.fa {
+		cursor: pointer;
+		float: right;
+		<!--  margin-right: 5px; -->
+	}
+
+	.collapsed ~ .panel-body {
+		padding: 0;
+	}
+
+	.ui-dialog { z-index: 123 !important ;}
 
 	fieldset.scheduler-border {
 	    border: 1px groove #ddd !important;
@@ -119,6 +140,9 @@
 		<!--   <input type="text" id="mydate" gldp-id="mydate">
           <div gldp-el="mydate" style="width:400px; height:250px; position:absolute;top:30px;left:0px;z-index:1000;font-size: 28px;"></div>
                 </div> -->
+
+		@include('hisdb.emergency.emergency_edit')
+
 	</div>
 
 	<div id="registerform" title="Register Form">
@@ -135,13 +159,13 @@
 				<span class='help-block'></span>
 			</div>
              <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="Name" id="patname" name="patname">
+				<input type="text" class="form-control input-sm text-uppercase" data-validation="required" placeholder="Name" id="patname" name="patname">
 			</div>
 		</div>	
         <div class="form-group">
         	<label class="col-md-2 control-label" for="idtype">ID Type</label>
 			<div class="col-md-2">
-					<select id='idtype' class="form-control input-sm">
+					<select id='idtype' name="idtype" class="form-control input-sm">
 						<option value="none" selected>None</option>
 						<option value="Father">Father</option>
 						<option value="Mother">Mother</option>
@@ -176,7 +200,7 @@
 
           	<label class="col-md-1 control-label" for="sex">Sex</label>
 			<div class="col-md-2">
-				<select id='sex' class="form-control input-sm" data-validation="required">
+				<select id='sex' name="sex" class="form-control input-sm" data-validation="required">
 				 <option value="" selected>Please Choose</option>
 	      		 <option value="M">Male</option>
 		         <option value="F">Female</option>
@@ -189,7 +213,7 @@
 			<label for="title" class="col-md-2 control-label">Race</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="Race" id="race" name="race" maxlength="12" rdonly>
+				<input type="text" class="form-control input-sm" data-validation="required" placeholder="Race" id="race" name="race" maxlength="12">
 				<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
@@ -214,7 +238,7 @@
 			</div>
 
              <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="fName" name="fName">
+				<input type="text" class="form-control input-sm text-uppercase" data-validation="required" placeholder="" id="fName" name="fName">
 			</div>
 
 		</div>
@@ -223,13 +247,13 @@
 			<label for="title" class="col-md-2 control-label">Payer</label>
 		    <div class="col-md-2">
 				<div class="input-group">
-					<input type="text" class="form-control input-sm" data-validation="required" placeholder="Payer" id="payer" name="payer" maxlength="12" rdonly>
+					<input type="text" class="form-control input-sm" data-validation="required" placeholder="Payer" id="payer" name="payer" maxlength="12">
 					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="payername" name="payername">
+				<input type="text" class="form-control input-sm text-uppercase" data-validation="required" placeholder="" id="payername" name="payername">
 				<input type="hidden" name="paytype" id="paytype">
 			</div>
 		</div>
@@ -238,13 +262,13 @@
 			<label for="title" class="col-md-2 control-label">Bill Type</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-					<input type="text" class="form-control input-sm" data-validation="required" placeholder="BillType" id="billtype" name="billtype" maxlength="12" rdonly>
+					<input type="text" class="form-control input-sm" data-validation="required" placeholder="BillType" id="billtype" name="billtype" maxlength="12">
 					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm" data-validation="required" placeholder="" id="description" name="description_bt">
+				<input type="text" class="form-control input-sm text-uppercase" data-validation="required" placeholder="" id="description" name="description_bt">
 			</div>
 		</div>
 
@@ -252,18 +276,19 @@
 			<label for="title" class="col-md-2 control-label">Doctor</label>
 	        <div class="col-md-2">
 				<div class="input-group">
-					<input type="text" class="form-control input-sm" placeholder="Doctor" data-validation="required" id="doctor" name="doctor" maxlength="12" rdonly>
+					<input type="text" class="form-control input-sm" placeholder="Doctor" data-validation="required" id="doctor" name="doctor" maxlength="12">
 					<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 				</div>
 				<span class='help-block'></span>
 			</div>
             <div class="col-md-4">
-				<input type="text" class="form-control input-sm"  placeholder="Doctor Name" id="docname" name="docname" data-validation="required">
+				<input type="text" class="form-control input-sm text-uppercase"  placeholder="Doctor Name" id="docname" name="docname" data-validation="required">
 			</div>
 		</div>
 
 	</form>		
 	</div>
+	
 
 	@include('hisdb.pat_mgmt.mdl_patient')
 	@include('hisdb.pat_mgmt.mdl_episode')
@@ -283,6 +308,7 @@
 	<script src="js/hisdb/pat_mgmt/episode.js"></script>
 
 	<script src="js/hisdb/emergency/emergency.js"></script>
+	<script src="js/hisdb/emergency/emergency_edit.js"></script>
 	<script type="text/javascript" src="plugins/glDatePicker/glDatePicker.js"></script>
 	<script type="text/javascript" src="plugins/glDatePicker/glDatePicker.min.js"></script>
 
