@@ -1299,12 +1299,12 @@ class DeliveryOrderController extends defaultController
                 ->first();
 
         DB::table('material.delordhd')
-                ->where('recno', '=', $request->recno)
+                ->where('recno', '=', $delordhd_obj->recno)
                 ->where('compcode', '=' ,session('compcode'))
                 ->update(['recstatus'  => 'POSTED']);
 
         DB::table('material.delorddt')
-                ->where('recno', '=', $request->recno)
+                ->where('recno', '=', $delordhd_obj->recno)
                 ->where('compcode', '=', session('compcode'))
                 ->update(['recstatus'  => 'POSTED']);
 

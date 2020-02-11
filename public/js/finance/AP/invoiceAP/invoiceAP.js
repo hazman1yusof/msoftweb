@@ -49,7 +49,6 @@ $(document).ready(function () {
 				counter_save=0;
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
-				refreshGrid("#jqGrid2",urlParam2);
 				mycurrency.formatOnBlur();
 				switch (oper) {
 					case state = 'add':
@@ -77,6 +76,7 @@ $(document).ready(function () {
 					dialog_department.on();
 				}
 				if(oper!='add'){
+					refreshGrid("#jqGrid2",urlParam2);
 					dialog_supplier.check(errorField);
 					dialog_payto.check(errorField);
 					dialog_category.check(errorField);
@@ -205,7 +205,7 @@ $(document).ready(function () {
 		//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
-		{ label: 'ttype', name: 'apacthdr_ttype', width: 10, classes: 'wrap', hidden:true},
+		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
 		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 20, classes: 'wrap', canSearch: true},
 		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true},
 		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},

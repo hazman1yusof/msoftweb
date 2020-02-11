@@ -233,7 +233,7 @@
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="purprice">Current Price</label>  
+					<label class="col-md-2 control-label" for="purprice">Unit Price</label>  
 						<div class="col-md-3">
 							<input id="purprice" name="purprice" maxlength="12" class="form-control input-sm" value="0.00" data-validation="required">  
 					 	</div>
@@ -279,7 +279,7 @@
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="origcost">Cost</label>  
+					<label class="col-md-2 control-label" for="origcost">Original Cost</label>  
 						<div class="col-md-3">
 							<input id="origcost" name="origcost" maxlength="12" class="form-control input-sm"  readonly>  
 					 	</div>

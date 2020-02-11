@@ -29,7 +29,7 @@
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency = new currencymode(['#origcost','#currentcost', '#purprice']);
 	var fdl = new faster_detail_load();
-	var cbselect = new checkbox_selection("#jqGrid","Checkbox");
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus","A");
 	var radbuts = new checkradiobutton(['regtype']);
 
 	////////////////////////////////////start dialog///////////////////////////////////////
@@ -199,6 +199,7 @@
 				$('#suppcode').val(data['dohd_suppcode']);
 				$('#invno').val(data['dohd_invoiceno']);
 				$('#invdate').val(data['ap_actdate']);
+
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -288,6 +289,10 @@
 				$('#currentcost').val(data['dodt_amount']);
 				$('#lineno_').val(data['dodt_lineno_']);
 				$('#description').val(data['dodt_itemcode'] + ' ' + data['dodt_remarks']);
+
+				
+				$("#purprice,#qty").blur();
+				$("#origcost,#lstytddep,#cuytddep").blur();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -893,6 +898,7 @@
 
 
 		$('#taggingNoButton').click(gneratetagno);
+		
 		function gneratetagno(){
 			var idno_array = [];
 		
@@ -947,6 +953,7 @@
 		function formatterCheckbox(cellvalue, options, rowObject){
 			let idno = cbselect.idno;
 			let recstatus = cbselect.recstatus;
+			
 			if(options.gid == "jqGrid"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}else if(options.gid != "jqGrid"){

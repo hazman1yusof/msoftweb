@@ -124,7 +124,7 @@ use Carbon\Carbon;
             'source' => 'AP',
             'auditno' => $auditno,
             'trantype' => $request->apacthdr_trantype,
-            'ttype' => $request->apacthdr_ttype,
+            'doctype' => $request->apacthdr_doctype,
             'suppgroup' => $suppgroup,
             'document' => strtoupper($request->apacthdr_document),
             'remarks' => strtoupper($request->apacthdr_remarks),
@@ -179,7 +179,7 @@ use Carbon\Carbon;
         $array_update = [
             'unit' => session('unit'),
             'compcode' => session('compcode'),
-            'ttype' => $request->apacthdr_ttype,
+            'doctype' => $request->apacthdr_doctype,
             'document' => strtoupper($request->apacthdr_document),
             'remarks' => strtoupper($request->apacthdr_remarks),
             'upduser' => session('username'),
@@ -302,7 +302,7 @@ use Carbon\Carbon;
                 'source' => $apacthdr_obj->source,
                 'trantype' => $apacthdr_obj->trantype,
                 'reference' => $apacthdr_obj->document,
-                'description' => $supp_obj->SuppCode.' '.$supp_obj->Name, //suppliercode + suppliername
+                'description' => $supp_obj->SuppCode.'</br>'.$supp_obj->Name, //suppliercode + suppliername
                 'postdate' => $apacthdr_obj->recdate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,

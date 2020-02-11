@@ -35,6 +35,8 @@ class assetregisterController extends defaultController
             case 'del':
                 return $this->asset_delete($request);
                 // return $this->defaultDel($request);
+            case 'gen_tagno_single':
+                return $this->gen_tagno_single($request);
             case 'gen_tagno':
                 return $this->gen_tagno($request);
             default:
@@ -94,6 +96,105 @@ class assetregisterController extends defaultController
 
         return json_encode($responce);
 
+        
+    }
+
+    public function gen_tagno_single(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            ////1. select facode tagnextno
+            $fatemp = DB::table('finance.fatemp')
+                        ->where('idno','=',$idno)
+                        ->first();
+
+            $facode = DB::table('finance.facode')->select('tagnextno')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('assettype', '=', $fatemp->assettype)
+                            ->first();
+                            
+            $tagnextno_counter = intval($facode->tagnextno)+1;
+            $assetno = str_pad($facode->tagnextno,6,"0",STR_PAD_LEFT);
+
+
+            ////2. insert into faregister
+            DB::table('finance.faregister')
+                ->insert([
+                    'assetcode' => $fatemp->assetcode,
+                    'assettype' => $fatemp->assettype,
+                    'assetno' => $assetno, // got padding
+                    'description' => $fatemp->description,
+                    'deptcode' => $fatemp->deptcode,
+                    'loccode' => $fatemp->loccode,
+                    'suppcode' => $fatemp->suppcode,
+                    'purordno' => $fatemp->purordno,
+                    'delordno'  => $fatemp->delordno,
+                    'delorddate' => $fatemp->delorddate,
+                    'itemcode' => $fatemp->itemcode,
+                    'invno' => $fatemp->invno,
+                    'invdate' => $fatemp->invdate,
+                    'purdate' => $fatemp->purdate,
+                    'purprice' => $fatemp->purprice,
+                    'origcost' => $fatemp->origcost,
+                    'currentcost' => $fatemp->currentcost,
+                    'qty' => $fatemp->qty,
+                    'lstytddep' => $fatemp->lstytddep,
+                    'cuytddep' => $fatemp->cuytddep,
+                    'recstatus' => $fatemp->recstatus,
+                    'individualtag' => $fatemp->individualtag,
+                    'startdepdate' =>$fatemp->statdate,
+                    'statdate' => $fatemp->statdate,
+                    'trantype' => $fatemp->trantype,
+                    'nprefid' => $fatemp->nprefid,
+                    'trandate' => $fatemp->trandate,
+                    'compcode' => session('compcode'),
+                    'adduser' => strtoupper(session('username')),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            ////delete from fatemp
+            DB::table('finance.fatemp')
+                    ->where('idno','=',$idno)
+                    ->delete();
+
+            ////4. update facode tagnextno
+            DB::table('finance.facode')->select('tagnextno')
+                ->where('compcode','=',session('compcode'))
+                ->where('assettype', '=', $fatemp->assettype)
+                ->update([
+                    'tagnextno' => $tagnextno_counter
+                ]);
+
+            //update qtytag at delorddt
+
+
+            if($fatemp->regtype == 'P'){
+                $delordhd = DB::table('material.delordhd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('delordno','=',$fatemp->delordno)
+                    ->first();
+
+                DB::table('material.delorddt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$delordhd->recno)
+                    ->where('itemcode','=',$fatemp->itemcode)
+                    ->where('lineno_','=',$fatemp->lineno_)
+                    ->update([
+                        'qtytag' => $fatemp->qty
+                    ]);
+            }
+
+            dump(DB::getQueryLog());
+            
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response('Error'.$e, 500);
+        }
         
     }
 
