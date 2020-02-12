@@ -33,13 +33,18 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Code',name:'suppgroup',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'costcode',name:'costcode',width:100,classes:'pointer',hidden:true},
+				{label:'glaccno',name:'glaccno',width:100,classes:'pointer',hidden:true},
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
 					filterVal:['session.compcode','A']
 				},
 				ondblClickRow: function () {
+					let data=selrowData('#'+dialog_SuppGroup.gridname);
 					$('#CostCode').focus();
+					$('#CostCode').val(data['costcode']);
+					$('#GlAccNo').val(data['glaccno']);
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
