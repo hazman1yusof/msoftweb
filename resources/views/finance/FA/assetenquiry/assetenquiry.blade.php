@@ -218,9 +218,6 @@ i.fa {
 					<div class="col-md-2">
 						<input id="casisno" name="casisno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
-			
-
-			<div class="form-group">
 				<label class="col-md-2 control-label" for="engineno">Engine No</label>  
 					<div class="col-md-2">
 						<input id="engineno" name="engineno" maxlength="12" class="form-control input-sm text-uppercase" data-sanitize="required" >  

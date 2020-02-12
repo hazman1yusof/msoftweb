@@ -64,6 +64,8 @@ class EmergencyController extends defaultController
         $paginate = $table->paginate($request->rows);
         $rows = $paginate->items();
 
+        // dd($rows);
+
 
         foreach ($rows as $key => $value) {
             $apptdatefr = Carbon::createFromFormat('Y-m-d H:i:s', $value->apptdatefr, 'Asia/Kuala_Lumpur');
@@ -77,6 +79,9 @@ class EmergencyController extends defaultController
                         ->where('p.mrn','=',$value->a_mrn)
                         ->where('p.compcode','=',session('compcode'))
                         ->first();
+
+            // dump($patmast_obj->toSql());
+            // dd($patmast_obj->getBindings());
 
             $rows[$key]->newic = $patmast_obj->Newic;
             $rows[$key]->racecode = $patmast_obj->racecode;

@@ -290,7 +290,7 @@
 				$('#lineno_').val(data['dodt_lineno_']);
 				$('#description').val(data['dodt_itemcode'] + ' ' + data['dodt_remarks']);
 
-				
+
 				$("#purprice,#qty").blur();
 				$("#origcost,#lstytddep,#cuytddep").blur();
 			},
@@ -527,7 +527,7 @@
 				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 				{ label: 'Item Code', name: 'itemcode', width: 11, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
-				{ label: 'Regtype', name: 'regtype', width: 11, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat},	
+				{ label: 'Regtype', name: 'regtype', width: 13, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat},	
 				{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
 				{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 				{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
