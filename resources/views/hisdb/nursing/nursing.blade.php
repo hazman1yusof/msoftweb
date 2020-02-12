@@ -289,7 +289,7 @@ legend.scheduler-border {
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="temperature">Temperature</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="temperature" name="temperature" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">°C</span>
 														</div>
@@ -297,7 +297,7 @@ legend.scheduler-border {
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="pulse">Pulse</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="pulse" name="pulse" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">/min</span>
 														</div>
@@ -305,7 +305,7 @@ legend.scheduler-border {
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="respiration">Respiration</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="respiration" name="respiration" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">/min</span>
 														</div>
@@ -313,26 +313,17 @@ legend.scheduler-border {
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="bloodpressure">Blood Pressure</label>
-														<!-- <div class="col-md-2 input-group" style="margin-left: 100px">
-															<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase"> 
-															<span class="input-group-addon">/mmHg</span>
-														</div> -->
-
-														<div class="row input-group" style="margin-left: 95px">
-															<div class="col-md-4" style="padding: 0 0 0 0">
-																<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase">
-															</div>
+														<div class="col-md-9 input-group" style="margin-left: 100px">
+															<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 45px">
 															<label class="col-md-1 control-label">/</label> 
-															<div class="col-md-4" style="padding: 0 0 0 0">
-																<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase"> 
-															</div>
-															<span class="input-group-addon">/mmHg</span>
+															<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 45px">
+															<span class="input-group-addon" style="float: left;width: 70px;height: 30px">/mmHg</span>
 														</div>
 													</div>
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="height">Height</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="height" name="height" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">cm</span>
 														</div>
@@ -340,7 +331,7 @@ legend.scheduler-border {
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="weight">Weight</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="weight" name="weight" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">kg</span>
 														</div>
@@ -348,7 +339,7 @@ legend.scheduler-border {
 													
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="GXT">GXT</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="GXT" name="GXT" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">mmOL</span>
 														</div>
@@ -356,7 +347,7 @@ legend.scheduler-border {
 
 													<div class="form-group">
 														<label class="col-md-4 control-label" for="painscore">Pain Score</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="painscore" name="painscore" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">/10</span>
 														</div>
@@ -401,7 +392,7 @@ legend.scheduler-border {
 												<div class="panel-body">
 
 													<div class="form-group">
-														<div class="form-check form-check-inline checkbox-inline" style="margin-left: 80px">
+														<div class="form-check form-check-inline checkbox-inline" style="margin-left: 150px">
 															<input class="form-check-input" type="checkbox" id="conscious" value="conscious">
 															<label class="form-check-label" for="conscious">Conscious</label>
 														</div>
@@ -424,7 +415,7 @@ legend.scheduler-border {
 										<div class='col-md-6'>
 											<div class="panel panel-info">
 												<div class="panel-heading text-center">MENTAL STATUS</div>
-												<div class="panel-body">
+												<div class="panel-body" style="height: 170px">
 
 													<div class="form-check" style="margin-left: 80px">
 														<input class="form-check-input" type="checkbox" value="orientated" id="orientated">
@@ -453,7 +444,7 @@ legend.scheduler-border {
 										<div class='col-md-6'>
 											<div class="panel panel-info">
 												<div class="panel-heading text-center">EMOTIONAL STATUS</div>
-												<div class="panel-body">
+												<div class="panel-body" style="height: 170px">
 
 													<div class="form-check" style="margin-left: 80px">
 														<input class="form-check-input" type="checkbox" value="calm" id="calm">
