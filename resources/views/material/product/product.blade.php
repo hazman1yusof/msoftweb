@@ -126,7 +126,7 @@
 
 						 	<label class="col-md-3 control-label" for="description">Item Description</label>  
 						  		<div class="col-md-5" id="description_parent">
-						  			<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+						  			<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
 						  		</div>
 					    </div>
 

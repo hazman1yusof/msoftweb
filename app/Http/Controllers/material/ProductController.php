@@ -45,15 +45,15 @@ class ProductController extends defaultController
 
     public function save_productmaster(Request $request)
     {   
-        if($request->Class == 'Asset'){
+        if(strtoupper($request->Class) == 'ASSET'){
             DB::beginTransaction();
 
             $table = DB::table('material.product');
 
             $array_insert = [
                 'itemcode' => $request->itemcode,
-                'description' => $request->description,
-                'groupcode' => $request->groupcode,
+                'description' => strtoupper($request->description),
+                'groupcode' => strtoupper($request->groupcode),
                 'uomcode' => 'PC',
                 'productcat' => $request->productcat,
                 'Class' => $request->Class,
