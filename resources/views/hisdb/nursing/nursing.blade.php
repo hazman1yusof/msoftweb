@@ -84,9 +84,37 @@ legend.scheduler-border {
 		</form> -->
         <br>
         
-        <div class="panel panel-default" id="jqGridTriageInfo_c">
+        <div class="panel panel-default" style="position: relative;" id="jqGridTriageInfo_c">
+			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+				id="btn_grp_edit"
+				style="position: absolute;
+						padding: 0 0 0 0;
+						right: 30px;
+						top: 10px;" 
+
+			>
+				<button type="button" class="btn btn-default" id="edit_rfde">
+					<span class="fa fa-edit fa-lg"></span> Edit
+				</button>
+				<button type="button" class="btn btn-default" id="save_rfde">
+					<span class="fa fa-save fa-lg"></span> Save
+				</button>
+				<button type="button" class="btn btn-default" id="cancel_rfde" >
+					<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+				</button>
+			</div>
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridTriageInfo_panel">
-				<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i> Triage Information 
+				<b><span id="name_show"></span></b><br>
+				<span id="newic_show"></span>
+				<span id="sex_show"></span>
+				<span id="age_show"></span>
+				<span id="race_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 10px;">
+					<h5>Triage Information</h5>
+				</div>				
 			</div>
 			<div id="jqGridTriageInfo_panel" class="panel-collapse collapse">
 				<div class="panel-body">
@@ -411,9 +439,37 @@ legend.scheduler-border {
 			</div>	
 		</div>
 
-        <div class="panel panel-default" id="jqGridActDaily_c">
+        <div class="panel panel-default" style="position: relative;" id="jqGridActDaily_c">
+			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+				id="btn_grp_edit"
+				style="position: absolute;
+						padding: 0 0 0 0;
+						right: 30px;
+						top: 10px;" 
+
+			>
+				<button type="button" class="btn btn-default" id="edit_rfde">
+					<span class="fa fa-edit fa-lg"></span> Edit
+				</button>
+				<button type="button" class="btn btn-default" id="save_rfde">
+					<span class="fa fa-save fa-lg"></span> Save
+				</button>
+				<button type="button" class="btn btn-default" id="cancel_rfde" >
+					<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+				</button>
+			</div>
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridActDaily_panel">
-				<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i> Activities of Daily Living 
+				<b><span id="name_show"></span></b><br>
+				<span id="newic_show"></span>
+				<span id="sex_show"></span>
+				<span id="age_show"></span>
+				<span id="race_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 10px;">
+					<h5>Activities of Daily Living</h5>
+				</div>
 			</div>
 			<div id="jqGridActDaily_panel" class="panel-collapse collapse">
 				<div class="panel-body">
@@ -780,9 +836,37 @@ legend.scheduler-border {
 			</div>	
 		</div>
 
-        <div class="panel panel-default" id="jqGridTriPhysical_c">
+        <div class="panel panel-default" style="position: relative;" id="jqGridTriPhysical_c">
+			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+				id="btn_grp_edit"
+				style="position: absolute;
+						padding: 0 0 0 0;
+						right: 30px;
+						top: 10px;" 
+
+			>
+				<button type="button" class="btn btn-default" id="edit_rfde">
+					<span class="fa fa-edit fa-lg"></span> Edit
+				</button>
+				<button type="button" class="btn btn-default" id="save_rfde">
+					<span class="fa fa-save fa-lg"></span> Save
+				</button>
+				<button type="button" class="btn btn-default" id="cancel_rfde" >
+					<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+				</button>
+			</div>
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridTriPhysical_panel">
-				<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i> Triage Physical Assessment 
+				<b><span id="name_show"></span></b><br>
+				<span id="newic_show"></span>
+				<span id="sex_show"></span>
+				<span id="age_show"></span>
+				<span id="race_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 10px;">
+					<h5>Triage Physical Assessment</h5>
+				</div>
 			</div>
 			<div id="jqGridTriPhysical_panel" class="panel-collapse collapse">
 				<div class="panel-body">
