@@ -235,7 +235,7 @@ legend.scheduler-border {
 									<div class="panel-heading text-center">Condition on Admission</div>
 									<div class="panel-body">
 
-										<div class='col-md-6'>
+										<div class='col-md-8'>
 											<div class="panel panel-info">
 												<div class="panel-heading text-center">VITAL SIGN</div>
 												<div class="panel-body">
@@ -299,7 +299,7 @@ legend.scheduler-border {
 													</div>
 
 													<div class="form-group">
-														<label class="col-md-4 control-label" for="painscore">Pain Score</label>  
+														<label class="col-md-3 control-label" for="painscore">Pain Score</label>  
 														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="painscore" name="painscore" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">/10</span>
@@ -310,27 +310,27 @@ legend.scheduler-border {
 											</div>
 										</div>
 
-										<div class='col-md-6'>
+										<div class='col-md-4'>
 											<div class="panel panel-info">
 												<div class="panel-heading text-center">MODE OF ADMISSION</div>
 												<div class="panel-body">
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 20px">
 														<input class="form-check-input" type="checkbox" value="walkIn" id="walkIn">
 														<label class="form-check-label" for="walkIn">Walk In</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 20px">
 														<input class="form-check-input" type="checkbox" value="wheelchair" id="wheelchair">
 														<label class="form-check-label" for="wheelchair">Wheel Chair</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 20px">
 														<input class="form-check-input" type="checkbox" value="trolley" id="trolley">
 														<label class="form-check-label" for="trolley">Trolley</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 20px">
 														<input class="form-check-input" type="checkbox" value="others" id="others">
 														<label class="form-check-label" for="others">Others</label>
 													</div>
@@ -345,7 +345,7 @@ legend.scheduler-border {
 												<div class="panel-body">
 
 													<div class="form-group">
-														<div class="form-check form-check-inline checkbox-inline" style="margin-left: 150px">
+														<div class="form-check form-check-inline checkbox-inline" style="margin-left: 100px">
 															<input class="form-check-input" type="checkbox" id="conscious" value="conscious">
 															<label class="form-check-label" for="conscious">Conscious</label>
 														</div>
@@ -370,22 +370,22 @@ legend.scheduler-border {
 												<div class="panel-heading text-center">MENTAL STATUS</div>
 												<div class="panel-body" style="height: 170px">
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="orientated" id="orientated">
 														<label class="form-check-label" for="orientated">Orientated</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="confused" id="confused">
 														<label class="form-check-label" for="confused">Confused</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="restless" id="restless">
 														<label class="form-check-label" for="restless">Restless</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="aggressive" id="aggressive">
 														<label class="form-check-label" for="aggressive">Aggressive</label>
 													</div>
@@ -399,27 +399,27 @@ legend.scheduler-border {
 												<div class="panel-heading text-center">EMOTIONAL STATUS</div>
 												<div class="panel-body" style="height: 170px">
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="calm" id="calm">
 														<label class="form-check-label" for="calm">Calm</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="anxious" id="anxious">
 														<label class="form-check-label" for="anxious">Anxious</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="distress" id="distress">
 														<label class="form-check-label" for="distress">Distress</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="depressed" id="depressed">
 														<label class="form-check-label" for="depressed">Depressed</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="irritable" id="irritable">
 														<label class="form-check-label" for="irritable">Irritable</label>
 													</div>
@@ -646,7 +646,7 @@ legend.scheduler-border {
 										<div class="panel-body">
 
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="sleepmedication" style="padding-left: 0px">Required Medication To Sleep?</label>  
+												<label class="col-md-6 control-label" for="sleepmedication" style="padding-left: 0px">Required Medication To Sleep?</label>  
 												<label class="radio-inline">
 													<input type="radio" name="sleepmedication" value="Yes">Yes
 												</label>
@@ -658,19 +658,19 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Mobility</div>
-													<div class="panel-body" style="height: 120px">
+													<div class="panel-body" style="padding: 15px 0; height: 120px">
 													
-														<div class="form-check" style="margin-left: 30px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="ambulant" id="ambulant">
 															<label class="form-check-label" for="ambulant">Ambulant</label>
 														</div>
 
-														<div class="form-check" style="margin-left: 30px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="assist" id="assist">
 															<label class="form-check-label" for="assist">Assist With AIDS</label>
 														</div>
 
-														<div class="form-check" style="margin-left: 30px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="bedridden" id="bedridden">
 															<label class="form-check-label" for="bedridden">Bedridden</label>
 														</div>
@@ -682,19 +682,19 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Personal Hygiene</div>
-													<div class="panel-body" style="height: 120px">
+													<div class="panel-body" style="padding: 15px 0; height: 120px">
 
-														<div class="form-check" style="margin-left: 20px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="self" id="self">
 															<label class="form-check-label" for="self">Self</label>
 														</div>
 
-														<div class="form-check" style="margin-left: 20px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="needassist" id="needassist">
 															<label class="form-check-label" for="needassist">Need Assistant</label>
 														</div>
 
-														<div class="form-check" style="margin-left: 20px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="totaldependant" id="totaldependant">
 															<label class="form-check-label" for="totaldependant">Totally Dependant</label>
 														</div>
@@ -763,7 +763,7 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Vision</div>
-													<div class="panel-body" style="height: 170px">
+													<div class="panel-body" style="padding: 15px 0; height: 170px">
 
 														<div class="form-check" style="margin-left: 20px">
 															<input class="form-check-input" type="checkbox" value="normal" id="normal">
@@ -797,7 +797,7 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Hearing</div>
-													<div class="panel-body" style="height: 170px">
+													<div class="panel-body" style="padding: 15px 0; height: 170px">
 
 														<div class="form-check" style="margin-left: 20px">
 															<input class="form-check-input" type="checkbox" value="normal" id="normal">
@@ -892,17 +892,17 @@ legend.scheduler-border {
 																<div class="panel-heading text-center">SKIN CONDITION</div>
 																<div class="panel-body" style="height: 150px">
 
-																	<div class="form-check" style="margin-left: 80px">
+																	<div class="form-check" style="margin-left: 50px">
 																		<input class="form-check-input" type="checkbox" value="dry" id="dry">
 																		<label class="form-check-label" for="dry">Dry</label>
 																	</div>
 
-																	<div class="form-check" style="margin-left: 80px">
+																	<div class="form-check" style="margin-left: 50px">
 																		<input class="form-check-input" type="checkbox" value="odema" id="odema">
 																		<label class="form-check-label" for="odema">Odema</label>
 																	</div>
 
-																	<div class="form-check" style="margin-left: 80px">
+																	<div class="form-check" style="margin-left: 50px">
 																		<input class="form-check-input" type="checkbox" value="jaundice" id="jaundice">
 																		<label class="form-check-label" for="jaundice">Jaundice</label>
 																	</div>
@@ -917,22 +917,22 @@ legend.scheduler-border {
 																<div class="panel-body" style="height: 150px">
 
 																
-																	<div class="form-check" style="margin-left: 70px">
+																	<div class="form-check" style="margin-left: 40px">
 																		<input class="form-check-input" type="checkbox" value="bruises" id="bruises">
 																		<label class="form-check-label" for="bruises">Bruises</label>
 																	</div>
 
-																	<div class="form-check" style="margin-left: 70px">
+																	<div class="form-check" style="margin-left: 40px">
 																		<input class="form-check-input" type="checkbox" value="decubituesulcer" id="decubituesulcer">
 																		<label class="form-check-label" for="decubituesulcer">Decubitues Ulcer</label>
 																	</div>
 
-																	<div class="form-check" style="margin-left: 70px">
+																	<div class="form-check" style="margin-left: 40px">
 																		<input class="form-check-input" type="checkbox" value="laceration" id="laceration">
 																		<label class="form-check-label" for="laceration">Laceration</label>
 																	</div>
 
-																	<div class="form-check" style="margin-left: 70px">
+																	<div class="form-check" style="margin-left: 40px">
 																		<input class="form-check-input" type="checkbox" value="discolouration" id="discolouration">
 																		<label class="form-check-label" for="discolouration">Discolouration</label>
 																	</div>
