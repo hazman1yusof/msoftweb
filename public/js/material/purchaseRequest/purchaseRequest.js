@@ -433,8 +433,8 @@ $(document).ready(function () {
 			unsaved = false;
 			hideatdialogForm(false);
 
+			addmore_jqgrid2.state = true;
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
 			}
 
@@ -673,7 +673,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', hidden: true },
-			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable: false, hidden: true },
+			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false},
 			{
 				label: 'Price Code', name: 'pricecode', width: 110, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
@@ -815,6 +815,7 @@ $(document).ready(function () {
 					});
 				}
 			});
+			console.log(addmore_jqgrid2);
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
@@ -993,8 +994,8 @@ $(document).ready(function () {
 			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
-				/*addmore_jqgrid2.state = true;
-				$('#jqGrid2_ilsave').click();*/
+				// addmore_jqgrid2.state = true;
+				// $('#jqGrid2_ilsave').click();
 			});
 
         	cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
@@ -1804,7 +1805,6 @@ $(document).ready(function () {
 		$(self.textfield).keyup(function(event){
 
 			if($(this).val().length >= 9){
-				alert('init')
 				let optid = $(this).attr("optid")
 				let id_optid = optid.substring(0,optid.search("_"));
 				let itemcode = $(this).val();

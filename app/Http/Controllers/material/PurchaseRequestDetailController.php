@@ -115,7 +115,20 @@ class PurchaseRequestDetailController extends defaultController
 
         DB::beginTransaction();
 
+        //check unique
+        $duplicate = DB::table('material.purreqdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('itemcode','=',strtoupper($request->itemcode))
+            ->where('uomcode','=',strtoupper($request->uomcode))
+            ->where('pouom','=',strtoupper($request->pouom))
+            ->exists();
+
         try {
+            if($duplicate){
+                throw new \Exception("Duplicate itemcode and uom");
+            }
+
+
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.purreqdt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
@@ -182,7 +195,7 @@ class PurchaseRequestDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -249,7 +262,7 @@ class PurchaseRequestDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -318,7 +331,7 @@ class PurchaseRequestDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -367,7 +380,7 @@ class PurchaseRequestDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
         
     }

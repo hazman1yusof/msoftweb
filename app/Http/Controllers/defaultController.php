@@ -448,7 +448,7 @@ abstract class defaultController extends Controller{
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -477,7 +477,7 @@ abstract class defaultController extends Controller{
         } catch (\Exception $e) {
             DB::rollback();
             
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }

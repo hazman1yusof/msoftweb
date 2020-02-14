@@ -95,7 +95,13 @@ class DeliveryOrderDetailController extends defaultController
             $value->remarks_show = $value->remarks;
             if(mb_strlen($value->remarks)>120){
 
-                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots">...</span><span id="more">'.mb_substr($value->remarks_show,120).'</span><a onclick="seemoreFunction()" id="moreBtn">Read more</a>';
+                $time = time() + $key;
+
+                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+
+                $value->callback_param = [
+                    'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+                ];
             }
             
         }
@@ -210,7 +216,18 @@ class DeliveryOrderDetailController extends defaultController
 
         DB::beginTransaction();
 
+         //check unique
+        $duplicate = DB::table('material.purreqdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('itemcode','=',strtoupper($request->itemcode))
+            ->where('uomcode','=',strtoupper($request->uomcode))
+            ->where('pouom','=',strtoupper($request->pouom))
+            ->exists();
+
         try {
+              if($duplicate){
+                throw new \Exception("Duplicate itemcode and uom");
+            }
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.delorddt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
@@ -225,10 +242,10 @@ class DeliveryOrderDetailController extends defaultController
                     'compcode' => session('compcode'),
                     'recno' => $recno,
                     'lineno_' => $li,
-                    'pricecode' => $request->pricecode,
-                    'itemcode' => $request->itemcode,
-                    'uomcode' => $request->uomcode,
-                    'pouom' => $request->pouom,
+                    'pricecode' => strtoupper($request->pricecode), 
+                    'itemcode'=> strtoupper($request->itemcode), 
+                    'uomcode'=> strtoupper($request->uomcode), 
+                    'pouom'=> strtoupper($request->pouom), 
                     'suppcode' => $request->suppcode,
                     'trandate' => $request->trandate,
                     'deldept' => $request->deldept,
@@ -253,7 +270,7 @@ class DeliveryOrderDetailController extends defaultController
                     'expdate' => $this->chgDate($request->expdate), 
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
-                    'remarks' => $request->remarks,
+                    'remarks'=> strtoupper($request->remarks),
                     'unit' => session('unit'),
                     'qtytag' => 0
                 ]);
@@ -323,7 +340,7 @@ class DeliveryOrderDetailController extends defaultController
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $this->chgDate($request->expdate),  
                     'batchno'=> $request->batchno, 
-                    'remarks'=> $request->remarks,
+                    'remarks'=> strtoupper($request->remarks),
                     'unit' => session('unit')
                 ]);
 
@@ -394,7 +411,7 @@ class DeliveryOrderDetailController extends defaultController
                         'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                         'expdate'=> $this->chgDate($value['expdate']),  
                         'batchno'=> $value['batchno'],
-                        'remarks'=> $value['remarks'],
+                        'remarks'=> strtoupper($value['remarks']),
                         'unit' => session('unit')
                     ]);
             }

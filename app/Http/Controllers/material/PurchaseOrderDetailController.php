@@ -116,7 +116,18 @@ class PurchaseOrderDetailController extends defaultController
 
         DB::beginTransaction();
 
+        //check unique
+        $duplicate = DB::table('material.purreqdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('itemcode','=',strtoupper($request->itemcode))
+            ->where('uomcode','=',strtoupper($request->uomcode))
+            ->where('pouom','=',strtoupper($request->pouom))
+            ->exists();
+
         try {
+             if($duplicate){
+                throw new \Exception("Duplicate itemcode and uom");
+            }
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.purorddt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
@@ -133,10 +144,10 @@ class PurchaseOrderDetailController extends defaultController
                     'lineno_' => $li,
                     'prdept' => $request->prdept,
                     'purordno' => $request->purordno,
-                    'pricecode' => $request->pricecode,
-                    'itemcode' => $request->itemcode,
-                    'uomcode' => $request->uomcode,
-                    'pouom' => $request->pouom,
+                    'pricecode' => strtoupper($request->pricecode), 
+                    'itemcode'=> strtoupper($request->itemcode), 
+                    'uomcode'=> strtoupper($request->uomcode), 
+                    'pouom'=> strtoupper($request->pouom), 
                     'suppcode' => $request->suppcode,
                     'purdate' => $request->purdate,
                     'qtyorder' => $request->qtyorder,
@@ -153,7 +164,7 @@ class PurchaseOrderDetailController extends defaultController
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN', 
-                    'remarks' => $request->remarks,
+                    'remarks'=> strtoupper($request->remarks),
                     'unit' => session('unit'),
                     'prdept' => $request->prdept,
                     'purordno' => $request->purordno,
@@ -309,7 +320,7 @@ class PurchaseOrderDetailController extends defaultController
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),  
                     'recstatus' => 'OPEN', 
-                    'remarks' => $value['remarks'],
+                    'remarks'=> strtoupper($value['remarks']),
                     'prdept' => $request->prdept,
                     'purordno' => $request->purordno,
                 ]);

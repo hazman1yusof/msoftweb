@@ -501,8 +501,8 @@ $(document).ready(function () {
 			unsaved = false;
 			hideatdialogForm(false);
 
+			addmore_jqgrid2.state = true;
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
 			}
 			if(selfoper=='add'){
@@ -674,7 +674,7 @@ $(document).ready(function () {
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+			{ label: 'No', name: 'lineno_', width: 50, frozen:true, classes: 'wrap', editable:false},
 			
 			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false},
 			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
@@ -848,7 +848,18 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
-		loadComplete: function(){
+		loadComplete: function(data){
+			data.rows.forEach(function(element){
+				if(element.callback_param != null){
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+							element.callback_param[0],
+							element.callback_param[1],
+							element.callback_param[2]
+						)
+					});
+				}
+			});
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
@@ -1569,6 +1580,19 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager3",
+		loadComplete: function(data){
+			data.rows.forEach(function(element){
+				if(element.callback_param != null){
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+							element.callback_param[0],
+							element.callback_param[1],
+							element.callback_param[2]
+						)
+					});
+				}
+			});
+		},
 		gridComplete: function(){
 			$("#jqGrid3").find(".remarks_button").on("click", function(e){
 				$("#remarks2").data('rowid',$(this).data('rowid'))

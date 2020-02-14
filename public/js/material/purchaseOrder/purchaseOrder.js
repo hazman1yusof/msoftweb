@@ -492,8 +492,8 @@ $(document).ready(function () {
 			unsaved = false;
 			hideatdialogForm(false);
 
+			addmore_jqgrid2.state = true;
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
 			}
 
@@ -737,7 +737,7 @@ $(document).ready(function () {
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+			{ label: 'No', name: 'lineno_', width: 50, frozen:true, classes: 'wrap', editable:false},
 
 			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false},
 			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
