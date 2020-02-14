@@ -138,11 +138,11 @@
 				{ label: 'idno', name: 'idno', sorttype: 'number', hidden:true },
 				{ label: 'Compcode', name: 'compcode', hidden:true},
 				{ label: 'Charge Type', name: 'chgtype', classes: 'wrap', width: 30, canSearch: true},
-				{ label: 'Description', name: 'description', classes: 'wrap', width: 70, canSearch: true},
-				{ label: 'Last User', name: 'upduser', classes: 'wrap', width: 30,checked:true},
+				{ label: 'Description', name: 'description', classes: 'wrap', width: 70, canSearch: true, checked:true},
+				{ label: 'Last User', name: 'upduser', classes: 'wrap', width: 30},
 				{ label: 'Last Update', name: 'upddate', classes: 'wrap', width: 20},
-				{ label: 'Sequence Number', name: 'seqno', classes: 'wrap', width: 20,checked:true},
-				{ label: 'Charge Group', name: 'chggroup', classes: 'wrap', width: 20,checked:true, canSearch: true},
+				{ label: 'Sequence Number', name: 'seqno', classes: 'wrap', width: 20},
+				{ label: 'Charge Group', name: 'chggroup', classes: 'wrap', width: 20, canSearch: true},
 				{ label: 'ipacccode', name: 'ipacccode', hidden:true},
 				{ label: 'opacccode', name: 'opacccode', hidden:true},
 				{ label: 'otcacccode', name: 'otcacccode', hidden:true},
@@ -246,23 +246,6 @@
 			
 			search('#jqGrid',$('#searchForm input[seltext=true]').val(),$('#searchForm [name=Scol] option:selected').val(),urlParam);
 		}
-
-		// function scolChange() {
-		// 	if($('#Scol').val()=='chggroup'){
-		// 		$("input[name='Stext']").hide("fast");
-		// 		$("#show_chgtype,#show_chggroup").hide("fast");
-		// 		$("#show_chggroup").show("fast");
-		// 	} else if($('#Scol').val() == 'chgtype'){
-		// 		$("input[name='Stext']").hide("fast");
-		// 		$("#show_chgtype,#show_chggroup").hide("fast");
-		// 		$("#show_chgtype").show("fast");
-		// 	} else {
-		// 		$("input[name='Stext']").show("fast");
-		// 		$("#show_chgtype,#show_chggroup").hide("fast");
-		// 		$("input[name='Stext']").attr('type', 'text');
-		// 		$("input[name='Stext']").velocity({ width: "100%" });
-		// 	}
-		// }
 
 		//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 		toogleSearch('#sbut1','#searchForm','on');
