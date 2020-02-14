@@ -193,19 +193,57 @@ abstract class defaultController extends Controller{
         /////////searching 2///////// ni search utk ordialog
         if(!empty($request->searchCol2)){
 
-            $table = $table->where(function($query) use ($request){
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol2);
+            }else{
+                $searchCol_array = $request->searchCol2;
+            }
 
-                if(!empty($request->fixPost)){
-                    $searchCol_array = $this->fixPost3($request->searchCol2);
-                }else{
-                    $searchCol_array = $request->searchCol2;
-                }
+            // $searchCol_array_1 = $searchCol_array_2 = $searchVal_array_1 = $searchVal_array_2 = [];
 
+            // foreach ($searchCol_array as $key => $value) {
+            //     if(($key+1)%2){
+            //         array_push($searchCol_array_1, $searchCol_array[$key]);
+            //         array_push($searchVal_array_1, $request->searchVal2[$key]);
+            //     }else{
+            //         array_push($searchCol_array_2, $searchCol_array[$key]);
+            //         array_push($searchVal_array_2, $request->searchVal2[$key]);
+            //     }
+            // }
+            
+            $table = $table->where(function($table) use ($searchCol_array, $request){
                 foreach ($searchCol_array as $key => $value) {
-                    $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
+                    if($key>1) break;
+                    $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
                 }
             });
+
+            if(count($searchCol_array)>2){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key<=1) continue;
+                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+            }
+            
         }
+
+        // if(!empty($request->searchCol2)){
+
+        //     $table = $table->where(function($query) use ($request){
+
+        //         if(!empty($request->fixPost)){
+        //             $searchCol_array = $this->fixPost3($request->searchCol2);
+        //         }else{
+        //             $searchCol_array = $request->searchCol2;
+        //         }
+
+        //         foreach ($searchCol_array as $key => $value) {
+        //             $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
+        //         }
+        //     });
+        // }
 
         //////////where////////// 
 
