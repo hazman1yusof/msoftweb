@@ -268,8 +268,8 @@
 			var dialog_stockacct = new ordialog(
 				'stockacct','finance.glmasref','#stockacct',errorField,
 				{	colModel:[
-						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -301,8 +301,8 @@
 			var dialog_cosacct = new ordialog(
 				'cosacct','finance.glmasref','#cosacct',errorField,
 				{	colModel:[
-						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -334,8 +334,8 @@
 			var dialog_adjacct = new ordialog(
 				'adjacct','finance.glmasref','#adjacct',errorField,
 				{	colModel:[
-						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -367,8 +367,8 @@
 			var dialog_woffacct = new ordialog(
 				'woffacct','finance.glmasref','#woffacct',errorField,
 				{	colModel:[
-						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 						],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -400,8 +400,8 @@
 			var dialog_expacct = new ordialog(
 				'expacct','finance.glmasref','#expacct',errorField,
 				{	colModel:[
-						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -433,8 +433,8 @@
 			var dialog_loanacct = new ordialog(
 				'loanacct','finance.glmasref','#loanacct',errorField,
 				{	colModel:[
-						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],

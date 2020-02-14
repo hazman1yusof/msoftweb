@@ -197,7 +197,7 @@
 					{ label: 'idno', name: 'idno', width: 20,hidden:true  },
 					{ label: 'Compcode', name: 'compcode', width: 40, hidden:true },
 					{ label: 'Source', name: 'source', width: 50, hidden:true },
-					{ label: 'Type', name: 'hdrtype', width: 35, classes: 'wrap', canSearch: true},
+					{ label: 'Type', name: 'hdrtype', width: 25, classes: 'wrap', canSearch: true},
 					{ label: 'Transaction Type', name: 'trantype', width:50, hidden:true},
 					{ label: 'Description', name: 'description', width: 80, classes: 'wrap',checked:true, canSearch: true },
 					{ label: 'Deposit Cost Code', name: 'depccode', width: 20,  classes: 'wrap' },

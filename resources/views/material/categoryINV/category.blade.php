@@ -13,7 +13,7 @@
 				<input type="hidden" name="idno">
 				<input id="source" name="source" type="hidden" value="{{$_GET['source']}}">
 				<input id="cattype" name="cattype" type="hidden" value="{{$_GET['cattype']}}">
-				<input id="class" name="class" type="text" value="{{$_GET['class']}}">
+				<input id="class" name="class" type="hidden" value="{{$_GET['class']}}">
 				
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="catcode">Category</label>  

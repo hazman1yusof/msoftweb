@@ -1017,8 +1017,8 @@ $(document).ready(function () {
 	var dialog_deptcode = new ordialog(
 		'deptcode','sysdb.department',"#jqGrid2 input[name='deptcode']",errorField,
 		{	colModel:[
-				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
 				
 			],
 			urlParam: {
@@ -1051,8 +1051,8 @@ $(document).ready(function () {
 	var dialog_category = new ordialog(
 		'category','material.category',"#jqGrid2 input[name='category']",errorField,
 		{	colModel:[
-				{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
 				
 			],
 			urlParam: {
@@ -1086,8 +1086,8 @@ $(document).ready(function () {
 		'GSTCode',['hisdb.taxmast'],"#jqGrid2 input[name='GSTCode']",errorField,
 		{	colModel:
 			[
-				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
