@@ -805,7 +805,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager2",
 		loadComplete: function(data){
 			data.rows.forEach(function(element){
-				$('input').on('beforeValidation', function(value, lang, config) {
+				if(element.callback_param != null){
 					$("#"+element.callback_param[2]).on('click', function() {
 						seemoreFunction(
 								element.callback_param[0],
@@ -813,7 +813,7 @@ $(document).ready(function () {
 								element.callback_param[2]
 						)
 					});
-				});
+				}
 			});
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
@@ -1283,8 +1283,8 @@ $(document).ready(function () {
 		dialog_suppcode.off();
 		errorField.length = 0;
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
-			mycurrency.formatOn();
 			saveHeader("#formdata",oper,saveParam);
+			mycurrency.formatOn();
 			unsaved = false;
 		} else {
 			mycurrency.formatOn();
@@ -1446,6 +1446,20 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager3",
+
+		loadComplete: function(data){
+			data.rows.forEach(function(element){
+				if(element.callback_param != null){
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+							element.callback_param[0],
+							element.callback_param[1],
+							element.callback_param[2]
+						)
+					});
+				}
+			});
+		},
 	
 		gridComplete: function(){
 			$("#jqGrid3").find(".remarks_button").on("click", function(e){

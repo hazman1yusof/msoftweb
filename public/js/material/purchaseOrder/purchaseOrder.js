@@ -876,7 +876,7 @@ $(document).ready(function () {
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
 			{ label: 'Remarks', name: 'remarks', hidden:true},
-			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap', hidden: false },
+			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'wrap', hidden: false },
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'prdept', name: 'prdept', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'purordno', name: 'purordno', width: 20, classes: 'wrap', hidden:true},
@@ -893,7 +893,18 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
-		loadComplete: function(){
+		loadComplete: function(data){
+			data.rows.forEach(function(element){
+				if(element.callback_param != null){
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+							element.callback_param[0],
+							element.callback_param[1],
+							element.callback_param[2]
+						)
+					});
+				}
+			});
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
@@ -1590,6 +1601,19 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager3",
 	
+		loadComplete: function(data){
+			data.rows.forEach(function(element){
+				if(element.callback_param != null){
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+							element.callback_param[0],
+							element.callback_param[1],
+							element.callback_param[2]
+						)
+					});
+				}
+			});
+		},
 		gridComplete: function(){
 			$("#jqGrid3").find(".remarks_button").on("click", function(e){
 				$("#remarks2").data('rowid',$(this).data('rowid'))
@@ -2368,6 +2392,7 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
 		},
+
 		gridComplete: function(){
 			
 		},

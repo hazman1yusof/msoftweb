@@ -75,9 +75,9 @@ class PurchaseRequestDetailController extends defaultController
             $value->remarks_show = $value->remarks;
             if(mb_strlen($value->remarks)>120){
 
-                $time = time();
+                $time = time() + $key;
 
-                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'">...</span><span id="more_'.$time.'">'.mb_substr($value->remarks_show,120).'</span><a " id="moreBtn_'.$time.'">Read more</a>';
+                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
 
                 $value->callback_param = [
                     'dots_'.$time,'more_'.$time,'moreBtn_'.$time
