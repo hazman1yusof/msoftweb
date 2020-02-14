@@ -65,7 +65,8 @@ class PurchaseRequestDetailController extends defaultController
                     })
                     ->where('prdt.recno','=',$request->filterVal[0])
                     ->where('prdt.compcode','=',session('compcode'))
-                    ->where('prdt.recstatus','<>','DELETE');
+                    ->where('prdt.recstatus','<>','DELETE')
+                    ->orderBy('prdt.idno','desc');
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);

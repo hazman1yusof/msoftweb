@@ -85,7 +85,8 @@ class DeliveryOrderDetailController extends defaultController
                 })
                 ->where('dodt.recno','=',$request->filterVal[0])
                 ->where('dodt.compcode','=',session('compcode'))
-                ->where('dodt.recstatus','<>','DELETE');
+                ->where('dodt.recstatus','<>','DELETE')
+                ->orderBy('dodt.idno','desc');
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);

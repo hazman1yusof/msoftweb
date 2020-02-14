@@ -83,85 +83,38 @@ legend.scheduler-border {
 			</fieldset> 
 		</form> -->
         <br>
+        
+        <div class="panel panel-default" style="position: relative;" id="jqGridTriageInfo_c">
+			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+				id="btn_grp_edit"
+				style="position: absolute;
+						padding: 0 0 0 0;
+						right: 30px;
+						top: 10px;" 
 
-        <div class="panel panel-default" id="jqGridPatientBio_c">
-		    <div class="panel-heading">Patient Biodata</div>
-		    <div class="panel-body">
-		    	<div class='col-md-12' style="padding:0 0 15px 0">
-            		<!-- <table id="jqGrid" class="table table-striped"></table>
-            		<div id="jqGridPager"></div> -->
-
-					<form class='form-horizontal' style='width:99%' id='formdata'>
-			
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="name">Name</label>  
-							<div class="col-md-3">
-								<input id="name" name="name" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-							</div>
-
-							<label class="col-md-2 control-label" for="icnumber">IC Number</label>  
-							<div class="col-md-3">
-								<input id="icnumber" name="icnumber" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="DOB">DOB</label>  
-							<div class="col-md-3">
-								<input id="DOB" name="DOB" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-							</div>
-
-							<label class="col-md-2 control-label" for="age">Age</label>  
-							<div class="col-md-3">
-								<input id="age" name="age" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="doctor">Doctor</label>  
-							<div class="col-md-3">
-								<input id="doctor" name="doctor" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-							</div>
-
-							<label class="col-md-2 control-label" for="MRN">MRN</label>  
-							<div class="col-md-3">
-								<input id="MRN" name="MRN" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="race">Race</label>  
-							<div class="col-md-3">
-								<input id="race" name="race" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-							</div>
-
-							<label class="col-md-2 control-label" for="sex">Sex</label>  
-							<div class="col-md-3">
-								<input id="sex" name="sex" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="occupation">Occupation</label>  
-							<div class="col-md-3">
-								<input id="occupation" name="occupation" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-							</div>
-
-							<label class="col-md-2 control-label" for="telephone">Telephone</label>  
-							<div class="col-md-3">
-								<input id="telephone" name="telephone" type="text" class="form-control input-sm uppercase" frozeOnEdit>
-							</div>
-						</div>
-
-					</form>
-
-        		</div>
-		    </div>
-		</div>
-
-        <div class="panel panel-default" id="jqGridTriageInfo_c">
+			>
+				<button type="button" class="btn btn-default" id="edit_rfde">
+					<span class="fa fa-edit fa-lg"></span> Edit
+				</button>
+				<button type="button" class="btn btn-default" id="save_rfde">
+					<span class="fa fa-save fa-lg"></span> Save
+				</button>
+				<button type="button" class="btn btn-default" id="cancel_rfde" >
+					<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+				</button>
+			</div>
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridTriageInfo_panel">
-				<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i> Triage Information 
+				<b><span id="name_show"></span></b><br>
+				<span id="newic_show"></span>
+				<span id="sex_show"></span>
+				<span id="age_show"></span>
+				<span id="race_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 10px;">
+					<h5>Triage Information</h5>
+				</div>				
 			</div>
 			<div id="jqGridTriageInfo_panel" class="panel-collapse collapse">
 				<div class="panel-body">
@@ -282,14 +235,14 @@ legend.scheduler-border {
 									<div class="panel-heading text-center">Condition on Admission</div>
 									<div class="panel-body">
 
-										<div class='col-md-6'>
+										<div class='col-md-8'>
 											<div class="panel panel-info">
 												<div class="panel-heading text-center">VITAL SIGN</div>
 												<div class="panel-body">
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="temperature">Temperature</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="temperature" name="temperature" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">°C</span>
 														</div>
@@ -297,7 +250,7 @@ legend.scheduler-border {
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="pulse">Pulse</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="pulse" name="pulse" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">/min</span>
 														</div>
@@ -305,7 +258,7 @@ legend.scheduler-border {
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="respiration">Respiration</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="respiration" name="respiration" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">/min</span>
 														</div>
@@ -313,26 +266,17 @@ legend.scheduler-border {
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="bloodpressure">Blood Pressure</label>
-														<!-- <div class="col-md-2 input-group" style="margin-left: 100px">
-															<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase"> 
-															<span class="input-group-addon">/mmHg</span>
-														</div> -->
-
-														<div class="row input-group" style="margin-left: 95px">
-															<div class="col-md-4" style="padding: 0 0 0 0">
-																<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase">
-															</div>
+														<div class="col-md-9 input-group" style="margin-left: 100px">
+															<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 45px">
 															<label class="col-md-1 control-label">/</label> 
-															<div class="col-md-4" style="padding: 0 0 0 0">
-																<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase"> 
-															</div>
-															<span class="input-group-addon">/mmHg</span>
+															<input id="bloodpressure" name="bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 45px">
+															<span class="input-group-addon" style="float: left;width: 70px;height: 30px">/mmHg</span>
 														</div>
 													</div>
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="height">Height</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="height" name="height" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">cm</span>
 														</div>
@@ -340,7 +284,7 @@ legend.scheduler-border {
 
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="weight">Weight</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="weight" name="weight" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">kg</span>
 														</div>
@@ -348,15 +292,15 @@ legend.scheduler-border {
 													
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="GXT">GXT</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="GXT" name="GXT" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">mmOL</span>
 														</div>
 													</div>
 
 													<div class="form-group">
-														<label class="col-md-4 control-label" for="painscore">Pain Score</label>  
-														<div class="col-md-6 input-group" style="margin-left: 100px">
+														<label class="col-md-3 control-label" for="painscore">Pain Score</label>  
+														<div class="col-md-7 input-group" style="margin-left: 100px">
 															<input id="painscore" name="painscore" type="text" class="form-control input-sm uppercase">
 															<span class="input-group-addon">/10</span>
 														</div>
@@ -366,27 +310,27 @@ legend.scheduler-border {
 											</div>
 										</div>
 
-										<div class='col-md-6'>
+										<div class='col-md-4'>
 											<div class="panel panel-info">
 												<div class="panel-heading text-center">MODE OF ADMISSION</div>
 												<div class="panel-body">
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 20px">
 														<input class="form-check-input" type="checkbox" value="walkIn" id="walkIn">
 														<label class="form-check-label" for="walkIn">Walk In</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 20px">
 														<input class="form-check-input" type="checkbox" value="wheelchair" id="wheelchair">
 														<label class="form-check-label" for="wheelchair">Wheel Chair</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 20px">
 														<input class="form-check-input" type="checkbox" value="trolley" id="trolley">
 														<label class="form-check-label" for="trolley">Trolley</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 20px">
 														<input class="form-check-input" type="checkbox" value="others" id="others">
 														<label class="form-check-label" for="others">Others</label>
 													</div>
@@ -401,7 +345,7 @@ legend.scheduler-border {
 												<div class="panel-body">
 
 													<div class="form-group">
-														<div class="form-check form-check-inline checkbox-inline" style="margin-left: 80px">
+														<div class="form-check form-check-inline checkbox-inline" style="margin-left: 100px">
 															<input class="form-check-input" type="checkbox" id="conscious" value="conscious">
 															<label class="form-check-label" for="conscious">Conscious</label>
 														</div>
@@ -424,24 +368,24 @@ legend.scheduler-border {
 										<div class='col-md-6'>
 											<div class="panel panel-info">
 												<div class="panel-heading text-center">MENTAL STATUS</div>
-												<div class="panel-body">
+												<div class="panel-body" style="height: 170px">
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="orientated" id="orientated">
 														<label class="form-check-label" for="orientated">Orientated</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="confused" id="confused">
 														<label class="form-check-label" for="confused">Confused</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="restless" id="restless">
 														<label class="form-check-label" for="restless">Restless</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="aggressive" id="aggressive">
 														<label class="form-check-label" for="aggressive">Aggressive</label>
 													</div>
@@ -453,29 +397,29 @@ legend.scheduler-border {
 										<div class='col-md-6'>
 											<div class="panel panel-info">
 												<div class="panel-heading text-center">EMOTIONAL STATUS</div>
-												<div class="panel-body">
+												<div class="panel-body" style="height: 170px">
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="calm" id="calm">
 														<label class="form-check-label" for="calm">Calm</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="anxious" id="anxious">
 														<label class="form-check-label" for="anxious">Anxious</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="distress" id="distress">
 														<label class="form-check-label" for="distress">Distress</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="depressed" id="depressed">
 														<label class="form-check-label" for="depressed">Depressed</label>
 													</div>
 
-													<div class="form-check" style="margin-left: 80px">
+													<div class="form-check" style="margin-left: 60px">
 														<input class="form-check-input" type="checkbox" value="irritable" id="irritable">
 														<label class="form-check-label" for="irritable">Irritable</label>
 													</div>
@@ -495,9 +439,37 @@ legend.scheduler-border {
 			</div>	
 		</div>
 
-        <div class="panel panel-default" id="jqGridActDaily_c">
+        <div class="panel panel-default" style="position: relative;" id="jqGridActDaily_c">
+			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+				id="btn_grp_edit"
+				style="position: absolute;
+						padding: 0 0 0 0;
+						right: 30px;
+						top: 10px;" 
+
+			>
+				<button type="button" class="btn btn-default" id="edit_rfde">
+					<span class="fa fa-edit fa-lg"></span> Edit
+				</button>
+				<button type="button" class="btn btn-default" id="save_rfde">
+					<span class="fa fa-save fa-lg"></span> Save
+				</button>
+				<button type="button" class="btn btn-default" id="cancel_rfde" >
+					<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+				</button>
+			</div>
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridActDaily_panel">
-				<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i> Activities of Daily Living 
+				<b><span id="name_show"></span></b><br>
+				<span id="newic_show"></span>
+				<span id="sex_show"></span>
+				<span id="age_show"></span>
+				<span id="race_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 10px;">
+					<h5>Activities of Daily Living</h5>
+				</div>
 			</div>
 			<div id="jqGridActDaily_panel" class="panel-collapse collapse">
 				<div class="panel-body">
@@ -674,7 +646,7 @@ legend.scheduler-border {
 										<div class="panel-body">
 
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="sleepmedication" style="padding-left: 0px">Required Medication To Sleep?</label>  
+												<label class="col-md-6 control-label" for="sleepmedication" style="padding-left: 0px">Required Medication To Sleep?</label>  
 												<label class="radio-inline">
 													<input type="radio" name="sleepmedication" value="Yes">Yes
 												</label>
@@ -686,19 +658,19 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Mobility</div>
-													<div class="panel-body" style="height: 120px">
+													<div class="panel-body" style="padding: 15px 0; height: 120px">
 													
-														<div class="form-check" style="margin-left: 30px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="ambulant" id="ambulant">
 															<label class="form-check-label" for="ambulant">Ambulant</label>
 														</div>
 
-														<div class="form-check" style="margin-left: 30px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="assist" id="assist">
 															<label class="form-check-label" for="assist">Assist With AIDS</label>
 														</div>
 
-														<div class="form-check" style="margin-left: 30px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="bedridden" id="bedridden">
 															<label class="form-check-label" for="bedridden">Bedridden</label>
 														</div>
@@ -710,19 +682,19 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Personal Hygiene</div>
-													<div class="panel-body" style="height: 120px">
+													<div class="panel-body" style="padding: 15px 0; height: 120px">
 
-														<div class="form-check" style="margin-left: 20px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="self" id="self">
 															<label class="form-check-label" for="self">Self</label>
 														</div>
 
-														<div class="form-check" style="margin-left: 20px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="needassist" id="needassist">
 															<label class="form-check-label" for="needassist">Need Assistant</label>
 														</div>
 
-														<div class="form-check" style="margin-left: 20px">
+														<div class="form-check" style="margin-left: 10px">
 															<input class="form-check-input" type="checkbox" value="totaldependant" id="totaldependant">
 															<label class="form-check-label" for="totaldependant">Totally Dependant</label>
 														</div>
@@ -791,7 +763,7 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Vision</div>
-													<div class="panel-body" style="height: 170px">
+													<div class="panel-body" style="padding: 15px 0; height: 170px">
 
 														<div class="form-check" style="margin-left: 20px">
 															<input class="form-check-input" type="checkbox" value="normal" id="normal">
@@ -825,7 +797,7 @@ legend.scheduler-border {
 											<div class='col-md-4'>
 												<div class="panel panel-info">
 													<div class="panel-heading text-center">Hearing</div>
-													<div class="panel-body" style="height: 170px">
+													<div class="panel-body" style="padding: 15px 0; height: 170px">
 
 														<div class="form-check" style="margin-left: 20px">
 															<input class="form-check-input" type="checkbox" value="normal" id="normal">
@@ -864,9 +836,37 @@ legend.scheduler-border {
 			</div>	
 		</div>
 
-        <div class="panel panel-default" id="jqGridTriPhysical_c">
+        <div class="panel panel-default" style="position: relative;" id="jqGridTriPhysical_c">
+			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+				id="btn_grp_edit"
+				style="position: absolute;
+						padding: 0 0 0 0;
+						right: 30px;
+						top: 10px;" 
+
+			>
+				<button type="button" class="btn btn-default" id="edit_rfde">
+					<span class="fa fa-edit fa-lg"></span> Edit
+				</button>
+				<button type="button" class="btn btn-default" id="save_rfde">
+					<span class="fa fa-save fa-lg"></span> Save
+				</button>
+				<button type="button" class="btn btn-default" id="cancel_rfde" >
+					<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+				</button>
+			</div>
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridTriPhysical_panel">
-				<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i> Triage Physical Assessment 
+				<b><span id="name_show"></span></b><br>
+				<span id="newic_show"></span>
+				<span id="sex_show"></span>
+				<span id="age_show"></span>
+				<span id="race_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 10px;">
+					<h5>Triage Physical Assessment</h5>
+				</div>
 			</div>
 			<div id="jqGridTriPhysical_panel" class="panel-collapse collapse">
 				<div class="panel-body">
@@ -892,17 +892,17 @@ legend.scheduler-border {
 																<div class="panel-heading text-center">SKIN CONDITION</div>
 																<div class="panel-body" style="height: 150px">
 
-																	<div class="form-check" style="margin-left: 80px">
+																	<div class="form-check" style="margin-left: 50px">
 																		<input class="form-check-input" type="checkbox" value="dry" id="dry">
 																		<label class="form-check-label" for="dry">Dry</label>
 																	</div>
 
-																	<div class="form-check" style="margin-left: 80px">
+																	<div class="form-check" style="margin-left: 50px">
 																		<input class="form-check-input" type="checkbox" value="odema" id="odema">
 																		<label class="form-check-label" for="odema">Odema</label>
 																	</div>
 
-																	<div class="form-check" style="margin-left: 80px">
+																	<div class="form-check" style="margin-left: 50px">
 																		<input class="form-check-input" type="checkbox" value="jaundice" id="jaundice">
 																		<label class="form-check-label" for="jaundice">Jaundice</label>
 																	</div>
@@ -917,22 +917,22 @@ legend.scheduler-border {
 																<div class="panel-body" style="height: 150px">
 
 																
-																	<div class="form-check" style="margin-left: 70px">
+																	<div class="form-check" style="margin-left: 40px">
 																		<input class="form-check-input" type="checkbox" value="bruises" id="bruises">
 																		<label class="form-check-label" for="bruises">Bruises</label>
 																	</div>
 
-																	<div class="form-check" style="margin-left: 70px">
+																	<div class="form-check" style="margin-left: 40px">
 																		<input class="form-check-input" type="checkbox" value="decubituesulcer" id="decubituesulcer">
 																		<label class="form-check-label" for="decubituesulcer">Decubitues Ulcer</label>
 																	</div>
 
-																	<div class="form-check" style="margin-left: 70px">
+																	<div class="form-check" style="margin-left: 40px">
 																		<input class="form-check-input" type="checkbox" value="laceration" id="laceration">
 																		<label class="form-check-label" for="laceration">Laceration</label>
 																	</div>
 
-																	<div class="form-check" style="margin-left: 70px">
+																	<div class="form-check" style="margin-left: 40px">
 																		<input class="form-check-input" type="checkbox" value="discolouration" id="discolouration">
 																		<label class="form-check-label" for="discolouration">Discolouration</label>
 																	</div>

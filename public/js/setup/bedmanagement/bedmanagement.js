@@ -27,7 +27,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table',
-		url: '/bed/table',
+		url: '/bedmanagement/table',
 		field: '',
 		table_name: ['hisdb.bed AS b', 'hisdb.episode AS c'],
 		table_id: 'b_compcode',
@@ -44,32 +44,14 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/bed/form",
+		editurl: "/bedmanagement/form",
 		colModel: [
             { label: 'compcode', name: 'compcode', hidden: true },
             { label: 'Bed No', name: 'bednum', width: 3, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Bed Type', name: 'bedtype', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-			{ label: 'Status', name: 'occup', width: 5, classes: 'wrap', canSearch: true, editable: true, edittype:"select",formatter:'select', 
-			editoptions:{
-				value:"OCCUPIED:OCCUPIED;VACANT:VACANT;HOUSEKEEPING:HOUSEKEEPING;MAINTENANCE:MAINTENANCE;ISOLATED:ISOLATED"
-			}},
-			{ label: 'Room', name: 'room', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Room', name: 'st_room', width: 15, canSearch: true, checked: true, editable: true, 
-			// 	editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-			// 	edittype:'custom',	editoptions:
-			// 		{  custom_element:StateCustomEdit,
-			// 		   custom_value:galGridCustomValue 	
-			// 		},
-			// },
+			{ label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
+            { label: 'Room', name: 'room', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Ward', name: 'ward', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Ward', name: 'st_ward', width: 15, canSearch: true, checked: true, editable: true, 
-			// 	editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-			// 	edittype:'custom',	editoptions:
-			// 		{  custom_element:StateCustomEdit,
-			// 		   custom_value:galGridCustomValue 	
-			// 		},
-			// },
 			{ label: 'Tel Ext', name: 'tel_ext', width: 3, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Statistic', name: 'statistic', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'MRN', name: 'mrn', width: 3, canSearch: true},
@@ -112,27 +94,26 @@ $(document).ready(function () {
 		},
 	});
 
-	// ////////////////////formatter status////////////////////////////////////////
-	// function formatteroccup(cellvalue, option, rowObject) {
-	// 	if (cellvalue == '1') {
-	// 		return 'OCCUPIED';
-	// 	}else if (cellvalue == '0') {
-	// 		return 'VACANT';
-	// 	}else{
-	// 		return 'VACANT';
-	// 	}
-	// }
+	function formatteroccup(cellvalue, option, rowObject) {
+		if (cellvalue == '1') {
+			return 'OCCUPIED';
+		}else if (cellvalue == '0') {
+			return 'VACANT';
+		}else{
+			return 'VACANT';
+		}
+	}
 
-	// ////////////////////unformatter status////////////////////////////////////////
-	// function unformatoccup(cellvalue, option, rowObject) {
-	// 	if (cellvalue == 'OCCUPIED') {
-	// 		return '1';
-	// 	}else if (cellvalue == 'VACANT') {
-	// 		return '0';
-	// 	}else{
-	// 		return '0';
-	// 	}
-	// }
+	////////////////////unformatter status////////////////////////////////////////
+	function unformatoccup(cellvalue, option, rowObject) {
+		if (cellvalue == 'OCCUPIED') {
+			return '1';
+		}else if (cellvalue == 'VACANT') {
+			return '0';
+		}else{
+			return '0';
+		}
+	}
 
 	var myEditOptions = {
 		keys: true,
@@ -166,9 +147,9 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 
-			let editurl = "/bed/form?"+
+			let editurl = "/bedmanagement/form?"+
 				$.param({
-					action: 'bed_save',
+					action: 'bedmanagement_save',
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -214,9 +195,9 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/bed/form?"+
+			let editurl = "/bedmanagement/form?"+
 				$.param({
-					action: 'bed_save',
+					action: 'bedmanagement_save',
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -258,11 +239,11 @@ $(document).ready(function () {
 						if (result == true) {
 							param = {
 								_token: $("#_token").val(),
-								action: 'bed_save',
+								action: 'bedmanagement_save',
 								Code: $('#Code').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/bed/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "/bedmanagement/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

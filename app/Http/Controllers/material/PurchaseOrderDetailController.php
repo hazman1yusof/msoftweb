@@ -64,7 +64,8 @@ class PurchaseOrderDetailController extends defaultController
                 })
                 ->where('podt.recno','=',$request->filterVal[0])
                 ->where('podt.compcode','=',session('compcode'))
-                ->where('podt.recstatus','<>','DELETE');
+                ->where('podt.recstatus','<>','DELETE')
+                ->orderBy('podt.idno','desc');
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);

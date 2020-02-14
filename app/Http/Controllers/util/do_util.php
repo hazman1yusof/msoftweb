@@ -238,7 +238,7 @@ class do_util extends defaultController{
                 'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
                 'trantype' => $delordhd_obj->trantype,
                 'reference' => $delordhd_obj->deldept .' '. $delordhd_obj->docno,
-                'description' => $value->itemcode.' '.$product_obj->description, 
+                'description' => $value->itemcode.'</br>'.$product_obj->description, 
                 'postdate' => $delordhd_obj->trandate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,
@@ -247,7 +247,7 @@ class do_util extends defaultController{
                 'crcostcode' => $row_sysparam->pvalue1,
                 'cracc' => $row_sysparam->pvalue2,
                 'amount' => $value->amount,
-                'idno' => $value->itemcode
+                'idno' => $delordhd_obj->deldept .' '. $delordhd_obj->docno
             ]);
 
         //2. check glmastdtl utk debit, kalu ada update kalu xde create

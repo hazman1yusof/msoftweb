@@ -9,7 +9,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 
-class BedController extends defaultController
+class BedManagementController extends defaultController
 {   
 
     var $table;
@@ -23,7 +23,7 @@ class BedController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('setup.bed.bed');
+        return view('setup.bedmanagement.bedmanagement');
     }
 
     public function form(Request $request)
@@ -53,7 +53,7 @@ class BedController extends defaultController
 
     public function get_table(Request $request){
         $table = DB::table('hisdb.bed')
-                    ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
+                    ->select('compcode','bednum','bedtype','room','ward','occup','tel_ext','statistic','recstatus','idno','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
                     ->where('compcode','=',session('compcode'));
 
         //////////paginate/////////
@@ -112,11 +112,10 @@ class BedController extends defaultController
                     'bednum' => strtoupper($request->bednum),
                     'bedtype' => strtoupper($request->bedtype),  
                     'room' => strtoupper($request->room),  
-                    'ward' => strtoupper($request->ward),  
-                    // 'occup' => 0,
-                    'occup' => strtoupper($request->occup),
-                    'tel_ext' => strtoupper($request->tel_ext), 
-                    'statistic' => strtoupper($request->statistic),  
+                    'ward' => strtoupper($request->ward),
+                    'tel_ext' => strtoupper($request->tel_ext),
+                    'statistic' => strtoupper($request->statistic), 
+                    'occup' => 0,  
                     'recstatus' => strtoupper($request->recstatus),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
@@ -143,8 +142,7 @@ class BedController extends defaultController
                     'bedtype' => strtoupper($request->bedtype),  
                     'room' => strtoupper($request->room),  
                     'ward' => strtoupper($request->ward),
-                    'occup' => strtoupper($request->occup),
-                    'tel_ext' => strtoupper($request->tel_ext), 
+                    'tel_ext' => strtoupper($request->tel_ext),
                     'statistic' => strtoupper($request->statistic),   
                     'recstatus' => strtoupper($request->recstatus),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),

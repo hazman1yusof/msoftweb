@@ -243,6 +243,11 @@ Route::get('/bed','setup\BedController@show');
 Route::get('/bed/table','setup\BedController@table');
 Route::post('/bed/form','setup\BedController@form');
 
+//// Bed Management setup page ///
+Route::get('/bedmanagement','setup\BedManagementController@show');
+Route::get('/bedmanagement/table','setup\BedManagementController@table');
+Route::post('/bedmanagement/form','setup\BedManagementController@form');
+
 ////////////////////////////////inventory setup///////////////////////////////////////////////////////////
 
 //// inventory Transaction setup page ///
