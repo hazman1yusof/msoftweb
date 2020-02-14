@@ -250,8 +250,8 @@ $(document).ready(function () {
 	'deptcode','sysdb.department','#dtl_deptcode',errorField,
 	{	
 		colModel:[
-			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 			{label:'Unit',name:'sector'},
 		],
 		urlParam: {
@@ -288,8 +288,8 @@ $(document).ready(function () {
 	'authorid','material.authorise','#dtl_authorid',errorField,
 	{	
 		colModel:[
-			{label:'Authorise ID',name:'authorid',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Authorise ID',name:'authorid',width:200,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 		],
 		urlParam: {
 			filterCol:['recstatus','compcode'],

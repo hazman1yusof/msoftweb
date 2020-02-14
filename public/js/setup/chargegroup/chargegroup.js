@@ -44,7 +44,7 @@
 			editurl: "/chargegroup/form",
 			colModel: [
 				{ label: 'compcode', name: 'compcode', hidden: true },
-				{ label: 'Group Code', name: 'grpcode', width: 30, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+				{ label: 'Group Code', name: 'grpcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 				{ label: 'Description', name: 'description', width: 100, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 				{ label: 'Sequence Number', name: 'seqno', width: 20, editable: true },
 				{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 

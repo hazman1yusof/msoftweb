@@ -44,7 +44,7 @@
 			editurl: "/chargeclass/form",
 			colModel: [
 				{ label: 'compcode', name: 'compcode', hidden: true },
-				{ label: 'Class Code', name: 'classcode', width: 30, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+				{ label: 'Class Code', name: 'classcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 				{ label: 'Description', name: 'description', width: 100, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 				{ label: 'Class Level', name: 'classlevel', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 					editoptions:{

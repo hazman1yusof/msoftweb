@@ -1637,9 +1637,9 @@ $(document).ready(function () {
 		'reqdept', 'sysdb.department', '#purordhd_reqdept', errorField,
 		{
 			colModel: [
-				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{label:'Unit',name:'sector'},
+				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'Unit',name:'sector'},
 			],
 			urlParam: {
 				filterCol:['recstatus', 'compcode', 'sector'],
@@ -1671,8 +1671,8 @@ $(document).ready(function () {
 	var dialog_purreqno = new ordialog(
 		'purreqno',['material.purreqhd AS h'],'#purordhd_purreqno',errorField,
 		{	colModel:[
-				{label:'Request No',name:'h_purreqno',width:50,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Request Department', name: 'h_reqdept', width: 100, classes: 'pointer' },
+				{label:'Request No',name:'h_purreqno',width:50,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Request Department', name: 'h_reqdept', width: 100, classes: 'pointer',canSearch:true,checked:true,or_search:true },
 				{label:'Supplier Code',name:'h_suppcode',width:100,classes:'pointer'},
 				{label:'Purchase Department',name:'h_prdept',width:200,classes:'pointer'},
 				{label:'PerDisc',name:'h_perdisc',width:400,classes:'pointer',hidden:true},
@@ -1784,8 +1784,8 @@ $(document).ready(function () {
 	var dialog_prdept = new ordialog(
 		'prdept','sysdb.department','#purordhd_prdept',errorField,
 		{	colModel:[
-				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Unit',name:'sector'},
 			],
 			urlParam: {
@@ -1818,8 +1818,8 @@ $(document).ready(function () {
 	var dialog_deldept = new ordialog(
 		'deldept','sysdb.department','#purordhd_deldept',errorField,
 		{	colModel:[
-				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Unit',name:'sector'},
 			],
 			urlParam: {
@@ -1852,8 +1852,8 @@ $(document).ready(function () {
 	var dialog_suppcode = new ordialog(
 		'suppcode','material.supplier','#purordhd_suppcode',errorField,
 		{	colModel:[
-				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -1889,8 +1889,8 @@ $(document).ready(function () {
 		'credcode', 'material.supplier', '#purordhd_credcode', errorField,
 		{
 			colModel: [
-				{ label: 'Creditor Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Creditor Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Creditor Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Creditor Name', name: 'name', width: 400, classes: 'pointer', canSearch: true,checked:true, or_search: true },
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -1923,8 +1923,8 @@ $(document).ready(function () {
 		'pricecode',['material.pricesource'],"#jqGrid2 input[name='pricecode']",errorField,
 		{	colModel:
 			[
-				{label:'Price code',name:'pricecode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Price code',name:'pricecode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -1936,8 +1936,8 @@ $(document).ready(function () {
 
 				if(data.pricecode == 'MS'){
 					let newcolmodel = [
-							{label: 'Item Codex',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+							{label: 'Item Codex',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
 							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
@@ -1948,8 +1948,8 @@ $(document).ready(function () {
 						]
 
 					let newcolmodel_uom = [
-							{ label: 'UOM code', name: 'u_uomcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-							{ label: 'Description', name: 'u_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+							{ label: 'UOM code', name: 'u_uomcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+							{ label: 'Description', name: 'u_description', width: 400, classes: 'pointer', canSearch: true,checked:true, or_search: true },
 							{ label: 'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' }
 						]
 
@@ -1982,8 +1982,8 @@ $(document).ready(function () {
 
 				}else{
 					let newcolmodel = [
-							{label: 'Item Codex',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+							{label: 'Item Codex',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 							{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
 							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
@@ -1994,8 +1994,8 @@ $(document).ready(function () {
 						]
 
 					let newcolmodel_uom = [
-							{label:'UOM code',name:'u_uomcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+							{label:'UOM code',name:'u_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 							{label: 'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' },
 							{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
 							{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
@@ -2184,8 +2184,8 @@ $(document).ready(function () {
 		'uom',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
 		{	colModel:
 			[
-				{label:'UOM code',name:'u_uomcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'UOM code',name:'u_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' },
 				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
 				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
@@ -2258,8 +2258,8 @@ $(document).ready(function () {
 		{
 			colModel:
 			[
-				{ label: 'UOM code', name: 'uomcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'UOM code', name: 'uomcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked:true, or_search: true },
 				{ label: 'Conversion', name: 'convfactor', width: 100, classes: 'pointer' }
 			],
 			urlParam: {
@@ -2318,8 +2318,8 @@ $(document).ready(function () {
 		'taxcode',['hisdb.taxmast'],"#jqGrid2 input[name='taxcode']",errorField,
 		{	colModel:
 			[
-				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {

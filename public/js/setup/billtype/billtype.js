@@ -160,7 +160,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Bill Type', name: 'billtype', width: 40, classes: 'wrap', canSearch: true},
 			{ label: 'opprice', name: 'opprice', width: 90, hidden: true },
-			{ label: 'Description', name: 'description', width: 90, classes: 'wrap', canSearch: true, checked: true  },
+			{ label: 'Description', name: 'description', width: 90, classes: 'wrap', canSearch: true, checked: true},
 			{ label: 'Price', name: 'price', width: 40, classes: 'wrap' },
 			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter: 'currency'  },
 			{ label: 'Percentage', name: 'percent_', width: 40, classes: 'wrap', formatter: formatter1, unformat: unformat1 },

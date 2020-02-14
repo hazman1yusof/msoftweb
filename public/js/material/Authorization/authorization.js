@@ -676,8 +676,8 @@ $("#saveHeaderLabel").click(function () {
 var dialog_authorid = new ordialog(
 	'authorid','sysdb.users','#authorid',errorField,
 	{	colModel:[
-			{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,checked:true},
-			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true},
+			{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,or_search:true,checked:true},
+			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
 			{label:'Password',name:'password',width:400,classes:'pointer'},
 			{label:'Dept Code',name:'deptcode',width:400,classes:'pointer'},
 		],
@@ -715,8 +715,8 @@ dialog_authorid.makedialog();
 var dialog_deptcodedtl = new ordialog(
 	'dtl_deptcode','sysdb.department',"#jqGrid2 input[name='dtl_deptcode']",errorField,
 	{	colModel:[
-			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true,},
 			{label:'Unit',name:'sector'},
 		],
 		urlParam: {
@@ -765,8 +765,8 @@ function onall_editfunc(){
 var dialog_deptcodeD = new ordialog(
 	'd_deptcode','sysdb.department','#d_deptcode',errorField,
 	{	colModel:[
-			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			{label:'Unit',name:'sector'},
 		],
 		urlParam: {
