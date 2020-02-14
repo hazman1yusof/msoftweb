@@ -75,7 +75,7 @@ $(document).ready(function () {
 				dialog_prdept.check(errorField);
 				dialog_suppcode.check(errorField);
 				dialog_credcode.check(errorField);
-				dialog_reqdept.check(errorField);
+			//	dialog_reqdept.check(errorField);
 				dialog_deldept.check(errorField);
 
 			}if(oper!='view'){
@@ -84,7 +84,7 @@ $(document).ready(function () {
 				dialog_prdept.on();
 				dialog_suppcode.on();
 				dialog_credcode.on();
-				dialog_reqdept.on();
+			//	dialog_reqdept.on();
 				dialog_deldept.on();
 				dialog_srcdocno.on();
 			}
@@ -113,7 +113,7 @@ $(document).ready(function () {
 			dialog_prdept.off();
 			dialog_suppcode.off();
 			dialog_credcode.off();
-			dialog_reqdept.off();
+			//dialog_reqdept.off();
 			dialog_deldept.off();
 			dialog_srcdocno.off();
 			$(".noti").empty();
@@ -1377,7 +1377,7 @@ $(document).ready(function () {
 		dialog_prdept.off();
 		dialog_suppcode.off();
 		dialog_credcode.off();
-		dialog_reqdept.off();
+	//	dialog_reqdept.off();
 		dialog_deldept.off();
 		dialog_srcdocno.off();
 		radbuts.check();
@@ -1392,7 +1392,7 @@ $(document).ready(function () {
 			dialog_suppcode.on();
 			dialog_credcode.on();
 			dialog_deldept.on();
-			dialog_reqdept.on();
+		//	dialog_reqdept.on();
 			dialog_srcdocno.on();
 		}
 	});
@@ -1406,7 +1406,7 @@ $(document).ready(function () {
 		dialog_suppcode.on();
 		dialog_credcode.on();
 		dialog_deldept.on();
-		dialog_reqdept.on();
+	//	dialog_reqdept.on();
 		dialog_srcdocno.on();
 		enableForm('#formdata');
 		rdonly('#formdata');
