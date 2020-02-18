@@ -80,6 +80,7 @@ class EmergencyController extends defaultController
                         ->where('p.compcode','=',session('compcode'))
                         ->first();
 
+                        // dd($patmast_obj);
             // dump($patmast_obj->toSql());
             // dd($patmast_obj->getBindings());
 
