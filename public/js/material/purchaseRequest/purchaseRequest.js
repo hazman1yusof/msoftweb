@@ -1450,7 +1450,7 @@ $(document).ready(function () {
 
 		loadComplete: function(data){
 			data.rows.forEach(function(element){
-				if(element.callback_param != null){
+				if(element.callback_param != null){//ini baru
 					$("#"+element.callback_param[2]).on('click', function() {
 						seemoreFunction(
 							element.callback_param[0],

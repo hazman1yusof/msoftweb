@@ -1601,7 +1601,7 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager3",
 	
-		loadComplete: function(data){
+		loadComplete: function(data){ //ini baru
 			data.rows.forEach(function(element){
 				if(element.callback_param != null){
 					$("#"+element.callback_param[2]).on('click', function() {

@@ -71,7 +71,7 @@ class PurchaseRequestDetailController extends defaultController
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
 
-        foreach ($paginate->items() as $key => $value) {
+        foreach ($paginate->items() as $key => $value) {//ini baru
             $value->remarks_show = $value->remarks;
             if(mb_strlen($value->remarks)>120){
 
