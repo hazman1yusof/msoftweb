@@ -23,27 +23,6 @@
 				}
 			},
 		};
-
-		// populate_registerformdata_edit();
-
-		// function populate_registerformdata_edit(obj){
-
-		// 	//panel header
-		// 	$('#name_show').text(obj.a_pat_name);
-		// 	$('#newic_show').text(obj.newic);
-		// 	$('#sex_show').text(obj.sex);
-		// 	$('#age_show').text(obj.age);
-		// 	$('#race_show').text(obj.race);	
-		// 	$("#btn_grp_edit").show();
-		
-		// }
-
-		//panel header
-		$('#name_show').val('name_show');
-		$('#newic_show').val();
-		$('#sex_show').val();
-		$('#age_show').val();
-		$('#race_show').val();
 			
 		////////////////////////////////////start dialog///////////////////////////////////////
 		// var butt1=[{
