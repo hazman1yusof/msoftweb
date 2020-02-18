@@ -44,24 +44,28 @@ class mmaController extends defaultController
         DB::beginTransaction();
         try {
 
-            $citizen = DB::table('hisdb.racecode')
-                            ->where('Code','=',$request->Code);
+            $mmamaster = DB::table('hisdb.mmamaster')
+                            ->where('mmacode','=',$request->mmacode);
 
-            if($citizen->exists()){
+            $type = DB::table('sysdb.sysparam')
+                            ->where('source','=',"MR")
+                            ->where('trantype','=',"MMAVER")
+                            ->first();
+
+            if($mmamaster->exists()){
                 throw new \Exception("record duplicate");
             }
 
-            DB::table('hisdb.racecode')
+            DB::table('hisdb.mmamaster')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'Code' => strtoupper($request->Code),
-                    'Description' => strtoupper($request->Description),
+                    'mmacode' => strtoupper($request->mmacode),
+                    'description' => strtoupper($request->Description),
+                    "version" => $type->pvalue1,
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
@@ -77,7 +81,7 @@ class mmaController extends defaultController
         DB::beginTransaction();
         try {
 
-            DB::table('hisdb.racecode')
+            DB::table('hisdb.mmamaster')
                 ->where('idno','=',$request->idno)
                 ->update([  
                     'Code' => strtoupper($request->Code),
@@ -99,7 +103,7 @@ class mmaController extends defaultController
     }
 
     public function del(Request $request){
-        DB::table('hisdb.racecode')
+        DB::table('hisdb.mmamaster')
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'D',

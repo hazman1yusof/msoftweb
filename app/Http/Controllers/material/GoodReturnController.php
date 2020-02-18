@@ -251,7 +251,7 @@ class GoodReturnController extends defaultController
                     'recstatus'=>$delordhd_obj->recstatus, 
                     'adduser'=>$delordhd_obj->adduser, 
                     'adddate'=>Carbon::now("Asia/Kuala_Lumpur"),
-                    'remarks'=>$delordhd_obj->remarks
+                    'remarks'=>strtoupper($delordhd_obj->remarks)
                 ]);
 
             //--- 2. loop delorddt untuk masuk dalam ivtxndt ---//
@@ -322,7 +322,7 @@ class GoodReturnController extends defaultController
                         'craccno' => $value->craccno, 
                         'crccode' => $value->crccode, 
                         'expdate' => $value->expdate, 
-                        'remarks' => $value->remarks, 
+                        'remarks' => strtoupper($value->remarks), 
                         'qtyonhand' => 0, 
                         'batchno' => $value->batchno, 
                         'amount' => $value->amount, 

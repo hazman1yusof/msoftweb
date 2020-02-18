@@ -30,7 +30,7 @@ $(document).ready(function () {
 		action: 'get_table_default',
 		url: '/util/get_table_default',
 		field: '',
-		table_name: 'hisdb.racecode',
+		table_name: 'hisdb.mmamaster',
 		table_id: 'idno',
 	}
 
@@ -38,24 +38,21 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/race/form",
 		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'Race Code', name: 'Code', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'MMA Code', name: 'mmacode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, editoptions: {style: "text-transform: uppercase;width: -webkit-fill-available;" ,rows: 5}},
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"
 			}},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'upduser', name: 'lastuser', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'upddate', name: 'lastupdate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
-			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
 
 		],
 		autowidth: true,
@@ -113,9 +110,9 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
 
-			let editurl = "/race/form?"+
+			let editurl = "/mma/form?"+
 				$.param({
-					action: 'race_save',
+					action: 'mma_save',
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -161,9 +158,9 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/race/form?"+
+			let editurl = "/mma/form?"+
 				$.param({
-					action: 'race_save',
+					action: 'mma_save',
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -205,7 +202,7 @@ $(document).ready(function () {
 						if (result == true) {
 							param = {
 								_token: $("#_token").val(),
-								action: 'race_save',
+								action: 'mma_save',
 								Code: $('#Code').val(),
 								idno: selrowData('#jqGrid').idno,
 							}

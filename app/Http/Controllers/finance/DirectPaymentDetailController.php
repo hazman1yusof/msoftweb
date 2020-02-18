@@ -107,7 +107,7 @@ class DirectPaymentDetailController extends defaultController
                     'lineno_' => $li,
                     'source' => 'CM',
                     'trantype' => 'DP',
-                    'document' => $request->document,
+                    'document' => strtoupper($request->document),
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
@@ -159,7 +159,7 @@ class DirectPaymentDetailController extends defaultController
                 ->update([
                     'source' => 'CM',
                     'trantype' => 'DP',
-                    'document' => $request->document,
+                    'document' => strtoupper($request->document),
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
@@ -254,7 +254,7 @@ class DirectPaymentDetailController extends defaultController
                     ->where('auditno','=',$request->auditno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'document' => $value['document'],
+                        'document' => strtoupper($value['document']),
                         'amount' => $value['amount'],
                         'category' => $value['category'],
                         'deptcode' => $value['deptcode'],

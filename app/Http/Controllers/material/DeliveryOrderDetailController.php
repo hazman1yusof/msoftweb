@@ -246,14 +246,14 @@ class DeliveryOrderDetailController extends defaultController
                     'itemcode'=> strtoupper($request->itemcode), 
                     'uomcode'=> strtoupper($request->uomcode), 
                     'pouom'=> strtoupper($request->pouom), 
-                    'suppcode' => $request->suppcode,
+                    'suppcode' => strtoupper($request->suppcode),
                     'trandate' => $request->trandate,
-                    'deldept' => $request->deldept,
+                    'deldept' => strtoupper($request->deldept),
                     'deliverydate' => $request->deliverydate,
                     'qtyorder' => $request->qtyorder,
                     'qtydelivered' => $request->qtydelivered,
                     'unitprice' => $request->unitprice,
-                    'taxcode' => $request->taxcode,
+                    'taxcode' => strtoupper($request->taxcode),
                     'perdisc' => $request->perdisc,
                     'amtdisc' => $request->amtdisc,
                     'amtslstax' => $request->tot_gst,
@@ -322,14 +322,14 @@ class DeliveryOrderDetailController extends defaultController
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
-                    'pricecode' => $request->pricecode, 
-                    'itemcode'=> $request->itemcode, 
-                    'uomcode'=> $request->uomcode, 
-                    'pouom'=> $request->pouom, 
+                    'pricecode' => strtoupper($request->pricecode), 
+                    'itemcode'=> strtoupper($request->itemcode), 
+                    'uomcode'=> strtoupper($request->uomcode), 
+                    'pouom'=> strtoupper($request->pouom), 
                     'qtyorder'=> $request->qtyorder, 
                     'qtydelivered'=> $request->qtydelivered, 
                     'unitprice'=> $request->unitprice,
-                    'taxcode'=> $request->taxcode, 
+                    'taxcode'=> strtoupper($request->taxcode), 
                     'perdisc'=> $request->perdisc, 
                     'amtdisc'=> $request->amtdisc, 
                     'amtslstax'=> $request->tot_gst, 
@@ -393,14 +393,14 @@ class DeliveryOrderDetailController extends defaultController
                     ->where('recno','=',$request->recno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'pricecode' => $value['pricecode'], 
-                        'itemcode'=> $value['itemcode'], 
-                        'uomcode'=> $value['uomcode'], 
-                        'pouom'=> $value['pouom'], 
+                        'pricecode' => strtoupper($value['pricecode']), 
+                        'itemcode'=> strtoupper($value['itemcode']), 
+                        'uomcode'=> strtoupper($value['uomcode']), 
+                        'pouom'=> strtoupper($value['pouom']), 
                         'qtyorder'=> $value['qtyorder'], 
                         'qtydelivered'=> $value['qtydelivered'], 
                         'unitprice'=> $value['unitprice'],
-                        'taxcode'=> $value['taxcode'], 
+                        'taxcode'=> strtoupper($value['taxcode']), 
                         'perdisc'=> $value['perdisc'], 
                         'amtdisc'=> $value['amtdisc'], 
                         'amtslstax'=> $value['tot_gst'], 
@@ -513,14 +513,14 @@ class DeliveryOrderDetailController extends defaultController
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
-                    'pricecode' => $request->pricecode, 
-                    'itemcode'=> $request->itemcode, 
-                    'uomcode'=> $request->uomcode, 
-                    'pouom'=> $request->pouom, 
+                    'pricecode' => strtoupper($request->pricecode), 
+                    'itemcode'=> strtoupper($request->itemcode), 
+                    'uomcode'=> strtoupper($request->uomcode), 
+                    'pouom'=> strtoupper($request->pouom), 
                     'qtyorder'=> $request->qtyorder, 
                     'qtydelivered'=> $request->qtydelivered, 
                     'unitprice'=> $request->unitprice,
-                    'taxcode'=> $request->taxcode, 
+                    'taxcode'=> strtoupper($request->taxcode), 
                     'perdisc'=> $request->perdisc, 
                     'amtdisc'=> $request->amtdisc, 
                     'amtslstax'=> $request->tot_gst, 
@@ -531,7 +531,7 @@ class DeliveryOrderDetailController extends defaultController
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $this->chgDate($request->expdate),  
                     'batchno'=> $request->batchno, 
-                    'remarks'=> $request->remarks
+                    'remarks'=> strtoupper($request->remarks)
                    // 'unit'=> $request->unit
                 ]);
 
