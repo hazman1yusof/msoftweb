@@ -116,8 +116,8 @@ class InvoiceAPDetailController extends defaultController
                     'lineno_' => $li,
                     'source' => 'AP',
                     'trantype' => 'IN',
-                    'document' => $request->document,
-                    'reference' => $request->reference,
+                    'document' => strtoupper($request->document),
+                    'reference' => strtoupper($request->reference),
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
@@ -170,8 +170,8 @@ class InvoiceAPDetailController extends defaultController
                     'compcode' => session('compcode'),
                     'source' => 'AP',
                     'trantype' => 'IN',
-                    'document' => $request->document,
-                    'reference' => $request->reference,
+                    'document' => strtoupper($request->document),
+                    'reference' => strtoupper($request->reference),
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
@@ -266,8 +266,8 @@ class InvoiceAPDetailController extends defaultController
                     ->where('auditno','=',$request->auditno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'document' => $value['itemcode'],
-                        'reference' => $value['reference'],
+                        'document' => strtoupper($value['itemcode']),
+                        'reference' => strtoupper($value['reference']),
                         'amount' => $value['amount'],
                         'dorecno' => $value['dorecno'],
                         'grnno' => $value['grnno'],
