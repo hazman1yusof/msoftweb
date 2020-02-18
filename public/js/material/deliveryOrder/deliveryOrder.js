@@ -864,6 +864,9 @@ $(document).ready(function () {
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
+
+			setjqgridHeight(data,'jqGrid2');
+
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
@@ -1592,6 +1595,8 @@ $(document).ready(function () {
 					});
 				}
 			});
+
+			setjqgridHeight(data,'jqGrid3');
 		},
 		gridComplete: function(){
 			$("#jqGrid3").find(".remarks_button").on("click", function(e){
@@ -2425,6 +2430,16 @@ $(document).ready(function () {
 	})
 	jqgrid_label_align_right("#jqGrid_selection");
 	cbselect.on();
+
+	function setjqgridHeight(data,grid){
+		if(data.rows.length>=6){
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(500);
+		}else if(data.rows.length>=3){
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(300);
+		}else{
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
+		}
+	}
 
 
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){

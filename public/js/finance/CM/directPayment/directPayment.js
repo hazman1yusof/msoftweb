@@ -465,11 +465,12 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
-		loadComplete: function(){
+		loadComplete: function(data){
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
+			setjqgridHeight(data,'jqGrid2');
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
@@ -871,6 +872,10 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager3",
+		loadComplete: function(data){
+
+			setjqgridHeight(data,'jqGrid3');
+		},
 		gridComplete: function(){
 			
 			fdl.set_array().reset();
@@ -1147,5 +1152,14 @@ $(document).ready(function () {
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
 	
+	function setjqgridHeight(data,grid){
+		if(data.rows.length>=6){
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(500);
+		}else if(data.rows.length>=3){
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(300);
+		}else{
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
+		}
+	}
 });
 		
