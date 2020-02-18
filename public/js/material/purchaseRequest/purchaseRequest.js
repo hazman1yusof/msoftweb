@@ -815,12 +815,14 @@ $(document).ready(function () {
 					});
 				}
 			});
-			console.log(addmore_jqgrid2);
+			// console.log(addmore_jqgrid2);
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 
+			setjqgridHeight(data,'jqGrid2');
+			
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		
@@ -1460,6 +1462,8 @@ $(document).ready(function () {
 					});
 				}
 			});
+
+			setjqgridHeight(data,'jqGrid3');
 		},
 	
 		gridComplete: function(){
@@ -2069,6 +2073,16 @@ $(document).ready(function () {
 	})
 	jqgrid_label_align_right("#jqGrid_selection");
 	cbselect.on();
+
+	function setjqgridHeight(data,grid){
+		if(data.rows.length>=6){
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(600);
+		}else if(data.rows.length>=3){
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(400);
+		}else{
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
+		}
+	}
 
 	/*var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();*/
