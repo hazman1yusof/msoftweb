@@ -8,6 +8,26 @@ input.uppercase {
 	text-transform: uppercase;
 }
 
+.panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+	display: none;
+}
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+	display: inline-block;
+}
+
+i.fa {
+	cursor: pointer;
+	float: right;
+	<!--  margin-right: 5px; -->
+}
+
+.clearfix {
+	overflow: auto;
+}
+
 @endsection
 
 @section('body')
@@ -42,6 +62,24 @@ input.uppercase {
             		<div id="jqGridPager"></div>
         		</div>
 		    </div>
+		</div>
+
+		<div class="panel-group">
+  			<div class="panel panel-default" id="jqGrid3_c">
+    			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
+					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>MMA Detail
+    			</div>
+    			<div id="jqGrid3_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<form id='formdata3' class='form-vertical' style='width:99%'>
+							<div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGrid3" class="table table-striped"></table>
+								<div id="jqGridPager3"></div>
+							</div>
+						</form>
+					</div>
+    			</div>
+  			</div>
 		</div>
     </div>
 

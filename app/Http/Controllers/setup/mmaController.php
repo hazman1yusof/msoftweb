@@ -64,6 +64,7 @@ class mmaController extends defaultController
                     "version" => $type->pvalue1,
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
