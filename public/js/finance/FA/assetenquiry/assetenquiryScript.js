@@ -492,12 +492,13 @@ $(document).ready(function () {
 				sortname: 'idno',
 				// sortorder: "fr.trandate",
 				pager: "#jqGridPager2",
-				loadComplete: function(){
+				loadComplete: function(data){
 					/*if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 					else{
 						$('#jqGrid2').jqGrid ('setSelection', "1");
 					}
 					addmore_jqgrid2.edit = addmore_jqgrid2.more = false;*/ //reset
+					setjqgridHeight(data,'jqGrid2');
 				},
 				gridComplete: function(){
 				/*	$("#jqGrid2").find(".remarks_button").on("click", function(e){
@@ -644,4 +645,14 @@ $(document).ready(function () {
 	$("#jqGrid2_panel").on("show.bs.collapse", function(){
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 	});
+
+	function setjqgridHeight(data,grid){
+		if(data.rows.length>=6){
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(500);
+		}else if(data.rows.length>=3){
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(300);
+		}else{
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
+		}
+	}
 });
