@@ -27,7 +27,7 @@ input.uppercase {
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
+							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control">
 						</div>
 		            </div>
 				</div>

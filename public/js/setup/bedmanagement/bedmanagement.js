@@ -211,7 +211,7 @@ $(document).ready(function () {
 
 
 	$("#jqGrid").inlineNav('#jqGridPager', {
-		add: true,
+		add: false,
 		edit: true,
 		cancel: true,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row

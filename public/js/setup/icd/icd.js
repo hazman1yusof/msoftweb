@@ -37,11 +37,10 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'ICD Code', name: 'icdcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'ICD Code', name: 'icdcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }},
 			{ label: 'Description', name: 'description', width: 80, canSearch: true, hidden:true},
-			{ label: 'Description', name: 'description_show', classes: 'wrap', width: 80, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, editoptions: {style: "text-transform: uppercase;width: -webkit-fill-available;" ,rows: 5}},
-			{ label: 'type', name: 'type', hidden: true },
+			{ label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
+			{ label: 'Type', name: 'type', width: 20, hidden: false },
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"
@@ -101,6 +100,10 @@ $(document).ready(function () {
 				$('#jqGrid_ilsave').click();*/
 			});
 
+			// let selrow = $("#jqGrid").jqGrid ('getRowData', rowid);
+
+			// $('textarea[name=description_show]').val(selrow.description)
+
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
@@ -148,6 +151,10 @@ $(document).ready(function () {
 				$('#jqGrid_ilsave').click();*/
 			});
 
+			let selrow = $("#jqGrid").jqGrid ('getRowData', rowid);
+
+			$('textarea[name=description_show]').val(selrow.description)
+
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
@@ -158,7 +165,7 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			alert(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			console.log(errorField)
@@ -175,6 +182,7 @@ $(document).ready(function () {
 		},
 		afterrestorefunc : function( response ) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		errorTextFormat: function (data) {
 			alert(data);

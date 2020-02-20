@@ -27,8 +27,37 @@ class icdController extends defaultController
 
     public function table(Request $request)
     {   
-        $table = DB::table('hisdb.diagtab as prdt')
-                    ->orderBy('idno','desc');
+
+        $icdver = DB::table('sysdb.sysparam')
+                        ->select('pvalue1')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','MR')
+                        ->where('trantype','=','ICD')
+                        ->first();
+
+        $table = DB::table('hisdb.diagtab')
+                    ->where('type','=',$icdver->pvalue1)
+                    ->orderBy('idno','asc');
+
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+
+            $count = array_count_values($searchCol_array);
+            // dump($count);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+        }
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -39,7 +68,7 @@ class icdController extends defaultController
 
                 $time = time() + $key;
 
-                $value->description_show = mb_substr($value->description_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+                $value->description_show = mb_substr($value->description_show,0,120).'<span id="dots_'.$time.'" style="display: inline;"> ... </span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
 
                 $value->callback_param = [
                     'dots_'.$time,'more_'.$time,'moreBtn_'.$time
@@ -94,9 +123,8 @@ class icdController extends defaultController
 
             DB::table('hisdb.diagtab')
                 ->insert([  
-                    'compcode' => session('compcode'),
-                    'icdcode' => strtoupper($request->icdcode),
-                    'description' => strtoupper($request->Description),
+                    'icdcode' => $request->icdcode,
+                    'description' => $request->description_show,
                     "type" => $type->pvalue1,
                     'recstatus' => strtoupper($request->recstatus),
                     // 'lastcomputerid' => strtoupper($request->lastcomputerid),
@@ -121,7 +149,7 @@ class icdController extends defaultController
             DB::table('hisdb.diagtab')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'description' => strtoupper($request->Description),
+                    'description' => $request->description_show,
                     'recstatus' => strtoupper($request->recstatus),
                     // 'lastcomputerid' => strtoupper($request->lastcomputerid),
                     // 'lastipaddress' => strtoupper($request->lastipaddress),

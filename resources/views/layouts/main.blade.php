@@ -78,7 +78,7 @@
 		}
 		.wrap{
 			word-wrap: break-word;
-			white-space: normal !important;
+			white-space: pre-line !important;
 			vertical-align: top !important;
 		}
 		.preline{
