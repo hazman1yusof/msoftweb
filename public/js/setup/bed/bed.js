@@ -140,18 +140,7 @@ $(document).ready(function () {
 		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPager",
-		loadComplete: function(data){
-			data.rows.forEach(function(element){
-				if(element.callback_param != null){
-					$("#"+element.callback_param[2]).on('click', function() {
-						seemoreFunction(
-								element.callback_param[0],
-								element.callback_param[1],
-								element.callback_param[2]
-						)
-					});
-				}
-				
+		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
