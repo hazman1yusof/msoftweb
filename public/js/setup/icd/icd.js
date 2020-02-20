@@ -27,11 +27,8 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
-		action: 'get_table_default',
-		url: '/util/get_table_default',
-		field: '',
-		table_name: 'hisdb.diagtab',
-		table_id: 'idno',
+		action: 'icd-table',
+		url: '/icd/table'
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -42,7 +39,8 @@ $(document).ready(function () {
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'ICD Code', name: 'icdcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, editoptions: {style: "text-transform: uppercase;width: -webkit-fill-available;" ,rows: 5}},
+			{ label: 'Description', name: 'description', width: 80, canSearch: true, hidden:true},
+			{ label: 'Description', name: 'description_show', classes: 'wrap', width: 80, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, editoptions: {style: "text-transform: uppercase;width: -webkit-fill-available;" ,rows: 5}},
 			{ label: 'type', name: 'type', hidden: true },
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{

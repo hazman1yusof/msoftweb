@@ -25,6 +25,40 @@ class icdController extends defaultController
         return view('setup.icd.icd');
     }
 
+    public function table(Request $request)
+    {   
+        $table = DB::table('hisdb.diagtab as prdt')
+                    ->orderBy('idno','desc');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {//ini baru
+            $value->description_show = $value->description;
+            if(mb_strlen($value->description)>120){
+
+                $time = time() + $key;
+
+                $value->description_show = mb_substr($value->description_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+
+                $value->callback_param = [
+                    'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+                ];
+            }
+            
+        }
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
+    }
+
     public function form(Request $request)
     {  
         switch($request->oper){
