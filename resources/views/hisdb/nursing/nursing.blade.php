@@ -131,17 +131,17 @@ legend.scheduler-border {
 
 										<div class="form-group">
 											<label class="col-md-1 control-label" for="time">Time</label>  
-											<div class="col-md-2">
-												<input id="time" name="time" type="text" class="form-control input-sm uppercase">
+											<div class="col-md-3">
+												<input id="time" name="time" type="time" class="form-control input-sm uppercase">
 											</div>
 
 											<label class="col-md-1 control-label" for="date">Date</label>  
-											<div class="col-md-2">
-												<input id="date" name="date" type="text" class="form-control input-sm uppercase" frozeOnEdit>
+											<div class="col-md-3">
+												<input id="date" name="date" type="date" class="form-control input-sm uppercase" frozeOnEdit>
 											</div>
 
-											<label class="col-md-3 control-label" for="tricolorzone">Triage Color Zone</label>  
-											<div class="col-md-3">
+											<label class="col-md-2 control-label" for="tricolorzone">Triage Color Zone</label>  
+											<div class="col-md-2">
 												<div class='input-group'>
 													<input id="tricolorzone" name="tricolorzone" type="text" class="form-control input-sm uppercase">
 													<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
