@@ -75,6 +75,24 @@ class mmaController extends defaultController
 
             return response('Error'.$e, 500);
         }
+
+                //////////paginate/////////
+                $paginate = $table->paginate($request->rows);
+
+                foreach ($paginate->items() as $key => $value) {//ini baru
+                    $value->remarks_show = $value->remarks;
+                    if(mb_strlen($value->remarks)>120){
+        
+                        $time = time() + $key;
+        
+                        $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+        
+                        $value->callback_param = [
+                            'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+                        ];
+                    }
+                    
+                }
     }
 
     public function edit(Request $request){
