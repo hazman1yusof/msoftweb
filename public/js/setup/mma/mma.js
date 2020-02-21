@@ -27,11 +27,8 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
-		action: 'get_table_default',
-		url: '/util/get_table_default',
-		field: '',
-		table_name: 'hisdb.mmamaster',
-		table_id: 'idno',
+		action: 'mma-table',
+		url: '/mma/table'
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////

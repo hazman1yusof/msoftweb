@@ -27,8 +27,15 @@ class mmaController extends defaultController
 
     public function table(Request $request)
     {   
+        // $mmaver = DB::table('sysdb.sysparam')
+        //                 ->select('pvalue1')
+        //                 ->where('compcode','=',session('compcode'))
+        //                 ->where('source','=','MR')
+        //                 ->where('trantype','=','ICD')
+        //                 ->first();
+
         $table = DB::table('hisdb.mmamaster')
-                    ->where('version','=',$version->pvalue1)
+                    // ->where('version','=',$version->pvalue1)
                     ->orderBy('idno','asc');
 
         if(!empty($request->searchCol)){
