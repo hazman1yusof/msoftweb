@@ -23,7 +23,67 @@
 				}
 			},
 		};
-			
+
+		////////////////////////////////pass parameter in url////////////////////////////////
+
+		////////////////////////////////one////////////////////////////////
+
+		//url: http://msoftweb.test/nursing?name_show=SAFIAH%20MD%20SALLEH&newic_show=430307015232&sex_show=F&age_show=20&race_show=MALAY
+		
+		function getQueryVariable(variable) {
+			var query = window.location.search.substring(1);
+			var parms = query.split('&');
+			for (var i = 0; i < parms.length; i++) {
+				var pos = parms[i].indexOf('=');
+				if (pos > 0 && variable == parms[i].substring(0, pos)) {
+					return parms[i].substring(pos + 1);;
+				}
+			}
+			return "";
+		}
+
+		getQueryVariable("name_show, newic_show, sex_show, age_show, race_show");
+
+		$(function () {
+			$('#name_show').text(getQueryVariable('name_show'))
+			$('#newic_show').text(getQueryVariable('newic_show'))
+			$('#sex_show').text(getQueryVariable('sex_show'))
+			$('#age_show').text(getQueryVariable('age_show'))
+			$('#race_show').text(getQueryVariable('race_show'))
+		});
+
+		////////////////////////////////two////////////////////////////////
+
+		// var url = "http://msoftweb.test/nursing?name_show=ABC"
+		// var name = url.substring(url.indexOf("=") + 1);  
+
+		// var parent = document.getElementById("name_show");
+		// var input = document.createElement("SPAN");
+		// input.value = name;
+		// parent.appendChild(input)
+
+		////////////////////////////////three////////////////////////////////
+
+		// function getParams() {
+		// 	var idx = document.URL.indexOf('?');
+		// 	var params = new Array();
+		// 	if (idx != -1) {
+		// 		var pairs = document.URL.substring(idx+1, document.URL.length).split('&');
+		// 		for (var i=0; i<pairs.length; i++) {
+		// 			nameVal = pairs[i].split('=');
+		// 			params[nameVal[0]] = nameVal[1];
+		// 	   	}
+		// 	}
+		// 	return params;
+		// }
+		// params = getParams();
+
+		// var para1=document.getElementById('name_show');
+		// var para2=document.getElementById('newic_show');
+
+		// para1.value = unescape(params["var1"]);
+		// para2.value = unescape(params["var2"]);
+				
 		////////////////////////////////////start dialog///////////////////////////////////////
 		// var butt1=[{
 		// 	text: "Save",click: function() {

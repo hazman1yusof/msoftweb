@@ -459,7 +459,7 @@ legend.scheduler-border {
 				</button>
 			</div>
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridActDaily_panel">
-				<b><span id="name_show"></span></b><br>
+				<b><span id="name_show2"></span></b><br>
 				<span id="newic_show"></span>
 				<span id="sex_show"></span>
 				<span id="age_show"></span>
