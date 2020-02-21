@@ -41,8 +41,10 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'MMA Code', name: 'mmacode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, editoptions: {style: "text-transform: uppercase;width: -webkit-fill-available;" ,rows: 5}},
+			{ label: 'MMA Code', name: 'mmacode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }},
+			{ label: 'Description', name: 'description', width: 80, canSearch: true, hidden:true},
+			{ label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
+			{ label: 'Version', name: 'version', width: 20, canSearch: true},
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"
@@ -103,6 +105,10 @@ $(document).ready(function () {
 				$('#jqGrid_ilsave').click();*/
 			});
 
+			// let selrow = $("#jqGrid").jqGrid ('getRowData', rowid);
+
+			// $('textarea[name=description_show]').val(selrow.description)
+
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
@@ -149,6 +155,10 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
+
+			let selrow = $("#jqGrid").jqGrid ('getRowData', rowid);
+
+			$('textarea[name=description_show]').val(selrow.description)
 
 		},
 		aftersavefunc: function (rowid, response, options) {
@@ -283,12 +293,12 @@ $(document).ready(function () {
 					maxlength: 100,
 				},
 			},
-			{ label: 'Version', name: 'version', width: 100, align: 'right', classes: 'wrap', editable:true,
-				edittype:"text",
-				editoptions:{
-					maxlength: 100,
-				},
-			},
+			// { label: 'Version', name: 'version', width: 100, align: 'right', classes: 'wrap', editable:true,
+			// 	edittype:"text",
+			// 	editoptions:{
+			// 		maxlength: 100,
+			// 	},
+			// },
 			{ label: 'MMA Consult', name: 'mmaconsult', width: 100, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{

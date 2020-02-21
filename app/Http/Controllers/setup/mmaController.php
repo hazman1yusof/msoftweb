@@ -25,6 +25,61 @@ class mmaController extends defaultController
         return view('setup.mma.mma');
     }
 
+    public function table(Request $request)
+    {   
+        $table = DB::table('hisdb.mmamaster')
+                    ->where('version','=',$version->pvalue1)
+                    ->orderBy('idno','asc');
+
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+
+            $count = array_count_values($searchCol_array);
+            // dump($count);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+        }
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {//ini baru
+            $value->description_show = $value->description;
+            if(mb_strlen($value->description)>120){
+
+                $time = time() + $key;
+
+                $value->description_show = mb_substr($value->description_show,0,120).'<span id="dots_'.$time.'" style="display: inline;"> ... </span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+
+                $value->callback_param = [
+                    'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+                ];
+            }
+            
+        }
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
+    }
+
     public function form(Request $request)
     {  
         switch($request->oper){
@@ -59,8 +114,8 @@ class mmaController extends defaultController
             DB::table('hisdb.mmamaster')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'mmacode' => strtoupper($request->mmacode),
-                    'description' => strtoupper($request->Description),
+                    'mmacode' => $request->mmacode,
+                    'description' => $request->description_show,
                     "version" => $type->pvalue1,
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
@@ -103,8 +158,8 @@ class mmaController extends defaultController
             DB::table('hisdb.mmamaster')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'Code' => strtoupper($request->Code),
-                    'Description' => strtoupper($request->Description),
+                    'Code' => $request->Code,
+                    'description' => $request->description_show,
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
