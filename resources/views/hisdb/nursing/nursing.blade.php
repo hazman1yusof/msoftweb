@@ -1,110 +1,25 @@
-@extends('layouts.main')
-
-@section('title', 'Triage Assessment')
-
-@section('style')
-
-.panel-heading.collapsed .fa-angle-double-up,
-.panel-heading .fa-angle-double-down {
-	display: none;
-}
-
-.panel-heading.collapsed .fa-angle-double-down,
-.panel-heading .fa-angle-double-up {
-	display: inline-block;
-}
-
-i.fa {
-	cursor: pointer;
-	float: right;
-	<!--  margin-right: 5px; -->
-}
-
-.collapsed ~ .panel-body {
-	padding: 0;
-}
-
-.clearfix {
-	overflow: auto;
-}
-
-input.uppercase {
-	text-transform: uppercase;
-}
-
-fieldset.scheduler-border {
-    border: 1px groove #ddd !important;
-    padding: 0 1.4em 1.4em 1.4em !important;
-    margin: 0 0 1.5em 0 !important;
-    -webkit-box-shadow:  0px 0px 0px 0px #000;
-            box-shadow:  0px 0px 0px 0px #000;
-}
-
-legend.scheduler-border {
-	font-size: 1.2em !important;
-	font-weight: bold !important;
-	text-align: left !important;
-	width:auto;
-	padding:0 10px;
-	border-bottom:none;
-}
-
-@endsection
-
-@section('body')
-
-	<!--***************************** Search + table ******************-->
-	<div class='row'>
-		<!-- <form id="searchForm" class="formclass" style='width:99%; position:relative'>
-			<fieldset>
-				<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
-
-				<div class='col-md-12' style="padding:0 0 15px 0;">
-					<div class="form-group"> 
-						<div class="col-md-2">
-							<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
-		              	</div>
-
-					  	<div class="col-md-5">
-					  		<label class="control-label"></label>  
-							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
-
-							<div  id="show_chggroup_div" style="display:none">
-								<div class='input-group'>
-									<input id="show_chggroup" seltext='false' name="show_chggroup" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div>
-						</div>
-		            </div>
-				</div>
-			</fieldset> 
-		</form> -->
-        <br>
-        
+   
         <div class="panel panel-default" style="position: relative;" id="jqGridTriageInfo_c">
 			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-				id="btn_grp_edit"
+				id="btn_grp_edit_ti"
 				style="position: absolute;
 						padding: 0 0 0 0;
 						right: 30px;
 						top: 10px;" 
 
 			>
-				<button type="button" class="btn btn-default" id="edit_rfde">
+				<button type="button" class="btn btn-default" id="edit_ti">
 					<span class="fa fa-edit fa-lg"></span> Edit
 				</button>
-				<button type="button" class="btn btn-default" id="save_rfde">
+				<button type="button" class="btn btn-default" id="save_ti">
 					<span class="fa fa-save fa-lg"></span> Save
 				</button>
-				<button type="button" class="btn btn-default" id="cancel_rfde" >
+				<button type="button" class="btn btn-default" id="cancel_ti" >
 					<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 				</button>
 			</div>
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridTriageInfo_panel">
-				<b><span id="name_show"></span></b><br>
+				<b><span class="name_show"></span></b><br>
 				<span id="newic_show"></span>
 				<span id="sex_show"></span>
 				<span id="age_show"></span>
@@ -441,14 +356,14 @@ legend.scheduler-border {
 
         <div class="panel panel-default" style="position: relative;" id="jqGridActDaily_c">
 			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-				id="btn_grp_edit"
+				id="btn_grp_edit_ad"
 				style="position: absolute;
 						padding: 0 0 0 0;
 						right: 30px;
 						top: 10px;" 
 
 			>
-				<button type="button" class="btn btn-default" id="edit_rfde">
+				<button type="button" class="btn btn-default" id="edit_ad">
 					<span class="fa fa-edit fa-lg"></span> Edit
 				</button>
 				<button type="button" class="btn btn-default" id="save_rfde">
@@ -980,15 +895,3 @@ legend.scheduler-border {
 				</div>
 			</div>	
 		</div>
-
-    </div>
-	<!-- ***************End Search + table ********************* -->
-
-@endsection
-
-
-@section('scripts')
-
-	<script src="js/hisdb/nursing/nursing.js"></script>
-	
-@endsection
