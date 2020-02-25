@@ -30,6 +30,7 @@ $(document).ready(function () {
 			urlParam.apptdatefr = moment(date).format('YYYY-MM-DD');
 			refreshGrid("#jqGrid", urlParam);
 			empty_registerformdata_edit();
+			empty_formNursing();
 	    }
 	}).glDatePicker(true);
 
@@ -243,6 +244,7 @@ $(document).ready(function () {
 			$('#episode_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
 
 			populate_registerformdata_edit(selrowData("#jqGrid"));
+			populate_formNursing(selrowData("#jqGrid"));
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 		},

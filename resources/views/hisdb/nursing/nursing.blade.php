@@ -19,11 +19,11 @@
 		</button>
 	</div>
 	<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridTriageInfo_panel">
-		<b><span class="name_show"></span></b><br>
-		<span class="newic_show"></span>
-		<span class="sex_show"></span>
-		<span class="age_show"></span>
-		<span class="race_show"></span>
+		<b><span id="name_show_ti"></span></b><br>
+		<span id="newic_show_ti"></span>
+		<span id="sex_show_ti"></span>
+		<span id="age_show_ti"></span>
+		<span id="race_show_ti"></span>
 
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -374,11 +374,11 @@
 		</button>
 	</div>
 	<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridActDaily_panel">
-		<b><span class="name_show"></span></b><br>
-		<span class="newic_show"></span>
-		<span class="sex_show"></span>
-		<span class="age_show"></span>
-		<span class="race_show"></span>
+		<b><span id="name_show_ad"></span></b><br>
+		<span id="newic_show_ad"></span>
+		<span id="sex_show_ad"></span>
+		<span id="age_show_ad"></span>
+		<span id="race_show_ad"></span>
 
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -771,11 +771,11 @@
 		</button>
 	</div>
 	<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridTriPhysical_panel">
-		<b><span class="name_show"></span></b><br>
-		<span class="newic_show"></span>
-		<span class="sex_show"></span>
-		<span class="age_show"></span>
-		<span class="race_show"></span>
+		<b><span id="name_show_tpa"></span></b><br>
+		<span id="newic_show_tpa"></span>
+		<span id="sex_show_tpa"></span>
+		<span id="age_show_tpa"></span>
+		<span id="race_show_tpa"></span>
 
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
