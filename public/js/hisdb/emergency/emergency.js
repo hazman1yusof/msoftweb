@@ -250,6 +250,8 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			set_grid_color();
+			empty_registerformdata_edit();
+			empty_formNursing();
 		},
 	});
 
