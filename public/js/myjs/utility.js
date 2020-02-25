@@ -113,6 +113,7 @@ function disableForm(formName){
 	$(formName+' textarea').prop("readonly",true);
 	$(formName+' input').prop("readonly",true);
 	$(formName+' input[type=radio]').prop("disabled",true);
+	$(formName+' input[type=checkbox]').prop("disabled",true);
 	$(formName+' select').prop("disabled",true);
 }
 
@@ -120,6 +121,7 @@ function enableForm(formName){
 	$(formName+' textarea').prop("readonly",false);
 	$(formName+' input').prop("readonly",false);
 	$(formName+' input[type=radio]').prop("disabled",false);
+	$(formName+' input[type=checkbox]').prop("disabled",false);
 	$(formName+' select').prop("disabled",false);
 }
 

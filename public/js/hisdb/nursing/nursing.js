@@ -166,66 +166,31 @@ function button_state_tpa(state){
 
 function populate_formNursing(obj){
 
-	//panel header Triage Information
-	$('#name_show_ti').text(obj.a_pat_name);
-	$('#newic_show_ti').text(obj.newic);
-	$('#sex_show_ti').text(obj.sex);
-	$('#age_show_ti').text(obj.age);
-	$('#race_show_ti').text(obj.race);	
-	$("#btn_grp_edit_ti").show();
-
-	//panel header Activities of Daily Living
-	$('#name_show_ad').text(obj.a_pat_name);
-	$('#newic_show_ad').text(obj.newic);
-	$('#sex_show_ad').text(obj.sex);
-	$('#age_show_ad').text(obj.age);
-	$('#race_show_ad').text(obj.race);	
-	$("#btn_grp_edit_ad").show();
-
-	//panel header Triage Physical Assessment
-	$('#name_show_tpa').text(obj.a_pat_name);
-	$('#newic_show_tpa').text(obj.newic);
-	$('#sex_show_tpa').text(obj.sex);
-	$('#age_show_tpa').text(obj.age);
-	$('#race_show_tpa').text(obj.race);	
-	$("#btn_grp_edit_tpa").show();
+	//panel header
+	$('#name_show_ti, #name_show_ad, #name_show_tpa').text(obj.a_pat_name);
+	$('#newic_show_ti, #newic_show_ad, #newic_show_tpa').text(obj.newic);
+	$('#sex_show_ti, #sex_show_ad, #sex_show_tpa').text(obj.sex);
+	$('#age_show_ti, #age_show_ad, #age_show_tpa').text(obj.age);
+	$('#race_show_ti, #race_show_ad, #race_show_tpa').text(obj.race);	
+	$("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").show();
 	
 }
 
 function empty_formNursing(){
 
-	//Triage Information
-	$('#name_show_ti').text('');
-	$('#newic_show_ti').text('');
-	$('#sex_show_ti').text('');
-	$('#age_show_ti').text('');
-	$('#race_show_ti').text('');	
-	$("#btn_grp_edit_ti").hide();
-	$("#cancel_ti").click();
+	$('#name_show_ti, #name_show_ad, #name_show_tpa').text('');
+	$('#newic_show_ti, #newic_show_ad, #newic_show_tpa').text('');
+	$('#sex_show_ti, #sex_show_ad, #sex_show_tpa').text('');
+	$('#age_show_ti, #age_show_ad, #age_show_tpa').text('');
+	$('#race_show_ti, #race_show_ad, #race_show_tpa').text('');	
+	$("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").hide();
+	$("#cancel_ti, #cancel_ad, #cancel_tpa").click();
 
 	disableForm('#formTriageInfo');
 	emptyFormdata(errorField_nursing,'#formTriageInfo')
 
-	//Activities of Daily Living
-	$('#name_show_ad').text('');
-	$('#newic_show_ad').text('');
-	$('#sex_show_ad').text('');
-	$('#age_show_ad').text('');
-	$('#race_show_ad').text('');	
-	$("#btn_grp_edit_ad").hide();
-	$("#cancel_ad").click();
-
 	disableForm('#formActDaily');
 	emptyFormdata(errorField_nursing,'#formActDaily')
-
-	//Triage Physical Assessment
-	$('#name_show_tpa').text('');
-	$('#newic_show_tpa').text('');
-	$('#sex_show_tpa').text('');
-	$('#age_show_tpa').text('');
-	$('#race_show_tpa').text('');	
-	$("#btn_grp_edit_tpa").hide();
-	$("#cancel_tpa").click();
 
 	disableForm('#formTriPhysical');
 	emptyFormdata(errorField_nursing,'#formTriPhysical')
