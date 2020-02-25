@@ -35,33 +35,71 @@ $(document).ready(function () {
 	disableForm('#formActDaily');
 	disableForm('#formTriPhysical');
 
-	$("#edit_ti, #edit_ad, #edit_tpa").click(function(){
-		button_state_nursing('edit');
+	$("#edit_ti").click(function(){
+		button_state_ti('edit');
 		enableForm('#formTriageInfo');
-		enableForm('#formActDaily');
-		enableForm('#formTriPhysical');		
 		rdonly('#formTriageInfo');
+		// dialog_mrn_edit.on();
+		
+	});
+
+	$("#save_ti").click(function(){
+		disableForm('#formTriageInfo');
+		saveForm_edit(function(){
+			$("#cancel_ti").click();
+		});
+
+	});
+
+	$("#cancel_ti").click(function(){
+		disableForm('#formTriageInfo');
+		button_state_ti('init');
+		// dialog_mrn_edit.off();
+
+	});
+
+	$("#edit_ad").click(function(){
+		button_state_ad('edit');
+		enableForm('#formActDaily');
 		rdonly('#formActDaily');
+		// dialog_mrn_edit.on();
+		
+	});
+
+	$("#save_ad").click(function(){
+		disableForm('#formActDaily');
+		saveForm_edit(function(){
+			$("#cancel_ad").click();
+		});
+
+	});
+
+	$("#cancel_ad").click(function(){
+		disableForm('#formActDaily');
+		button_state_ad('init');
+		// dialog_mrn_edit.off();
+
+	});
+
+	$("#edit_tpa").click(function(){
+		button_state_tpa('edit');
+		enableForm('#formTriPhysical');
 		rdonly('#formTriPhysical');
 		// dialog_mrn_edit.on();
 		
 	});
 
-	$("#save_ti, #save_ad, #save_tpa").click(function(){
-		disableForm('#formTriageInfo');
-		disableForm('#formActDaily');
+	$("#save_tpa").click(function(){
 		disableForm('#formTriPhysical');
 		saveForm_edit(function(){
-			$("#cancel_ti, #cancel_ad, #cancel_tpa").click();
+			$("#cancel_tpa").click();
 		});
 
 	});
 
-	$("#cancel_ti, #cancel_ad, #cancel_tpa").click(function(){
-		disableForm('#formTriageInfo');
-		disableForm('#formActDaily');
+	$("#cancel_tpa").click(function(){
 		disableForm('#formTriPhysical');
-		button_state_nursing('init');
+		button_state_tpa('init');
 		// dialog_mrn_edit.off();
 
 	});
@@ -84,47 +122,110 @@ conf_nursing = {
 	},
 };
 
-button_state_nursing('init');
-function button_state_nursing(state){
+button_state_ti('init');
+function button_state_ti(state){
 	switch(state){
 		case 'init':
-			$("#edit_ti, #edit_ad, #edit_tpa").attr('disabled',false);
-			$('#save_ti, #cancel_ti, #save_ad, #cancel_ad, #save_tpa, #cancel_tpa').attr('disabled',true);
+			$("#edit_ti").attr('disabled',false);
+			$('#save_ti,#cancel_ti').attr('disabled',true);
 			break;
 		case 'edit':
-			$("#save_ti, #cancel_ti, #save_ad, #cancel_ad, #save_tpa, #cancel_tpa").attr('disabled',false);
-			$('#edit_ti, #edit_ad, #edit_tpa').attr('disabled',true);
+			$("#save_ti,#cancel_ti").attr('disabled',false);
+			$('#edit_ti').attr('disabled',true);
+			break;
+	}
+}
+
+button_state_ad('init');
+function button_state_ad(state){
+	switch(state){
+		case 'init':
+			$("#edit_ad").attr('disabled',false);
+			$('#save_ad,#cancel_ad').attr('disabled',true);
+			break;
+		case 'edit':
+			$("#save_ad,#cancel_ad").attr('disabled',false);
+			$('#edit_ad').attr('disabled',true);
+			break;
+	}
+}
+
+button_state_tpa('init');
+function button_state_tpa(state){
+	switch(state){
+		case 'init':
+			$("#edit_tpa").attr('disabled',false);
+			$('#save_tpa,#cancel_tpa').attr('disabled',true);
+			break;
+		case 'edit':
+			$("#save_tpa,#cancel_tpa").attr('disabled',false);
+			$('#edit_tpa').attr('disabled',true);
 			break;
 	}
 }
 
 function populate_formNursing(obj){
 
-	//panel header
-	$('#name_show_ti, #name_show_ad, #name_show_tpa').text(obj.a_pat_name);
-	$('#newic_show_ti, #newic_show_ad, #newic_show_tpa').text(obj.newic);
-	$('#sex_show_ti, #sex_show_ad, #sex_show_tpa').text(obj.sex);
-	$('#age_show_ti, #age_show_ad, #age_show_tpa').text(obj.age);
-	$('#race_show_ti, #race_show_ad, #race_show_tpa').text(obj.race);	
-	$("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").show();
+	//panel header Triage Information
+	$('#name_show_ti').text(obj.a_pat_name);
+	$('#newic_show_ti').text(obj.newic);
+	$('#sex_show_ti').text(obj.sex);
+	$('#age_show_ti').text(obj.age);
+	$('#race_show_ti').text(obj.race);	
+	$("#btn_grp_edit_ti").show();
+
+	//panel header Activities of Daily Living
+	$('#name_show_ad').text(obj.a_pat_name);
+	$('#newic_show_ad').text(obj.newic);
+	$('#sex_show_ad').text(obj.sex);
+	$('#age_show_ad').text(obj.age);
+	$('#race_show_ad').text(obj.race);	
+	$("#btn_grp_edit_ad").show();
+
+	//panel header Triage Physical Assessment
+	$('#name_show_tpa').text(obj.a_pat_name);
+	$('#newic_show_tpa').text(obj.newic);
+	$('#sex_show_tpa').text(obj.sex);
+	$('#age_show_tpa').text(obj.age);
+	$('#race_show_tpa').text(obj.race);	
+	$("#btn_grp_edit_tpa").show();
 	
 }
 
 function empty_formNursing(){
 
-	$('#name_show_ti, #name_show_ad, #name_show_tpa').text('');
-	$('#newic_show_ti, #newic_show_ad, #newic_show_tpa').text('');
-	$('#sex_show_ti, #sex_show_ad, #sex_show_tpa').text('');
-	$('#age_show_ti, #age_show_ad, #age_show_tpa').text('');
-	$('#race_show_ti, #race_show_ad, #race_show_tpa').text('');	
-	$("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").hide();
-	$("#cancel_ti, #cancel_ad, #cancel_tpa").click();
+	//Triage Information
+	$('#name_show_ti').text('');
+	$('#newic_show_ti').text('');
+	$('#sex_show_ti').text('');
+	$('#age_show_ti').text('');
+	$('#race_show_ti').text('');	
+	$("#btn_grp_edit_ti").hide();
+	$("#cancel_ti").click();
 
 	disableForm('#formTriageInfo');
 	emptyFormdata(errorField_nursing,'#formTriageInfo')
 
+	//Activities of Daily Living
+	$('#name_show_ad').text('');
+	$('#newic_show_ad').text('');
+	$('#sex_show_ad').text('');
+	$('#age_show_ad').text('');
+	$('#race_show_ad').text('');	
+	$("#btn_grp_edit_ad").hide();
+	$("#cancel_ad").click();
+
 	disableForm('#formActDaily');
 	emptyFormdata(errorField_nursing,'#formActDaily')
+
+	//Triage Physical Assessment
+	$('#name_show_tpa').text('');
+	$('#newic_show_tpa').text('');
+	$('#sex_show_tpa').text('');
+	$('#age_show_tpa').text('');
+	$('#race_show_tpa').text('');	
+	$("#btn_grp_edit_tpa").hide();
+	$("#cancel_tpa").click();
 
 	disableForm('#formTriPhysical');
 	emptyFormdata(errorField_nursing,'#formTriPhysical')
