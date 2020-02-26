@@ -64,6 +64,9 @@ $(document).ready(function () {
 		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPager",
+		onSelectRow:function(rowid, selected){
+			populate_formMMA(selrowData("#jqGrid"));
+		},
 		loadComplete: function(data){
 			data.rows.forEach(function(element){
 				if(element.callback_param != null){
@@ -85,6 +88,9 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			$("#jqGrid_iledit").click();
+		},
+		gridComplete: function () {
+			empty_formMMA();
 		},
 	});
 
@@ -558,3 +564,24 @@ $(document).ready(function () {
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
 });
+
+function populate_formMMA(obj){
+
+	//panel header
+	$('#mmacode_show').text(obj.mmacode);
+	$('#description_show').text(obj.description_show);	
+	// $("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").show();
+	
+}
+
+function empty_formMMA(){
+
+	$('#mmacode_show').text('');
+	$('#description_show').text('');
+	// $("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").hide();
+	// $("#cancel_ti, #cancel_ad, #cancel_tpa").click();
+
+	// disableForm('#formMMA');
+	// emptyFormdata(errorField_MMA,'#formMMA')
+
+}
