@@ -152,6 +152,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function(rowid, selected) {
+			populate_formCDT(selrowData("#jqGrid"));
 			let recstatus = selrowData("#jqGrid").recstatus;
 			if(recstatus=='OPEN'){
 				$('#but_cancel_jq,#but_post_jq').show();
@@ -179,6 +180,7 @@ $(document).ready(function () {
 			}
 		},
 		gridComplete: function(){
+			empty_formCDT();
 			$('#but_cancel_jq,#but_post_jq').hide();
 				if (oper == 'add' || oper == null) {
 					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
@@ -1060,4 +1062,24 @@ $(document).ready(function () {
 		}
 	}
 });
-		
+
+function populate_formCDT(obj){
+
+	//panel header
+	$('#bankcode_show').text(obj.bankcode);
+	$('#refsource_show').text(obj.refsource);	
+	// $("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").show();
+	
+}
+
+function empty_formCDT(){
+
+	$('#bankcode_show').text('');
+	$('#refsource_show').text('');
+	// $("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").hide();
+	// $("#cancel_ti, #cancel_ad, #cancel_tpa").click();
+
+	// disableForm('#formCDT');
+	// emptyFormdata(errorField_MMA,'#formCDT')
+
+}

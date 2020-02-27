@@ -85,11 +85,16 @@ i.fa {
 		    	</div>
 		</div>
 
-		<div class="panel panel-default" id="jqGrid3_c">
-	    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
-	    		<i class="fa fa-angle-double-up" style="font-size:24px"></i>
-				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Credit/Debit Detail
-			</div>
+		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
+		<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
+			<b><span id="bankcode_show"></span></b><br>
+				<span id="refsource_show"></span>
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Credit/Debit Detail</h5>
+				</div>		
+		</div>
 
     		<div id="jqGrid3_panel" class="panel-collapse collapse">
 	    		<div class="panel-body">
