@@ -1170,13 +1170,15 @@ $(document).ready(function () {
 function populate_form(obj){
 
 	//panel header
+	$('#trantype_show').text(obj.apacthdr_trantype);
 	$('#document_show').text(obj.apacthdr_document);
-	$('#suppcode_show').text(obj.apacthdr_suppcode);
+	$('#suppcode_show').text(obj.supplier_name);
 	
 }
 
 function empty_form(){
 
+	$('#trantype_show').text('');
 	$('#document_show').text('');
 	$('#suppcode_show').text('');
 
