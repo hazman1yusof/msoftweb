@@ -258,6 +258,7 @@ $(document).ready(function () {
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 
 			refreshGrid("#jqGrid3",urlParam2);
+			populate_form(selrowData("#jqGrid"));
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -274,6 +275,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			empty_form();
 		},
 		
 
@@ -1164,3 +1166,18 @@ $(document).ready(function () {
 	});
 
 });
+
+function populate_form(obj){
+
+	//panel header
+	$('#document_show').text(obj.apacthdr_document);
+	$('#suppcode_show').text(obj.apacthdr_suppcode);
+	
+}
+
+function empty_form(){
+
+	$('#document_show').text('');
+	$('#suppcode_show').text('');
+
+}

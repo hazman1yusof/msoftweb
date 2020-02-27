@@ -176,6 +176,7 @@ $(document).ready(function () {
 
 			urlParam2.filterVal[1]=selrowData("#jqGrid").auditno;
 			refreshGrid("#jqGrid3",urlParam2);
+			populate_form(selrowData("#jqGrid"));
 		},
 
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -193,6 +194,8 @@ $(document).ready(function () {
 					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 				}
 				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+
+			empty_form()
 		},
 			
 	});
@@ -1162,4 +1165,19 @@ $(document).ready(function () {
 		}
 	}
 });
+
+function populate_form(obj){
+
+	//panel header
+	$('#bankcode_show').text(obj.bankcode);
+	$('#payto_show').text(obj.payto);
+	
+}
+
+function empty_form(){
+
+	$('#bankcode_show').text('');
+	$('#payto_show').text('');
+
+}
 		
