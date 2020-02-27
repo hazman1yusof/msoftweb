@@ -171,7 +171,7 @@ i.fa {
 		 <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
 				<b>GOOD RECEIVE NOTE NO: <span id="prdept_show"></span> - <span id="grnno_show"></span></b><br>
-				SUPPLIER NAME: <span id="suppcode_show"></span>
+				<b>SUPPLIER NAME: <span id="suppcode_show"></span></b>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>

@@ -204,7 +204,7 @@ $(document).ready(function () {
 		checkduplicate: 'true'
 	};
 	function padzero(cellvalue, options, rowObject){
-		let padzero = 6, str="";
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;

@@ -123,7 +123,7 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: true, checked: true},
-			{ label: 'Trantype', name: 'trantype', width: 10},
+			{ label: 'Trantype', name: 'trantype', width: 13},
 			{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', canSearch: true},
 			{ label: 'Reference', name: 'refsource', width: 43, classes: 'wrap',},
 			{ label: 'Post Date', name: 'actdate', width: 25, classes: 'wrap'},
