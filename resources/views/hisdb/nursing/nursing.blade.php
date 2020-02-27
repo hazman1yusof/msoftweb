@@ -167,66 +167,66 @@
 										<div class="panel-body">
 
 											<div class="form-group">
-												<label class="col-md-3 control-label" for="vs_temperature">Temperature</label>  
-												<div class="col-md-7 input-group" style="margin-left: 100px">
+												<label class="col-md-4 control-label" for="vs_temperature">Temperature</label>  
+												<div class="col-md-7 input-group">
 													<input id="vs_temperature" name="vs_temperature" type="text" class="form-control input-sm uppercase">
 													<span class="input-group-addon">°C</span>
 												</div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-3 control-label" for="vs_pulse">Pulse</label>  
-												<div class="col-md-7 input-group" style="margin-left: 100px">
+												<label class="col-md-4 control-label" for="vs_pulse">Pulse</label>  
+												<div class="col-md-7 input-group">
 													<input id="vs_pulse" name="vs_pulse" type="text" class="form-control input-sm uppercase">
 													<span class="input-group-addon">/min</span>
 												</div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-3 control-label" for="vs_respiration">Respiration</label>  
-												<div class="col-md-7 input-group" style="margin-left: 100px">
+												<label class="col-md-4 control-label" for="vs_respiration">Respiration</label>  
+												<div class="col-md-7 input-group">
 													<input id="vs_respiration" name="vs_respiration" type="text" class="form-control input-sm uppercase">
 													<span class="input-group-addon">/min</span>
 												</div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-3 control-label" for="vs_bloodpressure">Blood Pressure</label>
-												<div class="col-md-9 input-group" style="margin-left: 100px">
-													<input id="vs_bloodpressure" name="vs_bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 45px">
+												<label class="col-md-4 control-label" for="vs_bloodpressure">Blood Pressure</label>
+												<div class="col-md-7 input-group">
+													<input id="vs_bloodpressure" name="vs_bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 49px">
 													<label class="col-md-1 control-label">/</label> 
-													<input id="vs_bloodpressure" name="vs_bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 45px">
-													<span class="input-group-addon" style="float: left;width: 80px;height: 30px">/mmHg</span>
+													<input id="vs_bloodpressure" name="vs_bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 49px">
+													<span class="input-group-addon">/mmHg</span>
 												</div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-3 control-label" for="vs_height">Height</label>  
-												<div class="col-md-7 input-group" style="margin-left: 100px">
+												<label class="col-md-4 control-label" for="vs_height">Height</label>  
+												<div class="col-md-7 input-group">
 													<input id="vs_height" name="vs_height" type="text" class="form-control input-sm uppercase">
 													<span class="input-group-addon">cm</span>
 												</div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-3 control-label" for="vs_weight">Weight</label>  
-												<div class="col-md-7 input-group" style="margin-left: 100px">
+												<label class="col-md-4 control-label" for="vs_weight">Weight</label>  
+												<div class="col-md-7 input-group">
 													<input id="vs_weight" name="vs_weight" type="text" class="form-control input-sm uppercase">
 													<span class="input-group-addon">kg</span>
 												</div>
 											</div>
 											
 											<div class="form-group">
-												<label class="col-md-3 control-label" for="vs_gxt">GXT</label>  
-												<div class="col-md-7 input-group" style="margin-left: 100px">
+												<label class="col-md-4 control-label" for="vs_gxt">GXT</label>  
+												<div class="col-md-7 input-group">
 													<input id="vs_gxt" name="vs_gxt" type="text" class="form-control input-sm uppercase">
 													<span class="input-group-addon">mmOL</span>
 												</div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-3 control-label" for="vs_painscore">Pain Score</label>  
-												<div class="col-md-7 input-group" style="margin-left: 100px">
+												<label class="col-md-4 control-label" for="vs_painscore">Pain Score</label>  
+												<div class="col-md-7 input-group">
 													<input id="vs_painscore" name="vs_painscore" type="text" class="form-control input-sm uppercase">
 													<span class="input-group-addon">/10</span>
 												</div>
