@@ -39,24 +39,28 @@
 
 				<form class='form-horizontal' style='width:99%' id='formTriageInfo'>
 
-					<div class='col-md-6'>
+					<div class='col-md-5'>
 						<div class="panel panel-info">
 							<div class="panel-heading text-center">Information</div>
 							<div class="panel-body">
 
 								<div class="form-group">
-									<label class="col-md-1 control-label" for="admwardtime">Time</label>  
-									<div class="col-md-3">
+									<label class="col-md-3 control-label" for="admwardtime">Time</label>  
+									<div class="col-md-5">
 										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase">
 									</div>
+								</div>
 
-									<label class="col-md-1 control-label" for="reg_date">Date</label>  
-									<div class="col-md-3">
+								<div class="form-group">
+									<label class="col-md-3 control-label" for="reg_date">Date</label>  
+									<div class="col-md-5">
 										<input id="reg_date" name="reg_date" type="date" class="form-control input-sm uppercase" frozeOnEdit>
 									</div>
+								</div>
 
-									<label class="col-md-2 control-label" for="tricolorzone">Triage Color Zone</label>  
-									<div class="col-md-2">
+								<div class="form-group">
+									<label class="col-md-3 control-label" for="tricolorzone">Triage Color Zone</label>  
+									<div class="col-md-5">
 										<div class='input-group'>
 											<input id="tricolorzone" name="tricolorzone" type="text" class="form-control input-sm uppercase">
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -112,7 +116,7 @@
 									<div class="panel-body">
 
 										<div class="form-group">
-											<div class="form-check form-check-inline checkbox-inline" style="margin-left: 60px">
+											<div class="form-check form-check-inline checkbox-inline">
 												<input class="form-check-input" type="checkbox" id="allergydrugs" value="allergydrugs">
 												<label class="form-check-label" for="allergydrugs">Drugs</label>
 											</div>
@@ -152,7 +156,7 @@
 						</div>
 					</div>
 
-					<div class='col-md-6'>
+					<div class='col-md-7'>
 						<div class="panel panel-info">
 							<div class="panel-heading text-center">Condition on Admission</div>
 							<div class="panel-body">
@@ -192,7 +196,7 @@
 													<input id="vs_bloodpressure" name="vs_bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 45px">
 													<label class="col-md-1 control-label">/</label> 
 													<input id="vs_bloodpressure" name="vs_bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 45px">
-													<span class="input-group-addon" style="float: left;width: 70px;height: 30px">/mmHg</span>
+													<span class="input-group-addon" style="float: left;width: 80px;height: 30px">/mmHg</span>
 												</div>
 											</div>
 
@@ -401,7 +405,7 @@
 
 				<form class='form-horizontal' style='width:99%' id='formActDaily'>
 
-					<div class='col-md-6'>
+					<div class='col-md-5'>
 
 						<div class='col-md-12'>
 							<div class="panel panel-info">
@@ -560,7 +564,7 @@
 
 					</div>
 
-					<div class='col-md-6'>
+					<div class='col-md-7'>
 
 						<div class='col-md-12'>
 							<div class="panel panel-info">
@@ -814,17 +818,17 @@
 														<div class="panel-heading text-center">SKIN CONDITION</div>
 														<div class="panel-body" style="height: 150px">
 
-															<div class="form-check" style="margin-left: 50px">
+															<div class="form-check">
 																<input class="form-check-input" type="checkbox" value="dry" id="dry">
 																<label class="form-check-label" for="dry">Dry</label>
 															</div>
 
-															<div class="form-check" style="margin-left: 50px">
+															<div class="form-check">
 																<input class="form-check-input" type="checkbox" value="odema" id="odema">
 																<label class="form-check-label" for="odema">Odema</label>
 															</div>
 
-															<div class="form-check" style="margin-left: 50px">
+															<div class="form-check">
 																<input class="form-check-input" type="checkbox" value="jaundice" id="jaundice">
 																<label class="form-check-label" for="jaundice">Jaundice</label>
 															</div>
@@ -839,22 +843,22 @@
 														<div class="panel-body" style="height: 150px">
 
 														
-															<div class="form-check" style="margin-left: 40px">
+															<div class="form-check">
 																<input class="form-check-input" type="checkbox" value="bruises" id="bruises">
 																<label class="form-check-label" for="bruises">Bruises</label>
 															</div>
 
-															<div class="form-check" style="margin-left: 40px">
+															<div class="form-check">
 																<input class="form-check-input" type="checkbox" value="decubituesulcer" id="decubituesulcer">
 																<label class="form-check-label" for="decubituesulcer">Decubitues Ulcer</label>
 															</div>
 
-															<div class="form-check" style="margin-left: 40px">
+															<div class="form-check">
 																<input class="form-check-input" type="checkbox" value="laceration" id="laceration">
 																<label class="form-check-label" for="laceration">Laceration</label>
 															</div>
 
-															<div class="form-check" style="margin-left: 40px">
+															<div class="form-check">
 																<input class="form-check-input" type="checkbox" value="discolouration" id="discolouration">
 																<label class="form-check-label" for="discolouration">Discolouration</label>
 															</div>
