@@ -67,8 +67,8 @@ i.fa {
 		<div class="panel-group">
 			<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
-					<b><span id="mmacode_show"></span></b><br>
-						<span id="description_show"></span>
+					<b>MMA Code: <span id="mmacode_show"></span></b><br>
+						Description: <span id="description_show"></span>
 						<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 						<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
