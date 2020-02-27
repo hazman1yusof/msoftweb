@@ -341,6 +341,7 @@ $(document).ready(function () {
 			}
 
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purordhd_recno;
+			populate_form(selrowData("#jqGrid"));
 
 			$('#ponodepan').text(selrowData("#jqGrid").purordhd_purordno);//tukar kat depan tu
 			$('#prdeptdepan').text(selrowData("#jqGrid").purordhd_prdept);
@@ -366,6 +367,7 @@ $(document).ready(function () {
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			fdl.set_array().reset();
+			empty_form()
 
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
@@ -2424,3 +2426,20 @@ $(document).ready(function () {
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
 });
+
+function populate_form(obj){
+
+	//panel header
+	$('#prdept_show').text(obj.purordhd_prdept);
+	$('#purordno_show').text(padzero(obj.purordhd_purordno));
+	$('#suppcode_show').text(obj.supplier_name);
+	
+}
+
+function empty_form(){
+
+	$('#prdept_show').text('');
+	$('#purordno_show').text('');
+	$('#suppcode_show').text('');
+
+}

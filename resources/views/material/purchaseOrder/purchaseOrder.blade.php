@@ -185,7 +185,7 @@ i.fa {
 		    		</div>
 		</div>
 
-        
+       <!--  
         	<div class='click_row'>
         		<label class="control-label">Purchase Order No</label>
         		<span id="ponodepan" style="display: block;">&nbsp</span>
@@ -195,27 +195,31 @@ i.fa {
 				<label class="control-label">Purchase Dept</label>
         		<span id="prdeptdepan" style="display: block;">&nbsp</span>
         	</div>
-
+ -->
 	   		<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
 				<label class="control-label" style="margin-top: 10px;">Print Label</label>
         	</div>
 
-	        <div class="panel panel-default" id="jqGrid3_c">
-			    <div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
-				    <i class="fa fa-angle-double-up" style="font-size:24px"></i>
-		    		<i class="fa fa-angle-double-down" style="font-size:24px"></i>Purchase Order DataEntry Detail
-	    		</div>
-		    		
-		    	<div id="jqGrid3_panel" class="panel-collapse collapse">
-			    	<div class="panel-body">
-			    		<div class='col-md-12' style="padding:0 0 15px 0">
-		            		<table id="jqGrid3" class="table table-striped"></table>
-		            		<div id="jqGridPager3"></div>
-		    			</div>
-			    	</div>
-			    </div>
-			</div>    		
-		</div>
+	 		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
+					<b>PURCHASE ORDER NO: <span id="prdept_show"></span> - <span id="purordno_show"></span></b><br>
+					SUPPLIER NAME: <span id="suppcode_show"></span>
+
+					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+						<h5>Purchase Order Data Entry Detail</h5>
+					</div>
+				</div>
+				<div id="jqGrid3_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class='col-md-12' style="padding:0 0 15px 0">
+							<table id="jqGrid3" class="table table-striped"></table>
+							<div id="jqGridPager3"></div>
+						</div>
+					</div>
+				</div>	
+			</div>
     </div>
 	<!-------------------------------- End Search + table ------------------>
 		

@@ -204,7 +204,7 @@ $(document).ready(function () {
 		checkduplicate: 'true'
 	};
 	function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+		let padzero = 6, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
@@ -344,6 +344,7 @@ $(document).ready(function () {
 			}
 
 			urlParam2.filterVal[0]=selrowData("#jqGrid").delordhd_recno;
+			populate_form(selrowData("#jqGrid"));
 
 			$('#recnodepan').text(selrowData("#jqGrid").delordhd_recno);//tukar kat depan tu
 			$('#prdeptdepan').text(selrowData("#jqGrid").delordhd_prdept);
@@ -366,6 +367,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			empty_form()
 
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
@@ -2454,3 +2456,20 @@ $(document).ready(function () {
 	barcode.init();
 
 });
+
+function populate_form(obj){
+
+	//panel header
+	$('#prdept_show').text(obj.delordhd_prdept);
+	$('#grnno_show').text(padzero(obj.delordhd_docno));
+	$('#suppcode_show').text(obj.supplier_name);
+	
+}
+
+function empty_form(){
+
+	$('#prdept_show').text('');
+	$('#grnno_show').text('');
+	$('#suppcode_show').text('');
+
+}
