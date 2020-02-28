@@ -152,7 +152,7 @@ $(document).ready(function () {
 		table_id:'recno'
 	};
 	function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
@@ -1748,6 +1748,21 @@ $(document).ready(function () {
 	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();
 
-
-
 });
+
+function populate_form(obj){
+
+	//panel header
+	$('#txndept_show').text(obj.txndept);
+	$('#trantype_show').text(obj.trantype);
+	$('#docno_show').text(padzero(obj.docno));
+	
+}
+
+function empty_form(){
+
+	$('#txndept_show').text('');
+	$('#trantype_show').text('');
+	$('#docno_show').text('');
+
+}

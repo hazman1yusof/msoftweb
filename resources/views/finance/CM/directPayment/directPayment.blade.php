@@ -76,8 +76,8 @@ i.fa {
 
 		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
-				<b>Bank Code: <span id="bankcode_show"></span></b><br>
-				Pay To: <span id="payto_show"></span>
+				<b>BANK CODE: </b><span id="bankcode_show"></span><br>
+				<b>PAY TO: </b><span id="payto_show"></span>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>

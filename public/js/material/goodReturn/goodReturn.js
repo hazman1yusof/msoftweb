@@ -197,7 +197,7 @@ $(document).ready(function () {
 		checkduplicate:'true'
 	};
 	function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
@@ -334,6 +334,8 @@ $(document).ready(function () {
 			}
 
 			urlParam2.filterVal[0]=selrowData("#jqGrid").delordhd_recno;
+			populate_form(selrowData("#jqGrid"));
+
 			$('#recnodepan').text(selrowData("#jqGrid").delordhd_recno);//tukar kat depan tu
 			$('#prdeptdepan').text(selrowData("#jqGrid").delordhd_prdept);
 
@@ -348,6 +350,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			empty_form();
 
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
@@ -781,7 +784,7 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
-		loadComplete: function(){
+		loadComplete: function(data){
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
@@ -2191,3 +2194,22 @@ $(document).ready(function () {
 	genpdf.printEvent();
 
 });
+
+function populate_form(obj){
+
+	//panel header
+	$('#prdept_show').text(obj.delordhd_prdept);
+	$('#grtno_show').text(padzero(obj.delordhd_docno));
+	$('#suppcode_show').text(obj.supplier_name);
+	
+	
+}
+
+function empty_form(){
+
+	$('#prdept_show').text('');
+	$('#grtno_show').text('');
+	$('#suppcode_show').text('');
+	
+
+}
