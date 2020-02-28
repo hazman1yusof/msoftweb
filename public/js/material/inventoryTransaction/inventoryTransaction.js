@@ -247,6 +247,8 @@ $(document).ready(function () {
 			urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode no = ','s.year no ='],[]];
 			urlParam2.join_filterVal = [['s.uomcode',selrowData("#jqGrid").txndept,moment(selrowData("#jqGrid").trandate).year()],[]];
 			
+			populate_form(selrowData("#jqGrid"));
+
 			$('#txndeptdepan').text(selrowData("#jqGrid").txndept);//tukar kat depan tu
 			$('#trantypedepan').text(selrowData("#jqGrid").trantype);
 			$('#docnodepan').text(selrowData("#jqGrid").docno);
@@ -270,6 +272,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			empty_form();
 		},
 		
 	});
