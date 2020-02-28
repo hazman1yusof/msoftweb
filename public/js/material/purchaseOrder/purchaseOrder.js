@@ -367,7 +367,7 @@ $(document).ready(function () {
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			fdl.set_array().reset();
-			empty_form()
+			empty_form();
 
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
