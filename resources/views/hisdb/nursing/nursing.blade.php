@@ -14,6 +14,9 @@
 		<button type="button" class="btn btn-default" id="save_ti">
 			<span class="fa fa-save fa-lg"></span> Save
 		</button>
+		<button type="button" class="btn btn-default" id="save_edit_ti">
+			<span class="fa fa-save fa-lg"></span> Save
+		</button>
 		<button type="button" class="btn btn-default" id="cancel_ti" >
 			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 		</button>
@@ -28,7 +31,7 @@
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 10px;">
-			<h5>Triage Information</h5>
+			<!-- <h5>Triage Information</h5> -->
 		</div>				
 	</div>
 	<div id="jqGridTriageInfo_panel" class="panel-collapse collapse">
@@ -43,6 +46,8 @@
 						<div class="panel panel-info">
 							<div class="panel-heading text-center">Information</div>
 							<div class="panel-body">
+
+								<input id="mrn_edit_ti" name="mrn_edit_ti" type="hidden">
 
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="admwardtime">Time</label>  
@@ -117,27 +122,27 @@
 
 										<div class="form-group">
 											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" id="allergydrugs" value="allergydrugs">
+												<input class="form-check-input" type="checkbox" id="allergydrugs" name="allergydrugs" value="1">
 												<label class="form-check-label" for="allergydrugs">Drugs</label>
 											</div>
 
 											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" id="allergyplaster" value="allergyplaster">
+												<input class="form-check-input" type="checkbox" id="allergyplaster" name="allergyplaster" value="1">
 												<label class="form-check-label" for="allergyplaster">Plaster</label>
 											</div>
 
 											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" id="allergyfood" value="allergyfood">
+												<input class="form-check-input" type="checkbox" id="allergyfood" name="allergyfood" value="1">
 												<label class="form-check-label" for="allergyfood">Food</label>
 											</div>
 
 											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" id="allergyenviroment" value="allergyenviroment">
+												<input class="form-check-input" type="checkbox" id="allergyenviroment" name="allergyenviroment" value="1">
 												<label class="form-check-label" for="allergyenviroment">Environment</label>
 											</div>
 
 											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" id="allergyothers" value="allergyothers">
+												<input class="form-check-input" type="checkbox" id="allergyothers" name="allergyothers" value="1">
 												<label class="form-check-label" for="allergyothers">Others</label>
 											</div>
 										</div>
@@ -193,9 +198,9 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_bloodpressure">Blood Pressure</label>
 												<div class="col-md-7 input-group">
-													<input id="vs_bloodpressure" name="vs_bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 49px">
+													<input id="vs_bloodpressure_sys1" name="vs_bloodpressure_sys1" type="text" class="form-control input-sm uppercase" style="width: 49px">
 													<label class="col-md-1 control-label">/</label> 
-													<input id="vs_bloodpressure" name="vs_bloodpressure" type="text" class="form-control input-sm uppercase" style="width: 49px">
+													<input id="vs_bloodpressure_dias2" name="vs_bloodpressure_dias2" type="text" class="form-control input-sm uppercase" style="width: 49px">
 													<span class="input-group-addon">/mmHg</span>
 												</div>
 											</div>
@@ -242,22 +247,22 @@
 										<div class="panel-body">
 
 											<div class="form-check" style="margin-left: 20px">
-												<input class="form-check-input" type="checkbox" value="moa_walkin" id="moa_walkin">
+												<input class="form-check-input" type="checkbox" name="moa_walkin" id="moa_walkin" value="1">
 												<label class="form-check-label" for="moa_walkin">Walk In</label>
 											</div>
 
 											<div class="form-check" style="margin-left: 20px">
-												<input class="form-check-input" type="checkbox" value="moa_wheelchair" id="moa_wheelchair">
+												<input class="form-check-input" type="checkbox" name="moa_wheelchair" id="moa_wheelchair" value="1">
 												<label class="form-check-label" for="moa_wheelchair">Wheel Chair</label>
 											</div>
 
 											<div class="form-check" style="margin-left: 20px">
-												<input class="form-check-input" type="checkbox" value="moa_trolley" id="moa_trolley">
+												<input class="form-check-input" type="checkbox" name="moa_trolley" id="moa_trolley" value="1">
 												<label class="form-check-label" for="moa_trolley">Trolley</label>
 											</div>
 
 											<div class="form-check" style="margin-left: 20px">
-												<input class="form-check-input" type="checkbox" value="moa_others" id="moa_others">
+												<input class="form-check-input" type="checkbox" name="moa_others" id="moa_others" value="1">
 												<label class="form-check-label" for="moa_others">Others</label>
 											</div>
 
@@ -272,17 +277,17 @@
 
 											<div class="form-group">
 												<div class="form-check form-check-inline checkbox-inline" style="margin-left: 100px">
-													<input class="form-check-input" type="checkbox" id="loc_conscious" value="loc_conscious">
+													<input class="form-check-input" type="checkbox" id="loc_conscious" name="loc_conscious" value="1">
 													<label class="form-check-label" for="loc_conscious">Conscious</label>
 												</div>
 
 												<div class="form-check form-check-inline checkbox-inline">
-													<input class="form-check-input" type="checkbox" id="loc_semiconscious" value="loc_semiconscious">
+													<input class="form-check-input" type="checkbox" id="loc_semiconscious" name="loc_semiconscious" value="1">
 													<label class="form-check-label" for="loc_semiconscious">SemiConscious</label>
 												</div>
 
 												<div class="form-check form-check-inline checkbox-inline">
-													<input class="form-check-input" type="checkbox" id="loc_unconscious" value="loc_unconscious">
+													<input class="form-check-input" type="checkbox" id="loc_unconscious" name="loc_unconscious" value="1">
 													<label class="form-check-label" for="loc_unconscious">UnConscious</label>
 												</div>
 											</div>
@@ -297,22 +302,22 @@
 										<div class="panel-body" style="height: 170px">
 
 											<div class="form-check" style="margin-left: 60px">
-												<input class="form-check-input" type="checkbox" value="ms_orientated" id="ms_orientated">
+												<input class="form-check-input" type="checkbox" name="ms_orientated" id="ms_orientated" value="1">
 												<label class="form-check-label" for="ms_orientated">Orientated</label>
 											</div>
 
 											<div class="form-check" style="margin-left: 60px">
-												<input class="form-check-input" type="checkbox" value="ms_confused" id="ms_confused">
+												<input class="form-check-input" type="checkbox" name="ms_confused" id="ms_confused" value="1">
 												<label class="form-check-label" for="ms_confused">Confused</label>
 											</div>
 
 											<div class="form-check" style="margin-left: 60px">
-												<input class="form-check-input" type="checkbox" value="ms_restless" id="ms_restless">
+												<input class="form-check-input" type="checkbox" name="ms_restless" id="ms_restless" value="1">
 												<label class="form-check-label" for="ms_restless">Restless</label>
 											</div>
 
 											<div class="form-check" style="margin-left: 60px">
-												<input class="form-check-input" type="checkbox" value="ms_aggressive" id="ms_aggressive">
+												<input class="form-check-input" type="checkbox" name="ms_aggressive" id="ms_aggressive" value="1">
 												<label class="form-check-label" for="ms_aggressive">Aggressive</label>
 											</div>
 
@@ -326,27 +331,27 @@
 										<div class="panel-body" style="height: 170px">
 
 											<div class="form-check" style="margin-left: 60px">
-												<input class="form-check-input" type="checkbox" value="es_calm" id="es_calm">
+												<input class="form-check-input" type="checkbox" name="es_calm" id="es_calm" value="1">
 												<label class="form-check-label" for="es_calm">Calm</label>
 											</div>
 
 											<div class="form-check" style="margin-left: 60px">
-												<input class="form-check-input" type="checkbox" value="es_anxious" id="es_anxious">
+												<input class="form-check-input" type="checkbox" name="es_anxious" id="es_anxious" value="1">
 												<label class="form-check-label" for="es_anxious">Anxious</label>
 											</div>
 
 											<div class="form-check" style="margin-left: 60px">
-												<input class="form-check-input" type="checkbox" value="es_distress" id="es_distress">
+												<input class="form-check-input" type="checkbox" name="es_distress" id="es_distress" value="1">
 												<label class="form-check-label" for="es_distress">Distress</label>
 											</div>
 
 											<div class="form-check" style="margin-left: 60px">
-												<input class="form-check-input" type="checkbox" value="es_depressed" id="es_depressed">
+												<input class="form-check-input" type="checkbox" name="es_depressed" id="es_depressed" value="1">
 												<label class="form-check-label" for="es_depressed">Depressed</label>
 											</div>
 
 											<div class="form-check" style="margin-left: 60px">
-												<input class="form-check-input" type="checkbox" value="es_irritable" id="es_irritable">
+												<input class="form-check-input" type="checkbox" name="es_irritable" id="es_irritable" value="1">
 												<label class="form-check-label" for="es_irritable">Irritable</label>
 											</div>
 

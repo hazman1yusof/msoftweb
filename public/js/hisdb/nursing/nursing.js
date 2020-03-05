@@ -45,7 +45,15 @@ $(document).ready(function () {
 
 	$("#save_ti").click(function(){
 		disableForm('#formTriageInfo');
-		saveForm_edit(function(){
+		saveForm_add_ti(function(){
+			$("#cancel_ti").click();
+		});
+
+	});
+	
+	$("#save_edit_ti").click(function(){
+		disableForm('#formTriageInfo');
+		saveForm_edit_ti(function(){
 			$("#cancel_ti").click();
 		});
 
@@ -173,7 +181,11 @@ function populate_formNursing(obj){
 	$('#age_show_ti, #age_show_ad, #age_show_tpa').text(obj.age);
 	$('#race_show_ti, #race_show_ad, #race_show_tpa').text(obj.race);	
 	$("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").show();
-	
+
+	//formTriageInfo
+	$("#mrn_edit_ti").val(obj.a_mrn);
+	$("#reg_date").val(obj.reg_date);
+
 }
 
 function empty_formNursing(){
@@ -195,4 +207,46 @@ function empty_formNursing(){
 	disableForm('#formTriPhysical');
 	emptyFormdata(errorField_nursing,'#formTriPhysical')
 
+}
+
+function saveForm_add_ti(callback){
+	var saveParam={
+        action:'save_table_ti',oper:'add'
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	// sex_edit : $('#sex_edit').val(),
+    	// idtype_edit : $('#idtype_edit').val()
+
+    };
+
+    $.post( "/nursing/form?"+$.param(saveParam), $("#formTriageInfo").serialize()+'&'+$.param(postobj) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
+}
+
+function saveForm_edit_ti(callback){
+	var saveParam={
+        action:'save_table_ti',oper:'edit'
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	// sex_edit : $('#sex_edit').val(),
+    	// idtype_edit : $('#idtype_edit').val()
+
+    };
+
+    $.post( "/nursing/form?"+$.param(saveParam), $("#formTriageInfo").serialize()+'&'+$.param(postobj) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
 }
