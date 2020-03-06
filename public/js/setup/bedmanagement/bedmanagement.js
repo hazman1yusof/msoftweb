@@ -24,6 +24,47 @@ $(document).ready(function () {
 		},
 	};
 
+	function cust_rules(value,name){
+		var temp;
+		switch(name){
+			case 'Room':temp=$('#room');break;
+			case 'Ward':temp=$('#ward');break;
+				break;
+		}
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+	}
+
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'room':field=['room','description'];table="hisdb.bedtype";case_='room';break;
+			case 'ward': field = ['ward', 'description']; table = "hisdb.bedtype";case_='ward';break;
+		}
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		// fdl.get_array('chargemaster',options,param,case_,cellvalue);
+		
+		return cellvalue;
+	}
+
+	function roomCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="room" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function wardCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ward" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function galGridCustomValue (elem, operation, value){
+		if(operation == 'get') {
+			return $(elem).find("input").val();
+		} 
+		else if(operation == 'set') {
+			$('input',elem).val(value);
+		}
+	}
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table',
@@ -49,9 +90,27 @@ $(document).ready(function () {
             { label: 'compcode', name: 'compcode', hidden: true },
             { label: 'Bed No', name: 'bednum', width: 3, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Bed Type', name: 'bedtype', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-            { label: 'Room', name: 'room', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Ward', name: 'ward', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
+			{ label: 'Status', name: 'occup', width: 5, classes: 'wrap', canSearch: true, editable: true, edittype:"select",formatter:'select', 
+			editoptions:{
+				value:"OCCUPIED:OCCUPIED;VACANT:VACANT;HOUSEKEEPING:HOUSEKEEPING;MAINTENANCE:MAINTENANCE;ISOLATED:ISOLATED"
+			}},
+			// { label: 'Room', name: 'room', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Room', name: 'room', width: 5, align: 'right' , classes: 'wrap', editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+					edittype:'custom',	editoptions:
+						{  custom_element:roomCustomEdit,
+						custom_value:galGridCustomValue 	
+						},
+			},
+			// { label: 'Ward', name: 'ward', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Ward', name: 'ward', width: 5, align: 'right' , classes: 'wrap', editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+					edittype:'custom',	editoptions:
+						{  custom_element:wardCustomEdit,
+						custom_value:galGridCustomValue 	
+						},
+			},
 			{ label: 'Tel Ext', name: 'tel_ext', width: 3, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Statistic', name: 'statistic', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'MRN', name: 'mrn', width: 3, canSearch: true},
@@ -94,26 +153,27 @@ $(document).ready(function () {
 		},
 	});
 
-	function formatteroccup(cellvalue, option, rowObject) {
-		if (cellvalue == '1') {
-			return 'OCCUPIED';
-		}else if (cellvalue == '0') {
-			return 'VACANT';
-		}else{
-			return 'VACANT';
-		}
-	}
+	// ////////////////////formatter status////////////////////////////////////////
+	// function formatteroccup(cellvalue, option, rowObject) {
+	// 	if (cellvalue == '1') {
+	// 		return 'OCCUPIED';
+	// 	}else if (cellvalue == '0') {
+	// 		return 'VACANT';
+	// 	}else{
+	// 		return 'VACANT';
+	// 	}
+	// }
 
-	////////////////////unformatter status////////////////////////////////////////
-	function unformatoccup(cellvalue, option, rowObject) {
-		if (cellvalue == 'OCCUPIED') {
-			return '1';
-		}else if (cellvalue == 'VACANT') {
-			return '0';
-		}else{
-			return '0';
-		}
-	}
+	// ////////////////////unformatter status////////////////////////////////////////
+	// function unformatoccup(cellvalue, option, rowObject) {
+	// 	if (cellvalue == 'OCCUPIED') {
+	// 		return '1';
+	// 	}else if (cellvalue == 'VACANT') {
+	// 		return '0';
+	// 	}else{
+	// 		return '0';
+	// 	}
+	// }
 
 	var myEditOptions = {
 		keys: true,
