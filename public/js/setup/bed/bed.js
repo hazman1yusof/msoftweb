@@ -91,9 +91,9 @@ $(document).ready(function () {
 		editurl: "/bed/form",
 		colModel: [
             { label: 'compcode', name: 'compcode', hidden: true },
-            { label: 'Bed No', name: 'bednum', width: 3, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+            { label: 'Bed No', name: 'bednum', width: 7, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			// { label: 'Bed Type', name: 'bedtype', width: 5, canSearch: true, editable: true, editrules: { required: true }, formatter: showdetail, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Bed Type', name: 'bedtype', width: 5, align: 'right' , classes: 'wrap', editable:true, canSearch: true,
+			{ label: 'Bed Type', name: 'bedtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
 			editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 				edittype:'custom',	editoptions:
 					{  custom_element:bedTypeCustomEdit,
@@ -101,26 +101,26 @@ $(document).ready(function () {
 					},
 		},
 			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-			{ label: 'Status', name: 'occup', width: 5, classes: 'wrap', canSearch: true, editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'occup', width: 10, classes: 'wrap', canSearch: true, editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"OCCUPIED:OCCUPIED;VACANT:VACANT;HOUSEKEEPING:HOUSEKEEPING;MAINTENANCE:MAINTENANCE;ISOLATED:ISOLATED"
 			}},
-			{ label: 'Room', name: 'room', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 
 			// { label: 'Ward', name: 'ward', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Ward', name: 'ward', width: 5, align: 'right' , classes: 'wrap', editable:true,
+			{ label: 'Ward', name: 'ward', width: 15 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 					edittype:'custom',	editoptions:
 						{  custom_element:wardCustomEdit,
 						custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Tel Ext', name: 'tel_ext', width: 3, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Tel Ext', name: 'tel_ext', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Statistic', name: 'statistic', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'MRN', name: 'mrn', width: 3, canSearch: true, formatter: padzero, unformat: unpadzero},
-			{ label: 'Episode No', name: 'episno', width: 5, canSearch: true},
+			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: ' ', name: 'episno', width: 5, canSearch: true},
 			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
-            { label: 'Record Status', name: 'recstatus', width: 5, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+            { label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"
 			}},

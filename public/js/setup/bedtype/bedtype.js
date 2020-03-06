@@ -42,11 +42,11 @@ $(document).ready(function () {
 		editurl: "/bedtype/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'Bed Type', name: 'bedtype', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Bed Type', name: 'bedtype', width: 30, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			//{ label: 'Bed Charge Code', name: 'bedchgcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			//{ label: 'Lodger Charge Code', name: 'lodchgcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Record Status', name: 'recstatus', width: 50, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"
 			}},
