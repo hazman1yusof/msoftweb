@@ -49,7 +49,10 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
+			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}, 
+				cellattr: function(rowid, cellvalue)
+					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
+			},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},

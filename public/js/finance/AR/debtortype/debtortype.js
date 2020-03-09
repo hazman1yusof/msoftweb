@@ -241,7 +241,7 @@
 				'actdebccode','finance.costcenter','#actdebccode',errorField,
 				{	colModel:[
 						{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,,checked:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 					],
 					urlParam: {
 					filterCol:['compcode','recstatus'],

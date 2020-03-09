@@ -71,7 +71,10 @@ $(document).ready(function () {
 			{label: 'upddate', name: 'upddate', width: 90 , hidden: true},
 			{label: 'deluser', name: 'deluser', width: 90 , hidden: true},					
 			{label: 'deldate', name: 'deldate', width: 90 , hidden: true},					
-			{label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
+			{label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}, 
+				cellattr: function(rowid, cellvalue)
+					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
+			},
 			{label: 'idno', name: 'idno', hidden:true, key:true},
 			{label: 'computerid', name: 'computerid', width: 90, hidden:true, classes: 'wrap'},
 			{label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true, classes: 'wrap'},
