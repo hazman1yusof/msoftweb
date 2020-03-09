@@ -69,9 +69,11 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGrid2_iladd').click();}
+			if(addmore_jqgrid.more == true){
+				$('#jqGrid_iladd').click();
+			}
 			else{
-				$('#jqGrid2').jqGrid ('setSelection', "1");
+				$('#jqGrid').jqGrid ('setSelection', "1");
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
