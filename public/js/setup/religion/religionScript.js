@@ -46,7 +46,10 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'idno', width: 5, hidden: true, key:true },
 			{ label: 'Code', name: 'Code', width: 10, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 			{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, editable: true, checked: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Record Status', name: 'recstatus', width: 15, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}},
+			{ label: 'Record Status', name: 'recstatus', width: 15, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}, 
+			cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
+			},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
