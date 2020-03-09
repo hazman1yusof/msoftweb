@@ -115,7 +115,7 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Tel Ext', name: 'tel_ext', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Tel Ext', name: 'tel_ext', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Statistic', name: 'statistic', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5, canSearch: true},

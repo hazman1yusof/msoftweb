@@ -53,7 +53,7 @@ class BedController extends defaultController
 
     public function get_table(Request $request){
         $table = DB::table('hisdb.bed')
-                    ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
+                    ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','tel_ext','statistic','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
                     ->where('compcode','=',session('compcode'));
 
         //////////paginate/////////
