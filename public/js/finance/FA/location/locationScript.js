@@ -51,8 +51,10 @@ $(document).ready(function () {
 					},
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 						editoptions:{
-						value:"A:ACTIVE;D:DEACTIVE"}
-					},
+							value:"A:ACTIVE;D:DEACTIVE"},
+							cellattr: function(rowid, cellvalue)
+									{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
+						},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },

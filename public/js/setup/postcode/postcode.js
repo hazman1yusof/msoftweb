@@ -69,8 +69,10 @@ $(document).ready(function () {
 			},
 			{ label: 'Status', name: 'pc_recstatus', width: 30, classes: 'wrap', hidden:true, editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
-					value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
-				}},
+                    value:"A:ACTIVE;D:DEACTIVE"},
+                    cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
+                },
 			{ label: 'id', name: 'pc_idno', width:10, hidden: true, key:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },

@@ -48,8 +48,10 @@ $(document).ready(function () {
                 }},
             { label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
-                    value:"A:ACTIVE;D:DEACTIVE"
-                }},
+                    value:"A:ACTIVE;D:DEACTIVE"},
+                    cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
+                },
             { label: 'id', name: 'idno', width:10, hidden: true, key:true},
         ],
         autowidth:true,
