@@ -8,13 +8,13 @@
 				top: 10px;" 
 
 	>
-		<button type="button" class="btn btn-default" id="edit_ti">
+		<button type="button" class="btn btn-default" style="display: none" id="edit_ti">
 			<span class="fa fa-edit fa-lg"></span> Edit
 		</button>
-		<button type="button" class="btn btn-default" id="save_ti">
-			<span class="fa fa-save fa-lg"></span> Save
+		<button type="button" class="btn btn-default" id="new_ti">
+			<span class="fa fa-plus-square-o"></span> New
 		</button>
-		<button type="button" class="btn btn-default" id="save_edit_ti">
+		<button type="button" class="btn btn-default" id="save_ti">
 			<span class="fa fa-save fa-lg"></span> Save
 		</button>
 		<button type="button" class="btn btn-default" id="cancel_ti" >

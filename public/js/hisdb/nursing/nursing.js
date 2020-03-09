@@ -35,6 +35,14 @@ $(document).ready(function () {
 	disableForm('#formActDaily');
 	disableForm('#formTriPhysical');
 
+	$("#new_ti").click(function(){
+		button_state_ti('edit');
+		enableForm('#formTriageInfo');
+		rdonly('#formTriageInfo');
+		// dialog_mrn_edit.on();
+		
+	});
+
 	$("#edit_ti").click(function(){
 		button_state_ti('edit');
 		enableForm('#formTriageInfo');
@@ -134,12 +142,12 @@ button_state_ti('init');
 function button_state_ti(state){
 	switch(state){
 		case 'init':
-			$("#edit_ti").attr('disabled',false);
+			$("#edit_ti,#new_ti").attr('disabled',false);
 			$('#save_ti,#cancel_ti').attr('disabled',true);
 			break;
 		case 'edit':
 			$("#save_ti,#cancel_ti").attr('disabled',false);
-			$('#edit_ti').attr('disabled',true);
+			$('#edit_ti,#new_ti').attr('disabled',true);
 			break;
 	}
 }
