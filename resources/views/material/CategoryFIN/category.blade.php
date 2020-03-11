@@ -44,8 +44,8 @@ input.uppercase {
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
             		<table id="jqGrid" class="table table-striped">
             			<input type="hidden" name="idno">
-						<input id="source2" name="source" type="text" value="{{$_GET['source']}}">	
-						<input id="cattype" name="cattype" type="text" value="{{$_GET['cattype']}}">
+						<input id="source2" name="source" type="hidden" value="{{$_GET['source']}}">	
+						<input id="cattype" name="cattype" type="hidden" value="{{$_GET['cattype']}}">
 							
 						<input id="stockacct" name="stockacct" type="hidden">
 						<input id="cosacct" name="cosacct" type="hidden">
