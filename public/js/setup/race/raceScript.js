@@ -99,7 +99,8 @@ $(document).ready(function () {
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			addmore_jqgrid.more = true;
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'add');
 			errorField.length=0;
