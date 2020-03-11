@@ -99,12 +99,13 @@ $(document).ready(function () {
 					{  custom_element:bedTypeCustomEdit,
 					custom_value:galGridCustomValue 	
 					},
-		},
+			},
 			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-			{ label: 'Status', name: 'occup', width: 10, classes: 'wrap', canSearch: true, editable: true, edittype:"select",formatter:'select', 
-			editoptions:{
-				value:"OCCUPIED:OCCUPIED;VACANT:VACANT;HOUSEKEEPING:HOUSEKEEPING;MAINTENANCE:MAINTENANCE;ISOLATED:ISOLATED"
-			}},
+			{ label: 'Status', name: 'occup', width: 10, classes: 'wrap', canSearch: true, editable: true, edittype:"select",formatter:occup,unformat:occup_unformat, 
+				editoptions:{
+					value:'OCCUPIED:OCCUPIED;VACANT:VACANT;HOUSEKEEPING:HOUSEKEEPING;MAINTENANCE:MAINTENANCE;ISOLATED:ISOLATED'
+				}
+			},
 			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 
 			// { label: 'Ward', name: 'ward', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -160,6 +161,7 @@ $(document).ready(function () {
 	});
 
 	function padzero(cellvalue, options, rowObject){
+		console.log('sdsdss')
 		let padzero = 6, str="";
 		while(padzero>0){
 			str=str.concat("0");
@@ -170,6 +172,28 @@ $(document).ready(function () {
 
 	function unpadzero(cellvalue, options, rowObject){
 		return cellvalue.substring(cellvalue.search(/[1-9]/));
+	}
+
+	function occup(cellvalue, options, rowObject){
+		switch(cellvalue){
+			case 'OCCUPIED': return '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED';break;
+			case 'VACANT': return '<i class="fa fa-ban" aria-hidden="true"></i> VACANT';break;
+			case 'HOUSEKEEPING': return '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING';break;
+			case 'MAINTENANCE': return '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE';break;
+			case 'ISOLATED': return '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED';break;
+			default: return '';break;
+		}
+	}
+
+	function occup_unformat(cellvalue, options, rowObject){
+		switch(cellvalue){
+			case 'OCCUPIED': return 'OCCUPIED';break;
+			case 'VACANT': return 'VACANT';break;
+			case 'HOUSEKEEPING': return 'HOUSEKEEPING';break;
+			case 'MAINTENANCE': return 'MAINTENANCE';break;
+			case 'ISOLATED': return 'ISOLATED';break;
+			default: return '';break;
+		}
 	}
 
 	// ////////////////////formatter status////////////////////////////////////////

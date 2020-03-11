@@ -118,6 +118,15 @@ class EmergencyController extends defaultController
 
             $rows[$key]->reg_date = $apptdatefr->toDateString();
             $rows[$key]->reg_time = $apptdatefr->toTimeString();
+
+
+            $nusing_obj = DB::table('nursing.nursassessment')
+                        ->where('mrn','=',$value->a_mrn);
+
+            if($nusing_obj->exists()){
+                $nusing_obj = $nusing_obj->first();
+                $rows[$key]->nurse = $nusing_obj;
+            }
         }
 
         $responce = new stdClass();

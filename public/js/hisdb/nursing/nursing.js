@@ -39,6 +39,7 @@ $(document).ready(function () {
 		button_state_ti('edit');
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
+		$("#save_ti").data('oper','add');
 		// dialog_mrn_edit.on();
 		
 	});
@@ -47,21 +48,14 @@ $(document).ready(function () {
 		button_state_ti('edit');
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
+		$("#save_ti").data('oper','edit');
 		// dialog_mrn_edit.on();
 		
 	});
 
 	$("#save_ti").click(function(){
 		disableForm('#formTriageInfo');
-		saveForm_add_ti(function(){
-			$("#cancel_ti").click();
-		});
-
-	});
-	
-	$("#save_edit_ti").click(function(){
-		disableForm('#formTriageInfo');
-		saveForm_edit_ti(function(){
+		saveForm_ti(function(){
 			$("#cancel_ti").click();
 		});
 
@@ -217,30 +211,11 @@ function empty_formNursing(){
 
 }
 
-function saveForm_add_ti(callback){
+
+function saveForm_ti(callback){
 	var saveParam={
-        action:'save_table_ti',oper:'add'
-    }
-    var postobj={
-    	_token : $('#csrf_token').val(),
-    	// sex_edit : $('#sex_edit').val(),
-    	// idtype_edit : $('#idtype_edit').val()
-
-    };
-
-    $.post( "/nursing/form?"+$.param(saveParam), $("#formTriageInfo").serialize()+'&'+$.param(postobj) , function( data ) {
-        
-    },'json').fail(function(data) {
-        // alert('there is an error');
-        callback();
-    }).success(function(data){
-        callback();
-    });
-}
-
-function saveForm_edit_ti(callback){
-	var saveParam={
-        action:'save_table_ti',oper:'edit'
+        action:'save_table_ti',
+        oper:$("#save_ti").data('oper')
     }
     var postobj={
     	_token : $('#csrf_token').val(),

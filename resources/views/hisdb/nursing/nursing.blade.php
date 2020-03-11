@@ -14,7 +14,7 @@
 		<button type="button" class="btn btn-default" id="new_ti">
 			<span class="fa fa-plus-square-o"></span> New
 		</button>
-		<button type="button" class="btn btn-default" id="save_ti">
+		<button type="button" class="btn btn-default" data-oper='add' id="save_ti">
 			<span class="fa fa-save fa-lg"></span> Save
 		</button>
 		<button type="button" class="btn btn-default" id="cancel_ti" >
