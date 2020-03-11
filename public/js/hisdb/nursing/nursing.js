@@ -206,6 +206,10 @@ function autoinsert_rowdata(form,rowData){
 		var input=$(form+" [name='"+index+"']");
 		if(input.is("[type=radio]")){
 			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+		}else if(input.is("[type=checkbox]")){
+			if(value==1){
+				$(form+" [name='"+index+"']").prop('checked', true);
+			}
 		}else{
 			input.val(value);
 		}
@@ -246,7 +250,23 @@ function saveForm_ti(callback){
 
     };
 
-    $.post( "/nursing/form?"+$.param(saveParam), $("#formTriageInfo").serialize()+'&'+$.param(postobj) , function( data ) {
+    values = $("#formTriageInfo").serializeArray();
+
+    values = values.concat(
+        $('#formTriageInfo input[type=checkbox]:not(:checked)').map(
+        function() {
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formTriageInfo input[type=checkbox]:checked').map(
+        function() {
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+
+    $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

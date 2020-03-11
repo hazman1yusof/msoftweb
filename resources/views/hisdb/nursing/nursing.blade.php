@@ -30,7 +30,7 @@
 
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 350px; top: 10px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 300px; top: 10px;">
 			<h5>Triage Information</h5>
 		</div>				
 	</div>
