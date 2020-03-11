@@ -545,6 +545,23 @@ function timeUNFormatter(cellvalue, options, rowObject){
 	return moment(cellvalue, "hh:mm A").format('HH:mm:ss');
 }
 
+function truefalseFormatter(cellvalue, options, rowObject){
+	if (cellvalue == '1') {
+		return 'TRUE';
+	}else if (cellvalue == '0') {
+		return 'FALSE';
+	}
+}
+
+function truefalseUNFormatter(cellvalue, options, rowObject){
+	if (cellvalue == 'TRUE') {
+		return '1';
+	}else if (cellvalue == 'FALSE') {
+		return '0';
+	}
+}
+
+
 ////////////////////formatter status////////////////////////////////////////
 function formatterstatus(cellvalue, option, rowObject) {
 	if (cellvalue == 'A') {

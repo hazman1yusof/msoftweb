@@ -101,9 +101,9 @@ $(document).ready(function () {
 					},
 			},
 			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-			{ label: 'Status', name: 'occup', width: 10, classes: 'wrap', canSearch: true, editable: true, edittype:"select",formatter:occup,unformat:occup_unformat, 
+			{ label: 'Status', name: 'occup', width: 22, classes: 'wrap', canSearch: true, editable: true, edittype:"select",formatter:occup,unformat:occup_unformat, 
 				editoptions:{
-					value:'OCCUPIED:OCCUPIED;VACANT:VACANT;HOUSEKEEPING:HOUSEKEEPING;MAINTENANCE:MAINTENANCE;ISOLATED:ISOLATED'
+					value:'VACANT:VACANT;OCCUPIED:OCCUPIED;HOUSEKEEPING:HOUSEKEEPING;MAINTENANCE:MAINTENANCE;ISOLATED:ISOLATED'
 				}
 			},
 			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -116,8 +116,8 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Tel Ext', name: 'tel_ext', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Statistic', name: 'statistic', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Tel Ext', name: 'tel_ext', width: 10, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
+			{ label: 'Statistic', name: 'statistic', width: 10, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5, canSearch: true},
 			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
@@ -157,6 +157,9 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGrid_iledit").click();
+		},
+		gridComplete: function () {
+			fdl.set_array().reset();
 		},
 	});
 

@@ -94,6 +94,10 @@ class BedController extends defaultController
         return json_encode($responce);
     }
 
+    public function truefalse($param){
+        if($param == "TRUE"){ return 1;}else{return 0;}
+    }   
+
     public function add(Request $request){
 
         DB::beginTransaction();
@@ -115,8 +119,8 @@ class BedController extends defaultController
                     'ward' => strtoupper($request->ward),  
                     // 'occup' => 0,
                     'occup' => strtoupper($request->occup),
-                    'tel_ext' => strtoupper($request->tel_ext), 
-                    'statistic' => strtoupper($request->statistic),  
+                    'tel_ext' => $this->truefalse($request->tel_ext), 
+                    'statistic' => $this->truefalse($request->statistic),  
                     'recstatus' => strtoupper($request->recstatus),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
@@ -144,8 +148,8 @@ class BedController extends defaultController
                     'room' => strtoupper($request->room),  
                     'ward' => strtoupper($request->ward),
                     'occup' => strtoupper($request->occup),
-                    'tel_ext' => strtoupper($request->tel_ext), 
-                    'statistic' => strtoupper($request->statistic),   
+                    'tel_ext' => $this->truefalse($request->tel_ext), 
+                    'statistic' => $this->truefalse($request->statistic),    
                     'recstatus' => strtoupper($request->recstatus),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
