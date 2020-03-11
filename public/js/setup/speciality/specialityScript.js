@@ -209,7 +209,7 @@
 			function showdetail(cellvalue, options, rowObject){
 				var field,table,case_;
 				switch(options.colModel.name){
-					case 'disciplinecode':field=['code','description'];table="hidsb.discipline";case_='disciplinecode';break;
+					case 'disciplinecode':field=['code','description'];table="hisdb.discipline";case_='disciplinecode';break;
 					
 				}
 				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
@@ -264,6 +264,7 @@
 									param = {
 										_token: $("#_token").val(),
 										action: 'speciality_save',
+										disciplinecode: $('#disciplinecode').val(),
 										idno: selrowData('#jqGrid').idno,
 									}
 									$.post( "/speciality/form?"+$.param(param),{oper:'del'}, function( data ){
