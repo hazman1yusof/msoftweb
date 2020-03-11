@@ -88,6 +88,9 @@ $(document).ready(function () {
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGrid_iledit").click();
 		},
+		gridComplete: function () {
+			fdl.set_array().reset();
+		},
 
 	});
 
