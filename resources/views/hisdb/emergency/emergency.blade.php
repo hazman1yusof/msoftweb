@@ -22,7 +22,7 @@
 		padding: 0;
 	}
 
-	.ui-dialog { z-index: 123 !important ;}
+	.ui-dialog { z-index: 1123 !important ;}
 
 	fieldset.scheduler-border {
 	    border: 1px groove #ddd !important;

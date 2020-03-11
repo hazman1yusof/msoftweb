@@ -36,19 +36,17 @@ $(document).ready(function () {
 	disableForm('#formTriPhysical');
 
 	$("#new_ti").click(function(){
-		button_state_ti('edit');
+		button_state_ti('wait');
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
-		$("#save_ti").data('oper','add');
 		// dialog_mrn_edit.on();
 		
 	});
 
 	$("#edit_ti").click(function(){
-		button_state_ti('edit');
+		button_state_ti('wait');
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
-		$("#save_ti").data('oper','edit');
 		// dialog_mrn_edit.on();
 		
 	});
@@ -56,6 +54,7 @@ $(document).ready(function () {
 	$("#save_ti").click(function(){
 		disableForm('#formTriageInfo');
 		saveForm_ti(function(){
+			$("#cancel_ti").data('oper','edit');
 			$("#cancel_ti").click();
 		});
 
@@ -63,7 +62,7 @@ $(document).ready(function () {
 
 	$("#cancel_ti").click(function(){
 		disableForm('#formTriageInfo');
-		button_state_ti('init');
+		button_state_ti($(this).data('oper'));
 		// dialog_mrn_edit.off();
 
 	});
@@ -132,14 +131,20 @@ conf_nursing = {
 	},
 };
 
-button_state_ti('init');
+button_state_ti('add');
 function button_state_ti(state){
 	switch(state){
-		case 'init':
-			$("#edit_ti,#new_ti").attr('disabled',false);
-			$('#save_ti,#cancel_ti').attr('disabled',true);
+		case 'add':
+			$('#cancel_ti').data('oper','add');
+			$("#new_ti").attr('disabled',false);
+			$('#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
 			break;
 		case 'edit':
+			$('#cancel_ti').data('oper','edit');
+			$("#edit_ti").attr('disabled',false);
+			$('#save_ti,#cancel_ti,#new_ti').attr('disabled',true);
+			break;
+		case 'wait':
 			$("#save_ti,#cancel_ti").attr('disabled',false);
 			$('#edit_ti,#new_ti').attr('disabled',true);
 			break;
@@ -174,7 +179,7 @@ function button_state_tpa(state){
 	}
 }
 
-function populate_formNursing(obj){
+function populate_formNursing(obj,rowdata){
 
 	//panel header
 	$('#name_show_ti, #name_show_ad, #name_show_tpa').text(obj.a_pat_name);
@@ -188,6 +193,23 @@ function populate_formNursing(obj){
 	$("#mrn_edit_ti").val(obj.a_mrn);
 	$("#reg_date").val(obj.reg_date);
 
+	if(rowdata.nurse != undefined){
+		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
+		button_state_ti('edit');
+	}else{
+		button_state_ti('add');
+	}
+}
+
+function autoinsert_rowdata(form,rowData){
+	$.each(rowData, function( index, value ) {
+		var input=$(form+" [name='"+index+"']");
+		if(input.is("[type=radio]")){
+			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+		}else{
+			input.val(value);
+		}
+	});
 }
 
 function empty_formNursing(){
@@ -215,7 +237,7 @@ function empty_formNursing(){
 function saveForm_ti(callback){
 	var saveParam={
         action:'save_table_ti',
-        oper:$("#save_ti").data('oper')
+        oper:$("#cancel_ti").data('oper')
     }
     var postobj={
     	_token : $('#csrf_token').val(),

@@ -8,7 +8,7 @@
 				top: 10px;" 
 
 	>
-		<button type="button" class="btn btn-default" style="display: none" id="edit_ti">
+		<button type="button" class="btn btn-default" id="edit_ti">
 			<span class="fa fa-edit fa-lg"></span> Edit
 		</button>
 		<button type="button" class="btn btn-default" id="new_ti">
@@ -30,8 +30,8 @@
 
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 10px;">
-			<!-- <h5>Triage Information</h5> -->
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 350px; top: 10px;">
+			<h5>Triage Information</h5>
 		</div>				
 	</div>
 	<div id="jqGridTriageInfo_panel" class="panel-collapse collapse">

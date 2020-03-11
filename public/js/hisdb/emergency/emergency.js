@@ -200,10 +200,11 @@ $(document).ready(function () {
 		oper: oper,
 	};
 
+	var jqGrid_rowdata = null;
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'idno', name: 'a_idno', width: 5, hidden: true },
+			{ label: 'idno', name: 'a_idno', width: 5, hidden: true, key:true },
 			{ label: 'compcode', name: 'a_compcode', width: 5, hidden: true },
 			{ label: 'MRN', name: 'a_mrn', width: 12, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true, checked: true,  },
 			{ label: 'Epis. No', name: 'a_Episno', width: 10 ,canSearch: true,classes: 'wrap' },
@@ -240,11 +241,17 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			var retdata = jqGrid_rowdata.find(function(obj){
+				if(obj.a_idno == rowid){
+					return true;
+				}
+			});
+
 			$('#biodata_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
 			$('#episode_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
 
 			populate_registerformdata_edit(selrowData("#jqGrid"));
-			populate_formNursing(selrowData("#jqGrid"));
+			populate_formNursing(selrowData("#jqGrid"),retdata);
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 		},
@@ -253,6 +260,9 @@ $(document).ready(function () {
 			empty_registerformdata_edit();
 			empty_formNursing();
 		},
+		loadComplete: function(data){
+			jqGrid_rowdata = data.rows;
+		}
 	});
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
