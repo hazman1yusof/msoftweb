@@ -1,34 +1,6 @@
 
 $(document).ready(function () {
 
-	////////////////////////////////pass parameter in url////////////////////////////////
-
-	//url: http://msoftweb.test/emergency?name_show=SAFIAH%20MD%20SALLEH&newic_show=430307015232&sex_show=F&age_show=20&race_show=MALAY
-
-	function getQueryVariable(variable) {
-		var query = window.location.search.substring(1);
-		var parms = query.split('&');
-		for (var i = 0; i < parms.length; i++) {
-			var pos = parms[i].indexOf('=');
-			if (pos > 0 && variable == parms[i].substring(0, pos)) {
-				return parms[i].substring(pos + 1);;
-			}
-		}
-		return "";
-	}
-
-	getQueryVariable("name_show, newic_show, sex_show, age_show, race_show");
-
-	$(function () {
-		$('#name_show').text(getQueryVariable('name_show'))
-		$('#newic_show').text(getQueryVariable('newic_show'))
-		$('#sex_show').text(getQueryVariable('sex_show'))
-		$('#age_show').text(getQueryVariable('age_show'))
-		$('#race_show').text(getQueryVariable('race_show'))
-	});
-
-	////////////////////////////////////////end////////////////////////////////////////
-
 	// disableForm('#formTriageInfo, #formActDaily, #formTriPhysical');
 
 	disableForm('#formTriageInfo');
@@ -67,8 +39,16 @@ $(document).ready(function () {
 
 	});
 
+	$("#new_ad").click(function(){
+		button_state_ad('wait');
+		enableForm('#formActDaily');
+		rdonly('#formActDaily');
+		// dialog_mrn_edit.on();
+		
+	});
+
 	$("#edit_ad").click(function(){
-		button_state_ad('edit');
+		button_state_ad('wait');
 		enableForm('#formActDaily');
 		rdonly('#formActDaily');
 		// dialog_mrn_edit.on();
@@ -77,7 +57,8 @@ $(document).ready(function () {
 
 	$("#save_ad").click(function(){
 		disableForm('#formActDaily');
-		saveForm_edit(function(){
+		saveForm_ad(function(){
+			$("#cancel_ad").data('oper','edit');
 			$("#cancel_ad").click();
 		});
 
@@ -85,13 +66,21 @@ $(document).ready(function () {
 
 	$("#cancel_ad").click(function(){
 		disableForm('#formActDaily');
-		button_state_ad('init');
+		button_state_ad($(this).data('oper'));
 		// dialog_mrn_edit.off();
 
 	});
 
+	$("#new_tpa").click(function(){
+		button_state_tpa('wait');
+		enableForm('#formTriPhysical');
+		rdonly('#formTriPhysical');
+		// dialog_mrn_edit.on();
+		
+	});
+
 	$("#edit_tpa").click(function(){
-		button_state_tpa('edit');
+		button_state_tpa('wait');
 		enableForm('#formTriPhysical');
 		rdonly('#formTriPhysical');
 		// dialog_mrn_edit.on();
@@ -100,7 +89,8 @@ $(document).ready(function () {
 
 	$("#save_tpa").click(function(){
 		disableForm('#formTriPhysical');
-		saveForm_edit(function(){
+		saveForm_tpa(function(){
+			$("#cancel_tpa").data('oper','edit');
 			$("#cancel_tpa").click();
 		});
 
@@ -108,7 +98,7 @@ $(document).ready(function () {
 
 	$("#cancel_tpa").click(function(){
 		disableForm('#formTriPhysical');
-		button_state_tpa('init');
+		button_state_tpa($(this).data('oper'));
 		// dialog_mrn_edit.off();
 
 	});
@@ -151,30 +141,42 @@ function button_state_ti(state){
 	}
 }
 
-button_state_ad('init');
+button_state_ad('add');
 function button_state_ad(state){
 	switch(state){
-		case 'init':
-			$("#edit_ad").attr('disabled',false);
-			$('#save_ad,#cancel_ad').attr('disabled',true);
+		case 'add':
+			$('#cancel_ad').data('oper','add');
+			$("#new_ad").attr('disabled',false);
+			$('#save_ad,#cancel_ad,#edit_ad').attr('disabled',true);
 			break;
 		case 'edit':
+			$('#cancel_ad').data('oper','edit');
+			$("#edit_ad").attr('disabled',false);
+			$('#save_ad,#cancel_ad,#new_ad').attr('disabled',true);
+			break;
+		case 'wait':
 			$("#save_ad,#cancel_ad").attr('disabled',false);
-			$('#edit_ad').attr('disabled',true);
+			$('#edit_ad,#new_ad').attr('disabled',true);
 			break;
 	}
 }
 
-button_state_tpa('init');
+button_state_tpa('add');
 function button_state_tpa(state){
 	switch(state){
-		case 'init':
-			$("#edit_tpa").attr('disabled',false);
-			$('#save_tpa,#cancel_tpa').attr('disabled',true);
+		case 'add':
+			$('#cancel_tpa').data('oper','add');
+			$("#new_tpa").attr('disabled',false);
+			$('#save_tpa,#cancel_tpa,#edit_tpa').attr('disabled',true);
 			break;
 		case 'edit':
+			$('#cancel_tpa').data('oper','edit');
+			$("#edit_tpa").attr('disabled',false);
+			$('#save_tpa,#cancel_tpa,#new_tpa').attr('disabled',true);
+			break;
+		case 'wait':
 			$("#save_tpa,#cancel_tpa").attr('disabled',false);
-			$('#edit_tpa').attr('disabled',true);
+			$('#edit_tpa,#new_tpa').attr('disabled',true);
 			break;
 	}
 }
