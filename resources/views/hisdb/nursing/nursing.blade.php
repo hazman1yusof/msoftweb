@@ -8,11 +8,11 @@
 				top: 10px;" 
 
 	>
-		<button type="button" class="btn btn-default" id="edit_ti">
-			<span class="fa fa-edit fa-lg"></span> Edit
-		</button>
 		<button type="button" class="btn btn-default" id="new_ti">
 			<span class="fa fa-plus-square-o"></span> New
+		</button>
+		<button type="button" class="btn btn-default" id="edit_ti">
+			<span class="fa fa-edit fa-lg"></span> Edit
 		</button>
 		<button type="button" class="btn btn-default" data-oper='add' id="save_ti">
 			<span class="fa fa-save fa-lg"></span> Save
@@ -379,10 +379,13 @@
 				top: 10px;" 
 
 	>
+		<button type="button" class="btn btn-default" id="new_ad">
+			<span class="fa fa-plus-square-o"></span> New
+		</button>
 		<button type="button" class="btn btn-default" id="edit_ad">
 			<span class="fa fa-edit fa-lg"></span> Edit
 		</button>
-		<button type="button" class="btn btn-default" id="save_ad">
+		<button type="button" class="btn btn-default" data-oper='add' id="save_ad">
 			<span class="fa fa-save fa-lg"></span> Save
 		</button>
 		<button type="button" class="btn btn-default" id="cancel_ad" >
@@ -398,7 +401,7 @@
 
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 10px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 300px; top: 10px;">
 			<h5>Activities of Daily Living</h5>
 		</div>
 	</div>
@@ -776,10 +779,13 @@
 				top: 10px;" 
 
 	>
+		<button type="button" class="btn btn-default" id="new_tpa">
+			<span class="fa fa-plus-square-o"></span> New
+		</button>
 		<button type="button" class="btn btn-default" id="edit_tpa">
 			<span class="fa fa-edit fa-lg"></span> Edit
 		</button>
-		<button type="button" class="btn btn-default" id="save_tpa">
+		<button type="button" class="btn btn-default" data-oper='add' id="save_tpa">
 			<span class="fa fa-save fa-lg"></span> Save
 		</button>
 		<button type="button" class="btn btn-default" id="cancel_tpa" >
@@ -795,7 +801,7 @@
 
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 10px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 300px; top: 10px;">
 			<h5>Triage Physical Assessment</h5>
 		</div>
 	</div>
