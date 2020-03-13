@@ -23,6 +23,21 @@
 			background: url('../../../../assets/img/details_close.png') no-repeat center center;
 		}
 
+		.modal-dialog {
+		    width: 100%;
+		    height: 100%;
+		    margin: 0;
+		    padding: 0 !important;
+		  }
+		  
+		  .modal-content {
+		    height: auto;
+		    min-height: 100%;
+		    border: 0 none;
+		    border-radius: 0;
+		    box-shadow: none;
+		  }
+
 		.modal-header {
 			min-height: 16.42857143px;
 			padding: 5px;

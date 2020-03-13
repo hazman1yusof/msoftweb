@@ -60,6 +60,11 @@ $(document).ready(function () {
 		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ward" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
+	function occupCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="occup" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
 			return $(elem).find("input").val();
@@ -101,10 +106,11 @@ $(document).ready(function () {
 					},
 			},
 			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-			{ label: 'Status', name: 'occup', width: 22, classes: 'wrap', canSearch: true, editable: true, edittype:"select",formatter:occup,unformat:occup_unformat, 
-				editoptions:{
-					value:'VACANT:VACANT;OCCUPIED:OCCUPIED;HOUSEKEEPING:HOUSEKEEPING;MAINTENANCE:MAINTENANCE;ISOLATED:ISOLATED'
-				}
+			{ label: 'Status', name: 'occup', width: 22, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
+				edittype:'custom',	editoptions:
+						{  custom_element:occupCustomEdit,
+						custom_value:galGridCustomValue 	
+						},
 			},
 			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 
@@ -227,9 +233,12 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			
+			$('.selectpicker').selectpicker("refresh");
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-				dialog_ward.on();
-				dialog_bedtype.on();
+			dialog_ward.on();
+			dialog_bedtype.on();
+			dialog_occup.on();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -263,6 +272,7 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'add');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
@@ -276,9 +286,11 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('.selectpicker').selectpicker("refresh");
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			dialog_ward.on();
 			dialog_bedtype.on();
+			dialog_occup.on();
 			$("input[name='bednum']").attr('disabled','disabled');
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -442,6 +454,38 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_ward.makedialog();
+
+	var dialog_occup = new ordialog(
+		'occup','sysdb.department',"#jqGrid input[name='occup']",errorField,
+		{	colModel:[
+				{label:'Ward',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode','warddept'],
+				filterVal:['A', 'session.compcode','1']
+					},
+			ondblClickRow:function(){
+			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#tel_ext').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+		},{
+			title:"Select Bed Stattus",
+			open: function(){
+				dialog_occup.urlParam.filterCol = ['recstatus','compcode','warddept'];
+				dialog_occup.urlParam.filterVal = ['A', 'session.compcode','1'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_occup.makedialog();
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 

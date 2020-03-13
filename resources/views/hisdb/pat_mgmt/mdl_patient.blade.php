@@ -1,5 +1,5 @@
 <!-- Large modal -->
-<div id="mdl_patient_info" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none;">
+<div id="mdl_patient_info" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; padding-left: 0px !important;">
     <div class="modal-dialog modal-lg">
         <form id="frm_patient_info" class="form-horizontal">
 			<input type="hidden" name="idno" id="txt_pat_idno">
@@ -35,17 +35,17 @@
 
                             <div class="tabs-left" role="tabpanel">
                                 <!-- Nav tabs -->
-                                <ul class="nav nav-tabs" role="tablist" id="tab_patient_info">
+                                <!-- <ul class="nav nav-tabs" role="tablist" id="tab_patient_info">
                                     <li role="presentation" class="active"><a href="#tab9" role="tab" data-toggle="tab" aria-expanded="true">Patient Info</a></li>
                                     <li role="presentation" class=""><a href="#tab10" role="tab" data-toggle="tab" aria-expanded="false">Corporate Info</a></li>
-                                    <!--li role="presentation" class=""><a href="#tab11" role="tab" data-toggle="tab" aria-expanded="false">Address Info</a></li-->
                                     <li role="presentation" class=""><a href="#tab12" role="tab" data-toggle="tab" aria-expanded="false">Medical Info</a></li>
-                                </ul>
+                                </ul> -->
                                 <!-- Tab panes -->
                                 <div class="tab-content">
                                     <div role="tabpanel" class="tab-pane fade active in" id="tab9">
                                         <!-- Tab content begin -->
-										<div class="form-group">
+                                        <p><strong>Patient Info</strong></p>    
+										<div class="form-group"> 
 											<div class="col-md-2">
 												<img src="{{asset('img/defaultprofile.png')}}" width="120" height="140" />
 											</div>
@@ -353,7 +353,7 @@
 
                                         <!-- Tab content end -->
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab10">
+                                    <div>
                                         <!--div class="form-group">
 											<div class="col-md-4">
                                                 <small for="txt_pat_relation">Relationship</small>
@@ -373,6 +373,7 @@
                                                 
                                             </div>
                                         </div-->
+                                        <p><strong>Corporate Info</strong></p>    
                                         <div class="form-group">
                                             <div class="col-md-6">
                                                 <small for="txt_payer_company">Company Name</small>

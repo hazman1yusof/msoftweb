@@ -37,7 +37,7 @@ input.uppercase {
 				</div>
 			</fieldset> 
 		</form>
-
+		
         <div class="panel panel-default">
 		    <div class="panel-heading">Bed Setup Header</div>
 		    <div class="panel-body">
@@ -54,7 +54,10 @@ input.uppercase {
 
 
 @section('scripts')
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="plugins/bootstrap-select-1.13.9/dist/css/bootstrap-select.min.css">
 
+<!-- Latest compiled and minified JavaScript -->
+<script src="plugins/bootstrap-select-1.13.9/dist/js/bootstrap-select.min.js"></script>
 	<script src="js/setup/bed/bed.js"></script>
-	
 @endsection
