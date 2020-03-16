@@ -348,7 +348,7 @@
         {code:'#hid_RaceCode',desc:'#txt_RaceCode',id:'race'},
         {code:'#hid_Religion',desc:'#txt_Religion',id:'religioncode'}
     ]);
-    desc_show.load_desc();
+    // desc_show.load_desc();
 
     function loading_desc(obj){
         this.code_fields=obj;

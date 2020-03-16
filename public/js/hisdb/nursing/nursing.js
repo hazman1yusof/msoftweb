@@ -121,63 +121,99 @@ conf_nursing = {
 	},
 };
 
-button_state_ti('add');
+button_state_ti('empty');
 function button_state_ti(state){
 	switch(state){
+		case 'empty':
+			$("#toggle_ti").removeAttr('data-toggle');
+			$('#cancel_ti').data('oper','add');
+			$('#new_ti,#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
+			break;
 		case 'add':
+			$("#toggle_ti").attr('data-toggle','collapse');
 			$('#cancel_ti').data('oper','add');
 			$("#new_ti").attr('disabled',false);
 			$('#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
 			break;
 		case 'edit':
+			$("#toggle_ti").attr('data-toggle','collapse');
 			$('#cancel_ti').data('oper','edit');
 			$("#edit_ti").attr('disabled',false);
 			$('#save_ti,#cancel_ti,#new_ti').attr('disabled',true);
 			break;
 		case 'wait':
+			$("#toggle_ti").attr('data-toggle','collapse');
 			$("#save_ti,#cancel_ti").attr('disabled',false);
 			$('#edit_ti,#new_ti').attr('disabled',true);
 			break;
 	}
+
+	if(!moment(gldatepicker_date).isSame(moment(), 'day')){
+		$('#new_ti,#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
+	}
 }
 
-button_state_ad('add');
+button_state_ad('empty');
 function button_state_ad(state){
 	switch(state){
+		case 'empty':
+			$("#toggle_ad").removeAttr('data-toggle');
+			$('#cancel_ad').data('oper','add');
+			$('#new_ad,#save_ad,#cancel_ad,#edit_ad').attr('disabled',true);
+			break;
 		case 'add':
+			$("#toggle_ad").attr('data-toggle','collapse');
 			$('#cancel_ad').data('oper','add');
 			$("#new_ad").attr('disabled',false);
 			$('#save_ad,#cancel_ad,#edit_ad').attr('disabled',true);
 			break;
 		case 'edit':
+			$("#toggle_ad").attr('data-toggle','collapse');
 			$('#cancel_ad').data('oper','edit');
 			$("#edit_ad").attr('disabled',false);
 			$('#save_ad,#cancel_ad,#new_ad').attr('disabled',true);
 			break;
 		case 'wait':
+			$("#toggle_ad").attr('data-toggle','collapse');
 			$("#save_ad,#cancel_ad").attr('disabled',false);
 			$('#edit_ad,#new_ad').attr('disabled',true);
 			break;
 	}
+
+	if(!moment(gldatepicker_date).isSame(moment(), 'day')){
+		$('#new_ad,#save_ad,#cancel_ad,#edit_ad').attr('disabled',true);
+	}
 }
 
-button_state_tpa('add');
+button_state_tpa('empty');
 function button_state_tpa(state){
 	switch(state){
+		case 'empty':
+			$("#toggle_tpa").removeAttr('data-toggle');
+			$('#cancel_tpa').data('oper','add');
+			$('#new_tpa,#save_tpa,#cancel_tpa,#edit_tpa').attr('disabled',true);
+			break;
 		case 'add':
+			$("#toggle_tpa").attr('data-toggle','collapse');
 			$('#cancel_tpa').data('oper','add');
 			$("#new_tpa").attr('disabled',false);
 			$('#save_tpa,#cancel_tpa,#edit_tpa').attr('disabled',true);
 			break;
 		case 'edit':
+			$("#toggle_tpa").attr('data-toggle','collapse');
 			$('#cancel_tpa').data('oper','edit');
 			$("#edit_tpa").attr('disabled',false);
 			$('#save_tpa,#cancel_tpa,#new_tpa').attr('disabled',true);
 			break;
 		case 'wait':
+			$("#toggle_tpa").attr('data-toggle','collapse');
 			$("#save_tpa,#cancel_tpa").attr('disabled',false);
 			$('#edit_tpa,#new_tpa').attr('disabled',true);
 			break;
+	}
+
+	if(!moment(gldatepicker_date).isSame(moment(), 'day')){
+		$('#new_tpa,#save_tpa,#cancel_tpa,#edit_tpa').attr('disabled',true);
 	}
 }
 
@@ -189,7 +225,9 @@ function populate_formNursing(obj,rowdata){
 	$('#sex_show_ti, #sex_show_ad, #sex_show_tpa').text(obj.sex);
 	$('#age_show_ti, #age_show_ad, #age_show_tpa').text(obj.age);
 	$('#race_show_ti, #race_show_ad, #race_show_tpa').text(obj.race);	
-	$("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").show();
+	button_state_ti('add');
+	button_state_ad('add');
+	button_state_tpa('add');
 
 	//formTriageInfo
 	$("#mrn_edit_ti").val(obj.a_mrn);
@@ -198,8 +236,6 @@ function populate_formNursing(obj,rowdata){
 	if(rowdata.nurse != undefined){
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
 		button_state_ti('edit');
-	}else{
-		button_state_ti('add');
 	}
 }
 
@@ -225,8 +261,10 @@ function empty_formNursing(){
 	$('#sex_show_ti, #sex_show_ad, #sex_show_tpa').text('');
 	$('#age_show_ti, #age_show_ad, #age_show_tpa').text('');
 	$('#race_show_ti, #race_show_ad, #race_show_tpa').text('');	
-	$("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").hide();
-	$("#cancel_ti, #cancel_ad, #cancel_tpa").click();
+	button_state_ti('empty');
+	button_state_ad('empty');
+	button_state_tpa('empty');
+	// $("#cancel_ti, #cancel_ad, #cancel_tpa").click();
 
 	disableForm('#formTriageInfo');
 	emptyFormdata(errorField_nursing,'#formTriageInfo')

@@ -495,7 +495,7 @@
         {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'epis_doctor'},
         {code:'#txt_epis_fin',desc:'#hid_epis_fin',id:'epis_fin'}
     ]);
-    desc_show_epi.load_desc();
+    // desc_show_epi.load_desc();
 
     function loading_desc_episode(obj){
         this.code_fields=obj;

@@ -334,17 +334,27 @@ conf_rfde = {
 		},
 	};
 
-button_state_rfde('init');
+button_state_rfde('empty');
 function button_state_rfde(state){
+
 	switch(state){
+		case 'empty':
+			$("#toggle_rfde").removeAttr('data-toggle');
+			$("#edit_rfde,#save_rfde,#cancel_rfde").attr('disabled',true);
+			break;
 		case 'init':
+			$("#toggle_rfde").attr('data-toggle','collapse');
 			$("#edit_rfde").attr('disabled',false);
 			$('#save_rfde,#cancel_rfde').attr('disabled',true);
 			break;
 		case 'edit':
+			$("#toggle_rfde").attr('data-toggle','collapse');
 			$("#save_rfde,#cancel_rfde").attr('disabled',false);
 			$('#edit_rfde').attr('disabled',true);
 			break;
+	}
+	if(!moment(gldatepicker_date).isSame(moment(), 'day')){
+		$("#edit_rfde,#save_rfde,#cancel_rfde").attr('disabled',true);
 	}
 }
 
@@ -354,9 +364,8 @@ function populate_registerformdata_edit(obj){
 	$('#name_show').text(obj.a_pat_name);
 	$('#newic_show').text(obj.newic);
 	$('#sex_show').text(obj.sex);
-	$('#age_show').text(obj.age);
+	$('#age_show').text(obj.age+ 'YRS');
 	$('#race_show').text(obj.race);	
-	$("#btn_grp_edit").show();
 	
 	//the form edit
 	$("#apptbookidno_edit").val(obj.a_idno);
@@ -380,6 +389,8 @@ function populate_registerformdata_edit(obj){
 	$("#doctor_edit").val(obj.admdoctor);
 	$("#docname_edit").val(obj.admdoctor_desc);
 
+	button_state_rfde('edit');
+
 }
 
 function empty_registerformdata_edit(){
@@ -389,8 +400,8 @@ function empty_registerformdata_edit(){
 	$('#sex_show').text('');
 	$('#age_show').text('');
 	$('#race_show').text('');	
-	$("#btn_grp_edit").hide();
 	$("#cancel_rfde").click();
+	button_state_rfde('empty')
 
 	disableForm('#registerformdata_edit');
 	emptyFormdata(errorField_rfde,'#registerformdata_edit')

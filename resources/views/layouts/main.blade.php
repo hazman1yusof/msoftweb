@@ -198,7 +198,7 @@
 
 	@yield('js')
 </head>
-<body style="display:none">
+<body>
 
 
 	@yield('body')

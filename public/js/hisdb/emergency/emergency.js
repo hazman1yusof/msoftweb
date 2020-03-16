@@ -5,8 +5,9 @@ $.formUtils.loadModules('logic', null, function () {
 	$.validate({}); // ini perlu kalu nak ada 'data-validation-optional-if-answered'
 });
 
+var gldatepicker_date;
 $(document).ready(function () {
-	$("body").show();
+	// $("body").show();
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -27,7 +28,13 @@ $(document).ready(function () {
 		zIndex: 0,
 		showAlways: true,
 		onClick: function(target, cell, date, data) {
+			gldatepicker_date = date;
 			urlParam.apptdatefr = moment(date).format('YYYY-MM-DD');
+			if(moment(date).isSame(moment(), 'day')){
+				$('#regBtn').attr('disabled',false);
+			}else{
+				$('#regBtn').attr('disabled',true);
+			}
 			refreshGrid("#jqGrid", urlParam);
 			empty_registerformdata_edit();
 			empty_formNursing();
@@ -262,11 +269,19 @@ $(document).ready(function () {
 		},
 		loadComplete: function(data){
 			jqGrid_rowdata = data.rows;
+
+
+			let reccount = $('#jqGrid').jqGrid('getGridParam', 'reccount');
+			if(reccount>0){
+				$("#biodata_but_emergency").attr('disabled',false);
+			}else{
+				$("#biodata_but_emergency").attr('disabled',true);
+			}
 		}
 	});
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam,['reg_date','reg_time','newic','id_type','oldic','dob','sex','racecode','race','age','pay_type', 'pay_type_desc' ,'billtype' ,'billtype_desc' ,'admdoctor','admdoctor_desc']);
+	addParamField('#jqGrid', false, urlParam,['reg_date','reg_time','newic','id_type','oldic','dob','sex','racecode','race','age','pay_type', 'pay_type_desc' ,'billtype' ,'billtype_desc' ,'admdoctor','admdoctor_desc']);
 
 	function set_grid_color(){
 		var rows = $("#jqGrid").getDataIDs();

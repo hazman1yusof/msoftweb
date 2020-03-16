@@ -21,7 +21,7 @@
 			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 		</button>
 	</div>
-	<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridTriageInfo_panel">
+	<div class="panel-heading clearfix collapsed" id="toggle_ti" data-toggle="collapse" data-target="#jqGridTriageInfo_panel">
 		<b><span id="name_show_ti"></span></b><br>
 		<span id="newic_show_ti"></span>
 		<span id="sex_show_ti"></span>
@@ -392,7 +392,7 @@
 			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 		</button>
 	</div>
-	<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridActDaily_panel">
+	<div class="panel-heading clearfix collapsed" id="toggle_ad" data-toggle="collapse" data-target="#jqGridActDaily_panel">
 		<b><span id="name_show_ad"></span></b><br>
 		<span id="newic_show_ad"></span>
 		<span id="sex_show_ad"></span>
@@ -792,7 +792,7 @@
 			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 		</button>
 	</div>
-	<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridTriPhysical_panel">
+	<div class="panel-heading clearfix collapsed" id="toggle_tpa" data-toggle="collapse" data-target="#jqGridTriPhysical_panel">
 		<b><span id="name_show_tpa"></span></b><br>
 		<span id="newic_show_tpa"></span>
 		<span id="sex_show_tpa"></span>

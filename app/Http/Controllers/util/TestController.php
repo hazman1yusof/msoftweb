@@ -215,5 +215,13 @@ class TestController extends defaultController
         SendEmailPR::dispatch($data);
     }
 
+    public function testcalander(Request $request)
+    {   
+        return view('test.testcalander');
+
+    }
+
+    
+
 
 }
