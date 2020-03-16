@@ -407,7 +407,8 @@ class DirectPaymentController extends defaultController
                     ->where('bankcode', '=', $bankcode)
                     ->where('year', '=', $year)
                     ->where('period', '=', $period)
-                    ->first();
+                    ->sum('amount');
+                   
 
         $responce = new stdClass();
         $responce->amount = $cbtranamt->amount;
