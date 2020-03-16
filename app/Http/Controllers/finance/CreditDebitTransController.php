@@ -371,7 +371,7 @@ class CreditDebitTransController extends defaultController
                 ->where('bankcode','=',$bankcode);
 
         if($cbtran->exists()){
-            $cbtran_get = $cbtran->first();
+            $cbtran_get = (array)$cbtran->first();
             $this->cbtranAmount = $cbtran_get["actamount".$period];
         }
 

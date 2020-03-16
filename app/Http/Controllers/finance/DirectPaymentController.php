@@ -89,7 +89,7 @@ class DirectPaymentController extends defaultController
         }
     }
 
-     public function posted(Request $request){
+    public function posted(Request $request){
 
         DB::beginTransaction();
 
@@ -332,8 +332,6 @@ class DirectPaymentController extends defaultController
 
             return response('Error'.$e, 500);
         }
-
-
     }
 
     public function isCBtranExist($bankcode,$year,$period){
@@ -344,7 +342,7 @@ class DirectPaymentController extends defaultController
                 ->where('bankcode','=',$bankcode);
 
         if($cbtran->exists()){
-            $cbtran_get = $cbtran->first();
+            $cbtran_get = (array)$cbtran->first();
             $this->cbtranAmount = $cbtran_get["actamount".$period];
         }
 

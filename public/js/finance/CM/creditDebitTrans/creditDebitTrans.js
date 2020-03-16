@@ -32,6 +32,11 @@ $(document).ready(function () {
 	var radbuts=new checkradiobutton(['TaxClaimable']);
 	var fdl = new faster_detail_load();
 
+	///////////////////////////////// trandate check date validate from period////////// ////////////////
+	var actdateObj = new setactdate(["#actdate"]);
+	actdateObj.getdata().set();
+
+
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper;
 	var unsaved = false;
