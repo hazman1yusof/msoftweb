@@ -31,6 +31,7 @@ $(document).ready(function () {
 		switch(name){
 			case 'Bed Type':temp=$('#bedtype');break;
 			case 'Ward':temp=$('#ward');break;
+			case 'Status':temp=$('#occup');break;
 				break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -170,7 +171,6 @@ $(document).ready(function () {
 	});
 
 	function padzero(cellvalue, options, rowObject){
-		console.log('sdsdss')
 		let padzero = 6, str="";
 		while(padzero>0){
 			str=str.concat("0");
@@ -184,6 +184,7 @@ $(document).ready(function () {
 	}
 
 	function occup(cellvalue, options, rowObject){
+		console.log(cellvalue)
 		switch(cellvalue){
 			case 'OCCUPIED': return '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED';break;
 			case 'VACANT': return '<i class="fa fa-ban" aria-hidden="true"></i> VACANT';break;
@@ -325,6 +326,7 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'add');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
@@ -436,15 +438,15 @@ $(document).ready(function () {
 				$('#tel_ext').focus();
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#tel_ext').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#tel_ext').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Ward Type",
 			open: function(){
@@ -458,30 +460,34 @@ $(document).ready(function () {
 	var dialog_occup = new ordialog(
 		'occup','sysdb.department',"#jqGrid input[name='occup']",errorField,
 		{	colModel:[
-				{label:'Ward',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Bed Status',name:'bedcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 			],
 			urlParam: {
-				filterCol:['recstatus','compcode','warddept'],
-				filterVal:['A', 'session.compcode','1']
-					},
-			ondblClickRow:function(){
+				url:'./sysparam_bed_status',
+				filterCol:['recstatus','compcode'],
+				filterVal:['A', 'session.compcode']
+				},
+			ondblClickRow:function(event){
+
+				$(dialog_occup.textfield).val(selrowData("#"+dialog_occup.gridname)['description']);
+
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#tel_ext').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#tel_ext').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Bed Stattus",
 			open: function(){
-				dialog_occup.urlParam.filterCol = ['recstatus','compcode','warddept'];
-				dialog_occup.urlParam.filterVal = ['A', 'session.compcode','1'];
+				dialog_occup.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_occup.urlParam.filterVal = ['A', 'session.compcode'];
 			}
 		},'urlParam','radio','tab'
 	);

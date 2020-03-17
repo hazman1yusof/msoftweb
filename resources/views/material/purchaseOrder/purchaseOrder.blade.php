@@ -32,6 +32,8 @@ i.fa {
 	white-space: pre-wrap !important;
 }
 
+.frozen-div{overflow:hidden;}
+
 #more {display: none;}
 
 @endsection

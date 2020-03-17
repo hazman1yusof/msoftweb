@@ -676,8 +676,8 @@ $(document).ready(function () {
     fixPositionsOfFrozenDivs = function () {
         var $rows;
         if (typeof this.grid.fbDiv !== "undefined") {
-            $rows = $(">div>table.ui-jqgrid-btable>tbody>tr", this.grid.bDiv);
-            $(">table.ui-jqgrid-btable>tbody>tr", this.grid.fbDiv).each(function (i) {
+            $rows = $('>div>table.ui-jqgrid-btable>tbody>tr', this.grid.bDiv);
+            $('>table.ui-jqgrid-btable>tbody>tr', this.grid.fbDiv).each(function (i) {
                 var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
                 if ($(this).hasClass("jqgrow")) {
                     $(this).height(rowHight);
@@ -691,8 +691,8 @@ $(document).ready(function () {
             $(this.grid.fbDiv).css($(this.grid.bDiv).position());
         }
         if (typeof this.grid.fhDiv !== "undefined") {
-            $rows = $(">div>table.ui-jqgrid-htable>thead>tr", this.grid.hDiv);
-            $(">table.ui-jqgrid-htable>thead>tr", this.grid.fhDiv).each(function (i) {
+            $rows = $('>div>table.ui-jqgrid-htable>thead>tr', this.grid.hDiv);
+            $('>table.ui-jqgrid-htable>thead>tr', this.grid.fhDiv).each(function (i) {
                 var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
                 $(this).height(rowHight);
                 rowHightFrozen = $(this).height();
@@ -1636,6 +1636,10 @@ $(document).ready(function () {
 	fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
 	$("#jqGrid3").jqGrid("setFrozenColumns");
 	jqgrid_label_align_right("#jqGrid3");
+
+	$("#jqGrid3_panel").on('show.bs.collapse', function(){
+		fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
+	});
 
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
