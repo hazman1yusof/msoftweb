@@ -466,6 +466,18 @@ class PatmastController extends defaultController
                             "allocpayer" => 1
                          ]);
 
+                //buat debtormaster KALAU TAK JUMPA
+
+                //CREATE EPISPAYER
+
+                //CREATE docalloc
+
+                //CREATE BEDALLOC KALAU IP SHJ
+
+                //QUEUE FOR ALL
+
+                //QUEUE FOR SPECIALIST
+
 
             DB::commit();
 
