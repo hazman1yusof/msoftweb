@@ -79,7 +79,7 @@ $(document).ready(function () {
 		action: 'get_table',
 		url: '/bed/table',
 		field: '',
-		table_name: ['hisdb.bed AS b', 'hisdb.episode AS c'],
+		table_name: ['hisdb.chgmast AS CM','hisdb.bed AS b', 'hisdb.episode AS c'],
 		table_id: 'b_compcode',
 		sort_idno: true,
 		fixPost: 'true',
@@ -128,7 +128,8 @@ $(document).ready(function () {
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5, canSearch: true},
 			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
-            { label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
+			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)
