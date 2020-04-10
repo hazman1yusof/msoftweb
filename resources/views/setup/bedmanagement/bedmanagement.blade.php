@@ -4,6 +4,26 @@
 
 @section('style')
 
+.panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+	display: none;
+}
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+	display: inline-block;
+}
+
+i.fa {
+	cursor: pointer;
+	float: right;
+	<!--  margin-right: 5px; -->
+}
+
+.clearfix {
+	overflow: auto;
+}
+
 input.uppercase {
 	text-transform: uppercase;
 }
@@ -46,6 +66,35 @@ input.uppercase {
             		<div id="jqGridPager"></div>
         		</div>
 		    </div>
+		</div>
+
+		<div class="panel-group">
+			<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
+					<b>Name: <span id="name_show"></span></b><br>
+						Bed No: <span id="bednum_show"></span>
+						<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+						<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+						<br>
+							<button type="button" class="btn btn-info">Transfer</button>
+						</br>
+						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+							<h5>Bed Occupancy Detail</h5>
+						</div>		
+				</div>
+
+
+				<div id="jqGrid3_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<form id='formdata3' class='form-vertical' style='width:99%'>
+							<div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGrid3" class="table table-striped"></table>
+								<div id="jqGridPager3"></div>
+							</div>
+						</form>
+					</div>
+				</div>	
+			</div>
 		</div>
     </div>
 	<!-- ***************End Search + table ********************* -->

@@ -146,6 +146,9 @@ $(document).ready(function () {
 		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPager",
+		onSelectRow:function(rowid, selected){
+			populate_formbedm(selrowData("#jqGrid"));
+		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 			else{
@@ -158,7 +161,8 @@ $(document).ready(function () {
 			$("#jqGrid_iledit").click();
 		},
 		gridComplete: function () {
-			fdl.set_array().reset();
+		//	fdl.set_array().reset();
+		empty_formbedm();
 		},
 	});
 
@@ -449,3 +453,23 @@ $(document).ready(function () {
 	addParamField('#jqGrid', true, urlParam);
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 });
+
+
+function populate_formbedm(obj){
+
+	//panel header
+	$('#name_show').text(obj.name_show);
+	$('#bednum_show').text(obj.bednum_show);	
+	// $("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").show();
+}
+
+function empty_formbedm(){
+
+	$('#name_show').text('');
+	$('#bednum_show').text('');
+	// $("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").hide();
+	// $("#cancel_ti, #cancel_ad, #cancel_tpa").click();
+
+	// disableForm('#formMMA');
+	// emptyFormdata(errorField_MMA,'#formMMA')
+}
