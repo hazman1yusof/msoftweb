@@ -50,22 +50,13 @@
 								<input id="mrn_edit_ti" name="mrn_edit_ti" type="hidden">
 
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="admwardtime">Time</label>  
-									<div class="col-md-5">
+									<label class="col-md-2 control-label" for="admwardtime">Time</label>  
+									<div class="col-md-4">
 										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase">
 									</div>
-								</div>
 
-								<div class="form-group">
-									<label class="col-md-3 control-label" for="reg_date">Date</label>  
-									<div class="col-md-5">
-										<input id="reg_date" name="reg_date" type="date" class="form-control input-sm uppercase" frozeOnEdit>
-									</div>
-								</div>
-
-								<div class="form-group">
 									<label class="col-md-3 control-label" for="tricolorzone">Triage Color Zone</label>  
-									<div class="col-md-5">
+									<div class="col-md-3">
 										<div class='input-group'>
 											<input id="tricolorzone" name="tricolorzone" type="text" class="form-control input-sm uppercase">
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -75,43 +66,50 @@
 								</div>
 
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="chiefcomplain" >Chief Complain</label>  
-									<div class="col-md-9">
-										<textarea id="chiefcomplain" name="chiefcomplain" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
+									<label class="col-md-2 control-label" for="reg_date">Date</label>  
+									<div class="col-md-5">
+										<input id="reg_date" name="reg_date" type="date" class="form-control input-sm uppercase" rdonly>
 									</div>
 								</div>
 
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="medicalhistory">Medical History</label>  
-									<div class="col-md-9">
+									<label class="col-md-2 control-label" for="admreason" >Chief Complain</label>  
+									<div class="col-md-10">
+										<textarea id="admreason" name="admreason" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-md-2 control-label" for="medicalhistory">Medical History</label>  
+									<div class="col-md-10">
 										<textarea id="medicalhistory" name="medicalhistory" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="surgicalhistory">Surgical History</label>  
-									<div class="col-md-9">
+									<label class="col-md-2 control-label" for="surgicalhistory">Surgical History</label>  
+									<div class="col-md-10">
 										<textarea id="surgicalhistory" name="surgicalhistory" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="familymedicalhist">Family Medical History</label>  
-									<div class="col-md-9">
+									<label class="col-md-2 control-label" for="familymedicalhist">Family Medical History</label>  
+									<div class="col-md-10">
 										<textarea id="familymedicalhist" name="familymedicalhist" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="currentmedication">Current Medication</label>  
-									<div class="col-md-9">
+									<label class="col-md-2 control-label" for="currentmedication">Current Medication</label>  
+									<div class="col-md-10">
 										<textarea id="currentmedication" name="currentmedication" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="diagnosis">Diagnosis</label>  
-									<div class="col-md-9">
+									<label class="col-md-2 control-label" for="diagnosis">Diagnosis</label>  
+									<div class="col-md-10">
 										<textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
 									</div>
 								</div>
@@ -121,7 +119,7 @@
 									<div class="panel-body">
 
 										<div class="form-group">
-											<div class="form-check form-check-inline checkbox-inline">
+											<div class="form-check form-check-inline checkbox-inline" style="margin-left: 50px">
 												<input class="form-check-input" type="checkbox" id="allergydrugs" name="allergydrugs" value="1">
 												<label class="form-check-label" for="allergydrugs">Drugs</label>
 											</div>
@@ -139,6 +137,18 @@
 											<div class="form-check form-check-inline checkbox-inline">
 												<input class="form-check-input" type="checkbox" id="allergyenviroment" name="allergyenviroment" value="1">
 												<label class="form-check-label" for="allergyenviroment">Environment</label>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<div class="form-check form-check-inline checkbox-inline" style="margin-left: 50px">
+												<input class="form-check-input" type="checkbox" id="allergynone" name="allergynone" value="1">
+												<label class="form-check-label" for="allergynone">None</label>
+											</div>
+
+											<div class="form-check form-check-inline checkbox-inline">
+												<input class="form-check-input" type="checkbox" id="allergyunknown" name="allergyunknown" value="1">
+												<label class="form-check-label" for="allergyunknown">Unknown</label>
 											</div>
 
 											<div class="form-check form-check-inline checkbox-inline">
@@ -385,7 +395,7 @@
 		<button type="button" class="btn btn-default" id="edit_ad">
 			<span class="fa fa-edit fa-lg"></span> Edit
 		</button>
-		<button type="button" class="btn btn-default" data-oper='add' id="save_ad">
+		<button type="button" class="btn btn-default" data-oper='add_ad' id="save_ad">
 			<span class="fa fa-save fa-lg"></span> Save
 		</button>
 		<button type="button" class="btn btn-default" id="cancel_ad" >
@@ -420,54 +430,56 @@
 								<div class="panel-heading text-center">BREATHING</div>
 								<div class="panel-body">
 
+									<input id="mrn_edit_ad" name="mrn_edit_ad" type="hidden">
+
 									<div class="form-group">
-										<label class="col-sm-4 control-label" for="diffbreathe" style="padding-left: 0px">Any Difficulties In Breathing?</label>  
+										<label class="col-sm-4 control-label" for="br_breathing" style="padding-left: 0px">Any Difficulties In Breathing?</label>  
 										<label class="radio-inline">
-											<input type="radio" name="diffbreathe" value="Yes">Yes
+											<input type="radio" name="br_breathing" value="1">Yes
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="diffbreathe" value="No">No
+											<input type="radio" name="br_breathing" value="0">No
 										</label>
 									</div>
 
 									<div class="form-group">
-										<label class="col-md-4 control-label" for="diffbreatheyes">If Yes, Describe:</label>  
+										<label class="col-md-4 control-label" for="br_breathingdesc">If Yes, Describe:</label>  
 										<div class="col-md-8" style="padding-left: 0px">
-											<input id="diffbreatheyes" name="diffbreatheyes" type="text" class="form-control input-sm uppercase">
+											<input id="br_breathingdesc" name="br_breathingdesc" type="text" class="form-control input-sm uppercase">
 										</div>
 									</div>
 
 									<div class="form-group">
-										<label class="col-md-4 control-label" for="coughing">Have Any Cough?</label>  
+										<label class="col-md-4 control-label" for="br_cough">Have Any Cough?</label>  
 										<label class="radio-inline">
-											<input type="radio" name="coughing" value="Yes">Yes
+											<input type="radio" name="br_cough" value="1">Yes
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="coughing" value="No">No
+											<input type="radio" name="br_cough" value="0">No
 										</label>
 									</div>
 
 									<div class="form-group">
-										<label class="col-md-4 control-label" for="coughyes">If Yes, Describe:</label>  
+										<label class="col-md-4 control-label" for="br_coughdesc">If Yes, Describe:</label>  
 										<div class="col-md-8" style="padding-left: 0px">
-											<input id="coughyes" name="coughyes" type="text" class="form-control input-sm uppercase">
+											<input id="br_coughdesc" name="br_coughdesc" type="text" class="form-control input-sm uppercase">
 										</div>
 									</div>
 
 									<div class="form-group">
-										<label class="col-md-4 control-label" for="smoking">Does He/She Smoke?</label>  
+										<label class="col-md-4 control-label" for="br_smoke">Does He/She Smoke?</label>  
 										<label class="radio-inline">
-											<input type="radio" name="smoking" value="Yes">Yes
+											<input type="radio" name="br_smoke" value="1">Yes
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="smoking" value="No">No
+											<input type="radio" name="br_smoke" value="0">No
 										</label>
 									</div>
 
 									<div class="form-group">
-										<label class="col-md-4 control-label" for="smokeyes">If Yes, Amount:</label>  
+										<label class="col-md-4 control-label" for="br_smokedesc">If Yes, Amount:</label>  
 										<div class="col-md-8" style="padding-left: 0px">
-											<input id="smokeyes" name="smokeyes" type="text" class="form-control input-sm uppercase">
+											<input id="br_smokedesc" name="br_smokedesc" type="text" class="form-control input-sm uppercase">
 										</div>
 									</div>
 
@@ -481,19 +493,19 @@
 								<div class="panel-body">
 
 									<div class="form-group">
-										<label class="col-md-4 control-label" for="eatdrink" style="padding-left: 0px">Any Problem with Eating/Drinking?</label>  
+										<label class="col-md-4 control-label" for="ed_eatdrink" style="padding-left: 0px">Any Problem with Eating/Drinking?</label>  
 										<label class="radio-inline">
-											<input type="radio" name="eatdrink" value="Yes">Yes
+											<input type="radio" name="ed_eatdrink" value="1">Yes
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="eatdrink" value="No">No
+											<input type="radio" name="ed_eatdrink" value="0">No
 										</label>
 									</div>
 
 									<div class="form-group">
-										<label class="col-md-4 control-label" for="eatdrinkyes">If Yes, Describe:</label>  
+										<label class="col-md-4 control-label" for="ed_eatdrinkdesc">If Yes, Describe:</label>  
 										<div class="col-md-8" style="padding-left: 0px">
-											<input id="eatdrinkyes" name="eatdrinkyes" type="text" class="form-control input-sm uppercase">
+											<input id="ed_eatdrinkdesc" name="ed_eatdrinkdesc" type="text" class="form-control input-sm uppercase">
 										</div>
 									</div>
 
@@ -507,29 +519,29 @@
 								<div class="panel-body">
 
 									<div class="form-group">
-										<label class="col-md-6 control-label" for="bowelhabits" style="padding-left: 0px">Have Notice Any Changes In Bowel Habis Lately?</label>  
+										<label class="col-md-6 control-label" for="eb_bowelhabit" style="padding-left: 0px">Have Notice Any Changes In Bowel Habis Lately?</label>  
 										<label class="radio-inline">
-											<input type="radio" name="bowelhabits" value="Yes">Yes
+											<input type="radio" name="eb_bowelhabit" value="1">Yes
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="bowelhabits" value="No">No
-										</label>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-6 control-label" for="takemedication">Take Any Medication For Bowel Movement?</label>  
-										<label class="radio-inline">
-											<input type="radio" name="takemedication" value="Yes">Yes
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="takemedication" value="No">No
+											<input type="radio" name="eb_bowelhabit" value="0">No
 										</label>
 									</div>
 
 									<div class="form-group">
-										<label class="col-md-4 control-label" for="medicyes">If Yes, Describe:</label>  
+										<label class="col-md-6 control-label" for="eb_bowelmove">Take Any Medication For Bowel Movement?</label>  
+										<label class="radio-inline">
+											<input type="radio" name="eb_bowelmove" value="1">Yes
+										</label>
+										<label class="radio-inline">
+											<input type="radio" name="eb_bowelmove" value="0">No
+										</label>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="eb_bowelmovedesc">If Yes, Describe:</label>  
 										<div class="col-md-8" style="padding-left: 0px">
-											<input id="medicyes" name="medicyes" type="text" class="form-control input-sm uppercase">
+											<input id="eb_bowelmovedesc" name="eb_bowelmovedesc" type="text" class="form-control input-sm uppercase">
 										</div>
 									</div>
 
@@ -543,26 +555,26 @@
 								<div class="panel-body">
 
 									<div class="form-group">
-										<label class="col-md-5 control-label" for="urineprob">Have Any Problem Passing Urine?</label>  
+										<label class="col-md-5 control-label" for="bl_urine">Have Any Problem Passing Urine?</label>  
 										<label class="radio-inline">
-											<input type="radio" name="urineprob" value="Yes">Yes
+											<input type="radio" name="bl_urine" value="1">Yes
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="urineprob" value="No">No
+											<input type="radio" name="bl_urine" value="0">No
 										</label>
 									</div>
 
 									<div class="form-group">
-										<label class="col-md-5 control-label" for="probyes">If Yes, Describe:</label>  
+										<label class="col-md-5 control-label" for="bl_urinedesc">If Yes, Describe:</label>  
 										<div class="col-md-7" style="padding-left: 0px">
-											<input id="probyes" name="probyes" type="text" class="form-control input-sm uppercase">
+											<input id="bl_urinedesc" name="bl_urinedesc" type="text" class="form-control input-sm uppercase">
 										</div>
 									</div>
 
 									<div class="form-group">
-										<label class="col-md-5 control-label" for="howoften">How Often Get Up At Night To Pass Urine?</label>  
+										<label class="col-md-5 control-label" for="bl_urinefreq">How Often Get Up At Night To Pass Urine?</label>  
 										<div class="col-md-7" style="padding-left: 0px">
-											<input id="howoften" name="howoften" type="text" class="form-control input-sm uppercase">
+											<input id="bl_urinefreq" name="bl_urinefreq" type="text" class="form-control input-sm uppercase">
 										</div>
 									</div>
 
@@ -580,12 +592,12 @@
 								<div class="panel-body">
 
 									<div class="form-group">
-										<label class="col-md-6 control-label" for="sleepmedication" style="padding-left: 0px">Required Medication To Sleep?</label>  
+										<label class="col-md-6 control-label" for="sl_sleep" style="padding-left: 0px">Required Medication To Sleep?</label>  
 										<label class="radio-inline">
-											<input type="radio" name="sleepmedication" value="Yes">Yes
+											<input type="radio" name="sl_sleep" value="1">Yes
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="sleepmedication" value="No">No
+											<input type="radio" name="sl_sleep" value="0">No
 										</label>
 									</div>
 
@@ -595,18 +607,18 @@
 											<div class="panel-body" style="padding: 15px 0; height: 120px">
 											
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="ambulant" id="ambulant">
-													<label class="form-check-label" for="ambulant">Ambulant</label>
+													<input class="form-check-input" type="checkbox" value="mobilityambulan" id="mobilityambulan">
+													<label class="form-check-label" for="mobilityambulan">Ambulant</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="assist" id="assist">
-													<label class="form-check-label" for="assist">Assist With AIDS</label>
+													<input class="form-check-input" type="checkbox" value="mobilityassistaid" id="mobilityassistaid">
+													<label class="form-check-label" for="mobilityassistaid">Assist With AIDS</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="bedridden" id="bedridden">
-													<label class="form-check-label" for="bedridden">Bedridden</label>
+													<input class="form-check-input" type="checkbox" value="mobilitybedridden" id="mobilitybedridden">
+													<label class="form-check-label" for="mobilitybedridden">Bedridden</label>
 												</div>
 
 											</div>
@@ -619,18 +631,18 @@
 											<div class="panel-body" style="padding: 15px 0; height: 120px">
 
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="self" id="self">
-													<label class="form-check-label" for="self">Self</label>
+													<input class="form-check-input" type="checkbox" value="phygiene_self" id="phygiene_self">
+													<label class="form-check-label" for="phygiene_self">Self</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="needassist" id="needassist">
-													<label class="form-check-label" for="needassist">Need Assistant</label>
+													<input class="form-check-input" type="checkbox" value="phygiene_needassist" id="phygiene_needassist">
+													<label class="form-check-label" for="phygiene_needassist">Need Assistant</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="totaldependant" id="totaldependant">
-													<label class="form-check-label" for="totaldependant">Totally Dependant</label>
+													<input class="form-check-input" type="checkbox" value="phygiene_dependant" id="phygiene_dependant">
+													<label class="form-check-label" for="phygiene_dependant">Totally Dependant</label>
 												</div>
 
 											</div>
@@ -643,13 +655,13 @@
 											<div class="panel-body" style="height: 120px">
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="siderail" id="siderail">
-													<label class="form-check-label" for="siderail">Siderail</label>
+													<input class="form-check-input" type="checkbox" value="safeenv_siderail" id="safeenv_siderail">
+													<label class="form-check-label" for="safeenv_siderail">Siderail</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="restraint" id="restraint">
-													<label class="form-check-label" for="restraint">Restraint</label>
+													<input class="form-check-input" type="checkbox" value="safeenv_restraint" id="safeenv_restraint">
+													<label class="form-check-label" for="safeenv_restraint">Restraint</label>
 												</div>
 
 											</div>
@@ -671,23 +683,23 @@
 											<div class="panel-body" style="height: 170px">
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="normal" id="normal">
-													<label class="form-check-label" for="normal">Normal</label>
+													<input class="form-check-input" type="checkbox" value="cspeech_normal" id="cspeech_normal">
+													<label class="form-check-label" for="cspeech_normal">Normal</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="slurred" id="slurred">
-													<label class="form-check-label" for="slurred">Slurred</label>
+													<input class="form-check-input" type="checkbox" value="cspeech_slurred" id="cspeech_slurred">
+													<label class="form-check-label" for="cspeech_slurred">Slurred</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="impaired" id="impaired">
-													<label class="form-check-label" for="impaired">Impaired</label>
+													<input class="form-check-input" type="checkbox" value="cspeech_impaired" id="cspeech_impaired">
+													<label class="form-check-label" for="cspeech_impaired">Impaired</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="mute" id="mute">
-													<label class="form-check-label" for="mute">Mute</label>
+													<input class="form-check-input" type="checkbox" value="cspeech_mute" id="cspeech_mute">
+													<label class="form-check-label" for="cspeech_mute">Mute</label>
 												</div>
 
 											</div>
@@ -700,28 +712,28 @@
 											<div class="panel-body" style="padding: 15px 0; height: 170px">
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="normal" id="normal">
-													<label class="form-check-label" for="normal">Normal</label>
+													<input class="form-check-input" type="checkbox" value="cvision_normal" id="cvision_normal">
+													<label class="form-check-label" for="cvision_normal">Normal</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="blurring" id="blurring">
-													<label class="form-check-label" for="blurring">Blurring</label>
+													<input class="form-check-input" type="checkbox" value="cvision_blurring" id="cvision_blurring">
+													<label class="form-check-label" for="cvision_blurring">Blurring</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="doublevision" id="doublevision">
-													<label class="form-check-label" for="doublevision">Double Vision</label>
+													<input class="form-check-input" type="checkbox" value="cvision_doublev" id="cvision_doublev">
+													<label class="form-check-label" for="cvision_doublev">Double Vision</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="blind" id="blind">
-													<label class="form-check-label" for="blind">Blind</label>
+													<input class="form-check-input" type="checkbox" value="cvision_blind" id="cvision_blind">
+													<label class="form-check-label" for="cvision_blind">Blind</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="visualaids" id="visualaids">
-													<label class="form-check-label" for="visualaids">Visual Aids</label>
+													<input class="form-check-input" type="checkbox" value="cvision_visualaids" id="cvision_visualaids">
+													<label class="form-check-label" for="cvision_visualaids">Visual Aids</label>
 												</div>
 
 											</div>
@@ -734,23 +746,23 @@
 											<div class="panel-body" style="padding: 15px 0; height: 170px">
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="normal" id="normal">
-													<label class="form-check-label" for="normal">Normal</label>
+													<input class="form-check-input" type="checkbox" value="chearing_normal" id="chearing_normal">
+													<label class="form-check-label" for="chearing_normal">Normal</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="deaf" id="deaf">
-													<label class="form-check-label" for="deaf">Deaf</label>
+													<input class="form-check-input" type="checkbox" value="chearing_deaf" id="chearing_deaf">
+													<label class="form-check-label" for="chearing_deaf">Deaf</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="hardofhearing" id="hardofhearing">
-													<label class="form-check-label" for="hardofhearing">Hard of Hearing</label>
+													<input class="form-check-input" type="checkbox" value="chearing_hardhear" id="chearing_hardhear">
+													<label class="form-check-label" for="chearing_hardhear">Hard of Hearing</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="hearingaids" id="hearingaids">
-													<label class="form-check-label" for="hearingaids">Hearing Aids</label>
+													<input class="form-check-input" type="checkbox" value="chearing_hearaids" id="chearing_hearaids">
+													<label class="form-check-label" for="chearing_hearaids">Hearing Aids</label>
 												</div>
 
 											</div>
@@ -785,7 +797,7 @@
 		<button type="button" class="btn btn-default" id="edit_tpa">
 			<span class="fa fa-edit fa-lg"></span> Edit
 		</button>
-		<button type="button" class="btn btn-default" data-oper='add' id="save_tpa">
+		<button type="button" class="btn btn-default" data-oper='add_tpa' id="save_tpa">
 			<span class="fa fa-save fa-lg"></span> Save
 		</button>
 		<button type="button" class="btn btn-default" id="cancel_tpa" >
@@ -820,6 +832,8 @@
 
 								<div class='col-md-6'>
 
+									<input id="mrn_edit_tpa" name="mrn_edit_tpa" type="hidden">
+
 									<div class='col-md-12'>
 										<div class="panel panel-info">
 											<div class="panel-body">
@@ -830,18 +844,18 @@
 														<div class="panel-body" style="height: 150px">
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="dry" id="dry">
-																<label class="form-check-label" for="dry">Dry</label>
+																<input class="form-check-input" type="checkbox" value="pa_skindry" id="pa_skindry">
+																<label class="form-check-label" for="pa_skindry">Dry</label>
 															</div>
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="odema" id="odema">
-																<label class="form-check-label" for="odema">Odema</label>
+																<input class="form-check-input" type="checkbox" value="pa_skinodema" id="pa_skinodema">
+																<label class="form-check-label" for="pa_skinodema">Odema</label>
 															</div>
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="jaundice" id="jaundice">
-																<label class="form-check-label" for="jaundice">Jaundice</label>
+																<input class="form-check-input" type="checkbox" value="pa_skinjaundice" id="pa_skinjaundice">
+																<label class="form-check-label" for="pa_skinjaundice">Jaundice</label>
 															</div>
 
 														</div>
@@ -855,23 +869,23 @@
 
 														
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="bruises" id="bruises">
-																<label class="form-check-label" for="bruises">Bruises</label>
+																<input class="form-check-input" type="checkbox" value="pa_othbruises" id="pa_othbruises">
+																<label class="form-check-label" for="pa_othbruises">Bruises</label>
 															</div>
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="decubituesulcer" id="decubituesulcer">
-																<label class="form-check-label" for="decubituesulcer">Decubitues Ulcer</label>
+																<input class="form-check-input" type="checkbox" value="pa_othdeculcer" id="pa_othdeculcer">
+																<label class="form-check-label" for="pa_othdeculcer">Decubitues Ulcer</label>
 															</div>
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="laceration" id="laceration">
-																<label class="form-check-label" for="laceration">Laceration</label>
+																<input class="form-check-input" type="checkbox" value="pa_othlaceration" id="pa_othlaceration">
+																<label class="form-check-label" for="pa_othlaceration">Laceration</label>
 															</div>
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="discolouration" id="discolouration">
-																<label class="form-check-label" for="discolouration">Discolouration</label>
+																<input class="form-check-input" type="checkbox" value="pa_othdiscolor" id="pa_othdiscolor">
+																<label class="form-check-label" for="pa_othdiscolor">Discolouration</label>
 															</div>
 
 														</div>
@@ -887,9 +901,9 @@
 											<div class="panel-body">
 
 												<div class="form-group">
-													<label class="col-md-1 control-label" for="notes" >Notes:</label>  
+													<label class="col-md-1 control-label" for="pa_notes" >Notes:</label>  
 													<div class="row">
-														<textarea id="notes" name="notes" type="text" class="form-control input-sm uppercase" rows="6"></textarea>
+														<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm uppercase" rows="6"></textarea>
 													</div>
 												</div>														
 

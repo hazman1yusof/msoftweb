@@ -78,7 +78,7 @@
 			rowNum: 30,
 			pager: "#jqGridPager",
 			loadComplete: function(){
-				if(addmore_jqgrid.more == true){$('#jqGrid2_iladd').click();}
+				if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 				else{
 					$('#jqGrid2').jqGrid ('setSelection', "1");
 				}
@@ -107,7 +107,7 @@
 
 			},
 			aftersavefunc: function (rowid, response, options) {
-				if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+				addmore_jqgrid.more=true; //only addmore after save inline
 				//state true maksudnyer ada isi, tak kosong
 				refreshGrid('#jqGrid',urlParam,'add');
 				errorField.length=0;
