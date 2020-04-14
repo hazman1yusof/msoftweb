@@ -16,7 +16,7 @@
 
 i.fa {
 	cursor: pointer;
-	float: right;
+	<!-- float: right; -->
 	<!--  margin-right: 5px; -->
 }
 
@@ -50,8 +50,20 @@ input.uppercase {
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
 						</div>
 
-						<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
-					  		<p id="p_error"></p>
+						<div class="col-md-2" style="">
+							<p><i class="fa fa-ban" aria-hidden="true"></i> VACANT: <span id="stat_vacant"></span></p>
+					  	</div>
+						<div class="col-md-2" style="">
+							<p><i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED: <span id="stat_occupied"></span></p>
+					  	</div>
+						<div class="col-md-2" style="">
+							<p><i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING: <span id="stat_housekeeping"></span></p>
+					  	</div>
+						<div class="col-md-2" style="">
+							<p><i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE: <span id="stat_maintenance"></span></p>
+					  	</div>
+						<div class="col-md-2  col-md-offset-7" style="">
+							<p><i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED: <span id="stat_isolated"></span></p>
 					  	</div>
 		            </div>
 				</div>

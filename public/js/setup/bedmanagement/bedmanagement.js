@@ -40,7 +40,7 @@ $(document).ready(function () {
 		var field,table,case_;
 		switch(options.colModel.name){
 			case 'bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
-			case 'ward': field = ['ward', 'description']; table = "sysdb.department";case_='ward';break;
+			case 'ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -161,13 +161,12 @@ $(document).ready(function () {
 			$("#jqGrid_iledit").click();
 		},
 		gridComplete: function () {
-		//	fdl.set_array().reset();
-		empty_formbedm();
+			fdl.set_array().reset();
+			empty_formbedm();
 		},
 	});
 
 	function padzero(cellvalue, options, rowObject){
-		console.log('sdsdss')
 		let padzero = 6, str="";
 		while(padzero>0){
 			str=str.concat("0");
@@ -201,6 +200,23 @@ $(document).ready(function () {
 			default: return '';break;
 		}
 	}
+
+	statistics();
+	function statistics(){
+		$.get( "/bedmanagement/statistic", function( data ) {
+			
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data)){
+				$('#stat_vacant').text(data.vacant);
+				$('#stat_occupied').text(data.occupied);
+				$('#stat_housekeeping').text(data.housekeeping);
+				$('#stat_maintenance').text(data.maintenance);
+				$('#stat_isolated').text(data.isolated);
+			}
+		});
+
+	}
+
 	// ////////////////////formatter status////////////////////////////////////////
 	// function formatteroccup(cellvalue, option, rowObject) {
 	// 	if (cellvalue == '1') {

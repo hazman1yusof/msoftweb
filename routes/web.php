@@ -250,6 +250,7 @@ Route::post('/bed/form','setup\BedController@form');
 Route::get('/bedmanagement','setup\BedManagementController@show');
 Route::get('/bedmanagement/table','setup\BedManagementController@table');
 Route::post('/bedmanagement/form','setup\BedManagementController@form');
+Route::get('/bedmanagement/statistic','setup\BedManagementController@statistic');
 
 ////////////////////////////////inventory setup///////////////////////////////////////////////////////////
 

@@ -138,6 +138,51 @@ class BedManagementController extends defaultController
         }
     }
 
+    public function statistic(Request $request){
+
+        $table = DB::table('hisdb.bed')
+                    ->select('compcode','bednum','occup','room','statistic')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('statistic','=','1')
+                    ->get();
+
+        $vacant=0;
+        $occupied=0;
+        $housekeeping=0;
+        $maintenance=0;
+        $isolated=0;
+
+        foreach ($table as $key => $value) {
+            switch ($value->occup) {
+                case 'VACANT':
+                    $vacant = $vacant + 1;
+                    break;
+                case 'OCCUPIED':
+                    $occupied = $occupied + 1;
+                    break;
+                case 'HOUSEKEEPING':
+                    $housekeeping = $housekeeping + 1;
+                    break;
+                case 'MAINTENANCE':
+                    $maintenance = $maintenance + 1;
+                    break;
+                case 'ISOLATED':
+                    $isolated = $isolated + 1;
+                    break;
+            }
+        }
+
+        
+        $responce = new stdClass();
+        $responce->vacant = $vacant;
+        $responce->occupied = $occupied;
+        $responce->housekeeping = $housekeeping;
+        $responce->maintenance = $maintenance;
+        $responce->isolated = $isolated;
+
+        return json_encode($responce);
+    }
+
     public function edit(Request $request){
         
         DB::beginTransaction();
