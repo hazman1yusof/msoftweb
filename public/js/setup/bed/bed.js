@@ -79,7 +79,8 @@ $(document).ready(function () {
 		action: 'get_table',
 		url: '/bed/table',
 		field: '',
-		table_name: ['hisdb.chgmast AS CM','hisdb.bed AS b', 'hisdb.episode AS c'],
+		table_name: ['hisdb.bed AS b', 'hisdb.episode AS c'],
+		//table_name: ['hisdb.chgmast AS CM','hisdb.bed AS b', 'hisdb.episode AS c'],
 		table_id: 'b_compcode',
 		sort_idno: true,
 		fixPost: 'true',
@@ -97,7 +98,7 @@ $(document).ready(function () {
 		editurl: "/bed/form",
 		colModel: [
             { label: 'compcode', name: 'compcode', hidden: true },
-            { label: 'Bed No', name: 'bednum', width: 7, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+            { label: 'Bed No', name: 'bednum', width: 8, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			// { label: 'Bed Type', name: 'bedtype', width: 5, canSearch: true, editable: true, editrules: { required: true }, formatter: showdetail, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Bed Type', name: 'bedtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
 			editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
@@ -113,7 +114,7 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Room', name: 'room', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 
 			// { label: 'Ward', name: 'ward', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Ward', name: 'ward', width: 15 , classes: 'wrap', editable:true,
@@ -128,7 +129,7 @@ $(document).ready(function () {
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5, canSearch: true},
 			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
-			{ label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
+			//{ label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
 			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"},
@@ -188,22 +189,24 @@ $(document).ready(function () {
 		console.log(cellvalue)
 		switch(cellvalue){
 			case 'OCCUPIED': return '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED';break;
-			case 'VACANT': return '<i class="fa fa-ban" aria-hidden="true"></i> VACANT';break;
+			//case 'VACANT': return '<i class="fa fa-ban" aria-hidden="true"></i> VACANT';break;
 			case 'HOUSEKEEPING': return '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING';break;
 			case 'MAINTENANCE': return '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE';break;
 			case 'ISOLATED': return '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED';break;
-			default: return '';break;
+			default: return '<i class="fa fa-ban" aria-hidden="true"></i> VACANT';break;
+			//default: return '';break;
 		}
 	}
 
 	function occup_unformat(cellvalue, options, rowObject){
 		switch(cellvalue){
 			case 'OCCUPIED': return 'OCCUPIED';break;
-			case 'VACANT': return 'VACANT';break;
+			//case 'VACANT': return 'VACANT';break;
 			case 'HOUSEKEEPING': return 'HOUSEKEEPING';break;
 			case 'MAINTENANCE': return 'MAINTENANCE';break;
 			case 'ISOLATED': return 'ISOLATED';break;
-			default: return '';break;
+			default: return '<i class="fa fa-ban" aria-hidden="true"></i> VACANT';break;
+			//default: return '';break;
 		}
 	}
 
