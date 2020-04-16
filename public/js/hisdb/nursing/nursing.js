@@ -28,6 +28,11 @@ $(document).ready(function () {
 		saveForm_ti(function(){
 			$("#cancel_ti").data('oper','edit');
 			$("#cancel_ti").click();
+
+
+			$("#cancel_tpa").data('oper','edit_tpa');
+			$("#cancel_tpa").click();
+
 		});
 
 	});
@@ -60,6 +65,9 @@ $(document).ready(function () {
 		saveForm_ad(function(){
 			$("#cancel_ad").data('oper','edit_ad');
 			$("#cancel_ad").click();
+			
+			$("#cancel_tpa").data('oper','edit_tpa');
+			$("#cancel_tpa").click();
 		});
 
 	});
@@ -90,6 +98,9 @@ $(document).ready(function () {
 	$("#save_tpa").click(function(){
 		disableForm('#formTriPhysical');
 		saveForm_tpa(function(){
+			$("#cancel_ad").data('oper','edit_ad');
+			$("#cancel_ad").click();
+			
 			$("#cancel_tpa").data('oper','edit_tpa');
 			$("#cancel_tpa").click();
 		});
@@ -357,16 +368,9 @@ function saveForm_ad(callback){
 	);
 	
 	values = values.concat(
-        $('#formActDaily input[type=radio]:not(:checked)').map(
-        function() {
-            return {"name": this.name, "value": 0}
-        }).get()
-    );
-
-    values = values.concat(
         $('#formActDaily input[type=radio]:checked').map(
         function() {
-            return {"name": this.name, "value": 1}
+            return {"name": this.name, "value": this.value}
         }).get()
     );
 
