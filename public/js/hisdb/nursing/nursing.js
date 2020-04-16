@@ -354,6 +354,20 @@ function saveForm_ad(callback){
         function() {
             return {"name": this.name, "value": 1}
         }).get()
+	);
+	
+	values = values.concat(
+        $('#formActDaily input[type=radio]:not(:checked)').map(
+        function() {
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formActDaily input[type=radio]:checked').map(
+        function() {
+            return {"name": this.name, "value": 1}
+        }).get()
     );
 
     $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
