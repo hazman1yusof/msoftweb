@@ -265,8 +265,8 @@ class NursingController extends defaultController
 
         try {
 
-            DB::table('nursing.nursassessment')
-                ->where('mrn','=',$request->mrn_edit_ti)
+            DB::table('nursing.nursassessgen')
+                ->where('mrn','=',$request->mrn_edit_ad)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'br_breathing' => $request->br_breathing,
@@ -360,7 +360,7 @@ class NursingController extends defaultController
 
         try {
 
-            DB::table('nursing.nursassessment')
+            DB::table('nursing.nursassessgen')
                 ->where('mrn','=',$request->mrn_edit_tpa)
                 ->where('compcode','=',session('compcode'))
                 ->update([

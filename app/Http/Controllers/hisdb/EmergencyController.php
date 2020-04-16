@@ -123,9 +123,17 @@ class EmergencyController extends defaultController
             $nusing_obj = DB::table('nursing.nursassessment')
                         ->where('mrn','=',$value->a_mrn);
 
+            $nusing_gen_obj = DB::table('nursing.nursassessgen')
+                        ->where('mrn','=',$value->a_mrn);
+
             if($nusing_obj->exists()){
                 $nusing_obj = $nusing_obj->first();
                 $rows[$key]->nurse = $nusing_obj;
+            }
+
+            if($nusing_gen_obj->exists()){
+                $nusing_gen_obj = $nusing_gen_obj->first();
+                $rows[$key]->nurse_gen = $nusing_gen_obj;
             }
         }
 

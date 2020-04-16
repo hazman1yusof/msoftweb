@@ -162,12 +162,14 @@ function button_state_ad(state){
 			$('#new_ad,#save_ad,#cancel_ad,#edit_ad').attr('disabled',true);
 			break;
 		case 'add':
+		case 'add_ad':
 			$("#toggle_ad").attr('data-toggle','collapse');
 			$('#cancel_ad').data('oper','add_ad');
 			$("#new_ad").attr('disabled',false);
 			$('#save_ad,#cancel_ad,#edit_ad').attr('disabled',true);
 			break;
 		case 'edit':
+		case 'edit_ad':
 			$("#toggle_ad").attr('data-toggle','collapse');
 			$('#cancel_ad').data('oper','edit_ad');
 			$("#edit_ad").attr('disabled',false);
@@ -194,12 +196,14 @@ function button_state_tpa(state){
 			$('#new_tpa,#save_tpa,#cancel_tpa,#edit_tpa').attr('disabled',true);
 			break;
 		case 'add':
+		case 'add_tpa':
 			$("#toggle_tpa").attr('data-toggle','collapse');
 			$('#cancel_tpa').data('oper','add_tpa');
 			$("#new_tpa").attr('disabled',false);
 			$('#save_tpa,#cancel_tpa,#edit_tpa').attr('disabled',true);
 			break;
 		case 'edit':
+		case 'edit_tpa':
 			$("#toggle_tpa").attr('data-toggle','collapse');
 			$('#cancel_tpa').data('oper','edit_tpa');
 			$("#edit_tpa").attr('disabled',false);
@@ -236,6 +240,14 @@ function populate_formNursing(obj,rowdata){
 	if(rowdata.nurse != undefined){
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
 		button_state_ti('edit');
+	}
+
+	if(rowdata.nurse_gen != undefined){
+		autoinsert_rowdata("#formActDaily",rowdata.nurse_gen);
+		button_state_ad('edit');
+
+		autoinsert_rowdata("#formTriPhysical",rowdata.nurse_gen);
+		button_state_tpa('edit');
 	}
 }
 

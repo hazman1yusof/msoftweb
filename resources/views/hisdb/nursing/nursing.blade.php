@@ -607,17 +607,17 @@
 											<div class="panel-body" style="padding: 15px 0; height: 120px">
 											
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="mobilityambulan" id="mobilityambulan">
+													<input class="form-check-input" type="checkbox" value="mobilityambulan" id="mobilityambulan" name="mobilityambulan">
 													<label class="form-check-label" for="mobilityambulan">Ambulant</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="mobilityassistaid" id="mobilityassistaid">
+													<input class="form-check-input" type="checkbox" value="mobilityassistaid" id="mobilityassistaid" name="mobilityassistaid">
 													<label class="form-check-label" for="mobilityassistaid">Assist With AIDS</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="mobilitybedridden" id="mobilitybedridden">
+													<input class="form-check-input" type="checkbox" value="mobilitybedridden" id="mobilitybedridden" name="mobilitybedridden">
 													<label class="form-check-label" for="mobilitybedridden">Bedridden</label>
 												</div>
 
@@ -631,17 +631,17 @@
 											<div class="panel-body" style="padding: 15px 0; height: 120px">
 
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="phygiene_self" id="phygiene_self">
+													<input class="form-check-input" type="checkbox" value="phygiene_self" id="phygiene_self" name="phygiene_self">
 													<label class="form-check-label" for="phygiene_self">Self</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="phygiene_needassist" id="phygiene_needassist">
+													<input class="form-check-input" type="checkbox" value="phygiene_needassist" id="phygiene_needassist" name="phygiene_needassist">
 													<label class="form-check-label" for="phygiene_needassist">Need Assistant</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="phygiene_dependant" id="phygiene_dependant">
+													<input class="form-check-input" type="checkbox" value="phygiene_dependant" id="phygiene_dependant" name="phygiene_dependant">
 													<label class="form-check-label" for="phygiene_dependant">Totally Dependant</label>
 												</div>
 
@@ -655,12 +655,12 @@
 											<div class="panel-body" style="height: 120px">
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="safeenv_siderail" id="safeenv_siderail">
+													<input class="form-check-input" type="checkbox" value="safeenv_siderail" id="safeenv_siderail" name="safeenv_siderail">
 													<label class="form-check-label" for="safeenv_siderail">Siderail</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="safeenv_restraint" id="safeenv_restraint">
+													<input class="form-check-input" type="checkbox" value="safeenv_restraint" id="safeenv_restraint" name="safeenv_restraint">
 													<label class="form-check-label" for="safeenv_restraint">Restraint</label>
 												</div>
 
@@ -683,22 +683,22 @@
 											<div class="panel-body" style="height: 170px">
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cspeech_normal" id="cspeech_normal">
+													<input class="form-check-input" type="checkbox" value="cspeech_normal" id="cspeech_normal" name="cspeech_normal">
 													<label class="form-check-label" for="cspeech_normal">Normal</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cspeech_slurred" id="cspeech_slurred">
+													<input class="form-check-input" type="checkbox" value="cspeech_slurred" id="cspeech_slurred" name="cspeech_slurred">
 													<label class="form-check-label" for="cspeech_slurred">Slurred</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cspeech_impaired" id="cspeech_impaired">
+													<input class="form-check-input" type="checkbox" value="cspeech_impaired" id="cspeech_impaired" name="cspeech_impaired">
 													<label class="form-check-label" for="cspeech_impaired">Impaired</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cspeech_mute" id="cspeech_mute">
+													<input class="form-check-input" type="checkbox" value="cspeech_mute" id="cspeech_mute" name="cspeech_mute">
 													<label class="form-check-label" for="cspeech_mute">Mute</label>
 												</div>
 
@@ -712,27 +712,27 @@
 											<div class="panel-body" style="padding: 15px 0; height: 170px">
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cvision_normal" id="cvision_normal">
+													<input class="form-check-input" type="checkbox" value="cvision_normal" id="cvision_normal" name="cvision_normal">
 													<label class="form-check-label" for="cvision_normal">Normal</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cvision_blurring" id="cvision_blurring">
+													<input class="form-check-input" type="checkbox" value="cvision_blurring" id="cvision_blurring" name="cvision_blurring">
 													<label class="form-check-label" for="cvision_blurring">Blurring</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cvision_doublev" id="cvision_doublev">
+													<input class="form-check-input" type="checkbox" value="cvision_doublev" id="cvision_doublev" name="cvision_doublev">
 													<label class="form-check-label" for="cvision_doublev">Double Vision</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cvision_blind" id="cvision_blind">
+													<input class="form-check-input" type="checkbox" value="cvision_blind" id="cvision_blind" name="cvision_blind">
 													<label class="form-check-label" for="cvision_blind">Blind</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cvision_visualaids" id="cvision_visualaids">
+													<input class="form-check-input" type="checkbox" value="cvision_visualaids" id="cvision_visualaids" name="cvision_visualaids">
 													<label class="form-check-label" for="cvision_visualaids">Visual Aids</label>
 												</div>
 
@@ -746,22 +746,22 @@
 											<div class="panel-body" style="padding: 15px 0; height: 170px">
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="chearing_normal" id="chearing_normal">
+													<input class="form-check-input" type="checkbox" value="chearing_normal" id="chearing_normal" name="chearing_normal">
 													<label class="form-check-label" for="chearing_normal">Normal</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="chearing_deaf" id="chearing_deaf">
+													<input class="form-check-input" type="checkbox" value="chearing_deaf" id="chearing_deaf" name="chearing_deaf">
 													<label class="form-check-label" for="chearing_deaf">Deaf</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="chearing_hardhear" id="chearing_hardhear">
+													<input class="form-check-input" type="checkbox" value="chearing_hardhear" id="chearing_hardhear" name="chearing_hardhear">
 													<label class="form-check-label" for="chearing_hardhear">Hard of Hearing</label>
 												</div>
 
 												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="chearing_hearaids" id="chearing_hearaids">
+													<input class="form-check-input" type="checkbox" value="chearing_hearaids" id="chearing_hearaids" name="chearing_hearaids">
 													<label class="form-check-label" for="chearing_hearaids">Hearing Aids</label>
 												</div>
 
@@ -844,17 +844,17 @@
 														<div class="panel-body" style="height: 150px">
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_skindry" id="pa_skindry">
+																<input class="form-check-input" type="checkbox" value="pa_skindry" id="pa_skindry" name="pa_skindry">
 																<label class="form-check-label" for="pa_skindry">Dry</label>
 															</div>
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_skinodema" id="pa_skinodema">
+																<input class="form-check-input" type="checkbox" value="pa_skinodema" id="pa_skinodema" name="pa_skinodema">
 																<label class="form-check-label" for="pa_skinodema">Odema</label>
 															</div>
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_skinjaundice" id="pa_skinjaundice">
+																<input class="form-check-input" type="checkbox" value="pa_skinjaundice" id="pa_skinjaundice" name="pa_skinjaundice">
 																<label class="form-check-label" for="pa_skinjaundice">Jaundice</label>
 															</div>
 
@@ -869,22 +869,22 @@
 
 														
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_othbruises" id="pa_othbruises">
+																<input class="form-check-input" type="checkbox" value="pa_othbruises" id="pa_othbruises" name="pa_othbruises">
 																<label class="form-check-label" for="pa_othbruises">Bruises</label>
 															</div>
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_othdeculcer" id="pa_othdeculcer">
+																<input class="form-check-input" type="checkbox" value="pa_othdeculcer" id="pa_othdeculcer" name="pa_othdeculcer">
 																<label class="form-check-label" for="pa_othdeculcer">Decubitues Ulcer</label>
 															</div>
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_othlaceration" id="pa_othlaceration">
+																<input class="form-check-input" type="checkbox" value="pa_othlaceration" id="pa_othlaceration" name="pa_othlaceration">
 																<label class="form-check-label" for="pa_othlaceration">Laceration</label>
 															</div>
 
 															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_othdiscolor" id="pa_othdiscolor">
+																<input class="form-check-input" type="checkbox" value="pa_othdiscolor" id="pa_othdiscolor" name="pa_othdiscolor">
 																<label class="form-check-label" for="pa_othdiscolor">Discolouration</label>
 															</div>
 
