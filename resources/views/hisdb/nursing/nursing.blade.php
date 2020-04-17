@@ -208,9 +208,9 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_bloodpressure">Blood Pressure</label>
 												<div class="col-md-7 input-group">
-													<input id="vs_bloodpressure_sys1" name="vs_bloodpressure_sys1" type="text" class="form-control input-sm uppercase" style="width: 49px">
+													<input id="vs_bp_sys1" name="vs_bp_sys1" type="text" class="form-control input-sm uppercase" style="width: 49px">
 													<label class="col-md-1 control-label">/</label> 
-													<input id="vs_bloodpressure_dias2" name="vs_bloodpressure_dias2" type="text" class="form-control input-sm uppercase" style="width: 49px">
+													<input id="vs_bp_dias2" name="vs_bp_dias2" type="text" class="form-control input-sm uppercase" style="width: 49px">
 													<span class="input-group-addon">/mmHg</span>
 												</div>
 											</div>
