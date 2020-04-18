@@ -40,28 +40,6 @@ class NursingController extends defaultController
                         return 'error happen..';
                 }
 
-            case 'save_table_ad':
-
-                switch($request->oper){
-                    case 'add_ad':
-                        return $this->add_ad($request);
-                    case 'edit_ad':
-                        return $this->edit_ad($request);
-                    default:
-                        return 'error happen..';
-                }
-
-            case 'save_table_tpa':
-
-                switch($request->oper){
-                    case 'add_tpa':
-                        return $this->add_tpa($request);
-                    case 'edit_tpa':
-                        return $this->edit_tpa($request);
-                    default:
-                        return 'error happen..';
-                }
-
             default:
                 return 'error happen..';
         }
@@ -117,6 +95,61 @@ class NursingController extends defaultController
                         'es_distress' => $request->es_distress,
                         'es_depressed' => $request->es_depressed,
                         'es_irritable' => $request->es_irritable,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+
+            DB::table('nursing.nursassessgen')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_edit_ad,
+                        'br_breathing' => $request->br_breathing,
+                        'br_breathingdesc' => $request->br_breathingdesc,
+                        'br_cough' => $request->br_cough,
+                        'br_coughdesc' => $request->br_coughdesc,
+                        'br_smoke' => $request->br_smoke,
+                        'br_smokedesc' => $request->br_smokedesc,
+                        'ed_eatdrink' => $request->ed_eatdrink,
+                        'ed_eatdrinkdesc' => $request->ed_eatdrinkdesc,
+                        'eb_bowelhabit' => $request->eb_bowelhabit,
+                        'eb_bowelmove' => $request->eb_bowelmove,
+                        'eb_bowelmovedesc' => $request->eb_bowelmovedesc,
+                        'bl_urine' => $request->bl_urine,
+                        'bl_urinedesc' => $request->bl_urinedesc,
+                        'bl_urinefreq' => $request->bl_urinefreq,
+                        'sl_sleep' => $request->sl_sleep,
+                        'mobilityambulan' => $request->mobilityambulan,
+                        'mobilityassistaid' => $request->mobilityassistaid,
+                        'mobilitybedridden' => $request->mobilitybedridden,
+                        'phygiene_self' => $request->phygiene_self,
+                        'phygiene_needassist' => $request->phygiene_needassist,
+                        'phygiene_dependant' => $request->phygiene_dependant,
+                        'safeenv_siderail' => $request->safeenv_siderail,
+                        'safeenv_restraint' => $request->safeenv_restraint,
+                        'cspeech_normal' => $request->cspeech_normal,
+                        'cspeech_slurred' => $request->cspeech_slurred,
+                        'cspeech_impaired' => $request->cspeech_impaired,
+                        'cspeech_mute' => $request->cspeech_mute,
+                        'cvision_normal' => $request->cvision_normal,
+                        'cvision_blurring' => $request->cvision_blurring,
+                        'cvision_doublev' => $request->cvision_doublev,
+                        'cvision_blind' => $request->cvision_blind,
+                        'cvision_visualaids' => $request->cvision_visualaids,
+                        'chearing_normal' => $request->chearing_normal,
+                        'chearing_deaf' => $request->chearing_deaf,
+                        'chearing_hardhear' => $request->chearing_hardhear,
+                        'chearing_hearaids' => $request->chearing_hearaids,
+                        // TRIAGE PHYSICAL ASSESSMENT
+                        'pa_skindry' => $request->pa_skindry,
+                        'pa_skinodema' => $request->pa_skinodema,
+                        'pa_skinjaundice' => $request->pa_skinjaundice,
+                        'pa_othbruises' => $request->pa_othbruises,
+                        'pa_othdeculcer' => $request->pa_othdeculcer,
+                        'pa_othlaceration' => $request->pa_othlaceration,
+                        'pa_othdiscolor' => $request->pa_othdiscolor,
+                        'pa_notes' => $request->pa_notes,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -186,85 +219,6 @@ class NursingController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
 
-            $queries = DB::getQueryLog();
-            dump($queries);
-
-            DB::commit();
-
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response('Error DB rollback!'.$e, 500);
-        }
-    }
-
-    public function add_ad(Request $request){
-
-        DB::beginTransaction();
-
-        try {
-            
-            DB::table('nursing.nursassessgen')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_ad,
-                        'br_breathing' => $request->br_breathing,
-                        'br_breathingdesc' => $request->br_breathingdesc,
-                        'br_cough' => $request->br_cough,
-                        'br_coughdesc' => $request->br_coughdesc,
-                        'br_smoke' => $request->br_smoke,
-                        'br_smokedesc' => $request->br_smokedesc,
-                        'ed_eatdrink' => $request->ed_eatdrink,
-                        'ed_eatdrinkdesc' => $request->ed_eatdrinkdesc,
-                        'eb_bowelhabit' => $request->eb_bowelhabit,
-                        'eb_bowelmove' => $request->eb_bowelmove,
-                        'eb_bowelmovedesc' => $request->eb_bowelmovedesc,
-                        'bl_urine' => $request->bl_urine,
-                        'bl_urinedesc' => $request->bl_urinedesc,
-                        'bl_urinefreq' => $request->bl_urinefreq,
-                        'sl_sleep' => $request->sl_sleep,
-                        'mobilityambulan' => $request->mobilityambulan,
-                        'mobilityassistaid' => $request->mobilityassistaid,
-                        'mobilitybedridden' => $request->mobilitybedridden,
-                        'phygiene_self' => $request->phygiene_self,
-                        'phygiene_needassist' => $request->phygiene_needassist,
-                        'phygiene_dependant' => $request->phygiene_dependant,
-                        'safeenv_siderail' => $request->safeenv_siderail,
-                        'safeenv_restraint' => $request->safeenv_restraint,
-                        'cspeech_normal' => $request->cspeech_normal,
-                        'cspeech_slurred' => $request->cspeech_slurred,
-                        'cspeech_impaired' => $request->cspeech_impaired,
-                        'cspeech_mute' => $request->cspeech_mute,
-                        'cvision_normal' => $request->cvision_normal,
-                        'cvision_blurring' => $request->cvision_blurring,
-                        'cvision_doublev' => $request->cvision_doublev,
-                        'cvision_blind' => $request->cvision_blind,
-                        'cvision_visualaids' => $request->cvision_visualaids,
-                        'chearing_normal' => $request->chearing_normal,
-                        'chearing_deaf' => $request->chearing_deaf,
-                        'chearing_hardhear' => $request->chearing_hardhear,
-                        'chearing_hearaids' => $request->chearing_hearaids,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
-
-            DB::commit();
-
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response('Error DB rollback!'.$e, 500);
-        }
-    }
-
-    public function edit_ad(Request $request){
-        
-        DB::beginTransaction();
-
-        try {
-
             DB::table('nursing.nursassessgen')
                 ->where('mrn','=',$request->mrn_edit_ad)
                 ->where('compcode','=',session('compcode'))
@@ -305,65 +259,7 @@ class NursingController extends defaultController
                     'chearing_deaf' => $request->chearing_deaf,
                     'chearing_hardhear' => $request->chearing_hardhear,
                     'chearing_hearaids' => $request->chearing_hearaids,
-                    'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                ]);
-
-            $queries = DB::getQueryLog();
-            dump($queries);
-
-            DB::commit();
-
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response('Error DB rollback!'.$e, 500);
-        }
-    }
-
-    public function add_tpa(Request $request){
-
-        DB::beginTransaction();
-
-        try {
-            
-            DB::table('nursing.nursassessgen')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_tpa,
-                        'pa_skindry' => $request->pa_skindry,
-                        'pa_skinodema' => $request->pa_skinodema,
-                        'pa_skinjaundice' => $request->pa_skinjaundice,
-                        'pa_othbruises' => $request->pa_othbruises,
-                        'pa_othdeculcer' => $request->pa_othdeculcer,
-                        'pa_othlaceration' => $request->pa_othlaceration,
-                        'pa_othdiscolor' => $request->pa_othdiscolor,
-                        'pa_notes' => $request->pa_notes,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
-
-            DB::commit();
-
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response('Error DB rollback!'.$e, 500);
-        }
-    }
-
-    public function edit_tpa(Request $request){
-
-        DB::beginTransaction();
-
-        try {
-
-            DB::table('nursing.nursassessgen')
-                ->where('mrn','=',$request->mrn_edit_tpa)
-                ->where('compcode','=',session('compcode'))
-                ->update([
+                    // TRIAGE PHYSICAL ASSESSMENT
                     'pa_skindry' => $request->pa_skindry,
                     'pa_skinodema' => $request->pa_skinodema,
                     'pa_skinjaundice' => $request->pa_skinjaundice,
