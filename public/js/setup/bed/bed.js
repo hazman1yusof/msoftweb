@@ -64,6 +64,7 @@ $(document).ready(function () {
 	}
 
 	function occupCustomEdit(val, opt) {
+		console.log(val);
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="occup" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
@@ -173,22 +174,22 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			// populate_formbedm(selrowData("#jqGrid"));
 
-			if (rowid != null) {
-				rowData = $('#jqGrid').jqGrid('getRowData', rowid);
-				// refreshGrid('#jqGrid', urlParam,'kosongkan');
+			// if (rowid != null) {
+			// 	rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+			// 	// refreshGrid('#jqGrid', urlParam,'kosongkan');
 
-				if (rowData['mrn'] != 000000) {
-					refreshGrid('#jqGrid', urlParam);
-					$("#jqGridPagerDelete").hide();
-					$("#jqGrid_iledit").hide();
-				}
-				else if (rowData['mrn'] == 000000) {
-					refreshGrid('#jqGrid', urlParam);
-					$("#jqGridPagerDelete").show();
-					$("#jqGrid_iledit").show();
-				}
+			// 	if (rowData['mrn'] != 000000) {
+			// 		refreshGrid('#jqGrid', urlParam);
+			// 		$("#jqGridPagerDelete").hide();
+			// 		$("#jqGrid_iledit").hide();
+			// 	}
+			// 	else if (rowData['mrn'] == 000000) {
+			// 		refreshGrid('#jqGrid', urlParam);
+			// 		$("#jqGridPagerDelete").show();
+			// 		$("#jqGrid_iledit").show();
+			// 	}
 
-			}
+			// }
 
 		},
 		loadComplete: function(){
@@ -502,12 +503,51 @@ $(document).ready(function () {
 	);
 	dialog_ward.makedialog();
 
+	var dialog_occup = new ordialog(
+		'occup','sysdb.department',"#jqGrid input[name='occup']",errorField,
+		{	colModel:
+			[
+				{label:'Bed Status',name:'bedcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
+			],
+			urlParam: {
+				url:'./sysparam_bed_status',
+				filterCol:['recstatus','compcode'],
+				filterVal:['A', 'session.compcode']
+				},
+			ondblClickRow:function(event){
+
+				$(dialog_occup.textfield).val(selrowData("#"+dialog_occup.gridname)['description']);
+
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#room').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Bed Stattus",
+			open: function(){
+				dialog_occup.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_occup.urlParam.filterVal = ['A', 'session.compcode'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_occup.makedialog();
+
 	// var dialog_occup = new ordialog(
 	// 	'occup','sysdb.department',"#jqGrid input[name='occup']",errorField,
 	// 	{	colModel:
 	// 		[
-	// 			{label:'Bed Status',name:'bedcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-	// 			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+	// 			{ name: "bedstatus", 
+	// 			  label: "Bed Status", 
+	// 			  width: 75 
+	// 			}   
 	// 		],
 	// 		urlParam: {
 	// 			url:'./sysparam_bed_status',
@@ -529,7 +569,8 @@ $(document).ready(function () {
 	// 				$('#'+obj.dialogname).dialog('close');
 	// 			}
 	// 		}
-	// 	},{
+	// 	},
+	// 	{
 	// 		title:"Select Bed Stattus",
 	// 		open: function(){
 	// 			dialog_occup.urlParam.filterCol = ['recstatus','compcode'];
@@ -538,53 +579,6 @@ $(document).ready(function () {
 	// 	},'urlParam','radio','tab'
 	// );
 	// dialog_occup.makedialog();
-
-	var dialog_occup = new ordialog(
-		'occup','sysdb.department',"#jqGrid input[name='occup']",errorField,
-		{	colModel:
-			[
-				{ name: "bedstatus", 
-				  label: "Bed Status", 
-				  width: 75 
-				}   
-			],
-            data: [
-				{ id: "1", bedstatus: "VACANT" },
-				{ id: "2", bedstatus: "OCCUPIED" },
-				{ id: "3", bedstatus: "HOUSEKEEPING" },
-				{ id: "4", bedstatus: "MAINTENANCE" },
-				{ id: "5", bedstatus: "ISOLATED" },
-            ],
-			urlParam: {
-				url:'./sysparam_bed_status',
-				filterCol:['recstatus','compcode'],
-				filterVal:['A', 'session.compcode']
-				},
-			ondblClickRow:function(event){
-
-				$(dialog_occup.textfield).val(selrowData("#"+dialog_occup.gridname)['description']);
-
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#room').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},
-		{
-			title:"Select Bed Stattus",
-			open: function(){
-				dialog_occup.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_occup.urlParam.filterVal = ['A', 'session.compcode'];
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_occup.makedialog();
 
 	var dialog_chargecode = new ordialog(
 		'chgcode','hisdb.chgmast',"#jqGrid input[name='bedchgcode']",errorField,
