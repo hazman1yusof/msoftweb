@@ -459,6 +459,13 @@ Route::get('/bank','finance\BankController@show');
 Route::get('/bank/table','finance\BankController@table');
 Route::post('/bank/form','finance\BankController@form');
 
+//// cheque register setup ///
+Route::get('/cheqreg','finance\CheqRegController@show');
+Route::get('/cheqreg/table','finance\CheqRegController@table');
+Route::post('/cheqreg/form','finance\CheqRegController@form');
+Route::get('/cheqreg/form','finance\CheqRegController@form');
+Route::post('/cheqregDetail/form','finance\CheqRegDetailController@form');
+
 //// Bank Transfer ///
 Route::get('/bankTransfer','finance\BankTransferController@show');
 Route::get('/bankTransfer/table','finance\BankTransferController@table');
@@ -482,6 +489,13 @@ Route::get('/creditDebitTrans/table','finance\CreditDebitTransController@table')
 Route::post('/creditDebitTrans/form','finance\CreditDebitTransController@form');
 Route::get('/creditDebitTrans/form','finance\CreditDebitTransController@form');
 Route::post('/creditDebitTransDetail/form','finance\CreditDebitTransDetailController@form');
+
+//// Payment Voucher Transaction ///
+Route::get('/paymentVoucher','finance\PaymentVoucherController@show');
+Route::get('/paymentVoucher/table','finance\PaymentVoucherController@table');
+Route::post('/paymentVoucher/form','finance\PaymentVoucherController@form');
+Route::get('/paymentVoucher/form','finance\PaymentVoucherController@form');
+Route::post('/paymentVoucherDetail/form','finance\PaymentVoucherDetailController@form');
 
 ////////////////patient mgt setup/////////////////////////////////////////
 

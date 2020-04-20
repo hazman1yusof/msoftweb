@@ -44,7 +44,7 @@
 
 					<div class='col-md-5'>
 						<div class="panel panel-info">
-							<div class="panel-heading text-center">Information</div>
+							<div class="panel-heading text-center">INFORMATION</div>
 							<div class="panel-body">
 
 								<input id="mrn_edit_ti" name="mrn_edit_ti" type="hidden">
@@ -115,7 +115,7 @@
 								</div>
 
 								<div class="panel panel-info">
-									<div class="panel-heading text-center">Allergies</div>
+									<div class="panel-heading text-center">ALLERGIES</div>
 									<div class="panel-body">
 
 										<div class="form-group">
@@ -173,7 +173,7 @@
 
 					<div class='col-md-7'>
 						<div class="panel panel-info">
-							<div class="panel-heading text-center">Condition on Admission</div>
+							<div class="panel-heading text-center">CONDITION ON ADMISSION</div>
 							<div class="panel-body">
 
 								<div class='col-md-8'>
@@ -208,9 +208,9 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_bloodpressure">Blood Pressure</label>
 												<div class="col-md-7 input-group">
-													<input id="vs_bloodpressure_sys1" name="vs_bloodpressure_sys1" type="text" class="form-control input-sm uppercase" style="width: 49px">
+													<input id="vs_bp_sys1" name="vs_bp_sys1" type="text" class="form-control input-sm uppercase" style="width: 49px">
 													<label class="col-md-1 control-label">/</label> 
-													<input id="vs_bloodpressure_dias2" name="vs_bloodpressure_dias2" type="text" class="form-control input-sm uppercase" style="width: 49px">
+													<input id="vs_bp_dias2" name="vs_bp_dias2" type="text" class="form-control input-sm uppercase" style="width: 49px">
 													<span class="input-group-addon">/mmHg</span>
 												</div>
 											</div>
@@ -373,539 +373,165 @@
 						</div>
 					</div>
 
-				</form>
-
-			</div>
-		</div>
-	</div>	
-</div>
-
-<div class="panel panel-default" style="position: relative;" id="jqGridActDaily_c">
-	<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-		id="btn_grp_edit_ad"
-		style="position: absolute;
-				padding: 0 0 0 0;
-				right: 30px;
-				top: 10px;" 
-
-	>
-		<button type="button" class="btn btn-default" id="new_ad">
-			<span class="fa fa-plus-square-o"></span> New
-		</button>
-		<button type="button" class="btn btn-default" id="edit_ad">
-			<span class="fa fa-edit fa-lg"></span> Edit
-		</button>
-		<button type="button" class="btn btn-default" data-oper='add_ad' id="save_ad">
-			<span class="fa fa-save fa-lg"></span> Save
-		</button>
-		<button type="button" class="btn btn-default" id="cancel_ad" >
-			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-		</button>
-	</div>
-	<div class="panel-heading clearfix collapsed" id="toggle_ad" data-toggle="collapse" data-target="#jqGridActDaily_panel">
-		<b><span id="name_show_ad"></span></b><br>
-		<span id="newic_show_ad"></span>
-		<span id="sex_show_ad"></span>
-		<span id="age_show_ad"></span>
-		<span id="race_show_ad"></span>
-
-		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 300px; top: 10px;">
-			<h5>Activities of Daily Living</h5>
-		</div>
-	</div>
-	<div id="jqGridActDaily_panel" class="panel-collapse collapse">
-		<div class="panel-body">
-			<div class='col-md-12' style="padding:0 0 15px 0">
-				<!-- <table id="jqGridActDaily" class="table table-striped"></table>
-				<div id="jqGridPagerActDaily"></div> -->
-
-				<form class='form-horizontal' style='width:99%' id='formActDaily'>
-
-					<div class='col-md-5'>
-
-						<div class='col-md-12'>
-							<div class="panel panel-info">
-								<div class="panel-heading text-center">BREATHING</div>
-								<div class="panel-body">
-
-									<input id="mrn_edit_ad" name="mrn_edit_ad" type="hidden">
-
-									<div class="form-group">
-										<label class="col-sm-4 control-label" for="br_breathing" style="padding-left: 0px">Any Difficulties In Breathing?</label>  
-										<label class="radio-inline">
-											<input type="radio" name="br_breathing" value="1">Yes
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="br_breathing" value="0">No
-										</label>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-4 control-label" for="br_breathingdesc">If Yes, Describe:</label>  
-										<div class="col-md-8" style="padding-left: 0px">
-											<input id="br_breathingdesc" name="br_breathingdesc" type="text" class="form-control input-sm uppercase">
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-4 control-label" for="br_cough">Have Any Cough?</label>  
-										<label class="radio-inline">
-											<input type="radio" name="br_cough" value="1">Yes
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="br_cough" value="0">No
-										</label>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-4 control-label" for="br_coughdesc">If Yes, Describe:</label>  
-										<div class="col-md-8" style="padding-left: 0px">
-											<input id="br_coughdesc" name="br_coughdesc" type="text" class="form-control input-sm uppercase">
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-4 control-label" for="br_smoke">Does He/She Smoke?</label>  
-										<label class="radio-inline">
-											<input type="radio" name="br_smoke" value="1">Yes
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="br_smoke" value="0">No
-										</label>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-4 control-label" for="br_smokedesc">If Yes, Amount:</label>  
-										<div class="col-md-8" style="padding-left: 0px">
-											<input id="br_smokedesc" name="br_smokedesc" type="text" class="form-control input-sm uppercase">
-										</div>
-									</div>
-
-								</div>
-							</div>
-						</div>
-
-						<div class='col-md-12'>
-							<div class="panel panel-info">
-								<div class="panel-heading text-center">EATING/DRINKING</div>
-								<div class="panel-body">
-
-									<div class="form-group">
-										<label class="col-md-4 control-label" for="ed_eatdrink" style="padding-left: 0px">Any Problem with Eating/Drinking?</label>  
-										<label class="radio-inline">
-											<input type="radio" name="ed_eatdrink" value="1">Yes
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="ed_eatdrink" value="0">No
-										</label>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-4 control-label" for="ed_eatdrinkdesc">If Yes, Describe:</label>  
-										<div class="col-md-8" style="padding-left: 0px">
-											<input id="ed_eatdrinkdesc" name="ed_eatdrinkdesc" type="text" class="form-control input-sm uppercase">
-										</div>
-									</div>
-
-								</div>
-							</div>
-						</div>
-
-						<div class='col-md-12'>
-							<div class="panel panel-info">
-								<div class="panel-heading text-center">ELIMINATION BOWEL</div>
-								<div class="panel-body">
-
-									<div class="form-group">
-										<label class="col-md-6 control-label" for="eb_bowelhabit" style="padding-left: 0px">Have Notice Any Changes In Bowel Habis Lately?</label>  
-										<label class="radio-inline">
-											<input type="radio" name="eb_bowelhabit" value="1">Yes
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="eb_bowelhabit" value="0">No
-										</label>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-6 control-label" for="eb_bowelmove">Take Any Medication For Bowel Movement?</label>  
-										<label class="radio-inline">
-											<input type="radio" name="eb_bowelmove" value="1">Yes
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="eb_bowelmove" value="0">No
-										</label>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-4 control-label" for="eb_bowelmovedesc">If Yes, Describe:</label>  
-										<div class="col-md-8" style="padding-left: 0px">
-											<input id="eb_bowelmovedesc" name="eb_bowelmovedesc" type="text" class="form-control input-sm uppercase">
-										</div>
-									</div>
-
-								</div>
-							</div>
-						</div>
-
-						<div class='col-md-12'>
-							<div class="panel panel-info">
-								<div class="panel-heading text-center">BLADDER</div>
-								<div class="panel-body">
-
-									<div class="form-group">
-										<label class="col-md-5 control-label" for="bl_urine">Have Any Problem Passing Urine?</label>  
-										<label class="radio-inline">
-											<input type="radio" name="bl_urine" value="1">Yes
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="bl_urine" value="0">No
-										</label>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-5 control-label" for="bl_urinedesc">If Yes, Describe:</label>  
-										<div class="col-md-7" style="padding-left: 0px">
-											<input id="bl_urinedesc" name="bl_urinedesc" type="text" class="form-control input-sm uppercase">
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label class="col-md-5 control-label" for="bl_urinefreq">How Often Get Up At Night To Pass Urine?</label>  
-										<div class="col-md-7" style="padding-left: 0px">
-											<input id="bl_urinefreq" name="bl_urinefreq" type="text" class="form-control input-sm uppercase">
-										</div>
-									</div>
-
-								</div>
-							</div>
-						</div>
-
-					</div>
-
-					<div class='col-md-7'>
-
-						<div class='col-md-12'>
-							<div class="panel panel-info">
-								<div class="panel-heading text-center">SLEEPING</div>
-								<div class="panel-body">
-
-									<div class="form-group">
-										<label class="col-md-6 control-label" for="sl_sleep" style="padding-left: 0px">Required Medication To Sleep?</label>  
-										<label class="radio-inline">
-											<input type="radio" name="sl_sleep" value="1">Yes
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="sl_sleep" value="0">No
-										</label>
-									</div>
-
-									<div class='col-md-4'>
-										<div class="panel panel-info">
-											<div class="panel-heading text-center">Mobility</div>
-											<div class="panel-body" style="padding: 15px 0; height: 120px">
-											
-												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="mobilityambulan" id="mobilityambulan" name="mobilityambulan">
-													<label class="form-check-label" for="mobilityambulan">Ambulant</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="mobilityassistaid" id="mobilityassistaid" name="mobilityassistaid">
-													<label class="form-check-label" for="mobilityassistaid">Assist With AIDS</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="mobilitybedridden" id="mobilitybedridden" name="mobilitybedridden">
-													<label class="form-check-label" for="mobilitybedridden">Bedridden</label>
-												</div>
-
-											</div>
-										</div>
-									</div>
-
-									<div class='col-md-4'>
-										<div class="panel panel-info">
-											<div class="panel-heading text-center">Personal Hygiene</div>
-											<div class="panel-body" style="padding: 15px 0; height: 120px">
-
-												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="phygiene_self" id="phygiene_self" name="phygiene_self">
-													<label class="form-check-label" for="phygiene_self">Self</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="phygiene_needassist" id="phygiene_needassist" name="phygiene_needassist">
-													<label class="form-check-label" for="phygiene_needassist">Need Assistant</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 10px">
-													<input class="form-check-input" type="checkbox" value="phygiene_dependant" id="phygiene_dependant" name="phygiene_dependant">
-													<label class="form-check-label" for="phygiene_dependant">Totally Dependant</label>
-												</div>
-
-											</div>
-										</div>
-									</div>
-
-									<div class='col-md-4'>
-										<div class="panel panel-info">
-											<div class="panel-heading text-center">Safe Environment</div>
-											<div class="panel-body" style="height: 120px">
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="safeenv_siderail" id="safeenv_siderail" name="safeenv_siderail">
-													<label class="form-check-label" for="safeenv_siderail">Siderail</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="safeenv_restraint" id="safeenv_restraint" name="safeenv_restraint">
-													<label class="form-check-label" for="safeenv_restraint">Restraint</label>
-												</div>
-
-											</div>
-										</div>
-									</div>
-
-								</div>
-							</div>
-						</div>
-
-						<div class='col-md-12'>
-							<div class="panel panel-info">
-								<div class="panel-heading text-center">COMMUNICATION</div>
-								<div class="panel-body">
-
-									<div class='col-md-4'>
-										<div class="panel panel-info">
-											<div class="panel-heading text-center">Speech</div>
-											<div class="panel-body" style="height: 170px">
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cspeech_normal" id="cspeech_normal" name="cspeech_normal">
-													<label class="form-check-label" for="cspeech_normal">Normal</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cspeech_slurred" id="cspeech_slurred" name="cspeech_slurred">
-													<label class="form-check-label" for="cspeech_slurred">Slurred</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cspeech_impaired" id="cspeech_impaired" name="cspeech_impaired">
-													<label class="form-check-label" for="cspeech_impaired">Impaired</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cspeech_mute" id="cspeech_mute" name="cspeech_mute">
-													<label class="form-check-label" for="cspeech_mute">Mute</label>
-												</div>
-
-											</div>
-										</div>
-									</div>
-
-									<div class='col-md-4'>
-										<div class="panel panel-info">
-											<div class="panel-heading text-center">Vision</div>
-											<div class="panel-body" style="padding: 15px 0; height: 170px">
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cvision_normal" id="cvision_normal" name="cvision_normal">
-													<label class="form-check-label" for="cvision_normal">Normal</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cvision_blurring" id="cvision_blurring" name="cvision_blurring">
-													<label class="form-check-label" for="cvision_blurring">Blurring</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cvision_doublev" id="cvision_doublev" name="cvision_doublev">
-													<label class="form-check-label" for="cvision_doublev">Double Vision</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cvision_blind" id="cvision_blind" name="cvision_blind">
-													<label class="form-check-label" for="cvision_blind">Blind</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="cvision_visualaids" id="cvision_visualaids" name="cvision_visualaids">
-													<label class="form-check-label" for="cvision_visualaids">Visual Aids</label>
-												</div>
-
-											</div>
-										</div>
-									</div>
-
-									<div class='col-md-4'>
-										<div class="panel panel-info">
-											<div class="panel-heading text-center">Hearing</div>
-											<div class="panel-body" style="padding: 15px 0; height: 170px">
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="chearing_normal" id="chearing_normal" name="chearing_normal">
-													<label class="form-check-label" for="chearing_normal">Normal</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="chearing_deaf" id="chearing_deaf" name="chearing_deaf">
-													<label class="form-check-label" for="chearing_deaf">Deaf</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="chearing_hardhear" id="chearing_hardhear" name="chearing_hardhear">
-													<label class="form-check-label" for="chearing_hardhear">Hard of Hearing</label>
-												</div>
-
-												<div class="form-check" style="margin-left: 20px">
-													<input class="form-check-input" type="checkbox" value="chearing_hearaids" id="chearing_hearaids" name="chearing_hearaids">
-													<label class="form-check-label" for="chearing_hearaids">Hearing Aids</label>
-												</div>
-
-											</div>
-										</div>
-									</div>
-
-								</div>
-							</div>
-						</div>
-
-					</div>
-				
-				</form>
-				
-			</div>
-		</div>
-	</div>	
-</div>
-
-<div class="panel panel-default" style="position: relative;" id="jqGridTriPhysical_c">
-	<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-		id="btn_grp_edit_tpa"
-		style="position: absolute;
-				padding: 0 0 0 0;
-				right: 30px;
-				top: 10px;" 
-
-	>
-		<button type="button" class="btn btn-default" id="new_tpa">
-			<span class="fa fa-plus-square-o"></span> New
-		</button>
-		<button type="button" class="btn btn-default" id="edit_tpa">
-			<span class="fa fa-edit fa-lg"></span> Edit
-		</button>
-		<button type="button" class="btn btn-default" data-oper='add_tpa' id="save_tpa">
-			<span class="fa fa-save fa-lg"></span> Save
-		</button>
-		<button type="button" class="btn btn-default" id="cancel_tpa" >
-			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-		</button>
-	</div>
-	<div class="panel-heading clearfix collapsed" id="toggle_tpa" data-toggle="collapse" data-target="#jqGridTriPhysical_panel">
-		<b><span id="name_show_tpa"></span></b><br>
-		<span id="newic_show_tpa"></span>
-		<span id="sex_show_tpa"></span>
-		<span id="age_show_tpa"></span>
-		<span id="race_show_tpa"></span>
-
-		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 300px; top: 10px;">
-			<h5>Triage Physical Assessment</h5>
-		</div>
-	</div>
-	<div id="jqGridTriPhysical_panel" class="panel-collapse collapse">
-		<div class="panel-body">
-			<div class='col-md-12' style="padding:0 0 15px 0">
-				<!-- <table id="jqGridTriPhysical" class="table table-striped"></table>
-				<div id="jqGridPagerTriPhysical"></div> -->
-
-				<form class='form-horizontal' style='width:99%' id='formTriPhysical'>
-
 					<div class='col-md-12'>
-						<div class="panel panel-info">
-							<div class="panel-heading text-center">PHYSICAL ASSESSMENT - GENERAL</div>
+						<div class="panel panel-primary">
+							<div class="panel-heading text-center">ACTIVITIES OF DAILY LIVING</div>
 							<div class="panel-body">
 
-								<div class='col-md-6'>
-
-									<input id="mrn_edit_tpa" name="mrn_edit_tpa" type="hidden">
+								<div class='col-md-5'>
 
 									<div class='col-md-12'>
 										<div class="panel panel-info">
+											<div class="panel-heading text-center">BREATHING</div>
 											<div class="panel-body">
 
-												<div class='col-md-6'>
-													<div class="panel panel-info">
-														<div class="panel-heading text-center">SKIN CONDITION</div>
-														<div class="panel-body" style="height: 150px">
+												<input id="mrn_edit_ad" name="mrn_edit_ad" type="hidden">
 
-															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_skindry" id="pa_skindry" name="pa_skindry">
-																<label class="form-check-label" for="pa_skindry">Dry</label>
-															</div>
+												<div class="form-group">
+													<label class="col-sm-4 control-label" for="br_breathing" style="padding-left: 0px">Any Difficulties In Breathing?</label>  
+													<label class="radio-inline">
+														<input type="radio" name="br_breathing" value="1">Yes
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="br_breathing" value="0">No
+													</label>
+												</div>
 
-															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_skinodema" id="pa_skinodema" name="pa_skinodema">
-																<label class="form-check-label" for="pa_skinodema">Odema</label>
-															</div>
-
-															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_skinjaundice" id="pa_skinjaundice" name="pa_skinjaundice">
-																<label class="form-check-label" for="pa_skinjaundice">Jaundice</label>
-															</div>
-
-														</div>
+												<div class="form-group">
+													<label class="col-md-4 control-label" for="br_breathingdesc">If Yes, Describe:</label>  
+													<div class="col-md-8" style="padding-left: 0px">
+														<input id="br_breathingdesc" name="br_breathingdesc" type="text" class="form-control input-sm uppercase">
 													</div>
 												</div>
 
-												<div class='col-md-6'>
-													<div class="panel panel-info">
-														<div class="panel-heading text-center">OTHERS</div>
-														<div class="panel-body" style="height: 150px">
+												<div class="form-group">
+													<label class="col-md-4 control-label" for="br_cough">Have Any Cough?</label>  
+													<label class="radio-inline">
+														<input type="radio" name="br_cough" value="1">Yes
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="br_cough" value="0">No
+													</label>
+												</div>
 
-														
-															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_othbruises" id="pa_othbruises" name="pa_othbruises">
-																<label class="form-check-label" for="pa_othbruises">Bruises</label>
-															</div>
-
-															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_othdeculcer" id="pa_othdeculcer" name="pa_othdeculcer">
-																<label class="form-check-label" for="pa_othdeculcer">Decubitues Ulcer</label>
-															</div>
-
-															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_othlaceration" id="pa_othlaceration" name="pa_othlaceration">
-																<label class="form-check-label" for="pa_othlaceration">Laceration</label>
-															</div>
-
-															<div class="form-check">
-																<input class="form-check-input" type="checkbox" value="pa_othdiscolor" id="pa_othdiscolor" name="pa_othdiscolor">
-																<label class="form-check-label" for="pa_othdiscolor">Discolouration</label>
-															</div>
-
-														</div>
+												<div class="form-group">
+													<label class="col-md-4 control-label" for="br_coughdesc">If Yes, Describe:</label>  
+													<div class="col-md-8" style="padding-left: 0px">
+														<input id="br_coughdesc" name="br_coughdesc" type="text" class="form-control input-sm uppercase">
 													</div>
 												</div>
-												
+
+												<div class="form-group">
+													<label class="col-md-4 control-label" for="br_smoke">Does He/She Smoke?</label>  
+													<label class="radio-inline">
+														<input type="radio" name="br_smoke" value="1">Yes
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="br_smoke" value="0">No
+													</label>
+												</div>
+
+												<div class="form-group">
+													<label class="col-md-4 control-label" for="br_smokedesc">If Yes, Amount:</label>  
+													<div class="col-md-8" style="padding-left: 0px">
+														<input id="br_smokedesc" name="br_smokedesc" type="text" class="form-control input-sm uppercase">
+													</div>
+												</div>
+
 											</div>
 										</div>
 									</div>
 
 									<div class='col-md-12'>
 										<div class="panel panel-info">
+											<div class="panel-heading text-center">EATING/DRINKING</div>
 											<div class="panel-body">
 
 												<div class="form-group">
-													<label class="col-md-1 control-label" for="pa_notes" >Notes:</label>  
-													<div class="row">
-														<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm uppercase" rows="6"></textarea>
+													<label class="col-md-4 control-label" for="ed_eatdrink" style="padding-left: 0px">Any Problem with Eating/Drinking?</label>  
+													<label class="radio-inline">
+														<input type="radio" name="ed_eatdrink" value="1">Yes
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="ed_eatdrink" value="0">No
+													</label>
+												</div>
+
+												<div class="form-group">
+													<label class="col-md-4 control-label" for="ed_eatdrinkdesc">If Yes, Describe:</label>  
+													<div class="col-md-8" style="padding-left: 0px">
+														<input id="ed_eatdrinkdesc" name="ed_eatdrinkdesc" type="text" class="form-control input-sm uppercase">
 													</div>
-												</div>														
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class='col-md-12'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">ELIMINATION BOWEL</div>
+											<div class="panel-body">
+
+												<div class="form-group">
+													<label class="col-md-6 control-label" for="eb_bowelhabit" style="padding-left: 0px">Have Notice Any Changes In Bowel Habis Lately?</label>  
+													<label class="radio-inline">
+														<input type="radio" name="eb_bowelhabit" value="1">Yes
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="eb_bowelhabit" value="0">No
+													</label>
+												</div>
+
+												<div class="form-group">
+													<label class="col-md-6 control-label" for="eb_bowelmove">Take Any Medication For Bowel Movement?</label>  
+													<label class="radio-inline">
+														<input type="radio" name="eb_bowelmove" value="1">Yes
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="eb_bowelmove" value="0">No
+													</label>
+												</div>
+
+												<div class="form-group">
+													<label class="col-md-4 control-label" for="eb_bowelmovedesc">If Yes, Describe:</label>  
+													<div class="col-md-8" style="padding-left: 0px">
+														<input id="eb_bowelmovedesc" name="eb_bowelmovedesc" type="text" class="form-control input-sm uppercase">
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class='col-md-12'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">BLADDER</div>
+											<div class="panel-body">
+
+												<div class="form-group">
+													<label class="col-md-5 control-label" for="bl_urine">Have Any Problem Passing Urine?</label>  
+													<label class="radio-inline">
+														<input type="radio" name="bl_urine" value="1">Yes
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="bl_urine" value="0">No
+													</label>
+												</div>
+
+												<div class="form-group">
+													<label class="col-md-5 control-label" for="bl_urinedesc">If Yes, Describe:</label>  
+													<div class="col-md-7" style="padding-left: 0px">
+														<input id="bl_urinedesc" name="bl_urinedesc" type="text" class="form-control input-sm uppercase">
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label class="col-md-5 control-label" for="bl_urinefreq">How Often Get Up At Night To Pass Urine?</label>  
+													<div class="col-md-7" style="padding-left: 0px">
+														<input id="bl_urinefreq" name="bl_urinefreq" type="text" class="form-control input-sm uppercase">
+													</div>
+												</div>
 
 											</div>
 										</div>
@@ -913,10 +539,301 @@
 
 								</div>
 
-								<div class='col-md-6'>
+								<div class='col-md-7'>
+
+									<div class='col-md-12'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">SLEEPING</div>
+											<div class="panel-body">
+
+												<div class="form-group">
+													<label class="col-md-6 control-label" for="sl_sleep" style="padding-left: 0px">Required Medication To Sleep?</label>  
+													<label class="radio-inline">
+														<input type="radio" name="sl_sleep" value="1">Yes
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="sl_sleep" value="0">No
+													</label>
+												</div>
+
+												<div class='col-md-4'>
+													<div class="panel panel-info">
+														<div class="panel-heading text-center">MOBILITY</div>
+														<div class="panel-body" style="padding: 15px 0; height: 120px">
+														
+															<div class="form-check" style="margin-left: 10px">
+																<input class="form-check-input" type="checkbox" value="mobilityambulan" id="mobilityambulan" name="mobilityambulan">
+																<label class="form-check-label" for="mobilityambulan">Ambulant</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 10px">
+																<input class="form-check-input" type="checkbox" value="mobilityassistaid" id="mobilityassistaid" name="mobilityassistaid">
+																<label class="form-check-label" for="mobilityassistaid">Assist With AIDS</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 10px">
+																<input class="form-check-input" type="checkbox" value="mobilitybedridden" id="mobilitybedridden" name="mobilitybedridden">
+																<label class="form-check-label" for="mobilitybedridden">Bedridden</label>
+															</div>
+
+														</div>
+													</div>
+												</div>
+
+												<div class='col-md-4'>
+													<div class="panel panel-info">
+														<div class="panel-heading text-center">PERSONAL HYGIENE</div>
+														<div class="panel-body" style="padding: 15px 0; height: 120px">
+
+															<div class="form-check" style="margin-left: 10px">
+																<input class="form-check-input" type="checkbox" value="phygiene_self" id="phygiene_self" name="phygiene_self">
+																<label class="form-check-label" for="phygiene_self">Self</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 10px">
+																<input class="form-check-input" type="checkbox" value="phygiene_needassist" id="phygiene_needassist" name="phygiene_needassist">
+																<label class="form-check-label" for="phygiene_needassist">Need Assistant</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 10px">
+																<input class="form-check-input" type="checkbox" value="phygiene_dependant" id="phygiene_dependant" name="phygiene_dependant">
+																<label class="form-check-label" for="phygiene_dependant">Totally Dependant</label>
+															</div>
+
+														</div>
+													</div>
+												</div>
+
+												<div class='col-md-4'>
+													<div class="panel panel-info">
+														<div class="panel-heading text-center">SAFE ENVIRONMENT</div>
+														<div class="panel-body" style="height: 120px">
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="safeenv_siderail" id="safeenv_siderail" name="safeenv_siderail">
+																<label class="form-check-label" for="safeenv_siderail">Siderail</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="safeenv_restraint" id="safeenv_restraint" name="safeenv_restraint">
+																<label class="form-check-label" for="safeenv_restraint">Restraint</label>
+															</div>
+
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class='col-md-12'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">COMMUNICATION</div>
+											<div class="panel-body">
+
+												<div class='col-md-4'>
+													<div class="panel panel-info">
+														<div class="panel-heading text-center">SPEECH</div>
+														<div class="panel-body" style="height: 170px">
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="cspeech_normal" id="cspeech_normal" name="cspeech_normal">
+																<label class="form-check-label" for="cspeech_normal">Normal</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="cspeech_slurred" id="cspeech_slurred" name="cspeech_slurred">
+																<label class="form-check-label" for="cspeech_slurred">Slurred</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="cspeech_impaired" id="cspeech_impaired" name="cspeech_impaired">
+																<label class="form-check-label" for="cspeech_impaired">Impaired</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="cspeech_mute" id="cspeech_mute" name="cspeech_mute">
+																<label class="form-check-label" for="cspeech_mute">Mute</label>
+															</div>
+
+														</div>
+													</div>
+												</div>
+
+												<div class='col-md-4'>
+													<div class="panel panel-info">
+														<div class="panel-heading text-center">VISION</div>
+														<div class="panel-body" style="padding: 15px 0; height: 170px">
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="cvision_normal" id="cvision_normal" name="cvision_normal">
+																<label class="form-check-label" for="cvision_normal">Normal</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="cvision_blurring" id="cvision_blurring" name="cvision_blurring">
+																<label class="form-check-label" for="cvision_blurring">Blurring</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="cvision_doublev" id="cvision_doublev" name="cvision_doublev">
+																<label class="form-check-label" for="cvision_doublev">Double Vision</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="cvision_blind" id="cvision_blind" name="cvision_blind">
+																<label class="form-check-label" for="cvision_blind">Blind</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="cvision_visualaids" id="cvision_visualaids" name="cvision_visualaids">
+																<label class="form-check-label" for="cvision_visualaids">Visual Aids</label>
+															</div>
+
+														</div>
+													</div>
+												</div>
+
+												<div class='col-md-4'>
+													<div class="panel panel-info">
+														<div class="panel-heading text-center">HEARING</div>
+														<div class="panel-body" style="padding: 15px 0; height: 170px">
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="chearing_normal" id="chearing_normal" name="chearing_normal">
+																<label class="form-check-label" for="chearing_normal">Normal</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="chearing_deaf" id="chearing_deaf" name="chearing_deaf">
+																<label class="form-check-label" for="chearing_deaf">Deaf</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="chearing_hardhear" id="chearing_hardhear" name="chearing_hardhear">
+																<label class="form-check-label" for="chearing_hardhear">Hard of Hearing</label>
+															</div>
+
+															<div class="form-check" style="margin-left: 20px">
+																<input class="form-check-input" type="checkbox" value="chearing_hearaids" id="chearing_hearaids" name="chearing_hearaids">
+																<label class="form-check-label" for="chearing_hearaids">Hearing Aids</label>
+															</div>
+
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class='col-md-12'>
+						<div class="panel panel-primary">
+							<div class="panel-heading text-center">TRIAGE PHYSICAL ASSESSMENT</div>
+							<div class="panel-body">
+
+								<div class='col-md-12'>
 									<div class="panel panel-info">
-										<div class="panel-heading text-center">EXAMINATION</div>
+										<div class="panel-heading text-center">PHYSICAL ASSESSMENT - GENERAL</div>
 										<div class="panel-body">
+
+											<div class='col-md-6'>
+
+												<input id="mrn_edit_tpa" name="mrn_edit_tpa" type="hidden">
+
+												<div class='col-md-12'>
+													<div class="panel panel-info">
+														<div class="panel-body">
+
+															<div class='col-md-6'>
+																<div class="panel panel-info">
+																	<div class="panel-heading text-center">SKIN CONDITION</div>
+																	<div class="panel-body" style="height: 150px">
+
+																		<div class="form-check">
+																			<input class="form-check-input" type="checkbox" value="pa_skindry" id="pa_skindry" name="pa_skindry">
+																			<label class="form-check-label" for="pa_skindry">Dry</label>
+																		</div>
+
+																		<div class="form-check">
+																			<input class="form-check-input" type="checkbox" value="pa_skinodema" id="pa_skinodema" name="pa_skinodema">
+																			<label class="form-check-label" for="pa_skinodema">Odema</label>
+																		</div>
+
+																		<div class="form-check">
+																			<input class="form-check-input" type="checkbox" value="pa_skinjaundice" id="pa_skinjaundice" name="pa_skinjaundice">
+																			<label class="form-check-label" for="pa_skinjaundice">Jaundice</label>
+																		</div>
+
+																	</div>
+																</div>
+															</div>
+
+															<div class='col-md-6'>
+																<div class="panel panel-info">
+																	<div class="panel-heading text-center">OTHERS</div>
+																	<div class="panel-body" style="height: 150px">
+
+																		<div class="form-check">
+																			<input class="form-check-input" type="checkbox" value="pa_othbruises" id="pa_othbruises" name="pa_othbruises">
+																			<label class="form-check-label" for="pa_othbruises">Bruises</label>
+																		</div>
+
+																		<div class="form-check">
+																			<input class="form-check-input" type="checkbox" value="pa_othdeculcer" id="pa_othdeculcer" name="pa_othdeculcer">
+																			<label class="form-check-label" for="pa_othdeculcer">Decubitues Ulcer</label>
+																		</div>
+
+																		<div class="form-check">
+																			<input class="form-check-input" type="checkbox" value="pa_othlaceration" id="pa_othlaceration" name="pa_othlaceration">
+																			<label class="form-check-label" for="pa_othlaceration">Laceration</label>
+																		</div>
+
+																		<div class="form-check">
+																			<input class="form-check-input" type="checkbox" value="pa_othdiscolor" id="pa_othdiscolor" name="pa_othdiscolor">
+																			<label class="form-check-label" for="pa_othdiscolor">Discolouration</label>
+																		</div>
+
+																	</div>
+																</div>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+
+												<div class='col-md-12'>
+													<div class="panel panel-info">
+														<div class="panel-body">
+
+															<div class="form-group">
+																<label class="col-md-1 control-label" for="pa_notes" >Notes:</label>  
+																<div class="row">
+																	<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm uppercase" rows="6"></textarea>
+																</div>
+															</div>														
+
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+											<div class='col-md-6'>
+												<div class="panel panel-info">
+													<div class="panel-heading text-center">EXAMINATION</div>
+													<div class="panel-body">
+													</div>
+												</div>
+											</div>
+
 										</div>
 									</div>
 								</div>
@@ -926,7 +843,7 @@
 					</div>
 
 				</form>
-				
+
 			</div>
 		</div>
 	</div>	
