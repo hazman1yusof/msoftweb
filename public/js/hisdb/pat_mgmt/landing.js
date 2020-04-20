@@ -6,16 +6,16 @@ $(document).ready(function() {
       debug: true,
       success: "valid"
     });
-    $('#frm_patient_info').validate({
-        rules: {
-            telh: {
-              require_from_group: [1, ".phone-group"]
-            },
-            telhp: {
-              require_from_group: [1, ".phone-group"]
-            }
-        }
-    });    // patient form validation
+    // $('#frm_patient_info').validate({
+    //     rules: {
+    //         telh: {
+    //           require_from_group: [1, ".phone-group"]
+    //         },
+    //         telhp: {
+    //           require_from_group: [1, ".phone-group"]
+    //         }
+    //     }
+    // });    // patient form validation
 
     var counter = 0;
     var grid = $("#grid-command-buttons").bootgrid({
@@ -239,6 +239,8 @@ $(document).ready(function() {
     });
 
     ////////////////habis mykad///////
+
+    $("#txt_epis_dept,#txt_epis_source,#txt_epis_case,#txt_epis_doctor,#txt_epis_fin").on('keydown',{data:this},onTab);
 
 
 } );

@@ -1,6 +1,6 @@
 var Global = function () {
 
-	function pop_item_select(type)
+	function pop_item_select(type,ontab=false)
 	{	
 		var act = "";
 		var selecter = null;
@@ -72,7 +72,13 @@ var Global = function () {
 				"columns": [
 							{'data': 'code'}, 
 							{'data': 'description' },
-						   ]
+						   ],
+				"fnInitComplete": function(oSettings, json) {
+					
+                    if(act == "get_reg_source"){
+                        $('#add_new_adm').show();
+                    }
+			    }
 		} );
 		
 		// dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
@@ -93,6 +99,7 @@ var Global = function () {
 			
 		$("#mdl_item_selector").on('hidden.bs.modal', function () {
             //$('#tbl_item_select tbody').off('dblclick', 'tr', function () {
+            $('#add_new_adm').hide();
 			$('#tbl_item_select').html('');
 			selecter.destroy();
 			type = "";
@@ -101,6 +108,29 @@ var Global = function () {
 						//console.dir(item);
 			//		} );
 		});
+
+		$('#add_new_adm').click(function(){
+            $('#mdl_add_new_adm').modal('show');
+        });
+
+        $('#adm_save').click(function(){
+              if($('#adm_form').valid()){
+                var _token = $('#csrf_token').val();
+                let serializedForm = $( "#adm_form" ).serializeArray();
+                let obj = {
+                        _token: _token
+                }
+                
+                $.post( '/pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $("#adm_form").trigger('reset');
+                    selecter.ajax.reload()
+                    $('#mdl_add_new_adm').modal('hide');
+                }).fail(function(data) {
+                    alert(data.responseText);
+                }).success(function(data){
+                });
+              }
+        });
 			
 		
 	}

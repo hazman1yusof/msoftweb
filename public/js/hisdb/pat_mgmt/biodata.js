@@ -6,7 +6,16 @@
             },
             telhp: {
               require_from_group: [1, ".phone-group"]
-            }
+            },
+            Newic: {
+              require_from_group: [1, ".ic-group"]
+            },
+            Oldic: {
+              require_from_group: [1, ".ic-group"]
+            },
+            idnumber: {
+              require_from_group: [1, ".ic-group"]
+            },
         }
     });	// patient form validation
     
@@ -76,8 +85,6 @@
         var urlType = 'pat_mast/get_entry?action=get_patient_idtype';
         loadlist($('select#cmb_pat_idtype').get(0),urlType,'Code','Description');
 
-        var urloccupation = 'pat_mast/get_entry?action=get_patient_occupation';
-        loadlist($('select#occupcode').get(0),urloccupation,'occupcode','description');
 
         var urlsex = 'pat_mast/get_entry?action=get_patient_sex';
         loadlist($('select#cmb_pat_sex').get(0),urlsex,'code','description');
@@ -93,6 +100,7 @@
 
         var urlRel = 'pat_mast/get_entry?action=get_patient_relationship';
         loadlist($('select#cmb_grtr_relation').get(0),urlRel,'relationshipcode','description');
+        
     }
 
     $("#txt_pat_dob").blur(function(){

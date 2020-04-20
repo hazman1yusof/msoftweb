@@ -161,8 +161,8 @@ class PatmastController extends defaultController
                 break;
 
             case 'get_reg_source':
-                $data = DB::table('sysdb.department')
-                        ->select('deptcode as code','description')
+                $data = DB::table('hisdb.admissrc')
+                        ->select('admsrccode as code','description')
                         ->where('compcode','=',session('compcode'))
                         ->get();
                 break;
@@ -231,6 +231,14 @@ class PatmastController extends defaultController
                 $data = $this->check_debtormast($request);
                 break;
 
+            case 'get_refno_list':
+                $data = DB::table('hisdb.corpstaff')
+                    ->where('debtorcode','=',$request->debtorcode)
+                    ->where('mrn','=',$request->mrn)
+                    ->get();
+
+                break;
+
             // case 'get_patient_active':
             //     return DB::table('hisdb.title')->select('code','description')->get();
 
@@ -244,7 +252,7 @@ class PatmastController extends defaultController
             //     return DB::table('hisdb.occupation')->select('occupcode','description')->get();
             
             default:
-                $data ='nothing';
+                $data = 'nothing';
                 break;
         }
 
@@ -547,4 +555,86 @@ class PatmastController extends defaultController
     public function check_last_episode(Request $request){
 
     }
+
+    public function save_adm(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+
+                $codeexist = DB::table('hisdb.admissrc')
+                    ->where('admsrccode','=',$request->adm_code);
+
+                if($codeexist->exists()){
+                    throw new \Exception('Admsrccode already exists', 500);
+                }
+
+
+                DB::table('hisdb.admissrc')
+                    ->insert([
+                        'compcode'    =>  session('compcode'),
+                        'admsrccode'  =>  $request->adm_code,    
+                        'description'  =>  $request->adm_desc,
+                        'addr1'        =>  $request->adm_addr1, 
+                        'addr2'    =>  $request->adm_addr2,
+                        'addr3'    =>  $request->adm_addr3,
+                        'addr4'    =>  $request->adm_addr4,
+                        'telno'    =>  $request->adm_telno,
+                        'email'    =>  $request->adm_email
+                    ]);
+
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                return response($e->getMessage(), 500);
+            }
+
+        
+
+    }
+
+    public function save_gl(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+
+                // $codeexist = DB::table('hisdb.corpstaff')
+                //     ->where('admsrccode','=',$request->adm_code);
+
+                // if($codeexist->exists()){
+                //     throw new \Exception('Admsrccode already exists', 500);
+                // }
+
+
+                DB::table('hisdb.corpstaff')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'debtorcode'    =>  $request['debtorcode'],
+                        'staffid'  =>  $request['newgl-staffid'],    
+                        'childno'  =>  $request['newgl-childno'],
+                        'relatecode'        =>  $request['newgl-relatecode'], 
+                        'name'    =>  $request['newgl-name'],
+                        'gltype'    =>  $request['newgl-gltype'],
+                        'remark'    =>  $request['newgl-remark'],
+                        'mrn'    =>  $request['mrn']
+                    ]);
+
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                return response($e->getMessage(), 500);
+            }
+
+        
+
+    }
+
+
 }
