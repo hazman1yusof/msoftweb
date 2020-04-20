@@ -44,6 +44,9 @@ Route::get('/user_maintenance','setup\UserMaintenanceController@show');
 Route::get('/user_maintenance/table','setup\UserMaintenanceController@table');
 Route::post('/user_maintenance/form','setup\UserMaintenanceController@form');
 
+//// sysparam ////
+Route::get('/sysparam_bed_status','SysparamController@sysparam_bed_status');
+
 ///////////////file setup//////////////////////////////////////////////////
 
 //// Religion setup page ///
@@ -247,6 +250,7 @@ Route::post('/bed/form','setup\BedController@form');
 Route::get('/bedmanagement','setup\BedManagementController@show');
 Route::get('/bedmanagement/table','setup\BedManagementController@table');
 Route::post('/bedmanagement/form','setup\BedManagementController@form');
+Route::get('/bedmanagement/statistic','setup\BedManagementController@statistic');
 
 ////////////////////////////////inventory setup///////////////////////////////////////////////////////////
 

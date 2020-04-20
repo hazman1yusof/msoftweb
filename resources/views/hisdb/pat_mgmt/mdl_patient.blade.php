@@ -1,6 +1,7 @@
 <!-- Large modal -->
 <div id="mdl_patient_info" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; padding-left: 0px !important;">
     <div class="modal-dialog modal-lg">
+
         <form id="frm_patient_info" class="form-horizontal">
 			<input type="hidden" name="idno" id="txt_pat_idno">
             <div class="modal-content">
@@ -353,32 +354,20 @@
 
                                         <!-- Tab content end -->
                                     </div>
-                                    <div>
-                                        <!--div class="form-group">
-											<div class="col-md-4">
-                                                <small for="txt_pat_relation">Relationship</small>
-												<div class="input-group">
-                                                    <input type="text" class="form-control form-mandatory" name="txt_pat_relation" id="txt_pat_relation">
-                                                    <input type="hidden" name="hid_payer_relation" id="hid_payer_relation" value="" />
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-warning" id="btn_payer_relation" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('payer_relation');"><span class="fa fa-ellipsis-h"></span> </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-											<div class="col-md-2">
-                                                <small for="txt_payer_childno">Child No</small>
-                                                <input class="form-control" name="txt_payer_childno" id="txt_payer_childno" placeholder="" type="text">
-                                            </div>
-                                            <div class="col-md-6">
-                                                
-                                            </div>
-                                        </div-->
+
+                                    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
+                                        <div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#Corporate_Info">
+                                                <h5>Corporate Info</h5>
+                                        </div>
+                                        <div id="Corporate_Info" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div>
                                         <p><strong>Corporate Info</strong></p>    
                                         <div class="form-group">
                                             <div class="col-md-6">
                                                 <small for="txt_payer_company">Company Name</small>
                                                 <!--input class="form-control" id="corpcomp" placeholder="" type="text"-->
-												<div class="input-group">
+                                                <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" name="txt_payer_company" id="txt_payer_company">
                                                     <input type="hidden" name="hid_payer_company" id="hid_payer_company" value="" />
                                                     <span class="input-group-btn">
@@ -386,46 +375,50 @@
                                                     </span>
                                                 </div>
                                             </div>
-											<div class="col-md-6">
+                                            <div class="col-md-6">
                                                 
                                             </div>
-										</div>										
+                                        </div>                                      
                                         <div class="form-group">
                                             <div class="col-md-3">
                                                 <small for="txt_payer_staffid">Staff ID</small>
                                                 <input class="form-control" name="txt_payer_staffid" id="txt_payer_staffid" placeholder="" type="text">
                                             </div>
-											 <div class="col-md-3">
+                                             <div class="col-md-3">
                                                 <small for="txt_payer_occupation">Occupation</small>
                                                 <!--input class="form-control" id="remarks" placeholder="" type="text"-->
-												<div class="input-group">
-													<input type="text" class="form-control form-mandatory" name="txt_pat_occupation" id="txt_pat_occupation">
-													<input type="hidden" name="hid_pat_occupation" id="hid_pat_occupation" value="" />
-													<span class="input-group-btn">
-														<button type="button" class="btn btn-warning" id="btn_pat_occupation" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_occupation');"><span class="fa fa-ellipsis-h"></span> </button>
-													</span>
-												</div>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_pat_occupation" id="txt_pat_occupation">
+                                                    <input type="hidden" name="hid_pat_occupation" id="hid_pat_occupation" value="" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-warning" id="btn_pat_occupation" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_occupation');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    </span>
+                                                </div>
                                             </div>                                            
-											<!--div class="col-md-6">
+                                            <!--div class="col-md-6">
                                                 <div class="col-md-4"></div>
-												<div class="col-md-5">
-													<small for="remarks"><i>Click here if patient issue GL</i></small><br /><br />
-													<button id="btn_payer_new_gl" type="button" class="btn btn-warning" >Add New GL</button>
-												</div>
-												<div class="col-md-3"></div>
+                                                <div class="col-md-5">
+                                                    <small for="remarks"><i>Click here if patient issue GL</i></small><br /><br />
+                                                    <button id="btn_payer_new_gl" type="button" class="btn btn-warning" >Add New GL</button>
+                                                </div>
+                                                <div class="col-md-3"></div>
                                             </div-->
                                         </div>
-										<div class="form-group">
-											<div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-6">
                                                 <small for="txt_payer_email_official">Company's Email</small>
                                                 <input class="form-control" name="txt_payer_email_official" id="txt_payer_email_official" placeholder="" type="email">
                                             </div>
-											<div class="col-md-6">
+                                            <div class="col-md-6">
                                                 
                                             </div>
                                         </div>
                                         <!-- end tabs -->
                                     </div>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                    
                                     <!--div role="tabpanel" class="tab-pane fade" id="tab11">
                                         <!-- begin tabs ->
                                         <div class="form-group">
