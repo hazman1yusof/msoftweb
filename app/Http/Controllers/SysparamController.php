@@ -48,7 +48,7 @@ class SysparamController extends Controller
 					$object->bedcode = '<i class="fa fa-bullhorn" aria-hidden="true"></i> '.$value;
 					break;
 			}
-			$object->description = $value.' BED';
+			$object->description = $value;
 			$rows[$key] = $object;
 		}
 
