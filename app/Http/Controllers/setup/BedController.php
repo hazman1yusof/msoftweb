@@ -52,9 +52,11 @@ class BedController extends defaultController
     }
 
     public function get_table(Request $request){
-        $table = DB::table('hisdb.bed')
-                    ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','tel_ext','statistic','bedchgcode','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
-                    ->where('compcode','=',session('compcode'));
+        // $table = DB::table('hisdb.bed')
+        //             ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','tel_ext','statistic','bedchgcode','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
+        //             ->where('compcode','=',session('compcode'));
+        
+        $table = $this->defaultGetter($request);
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -119,7 +121,8 @@ class BedController extends defaultController
                     'ward' => strtoupper($request->ward),  
                     // 'occup' => 0,
                     'occup' => strtoupper($request->occup),
-                    'tel_ext' => $this->truefalse($request->tel_ext),
+                    'tel_ext' => strtoupper($request->tel_ext),  
+                    // 'tel_ext' => $this->truefalse($request->tel_ext),
                     'bedchgcode' => strtoupper($request->bedchgcode),
                     'statistic' => $this->truefalse($request->statistic),  
                     'recstatus' => strtoupper($request->recstatus),
@@ -149,7 +152,7 @@ class BedController extends defaultController
                     'room' => strtoupper($request->room),  
                     'ward' => strtoupper($request->ward),
                     'occup' => strtoupper($request->occup),
-                    'tel_ext' => $this->truefalse($request->tel_ext),
+                    'tel_ext' => strtoupper($request->tel_ext),  
                     'bedchgcode' => strtoupper($request->bedchgcode), 
                     'statistic' => $this->truefalse($request->statistic),    
                     'recstatus' => strtoupper($request->recstatus),

@@ -103,7 +103,7 @@ $(document).ready(function () {
 					},
 			},
 			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-			{ label: 'Status', name: 'occup', width: 30, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Status', name: 'occup', width: 20, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 						{  custom_element:occupCustomEdit,
 						custom_value:galGridCustomValue 	
@@ -118,12 +118,13 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Tel Ext', name: 'tel_ext', width: 10, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
-			{ label: 'Statistic', name: 'statistic', width: 10, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
+			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			// { label: 'Tel Ext', name: 'tel_ext', width: 10, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
+			{ label: 'Statistic', name: 'statistic', width: 15, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5, canSearch: true},
 			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
-            { label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+            { label: 'Record Status', name: 'recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)
@@ -146,30 +147,30 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
-		height: 350,
+		height: 350, 
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			populate_formbedm(selrowData("#jqGrid"));
 
-			// if (rowid != null) {
-			// 	rowData = $('#jqGrid').jqGrid('getRowData', rowid);
-			// 	refreshGrid('#jqGrid3', urlParam2,'kosongkan');
-			// 	$("#pg_jqGridPager3 table, #jqGrid3_c").hide();
+			if (rowid != null) {
+				rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				refreshGrid('#jqGrid3', urlParam2,'kosongkan');
+				$("#pg_jqGridPager3 table, #jqGrid3_c").hide();
 
-			// 	if (rowData['mrn'] != 000000) {
-			// 		refreshGrid('#jqGrid3', urlParam2);
-			// 		$("#pg_jqGridPager3 table, #jqGrid3_c").show();
-			// 		$("#jqGridPagerDelete").hide();
-			// 		$("#jqGrid_iledit").hide();
-			// 	}
-			// 	else if (rowData['mrn'] == 000000) {
-			// 		refreshGrid('#jqGrid3', urlParam2);
-			// 		$("#jqGridPagerDelete").show();
-			// 		$("#jqGrid_iledit").show();
-			// 	}
+				if (rowData['mrn'] != 000000) {
+					refreshGrid('#jqGrid3', urlParam2);
+					$("#pg_jqGridPager3 table, #jqGrid3_c").show();
+					$("#jqGridPagerDelete").hide();
+					$("#jqGrid_iledit").hide();
+				}
+				else if (rowData['mrn'] == 000000) {
+					refreshGrid('#jqGrid3', urlParam2);
+					$("#jqGridPagerDelete").show();
+					$("#jqGrid_iledit").show();
+				}
 
-			// }
+			}
 
 		},
 		loadComplete: function(){
