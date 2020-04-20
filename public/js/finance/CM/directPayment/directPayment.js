@@ -547,6 +547,7 @@ $(document).ready(function () {
 				$.param({
 					action: 'directPaymentDetail_save',
 					auditno:$('#auditno').val(),
+					amount:data.amount,
 					lineno_:data.lineno_,
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
