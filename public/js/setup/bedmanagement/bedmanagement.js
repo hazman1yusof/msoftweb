@@ -183,7 +183,22 @@ $(document).ready(function () {
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGrid_iledit").click();
+			if (rowid != null) {
+				rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+
+				if (rowData['mrn'] != 000000) {
+					$("#jqGridPagerDelete").hide();
+					$("#jqGrid_iledit").hide();
+				}
+				else if (rowData['mrn'] == 000000) {
+					refreshGrid('#jqGrid3', urlParam2);
+					$("#jqGrid_iledit").click();
+					$("#jqGridPagerDelete").show();
+					$("#jqGrid_iledit").show();
+				}
+
+			}
+			// $("#jqGrid_iledit").click();
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();

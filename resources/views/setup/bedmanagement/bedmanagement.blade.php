@@ -399,59 +399,114 @@ row.error td { background-color: red; }
 								<!-- form -->
 
 								<div class='col-md-12' style="padding:15px 0 15px 0">
+
 									<div class='col-md-6'>
 										<div class="panel panel-info">
-											<div class="panel-heading text-center">LEVEL OF CONSCIOUSNESS</div>
+											<div class="panel-heading text-center">CURRENT BED</div>
 											<div class="panel-body">
 
 												<div class="form-group">
-													<div class="form-check form-check-inline checkbox-inline" style="margin-left: 100px">
-														<input class="form-check-input" type="checkbox" id="loc_conscious" name="loc_conscious" value="1">
-														<label class="form-check-label" for="loc_conscious">Conscious</label>
+												<label class="col-md-2 control-label" for="date">Date</label>  
+													<div class="col-md-4">
+														<input id="admwardtime" name="date" type="date" class="form-control input-sm uppercase">
+													</div>
+												
+												<label class="col-md-2 control-label" for="time">Time</label>  
+													<div class="col-md-4">
+														<input id="admwardtime" name="time" type="time" class="form-control input-sm uppercase">
 													</div>
 
-													<label class="col-md-2 control-label" for="admwardtime">Time</label>  
-														<div class="col-md-4">
-															<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase">
+												<label class="col-md-2 control-label" for="room">Room</label>  
+													<div class="col-md-4">
+														<input id="room" name="room" type="text" class="form-control input-sm uppercase">
+													</div>
+
+												<!-- <label class="col-md-2 control-label" for="room">Room</label>  
+													<div class="col-md-4">
+														<div class='input-group'>
+															<input id="room" name="room" type="text" class="form-control input-sm uppercase">
+															<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 														</div>
+														<span class="help-block"></span>
+													</div> -->
 
-													<div class="form-check form-check-inline checkbox-inline">
-														<input class="form-check-input" type="checkbox" id="loc_semiconscious" name="loc_semiconscious" value="1">
-														<label class="form-check-label" for="loc_semiconscious">SemiConscious</label>
+												<label class="col-md-2 control-label" for="ward">Ward</label>  
+													<div class="col-md-4">
+														<input id="ward" name="ward" type="text" class="form-control input-sm uppercase">
 													</div>
 
-													<div class="form-check form-check-inline checkbox-inline">
-														<input class="form-check-input" type="checkbox" id="loc_unconscious" name="loc_unconscious" value="1">
-														<label class="form-check-label" for="loc_unconscious">UnConscious</label>
+												<label class="col-md-2 control-label" for="bednum">Bed No</label>  
+													<div class="col-md-4">
+														<input id="bednum" name="bednum" type="text" class="form-control input-sm uppercase">
 													</div>
+												
+												<label class="col-md-2 control-label" for="bedtype">Bed Type</label>  
+													<div class="col-md-4">
+														<input id="bedtype" name="bedtype" type="text" class="form-control input-sm uppercase">
+													</div>													
+													</div>
+													
 												</div>
+												<!-- Class form group closed -->
 
-											</div>
+											</div>  
+											<!-- Panel body close -->
 										</div>
 									</div>
+
 									<div class='col-md-6'>
 										<div class="panel panel-info">
-											<div class="panel-heading text-center">CONSCIOUSNESS</div>
+											<div class="panel-heading text-center">TRANSFER TO BED</div>
 											<div class="panel-body">
 
 												<div class="form-group">
-													<div class="form-check form-check-inline checkbox-inline" style="margin-left: 100px">
-														<input class="form-check-input" type="checkbox" id="loc_conscious" name="loc_conscious" value="1">
-														<label class="form-check-label" for="loc_conscious">Conscious</label>
+
+												<label class="col-md-2 control-label" for="date">Date</label>  
+													<div class="col-md-4">
+														<input id="admwardtime" name="date" type="date" class="form-control input-sm uppercase">
+													</div>
+												
+												<label class="col-md-2 control-label" for="time">Time</label>  
+													<div class="col-md-4">
+														<input id="admwardtime" name="time" type="time" class="form-control input-sm uppercase">
 													</div>
 
-													<div class="form-check form-check-inline checkbox-inline">
-														<input class="form-check-input" type="checkbox" id="loc_semiconscious" name="loc_semiconscious" value="1">
-														<label class="form-check-label" for="loc_semiconscious">SemiConscious</label>
+												<label class="col-md-2 control-label" for="room">Room</label>  
+													<div class="col-md-4">
+														<input id="room" name="room" type="text" class="form-control input-sm uppercase">
 													</div>
 
-													<div class="form-check form-check-inline checkbox-inline">
-														<input class="form-check-input" type="checkbox" id="loc_unconscious" name="loc_unconscious" value="1">
-														<label class="form-check-label" for="loc_unconscious">UnConscious</label>
+												<label class="col-md-2 control-label" for="ward">Ward</label>  
+													<div class="col-md-4">
+														<input id="ward" name="ward" type="text" class="form-control input-sm uppercase">
 													</div>
+
+												<label class="col-md-2 control-label" for="bednum">Bed No</label>  
+													<div class="col-md-4">
+														<input id="bednum" name="bednum" type="text" class="form-control input-sm uppercase">
+													</div>
+												
+												<label class="col-md-2 control-label" for="bedtype">Bed Type</label>  
+													<div class="col-md-4">
+														<input id="bedtype" name="bedtype" type="text" class="form-control input-sm uppercase">
+													</div>
+
+												<label class="col-md-2 control-label" for="occup">Bed Status</label>  
+													<div class="col-md-4">
+														<input id="occup" name="occup" type="text" class="form-control input-sm uppercase">
+													</div>
+<!-- 												
+												<label class="col-md-2 control-label" for="bedtype">Bed Type</label>  
+													<div class="col-md-4">
+														<input id="bedtype" name="bedtype" type="text" class="form-control input-sm uppercase">
+													</div>													 -->
+													</div>
+													
 												</div>
+												<!-- Class form group closed -->
 
-											</div>
+											</div>  
+											<!-- Panel body close -->
 										</div>
 									</div>
 								</div>
