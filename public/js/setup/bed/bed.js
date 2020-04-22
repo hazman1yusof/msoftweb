@@ -86,13 +86,9 @@ $(document).ready(function () {
 		action: 'get_table',
 		url: '/bed/table',
 		field: '',
-		table_name: ['hisdb.bed AS b', 'hisdb.episode AS c'],
+		table_name: ['hisdb.bed as b'],
 		table_id: 'b_compcode',
 		sort_idno: true,
-		fixPost: 'true',
-		join_type:['LEFT JOIN'],
-		join_onCol:['b.room'],
-		join_onVal:['c.room'],
 		filterCol:['b.compcode'],
 		filterVal:['session.compcode']
 	}
@@ -225,6 +221,9 @@ $(document).ready(function () {
 	}
 
 	function occup(cellvalue, options, rowObject){
+		if(cellvalue==undefined){
+			cellvalue="";
+		}
 		switch(cellvalue.trim()){
 			case 'OCCUPIED': return '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED';break;
 			case 'VACANT': return '<i class="fa fa-ban" aria-hidden="true"></i> VACANT';break;
@@ -503,7 +502,7 @@ $(document).ready(function () {
 		'occup','sysdb.department',"#jqGrid input[name='occup']",errorField,
 		{	colModel:
 			[
-				{label:'Bed Status',name:'bedcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Bed Status',name:'bedcode',width:200,classes:'pointer justify',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
 			],
 			urlParam: {
@@ -527,11 +526,12 @@ $(document).ready(function () {
 				}
 			}
 		},{
-			title:"Select Bed Stattus",
+			title:"Select Bed Status",
 			open: function(){
 				dialog_occup.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_occup.urlParam.filterVal = ['A', 'session.compcode'];
-			}
+			},
+			width:5/10 * $(window).width()
 		},'urlParam','radio','tab'
 	);
 	dialog_occup.makedialog();

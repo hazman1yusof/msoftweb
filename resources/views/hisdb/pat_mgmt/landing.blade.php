@@ -85,8 +85,8 @@
 <body class="header-fixed">
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
     <div class="wrapper">
-        	<input name="pattype" id="pattype" type="hidden" value="{{request()->get('pattype')}}">
-        	<input name="listtype" id="listtype" type="hidden" value="{{request()->get('listtype')}}">
+        <input name="epistycode" id="epistycode" type="hidden" value="{{request()->get('epistycode')}}">
+        <input name="curpat" id="curpat" type="hidden" value="{{request()->get('curpat')}}">
         <div id="info"></div>
 
 		<div class="panel">

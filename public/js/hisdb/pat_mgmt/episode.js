@@ -69,6 +69,11 @@
         // $('#occupcode').val(rowdata.occupcode);
         $('#hid_pat_occupation').val(rowdata.OccupCode);
 
+        
+        $('#hid_LanguageCode').val(rowdata.LanguageCode);
+        $('#hid_RaceCode').val(rowdata.RaceCode);
+        $('#hid_Religion').val(rowdata.Religion);
+        $('#hid_ID_Type').val(rowdata.ID_Type);
         $('#txt_pat_dob').val(rowdata.DOB);
         $('#txt_pat_age').val(gettheage(rowdata.DOB));
         $('#txt_pat_telh').val('0' +rowdata.telh);
@@ -108,8 +113,16 @@
 
         // ********* episode ************
         if(episode == "episode"){
-            $('#txt_epis_no').val(parseInt(rowdata.Episno) + 1); // dlm modal Episode
-            $('#txt_epis_type').val("OP");                    
+
+            $('#txt_epis_name').text(rowdata.Name);
+            $('#txt_epis_mrn').text(('0000000' + rowdata.MRN).slice(-7));
+
+            var episno_ = parseInt(rowdata.Episno);
+            if(isNaN(episno_)){
+                episno_ = 0;
+            }
+            $('#txt_epis_no').val(parseInt(episno_) + 1); // dlm modal Episode
+            $('#txt_epis_type').val($("#epistycode").val());                    
             $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
             $('#txt_epis_time').val(moment().format('hh:mm:ss'));
 
@@ -117,6 +130,9 @@
             {
                 $('#rad_epis_pregnancy_no').prop("checked", true);
                 $('#rad_epis_pregnancy_yes').prop("disabled", true);
+            }
+            if (rowdata.PatStatus == "true") // dlm modal Episode
+            { alert('PatStatus true');
             }
                 
         }
@@ -271,12 +287,13 @@
     $( "#btngurantorcommit").click(add_guarantor);
 
 
-    var refno_table = null;
-    var refno_table_name = null;
-    var refno_mdl_opened = null;
-    var refno_item = null;
     $( "#btn_refno_info").click(function() 
     {
+        var refno_table = null;
+        var refno_table_name = null;
+        var refno_mdl_opened = null;
+        var refno_item = null;
+
         refno_table_name = $('#tbl_epis_reference');
         
         refno_table = $('#tbl_epis_reference').DataTable( {
@@ -285,8 +302,8 @@
                                     {'data': 'staffid'}, 
                                     {'data': 'debtorcode' },
                                     {'data': 'name' },
-                                    {'data': 'ourrefno' },
-                                    {'data': 'refno' },
+                                    {'data': 'gltype' },
+                                    {'data': 'debtorcode' },
                                    ]
                 } );
                 
@@ -298,8 +315,8 @@
                 //console.dir(debtor_table_name);
                 refno_item = refno_table.row( this ).data();                
                 //console.log("type2="+type + " refno_item=" + refno_item["description"]);
-                $('#txt_epis_our_refno').val(refno_item["ourrefno"]);
-                $('#txt_epis_refno').val(refno_item["refno"]);
+                $('#txt_epis_our_refno').val(refno_item["debtorcode"]);
+                $('#txt_epis_refno').val(refno_item["debtorcode"]);
                 
                     
                 refno_mdl_opened.modal('hide');
@@ -309,8 +326,7 @@
             
         refno_mdl_opened.on('hidden.bs.modal', function () 
         {
-            refno_table_name.html('');
-            refno_item = null;
+            refno_table.destroy();
         });
     });
 
@@ -705,6 +721,17 @@
                             {'data': 'code'}, 
                             {'data': 'description' },
                            ],
+
+                "columnDefs": [ {
+                    "targets": 0,
+                    "data": "code",
+                    "render": function ( data, type, row, meta ) {
+                        if(act == "get_reg_source"){
+                            return pad('000000',data,true)
+                        }
+                    }
+                  } ],
+
                 "fnInitComplete": function(oSettings, json) {
                     if(ontab==true){
                         selecter.search( text_val ).draw();
@@ -780,6 +807,16 @@
               }
         });
 
+    }
+
+    function pad(pad, str, padLeft) {
+        if (typeof str === 'undefined') 
+            return pad;
+        if (padLeft) {
+            return (pad + str).slice(-pad.length);
+        } else {
+            return (str + pad).substring(0, pad.length);
+        }
     }
 
 

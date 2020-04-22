@@ -1,5 +1,5 @@
 	<!-- popup item selector -->
-	<div id="mdl_item_selector" class="modal fade" role="dialog" title="title" data-backdrop="static">
+	<div id="mdl_item_selector" class="modal fade" role="dialog" title="title">
 		<div class="modal-dialog">
 		
 			<!-- Modal content-->
@@ -43,7 +43,7 @@
 					<form id="adm_form">
 					<div class="col-md-3 col-md-offset-1">
 	                    <small for="adm_code">Code</small>
-	                    <input type="text" class="form-control form-mandatory" id="adm_code" name="adm_code" aria-required="true" required>
+	                    <input type="text" class="form-control form-mandatory" id="adm_code" name="adm_code" aria-required="true" disabled>
 	                </div>
 	                <div class="col-md-7">
 	                    <small for="adm_desc">Description</small>

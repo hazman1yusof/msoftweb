@@ -73,6 +73,20 @@ var Global = function () {
 							{'data': 'code'}, 
 							{'data': 'description' },
 						   ],
+
+                "columnDefs": [ {
+                    "targets": 0,
+                    "data": "code",
+                    "render": function ( data, type, row, meta ) {
+                    	console.log(act);
+                        if(act == "get_reg_source"){
+                            return pad('000000',data,true)
+                        }else{
+                        	return data;
+                        }
+                    }
+                  } ],
+
 				"fnInitComplete": function(oSettings, json) {
 					
                     if(act == "get_reg_source"){

@@ -1,5 +1,5 @@
 <!-- Large modal -->
-<div id="editEpisode" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editEpisode" aria-hidden="true" style="display: none;">
+<div id="editEpisode" class="modal fade" data-keyboard="false" role="dialog" aria-labelledby="editEpisode" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <form class="form-horizontal" id="episode_form">
             <input type="hidden" name="rowid" id="rowid">
@@ -8,7 +8,7 @@
             <div class="modal-content">
                 <div class="modal-header label-warning">
                     <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
-                    <div class="form-group has-error">
+                    <div class="form-group ">
                         <div class="col-sm-2">
                             <small  for="txt_epis_no">EPISODE NO:</small>
                             <input class="form-control " id="txt_epis_no" placeholder="" type="text" readonly>
@@ -37,6 +37,16 @@
 
 
                     </div>
+
+                    <div class="form-group ">
+                        <div class="col-md-offset-4 col-md-3">
+                           NAME:  <big id="txt_epis_name">Hazman Yusof</big>
+                        </div>
+                        <div class="col-md-3">
+                           MRN:  <big id="txt_epis_mrn">0000003</big>
+                        </div>
+
+                    </div>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -57,7 +67,7 @@
                                     <div role="tabpanel" class="tab-pane fade active in" id="tabEpisode">
                                         <!-- Tab content begin -->
                                         <div class="form-group">
-                                            <div class="col-md-10">
+                                            <div class="col-md-offset-1 col-md-10">
                                                 <small for="txt_epis_dept">Registration Department</small>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_dept">
@@ -67,7 +77,7 @@
                                                     </span>
                                                 </div>
                                             </div>                                          
-                                            <div class="col-md-10">
+                                            <div class="col-md-offset-1 col-md-10">
                                                 <small for="txt_epis_source">Registration Source</small>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_source">
@@ -77,7 +87,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-10">
+                                            <div class="col-md-offset-1 col-md-10">
                                                 <small for="txt_epis_case">Case </small>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_case">
@@ -87,7 +97,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-10">
+                                            <div class="col-md-offset-1 col-md-10">
                                                 <small for="txt_epis_doctor">Doctor</small>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_doctor">
@@ -97,7 +107,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-10">
+                                            <div class="col-md-offset-1 col-md-10">
                                                 <small for="txt_epis_fin">Financial Class</small>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_fin" name="txt_epis_fin">
@@ -107,7 +117,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-10">
+                                            <div class="col-md-offset-1 col-md-10">
                                                 <small for="cmb_epis_pay_mode">Pay Mode </small>
                                                 <select id="cmb_epis_pay_mode" name="pyrmode" class="form-control form-disabled">
                                                     <option value='CASH'>Cash</option>
@@ -120,7 +130,7 @@
 
                                         </div>
                                         <div class="form-group">
-                                            <div class="col-md-10">
+                                            <div class="col-md-offset-1 col-md-10">
                                                 <small for="txt_epis_payer">Payer </small>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_payer">
@@ -130,7 +140,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-10">
+                                            <div class="col-md-offset-1 col-md-10">
                                                 <small for="txt_epis_bill_type">Bill Type </small>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control form-mandatory" id="txt_epis_bill_type">
@@ -142,7 +152,7 @@
                                             </div>
                                         </div>                                        
                                         <div class="form-group">
-                                            <div class="col-md-10">
+                                            <div class="col-md-offset-1 col-md-10">
                                                 <small for="txt_epis_refno">Reference No</small>
                                                 <div class="input-group">
                                                     <input id="txt_epis_refno" type="text" class="form-control form-mandatory" >
@@ -151,7 +161,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-10">
+                                            <div class="col-md-offset-1 col-md-10">
                                                 <small for="txt_epis_our_refno">Our Reference No</small>
                                                 <div class="input-group">
                                                     <input id="txt_epis_our_refno" type="text" class="form-control"  readonly>
@@ -162,7 +172,7 @@
                                             </div>
                                         </div>
                                         <div class="row">                                        
-                                            <div class="col-md-4">
+                                            <div class="col-md-offset-1 col-md-4">
                                                 <small for="rad_epis_pregnancy">Status</small>
                                                 <div class="panel panel-default">
                                                     <div class="panel-body checkbox">
@@ -510,8 +520,8 @@
                             <th data-column-id="mrn" >Staff ID</th>
                             <th data-column-id="mrn" >Debtor Code</th>
                             <th data-column-id="mrn" >Name</th>
-                            <th data-column-id="mrn" >Our Reference</th>
-                            <th data-column-id="mrn" >Reference No</th>
+                            <th data-column-id="mrn" >GL Type</th>
+                            <th data-column-id="mrn" >Debtorcode</th>
                         </tr>
                         </thead>
 

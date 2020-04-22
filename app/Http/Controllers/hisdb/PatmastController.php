@@ -155,14 +155,15 @@ class PatmastController extends defaultController
 
             case 'get_reg_dept':
                 $data = DB::table('sysdb.department')
-                        ->select('deptcode as code','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
+                    ->select('deptcode as code','description')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('regdept','=','1')
+                    ->get();
                 break;
 
             case 'get_reg_source':
                 $data = DB::table('hisdb.admissrc')
-                        ->select('admsrccode as code','description')
+                        ->select('idno as code','description')
                         ->where('compcode','=',session('compcode'))
                         ->get();
                 break;
@@ -212,12 +213,12 @@ class PatmastController extends defaultController
                 if($request->type == "OP"){
                     $data = DB::table('hisdb.billtymst')
                             ->where('compcode','=',session('compcode'))  
-                            ->where('opprice','=',$request->type)
+                            ->where('opprice','=','1')
                             ->get();
                 }else{
                     $data = DB::table('hisdb.billtymst')
                             ->where('compcode','=',session('compcode')) 
-                            ->where('opprice','=',$request->type)
+                            ->where('opprice','=','0')
                             ->get();
                 }
                 break;
@@ -447,36 +448,38 @@ class PatmastController extends defaultController
         try {
             DB::table("hisdb.episode")
                 ->insert([
-                            "compcode" => session('compcode'),
-                            "mrn" => $epis_mrn,
-                            "episno" => $epis_no,
-                            "epistycode" => $epis_type,
-                            "newcaseP" => $epis_newcase,
-                            "followupP" => $epis_followup,
-                            "reg_date" => $epis_date,
-                            "reg_time" => $epis_time,
-                            "regdept" => $epis_dept,
-                            "admsrccode" => $epis_src,
-                            "case_code" => $epis_case,
-                            "admdoctor" => $epis_doctor,
-                            "pay_type" => $epis_fin,
-                            "pyrmode" => $epis_paymode,
-                            "billtype" => $epis_billtype,
-                            // "fu_preg" => $epis_fu_preg,
-                            // "nc_preg" => $epis_nc_preg,
-                            "AdminFees" => $epis_fee,
-                            "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
-                            "adduser" => session('username'),
-                            // "updatedate" => Carbon::now("Asia/Kuala_Lumpur"),
-                            // "updatetime" => Carbon::now("Asia/Kuala_Lumpur"),
-                            // "upduser" => session('username'),
-                            "episactive" => 1,
-                            "allocpayer" => 1
-                         ]);
+                    "compcode" => session('compcode'),
+                    "mrn" => $epis_mrn,
+                    "episno" => $epis_no,
+                    "epistycode" => $epis_type,
+                    "newcaseP" => $epis_newcase,
+                    "followupP" => $epis_followup,
+                    "reg_date" => $epis_date,
+                    "reg_time" => $epis_time,
+                    "regdept" => $epis_dept,
+                    "admsrccode" => $epis_src,
+                    "case_code" => $epis_case,
+                    "admdoctor" => $epis_doctor,
+                    "pay_type" => $epis_fin,
+                    "pyrmode" => $epis_paymode,
+                    "billtype" => $epis_billtype,
+                    // "fu_preg" => $epis_fu_preg,
+                    // "nc_preg" => $epis_nc_preg,
+                    "AdminFees" => $epis_fee,
+                    "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
+                    "adduser" => session('username'),
+                    // "updatedate" => Carbon::now("Asia/Kuala_Lumpur"),
+                    // "updatetime" => Carbon::now("Asia/Kuala_Lumpur"),
+                    // "upduser" => session('username'),
+                    "episactive" => 1,
+                    "allocpayer" => 1
+                ]);
 
                 //buat debtormaster KALAU TAK JUMPA
 
                 //CREATE EPISPAYER
+
+                //CREATE NOK
 
                 //CREATE docalloc
 
@@ -574,7 +577,6 @@ class PatmastController extends defaultController
                 DB::table('hisdb.admissrc')
                     ->insert([
                         'compcode'    =>  session('compcode'),
-                        'admsrccode'  =>  $request->adm_code,    
                         'description'  =>  $request->adm_desc,
                         'addr1'        =>  $request->adm_addr1, 
                         'addr2'    =>  $request->adm_addr2,

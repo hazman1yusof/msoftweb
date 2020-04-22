@@ -1,5 +1,5 @@
 <!-- Large modal -->
-<div id="mdl_patient_info" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; padding-left: 0px !important;">
+<div id="mdl_patient_info" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; padding-left: 0px !important;">
     <div class="modal-dialog modal-lg">
 
         <form id="frm_patient_info" class="form-horizontal">
@@ -355,16 +355,11 @@
                                         <!-- Tab content end -->
                                     </div>
 
-                                    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-                                        <div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#Corporate_Info">
-                                                <h5>Corporate Info</h5>
-                                        </div>
-                                        <div id="Corporate_Info" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <div>
+                                    
+                                    <div>
                                         <p><strong>Corporate Info</strong></p>    
                                         <div class="form-group">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-4 col-md-6">
                                                 <small for="txt_payer_company">Company Name</small>
                                                 <!--input class="form-control" id="corpcomp" placeholder="" type="text"-->
                                                 <div class="input-group">
@@ -380,7 +375,7 @@
                                             </div>
                                         </div>                                      
                                         <div class="form-group">
-                                            <div class="col-md-3">
+                                            <div class="col-md-offset-4 col-md-3">
                                                 <small for="txt_payer_staffid">Staff ID</small>
                                                 <input class="form-control" name="txt_payer_staffid" id="txt_payer_staffid" placeholder="" type="text">
                                             </div>
@@ -394,18 +389,10 @@
                                                         <button type="button" class="btn btn-warning" id="btn_pat_occupation" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_occupation');"><span class="fa fa-ellipsis-h"></span> </button>
                                                     </span>
                                                 </div>
-                                            </div>                                            
-                                            <!--div class="col-md-6">
-                                                <div class="col-md-4"></div>
-                                                <div class="col-md-5">
-                                                    <small for="remarks"><i>Click here if patient issue GL</i></small><br /><br />
-                                                    <button id="btn_payer_new_gl" type="button" class="btn btn-warning" >Add New GL</button>
-                                                </div>
-                                                <div class="col-md-3"></div>
-                                            </div-->
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-4 col-md-6">
                                                 <small for="txt_payer_email_official">Company's Email</small>
                                                 <input class="form-control" name="txt_payer_email_official" id="txt_payer_email_official" placeholder="" type="email">
                                             </div>
@@ -415,65 +402,7 @@
                                         </div>
                                         <!-- end tabs -->
                                     </div>
-                                            </div>
-                                        </div>  
-                                    </div>
                                     
-                                    <!--div role="tabpanel" class="tab-pane fade" id="tab11">
-                                        <!-- begin tabs ->
-                                        <div class="form-group">
-                                            <div class="col-md-4">
-                                                <small for="input-title">Current Address</small>
-                                                <input class="form-control" id="address1" placeholder="" type="text">
-                                                <input class="form-control" id="address2" placeholder="" type="text">
-                                                <input class="form-control" id="address3" placeholder="" type="text">
-
-                                            </div>
-                                            <div class="col-md-4">
-                                                <small for="input-mrn">Office Address</small>
-                                                <input class="form-control" id="offadd1" placeholder="" type="text">
-                                                <input class="form-control" id="offadd2" placeholder="" type="text">
-                                                <input class="form-control" id="offadd3" placeholder="" type="text">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <small for="input-mrn">Home Address</small>
-                                                <input class="form-control" id="padd1" placeholder="" type="text">
-                                                <input class="form-control" id="padd2" placeholder="" type="text">
-                                                <input class="form-control" id="padd3" placeholder="" type="text">
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-md-4">
-                                                <small for="input-title">Current Postcode</small>
-                                                <input class="form-control" id="postcode" placeholder="" type="text">
-
-
-                                            </div>
-                                            <div class="col-md-4">
-                                                <small for="offpostcode">Office Postcode</small>
-                                                <input class="form-control" id="offpostcode" placeholder="" type="text">
-
-                                            </div>
-                                            <div class="col-md-4">
-                                                <small for="input-mrn">Home Postcode</small>
-                                                <input class="form-control" id="ppostcode" placeholder="" type="text">
-
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-md-4">
-                                                <small for="telhp">Phone (Mobile)</small>
-                                                <input class="form-control" id="telhp" placeholder="" type="text">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <small for="telh">Phone (House)</small>
-                                                <input class="form-control" id="telh" placeholder="" type="text">
-                                            </div>
-                                        </div>
-                                        <!-- end tabs ->
-                                    </div-->
                                     <div role="tabpanel" class="tab-pane fade" id="tab12">
                                         <div class="form-group">
                                             <div class="col-md-3">

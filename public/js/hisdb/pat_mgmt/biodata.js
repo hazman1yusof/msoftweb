@@ -144,6 +144,8 @@
         $('#hid_pat_occupation').val(rowdata.OccupCode);
 
         // $('#txt_pat_loginid').val(rowdata.DOB);
+        
+        $('#hid_ID_Type').val(rowdata.ID_Type);
         $('#txt_pat_dob').val(rowdata.DOB);
         $('#txt_pat_age').val(gettheage(rowdata.DOB));
         $('#txt_pat_telh').val('0' +rowdata.telh);
@@ -356,7 +358,7 @@
         {code:'#hid_RaceCode',desc:'#txt_RaceCode',id:'race'},
         {code:'#hid_Religion',desc:'#txt_Religion',id:'religioncode'}
     ]);
-    // desc_show.load_desc();
+    desc_show.load_desc();
 
     function loading_desc(obj){
         this.code_fields=obj;
