@@ -121,7 +121,7 @@ class BedController extends defaultController
                     'ward' => strtoupper($request->ward),  
                     // 'occup' => 0,
                     'occup' => strtoupper($request->occup),
-                    'tel_ext' => strtoupper($request->tel_ext),  
+                    'tel_ext' => strtoupper($request->tel_ext),
                     // 'tel_ext' => $this->truefalse($request->tel_ext),
                     'bedchgcode' => strtoupper($request->bedchgcode),
                     'statistic' => $this->truefalse($request->statistic),  
