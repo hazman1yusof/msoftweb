@@ -452,8 +452,8 @@ $(document).ready(function () {
 	var dialog_bedtype = new ordialog(
 		'bedtype','hisdb.bedtype',"#jqGrid input[name='bedtype']",errorField,
 		{	colModel:[
-				{label:'Bedtype',name:'bedtype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Bedtype',name:'bedtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
@@ -485,8 +485,8 @@ $(document).ready(function () {
 	var dialog_ward = new ordialog(
 		'ward','sysdb.department',"#jqGrid input[name='ward']",errorField,
 		{	colModel:[
-				{label:'Ward',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Ward',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','warddept'],

@@ -52,11 +52,11 @@ class BedController extends defaultController
     }
 
     public function get_table(Request $request){
-        // $table = DB::table('hisdb.bed')
-        //             ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','tel_ext','statistic','bedchgcode','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
-        //             ->where('compcode','=',session('compcode'));
+        $table = DB::table('hisdb.bed')
+                    ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','tel_ext','statistic','bedchgcode','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
+                    ->where('compcode','=',session('compcode'));
         
-        $table = $this->defaultGetter($request);
+        // $table = $this->defaultGetter($request);
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);

@@ -130,8 +130,7 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			//{ label: 'Tel Ext', name: 'tel_ext', width: 13, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'Statistic', name: 'statistic', width: 13, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
