@@ -75,11 +75,8 @@ $(document).ready(function () {
 		},
 		onSelectRow:function(rowid, selected){
 			if(rowid != null) {
-				urlParam_cheqregdtl.filterVal[0]=selrowData("#jqGrid").bankcode; 
-				$("#Fsuppitems :input[name='si_suppcode']").val(selrowData("#jqGrid").SuppCode);
-				refreshGrid('#gridSuppitems',urlParam_suppitems);
-				$('#gridSuppBonus').jqGrid('clearGridData');
-				$("#pg_jqGridPager3 table").hide();
+				urlParam_cheqregdtl.filterVal[0]=selrowData("#jqGrid").bankcode;
+				refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl);
 				$("#pg_jqGridPager2 table").show();
 			}
 
@@ -88,7 +85,68 @@ $(document).ready(function () {
 	});
 
 
-	
+	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
+			var urlParam_cheqregdtl={
+				action:'get_table_default',
+				url:'util/get_table_default',
+				field:'',
+				table_name:'finance.chqreg',
+				table_id:'startno',
+				filterCol:['bankcode'],
+				filterVal:[''],
+				sort_idno: true,
+			}
+
+			$("#gridCheqRegDetail").jqGrid({
+				editurl: "/cheqreg/form",
+				datatype: "local",
+				colModel: [
+				 	{ label: 'Comp Code', name: 'compcode', width: 50, hidden:true},	
+					{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true, editable: true,},
+					{ label: 'Start Number', name: 'startno', width: 20, classes: 'wrap', sorttype: 'number', editable: true,
+							editrules:{required: true},edittype:"text",canSearch:true,checked:true,
+							editoptions:{
+								maxlength: 11,
+								dataInit: function(element) {
+									$(element).keypress(function(e){
+										 if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+											return false;
+										 }
+									});
+								}
+							},
+					},
+					{ label: 'End Number', name: 'endno', width: 20, classes: 'wrap', editable: true,
+							editrules:{required: true},edittype:"text",canSearch:true,
+							editoptions:{
+								maxlength: 11,
+								dataInit: function(element) {
+									$(element).keypress(function(e){
+										 if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+											return false;
+										 }
+									});
+								}
+							},
+					},
+					{ label: 'Cheq Qty', name: 'cheqqty', width: 30, hidden:true,},
+					{ label: 'Stat', name: 'stat', width: 30, hidden:true,},
+					{ label: 'Action', name: 'action', width :10,  formatoptions: { keys: false, editbutton: true, delbutton: true }, formatter: 'actions'},
+					{label: 'idno', name: 'idno', hidden: true},
+				],
+				autowidth:true,
+				viewrecords: true,
+                multiSort: true,
+				loadonce: false,
+				rownumbers: true,
+				//sortname: 'startno',
+				//sortorder:'desc',
+				height: 124,
+				rowNum: 30,
+				sord: "desc",
+				pager: "#jqGridPager2",
+			});
+
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,
@@ -151,732 +209,12 @@ $(document).ready(function () {
 	addParamField('#jqGrid',true,urlParam);
 	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
 
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////// suppitems //////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-
-	var dialog_pricecode = new ordialog(
-		'si_pricecode','material.pricesource',"#Fsuppitems :input[name='si_pricecode']",errorField,
-		{	colModel:[
-				{label:'Code',name:'pricecode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-				urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-				},
-				ondblClickRow: function () {
-					$('#si_itemcode').focus();
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#si_itemcode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-				}
-		},{
-			title:"Select Price Code",
-			open: function(){
-				dialog_pricecode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_pricecode.urlParam.filterVal=['session.compcode','A']
-			}
-		},'urlParam', 'radio', 'tab'
-	);
-	dialog_pricecode.makedialog(true);
-
-	var dialog_itemcode = new ordialog(
-		'si_itemcode','material.product',"#Fsuppitems :input[name='si_itemcode']",errorField,
-		{	colModel:[
-				{label:'Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-				},
-				ondblClickRow: function () {
-					$('#si_uomcode').focus();
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#si_uomcode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-				}
-		},{
-			title:"Select Supplier Group",
-			open: function(){
-				dialog_itemcode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_itemcode.urlParam.filterVal=['session.compcode','A']
-			}
-		},'urlParam', 'radio', 'tab'
-	);
-	dialog_itemcode.makedialog(true);
-
-	var dialog_uomcode = new ordialog(
-		'si_uomcode','material.uom',"#Fsuppitems :input[name='si_uomcode']",errorField,
-		{	colModel:[
-				{label:'Code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-				},
-				ondblClickRow: function () {
-					
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-				}
-
-		},{
-			title:"Select UOM Code",
-			open: function(){
-				dialog_uomcode.urlParam.filterCol=['recstatus'],
-				dialog_uomcode.urlParam.filterVal=['A']
-			}
-		},'urlParam', 'radio', 'tab'
-	);
-	dialog_uomcode.makedialog(true);
-
-	var buttItem1=[{
-		text: "Save",click: function() {
-			mycurrency.formatOff();
-			mycurrency.check0value(errorField);
-			if( $('#Fsuppitems').isValid({requiredFields: ''}, {}, true) ) {
-				saveFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",oper_suppitems,saveParam_suppitems,urlParam_suppitems,'#searchForm2');
-			}else{
-				mycurrency.formatOn();
-			}
-		}
-	},{
-		text: "Cancel",click: function() {
-			$(this).dialog('close');
-		}
-	}];
-
-	var oper_suppitems;
-	$("#Dsuppitems")
-	  .dialog({ 
-		width: 9/10 * $(window).width(),
-		modal: true,
-		autoOpen: false,
-		open: function( event, ui ) {
-			parent_close_disabled(true);
-			switch(oper_suppitems) {
-				case state = 'add':
-					mycurrency.formatOnBlur();
-					$( this ).dialog( "option", "title", "Add" );
-					enableForm('#Fsuppitems');
-					hideOne('#Fsuppitems');
-					rdonly('#Fsuppitems');
-					$(this).dialog("option", "buttons",buttItem1);
-					break;
-				case state = 'edit':
-					mycurrency.formatOnBlur();
-					$( this ).dialog( "option", "title", "Edit" );
-					enableForm('#Fsuppitems');
-					frozeOnEdit("#Dsuppitems");
-					$('#Fsuppitems :input[hideOne]').show();
-					rdonly('#Fsuppitems');
-					$(this).dialog("option", "buttons",buttItem1);
-					break;
-				case state = 'view':
-					mycurrency.formatOnBlur();
-					$( this ).dialog( "option", "title", "View" );
-					disableForm('#Fsuppitems');
-					$('#Fsuppitems :input[hideOne]').show();
-					$(this).dialog("option", "buttons",butt2);
-					break;
-			}
-			if(oper_suppitems=='add'){
-				dialog_pricecode.on();
-				dialog_itemcode.on();
-				dialog_uomcode.on();
-			}
-			if(oper_suppitems == 'edit' && $('#gridSuppBonus').jqGrid('getGridParam', 'reccount') < 1){
-				dialog_pricecode.on();
-				dialog_itemcode.on();
-				dialog_uomcode.on();
-			}
-			if(oper_suppitems == 'edit' && $('#gridSuppBonus').jqGrid('getGridParam', 'reccount') > 1){
-				$("#Fsuppitems :input[name*='si_pricecode']").prop("readonly",true);
-				$("#Fsuppitems :input[name*='si_itemcode']").prop("readonly",true);
-				$("#Fsuppitems :input[name*='si_uomcode']").prop("readonly",true);
-				$("#Fsuppitems :input[name*='si_purqty']").prop("readonly",true);
-			}
-			if(oper_suppitems!='add'){
-				dialog_pricecode.check(errorField);
-				dialog_itemcode.check(errorField);
-				dialog_uomcode.check(errorField);
-			}
-			if (oper_suppitems != 'view') {
-				set_compid_from_storage("input[name='si_lastcomputerid']","input[name='si_lastipaddress']","input[name='si_computerid']","input[name='si_ipaddress']");
-			}
-		},
-		close: function( event, ui ) {
-			parent_close_disabled(false);
-			emptyFormdata(errorField,'#Fsuppitems');
-			$('#Fsuppitems .alert').detach();
-			dialog_pricecode.off();
-			dialog_itemcode.off();
-			dialog_uomcode.off();
-			if(oper=='view'){
-				$(this).dialog("option", "buttons",buttItem1);
-			}
-		},
-		buttons :buttItem1,
-	  });
-	
-	/////////////////////parameter for jqgrid url SVC/////////////////////////////////////////////////
-	var urlParam_suppitems={
-		action:'get_table_default',
-		field:'',
-		url:'util/get_table_default',
-		fixPost:'true',//replace underscore with dot
-		table_name:['material.suppitems as si','material.product as p'],
-		table_id:'si_lineno_',
-		join_type:['LEFT JOIN'],
-		join_onCol:['si.itemcode'],
-		join_onVal:['p.itemcode'],
-		filterCol:['si.SuppCode','si.compcode','p.compcode'],
-		filterVal:['','session.company','session.company'],//suppcode set when click supplier grid
-		sort_idno:true,
-	}
-
-	var saveParam_suppitems={
-		action:'save_table_default',
-		url:'supplier/form',
-		field:'',
-		oper:oper_suppitems,
-		table_name:'material.suppitems',//for save_table_default, use only 1 table
-		fixPost:'true',//throw out dot in the field name
-		idnoUse:'si_idno',
-		table_id:'itemcode',
-		// noduplicate:true,
-		// filterCol:['suppcode'],
-		// filterVal:[''],//suppcode set when click supplier grid
-		lineno:{useOn:'lineno_'},
-		saveip:'true'
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	$("#gridSuppitems").jqGrid({
-		datatype: "local",
-		 colModel: [
-			{ label: 'Supplier Code', name: 'si_suppcode', width: 100, hidden: true},
-		 	{ label: 'no', name: 'si_lineno_', width: 50, sorttype: 'number', hidden: true,}, // 
-		 	{ label: 'Item Code', name: 'si_itemcode', width: 150, sorttype: 'text', editable: true, classes: 'wrap', canSearch: true},
-			{ label: 'Item Description', name: 'p_description', width: 400, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true},
-			{ label: 'Price Code', name: 'si_pricecode', width: 200, sorttype: 'text', editable: true, classes: 'wrap'},
-			{ label: 'Uom Code', name: 'si_uomcode', width: 100, sorttype: 'text', editable: true, classes: 'wrap'},
-			{ label: 'Unit Price', name: 'si_unitprice', width: 200, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
-			{ label: 'Purchase Quantity', name: 'si_purqty', width: 200, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
-			{ label: 'Percentage of Discount', name: 'si_perdiscount', width: 100,  hidden: true},
-			{ label: 'Amount Discount', name: 'si_amtdisc', width: 30,  hidden: true},
-			{ label: 'Amount Sales Tax', name: 'si_amtslstax', width: 30,  hidden: true},
-			{ label: 'Percentage of Sales Tax', name: 'si_perslstax', width: 30,  hidden: true},
-			{ label: 'Expiry Date', name: 'si_expirydate', width: 30,  hidden: true},
-			{ label: "Item Code at Supplier's Site", name: 'si_sitemcode', width: 30,  hidden: true},
-			{ label: 'Record Status', name: 'si_recstatus', width: 200, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
-			},
-			{label: 'No', name: 'si_idno', width: 50, hidden: true},
-			{ label: 'adduser', name: 'si_adduser', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'adddate', name: 'si_adddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'upduser', name: 'si_upduser', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'upddate', name: 'si_upddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'computerid', name: 'si_computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'si_ipaddress', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastcomputerid', name: 'si_lastcomputerid', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'lastipaddress', name: 'si_lastipaddress', width: 90, hidden:true, classes: 'wrap'},
-		],
-		viewrecords: true,
-		//shrinkToFit: true,
-		autowidth:true,
-        multiSort: true,
-		loadonce:false,
-		width: 900,
-		height: 200,
-		rowNum: 30,
-		hidegrid: false,
-		caption: caption('searchForm2','Items Supplied By the Supplier'),
-		pager: "#jqGridPager2",
-		onPaging: function(pgButton){
-		},
-		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager2 td[title='Edit Selected Row']").click();
-		},
-		gridComplete: function(){
-			if(oper == 'add'){
-				$("#gridSuppitems").setSelection($("#jqGrid").getDataIDs()[0]);
-			}
-
-			$('#'+$("#gridSuppitems").jqGrid ('getGridParam', 'selrow')).focus();
-
-			/////////////////////////////// reccount ////////////////////////////
-			
-			if($("#gridSuppitems").getGridParam("reccount") >= 1){
-				$("#jqGridPagerglyphicon-trash").hide();
-			} 
-
-			if($("#gridSuppitems").getGridParam("reccount") < 1){
-				$("#jqGridPagerglyphicon-trash").show()
-			}
-		},
-		onSelectRow:function(rowid, selected){
-			if(rowid != null) {
-				rowData = $('#gridSuppitems').jqGrid ('getRowData', rowid);
-				//console.log(rowData.svc_billtype);
-				urlParam_suppbonus.filterVal[0]=selrowData("#gridSuppitems").si_itemcode; 
-
-				$("#Fsuppbonus :input[name*='sb_suppcode']").val(selrowData("#gridSuppitems").si_suppcode);
-				$("#Fsuppbonus :input[name*='sb_pricecode']").val(selrowData("#gridSuppitems").si_pricecode);
-				$("#Fsuppbonus :input[name*='sb_itemcode']").val(selrowData("#gridSuppitems").si_itemcode);
-				$("#Fsuppbonus :input[name*='sb_uomcode']").val(selrowData("#gridSuppitems").si_uomcode);
-				$("#Fsuppbonus :input[name*='sb_purqty']").val(selrowData("#gridSuppitems").si_purqty);
-				refreshGrid('#gridSuppBonus',urlParam_suppbonus);
-				$("#pg_jqGridPager3 table").show();
-			}
-		},
-		
-	});
-	
-	$("#gridSuppitems").jqGrid('navGrid','#jqGridPager2',{	
-		view:false,edit:false,add:false,del:false,search:false,
-		beforeRefresh: function(){
-			refreshGrid("#gridSuppitems",urlParam_suppitems);
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		caption:"", 
-		buttonicon:"glyphicon glyphicon-trash", 
-		id:"jqGridPager2glyphicon-trash",
-		onClickButton: function(){
-			oper_suppitems='del';
-			var selRowId = $("#gridSuppitems").jqGrid ('getGridParam', 'selrow');
-			if(!selRowId){
-				alert('Please select row');
-				return emptyFormdata(errorField,'#Fsuppitems');
-			}else{
-				saveFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",'del',saveParam_suppitems,urlParam_suppitems,null,{'idno':selRowId});
-			}
-		}, 
-		position: "first", 
-		title:"Delete Selected Row", 
-		cursor: "pointer"
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		caption:"", 
-		buttonicon:"glyphicon glyphicon-info-sign", 
-		onClickButton: function(){
-			oper_suppitems='view';
-			selRowId = $("#gridSuppitems").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",selRowId,'view');
-		}, 
-		position: "first", 
-		title:"View Selected Row", 
-		cursor: "pointer"
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		caption:"", 
-		buttonicon:"glyphicon glyphicon-edit", 
-		onClickButton: function(){
-			oper_suppitems='edit';
-			selRowId = $("#gridSuppitems").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",selRowId,'edit');
-			recstatusDisable();
-		}, 
-		position: "first", 
-		title:"Edit Selected Row", 
-		cursor: "pointer"
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		caption:"", 
-		buttonicon:"glyphicon glyphicon-plus", 
-		onClickButton: function(){
-			oper_suppitems='add';
-			$( "#Dsuppitems" ).dialog( "open" );
-			//$('#Fsuppitems :input[name=si_lineno_]').hide();
-			//$("#Fsuppitems :input[name*='SuppCode']").val(selrowData('#jqGrid').SuppCode);
-		}, 
-		position: "first", 
-		title:"Add New Row", 
-		cursor: "pointer"
-	});
-
-	addParamField('#gridSuppitems',false,urlParam_suppitems);
-	addParamField('#gridSuppitems',false,saveParam_suppitems,["p_description", "si_idno", "si_adduser", "si_adddate", "si_upduser", "si_upddate", "si_computerid", 'si_ipaddress', 'si_recstatus']);
-
-	populateSelect('#gridSuppitems','#searchForm2');
-	searchClick('#gridSuppitems','#searchForm2',urlParam_suppitems);
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////// suppbonus //////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	var dialog_bonpricecode = new ordialog(
-		'sb_bonpricecode','material.pricesource',"#Fsuppbonus :input[name='sb_bonpricecode']",errorField,
-		{	colModel:[
-				{label:'Code',name:'pricecode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-			},
-				ondblClickRow: function () {
-					$('#sb_bonitemcode').focus();
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#sb_bonitemcode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-				}
-		},{
-			title:"Select Bonus Price Code",
-			open: function(){
-				dialog_bonpricecode.urlParam.filterCol=['recstatus'],
-				dialog_bonpricecode.urlParam.filterVal=['A']
-			}
-		},'urlParam', 'radio', 'tab'
-	);
-	dialog_bonpricecode.makedialog(true);
-
-	var dialog_bonitemcode = new ordialog(
-		'sb_bonitemcode','material.product',"#Fsuppbonus :input[name='sb_bonitemcode']",errorField,
-		{	colModel:[
-				{label:'Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-			},
-				ondblClickRow: function () {
-					$('#sb_bonuomcode').focus();
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#sb_bonuomcode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-				}
-		},{
-			title:"Select Bonus Item Code",
-			open: function(){
-				dialog_bonitemcode.urlParam.filterCol=['recstatus'],
-				dialog_bonitemcode.urlParam.filterVal=['A']
-			}
-		},'urlParam', 'radio', 'tab'
-	);
-	dialog_bonitemcode.makedialog(true);
-
-	var dialog_bonuomcode = new ordialog(
-		'sb_bonuomcode','material.uom',"#Fsuppbonus :input[name='sb_bonuomcode']",errorField,
-		{	colModel:[
-				{label:'Code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
-			},
-				ondblClickRow: function () {
-					
-				},
-				gridComplete: function(obj){
-					var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-				}
-		},{
-			title:"Select Bonus UOM Code",
-			open: function(){
-				dialog_bonuomcode.urlParam.filterCol=['recstatus'],
-				dialog_bonuomcode.urlParam.filterVal=['A']
-			}
-		},'urlParam', 'radio', 'tab'
-	);
-	dialog_bonuomcode.makedialog(true);
-	
-	var buttbonus1=[{
-		text: "Save",click: function() {
-			mycurrency.formatOff();
-			mycurrency.check0value(errorField);
-			if( $('#Fsuppbonus').isValid({requiredFields: ''}, {}, true) ) {
-				saveFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",oper_suppbonus,saveParam_suppbonus,urlParam_suppbonus);
-			}else{
-				mycurrency.formatOn();
-			}
-		}
-	},{
-		text: "Cancel",click: function() {
-			$(this).dialog('close');
-		}
-	}];
-
-	var oper_suppbonus;
-	$("#Dsuppbonus")
-	  .dialog({ 
-		width: 9/10 * $(window).width(),
-		modal: true,
-		autoOpen: false,
-		open: function( event, ui ) {
-			parent_close_disabled(true);
-			switch(oper_suppbonus) {
-				case state = 'add':
-					mycurrency.formatOnBlur();
-					$( this ).dialog( "option", "title", "Add" );
-					enableForm('#Fsuppbonus');
-					rdonly('#Fsuppbonus');
-					hideOne('#Fsuppbonus');
-					$(this).dialog("option", "buttons",buttbonus1);
-					break;
-				case state = 'edit':
-					mycurrency.formatOnBlur();
-					$( this ).dialog( "option", "title", "Edit" );
-					enableForm('#Fsuppbonus');
-					frozeOnEdit("#Dsuppbonus");
-					rdonly('#Fsuppbonus');
-					$('#formdata :input[hideOne]').show();
-					$(this).dialog("option", "buttons",buttbonus1);
-					break;
-				case state = 'view':
-					mycurrency.formatOnBlur();
-					$( this ).dialog( "option", "title", "View" );
-					disableForm('#Fsuppbonus');
-					$('#formdata :input[hideOne]').show();
-					$(this).dialog("option", "buttons",butt2);
-					break;
-			}
-			if(oper_suppbonus!='view'){
-				set_compid_from_storage("input[name='sb_lastcomputerid']","input[name='sb_lastipaddress']","input[name='sb_computerid']","input[name='sb_ipaddress']");
-				dialog_bonpricecode.on();
-				dialog_bonitemcode.on();
-				dialog_bonuomcode.on();
-			}
-			if(oper_suppbonus!='add'){
-				dialog_bonpricecode.check(errorField);
-				dialog_bonitemcode.check(errorField);
-				dialog_bonuomcode.check(errorField);
-			}
-		},
-		close: function( event, ui ) {
-			emptyFormdata(errorField,'#Fsuppbonus');
-			parent_close_disabled(false);
-			//$('.alert').detach();
-			$('#Fsuppbonus .alert').detach();
-			dialog_bonpricecode.off();
-			dialog_bonitemcode.off();
-			dialog_bonuomcode.off();
-			$("#Fsuppbonus a").off();
-			if(oper=='view'){
-				$(this).dialog("option", "buttons",buttbonus1);
-			}
-		},
-		buttons :buttbonus1,
-	  });
-	/////////////////////parameter for jqgrid url Item/////////////////////////////////////////////////
-	var urlParam_suppbonus={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:'',
-		fixPost:'true',//replace underscore with dot
-		table_name:['material.suppbonus as sb','material.product as p'],
-		table_id:'sb_lineno_',
-		join_type:['LEFT JOIN'],
-		join_onCol:['sb.bonitemcode'],
-		join_onVal:['p.itemcode'],
-		filterCol:['sb.itemcode', 'sb.suppcode',  'sb.compcode', 'p.compcode'],
-		filterVal:['', '', 'session.company', 'session.company'],
-		sort_idno:true,
-	}
-
-	var saveParam_suppbonus={
-		action:'save_table_default',
-		url:'supplier/form',
-		field:'',
-		oper:oper_suppitems,
-		table_name:'material.suppbonus',//for save_table_default, use only 1 table
-		fixPost:'true',//throw out dot in the field name
-		idnoUse:'sb_idno',
-		// filterCol:['suppcode'],
-		// filterVal:[''],//suppcode set when click supplier grid
-		noduplicate:true,
-		lineno:{useOn:'lineno_'},
-		saveip:'true'
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-
-	$("#gridSuppBonus").jqGrid({
-		datatype: "local",
-		 colModel: [
-		 	{ label: 'Supplier Code', name: 'sb_suppcode', width: 50, hidden: true},
-		 	{ label: 'no', name: 'sb_lineno_', width: 50, hidden: true},
-		 	{ label: 'itemcode', name: 'sb_itemcode', width: 50, hidden: true},
-			{ label: 'Price Code', name: 'sb_pricecode', width: 30, hidden: true},
-			{ label: 'uomcode', name: 'sb_uomcode', width: 50, hidden: true},
-			{ label: 'purqty', name: 'sb_purqty', width: 50, hidden: true},
-			{ label: 'bonpricecode', name: 'sb_bonpricecode', width: 50, hidden: true},
-		 	{ label: 'Bonus Item Code', name: 'sb_bonitemcode', width: 200, classes: 'wrap', canSearch: true},
-			{ label: 'Item Description', name: 'p_description', width: 400, classes: 'wrap', checked:true,canSearch: true},
-			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 200, classes: 'wrap'},
-			{ label: 'Bonus Quantity', name: 'sb_bonqty', width: 200, classes: 'wrap', formatter:'currency'}, 
-			{ label: "Supplier's Item Code", name: 'sb_bonsitemcode', width: 200, classes: 'wrap'},
-			{ label: 'Record Status', name: 'sb_recstatus', width: 200, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
-			},
-			{label: 'No', name: 'sb_idno', width: 50, hidden: true},
-			{ label: 'adduser', name: 'sb_adduser', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'adddate', name: 'sb_adddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'upduser', name: 'sb_upduser', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'upddate', name: 'sb_upddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'idno', name: 'sb_idno', width: 90, hidden:true},
-			{ label: 'computerid', name: 'sb_computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'sb_ipaddress', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastcomputerid', name: 'sb_lastcomputerid', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'lastipaddress', name: 'sb_lastipaddress', width: 90, hidden:true, classes: 'wrap'},
-		],
-		viewrecords: true,
-		shrinkToFit: true,
-		autowidth:true,
-        multiSort: true,
-		loadonce:false,
-		width: 900,
-		height: 100,
-		rowNum: 30,
-		hidegrid: false,
-		caption: caption('searchForm3','Bonus Items Given by the Supplier for the item'),
-		pager: "#jqGridPager3",
-		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager3 td[title='Edit Selected Row']").click();
-		},
-		gridComplete: function(){
-			if(oper == 'add'){
-				$("#gridSuppBonus").setSelection($("#jqGrid").getDataIDs()[0]);
-			}
-
-			$('#'+$("#gridSuppBonus").jqGrid ('getGridParam', 'selrow')).focus();
-
-			/////////////////////////////// reccount ////////////////////////////
-			if($("#gridSuppBonus").getGridParam("reccount") >= 1){
-				$("#jqGridPager2glyphicon-trash").hide();
-			} 
-
-			if($("#gridSuppBonus").getGridParam("reccount") < 1){
-				$("#jqGridPager2glyphicon-trash").show()
-			}
-			
-		},
-		onSelectRow:function(rowid, selected){
-			if(rowid != null) {
-				rowData = $('#gridSuppBonus').jqGrid ('getRowData', rowid);
-			}
-		},
-	});
-	
-	$("#gridSuppBonus").jqGrid('navGrid','#jqGridPager3',{	
-		view:false,edit:false,add:false,del:false,search:false,
-		beforeRefresh: function(){
-			refreshGrid("#gridSuppBonus",urlParam_suppbonus);
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager3",{
-		caption:"", 
-		buttonicon:"glyphicon glyphicon-trash", 
-		onClickButton: function(){
-			oper_suppitems='del';
-			var selRowId = $("#gridSuppBonus").jqGrid ('getGridParam', 'selrow');
-			if(!selRowId){
-				alert('Please select row');
-				return emptyFormdata(errorField,'#Fsuppbonus');
-			}else{
-				saveFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",'del',saveParam_suppbonus,urlParam_suppbonus,null,{'idno':selRowId});
-			}
-		}, 
-		position: "first", 
-		title:"Delete Selected Row", 
-		cursor: "pointer"
-	}).jqGrid('navButtonAdd',"#jqGridPager3",{
-		caption:"", 
-		buttonicon:"glyphicon glyphicon-info-sign", 
-		onClickButton: function(){
-			oper_suppbonus='view';
-			selRowId = $("#gridSuppBonus").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",selRowId,'view');
-		}, 
-		position: "first", 
-		title:"View Selected Row", 
-		cursor: "pointer"
-	}).jqGrid('navButtonAdd',"#jqGridPager3",{
-		caption:"", 
-		buttonicon:"glyphicon glyphicon-edit", 
-		onClickButton: function(){
-			oper_suppbonus='edit';
-			selRowId = $("#gridSuppBonus").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",selRowId,'edit');
-			recstatusDisable();
-		}, 
-		position: "first", 
-		title:"Edit Selected Row", 
-		cursor: "pointer"
-	}).jqGrid('navButtonAdd',"#jqGridPager3",{
-		caption:"", 
-		buttonicon:"glyphicon glyphicon-plus", 
-		onClickButton: function(rowid, selected){
-			oper_suppbonus='add';
-			$( "#Dsuppbonus" ).dialog( "open" );
-		}, 
-		position: "first", 
-		title:"Add New Row", 
-		cursor: "pointer"
-	});
-
-	addParamField('#gridSuppBonus',false,urlParam_suppbonus);
-	addParamField('#gridSuppBonus',false,saveParam_suppbonus,["p_description", "sb_idno", "sb_adduser","sb_adddate", "sb_upduser","sb_upddate", "sb_computerid", "sb_ipaddress", "sb_recstatus"]);
-
-	populateSelect('#gridSuppBonus','#searchForm3');
-	searchClick('#gridSuppBonus','#searchForm3',urlParam_suppbonus);
-
 	/////////////////Pager Hide/////////////////////////////////////////////////////////////////////////////////////////
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
 
 	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
-		$("#gridSuppitems").jqGrid ('setGridWidth', Math.floor($("#gridSuppitems_c")[0].offsetWidth-$("#gridSuppitems_c")[0].offsetLeft-28));
-	});
-
-	$("#jqGrid3_panel2").on("show.bs.collapse", function(){
-		$("#gridSuppBonus").jqGrid ('setGridWidth', Math.floor($("#gridSuppBonus_c")[0].offsetWidth-$("#gridSuppBonus_c")[0].offsetLeft-28));
+		$("#gridCheqRegDetail").jqGrid ('setGridWidth', Math.floor($("#gridCheqRegDetail_c")[0].offsetWidth-$("#gridCheqRegDetail_c")[0].offsetLeft-28));
 	});
 
 });

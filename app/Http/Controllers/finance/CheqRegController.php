@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\material;
+namespace App\Http\Controllers\finance;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
@@ -9,17 +9,17 @@ class CheqRegController extends defaultController
 {   
 
     var $table;
-    var $duplicateCode;
+    //var $duplicateCode;
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "Code";
+        //$this->duplicateCode = "Code";
     }
 
     public function show(Request $request)
     {   
-        return view('finance.cheqreg.cheqreg');
+        return view('finance.CM.chqreg.cheqreg');
     }
 
     public function form(Request $request)
