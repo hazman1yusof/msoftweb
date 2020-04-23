@@ -28,19 +28,19 @@ class SysparamController extends Controller
 			$object = new stdClass();
 			switch ($value) {
 				case 'OCCUPIED':
-					$object->bedcode = '<i class="fa fa-bed" aria-hidden="true"></i> '.$value;
+					$object->bedcode = '<i class="fa fa-bed fa-2x" aria-hidden="true"></i> '.$value;
 					break;
 				case 'VACANT':
-					$object->bedcode = '<i class="fa fa-ban" aria-hidden="true"></i> '.$value;
+					$object->bedcode = '<i class="fa fa-ban fa-2x" aria-hidden="true"></i> '.$value;
 					break;
 				case 'HOUSEKEEPING':
-					$object->bedcode = '<i class="fa fa-female" aria-hidden="true"></i> '.$value;
+					$object->bedcode = '<i class="fa fa-female fa-2x" aria-hidden="true"></i> '.$value;
 					break;
 				case 'MAINTENANCE':
-					$object->bedcode = '<i class="fa fa-gavel" aria-hidden="true"></i> '.$value;
+					$object->bedcode = '<i class="fa fa-gavel fa-2x" aria-hidden="true"></i> '.$value;
 					break;
 				case 'ISOLATED':
-					$object->bedcode = '<i class="fa fa-bullhorn" aria-hidden="true"></i> '.$value;
+					$object->bedcode = '<i class="fa fa-bullhorn fa-2x" aria-hidden="true"></i> '.$value;
 					break;
 				
 				default:
@@ -48,7 +48,7 @@ class SysparamController extends Controller
 					$object->bedcode = '<i class="fa fa-bullhorn" aria-hidden="true"></i> '.$value;
 					break;
 			}
-			$object->description = $value.' BED';
+			$object->description = $value;
 			$rows[$key] = $object;
 		}
 

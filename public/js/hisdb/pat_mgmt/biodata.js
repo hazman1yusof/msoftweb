@@ -6,7 +6,16 @@
             },
             telhp: {
               require_from_group: [1, ".phone-group"]
-            }
+            },
+            Newic: {
+              require_from_group: [1, ".ic-group"]
+            },
+            Oldic: {
+              require_from_group: [1, ".ic-group"]
+            },
+            idnumber: {
+              require_from_group: [1, ".ic-group"]
+            },
         }
     });	// patient form validation
     
@@ -76,8 +85,6 @@
         var urlType = 'pat_mast/get_entry?action=get_patient_idtype';
         loadlist($('select#cmb_pat_idtype').get(0),urlType,'Code','Description');
 
-        var urloccupation = 'pat_mast/get_entry?action=get_patient_occupation';
-        loadlist($('select#occupcode').get(0),urloccupation,'occupcode','description');
 
         var urlsex = 'pat_mast/get_entry?action=get_patient_sex';
         loadlist($('select#cmb_pat_sex').get(0),urlsex,'code','description');
@@ -93,6 +100,7 @@
 
         var urlRel = 'pat_mast/get_entry?action=get_patient_relationship';
         loadlist($('select#cmb_grtr_relation').get(0),urlRel,'relationshipcode','description');
+        
     }
 
     $("#txt_pat_dob").blur(function(){
@@ -136,6 +144,8 @@
         $('#hid_pat_occupation').val(rowdata.OccupCode);
 
         // $('#txt_pat_loginid').val(rowdata.DOB);
+        
+        $('#hid_ID_Type').val(rowdata.ID_Type);
         $('#txt_pat_dob').val(rowdata.DOB);
         $('#txt_pat_age').val(gettheage(rowdata.DOB));
         $('#txt_pat_telh').val('0' +rowdata.telh);
@@ -348,7 +358,7 @@
         {code:'#hid_RaceCode',desc:'#txt_RaceCode',id:'race'},
         {code:'#hid_Religion',desc:'#txt_Religion',id:'religioncode'}
     ]);
-    // desc_show.load_desc();
+    desc_show.load_desc();
 
     function loading_desc(obj){
         this.code_fields=obj;

@@ -1,5 +1,5 @@
 <!-- Large modal -->
-<div id="mdl_patient_info" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; padding-left: 0px !important;">
+<div id="mdl_patient_info" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; padding-left: 0px !important;">
     <div class="modal-dialog modal-lg">
 
         <form id="frm_patient_info" class="form-horizontal">
@@ -69,7 +69,7 @@
 													</div>
 													<div class="col-md-3">
 														<small for="cmb_pat_sex">Sex</small>
-														<select id="cmb_pat_sex" name="Sex" class="form-control form-mandatory">
+														<select id="cmb_pat_sex" name="Sex" class="form-control form-mandatory" required>
 															<option value="">- Select Sex -</option>
 															<option value="M">Male</option>
 															<option value="F">Female</option>
@@ -84,7 +84,7 @@
 															<option value="">- Select IC Type -</option>
 														</select> -->
 														<div class="input-group">
-		                                                    <input type="text" class="form-control form-mandatory" name="txt_ID_Type" id="txt_ID_Type">
+		                                                    <input type="text" class="form-control form-mandatory" name="txt_ID_Type" id="txt_ID_Type" required>
 		                                                    <input type="hidden" name="ID_Type" id="hid_ID_Type" value="" />
 		                                                    <span class="input-group-btn">
 		                                                        <button type="button" class="btn btn-warning" id="btn_ID_Type" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('ID_Type');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -93,15 +93,15 @@
 													</div>
 													<div class="col-md-3">
 														<small for="txt_pat_newic">New IC (eg 690101086649)</small>
-														<input class="form-control form-mandatory" name="Newic" id="txt_pat_newic" placeholder="" type="text" required>
+														<input class="form-control form-mandatory ic-group" name="Newic" id="txt_pat_newic" placeholder="" type="text">
 													</div>
 													<div class="col-md-3">
 														<small for="txt_pat_oldic">Old IC</small>
-														<input class="form-control form-mandatory" name="Oldic" id="txt_pat_oldic" placeholder="" type="text">
+														<input class="form-control form-mandatory ic-group" name="Oldic" id="txt_pat_oldic" placeholder="" type="text">
 													</div>
 													<div class="col-md-3">
 														<small for="txt_pat_idnumber">Other (eg Passport Number)</small>
-														<input class="form-control form-mandatory" name="idnumber" id="txt_pat_idnumber" placeholder="" type="text">
+														<input class="form-control form-mandatory ic-group" name="idnumber" id="txt_pat_idnumber" placeholder="" type="text">
 													</div>												
 													
 												</div>
@@ -111,7 +111,7 @@
                                             <div class="col-md-4">
 												<small for="txt_pat_dob">DOB - Age</small>
 												<div class="input-group">
-													<input class="form-control form-mandatory" style="width:180px;" name="DOB" id="txt_pat_dob" placeholder="" type="date">
+													<input class="form-control form-mandatory" style="width:180px;" name="DOB" id="txt_pat_dob" placeholder="" type="date" required>
 													<span class="input-group-addon" style="background-color:transparent; border-color: transparent" style="width:10px;">&mdash;</span>														
 													<input class="form-control" style="width:50px;" name="txt_pat_age" id="txt_pat_age" placeholder="" type="text" disabled>
 												</div>
@@ -122,7 +122,7 @@
                                                     <option value="">- Select Race -</option>
                                                 </select> -->
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control form-mandatory" name="txt_RaceCode" id="txt_RaceCode">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_RaceCode" id="txt_RaceCode" required>
                                                     <input type="hidden" name="RaceCode" id="hid_RaceCode" value="" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_RaceCode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('RaceCode');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -135,7 +135,7 @@
                                                     <option value="">- Select Religion -</option>
                                                 </select> -->
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control form-mandatory" name="txt_Religion" id="txt_Religion">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_Religion" id="txt_Religion" required>
                                                     <input type="hidden" name="Religion" id="hid_Religion" value="" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_Religion" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('Religion');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -148,7 +148,7 @@
                                                     <option value="">- Select Language -</option>
                                                 </select> -->
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control form-mandatory" name="txt_LanguageCode" id="txt_LanguageCode">
+                                                    <input type="text" class="form-control" name="txt_LanguageCode" id="txt_LanguageCode">
                                                     <input type="hidden" name="LanguageCode" id="hid_LanguageCode" value="" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_LanguageCode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('LanguageCode');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -176,7 +176,7 @@
                                                     <option value="">- Select Citizen -</option>
                                                 </select-->
 												<div class="input-group">
-                                                    <input type="text" class="form-control form-mandatory" name="txt_pat_citizen" id="txt_pat_citizen">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_pat_citizen" id="txt_pat_citizen" required>
                                                     <input type="hidden" name="Citizencode" id="hid_pat_citizen" value="" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_pat_citizen" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_citizen');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -189,7 +189,7 @@
                                                     <option value="">- Select Area -</option>
                                                 </select-->
 												<div class="input-group">
-                                                    <input type="text" class="form-control form-mandatory" name="txt_pat_area" id="txt_pat_area">
+                                                    <input type="text" class="form-control form-mandatory" name="txt_pat_area" id="txt_pat_area" required>
                                                     <input type="hidden" name="AreaCode" id="hid_pat_area" value="" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-warning" id="btn_pat_area" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_area');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -355,16 +355,11 @@
                                         <!-- Tab content end -->
                                     </div>
 
-                                    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-                                        <div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#Corporate_Info">
-                                                <h5>Corporate Info</h5>
-                                        </div>
-                                        <div id="Corporate_Info" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <div>
+                                    
+                                    <div>
                                         <p><strong>Corporate Info</strong></p>    
                                         <div class="form-group">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-4 col-md-6">
                                                 <small for="txt_payer_company">Company Name</small>
                                                 <!--input class="form-control" id="corpcomp" placeholder="" type="text"-->
                                                 <div class="input-group">
@@ -380,7 +375,7 @@
                                             </div>
                                         </div>                                      
                                         <div class="form-group">
-                                            <div class="col-md-3">
+                                            <div class="col-md-offset-4 col-md-3">
                                                 <small for="txt_payer_staffid">Staff ID</small>
                                                 <input class="form-control" name="txt_payer_staffid" id="txt_payer_staffid" placeholder="" type="text">
                                             </div>
@@ -394,18 +389,10 @@
                                                         <button type="button" class="btn btn-warning" id="btn_pat_occupation" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_occupation');"><span class="fa fa-ellipsis-h"></span> </button>
                                                     </span>
                                                 </div>
-                                            </div>                                            
-                                            <!--div class="col-md-6">
-                                                <div class="col-md-4"></div>
-                                                <div class="col-md-5">
-                                                    <small for="remarks"><i>Click here if patient issue GL</i></small><br /><br />
-                                                    <button id="btn_payer_new_gl" type="button" class="btn btn-warning" >Add New GL</button>
-                                                </div>
-                                                <div class="col-md-3"></div>
-                                            </div-->
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-4 col-md-6">
                                                 <small for="txt_payer_email_official">Company's Email</small>
                                                 <input class="form-control" name="txt_payer_email_official" id="txt_payer_email_official" placeholder="" type="email">
                                             </div>
@@ -415,65 +402,7 @@
                                         </div>
                                         <!-- end tabs -->
                                     </div>
-                                            </div>
-                                        </div>  
-                                    </div>
                                     
-                                    <!--div role="tabpanel" class="tab-pane fade" id="tab11">
-                                        <!-- begin tabs ->
-                                        <div class="form-group">
-                                            <div class="col-md-4">
-                                                <small for="input-title">Current Address</small>
-                                                <input class="form-control" id="address1" placeholder="" type="text">
-                                                <input class="form-control" id="address2" placeholder="" type="text">
-                                                <input class="form-control" id="address3" placeholder="" type="text">
-
-                                            </div>
-                                            <div class="col-md-4">
-                                                <small for="input-mrn">Office Address</small>
-                                                <input class="form-control" id="offadd1" placeholder="" type="text">
-                                                <input class="form-control" id="offadd2" placeholder="" type="text">
-                                                <input class="form-control" id="offadd3" placeholder="" type="text">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <small for="input-mrn">Home Address</small>
-                                                <input class="form-control" id="padd1" placeholder="" type="text">
-                                                <input class="form-control" id="padd2" placeholder="" type="text">
-                                                <input class="form-control" id="padd3" placeholder="" type="text">
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-md-4">
-                                                <small for="input-title">Current Postcode</small>
-                                                <input class="form-control" id="postcode" placeholder="" type="text">
-
-
-                                            </div>
-                                            <div class="col-md-4">
-                                                <small for="offpostcode">Office Postcode</small>
-                                                <input class="form-control" id="offpostcode" placeholder="" type="text">
-
-                                            </div>
-                                            <div class="col-md-4">
-                                                <small for="input-mrn">Home Postcode</small>
-                                                <input class="form-control" id="ppostcode" placeholder="" type="text">
-
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-md-4">
-                                                <small for="telhp">Phone (Mobile)</small>
-                                                <input class="form-control" id="telhp" placeholder="" type="text">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <small for="telh">Phone (House)</small>
-                                                <input class="form-control" id="telh" placeholder="" type="text">
-                                            </div>
-                                        </div>
-                                        <!-- end tabs ->
-                                    </div-->
                                     <div role="tabpanel" class="tab-pane fade" id="tab12">
                                         <div class="form-group">
                                             <div class="col-md-3">

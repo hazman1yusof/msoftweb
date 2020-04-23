@@ -8,6 +8,11 @@ input.uppercase {
 	text-transform: uppercase;
 }
 
+.justify {
+	text-align: -webkit-center;
+}
+
+
 @endsection
 
 @section('body')

@@ -52,9 +52,11 @@ class BedManagementController extends defaultController
     }
 
     public function get_table(Request $request){
-        $table = DB::table('hisdb.bed')
-                    ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','tel_ext','statistic','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
-                    ->where('compcode','=',session('compcode'));
+        // $table = DB::table('hisdb.bed')
+        //             ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','tel_ext','statistic','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
+        //             ->where('compcode','=',session('compcode'));
+        
+        $table = $this->defaultGetter($request);
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -117,11 +119,11 @@ class BedManagementController extends defaultController
                     'bedtype' => strtoupper($request->bedtype),  
                     'room' => strtoupper($request->room),  
                     'ward' => strtoupper($request->ward),
-                    // 'tel_ext' => strtoupper($request->tel_ext),
+                    'tel_ext' => strtoupper($request->tel_ext),
                     // 'statistic' => strtoupper($request->statistic), 
                     //'occup' => 0,  
                     'occup' => strtoupper($request->occup),
-                    'tel_ext' => $this->truefalse($request->tel_ext), 
+                    // 'tel_ext' => $this->truefalse($request->tel_ext), 
                     'statistic' => $this->truefalse($request->statistic),
                     'recstatus' => strtoupper($request->recstatus),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
@@ -195,7 +197,8 @@ class BedManagementController extends defaultController
                     'room' => strtoupper($request->room),  
                     'ward' => strtoupper($request->ward),
                     'occup' => strtoupper($request->occup),
-                    'tel_ext' => $this->truefalse($request->tel_ext), 
+                    'tel_ext' => strtoupper($request->tel_ext),
+                    // 'tel_ext' => $this->truefalse($request->tel_ext), 
                     'statistic' => $this->truefalse($request->statistic),    
                     'recstatus' => strtoupper($request->recstatus),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),

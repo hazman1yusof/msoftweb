@@ -69,6 +69,11 @@
         // $('#occupcode').val(rowdata.occupcode);
         $('#hid_pat_occupation').val(rowdata.OccupCode);
 
+        
+        $('#hid_LanguageCode').val(rowdata.LanguageCode);
+        $('#hid_RaceCode').val(rowdata.RaceCode);
+        $('#hid_Religion').val(rowdata.Religion);
+        $('#hid_ID_Type').val(rowdata.ID_Type);
         $('#txt_pat_dob').val(rowdata.DOB);
         $('#txt_pat_age').val(gettheage(rowdata.DOB));
         $('#txt_pat_telh').val('0' +rowdata.telh);
@@ -108,8 +113,16 @@
 
         // ********* episode ************
         if(episode == "episode"){
-            $('#txt_epis_no').val(parseInt(rowdata.Episno) + 1); // dlm modal Episode
-            $('#txt_epis_type').val("OP");                    
+
+            $('#txt_epis_name').text(rowdata.Name);
+            $('#txt_epis_mrn').text(('0000000' + rowdata.MRN).slice(-7));
+
+            var episno_ = parseInt(rowdata.Episno);
+            if(isNaN(episno_)){
+                episno_ = 0;
+            }
+            $('#txt_epis_no').val(parseInt(episno_) + 1); // dlm modal Episode
+            $('#txt_epis_type').val($("#epistycode").val());                    
             $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
             $('#txt_epis_time').val(moment().format('hh:mm:ss'));
 
@@ -117,6 +130,9 @@
             {
                 $('#rad_epis_pregnancy_no').prop("checked", true);
                 $('#rad_epis_pregnancy_yes').prop("disabled", true);
+            }
+            if (rowdata.PatStatus == "true") // dlm modal Episode
+            { alert('PatStatus true');
             }
                 
         }
@@ -271,22 +287,23 @@
     $( "#btngurantorcommit").click(add_guarantor);
 
 
-    var refno_table = null;
-    var refno_table_name = null;
-    var refno_mdl_opened = null;
-    var refno_item = null;
     $( "#btn_refno_info").click(function() 
     {
+        var refno_table = null;
+        var refno_table_name = null;
+        var refno_mdl_opened = null;
+        var refno_item = null;
+
         refno_table_name = $('#tbl_epis_reference');
         
         refno_table = $('#tbl_epis_reference').DataTable( {
-                        "ajax": "../../../../assets/php/entry_hisdb.php?action=get_refno_list&tp=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn').val(),
+                        "ajax": "/pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val(),
                         "columns": [
                                     {'data': 'staffid'}, 
                                     {'data': 'debtorcode' },
                                     {'data': 'name' },
-                                    {'data': 'ourrefno' },
-                                    {'data': 'refno' },
+                                    {'data': 'gltype' },
+                                    {'data': 'debtorcode' },
                                    ]
                 } );
                 
@@ -298,8 +315,8 @@
                 //console.dir(debtor_table_name);
                 refno_item = refno_table.row( this ).data();                
                 //console.log("type2="+type + " refno_item=" + refno_item["description"]);
-                $('#txt_epis_our_refno').val(refno_item["ourrefno"]);
-                $('#txt_epis_refno').val(refno_item["refno"]);
+                $('#txt_epis_our_refno').val(refno_item["debtorcode"]);
+                $('#txt_epis_refno').val(refno_item["debtorcode"]);
                 
                     
                 refno_mdl_opened.modal('hide');
@@ -309,8 +326,7 @@
             
         refno_mdl_opened.on('hidden.bs.modal', function () 
         {
-            refno_table_name.html('');
-            refno_item = null;
+            refno_table.destroy();
         });
     });
 
@@ -332,7 +348,26 @@
     });
 
     $( "#btnglsave").click(function() {
-        $('#mdl_reference').modal('show');
+        if($('#glform').valid()){
+            var _token = $('#csrf_token').val();
+            let serializedForm = $( "#glform" ).serializeArray();
+            let obj = {
+                    'debtorcode':$('#hid_epis_payer').val(),
+                    'mrn':$('#mrn_episode').val(),
+                    '_token': _token
+            }
+            
+            $.post( '/pat_mast/save_gl', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                $("#glform").trigger('reset');
+                $('#mdl_new_gl').modal('hide');
+                $('#mdl_reference').modal('show');
+            }).fail(function(data) {
+                alert(data.responseText);
+            }).success(function(data){
+            });
+        }
+        
+
     });
 
     function disableEpisode(status) {
@@ -514,6 +549,8 @@
             load_for_desc(this,'epis_doctor','pat_mast/get_entry?action=get_reg_doctor');
 
             load_for_desc(this,'epis_fin','pat_mast/get_entry?action=get_reg_fin');
+
+            load_for_desc(this,'epis_fin','pat_mast/get_entry?action=get_reg_fin');
         }
 
         function load_for_desc(selobj,id,url){
@@ -589,6 +626,198 @@
 
     }
 
-    function check_last_episode(){
+    populatecombo_gl();
+    function populatecombo_gl(){
+
+        var urloccupation = 'pat_mast/get_entry?action=get_patient_occupation';
+        loadlist($('select#newgl-occupcode').get(0),urloccupation,'occupcode','description');
+
+        var urlRel = 'pat_mast/get_entry?action=get_patient_relationship';
+        loadlist($('select#newgl-relatecode').get(0),urlRel,'relationshipcode','description');
+    }
+
+    function onTab(event){
+        var textfield = $(event.currentTarget);
+        var id_ = textfield.attr('id');
+        var id_use = id_.substring(id_.indexOf("_")+1);
+
+        if(event.key == "Tab" && textfield.val() != ""){
+
+            $('#mdl_item_selector').modal('show');
+            pop_item_select(id_use,true,textfield.val());
+        }
+    }
+
+    function pop_item_select(type,ontab=false,text_val)
+    {    
+        var act = "";
+        var selecter = null;
+        var item = null;
+            
+        switch (type)
+        {
+            case "LanguageCode":
+                act = "get_patient_language";
+                break;
+            case "Religion":
+                act = "get_patient_religioncode";
+                break;
+            case "RaceCode":
+                act = "get_patient_race";
+                break;
+            case "ID_Type":
+                act = "get_patient_idtype";
+                break;
+            case "pat_title":
+                act = "get_patient_title";
+                break;
+            case "pat_occupation":
+                act = "get_patient_occupation";
+                break;
+            case "pat_area":
+                act = "get_patient_areacode";
+                break;
+            case "pat_citizen":
+                act = "get_patient_citizen";
+                break;
+            case "payer_relation":
+                act = "get_patient_relationship";
+                break;
+            case "payer_occupation":
+                act = "get_patient_occupation";
+                break;
+            case "payer_company":
+                act = "get_all_company";
+                break;
+            case "grtr_relation":
+                act = "get_patient_relationship";
+                break;
+            case "epis_dept":
+                act = "get_reg_dept";
+                break;
+            case "epis_source":
+                act = "get_reg_source";
+                break;
+            case "epis_case":
+                act = "get_reg_case";
+                break;
+            case "epis_doctor":
+                act = "get_reg_doctor";
+                break;
+            case "epis_fin":
+                act = "get_reg_fin";
+                break;
+        }
+        
+        selecter = $('#tbl_item_select').DataTable( {
+                "ajax": "pat_mast/get_entry?action=" + act,
+                "lengthChange": false,
+                "info": true,
+                "pagingType" : "numbers",
+                "search": {
+                            "smart": true,
+                          },
+                "columns": [
+                            {'data': 'code'}, 
+                            {'data': 'description' },
+                           ],
+
+                "columnDefs": [ {
+                    "targets": 0,
+                    "data": "code",
+                    "render": function ( data, type, row, meta ) {
+                        if(act == "get_reg_source"){
+                            return pad('000000',data,true)
+                        }
+                    }
+                  } ],
+
+                "fnInitComplete": function(oSettings, json) {
+                    if(ontab==true){
+                        selecter.search( text_val ).draw();
+
+                    }
+                    if(act == "get_reg_source"){
+                        $('#add_new_adm').show();
+                    }
+                    console.log( selecter.page.info)
+                    if(selecter.data().count() == 1){
+                        alert('will auto select')
+                    }
+                }
+        } );
+
+        // selecter.on( 'search.dt', function () {
+        //     console.log(selecter.page.info().recordsDisplay);
+        //     if(selecter.page.info().recordsDisplay == 1){
+        //         $('#tbl_item_select tbody tr:eq(0)').dblclick();
+        //     }
+        // } );
+        
+        // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
+        $('#tbl_item_select tbody').on('dblclick', 'tr', function () {    
+
+            item = selecter.row( this ).data();
+            
+            //console.log("type2="+type + " item=" + item["description"]);
+            $('#hid_' + type).val(item["code"]);
+            $('#txt_' + type).val(item["description"]);            
+            
+            $('#txt_' + type).change(); // <-- to activate onchange event if any
+            //$('#txt' + type).blur(); // <-- to activate onchange event if any
+                
+            $('#mdl_item_selector').modal('hide');
+            
+                
+                //alert( 'You clicked on ' + item["description"] + '\'s row.' );
+            } );
+            
+        $("#mdl_item_selector").on('hidden.bs.modal', function () {
+            //$('#tbl_item_select tbody').off('dblclick', 'tr', function () {
+            $('#add_new_adm').hide();
+            $('#tbl_item_select').html('');
+            selecter.destroy();
+            type = "";
+            item = "";
+                        //console.dir(selecter);
+                        //console.dir(item);
+            //        } );
+        });
+
+        $('#add_new_adm').click(function(){
+            $('#mdl_add_new_adm').modal('show');
+        });
+
+        $('#adm_save').click(function(){
+              if($('#adm_form').valid()){
+                var _token = $('#csrf_token').val();
+                let serializedForm = $( "#adm_form" ).serializeArray();
+                let obj = {
+                        _token: _token
+                }
+                
+                $.post( '/pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $("#adm_form").trigger('reset');
+                    selecter.ajax.reload()
+                    $('#mdl_add_new_adm').modal('hide');
+                }).fail(function(data) {
+                    alert(data.responseText);
+                }).success(function(data){
+                });
+              }
+        });
 
     }
+
+    function pad(pad, str, padLeft) {
+        if (typeof str === 'undefined') 
+            return pad;
+        if (padLeft) {
+            return (pad + str).slice(-pad.length);
+        } else {
+            return (str + pad).substring(0, pad.length);
+        }
+    }
+
+
+            
