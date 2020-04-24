@@ -23,14 +23,15 @@ $(document).ready(function () {
 
 	$("#save_ti").click(function(){
 		disableForm('#formTriageInfo');
-		saveForm_ti(function(){
-			$("#cancel_ti").data('oper','edit');
-			$("#cancel_ti").click();
-
-			$("#cancel_tpa").data('oper','edit_tpa');
-			$("#cancel_tpa").click();
-
-		});
+		if( $('#formTriageInfo').isValid({requiredFields: ''}, conf, true) ) {
+			saveForm_ti(function(){
+				$("#cancel_ti").data('oper','edit');
+				$("#cancel_ti").click();
+				$('#refresh_jqGrid').click();
+			});
+		}else{
+			enableForm('#formTriageInfo');
+		}
 
 	});
 
@@ -43,16 +44,16 @@ $(document).ready(function () {
 
 });
 
-var errorField_nursing = [];
-conf_nursing = {
+var errorField = [];
+conf = {
 	modules : 'logic',
 	language: {
 		requiredFields: 'You have not answered all required fields'
 	},
 	onValidate: function ($form) {
-		if (errorField_nursing.length > 0) {
+		if (errorField.length > 0) {
 			return {
-				element: $(errorField_nursing[0]),
+				element: $(errorField[0]),
 				message: ''
 			}
 		}
@@ -145,7 +146,7 @@ function empty_formNursing(){
 	// $("#cancel_ti, #cancel_ad, #cancel_tpa").click();
 
 	disableForm('#formTriageInfo');
-	emptyFormdata(errorField_nursing,'#formTriageInfo')
+	emptyFormdata(errorField,'#formTriageInfo')
 
 }
 

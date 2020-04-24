@@ -52,7 +52,7 @@
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="admwardtime">Time</label>  
 									<div class="col-md-4">
-										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase">
+										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase" data-validation="required">
 									</div>
 
 									<label class="col-md-3 control-label" for="tricolorzone">Triage Color Zone</label>  
