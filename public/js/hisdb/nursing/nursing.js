@@ -63,32 +63,36 @@ button_state_ti('empty');
 function button_state_ti(state){
 	switch(state){
 		case 'empty':
+		console.log('empty')
 			$("#toggle_ti").removeAttr('data-toggle');
 			$('#cancel_ti').data('oper','add');
 			$('#new_ti,#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
 			break;
 		case 'add':
+		console.log('add')
 			$("#toggle_ti").attr('data-toggle','collapse');
 			$('#cancel_ti').data('oper','add');
 			$("#new_ti").attr('disabled',false);
 			$('#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
 			break;
 		case 'edit':
+		console.log('edit')
 			$("#toggle_ti").attr('data-toggle','collapse');
 			$('#cancel_ti').data('oper','edit');
 			$("#edit_ti").attr('disabled',false);
 			$('#save_ti,#cancel_ti,#new_ti').attr('disabled',true);
 			break;
 		case 'wait':
+		console.log('wait')
 			$("#toggle_ti").attr('data-toggle','collapse');
 			$("#save_ti,#cancel_ti").attr('disabled',false);
 			$('#edit_ti,#new_ti').attr('disabled',true);
 			break;
 	}
 
-	if(!moment(gldatepicker_date).isSame(moment(), 'day')){
-		$('#new_ti,#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
-	}
+	// if(!moment(gldatepicker_date).isSame(moment(), 'day')){
+	// 	$('#new_ti,#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
+	// }
 }
 
 function populate_formNursing(obj,rowdata){

@@ -63,6 +63,7 @@ var Global = function () {
 		
 		selecter = $('#tbl_item_select').DataTable( {
 				"ajax": "pat_mast/get_entry?action=" + act,
+				"order": [[ 0, "desc" ]],
 				"lengthChange": false,
 				"info": false,
 				"pagingType" : "numbers",

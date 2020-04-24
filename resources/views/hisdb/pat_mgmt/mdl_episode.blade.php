@@ -9,23 +9,35 @@
                 <div class="modal-header label-warning">
                     <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
                     <div class="form-group ">
-                        <div class="col-sm-2">
+                        <div class="col-sm-1">
                             <small  for="txt_epis_no">EPISODE NO:</small>
                             <input class="form-control " id="txt_epis_no" placeholder="" type="text" readonly>
                             <!--                                    <small class="help-block text-center">REGISTRATION MRN</small>-->
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-1">
                             <small for="txt_epis_type">TYPE: </small>
-                            <div class="input-group">
-                                <input id="txt_epis_type" placeholder="" type="text" class="form-control" style="width:50px;" readonly>
-                                <span class="input-group-addon" style="background-color:transparent; border-color: transparent" style="width:40px;">&mdash;</span>
-                                <select id="cmb_epis_case_maturity" name="cmb_epis_case_maturity" class="form-control form-mandatory" style="width:300px;">
-                                    <option value="">- Select -</option>
-                                    <option value="1">New Case</option>
-                                    <option value="2">Follow Up</option>
-                                </select>
-                            </div>
+                            <input id="txt_epis_type" placeholder="" type="text" class="form-control" style="width:50px;" readonly>
                         </div>
+
+                        <div class="col-sm-3">
+                            <small for="txt_epis_type">Case</small>
+                            <select id="cmb_epis_case_maturity" name="cmb_epis_case_maturity" class="form-control form-mandatory" required>
+                                <option value="">- Select -</option>
+                                <option value="1">New Case</option>
+                                <option value="2">Follow Up</option>
+                            </select>
+                        </div>
+                                
+
+                        <div class="col-sm-3">
+                            <small for="txt_epis_type">Pregnancy</small>
+                            <select id="cmb_epis_pregnancy" name="cmb_epis_pregnancy" class="form-control form-mandatory" required>  
+                                <option value="">- Select -</option>
+                                <option value="Pregnant">Pregnant</option>
+                                <option value="Non-Pregnant" selected>Non-Pregnant</option>
+                            </select>
+                        </div>
+
                         <div class="col-sm-2">
                             <small for="txt_epis_date">DATE: </small>
                             <input class="form-control" id="txt_epis_date" placeholder="" type="text" readonly>
@@ -172,7 +184,7 @@
                                             </div>
                                         </div>
                                         <div class="row">                                        
-                                            <div class="col-md-offset-1 col-md-4">
+                                            <!-- <div class="col-md-offset-1 col-md-4">
                                                 <small for="rad_epis_pregnancy">Status</small>
                                                 <div class="panel panel-default">
                                                     <div class="panel-body checkbox">
@@ -180,7 +192,7 @@
                                                         <small class="checkbox checkbox-inline"><input type="radio" value="0" name="rad_epis_pregnancy" id="rad_epis_pregnancy_no">Non Pregnant</small>
                                                     </div>
                                                 </div>
-                                            </div>                                     
+                                            </div>         -->                             
                                             <div class="col-md-4">
                                                 <small for="rad_epis_fee">Admin Fee</small>
                                                 <div class="panel panel-default">

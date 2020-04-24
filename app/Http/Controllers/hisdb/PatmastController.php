@@ -165,6 +165,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.admissrc')
                         ->select('idno as code','description')
                         ->where('compcode','=',session('compcode'))
+                        ->orderBy('idno', 'asc')
                         ->get();
                 break;
 
@@ -485,6 +486,8 @@ class PatmastController extends defaultController
 
                 //CREATE BEDALLOC KALAU IP SHJ
 
+                //UPDATE BED set occup=OCCUPIED
+
                 //QUEUE FOR ALL
 
                 //QUEUE FOR SPECIALIST
@@ -566,24 +569,27 @@ class PatmastController extends defaultController
         try {
 
 
-                $codeexist = DB::table('hisdb.admissrc')
-                    ->where('admsrccode','=',$request->adm_code);
+                // $codeexist = DB::table('hisdb.admissrc')
+                //     ->where('admsrccode','=',$request->adm_code);
 
-                if($codeexist->exists()){
-                    throw new \Exception('Admsrccode already exists', 500);
-                }
+                // if($codeexist->exists()){
+                //     throw new \Exception('Admsrccode already exists', 500);
+                // }
 
 
                 DB::table('hisdb.admissrc')
                     ->insert([
                         'compcode'    =>  session('compcode'),
-                        'description'  =>  $request->adm_desc,
+                        'description'  =>  strtoupper($request->adm_desc),
                         'addr1'        =>  $request->adm_addr1, 
                         'addr2'    =>  $request->adm_addr2,
                         'addr3'    =>  $request->adm_addr3,
                         'addr4'    =>  $request->adm_addr4,
                         'telno'    =>  $request->adm_telno,
-                        'email'    =>  $request->adm_email
+                        'email'    =>  $request->adm_email,
+                        'type'     =>  $request->adm_type,
+                        'lastupdate'     => session('username'),
+                        'lastuser'     =>  Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
                 DB::commit();

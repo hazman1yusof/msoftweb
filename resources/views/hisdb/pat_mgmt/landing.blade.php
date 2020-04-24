@@ -38,6 +38,10 @@
 		    box-shadow: none;
 		  }
 
+		  .uppercase{
+		  	text-transform:uppercase
+		  }
+
 		.modal-header {
 			min-height: 16.42857143px;
 			padding: 5px;
@@ -104,7 +108,7 @@
                     <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="10%">MRN No</th>
                     <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="30%">Name</th>
                     <th data-column-id="Newic" data-width="15%">New IC</th>
-                    <th data-column-id="Oldic" data-width="10%">Old IC</th>
+                    <th data-column-id="telhp" data-width="10%">H/P</th>
                     <th data-column-id="DOB" data-formatter="col_dob" data-width="12%">Birth Date</th>
                     <th data-column-id="Sex" data-width="6%">Sex</th>
 					<th data-column-id="Staffid" data-width="15%">Patient Staff ID</th>

@@ -47,7 +47,7 @@
 	                </div>
 	                <div class="col-md-7">
 	                    <small for="adm_desc">Description</small>
-	                    <input type="text" class="form-control form-mandatory" id="adm_desc" name="adm_desc" required>
+	                    <input type="text" class="form-control form-mandatory uppercase" id="adm_desc" name="adm_desc" required >
 	                </div>
 
                     <div class="col-md-10 col-md-offset-1">
@@ -64,6 +64,14 @@
                     <div class="col-md-5">
                         <small for="input-title">E-mail</small>
                         <input class="form-control" id="adm_email" name="adm_email" placeholder="" type="text">
+                    </div>
+                    <div class="col-md-5">
+                        <small for="adm_type">Source Type</small>
+                        <select id="adm_type" name="adm_type" class="form-control form-mandatory" required>
+                            <option value="GP">GP</option>
+                            <option value="DOCTOR">DOCTOR</option>
+                            <option value="HOSPITAL">HOSPITAL</option>
+                        </select>
                     </div>
                     </form>
 				</div>

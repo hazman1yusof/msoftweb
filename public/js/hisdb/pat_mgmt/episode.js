@@ -70,6 +70,7 @@
         $('#hid_pat_occupation').val(rowdata.OccupCode);
 
         
+        $('#txt_pat_mrn').val(('0000000' + rowdata.MRN).slice(-7));
         $('#hid_LanguageCode').val(rowdata.LanguageCode);
         $('#hid_RaceCode').val(rowdata.RaceCode);
         $('#hid_Religion').val(rowdata.Religion);
@@ -128,8 +129,9 @@
 
             if (rowdata.Sex == "M") // dlm modal Episode
             {
-                $('#rad_epis_pregnancy_no').prop("checked", true);
-                $('#rad_epis_pregnancy_yes').prop("disabled", true);
+                $('#cmb_epis_pregnancy').prop("disabled", true);
+            }else{
+                $('#cmb_epis_pregnancy').prop("disabled", false);
             }
             if (rowdata.PatStatus == "true") // dlm modal Episode
             { alert('PatStatus true');

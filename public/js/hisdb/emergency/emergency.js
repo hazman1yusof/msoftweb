@@ -38,8 +38,11 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid", urlParam);
 			empty_registerformdata_edit();
 			empty_formNursing();
+			sel_idno = 0;
 	    }
 	}).glDatePicker(true);
+
+
 
 	var errorField = [];
 	conf = {
@@ -207,6 +210,7 @@ $(document).ready(function () {
 		oper: oper,
 	};
 
+	var sel_idno = 0;
 	var jqGrid_rowdata = null;
 	$("#jqGrid").jqGrid({
 		datatype: "local",
@@ -254,6 +258,8 @@ $(document).ready(function () {
 				}
 			});
 
+			sel_idno = rowid;
+
 			$('#biodata_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
 			$('#episode_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
 
@@ -262,26 +268,27 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 		},
-		gridComplete: function () {
-			set_grid_color();
-			empty_registerformdata_edit();
-			empty_formNursing();
-		},
 		loadComplete: function(data){
 			jqGrid_rowdata = data.rows;
-
-
 			let reccount = $('#jqGrid').jqGrid('getGridParam', 'reccount');
 			if(reccount>0){
-				$("#biodata_but_emergency").attr('disabled',false);
+				empty_registerformdata_edit();
+				empty_formNursing();
 			}else{
-				$("#biodata_but_emergency").attr('disabled',true);
+				set_grid_color();
+			}
+
+
+			if (sel_idno == 0) {
+				$('#' + $("#jqGrid").getDataIDs()[0]).click();
+			}else{
+				$('#'+sel_idno).click();
 			}
 		}
 	});
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', false, urlParam,['reg_date','reg_time','newic','id_type','oldic','dob','sex','racecode','race','age','pay_type', 'pay_type_desc' ,'billtype' ,'billtype_desc' ,'admdoctor','admdoctor_desc']);
+	addParamField('#jqGrid', true, urlParam,['reg_date','reg_time','newic','id_type','oldic','dob','sex','racecode','race','age','pay_type', 'pay_type_desc' ,'billtype' ,'billtype_desc' ,'admdoctor','admdoctor_desc']);
 
 	function set_grid_color(){
 		var rows = $("#jqGrid").getDataIDs();

@@ -118,88 +118,6 @@
         return null;
     }
 
-    function populate_patient_episode (episode,rowid) {
-
-        let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
-
-        $('#hid_pat_title').val(rowdata.TitleCode);
-        $('#mrn').val(('0000000' + rowdata.MRN).slice(-7));
-        // $('#oldmrn').val(rowdata.oldmrn);
-
-        var first_visit = new Date(rowdata['first_visit_date']);
-        var first_visit_val = (isNaN(first_visit.getFullYear()) ? 'n/a' : moment(first_visit).format('DD/MM/YYYY'));
-        $('#first_visit_date').val(first_visit_val);
-        var last_visit = new Date(rowdata['last_visit_date']);
-        var last_visit_val = (isNaN(last_visit.getFullYear()) ? 'n/a' : moment(last_visit).format('DD/MM/YYYY'));
-        $('#last_visit_date').val(last_visit_val);
-        $('#episno').val(rowdata.Episno); // dlm modal Patient   
-		
-        $('#txt_pat_name').val(rowdata.Name);
-        $('#txt_pat_newic').val(rowdata.Newic);
-        $('#txt_pat_oldic').val(rowdata.Oldic);
-        $('#cmb_pat_idtype').val(rowdata['ID_Type']);
-        $('#txt_pat_idno').val(rowdata.idnumber);
-
-        // $('#occupcode').val(rowdata.occupcode);
-        $('#hid_pat_occupation').val(rowdata.OccupCode);
-
-        // $('#txt_pat_loginid').val(rowdata.DOB);
-        
-        $('#hid_ID_Type').val(rowdata.ID_Type);
-        $('#txt_pat_dob').val(rowdata.DOB);
-        $('#txt_pat_age').val(gettheage(rowdata.DOB));
-        $('#txt_pat_telh').val('0' +rowdata.telh);
-        $('#txt_pat_telhp').val('0' +rowdata.telhp);
-        $('#txt_pat_email').val(rowdata.Email);
-        $('#hid_pat_area').val(rowdata.AreaCode);
-        $('#cmb_pat_sex').val(rowdata.Sex); // dlm modal Patient                    
-        $('#hid_pat_citizen').val(rowdata.Citizencode);
-        $('#cmb_pat_racecode').val(rowdata.RaceCode);
-        $('#cmb_pat_religion').val(rowdata.Religion);
-        $('#maritalcode').val(rowdata.MaritalCode);
-        $('#cmb_pat_langcode').val(rowdata.LanguageCode);
-        $('#remarks').val(rowdata.Remarks);
-        $('#relatecode').val(rowdata.RelateCode);
-        $('#corpcomp').val(rowdata.CorpComp);
-        $('#email_official').val(rowdata.Email_official);
-        $('#childno').val(rowdata.Childno);
-        $('#txt_pat_curradd1').val(rowdata.Address1);
-        $('#txt_pat_curradd2').val(rowdata.Address2);
-        $('#txt_pat_curradd3').val(rowdata.Address3);
-        $('#txt_pat_offadd1').val(rowdata.Offadd1);
-        $('#txt_pat_offadd2').val(rowdata.Offadd2);
-        $('#txt_pat_offadd3').val(rowdata.Offadd3);
-        $('#txt_pat_padd1').val(rowdata.pAdd1);
-        $('#txt_pat_padd2').val(rowdata.pAdd2);
-        $('#txt_pat_padd3').val(rowdata.pAdd3);
-        $('#txt_pat_currpostcode').val(rowdata.Postcode);
-        $('#txt_pat_offpostcode').val(rowdata.OffPostcode);
-        $('#txt_pat_ppostcode').val(rowdata.pPostCode);
-        $('#active').val(rowdata.Active);
-        $('#confidential').val(rowdata.Confidential);
-        $('#mrfolder').val(rowdata.MRFolder);
-        $('#patientcat').val(rowdata.PatientCat);
-        $('#newmrn').val(rowdata.NewMrn);
-        $('#blood_grp').val(rowdata.bloodgrp);
-        // $('#name').val(rowdata.name);
-
-        // ********* episode ************
-        if(episode == "episode"){
-            $('#txt_epis_no').val(parseInt(rowdata.Episno) + 1); // dlm modal Episode
-            $('#txt_epis_type').val("OP");                    
-            $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
-            $('#txt_epis_time').val(moment().format('hh:mm:ss'));
-
-            if (rowdata.Sex == "M") // dlm modal Episode
-            {
-                $('#rad_epis_pregnancy_no').prop("checked", true);
-                $('#rad_epis_pregnancy_yes').prop("disabled", true);
-            }
-                
-        }
-			//populate_payer_guarantee_info(d); tgk balik nanti
-    }
-
     $('#mdl_patient_info').on('hidden.bs.modal', function (e) {
         destoryallerror();
         $(this)
@@ -268,6 +186,7 @@
         }).success(function(data){
             $('#mdl_patient_info').modal('hide');
             $('#mdl_existing_record').modal('hide');
+            $("#grid-command-buttons").bootgrid('reload');
         });
     }
 	
