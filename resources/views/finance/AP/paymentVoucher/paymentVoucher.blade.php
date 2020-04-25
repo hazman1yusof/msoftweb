@@ -124,7 +124,7 @@ i.fa {
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="AP">
-					<input id="apacthdr_trantype" name="apacthdr_trantype" value = "IN" type="hidden">
+					<input id="apacthdr_trantype" name="apacthdr_trantype" type="text">
 					<input id="auditno" name="auditno" type="hidden">
 					<input id="idno" name="idno" type="hidden">
 
@@ -136,7 +136,7 @@ i.fa {
 
 				  		<label class="col-md-2 control-label" for="apacthdr_pvno">PV No</label>  
 				  			<div class="col-md-2">
-								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm" rdonly>
+								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30">
 				  			</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
@@ -252,7 +252,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_suppcode">Provider Product</label>	  
 							<div class="col-md-2">
 							  	<div class='input-group'>
-									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -261,7 +261,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_payto">Destination</label>	  
 							<div class="col-md-2">
 							  	<div class='input-group'>
-									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -270,7 +270,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_payto">Purpose of Transfer</label>	  
 							<div class="col-md-2">
 							  	<div class='input-group'>
-									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -310,7 +310,6 @@ i.fa {
 
 	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js"></script>
 	<script src="js/finance/AP/paymentVoucher/pdfgen.js"></script>
-	<script src="plugins/pdfmake/pdfmake.min.js"></script>
-	<script src="plugins/pdfmake/vfs_fonts.js"></script>
+
 	
 @endsection

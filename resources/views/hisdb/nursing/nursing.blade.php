@@ -52,7 +52,7 @@
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="admwardtime">Time</label>  
 									<div class="col-md-4">
-										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase">
+										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase" data-validation="required">
 									</div>
 
 									<label class="col-md-3 control-label" for="tricolorzone">Triage Color Zone</label>  
@@ -160,7 +160,7 @@
 										<div class="form-group">
 											<label class="col-md-4 control-label" for="allergyremarks">If Others, Please specify:</label>  
 											<div class="col-md-8">
-												<textarea id="allergyremarks" name="allergyremarks" type="text" class="form-control input-sm uppercase"></textarea>
+												<textarea id="allergyremarks" name="allergyremarks" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
 											</div>
 										</div>
 
@@ -184,7 +184,7 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_temperature">Temperature</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_temperature" name="vs_temperature" type="text" class="form-control input-sm uppercase">
+													<input id="vs_temperature" name="vs_temperature" type="number" class="form-control input-sm uppercase">
 													<span class="input-group-addon">°C</span>
 												</div>
 											</div>
@@ -192,7 +192,7 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_pulse">Pulse</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_pulse" name="vs_pulse" type="text" class="form-control input-sm uppercase">
+													<input id="vs_pulse" name="vs_pulse" type="number" class="form-control input-sm uppercase">
 													<span class="input-group-addon">/min</span>
 												</div>
 											</div>
@@ -200,7 +200,7 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_respiration">Respiration</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_respiration" name="vs_respiration" type="text" class="form-control input-sm uppercase">
+													<input id="vs_respiration" name="vs_respiration" type="number" class="form-control input-sm uppercase">
 													<span class="input-group-addon">/min</span>
 												</div>
 											</div>
@@ -208,9 +208,9 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_bloodpressure">Blood Pressure</label>
 												<div class="col-md-7 input-group">
-													<input id="vs_bp_sys1" name="vs_bp_sys1" type="text" class="form-control input-sm uppercase" style="width: 49px">
+													<input id="vs_bp_sys1" name="vs_bp_sys1" type="number" class="form-control input-sm uppercase" style="width: 49px">
 													<label class="col-md-1 control-label">/</label> 
-													<input id="vs_bp_dias2" name="vs_bp_dias2" type="text" class="form-control input-sm uppercase" style="width: 49px">
+													<input id="vs_bp_dias2" name="vs_bp_dias2" type="number" class="form-control input-sm uppercase" style="width: 49px">
 													<span class="input-group-addon">/mmHg</span>
 												</div>
 											</div>
@@ -218,7 +218,7 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_height">Height</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_height" name="vs_height" type="text" class="form-control input-sm uppercase">
+													<input id="vs_height" name="vs_height" type="number" class="form-control input-sm uppercase">
 													<span class="input-group-addon">cm</span>
 												</div>
 											</div>
@@ -226,7 +226,7 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_weight">Weight</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_weight" name="vs_weight" type="text" class="form-control input-sm uppercase">
+													<input id="vs_weight" name="vs_weight" type="number" class="form-control input-sm uppercase">
 													<span class="input-group-addon">kg</span>
 												</div>
 											</div>
@@ -234,7 +234,7 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_gxt">GXT</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_gxt" name="vs_gxt" type="text" class="form-control input-sm uppercase">
+													<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm uppercase">
 													<span class="input-group-addon">mmOL</span>
 												</div>
 											</div>
@@ -242,7 +242,7 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_painscore">Pain Score</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_painscore" name="vs_painscore" type="text" class="form-control input-sm uppercase">
+													<input id="vs_painscore" name="vs_painscore" type="number" class="form-control input-sm uppercase">
 													<span class="input-group-addon">/10</span>
 												</div>
 											</div>
@@ -374,7 +374,7 @@
 					</div>
 
 					<div class='col-md-12'>
-						<div class="panel panel-primary">
+						<div class="panel panel-default">
 							<div class="panel-heading text-center">ACTIVITIES OF DAILY LIVING</div>
 							<div class="panel-body">
 
@@ -400,7 +400,7 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="br_breathingdesc">If Yes, Describe:</label>  
 													<div class="col-md-8" style="padding-left: 0px">
-														<input id="br_breathingdesc" name="br_breathingdesc" type="text" class="form-control input-sm uppercase">
+														<textarea id="br_breathingdesc" name="br_breathingdesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -417,7 +417,7 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="br_coughdesc">If Yes, Describe:</label>  
 													<div class="col-md-8" style="padding-left: 0px">
-														<input id="br_coughdesc" name="br_coughdesc" type="text" class="form-control input-sm uppercase">
+														<textarea id="br_coughdesc" name="br_coughdesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -434,7 +434,7 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="br_smokedesc">If Yes, Amount:</label>  
 													<div class="col-md-8" style="padding-left: 0px">
-														<input id="br_smokedesc" name="br_smokedesc" type="text" class="form-control input-sm uppercase">
+														<textarea id="br_smokedesc" name="br_smokedesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -460,7 +460,7 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="ed_eatdrinkdesc">If Yes, Describe:</label>  
 													<div class="col-md-8" style="padding-left: 0px">
-														<input id="ed_eatdrinkdesc" name="ed_eatdrinkdesc" type="text" class="form-control input-sm uppercase">
+														<textarea id="ed_eatdrinkdesc" name="ed_eatdrinkdesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -496,7 +496,7 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="eb_bowelmovedesc">If Yes, Describe:</label>  
 													<div class="col-md-8" style="padding-left: 0px">
-														<input id="eb_bowelmovedesc" name="eb_bowelmovedesc" type="text" class="form-control input-sm uppercase">
+														<textarea id="eb_bowelmovedesc" name="eb_bowelmovedesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -522,14 +522,14 @@
 												<div class="form-group">
 													<label class="col-md-5 control-label" for="bl_urinedesc">If Yes, Describe:</label>  
 													<div class="col-md-7" style="padding-left: 0px">
-														<input id="bl_urinedesc" name="bl_urinedesc" type="text" class="form-control input-sm uppercase">
+														<textarea id="bl_urinedesc" name="bl_urinedesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
 													</div>
 												</div>
 
 												<div class="form-group">
 													<label class="col-md-5 control-label" for="bl_urinefreq">How Often Get Up At Night To Pass Urine?</label>  
 													<div class="col-md-7" style="padding-left: 0px">
-														<input id="bl_urinefreq" name="bl_urinefreq" type="text" class="form-control input-sm uppercase">
+														<textarea id="bl_urinefreq" name="bl_urinefreq" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -735,7 +735,7 @@
 					</div>
 
 					<div class='col-md-12'>
-						<div class="panel panel-primary">
+						<div class="panel panel-default">
 							<div class="panel-heading text-center">TRIAGE PHYSICAL ASSESSMENT</div>
 							<div class="panel-body">
 

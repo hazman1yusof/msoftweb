@@ -82,6 +82,6 @@ i.fa {
 
 @section('scripts')
 
-	<script src="js/finance/cheqreg/cheqreg.js"></script>
+	<script src="js/finance/CM/chqreg/cheqreg.js"></script>
 
 @endsection

@@ -61,8 +61,11 @@ use Carbon\Carbon;
             $idno = $request->table_id;
         }
 
-        $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
-        $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
+        /*$auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
+        $suppgroup = $this->suppgroup($request->apacthdr_suppcode);*/
+
+        $auditno = $this->defaultSysparam($request->apacthdr_source,'PV');
+        
 
         DB::beginTransaction();
 
@@ -71,9 +74,9 @@ use Carbon\Carbon;
         $array_insert = [
             'source' => 'AP',
             'auditno' => $auditno,
-            'trantype' => $request->apacthdr_trantype,
+            'trantype' => 'PV',
             'doctype' => $request->apacthdr_doctype,
-            'suppgroup' => $suppgroup,
+            'suppcode' => $request->apacthdr_suppcode,
             'document' => strtoupper($request->apacthdr_document),
             'remarks' => strtoupper($request->apacthdr_remarks),
             'compcode' => session('compcode'),

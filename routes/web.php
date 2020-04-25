@@ -463,8 +463,8 @@ Route::post('/bank/form','finance\BankController@form');
 Route::get('/cheqreg','finance\CheqRegController@show');
 Route::get('/cheqreg/table','finance\CheqRegController@table');
 Route::post('/cheqreg/form','finance\CheqRegController@form');
-Route::get('/cheqreg/form','finance\CheqRegController@form');
-Route::post('/cheqregDetail/form','finance\CheqRegDetailController@form');
+//Route::get('/cheqreg/form','finance\CheqRegController@form');
+//Route::post('/cheqregDetail/form','finance\CheqRegDetailController@form');
 
 //// Bank Transfer ///
 Route::get('/bankTransfer','finance\BankTransferController@show');

@@ -578,10 +578,10 @@ $(document).ready(function () {
 			
 		},
 		beforeSubmit: function(postdata, rowid){ 
-			dialog_supplier.check(errorField);
+			/*dialog_suppcode.check(errorField);
 			dialog_payto.check(errorField);
 			dialog_category.check(errorField);
-			dialog_department.check(errorField);
+			dialog_department.check(errorField);*/
 	 	}
 	});
 
@@ -845,10 +845,10 @@ $(document).ready(function () {
 		
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 		
-			dialog_supplier.off();
+			/*dialog_suppcode.off();
 			dialog_payto.off();
 			dialog_category.off();
-			dialog_department.off();
+			dialog_department.off();*/
 			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
 			errorField.length=0;
 		}else{
@@ -880,10 +880,12 @@ $(document).ready(function () {
 	$("#saveHeaderLabel").click(function(){
 		emptyFormdata(errorField,'#formdata2');
 		hideatdialogForm(true);
-		dialog_supplier.on();
-		dialog_payto.on();
-		dialog_category.on();
-		dialog_department.on();
+		dialog_bankcode.on();
+					dialog_department.on();
+					dialog_paymode.on();
+					dialog_cheqno.on();
+					dialog_suppcode.on();
+					dialog_payto.on();
 		enableForm('#formdata');
 		rdonly('#formdata');
 		$(".noti").empty();
@@ -1083,7 +1085,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','A']
 					},
 			ondblClickRow:function(){
-				let data=selrowData('#'+dialog_supplier.gridname);
+				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#apacthdr_payto").val(data['SuppCode']);
 				$('#apacthdr_recdate').focus();
 			},

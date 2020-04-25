@@ -252,6 +252,9 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			// refreshGrid("#formTriageInfo", urlParam);
+			// $("#formTriageInfo").trigger('reloadGrid');
+
 			var retdata = jqGrid_rowdata.find(function(obj){
 				if(obj.a_idno == rowid){
 					return true;
