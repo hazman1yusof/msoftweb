@@ -64,27 +64,23 @@ button_state_ti('empty');
 function button_state_ti(state){
 	switch(state){
 		case 'empty':
-		console.log('empty')
 			$("#toggle_ti").removeAttr('data-toggle');
 			$('#cancel_ti').data('oper','add');
 			$('#new_ti,#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
 			break;
 		case 'add':
-		console.log('add')
 			$("#toggle_ti").attr('data-toggle','collapse');
 			$('#cancel_ti').data('oper','add');
 			$("#new_ti").attr('disabled',false);
 			$('#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
 			break;
 		case 'edit':
-		console.log('edit')
 			$("#toggle_ti").attr('data-toggle','collapse');
 			$('#cancel_ti').data('oper','edit');
 			$("#edit_ti").attr('disabled',false);
 			$('#save_ti,#cancel_ti,#new_ti').attr('disabled',true);
 			break;
 		case 'wait':
-		console.log('wait')
 			$("#toggle_ti").attr('data-toggle','collapse');
 			$("#save_ti,#cancel_ti").attr('disabled',false);
 			$('#edit_ti,#new_ti').attr('disabled',true);
@@ -111,6 +107,7 @@ function populate_formNursing(obj,rowdata){
 	$("#reg_date").val(obj.reg_date);
 
 	if(rowdata.nurse != undefined){
+		dialog_tri_col.on();
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
 		button_state_ti('edit');
 	}
@@ -199,3 +196,52 @@ function saveForm_ti(callback){
         callback();
     });
 }
+
+var dialog_tri_col = new ordialog(
+	'tri_col','sysdb.sysparam',"#tricolorzone",errorField,
+	{	colModel:
+		[
+			{label:'Color',name:'colorcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
+		],
+		urlParam: {
+			url:'./sysparam_triage_color',
+			filterCol:['recstatus','compcode'],
+			filterVal:['A', 'session.compcode']
+			},
+		ondblClickRow:function(event){
+
+			$(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
+
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+			}
+		},
+		loadComplete: function(data,obj){
+			var gridname = '#'+obj.gridname;
+			var ids = $(gridname).jqGrid("getDataIDs"), l = ids.length, i, rowid, status;
+	        for (i = 0; i < l; i++) {
+	            rowid = ids[i];
+	            colorcode = $(gridname).jqGrid("getCell", rowid, "colorcode");
+
+	            $('#' + rowid).addClass(colorcode);
+
+	        }
+		}
+	},{
+		title:"Select Bed Status",
+		open: function(){
+			dialog_tri_col.urlParam.filterCol = ['recstatus','compcode'];
+			dialog_tri_col.urlParam.filterVal = ['A', 'session.compcode'];
+		},
+		width:5/10 * $(window).width()
+	},'urlParam','radio','tab','table'
+);
+dialog_tri_col.makedialog();
+dialog_tri_col.on();

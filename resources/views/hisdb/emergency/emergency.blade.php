@@ -55,6 +55,20 @@
 	}
 
 
+	.yellow{
+		background-color:yellow;
+	}
+
+	.red{
+		background-color:red;
+	}
+
+	.blue{
+		background-color:blue;
+	}
+
+
+
 
 @endsection
 

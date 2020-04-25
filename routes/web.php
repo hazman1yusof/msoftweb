@@ -46,6 +46,7 @@ Route::post('/user_maintenance/form','setup\UserMaintenanceController@form');
 
 //// sysparam ////
 Route::get('/sysparam_bed_status','SysparamController@sysparam_bed_status');
+Route::get('/sysparam_triage_color','SysparamController@sysparam_triage_color');
 
 ///////////////file setup//////////////////////////////////////////////////
 
