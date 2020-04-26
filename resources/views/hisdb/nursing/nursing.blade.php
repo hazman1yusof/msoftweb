@@ -52,13 +52,13 @@
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="admwardtime">Time</label>  
 									<div class="col-md-4">
-										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase" data-validation="required">
+										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase" data-validation="required" data-validation-error-msg-required="Please enter time.">
 									</div>
 
 									<label class="col-md-3 control-label" for="triagecolor">Triage Color Zone</label>  
 									<div class="col-md-3">
 										<div class='input-group'>
-											<input id="triagecolor" name="triagecolor" type="text" class="form-control input-sm uppercase">
+											<input id="triagecolor" name="triagecolor" type="text" class="form-control input-sm uppercase" data-validation="required" data-validation-error-msg-required="Please select color zone.">
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										</div>
 										<span class="help-block"></span>
@@ -75,42 +75,42 @@
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="admreason" >Chief Complain</label>  
 									<div class="col-md-10">
-										<textarea id="admreason" name="admreason" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
+										<textarea id="admreason" name="admreason" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="medicalhistory">Medical History</label>  
 									<div class="col-md-10">
-										<textarea id="medicalhistory" name="medicalhistory" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
+										<textarea id="medicalhistory" name="medicalhistory" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="surgicalhistory">Surgical History</label>  
 									<div class="col-md-10">
-										<textarea id="surgicalhistory" name="surgicalhistory" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
+										<textarea id="surgicalhistory" name="surgicalhistory" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="familymedicalhist">Family Medical History</label>  
 									<div class="col-md-10">
-										<textarea id="familymedicalhist" name="familymedicalhist" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
+										<textarea id="familymedicalhist" name="familymedicalhist" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="currentmedication">Current Medication</label>  
 									<div class="col-md-10">
-										<textarea id="currentmedication" name="currentmedication" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
+										<textarea id="currentmedication" name="currentmedication" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="diagnosis">Diagnosis</label>  
 									<div class="col-md-10">
-										<textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm uppercase" rows="4"></textarea>
+										<textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
@@ -184,67 +184,76 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_temperature">Temperature</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_temperature" name="vs_temperature" type="number" class="form-control input-sm uppercase">
+													<input id="vs_temperature" name="vs_temperature" type="number" class="form-control input-sm uppercase" onkeydown="return event.keyCode !== 69" data-validation="required" data-validation-error-msg-required="Please enter temperature." data-validation-error-msg-container="#error-vs_temperature">
 													<span class="input-group-addon">°C</span>
 												</div>
+												<div class="error-msg" style="margin-left: 165px" id="error-vs_temperature"></div>
 											</div>
 
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_pulse">Pulse</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_pulse" name="vs_pulse" type="number" class="form-control input-sm uppercase">
+													<input id="vs_pulse" name="vs_pulse" type="number" class="form-control input-sm uppercase" onkeydown="return event.keyCode !== 69" data-validation="required" data-validation-error-msg-required="Please enter pulse." data-validation-error-msg-container="#error-vs_pulse">
 													<span class="input-group-addon">/min</span>
 												</div>
+												<div class="error-msg" style="margin-left: 165px" id="error-vs_pulse"></div>
 											</div>
 
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_respiration">Respiration</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_respiration" name="vs_respiration" type="number" class="form-control input-sm uppercase">
+													<input id="vs_respiration" name="vs_respiration" type="number" class="form-control input-sm uppercase" onkeydown="return event.keyCode !== 69" data-validation="required" data-validation-error-msg-required="Please enter respiratory rate." data-validation-error-msg-container="#error-vs_respiration">
 													<span class="input-group-addon">/min</span>
 												</div>
+												<div class="error-msg" style="margin-left: 165px" id="error-vs_respiration"></div>
 											</div>
 
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_bloodpressure">Blood Pressure</label>
 												<div class="col-md-7 input-group">
-													<input id="vs_bp_sys1" name="vs_bp_sys1" type="number" class="form-control input-sm uppercase" style="width: 49px">
+													<input id="vs_bp_sys1" name="vs_bp_sys1" type="number" class="form-control input-sm uppercase" style="width: 49px" onkeydown="return event.keyCode !== 69" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-vs_bp_sys1">
 													<label class="col-md-1 control-label">/</label> 
-													<input id="vs_bp_dias2" name="vs_bp_dias2" type="number" class="form-control input-sm uppercase" style="width: 49px">
+													<input id="vs_bp_dias2" name="vs_bp_dias2" type="number" class="form-control input-sm uppercase" style="width: 49px" onkeydown="return event.keyCode !== 69" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-vs_bp_dias2">
 													<span class="input-group-addon">/mmHg</span>
 												</div>
+												<div class="error-msg" style="margin-left: 165px" id="error-vs_bp_sys1"></div>
+												<div class="error-msg" style="margin-left: 165px" id="error-vs_bp_dias2"></div>
 											</div>
 
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_height">Height</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_height" name="vs_height" type="number" class="form-control input-sm uppercase">
+													<input id="vs_height" name="vs_height" type="number" class="form-control input-sm uppercase" onkeydown="return event.keyCode !== 69" data-validation="required" data-validation-error-msg-required="Please enter height." data-validation-error-msg-container="#error-vs_height">
 													<span class="input-group-addon">cm</span>
 												</div>
+												<div class="error-msg" style="margin-left: 165px" id="error-vs_height"></div>
 											</div>
 
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_weight">Weight</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_weight" name="vs_weight" type="number" class="form-control input-sm uppercase">
+													<input id="vs_weight" name="vs_weight" type="number" class="form-control input-sm uppercase" onkeydown="return event.keyCode !== 69" data-validation="required" data-validation-error-msg-required="Please enter weight." data-validation-error-msg-container="#error-vs_weight">
 													<span class="input-group-addon">kg</span>
 												</div>
+												<div class="error-msg" style="margin-left: 165px" id="error-vs_weight"></div>
 											</div>
 											
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_gxt">GXT</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm uppercase">
+													<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm uppercase" onkeydown="return event.keyCode !== 69" data-validation="required" data-validation-error-msg-required="Please enter GXT." data-validation-error-msg-container="#error-vs_gxt">
 													<span class="input-group-addon">mmOL</span>
 												</div>
+												<div class="error-msg" style="margin-left: 165px" id="error-vs_gxt"></div>
 											</div>
 
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_painscore">Pain Score</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_painscore" name="vs_painscore" type="number" class="form-control input-sm uppercase">
+													<input id="vs_painscore" name="vs_painscore" type="number" class="form-control input-sm uppercase" onkeydown="return event.keyCode !== 69" data-validation="required" data-validation-error-msg-required="Please enter pain score." data-validation-error-msg-container="#error-vs_painscore">
 													<span class="input-group-addon">/10</span>
 												</div>
+												<div class="error-msg" style="margin-left: 165px" id="error-vs_painscore"></div>
 											</div>
 
 										</div>
@@ -755,7 +764,7 @@
 															<div class='col-md-6'>
 																<div class="panel panel-info">
 																	<div class="panel-heading text-center">SKIN CONDITION</div>
-																	<div class="panel-body" style="height: 150px">
+																	<div class="panel-body" style="height: 160px">
 
 																		<div class="form-check">
 																			<input class="form-check-input" type="checkbox" value="pa_skindry" id="pa_skindry" name="pa_skindry">
@@ -772,6 +781,11 @@
 																			<label class="form-check-label" for="pa_skinjaundice">Jaundice</label>
 																		</div>
 
+																		<div class="form-check">
+																			<input class="form-check-input" type="checkbox" value="pa_skinnil" id="pa_skinnil" name="pa_skinnil">
+																			<label class="form-check-label" for="pa_skinnil">NIL</label>
+																		</div>
+
 																	</div>
 																</div>
 															</div>
@@ -779,7 +793,7 @@
 															<div class='col-md-6'>
 																<div class="panel panel-info">
 																	<div class="panel-heading text-center">OTHERS</div>
-																	<div class="panel-body" style="height: 150px">
+																	<div class="panel-body" style="height: 160px">
 
 																		<div class="form-check">
 																			<input class="form-check-input" type="checkbox" value="pa_othbruises" id="pa_othbruises" name="pa_othbruises">
@@ -801,6 +815,11 @@
 																			<label class="form-check-label" for="pa_othdiscolor">Discolouration</label>
 																		</div>
 
+																		<div class="form-check">
+																			<input class="form-check-input" type="checkbox" value="pa_othnil" id="pa_othnil" name="pa_othnil">
+																			<label class="form-check-label" for="pa_othnil">NIL</label>
+																		</div>
+
 																	</div>
 																</div>
 															</div>
@@ -816,7 +835,7 @@
 															<div class="form-group">
 																<label class="col-md-1 control-label" for="pa_notes" >Notes:</label>  
 																<div class="row">
-																	<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm uppercase" rows="6"></textarea>
+																	<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm uppercase" rows="6" data-validation="required" data-validation-error-msg-required="Please enter notes."></textarea>
 																</div>
 															</div>														
 
