@@ -83,6 +83,9 @@ class SysparamController extends Controller
 				case 'yellow':
 					$object->colorcode = $value;
 					break;
+				case 'green':
+					$object->colorcode = $value;
+					break;
 				default:
 					$object->colorcode = $value;
 					break;

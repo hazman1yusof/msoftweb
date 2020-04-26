@@ -198,7 +198,7 @@ function saveForm_ti(callback){
 }
 
 var dialog_tri_col = new ordialog(
-	'tri_col','sysdb.sysparam',"#tricolorzone",errorField,
+	'tri_col','sysdb.sysparam',"#triagecolor",errorField,
 	{	colModel:
 		[
 			{label:'Color',name:'colorcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},

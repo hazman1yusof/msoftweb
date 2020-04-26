@@ -56,6 +56,7 @@ class NursingController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_edit_ti,
                         'admwardtime' => $request->admwardtime,
+                        'triagecolor' => $request->triagecolor,
                         'admreason' => $request->admreason,
                         'medicalhistory' => $request->medicalhistory,
                         'surgicalhistory' => $request->surgicalhistory,
@@ -176,6 +177,7 @@ class NursingController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'admwardtime' => $request->admwardtime,
+                    'triagecolor' => $request->triagecolor,
                     'admreason' => $request->admreason,
                     'medicalhistory' => $request->medicalhistory,
                     'surgicalhistory' => $request->surgicalhistory,

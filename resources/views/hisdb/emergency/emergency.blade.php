@@ -67,8 +67,9 @@
 		background-color:blue;
 	}
 
-
-
+	.green{
+		background-color:green;
+	}
 
 @endsection
 

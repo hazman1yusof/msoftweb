@@ -55,10 +55,10 @@
 										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase" data-validation="required">
 									</div>
 
-									<label class="col-md-3 control-label" for="tricolorzone">Triage Color Zone</label>  
+									<label class="col-md-3 control-label" for="triagecolor">Triage Color Zone</label>  
 									<div class="col-md-3">
 										<div class='input-group'>
-											<input id="tricolorzone" name="tricolorzone" type="text" class="form-control input-sm uppercase">
+											<input id="triagecolor" name="triagecolor" type="text" class="form-control input-sm uppercase">
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										</div>
 										<span class="help-block"></span>
