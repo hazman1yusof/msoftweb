@@ -151,7 +151,6 @@ function empty_formNursing(){
 
 }
 
-
 function saveForm_ti(callback){
 	var saveParam={
         action:'save_table_ti',

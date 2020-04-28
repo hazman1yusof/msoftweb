@@ -241,7 +241,7 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="vs_gxt">GXT</label>  
 												<div class="col-md-7 input-group">
-													<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm uppercase" onkeydown="return event.keyCode !== 69" data-validation="required" onKeyPress="if(this.value.length==5) return false;" data-validation-error-msg-required="Please enter GXT." data-validation-error-msg-container="#error-vs_gxt">
+													<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm uppercase" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==5) return false;" data-validation="required" data-validation-error-msg-required="Please enter GXT." data-validation-error-msg-container="#error-vs_gxt">
 													<span class="input-group-addon">mmOL</span>
 												</div>
 												<div class="error-msg" style="margin-left: 165px" id="error-vs_gxt"></div>
