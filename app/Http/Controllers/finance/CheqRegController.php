@@ -91,17 +91,24 @@ class CheqRegController extends defaultController
         DB::beginTransaction();
         try {
 
-            DB::table('material.category')
+            DB::table('finance.chqreg')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'catcode' => strtoupper($request->catcode),
-                    'description' => strtoupper($request->description),
-                    'expacct' => strtoupper($request->expacct),
-                    'povalidate' => strtoupper($request->povalidate),
-                    'recstatus' => strtoupper($request->recstatus),
-                    'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                   'bankcode' => strtoupper($request->bankcode),
+                    'startno' => strtoupper($request->startno),
+                    'endno' => $request->endno,
+                    'cheqqty' => $request->endno -$request->startno+1,
+                    'recstatus' => 'ACTIVE',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]); 
+
+                 DB::table('finance.chqreg')
+                ->where('idno','=',$request->idno)
+                ->update([  
+                   'bankcode' => strtoupper($request->bankcode),
+                        'cheqno' => $startno++,
+                        'recstatus' => 'OPEN',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
