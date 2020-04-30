@@ -126,7 +126,7 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
 			//{ label: 'Tel Ext', name: 'tel_ext', width: 13, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'Statistic', name: 'statistic', width: 13, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
@@ -181,9 +181,7 @@ $(document).ready(function () {
 					$("#jqGridPagerDelete").show();
 					$("#jqGrid_iledit").show();
 				}
-
 			}
-
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
@@ -196,6 +194,11 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+
+			if(selrowData("#jqGrid").mrn == "000000")
+			{
+				selrowData("#jqGrid").mrn == "";
+			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			if (rowData['mrn'] == '000000') {
@@ -435,8 +438,8 @@ $(document).ready(function () {
 	var dialog_bedtype = new ordialog(
 		'bedtype','hisdb.bedtype',"#jqGrid input[name='bedtype']",errorField,
 		{	colModel:[
-				{label:'Bedtype',name:'bedtype',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Bedtype',name:'bedtype',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
@@ -468,8 +471,8 @@ $(document).ready(function () {
 	var dialog_ward = new ordialog(
 		'ward','sysdb.department',"#jqGrid input[name='ward']",errorField,
 		{	colModel:[
-				{label:'Ward',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Ward',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','warddept'],
@@ -502,7 +505,7 @@ $(document).ready(function () {
 		'occup','sysdb.department',"#jqGrid input[name='occup']",errorField,
 		{	colModel:
 			[
-				{label:'Bed Status',name:'bedcode',width:200,classes:'pointer justify',canSearch:true,checked:true,or_search:true},
+				{label:'Bed Status',name:'bedcode',width:200,classes:'pointer left',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
 			],
 			urlParam: {
