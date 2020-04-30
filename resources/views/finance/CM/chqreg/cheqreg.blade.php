@@ -38,6 +38,7 @@ i.fa {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
+				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 				<div class="ScolClass">
 						<div name='Scol'>Search By : </div>
 				</div>
@@ -67,6 +68,8 @@ i.fa {
 				<div id="jqGrid3_panel1" class="panel-collapse collapse">
 					<div class="panel-body">
 					    <div class='col-md-12' style="padding:0 0 15px 0">
+
+					    	<input id="bankcode" name="bankcode" type="text">
 			            	<table id="gridCheqRegDetail" class="table table-striped"></table>
 			            		<div id="jqGridPager2"></div>
 			        	</div>
