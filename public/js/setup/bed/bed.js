@@ -130,7 +130,7 @@ $(document).ready(function () {
 			//{ label: 'Tel Ext', name: 'tel_ext', width: 13, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'Statistic', name: 'statistic', width: 13, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
-			{ label: ' ', name: 'episno', width: 5, canSearch: true},
+			{ label: ' ', name: 'episno', width: 5, canSearch: false},
 			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
 			// { label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
 			{ label: 'Charge Code', name: 'bedchgcode', width: 15 , classes: 'wrap', editable:true,
@@ -180,7 +180,7 @@ $(document).ready(function () {
 				else if (rowData['mrn'] == '000000') {
 					$("#jqGridPagerDelete").show();
 					$("#jqGrid_iledit").show();
-				}
+		}
 			}
 		},
 		loadComplete: function(){
@@ -192,13 +192,8 @@ $(document).ready(function () {
 			{
 				'class="alert alert-danger"';
 			}
-
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 
-			if(selrowData("#jqGrid").mrn == "000000")
-			{
-				selrowData("#jqGrid").mrn == "";
-			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			if (rowData['mrn'] == '000000') {
@@ -228,8 +223,8 @@ $(document).ready(function () {
 			cellvalue="";
 		}
 		switch(cellvalue.trim()){
-			case 'OCCUPIED': return '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED';break;
-			case 'VACANT': return '<i class="fa fa-ban" aria-hidden="true"></i> VACANT';break;
+			case 'OCCUPIED': return '<i class="fa fa-ban" aria-hidden="true"></i> OCCUPIED';break;
+			case 'VACANT': return '<i class="fa fa-bed" aria-hidden="true"></i> VACANT';break;
 			case 'HOUSEKEEPING': return '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING';break;
 			case 'MAINTENANCE': return '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE';break;
 			case 'ISOLATED': return '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED';break;
@@ -239,8 +234,8 @@ $(document).ready(function () {
 
 	function occup_unformat(cellvalue, options, rowObject){
 		switch(cellvalue){
-			case '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED': return 'OCCUPIED';break;
-			case '<i class="fa fa-ban" aria-hidden="true"></i> VACANT': return 'VACANT';break;
+			case '<i class="fa fa-ban" aria-hidden="true"></i> OCCUPIED': return 'OCCUPIED';break;
+			case '<i class="fa fa-bed" aria-hidden="true"></i> VACANT': return 'VACANT';break;
 			case '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING': return 'HOUSEKEEPING';break;
 			case '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE': return 'MAINTENANCE';break;
 			case '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED': return 'ISOLATED';break;
@@ -297,6 +292,7 @@ $(document).ready(function () {
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'add');
 			errorField.length=0;
+			// selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
@@ -350,6 +346,7 @@ $(document).ready(function () {
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'add');
 			errorField.length=0;
+			// selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
@@ -377,7 +374,6 @@ $(document).ready(function () {
 			alert(data);
 		}
 	};
-
 
 	$("#jqGrid").inlineNav('#jqGridPager', {
 		add: true,
@@ -534,7 +530,7 @@ $(document).ready(function () {
 				dialog_occup.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_occup.urlParam.filterVal = ['A', 'session.compcode'];
 			},
-			width:5/10 * $(window).width()
+			width:4/10 * $(window).width()
 		},'urlParam','radio','tab'
 	);
 	dialog_occup.makedialog();
