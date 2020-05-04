@@ -183,78 +183,78 @@
 										<div class="panel-body">
 
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="vs_temperature">Temperature</label>  
-												<div class="col-md-7 input-group">
+												<label class="col-md-3 control-label" for="vs_temperature">Temperature</label>  
+												<div class="col-md-8 input-group">
 													<input id="vs_temperature" name="vs_temperature" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter temperature." data-validation-error-msg-container="#error-vs_temperature">
 													<span class="input-group-addon">°C</span>
 												</div>
-												<div class="error-msg" style="margin-left: 165px" id="error-vs_temperature"></div>
+												<div class="error-msg" style="margin-left: 100px" id="error-vs_temperature"></div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="vs_pulse">Pulse</label>  
-												<div class="col-md-7 input-group">
+												<label class="col-md-3 control-label" for="vs_pulse">Pulse</label>  
+												<div class="col-md-8 input-group">
 													<input id="vs_pulse" name="vs_pulse" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pulse." data-validation-error-msg-container="#error-vs_pulse">
 													<span class="input-group-addon">/min</span>
 												</div>
-												<div class="error-msg" style="margin-left: 165px" id="error-vs_pulse"></div>
+												<div class="error-msg" style="margin-left: 100px" id="error-vs_pulse"></div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="vs_respiration">Respiration</label>  
-												<div class="col-md-7 input-group">
+												<label class="col-md-3 control-label" for="vs_respiration">Respiration</label>  
+												<div class="col-md-8 input-group">
 													<input id="vs_respiration" name="vs_respiration" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter respiratory rate." data-validation-error-msg-container="#error-vs_respiration">
 													<span class="input-group-addon">/min</span>
 												</div>
-												<div class="error-msg" style="margin-left: 165px" id="error-vs_respiration"></div>
+												<div class="error-msg" style="margin-left: 100px" id="error-vs_respiration"></div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="vs_bloodpressure">Blood Pressure</label>
-												<div class="col-md-7 input-group">
+												<label class="col-md-3 control-label" for="vs_bloodpressure">Blood Pressure</label>
+												<div class="col-md-8 input-group">
 													<input id="vs_bp_sys1" name="vs_bp_sys1" type="number" class="form-control input-sm uppercase floatNumberField" style="width: 80px" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-vs_bp_sys1">
 													<label class="col-md-1 control-label">/</label> 
 													<input id="vs_bp_dias2" name="vs_bp_dias2" type="number" class="form-control input-sm uppercase floatNumberField" style="width: 80px" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-vs_bp_dias2">
 													<span class="input-group-addon">/mmHg</span>
 												</div>
-												<div class="error-msg" style="margin-left: 165px" id="error-vs_bp_sys1"></div>
-												<div class="error-msg" style="margin-left: 165px" id="error-vs_bp_dias2"></div>
+												<div class="error-msg" style="margin-left: 100px" id="error-vs_bp_sys1"></div>
+												<div class="error-msg" style="margin-left: 100px" id="error-vs_bp_dias2"></div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="vs_height">Height</label>  
-												<div class="col-md-7 input-group">
+												<label class="col-md-3 control-label" for="vs_height">Height</label>  
+												<div class="col-md-8 input-group">
 													<input id="vs_height" name="vs_height" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter height." data-validation-error-msg-container="#error-vs_height">
 													<span class="input-group-addon">cm</span>
 												</div>
-												<div class="error-msg" style="margin-left: 165px" id="error-vs_height"></div>
+												<div class="error-msg" style="margin-left: 100px" id="error-vs_height"></div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="vs_weight">Weight</label>  
-												<div class="col-md-7 input-group">
+												<label class="col-md-3 control-label" for="vs_weight">Weight</label>  
+												<div class="col-md-8 input-group">
 													<input id="vs_weight" name="vs_weight" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter weight." data-validation-error-msg-container="#error-vs_weight">
 													<span class="input-group-addon">kg</span>
 												</div>
-												<div class="error-msg" style="margin-left: 165px" id="error-vs_weight"></div>
+												<div class="error-msg" style="margin-left: 100px" id="error-vs_weight"></div>
 											</div>
 											
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="vs_gxt">GXT</label>  
-												<div class="col-md-7 input-group">
+												<label class="col-md-3 control-label" for="vs_gxt">GXT</label>  
+												<div class="col-md-8 input-group">
 													<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter GXT." data-validation-error-msg-container="#error-vs_gxt">
 													<span class="input-group-addon">mmOL</span>
 												</div>
-												<div class="error-msg" style="margin-left: 165px" id="error-vs_gxt"></div>
+												<div class="error-msg" style="margin-left: 100px" id="error-vs_gxt"></div>
 											</div>
 
 											<div class="form-group">
-												<label class="col-md-4 control-label" for="vs_painscore">Pain Score</label>  
-												<div class="col-md-7 input-group">
+												<label class="col-md-3 control-label" for="vs_painscore">Pain Score</label>  
+												<div class="col-md-8 input-group">
 													<input id="vs_painscore" name="vs_painscore" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pain score." data-validation-error-msg-container="#error-vs_painscore">
 													<span class="input-group-addon">/10</span>
 												</div>
-												<div class="error-msg" style="margin-left: 165px" id="error-vs_painscore"></div>
+												<div class="error-msg" style="margin-left: 100px" id="error-vs_painscore"></div>
 											</div>
 
 										</div>
