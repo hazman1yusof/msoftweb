@@ -54,24 +54,53 @@
 		border-radius:5px;
 	}
 
-	.yellow{
-		border-color:yellow !important;
+	tr.yellow{
 		background-color:yellow !important;
 	}
 
-	.red{
+	input.yellow{
+		color: #9e9e00 !important;
+		border-color:#9e9e00 !important;
+		background-color:yellow !important;
+	}
+
+	a.yellow{
+		color: #9e9e00 !important;
+	    background-color: #fdffe2 !important;
+	    border-color: #9e9e00 !important;
+	}
+
+	tr.red{
+		background-color:red !important;
+	}
+
+	input.red{
+		color: white !important;
 		border-color:red !important;
 		background-color:red !important;
 	}
 
-	.blue{
-		border-color:blue !important;
-		background-color:blue !important;
+	a.red{
+		color: red !important;
+	    background-color: #ffe5e5 !important;
+	    border-color: red !important;
 	}
 
-	.green{
+	tr.green{
+		color:white;
+		background-color:green !important;
+	}
+	
+	input.green{
+		color: white !important;
 		border-color:green !important;
 		background-color:green !important;
+	}
+
+	a.green{
+		color: #3c763d !important;
+	    background-color: #dff0d8 !important;
+	    border-color: #3c763d !important;
 	}
 
 @endsection

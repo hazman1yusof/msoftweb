@@ -1086,7 +1086,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		$("#"+obj.gridname).jqGrid({
 			datatype: "local",
 			colModel: obj.field,
-			autowidth: true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
+			autowidth: true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,hoverrows:false,
 			pager: "#"+obj.gridname+"Pager",
 			sortname: (obj.jqgrid_.hasOwnProperty('sortname'))?obj.jqgrid_.sortname:'',
 			sortorder: (obj.jqgrid_.hasOwnProperty('sortorder'))?obj.jqgrid_.sortorder:'',

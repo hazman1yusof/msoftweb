@@ -212,10 +212,16 @@ var dialog_tri_col = new ordialog(
 		ondblClickRow:function(event){
 
 			$(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
+			$(dialog_tri_col.textfield)
+							.removeClass( "red" )
+							.removeClass( "yellow" )
+							.removeClass( "green" )
+							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
+
 			$(dialog_tri_col.textfield).next()
 							.removeClass( "red" )
 							.removeClass( "yellow" )
-							.removeClass( "blue" )
+							.removeClass( "green" )
 							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
 
 		},
@@ -263,7 +269,7 @@ function examination(){
 	this.idno=null;
 	this.examarray=[];
 	this.on=function(){
-		$("#exam_plus").on('click',addexam);
+		$("#exam_plus").on('click',{data:this},addexam);
 
 	}
 
@@ -273,24 +279,45 @@ function examination(){
 		$("#exam_div").html('');
 	}
 
-	function addexam(){
+	function addexam(event){
+		var obj = event.data.data;
+		var currentid = 0;
+		if(obj.examarray.length==0){
+			obj.examarray.push(0);
+			currentid = 0;
+		}
+
 		$("#exam_div").append(`
 			<hr>
 			<div class="form-group">
-				<div class="col-md-2">select</div>
+				<div class="col-md-2">Exam</div>
 				<div class="col-md-10">
-					<select class="form-select form-control ">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
+					<select class="form-select form-control" name="exam_`+currentid+`" id="exam_`+currentid+`">
+						<option>General</option>
+						<option>Head</option>
+						<option>Neck</option>
+						<option>Throat</option>
+						<option>Abdomen</option>
+						<option>Eye</option>
+						<option>Lungs</option>
+						<option>Neuro</option>
+						<option>Limbs</option>
+						<option>Chest</option>
+						<option>BACK</option>
+						<option>Heart</option>
+						<option>Skin</option>
+						<option>Musculosketel</option>
+						<option>Neurological</option>
+						<option>stomach</option>
+						<option>middle finger</option>
 					</select>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<div class="col-md-2">textarea</div>
+				<div class="col-md-2">Note</div>
 				<div class="col-md-10">
-					<textarea class="form-control input-sm uppercase" rows="5" ></textarea>
+					<textarea class="form-control input-sm uppercase" rows="5"  name="examnote_`+currentid+`" id="examnote_`+currentid+`"></textarea>
 				</div>
 			</div>
 		`)
