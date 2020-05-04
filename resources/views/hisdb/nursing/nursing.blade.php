@@ -144,8 +144,10 @@
 												<input class="form-check-input" type="checkbox" id="allergynone" name="allergynone" value="1">
 												<label class="form-check-label" for="allergynone">None</label>
 											</div>
+										</div>
 
-											<div class="form-check form-check-inline checkbox-inline">
+										<div class="form-group">
+											<div class="form-check form-check-inline checkbox-inline" style="margin-left: 50px">
 												<input class="form-check-input" type="checkbox" id="allergyunknown" name="allergyunknown" value="1">
 												<label class="form-check-label" for="allergyunknown">Unknown</label>
 											</div>
@@ -154,9 +156,6 @@
 												<input class="form-check-input" type="checkbox" id="allergyothers" name="allergyothers" value="1">
 												<label class="form-check-label" for="allergyothers">Others</label>
 											</div>
-										</div>
-
-										<div class="form-group">
 										</div>
 
 										<div class="form-group">
@@ -178,7 +177,7 @@
 							<div class="panel-heading text-center">CONDITION ON ADMISSION</div>
 							<div class="panel-body">
 
-								<div class='col-md-10 col-md-offset-1'>
+								<div class='col-md-12'>
 									<div class="panel panel-info">
 										<div class="panel-heading text-center">VITAL SIGN</div>
 										<div class="panel-body">
@@ -189,7 +188,7 @@
 													<input id="vs_temperature" name="vs_temperature" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter temperature." data-validation-error-msg-container="#error-vs_temperature">
 													<span class="input-group-addon">°C</span>
 												</div>
-												<div class="error-msg" style="margin-left: 100px" id="error-vs_temperature"></div>
+												<div class="error-msg" style="margin-left: 110px" id="error-vs_temperature"></div>
 											</div>
 
 											<div class="form-group">
@@ -198,7 +197,7 @@
 													<input id="vs_pulse" name="vs_pulse" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pulse." data-validation-error-msg-container="#error-vs_pulse">
 													<span class="input-group-addon">/min</span>
 												</div>
-												<div class="error-msg" style="margin-left: 100px" id="error-vs_pulse"></div>
+												<div class="error-msg" style="margin-left: 110px" id="error-vs_pulse"></div>
 											</div>
 
 											<div class="form-group">
@@ -207,19 +206,19 @@
 													<input id="vs_respiration" name="vs_respiration" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter respiratory rate." data-validation-error-msg-container="#error-vs_respiration">
 													<span class="input-group-addon">/min</span>
 												</div>
-												<div class="error-msg" style="margin-left: 100px" id="error-vs_respiration"></div>
+												<div class="error-msg" style="margin-left: 110px" id="error-vs_respiration"></div>
 											</div>
 
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="vs_bloodpressure">Blood Pressure</label>
 												<div class="col-md-8 input-group">
-													<input id="vs_bp_sys1" name="vs_bp_sys1" type="number" class="form-control input-sm uppercase floatNumberField" style="width: 80px" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-vs_bp_sys1">
+													<input id="vs_bp_sys1" name="vs_bp_sys1" type="number" class="form-control input-sm uppercase floatNumberField" style="width: 95px" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-vs_bp_sys1">
 													<label class="col-md-1 control-label">/</label> 
-													<input id="vs_bp_dias2" name="vs_bp_dias2" type="number" class="form-control input-sm uppercase floatNumberField" style="width: 80px" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-vs_bp_dias2">
+													<input id="vs_bp_dias2" name="vs_bp_dias2" type="number" class="form-control input-sm uppercase floatNumberField" style="width: 95px" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-vs_bp_dias2">
 													<span class="input-group-addon">/mmHg</span>
 												</div>
-												<div class="error-msg" style="margin-left: 100px" id="error-vs_bp_sys1"></div>
-												<div class="error-msg" style="margin-left: 100px" id="error-vs_bp_dias2"></div>
+												<div class="error-msg" style="margin-left: 110px" id="error-vs_bp_sys1"></div>
+												<div class="error-msg" style="margin-left: 110px" id="error-vs_bp_dias2"></div>
 											</div>
 
 											<div class="form-group">
@@ -228,7 +227,7 @@
 													<input id="vs_height" name="vs_height" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter height." data-validation-error-msg-container="#error-vs_height">
 													<span class="input-group-addon">cm</span>
 												</div>
-												<div class="error-msg" style="margin-left: 100px" id="error-vs_height"></div>
+												<div class="error-msg" style="margin-left: 110px" id="error-vs_height"></div>
 											</div>
 
 											<div class="form-group">
@@ -237,7 +236,7 @@
 													<input id="vs_weight" name="vs_weight" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter weight." data-validation-error-msg-container="#error-vs_weight">
 													<span class="input-group-addon">kg</span>
 												</div>
-												<div class="error-msg" style="margin-left: 100px" id="error-vs_weight"></div>
+												<div class="error-msg" style="margin-left: 110px" id="error-vs_weight"></div>
 											</div>
 											
 											<div class="form-group">
@@ -246,7 +245,7 @@
 													<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter GXT." data-validation-error-msg-container="#error-vs_gxt">
 													<span class="input-group-addon">mmOL</span>
 												</div>
-												<div class="error-msg" style="margin-left: 100px" id="error-vs_gxt"></div>
+												<div class="error-msg" style="margin-left: 110px" id="error-vs_gxt"></div>
 											</div>
 
 											<div class="form-group">
@@ -255,7 +254,7 @@
 													<input id="vs_painscore" name="vs_painscore" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pain score." data-validation-error-msg-container="#error-vs_painscore">
 													<span class="input-group-addon">/10</span>
 												</div>
-												<div class="error-msg" style="margin-left: 100px" id="error-vs_painscore"></div>
+												<div class="error-msg" style="margin-left: 110px" id="error-vs_painscore"></div>
 											</div>
 
 										</div>
@@ -267,22 +266,22 @@
 										<div class="panel-heading text-center">MODE OF ADMISSION</div>
 										<div class="panel-body" style="height: 170px">
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 50px">
 												<input class="form-check-input" type="checkbox" name="moa_walkin" id="moa_walkin" value="1">
 												<label class="form-check-label" for="moa_walkin">Walk In</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 50px">
 												<input class="form-check-input" type="checkbox" name="moa_wheelchair" id="moa_wheelchair" value="1">
 												<label class="form-check-label" for="moa_wheelchair">Wheel Chair</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 50px">
 												<input class="form-check-input" type="checkbox" name="moa_trolley" id="moa_trolley" value="1">
 												<label class="form-check-label" for="moa_trolley">Trolley</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 50px">
 												<input class="form-check-input" type="checkbox" name="moa_others" id="moa_others" value="1">
 												<label class="form-check-label" for="moa_others">Others</label>
 											</div>
@@ -296,17 +295,17 @@
 										<div class="panel-heading text-center">LEVEL OF CONSCIOUSNESS</div>
 										<div class="panel-body" style="height: 170px">
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 40px">
 												<input class="form-check-input" type="checkbox" id="loc_conscious" name="loc_conscious" value="1">
 												<label class="form-check-label" for="loc_conscious">Conscious</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 40px">
 												<input class="form-check-input" type="checkbox" id="loc_semiconscious" name="loc_semiconscious" value="1">
 												<label class="form-check-label" for="loc_semiconscious">SemiConscious</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 40px">
 												<input class="form-check-input" type="checkbox" id="loc_unconscious" name="loc_unconscious" value="1">
 												<label class="form-check-label" for="loc_unconscious">UnConscious</label>
 											</div>
@@ -320,22 +319,22 @@
 										<div class="panel-heading text-center">MENTAL STATUS</div>
 										<div class="panel-body" style="height: 170px">
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 50px">
 												<input class="form-check-input" type="checkbox" name="ms_orientated" id="ms_orientated" value="1">
 												<label class="form-check-label" for="ms_orientated">Orientated</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 50px">
 												<input class="form-check-input" type="checkbox" name="ms_confused" id="ms_confused" value="1">
 												<label class="form-check-label" for="ms_confused">Confused</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 50px">
 												<input class="form-check-input" type="checkbox" name="ms_restless" id="ms_restless" value="1">
 												<label class="form-check-label" for="ms_restless">Restless</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 50px">
 												<input class="form-check-input" type="checkbox" name="ms_aggressive" id="ms_aggressive" value="1">
 												<label class="form-check-label" for="ms_aggressive">Aggressive</label>
 											</div>
@@ -349,27 +348,27 @@
 										<div class="panel-heading text-center">EMOTIONAL STATUS</div>
 										<div class="panel-body" style="height: 170px">
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 40px">
 												<input class="form-check-input" type="checkbox" name="es_calm" id="es_calm" value="1">
 												<label class="form-check-label" for="es_calm">Calm</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 40px">
 												<input class="form-check-input" type="checkbox" name="es_anxious" id="es_anxious" value="1">
 												<label class="form-check-label" for="es_anxious">Anxious</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 40px">
 												<input class="form-check-input" type="checkbox" name="es_distress" id="es_distress" value="1">
 												<label class="form-check-label" for="es_distress">Distress</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 40px">
 												<input class="form-check-input" type="checkbox" name="es_depressed" id="es_depressed" value="1">
 												<label class="form-check-label" for="es_depressed">Depressed</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 60px">
+											<div class="form-check" style="margin-left: 40px">
 												<input class="form-check-input" type="checkbox" name="es_irritable" id="es_irritable" value="1">
 												<label class="form-check-label" for="es_irritable">Irritable</label>
 											</div>
