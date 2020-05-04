@@ -55,6 +55,7 @@ class NursingController extends defaultController
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_edit_ti,
+                        'episno' => $request->episno_ti,
                         'admwardtime' => $request->admwardtime,
                         'triagecolor' => $request->triagecolor,
                         'admreason' => $request->admreason,
@@ -105,7 +106,8 @@ class NursingController extends defaultController
             DB::table('nursing.nursassessgen')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_ad,
+                        'mrn' => $request->mrn_edit_ti,
+                        'episno' => $request->episno_ti,
                         'br_breathing' => $request->br_breathing,
                         'br_breathingdesc' => $request->br_breathingdesc,
                         'br_cough' => $request->br_cough,
@@ -176,6 +178,7 @@ class NursingController extends defaultController
 
             DB::table('nursing.nursassessment')
                 ->where('mrn','=',$request->mrn_edit_ti)
+                ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'admwardtime' => $request->admwardtime,
@@ -224,7 +227,8 @@ class NursingController extends defaultController
                 ]);
 
             DB::table('nursing.nursassessgen')
-                ->where('mrn','=',$request->mrn_edit_ad)
+                ->where('mrn','=',$request->mrn_edit_ti)
+                ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'br_breathing' => $request->br_breathing,
