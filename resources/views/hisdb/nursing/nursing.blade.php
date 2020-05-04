@@ -847,8 +847,13 @@
 
 											<div class='col-md-6'>
 												<div class="panel panel-info">
-													<div class="panel-heading text-center">EXAMINATION</div>
-													<div class="panel-body">
+													<div class="panel-heading text-center" style="position: relative;"> EXAMINATION 
+														<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 10px; top: 2px;">
+															<button type="button" class="btn btn-info" id="exam_plus"><span class="fa fa-plus"></span></button>
+														</div>
+													</div>
+													<div class="panel-body" id="exam_div">
+														
 													</div>
 												</div>
 											</div>

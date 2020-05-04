@@ -45,8 +45,10 @@ class CheqRegController extends defaultController
         DB::beginTransaction();
         try {
 
+
             $chqreg = DB::table('finance.chqreg')
-                            ->where('startno','=',$request->startno);
+                            ->where('startno','=',$request->startno)
+                            ->where('bankcode','=',$request->bankcode);
 
             if($chqreg->exists()){
                 throw new \Exception("record duplicate");
@@ -56,9 +58,9 @@ class CheqRegController extends defaultController
                 ->insert([  
                     'compcode' => session('compcode'),
                     'bankcode' => strtoupper($request->bankcode),
-                    'startno' => strtoupper($request->startno),
+                    'startno' => $request->startno,
                     'endno' => $request->endno,
-                    'cheqqty' => $request->endno -$request->startno+1,
+                    'cheqqty' => $request->endno-$request->startno+1,
                     'recstatus' => 'ACTIVE',
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -68,15 +70,30 @@ class CheqRegController extends defaultController
             $startno = $request->startno;
             $endno = $request->endno;
 
-            DB::table('finance.chqtran')
+
+            for ($i=$request->startno; $i <= $request->endno; $i++) { 
+
+                $chqtran = DB::table('finance.chqtran')
+                                ->where('cheqno','=',$i)
+                                ->where('bankcode','=',$request->bankcode);
+
+                if($chqtran->exists()){
+                    continue;
+                }
+
+
+                DB::table('finance.chqtran')
                     ->insert([  
                         'compcode' => session('compcode'),
                         'bankcode' => strtoupper($request->bankcode),
-                        'cheqno' => $startno++,
+                        'cheqno' => $i,
                         'recstatus' => 'OPEN',
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+            }
+
+            
 
              DB::commit();
         } catch (\Exception $e) {

@@ -110,7 +110,7 @@ $(document).ready(function () {
 		editurl: "/cheqregDetail/form",
 		colModel: [
 			{ label: 'Comp Code', name: 'compcode', width: 50, hidden:true},	
-			{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true, editable: true,},
+			{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true,},
 			{ label: 'Start Number', name: 'startno', width: 20, classes: 'wrap', sorttype: 'number', editable: true,
 				editrules:{required: true},edittype:"text",canSearch:true,checked:true,
 				editoptions:{
@@ -185,149 +185,102 @@ $(document).ready(function () {
 			//$("#gridCheqRegDetail :input[name='bankcode']").attr('readonly', 'readonly');
 			$("#gridCheqRegDetail :input[name='endno']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
-					if (code == '9')$('#jqGrid_ilsave').click();
+					if (code == '9')$('#gridCheqRegDetail_ilsave').click();
 					/*addmore_jqgrid.state = true;
 					$('#jqGrid_ilsave').click();*/
 			});
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-					//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-					addmore_jqgrid.more = true;
-					//state true maksudnyer ada isi, tak kosong
-					refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
-					errorField.length=0;
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-				},
-				errorfunc: function(rowid,response){
-					//$('#p_error').text(response.responseText);
-					refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
-				},
-				beforeSaveRow: function (options, rowid) {
-					//$('#p_error').text('');
-					if(errorField.length>0)return false;
+			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			addmore_jqgrid.more = true;
+			//state true maksudnyer ada isi, tak kosong
+			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
+			errorField.length=0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorfunc: function(rowid,response){
+			//$('#p_error').text(response.responseText);
+			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
+		},
+		beforeSaveRow: function (options, rowid) {
+			//$('#p_error').text('');
+			if(errorField.length>0)return false;
 
-					let data = $('#gridCheqRegDetail').jqGrid ('getRowData', rowid);
-					console.log(data);
+			let data = $('#gridCheqRegDetail').jqGrid ('getRowData', rowid);
 
-					let editurl = "/cheqregDetail/form?"+
-						$.param({
-							action: 'cheqregDetail_save',
-							//idno: selrowData('#gridCheqRegDetail').idno,
-						});
-					$("#gridCheqRegDetail").jqGrid('setGridParam', { editurl: editurl });
-				},
-				afterrestorefunc : function( response ) {
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-				},
-				errorTextFormat: function (data) {
-					alert(data);
-				}
-			};
+			let editurl = "/cheqregDetail/form?"+
+				$.param({
+					bankcode: selrowData('#jqGrid').bankcode,
+					action: 'cheqregDetail_save',
+					//idno: selrowData('#gridCheqRegDetail').idno,
+				});
+			$("#gridCheqRegDetail").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function( response ) {
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
+		}
+	};
 
-			var myEditOptions_edit = {
-				keys: true,
-				extraparam:{
-					"_token": $("#_token").val()
-				},
-				oneditfunc: function (rowid) {
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-					$("#gridCheqRegDetail :input[name='endno']").keydown(function(e) {//when click tab at last column in header, auto save
-						var code = e.keyCode || e.which;
-						if (code == '9')$('#jqGrid_ilsave').click();
-						/*addmore_jqgrid.state = true;
-						$('#jqGrid_ilsave').click();*/
-					});
-
-				},
-				aftersavefunc: function (rowid, response, options) {
-					if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-					//state true maksudnyer ada isi, tak kosong
-					refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
-					errorField.length=0;
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-				},
-				errorfunc: function(rowid,response){
-					$('#p_error').text(response.responseText);
-					refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
-				},
-				beforeSaveRow: function (options, rowid) {
-					$('#p_error').text('');
-					if(errorField.length>0)return false;
-
-					let data = $('#gridCheqRegDetail').jqGrid ('getRowData', rowid);
-					// console.log(data);
-
-					let editurl = "/cheqregDetail/form?"+
-						$.param({
-							action: 'cheqregDetail_save',
-						});
-					$("#gridCheqRegDetail").jqGrid('setGridParam', { editurl: editurl });
-				},
-				afterrestorefunc : function( response ) {
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-				},
-				errorTextFormat: function (data) {
-					alert(data);
-				}
-			};
-
-			/////////////////////////start grid pager/////////////////////////////////////////////////////////
-			$("#gridCheqRegDetail").inlineNav('#jqGridPager2', {
-				add: true,
-				edit: true,
-				cancel: true,
-				//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-				restoreAfterSelect: false,
-				addParams: {
-					addRowParams: myEditOptions
-				},
-				editParams: myEditOptions_edit
-			}).jqGrid('navButtonAdd', "#jqGridPager2", {
-				id: "jqGridPagerDelete",
-				caption: "", cursor: "pointer", position: "last",
-				buttonicon: "glyphicon glyphicon-trash",
-				title: "Delete Selected Row",
-				onClickButton: function () {
-					selRowId = $("#gridCheqRegDetail").jqGrid('getGridParam', 'selrow');
-					if (!selRowId) {
-						bootbox.alert('Please select row');
-					} else {
-						bootbox.confirm({
-							message: "Are you sure you want to delete this row?",
-							buttons: {
-								confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
-							},
-							callback: function (result) {
-								if (result == true) {
-									param = {
-										_token: $("#_token").val(),
-										action: 'cheqregDetail_save',
-										//uomcode: $('#uomcode').val(),
-										idno: selrowData('#gridCheqRegDetail').idno,
-									}
-									$.post( "/cheqregDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-									}).fail(function (data) {
-										//////////////////errorText(dialog,data.responseText);
-									}).done(function (data) {
-										refreshGrid("#gridCheqRegDetail", urlParam_cheqregdtl);
-									});
-								}else{
-									$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-								}
+	/////////////////////////start grid pager/////////////////////////////////////////////////////////
+	$("#gridCheqRegDetail").inlineNav('#jqGridPager2', {
+		add: true,
+		edit: true,
+		cancel: true,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions
+		},
+		editParams: myEditOptions
+	}).jqGrid('navButtonAdd', "#jqGridPager2", {
+		id: "jqGridPagerDelete",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-trash",
+		title: "Delete Selected Row",
+		onClickButton: function () {
+			selRowId = $("#gridCheqRegDetail").jqGrid('getGridParam', 'selrow');
+			if (!selRowId) {
+				bootbox.alert('Please select row');
+			} else {
+				bootbox.confirm({
+					message: "Are you sure you want to delete this row?",
+					buttons: {
+						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
+					},
+					callback: function (result) {
+						if (result == true) {
+							param = {
+								_token: $("#_token").val(),
+								action: 'cheqregDetail_save',
+								//uomcode: $('#uomcode').val(),
+								idno: selrowData('#gridCheqRegDetail').idno,
 							}
-						});
+							$.post( "/cheqregDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+							}).fail(function (data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function (data) {
+								refreshGrid("#gridCheqRegDetail", urlParam_cheqregdtl);
+							});
+						}else{
+							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+						}
 					}
-				},
-			}).jqGrid('navButtonAdd', "#jqGridPager2", {
-				id: "jqGridPagerRefresh",
-				caption: "", cursor: "pointer", position: "last",
-				buttonicon: "glyphicon glyphicon-refresh",
-				title: "Refresh Table",
-				onClickButton: function () {
-					refreshGrid("#gridCheqRegDetail", urlParam_cheqregdtl);
-				},
-			});
+				});
+			}
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPager2", {
+		id: "jqGridPagerRefresh",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function () {
+			refreshGrid("#gridCheqRegDetail", urlParam_cheqregdtl);
+		},
+	});
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 			
@@ -336,7 +289,7 @@ $(document).ready(function () {
 	searchClick2('#gridCheqRegDetail','#searchForm',urlParam_cheqregdtl);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#gridCheqRegDetail',true,urlParam_cheqregdtl);
+	addParamField('#gridCheqRegDetail',true,urlParam_cheqregdtl,['action','rn']);
 
 	/////////////////Pager Hide/////////////////////////////////////////////////////////////////////////////////////////
 	$("#pg_jqGridPager2 table").hide();
