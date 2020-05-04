@@ -42,7 +42,7 @@
 
 				<form class='form-horizontal' style='width:99%' id='formTriageInfo'>
 
-					<div class='col-md-5'>
+					<div class='col-md-6'>
 						<div class="panel panel-info">
 							<div class="panel-heading text-center">INFORMATION</div>
 							<div class="panel-body">
@@ -139,10 +139,8 @@
 												<input class="form-check-input" type="checkbox" id="allergyenviroment" name="allergyenviroment" value="1">
 												<label class="form-check-label" for="allergyenviroment">Environment</label>
 											</div>
-										</div>
 
-										<div class="form-group">
-											<div class="form-check form-check-inline checkbox-inline" style="margin-left: 50px">
+											<div class="form-check form-check-inline checkbox-inline">
 												<input class="form-check-input" type="checkbox" id="allergynone" name="allergynone" value="1">
 												<label class="form-check-label" for="allergynone">None</label>
 											</div>
@@ -159,6 +157,9 @@
 										</div>
 
 										<div class="form-group">
+										</div>
+
+										<div class="form-group">
 											<label class="col-md-4 control-label" for="allergyremarks">If Others, Please specify:</label>  
 											<div class="col-md-8">
 												<textarea id="allergyremarks" name="allergyremarks" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
@@ -172,12 +173,12 @@
 						</div>
 					</div>
 
-					<div class='col-md-7'>
+					<div class='col-md-6'>
 						<div class="panel panel-info">
 							<div class="panel-heading text-center">CONDITION ON ADMISSION</div>
 							<div class="panel-body">
 
-								<div class='col-md-8'>
+								<div class='col-md-10 col-md-offset-1'>
 									<div class="panel panel-info">
 										<div class="panel-heading text-center">VITAL SIGN</div>
 										<div class="panel-body">
@@ -261,27 +262,27 @@
 									</div>
 								</div>
 
-								<div class='col-md-4'>
+								<div class='col-md-6'>
 									<div class="panel panel-info">
 										<div class="panel-heading text-center">MODE OF ADMISSION</div>
-										<div class="panel-body">
+										<div class="panel-body" style="height: 170px">
 
-											<div class="form-check" style="margin-left: 20px">
+											<div class="form-check" style="margin-left: 60px">
 												<input class="form-check-input" type="checkbox" name="moa_walkin" id="moa_walkin" value="1">
 												<label class="form-check-label" for="moa_walkin">Walk In</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 20px">
+											<div class="form-check" style="margin-left: 60px">
 												<input class="form-check-input" type="checkbox" name="moa_wheelchair" id="moa_wheelchair" value="1">
 												<label class="form-check-label" for="moa_wheelchair">Wheel Chair</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 20px">
+											<div class="form-check" style="margin-left: 60px">
 												<input class="form-check-input" type="checkbox" name="moa_trolley" id="moa_trolley" value="1">
 												<label class="form-check-label" for="moa_trolley">Trolley</label>
 											</div>
 
-											<div class="form-check" style="margin-left: 20px">
+											<div class="form-check" style="margin-left: 60px">
 												<input class="form-check-input" type="checkbox" name="moa_others" id="moa_others" value="1">
 												<label class="form-check-label" for="moa_others">Others</label>
 											</div>
@@ -290,26 +291,24 @@
 									</div>
 								</div>
 
-								<div class='col-md-12'>
+								<div class='col-md-6'>
 									<div class="panel panel-info">
 										<div class="panel-heading text-center">LEVEL OF CONSCIOUSNESS</div>
-										<div class="panel-body">
+										<div class="panel-body" style="height: 170px">
 
-											<div class="form-group">
-												<div class="form-check form-check-inline checkbox-inline" style="margin-left: 100px">
-													<input class="form-check-input" type="checkbox" id="loc_conscious" name="loc_conscious" value="1">
-													<label class="form-check-label" for="loc_conscious">Conscious</label>
-												</div>
+											<div class="form-check" style="margin-left: 60px">
+												<input class="form-check-input" type="checkbox" id="loc_conscious" name="loc_conscious" value="1">
+												<label class="form-check-label" for="loc_conscious">Conscious</label>
+											</div>
 
-												<div class="form-check form-check-inline checkbox-inline">
-													<input class="form-check-input" type="checkbox" id="loc_semiconscious" name="loc_semiconscious" value="1">
-													<label class="form-check-label" for="loc_semiconscious">SemiConscious</label>
-												</div>
+											<div class="form-check" style="margin-left: 60px">
+												<input class="form-check-input" type="checkbox" id="loc_semiconscious" name="loc_semiconscious" value="1">
+												<label class="form-check-label" for="loc_semiconscious">SemiConscious</label>
+											</div>
 
-												<div class="form-check form-check-inline checkbox-inline">
-													<input class="form-check-input" type="checkbox" id="loc_unconscious" name="loc_unconscious" value="1">
-													<label class="form-check-label" for="loc_unconscious">UnConscious</label>
-												</div>
+											<div class="form-check" style="margin-left: 60px">
+												<input class="form-check-input" type="checkbox" id="loc_unconscious" name="loc_unconscious" value="1">
+												<label class="form-check-label" for="loc_unconscious">UnConscious</label>
 											</div>
 
 										</div>
