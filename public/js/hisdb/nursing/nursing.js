@@ -42,6 +42,11 @@ $(document).ready(function () {
 
 	});
 
+	// to format number input to two decimal places (0.00)
+	$(".floatNumberField").change(function() {
+		$(this).val(parseFloat($(this).val()).toFixed(2));
+	});
+
 });
 
 var errorField = [];
@@ -103,7 +108,8 @@ function populate_formNursing(obj,rowdata){
 	button_state_ti('add');
 
 	//formTriageInfo
-	$("#mrn_edit_ti, #mrn_edit_ad, #mrn_edit_tpa").val(obj.a_mrn);
+	$("#mrn_edit_ti").val(obj.a_mrn);
+	$("#episno_ti").val(obj.a_Episno);
 	$("#reg_date").val(obj.reg_date);
 
 	if(rowdata.nurse != undefined){
