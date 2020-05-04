@@ -54,21 +54,24 @@
 		border-radius:5px;
 	}
 
-
 	.yellow{
-		background-color:yellow;
+		border-color:yellow !important;
+		background-color:yellow !important;
 	}
 
 	.red{
-		background-color:red;
+		border-color:red !important;
+		background-color:red !important;
 	}
 
 	.blue{
-		background-color:blue;
+		border-color:blue !important;
+		background-color:blue !important;
 	}
 
 	.green{
-		background-color:green;
+		border-color:green !important;
+		background-color:green !important;
 	}
 
 @endsection

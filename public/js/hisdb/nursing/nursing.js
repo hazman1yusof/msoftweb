@@ -202,6 +202,7 @@ function saveForm_ti(callback){
     });
 }
 
+
 var dialog_tri_col = new ordialog(
 	'tri_col','sysdb.sysparam',"#triagecolor",errorField,
 	{	colModel:
@@ -217,6 +218,16 @@ var dialog_tri_col = new ordialog(
 		ondblClickRow:function(event){
 
 			$(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
+			$(dialog_tri_col.textfield).next()
+							.removeClass( "red" )
+							.removeClass( "yellow" )
+							.removeClass( "blue" )
+							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
+
+		},
+		onSelectRow:function(rowid, selected){
+			$('#'+dialog_tri_col.gridname+' tr#'+rowid).dblclick();
+			// $(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
 
 		},
 		gridComplete: function(obj){
@@ -233,7 +244,7 @@ var dialog_tri_col = new ordialog(
 			var ids = $(gridname).jqGrid("getDataIDs"), l = ids.length, i, rowid, status;
 	        for (i = 0; i < l; i++) {
 	            rowid = ids[i];
-	            colorcode = $(gridname).jqGrid("getCell", rowid, "colorcode");
+	            colorcode = $(gridname).jqGrid("getCell", rowid, "description");
 
 	            $('#' + rowid).addClass(colorcode);
 
@@ -250,3 +261,45 @@ var dialog_tri_col = new ordialog(
 );
 dialog_tri_col.makedialog();
 dialog_tri_col.on();
+
+
+var examination = new examination();
+examination.on();
+function examination(){
+	this.idno=null;
+	this.examarray=[];
+	this.on=function(){
+		$("#exam_plus").on('click',addexam);
+
+	}
+
+	this.off=function(){
+		this.idno=null;
+		this.examarray.length=0;
+		$("#exam_div").html('');
+	}
+
+	function addexam(){
+		$("#exam_div").append(`
+			<hr>
+			<div class="form-group">
+				<div class="col-md-2">select</div>
+				<div class="col-md-10">
+					<select class="form-select form-control ">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-2">textarea</div>
+				<div class="col-md-10">
+					<textarea class="form-control input-sm uppercase" rows="5" ></textarea>
+				</div>
+			</div>
+		`)
+	}
+}
+

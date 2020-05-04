@@ -493,14 +493,29 @@ $(document).ready(function () {
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
-			{ label: 'Delivery Order Number', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: true,
+			{ label: 'Creditor Code', name: 'suppcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ custom_element:documentCustomEdit,
 					custom_value:galGridCustomValue },
 			},
 	
-			{ label: 'Purchase Order Number', name: 'reference', width: 200, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+			{ label: 'Invoice Date', name: 'recdate', width: 100, classes: 'wrap', editable:true,
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+				editoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            id: 'expdate_datePicker',
+                            dateFormat: 'dd/mm/yy',
+                            minDate: 1,
+                            showOn: 'focus',
+                            changeMonth: true,
+		  					changeYear: true,
+                        });
+                    }
+                }
+			},
+			{ label: 'Invoice No', name: 'document', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
 				edittype:"text",
 			},
 			{ label: 'Amount', name: 'amount', width: 100, classes: 'wrap',
@@ -521,11 +536,11 @@ $(document).ready(function () {
 					}
 				},
 			},
-			{ label: 'Tax Claim', name: 'GSTCode', width: 200, edittype:'text', hidden:true, classes: 'wrap',  
-				editable:true,
+			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:true,	
+				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Tax Amount', name: 'AmtB4GST', width: 100, classes: 'wrap', hidden:true, 
+			{ label: 'Amount Paid', name: 'totamount', width: 100, classes: 'wrap', hidden:true, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
@@ -543,12 +558,25 @@ $(document).ready(function () {
 					}
 				},
 			},
-			{ label: 'Record No', name: 'dorecno', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
-				edittype:"text",
+			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:true, 
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: true,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					readonly: "readonly",
+					maxlength: 12,
+					dataInit: function(element) {
+					element.style.textAlign = 'right';
+						$(element).keypress(function(e){					
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+						}
+					});
+					}
+				},
 			},
-			{ label: 'GRN No', name: 'grnno', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
-				edittype:"text",
-			},
+		
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -588,6 +616,11 @@ $(document).ready(function () {
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
+	function format_qtyoutstand(cellvalue, options, rowObject){
+		var qtyoutstand = rowObject.qtyorder - rowObject.qtydelivered;
+		if(qtyoutstand<0 || isNaN(qtyoutstand)) return 0;
+		return qtyoutstand;
+	}
 	
 	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	
@@ -979,6 +1012,7 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
@@ -1000,8 +1034,9 @@ $(document).ready(function () {
 		},{
 			title:"Select Paymode",
 			open: function(){
-				dialog_paymode.urlParam.filterCol=['recstatus', 'compcode', 'source'],
-				dialog_paymode.urlParam.filterVal=['A', 'session.compcode', $('#apacthdr_source').val()]
+				//let data=selrowData('#'+dialog_paymode.gridname);
+				dialog_paymode.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
+				dialog_paymode.urlParam.filterVal=['A', 'session.compcode', $('#apacthdr_source').val(), '<>.Debit Note' && '<>.Credit Note']
 				}
 			},'urlParam','radio','tab'
 		);
@@ -1044,11 +1079,11 @@ $(document).ready(function () {
 		'cheqno','finance.chqtran','#apacthdr_cheqno',errorField,
 		{	colModel:[
 				{label:'Cheque No',name:'cheqno',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				{label:'Bankcode',name:'bankcode',width:200,classes:'pointer',hidden:false},
+				{label:'Bankcode',name:'bankcode',width:200,classes:'pointer',hidden:true},
 				
 			],
 			urlParam: {
-				filterCol:['compcode','stat'],
+				filterCol:['compcode','recstatus'],
 				filterVal:['session.compcode','A']
 			},
 			ondblClickRow: function () {
@@ -1067,7 +1102,7 @@ $(document).ready(function () {
 		},{
 			title:"Select Cheque No",
 			open: function(){
-				dialog_cheqno.urlParam.filterCol=['compcode','stat', 'bankcode'],
+				dialog_cheqno.urlParam.filterCol=['compcode','recstatus', 'bankcode'],
 				dialog_cheqno.urlParam.filterVal=['session.compcode','A', $('#apacthdr_bankcode').val()]
 			}
 		},'urlParam','radio','tab'
@@ -1087,21 +1122,63 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#apacthdr_payto").val(data['SuppCode']);
-				$('#apacthdr_recdate').focus();
+
+				var urlParam2 = {
+					action: 'get_value_default',
+					url: '/util/get_value_default',
+					field: ['h.compcode', 'h.source', 'h.trantype', 'h.recstatus', 'h.recdate', 'h.payto', 'h.outamount', 'h.amount' ],
+					table_name: ['finance.apacthdr AS h'],
+					table_id: 'idno',
+					filterCol: ['h.compcode', 'h.source', 'h.trantype'],
+					filterVal: ['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
+					sortby:['idno desc']
+				};
+
+				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
+				}, 'json').done(function (data) {
+					if (!$.isEmptyObject(data.rows)) {
+						data.rows.forEach(function(elem) {
+							if(elem['outamount'] > 0){
+								$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
+									{
+										compcode:elem['compcode'],
+										recno:elem['recno'],
+										//lineno_:elem['lineno_'],
+										suppcode:elem['suppcode'],
+										recdate:elem['recdate'],
+										amount:elem['amount'],
+										outamount:0,
+			    						balance :elem['outamount'] - elem['totamount'],
+										unitprice:elem['unitprice'],
+										
+									}
+								);
+							}
+						});
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+
+					} else {
+
+					}
+				});
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#apacthdr_recdate').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#apacthdr_payto').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+
+			
 		},{
 			title:"Select Supplier Code",
 			open: function(){
+				$("#jqGrid2").jqGrid("clearGridData", true);
+				dialog_suppcode.fixPost = "true";
 				dialog_suppcode.urlParam.filterCol=['recstatus', 'compcode'],
 				dialog_suppcode.urlParam.filterVal=['A', 'session.compcode']
 				}

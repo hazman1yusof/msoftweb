@@ -309,7 +309,7 @@ i.fa {
 @section('scripts')
 
 	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js"></script>
-	<script src="js/finance/AP/paymentVoucher/pdfgen.js"></script>
+	<!-- <script src="js/finance/AP/paymentVoucher/pdfgen.js"></script> -->
 
 	
 @endsection

@@ -38,6 +38,7 @@ i.fa {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
+				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 				<div class="ScolClass">
 						<div name='Scol'>Search By : </div>
 				</div>
