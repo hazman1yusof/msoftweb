@@ -200,9 +200,9 @@ $(document).ready(function () {
 					$("#jqGridPagerDelete").show();
 					$("#jqGrid_iledit").show();
 				}
-
 			}
 			// $("#jqGrid_iledit").click();
+			$('#p_error').text('');   //hilangkan error msj after save
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();

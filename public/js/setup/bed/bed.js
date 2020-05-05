@@ -180,8 +180,9 @@ $(document).ready(function () {
 				else if (rowData['mrn'] == '000000') {
 					$("#jqGridPagerDelete").show();
 					$("#jqGrid_iledit").show();
-		}
+				}
 			}
+			$('#p_error').text('');   //hilangkan error msj after save
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
