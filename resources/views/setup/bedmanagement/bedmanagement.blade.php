@@ -14,11 +14,6 @@
 	display: inline-block;
 }
 
-i.fa {
-		cursor: pointer;
-		float: right;
-		<!--  margin-right: 5px; -->
-	}
 
 .clearfix {
 	overflow: auto;
