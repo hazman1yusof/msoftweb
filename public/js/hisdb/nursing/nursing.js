@@ -54,10 +54,10 @@ $(document).ready(function () {
 		var regex = new RegExp(input.attr('pattern'), 'g');
 	  
 		setTimeout(function(){
-		  var newVal = input.val();
-		  if(!regex.test(newVal)){
-			input.val(oldVal); 
-		  }
+			var newVal = input.val();
+			if(!regex.test(newVal)){
+				input.val(oldVal); 
+		  	}
 		}, 0);
 	});
 
