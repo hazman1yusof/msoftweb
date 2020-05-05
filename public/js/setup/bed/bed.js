@@ -620,3 +620,16 @@ $(document).ready(function () {
 	addParamField('#jqGrid', true, urlParam, ['mrn', 'episno', 'name']);
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 });
+
+
+function err_reroll(){
+	this.old_data;
+	this.store_data=function(){
+
+
+	}
+	this.reroll=function(){
+		
+	}
+
+}
