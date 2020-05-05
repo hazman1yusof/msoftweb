@@ -195,7 +195,7 @@ i.fa {
 				  		<label class="col-md-2 control-label" for="apacthdr_cheqno">Cheque No</label>	  
 				  			<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_cheqno" name="apacthdr_cheqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_cheqno" name="apacthdr_cheqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -249,28 +249,28 @@ i.fa {
 					<label for="checkbox_selection">Online Banking</label>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_suppcode">Provider Product</label>	  
+						<label class="col-md-2 control-label" for="apacthdr_prov_prod">Provider Product</label>	  
 							<div class="col-md-2">
 							  	<div class='input-group'>
-									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+									<input id="apacthdr_prov_prod" name="apacthdr_prov_prod" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
 						  	</div>
 					
-						<label class="col-md-2 control-label" for="apacthdr_payto">Destination</label>	  
+						<label class="col-md-2 control-label" for="apacthdr_destination">Destination</label>	  
 							<div class="col-md-2">
 							  	<div class='input-group'>
-									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+									<input id="apacthdr_destination" name="apacthdr_destination" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
 						  	</div>
 
-						<label class="col-md-2 control-label" for="apacthdr_payto">Purpose of Transfer</label>	  
+						<label class="col-md-2 control-label" for="apacthdr_purp_of_trans">Purpose of Transfer</label>	  
 							<div class="col-md-2">
 							  	<div class='input-group'>
-									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+									<input id="apacthdr_purp_of_trans" name="apacthdr_purp_of_trans" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>

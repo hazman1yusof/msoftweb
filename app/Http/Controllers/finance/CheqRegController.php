@@ -61,7 +61,7 @@ class CheqRegController extends defaultController
                     'startno' => $request->startno,
                     'endno' => $request->endno,
                     'cheqqty' => $request->endno-$request->startno+1,
-                    'recstatus' => 'ACTIVE',
+                    'recstatus' => 'OPEN',
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -106,7 +106,21 @@ class CheqRegController extends defaultController
     public function edit(Request $request){
         
         DB::beginTransaction();
+
+
         try {
+
+            $cheqtran = DB::table('finance.chqtran')->select('recstatus')
+                            ->where('compcode', '=', session('compcode'))
+                            ->where('bankcode', '=', $request->bankcode)
+                            ->where('recstatus', '<>', 'OPEN')
+                            ->count();
+
+            if ($cheqtran){
+                throw new \Exception("Cannot edit. Cheque has been issued");
+            }
+
+            dd($cheqtran);
 
             DB::table('finance.chqreg')
                 ->where('idno','=',$request->idno)
@@ -115,20 +129,32 @@ class CheqRegController extends defaultController
                     'startno' => strtoupper($request->startno),
                     'endno' => $request->endno,
                     'cheqqty' => $request->endno -$request->startno+1,
-                    'recstatus' => 'ACTIVE',
+                    'recstatus' => 'OPEN',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
-                 DB::table('finance.chqreg')
+            for ($i=$request->startno; $i <= $request->endno; $i++) { 
+
+                $chqtran = DB::table('finance.chqtran')
+                    ->where('cheqno','=',$i)
+                    ->where('bankcode','=',$request->bankcode);
+
+                if($chqtran->exists()){
+                    continue;
+                }
+
+
+            DB::table('finance.chqtran')
                 ->where('idno','=',$request->idno)
                 ->update([  
                    'bankcode' => strtoupper($request->bankcode),
-                        'cheqno' => $startno++,
-                        'recstatus' => 'OPEN',
+                    'cheqno' => $i,
+                    'recstatus' => 'OPEN',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
+            }
 
             DB::commit();
         } catch (\Exception $e) {
@@ -139,12 +165,17 @@ class CheqRegController extends defaultController
     }
 
     public function del(Request $request){
-        DB::table('material.category')
+        DB::table('finance.chqreg')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
+
+        DB::table('finance.chqtran')
+            ->where('idno','=',$request->idno)
+            ->delete();
+             
     }
 }
