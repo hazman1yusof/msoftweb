@@ -28,10 +28,10 @@ class SysparamController extends Controller
 			$object = new stdClass();
 			switch ($value) {
 				case 'OCCUPIED':
-					$object->bedcode = '<i class="fa fa-ban fa-2x" aria-hidden="true"></i> '.$value;
+					$object->bedcode = '<i class="fa fa-bed fa-2x" aria-hidden="true"></i> '.$value;
 					break;
 				case 'VACANT':
-					$object->bedcode = '<i class="fa fa-bed fa-2x" aria-hidden="true"></i> '.$value;
+					$object->bedcode = '<img src="img/bedonly.png" height="20" width="28"></img> '.$value;
 					break;
 				case 'HOUSEKEEPING':
 					$object->bedcode = '<i class="fa fa-female fa-2x" aria-hidden="true"></i> '.$value;
