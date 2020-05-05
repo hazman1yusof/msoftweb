@@ -1,0 +1,327 @@
+
+$(document).ready(function () {
+
+	disableForm('#formTriageInfo');
+
+	$("#new_ti").click(function(){
+		button_state_ti('wait');
+		enableForm('#formTriageInfo');
+		rdonly('#formTriageInfo');
+		// dialog_mrn_edit.on();
+		
+	});
+
+	$("#edit_ti").click(function(){
+		button_state_ti('wait');
+		enableForm('#formTriageInfo');
+		rdonly('#formTriageInfo');
+		// dialog_mrn_edit.on();
+		
+	});
+
+	$("#save_ti").click(function(){
+		disableForm('#formTriageInfo');
+		if( $('#formTriageInfo').isValid({requiredFields: ''}, conf, true) ) {
+			saveForm_ti(function(){
+				$("#cancel_ti").data('oper','edit');
+				$("#cancel_ti").click();
+				$('#refresh_jqGrid').click();
+			});
+		}else{
+			enableForm('#formTriageInfo');
+		}
+
+	});
+
+	$("#cancel_ti").click(function(){
+		disableForm('#formTriageInfo');
+		button_state_ti($(this).data('oper'));
+		// dialog_mrn_edit.off();
+
+	});
+
+	// to format number input to two decimal places (0.00)
+	$(".floatNumberField").change(function() {
+		$(this).val(parseFloat($(this).val()).toFixed(2));
+	});
+
+});
+
+var errorField = [];
+conf = {
+	modules : 'logic',
+	language: {
+		requiredFields: 'You have not answered all required fields'
+	},
+	onValidate: function ($form) {
+		if (errorField.length > 0) {
+			return {
+				element: $(errorField[0]),
+				message: ''
+			}
+		}
+	},
+};
+
+// button_state_ti('empty');
+function button_state_ti(state){
+	switch(state){
+		case 'empty':
+			$("#toggle_ti").removeAttr('data-toggle');
+			$('#cancel_ti').data('oper','add');
+			$('#new_ti,#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
+			break;
+		case 'add':
+			$("#toggle_ti").attr('data-toggle','collapse');
+			$('#cancel_ti').data('oper','add');
+			$("#new_ti").attr('disabled',false);
+			$('#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
+			break;
+		case 'edit':
+			$("#toggle_ti").attr('data-toggle','collapse');
+			$('#cancel_ti').data('oper','edit');
+			$("#edit_ti").attr('disabled',false);
+			$('#save_ti,#cancel_ti,#new_ti').attr('disabled',true);
+			break;
+		case 'wait':
+			$("#toggle_ti").attr('data-toggle','collapse');
+			$("#save_ti,#cancel_ti").attr('disabled',false);
+			$('#edit_ti,#new_ti').attr('disabled',true);
+			break;
+	}
+
+}
+
+function populate_formNursing(obj,rowdata){
+
+	//panel header
+	$('#name_show_ti').text(obj.a_pat_name);
+	$('#newic_show_ti').text(obj.newic);
+	$('#sex_show_ti').text(obj.sex);
+	$('#age_show_ti').text(obj.age+ 'YRS');
+	$('#race_show_ti').text(obj.race);	
+	button_state_ti('add');
+
+	//formTriageInfo
+	$("#mrn_edit_ti").val(obj.a_mrn);
+	$("#episno_ti").val(obj.a_Episno);
+	$("#reg_date").val(obj.reg_date);
+
+	if(rowdata.nurse != undefined){
+		dialog_tri_col.on();
+		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
+		button_state_ti('edit');
+	}
+
+	if(rowdata.nurse_gen != undefined){
+		autoinsert_rowdata("#formTriageInfo",rowdata.nurse_gen);
+		button_state_ti('edit');
+
+		autoinsert_rowdata("#formTriageInfo",rowdata.nurse_gen);
+		button_state_ti('edit');
+	}
+}
+
+function autoinsert_rowdata(form,rowData){
+	$.each(rowData, function( index, value ) {
+		var input=$(form+" [name='"+index+"']");
+		if(input.is("[type=radio]")){
+			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+		}else if(input.is("[type=checkbox]")){
+			if(value==1){
+				$(form+" [name='"+index+"']").prop('checked', true);
+			}
+		}else{
+			input.val(value);
+		}
+	});
+}
+
+function empty_formNursing(){
+
+	$('#name_show_ti').text('');
+	$('#newic_show_ti').text('');
+	$('#sex_show_ti').text('');
+	$('#age_show_ti').text('');
+	$('#race_show_ti').text('');	
+	button_state_ti('empty');
+	// $("#cancel_ti, #cancel_ad, #cancel_tpa").click();
+
+	disableForm('#formTriageInfo');
+	emptyFormdata(errorField,'#formTriageInfo')
+
+}
+
+function saveForm_ti(callback){
+	var saveParam={
+        action:'save_table_ti',
+        oper:$("#cancel_ti").data('oper')
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	// sex_edit : $('#sex_edit').val(),
+    	// idtype_edit : $('#idtype_edit').val()
+
+    };
+
+    values = $("#formTriageInfo").serializeArray();
+
+    values = values.concat(
+        $('#formTriageInfo input[type=checkbox]:not(:checked)').map(
+        function() {
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formTriageInfo input[type=checkbox]:checked').map(
+        function() {
+            return {"name": this.name, "value": 1}
+        }).get()
+	);
+	
+	values = values.concat(
+        $('#formTriageInfo input[type=radio]:checked').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
+}
+
+
+var dialog_tri_col = new ordialog(
+	'tri_col','sysdb.sysparam',"#triagecolor",errorField,
+	{	colModel:
+		[
+			{label:'Color',name:'colorcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
+		],
+		urlParam: {
+			url:'./sysparam_triage_color',
+			filterCol:['recstatus','compcode'],
+			filterVal:['A', 'session.compcode']
+			},
+		ondblClickRow:function(event){
+
+			$(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
+			$(dialog_tri_col.textfield)
+							.removeClass( "red" )
+							.removeClass( "yellow" )
+							.removeClass( "green" )
+							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
+
+			$(dialog_tri_col.textfield).next()
+							.removeClass( "red" )
+							.removeClass( "yellow" )
+							.removeClass( "green" )
+							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
+
+		},
+		onSelectRow:function(rowid, selected){
+			$('#'+dialog_tri_col.gridname+' tr#'+rowid).dblclick();
+			// $(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
+
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+			}
+		},
+		loadComplete: function(data,obj){
+			var gridname = '#'+obj.gridname;
+			var ids = $(gridname).jqGrid("getDataIDs"), l = ids.length, i, rowid, status;
+	        for (i = 0; i < l; i++) {
+	            rowid = ids[i];
+	            colorcode = $(gridname).jqGrid("getCell", rowid, "description");
+
+	            $('#' + rowid).addClass(colorcode);
+
+	        }
+		}
+	},{
+		title:"Select Bed Status",
+		open: function(){
+			dialog_tri_col.urlParam.filterCol = ['recstatus','compcode'];
+			dialog_tri_col.urlParam.filterVal = ['A', 'session.compcode'];
+		},
+		width:5/10 * $(window).width()
+	},'urlParam','radio','tab','table'
+);
+dialog_tri_col.makedialog();
+dialog_tri_col.on();
+
+
+var examination = new examination();
+examination.on();
+function examination(){
+	this.idno=null;
+	this.examarray=[];
+	this.on=function(){
+		$("#exam_plus").on('click',{data:this},addexam);
+
+	}
+
+	this.off=function(){
+		this.idno=null;
+		this.examarray.length=0;
+		$("#exam_div").html('');
+	}
+
+	function addexam(event){
+		var obj = event.data.data;
+		var currentid = 0;
+		if(obj.examarray.length==0){
+			obj.examarray.push(0);
+			currentid = 0;
+		}
+
+		$("#exam_div").append(`
+			<hr>
+			<div class="form-group">
+				<div class="col-md-2">Exam</div>
+				<div class="col-md-10">
+					<select class="form-select form-control" name="exam_`+currentid+`" id="exam_`+currentid+`">
+						<option>General</option>
+						<option>Head</option>
+						<option>Neck</option>
+						<option>Throat</option>
+						<option>Abdomen</option>
+						<option>Eye</option>
+						<option>Lungs</option>
+						<option>Neuro</option>
+						<option>Limbs</option>
+						<option>Chest</option>
+						<option>BACK</option>
+						<option>Heart</option>
+						<option>Skin</option>
+						<option>Musculosketel</option>
+						<option>Neurological</option>
+						<option>stomach</option>
+						<option>middle finger</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-2">Note</div>
+				<div class="col-md-10">
+					<textarea class="form-control input-sm uppercase" rows="5"  name="examnote_`+currentid+`" id="examnote_`+currentid+`"></textarea>
+				</div>
+			</div>
+		`)
+	}
+}
+
