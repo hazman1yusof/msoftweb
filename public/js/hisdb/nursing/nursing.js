@@ -86,6 +86,8 @@ function button_state_ti(state){
 			$('#save_ti,#cancel_ti,#new_ti').attr('disabled',true);
 			break;
 		case 'wait':
+			dialog_tri_col.on();
+			examination.on().enable();
 			$("#toggle_ti").attr('data-toggle','collapse');
 			$("#save_ti,#cancel_ti").attr('disabled',false);
 			$('#edit_ti,#new_ti').attr('disabled',true);
@@ -111,10 +113,11 @@ function populate_formNursing(obj,rowdata){
 	$("#mrn_edit_ti").val(obj.a_mrn);
 	$("#episno_ti").val(obj.a_Episno);
 	$("#reg_date").val(obj.reg_date);
+	tri_color_set('empty');
 
 	if(rowdata.nurse != undefined){
-		dialog_tri_col.on();
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
+		tri_color_set();
 		button_state_ti('edit');
 	}
 
@@ -124,6 +127,14 @@ function populate_formNursing(obj,rowdata){
 
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse_gen);
 		button_state_ti('edit');
+	}
+
+	if(rowdata.nurse_exm != undefined){
+		var newrowdata = $.extend(true,{}, rowdata);
+		examination.examarray = newrowdata.nurse_exm;
+		examination.loadexam().off().disable();
+	}else{
+		examination.empty().off().disable();
 	}
 }
 
@@ -143,7 +154,8 @@ function autoinsert_rowdata(form,rowData){
 }
 
 function empty_formNursing(){
-
+	
+	tri_color_set('empty');
 	$('#name_show_ti').text('');
 	$('#newic_show_ti').text('');
 	$('#sex_show_ti').text('');
@@ -154,6 +166,8 @@ function empty_formNursing(){
 
 	disableForm('#formTriageInfo');
 	emptyFormdata(errorField,'#formTriageInfo')
+	examination.empty().off().disable();
+	dialog_tri_col.off();
 
 }
 
@@ -191,6 +205,20 @@ function saveForm_ti(callback){
             return {"name": this.name, "value": this.value}
         }).get()
     );
+
+    values = values.concat(
+        $('#formTriageInfo select').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+	);
+
+    // values = values.concat(
+    //     $('#formTriageInfo input[type=radio]:checked').map(
+    //     function() {
+    //         return {"name": this.name, "value": this.value}
+    //     }).get()
+    // );
 
     $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
@@ -246,6 +274,13 @@ var dialog_tri_col = new ordialog(
 			}
 		},
 		loadComplete: function(data,obj){
+			$("input[type='radio'][name='colorcode_select']").click(function(){
+				let self = this;
+				delay(function(){
+						$(self).parent().click();
+				}, 100 );
+			});
+
 			var gridname = '#'+obj.gridname;
 			var ids = $(gridname).jqGrid("getDataIDs"), l = ids.length, i, rowid, status;
 	        for (i = 0; i < l; i++) {
@@ -266,23 +301,99 @@ var dialog_tri_col = new ordialog(
 	},'urlParam','radio','tab','table'
 );
 dialog_tri_col.makedialog();
-dialog_tri_col.on();
+
+function tri_color_set(empty){
+	if(empty == 'empty'){
+		$(dialog_tri_col.textfield).removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
+
+		$(dialog_tri_col.textfield).next().removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
+	}
+
+	var color = $(dialog_tri_col.textfield).val();
+	$(dialog_tri_col.textfield)
+					.removeClass( "red" )
+					.removeClass( "yellow" )
+					.removeClass( "green" )
+					.addClass( color );
+
+	$(dialog_tri_col.textfield).next()
+					.removeClass( "red" )
+					.removeClass( "yellow" )
+					.removeClass( "green" )
+					.addClass( color );
+}
 
 
 var examination = new examination();
-examination.on();
 function examination(){
-	this.idno=null;
 	this.examarray=[];
 	this.on=function(){
 		$("#exam_plus").on('click',{data:this},addexam);
+		return this;
+	}
 
+	this.empty=function(){
+		this.examarray.length=0;
+		$("#exam_div").html('');
+		return this;
 	}
 
 	this.off=function(){
-		this.idno=null;
-		this.examarray.length=0;
-		$("#exam_div").html('');
+		$("#exam_plus").off('click',addexam);
+		return this;
+	}
+
+	this.disable=function(){
+		disableForm('#exam_div');
+		return this;
+	}
+
+	this.enable=function(){
+		enableForm('#exam_div');
+		return this;
+	}
+
+	this.loadexam = function(){
+		this.examarray.forEach(function(item, index){
+			$("#exam_div").append(`
+				<hr>
+				<div class="form-group">
+					<input type="hidden" name="examidno_`+index+`" value="`+item.idno+`">
+					<div class="col-md-2">Exam</div>
+					<div class="col-md-10">
+						<select class="form-select form-control" name="examsel_`+index+`" id="exam_`+index+`">
+							<option value="General">General</option>
+							<option value="Head" >Head</option>
+							<option value="Neck" >Neck</option>
+							<option value="Throat" >Throat</option>
+							<option value="Abdomen" >Abdomen</option>
+							<option value="Eye" >Eye</option>
+							<option value="Lungs" >Lungs</option>
+							<option value="Neuro" >Neuro</option>
+							<option value="Limbs" >Limbs</option>
+							<option value="Chest" >Chest</option>
+							<option value="BACK" >BACK</option>
+							<option value="Heart" >Heart</option>
+							<option value="Skin" >Skin</option>
+							<option value="Musculosketel" >Musculosketel</option>
+							<option value="Neurological" >Neurological</option>
+							<option value="stomach" >stomach</option>
+							<option value="middle finger" >middle finger</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-md-2">Note</div>
+					<div class="col-md-10">
+						<textarea class="form-control input-sm uppercase" rows="5"  name="examnote_`+index+`" id="examnote_`+index+`">`+item.examnote+`</textarea>
+					</div>
+				</div>
+			`);
+
+			$("#exam_"+index).val(item.exam);
+		});
+		return this;
 	}
 
 	function addexam(event){
@@ -291,31 +402,35 @@ function examination(){
 		if(obj.examarray.length==0){
 			obj.examarray.push(0);
 			currentid = 0;
+		}else{
+			currentid = obj.examarray.length;
+			obj.examarray.push(obj.examarray.length);
 		}
 
 		$("#exam_div").append(`
 			<hr>
 			<div class="form-group">
+				<input type="hidden" name="examidno_`+currentid+`" value="0">
 				<div class="col-md-2">Exam</div>
 				<div class="col-md-10">
-					<select class="form-select form-control" name="exam_`+currentid+`" id="exam_`+currentid+`">
-						<option>General</option>
-						<option>Head</option>
-						<option>Neck</option>
-						<option>Throat</option>
-						<option>Abdomen</option>
-						<option>Eye</option>
-						<option>Lungs</option>
-						<option>Neuro</option>
-						<option>Limbs</option>
-						<option>Chest</option>
-						<option>BACK</option>
-						<option>Heart</option>
-						<option>Skin</option>
-						<option>Musculosketel</option>
-						<option>Neurological</option>
-						<option>stomach</option>
-						<option>middle finger</option>
+					<select class="form-select form-control" name="examsel_`+currentid+`" id="exam_`+currentid+`">
+						<option value="General" selected="selected" >General</option>
+						<option value="Head" >Head</option>
+						<option value="Neck" >Neck</option>
+						<option value="Throat" >Throat</option>
+						<option value="Abdomen" >Abdomen</option>
+						<option value="Eye" >Eye</option>
+						<option value="Lungs" >Lungs</option>
+						<option value="Neuro" >Neuro</option>
+						<option value="Limbs" >Limbs</option>
+						<option value="Chest" >Chest</option>
+						<option value="BACK" >BACK</option>
+						<option value="Heart" >Heart</option>
+						<option value="Skin" >Skin</option>
+						<option value="Musculosketel" >Musculosketel</option>
+						<option value="Neurological" >Neurological</option>
+						<option value="stomach" >stomach</option>
+						<option value="middle finger" >middle finger</option>
 					</select>
 				</div>
 			</div>
@@ -326,7 +441,8 @@ function examination(){
 					<textarea class="form-control input-sm uppercase" rows="5"  name="examnote_`+currentid+`" id="examnote_`+currentid+`"></textarea>
 				</div>
 			</div>
-		`)
+		`);
+
 	}
 }
 

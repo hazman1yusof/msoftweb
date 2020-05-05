@@ -266,6 +266,9 @@ $(document).ready(function () {
 			$('#biodata_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
 			$('#episode_but_emergency').data('bio_from_grid',selrowData("#jqGrid"));
 
+			empty_registerformdata_edit();
+			empty_formNursing();
+			
 			populate_registerformdata_edit(selrowData("#jqGrid"));
 			populate_formNursing(selrowData("#jqGrid"),retdata);
 		},
