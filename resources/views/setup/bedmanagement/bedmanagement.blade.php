@@ -14,6 +14,7 @@
 	display: inline-block;
 }
 
+
 .clearfix {
 	overflow: auto;
 }
