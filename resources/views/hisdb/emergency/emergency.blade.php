@@ -103,6 +103,10 @@
 	    border-color: #3c763d !important;
 	}
 
+	.panelbgcolor {
+		background-color: #C0C0C0 !important;
+	}
+
 @endsection
 
 @section('css')
