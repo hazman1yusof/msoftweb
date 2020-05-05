@@ -529,6 +529,11 @@ Route::get('/nursing','hisdb\NursingController@show');
 Route::get('/nursing/table','hisdb\NursingController@table');
 Route::post('/nursing/form','hisdb\NursingController@form');
 
+//// Ward Panel page ///
+Route::get('/wardpanel','hisdb\WardPanelController@show');
+Route::get('/wardpanel/table','hisdb\WardPanelController@table');
+Route::post('/wardpanel/form','hisdb\WardPanelController@form');
+
 ///////////////////fixed asset setup////////////////////////////////////
 
 //// Fixed Asset Location setup page ///
