@@ -121,10 +121,16 @@ class EmergencyController extends defaultController
 
 
             $nusing_obj = DB::table('nursing.nursassessment')
-                        ->where('mrn','=',$value->a_mrn);
+                        ->where('mrn','=',$value->a_mrn)
+                        ->where('episno','=',$value->a_Episno);
 
             $nusing_gen_obj = DB::table('nursing.nursassessgen')
-                        ->where('mrn','=',$value->a_mrn);
+                        ->where('mrn','=',$value->a_mrn)
+                        ->where('episno','=',$value->a_Episno);
+
+            $nusing_exm_obj = DB::table('nursing.nurassesexam')
+                        ->where('mrn','=',$value->a_mrn)
+                        ->where('episno','=',$value->a_Episno);
 
             if($nusing_obj->exists()){
                 $nusing_obj = $nusing_obj->first();
@@ -134,6 +140,11 @@ class EmergencyController extends defaultController
             if($nusing_gen_obj->exists()){
                 $nusing_gen_obj = $nusing_gen_obj->first();
                 $rows[$key]->nurse_gen = $nusing_gen_obj;
+            }
+
+            if($nusing_exm_obj->exists()){
+                $nusing_exm_obj = $nusing_exm_obj->get()->toArray();
+                $rows[$key]->nurse_exm = $nusing_exm_obj;
             }
         }
 

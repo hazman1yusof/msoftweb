@@ -282,8 +282,43 @@ class NursingController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
 
+            $examidno = [];
+            $examsel = [];
+            $examnote = [];
+
+            foreach($request->all() as $key => $value) {
+                if(strpos($key, "examnote") === 0){
+                    array_push($examnote, $value);
+                }else if(strpos($key, "examsel") === 0){
+                    array_push($examsel, $value);
+                }else if(strpos($key, "examidno") === 0){
+                    array_push($examidno, $value);
+                }
+            }
+
+            foreach ($examidno as $key => $value) {
+                if($value=='0'){
+                    DB::table('nursing.nurassesexam')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'mrn' => $request->mrn_edit_ti,
+                            'episno' => $request->episno_ti,
+                            'location' => 'TRIAGE',
+                            'exam' => $examsel[$key],
+                            'examnote' => $examnote[$key]
+                        ]);
+                }else{
+                    DB::table('nursing.nurassesexam')
+                        ->where('idno','=',$value)
+                        ->update([
+                            'exam' => $examsel[$key],
+                            'examnote' => $examnote[$key]
+                        ]);
+                }
+            }
+
             $queries = DB::getQueryLog();
-            dump($queries);
+            // dump($queries);
 
             DB::commit();
 

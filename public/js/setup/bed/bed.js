@@ -110,7 +110,7 @@ $(document).ready(function () {
 					},
 			},
 			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-			{ label: 'Status', name: 'occup', width: 30, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Status', name: 'occup', width: 35, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 						{  custom_element:occupCustomEdit,
 						custom_value:galGridCustomValue 	
@@ -128,12 +128,12 @@ $(document).ready(function () {
 			},
 			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
 			//{ label: 'Tel Ext', name: 'tel_ext', width: 13, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
-			{ label: 'Statistic', name: 'statistic', width: 13, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
+			{ label: 'Statistic', name: 'statistic', width: 15, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5, canSearch: false},
 			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
 			// { label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
-			{ label: 'Charge Code', name: 'bedchgcode', width: 15 , classes: 'wrap', editable:true,
+			{ label: 'Charge Code', name: 'bedchgcode', width: 20 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 					edittype:'custom',	editoptions:
 						{  custom_element:chgcodeCustomEdit,
@@ -180,8 +180,9 @@ $(document).ready(function () {
 				else if (rowData['mrn'] == '000000') {
 					$("#jqGridPagerDelete").show();
 					$("#jqGrid_iledit").show();
-		}
+				}
 			}
+			$('#p_error').text('');   //hilangkan error msj after save
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
@@ -223,8 +224,8 @@ $(document).ready(function () {
 			cellvalue="";
 		}
 		switch(cellvalue.trim()){
-			case 'OCCUPIED': return '<i class="fa fa-ban" aria-hidden="true"></i> OCCUPIED';break;
-			case 'VACANT': return '<i class="fa fa-bed" aria-hidden="true"></i> VACANT';break;
+			case 'OCCUPIED': return '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED';break;
+			case 'VACANT': return '<img src="img/bedonly.png" height="10" width="14"></img> VACANT';break;
 			case 'HOUSEKEEPING': return '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING';break;
 			case 'MAINTENANCE': return '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE';break;
 			case 'ISOLATED': return '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED';break;
@@ -234,8 +235,8 @@ $(document).ready(function () {
 
 	function occup_unformat(cellvalue, options, rowObject){
 		switch(cellvalue){
-			case '<i class="fa fa-ban" aria-hidden="true"></i> OCCUPIED': return 'OCCUPIED';break;
-			case '<i class="fa fa-bed" aria-hidden="true"></i> VACANT': return 'VACANT';break;
+			case '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED': return 'OCCUPIED';break;
+			case '<img src="img/bedonly.png" height="10" width="14"></img> VACANT': return 'VACANT';break;
 			case '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING': return 'HOUSEKEEPING';break;
 			case '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE': return 'MAINTENANCE';break;
 			case '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED': return 'ISOLATED';break;

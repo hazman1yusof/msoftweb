@@ -93,7 +93,7 @@ $(document).ready(function () {
 		editurl: "/bedmanagement/form",
 		colModel: [
             { label: 'compcode', name: 'compcode', hidden: true },
-            { label: 'Bed No', name: 'bednum', width: 7, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+            { label: 'Bed No', name: 'bednum', width: 10, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			// { label: 'Bed Type', name: 'bedtype', width: 5, canSearch: true, editable: true, editrules: { required: true }, formatter: showdetail, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Bed Type', name: 'bedtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
 			editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
@@ -103,7 +103,7 @@ $(document).ready(function () {
 					},
 			},
 			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-			{ label: 'Status', name: 'occup', width: 20, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Status', name: 'occup', width: 22, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 						{  custom_element:occupCustomEdit,
 						custom_value:galGridCustomValue 	
@@ -200,12 +200,13 @@ $(document).ready(function () {
 					$("#jqGridPagerDelete").show();
 					$("#jqGrid_iledit").show();
 				}
-
 			}
 			// $("#jqGrid_iledit").click();
+			$('#p_error').text('');   //hilangkan error msj after save
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
+			statistics();
 			empty_formbedm();
 		},
 	});
@@ -226,7 +227,7 @@ $(document).ready(function () {
 	function occup(cellvalue, options, rowObject){
 		switch(cellvalue.trim()){
 			case 'OCCUPIED': return '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED';break;
-			case 'VACANT': return '<i class="fa fa-ban" aria-hidden="true"></i> VACANT';break;
+			case 'VACANT': return '<img src="img/bedonly.png" height="10" width="14"></img> VACANT';break;
 			case 'HOUSEKEEPING': return '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING';break;
 			case 'MAINTENANCE': return '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE';break;
 			case 'ISOLATED': return '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED';break;
@@ -237,7 +238,7 @@ $(document).ready(function () {
 	function occup_unformat(cellvalue, options, rowObject){
 		switch(cellvalue){
 			case '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED': return 'OCCUPIED';break;
-			case '<i class="fa fa-ban" aria-hidden="true"></i> VACANT': return 'VACANT';break;
+			case '<img src="img/bedonly.png" height="10" width="14"></img> VACANT': return 'VACANT';break;
 			case '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING': return 'HOUSEKEEPING';break;
 			case '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE': return 'MAINTENANCE';break;
 			case '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED': return 'ISOLATED';break;
@@ -547,7 +548,8 @@ $(document).ready(function () {
 			open: function(){
 				dialog_occup.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_occup.urlParam.filterVal = ['A', 'session.compcode'];
-			}
+			},
+			width:4/10 * $(window).width()
 		},'urlParam','radio','tab'
 	);
 	dialog_occup.makedialog();

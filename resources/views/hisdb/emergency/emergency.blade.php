@@ -59,7 +59,7 @@
 	}
 
 	input.yellow{
-		color: #9e9e00 !important;
+		color: black !important;
 		border-color:#9e9e00 !important;
 		background-color:yellow !important;
 	}
@@ -71,6 +71,7 @@
 	}
 
 	tr.red{
+		color:white;
 		background-color:red !important;
 	}
 

@@ -14,11 +14,6 @@
 	display: inline-block;
 }
 
-i.fa {
-		cursor: pointer;
-		float: right;
-		<!--  margin-right: 5px; -->
-	}
 
 .clearfix {
 	overflow: auto;
@@ -57,7 +52,7 @@ row.error td { background-color: red; }
 						</div>
 
 						<div class="col-md-2" style="">
-							<p><i class="fa fa-ban" aria-hidden="true"></i> VACANT: <span id="stat_vacant"></span></p>
+							<p><img src="img/bedonly.png" height="10" width="14"></img> VACANT: <span id="stat_vacant"></span></p>
 					  	</div>
 						<div class="col-md-2" style="">
 							<p><i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED: <span id="stat_occupied"></span></p>
