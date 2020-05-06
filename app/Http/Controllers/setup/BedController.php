@@ -62,6 +62,8 @@ class BedController extends defaultController
         $paginate = $table->paginate($request->rows);
 
         foreach ($paginate->items() as $key => $value) {
+            //pergi ke queue , epistycode='IP or DP', deptcode='ALL'
+
             $episode = DB::table('hisdb.episode as e')
                             ->select('e.mrn','e.episno','p.name')
                             ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){

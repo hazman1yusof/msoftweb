@@ -205,6 +205,7 @@ $(document).ready(function () {
 			if (rowData['mrn'] == '000000') {
 				$("#jqGrid_iledit").click();
 			}
+			$('#p_error').text('');   //hilangkan duplicate error msj after save
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
