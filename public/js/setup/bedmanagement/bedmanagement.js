@@ -169,9 +169,13 @@ $(document).ready(function () {
 					$("#jqGridPagerDelete").show();
 					$("#jqGrid_iledit").show();
 				}
-
+				// else if ((rowData['mrn'] == 000000) || (rowData['occup'] == "VACANT")) {
+				// 	refreshGrid('#jqGrid3', urlParam2);
+				// 	$("#jqGridPagerDelete").show();
+				// 	$("#jqGrid_iledit").show();
+				// 	$("#jqGrid_iladd").show();
+				// }
 			}
-
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
@@ -202,7 +206,7 @@ $(document).ready(function () {
 				}
 			}
 			// $("#jqGrid_iledit").click();
-			$('#p_error').text('');   //hilangkan error msj after save
+			$('#p_error').text('');   //hilangkan duplicate error msj after save
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
