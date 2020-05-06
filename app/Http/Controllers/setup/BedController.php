@@ -101,7 +101,7 @@ class BedController extends defaultController
     }   
 
     public function add(Request $request){
-
+        
         DB::beginTransaction();
         try {
 
@@ -136,7 +136,11 @@ class BedController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
+
+            return response(json_encode($responce), 500);
         }
     }
 
