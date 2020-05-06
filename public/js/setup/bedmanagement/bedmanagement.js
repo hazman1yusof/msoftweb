@@ -122,7 +122,7 @@ $(document).ready(function () {
 			// { label: 'Tel Ext', name: 'tel_ext', width: 10, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'Statistic', name: 'statistic', width: 15, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
-			{ label: ' ', name: 'episno', width: 5, canSearch: true},
+			{ label: ' ', name: 'episno', width: 5},
 			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
             { label: 'Record Status', name: 'recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{

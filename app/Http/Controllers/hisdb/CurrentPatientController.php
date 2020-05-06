@@ -4,6 +4,9 @@ namespace App\Http\Controllers\hisdb;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use stdClass;
+use DB;
+use Carbon\Carbon;
 
 class CurrentPatientController extends defaultController
 {   
@@ -22,22 +25,36 @@ class CurrentPatientController extends defaultController
         return view('hisdb.currentPt.currentPt');
     }
 
-    // public function table(Request $request)
-    // {   
-    //     $paginate = DB::table('hisdb.queue')
-    //                 ->select('epistycode')
-    //                 ->where('epistycode','=',$request->filterVal[0]);
+    public function table(Request $request)
+    {   
+        $request->rows = $request->rowCount;
 
-    //     if(!empty($request->searchCol)){
-    //         $paginate = $paginate->where($request->searchCol[0],'like',$request->searchVal[0]);
-    //     }
-    //     $responce = new stdClass();
-    //     $responce->page = $paginate->currentPage();
-    //     $responce->total = $paginate->lastPage();
-    //     $responce->records = $paginate->total();
-    //     $responce->rows = $paginate->items();
-    //     return json_encode($responce);
-    // }    
+        $sel_epistycode = $request->epistycode;
+        $table = DB::table('hisdb.queue')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('deptcode','=',"ALL");
+
+        if($sel_epistycode == 'OP'){
+                $table->whereIn('epistycode', ['OP','OTC']);
+        }else{
+                $table->whereIn('epistycode', ['IP','DP']);
+        }
+
+
+        if(!empty($request->searchCol)){
+            $table = $table->where($request->searchCol[0],'like',$request->searchVal[0]);
+        }
+
+        $paginate = $table->paginate($request->rows);
+
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        return json_encode($responce);
+    }    
 
     public function form(Request $request)
     {   

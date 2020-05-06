@@ -516,7 +516,7 @@ Route::post('/emergency/form','hisdb\EmergencyController@form');
 //// pat_mgmt Current Patient ///
 Route::get('/currentPt','hisdb\CurrentPatientController@show');
 Route::get('/currentPt/get_entry','hisdb\CurrentPatientController@get_entry');
-Route::post('/currentPt/post_entry','hisdb\CurrentPatientController@post_entry');
+Route::post('/currentPt/table','hisdb\CurrentPatientController@table');
 
 //// pat_enq registration ////
 Route::get('/pat_enq','hisdb\PatEnqController@show');
