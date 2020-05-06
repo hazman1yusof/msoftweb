@@ -159,13 +159,12 @@ $(document).ready(function () {
 				$("#pg_jqGridPager3 table, #jqGrid3_c").hide();
 
 				if (rowData['mrn'] != 000000) {
+					urlParam2.filterVal[0] = selrowData('#jqGrid').mrn;
 					refreshGrid('#jqGrid3', urlParam2);
 					$("#pg_jqGridPager3 table, #jqGrid3_c").show();
 					$("#jqGridPagerDelete").hide();
 					$("#jqGrid_iledit").hide();
-				}
-				else if (rowData['mrn'] == 000000) {
-					refreshGrid('#jqGrid3', urlParam2);
+				}else if (rowData['mrn'] == 000000) {
 					$("#jqGridPagerDelete").show();
 					$("#jqGrid_iledit").show();
 				}
@@ -565,8 +564,13 @@ $(document).ready(function () {
 		action:'get_table_default',
 		url:'/util/get_table_default',
 		field: '',
-		table_name: 'hisdb.bedalloc',
-		table_id: 'idno',
+		fixPost:'true',
+		table_name: ['hisdb.bedalloc AS ba','hisdb.bed AS b'],
+		join_type:['LEFT JOIN'],
+		join_onCol:['b.bednum'],
+		join_onVal:['ba.bednum'],
+		filterCol:['mrn','ba.compcode'],
+		filterVal:['','session.compcode'],
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
@@ -575,10 +579,9 @@ $(document).ready(function () {
 
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
-		editurl: "/mma/form",
 		colModel: [
-			{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'Start Date', name: 'asdate', width: 5, classes: 'wrap', editable:true,
+			{ label: 'compcode', name: 'ba_compcode', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'Start Date', name: 'ba_asdate', width: 5, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
 					dataInit: function (element) {
@@ -593,11 +596,11 @@ $(document).ready(function () {
 					}
 				}
 			},
-			{ label: 'Start Time', name: 'astime', width: 5, frozen:true, classes: 'wrap', editable:false},
-            { label: 'Bed No', name: 'bednum', width: 7, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Bed Type', name: 'bedtype', width: 15, classes: 'wrap', editable:true, canSearch: true},
-			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'Start Time', name: 'ba_astime', width: 5, frozen:true, classes: 'wrap', editable:false},
+            { label: 'Bed No', name: 'ba_bednum', width: 7, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Room', name: 'ba_room', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Bed Type', name: 'b_bedtype', width: 15, classes: 'wrap', editable:true, canSearch: true},
+			{ label: 'idno', name: 'ba_idno', width: 20, classes: 'wrap', hidden:true},
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -607,8 +610,6 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 30,
-		sortname: 'idno',
-		sortorder: "desc",
 		pager: "#jqGridPager3",
 		loadComplete: function(){
 			if(addmore_jqgrid2.more == true){$('#jqGrid3_iladd').click();}
@@ -823,6 +824,8 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam, ['mrn', 'episno', 'name']);
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
+	addParamField('#jqGrid3', false, urlParam2);
+	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
@@ -833,8 +836,8 @@ $(document).ready(function () {
 function populate_formbedm(obj){
 
 	//panel header
-	$('#name_show').text(obj.name_show);
-	$('#bednum_show').text(obj.bednum_show);	
+	$('#name_show').text(obj.name);
+	$('#bednum_show').text(obj.bednum);	
 	// $("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").show();
 }
 

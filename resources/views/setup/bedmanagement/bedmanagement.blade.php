@@ -14,6 +14,17 @@
 	display: inline-block;
 }
 
+.panel-heading i.fa {
+	cursor: pointer;
+	float: right;
+	<!--  margin-right: 5px; -->
+}
+
+.panel-heading div i {
+	position: relative;
+	line-height: 1;
+	top: -10px;
+}
 
 .clearfix {
 	overflow: auto;
@@ -88,9 +99,6 @@ row.error td { background-color: red; }
 						Bed No: <span id="bednum_show"></span>
 						<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 						<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-						<br>
-							<button type="button" class="btn btn-info">Transfer</button>
-						</br>
 						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 20px;">
 							<h5>Bed Occupancy Detail</h5>
 						</div>		
@@ -115,12 +123,12 @@ row.error td { background-color: red; }
 												<div class="form-group">
 													<label class="col-md-2 control-label" for="date">Date</label>  
 													<div class="col-md-4">
-														<input id="admwardtime" name="date" type="date" class="form-control input-sm uppercase">
+														<input id="asdate" name="asdate" type="date" class="form-control input-sm uppercase">
 													</div>
 												
 													<label class="col-md-2 control-label" for="time">Time</label>  
 													<div class="col-md-4">
-														<input id="admwardtime" name="time" type="time" class="form-control input-sm uppercase">
+														<input id="astime" name="astime" type="time" class="form-control input-sm uppercase">
 													</div>
 
 													<label class="col-md-2 control-label" for="room">Room</label>  
@@ -168,12 +176,12 @@ row.error td { background-color: red; }
 
 													<label class="col-md-2 control-label" for="date">Date</label>  
 													<div class="col-md-4">
-														<input id="admwardtime" name="date" type="date" class="form-control input-sm uppercase">
+														<input id="aedate" name="aedate" type="date" class="form-control input-sm uppercase">
 													</div>
 												
 													<label class="col-md-2 control-label" for="time">Time</label>  
 													<div class="col-md-4">
-														<input id="admwardtime" name="time" type="time" class="form-control input-sm uppercase">
+														<input id="aetime" name="aetime" type="time" class="form-control input-sm uppercase">
 													</div>
 
 													<label class="col-md-2 control-label" for="room">Room</label>  
@@ -198,7 +206,7 @@ row.error td { background-color: red; }
 
 													<label class="col-md-2 control-label" for="occup">Bed Status</label>  
 													<div class="col-md-4">
-														<input id="occup" name="occup" type="text" class="form-control input-sm uppercase">
+														<input id="astatus" name="astatus" type="text" class="form-control input-sm uppercase">
 													</div>
 												</div>
 												<!-- Class form group closed -->
