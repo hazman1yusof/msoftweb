@@ -4,8 +4,8 @@
 		id="btn_grp_edit_ti"
 		style="position: absolute;
 				padding: 0 0 0 0;
-				right: 30px;
-				top: 10px;" 
+				right: 40px;
+				top: 15px;" 
 
 	>
 		<button type="button" class="btn btn-default" id="new_ti">
@@ -30,7 +30,7 @@
 
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 300px; top: 10px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
 			<h5>Triage Information</h5>
 		</div>				
 	</div>

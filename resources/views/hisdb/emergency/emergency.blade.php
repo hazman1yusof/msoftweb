@@ -18,6 +18,12 @@
 		<!--  margin-right: 5px; -->
 	}
 
+	div i {
+		position: relative;
+		line-height: 1;
+		top: -10px;
+	}
+
 	.collapsed ~ .panel-body {
 		padding: 0;
 	}
