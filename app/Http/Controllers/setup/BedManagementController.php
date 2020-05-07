@@ -35,6 +35,8 @@ class BedManagementController extends defaultController
                 return $this->edit($request);
             case 'del':
                 return $this->del($request);
+            case 'transfer_form':
+                return $this->transfer_form($request);
             default:
                 return 'error happen..';
         }
@@ -225,6 +227,57 @@ class BedManagementController extends defaultController
                     'recstatus' => 'D',
                     'deluser' => strtoupper(session('username')),
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+        
+    }
+
+    public function transfer_form(Request $request){
+        DB::beginTransaction();
+        try {
+            //1. new bed alloc
+            DB::table('hisdb.bedalloc')
+                ->insert([  
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'name' => $request->name,
+                    'astatus' => $request->trf_astatus,
+                    'ward' =>  $request->trf_ward,
+                    'room' =>  $request->trf_room,
+                    'bednum' =>  $request->trf_bednum,
+                    'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'astime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'compcode' => session('compcode'),
+                    'adduser' => strtoupper(session('username')),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            //2. edit episode
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->update([
+                    'bed' =>  $request->trf_bednum,
+                    'bedtype' => $request->trf_bedtype,
+                    'ward' =>  $request->trf_ward,
+                    'room' =>  $request->trf_room,
+                ]);
+
+            //3. edit queue
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->update([
+                    'bed' =>  $request->trf_bednum,
+                    'bedtype' => $request->trf_bedtype,
+                    'ward' =>  $request->trf_ward,
+                    'room' =>  $request->trf_room,
                 ]);
 
             DB::commit();
