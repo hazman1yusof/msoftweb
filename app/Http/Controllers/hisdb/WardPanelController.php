@@ -29,7 +29,7 @@ class WardPanelController extends defaultController
     {   
         DB::enableQueryLog();
         switch($request->action){
-            case 'save_table_ti':
+            case 'save_table_ward':
 
                 switch($request->oper){
                     case 'add':
@@ -54,8 +54,8 @@ class WardPanelController extends defaultController
             DB::table('nursing.nursassessment')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_ti,
-                        'episno' => $request->episno_ti,
+                        'mrn' => $request->mrn_edit_ward,
+                        'episno' => $request->episno_ward,
                         'admwardtime' => $request->admwardtime,
                         'triagecolor' => $request->triagecolor,
                         'admreason' => $request->admreason,
@@ -97,6 +97,7 @@ class WardPanelController extends defaultController
                         'es_distress' => $request->es_distress,
                         'es_depressed' => $request->es_depressed,
                         'es_irritable' => $request->es_irritable,
+                        'location' => 'WARD',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -106,8 +107,8 @@ class WardPanelController extends defaultController
             DB::table('nursing.nursassessgen')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_ti,
-                        'episno' => $request->episno_ti,
+                        'mrn' => $request->mrn_edit_ward,
+                        'episno' => $request->episno_ward,
                         'br_breathing' => $request->br_breathing,
                         'br_breathingdesc' => $request->br_breathingdesc,
                         'br_cough' => $request->br_cough,
@@ -155,6 +156,7 @@ class WardPanelController extends defaultController
                         'pa_othdiscolor' => $request->pa_othdiscolor,
                         'pa_othnil' => $request->pa_othnil,
                         'pa_notes' => $request->pa_notes,
+                        'location' => 'WARD',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -177,8 +179,8 @@ class WardPanelController extends defaultController
         try {
 
             DB::table('nursing.nursassessment')
-                ->where('mrn','=',$request->mrn_edit_ti)
-                ->where('episno','=',$request->episno_ti)
+                ->where('mrn','=',$request->mrn_edit_ward)
+                ->where('episno','=',$request->episno_ward)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'admwardtime' => $request->admwardtime,
@@ -227,8 +229,8 @@ class WardPanelController extends defaultController
                 ]);
 
             DB::table('nursing.nursassessgen')
-                ->where('mrn','=',$request->mrn_edit_ti)
-                ->where('episno','=',$request->episno_ti)
+                ->where('mrn','=',$request->mrn_edit_ward)
+                ->where('episno','=',$request->episno_ward)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'br_breathing' => $request->br_breathing,
@@ -282,8 +284,43 @@ class WardPanelController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
 
+            $examidno = [];
+            $examsel = [];
+            $examnote = [];
+
+            foreach($request->all() as $key => $value) {
+                if(strpos($key, "examnote") === 0){
+                    array_push($examnote, $value);
+                }else if(strpos($key, "examsel") === 0){
+                    array_push($examsel, $value);
+                }else if(strpos($key, "examidno") === 0){
+                    array_push($examidno, $value);
+                }
+            }
+
+            foreach ($examidno as $key => $value) {
+                if($value=='0'){
+                    DB::table('nursing.nurassesexam')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'mrn' => $request->mrn_edit_ward,
+                            'episno' => $request->episno_ward,
+                            'location' => 'WARD',
+                            'exam' => $examsel[$key],
+                            'examnote' => $examnote[$key]
+                        ]);
+                }else{
+                    DB::table('nursing.nurassesexam')
+                        ->where('idno','=',$value)
+                        ->update([
+                            'exam' => $examsel[$key],
+                            'examnote' => $examnote[$key]
+                        ]);
+                }
+            }
+
             $queries = DB::getQueryLog();
-            dump($queries);
+            // dump($queries);
 
             DB::commit();
 

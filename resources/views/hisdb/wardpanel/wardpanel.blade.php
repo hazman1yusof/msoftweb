@@ -21,8 +21,68 @@
 		<!--  margin-right: 5px; -->
 	}
 
+	div i {
+		position: relative;
+		line-height: 1;
+		top: -10px;
+	}
+
 	.collapsed ~ .panel-body {
 		padding: 0;
+	}
+
+	tr.yellow{
+		background-color:yellow !important;
+	}
+
+	input.yellow{
+		color: black !important;
+		border-color:#9e9e00 !important;
+		background-color:yellow !important;
+	}
+
+	a.yellow{
+		color: #9e9e00 !important;
+		background-color: #fdffe2 !important;
+		border-color: #9e9e00 !important;
+	}
+
+	tr.red{
+		color:white;
+		background-color:red !important;
+	}
+
+	input.red{
+		color: white !important;
+		border-color:red !important;
+		background-color:red !important;
+	}
+
+	a.red{
+		color: red !important;
+		background-color: #ffe5e5 !important;
+		border-color: red !important;
+	}
+
+	tr.green{
+		color:white;
+		background-color:green !important;
+	}
+
+	input.green{
+		color: white !important;
+		border-color:green !important;
+		background-color:green !important;
+	}
+
+	a.green{
+		color: #3c763d !important;
+		background-color: #dff0d8 !important;
+		border-color: #3c763d !important;
+	}
+
+	.panelbgcolor {
+		background-color: #C0C0C0 !important;
 	}
 
 @endsection
@@ -30,56 +90,56 @@
 @section('body')
 
 	<div class='row'>   
-		<div class="panel panel-default" style="position: relative;" id="jqGridTriageInfo_c">
+		<div class="panel panel-default" style="position: relative;" id="jqGridWard_c">
 			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-				id="btn_grp_edit_ti"
+				id="btn_grp_edit_ward"
 				style="position: absolute;
 						padding: 0 0 0 0;
-						right: 30px;
-						top: 10px;" 
+						right: 40px;
+						top: 15px;" 
 
 			>
-				<button type="button" class="btn btn-default" id="new_ti">
+				<button type="button" class="btn btn-default" id="new_ward">
 					<span class="fa fa-plus-square-o"></span> New
 				</button>
-				<button type="button" class="btn btn-default" id="edit_ti">
+				<button type="button" class="btn btn-default" id="edit_ward">
 					<span class="fa fa-edit fa-lg"></span> Edit
 				</button>
-				<button type="button" class="btn btn-default" data-oper='add' id="save_ti">
+				<button type="button" class="btn btn-default" data-oper='add' id="save_ward">
 					<span class="fa fa-save fa-lg"></span> Save
 				</button>
-				<button type="button" class="btn btn-default" id="cancel_ti" >
+				<button type="button" class="btn btn-default" id="cancel_ward" >
 					<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 				</button>
 			</div>
-			<div class="panel-heading clearfix collapsed" id="toggle_ti" data-toggle="collapse" data-target="#jqGridTriageInfo_panel">
-				<b><span id="name_show_ti"></span></b><br>
-				<span id="newic_show_ti"></span>
-				<span id="sex_show_ti"></span>
-				<span id="age_show_ti"></span>
-				<span id="race_show_ti"></span>
+			<div class="panel-heading clearfix collapsed" id="toggle_ward" data-toggle="collapse" data-target="#jqGridWard_panel">
+				<b><span id="name_show_ward"></span></b><br>
+				<span id="newic_show_ward"></span>
+				<span id="sex_show_ward"></span>
+				<span id="age_show_ward"></span>
+				<span id="race_show_ward"></span>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 300px; top: 10px;">
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
 					<h5>Ward</h5>
 				</div>				
 			</div>
-			<div id="jqGridTriageInfo_panel" class="panel-collapse collapse">
+			<div id="jqGridWard_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<!-- <table id="jqGridTriageInfo" class="table table-striped"></table>
 						<div id="jqGridPagerTriageInfo"></div> -->
 
-						<form class='form-horizontal' style='width:99%' id='formTriageInfo'>
+						<form class='form-horizontal' style='width:99%' id='formWard'>
 
 							<div class='col-md-6'>
 								<div class="panel panel-info">
 									<div class="panel-heading text-center">INFORMATION</div>
 									<div class="panel-body">
 
-										<input id="mrn_edit_ti" name="mrn_edit_ti" type="hidden">
-										<input id="episno_ti" name="episno_ti" type="hidden">
+										<input id="mrn_edit_ward" name="mrn_edit_ward" type="hidden">
+										<input id="episno_ward" name="episno_ward" type="hidden">
 
 										<div class="form-group">
 											<label class="col-md-2 control-label" for="admwardtime">Time</label>  
@@ -216,7 +276,7 @@
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="vs_temperature">Temperature</label>  
 														<div class="col-md-8 input-group">
-															<input id="vs_temperature" name="vs_temperature" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter temperature." data-validation-error-msg-container="#error-vs_temperature">
+															<input id="vs_temperature" name="vs_temperature" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter temperature." data-validation-error-msg-container="#error-vs_temperature">
 															<span class="input-group-addon">°C</span>
 														</div>
 														<div class="error-msg" style="margin-left: 110px" id="error-vs_temperature"></div>
@@ -225,7 +285,7 @@
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="vs_pulse">Pulse</label>  
 														<div class="col-md-8 input-group">
-															<input id="vs_pulse" name="vs_pulse" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pulse." data-validation-error-msg-container="#error-vs_pulse">
+															<input id="vs_pulse" name="vs_pulse" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pulse." data-validation-error-msg-container="#error-vs_pulse">
 															<span class="input-group-addon">/min</span>
 														</div>
 														<div class="error-msg" style="margin-left: 110px" id="error-vs_pulse"></div>
@@ -234,7 +294,7 @@
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="vs_respiration">Respiration</label>  
 														<div class="col-md-8 input-group">
-															<input id="vs_respiration" name="vs_respiration" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter respiratory rate." data-validation-error-msg-container="#error-vs_respiration">
+															<input id="vs_respiration" name="vs_respiration" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter respiratory rate." data-validation-error-msg-container="#error-vs_respiration">
 															<span class="input-group-addon">/min</span>
 														</div>
 														<div class="error-msg" style="margin-left: 110px" id="error-vs_respiration"></div>
@@ -243,9 +303,9 @@
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="vs_bloodpressure">Blood Pressure</label>
 														<div class="col-md-8 input-group">
-															<input id="vs_bp_sys1" name="vs_bp_sys1" type="number" class="form-control input-sm uppercase floatNumberField" style="width: 95px" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-vs_bp_sys1">
+															<input id="vs_bp_sys1" name="vs_bp_sys1" type="number" class="form-control input-sm floatNumberField" style="width: 95px" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-vs_bp_sys1">
 															<label class="col-md-1 control-label">/</label> 
-															<input id="vs_bp_dias2" name="vs_bp_dias2" type="number" class="form-control input-sm uppercase floatNumberField" style="width: 95px" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-vs_bp_dias2">
+															<input id="vs_bp_dias2" name="vs_bp_dias2" type="number" class="form-control input-sm floatNumberField" style="width: 95px" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-vs_bp_dias2">
 															<span class="input-group-addon">/mmHg</span>
 														</div>
 														<div class="error-msg" style="margin-left: 110px" id="error-vs_bp_sys1"></div>
@@ -255,7 +315,7 @@
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="vs_height">Height</label>  
 														<div class="col-md-8 input-group">
-															<input id="vs_height" name="vs_height" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter height." data-validation-error-msg-container="#error-vs_height">
+															<input id="vs_height" name="vs_height" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter height." data-validation-error-msg-container="#error-vs_height">
 															<span class="input-group-addon">cm</span>
 														</div>
 														<div class="error-msg" style="margin-left: 110px" id="error-vs_height"></div>
@@ -264,7 +324,7 @@
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="vs_weight">Weight</label>  
 														<div class="col-md-8 input-group">
-															<input id="vs_weight" name="vs_weight" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter weight." data-validation-error-msg-container="#error-vs_weight">
+															<input id="vs_weight" name="vs_weight" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter weight." data-validation-error-msg-container="#error-vs_weight">
 															<span class="input-group-addon">kg</span>
 														</div>
 														<div class="error-msg" style="margin-left: 110px" id="error-vs_weight"></div>
@@ -273,7 +333,7 @@
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="vs_gxt">GXT</label>  
 														<div class="col-md-8 input-group">
-															<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter GXT." data-validation-error-msg-container="#error-vs_gxt">
+															<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter GXT." data-validation-error-msg-container="#error-vs_gxt">
 															<span class="input-group-addon">mmOL</span>
 														</div>
 														<div class="error-msg" style="margin-left: 110px" id="error-vs_gxt"></div>
@@ -282,7 +342,7 @@
 													<div class="form-group">
 														<label class="col-md-3 control-label" for="vs_painscore">Pain Score</label>  
 														<div class="col-md-8 input-group">
-															<input id="vs_painscore" name="vs_painscore" type="number" class="form-control input-sm uppercase floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pain score." data-validation-error-msg-container="#error-vs_painscore">
+															<input id="vs_painscore" name="vs_painscore" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pain score." data-validation-error-msg-container="#error-vs_painscore">
 															<span class="input-group-addon">/10</span>
 														</div>
 														<div class="error-msg" style="margin-left: 110px" id="error-vs_painscore"></div>
@@ -414,7 +474,7 @@
 
 							<div class='col-md-12'>
 								<div class="panel panel-default">
-									<div class="panel-heading text-center">ACTIVITIES OF DAILY LIVING</div>
+									<div class="panel-heading text-center panelbgcolor">ACTIVITIES OF DAILY LIVING</div>
 									<div class="panel-body">
 
 										<div class='col-md-5'>
@@ -534,39 +594,6 @@
 															<label class="col-md-4 control-label" for="eb_bowelmovedesc">If Yes, Describe:</label>  
 															<div class="col-md-8" style="padding-left: 0px">
 																<textarea id="eb_bowelmovedesc" name="eb_bowelmovedesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
-															</div>
-														</div>
-
-													</div>
-												</div>
-											</div>
-
-											<div class='col-md-12'>
-												<div class="panel panel-info">
-													<div class="panel-heading text-center">BLADDER</div>
-													<div class="panel-body">
-
-														<div class="form-group">
-															<label class="col-md-5 control-label" for="bl_urine">Have Any Problem Passing Urine?</label>  
-															<label class="radio-inline">
-																<input type="radio" name="bl_urine" value="1">Yes
-															</label>
-															<label class="radio-inline">
-																<input type="radio" name="bl_urine" value="0">No
-															</label>
-														</div>
-
-														<div class="form-group">
-															<label class="col-md-5 control-label" for="bl_urinedesc">If Yes, Describe:</label>  
-															<div class="col-md-7" style="padding-left: 0px">
-																<textarea id="bl_urinedesc" name="bl_urinedesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
-															</div>
-														</div>
-
-														<div class="form-group">
-															<label class="col-md-5 control-label" for="bl_urinefreq">How Often Get Up At Night To Pass Urine?</label>  
-															<div class="col-md-7" style="padding-left: 0px">
-																<textarea id="bl_urinefreq" name="bl_urinefreq" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
 															</div>
 														</div>
 
@@ -765,6 +792,39 @@
 												</div>
 											</div>
 
+											<div class='col-md-12'>
+												<div class="panel panel-info">
+													<div class="panel-heading text-center">BLADDER</div>
+													<div class="panel-body">
+
+														<div class="form-group">
+															<label class="col-md-4 control-label" for="bl_urine">Have Any Problem Passing Urine?</label>  
+															<label class="radio-inline">
+																<input type="radio" name="bl_urine" value="1">Yes
+															</label>
+															<label class="radio-inline">
+																<input type="radio" name="bl_urine" value="0">No
+															</label>
+														</div>
+
+														<div class="form-group">
+															<label class="col-md-4 control-label" for="bl_urinedesc">If Yes, Describe:</label>  
+															<div class="col-md-7" style="padding-left: 0px">
+																<textarea id="bl_urinedesc" name="bl_urinedesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
+															</div>
+														</div>
+
+														<div class="form-group">
+															<label class="col-md-4 control-label" for="bl_urinefreq">How Often Get Up At Night To Pass Urine?</label>  
+															<div class="col-md-7" style="padding-left: 0px">
+																<textarea id="bl_urinefreq" name="bl_urinefreq" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+
 										</div>
 
 									</div>
@@ -773,7 +833,7 @@
 
 							<div class='col-md-12'>
 								<div class="panel panel-default">
-									<div class="panel-heading text-center">TRIAGE PHYSICAL ASSESSMENT</div>
+									<div class="panel-heading text-center panelbgcolor">TRIAGE PHYSICAL ASSESSMENT</div>
 									<div class="panel-body">
 
 										<div class='col-md-12'>
@@ -856,15 +916,13 @@
 
 														<div class='col-md-12'>
 															<div class="panel panel-info">
-																<div class="panel-body">
-
-																	<div class="form-group">
-																		<label class="col-md-1 control-label" for="pa_notes" >Notes:</label>  
-																		<div class="row">
-																			<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm uppercase" rows="6" data-validation="required" data-validation-error-msg-required="Please enter notes."></textarea>
-																		</div>
-																	</div>														
-
+																<div class="panel-heading text-center" style="position: relative;"> EXAMINATION 
+																	<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 10px; top: 2px;">
+																		<button type="button" class="btn btn-info" id="exam_plus"><span class="fa fa-plus"></span></button>
+																	</div>
+																</div>
+																<div class="panel-body" id="exam_div">
+																	
 																</div>
 															</div>
 														</div>
@@ -873,13 +931,15 @@
 
 													<div class='col-md-6'>
 														<div class="panel panel-info">
-															<div class="panel-heading text-center" style="position: relative;"> EXAMINATION 
-																<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 10px; top: 2px;">
-																	<button type="button" class="btn btn-info" id="exam_plus"><span class="fa fa-plus"></span></button>
-																</div>
-															</div>
-															<div class="panel-body" id="exam_div">
-																
+															<div class="panel-body">
+
+																<div class="form-group">
+																	<label class="col-md-1 control-label" for="pa_notes" style="margin-bottom: 10px">Notes:</label>  
+																	<div class="row">
+																		<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm uppercase" rows="15" data-validation="required" data-validation-error-msg-required="Please enter notes."></textarea>
+																	</div>
+																</div>														
+
 															</div>
 														</div>
 													</div>

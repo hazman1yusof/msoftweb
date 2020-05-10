@@ -1,41 +1,42 @@
 
 $(document).ready(function () {
 
-	disableForm('#formTriageInfo');
+	disableForm('#formWard');
 
-	$("#new_ti").click(function(){
-		button_state_ti('wait');
-		enableForm('#formTriageInfo');
-		rdonly('#formTriageInfo');
+	$("#new_ward").click(function(){
+		button_state_ward('wait');
+		enableForm('#formWard');
+		rdonly('#formWard');
 		// dialog_mrn_edit.on();
 		
 	});
 
-	$("#edit_ti").click(function(){
-		button_state_ti('wait');
-		enableForm('#formTriageInfo');
-		rdonly('#formTriageInfo');
+	$("#edit_ward").click(function(){
+		button_state_ward('wait');
+		enableForm('#formWard');
+		rdonly('#formWard');
 		// dialog_mrn_edit.on();
 		
 	});
 
-	$("#save_ti").click(function(){
-		disableForm('#formTriageInfo');
-		if( $('#formTriageInfo').isValid({requiredFields: ''}, conf, true) ) {
-			saveForm_ti(function(){
-				$("#cancel_ti").data('oper','edit');
-				$("#cancel_ti").click();
+	$("#save_ward").click(function(){
+		disableForm('#formWard');
+		if( $('#formWard').isValid({requiredFields: ''}, conf, true) ) {
+			saveForm_ward(function(){
+				$("#cancel_ward").data('oper','edit');
+				$("#cancel_ward").click();
 				$('#refresh_jqGrid').click();
 			});
 		}else{
-			enableForm('#formTriageInfo');
+			enableForm('#formWard');
+			rdonly('#formWard');
 		}
 
 	});
 
-	$("#cancel_ti").click(function(){
-		disableForm('#formTriageInfo');
-		button_state_ti($(this).data('oper'));
+	$("#cancel_ward").click(function(){
+		disableForm('#formWard');
+		button_state_ward($(this).data('oper'));
 		// dialog_mrn_edit.off();
 
 	});
@@ -43,6 +44,20 @@ $(document).ready(function () {
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function() {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
+	});
+
+	// to limit to two decimal places (onkeypress)
+	$(document).on('keydown', 'input[pattern]', function(e){
+		var input = $(this);
+		var oldVal = input.val();
+		var regex = new RegExp(input.attr('pattern'), 'g');
+	  
+		setTimeout(function(){
+			var newVal = input.val();
+			if(!regex.test(newVal)){
+				input.val(oldVal); 
+		  	}
+		}, 0);
 	});
 
 });
@@ -63,62 +78,76 @@ conf = {
 	},
 };
 
-// button_state_ti('empty');
-function button_state_ti(state){
+// button_state_ward('empty');
+function button_state_ward(state){
 	switch(state){
 		case 'empty':
-			$("#toggle_ti").removeAttr('data-toggle');
-			$('#cancel_ti').data('oper','add');
-			$('#new_ti,#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
+			$("#toggle_ward").removeAttr('data-toggle');
+			$('#cancel_ward').data('oper','add');
+			$('#new_ward,#save_ward,#cancel_ward,#edit_ward').attr('disabled',true);
 			break;
 		case 'add':
-			$("#toggle_ti").attr('data-toggle','collapse');
-			$('#cancel_ti').data('oper','add');
-			$("#new_ti").attr('disabled',false);
-			$('#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
+			$("#toggle_ward").attr('data-toggle','collapse');
+			$('#cancel_ward').data('oper','add');
+			$("#new_ward").attr('disabled',false);
+			$('#save_ward,#cancel_ward,#edit_ward').attr('disabled',true);
 			break;
 		case 'edit':
-			$("#toggle_ti").attr('data-toggle','collapse');
-			$('#cancel_ti').data('oper','edit');
-			$("#edit_ti").attr('disabled',false);
-			$('#save_ti,#cancel_ti,#new_ti').attr('disabled',true);
+			$("#toggle_ward").attr('data-toggle','collapse');
+			$('#cancel_ward').data('oper','edit');
+			$("#edit_ward").attr('disabled',false);
+			$('#save_ward,#cancel_ward,#new_ward').attr('disabled',true);
 			break;
 		case 'wait':
-			$("#toggle_ti").attr('data-toggle','collapse');
-			$("#save_ti,#cancel_ti").attr('disabled',false);
-			$('#edit_ti,#new_ti').attr('disabled',true);
+			dialog_tri_col.on();
+			examination.on().enable();
+			$("#toggle_ward").attr('data-toggle','collapse');
+			$("#save_ward,#cancel_ward").attr('disabled',false);
+			$('#edit_ward,#new_ward').attr('disabled',true);
 			break;
 	}
 
+	// if(!moment(gldatepicker_date).isSame(moment(), 'day')){
+	// 	$('#new_ward,#save_ward,#cancel_ward,#edit_ward').attr('disabled',true);
+	// }
 }
 
-function populate_formNursing(obj,rowdata){
+function populate_formWard(obj,rowdata){
 
 	//panel header
-	$('#name_show_ti').text(obj.a_pat_name);
-	$('#newic_show_ti').text(obj.newic);
-	$('#sex_show_ti').text(obj.sex);
-	$('#age_show_ti').text(obj.age+ 'YRS');
-	$('#race_show_ti').text(obj.race);	
-	button_state_ti('add');
+	$('#name_show_ward').text(obj.a_pat_name);
+	$('#newic_show_ward').text(obj.newic);
+	$('#sex_show_ward').text(obj.sex);
+	$('#age_show_ward').text(obj.age+ 'YRS');
+	$('#race_show_ward').text(obj.race);	
+	button_state_ward('add');
 
-	//formTriageInfo
-	$("#mrn_edit_ti").val(obj.a_mrn);
-	$("#episno_ti").val(obj.a_Episno);
+	//formWard
+	$("#mrn_edit_ward").val(obj.a_mrn);
+	$("#episno_ward").val(obj.a_Episno);
 	$("#reg_date").val(obj.reg_date);
+	tri_color_set('empty');
 
 	if(rowdata.nurse != undefined){
-		dialog_tri_col.on();
-		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
-		button_state_ti('edit');
+		autoinsert_rowdata("#formWard",rowdata.nurse);
+		tri_color_set();
+		button_state_ward('edit');
 	}
 
 	if(rowdata.nurse_gen != undefined){
-		autoinsert_rowdata("#formTriageInfo",rowdata.nurse_gen);
-		button_state_ti('edit');
+		autoinsert_rowdata("#formWard",rowdata.nurse_gen);
+		button_state_ward('edit');
 
-		autoinsert_rowdata("#formTriageInfo",rowdata.nurse_gen);
-		button_state_ti('edit');
+		autoinsert_rowdata("#formWard",rowdata.nurse_gen);
+		button_state_ward('edit');
+	}
+
+	if(rowdata.nurse_exm != undefined){
+		var newrowdata = $.extend(true,{}, rowdata);
+		examination.examarray = newrowdata.nurse_exm;
+		examination.loadexam().off().disable();
+	}else{
+		examination.empty().off().disable();
 	}
 }
 
@@ -137,25 +166,28 @@ function autoinsert_rowdata(form,rowData){
 	});
 }
 
-function empty_formNursing(){
+function empty_formWard(){
+	
+	tri_color_set('empty');
+	$('#name_show_ward').text('');
+	$('#newic_show_ward').text('');
+	$('#sex_show_ward').text('');
+	$('#age_show_ward').text('');
+	$('#race_show_ward').text('');	
+	button_state_ward('empty');
+	// $("#cancel_ward, #cancel_ad, #cancel_tpa").click();
 
-	$('#name_show_ti').text('');
-	$('#newic_show_ti').text('');
-	$('#sex_show_ti').text('');
-	$('#age_show_ti').text('');
-	$('#race_show_ti').text('');	
-	button_state_ti('empty');
-	// $("#cancel_ti, #cancel_ad, #cancel_tpa").click();
-
-	disableForm('#formTriageInfo');
-	emptyFormdata(errorField,'#formTriageInfo')
+	disableForm('#formWard');
+	emptyFormdata(errorField,'#formWard')
+	examination.empty().off().disable();
+	dialog_tri_col.off();
 
 }
 
-function saveForm_ti(callback){
+function saveForm_ward(callback){
 	var saveParam={
-        action:'save_table_ti',
-        oper:$("#cancel_ti").data('oper')
+        action:'save_table_ward',
+        oper:$("#cancel_ward").data('oper')
     }
     var postobj={
     	_token : $('#csrf_token').val(),
@@ -164,30 +196,44 @@ function saveForm_ti(callback){
 
     };
 
-    values = $("#formTriageInfo").serializeArray();
+    values = $("#formWard").serializeArray();
 
     values = values.concat(
-        $('#formTriageInfo input[type=checkbox]:not(:checked)').map(
+        $('#formWard input[type=checkbox]:not(:checked)').map(
         function() {
             return {"name": this.name, "value": 0}
         }).get()
     );
 
     values = values.concat(
-        $('#formTriageInfo input[type=checkbox]:checked').map(
+        $('#formWard input[type=checkbox]:checked').map(
         function() {
             return {"name": this.name, "value": 1}
         }).get()
 	);
 	
 	values = values.concat(
-        $('#formTriageInfo input[type=radio]:checked').map(
+        $('#formWard input[type=radio]:checked').map(
         function() {
             return {"name": this.name, "value": this.value}
         }).get()
     );
 
-    $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    values = values.concat(
+        $('#formWard select').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+	);
+
+    // values = values.concat(
+    //     $('#formWard input[type=radio]:checked').map(
+    //     function() {
+    //         return {"name": this.name, "value": this.value}
+    //     }).get()
+    // );
+
+    $.post( "/wardpanel/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');
@@ -241,6 +287,13 @@ var dialog_tri_col = new ordialog(
 			}
 		},
 		loadComplete: function(data,obj){
+			$("input[type='radio'][name='colorcode_select']").click(function(){
+				let self = this;
+				delay(function(){
+						$(self).parent().click();
+				}, 100 );
+			});
+
 			var gridname = '#'+obj.gridname;
 			var ids = $(gridname).jqGrid("getDataIDs"), l = ids.length, i, rowid, status;
 	        for (i = 0; i < l; i++) {
@@ -261,23 +314,99 @@ var dialog_tri_col = new ordialog(
 	},'urlParam','radio','tab','table'
 );
 dialog_tri_col.makedialog();
-dialog_tri_col.on();
+
+function tri_color_set(empty){
+	if(empty == 'empty'){
+		$(dialog_tri_col.textfield).removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
+
+		$(dialog_tri_col.textfield).next().removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
+	}
+
+	var color = $(dialog_tri_col.textfield).val();
+	$(dialog_tri_col.textfield)
+					.removeClass( "red" )
+					.removeClass( "yellow" )
+					.removeClass( "green" )
+					.addClass( color );
+
+	$(dialog_tri_col.textfield).next()
+					.removeClass( "red" )
+					.removeClass( "yellow" )
+					.removeClass( "green" )
+					.addClass( color );
+}
 
 
 var examination = new examination();
-examination.on();
 function examination(){
-	this.idno=null;
 	this.examarray=[];
 	this.on=function(){
 		$("#exam_plus").on('click',{data:this},addexam);
+		return this;
+	}
 
+	this.empty=function(){
+		this.examarray.length=0;
+		$("#exam_div").html('');
+		return this;
 	}
 
 	this.off=function(){
-		this.idno=null;
-		this.examarray.length=0;
-		$("#exam_div").html('');
+		$("#exam_plus").off('click',addexam);
+		return this;
+	}
+
+	this.disable=function(){
+		disableForm('#exam_div');
+		return this;
+	}
+
+	this.enable=function(){
+		enableForm('#exam_div');
+		return this;
+	}
+
+	this.loadexam = function(){
+		this.examarray.forEach(function(item, index){
+			$("#exam_div").append(`
+				<hr>
+				<div class="form-group">
+					<input type="hidden" name="examidno_`+index+`" value="`+item.idno+`">
+					<div class="col-md-2">Exam</div>
+					<div class="col-md-10">
+						<select class="form-select form-control" name="examsel_`+index+`" id="exam_`+index+`">
+							<option value="General">General</option>
+							<option value="Head" >Head</option>
+							<option value="Neck" >Neck</option>
+							<option value="Throat" >Throat</option>
+							<option value="Abdomen" >Abdomen</option>
+							<option value="Eye" >Eye</option>
+							<option value="Lungs" >Lungs</option>
+							<option value="Neuro" >Neuro</option>
+							<option value="Limbs" >Limbs</option>
+							<option value="Chest" >Chest</option>
+							<option value="BACK" >BACK</option>
+							<option value="Heart" >Heart</option>
+							<option value="Skin" >Skin</option>
+							<option value="Musculosketel" >Musculosketel</option>
+							<option value="Neurological" >Neurological</option>
+							<option value="stomach" >stomach</option>
+							<option value="middle finger" >middle finger</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-md-2">Note</div>
+					<div class="col-md-10">
+						<textarea class="form-control input-sm uppercase" rows="5"  name="examnote_`+index+`" id="examnote_`+index+`">`+item.examnote+`</textarea>
+					</div>
+				</div>
+			`);
+
+			$("#exam_"+index).val(item.exam);
+		});
+		return this;
 	}
 
 	function addexam(event){
@@ -286,31 +415,35 @@ function examination(){
 		if(obj.examarray.length==0){
 			obj.examarray.push(0);
 			currentid = 0;
+		}else{
+			currentid = obj.examarray.length;
+			obj.examarray.push(obj.examarray.length);
 		}
 
 		$("#exam_div").append(`
 			<hr>
 			<div class="form-group">
+				<input type="hidden" name="examidno_`+currentid+`" value="0">
 				<div class="col-md-2">Exam</div>
 				<div class="col-md-10">
-					<select class="form-select form-control" name="exam_`+currentid+`" id="exam_`+currentid+`">
-						<option>General</option>
-						<option>Head</option>
-						<option>Neck</option>
-						<option>Throat</option>
-						<option>Abdomen</option>
-						<option>Eye</option>
-						<option>Lungs</option>
-						<option>Neuro</option>
-						<option>Limbs</option>
-						<option>Chest</option>
-						<option>BACK</option>
-						<option>Heart</option>
-						<option>Skin</option>
-						<option>Musculosketel</option>
-						<option>Neurological</option>
-						<option>stomach</option>
-						<option>middle finger</option>
+					<select class="form-select form-control" name="examsel_`+currentid+`" id="exam_`+currentid+`">
+						<option value="General" selected="selected" >General</option>
+						<option value="Head" >Head</option>
+						<option value="Neck" >Neck</option>
+						<option value="Throat" >Throat</option>
+						<option value="Abdomen" >Abdomen</option>
+						<option value="Eye" >Eye</option>
+						<option value="Lungs" >Lungs</option>
+						<option value="Neuro" >Neuro</option>
+						<option value="Limbs" >Limbs</option>
+						<option value="Chest" >Chest</option>
+						<option value="BACK" >BACK</option>
+						<option value="Heart" >Heart</option>
+						<option value="Skin" >Skin</option>
+						<option value="Musculosketel" >Musculosketel</option>
+						<option value="Neurological" >Neurological</option>
+						<option value="stomach" >stomach</option>
+						<option value="middle finger" >middle finger</option>
 					</select>
 				</div>
 			</div>
@@ -321,7 +454,8 @@ function examination(){
 					<textarea class="form-control input-sm uppercase" rows="5"  name="examnote_`+currentid+`" id="examnote_`+currentid+`"></textarea>
 				</div>
 			</div>
-		`)
+		`);
+
 	}
 }
 
