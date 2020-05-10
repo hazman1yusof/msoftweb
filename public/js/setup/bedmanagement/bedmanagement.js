@@ -30,10 +30,9 @@ $(document).ready(function () {
 	function cust_rules(value,name){
 		var temp;
 		switch(name){
-			case 'Bed Type':temp=$('#bedtype');break;
-			case 'Ward':temp=$('#ward');break;
-			case 'Status':temp=$('#occup');break;
-			case 'Doctor Code':temp=$('#doccode');break;
+			case 'Bed Type':temp=$('#b_bedtype');break;
+			case 'Ward':temp=$('#b_ward');break;
+			case 'Status':temp=$('#b_occup');break;
 				break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -44,6 +43,7 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
 			case 'ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
+			case 'doccode': field = ['doctorcode', 'doctorname']; table = "hisdb.doctor";case_='doccode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -54,23 +54,23 @@ $(document).ready(function () {
 
 	function occupCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val;
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="occup" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="b_occup" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function bedTypeCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="bedtype" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="b_bedtype" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function wardCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ward" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="b_ward" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
-	function docCodeCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="doccode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
+	// function docCodeCustomEdit(val, opt) {
+	// 	val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+	// 	return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="q_doccode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	// }
 
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -134,13 +134,7 @@ $(document).ready(function () {
 			{ label: 'MRN', name: 'b_mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'b_episno', width: 5},
 			{ label: 'Patient Name', name: 'b_name', width: 40, canSearch: true, classes: 'wrap'},
-			{ label: 'Doctor Code', name: 'q_doccode', width: 15 , classes: 'wrap', editable:true,
-				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
-				edittype:'custom',	editoptions:
-					{ 	custom_element:docCodeCustomEdit,
-						custom_value:galGridCustomValue 	
-					},
-			},
+			{ label: 'Doctor Code', name: 'q_doccode', width: 15, canSearch: true, formatter: showdetail},
             { label: 'Record Status', name: 'b_recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"},
@@ -830,6 +824,4 @@ $(document).ready(function () {
 
 
 });
-
-
 

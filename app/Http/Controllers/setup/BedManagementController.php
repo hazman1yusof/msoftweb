@@ -224,7 +224,7 @@ class BedManagementController extends defaultController
         try {
 
             DB::table('hisdb.bed')
-                ->where('idno','=',$request->idno)
+                ->where('idno','=',$request->b_idno)
                 ->update([  
                     'recstatus' => 'D',
                     'deluser' => strtoupper(session('username')),
@@ -246,9 +246,9 @@ class BedManagementController extends defaultController
             //1. new bed alloc
             DB::table('hisdb.bedalloc')
                 ->insert([  
-                    'mrn' => $request->b_mrn,
-                    'episno' => $request->b_episno,
-                    'name' => $request->b_name,
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'name' => $request->name,
                     'astatus' => $request->trf_astatus,
                     'ward' =>  $request->trf_ward,
                     'room' =>  $request->trf_room,
@@ -262,8 +262,8 @@ class BedManagementController extends defaultController
 
             //2. edit episode
             DB::table('hisdb.episode')
-                ->where('mrn','=',$request->b_mrn)
-                ->where('episno','=',$request->b_episno)
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
                 ->update([
                     'bed' =>  $request->trf_bednum,
                     'bedtype' => $request->trf_bedtype,
@@ -273,8 +273,8 @@ class BedManagementController extends defaultController
 
             //3. edit queue
             DB::table('hisdb.episode')
-                ->where('mrn','=',$request->b_mrn)
-                ->where('episno','=',$request->b_episno)
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
                 ->update([
                     'bed' =>  $request->trf_bednum,
                     'bedtype' => $request->trf_bedtype,
