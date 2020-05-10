@@ -71,19 +71,19 @@ class BedManagementController extends defaultController
                                 $join = $join->on('e.compcode','=','p.compcode');
                             })
                             ->where('e.compcode','=',session('compcode'))
-                            ->where('e.bed','=',$value->bednum)
+                            ->where('e.bed','=',$value->b_bednum)
                             ->where('e.episactive','=','1')
                             ->orderBy('e.idno','DESC');
 
             if($episode->exists()){
                 $episode_first = $episode->first();
-                $value->mrn = $episode_first->mrn;
-                $value->episno = $episode_first->episno;
-                $value->name = $episode_first->name;
+                $value->mrn = $episode_first->b_mrn;
+                $value->episno = $episode_first->b_episno;
+                $value->name = $episode_first->b_name;
             }else{
-                $value->mrn = '';
-                $value->episno = '';
-                $value->name = '';
+                $value->b_mrn = '';
+                $value->b_episno = '';
+                $value->b_name = '';
             }
         }
 
@@ -108,7 +108,7 @@ class BedManagementController extends defaultController
         try {
 
             $bednum = DB::table('hisdb.bed')
-                            ->where('bednum','=',$request->bednum);
+                            ->where('bednum','=',$request->b_bednum);
 
             if($bednum->exists()){
                 throw new \Exception("RECORD DUPLICATE");
@@ -117,19 +117,20 @@ class BedManagementController extends defaultController
             DB::table('hisdb.bed')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'bednum' => strtoupper($request->bednum),
-                    'bedtype' => strtoupper($request->bedtype),  
-                    'room' => strtoupper($request->room),  
-                    'ward' => strtoupper($request->ward),
-                    'tel_ext' => strtoupper($request->tel_ext),
+                    'bednum' => strtoupper($request->b_bednum),
+                    'bedtype' => strtoupper($request->b_bedtype),  
+                    'room' => strtoupper($request->b_room),  
+                    'ward' => strtoupper($request->b_ward),
+                    'tel_ext' => strtoupper($request->b_tel_ext),
                     // 'statistic' => strtoupper($request->statistic), 
                     //'occup' => 0,  
-                    'occup' => strtoupper($request->occup),
+                    'occup' => strtoupper($request->b_occup),
+                    'Doctor Code' => strtoupper($request->q_doccode),
                     // 'tel_ext' => $this->truefalse($request->tel_ext), 
-                    'statistic' => $this->truefalse($request->statistic),
-                    'recstatus' => strtoupper($request->recstatus),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'statistic' => $this->truefalse($request->b_statistic),
+                    'recstatus' => strtoupper($request->b_recstatus),
+                    'lastcomputerid' => strtoupper($request->b_lastcomputerid),
+                    'lastipaddress' => strtoupper($request->b_lastipaddress),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -193,18 +194,19 @@ class BedManagementController extends defaultController
         try {
 
             DB::table('hisdb.bed')
-                ->where('idno','=',$request->idno)
+                ->where('idno','=',$request->b_idno)
                 ->update([  
-                    'bedtype' => strtoupper($request->bedtype),  
-                    'room' => strtoupper($request->room),  
-                    'ward' => strtoupper($request->ward),
-                    'occup' => strtoupper($request->occup),
-                    'tel_ext' => strtoupper($request->tel_ext),
+                    'bedtype' => strtoupper($request->b_bedtype),  
+                    'room' => strtoupper($request->b_room),  
+                    'ward' => strtoupper($request->b_ward),
+                    'occup' => strtoupper($request->b_occup),
+                    'tel_ext' => strtoupper($request->b_tel_ext),
+                    'Doctor Code' => strtoupper($request->q_doccode),
                     // 'tel_ext' => $this->truefalse($request->tel_ext), 
-                    'statistic' => $this->truefalse($request->statistic),    
-                    'recstatus' => strtoupper($request->recstatus),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'statistic' => $this->truefalse($request->b_statistic),    
+                    'recstatus' => strtoupper($request->b_recstatus),
+                    'lastcomputerid' => strtoupper($request->b_lastcomputerid),
+                    'lastipaddress' => strtoupper($request->b_lastipaddress),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -244,9 +246,9 @@ class BedManagementController extends defaultController
             //1. new bed alloc
             DB::table('hisdb.bedalloc')
                 ->insert([  
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'name' => $request->name,
+                    'mrn' => $request->b_mrn,
+                    'episno' => $request->b_episno,
+                    'name' => $request->b_name,
                     'astatus' => $request->trf_astatus,
                     'ward' =>  $request->trf_ward,
                     'room' =>  $request->trf_room,
@@ -260,8 +262,8 @@ class BedManagementController extends defaultController
 
             //2. edit episode
             DB::table('hisdb.episode')
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
+                ->where('mrn','=',$request->b_mrn)
+                ->where('episno','=',$request->b_episno)
                 ->update([
                     'bed' =>  $request->trf_bednum,
                     'bedtype' => $request->trf_bedtype,
@@ -271,8 +273,8 @@ class BedManagementController extends defaultController
 
             //3. edit queue
             DB::table('hisdb.episode')
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
+                ->where('mrn','=',$request->b_mrn)
+                ->where('episno','=',$request->b_episno)
                 ->update([
                     'bed' =>  $request->trf_bednum,
                     'bedtype' => $request->trf_bedtype,
