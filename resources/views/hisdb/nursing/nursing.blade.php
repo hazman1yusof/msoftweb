@@ -53,13 +53,13 @@
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="admwardtime">Time</label>  
 									<div class="col-md-4">
-										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm uppercase" data-validation="required" data-validation-error-msg-required="Please enter time.">
+										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter time.">
 									</div>
 
 									<label class="col-md-3 control-label" for="triagecolor">Triage Color Zone</label>  
 									<div class="col-md-3">
 										<div class='input-group'>
-											<input id="triagecolor" name="triagecolor" type="text" class="form-control input-sm uppercase" data-validation="required" data-validation-error-msg-required="Please select color zone.">
+											<input id="triagecolor" name="triagecolor" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please select color zone.">
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										</div>
 										<span class="help-block"></span>
@@ -69,49 +69,49 @@
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="reg_date">Date</label>  
 									<div class="col-md-5">
-										<input id="reg_date" name="reg_date" type="date" class="form-control input-sm uppercase" rdonly>
+										<input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="admreason" >Chief Complain</label>  
 									<div class="col-md-10">
-										<textarea id="admreason" name="admreason" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										<textarea id="admreason" name="admreason" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="medicalhistory">Medical History</label>  
 									<div class="col-md-10">
-										<textarea id="medicalhistory" name="medicalhistory" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										<textarea id="medicalhistory" name="medicalhistory" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="surgicalhistory">Surgical History</label>  
 									<div class="col-md-10">
-										<textarea id="surgicalhistory" name="surgicalhistory" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										<textarea id="surgicalhistory" name="surgicalhistory" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="familymedicalhist">Family Medical History</label>  
 									<div class="col-md-10">
-										<textarea id="familymedicalhist" name="familymedicalhist" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										<textarea id="familymedicalhist" name="familymedicalhist" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="currentmedication">Current Medication</label>  
 									<div class="col-md-10">
-										<textarea id="currentmedication" name="currentmedication" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										<textarea id="currentmedication" name="currentmedication" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="diagnosis">Diagnosis</label>  
 									<div class="col-md-10">
-										<textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm uppercase" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										<textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
 									</div>
 								</div>
 
@@ -161,7 +161,7 @@
 										<div class="form-group">
 											<label class="col-md-4 control-label" for="allergyremarks">If Others, Please specify:</label>  
 											<div class="col-md-8">
-												<textarea id="allergyremarks" name="allergyremarks" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
+												<textarea id="allergyremarks" name="allergyremarks" type="text" class="form-control input-sm" rows="3"></textarea>
 											</div>
 										</div>
 
@@ -406,7 +406,7 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="br_breathingdesc">If Yes, Describe:</label>  
 													<div class="col-md-8" style="padding-left: 0px">
-														<textarea id="br_breathingdesc" name="br_breathingdesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
+														<textarea id="br_breathingdesc" name="br_breathingdesc" type="text" class="form-control input-sm" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -423,7 +423,7 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="br_coughdesc">If Yes, Describe:</label>  
 													<div class="col-md-8" style="padding-left: 0px">
-														<textarea id="br_coughdesc" name="br_coughdesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
+														<textarea id="br_coughdesc" name="br_coughdesc" type="text" class="form-control input-sm" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -440,7 +440,7 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="br_smokedesc">If Yes, Amount:</label>  
 													<div class="col-md-8" style="padding-left: 0px">
-														<textarea id="br_smokedesc" name="br_smokedesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
+														<textarea id="br_smokedesc" name="br_smokedesc" type="text" class="form-control input-sm" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -466,7 +466,7 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="ed_eatdrinkdesc">If Yes, Describe:</label>  
 													<div class="col-md-8" style="padding-left: 0px">
-														<textarea id="ed_eatdrinkdesc" name="ed_eatdrinkdesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
+														<textarea id="ed_eatdrinkdesc" name="ed_eatdrinkdesc" type="text" class="form-control input-sm" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -502,7 +502,7 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="eb_bowelmovedesc">If Yes, Describe:</label>  
 													<div class="col-md-8" style="padding-left: 0px">
-														<textarea id="eb_bowelmovedesc" name="eb_bowelmovedesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
+														<textarea id="eb_bowelmovedesc" name="eb_bowelmovedesc" type="text" class="form-control input-sm" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -719,14 +719,14 @@
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="bl_urinedesc">If Yes, Describe:</label>  
 													<div class="col-md-7" style="padding-left: 0px">
-														<textarea id="bl_urinedesc" name="bl_urinedesc" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
+														<textarea id="bl_urinedesc" name="bl_urinedesc" type="text" class="form-control input-sm" rows="3"></textarea>
 													</div>
 												</div>
 
 												<div class="form-group">
 													<label class="col-md-4 control-label" for="bl_urinefreq">How Often Get Up At Night To Pass Urine?</label>  
 													<div class="col-md-7" style="padding-left: 0px">
-														<textarea id="bl_urinefreq" name="bl_urinefreq" type="text" class="form-control input-sm uppercase" rows="3"></textarea>
+														<textarea id="bl_urinefreq" name="bl_urinefreq" type="text" class="form-control input-sm" rows="3"></textarea>
 													</div>
 												</div>
 
@@ -845,7 +845,7 @@
 														<div class="form-group">
 															<label class="col-md-1 control-label" for="pa_notes" style="margin-bottom: 10px">Notes:</label>  
 															<div class="row">
-																<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm uppercase" rows="15" data-validation="required" data-validation-error-msg-required="Please enter notes."></textarea>
+																<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm" rows="15" data-validation="required" data-validation-error-msg-required="Please enter notes."></textarea>
 															</div>
 														</div>														
 
