@@ -86,10 +86,10 @@ $(document).ready(function () {
 		url: '/bedmanagement/table',
 		field: '',
 		fixPost:'true',
-		table_name: ['hisdb.bed as b', 'hsidb.queue as q'],
+		table_name: ['hisdb.bed as b', 'hisdb.queue as q'],
 		join_type:['LEFT JOIN'],
-		join_onCol:['b.doccode'],
-		join_onVal:['q.admdoctor'],
+		join_onCol:['b.bednum'],
+		join_onVal:['q.bed'],
 		table_id: 'b_compcode',
 		sort_idno: true,
 		filterCol:['b.compcode'],			
@@ -131,10 +131,10 @@ $(document).ready(function () {
 			{ label: 'Tel Ext', name: 'b_tel_ext', width: 8, canSearch: true, checked: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
 			// { label: 'Tel Ext', name: 'b_tel_ext', width: 10, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'Statistic', name: 'b_statistic', width: 15, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
-			{ label: 'MRN', name: 'b_mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
-			{ label: ' ', name: 'b_episno', width: 5},
-			{ label: 'Patient Name', name: 'b_name', width: 40, canSearch: true, classes: 'wrap'},
-			{ label: 'Doctor Code', name: 'q_doccode', width: 15, canSearch: true, formatter: showdetail},
+			{ label: 'MRN', name: 'q_mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: ' ', name: 'q_episno', width: 5},
+			{ label: 'Patient Name', name: 'q_name', width: 40, canSearch: true, classes: 'wrap'},
+			{ label: 'Doctor Code', name: 'q_admdoctor', width: 15, canSearch: true, formatter: showdetail},
             { label: 'Record Status', name: 'b_recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"},
@@ -632,7 +632,7 @@ $(document).ready(function () {
 	searchClick2('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam, ['mrn', 'episno', 'name']);
+	addParamField('#jqGrid', true, urlParam, ['q_mrn', 'q_episno', 'q_name']);
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 	addParamField('#jqGrid_trf', false, urlParam2);
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
