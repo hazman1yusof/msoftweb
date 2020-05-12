@@ -534,6 +534,11 @@ Route::get('/wardpanel','hisdb\WardPanelController@show');
 Route::get('/wardpanel/table','hisdb\WardPanelController@table');
 Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 
+//// Diet Order page ///
+Route::get('/dietorder','hisdb\DietOrderController@show');
+Route::get('/dietorder/table','hisdb\DietOrderController@table');
+Route::post('/dietorder/form','hisdb\DietOrderController@form');
+
 ///////////////////fixed asset setup////////////////////////////////////
 
 //// Fixed Asset Location setup page ///
