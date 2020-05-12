@@ -77,13 +77,13 @@ class BedManagementController extends defaultController
 
             if($episode->exists()){
                 $episode_first = $episode->first();
-                $value->mrn = $episode_first->b_mrn;
-                $value->episno = $episode_first->b_episno;
-                $value->name = $episode_first->b_name;
+                $value->mrn = $episode_first->q_mrn;
+                $value->episno = $episode_first->q_episno;
+                $value->name = $episode_first->q_name;
             }else{
-                $value->b_mrn = '';
-                $value->b_episno = '';
-                $value->b_name = '';
+                $value->q_mrn = '';
+                $value->q_episno = '';
+                $value->q_name = '';
             }
         }
 
@@ -125,7 +125,7 @@ class BedManagementController extends defaultController
                     // 'statistic' => strtoupper($request->statistic), 
                     //'occup' => 0,  
                     'occup' => strtoupper($request->b_occup),
-                    'Doctor Code' => strtoupper($request->q_doccode),
+                    'Doctor Code' => strtoupper($request->q_admdoctor),
                     // 'tel_ext' => $this->truefalse($request->tel_ext), 
                     'statistic' => $this->truefalse($request->b_statistic),
                     'recstatus' => strtoupper($request->b_recstatus),
@@ -201,7 +201,7 @@ class BedManagementController extends defaultController
                     'ward' => strtoupper($request->b_ward),
                     'occup' => strtoupper($request->b_occup),
                     'tel_ext' => strtoupper($request->b_tel_ext),
-                    'Doctor Code' => strtoupper($request->q_doccode),
+                    'Doctor Code' => strtoupper($request->q_admdoctor),
                     // 'tel_ext' => $this->truefalse($request->tel_ext), 
                     'statistic' => $this->truefalse($request->b_statistic),    
                     'recstatus' => strtoupper($request->b_recstatus),
