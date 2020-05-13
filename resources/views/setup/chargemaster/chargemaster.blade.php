@@ -63,7 +63,7 @@ input.uppercase {
 					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
 		              	</div>
 
-					  	<div class="col-md-5">
+					  	<div class="col-md-5" style="padding-right: 0px;">
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
 
@@ -84,14 +84,16 @@ input.uppercase {
 							</div>
 						</div>
 
-					  	<div class="col-md-1" id="div_chggroup" style="padding-left: 30px;padding-right: 30px;display:none">
-							<label class="control-label"></label>
-							<a class='form-control btn btn-primary' id="btn_chggroup"><span class='fa fa-ellipsis-h'></span></a>
-					  	</div>
-					  	<div class="col-md-1" id="div_chgtype" style="padding-left: 30px;padding-right: 30px;display:none;margin: 0px">
-							<label class="control-label"></label>
-							<a class='form-control btn btn-primary' id="btn_chgtype"><span class='fa fa-ellipsis-h'></span></a>
-					  	</div>
+						<div class="col-md-1" style="padding-left: 0px;">
+							<div id="div_chggroup" style="padding-left: 0px;padding-right: 30px;display:none">
+								<label class="control-label"></label>
+								<a class='form-control btn btn-primary' id="btn_chggroup"><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<div id="div_chgtype" style="padding-left: 0px;padding-right: 30px;display:none;margin: 0px">
+								<label class="control-label"></label>
+								<a class='form-control btn btn-primary' id="btn_chgtype"><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+						</div>
 		            </div>
 				</div>
 			</fieldset> 
