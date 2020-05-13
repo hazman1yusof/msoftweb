@@ -821,7 +821,4 @@ $(document).ready(function () {
 	        callback();
 	    });
 	}
-
-
 });
-
