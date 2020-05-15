@@ -582,7 +582,7 @@ $(document).ready(function () {
 		join_onVal:['ba.bednum'],
 		join_filterCol:[['b.compcode on =']],
 		join_filterVal:[['ba.compcode']],
-		filterCol:['mrn','ba.compcode'],
+		filterCol:['ba.mrn','ba.compcode'],
 		filterVal:['','session.compcode'],
 	};
 
