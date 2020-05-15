@@ -91,11 +91,11 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['b.bednum'],
 		join_onVal:['q.bed'],
-		join_filterCol:[['q.deptcode in =']],
-		join_filterVal:[['ALL']],
+		join_filterCol:[['q.deptcode in =','q.compcode on =']],
+		join_filterVal:[['ALL','b.compcode']],
 		table_id: 'b_compcode',
 		sort_idno: true,
-		filterCol:['b.compcode'],			
+		filterCol:['b.compcode'],
 		filterVal:['session.compcode']
 	}
 
@@ -582,6 +582,8 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['b.bednum'],
 		join_onVal:['ba.bednum'],
+		join_filterCol:[['b.compcode on =']],
+		join_filterVal:[['ba.compcode']],
 		filterCol:['mrn','ba.compcode'],
 		filterVal:['','session.compcode'],
 	};
