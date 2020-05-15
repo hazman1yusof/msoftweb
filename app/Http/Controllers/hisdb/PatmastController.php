@@ -476,19 +476,75 @@ class PatmastController extends defaultController
                     "allocpayer" => 1
                 ]);
 
-                //buat debtormaster KALAU TAK JUMPA
+                //update patmast
+                    //episno = episode.episno
+                    //patstatus=episode.episactive
+                    //last_visit_date=episode.reg_date
+                    //first_visit_date=episode.reg_date when episno=1
+                    //Lastupdate=today
+                    //LastUser=session.user
+
+
+                //if pay_type = PT
+                    //buat debtormaster KALAU TAK JUMPA
+                        //debtortype = pay_type
+                        //debtorcode = MRN prefix until 7 zero
+                        //debtorname = patmast.name
+                        //address1 address2 address3 address4
+                        //actdebccode //select dari debtortype where compcode=session and debtortycode=pay_type
+                        //actdebglacc //select dari debtortype where compcode=session and debtortycode=pay_type
+                        //depccode //select dari debtortype where compcode=session and debtortycode=pay_type
+                        //depglacc //select dari debtortype where compcode=session and debtortycode=pay_type
+                        //adduser
+                        //adddate
+                        //computerid
 
                 //CREATE EPISPAYER
+                    // mrn
+                    // episno
+                    // payercode
+                    // lineno = 1
+                    // epistycode
+                    // pay_type
+                    // pyrmode
+                    // billtype
+                    // adduser
+                    // adddate
+                    // computerid
 
                 //CREATE NOK
 
                 //CREATE docalloc
+                      //compcode = episode.compcode
+                      //mrn = episode.mrn
+                      //episno = episode.episno
+                      //AllocNo
+                      //DoctorCode = episode.admdoctor
+                      //asdate = episode.epis_date
+                      //astime = episode.epis_time
+                      //aedate
+                      //aetime
+                      //aprovide
+                      //astatus
+                      //areason
+                      //servicecode
+                      //doctype = doctor.doctype
+                      //epistycode = episode.epistycode
+                      //adddate
+                      //adduser
+                      // computerid
 
-                //CREATE BEDALLOC KALAU IP SHJ
+                //CREATE BEDALLOC KALAU IP @ DP SHJ
+                    // from page
 
-                //UPDATE BED set occup=OCCUPIED
+                //UPDATE BED set occup=OCCUPIED KALAU IP @ DP SHJ
+                        //mrn = episode.mrn
+                        //episno = episode.episno
+                        //name = patmast.name
 
                 //QUEUE FOR ALL
+                    //epistycode = IP if epis_type  = IP @ DP
+                    //epistycode = OP if epis_type  = OP @ OTC
 
                 //QUEUE FOR SPECIALIST
 
