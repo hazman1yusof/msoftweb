@@ -537,7 +537,7 @@ class PatmastController extends defaultController
                 //CREATE BEDALLOC KALAU IP @ DP SHJ
                     // from page
 
-                //UPDATE BED set occup=OCCUPIED KALAU IP @ DP SHJ
+                //UPDATE BED set recstatus=OCCUPIED KALAU IP @ DP SHJ
                         //mrn = episode.mrn
                         //episno = episode.episno
                         //name = patmast.name
