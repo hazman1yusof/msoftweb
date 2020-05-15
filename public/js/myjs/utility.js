@@ -1425,23 +1425,37 @@ function faster_detail_load(){
 
 		if(!storage_obj){
 
-			$.get( param.url+"?"+$.param(param), function( data ) {
-					
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data.rows)){
-					$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0][desc_name]+"</span>");
+			if(cellvalue !== null){
+				$.get( param.url+"?"+$.param(param), function( data ) {
+						
+				},'json').done(function(data) {
+					if(!$.isEmptyObject(data.rows)){
+						$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0][desc_name]+"</span>");
 
-					let desc = data.rows[0][desc_name];
-					let now = moment()
+						let desc = data.rows[0][desc_name];
+						let now = moment();
 
-					var json = JSON.stringify({
-						'description':desc,
-						'timestamp': now
-					});
+						var json = JSON.stringify({
+							'description':desc,
+							'timestamp': now
+						});
 
-					localStorage.setItem(storage_name,json);
-				}
-			});
+						localStorage.setItem(storage_name,json);
+					}
+				});
+			}else{
+				let desc = '';
+				let now = moment();
+
+				var json = JSON.stringify({
+					'description':desc,
+					'timestamp': now
+				});
+
+				localStorage.setItem(storage_name,json);
+			}
+
+			
 
 		}else{
 			let obj_stored = {

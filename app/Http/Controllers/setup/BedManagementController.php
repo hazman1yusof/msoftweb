@@ -63,37 +63,37 @@ class BedManagementController extends defaultController
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
 
-        foreach ($paginate->items() as $key => $value) {
-            $episode = DB::table('hisdb.episode as e')
-                            ->select('e.mrn','e.episno','p.name')
-                            ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
-                                $join = $join->on("e.mrn", '=', 'p.mrn');    
-                                $join = $join->on('e.compcode','=','p.compcode');
-                            })
-                            ->where('e.compcode','=',session('compcode'))
-                            ->where('e.bed','=',$value->b_bednum)
-                            ->where('e.episactive','=','1')
-                            ->orderBy('e.idno','DESC');
+        // foreach ($paginate->items() as $key => $value) {
+        //     $episode = DB::table('hisdb.episode as e')
+        //                     ->select('e.mrn','e.episno','p.name')
+        //                     ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
+        //                         $join = $join->on("e.mrn", '=', 'p.mrn');    
+        //                         $join = $join->on('e.compcode','=','p.compcode');
+        //                     })
+        //                     ->where('e.compcode','=',session('compcode'))
+        //                     ->where('e.bed','=',$value->b_bednum)
+        //                     ->where('e.episactive','=','1')
+        //                     ->orderBy('e.idno','DESC');
 
-            if($episode->exists()){
-                $episode_first = $episode->first();
-                $value->mrn = $episode_first->q_mrn;
-                $value->episno = $episode_first->q_episno;
-                $value->name = $episode_first->q_name;
-            }else{
-                $value->q_mrn = '';
-                $value->q_episno = '';
-                $value->q_name = '';
-            }
-        }
+        //     if($episode->exists()){
+        //         $episode_first = $episode->first();
+        //         $value->mrn = $episode_first->q_mrn;
+        //         $value->episno = $episode_first->q_episno;
+        //         $value->name = $episode_first->q_name;
+        //     }else{
+        //         $value->q_mrn = '';
+        //         $value->q_episno = '';
+        //         $value->q_name = '';
+        //     }
+        // }
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
         $responce->records = $paginate->total();
         $responce->rows = $paginate->items();
-        $responce->sql = $episode->toSql();
-        $responce->sql_bind = $episode->getBindings();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
     }
@@ -260,10 +260,24 @@ class BedManagementController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-            //2. edit episode
+            //2 edit bed
+            DB::table('hisdb.bed')
+                ->where('idno','=',$request->b_idno)
+                ->update([  
+                    'occup' => 'VACANT'
+                ]);
+
+            DB::table('hisdb.bed')
+                ->where('compcode','=',session('compcode'))
+                ->where('bednum','=',$request->trf_bednum)
+                ->update([  
+                    'occup' => 'OCCUPIED'
+                ]);
+
+            //3. edit episode
             DB::table('hisdb.episode')
-                ->where('mrn','=',$request->b_mrn)
-                ->where('episno','=',$request->b_episno)
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
                 ->update([
                     'bed' =>  $request->trf_bednum,
                     'bedtype' => $request->trf_bedtype,
@@ -271,8 +285,8 @@ class BedManagementController extends defaultController
                     'room' =>  $request->trf_room,
                 ]);
 
-            //3. edit queue
-            DB::table('hisdb.episode')
+            //4. edit queue
+            DB::table('hisdb.queue')
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
                 ->update([

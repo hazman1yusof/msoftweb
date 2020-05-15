@@ -41,14 +41,15 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table,case_;
 		switch(options.colModel.name){
-			case 'bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
-			case 'ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
-			case 'doccode': field = ['doctorcode', 'doctorname']; table = "hisdb.doctor";case_='doccode';break;
+			case 'b_bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
+			case 'b_ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
+			case 'q_admdoctor': field = ['doctorcode', 'doctorname']; table = "hisdb.doctor";case_='doccode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('bedmanagement',options,param,case_,cellvalue);
 		
+		if(cellvalue==null)return "";
 		return cellvalue;
 	}
 
@@ -90,6 +91,8 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['b.bednum'],
 		join_onVal:['q.bed'],
+		join_filterCol:[['q.deptcode in =']],
+		join_filterVal:[['ALL']],
 		table_id: 'b_compcode',
 		sort_idno: true,
 		filterCol:['b.compcode'],			
@@ -168,17 +171,18 @@ $(document).ready(function () {
 				refreshGrid('#jqGrid_trf', urlParam2,'kosongkan');
 				$("#pg_jqGridPager3 table, #jqGrid_trf_c").hide();
 
-				if (rowData['b_mrn'] != 000000) {
-					urlParam2.filterVal[0] = selrowData('#jqGrid').b_mrn;
+				if(rowData['q_mrn'] != '') {
+					urlParam2.filterVal[0] = selrowData('#jqGrid').q_mrn;
 					refreshGrid('#jqGrid_trf', urlParam2);
 					$("#pg_jqGridPager3 table, #jqGrid_trf_c").show();
 					$("#jqGridPagerDelete").hide();
 					$("#jqGrid_iledit").hide();
-				}else if (rowData['b_mrn'] == 000000) {
+				}else if (rowData['q_mrn'] == '') {
 					$("#jqGridPagerDelete").show();
 					$("#jqGrid_iledit").show();
 				}
 			}
+
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
@@ -219,6 +223,9 @@ $(document).ready(function () {
 	});
 
 	function padzero(cellvalue, options, rowObject){
+		if(cellvalue == null){
+			return "";
+		}
 		let padzero = 6, str="";
 		while(padzero>0){
 			str=str.concat("0");
@@ -601,6 +608,8 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 30,
+		sortname: 'ba_idno',
+		sortorder: 'desc',
 		pager: "#jqGridPager3",
 		onSelectRow:function(rowid, selected){
 			populate_form_trf(selrowData("#jqGrid_trf"));
@@ -632,7 +641,7 @@ $(document).ready(function () {
 	searchClick2('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam, ['q_mrn', 'q_episno', 'q_name']);
+	addParamField('#jqGrid', true, urlParam,);
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 	addParamField('#jqGrid_trf', false, urlParam2);
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
@@ -652,8 +661,8 @@ $(document).ready(function () {
 				{ label: 'Bed Type', name: 'bedtype',classes:'pointer', width: 15, classes: 'wrap',canSearch:true,or_search:true},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterCol:['compcode','recstatus','occup'],
+				filterVal:['session.compcode','A','<>.OCCUPIED']
 			},
 			ondblClickRow:function(){
 				$(dialog_bed_trf.textfield).parent().next().html('');
@@ -675,8 +684,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Transaction Type",
 			open: function(){
-				dialog_bed_trf.urlParam.filterCol=['recstatus', 'compcode'];
-				dialog_bed_trf.urlParam.filterVal=['A', 'session.compcode'];
+				dialog_bed_trf.urlParam.filterCol=['compcode','recstatus','occup'];
+				dialog_bed_trf.urlParam.filterVal=['session.compcode','A','<>.OCCUPIED'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -804,9 +813,10 @@ $(document).ready(function () {
 	    }
 	    var postobj={
 	    	_token : $('#_token').val(),
-	    	name: selrowData("#jqGrid").name,
-	    	mrn : selrowData("#jqGrid").mrn,
-			episno : selrowData("#jqGrid").episno,
+	    	name: selrowData("#jqGrid").q_name,
+	    	mrn : selrowData("#jqGrid").q_mrn,
+			episno : selrowData("#jqGrid").q_episno,
+			b_idno : selrowData("#jqGrid").b_idno,
 	    };
 
 	    var values = $("#form_trf").serializeArray();
