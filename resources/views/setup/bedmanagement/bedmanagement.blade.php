@@ -46,7 +46,7 @@ row.error td { background-color: red; }
 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative; min-height: 120px'>
 			<fieldset>
 				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
@@ -57,27 +57,36 @@ row.error td { background-color: red; }
 					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
 		              	</div>
 
-					  	<div class="col-md-5">
+					  	<div class="col-md-4">
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
 						</div>
+		            </div>
 
-						<div class="col-md-2" style="">
+		            <div class="form-group" style="position: absolute; right: 10px;top: 8px; width: 35%">
+		            	<div class="col-md-6" style="">
 							<p><img src="img/bedonly.png" height="10" width="14"></img> VACANT: <span id="stat_vacant"></span></p>
 					  	</div>
-						<div class="col-md-2" style="">
+						<div class="col-md-6" style="">
 							<p><i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED: <span id="stat_occupied"></span></p>
 					  	</div>
-						<div class="col-md-2" style="">
+						<div class="col-md-6" style="">
 							<p><i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING: <span id="stat_housekeeping"></span></p>
 					  	</div>
-						<div class="col-md-2" style="">
+						<div class="col-md-6" style="">
 							<p><i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE: <span id="stat_maintenance"></span></p>
 					  	</div>
-						<div class="col-md-2  col-md-offset-7" style="">
+						<div class="col-md-6" style="">
 							<p><i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED: <span id="stat_isolated"></span></p>
 					  	</div>
+						<div class="col-md-6" style="">
+							<p><i class="fa fa-check" aria-hidden="true"></i> ACTIVE: <span id="stat_active"></span></p>
+					  	</div>
+						<div class="col-md-6" style="">
+							<p><i class="fa fa-ban" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
+					  	</div>
 		            </div>
+
 				</div>
 			</fieldset> 
 		</form>

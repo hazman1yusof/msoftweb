@@ -271,6 +271,8 @@ $(document).ready(function () {
 				$('#stat_housekeeping').text(data.housekeeping);
 				$('#stat_maintenance').text(data.maintenance);
 				$('#stat_isolated').text(data.isolated);
+				$('#stat_active').text(data.active);
+				$('#stat_deactive').text(data.deactive);
 			}
 		});
 

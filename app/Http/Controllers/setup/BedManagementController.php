@@ -146,7 +146,7 @@ class BedManagementController extends defaultController
     public function statistic(Request $request){
 
         $table = DB::table('hisdb.bed')
-                    ->select('compcode','bednum','occup','room','statistic')
+                    ->select('compcode','bednum','occup','room','statistic','recstatus')
                     ->where('compcode','=',session('compcode'))
                     ->where('statistic','=','1')
                     ->get();
@@ -156,6 +156,8 @@ class BedManagementController extends defaultController
         $housekeeping=0;
         $maintenance=0;
         $isolated=0;
+        $active=0;
+        $deactive=0;
 
         foreach ($table as $key => $value) {
             switch ($value->occup) {
@@ -175,6 +177,14 @@ class BedManagementController extends defaultController
                     $vacant = $vacant + 1;
                     break;
             }
+            switch ($value->recstatus) {
+                case 'A':
+                    $active = $active + 1;
+                    break;
+                case 'D':
+                    $deactive = $deactive + 1;
+                    break;
+            }
         }
 
         
@@ -184,6 +194,8 @@ class BedManagementController extends defaultController
         $responce->housekeeping = $housekeeping;
         $responce->maintenance = $maintenance;
         $responce->isolated = $isolated;
+        $responce->active = $active;
+        $responce->deactive = $deactive;
 
         return json_encode($responce);
     }
