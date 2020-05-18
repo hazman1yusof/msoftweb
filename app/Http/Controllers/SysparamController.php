@@ -42,7 +42,9 @@ class SysparamController extends Controller
 				case 'ISOLATED':
 					$object->bedcode = '<i class="fa fa-bullhorn fa-2x" aria-hidden="true"></i> '.$value;
 					break;
-				
+				case 'RESERVE':
+					$object->bedcode = '<i class="fa fa-ban fa-2x" aria-hidden="true"></i> '.$value;
+					break;				
 				default:
 					
 					$object->bedcode = '<i class="fa fa-bullhorn" aria-hidden="true"></i> '.$value;

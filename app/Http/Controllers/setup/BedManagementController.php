@@ -158,6 +158,7 @@ class BedManagementController extends defaultController
         $isolated=0;
         $active=0;
         $deactive=0;
+        $reserve=0;
 
         foreach ($table as $key => $value) {
             switch ($value->occup) {
@@ -172,6 +173,9 @@ class BedManagementController extends defaultController
                     break;
                 case 'ISOLATED':
                     $isolated = $isolated + 1;
+                    break;
+                case 'RESERVE':
+                    $reserve = $reserve + 1;
                     break;
                 default :
                     $vacant = $vacant + 1;
@@ -196,6 +200,8 @@ class BedManagementController extends defaultController
         $responce->isolated = $isolated;
         $responce->active = $active;
         $responce->deactive = $deactive;
+        $responce->reserve = $reserve;
+
 
         return json_encode($responce);
     }

@@ -245,6 +245,7 @@ $(document).ready(function () {
 			case 'HOUSEKEEPING': return '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING';break;
 			case 'MAINTENANCE': return '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE';break;
 			case 'ISOLATED': return '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED';break;
+			case 'RESERVE': return '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE';break;
 			default: return cellvalue;break;
 		}
 	}
@@ -256,6 +257,7 @@ $(document).ready(function () {
 			case '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING': return 'HOUSEKEEPING';break;
 			case '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE': return 'MAINTENANCE';break;
 			case '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED': return 'ISOLATED';break;
+			case '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE': return 'RESERVE';break;			
 			default: return cellvalue;break;
 		}
 	}
@@ -273,6 +275,7 @@ $(document).ready(function () {
 				$('#stat_isolated').text(data.isolated);
 				$('#stat_active').text(data.active);
 				$('#stat_deactive').text(data.deactive);
+				$('#stat_reserve').text(data.reserve);
 			}
 		});
 
@@ -560,7 +563,7 @@ $(document).ready(function () {
 				}
 			}
 		},{
-			title:"Select Bed Stattus",
+			title:"Select Bed Status",
 			open: function(){
 				dialog_occup.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_occup.urlParam.filterVal = ['A', 'session.compcode'];
