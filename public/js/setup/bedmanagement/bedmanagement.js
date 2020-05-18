@@ -45,6 +45,7 @@ $(document).ready(function () {
 			case 'b_bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
 			case 'b_ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
 			case 'q_admdoctor': field = ['doctorcode', 'doctorname']; table = "hisdb.doctor";case_='doccode';break;
+			case 'ba_ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -648,9 +649,9 @@ $(document).ready(function () {
 			{ label: 'Start Date', name: 'ba_asdate', width: 5, classes: 'wrap'},
 			{ label: 'Start Time', name: 'ba_astime', width: 5, classes: 'wrap'},
             { label: 'Bed No', name: 'ba_bednum', width: 7},
-            { label: 'ward', name: 'ba_ward', width: 7, hidden:true},
 			{ label: 'Room', name: 'ba_room', width: 10},
-			{ label: 'Bed Type', name: 'b_bedtype', width: 15, classes: 'wrap'},
+			{ label: 'Bed Type', name: 'b_bedtype', width: 15, classes: 'wrap', formatter: showdetail},
+			{ label: 'Ward', name: 'ba_ward', width: 15, classes: 'wrap', formatter: showdetail},
 			{ label: 'idno', name: 'ba_idno', width: 20, hidden:true},
 		],
 		autowidth: true,
@@ -827,7 +828,7 @@ $(document).ready(function () {
 	});
 
 	function populate_form_trf(rowdata){
-		$('#name_show').text(selrowData("#jqGrid").ba_name);
+		$('#name_show').text(selrowData("#jqGrid").b_name);
 		$('#bednum_show').text(selrowData("#jqGrid").b_bednum);	
 		autoinsert_rowdata("#form_trf",rowdata);
 		$('input[name=trf_aedate]').val(moment().format('YYYY-MM-DD'));
