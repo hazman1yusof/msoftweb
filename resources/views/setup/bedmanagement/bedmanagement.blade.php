@@ -80,10 +80,13 @@ row.error td { background-color: red; }
 							<p><i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED: <span id="stat_isolated"></span></p>
 					  	</div>
 						<div class="col-md-6" style="">
+							<p><i class="fa fa-ban" aria-hidden="true"></i> RESERVE: <span id="stat_reserve"></span></p>
+					  	</div>
+						<div class="col-md-6" style="">
 							<p><i class="fa fa-check" aria-hidden="true"></i> ACTIVE: <span id="stat_active"></span></p>
 					  	</div>
 						<div class="col-md-6" style="">
-							<p><i class="fa fa-ban" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
+							<p><i class="fa fa-times" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
 					  	</div>
 		            </div>
 
