@@ -81,7 +81,7 @@
 						dialog_depglacc.on();
 					}
 					if(oper!='add'){
-						toggleFormData('#jqGrid','#formdata');
+						//FormData('#jqGrid','#formdata');
 						dialog_costcode.check(errorField);
 						dialog_glaccount.check(errorField);
 						dialog_depccode.check(errorField);
