@@ -138,7 +138,7 @@ $(document).ready(function () {
 			{ label: ' ', name: 'q_episno', width: 5},
 			{ label: 'Patient Name', name: 'q_name', width: 40, canSearch: true, classes: 'wrap'},
 			{ label: 'Doctor Code', name: 'q_admdoctor', width: 15, canSearch: true, formatter: showdetail},
-            { label: 'Record Status', name: 'b_recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+            { label: 'Record Status', name: 'b_recstatus', width: 15, classes: 'wrap', hidden:true, editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)
@@ -778,8 +778,8 @@ $(document).ready(function () {
 	});
 
 	function populate_form_trf(rowdata){
-		$('#name_show').text(selrowData("#jqGrid").name);
-		$('#bednum_show').text(selrowData("#jqGrid").bednum);	
+		$('#name_show').text(selrowData("#jqGrid").ba_name);
+		$('#bednum_show').text(selrowData("#jqGrid").b_bednum);	
 		autoinsert_rowdata("#form_trf",rowdata);
 		$('input[name=trf_aedate]').val(moment().format('YYYY-MM-DD'));
 		$('input[name=trf_aetime]').val(moment().format('HH:mm:ss'));
