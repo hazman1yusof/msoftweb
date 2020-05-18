@@ -61,6 +61,42 @@ class SysparamController extends Controller
         $responce->rows = $rows;
 
         return json_encode($responce);
+	}
+	
+    public function sysparam_stat(Request $request){
+        $sysparam = DB::table('sysdb.sysparam')
+			        	->where('compcode','=',session('compcode'))
+			        	->where('source','=','STAT')
+			        	->where('trantype','=','YES')
+			        	->first();
+
+		$pvalue1 = explode(",",$sysparam->pvalue1);
+		$rows = [];
+
+		foreach ($pvalue1 as $key => $value){
+			$object = new stdClass();
+			switch ($value) {
+				case 'TRUE':
+					$object->stat = '<i class="fa fa-check fa-2x" aria-hidden="true"></i> '.$value;
+					break;
+				case 'FALSE':
+					$object->stat = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
+					break;
+				default:				
+					$object->stat = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
+					break;
+			}
+			$object->description = $value;
+			$rows[$key] = $object;
+		}
+
+        $responce = new stdClass();
+        $responce->page = 1;
+        $responce->total = 1;
+        $responce->records = 4;
+        $responce->rows = $rows;
+
+        return json_encode($responce);
     }
 
     public function sysparam_triage_color(Request $request){
