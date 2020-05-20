@@ -539,6 +539,11 @@ Route::get('/dietorder','hisdb\DietOrderController@show');
 Route::get('/dietorder/table','hisdb\DietOrderController@table');
 Route::post('/dietorder/form','hisdb\DietOrderController@form');
 
+//// Discharge Summary page ///
+Route::get('/dischgsummary','hisdb\DischgSummaryController@show');
+Route::get('/dischgsummary/table','hisdb\DischgSummaryController@table');
+Route::post('/dischgsummary/form','hisdb\DischgSummaryController@form');
+
 ///////////////////fixed asset setup////////////////////////////////////
 
 //// Fixed Asset Location setup page ///
