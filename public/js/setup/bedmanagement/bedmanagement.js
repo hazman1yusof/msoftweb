@@ -33,6 +33,7 @@ $(document).ready(function () {
 			case 'Bed Type':temp=$('#b_bedtype');break;
 			case 'Ward':temp=$('#b_ward');break;
 			case 'Status':temp=$('#b_occup');break;
+			case 'Statistic':temp=$('#b_statistic');break;
 				break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -44,6 +45,7 @@ $(document).ready(function () {
 			case 'b_bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
 			case 'b_ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
 			case 'q_admdoctor': field = ['doctorcode', 'doctorname']; table = "hisdb.doctor";case_='doccode';break;
+			case 'ba_ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -68,10 +70,10 @@ $(document).ready(function () {
 		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="b_ward" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
-	// function docCodeCustomEdit(val, opt) {
-	// 	val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-	// 	return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="q_doccode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	// }
+	function statCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="b_statistic" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
 
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -132,8 +134,13 @@ $(document).ready(function () {
 						},
 			},
 			{ label: 'Tel Ext', name: 'b_tel_ext', width: 8, canSearch: true, checked: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Tel Ext', name: 'b_tel_ext', width: 10, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
-			{ label: 'Statistic', name: 'b_statistic', width: 15, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
+			//{ label: 'Statistic', name: 'b_statistic', width: 15, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
+			{ label: 'Statistic', name: 'b_statistic', width: 15, classes: 'wrap', canSearch: true, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
+				edittype:'custom',	editoptions:
+					{ 	custom_element:statCustomEdit,
+						custom_value:galGridCustomValue 	
+					},
+			},
 			{ label: 'MRN', name: 'q_mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'q_episno', width: 5},
 			{ label: 'Patient Name', name: 'q_name', width: 40, canSearch: true, classes: 'wrap'},
@@ -323,6 +330,7 @@ $(document).ready(function () {
 			dialog_ward.on();
 			dialog_bedtype.on();
 			dialog_occup.on();
+			dialog_stat.on();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -372,6 +380,7 @@ $(document).ready(function () {
 			dialog_ward.on();
 			dialog_bedtype.on();
 			dialog_occup.on();
+			dialog_stat.on();
 			$("input[name='b_bednum']").attr('disabled','disabled');
 			$("select[name='b_recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -573,6 +582,44 @@ $(document).ready(function () {
 	);
 	dialog_occup.makedialog();
 
+	var dialog_stat = new ordialog(
+		'b_statistic','hisdb.bed',"#jqGrid input[name='b_statistic']",errorField,
+		{	colModel:
+			[
+				{label:'Statistic',name:'stat',width:200,classes:'pointer left',canSearch:true,checked:true,or_search:true},
+				//{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
+			],
+			urlParam: {
+				url:'./sysparam_stat',
+				filterCol:['recstatus','compcode'],
+				filterVal:['A', 'session.compcode']
+				},
+			ondblClickRow:function(event){
+
+				$(dialog_stat.textfield).val(selrowData("#"+dialog_stat.gridname)['description']);
+
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#b_mrn').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Statistic",
+			open: function(){
+				dialog_stat.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_stat.urlParam.filterVal = ['A', 'session.compcode'];
+			},
+			width:5/10 * $(window).width()
+		},'urlParam','radio','tab'
+	);
+	dialog_stat.makedialog();	
+
 	//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
@@ -602,9 +649,9 @@ $(document).ready(function () {
 			{ label: 'Start Date', name: 'ba_asdate', width: 5, classes: 'wrap'},
 			{ label: 'Start Time', name: 'ba_astime', width: 5, classes: 'wrap'},
             { label: 'Bed No', name: 'ba_bednum', width: 7},
-            { label: 'ward', name: 'ba_ward', width: 7, hidden:true},
 			{ label: 'Room', name: 'ba_room', width: 10},
-			{ label: 'Bed Type', name: 'b_bedtype', width: 15, classes: 'wrap'},
+			{ label: 'Bed Type', name: 'b_bedtype', width: 15, classes: 'wrap', formatter: showdetail},
+			{ label: 'Ward', name: 'ba_ward', width: 15, classes: 'wrap', formatter: showdetail},
 			{ label: 'idno', name: 'ba_idno', width: 20, hidden:true},
 		],
 		autowidth: true,
@@ -781,7 +828,7 @@ $(document).ready(function () {
 	});
 
 	function populate_form_trf(rowdata){
-		$('#name_show').text(selrowData("#jqGrid").ba_name);
+		$('#name_show').text(selrowData("#jqGrid").b_name);
 		$('#bednum_show').text(selrowData("#jqGrid").b_bednum);	
 		autoinsert_rowdata("#form_trf",rowdata);
 		$('input[name=trf_aedate]').val(moment().format('YYYY-MM-DD'));

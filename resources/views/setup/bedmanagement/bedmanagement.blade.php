@@ -127,9 +127,9 @@ row.error td { background-color: red; }
 				<div class="panel-heading clearfix collapsed" id="toggle_trf" data-toggle="collapse" data-target="#jqGrid_trf_panel">
 					<b>Name: <span id="name_show"></span></b><br>
 						Bed No: <span id="bednum_show"></span>
-						<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-						<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 20px;">
+						<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px"></i>
+						<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px"></i>
+						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 280px; top: 15px;">
 							<h5>Bed Occupancy Detail</h5>
 						</div>		
 				</div>

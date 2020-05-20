@@ -165,7 +165,7 @@
 				autoOpen: false,
 				open: function( event, ui ) {
 					parent_close_disabled(true);
-					toggleFormData('#jqGrid','#formdata',oper);
+					//toggleFormData('#jqGrid','#formdata',oper);
 					switch(oper) {
 						case state = 'add':
 							dialog_debtortype.on();
