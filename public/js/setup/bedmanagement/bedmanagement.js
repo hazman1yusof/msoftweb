@@ -118,7 +118,7 @@ $(document).ready(function () {
 						},
 			},
 			// { label: 'Status', name: 'b_occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-			{ label: 'Status', name: 'b_occup', width: 22, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Bed Status', name: 'b_occup', width: 22, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ 	custom_element:occupCustomEdit,
 						custom_value:galGridCustomValue 	
@@ -229,6 +229,48 @@ $(document).ready(function () {
 		},
 	});
 
+	/////////////////////////////Start populate data for search By dropdown and btn////////////////////////////
+	searchBy();
+	function searchBy(){
+		$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
+			if(value['canSearch']){
+				if(value['selected']){
+					$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+				}else{
+					$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+				}
+			}
+		});
+	}
+	$('#Scol').on('change', scolChange);
+
+	function scolChange() {
+		if($('#Scol').val()=='b_bedtype'){
+			$("#div_statistic").hide();
+			$("#div_occup").hide();
+			$("#div_mrn").hide();			
+			$("#div_bedtype").show();
+		} else if($('#Scol').val() == 'b_statistic'){
+			$("#div_bedtype").hide();
+			$("#div_occup").hide();
+			$("#div_mrn").hide();			
+			$("#div_statistic").show();
+		} else if($('#Scol').val() == 'b_occup'){
+			$("#div_bedtype").hide();
+			$("#div_statistic").hide();
+			$("#div_mrn").hide();			
+			$("#div_occup").show();	
+		} else if($('#Scol').val() == 'b_mrn'){
+			$("#div_bedtype").hide();
+			$("#div_statistic").hide();
+			$("#div_occup").hide();			
+			$("#div_mrn").show();			
+		} else {
+			$("#div_statistic,#div_bedtype,#div_occup,#div_mrn").hide();
+		}
+	}
+	/////////////////////////////End populate data for search By dropdown and btn////////////////////////////
+
 	function padzero(cellvalue, options, rowObject){
 		if(cellvalue == null){
 			return "";
@@ -296,7 +338,6 @@ $(document).ready(function () {
 			return 'Deactive' ? 'class="alert alert-danger"': '';
 		}
 	}
-
 
 	// ////////////////////formatter status////////////////////////////////////////
 	// function formatteroccup(cellvalue, option, rowObject) {
@@ -478,6 +519,149 @@ $(document).ready(function () {
 		},
 	});
 
+	////////////////////// Start Dialog for Search By btn////////////////////////////////////////////////////////////////////////////////
+	// $('#btn_bedtype').on( "click", function() {
+	// 	$('#b_bedtype ~ a').click();
+	// });
+	// var bedtype = new ordialog(
+	// 	'b_bedtype', 'hisdb.bedtype', '#b_bedtype', 'errorField',
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'Bed Type', name: 'bedtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+	// 			{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['b_compcode','b_recstatus'],
+	// 			filterVal:['session.compcode','A']
+	// 		},
+	// 		ondblClickRow: function () {
+	// 			let data = selrowData('#' + bedtype.gridname).bedtype;
+	// 			$("#searchForm input[name='Stext']").val($('#b_bedtype').val());
+
+	// 			urlParam.searchCol=["bedtype"];
+	// 			urlParam.searchVal=[data];
+	// 			refreshGrid("#jqGrid3",null,"kosongkan");
+	// 			refreshGrid('#jqGrid', urlParam);
+	// 		}
+	// 	},{
+	// 		title: "Select Bed Type",
+	// 		open: function () {
+	// 			bedtype.urlParam.filterCol=['compcode', 'recstatus'];
+	// 			bedtype.urlParam.filterVal=['session.compcode', 'A'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// bedtype.makedialog();
+	// bedtype.on();
+	
+	
+	// $('#btn_statistic').on( "click", function() {
+	// 	$('#b_statistic ~ a').click();
+	// });
+	// var bedstatus = new ordialog(
+	// 	'b_statistic', 'hisdb.bed', '#b_statistic', 'errorField',
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'Statistic', name: 'statistic', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+	// 			//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['b_compcode','b_recstatus'],
+	// 			filterVal:['session.compcode','A']
+	// 		},
+	// 		ondblClickRow: function () {
+	// 			let data = selrowData('#' + statistic.gridname).statistic;
+	// 			$("#searchForm input[name='Stext']").val($('#b_statistic').val());
+
+	// 			urlParam.searchCol=["statistic"];
+	// 			urlParam.searchVal=[data];
+	// 			refreshGrid("#jqGrid3",null,"kosongkan");
+	// 			refreshGrid('#jqGrid', urlParam);
+	// 		}
+	// 	},{
+	// 		title: "Select Statistic",
+	// 		open: function () {
+	// 			statistic.urlParam.filterCol=['compcode', 'recstatus'];
+	// 			statistic.urlParam.filterVal=['session.compcode', 'A'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// statistic.makedialog();
+	// statistic.on();	
+
+
+	// $('#btn_occup').on( "click", function() {
+	// 	$('#b_occup ~ a').click();
+	// });
+	// var occup = new ordialog(
+	// 	'b_occup', 'hisdb.bed', '#b_occup', 'errorField',
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'Bed Status', name: 'occup', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+	// 			//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['b_compcode','b_recstatus'],
+	// 			filterVal:['session.compcode','A']
+	// 		},
+	// 		ondblClickRow: function () {
+	// 			let data = selrowData('#' + occup.gridname).occup;
+	// 			$("#searchForm input[name='Stext']").val($('#b_occup').val());
+
+	// 			urlParam.searchCol=["occup"];
+	// 			urlParam.searchVal=[data];
+	// 			refreshGrid("#jqGrid3",null,"kosongkan");
+	// 			refreshGrid('#jqGrid', urlParam);
+	// 		}
+	// 	},{
+	// 		title: "Select Bed Type",
+	// 		open: function () {
+	// 			occup.urlParam.filterCol=['compcode', 'recstatus'];
+	// 			occup.urlParam.filterVal=['session.compcode', 'A'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// occup.makedialog();
+	// occup.on();
+
+
+	// $('#btn_mrn').on( "click", function() {
+	// 	$('#q_mrn ~ a').click();
+	// });
+	// var mrn = new ordialog(
+	// 	'q_mrn', 'hisdb.queue', '#q_mrn', 'errorField',
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'MRN', name: 'mrn', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+	// 			//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['b_compcode','b_recstatus'],
+	// 			filterVal:['session.compcode','A']
+	// 		},
+	// 		ondblClickRow: function () {
+	// 			let data = selrowData('#' + mrn.gridname).mrn;
+	// 			$("#searchForm input[name='Stext']").val($('#q_mrn').val());
+
+	// 			urlParam.searchCol=["mrn"];
+	// 			urlParam.searchVal=[data];
+	// 			refreshGrid("#jqGrid3",null,"kosongkan");
+	// 			refreshGrid('#jqGrid', urlParam);
+	// 		}
+	// 	},{
+	// 		title: "Select Bed Type",
+	// 		open: function () {
+	// 			mrn.urlParam.filterCol=['compcode', 'recstatus'];
+	// 			mrn.urlParam.filterVal=['session.compcode', 'A'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// mrn.makedialog();
+	// mrn.on();
+	////////////////////// End Dialog for Search By btn////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////// Start Dialog for jqGrid1////////////////////////////////////////////////////////////////////////////////
+	
 	var dialog_bedtype = new ordialog(
 		'b_bedtype','hisdb.bedtype',"#jqGrid input[name='b_bedtype']",errorField,
 		{	colModel:[
