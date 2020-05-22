@@ -519,145 +519,145 @@ $(document).ready(function () {
 		},
 	});
 
-	////////////////////// Start Dialog for Search By btn////////////////////////////////////////////////////////////////////////////////
-	// $('#btn_bedtype').on( "click", function() {
-	// 	$('#b_bedtype ~ a').click();
-	// });
-	// var bedtype = new ordialog(
-	// 	'b_bedtype', 'hisdb.bedtype', '#b_bedtype', 'errorField',
-	// 	{
-	// 		colModel: [
-	// 			{ label: 'Bed Type', name: 'bedtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-	// 			{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
-	// 		],
-	// 		urlParam: {
-	// 			filterCol:['b_compcode','b_recstatus'],
-	// 			filterVal:['session.compcode','A']
-	// 		},
-	// 		ondblClickRow: function () {
-	// 			let data = selrowData('#' + bedtype.gridname).bedtype;
-	// 			$("#searchForm input[name='Stext']").val($('#b_bedtype').val());
+	//////////////////// Start Dialog for Search By btn////////////////////////////////////////////////////////////////////////////////
+	$('#btn_bedtype').on( "click", function() {
+		$('#b_bedtype ~ a').click();
+	});
+	var search_bedtype = new ordialog(
+		'search_b_bedtype', 'hisdb.bedtype', '#b_bedtype', 'errorField',
+		{
+			colModel: [
+				{ label: 'Bed Type', name: 'bedtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']
+			},
+			ondblClickRow: function () {
+				let data = selrowData('#' + search_bedtype.gridname).bedtype;
+				$("#searchForm input[name='Stext']").val($('#b_bedtype').val());
 
-	// 			urlParam.searchCol=["bedtype"];
-	// 			urlParam.searchVal=[data];
-	// 			refreshGrid("#jqGrid3",null,"kosongkan");
-	// 			refreshGrid('#jqGrid', urlParam);
-	// 		}
-	// 	},{
-	// 		title: "Select Bed Type",
-	// 		open: function () {
-	// 			bedtype.urlParam.filterCol=['compcode', 'recstatus'];
-	// 			bedtype.urlParam.filterVal=['session.compcode', 'A'];
-	// 		}
-	// 	},'urlParam','radio','tab'
-	// );
-	// bedtype.makedialog();
-	// bedtype.on();
+				urlParam.searchCol=["b_bedtype"];
+				urlParam.searchVal=[data];
+				refreshGrid("#jqGrid3",null,"kosongkan");
+				refreshGrid('#jqGrid', urlParam);
+			}
+		},{
+			title: "Select Bed Type search",
+			open: function () {
+				search_bedtype.urlParam.filterCol=['compcode', 'recstatus'];
+				search_bedtype.urlParam.filterVal=['session.compcode', 'A'];
+			}
+		},'urlParam','radio','tab'
+	);
+	search_bedtype.makedialog();
+	search_bedtype.on();
 	
 	
-	// $('#btn_statistic').on( "click", function() {
-	// 	$('#b_statistic ~ a').click();
-	// });
-	// var bedstatus = new ordialog(
-	// 	'b_statistic', 'hisdb.bed', '#b_statistic', 'errorField',
-	// 	{
-	// 		colModel: [
-	// 			{ label: 'Statistic', name: 'statistic', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-	// 			//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
-	// 		],
-	// 		urlParam: {
-	// 			filterCol:['b_compcode','b_recstatus'],
-	// 			filterVal:['session.compcode','A']
-	// 		},
-	// 		ondblClickRow: function () {
-	// 			let data = selrowData('#' + statistic.gridname).statistic;
-	// 			$("#searchForm input[name='Stext']").val($('#b_statistic').val());
+	$('#btn_statistic').on( "click", function() {
+		$('#b_statistic ~ a').click();
+	});
+	var statistic = new ordialog(
+		'b_statistic', 'hisdb.bed', '#b_statistic', 'errorField',
+		{
+			colModel: [
+				{ label: 'Statistic', name: 'statistic', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['b_compcode','b_recstatus'],
+				filterVal:['session.compcode','A']
+			},
+			ondblClickRow: function () {
+				let data = selrowData('#' + statistic.gridname).statistic;
+				$("#searchForm input[name='Stext']").val($('#b_statistic').val());
 
-	// 			urlParam.searchCol=["statistic"];
-	// 			urlParam.searchVal=[data];
-	// 			refreshGrid("#jqGrid3",null,"kosongkan");
-	// 			refreshGrid('#jqGrid', urlParam);
-	// 		}
-	// 	},{
-	// 		title: "Select Statistic",
-	// 		open: function () {
-	// 			statistic.urlParam.filterCol=['compcode', 'recstatus'];
-	// 			statistic.urlParam.filterVal=['session.compcode', 'A'];
-	// 		}
-	// 	},'urlParam','radio','tab'
-	// );
-	// statistic.makedialog();
-	// statistic.on();	
-
-
-	// $('#btn_occup').on( "click", function() {
-	// 	$('#b_occup ~ a').click();
-	// });
-	// var occup = new ordialog(
-	// 	'b_occup', 'hisdb.bed', '#b_occup', 'errorField',
-	// 	{
-	// 		colModel: [
-	// 			{ label: 'Bed Status', name: 'occup', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-	// 			//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
-	// 		],
-	// 		urlParam: {
-	// 			filterCol:['b_compcode','b_recstatus'],
-	// 			filterVal:['session.compcode','A']
-	// 		},
-	// 		ondblClickRow: function () {
-	// 			let data = selrowData('#' + occup.gridname).occup;
-	// 			$("#searchForm input[name='Stext']").val($('#b_occup').val());
-
-	// 			urlParam.searchCol=["occup"];
-	// 			urlParam.searchVal=[data];
-	// 			refreshGrid("#jqGrid3",null,"kosongkan");
-	// 			refreshGrid('#jqGrid', urlParam);
-	// 		}
-	// 	},{
-	// 		title: "Select Bed Type",
-	// 		open: function () {
-	// 			occup.urlParam.filterCol=['compcode', 'recstatus'];
-	// 			occup.urlParam.filterVal=['session.compcode', 'A'];
-	// 		}
-	// 	},'urlParam','radio','tab'
-	// );
-	// occup.makedialog();
-	// occup.on();
+				urlParam.searchCol=["statistic"];
+				urlParam.searchVal=[data];
+				refreshGrid("#jqGrid3",null,"kosongkan");
+				refreshGrid('#jqGrid', urlParam);
+			}
+		},{
+			title: "Select Statistic",
+			open: function () {
+				statistic.urlParam.filterCol=['compcode', 'recstatus'];
+				statistic.urlParam.filterVal=['session.compcode', 'A'];
+			}
+		},'urlParam','radio','tab'
+	);
+	statistic.makedialog();
+	statistic.on();	
 
 
-	// $('#btn_mrn').on( "click", function() {
-	// 	$('#q_mrn ~ a').click();
-	// });
-	// var mrn = new ordialog(
-	// 	'q_mrn', 'hisdb.queue', '#q_mrn', 'errorField',
-	// 	{
-	// 		colModel: [
-	// 			{ label: 'MRN', name: 'mrn', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-	// 			//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
-	// 		],
-	// 		urlParam: {
-	// 			filterCol:['b_compcode','b_recstatus'],
-	// 			filterVal:['session.compcode','A']
-	// 		},
-	// 		ondblClickRow: function () {
-	// 			let data = selrowData('#' + mrn.gridname).mrn;
-	// 			$("#searchForm input[name='Stext']").val($('#q_mrn').val());
+	$('#btn_occup').on( "click", function() {
+		$('#b_occup ~ a').click();
+	});
+	var occup = new ordialog(
+		'b_occup', 'hisdb.bed', '#b_occup', 'errorField',
+		{
+			colModel: [
+				{ label: 'Bed Status', name: 'occup', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['b_compcode','b_recstatus'],
+				filterVal:['session.compcode','A']
+			},
+			ondblClickRow: function () {
+				let data = selrowData('#' + occup.gridname).occup;
+				$("#searchForm input[name='Stext']").val($('#b_occup').val());
 
-	// 			urlParam.searchCol=["mrn"];
-	// 			urlParam.searchVal=[data];
-	// 			refreshGrid("#jqGrid3",null,"kosongkan");
-	// 			refreshGrid('#jqGrid', urlParam);
-	// 		}
-	// 	},{
-	// 		title: "Select Bed Type",
-	// 		open: function () {
-	// 			mrn.urlParam.filterCol=['compcode', 'recstatus'];
-	// 			mrn.urlParam.filterVal=['session.compcode', 'A'];
-	// 		}
-	// 	},'urlParam','radio','tab'
-	// );
-	// mrn.makedialog();
-	// mrn.on();
+				urlParam.searchCol=["occup"];
+				urlParam.searchVal=[data];
+				refreshGrid("#jqGrid3",null,"kosongkan");
+				refreshGrid('#jqGrid', urlParam);
+			}
+		},{
+			title: "Select Bed Type occup",
+			open: function () {
+				occup.urlParam.filterCol=['compcode', 'recstatus'];
+				occup.urlParam.filterVal=['session.compcode', 'A'];
+			}
+		},'urlParam','radio','tab'
+	);
+	occup.makedialog();
+	occup.on();
+
+
+	$('#btn_mrn').on( "click", function() {
+		$('#q_mrn ~ a').click();
+	});
+	var mrn = new ordialog(
+		'q_mrn', 'hisdb.queue', '#q_mrn', 'errorField',
+		{
+			colModel: [
+				{ label: 'MRN', name: 'mrn', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['b_compcode','b_recstatus'],
+				filterVal:['session.compcode','A']
+			},
+			ondblClickRow: function () {
+				let data = selrowData('#' + mrn.gridname).mrn;
+				$("#searchForm input[name='Stext']").val($('#q_mrn').val());
+
+				urlParam.searchCol=["mrn"];
+				urlParam.searchVal=[data];
+				refreshGrid("#jqGrid3",null,"kosongkan");
+				refreshGrid('#jqGrid', urlParam);
+			}
+		},{
+			title: "Select MRN",
+			open: function () {
+				mrn.urlParam.filterCol=['compcode', 'recstatus'];
+				mrn.urlParam.filterVal=['session.compcode', 'A'];
+			}
+		},'urlParam','radio','tab'
+	);
+	mrn.makedialog();
+	mrn.on();
 	////////////////////// End Dialog for Search By btn////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////// Start Dialog for jqGrid1////////////////////////////////////////////////////////////////////////////////
@@ -686,14 +686,14 @@ $(document).ready(function () {
 						}
 					}
 		},{
-			title:"Select Bed Type",
+			title:"Select Bed Type dialog",
 			open: function(){
 				dialog_bedtype.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_bedtype.urlParam.filterVal = ['A', 'session.compcode'];
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_bedtype.makedialog();
+	dialog_bedtype.makedialog(false);
 
 	var dialog_ward = new ordialog(
 		'b_ward','sysdb.department',"#jqGrid input[name='b_ward']",errorField,

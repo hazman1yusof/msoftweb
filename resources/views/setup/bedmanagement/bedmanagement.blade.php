@@ -233,7 +233,11 @@ row.error td { background-color: red; }
 												
 													<label class="col-md-2 control-label" for="bedtype">Bed Type</label>  
 													<div class="col-md-4">
-														<input id="b_bedtype" name="b_bedtype" type="text" class="form-control input-sm uppercase">
+														<div class='input-group'>
+															<input id="b_bedtype" name="b_bedtype" type="text" class="form-control input-sm uppercase">
+															<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+														</div>
+														<span class="help-block"></span>
 													</div>													
 												</div>
 												<!-- Class form group closed -->
