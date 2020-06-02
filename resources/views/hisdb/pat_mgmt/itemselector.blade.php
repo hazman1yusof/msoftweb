@@ -1,5 +1,5 @@
 	<!-- popup item selector -->
-	<div id="mdl_item_selector" class="modal fade" role="dialog" title="title">
+	<div id="mdl_item_selector" class="modal fade" role="dialog" title="title" style="display: none; z-index: 110">
 		<div class="modal-dialog">
 		
 			<!-- Modal content-->
@@ -30,7 +30,7 @@
 	</div>
 	<!-- end popup item selector -->
 
-	<div id="mdl_add_new_adm" class="modal fade" role="dialog" title="title" data-backdrop="static">
+	<div id="mdl_add_new_adm" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
 		<div class="modal-dialog">
 		
 			<!-- Modal content-->

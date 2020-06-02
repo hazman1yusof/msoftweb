@@ -10,9 +10,13 @@
 
 	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap-theme.css">
+	<link rel="stylesheet" href="plugins/jquery-ui-1.12.1/jquery-ui.min.css">
 	<link rel="stylesheet" href="plugins/bootgrid/css/jquery.bootgrid.css">
 	<link rel="stylesheet" href="plugins/datatables/css/jquery.dataTables.css">
 	<link rel="stylesheet" href="plugins/font-awesome-4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="plugins/form-validator/theme-default.css" />
+
+    <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
 
 	<style type="text/css" class="init">
 		td.details-control {
@@ -64,6 +68,10 @@
 			background-color: #DDD;
 			color: #999;
 		}
+
+		.modal-backdrop{
+			z-index: 99 !important;
+		}
 		
 		.modal-open {
 		  overflow: scroll;
@@ -80,6 +88,21 @@
 		}
 		.addressinp{
 			margin-bottom: 5px;
+		}
+		.panel-heading.collapsed .fa-angle-double-up,
+		.panel-heading .fa-angle-double-down {
+			display: none;
+		}
+
+		.panel-heading.collapsed .fa-angle-double-down,
+		.panel-heading .fa-angle-double-up {
+			display: inline-block;
+		}
+
+		i.fa {
+			cursor: pointer;
+			float: right;
+			<!--  margin-right: 5px; -->
 		}
 	</style>
 
@@ -105,17 +128,14 @@
                 <thead>
                 <tr>
                 	<th data-column-id="mrn" data-formatter="col_add" data-width="5%">#</th>
-                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="10%">MRN No</th>
+                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="8%">MRN No</th>
                     <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="30%">Name</th>
-                    <th data-column-id="Newic" data-width="15%">New IC</th>
-                    <th data-column-id="telhp" data-width="10%">H/P</th>
-                    <th data-column-id="DOB" data-formatter="col_dob" data-width="12%">Birth Date</th>
-                    <th data-column-id="Sex" data-width="6%">Sex</th>
-					<th data-column-id="Staffid" data-width="15%">Patient Staff ID</th>
-                    <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="8%">Age</th>
-
-<!--                    <th data-column-id="edit_cmd" data-formatter="edit_cmd" data-sortable="false">Commands</th>-->
-<!--                    <th data-column-id="episode_cmd" data-formatter="episode_cmd" data-sortable="false">Commands</th>-->
+                    <th data-column-id="Newic" data-width="8%">New IC</th>
+                    <th data-column-id="telhp" data-width="8%">H/P</th>
+                    <th data-column-id="DOB" data-formatter="col_dob" data-width="8%">Birth Date</th>
+                    <th data-column-id="Sex" data-width="2%">Sex</th>
+					<th data-column-id="Staffid" data-width="8%">Staff ID</th>
+                    <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="5%">Age</th>
 					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="8%">#</th>
 				</tr>
 				</thead>
@@ -135,6 +155,12 @@
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
 	<script type="text/ecmascript" src="plugins/jquery-migrate-3.0.0.js"></script>
     <script type="text/ecmascript" src="plugins/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript">$.fn.modal.Constructor.prototype.enforceFocus = function() {};</script>
+    <script type="text/ecmascript" src="plugins/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+	<script type="text/ecmascript" src="plugins/form-validator/jquery.form-validator.min.js"></script>
+    
+    <script type="text/ecmascript" src="plugins/trirand/i18n/grid.locale-en.js"></script>
+    <script type="text/ecmascript" src="plugins/trirand/jquery.jqGrid.min.js"></script>
     <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 	<script type="text/ecmascript" src="plugins/moment.js"></script>
 
@@ -149,6 +175,12 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js"></script>
+
+	
+	<script type="text/javascript" src="js/myjs/utility.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 
 	</div>
 

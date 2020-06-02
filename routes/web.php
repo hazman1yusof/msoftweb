@@ -509,6 +509,10 @@ Route::post('/pat_mast/save_episode','hisdb\PatmastController@save_episode');
 Route::post('/pat_mast/save_adm','hisdb\PatmastController@save_adm');
 Route::post('/pat_mast/save_gl','hisdb\PatmastController@save_gl');
 
+
+Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');
+
+
 //// Emergency setup page ///
 Route::get('/emergency','hisdb\EmergencyController@show');
 Route::get('/emergency/table','hisdb\EmergencyController@table');

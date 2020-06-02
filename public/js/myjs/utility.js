@@ -232,6 +232,25 @@ function emptyFormdata(errorField,form,except){
 	}
 }
 
+function emptyFormdata_div(div,except){
+	var temp=[];
+	if(except!=null){
+		$.each(except, function( index, value ) {
+			temp.push($(value).val());
+		});
+	}
+
+	$(div+' textarea').val("");
+	$(div+' input').val("");
+
+	$(div+' .help-block').html('');
+	if(except!=null){
+		$.each(except, function( index, value ) {
+			$(value).val(temp[index]);
+		});
+	}
+}
+
 function trimmall(form,uppercase){
 	var serializedForm =  $( form ).serializeArray();
 	$.each( serializedForm, function( i, field ) {
