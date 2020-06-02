@@ -90,18 +90,23 @@ class PatmastController extends defaultController
 
         }else{
 
-            $table = $this->defaultGetter($request);
+            $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
+                            ->where('compcode','=',session('compcode'));
+
+            if(!empty($request->searchCol)){
+                $table_patm = $table_patm->where($request->searchCol[0],'like',$request->searchVal[0]);
+            }
 
             if(!empty($request->sort)){
                 foreach ($request->sort as $key => $value) {
-                    $table = $table->orderBy($key, $value);
+                    $table_patm = $table_patm->orderBy($key, $value);
                 }
             }
 
             $request->page = $request->current;
 
             //////////paginate/////////
-            $paginate = $table->paginate($request->rowCount);
+            $paginate = $table_patm->paginate($request->rowCount);
 
             $responce = new stdClass();
             $responce->current = $paginate->currentPage();
@@ -109,8 +114,8 @@ class PatmastController extends defaultController
             $responce->total = $paginate->total();
             $responce->rowCount = $request->rowCount;
             $responce->rows = $paginate->items();
-            $responce->sql = $table->toSql();
-            $responce->sql_bind = $table->getBindings();
+            $responce->sql = $table_patm->toSql();
+            $responce->sql_bind = $table_patm->getBindings();
 
             return json_encode($responce);
 
@@ -555,6 +560,8 @@ class PatmastController extends defaultController
                                 ->where('MRN','=',$epis_mrn)
                                 ->where('compcode','=',session('compcode'))
                                 ->first();
+
+            dd(session('compcode'));
 
             //if pay_type = PT
                 //buat debtormaster KALAU TAK JUMPA
