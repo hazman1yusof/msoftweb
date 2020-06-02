@@ -41,6 +41,7 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce: false,
+		viewrecords: false,
 		width: 900,
 		height: 250, 
 		rowNum: 30,

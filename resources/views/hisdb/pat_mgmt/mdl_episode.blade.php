@@ -10,7 +10,7 @@
                     <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
                     <div class="form-group ">
                         <div class="col-sm-1">
-                            <small  for="txt_epis_no">EPISODE NO:</small>
+                            <small  for="txt_epis_no">EPISODE</small>
                             <input class="form-control " id="txt_epis_no" placeholder="" type="text" readonly>
                             <!--                                    <small class="help-block text-center">REGISTRATION MRN</small>-->
                         </div>
