@@ -90,12 +90,29 @@ class PatmastController extends defaultController
 
         }else{
 
-            $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
-                            ->where('compcode','=',session('compcode'));
+            $table_patm = DB::table('hisdb.pat_mast'); //ambil dari patmast balik
+                            // ->where('compcode','=',session('compcode'));
 
             if(!empty($request->searchCol)){
-                $table_patm = $table_patm->where($request->searchCol[0],'like',$request->searchVal[0]);
+                $searchCol_array = $request->searchCol;
+                $count = array_count_values($searchCol_array);
+
+                foreach ($count as $key => $value) {
+                    $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                    $table_patm = $table_patm->orWhere(function ($table_patm) use ($request,$searchCol_array,$occur_ar) {
+                        foreach ($searchCol_array as $key => $value) {
+                            $found = array_search($key,$occur_ar);
+                            if($found !== false){
+                                $table_patm->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            }
+                        }
+                    });
+                }
+
             }
+
+            $table_patm = $table_patm->where('compcode','=',session('compcode'));
 
             if(!empty($request->sort)){
                 foreach ($request->sort as $key => $value) {

@@ -66,9 +66,8 @@ $(document).ready(function() {
                 return (isNaN(birthday.getFullYear()) ? 'n/a' : moment(birthday).format('DD/MM/YYYY'));
             },
             "col_age": function (column,row) {
-                var day = new Date();
-                var dob = new Date(row.DOB);
-                return day.getFullYear() - dob.getFullYear();
+                var birthday = new Date(row.DOB);
+                return (isNaN(birthday)) ? '' : moment().diff(birthday, 'years',false);;
             },
             "commands": function (column,row) {
                 let rowid = counter++;//just for specify each row
@@ -81,7 +80,14 @@ $(document).ready(function() {
         counter = 0;
 
         if(!$("#Scol").length){ //tambah search col kat atas utk search by field and shit
-            $(".actionBar").prepend("<select id='Scol' class='search form-group form-control'><option>MRN</option><option selected='true'>Name</option><option>Newic</option><option>Staffid</option></select>");
+            $(".actionBar").prepend(`
+                <select id='Scol' class='search form-group form-control'>
+                    <option value='MRN'>MRN</option>
+                    <option selected='true' value='Name'>Name</option>
+                    <option value='Newic'>Newic</option>
+                    <option value='Staffid'>Staffid</option>
+                    <option value='telhp'>Handphone</option>
+                </select>`);
         }
 
         var detailRows = '';
@@ -195,6 +201,15 @@ $(document).ready(function() {
             .find("input[type=checkbox], input[type=radio]")
             .prop("checked", "")
             .end(); //this for clearing input after hide modal
+    });
+
+    $('#mdl_patient_info').on('shown.bs.modal', function (e) {
+        $('#mdl_patient_info').css("padding-left","0px")
+    });
+
+
+    $('#mdl_patient_info, #editEpisode').on('shown.bs.modal', function (e) {
+        $(this).css("padding-left","0px")
     });
 
     $( "#patientBox").click(function() { // register new patient

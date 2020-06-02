@@ -172,9 +172,6 @@ abstract class defaultController extends Controller{
                     }
                 });
             }
-
-            
-
             
         }
 

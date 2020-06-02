@@ -46,6 +46,10 @@
 		  	text-transform:uppercase
 		  }
 
+		small, input[type=text]{
+		  	text-transform:uppercase
+		}
+
 		.modal-header {
 			min-height: 16.42857143px;
 			padding: 5px;
