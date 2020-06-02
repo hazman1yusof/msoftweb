@@ -463,7 +463,7 @@ class PatmastController extends defaultController
     public function save_episode(Request $request){
 
         DB::enableQueryLog();
-        // dd('episode start');
+
         $epis_mrn = $request->epis_mrn;
         $epis_no = $request->epis_no;
         $epis_type = $request->epis_type;
@@ -561,8 +561,6 @@ class PatmastController extends defaultController
                                 ->where('compcode','=',session('compcode'))
                                 ->first();
 
-            dd(session('compcode'));
-
             //if pay_type = PT
                 //buat debtormaster KALAU TAK JUMPA
                     //debtortype = pay_type
@@ -580,16 +578,15 @@ class PatmastController extends defaultController
             if($epis_fin == "PT"){
                 $debtortype_data = DB::table('debtor.debtortype')
                     ->where('compcode','=',session('compcode'))
-                    ->where('DebtorTyCode','=','PR')
+                    ->where('DebtorTyCode','=',$epis_fin)
                     ->first();
 
                 $debtormast_obj = DB::table('debtor.debtormast')
                     ->where('compcode','=',session('compcode'))
                     ->where('debtorcode','=',$epis_mrn);
 
-                $debtormast_data = $debtormast_obj->first();
 
-                if($debtormast_data){
+                if(!$debtormast_obj->exists()){
                     //kalu xjumpa debtormast, buat baru
                     DB::table('debtor.debtormast')
                         ->insert([
@@ -610,6 +607,10 @@ class PatmastController extends defaultController
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'RecStatus' => "A"
                         ]);
+                }else{
+
+                    // $debtormast_data = $debtormast_obj->first();
+
                 }
             }
 
