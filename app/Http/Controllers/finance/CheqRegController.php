@@ -52,8 +52,9 @@ class CheqRegController extends defaultController
 
 
             if($chqreg->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record duplicate");
             }
+
 
             $startno = $request->startno;
             $endno = $request->endno;
@@ -62,8 +63,8 @@ class CheqRegController extends defaultController
                         ->where('bankcode','=',$request->bankcode);;
 
 
-            if($chqreg->exists()){
-                throw new \Exception("record duplicate");
+            if($cheqtran->exists()){
+                throw new \Exception("Cheque No already exist");
             }
 
             DB::table('finance.chqreg')
