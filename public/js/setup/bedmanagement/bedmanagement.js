@@ -260,7 +260,7 @@ $(document).ready(function () {
 			$("#div_statistic").hide();
 			$("#div_mrn").hide();			
 			$("#div_occup").show();	
-		} else if($('#Scol').val() == 'b_mrn'){
+		} else if($('#Scol').val() == 'q_mrn'){
 			$("#div_bedtype").hide();
 			$("#div_statistic").hide();
 			$("#div_occup").hide();			
@@ -555,8 +555,48 @@ $(document).ready(function () {
 	search_bedtype.on();
 	
 	
+	$('#btn_occup').on( "click", function() {
+		$('#b_occup ~ a').click();
+	});
+	var search_occup = new ordialog(
+		'search_b_occup', 'sysdb.department', '#b_occup', 'errorField',
+		{
+			colModel: [
+				{ label: 'Bed Status', name: 'bedcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+			],
+			urlParam: {
+				url:'./sysparam_bed_status',
+				filterCol:['b_compcode','b_recstatus'],
+				filterVal:['session.compcode','A']
+			},
+			ondblClickRow: function () {
+
+				$(search_occup.textfield).val(selrowData("#"+search_occup.gridname)['description']);
+
+				// let data = selrowData('#' + search_occup.gridname).bedcode;
+				// $("#searchForm input[name='Stext']").val($('#b_occup').val());
+
+				// urlParam.searchCol=["b_occup"];
+				// urlParam.searchVal=[data];
+				// refreshGrid("#jqGrid3",null,"kosongkan");
+				// refreshGrid('#jqGrid', urlParam);
+			}
+		},{
+			title: "Select Bed Status search",
+			open: function () {
+				search_occup.urlParam.filterCol=['compcode', 'recstatus'];
+				search_occup.urlParam.filterVal=['session.compcode', 'A'];
+			},
+			width:4/10 * $(window).width()
+		},'urlParam','radio','tab'
+	);
+	search_occup.makedialog();
+	search_occup.on();
+
+
 	$('#btn_statistic').on( "click", function() {
-		$('#b_statistic ~ a').click();
+		$('#search_b_statistic ~ a').click();
 	});
 	var search_statistic = new ordialog(
 		'search_b_statistic', 'hisdb.bed', '#b_statistic', 'errorField',
@@ -590,57 +630,21 @@ $(document).ready(function () {
 	search_statistic.on();	
 
 
-	$('#btn_occup').on( "click", function() {
-		$('#b_occup ~ a').click();
-	});
-	var occup = new ordialog(
-		'b_occup', 'hisdb.bed', '#b_occup', 'errorField',
-		{
-			colModel: [
-				{ label: 'Bed Status', name: 'occup', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
-			],
-			urlParam: {
-				filterCol:['b_compcode','b_recstatus'],
-				filterVal:['session.compcode','A']
-			},
-			ondblClickRow: function () {
-				let data = selrowData('#' + occup.gridname).occup;
-				$("#searchForm input[name='Stext']").val($('#b_occup').val());
-
-				urlParam.searchCol=["occup"];
-				urlParam.searchVal=[data];
-				refreshGrid("#jqGrid3",null,"kosongkan");
-				refreshGrid('#jqGrid', urlParam);
-			}
-		},{
-			title: "Select Bed Type occup",
-			open: function () {
-				occup.urlParam.filterCol=['compcode', 'recstatus'];
-				occup.urlParam.filterVal=['session.compcode', 'A'];
-			}
-		},'urlParam','radio','tab'
-	);
-	occup.makedialog();
-	occup.on();
-
-
 	$('#btn_mrn').on( "click", function() {
 		$('#q_mrn ~ a').click();
 	});
-	var mrn = new ordialog(
-		'q_mrn', 'hisdb.queue', '#q_mrn', 'errorField',
+	var search_mrn = new ordialog(
+		'search_q_mrn', 'hisdb.queue', '#q_mrn', 'errorField',
 		{
 			colModel: [
 				{ label: 'MRN', name: 'mrn', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
 			],
 			urlParam: {
-				filterCol:['b_compcode','b_recstatus'],
+				filterCol:['compcode','recstatus'],
 				filterVal:['session.compcode','A']
 			},
 			ondblClickRow: function () {
-				let data = selrowData('#' + mrn.gridname).mrn;
+				let data = selrowData('#' + search_mrn.gridname).mrn;
 				$("#searchForm input[name='Stext']").val($('#q_mrn').val());
 
 				urlParam.searchCol=["mrn"];
@@ -649,15 +653,15 @@ $(document).ready(function () {
 				refreshGrid('#jqGrid', urlParam);
 			}
 		},{
-			title: "Select MRN",
+			title: "Select MRN search",
 			open: function () {
-				mrn.urlParam.filterCol=['compcode', 'recstatus'];
-				mrn.urlParam.filterVal=['session.compcode', 'A'];
+				search_mrn.urlParam.filterCol=['compcode', 'recstatus'];
+				search_mrn.urlParam.filterVal=['session.compcode', 'A'];
 			}
 		},'urlParam','radio','tab'
 	);
-	mrn.makedialog();
-	mrn.on();
+	search_mrn.makedialog();
+	search_mrn.on();
 	////////////////////// End Dialog for Search By btn////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////// Start Dialog for jqGrid1////////////////////////////////////////////////////////////////////////////////

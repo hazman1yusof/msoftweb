@@ -61,7 +61,7 @@ row.error td { background-color: red; }
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
 						
-							<div  id="show_bedtype" style="display:none">
+							<!-- <div  id="show_bedtype" style="display:none">
 								<div class='input-group'>
 									<input id="bedtype" name="bedtype" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -91,7 +91,7 @@ row.error td { background-color: red; }
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
-							</div>
+							</div> -->
 						</div>
 
 						<div class="col-md-1" style="padding-left: 0px;">
