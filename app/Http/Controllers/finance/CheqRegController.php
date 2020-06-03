@@ -47,8 +47,20 @@ class CheqRegController extends defaultController
 
 
             $chqreg = DB::table('finance.chqreg')
-                            ->where('startno','=',$request->startno)
-                            ->where('bankcode','=',$request->bankcode);
+                        ->where('startno','=',$request->startno)
+                        ->where('bankcode','=',$request->bankcode);
+
+
+            if($chqreg->exists()){
+                throw new \Exception("record duplicate");
+            }
+
+            $startno = $request->startno;
+            $endno = $request->endno;
+            $cheqtran = DB::table('finance.chqtran')
+                        ->whereBetween('cheqno', [$startno, $endno])
+                        ->where('bankcode','=',$request->bankcode);;
+
 
             if($chqreg->exists()){
                 throw new \Exception("record duplicate");
@@ -110,22 +122,24 @@ class CheqRegController extends defaultController
 
         try {
 
-            $cheqtran = DB::table('finance.chqtran')->select('recstatus')
+           /* $cheqtran = DB::table('finance.chqtran')->select('recstatus')
                             ->where('compcode', '=', session('compcode'))
                             ->where('bankcode', '=', $request->bankcode)
+                            ->where('cheqno', '<=', $request->endno)
                             ->where('recstatus', '<>', 'OPEN')
                             ->count();
 
-            if ($cheqtran){
+            if ($cheqtran > 0){
                 throw new \Exception("Cannot edit. Cheque has been issued");
             }
 
-            dd($cheqtran);
+            dd($cheqtran);*/
 
             DB::table('finance.chqreg')
+                ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
+                ->where('bankcode', '=>', strtoupper($request->bankcode))
                 ->update([  
-                   'bankcode' => strtoupper($request->bankcode),
                     'startno' => strtoupper($request->startno),
                     'endno' => $request->endno,
                     'cheqqty' => $request->endno -$request->startno+1,

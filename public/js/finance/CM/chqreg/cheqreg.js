@@ -66,12 +66,18 @@ $(document).ready(function () {
 					}
 
 				addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset*/
+
 		},
-		ondblClickRow: function(rowid, iRow, iCol, e){
+		onClickRow: function(rowid, iRow, iCol, e){
+
 			//$("#jqGrid_iledit").click();
 		},
 		gridComplete: function () {
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}
 			fdl.set_array().reset();
+
 		},
 		onSelectRow:function(rowid, selected){
 			if(rowid != null) {
@@ -79,7 +85,6 @@ $(document).ready(function () {
 				refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl);
 				$("#pg_jqGridPager2 table").show();
 			}
-
 		},
 		
 	});
@@ -163,12 +168,15 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+
+			
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGrid_iledit").click();
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
+
 		},
 	});
 
@@ -200,11 +208,11 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			//$('#p_error').text(response.responseText);
+			$('#p_error').text(response.responseText);
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
-			//$('#p_error').text('');
+			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
 			let data = $('#gridCheqRegDetail').jqGrid ('getRowData', rowid);
@@ -225,6 +233,59 @@ $(document).ready(function () {
 		}
 	};
 
+		var myEditOptions_edit = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+			$("#gridCheqRegDetail :input[name='startno']").focus();
+			//$("#gridCheqRegDetail :input[name='bankcode']").val(bankcode);
+			//$("#gridCheqRegDetail :input[name='bankcode']").attr('readonly', 'readonly');
+			$("#gridCheqRegDetail :input[name='endno']").keydown(function(e) {//when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+					if (code == '9')$('#gridCheqRegDetail_ilsave').click();
+					/*addmore_jqgrid.state = true;
+					$('#jqGrid_ilsave').click();*/
+			});
+
+		},
+		aftersavefunc: function (rowid, response, options) {
+			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			addmore_jqgrid.more = true;
+			//state true maksudnyer ada isi, tak kosong
+			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
+			errorField.length=0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorfunc: function(rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
+		},
+		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
+			if(errorField.length>0)return false;
+
+			let data = $('#gridCheqRegDetail').jqGrid ('getRowData', rowid);
+
+			let editurl = "/cheqregDetail/form?"+
+				$.param({
+					bankcode: selrowData('#jqGrid').bankcode,
+					action: 'cheqregDetail_save',
+					//idno: selrowData('#gridCheqRegDetail').idno,
+				});
+			$("#gridCheqRegDetail").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function( response ) {
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
+		}
+	};
+
+
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#gridCheqRegDetail").inlineNav('#jqGridPager2', {
 		add: true,
@@ -235,7 +296,8 @@ $(document).ready(function () {
 		addParams: {
 			addRowParams: myEditOptions
 		},
-		editParams: myEditOptions
+		editParams: myEditOptions_edit,
+		
 	}).jqGrid('navButtonAdd', "#jqGridPager2", {
 		id: "jqGridPagerDelete",
 		caption: "", cursor: "pointer", position: "last",

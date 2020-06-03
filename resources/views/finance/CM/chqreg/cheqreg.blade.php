@@ -45,9 +45,13 @@ i.fa {
 				<div class="StextClass">
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
 					<div style="position:absolute;bottom:0;right:0;">
-						<!--<label class="checkbox-inline"><input type="checkbox" value=""><b> Repeat add</b></label>-->
+						
 					</div>
 				</div>
+
+				<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
+					  		<p id="p_error"></p>
+					  	</div>
 			 </fieldset> 
 		</form>
 
