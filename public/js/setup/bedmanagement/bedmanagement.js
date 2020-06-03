@@ -768,7 +768,7 @@ $(document).ready(function () {
 			width:4/10 * $(window).width()
 		},'urlParam','radio','tab'
 	);
-	dialog_occup.makedialog();
+	dialog_occup.makedialog(false);
 
 	var dialog_stat = new ordialog(
 		'b_statistic','hisdb.bed',"#jqGrid input[name='b_statistic']",errorField,
@@ -798,7 +798,7 @@ $(document).ready(function () {
 				}
 			}
 		},{
-			title:"Select Statistic",
+			title:"Select Statistic dialog",
 			open: function(){
 				dialog_stat.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_stat.urlParam.filterVal = ['A', 'session.compcode'];
@@ -806,7 +806,7 @@ $(document).ready(function () {
 			width:5/10 * $(window).width()
 		},'urlParam','radio','tab'
 	);
-	dialog_stat.makedialog();	
+	dialog_stat.makedialog(false);	
 
 	//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
 
