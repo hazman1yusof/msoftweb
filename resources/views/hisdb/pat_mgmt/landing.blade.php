@@ -27,27 +27,31 @@
 			background: url('../../../../assets/img/details_close.png') no-repeat center center;
 		}
 
-		.modal-dialog {
-		    width: 100%;
-		    height: 100%;
-		    margin: 0;
-		    padding: 0 !important;
-		  }
-		  
-		  .modal-content {
-		    height: auto;
-		    min-height: 100%;
-		    border: 0 none;
-		    border-radius: 0;
-		    box-shadow: none;
-		  }
-
-		  .uppercase{
+		.uppercase{
 		  	text-transform:uppercase
-		  }
+		}
 
 		small, input[type=text]{
 		  	text-transform:uppercase
+		}
+
+		.modal {
+		  padding: 0 !important;
+		}
+
+		.modal .modal-dialog {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		.modal .modal-content {
+			height: auto;
+			min-height: 100%;
+			border: 0 none;
+			border-radius: 0;
+			box-shadow: none;
 		}
 
 		.modal-header {
@@ -55,9 +59,16 @@
 			padding: 5px;
 			border-bottom: 1px solid #e5e5e5;
 		}
+
 		.modal-body {
 			position: relative;
 			padding: 10px;
+		}
+
+		.modal-backdrop{
+			z-index: 99 !important;
+			background-color: #fff !important;
+			opacity: 1 !important;
 		}
 
 		.form-group{
@@ -73,13 +84,6 @@
 			color: #999;
 		}
 
-		.modal-backdrop{
-			z-index: 99 !important;
-		}
-		
-		.modal-open {
-		  overflow: scroll;
-		}
 		.justbc{
 			background-color: #dff0d8 !important;
 		}

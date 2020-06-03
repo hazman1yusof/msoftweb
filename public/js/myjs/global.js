@@ -79,7 +79,6 @@ var Global = function () {
                     "targets": 0,
                     "data": "code",
                     "render": function ( data, type, row, meta ) {
-                    	console.log(act);
                         if(act == "get_reg_source"){
                             return pad('000000',data,true)
                         }else{

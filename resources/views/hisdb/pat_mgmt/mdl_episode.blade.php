@@ -6,32 +6,29 @@
             <input type="hidden" name="mrn_episode" id="mrn_episode">
 
             <div class="modal-content">
-                <div class="modal-header label-warning">
-                    <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
+                <div class="modal-header label-info">
                     <div class="form-group ">
                         <div class="col-sm-1">
                             <small  for="txt_epis_no">EPISODE</small>
-                            <input class="form-control " id="txt_epis_no" placeholder="" type="text" readonly>
-                            <!--                                    <small class="help-block text-center">REGISTRATION MRN</small>-->
+                            <input class="form-control input-sm" id="txt_epis_no" placeholder="" type="text" readonly>
                         </div>
                         <div class="col-sm-1">
                             <small for="txt_epis_type">TYPE: </small>
-                            <input id="txt_epis_type" placeholder="" type="text" class="form-control" style="width:50px;" readonly>
+                            <input id="txt_epis_type" placeholder="" type="text" class="form-control input-sm" readonly>
                         </div>
 
                         <div class="col-sm-3">
                             <small for="txt_epis_type">Case</small>
-                            <select id="cmb_epis_case_maturity" name="cmb_epis_case_maturity" class="form-control form-mandatory" required>
+                            <select id="cmb_epis_case_maturity" name="cmb_epis_case_maturity" class="form-control input-sm form-mandatory" required>
                                 <option value="">- Select -</option>
                                 <option value="1">New Case</option>
                                 <option value="2">Follow Up</option>
                             </select>
                         </div>
-                                
 
                         <div class="col-sm-3">
                             <small for="txt_epis_type">Pregnancy</small>
-                            <select id="cmb_epis_pregnancy" name="cmb_epis_pregnancy" class="form-control form-mandatory" required>  
+                            <select id="cmb_epis_pregnancy" name="cmb_epis_pregnancy" class="form-control input-sm form-mandatory" required>  
                                 <option value="">- Select -</option>
                                 <option value="Pregnant">Pregnant</option>
                                 <option value="Non-Pregnant" selected>Non-Pregnant</option>
@@ -46,18 +43,15 @@
                             <small for="txt_epis_time">TIME: </small>
                             <input class="form-control" id="txt_epis_time" placeholder="" type="text" readonly>
                         </div>
-
-
                     </div>
 
                     <div class="form-group ">
                         <div class="col-md-offset-4 col-md-3">
-                           NAME:  <big id="txt_epis_name">Hazman Yusof</big>
+                           NAME:  <b><big id="txt_epis_name">Hazman Yusof</big></b>
                         </div>
                         <div class="col-md-3">
-                           MRN:  <big id="txt_epis_mrn">0000003</big>
+                           MRN:  <b><big id="txt_epis_mrn">0000003</big></b>
                         </div>
-
                     </div>
                 </div>
                 <div class="modal-body">
@@ -85,7 +79,7 @@
                                                 <input type="text" class="form-control form-mandatory" id="txt_epis_dept">
                                                 <input type="hidden" id="hid_epis_dept" value="" name="regdept" />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-warning" id="btn_epis_dept" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_dept');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_epis_dept" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_dept');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>                                          
@@ -95,7 +89,7 @@
                                                 <input type="text" class="form-control form-mandatory" id="txt_epis_source">
                                                 <input type="hidden" id="hid_epis_source" value="" name="" />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-warning" id="btn_epis_source" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_source');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_epis_source" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_source');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -105,7 +99,7 @@
                                                 <input type="text" class="form-control form-mandatory" id="txt_epis_case">
                                                 <input type="hidden" id="hid_epis_case" value="" name="case_code"/>
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-warning" id="btn_epis_case" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_case');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_epis_case" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_case');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -115,7 +109,7 @@
                                                 <input type="text" class="form-control form-mandatory" id="txt_epis_doctor">
                                                 <input type="hidden" id="hid_epis_doctor" value="" name="admdoctor"/>
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-warning" id="btn_epis_doctor" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_doctor');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_epis_doctor" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_doctor');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -125,7 +119,7 @@
                                                 <input type="text" class="form-control form-mandatory" id="txt_epis_fin" name="txt_epis_fin">
                                                 <input type="hidden" id="hid_epis_fin" name="pay_type" value="" />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-warning" id="btn_epis_fin" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_fin');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_epis_fin" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_fin');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -148,7 +142,7 @@
                                                 <input type="text" class="form-control form-mandatory" id="txt_epis_payer">
                                                 <input type="hidden" id="hid_epis_payer" value="PURI" name=""/>
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-warning" id="btn_epis_payer"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_epis_payer"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -158,7 +152,7 @@
                                                 <input type="text" class="form-control form-mandatory" id="txt_epis_bill_type">
                                                 <input type="hidden" id="hid_epis_bill_type" value="STD" name=""/>
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-warning" id="btn_bill_type_info" ><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_bill_type_info" ><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -169,7 +163,7 @@
                                             <div class="input-group">
                                                 <input id="txt_epis_refno" type="text" class="form-control form-mandatory" >
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-warning" id="btn_refno_info" ><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_refno_info" ><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -178,7 +172,7 @@
                                             <div class="input-group">
                                                 <input id="txt_epis_our_refno" type="text" class="form-control"  readonly>
                                                 <!--span class="input-group-btn">
-                                                    <button type="button" class="btn btn-warning" id="btn_our_refno_info" ><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_our_refno_info" ><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span-->
                                             </div>
                                         </div>
@@ -216,12 +210,11 @@
                             <!-- doctor -->
                             <div class="panel panel-default" style="position: relative;" id="div-doctor">
                                 <div class="panel-heading clearfix collapsed" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabDoctor">
-
-                                <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-                                <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
-                                <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
-                                    <h5>Doctor</h5>
-                                </div> 
+                                    <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+                                    <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
+                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
+                                        <h5>Doctor</h5>
+                                    </div> 
                                 </div>
 
                                 <div id="tabDoctor" class="panel-collapse collapse">
@@ -262,7 +255,7 @@
                                                 <small for="doc_doctorcode">Doctor</small>
                                                 <div class='input-group'>
                                                     <input id="doc_doctorcode" name="doc_doctorcode" type="text" class="form-control uppercase">
-                                                    <a class='input-group-addon btn btn-warning'><span class='fa fa-ellipsis-h'></span></a>
+                                                    <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
                                                 </div>
                                                 <span class="help-block"></span>
                                             </div>
@@ -354,7 +347,7 @@
                                                 <small for="doc_doctorcode">Bed No.</small>
                                                 <div class='input-group'>
                                                     <input id="bed_bednum" name="bed_bednum" type="text" class="form-control uppercase">
-                                                    <a class='input-group-addon btn btn-warning'><span class='fa fa-ellipsis-h'></span></a>
+                                                    <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
                                                 </div>
                                                 <span class="help-block"></span>
                                             </div>
@@ -401,7 +394,7 @@
                                                 <small for="bed_lodger">Lodger</small>
                                                 <div class='input-group'>
                                                     <input id="bed_lodger" name="bed_lodger" type="text" class="form-control uppercase">
-                                                    <a class='input-group-addon btn btn-warning'><span class='fa fa-ellipsis-h'></span></a>
+                                                    <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
                                                 </div>
                                                 <span class="help-block"></span>
                                             </div>
@@ -485,7 +478,7 @@
                                                 <small for="nok_relate">Relationship</small>
                                                 <div class='input-group'>
                                                     <input id="nok_relate" name="nok_relate" type="text" class="form-control uppercase">
-                                                    <a class='input-group-addon btn btn-warning'><span class='fa fa-ellipsis-h'></span></a>
+                                                    <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
                                                 </div>
                                                 <span class="help-block"></span>
                                             </div>
@@ -854,10 +847,10 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" disabled>VIEW GL</button>
-                    <button type="button" class="btn btn-warning" disabled>GL DETAIL</button>
-                    <button id="btn_epis_new_gl" type="button" class="btn btn-warning" >NEW GL</button>
-                    <button type="button" class="btn btn-warning" disabled>OK</button>
+                    <button type="button" class="btn btn-info" disabled>VIEW GL</button>
+                    <button type="button" class="btn btn-info" disabled>GL DETAIL</button>
+                    <button id="btn_epis_new_gl" type="button" class="btn btn-info" >NEW GL</button>
+                    <button type="button" class="btn btn-info" disabled>OK</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
                 </div>
             </div>

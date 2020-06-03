@@ -25,6 +25,7 @@ Route::get('/util/get_value_default','UtilController@get_value_default');
 Route::get('/util/get_table_default','UtilController@get_table_default');
 Route::get('/util/save_table_default','UtilController@defaultSetter');
 Route::get('/util/input_check','UtilController@input_check'); //jgn guna
+Route::get('/util/mycard_read','util\MycardController@get_data');
 
 /// announcement thingy ///
 Route::get('/announcement/generate','setup\AnnouncementController@generate');

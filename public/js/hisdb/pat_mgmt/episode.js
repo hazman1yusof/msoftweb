@@ -731,20 +731,19 @@
                         if(act == "get_reg_source"){
                             return pad('000000',data,true)
                         }
+                        return data;
                     }
                   } ],
 
                 "fnInitComplete": function(oSettings, json) {
                     if(ontab==true){
                         selecter.search( text_val ).draw();
-
                     }
                     if(act == "get_reg_source"){
                         $('#add_new_adm').show();
                     }
-                    console.log( selecter.page.info)
-                    if(selecter.data().count() == 1){
-                        alert('will auto select')
+                    if(selecter.page.info().recordsDisplay == 1){
+                        $('#tbl_item_select tbody tr:eq(0)').dblclick();
                     }
                 }
         } );

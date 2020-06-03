@@ -16,12 +16,16 @@
             idnumber: {
               require_from_group: [1, ".ic-group"]
             },
+        },
+        errorPlacement: function(error, element) {
+            var elem_dialog = ['txt_ID_Type','txt_RaceCode','txt_Religion','txt_LanguageCode','txt_pat_citizen','txt_pat_area','txt_payer_company','txt_pat_occupation','DOB'];
+            if( elem_dialog.includes(element.attr("name")) ){
+                error.insertAfter( element.closest(".input-group") );
+            }else{
+                error.insertAfter(element)
+            }
         }
     });	// patient form validation
-    
-    function destoryallerror(){
-        $('#frm_patient_info').find("label.error").detach();
-    }//utk buang label error lepas close dialog modal
 
     $('#txt_pat_newic').blur(function(){
         if($(this).val() != ''){
@@ -85,7 +89,6 @@
         var urlType = 'pat_mast/get_entry?action=get_patient_idtype';
         loadlist($('select#cmb_pat_idtype').get(0),urlType,'Code','Description');
 
-
         var urlsex = 'pat_mast/get_entry?action=get_patient_sex';
         loadlist($('select#cmb_pat_sex').get(0),urlsex,'code','description');
 
@@ -119,7 +122,9 @@
     }
 
     $('#mdl_patient_info').on('hidden.bs.modal', function (e) {
-        destoryallerror();
+        $('#frm_patient_info').find("label.error").detach();
+        $("#frm_patient_info").find('.error').removeClass("error");
+        $("#frm_patient_info").find('.valid').removeClass("valid");
         $(this)
             .find("input,textarea,select")
             .val('')

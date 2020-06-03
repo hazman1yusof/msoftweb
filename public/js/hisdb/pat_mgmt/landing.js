@@ -255,7 +255,7 @@ $(document).ready(function() {
 
     ////////////////habis mykad///////
 
-    $("#txt_epis_dept,#txt_epis_source,#txt_epis_case,#txt_epis_doctor,#txt_epis_fin").on('keydown',{data:this},onTab);
+    $("#txt_epis_dept,#txt_epis_source,#txt_epis_case,#txt_epis_doctor,#txt_epis_fin,#txt_pat_title,#txt_ID_Type,#txt_RaceCode,#txt_Religion,#txt_LanguageCode,#txt_pat_citizen,#txt_pat_area,#txt_payer_company,#txt_pat_occupation").on('keydown',{data:this},onTab);
 
 
 } );

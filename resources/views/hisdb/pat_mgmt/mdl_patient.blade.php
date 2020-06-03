@@ -6,17 +6,11 @@
 			<input type="hidden" name="idno" id="txt_pat_idno">
             <div class="modal-content">
                 <div class="modal-header label-info">
-                    <!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
-                    <div class="form-group has-error">
+                    <div class="form-group">
                         <div class="col-sm-3">
                             <small  for="mrn">PATIENT REGISTRATION (MRN)</small>
                             <input class="form-control " name="MRN" id="txt_pat_mrn" placeholder="" type="text" readonly>
-                            <!--                                    <small class="help-block text-center">REGISTRATION MRN</small>-->
                         </div>
-<!--                        <div class="col-sm-3">-->
-<!--                            <small for="oldmrn">HUKM MRN</small>-->
-<!--                            <input class="form-control" id="oldmrn" placeholder="" type="text"  >-->
-<!--                        </div>-->
                         <div class="col-sm-3">
                             <small for="first_visit_date">FIRST VISIT</small>
                             <input class="form-control" name="first_visit_date" id="first_visit_date" placeholder="" type="text" readonly>
@@ -42,7 +36,7 @@
                             </ul> -->
                             <!-- Tab panes -->
                             <div class="panel panel-default" style="position: relative;">
-                                <div class="panel-heading clearfix" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabEpisode">
+                                <div class="panel-heading clearfix" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabBio">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                                     <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
                                     <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
@@ -50,7 +44,7 @@
                                     </div> 
                                 </div>
 
-                                <div id="tabEpisode" class="panel-collapse collapse in">
+                                <div id="tabBio" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <!-- Tab content begin -->
                                     <p><strong>Patient Info</strong></p>    
@@ -73,7 +67,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <small for="txt_pat_name">Name</small>
-                                                    <input class="form-control has-error form-mandatory" name="Name" id="txt_pat_name" placeholder="" type="text" required>
+                                                    <input class="form-control form-mandatory" name="Name" id="txt_pat_name" placeholder="" type="text" required>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <small for="cmb_pat_sex">Sex</small>
@@ -119,8 +113,8 @@
                                         <div class="col-md-4">
                                             <small for="txt_pat_dob">DOB - Age</small>
                                             <div class="input-group">
-                                                <input class="form-control form-mandatory" style="width:180px;" name="DOB" id="txt_pat_dob" placeholder="" type="date" required>
-                                                <span class="input-group-addon" style="background-color:transparent; border-color: transparent" style="width:10px;">&mdash;</span>                                                      
+                                                <input class="form-control form-mandatory" name="DOB" id="txt_pat_dob" placeholder="" type="date" required>
+                                                <span class="input-group-addon" style="background-color:transparent; border-color: transparent" style="width:10px;">&mdash;</span>
                                                 <input class="form-control" style="width:50px;" name="txt_pat_age" id="txt_pat_age" placeholder="" type="text" disabled>
                                             </div>
                                         </div>                                          
@@ -206,7 +200,7 @@
                             </div>
 
                             <div class="panel panel-default" style="position: relative;">
-                                <div class="panel-heading clearfix collapsed" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabAddr">
+                                <div class="panel-heading clearfix collapsed" id="toggle_tabAddr" data-toggle="collapse" data-target="#tabAddr">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                                     <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
                                     <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
@@ -219,8 +213,7 @@
                                     <div class="form-group">
                                         <!--div class="row"-->
                                         <div class="col-md-12">
-                                            <br />
-                                            <p><strong>ADDRESS</strong></p>                                                     
+                                            <!-- <p><strong>ADDRESS</strong></p>                                                      -->
                                             <div class="tab-v2">
                                                 <ul class="nav nav-tabs">
                                                     <li class="active"><a href="#addr_current" data-toggle="tab">Current</a></li>
@@ -369,7 +362,7 @@
                                     </div> 
                                 </div>
 
-                                <div id="tabCorp" class="panel-collapse collapse in">
+                                <div id="tabCorp" class="panel-collapse collapse">
                                 <div class="panel-body">
 
                                     <p><strong>Corporate Info</strong></p>    
@@ -519,7 +512,7 @@
     <div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header label-success">
-				<p align="center"><b>Mykad Identification Menu</b></p>
+				<h4 align="center" style="color: white"><b>Mykad Identification Menu</b></h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -540,11 +533,11 @@
 							<div class="row">
 								<div class="col-md-6">
 									<small for="Name">Name</small>
-									<input class="form-control has-error form-mandatory" name="Name" id="mykad_pat_name" placeholder="" type="text" required>
+									<input class="form-control form-mandatory" name="Name" id="mykad_pat_name" placeholder="" type="text" required>
 								</div>
 								<div class="col-md-3">
 									<small for="DOB">DOB</small>
-										<input class="form-control has-error form-mandatory" name="DOB" id="mykad_DOB" placeholder="" type="date" required>
+										<input class="form-control form-mandatory" name="DOB" id="mykad_DOB" placeholder="" type="date" required>
 								</div>
 								<div class="col-md-3">
 									<small for="race">Race</small>
