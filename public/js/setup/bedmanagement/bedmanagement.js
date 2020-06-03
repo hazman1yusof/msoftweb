@@ -558,36 +558,36 @@ $(document).ready(function () {
 	$('#btn_statistic').on( "click", function() {
 		$('#b_statistic ~ a').click();
 	});
-	var statistic = new ordialog(
-		'b_statistic', 'hisdb.bed', '#b_statistic', 'errorField',
+	var search_statistic = new ordialog(
+		'search_b_statistic', 'hisdb.bed', '#b_statistic', 'errorField',
 		{
 			colModel: [
 				{ label: 'Statistic', name: 'statistic', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
 			],
 			urlParam: {
-				filterCol:['b_compcode','b_recstatus'],
+				filterCol:['compcode','recstatus'],
 				filterVal:['session.compcode','A']
 			},
 			ondblClickRow: function () {
-				let data = selrowData('#' + statistic.gridname).statistic;
+				let data = selrowData('#' + search_statistic.gridname).statistic;
 				$("#searchForm input[name='Stext']").val($('#b_statistic').val());
 
-				urlParam.searchCol=["statistic"];
+				urlParam.searchCol=["b_statistic"];
 				urlParam.searchVal=[data];
 				refreshGrid("#jqGrid3",null,"kosongkan");
 				refreshGrid('#jqGrid', urlParam);
 			}
 		},{
-			title: "Select Statistic",
+			title: "Select Statistic Search",
 			open: function () {
-				statistic.urlParam.filterCol=['compcode', 'recstatus'];
-				statistic.urlParam.filterVal=['session.compcode', 'A'];
+				search_statistic.urlParam.filterCol=['compcode', 'recstatus'];
+				search_statistic.urlParam.filterVal=['session.compcode', 'A'];
 			}
 		},'urlParam','radio','tab'
 	);
-	statistic.makedialog();
-	statistic.on();	
+	search_statistic.makedialog();
+	search_statistic.on();	
 
 
 	$('#btn_occup').on( "click", function() {
