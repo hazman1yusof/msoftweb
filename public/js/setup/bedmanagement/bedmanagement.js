@@ -562,15 +562,14 @@ $(document).ready(function () {
 		'search_b_occup', 'sysdb.department', '#b_occup', 'errorField',
 		{
 			colModel: [
-				{ label: 'Bed Status', name: 'bedcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+				{ label: 'Bed Status', name: 'bedcode', width: 200, classes: 'pointer', checked: true, canSearch: true, or_search: true },
 			],
 			urlParam: {
 				url:'./sysparam_bed_status',
 				filterCol:['b_compcode','b_recstatus'],
 				filterVal:['session.compcode','A']
 			},
-			ondblClickRow: function () {
+			ondblClickRow: function (event) {
 
 				$(search_occup.textfield).val(selrowData("#"+search_occup.gridname)['description']);
 
@@ -596,7 +595,7 @@ $(document).ready(function () {
 
 
 	$('#btn_statistic').on( "click", function() {
-		$('#search_b_statistic ~ a').click();
+		$('#b_statistic ~ a').click();
 	});
 	var search_statistic = new ordialog(
 		'search_b_statistic', 'hisdb.bed', '#b_statistic', 'errorField',
@@ -606,62 +605,67 @@ $(document).ready(function () {
 				//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
 			],
 			urlParam: {
+				url:'./sysparam_stat',
 				filterCol:['compcode','recstatus'],
 				filterVal:['session.compcode','A']
 			},
-			ondblClickRow: function () {
-				let data = selrowData('#' + search_statistic.gridname).statistic;
-				$("#searchForm input[name='Stext']").val($('#b_statistic').val());
+			ondblClickRow: function (event) {
+				$(search_statistic.textfield).val(selrowData("#"+search_statistic.gridname)['description']);
 
-				urlParam.searchCol=["b_statistic"];
-				urlParam.searchVal=[data];
-				refreshGrid("#jqGrid3",null,"kosongkan");
-				refreshGrid('#jqGrid', urlParam);
+				// let data = selrowData('#' + search_statistic.gridname).statistic;
+				// $("#searchForm input[name='Stext']").val($('#b_statistic').val());
+
+				// urlParam.searchCol=["b_statistic"];
+				// urlParam.searchVal=[data];
+				// refreshGrid("#jqGrid3",null,"kosongkan");
+				// refreshGrid('#jqGrid', urlParam);
 			}
 		},{
 			title: "Select Statistic Search",
 			open: function () {
 				search_statistic.urlParam.filterCol=['compcode', 'recstatus'];
 				search_statistic.urlParam.filterVal=['session.compcode', 'A'];
-			}
+			},
+			width:5/10 * $(window).width()
 		},'urlParam','radio','tab'
 	);
 	search_statistic.makedialog();
 	search_statistic.on();	
 
 
-	$('#btn_mrn').on( "click", function() {
-		$('#q_mrn ~ a').click();
-	});
-	var search_mrn = new ordialog(
-		'search_q_mrn', 'hisdb.queue', '#q_mrn', 'errorField',
-		{
-			colModel: [
-				{ label: 'MRN', name: 'mrn', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
-			},
-			ondblClickRow: function () {
-				let data = selrowData('#' + search_mrn.gridname).mrn;
-				$("#searchForm input[name='Stext']").val($('#q_mrn').val());
+	// $('#btn_mrn').on( "click", function() {
+	// 	$('#q_mrn ~ a').click();
+	// });
+	// var search_mrn = new ordialog(
+	// 	'search_q_mrn', 'hisdb.queue', '#q_mrn', 'errorField',
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'MRN', name: 'mrn', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','recstatus'],
+	// 			filterVal:['session.compcode','A']
+	// 		},
+	// 		ondblClickRow: function () {
+	// 			let data = selrowData('#' + search_mrn.gridname).mrn;
+	// 			$("#searchForm input[name='Stext']").val($('#q_mrn').val());
 
-				urlParam.searchCol=["mrn"];
-				urlParam.searchVal=[data];
-				refreshGrid("#jqGrid3",null,"kosongkan");
-				refreshGrid('#jqGrid', urlParam);
-			}
-		},{
-			title: "Select MRN search",
-			open: function () {
-				search_mrn.urlParam.filterCol=['compcode', 'recstatus'];
-				search_mrn.urlParam.filterVal=['session.compcode', 'A'];
-			}
-		},'urlParam','radio','tab'
-	);
-	search_mrn.makedialog();
-	search_mrn.on();
+	// 			urlParam.searchCol=["mrn"];
+	// 			urlParam.searchVal=[data];
+	// 			refreshGrid("#jqGrid3",null,"kosongkan");
+	// 			refreshGrid('#jqGrid', urlParam);
+	// 		}
+	// 	},{
+	// 		title: "Select MRN search",
+	// 		open: function () {
+	// 			search_mrn.urlParam.filterCol=['compcode', 'recstatus'];
+	// 			search_mrn.urlParam.filterVal=['session.compcode', 'A'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// search_mrn.makedialog();
+	// search_mrn.on();
+
 	////////////////////// End Dialog for Search By btn////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////// Start Dialog for jqGrid1////////////////////////////////////////////////////////////////////////////////

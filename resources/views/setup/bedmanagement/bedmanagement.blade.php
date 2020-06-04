@@ -61,9 +61,9 @@ row.error td { background-color: red; }
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
 						
-							<!-- <div  id="show_bedtype" style="display:none">
+							<div  id="show_bedtype" style="display:none">
 								<div class='input-group'>
-									<input id="bedtype" name="bedtype" type="text" maxlength="12" class="form-control input-sm">
+									<input id="b_bedtype" name="b_bedtype" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -71,7 +71,7 @@ row.error td { background-color: red; }
 
 							<div  id="show_statistic" style="display:none">
 								<div class='input-group'>
-									<input id="statistic" name="statistic" type="text" maxlength="12" class="form-control input-sm">
+									<input id="b_statistic" name="b_statistic" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -79,19 +79,19 @@ row.error td { background-color: red; }
 							
 							<div  id="show_occup" style="display:none">
 								<div class='input-group'>
-									<input id="occup" name="occup" type="text" maxlength="12" class="form-control input-sm">
+									<input id="b_occup" name="b_occup" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
 							</div>
 
-							<div  id="show_mrn" style="display:none">
+							<!-- <div  id="show_mrn" style="display:none">
 								<div class='input-group'>
-									<input id="mrn" name="mrn" type="text" maxlength="12" class="form-control input-sm">
+									<input id="q_mrn" name="q_mrn" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
-							</div> -->
+							</div>  -->
 						</div>
 
 						<div class="col-md-1" style="padding-left: 0px;">
@@ -233,13 +233,10 @@ row.error td { background-color: red; }
 												
 													<label class="col-md-2 control-label" for="bedtype">Bed Type</label>  
 													<div class="col-md-4">
-														<div class='input-group'>
-															<input id="b_bedtype" name="b_bedtype" type="text" class="form-control input-sm uppercase">
-															<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-														</div>
-														<span class="help-block"></span>
-													</div>													
-												</div>
+														<input id="b_bedtype" name="b_bedtype" type="text" class="form-control input-sm uppercase">
+													</div>
+													<span class="help-block"></span>
+												</div>													
 												<!-- Class form group closed -->
 													
 											</div>  
