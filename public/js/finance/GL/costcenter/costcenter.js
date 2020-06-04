@@ -79,7 +79,12 @@
 				ondblClickRow: function(rowid, iRow, iCol, e){
 					$("#jqGrid_iledit").click();
 				},
-				
+				gridComplete: function () {
+					if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
+						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+					}
+					
+				},
 				
 			});
 

@@ -49,9 +49,6 @@ i.fa {
 					</div>
 				</div>
 
-				<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
-					  		<p id="p_error"></p>
-					  	</div>
 			 </fieldset> 
 		</form>
 
@@ -66,9 +63,13 @@ i.fa {
 
 		<div class="panel panel-default" id="gridCheqRegDetail_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel1">
+
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
     			Cheque Detail </div>
+    			<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;color: red">
+						<p id="p_error"></p>
+					</div>
 				<div id="jqGrid3_panel1" class="panel-collapse collapse">
 					<div class="panel-body">
 					    <div class='col-md-12' style="padding:0 0 15px 0">

@@ -112,7 +112,11 @@ class CheqRegController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-             return response($e->getMessage(), 500);
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
+
+            return response(json_encode($responce), 500);
         }
     }
 
@@ -123,25 +127,46 @@ class CheqRegController extends defaultController
 
         try {
 
-           /* $cheqtran = DB::table('finance.chqtran')->select('recstatus')
+            $chqreg = DB::table('finance.chqreg')
+                        ->where('startno','=',$request->startno)
+                        ->where('bankcode','=',$request->bankcode);
+
+
+            if($chqreg->exists()){
+                throw new \Exception("Record duplicate");
+            }
+
+
+            $startno = $request->startno;
+            $endno = $request->endno;
+            $cheqtran = DB::table('finance.chqtran')
+                        ->whereBetween('cheqno', [$startno, $endno])
+                        ->where('bankcode','=',$request->bankcode);;
+
+
+            if($cheqtran->exists()){
+                throw new \Exception("Cheque No already exist");
+            }
+
+            $cheqtrancount = DB::table('finance.chqtran')->select('recstatus')
                             ->where('compcode', '=', session('compcode'))
                             ->where('bankcode', '=', $request->bankcode)
                             ->where('cheqno', '<=', $request->endno)
                             ->where('recstatus', '<>', 'OPEN')
                             ->count();
 
-            if ($cheqtran > 0){
+            if ($cheqtrancount >'0'){
                 throw new \Exception("Cannot edit. Cheque has been issued");
             }
 
-            dd($cheqtran);*/
+            //dd($cheqtrancount);
 
             DB::table('finance.chqreg')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->where('bankcode', '=>', strtoupper($request->bankcode))
                 ->update([  
-                    'startno' => strtoupper($request->startno),
+                    'startno' => ($request->startno),
                     'endno' => $request->endno,
                     'cheqqty' => $request->endno -$request->startno+1,
                     'recstatus' => 'OPEN',
