@@ -21,12 +21,12 @@
 			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 		</button>
 	</div>
-	<div class="panel-heading clearfix collapsed" id="toggle_dietOrder" data-toggle="collapse" data-target="#jqGridDietOrder_panel">
+	<div class="panel-heading clearfix collapsed position" id="toggle_dietOrder" data-toggle="collapse" data-target="#jqGridDietOrder_panel">
 		<b>Name: <span id="name_show_dietOrder"></span></b><br>
 		MRN: <span id="mrn_show_dietOrder"></span>
 
-		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
 			<h5>Diet Order</h5>
 		</div>				

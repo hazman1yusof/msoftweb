@@ -4,41 +4,53 @@
 
 @section('style')
 
-.panel-heading.collapsed .fa-angle-double-up,
-.panel-heading .fa-angle-double-down {
-	display: none;
-}
+	.panel-heading.collapsed .fa-angle-double-up,
+	.panel-heading .fa-angle-double-down {
+		display: none;
+	}
 
-.panel-heading.collapsed .fa-angle-double-down,
-.panel-heading .fa-angle-double-up {
-	display: inline-block;
-}
+	.panel-heading.collapsed .fa-angle-double-down,
+	.panel-heading .fa-angle-double-up {
+		display: inline-block;
+	}
 
-.panel-heading i.fa {
-	cursor: pointer;
-	float: right;
-	<!--  margin-right: 5px; -->
-}
+	.panel-heading i.fa {
+		cursor: pointer;
+		float: right;
+		<!--  margin-right: 5px; -->
+	}
 
-.panel-heading div i {
-	position: relative;
-	line-height: 1;
-	top: -10px;
-}
+	.panel-heading div i {
+		position: relative;
+		line-height: 1;
+		top: -10px;
+	}
 
-.clearfix {
-	overflow: auto;
-}
+	.clearfix {
+		overflow: auto;
+	}
 
-input.uppercase {
-	text-transform: uppercase;
-}
+	input.uppercase {
+		text-transform: uppercase;
+	}
 
-.justify {
-	text-align: -webkit-center;
-}
+	.justify {
+		text-align: -webkit-center;
+	}
 
-row.error td { background-color: red; }
+	row.error td { background-color: red; }
+
+	i.arrow {
+		cursor: pointer;
+		float: right;
+		<!--  margin-right: 5px; -->
+	}
+
+	.position i {
+		position: relative;
+		line-height: 1;
+		top: -10px;
+	}
 
 @endsection
 
@@ -175,11 +187,11 @@ row.error td { background-color: red; }
 						<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 					</button>
 				</div>
-				<div class="panel-heading clearfix collapsed" id="toggle_trf" data-toggle="collapse" data-target="#jqGrid_trf_panel">
+				<div class="panel-heading clearfix collapsed position" id="toggle_trf" data-toggle="collapse" data-target="#jqGrid_trf_panel">
 					<b>Name: <span id="name_show"></span></b><br>
 						Bed No: <span id="bednum_show"></span>
-						<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px"></i>
-						<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px"></i>
+						<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px"></i>
+						<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px"></i>
 						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 280px; top: 15px;">
 							<h5>Bed Occupancy Detail</h5>
 						</div>		
