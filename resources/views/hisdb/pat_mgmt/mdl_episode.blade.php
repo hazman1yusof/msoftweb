@@ -491,8 +491,8 @@
 
                                         <div class="form-group">
                                             <div class="col-md-6">
-                                                <small for="nok_telh">Tel (H/P)</small>
-                                                <input id="nok_telh" name="nok_telh" type="text" class="form-control" data-validation="required" rdonly>
+                                                <small for="nok_telhp">Tel (H/P)</small>
+                                                <input id="nok_telhp" name="nok_telhp" type="text" class="form-control" data-validation="required" rdonly>
                                             </div>
 
                                             <div class="col-md-offset-3 col-md-3">

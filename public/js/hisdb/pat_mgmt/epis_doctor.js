@@ -149,7 +149,7 @@ $(document).ready(function () {
 	$("#save_doc").click(function(){
 		disableForm('#form_doc');
 		if( $('#form_doc').isValid({requiredFields: ''}, conf_doc, true) ) {
-			saveForm_ti(function(){
+			saveForm_doc(function(){
 				refreshGrid("#jqGrid_doctor", urlParam_doctor);
 			});
 		}else{
@@ -158,7 +158,7 @@ $(document).ready(function () {
 
 	});
 
-	function saveForm_ti(callback){
+	function saveForm_doc(callback){
 		var saveParam={
 	        action:'save_table_ti',
 	        oper:$("#cancel_ti").data('oper')

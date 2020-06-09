@@ -229,25 +229,26 @@ $(document).ready(function() {
     });
 
     $('#read_mykad').click(function(){
-        $.getJSON('http://127.0.0.1:4000', function(data){
-            if(data.response != "success"){
-                $("#mykad_reponse").text(data.response);
+        $.getJSON('/util/mycard_read', function(data){
+            console.log(data);
+            if(data.status == failed){
+                alert("Error reading Mycard");
             }else{
                 $("#mykad_reponse").text("");
-                $("#mykad_newic").val(data.mykad_newic);
-                $("#mykad_DOB").val(data.mykad_DOB);
-                $("#mykad_birthPlace").val(data.mykad_birthPlace);
-                $("#mykad_pat_name").val(data.mykad_pat_name);
-                $("#mykad_oldic").val(data.mykad_oldic);
-                $("#mykad_religion").val(data.mykad_religion);
-                $("#mykad_gender").val(data.mykad_gender);
-                $("#mykad_race").val(data.mykad_race);
-                $("#mykad_address1").val(data.mykad_address1);
-                $("#mykad_address2").val(data.mykad_address2);
-                $("#mykad_address3").val(data.mykad_address3);
-                $("#mykad_city").val(data.mykad_city);
-                $("#mykad_state").val(data.mykad_state);
-                $("#mykad_postcode").val(data.mykad_postcode);
+                $("#mykad_newic").val(data.ic);
+                $("#mykad_DOB").val(data.dob);
+                $("#mykad_birthPlace").val(data.birthplace);
+                $("#mykad_pat_name").val(data.name);
+                $("#mykad_oldic").val(data.oldic);
+                $("#mykad_religion").val(data.religion);
+                $("#mykad_gender").val(data.sex);
+                $("#mykad_race").val(data.race);
+                $("#mykad_address1").val(data.addr1);
+                $("#mykad_address2").val(data.addr2);
+                $("#mykad_address3").val(data.addr3);
+                $("#mykad_city").val(data.city);
+                $("#mykad_state").val(data.state);
+                $("#mykad_postcode").val(data.postcode);
                 $("#mykad_photo").attr('src', 'data:image/png;base64,'+data.mykad_photo);
             }
         });

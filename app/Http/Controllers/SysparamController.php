@@ -29,25 +29,31 @@ class SysparamController extends Controller
 			switch ($value) {
 				case 'OCCUPIED':
 					$object->bedcode = '<i class="fa fa-bed fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
 					break;
 				case 'VACANT':
 					$object->bedcode = '<img src="img/bedonly.png" height="20" width="28"></img> '.$value;
+					$object->description = $value;
 					break;
 				case 'HOUSEKEEPING':
 					$object->bedcode = '<i class="fa fa-female fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
 					break;
 				case 'MAINTENANCE':
 					$object->bedcode = '<i class="fa fa-gavel fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
 					break;
 				case 'ISOLATED':
 					$object->bedcode = '<i class="fa fa-bullhorn fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
 					break;
 				case 'RESERVE':
 					$object->bedcode = '<i class="fa fa-ban fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
 					break;				
 				default:
-					
 					$object->bedcode = '<i class="fa fa-bullhorn" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
 					break;
 			}
 			$object->description = $value;
@@ -78,15 +84,17 @@ class SysparamController extends Controller
 			switch ($value) {
 				case 'TRUE':
 					$object->stat = '<i class="fa fa-check fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = 1;
 					break;
 				case 'FALSE':
 					$object->stat = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = 0;
 					break;
 				default:				
 					$object->stat = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
 					break;
 			}
-			$object->description = $value;
 			$rows[$key] = $object;
 		}
 

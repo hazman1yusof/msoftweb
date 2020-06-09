@@ -1017,16 +1017,6 @@ class PatmastController extends defaultController
         DB::beginTransaction();
 
         try {
-
-
-                // $codeexist = DB::table('hisdb.corpstaff')
-                //     ->where('admsrccode','=',$request->adm_code);
-
-                // if($codeexist->exists()){
-                //     throw new \Exception('Admsrccode already exists', 500);
-                // }
-
-
                 DB::table('hisdb.docalloc')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -1050,9 +1040,36 @@ class PatmastController extends defaultController
 
                 return response($e->getMessage(), 500);
             }
+    }
 
-        
+    public function save_nok(Request $request){
 
+        DB::beginTransaction();
+
+        try {
+                DB::table('hisdb.nok_ec')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn'    =>  $request->mrn,
+                        'episno'  =>  $request->episno,
+                        'doctorcode'  =>  $request->doctorcode,
+                        'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
+                        'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'astatus'    =>  $request->status,
+                        'epistycode'    =>  $request->epistycode,
+                        'adddate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'adduser'    =>  session('username'),
+                        'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'    =>  session('username')
+                    ]);
+
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                return response($e->getMessage(), 500);
+            }
     }
 
     

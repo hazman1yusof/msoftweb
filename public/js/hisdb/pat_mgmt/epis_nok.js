@@ -161,9 +161,16 @@ $(document).ready(function () {
 	    	_token : $('#csrf_token').val(),
 	    	mrn : $("#mrn_episode").val(),
 	    	episno : $("#txt_epis_no").val(),
-	    	epistycode : $("#epistycode").val(),
-	    	doctorcode : $('#doc_doctorcode').val(),
-			status : doc_status
+			name : $("#nok_name").val(),
+			relationshipcode : $("#nok_relate").val(),
+			address1 : $("#nok_addr1").val(),
+			address3 : $("#nok_addr2").val(),
+			address3 : $("#nok_addr3").val(),
+			postcode : $("#nok_postcode").val(),
+			tel_h : $("#nok_telh").val(),
+			tel_hp : $("#nok_telhp").val(),
+			tel_o : $("#nok_telo").val(),
+			tel_o_ext : $("#nok_ext").val()
 	    };
 
 	    $.post( "/episode/save_nok", $.param(postobj) , function( data ) {

@@ -563,6 +563,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'Bed Status', name: 'bedcode', width: 200, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+				{ label: 'description', name: 'description', hidden:true},
 			],
 			urlParam: {
 				url:'./sysparam_bed_status',
@@ -571,15 +572,13 @@ $(document).ready(function () {
 			},
 			ondblClickRow: function (event) {
 
-				$(search_occup.textfield).val(selrowData("#"+search_occup.gridname)['description']);
+				let data = selrowData('#' + search_occup.gridname);
+				$("#searchForm input[name='Stext']").val(data.description);
 
-				// let data = selrowData('#' + search_occup.gridname).bedcode;
-				// $("#searchForm input[name='Stext']").val($('#b_occup').val());
-
-				// urlParam.searchCol=["b_occup"];
-				// urlParam.searchVal=[data];
-				// refreshGrid("#jqGrid3",null,"kosongkan");
-				// refreshGrid('#jqGrid', urlParam);
+				urlParam.searchCol=["b_occup"];
+				urlParam.searchVal=[data.description];
+				refreshGrid("#jqGrid3",null,"kosongkan");
+				refreshGrid('#jqGrid', urlParam);
 			}
 		},{
 			title: "Select Bed Status search",
@@ -601,8 +600,8 @@ $(document).ready(function () {
 		'search_b_statistic', 'hisdb.bed', '#b_statistic', 'errorField',
 		{
 			colModel: [
-				{ label: 'Statistic', name: 'statistic', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				//{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+				{ label: 'Statistic', name: 'stat', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', hidden: true },
 			],
 			urlParam: {
 				url:'./sysparam_stat',
@@ -610,15 +609,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','A']
 			},
 			ondblClickRow: function (event) {
-				$(search_statistic.textfield).val(selrowData("#"+search_statistic.gridname)['description']);
 
-				// let data = selrowData('#' + search_statistic.gridname).statistic;
-				// $("#searchForm input[name='Stext']").val($('#b_statistic').val());
+				let data = selrowData('#' + search_statistic.gridname);
+				$("#searchForm input[name='Stext']").val(data.description);
 
-				// urlParam.searchCol=["b_statistic"];
-				// urlParam.searchVal=[data];
-				// refreshGrid("#jqGrid3",null,"kosongkan");
-				// refreshGrid('#jqGrid', urlParam);
+				urlParam.searchCol=["b_statistic"];
+				urlParam.searchVal=[data.description];
+				refreshGrid("#jqGrid3",null,"kosongkan");
+				refreshGrid('#jqGrid', urlParam);
 			}
 		},{
 			title: "Select Statistic Search",
@@ -666,9 +664,9 @@ $(document).ready(function () {
 	// search_mrn.makedialog();
 	// search_mrn.on();
 
-	////////////////////// End Dialog for Search By btn////////////////////////////////////////////////////////////////////////////////
+	////////////////////// End Dialog for Search By btn//////////////////////
 
-	////////////////////// Start Dialog for jqGrid1////////////////////////////////////////////////////////////////////////////////
+	////////////////////// Start Dialog for jqGrid1//////////////////////////
 	
 	var dialog_bedtype = new ordialog(
 		'b_bedtype','hisdb.bedtype',"#jqGrid input[name='b_bedtype']",errorField,
@@ -883,7 +881,6 @@ $(document).ready(function () {
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 	//toogleSearch('#sbut1', '#searchForm', 'on');
-	populateSelect2('#jqGrid', '#searchForm');
 	searchClick2('#jqGrid', '#searchForm', urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////

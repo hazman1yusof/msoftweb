@@ -512,6 +512,7 @@ Route::post('/pat_mast/save_gl','hisdb\PatmastController@save_gl');
 
 
 Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');
+Route::post('/episode/save_nok','hisdb\PatmastController@save_nok');
 
 
 //// Emergency setup page ///
