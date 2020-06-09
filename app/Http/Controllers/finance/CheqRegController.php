@@ -60,7 +60,7 @@ class CheqRegController extends defaultController
             $endno = $request->endno;
             $cheqtran = DB::table('finance.chqtran')
                         ->whereBetween('cheqno', [$startno, $endno])
-                        ->where('bankcode','=',$request->bankcode);;
+                        ->where('bankcode','=',$request->bankcode);
 
 
             if($cheqtran->exists()){
@@ -127,30 +127,34 @@ class CheqRegController extends defaultController
 
         try {
 
-            $chqreg = DB::table('finance.chqreg')
+            //1. check duplicate
+
+            $chqreg_duplicate = DB::table('finance.chqreg')
                         ->where('startno','=',$request->startno)
                         ->where('bankcode','=',$request->bankcode);
 
 
-            if($chqreg->exists()){
+            if($chqreg_duplicate->exists()){
                 throw new \Exception("Record duplicate");
             }
 
 
             $startno = $request->startno;
             $endno = $request->endno;
-            $cheqtran = DB::table('finance.chqtran')
+
+            $cheqtran_duplicate = DB::table('finance.chqtran')
                         ->whereBetween('cheqno', [$startno, $endno])
-                        ->where('bankcode','=',$request->bankcode);;
+                        ->where('bankcode','=',$request->bankcode);
 
 
-            if($cheqtran->exists()){
+            if($cheqtran_duplicate->exists()){
                 throw new \Exception("Cheque No already exist");
             }
 
             $cheqtrancount = DB::table('finance.chqtran')->select('recstatus')
                             ->where('compcode', '=', session('compcode'))
                             ->where('bankcode', '=', $request->bankcode)
+                            ->where('cheqno', '>=', $request->startno)
                             ->where('cheqno', '<=', $request->endno)
                             ->where('recstatus', '<>', 'OPEN')
                             ->count();
@@ -214,29 +218,31 @@ class CheqRegController extends defaultController
 
         try {
 
-             $cheqtrancount = DB::table('finance.chqtran')->select('recstatus')
+            $startno = $request->startno;
+            $endno = $request->endno;
+
+             $cheqtrancount_del = DB::table('finance.chqtran')->select('recstatus', 'bankcode')
                                 ->where('compcode', '=', session('compcode'))
                                 ->where('bankcode', '=', $request->bankcode)
-                                ->where('cheqno', '<=', $request->endno)
-                                ->where('recstatus', '<>', 'OPEN')
-                                ->count();
+                                ->whereBetween('cheqno', [$startno, $endno])
+                                ->where('recstatus', '<>', 'OPEN');
+                                //->count();
 
-                if ($cheqtrancount->exists()){
+                if ($cheqtrancount_del->exists()){
                     throw new \Exception("Cannot delete. Cheque has been issued");
+                } else {
+                    DB::table('finance.chqreg')
+                        ->where('idno','=',$request->idno)
+                        ->update([  
+                            'recstatus' => 'DEACTIVE',
+                            'deluser' => session('username'),
+                            'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                    DB::table('finance.chqtran')
+                        ->where('idno','=',$request->idno)
+                        ->delete();
                 }
-
-            DB::table('finance.chqreg')
-                ->where('idno','=',$request->idno)
-                ->update([  
-                    'recstatus' => 'DEACTIVE',
-                    'deluser' => session('username'),
-                    'deldate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-            DB::table('finance.chqtran')
-                ->where('idno','=',$request->idno)
-                ->delete();
-
         } catch (\Exception $e) {
             DB::rollback();    
 

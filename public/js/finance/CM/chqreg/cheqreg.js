@@ -261,12 +261,12 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			//$('#p_error').text(response.responseText);
-			var data = JSON.parse(response.responseText)
+			$('#p_error').text(response.responseText);
+			/*var data = JSON.parse(response.responseText)
 			$('#p_error').text(data.errormsg);
 			err_reroll.old_data = data.request;
 			err_reroll.error = true;
-			err_reroll.errormsg = data.errormsg;
+			err_reroll.errormsg = data.errormsg;*/
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
@@ -352,8 +352,8 @@ $(document).ready(function () {
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 			
 	//toogleSearch('#sbut1','#searchForm','on');
-	populateSelect2('#gridCheqRegDetail','#searchForm');
-	searchClick2('#gridCheqRegDetail','#searchForm',urlParam_cheqregdtl);
+	/*populateSelect2('#gridCheqRegDetail','#searchForm');
+	searchClick2('#gridCheqRegDetail','#searchForm',urlParam_cheqregdtl);*/
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#gridCheqRegDetail',true,urlParam_cheqregdtl,['action','rn']);
@@ -364,6 +364,7 @@ $(document).ready(function () {
 
 	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
 		$("#gridCheqRegDetail").jqGrid ('setGridWidth', Math.floor($("#gridCheqRegDetail_c")[0].offsetWidth-$("#gridCheqRegDetail_c")[0].offsetLeft-28));
+		refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl);
 	});
 
 
