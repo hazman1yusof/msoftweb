@@ -41,7 +41,25 @@ $(document).ready(function () {
 
 	});
 
+	$('.mof_orderList').hide();
+
+	$('#feedingmode').change(function () {
+		$(this).find("option").each(function () {
+			$('#' + this.value).hide();
+		});
+		$('#' + this.value).show();
+
+	});
+
 });
+
+function yesnoCheck() {
+	if (document.getElementById('yesCheck').checked) {
+		document.getElementById('ifYes').style.display = 'inline-block';
+	}
+	else document.getElementById('ifYes').style.display = 'none';
+
+}
 
 var errorField = [];
 conf = {
@@ -89,6 +107,57 @@ function button_state_dietOrder(state){
 	// if(!moment(gldatepicker_date).isSame(moment(), 'day')){
 	// 	$('#new_dietOrder,#save_dietOrder,#cancel_dietOrder,#edit_dietOrder').attr('disabled',true);
 	// }
+}
+
+function populate_dietOrder(obj,rowdata){
+
+	//panel header
+	$('#name_show_dietOrder').text(obj.q_name);
+	$('#mrn_show_dietOrder').text(obj.q_mrn);
+	button_state_dietOrder('add');
+
+	//formDietOrder
+	$('#mrn_dietOrder').val(obj.q_mrn);
+	$("#episno_dietOrder").val(obj.q_episno);
+	
+}
+
+function saveForm_dietOrder(callback){
+	var saveParam={
+        action:'save_table_dietOrder',
+        oper:$("#cancel_dietOrder").data('oper')
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	// sex_edit : $('#sex_edit').val(),
+    	// idtype_edit : $('#idtype_edit').val()
+
+    };
+
+    values = $("#formDietOrder").serializeArray();
+	
+	values = values.concat(
+        $('#formDietOrder input[type=radio]:checked').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formDietOrder select').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+	);
+
+    $.post( "/dietorder/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
 }
 
 

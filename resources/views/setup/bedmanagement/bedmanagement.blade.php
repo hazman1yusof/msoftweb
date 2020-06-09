@@ -326,6 +326,12 @@ row.error td { background-color: red; }
 				</div>	
 			</div>
 		</div>
+
+		<div class='row'>
+
+			@include('hisdb.dietorder.dietorder')
+			
+		</div>
     </div>
 	<!-- ***************End Search + table ********************* -->
 
@@ -335,5 +341,7 @@ row.error td { background-color: red; }
 @section('scripts')
 
 	<script src="js/setup/bedmanagement/bedmanagement.js"></script>
+
+	<script src="js/hisdb/dietorder/dietorder.js"></script>
 	
 @endsection

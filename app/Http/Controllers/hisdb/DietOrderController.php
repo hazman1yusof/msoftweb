@@ -50,6 +50,22 @@ class DietOrderController extends defaultController
         DB::beginTransaction();
 
         try {
+
+            DB::table('nursing.dietorder')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_dietOrder,
+                        'episno' => $request->episno_dietOrder,
+                        'lodgerflag' => $request->lodgerflag,
+                        'lodgervalue' => $request->lodgervalue,
+                        'disposable' => $request->disposable,
+                        'remark' => $request->remark,
+                        'remarkkitchen' => $request->remarkkitchen,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
             
             DB::commit();
 
@@ -65,6 +81,20 @@ class DietOrderController extends defaultController
         DB::beginTransaction();
 
         try {
+
+            DB::table('nursing.dietorder')
+                ->where('mrn','=',$request->mrn_dietOrder)
+                ->where('episno','=',$request->episno_dietOrder)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'lodgerflag' => $request->lodgerflag,
+                    'lodgervalue' => $request->lodgervalue,
+                    'disposable' => $request->disposable,
+                    'remark' => $request->remark,
+                    'remarkkitchen' => $request->remarkkitchen,
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
 
             $queries = DB::getQueryLog();
             // dump($queries);
