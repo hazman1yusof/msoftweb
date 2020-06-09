@@ -74,6 +74,7 @@ $(document).ready(function () {
 				$("#pg_jqGridPager2 table").show();
 			}
 		},
+
 		
 	});
 
@@ -164,6 +165,12 @@ $(document).ready(function () {
 			
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
+			let stat = selrowData("#gridCheqRegDetail").recstatus;
+			if(stat=='OPEN'){
+				$("#jqGridPager2 td[title='Edit Selected Row']").click();
+			}else{
+				$("#jqGridPager2 td[title='View Selected Row']").click();
+			}
 			$("#jqGrid_iledit").click();
 			$('#p_error').text('');   
 		},
@@ -254,7 +261,12 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			$('#p_error').text(response.responseText);
+			//$('#p_error').text(response.responseText);
+			var data = JSON.parse(response.responseText)
+			$('#p_error').text(data.errormsg);
+			err_reroll.old_data = data.request;
+			err_reroll.error = true;
+			err_reroll.errormsg = data.errormsg;
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
@@ -312,7 +324,6 @@ $(document).ready(function () {
 							param = {
 								_token: $("#_token").val(),
 								action: 'cheqregDetail_save',
-								//uomcode: $('#uomcode').val(),
 								idno: selrowData('#gridCheqRegDetail').idno,
 							}
 							$.post( "/cheqregDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
