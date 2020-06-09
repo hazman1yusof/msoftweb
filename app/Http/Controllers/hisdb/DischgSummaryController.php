@@ -50,6 +50,23 @@ class DischgSummaryController extends defaultController
         DB::beginTransaction();
 
         try {
+
+            DB::table('hisdb.episode')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_dischgSummary,
+                        'episno' => $request->episno_dischgSummary,
+                        'dischargetime' => $request->dischargetime,
+                        'diagprov' => $request->diagprov,
+                        'diagfinal' => $request->diagfinal,
+                        'procedure' => $request->procedure,
+                        'treatment' => $request->treatment,
+                        'dischargestatus' => $request->dischargestatus,            
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
             
             DB::commit();
 
@@ -65,6 +82,21 @@ class DischgSummaryController extends defaultController
         DB::beginTransaction();
 
         try {
+
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn_dischgSummary)
+                ->where('episno','=',$request->episno_dischgSummary)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'dischargetime' => $request->dischargetime,
+                    'diagprov' => $request->diagprov,
+                    'diagfinal' => $request->diagfinal,
+                    'procedure' => $request->procedure,
+                    'treatment' => $request->treatment,
+                    'dischargestatus' => $request->dischargestatus,
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
 
             $queries = DB::getQueryLog();
             // dump($queries);

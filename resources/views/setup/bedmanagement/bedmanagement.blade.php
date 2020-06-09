@@ -342,6 +342,7 @@
 		<div class='row'>
 
 			@include('hisdb.dietorder.dietorder')
+			@include('hisdb.dischgsummary.dischgsummary')
 			
 		</div>
     </div>
@@ -355,5 +356,6 @@
 	<script src="js/setup/bedmanagement/bedmanagement.js"></script>
 
 	<script src="js/hisdb/dietorder/dietorder.js"></script>
+	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>
 	
 @endsection

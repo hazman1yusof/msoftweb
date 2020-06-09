@@ -25,7 +25,7 @@ $(document).ready(function () {
 	};
 	
 	var fdl = new faster_detail_load();
-	$("#jqGrid_trf_c, #jqGridDietOrder_c").hide();
+	$("#jqGrid_trf_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").hide();
 
 	function cust_rules(value,name){
 		var temp;
@@ -176,12 +176,12 @@ $(document).ready(function () {
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid_trf', urlParam2,'kosongkan');
-				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridDietOrder_c").hide();
+				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").hide();
 
 				if(rowData['q_mrn'] != '') {
 					urlParam2.filterVal[0] = selrowData('#jqGrid').q_mrn;
 					refreshGrid('#jqGrid_trf', urlParam2);
-					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridDietOrder_c").show();
+					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").show();
 					$("#jqGridPagerDelete").hide();
 					$("#jqGrid_iledit").hide();
 				}else if (rowData['q_mrn'] == '') {
@@ -191,6 +191,7 @@ $(document).ready(function () {
 			}
 
 			populate_dietOrder(selrowData("#jqGrid"));
+			populate_dischgSummary(selrowData("#jqGrid"));
 
 		},
 		loadComplete: function(){

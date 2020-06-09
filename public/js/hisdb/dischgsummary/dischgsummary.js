@@ -110,6 +110,71 @@ function button_state_dischgSummary(state){
 	// }
 }
 
+function populate_dischgSummary(obj,rowdata){
+
+	//panel header
+	$('#name_show_dischgSummary').text(obj.q_name);
+	$('#mrn_show_dischgSummary').text(obj.q_mrn);
+	button_state_dischgSummary('add');
+
+	//formDischgSummary
+	$('#mrn_dischgSummary').val(obj.q_mrn);
+	$("#episno_dischgSummary").val(obj.q_episno);
+	
+}
+
+function saveForm_dischgSummary(callback){
+	var saveParam={
+        action:'save_table_dischgSummary',
+        oper:$("#cancel_dischgSummary").data('oper')
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	// sex_edit : $('#sex_edit').val(),
+    	// idtype_edit : $('#idtype_edit').val()
+
+    };
+
+	values = $("#formDischgSummary").serializeArray();
+	
+	values = values.concat(
+        $('#formDischgSummary input[type=checkbox]:not(:checked)').map(
+        function() {
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formDischgSummary input[type=checkbox]:checked').map(
+        function() {
+            return {"name": this.name, "value": 1}
+        }).get()
+	);
+	
+	values = values.concat(
+        $('#formDischgSummary input[type=radio]:checked').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formDischgSummary select').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+	);
+
+    $.post( "/dischgsummary/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
+}
+
 
 
 
