@@ -75,53 +75,53 @@
 						
 							<div  id="show_bedtype" style="display:none">
 								<div class='input-group'>
-									<input id="b_bedtype" name="b_bedtype" type="text" maxlength="12" class="form-control input-sm">
+									<input id="s_bedtype" name="s_bedtype" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
 							</div>
 
-							<div  id="show_statistic" style="display:none">
+							<!-- <div  id="show_statistic" style="display:none">
 								<div class='input-group'>
 									<input id="b_statistic" name="b_statistic" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
-							</div>
+							</div> -->
 							
 							<div  id="show_occup" style="display:none">
 								<div class='input-group'>
-									<input id="b_occup" name="b_occup" type="text" maxlength="12" class="form-control input-sm">
+									<input id="occup" name="occup" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
 							</div>
 
-							<!-- <div  id="show_mrn" style="display:none">
+							<div  id="show_doc" style="display:none">
 								<div class='input-group'>
-									<input id="q_mrn" name="q_mrn" type="text" maxlength="12" class="form-control input-sm">
+									<input id="doc" name="doc" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
-							</div>  -->
+							</div> 
 						</div>
 
 						<div class="col-md-1" style="padding-left: 0px;">
-							<div id="div_bedtype" style="padding-left: 0px;padding-right: 70px;display:none">
+							<div id="div_bedtype" style="padding-left: 0px;max-width: 45px;display:none">
 								<label class="control-label"></label>
 								<a class='form-control btn btn-primary' id="btn_bedtype"><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-							<div id="div_statistic" style="padding-left: 0px;padding-right: 70px;display:none;margin: 0px">
+							<!-- <div id="div_statistic" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
 								<label class="control-label"></label>
 								<a class='form-control btn btn-primary' id="btn_statistic"><span class='fa fa-ellipsis-h'></span></a>
-							</div>
-							<div id="div_occup" style="padding-left: 0px;padding-right: 70px;display:none;margin: 0px">
+							</div> -->
+							<div id="div_occup" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
 								<label class="control-label"></label>
 								<a class='form-control btn btn-primary' id="btn_occup"><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-							<div id="div_mrn" style="padding-left: 0px;padding-right: 70px;display:none;margin: 0px">
+							<div id="div_doc" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
 								<label class="control-label"></label>
-								<a class='form-control btn btn-primary' id="btn_mrn"><span class='fa fa-ellipsis-h'></span></a>
+								<a class='form-control btn btn-primary' id="btn_doc"><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 						</div>
 		            </div>
@@ -245,7 +245,7 @@
 												
 													<label class="col-md-2 control-label" for="bedtype">Bed Type</label>  
 													<div class="col-md-4">
-														<input id="b_bedtype" name="b_bedtype" type="text" class="form-control input-sm uppercase">
+														<input id="bedtype" name="bedtype" type="text" class="form-control input-sm uppercase">
 													</div>
 													<span class="help-block"></span>
 												</div>													
