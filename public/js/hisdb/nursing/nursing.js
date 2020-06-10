@@ -160,8 +160,8 @@ function populate_formNursing(obj,rowdata){
 function populate_triage(obj,rowdata){
 
 	//panel header
-	$('#name_show_triage').text(obj.q_name);
-	$('#mrn_show_triage').text(obj.q_mrn);
+	$('#name_show_triage').text(obj.name);
+	$('#mrn_show_triage').text(obj.mrn);
 
 	document.getElementById('hiddentriage').style.display = 'inline';
 	

@@ -113,13 +113,13 @@ function button_state_dischgSummary(state){
 function populate_dischgSummary(obj,rowdata){
 
 	//panel header
-	$('#name_show_dischgSummary').text(obj.q_name);
-	$('#mrn_show_dischgSummary').text(obj.q_mrn);
+	$('#name_show_dischgSummary').text(obj.name);
+	$('#mrn_show_dischgSummary').text(obj.mrn);
 	button_state_dischgSummary('add');
 
 	//formDischgSummary
-	$('#mrn_dischgSummary').val(obj.q_mrn);
-	$("#episno_dischgSummary").val(obj.q_episno);
+	$('#mrn_dischgSummary').val(obj.mrn);
+	$("#episno_dischgSummary").val(obj.episno);
 	
 }
 

@@ -112,13 +112,13 @@ function button_state_dietOrder(state){
 function populate_dietOrder(obj,rowdata){
 
 	//panel header
-	$('#name_show_dietOrder').text(obj.q_name);
-	$('#mrn_show_dietOrder').text(obj.q_mrn);
+	$('#name_show_dietOrder').text(obj.name);
+	$('#mrn_show_dietOrder').text(obj.mrn);
 	button_state_dietOrder('add');
 
 	//formDietOrder
-	$('#mrn_dietOrder').val(obj.q_mrn);
-	$("#episno_dietOrder").val(obj.q_episno);
+	$('#mrn_dietOrder').val(obj.mrn);
+	$("#episno_dietOrder").val(obj.episno);
 	
 }
 
