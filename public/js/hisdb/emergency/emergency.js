@@ -290,6 +290,8 @@ $(document).ready(function () {
 			}else{
 				$('#'+sel_idno).click();
 			}
+
+			document.getElementById('hiddenti').style.display = 'inline'; //hide and show heading details dekat triage
 		}
 	});
 
