@@ -21,15 +21,21 @@
 			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 		</button>
 	</div>
-	<div class="panel-heading clearfix collapsed" id="toggle_ti" data-toggle="collapse" data-target="#jqGridTriageInfo_panel">
-		<b><span id="name_show_ti"></span></b><br>
-		<span id="newic_show_ti"></span>
-		<span id="sex_show_ti"></span>
-		<span id="age_show_ti"></span>
-		<span id="race_show_ti"></span>
+	<div class="panel-heading clearfix collapsed position" id="toggle_ti" data-toggle="collapse" data-target="#jqGridTriageInfo_panel">
+		<p id="hiddenti" style="display:none">
+			<b><span id="name_show_ti"></span></b><br>
+			<span id="newic_show_ti"></span>
+			<span id="sex_show_ti"></span>
+			<span id="age_show_ti"></span>
+			<span id="race_show_ti"></span>
+		</p>
+		<p id="hiddentriage" style="display:none">
+			<b>Name: <span id="name_show_triage"></span></b><br>
+			MRN: <span id="mrn_show_triage"></span>
+		</p>
 
-		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
 			<h5>Triage Information</h5>
 		</div>				

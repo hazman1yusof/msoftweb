@@ -52,6 +52,60 @@
 		top: -10px;
 	}
 
+	tr.yellow{
+		background-color:yellow !important;
+	}
+
+	input.yellow{
+		color: black !important;
+		border-color:#9e9e00 !important;
+		background-color:yellow !important;
+	}
+
+	a.yellow{
+		color: #9e9e00 !important;
+		background-color: #fdffe2 !important;
+		border-color: #9e9e00 !important;
+	}
+
+	tr.red{
+		color:white;
+		background-color:red !important;
+	}
+
+	input.red{
+		color: white !important;
+		border-color:red !important;
+		background-color:red !important;
+	}
+
+	a.red{
+		color: red !important;
+		background-color: #ffe5e5 !important;
+		border-color: red !important;
+	}
+
+	tr.green{
+		color:white;
+		background-color:green !important;
+	}
+
+	input.green{
+		color: white !important;
+		border-color:green !important;
+		background-color:green !important;
+	}
+
+	a.green{
+		color: #3c763d !important;
+		background-color: #dff0d8 !important;
+		border-color: #3c763d !important;
+	}
+
+	.panelbgcolor {
+		background-color: #C0C0C0 !important;
+	}
+
 @endsection
 
 @section('body')
@@ -340,7 +394,8 @@
 		</div>
 
 		<div class='row'>
-
+		
+			@include('hisdb.nursing.nursing')
 			@include('hisdb.dietorder.dietorder')
 			@include('hisdb.dischgsummary.dischgsummary')
 			
@@ -354,7 +409,7 @@
 @section('scripts')
 
 	<script src="js/setup/bedmanagement/bedmanagement.js"></script>
-
+	<script src="js/hisdb/nursing/nursing.js"></script>
 	<script src="js/hisdb/dietorder/dietorder.js"></script>
 	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>
 	
