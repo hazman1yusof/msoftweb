@@ -192,6 +192,7 @@ $(document).ready(function () {
 
 			populate_dietOrder(selrowData("#jqGrid"));
 			populate_dischgSummary(selrowData("#jqGrid"));
+			populate_form_trf(selrowData("#jqGrid"));
 
 		},
 		loadComplete: function(){
@@ -267,7 +268,7 @@ $(document).ready(function () {
 			$("#div_bedtype").hide();
 			$("#div_statistic").hide();
 			$("#div_occup").hide();			
-			$("#div_mrn").show();			
+			$("#div_mrn").hide();			
 		} else {
 			$("#div_statistic,#div_bedtype,#div_occup,#div_mrn").hide();
 		}
@@ -1020,7 +1021,7 @@ $(document).ready(function () {
 	});
 
 	function populate_form_trf(rowdata){
-		$('#name_show').text(selrowData("#jqGrid").b_name);
+		$('#name_show').text(selrowData("#jqGrid").q_name);
 		$('#bednum_show').text(selrowData("#jqGrid").b_bednum);	
 		autoinsert_rowdata("#form_trf",rowdata);
 		$('input[name=trf_aedate]').val(moment().format('YYYY-MM-DD'));
