@@ -149,7 +149,7 @@ $(document).ready(function () {
 			{ label: ' ', name: 'episno', width: 5},
 			{ label: 'Patient Name', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
 			{ label: 'Doctor Code', name: 'admdoctor', width: 25, canSearch: true, formatter: showdetail},
-            { label: 'Record Status', name: 'recstatus', width: 15, classes: 'wrap', hidden:true, editable: true, edittype:"select",formatter:'select', 
+            { label: 'Record Status', name: 'recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)
@@ -338,7 +338,9 @@ $(document).ready(function () {
 		if (cellvalue == 'A') {
 			return 'Active';
 		}else if (cellvalue == 'D') {
-			return 'Deactive' ? 'class="alert alert-danger"': '';
+			// return 'Deactive' ? 'class="alert alert-danger"': '';
+			return '<span class="fa fa-times"></span>';
+			// return '<i class="fa fa-times" aria-hidden="true"></i> DEACTIVE';
 		}
 	}
 
