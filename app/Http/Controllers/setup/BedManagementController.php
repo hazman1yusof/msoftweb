@@ -279,17 +279,26 @@ class BedManagementController extends defaultController
                 ]);
 
             //2 edit bed
-            DB::table('hisdb.bed')
-                ->where('idno','=',$request->b_idno)
+            DB::table('hisdb.bed') //curent bed
+                ->where('compcode','=',session('compcode'))
+                ->where('bednum','=',$request->ba_bednum)
                 ->update([  
-                    'occup' => 'VACANT'
+                    'occup' => 'VACANT',
+                    'mrn' => NULL,
+                    'episno' => NULL,
+                    'name' => NULL,
+                    'admdoctor' => NULL
                 ]);
 
-            DB::table('hisdb.bed')
+            DB::table('hisdb.bed') //trf bed
                 ->where('compcode','=',session('compcode'))
                 ->where('bednum','=',$request->trf_bednum)
                 ->update([  
-                    'occup' => 'OCCUPIED'
+                    'occup' => 'OCCUPIED',
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'name' => $request->name,
+                    'admdoctor' => $request->admdoctor
                 ]);
 
             //3. edit episode

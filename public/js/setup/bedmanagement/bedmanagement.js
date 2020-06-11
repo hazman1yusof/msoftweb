@@ -44,9 +44,10 @@ $(document).ready(function () {
 		var field,table,case_;
 		switch(options.colModel.name){
 			case 'bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
+			case 'b_bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='b_bedtype';break;
 			case 'ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
 			case 'admdoctor': field = ['doctorcode', 'doctorname']; table = "hisdb.doctor";case_='doccode';break;
-			case 'ba_ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
+			case 'ba_ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ba_ward';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -148,12 +149,9 @@ $(document).ready(function () {
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5},
 			{ label: 'Patient Name', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
-			{ label: 'Doctor Code', name: 'admdoctor', width: 25, canSearch: true, formatter: showdetail},
-            { label: 'Record Status', name: 'recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
-				editoptions:{
-				value:"A:ACTIVE;D:DEACTIVE"},
-				cellattr: function(rowid, cellvalue)
-						{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
+			{ label: 'Doctor Code', name: 'admdoctor', width: 25, canSearch: true, formatter: showdetail, unformat:un_showdetail},
+            { label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true, edittype:"select",formatter:formatterstatus_tick,unformat:unformatstatus_tick,
+				editoptions:{value:"A:ACTIVE;D:DEACTIVE"},
 			},
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
@@ -204,11 +202,6 @@ $(document).ready(function () {
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
-			}
-			if(selrowData("#jqGrid").recstatus == "D")  /////if recstatus = D, nak whole row ni berubah color /////////////////////////////////////////////////
-			{
-				return rowcolor();
-				
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
@@ -332,39 +325,6 @@ $(document).ready(function () {
 		});
 
 	}
-
-	////////////////////formatter status////////////////////////////////////////
-	function rowcolor(cellvalue, option, rowObject) {
-		if (cellvalue == 'A') {
-			return 'Active';
-		}else if (cellvalue == 'D') {
-			// return 'Deactive' ? 'class="alert alert-danger"': '';
-			return '<span class="fa fa-times"></span>';
-			// return '<i class="fa fa-times" aria-hidden="true"></i> DEACTIVE';
-		}
-	}
-
-	// ////////////////////formatter status////////////////////////////////////////
-	// function formatteroccup(cellvalue, option, rowObject) {
-	// 	if (cellvalue == '1') {
-	// 		return 'OCCUPIED';
-	// 	}else if (cellvalue == '0') {
-	// 		return 'VACANT';
-	// 	}else{
-	// 		return 'VACANT';
-	// 	}
-	// }
-
-	// ////////////////////unformatter status////////////////////////////////////////
-	// function unformatoccup(cellvalue, option, rowObject) {
-	// 	if (cellvalue == 'OCCUPIED') {
-	// 		return '1';
-	// 	}else if (cellvalue == 'VACANT') {
-	// 		return '0';
-	// 	}else{
-	// 		return '0';
-	// 	}
-	// }
 
 	var myEditOptions = {
 		keys: true,
@@ -579,9 +539,16 @@ $(document).ready(function () {
 
 				let data = selrowData('#' + search_occup.gridname);
 				$("#searchForm input[name='Stext']").val(data.description);
+				console.log(data.description);
+				if(data.description == 'ACTIVE' || data.description == 'DEACTIVE'){
+					let val_use = (data.description == 'ACTIVE')? 'A':'D';
+					urlParam.searchCol=["recstatus"];
+					urlParam.searchVal=[val_use];
+				}else{
+					urlParam.searchCol=["occup"];
+					urlParam.searchVal=[data.description];
+				}
 
-				urlParam.searchCol=["occup"];
-				urlParam.searchVal=[data.description];
 				refreshGrid("#jqGrid3",null,"kosongkan");
 				refreshGrid('#jqGrid', urlParam);
 			}
@@ -596,45 +563,6 @@ $(document).ready(function () {
 	);
 	search_occup.makedialog();
 	search_occup.on();
-
-
-	// $('#btn_statistic').on( "click", function() {
-	// 	$('#statistic ~ a').click();
-	// });
-	// var search_statistic = new ordialog(
-	// 	'search_statistic', 'hisdb.bed', '#statistic', 'errorField',
-	// 	{
-	// 		colModel: [
-	// 			{ label: 'Statistic', name: 'stat', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-	// 			{ label: 'Description', name: 'description', hidden: true },
-	// 		],
-	// 		urlParam: {
-	// 			url:'./sysparam_stat',
-	// 			filterCol:['compcode','recstatus'],
-	// 			filterVal:['session.compcode','A']
-	// 		},
-	// 		ondblClickRow: function (event) {
-
-	// 			let data = selrowData('#' + search_statistic.gridname);
-	// 			$("#searchForm input[name='Stext']").val(data.description);
-
-	// 			urlParam.searchCol=["statistic"];
-	// 			urlParam.searchVal=[data.description];
-	// 			refreshGrid("#jqGrid3",null,"kosongkan");
-	// 			refreshGrid('#jqGrid', urlParam);
-	// 		}
-	// 	},{
-	// 		title: "Select Statistic Search",
-	// 		open: function () {
-	// 			search_statistic.urlParam.filterCol=['compcode', 'recstatus'];
-	// 			search_statistic.urlParam.filterVal=['session.compcode', 'A'];
-	// 		},
-	// 		width:5/10 * $(window).width()
-	// 	},'urlParam','radio','tab'
-	// );
-	// search_statistic.makedialog();
-	// search_statistic.on();	
-
 
 	$('#btn_doc').on( "click", function() {
 		$('#doc ~ a').click();
@@ -846,15 +774,15 @@ $(document).ready(function () {
 			{ label: 'Start Time', name: 'ba_astime', width: 5, classes: 'wrap'},
             { label: 'Bed No', name: 'ba_bednum', width: 7},
 			{ label: 'Room', name: 'ba_room', width: 10},
-			{ label: 'Bed Type', name: 'bedtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
-				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+			{ label: 'Bed Type', name: 'b_bedtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
 					{	custom_element:bedTypeTRFCustomEdit,
 						custom_value:galGridCustomValue 	
 					},
 			},
 			{ label: 'Ward', name: 'ba_ward', width: 15 , classes: 'wrap', editable:true,
-				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
+				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
 					{ 	custom_element:wardTRFCustomEdit,
 						custom_value:galGridCustomValue 	
@@ -874,6 +802,7 @@ $(document).ready(function () {
 		sortorder: 'desc',
 		pager: "#jqGridPager3",
 		onSelectRow:function(rowid, selected){
+			console.log(selrowData("#jqGrid_trf"));
 			populate_form_trf(selrowData("#jqGrid_trf"));
 		},
 		loadComplete: function(){
@@ -887,7 +816,7 @@ $(document).ready(function () {
 		},
 		gridComplete: function(){
 
-			// fdl.set_array().reset();
+			fdl.set_array().reset();
 			// if(!hide_init){
 			// 	hide_init=1;
 			// 	hideatdialogForm_jqGrid_trf(false);
@@ -1077,6 +1006,7 @@ $(document).ready(function () {
 	    	name: selrowData("#jqGrid").name,
 	    	mrn : selrowData("#jqGrid").mrn,
 			episno : selrowData("#jqGrid").episno,
+			admdoctor : selrowData("#jqGrid").admdoctor,
 			idno : selrowData("#jqGrid").idno,
 	    };
 

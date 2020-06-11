@@ -610,6 +610,14 @@ function formatterstatus(cellvalue, option, rowObject) {
 	}
 }
 
+function formatterstatus_tick(cellvalue, option, rowObject) {
+	if (cellvalue == 'A') {
+		return '<span class="fa fa-check" ></span>';
+	}else if (cellvalue == 'D') {
+		return '<span class="fa fa-times" ></span>';
+	}
+}
+
 ////////////////////unformatter status////////////////////////////////////////
 function unformatstatus(cellvalue, option, rowObject) {
 	if (cellvalue == 'Active') {
@@ -617,6 +625,21 @@ function unformatstatus(cellvalue, option, rowObject) {
 	}else if (cellvalue == 'Deactive') {
 		return 'D';
 	}
+}
+
+function unformatstatus_tick(cellvalue, option, rowObject) {
+	if (cellvalue == '<span class="fa fa-2x fa-check" style="color:green"></span>') {
+		return 'A';
+	}else if (cellvalue == '<span class="fa fa-2x fa-times" style="color:red"></span>') {
+		return 'D';
+	}
+}
+
+function un_showdetail(cellvalue, option, rowObject){
+	let val = $(rowObject).html();
+	val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+	
+	return val;
 }
 
 function jqgrid_label_align_right(grid){

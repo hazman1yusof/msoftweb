@@ -50,7 +50,15 @@ class SysparamController extends Controller
 				case 'RESERVE':
 					$object->bedcode = '<i class="fa fa-ban fa-2x" aria-hidden="true"></i> '.$value;
 					$object->description = $value;
-					break;				
+					break;	
+				case 'ACTIVE':
+					$object->bedcode = '<i class="fa fa-check fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
+					break;
+				case 'DEACTIVE':
+					$object->bedcode = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
+					break;			
 				default:
 					$object->bedcode = '<i class="fa fa-bullhorn" aria-hidden="true"></i> '.$value;
 					$object->description = $value;

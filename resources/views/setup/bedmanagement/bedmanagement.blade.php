@@ -299,7 +299,7 @@
 												
 													<label class="col-md-2 control-label" for="bedtype">Bed Type</label>  
 													<div class="col-md-4">
-														<input id="bedtype" name="bedtype" type="text" class="form-control input-sm uppercase">
+														<input id="b_bedtype" name="b_bedtype" type="text" class="form-control input-sm uppercase">
 													</div>
 													<span class="help-block"></span>
 												</div>													

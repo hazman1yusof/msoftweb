@@ -87,8 +87,7 @@ $(document).ready(function () {
 		action: 'get_table',
 		url: '/bed/table',
 		field: '',
-		table_name: ['hisdb.bed as b'],
-		table_id: 'b_compcode',
+		table_name: 'hisdb.bed as b',
 		sort_idno: true,
 		filterCol:['b.compcode'],
 		filterVal:['session.compcode']
