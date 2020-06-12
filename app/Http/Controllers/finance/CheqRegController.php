@@ -171,7 +171,7 @@ class CheqRegController extends defaultController
             }
 
 
-          /*  $cheqtrancount = DB::table('finance.chqtran')->select('recstatus')
+            $cheqtrancount = DB::table('finance.chqtran')->select('recstatus')
                             ->where('compcode', '=', session('compcode'))
                             ->where('bankcode', '=', $request->bankcode)
                             ->where('cheqno', '>=', $request->startno)
@@ -181,7 +181,7 @@ class CheqRegController extends defaultController
 
             if ($cheqtrancount->exists()){
                 throw new \Exception("Cannot edit. Cheque has been issued");
-            }*/
+            }
 
             //dd($cheqtrancount);
 
