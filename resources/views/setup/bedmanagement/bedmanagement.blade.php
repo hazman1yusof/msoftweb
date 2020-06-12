@@ -200,11 +200,12 @@
 							<p><i class="fa fa-ban" aria-hidden="true"></i> RESERVE: <span id="stat_reserve"></span></p>
 					  	</div>
 						<div class="col-md-6" style="">
-							<p><i class="fa fa-check" aria-hidden="true"></i> ACTIVE: <span id="stat_active"></span></p>
-					  	</div>
-						<div class="col-md-6" style="">
 							<p><i class="fa fa-times" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
-					  	</div>
+					  	</div>  
+						<!-- <div class="col-md-6" style="">
+							<p><i class="fa fa-check" aria-hidden="true"></i> ACTIVE: <span id="stat_active"></span></p>
+					  	</div> -->
+
 		            </div>
 
 				</div>
