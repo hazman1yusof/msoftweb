@@ -397,6 +397,7 @@
 		<div class='row'>
 		
 			@include('hisdb.nursing.nursing')
+			@include('hisdb.wardpanel.wardpanel')
 			@include('hisdb.dietorder.dietorder')
 			@include('hisdb.dischgsummary.dischgsummary')
 			
@@ -411,6 +412,7 @@
 
 	<script src="js/setup/bedmanagement/bedmanagement.js"></script>
 	<script src="js/hisdb/nursing/nursing.js"></script>
+	<script src="js/hisdb/wardpanel/wardpanel.js"></script>
 	<script src="js/hisdb/dietorder/dietorder.js"></script>
 	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>
 	
