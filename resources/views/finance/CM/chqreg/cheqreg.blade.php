@@ -61,13 +61,13 @@ i.fa {
 		    </div>
 		</div>
 
-		<div class="panel panel-default" id="gridCheqRegDetail_c">
+		<div class="panel panel-default" id="gridCheqRegDetail_c" style="position: relative;">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel1">
 
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
     			Cheque Detail </div>
-    			<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;color: red">
+    			<div style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;color: red">
 						<p id="p_error"></p>
 					</div>
 				<div id="jqGrid3_panel1" class="panel-collapse collapse">

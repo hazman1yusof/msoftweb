@@ -26,7 +26,7 @@ $(document).ready(function () {
 	};
 
 	var fdl = new faster_detail_load();
-	// var err_reroll = new err_reroll('#gridCheqRegDetail',['startno','endno']);
+	var err_reroll = new err_reroll('#gridCheqRegDetail',['startno','endno']);
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
@@ -134,7 +134,7 @@ $(document).ready(function () {
 			{ label: 'Cheq Qty', name: 'cheqqty', width: 30, hidden:true,},
 			{ label: 'Recstatus', name: 'recstatus', width: 30, hidden:false,},
 			{ label: 'Action', name: 'action', hidden: true,width :10,  formatoptions: { keys: false, editbutton: true, delbutton: true }, formatter: 'actions'},
-			{label: 'idno', name: 'idno', hidden: true},
+			{label: 'idno', name: 'idno', hidden: true,editable: true},
 			{label: 'rn', name: 'rn', hidden: true},
 		],
 		autowidth:true,
@@ -150,7 +150,7 @@ $(document).ready(function () {
 		sord: "desc",
 		pager: "#jqGridPager2",
 		onSelectRow:function(rowid, selected){
-			// if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
+			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
@@ -159,9 +159,9 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
-			// if(err_reroll.error == true){
-			// 	err_reroll.reroll();
-			// }
+			if(err_reroll.error == true){
+				err_reroll.reroll();
+			}
 			
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -208,9 +208,9 @@ $(document).ready(function () {
 		errorfunc: function(rowid,response){
 			var data = JSON.parse(response.responseText)
 			$('#p_error').text(data.errormsg);
-			// err_reroll.old_data = data.request;
-			// err_reroll.error = true;
-			// err_reroll.errormsg = data.errormsg;
+			err_reroll.old_data = data.request;
+			err_reroll.error = true;
+			err_reroll.errormsg = data.errormsg;
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
@@ -264,9 +264,9 @@ $(document).ready(function () {
 			//$('#p_error').text(response.responseText);
 			var data = JSON.parse(response.responseText)
 			$('#p_error').text(data.errormsg);
-			// err_reroll.old_data = data.request;
-			// err_reroll.error = true;
-			// err_reroll.errormsg = data.errormsg;
+			err_reroll.old_data = data.request;
+			err_reroll.error = true;
+			err_reroll.errormsg = data.errormsg;
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
@@ -369,11 +369,14 @@ $(document).ready(function () {
 		this.errormsg = 'asdsds';
 		this.old_data;
 		this.reroll=function(){
-
 			$('#p_error').text(this.errormsg);
 			var self = this;
-			$(this.jqgridname+"_iladd").click();
-			$(this.jqgridname+"_iledit").click();
+
+			if(this.old_data.oper == "add"){
+				$(this.jqgridname+"_iladd").click();
+			}else if(this.old_data.oper == "edit"){
+				$(this.jqgridname+"_iledit").click();
+			}
 
 			this.data_array.forEach(function(item,i){
 				$(self.jqgridname+' input[name="'+item+'"]').val(self.old_data[item]);
