@@ -13,12 +13,12 @@ class CheqRegController extends defaultController
 {   
 
     var $table;
-    var $duplicateCode;
+   // var $duplicateCode;
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "startno";
+       // $this->duplicateCode = "startno";
     }
 
     public function show(Request $request)
@@ -262,19 +262,17 @@ class CheqRegController extends defaultController
 
                     DB::table('finance.chqtran')
                         ->where('compcode', '=', session('compcode'))
+                        ->where('idno','=',$request->idno)
                         ->where('bankcode', '=', $request->bankcode)
                         ->where('cheqno', '>=', $startno_old)
                         ->where('cheqno', '<=', $endno_old)
                         ->delete();
-                }
+            }
+            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();    
-            
-            $responce = new stdClass();
-            $responce->errormsg = $e->getMessage();
-            $responce->request = $_REQUEST;
 
-            return response(json_encode($responce), 500);
+           return response($e->getMessage(), 500);
         }    
     }
 }

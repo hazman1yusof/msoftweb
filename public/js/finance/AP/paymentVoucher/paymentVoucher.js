@@ -1128,7 +1128,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','OPEN']
 			},
 			ondblClickRow: function () {
 				$('#apacthdr_cheqdate').focus();
@@ -1147,7 +1147,7 @@ $(document).ready(function () {
 			title:"Select Cheque No",
 			open: function(){
 				dialog_cheqno.urlParam.filterCol=['compcode','recstatus', 'bankcode'],
-				dialog_cheqno.urlParam.filterVal=['session.compcode','A', $('#apacthdr_bankcode').val()]
+				dialog_cheqno.urlParam.filterVal=['session.compcode','OPEN', $('#apacthdr_bankcode').val()]
 			}
 		},'urlParam','radio','tab'
 	);

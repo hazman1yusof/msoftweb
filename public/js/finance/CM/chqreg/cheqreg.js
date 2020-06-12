@@ -324,6 +324,8 @@ $(document).ready(function () {
 							param = {
 								_token: $("#_token").val(),
 								action: 'cheqregDetail_save',
+								//bankcode: $('#bankcode').val(),
+								cheqno: $('#cheqno').val(),
 								idno: selrowData('#gridCheqRegDetail').idno,
 							}
 							$.post( "/cheqregDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
