@@ -125,12 +125,6 @@ class CheqRegController extends defaultController
         DB::beginTransaction();
 
         try {
-
-            if(!empty($request->idno)){
-                $idno_ = $request->idno;
-            }else{
-                $idno_ = $request->idno;
-            }
             
             $cheqreg = DB::table('finance.chqreg')
                 ->where('compcode', '=', session('compcode'))
