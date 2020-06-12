@@ -151,6 +151,14 @@ $(document).ready(function () {
 		pager: "#jqGridPager2",
 		onSelectRow:function(rowid, selected){
 			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
+
+			let stat = selrowData("#gridCheqRegDetail").recstatus;
+			if(stat=='DEACTIVE'){
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+				//$("#jqGridPager2 td[title='View Selected Row']").click();
+			}else{
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+			}
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
@@ -165,12 +173,7 @@ $(document).ready(function () {
 			
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			let stat = selrowData("#gridCheqRegDetail").recstatus;
-			if(stat=='OPEN'){
-				$("#jqGridPager2 td[title='Edit Selected Row']").click();
-			}else{
-				$("#jqGridPager2 td[title='View Selected Row']").click();
-			}
+			
 			$("#jqGrid_iledit").click();
 			$('#p_error').text('');   
 		},
