@@ -330,7 +330,7 @@ $(document).ready(function () {
 							}
 							$.post( "/cheqregDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function (data) {
-								//////////////////errorText(dialog,data.responseText);
+								$('#p_error').text(data.responseText);
 							}).done(function (data) {
 								refreshGrid("#gridCheqRegDetail", urlParam_cheqregdtl);
 							});

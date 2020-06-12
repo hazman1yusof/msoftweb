@@ -237,37 +237,36 @@ class CheqRegController extends defaultController
 
             $startno_old = $cheqreg_get->startno;
             $endno_old = $cheqreg_get->endno;
-            $startno = $request->startno;
-            $endno = $request->endno;
 
            
             $cheqtrancount = DB::table('finance.chqtran')->select('recstatus')
                             ->where('compcode', '=', session('compcode'))
-                            ->where('bankcode', '=', $request->bankcode)
+                            ->where('bankcode', '=', $cheqreg_get->bankcode)
                             ->where('cheqno', '>=', $startno_old)
                             ->where('cheqno', '<=', $endno_old)
                             ->where('recstatus', '<>', 'OPEN');
 
             if ($cheqtrancount->exists()){
-                throw new \Exception("Cannot edit. Cheque has been issued");
+                throw new \Exception("Cannot delete. Cheque has been issued");
 
-            } else {
-                    DB::table('finance.chqreg')
-                        ->where('idno','=',$request->idno)
-                        ->update([  
-                            'recstatus' => 'DEACTIVE',
-                            'deluser' => session('username'),
-                            'deldate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-                    DB::table('finance.chqtran')
-                        ->where('compcode', '=', session('compcode'))
-                        ->where('idno','=',$request->idno)
-                        ->where('bankcode', '=', $request->bankcode)
-                        ->where('cheqno', '>=', $startno_old)
-                        ->where('cheqno', '<=', $endno_old)
-                        ->delete();
             }
+
+            DB::table('finance.chqreg')
+                ->where('compcode', '=', session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->update([  
+                    'recstatus' => 'DEACTIVE',
+                    'deluser' => session('username'),
+                    'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+            ]);
+
+            DB::table('finance.chqtran')
+                ->where('compcode', '=', session('compcode'))
+                ->where('bankcode', '=', $cheqreg_get->bankcode)
+                ->where('cheqno', '>=', $startno_old)
+                ->where('cheqno', '<=', $endno_old)
+                ->delete();
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();    
