@@ -192,7 +192,7 @@ class CheqRegController extends defaultController
                     ->where('idno','=',$request->idno)
                     ->where('bankcode', '=>', strtoupper($request->bankcode))
                     ->update([  
-                        'startno' => ($request->startno),
+                        'startno' => $request->startno,
                         'endno' => $request->endno,
                         'cheqqty' => $request->endno -$request->startno+1,
                         'recstatus' => 'OPEN',
