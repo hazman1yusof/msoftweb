@@ -63,122 +63,122 @@
 
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="feedingmode">Mode of Feeding</label>
-									<div class="col-md-5">
-										<select id="feedingmode" class="form-control">
-											<option value='diet1' selected>Oral</option>
-											<option value='diet2'>Nil by Mouth</option>
-											<option value='diet3'>Ryles Tube Feeding</option>
-											<option value='diet4'>Restriction of Fluid</option>
-											<option value='diet5'>Total Parenteral Nutrition</option>
-										</select>
+									<div class="col-md-6">
+										<label class="radio-inline">
+											<input type="radio" onclick="javascript:feedingOral();" name="oral" value="1">Oral
+										</label>
+										<label class="radio-inline">
+											<input type="radio" onclick="javascript:feedingOthers();" name="nbm" value="1">Nil by Mouth
+										</label>
+										<label class="radio-inline">
+											<input type="radio" onclick="javascript:feedingOthers();" name="rtf" value="1">Ryles Tube Feeding
+										</label>
+										<label class="radio-inline">
+											<input type="radio" onclick="javascript:feedingOthers();" name="rof" value="1">Restriction of Fluid
+										</label>
+										<label class="radio-inline">
+											<input type="radio" onclick="javascript:feedingOthers();" name="tpn" value="1">Total Parenteral Nutrition
+										</label>
 									</div>
-									<!-- Button trigger modal -->
-									<div id="diet1" class="mof_orderList">
-										<button type="button" class="btn btn-light" data-toggle="modal" data-target="#mof_oral">
-											Order List
-										</button>
-									</div>
-									<!-- Button trigger modal ends -->
-									<!-- Modal -->
-									<div class="modal fade" id="mof_oral" tabindex="-1" role="dialog" aria-labelledby="mof_oralLabel" aria-hidden="true">
-										<div class="modal-dialog modal-dialog-centered" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title" id="mof_oralLabel">Diet Order List</h5>
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position: absolute; padding: 0 0 0 0; right: 20px; top: 15px;">
-														<span aria-hidden="true">&times;</span>
-													</button>
-												</div>
-												<div class="modal-body">
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="regular_a" id="regular_a" value="1">
-														<label class="form-check-label" for="regular_a">Regular (A)</label>
-													</div>
+								</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="regular_b" id="regular_b" value="1">
-														<label class="form-check-label" for="regular_b">Regular (B)</label>
-													</div>
+								<div class="form-group" id="ifOral" style="display:none">
+									<div class="col-sm-6 col-sm-offset-3">
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">Diet Order List</div>
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-6 col-sm-5">
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="regular_a" id="regular_a" value="1">
+															<label class="form-check-label" for="regular_a">Regular (A)</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="soft" id="soft" value="1">
-														<label class="form-check-label" for="soft">Soft</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="regular_b" id="regular_b" value="1">
+															<label class="form-check-label" for="regular_b">Regular (B)</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="vegetarian_c" id="vegetarian_c" value="1">
-														<label class="form-check-label" for="vegetarian_c">Vegetarian (C)</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="soft" id="soft" value="1">
+															<label class="form-check-label" for="soft">Soft</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="western_d" id="western_d" value="1">
-														<label class="form-check-label" for="western_d">Western (D)</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="vegetarian_c" id="vegetarian_c" value="1">
+															<label class="form-check-label" for="vegetarian_c">Vegetarian (C)</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="highprotein" id="highprotein" value="1">
-														<label class="form-check-label" for="highprotein">High Protein</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="western_d" id="western_d" value="1">
+															<label class="form-check-label" for="western_d">Western (D)</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="highcalorie" id="highcalorie" value="1">
-														<label class="form-check-label" for="highcalorie">High Calorie</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="highprotein" id="highprotein" value="1">
+															<label class="form-check-label" for="highprotein">High Protein</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="highfiber" id="highfiber" value="1">
-														<label class="form-check-label" for="highfiber">High Fiber</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="highcalorie" id="highcalorie" value="1">
+															<label class="form-check-label" for="highcalorie">High Calorie</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="diabetic" id="diabetic" value="1">
-														<label class="form-check-label" for="diabetic">Diabetic</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="highfiber" id="highfiber" value="1">
+															<label class="form-check-label" for="highfiber">High Fiber</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="lowprotein" id="lowprotein" value="1">
-														<label class="form-check-label" for="lowprotein">Low Protein</label>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="diabetic" id="diabetic" value="1">
+															<label class="form-check-label" for="diabetic">Diabetic</label>
+														</div>
 													</div>
+													<div class="col-6 col-sm-5">
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="lowprotein" id="lowprotein" value="1">
+															<label class="form-check-label" for="lowprotein">Low Protein</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="lowfat" id="lowfat" value="1">
-														<label class="form-check-label" for="lowfat">Low Fat</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="lowfat" id="lowfat" value="1">
+															<label class="form-check-label" for="lowfat">Low Fat</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="red1200kcal" id="red1200kcal" value="1">
-														<label class="form-check-label" for="red1200kcal">Reduction 1200 Kcal</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="red1200kcal" id="red1200kcal" value="1">
+															<label class="form-check-label" for="red1200kcal">Reduction 1200 Kcal</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="red1500kcal" id="red1500kcal" value="1">
-														<label class="form-check-label" for="red1500kcal">Reduction 1500 Kcal</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="red1500kcal" id="red1500kcal" value="1">
+															<label class="form-check-label" for="red1500kcal">Reduction 1500 Kcal</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="paed6to12mth" id="paed6to12mth" value="1">
-														<label class="form-check-label" for="paed6to12mth">Paediatrics 6-12 Months</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="paed6to12mth" id="paed6to12mth" value="1">
+															<label class="form-check-label" for="paed6to12mth">Paediatrics 6-12 Months</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="paed1to3yr" id="paed1to3yr" value="1">
-														<label class="form-check-label" for="paed1to3yr">Paediatrics 1-3 Years</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="paed1to3yr" id="paed1to3yr" value="1">
+															<label class="form-check-label" for="paed1to3yr">Paediatrics 1-3 Years</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="paed4to9yr" id="paed4to9yr" value="1">
-														<label class="form-check-label" for="paed4to9yr">Paediatrics 4-9 Years</label>
-													</div>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="paed4to9yr" id="paed4to9yr" value="1">
+															<label class="form-check-label" for="paed4to9yr">Paediatrics 4-9 Years</label>
+														</div>
 
-													<div class="form-check" style="margin-left: 50px">
-														<input class="form-check-input" type="checkbox" name="paedgt10yr" id="paedgt10yr" value="1">
-														<label class="form-check-label" for="paedgt10yr">Paediatrics >10 Years</label>
+														<div class="form-check" style="margin-left: 50px">
+															<input class="form-check-input" type="checkbox" name="paedgt10yr" id="paedgt10yr" value="1">
+															<label class="form-check-label" for="paedgt10yr">Paediatrics >10 Years</label>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-									<!-- Modal ends -->
 								</div>
 
 								<div class="form-group">

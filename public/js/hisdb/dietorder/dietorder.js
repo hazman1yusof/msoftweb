@@ -41,18 +41,23 @@ $(document).ready(function () {
 
 	});
 
-	$('.mof_orderList').hide();
-
-	$('#feedingmode').change(function () {
-		$(this).find("option").each(function () {
-			$('#' + this.value).hide();
+	// Mode of Feeding
+	// Radio button with different name but a single selection
+	$(document).ready(function() {
+		$("input[type=radio]").prop("checked", false);
+		$("input[type=radio]:first").prop("checked", true);
+	  
+		$("input[type=radio]").click(function(event) {
+			$("input[type=radio]").prop("checked", false);
+			$(this).prop("checked", true);
+	  
+		  	//event.preventDefault();
 		});
-		$('#' + this.value).show();
-
 	});
 
 });
 
+// hide show No of Lodger
 function yesnoCheck() {
 	if (document.getElementById('yesCheck').checked) {
 		document.getElementById('ifYes').style.display = 'inline-block';
@@ -60,6 +65,16 @@ function yesnoCheck() {
 	else document.getElementById('ifYes').style.display = 'none';
 
 }
+
+// hide show order list
+function feedingOthers(){
+	document.getElementById('ifOral').style.display ='none';
+}
+  
+function feedingOral(){
+	document.getElementById('ifOral').style.display = 'block';
+}
+// hide show order list ends
 
 var errorField = [];
 conf = {
