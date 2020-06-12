@@ -46,14 +46,14 @@ class CheqRegController extends defaultController
         try {
 
 
-            $chqreg = DB::table('finance.chqreg')
-                        ->where('startno','=',$request->startno)
-                        ->where('bankcode','=',$request->bankcode);
+            // $chqreg = DB::table('finance.chqreg')
+            //             ->where('startno','=',$request->startno)
+            //             ->where('bankcode','=',$request->bankcode);
 
 
-            if($chqreg->exists()){
-                throw new \Exception("Record duplicate");
-            }
+            // if($chqreg->exists()){
+            //     throw new \Exception("Record duplicate");
+            // }
 
 
             $startno = $request->startno;
@@ -67,8 +67,8 @@ class CheqRegController extends defaultController
                 throw new \Exception("Cheque No already exist");
             }
 
-            DB::table('finance.chqreg')
-                ->insert([  
+            $chqregidno = DB::table('finance.chqreg')
+                ->insertGetId([  
                     'compcode' => session('compcode'),
                     'bankcode' => strtoupper($request->bankcode),
                     'startno' => $request->startno,
@@ -79,27 +79,14 @@ class CheqRegController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-            $bankcode = $request->bankcode;
-            $startno = $request->startno;
-            $endno = $request->endno;
-
-
             for ($i=$request->startno; $i <= $request->endno; $i++) { 
-
-                $chqtran = DB::table('finance.chqtran')
-                                ->where('cheqno','=',$i)
-                                ->where('bankcode','=',$request->bankcode);
-
-                if($chqtran->exists()){
-                    continue;
-                }
-
 
                 DB::table('finance.chqtran')
                     ->insert([  
                         'compcode' => session('compcode'),
                         'bankcode' => strtoupper($request->bankcode),
                         'cheqno' => $i,
+                        'chqregidno' => $chqregidno,
                         'recstatus' => 'OPEN',
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -138,24 +125,51 @@ class CheqRegController extends defaultController
             $endno = $request->endno;
 
             //check duplicate
-            $chqreg_duplicate = DB::table('finance.chqreg')
-                        ->where('startno','=',$startno)
-                        ->where('bankcode','=',$request->bankcode);
+            // $chqreg_duplicate = DB::table('finance.chqreg')
+            //             ->where('startno','=',$startno)
+            //             ->where('bankcode','=',$request->bankcode);
 
-            if($chqreg_duplicate->exists()){
-                throw new \Exception("Record duplicate");
-            }
+            // if($chqreg_duplicate->exists()){
+            //     throw new \Exception("Record duplicate");
+            // }
 
             //check between range
-            $cheqtran_duplicate = DB::table('finance.chqtran')
+            // $cheqtran_duplicate = DB::table('finance.chqtran')
+            //             ->whereBetween('cheqno', [$startno, $endno])
+            //             ->where('bankcode','=',$request->bankcode);
+
+
+            // if($cheqtran_duplicate->exists()){
+            //     throw new \Exception("Cheque No already exist");
+            // }
+
+            //check duplicate
+
+            $cheqtran = DB::table('finance.chqtran')
                         ->whereBetween('cheqno', [$startno, $endno])
+                        ->where('chqregidno','!=',$request->idno)
                         ->where('bankcode','=',$request->bankcode);
 
-
-            if($cheqtran_duplicate->exists()){
+            if($cheqtran->exists()){
                 throw new \Exception("Cheque No already exist");
             }
 
+            // for ($i=$startno; $i <= $endno; $i++) { 
+
+            //     $chqtran = DB::table('finance.chqtran')
+            //                     ->where('compcode','=',session('compcode'))
+            //                     ->where('cheqno','=',$i)
+            //                     ->where('bankcode','=',$request->bankcode);
+
+            //     if($chqtran->exists()){
+            //         $chqtran_first = $chqtran->first();
+            //         if($chqtran_first->chqregidno != $request->idno){
+            //             throw new \Exception("Cheque No already exist");
+            //         }
+            //     }
+            // }
+
+            //cheqtran yg lama
             $cheqtrancount = DB::table('finance.chqtran')->select('recstatus')
                             ->where('compcode', '=', session('compcode'))
                             ->where('bankcode', '=', $request->bankcode)
@@ -190,21 +204,12 @@ class CheqRegController extends defaultController
 
             //buat chqtran baru
             for ($i=$startno; $i <= $endno; $i++) { 
-
-                $chqtran = DB::table('finance.chqtran')
-                                ->where('cheqno','=',$i)
-                                ->where('bankcode','=',$request->bankcode);
-
-                if($chqtran->exists()){
-                    continue;
-                }
-
-
                 DB::table('finance.chqtran')
                     ->insert([  
                         'compcode' => session('compcode'),
                         'bankcode' => strtoupper($request->bankcode),
                         'cheqno' => $i,
+                        'chqregidno' => $request->idno,
                         'recstatus' => 'OPEN',
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")

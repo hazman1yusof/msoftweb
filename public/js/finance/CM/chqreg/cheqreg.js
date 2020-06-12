@@ -134,7 +134,7 @@ $(document).ready(function () {
 			{ label: 'Cheq Qty', name: 'cheqqty', width: 30, hidden:true,},
 			{ label: 'Recstatus', name: 'recstatus', width: 30, hidden:false,},
 			{ label: 'Action', name: 'action', hidden: true,width :10,  formatoptions: { keys: false, editbutton: true, delbutton: true }, formatter: 'actions'},
-			{label: 'idno', name: 'idno', hidden: true,editable: true},
+			{label: 'idno', name: 'idno', hidden: true,editable: true, key:true},
 			{label: 'rn', name: 'rn', hidden: true},
 		],
 		autowidth:true,
@@ -155,7 +155,7 @@ $(document).ready(function () {
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 			else{
-				$('#gridCheqRegDetail').jqGrid ('setSelection', "1");
+				$("#gridCheqRegDetail").setSelection($("#gridCheqRegDetail").getDataIDs()[0]);
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
@@ -377,6 +377,7 @@ $(document).ready(function () {
 			if(this.old_data.oper == "add"){
 				$(this.jqgridname+"_iladd").click();
 			}else if(this.old_data.oper == "edit"){
+				$("#gridCheqRegDetail").setSelection(this.old_data.idno);
 				$(this.jqgridname+"_iledit").click();
 			}
 
