@@ -124,21 +124,40 @@ class CheqRegController extends defaultController
         
         DB::beginTransaction();
 
-
         try {
 
-            //1. check duplicate
+            if(!empty($request->idno)){
+                $idno_ = $request->idno;
+            }else{
+                $idno_ = $request->idno;
+            }
+            
+            $cheqreg = DB::table('finance.chqreg')
+                ->where('compcode', '=', session('compcode'))
+                ->where('idno', '=', $request->idno)
+                ->where('startno','=',$request->startno)
+                ->where('bankcode','=',$request->bankcode);
 
+            $cheqreg_get = $cheqreg->first();
+
+            $startno = $request->startno;
+            $endno = $request->endno;
+            $cheqtran = DB::table('finance.chqtran')
+                        ->whereBetween('cheqno', [$startno, $endno])
+                        ->where('bankcode','=',$request->bankcode);
+
+            $cheqtran_get = $cheqtran->first();
+
+            //check duplicate
             $chqreg_duplicate = DB::table('finance.chqreg')
                         ->where('startno','=',$request->startno)
                         ->where('bankcode','=',$request->bankcode);
-
 
             if($chqreg_duplicate->exists()){
                 throw new \Exception("Record duplicate");
             }
 
-
+            //check between range
             $startno = $request->startno;
             $endno = $request->endno;
 
@@ -151,7 +170,8 @@ class CheqRegController extends defaultController
                 throw new \Exception("Cheque No already exist");
             }
 
-            $cheqtrancount = DB::table('finance.chqtran')->select('recstatus')
+
+          /*  $cheqtrancount = DB::table('finance.chqtran')->select('recstatus')
                             ->where('compcode', '=', session('compcode'))
                             ->where('bankcode', '=', $request->bankcode)
                             ->where('cheqno', '>=', $request->startno)
@@ -161,43 +181,126 @@ class CheqRegController extends defaultController
 
             if ($cheqtrancount->exists()){
                 throw new \Exception("Cannot edit. Cheque has been issued");
-            }
+            }*/
 
             //dd($cheqtrancount);
 
-            DB::table('finance.chqreg')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->where('bankcode', '=>', strtoupper($request->bankcode))
-                ->update([  
-                    'startno' => ($request->startno),
-                    'endno' => $request->endno,
-                    'cheqqty' => $request->endno -$request->startno+1,
-                    'recstatus' => 'OPEN',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]); 
+            if (!$chqreg_duplicate) {
 
-            for ($i=$request->startno; $i <= $request->endno; $i++) { 
+                DB::table('finance.chqreg')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->where('bankcode', '=>', strtoupper($request->bankcode))
+                    ->update([  
+                        'startno' => ($request->startno),
+                        'endno' => $request->endno,
+                        'cheqqty' => $request->endno -$request->startno+1,
+                        'recstatus' => 'OPEN',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]); 
 
-                $chqtran = DB::table('finance.chqtran')
-                    ->where('cheqno','=',$i)
-                    ->where('bankcode','=',$request->bankcode);
+                for ($i=$request->startno; $i <= $request->endno; $i++) { 
 
-                if($chqtran->exists()){
-                    continue;
+                    $chqtran = DB::table('finance.chqtran')
+                        ->where('cheqno','=',$i)
+                        ->where('bankcode','=',$request->bankcode);
+
+                    if($chqtran->exists()){
+                        continue;
+                    }
+                }
+
+                DB::table('finance.chqtran')
+                    ->where('idno','=',$request->idno)
+                    ->update([  
+                       'bankcode' => strtoupper($request->bankcode),
+                        'cheqno' => $i,
+                        'recstatus' => 'OPEN',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]); 
+
+            } else if (!$cheqtran_duplicate) {
+
+                DB::table('finance.chqreg')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->where('bankcode', '=>', strtoupper($request->bankcode))
+                    ->update([  
+                        'startno' => ($request->startno),
+                        'endno' => $request->endno,
+                        'cheqqty' => $request->endno -$request->startno+1,
+                        'recstatus' => 'OPEN',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]); 
+
+                for ($i=$request->startno; $i <= $request->endno; $i++) { 
+
+                    $chqtran = DB::table('finance.chqtran')
+                        ->where('cheqno','=',$i)
+                        ->where('bankcode','=',$request->bankcode);
+
+                    if($chqtran->exists()){
+                        continue;
+                    }
+                }
+
+                DB::table('finance.chqtran')
+                    ->where('idno','=',$request->idno)
+                    ->update([  
+                       'bankcode' => strtoupper($request->bankcode),
+                        'cheqno' => $i,
+                        'recstatus' => 'OPEN',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]); 
+
+            } else {
+
+                $startno = $request->startno;
+                $endno = $request->endno;
+
+                DB::table('finance.chqtran')
+                    ->where('idno','=',$request->idno)
+                    ->delete();
+
+                for ($i=$request->startno; $i <= $request->endno; $i++) { 
+
+                    $chqtran = DB::table('finance.chqtran')
+                        ->where('cheqno','=',$i)
+                        ->where('bankcode','=',$request->bankcode);
+
+                    if($chqtran->exists()){
+                        continue;
+                    }
                 }
 
 
-            DB::table('finance.chqtran')
-                ->where('idno','=',$request->idno)
-                ->update([  
-                   'bankcode' => strtoupper($request->bankcode),
-                    'cheqno' => $i,
-                    'recstatus' => 'OPEN',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]); 
+                DB::table('finance.chqtran')
+                    ->where('idno','=',$request->idno)
+                    ->update([  
+                       'bankcode' => strtoupper($request->bankcode),
+                        'cheqno' => $i,
+                        'recstatus' => 'OPEN',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]); 
+
+                DB::table('finance.chqreg')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->where('bankcode', '=>', strtoupper($request->bankcode))
+                    ->update([  
+                        'startno' => ($request->startno),
+                        'endno' => $request->endno,
+                        'cheqqty' => $request->endno -$request->startno+1,
+                        'recstatus' => 'OPEN',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]); 
+
             }
 
             DB::commit();
