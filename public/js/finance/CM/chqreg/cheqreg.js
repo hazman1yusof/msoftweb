@@ -155,6 +155,7 @@ $(document).ready(function () {
 			let stat = selrowData("#gridCheqRegDetail").recstatus;
 			if(stat=='DEACTIVE'){
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+				//$("#jqGridPager2 td[title='View Selected Row']").click();
 			}else{
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 			}
