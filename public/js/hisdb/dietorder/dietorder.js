@@ -129,12 +129,50 @@ function populate_dietOrder(obj,rowdata){
 	//panel header
 	$('#name_show_dietOrder').text(obj.name);
 	$('#mrn_show_dietOrder').text(obj.mrn);
-	button_state_dietOrder('add');
 
 	//formDietOrder
 	$('#mrn_dietOrder').val(obj.mrn);
 	$("#episno_dietOrder").val(obj.episno);
+
+	var saveParam={
+        action:'get_table_dietorder',
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	mrn:obj.mrn,
+    	episno:obj.episno
+
+    };
+
+    $.post( "/dietorder/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).success(function(data){
+    	if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formDietOrder",data.dietorder);
+			button_state_dietOrder('edit');
+        }else{
+			button_state_dietOrder('add');
+        }
+
+    });
 	
+}
+
+function autoinsert_rowdata(form,rowData){
+	$.each(rowData, function( index, value ) {
+		var input=$(form+" [name='"+index+"']");
+		if(input.is("[type=radio]")){
+			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+		}else if(input.is("[type=checkbox]")){
+			if(value==1){
+				$(form+" [name='"+index+"']").prop('checked', true);
+			}
+		}else{
+			input.val(value);
+		}
+	});
 }
 
 function saveForm_dietOrder(callback){
