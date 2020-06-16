@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Cheque Register')
+@section('title', 'Cheque List')
 
 @section('style')
 
@@ -61,19 +61,16 @@ i.fa {
 		    </div>
 		</div>
 
-		<div class="panel panel-default" id="gridCheqRegDetail_c" style="position: relative;">
+		<div class="panel panel-default" id="gridCheqListDetail_c" style="position: relative;">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel1">
 
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
-    			Cheque Detail </div>
-    			<div style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;color: red">
-						<p id="p_error"></p>
-					</div>
+    			Cheque List Detail </div>
 				<div id="jqGrid3_panel1" class="panel-collapse collapse">
 					<div class="panel-body">
 					    <div class='col-md-12' style="padding:0 0 15px 0">
-			            	<table id="gridCheqRegDetail" class="table table-striped"></table>
+			            	<table id="gridCheqListDetail" class="table table-striped"></table>
 			            		<div id="jqGridPager2"></div>
 			        	</div>
 					</div>
@@ -88,6 +85,6 @@ i.fa {
 
 @section('scripts')
 
-	<script src="js/finance/CM/chqreg/cheqreg.js"></script>
+	<script src="js/finance/CM/chqlist/cheqlist.js"></script>
 
 @endsection

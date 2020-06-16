@@ -41,7 +41,40 @@ $(document).ready(function () {
 
 	});
 
+	// Mode of Feeding
+	// Radio button with different name but a single selection
+	$(document).ready(function() {
+		$("input[id=feedingmode]").prop("checked", false);
+		$("input[id=feedingmode]:first").prop("checked", true);
+	  
+		$("input[id=feedingmode]").click(function(event) {
+			$("input[id=feedingmode]").prop("checked", false);
+			$(this).prop("checked", true);
+	  
+		  	//event.preventDefault();
+		});
+	});
+
 });
+
+// hide show No of Lodger
+function yesnoCheck() {
+	if (document.getElementById('yesCheck').checked) {
+		document.getElementById('ifYes').style.display = 'inline-block';
+	}
+	else document.getElementById('ifYes').style.display = 'none';
+
+}
+
+// hide show order list
+function feedingOthers(){
+	document.getElementById('ifOral').style.display ='none';
+}
+  
+function feedingOral(){
+	document.getElementById('ifOral').style.display = 'block';
+}
+// hide show order list ends
 
 var errorField = [];
 conf = {
@@ -89,6 +122,71 @@ function button_state_dietOrder(state){
 	// if(!moment(gldatepicker_date).isSame(moment(), 'day')){
 	// 	$('#new_dietOrder,#save_dietOrder,#cancel_dietOrder,#edit_dietOrder').attr('disabled',true);
 	// }
+}
+
+function populate_dietOrder(obj,rowdata){
+
+	//panel header
+	$('#name_show_dietOrder').text(obj.name);
+	$('#mrn_show_dietOrder').text(obj.mrn);
+	button_state_dietOrder('add');
+
+	//formDietOrder
+	$('#mrn_dietOrder').val(obj.mrn);
+	$("#episno_dietOrder").val(obj.episno);
+	
+}
+
+function saveForm_dietOrder(callback){
+	var saveParam={
+        action:'save_table_dietOrder',
+        oper:$("#cancel_dietOrder").data('oper')
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	// sex_edit : $('#sex_edit').val(),
+    	// idtype_edit : $('#idtype_edit').val()
+
+    };
+
+	values = $("#formDietOrder").serializeArray();
+	
+	values = values.concat(
+        $('#formDietOrder input[type=checkbox]:not(:checked)').map(
+        function() {
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formDietOrder input[type=checkbox]:checked').map(
+        function() {
+            return {"name": this.name, "value": 1}
+        }).get()
+	);
+	
+	values = values.concat(
+        $('#formDietOrder input[type=radio]:checked').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formDietOrder select').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+	);
+
+    $.post( "/dietorder/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
 }
 
 

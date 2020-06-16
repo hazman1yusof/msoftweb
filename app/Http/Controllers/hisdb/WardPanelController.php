@@ -54,7 +54,7 @@ class WardPanelController extends defaultController
             DB::table('nursing.nursassessment')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_ward,
+                        'mrn' => $request->mrn_ward,
                         'episno' => $request->episno_ward,
                         'admwardtime' => $request->admwardtime,
                         'triagecolor' => $request->triagecolor,
@@ -107,7 +107,7 @@ class WardPanelController extends defaultController
             DB::table('nursing.nursassessgen')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_ward,
+                        'mrn' => $request->mrn_ward,
                         'episno' => $request->episno_ward,
                         'br_breathing' => $request->br_breathing,
                         'br_breathingdesc' => $request->br_breathingdesc,
@@ -179,9 +179,10 @@ class WardPanelController extends defaultController
         try {
 
             DB::table('nursing.nursassessment')
-                ->where('mrn','=',$request->mrn_edit_ward)
+                ->where('mrn','=',$request->mrn_ward)
                 ->where('episno','=',$request->episno_ward)
                 ->where('compcode','=',session('compcode'))
+                ->where('location','=','WARD')
                 ->update([
                     'admwardtime' => $request->admwardtime,
                     'triagecolor' => $request->triagecolor,
@@ -229,9 +230,10 @@ class WardPanelController extends defaultController
                 ]);
 
             DB::table('nursing.nursassessgen')
-                ->where('mrn','=',$request->mrn_edit_ward)
+                ->where('mrn','=',$request->mrn_ward)
                 ->where('episno','=',$request->episno_ward)
                 ->where('compcode','=',session('compcode'))
+                ->where('location','=','WARD')
                 ->update([
                     'br_breathing' => $request->br_breathing,
                     'br_breathingdesc' => $request->br_breathingdesc,
@@ -303,7 +305,7 @@ class WardPanelController extends defaultController
                     DB::table('nursing.nurassesexam')
                         ->insert([
                             'compcode' => session('compcode'),
-                            'mrn' => $request->mrn_edit_ward,
+                            'mrn' => $request->mrn_ward,
                             'episno' => $request->episno_ward,
                             'location' => 'WARD',
                             'exam' => $examsel[$key],

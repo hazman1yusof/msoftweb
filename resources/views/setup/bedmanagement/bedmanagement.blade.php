@@ -4,41 +4,107 @@
 
 @section('style')
 
-.panel-heading.collapsed .fa-angle-double-up,
-.panel-heading .fa-angle-double-down {
-	display: none;
-}
+	.panel-heading.collapsed .fa-angle-double-up,
+	.panel-heading .fa-angle-double-down {
+		display: none;
+	}
 
-.panel-heading.collapsed .fa-angle-double-down,
-.panel-heading .fa-angle-double-up {
-	display: inline-block;
-}
+	.panel-heading.collapsed .fa-angle-double-down,
+	.panel-heading .fa-angle-double-up {
+		display: inline-block;
+	}
 
-.panel-heading i.fa {
-	cursor: pointer;
-	float: right;
-	<!--  margin-right: 5px; -->
-}
+	.panel-heading i.fa {
+		cursor: pointer;
+		float: right;
+		<!--  margin-right: 5px; -->
+	}
 
-.panel-heading div i {
-	position: relative;
-	line-height: 1;
-	top: -10px;
-}
+	.panel-heading div i {
+		position: relative;
+		line-height: 1;
+		top: -10px;
+	}
 
-.clearfix {
-	overflow: auto;
-}
+	.clearfix {
+		overflow: auto;
+	}
 
-input.uppercase {
-	text-transform: uppercase;
-}
+	input.uppercase {
+		text-transform: uppercase;
+	}
 
-.justify {
-	text-align: -webkit-center;
-}
+	.justify {
+		text-align: -webkit-center;
+	}
 
-row.error td { background-color: red; }
+	row.error td { background-color: red; }
+
+	i.arrow {
+		cursor: pointer;
+		float: right;
+		<!--  margin-right: 5px; -->
+	}
+
+	.position i {
+		position: relative;
+		line-height: 1;
+		top: -10px;
+	}
+
+	tr.yellow{
+		background-color:yellow !important;
+	}
+
+	input.yellow{
+		color: black !important;
+		border-color:#9e9e00 !important;
+		background-color:yellow !important;
+	}
+
+	a.yellow{
+		color: #9e9e00 !important;
+		background-color: #fdffe2 !important;
+		border-color: #9e9e00 !important;
+	}
+
+	tr.red{
+		color:white;
+		background-color:red !important;
+	}
+
+	input.red{
+		color: white !important;
+		border-color:red !important;
+		background-color:red !important;
+	}
+
+	a.red{
+		color: red !important;
+		background-color: #ffe5e5 !important;
+		border-color: red !important;
+	}
+
+	tr.green{
+		color:white;
+		background-color:green !important;
+	}
+
+	input.green{
+		color: white !important;
+		border-color:green !important;
+		background-color:green !important;
+	}
+
+	a.green{
+		color: #3c763d !important;
+		background-color: #dff0d8 !important;
+		border-color: #3c763d !important;
+	}
+
+	.panelbgcolor {
+		background-color: #C0C0C0 !important;
+	}
 
 @endsection
 
@@ -63,53 +129,53 @@ row.error td { background-color: red; }
 						
 							<div  id="show_bedtype" style="display:none">
 								<div class='input-group'>
-									<input id="b_bedtype" name="b_bedtype" type="text" maxlength="12" class="form-control input-sm">
+									<input id="s_bedtype" name="s_bedtype" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
 							</div>
 
-							<div  id="show_statistic" style="display:none">
+							<!-- <div  id="show_statistic" style="display:none">
 								<div class='input-group'>
 									<input id="b_statistic" name="b_statistic" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
-							</div>
+							</div> -->
 							
 							<div  id="show_occup" style="display:none">
 								<div class='input-group'>
-									<input id="b_occup" name="b_occup" type="text" maxlength="12" class="form-control input-sm">
+									<input id="occup" name="occup" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
 							</div>
 
-							<!-- <div  id="show_mrn" style="display:none">
+							<div  id="show_doc" style="display:none">
 								<div class='input-group'>
-									<input id="q_mrn" name="q_mrn" type="text" maxlength="12" class="form-control input-sm">
+									<input id="doc" name="doc" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
-							</div>  -->
+							</div> 
 						</div>
 
 						<div class="col-md-1" style="padding-left: 0px;">
-							<div id="div_bedtype" style="padding-left: 0px;padding-right: 70px;display:none">
+							<div id="div_bedtype" style="padding-left: 0px;max-width: 45px;display:none">
 								<label class="control-label"></label>
 								<a class='form-control btn btn-primary' id="btn_bedtype"><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-							<div id="div_statistic" style="padding-left: 0px;padding-right: 70px;display:none;margin: 0px">
+							<!-- <div id="div_statistic" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
 								<label class="control-label"></label>
 								<a class='form-control btn btn-primary' id="btn_statistic"><span class='fa fa-ellipsis-h'></span></a>
-							</div>
-							<div id="div_occup" style="padding-left: 0px;padding-right: 70px;display:none;margin: 0px">
+							</div> -->
+							<div id="div_occup" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
 								<label class="control-label"></label>
 								<a class='form-control btn btn-primary' id="btn_occup"><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-							<div id="div_mrn" style="padding-left: 0px;padding-right: 70px;display:none;margin: 0px">
+							<div id="div_doc" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
 								<label class="control-label"></label>
-								<a class='form-control btn btn-primary' id="btn_mrn"><span class='fa fa-ellipsis-h'></span></a>
+								<a class='form-control btn btn-primary' id="btn_doc"><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 						</div>
 		            </div>
@@ -134,11 +200,12 @@ row.error td { background-color: red; }
 							<p><i class="fa fa-ban" aria-hidden="true"></i> RESERVE: <span id="stat_reserve"></span></p>
 					  	</div>
 						<div class="col-md-6" style="">
-							<p><i class="fa fa-check" aria-hidden="true"></i> ACTIVE: <span id="stat_active"></span></p>
-					  	</div>
-						<div class="col-md-6" style="">
 							<p><i class="fa fa-times" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
-					  	</div>
+					  	</div>  
+						<!-- <div class="col-md-6" style="">
+							<p><i class="fa fa-check" aria-hidden="true"></i> ACTIVE: <span id="stat_active"></span></p>
+					  	</div> -->
+
 		            </div>
 
 				</div>
@@ -175,11 +242,11 @@ row.error td { background-color: red; }
 						<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 					</button>
 				</div>
-				<div class="panel-heading clearfix collapsed" id="toggle_trf" data-toggle="collapse" data-target="#jqGrid_trf_panel">
+				<div class="panel-heading clearfix collapsed position" id="toggle_trf" data-toggle="collapse" data-target="#jqGrid_trf_panel">
 					<b>Name: <span id="name_show"></span></b><br>
 						Bed No: <span id="bednum_show"></span>
-						<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px"></i>
-						<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px"></i>
+						<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px"></i>
+						<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px"></i>
 						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 280px; top: 15px;">
 							<h5>Bed Occupancy Detail</h5>
 						</div>		
@@ -326,6 +393,15 @@ row.error td { background-color: red; }
 				</div>	
 			</div>
 		</div>
+
+		<div class='row'>
+		
+			@include('hisdb.nursing.nursing')
+			@include('hisdb.wardpanel.wardpanel')
+			@include('hisdb.dietorder.dietorder')
+			@include('hisdb.dischgsummary.dischgsummary')
+			
+		</div>
     </div>
 	<!-- ***************End Search + table ********************* -->
 
@@ -335,5 +411,9 @@ row.error td { background-color: red; }
 @section('scripts')
 
 	<script src="js/setup/bedmanagement/bedmanagement.js"></script>
+	<script src="js/hisdb/nursing/nursing.js"></script>
+	<script src="js/hisdb/wardpanel/wardpanel.js"></script>
+	<script src="js/hisdb/dietorder/dietorder.js"></script>
+	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>
 	
 @endsection

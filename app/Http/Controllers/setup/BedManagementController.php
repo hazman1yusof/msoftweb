@@ -117,20 +117,20 @@ class BedManagementController extends defaultController
             DB::table('hisdb.bed')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'bednum' => strtoupper($request->b_bednum),
-                    'bedtype' => strtoupper($request->b_bedtype),  
-                    'room' => strtoupper($request->b_room),  
-                    'ward' => strtoupper($request->b_ward),
-                    'tel_ext' => strtoupper($request->b_tel_ext),
-                    // 'statistic' => strtoupper($request->statistic), 
+                    'bednum' => strtoupper($request->bednum),
+                    'bedtype' => strtoupper($request->bedtype),  
+                    'room' => strtoupper($request->room),  
+                    'ward' => strtoupper($request->ward),
+                    'tel_ext' => strtoupper($request->tel_ext),
+                    'statistic' => strtoupper($request->statistic), 
                     //'occup' => 0,  
-                    'occup' => strtoupper($request->b_occup),
-                    'Doctor Code' => strtoupper($request->q_admdoctor),
+                    'occup' => strtoupper($request->occup),
+                    'admdoctor' => strtoupper($request->admdoctor),
                     // 'tel_ext' => $this->truefalse($request->tel_ext), 
-                    'statistic' => $this->truefalse($request->b_statistic),
-                    'recstatus' => strtoupper($request->b_recstatus),
-                    'lastcomputerid' => strtoupper($request->b_lastcomputerid),
-                    'lastipaddress' => strtoupper($request->b_lastipaddress),
+                    // 'statistic' => $this->truefalse($request->b_statistic),
+                    'recstatus' => strtoupper($request->recstatus),
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                    'lastipaddress' => strtoupper($request->lastipaddress),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -212,19 +212,19 @@ class BedManagementController extends defaultController
         try {
 
             DB::table('hisdb.bed')
-                ->where('idno','=',$request->b_idno)
+                ->where('idno','=',$request->idno)
                 ->update([  
-                    'bedtype' => strtoupper($request->b_bedtype),  
-                    'room' => strtoupper($request->b_room),  
-                    'ward' => strtoupper($request->b_ward),
-                    'occup' => strtoupper($request->b_occup),
-                    'tel_ext' => strtoupper($request->b_tel_ext),
-                    'Doctor Code' => strtoupper($request->q_admdoctor),
-                    // 'tel_ext' => $this->truefalse($request->tel_ext), 
-                    'statistic' => $this->truefalse($request->b_statistic),    
-                    'recstatus' => strtoupper($request->b_recstatus),
-                    'lastcomputerid' => strtoupper($request->b_lastcomputerid),
-                    'lastipaddress' => strtoupper($request->b_lastipaddress),
+                    'bedtype' => strtoupper($request->bedtype),  
+                    'room' => strtoupper($request->room),  
+                    'ward' => strtoupper($request->ward),
+                    'occup' => strtoupper($request->occup),
+                    'tel_ext' => strtoupper($request->tel_ext),
+                    'admdoctor' => strtoupper($request->admdoctor),
+                    'tel_ext' => $request->tel_ext, 
+                    'statistic' => $request->statistic,    
+                    'recstatus' => strtoupper($request->recstatus),
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                    'lastipaddress' => strtoupper($request->lastipaddress),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -242,7 +242,7 @@ class BedManagementController extends defaultController
         try {
 
             DB::table('hisdb.bed')
-                ->where('idno','=',$request->b_idno)
+                ->where('idno','=',$request->idno)
                 ->update([  
                     'recstatus' => 'D',
                     'deluser' => strtoupper(session('username')),
@@ -279,17 +279,26 @@ class BedManagementController extends defaultController
                 ]);
 
             //2 edit bed
-            DB::table('hisdb.bed')
-                ->where('idno','=',$request->b_idno)
+            DB::table('hisdb.bed') //curent bed
+                ->where('compcode','=',session('compcode'))
+                ->where('bednum','=',$request->ba_bednum)
                 ->update([  
-                    'occup' => 'VACANT'
+                    'occup' => 'VACANT',
+                    'mrn' => NULL,
+                    'episno' => NULL,
+                    'name' => NULL,
+                    'admdoctor' => NULL
                 ]);
 
-            DB::table('hisdb.bed')
+            DB::table('hisdb.bed') //trf bed
                 ->where('compcode','=',session('compcode'))
                 ->where('bednum','=',$request->trf_bednum)
                 ->update([  
-                    'occup' => 'OCCUPIED'
+                    'occup' => 'OCCUPIED',
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'name' => $request->name,
+                    'admdoctor' => $request->admdoctor
                 ]);
 
             //3. edit episode

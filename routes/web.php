@@ -462,6 +462,12 @@ Route::get('/bank','finance\BankController@show');
 Route::get('/bank/table','finance\BankController@table');
 Route::post('/bank/form','finance\BankController@form');
 
+//// cheque list setup ///
+Route::get('/cheqlist','finance\CheqListController@show');
+Route::get('/cheqlist/table','finance\CheqListController@table');
+Route::get('/cheqlistDetail/form','finance\CheqListController@form');
+Route::post('/cheqlistDetail/form','finance\CheqListController@form');
+
 //// cheque register setup ///
 Route::get('/cheqreg','finance\CheqRegController@show');
 Route::get('/cheqreg/table','finance\CheqRegController@table');

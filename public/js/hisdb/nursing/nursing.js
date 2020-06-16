@@ -107,6 +107,10 @@ function button_state_ti(state){
 			$("#save_ti,#cancel_ti").attr('disabled',false);
 			$('#edit_ti,#new_ti').attr('disabled',true);
 			break;
+		case 'triage':
+			$("#toggle_ti").attr('data-toggle','collapse');
+			$('#new_ti,#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
+			break;
 	}
 
 	// if(!moment(gldatepicker_date).isSame(moment(), 'day')){
@@ -151,6 +155,16 @@ function populate_formNursing(obj,rowdata){
 	}else{
 		examination.empty().off().disable();
 	}
+}
+
+function populate_triage(obj,rowdata){
+
+	//panel header
+	$('#name_show_triage').text(obj.name);
+	$('#mrn_show_triage').text(obj.mrn);
+
+	document.getElementById('hiddentriage').style.display = 'inline';
+	
 }
 
 function autoinsert_rowdata(form,rowData){

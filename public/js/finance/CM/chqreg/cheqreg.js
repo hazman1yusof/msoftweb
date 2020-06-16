@@ -74,6 +74,7 @@ $(document).ready(function () {
 				$("#pg_jqGridPager2 table").show();
 			}
 		},
+
 		
 	});
 
@@ -133,7 +134,7 @@ $(document).ready(function () {
 			{ label: 'Cheq Qty', name: 'cheqqty', width: 30, hidden:true,},
 			{ label: 'Recstatus', name: 'recstatus', width: 30, hidden:false,},
 			{ label: 'Action', name: 'action', hidden: true,width :10,  formatoptions: { keys: false, editbutton: true, delbutton: true }, formatter: 'actions'},
-			{label: 'idno', name: 'idno', hidden: true},
+			{label: 'idno', name: 'idno', hidden: true,editable: true, key:true},
 			{label: 'rn', name: 'rn', hidden: true},
 		],
 		autowidth:true,
@@ -150,11 +151,19 @@ $(document).ready(function () {
 		pager: "#jqGridPager2",
 		onSelectRow:function(rowid, selected){
 			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
+
+			let stat = selrowData("#gridCheqRegDetail").recstatus;
+			if(stat=='DEACTIVE'){
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+				//$("#jqGridPager2 td[title='View Selected Row']").click();
+			}else{
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+			}
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 			else{
-				$('#gridCheqRegDetail').jqGrid ('setSelection', "1");
+				$("#gridCheqRegDetail").setSelection($("#gridCheqRegDetail").getDataIDs()[0]);
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
@@ -164,6 +173,7 @@ $(document).ready(function () {
 			
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
+			
 			$("#jqGrid_iledit").click();
 			$('#p_error').text('');   
 		},
@@ -254,7 +264,12 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			$('#p_error').text(response.responseText);
+			//$('#p_error').text(response.responseText);
+			var data = JSON.parse(response.responseText)
+			$('#p_error').text(data.errormsg);
+			err_reroll.old_data = data.request;
+			err_reroll.error = true;
+			err_reroll.errormsg = data.errormsg;
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
@@ -312,12 +327,13 @@ $(document).ready(function () {
 							param = {
 								_token: $("#_token").val(),
 								action: 'cheqregDetail_save',
-								//uomcode: $('#uomcode').val(),
+								//bankcode: $('#bankcode').val(),
+								cheqno: $('#cheqno').val(),
 								idno: selrowData('#gridCheqRegDetail').idno,
 							}
 							$.post( "/cheqregDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function (data) {
-								//////////////////errorText(dialog,data.responseText);
+								$('#p_error').text(data.responseText);
 							}).done(function (data) {
 								refreshGrid("#gridCheqRegDetail", urlParam_cheqregdtl);
 							});
@@ -338,12 +354,6 @@ $(document).ready(function () {
 		},
 	});
 
-	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-			
-	//toogleSearch('#sbut1','#searchForm','on');
-	populateSelect2('#gridCheqRegDetail','#searchForm');
-	searchClick2('#gridCheqRegDetail','#searchForm',urlParam_cheqregdtl);
-
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#gridCheqRegDetail',true,urlParam_cheqregdtl,['action','rn']);
 
@@ -353,6 +363,7 @@ $(document).ready(function () {
 
 	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
 		$("#gridCheqRegDetail").jqGrid ('setGridWidth', Math.floor($("#gridCheqRegDetail_c")[0].offsetWidth-$("#gridCheqRegDetail_c")[0].offsetLeft-28));
+		refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl);
 	});
 
 
@@ -363,10 +374,15 @@ $(document).ready(function () {
 		this.errormsg = 'asdsds';
 		this.old_data;
 		this.reroll=function(){
-
 			$('#p_error').text(this.errormsg);
 			var self = this;
-			$(this.jqgridname+"_iladd").click();
+
+			if(this.old_data.oper == "add"){
+				$(this.jqgridname+"_iladd").click();
+			}else if(this.old_data.oper == "edit"){
+				$("#gridCheqRegDetail").setSelection(this.old_data.idno);
+				$(this.jqgridname+"_iledit").click();
+			}
 
 			this.data_array.forEach(function(item,i){
 				$(self.jqgridname+' input[name="'+item+'"]').val(self.old_data[item]);

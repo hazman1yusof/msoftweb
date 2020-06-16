@@ -99,7 +99,7 @@ function button_state_ward(state){
 			$('#save_ward,#cancel_ward,#new_ward').attr('disabled',true);
 			break;
 		case 'wait':
-			dialog_tri_col.on();
+			// dialog_tri_col.on();
 			examination.on().enable();
 			$("#toggle_ward").attr('data-toggle','collapse');
 			$("#save_ward,#cancel_ward").attr('disabled',false);
@@ -115,73 +115,13 @@ function button_state_ward(state){
 function populate_formWard(obj,rowdata){
 
 	//panel header
-	$('#name_show_ward').text(obj.a_pat_name);
-	$('#newic_show_ward').text(obj.newic);
-	$('#sex_show_ward').text(obj.sex);
-	$('#age_show_ward').text(obj.age+ 'YRS');
-	$('#race_show_ward').text(obj.race);	
+	$('#name_show_ward').text(obj.name);
+	$('#mrn_show_ward').text(obj.mrn);
 	button_state_ward('add');
 
 	//formWard
-	$("#mrn_edit_ward").val(obj.a_mrn);
-	$("#episno_ward").val(obj.a_Episno);
-	$("#reg_date").val(obj.reg_date);
-	tri_color_set('empty');
-
-	if(rowdata.nurse != undefined){
-		autoinsert_rowdata("#formWard",rowdata.nurse);
-		tri_color_set();
-		button_state_ward('edit');
-	}
-
-	if(rowdata.nurse_gen != undefined){
-		autoinsert_rowdata("#formWard",rowdata.nurse_gen);
-		button_state_ward('edit');
-
-		autoinsert_rowdata("#formWard",rowdata.nurse_gen);
-		button_state_ward('edit');
-	}
-
-	if(rowdata.nurse_exm != undefined){
-		var newrowdata = $.extend(true,{}, rowdata);
-		examination.examarray = newrowdata.nurse_exm;
-		examination.loadexam().off().disable();
-	}else{
-		examination.empty().off().disable();
-	}
-}
-
-function autoinsert_rowdata(form,rowData){
-	$.each(rowData, function( index, value ) {
-		var input=$(form+" [name='"+index+"']");
-		if(input.is("[type=radio]")){
-			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-		}else if(input.is("[type=checkbox]")){
-			if(value==1){
-				$(form+" [name='"+index+"']").prop('checked', true);
-			}
-		}else{
-			input.val(value);
-		}
-	});
-}
-
-function empty_formWard(){
-	
-	tri_color_set('empty');
-	$('#name_show_ward').text('');
-	$('#newic_show_ward').text('');
-	$('#sex_show_ward').text('');
-	$('#age_show_ward').text('');
-	$('#race_show_ward').text('');	
-	button_state_ward('empty');
-	// $("#cancel_ward, #cancel_ad, #cancel_tpa").click();
-
-	disableForm('#formWard');
-	emptyFormdata(errorField,'#formWard')
-	examination.empty().off().disable();
-	dialog_tri_col.off();
-
+	$('#mrn_ward').val(obj.mrn);
+	$("#episno_ward").val(obj.episno);
 }
 
 function saveForm_ward(callback){
@@ -244,7 +184,7 @@ function saveForm_ward(callback){
 }
 
 var dialog_tri_col = new ordialog(
-	'tri_col','sysdb.sysparam',"#triagecolor",errorField,
+	'ward_tri_col','sysdb.sysparam',"#triagecolor",errorField,
 	{	colModel:
 		[
 			{label:'Color',name:'colorcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -339,34 +279,34 @@ var examination = new examination();
 function examination(){
 	this.examarray=[];
 	this.on=function(){
-		$("#exam_plus").on('click',{data:this},addexam);
+		$("#ward_exam_plus").on('click',{data:this},addexam);
 		return this;
 	}
 
 	this.empty=function(){
 		this.examarray.length=0;
-		$("#exam_div").html('');
+		$("#ward_exam_div").html('');
 		return this;
 	}
 
 	this.off=function(){
-		$("#exam_plus").off('click',addexam);
+		$("#ward_exam_plus").off('click',addexam);
 		return this;
 	}
 
 	this.disable=function(){
-		disableForm('#exam_div');
+		disableForm('#ward_exam_div');
 		return this;
 	}
 
 	this.enable=function(){
-		enableForm('#exam_div');
+		enableForm('#ward_exam_div');
 		return this;
 	}
 
 	this.loadexam = function(){
 		this.examarray.forEach(function(item, index){
-			$("#exam_div").append(`
+			$("#ward_exam_div").append(`
 				<hr>
 				<div class="form-group">
 					<input type="hidden" name="examidno_`+index+`" value="`+item.idno+`">
@@ -418,7 +358,7 @@ function examination(){
 			obj.examarray.push(obj.examarray.length);
 		}
 
-		$("#exam_div").append(`
+		$("#ward_exam_div").append(`
 			<hr>
 			<div class="form-group">
 				<input type="hidden" name="examidno_`+currentid+`" value="0">

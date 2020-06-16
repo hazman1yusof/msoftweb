@@ -61,39 +61,39 @@ class BedController extends defaultController
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
 
-        foreach ($paginate->items() as $key => $value) {
-            //pergi ke queue , epistycode='IP or DP', deptcode='ALL'
+        // foreach ($paginate->items() as $key => $value) {
+        //     //pergi ke queue , epistycode='IP or DP', deptcode='ALL'
 
-            $episode = DB::table('hisdb.episode as e')
-                            ->select('e.mrn','e.episno','p.name')
-                            ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
-                                $join = $join->on("e.mrn", '=', 'p.mrn');    
-                                $join = $join->on('e.compcode','=','p.compcode');
-                            })
-                            ->where('e.compcode','=',session('compcode'))
-                            ->where('e.bed','=',$value->bednum)
-                            ->where('e.episactive','=','1')
-                            ->orderBy('e.idno','DESC');
+        //     $episode = DB::table('hisdb.episode as e')
+        //                     ->select('e.mrn','e.episno','p.name')
+        //                     ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
+        //                         $join = $join->on("e.mrn", '=', 'p.mrn');    
+        //                         $join = $join->on('e.compcode','=','p.compcode');
+        //                     })
+        //                     ->where('e.compcode','=',session('compcode'))
+        //                     ->where('e.bed','=',$value->bednum)
+        //                     ->where('e.episactive','=','1')
+        //                     ->orderBy('e.idno','DESC');
 
-            if($episode->exists()){
-                $episode_first = $episode->first();
-                $value->mrn = $episode_first->mrn;
-                $value->episno = $episode_first->episno;
-                $value->name = $episode_first->name;
-            }else{
-                $value->mrn = '';
-                $value->episno = '';
-                $value->name = '';
-            }
-        }
+        //     if($episode->exists()){
+        //         $episode_first = $episode->first();
+        //         $value->mrn = $episode_first->mrn;
+        //         $value->episno = $episode_first->episno;
+        //         $value->name = $episode_first->name;
+        //     }else{
+        //         $value->mrn = '';
+        //         $value->episno = '';
+        //         $value->name = '';
+        //     }
+        // }
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
         $responce->records = $paginate->total();
         $responce->rows = $paginate->items();
-        $responce->sql = $episode->toSql();
-        $responce->sql_bind = $episode->getBindings();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
     }

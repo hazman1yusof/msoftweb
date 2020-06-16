@@ -161,6 +161,28 @@ class NursingController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
 
+            // DB::table('hisdb.episode')
+            //         ->insert([
+            //             'compcode' => session('compcode'),
+            //             'mrn' => $request->mrn_edit_ti,
+            //             'episno' => $request->episno_ti,
+            //             'diagprov' => $request->diagnosis,
+            //             'adduser'  => session('username'),
+            //             'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'lastuser'  => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //         ]);
+
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn_edit_ti)
+                ->where('episno','=',$request->episno_ti)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'diagprov' => $request->diagnosis,
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+
             DB::commit();
 
         } catch (\Exception $e) {
@@ -278,6 +300,16 @@ class NursingController extends defaultController
                     'pa_othdiscolor' => $request->pa_othdiscolor,
                     'pa_othnil' => $request->pa_othnil,
                     'pa_notes' => $request->pa_notes,
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn_edit_ti)
+                ->where('episno','=',$request->episno_ti)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'diagprov' => $request->diagnosis,
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);

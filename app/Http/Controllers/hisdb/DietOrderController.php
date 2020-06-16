@@ -50,6 +50,44 @@ class DietOrderController extends defaultController
         DB::beginTransaction();
 
         try {
+
+            DB::table('nursing.dietorder')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_dietOrder,
+                        'episno' => $request->episno_dietOrder,
+                        'oral' => $request->oral,
+                        'nbm' => $request->nbm,
+                        'rtf' => $request->rtf,
+                        'rof' => $request->rof,
+                        'tpn' => $request->tpn,
+                        'regular_a' => $request->regular_a,
+                        'regular_b' => $request->regular_b,
+                        'soft' => $request->soft,
+                        'vegetarian_c' => $request->vegetarian_c,
+                        'western_d' => $request->western_d,
+                        'highprotein' => $request->highprotein,
+                        'highcalorie' => $request->highcalorie,
+                        'highfiber' => $request->highfiber,
+                        'diabetic' => $request->diabetic,
+                        'lowprotein' => $request->lowprotein,
+                        'lowfat' => $request->lowfat,
+                        'red1200kcal' => $request->red1200kcal,
+                        'red1500kcal' => $request->red1500kcal,
+                        'paed6to12mth' => $request->paed6to12mth,
+                        'paed1to3yr' => $request->paed1to3yr,
+                        'paed4to9yr' => $request->paed4to9yr,
+                        'paedgt10yr' => $request->paedgt10yr,
+                        'lodgerflag' => $request->lodgerflag,
+                        'lodgervalue' => $request->lodgervalue,
+                        'disposable' => $request->disposable,
+                        'remark' => $request->remark,
+                        'remarkkitchen' => $request->remarkkitchen,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
             
             DB::commit();
 
@@ -65,6 +103,42 @@ class DietOrderController extends defaultController
         DB::beginTransaction();
 
         try {
+
+            DB::table('nursing.dietorder')
+                ->where('mrn','=',$request->mrn_dietOrder)
+                ->where('episno','=',$request->episno_dietOrder)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'oral' => $request->oral,
+                    'nbm' => $request->nbm,
+                    'rtf' => $request->rtf,
+                    'rof' => $request->rof,
+                    'tpn' => $request->tpn,
+                    'regular_a' => $request->regular_a,
+                    'regular_b' => $request->regular_b,
+                    'soft' => $request->soft,
+                    'vegetarian_c' => $request->vegetarian_c,
+                    'western_d' => $request->western_d,
+                    'highprotein' => $request->highprotein,
+                    'highcalorie' => $request->highcalorie,
+                    'highfiber' => $request->highfiber,
+                    'diabetic' => $request->diabetic,
+                    'lowprotein' => $request->lowprotein,
+                    'lowfat' => $request->lowfat,
+                    'red1200kcal' => $request->red1200kcal,
+                    'red1500kcal' => $request->red1500kcal,
+                    'paed6to12mth' => $request->paed6to12mth,
+                    'paed1to3yr' => $request->paed1to3yr,
+                    'paed4to9yr' => $request->paed4to9yr,
+                    'paedgt10yr' => $request->paedgt10yr,
+                    'lodgerflag' => $request->lodgerflag,
+                    'lodgervalue' => $request->lodgervalue,
+                    'disposable' => $request->disposable,
+                    'remark' => $request->remark,
+                    'remarkkitchen' => $request->remarkkitchen,
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
 
             $queries = DB::getQueryLog();
             // dump($queries);
