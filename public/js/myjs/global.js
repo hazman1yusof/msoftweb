@@ -59,6 +59,9 @@ var Global = function () {
 			case "epis_fin":
 				act = "get_reg_fin";
 				break;
+			case "epis_bed":
+				act = "get_reg_bed";
+				break;
 		}
 		
 		selecter = $('#tbl_item_select').DataTable( {

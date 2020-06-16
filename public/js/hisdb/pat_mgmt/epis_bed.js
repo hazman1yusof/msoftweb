@@ -24,7 +24,7 @@ $(document).ready(function () {
 		action:'get_table_default',
 		url:'/util/get_table_default',
 		field: '',
-		table_name: 'hisdb.bed',
+		table_name: 'hisdb.bedalloc',
 		filterCol:['compcode'],
 		filterVal:['session.compcode'],
 	}
@@ -32,10 +32,15 @@ $(document).ready(function () {
 	$("#jqGrid_bed").jqGrid({
 		datatype: "local",
 		colModel: [
+            { label: 'idno', name: 'idno' , hidden: true },
+            { label: 'mrn', name: 'mrn' , hidden: true },
+            { label: 'episno', name: 'episno' , hidden: true},
+            { label: 'Assign Date', name: 'asdate' , width:3 },
+            { label: 'Assign Time', name: 'astime' , width:3 },
             { label: 'Ward', name: 'ward' , width: 2 },
-            { label: 'Room', name: 'room' , width: 2 },
-            { label: 'Bed no', name: 'bednum', width: 4 },
-            { label: 'Bed Type', name: 'bedtype', width: 4  }
+            { label: 'Room', name: 'room' , width: 1 },
+            { label: 'Bed no', name: 'bednum', width: 2 },
+            { label: 'name', name: 'name', hidden: true }
 		],
 		autowidth: true,
 		multiSort: true,
@@ -45,6 +50,8 @@ $(document).ready(function () {
 		width: 900,
 		height: 250, 
 		rowNum: 30,
+		sortname: 'idno',
+		sortorder: 'desc',
 		pager: "#jqGridPager_bed",
 		onSelectRow:function(rowid, selected){
 			// populate_bed(selrowData("#jqGrid_bed"));
@@ -63,7 +70,7 @@ $(document).ready(function () {
 		ondblClickRow: function(rowid, iRow, iCol, e){
 		},
 		gridComplete: function () {
-		},
+		}
 	});
 
 	$("#jqGrid_bed").inlineNav('#jqGridPager_bed', {edit:false,add:false,del:false,search:false,
@@ -95,8 +102,8 @@ $(document).ready(function () {
 				{ label: 'Bed Type', name: 'bedtype', width: 4, classes: 'pointer'},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterCol:['compcode','recstatus', 'occup'],
+				filterVal:['session.compcode','A', 'VACANT']
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + search_bed.gridname);
@@ -109,8 +116,8 @@ $(document).ready(function () {
 		},{
 			title: "Select Bed Type search",
 			open: function () {
-				search_bed.urlParam.filterCol=['compcode', 'recstatus'];
-				search_bed.urlParam.filterVal=['session.compcode', 'A'];
+				search_bed.urlParam.filterCol=['compcode', 'recstatus', 'occup'];
+				search_bed.urlParam.filterVal=['session.compcode', 'A', 'VACANT'];
 
 				$('div[aria-describedby="otherdialog_search_bed"]').css("z-index", "1100");
 				$('div.ui-widget-overlay.ui-front').css("z-index", "1099");
@@ -169,6 +176,7 @@ $(document).ready(function () {
 
 	function saveForm_bed(callback){
 	    var postobj={
+	    	name : $('#txt_epis_name').text(),
 	    	_token : $('#csrf_token').val(),
 	    	mrn : $("#mrn_episode").val(),
 	    	episno : $("#txt_epis_no").val(),
@@ -193,7 +201,7 @@ $(document).ready(function () {
 	    });
 	}
 
-	$("#cancel_doc").click(function(){
+	$("#cancel_bed").click(function(){
 		button_state_bed('add');
 		disableForm('#form_bed');
 		search_bed.off();
@@ -208,14 +216,14 @@ $(document).ready(function () {
 	function button_state_bed(state){
 		switch(state){
 			case 'empty':
-				$('#add_bed,#save_bed,#cancel_doc').attr('disabled',true);
+				$('#add_bed,#save_bed,#cancel_bed').attr('disabled',true);
 				break;
 			case 'add':
 				$("#add_bed").attr('disabled',false);
-				$('#save_bed,#cancel_doc').attr('disabled',true);
+				$('#save_bed,#cancel_bed').attr('disabled',true);
 				break;
 			case 'wait':
-				$("#save_bed,#cancel_doc").attr('disabled',false);
+				$("#save_bed,#cancel_bed").attr('disabled',false);
 				$('#add_bed').attr('disabled',true);
 				break;
 		}

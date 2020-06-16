@@ -56,7 +56,11 @@ $(document).ready(function() {
         url: "pat_mast/post_entry?action=get_patient_list&epistycode="+$("#epistycode").val()+"&curpat="+$("#curpat").val(),
         formatters: {
             "col_add": function (column,row) {
-                return "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
+                var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
+                if(row.PatStatus == 1){
+                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/pat1.png' width='18'></a>";
+                }
+                return retval;
             },
             "col_mrn": function (column,row) {
                 return ('0000000' + row.MRN).slice(-7);
@@ -72,8 +76,8 @@ $(document).ready(function() {
             "commands": function (column,row) {
                 let rowid = counter++;//just for specify each row
                 return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
-                       "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\"  id=\"cmd_history" + row.MRN + "\"><span class='glyphicon glyphicon-header' aria-hidden='true'></span></button>" +
-                       "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><span class='fa fa-user-md' aria-hidden='true'></span></button>";
+                       "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>" +
+                       "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button>";
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function(){
@@ -96,7 +100,7 @@ $(document).ready(function() {
         grid.find(".command-edit").on("click", function(e){
             let rowid = $(this).data("rowId");
 
-            populate_patient_episode("edit",rowid);
+            populate_patient(rowid);
             $('#mdl_patient_info').modal({backdrop: "static"});
             $("#btn_register_patient").data("oper","edit");
             // console.log($("#grid-command-buttons").bootgrid("getCurrentRows")[rowid]);
@@ -104,11 +108,9 @@ $(document).ready(function() {
             
             desc_show.write_desc();
         }).end().find(".command-episode").on("click", function(e) {
-            populate_patient_episode("episode",$(this).data("rowId"));
+            populate_episode($(this).data("rowId"));
             $('#editEpisode').modal({backdrop: "static"});
-            $('#btn_epis_payer').data('mrn',$(this).data("mrn"));
 
-            disableEpisode(true);
         }).end().find(".command-add").on("click", function(e) {
             var html = '';
 
@@ -175,7 +177,7 @@ $(document).ready(function() {
         });
     });
 
-    populatecombo1();
+    // populatecombo1();
 
     $("#txt_pat_dob").blur(function(){
        $('#txt_pat_age').val(gettheage($(this).val()));
@@ -192,33 +194,9 @@ $(document).ready(function() {
         return null;
     }
 
-    $('#mdl_patient_info').on('hidden.bs.modal', function (e) {
-        destoryallerror();
-        $(this)
-            .find("input,textarea,select")
-            .val('')
-            .end()
-            .find("input[type=checkbox], input[type=radio]")
-            .prop("checked", "")
-            .end(); //this for clearing input after hide modal
-    });
-
-    $('#mdl_patient_info').on('shown.bs.modal', function (e) {
-        $('#mdl_patient_info').css("padding-left","0px")
-    });
-
-
-    $('#mdl_patient_info, #editEpisode').on('shown.bs.modal', function (e) {
-        $(this).css("padding-left","0px")
-    });
-
     $( "#patientBox").click(function() { // register new patient
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","add");
-        var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
-        $('#first_visit_date').val(first_visit_val);
-        var last_visit_val =moment(new Date()).format('DD/MM/YYYY');
-        $('#last_visit_date').val(last_visit_val);
         $('#episno').val('1');
     });
 
@@ -258,5 +236,62 @@ $(document).ready(function() {
 
     $("#txt_epis_dept,#txt_epis_source,#txt_epis_case,#txt_epis_doctor,#txt_epis_fin,#txt_pat_title,#txt_ID_Type,#txt_RaceCode,#txt_Religion,#txt_LanguageCode,#txt_pat_citizen,#txt_pat_area,#txt_payer_company,#txt_pat_occupation").on('keydown',{data:this},onTab);
 
+
+    if($('#curpat').val() == "true"){
+        var preepisode = new preepisode_init();
+        preepisode.makejqgrid();
+    }
+
+    function preepisode_init(){
+        this.urlParam_preepis;
+
+        this.makejqgrid = function(){
+
+            this.urlParam_preepis = {
+                    action:'get_table_default',
+                    url:'/util/get_table_default',
+                    field: '',
+                    table_name: 'hisdb.pre_episode',
+                    filterCol:['da.compcode'],
+                    filterVal:['session.compcode'],
+                }
+
+            $("#jqGrid_preepis").jqGrid({
+                datatype: "local",
+                colModel: [
+                    { label: 'Compcode', name: 'compcode' , width: 20 },
+                    { label: 'MRN', name: 'mrn' , width: 60},
+                    { label: 'Episode No.', name: 'episno', width: 20 }
+                ],
+                autowidth: true,
+                multiSort: true,
+                viewrecords: true,
+                loadonce: false,
+                viewrecords: false,
+                width: 900,
+                height: 200, 
+                rowNum: 30,
+                pager: "#jqGridPager_preepis",
+                onSelectRow:function(rowid, selected){
+                },
+                loadComplete: function(){
+                    
+                },
+                ondblClickRow: function(rowid, iRow, iCol, e){
+                },
+                gridComplete: function () {
+                },
+            });
+
+            addParamField('#jqGrid_preepis', false, this.urlParam_preepis);
+            var self = this;
+            $("#tabpreepis").on("shown.bs.collapse", function(){
+                $("#jqGrid_preepis").jqGrid ('setGridWidth', Math.floor($("#jqGrid_preepis_c")[0].offsetWidth-$("#jqGrid_preepis_c")[0].offsetLeft-0));
+                refreshGrid("#jqGrid_preepis", self.urlParam_preepis);
+            });
+        }
+    }
+
+    
 
 } );

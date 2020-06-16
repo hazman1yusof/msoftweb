@@ -217,13 +217,16 @@ $(document).ready(function () {
 	}
 
 	function populate_nok(obj){
-		$("#doc_no").val(obj.da_allocno);
-		$("#doc_doctorcode").val(obj.da_doctorcode);
-		$("#doc_doctorname").val(obj.d_doctorname);
-		$("#doc_discipline").val(obj.d_disciplinecode);
-		$("#doc_date").val(obj.da_asdate);
-		$("#doc_time").val(obj.da_astime);
-		$("#doc_status").val(obj.da_astatus);
+		$("#nok_name").val(obj.name);
+		$("#nok_relate").val(obj.relationshipcode);
+		$("#nok_addr1").val(obj.address1);
+		$("#nok_addr2").val(obj.address2);
+		$("#nok_addr3").val(obj.address3);
+		$("#nok_postcode").val(obj.postcode);
+		$("#nok_telh").val(obj.tel_h);
+		$("#nok_telhp").val(obj.tel_hp);
+		$("#nok_telo").val(obj.tel_o);
+		$("#nok_ext").val(obj.tel_o_ext);
 	}
 
 });

@@ -1,10 +1,8 @@
-    
-    function destoryallerror(){
-        $('#frm_patient_info').find("label.error").detach();
-    }//utk buang label error lepas close dialog modal
 
     $('#editEpisode').on('hidden.bs.modal', function (e) {
-        destoryallerror();
+        $('#editEpisode').find("label.error").detach();
+        $("#editEpisode").find('.error').removeClass("error");
+        $("#editEpisode").find('.valid').removeClass("valid");
         $(this)
             .find("input,textarea,select")
             .val('')
@@ -41,17 +39,11 @@
         });
     }
 
-    function populate_patient_episode (episode,rowid) {
+    function populate_patient (rowid) {
 
         let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
 
-
         $('#hid_pat_title').val(rowdata.TitleCode);
-        $('#mrn').val(('0000000' + rowdata.MRN).slice(-7));
-        $('#mrn_episode').val(rowdata.MRN);
-
-        $('#rowid').val(rowid);
-
         var first_visit = new Date(rowdata['first_visit_date']);
         var first_visit_val = (isNaN(first_visit.getFullYear()) ? 'n/a' : moment(first_visit).format('DD/MM/YYYY'));
         $('#first_visit_date').val(first_visit_val);
@@ -68,7 +60,6 @@
 
         // $('#occupcode').val(rowdata.occupcode);
         $('#hid_pat_occupation').val(rowdata.OccupCode);
-
         
         $('#txt_pat_mrn').val(('0000000' + rowdata.MRN).slice(-7));
         $('#hid_LanguageCode').val(rowdata.LanguageCode);
@@ -112,33 +103,39 @@
         $('#blood_grp').val(rowdata.bloodgrp);
         // $('#name').val(rowdata.name);
 
-        // ********* episode ************
-        if(episode == "episode"){
+		//populate_payer_guarantee_info(d); tgk balik nanti
+    }
 
-            $('#txt_epis_name').text(rowdata.Name);
-            $('#txt_epis_mrn').text(('0000000' + rowdata.MRN).slice(-7));
+    function populate_episode(rowid){
+        let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+        disableEpisode(true);
 
-            var episno_ = parseInt(rowdata.Episno);
-            if(isNaN(episno_)){
-                episno_ = 0;
-            }
-            $('#txt_epis_no').val(parseInt(episno_) + 1); // dlm modal Episode
-            $('#txt_epis_type').val($("#epistycode").val());                    
-            $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
-            $('#txt_epis_time').val(moment().format('hh:mm:ss'));
-
-            if (rowdata.Sex == "M") // dlm modal Episode
-            {
-                $('#cmb_epis_pregnancy').prop("disabled", true);
-            }else{
-                $('#cmb_epis_pregnancy').prop("disabled", false);
-            }
-            if (rowdata.PatStatus == "true") // dlm modal Episode
-            { alert('PatStatus true');
-            }
-                
+        $('#mrn_episode').val(rowdata.MRN);
+        $('#rowid').val(rowid);
+        $('#txt_epis_name').text(rowdata.Name);
+        $('#txt_epis_mrn').text(('0000000' + rowdata.MRN).slice(-7));
+        $('#txt_epis_type').val($("#epistycode").val());
+        $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
+        $('#txt_epis_time').val(moment().format('hh:mm:ss'));
+        $('#btn_epis_payer').data('mrn',$(this).data("mrn"));
+        if(rowdata.Sex == "M"){
+            $('#cmb_epis_pregnancy').val('Non-Pregnant');
+            $('#cmb_epis_pregnancy').prop("disabled", true);
+        }else{
+            $('#cmb_epis_pregnancy').prop("disabled", false);
         }
-			//populate_payer_guarantee_info(d); tgk balik nanti
+
+        var episno_ = parseInt(rowdata.Episno);
+        if(isNaN(episno_)){
+            episno_ = 0;
+        }
+
+        if(rowdata.PatStatus == 1){
+            $('#txt_epis_no').val(parseInt(episno_));
+            populate_episode_by_mrn_episno(rowdata.MRN,rowdata.Episno);
+        }else{
+            $('#txt_epis_no').val(parseInt(episno_) + 1);
+        }
     }
 	
 	function populate_payer_guarantee_info(d)
@@ -170,18 +167,17 @@
 
      // *************************** episode ******************************
 
-    $('#btn_save_episode').click(add_episode);
-
-    $('#cmb_epis_case').change (function (e) {
-
-        var icase = $('#cmb_epis_case').val();
-
-        //$('#cmb_epis_doctor').empty();
-        
-        var urlReg = '../../../../assets/php/entry_hisdb.php?action=get_doctor_by_discipline&disc=' + icase;
-        loadlist($('#cmb_epis_doctor').get(0),urlReg,'doctorcode','doctorname');
+    $('#form_episode').validate({
+        errorPlacement: function(error, element) {
+            error.insertAfter( element.closest(".input-group") );
+        }
     });
 
+    $('#btn_save_episode').click(function(){
+        if($('#epis_header').valid() && $('#form_episode').valid()){
+            add_episode();
+        }
+    });
 
     $('#txt_epis_fin').change(function (e){
         var iregin = $('#hid_epis_fin').val();
@@ -374,7 +370,6 @@
 
     function disableEpisode(status) {
 
-        //$('#cmb_epis_pay_mode').prop("disabled",status);
         $('#txt_epis_payer').prop("disabled",status);
         $('#txt_epis_bill_type').prop("disabled",status);
         $('#rad_epis_fee_yes').prop("disabled",status);
@@ -388,12 +383,6 @@
 
 
         $('#regque').prop("disabled",status);
-
-        // $('#np').prop("disabled",status);
-        // $('#nnp').prop("disabled",status);
-        // $('#fp').prop("disabled",status);
-        // $('#fnp').prop("disabled",status);
-
     }
 
     function add_episode()
@@ -416,6 +405,7 @@
         var episourrefno = $("#txt_epis_our_refno").val();
         var epispreg = $('input[name=rad_epis_pregnancy]:checked').val();
         var episfee = $('input[name=rad_epis_fee]:checked').val();
+        var episbed = $('#hid_epis_bed').val();
         var _token = $('#csrf_token').val();
 
         let obj =  { 
@@ -437,6 +427,7 @@
                     epis_ourrefno : episourrefno,
                     epis_preg : epispreg,
                     epis_fee : episfee,
+                    epis_bed : episbed,
                     _token: _token
                   }
 
@@ -524,81 +515,12 @@
         */
     }
 
-
-    var desc_show_epi = new loading_desc_episode([
-        {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'epis_dept'},
-        {code:'#hid_epis_source',desc:'#txt_epis_source',id:'epis_source'},
-        {code:'#hid_epis_case',desc:'#txt_epis_case',id:'epis_case'},
-        {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'epis_doctor'},
-        {code:'#txt_epis_fin',desc:'#hid_epis_fin',id:'epis_fin'}
-    ]);
-    // desc_show_epi.load_desc();
-
-    function loading_desc_episode(obj){
-        this.code_fields=obj;
-        this.epis_dept={code:'code',desc:'description'};//data simpan dekat dalam ni
-        this.epis_source={code:'code',desc:'description'};//data simpan dekat dalam ni
-        this.epis_case={code:'code',desc:'description'};//data simpan dekat dalam ni
-        this.epis_doctor={code:'code',desc:'description'};//data simpan dekat dalam ni
-        this.epis_fin={code:'code',desc:'description'};//data simpan dekat dalam ni
-        this.load_desc = function(){
-            load_for_desc(this,'epis_dept','pat_mast/get_entry?action=get_reg_dept');
-
-            load_for_desc(this,'epis_source','pat_mast/get_entry?action=get_reg_source');
-
-            load_for_desc(this,'epis_case','pat_mast/get_entry?action=get_reg_case');
-
-            load_for_desc(this,'epis_doctor','pat_mast/get_entry?action=get_reg_doctor');
-
-            load_for_desc(this,'epis_fin','pat_mast/get_entry?action=get_reg_fin');
-
-            load_for_desc(this,'epis_fin','pat_mast/get_entry?action=get_reg_fin');
-        }
-
-        function load_for_desc(selobj,id,url){
-            $.getJSON(url,{},function(data){
-                selobj[id].data = data.data;
-            });
-        }
-
-        this.write_desc = function(){
-            self=this;
-            obj.forEach(function(elem){
-                if($(elem.code).val().trim() != ""){
-                    $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id));
-                }
-            });
-        }
-
-        this.get_desc = function(search_code,id){
-            let code_ = this[id].code;
-            let desc_ = this[id].desc;
-            let retdata="N/A";
-
-            retdata = this[id].data.find(function(obj){
-                return obj[code_] == search_code;
-            });
-
-            return (retdata == undefined)? "N/A" : retdata[desc_];
-        }
-    }
-
-    function click_episode_button() {
-        populate_patient_episode("episode",$(this).data("rowId"));
-        check_last_episde();
-        $('#editEpisode').modal({backdrop: "static"});
-        $('#btn_epis_payer').data('mrn',$(this).data("mrn"));
-
-        disableEpisode(true);
-    }
-
     function populate_episode_by_mrn_episno(mrn,episno,form){
         var param={
             action:'get_value_default',
             field:"*",
             table_name:'hisdb.episode',
-            table_id:'_none',
-            filterCol:['compcode','mrn','episno'],filterVal:['session.company',mrn,episno]
+            filterCol:['compcode','mrn','episno'],filterVal:['session.compcode',mrn,episno]
         };
 
         $.get( "/util/get_value_default?"+$.param(param), function( data ) {
@@ -606,21 +528,47 @@
         },'json').done(function(data) {
 
             if(data.rows.length > 0){
-                
-                $.each(data.rows[0], function( index, value ) {
-                    var input=$(form+" [name='"+index+"']");
+                var episdata = data.rows[0]
 
-                    if(input.is("[type=radio]")){
-                        $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-                    }else{
-                        input.val(value);
-                    }
-                });
+                if(episdata.newcaseP == 1){
+                    $('#cmb_epis_case_maturity').val(1);
+                    $('#cmb_epis_pregnancy').val("Pregnant");
+                }else if(episdata.newcaseNP == 1){
+                    $('#cmb_epis_case_maturity').val(1);
+                    $('#cmb_epis_pregnancy').val("Non-Pregnant");
+                }else if(episdata.followupP == 1){
+                    $('#cmb_epis_case_maturity').val(2);
+                    $('#cmb_epis_pregnancy').val("Pregnant");
+                }else if(episdata.followupP == 1){
+                    $('#cmb_epis_case_maturity').val(2);
+                    $('#cmb_epis_pregnancy').val("Non-Pregnant");
+                }
 
+                $('#cmb_epis_pregnancy').val();
+                $('#txt_epis_date').val(episdata.reg_date);
+                $('#txt_epis_time').val(episdata.reg_time);
+                $('#txt_epis_no').val(episdata.episno);
+                $('#txt_epis_type').val(episdata.epistycode);
+
+                $('#hid_epis_dept').val(episdata.regdept);
+                $('#hid_epis_source').val(episdata.admsrccode);
+                $('#hid_epis_case').val(episdata.case_code);
+                $('#hid_epis_doctor').val(episdata.admdoctor);
+                $('#hid_epis_fin').val(episdata.pay_type);
+                $("#hid_epis_bed").val(episdata.bed);
+                $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
+                $('#cmb_epis_pay_mode').val(episdata.pyrmode.toUpperCase());
+                $('#hid_epis_payer').val();
+                $('#hid_epis_bill_type').val(episdata.billtype);
+                $('#txt_epis_refno').val();
+                $('#txt_epis_our_refno').val();
+                $('#txt_epis_queno').val();
 
             }else{
                 alert('MRN not found')
             }
+
+            epis_desc_show.write_desc();
 
         }).error(function(data){
 
@@ -628,7 +576,7 @@
 
     }
 
-    populatecombo_gl();
+    // populatecombo_gl();
     function populatecombo_gl(){
 
         var urloccupation = 'pat_mast/get_entry?action=get_patient_occupation';
@@ -817,6 +765,118 @@
             return (pad + str).slice(-pad.length);
         } else {
             return (str + pad).substring(0, pad.length);
+        }
+    }
+
+    if($('#epistycode').val() == 'OP'){
+        var epis_desc_show = new loading_desc_epis([
+            {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+            {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+            {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+            {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+            {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+            {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+            {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'}
+        ]);
+    }else if($('#epistycode').val() == 'IP'){
+        var epis_desc_show = new loading_desc_epis([
+            {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+            {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+            {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+            {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+            {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
+            {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+            {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+            {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'}
+        ]);
+    }
+    
+    epis_desc_show.load_desc();
+
+    function loading_desc_epis(obj){
+        this.code_fields=obj;
+        this.regdept={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.regsource={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.case={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.doctor={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.epis_bed={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.epis_fin={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.epis_payer={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.bill_type={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.load_desc = function(){
+            load_for_desc(this,'regdept','pat_mast/get_entry?action=get_reg_dept');
+            load_for_desc(this,'regsource','pat_mast/get_entry?action=get_reg_source');
+            load_for_desc(this,'case','pat_mast/get_entry?action=get_reg_case');
+            load_for_desc(this,'doctor','pat_mast/get_entry?action=get_reg_doctor');
+            load_for_desc(this,'epis_bed','pat_mast/get_entry?action=get_reg_bed');
+            load_for_desc(this,'epis_fin','pat_mast/get_entry?action=get_reg_fin');
+            load_for_desc(this,'epis_payer','pat_mast/get_entry?action=get_debtor_list');
+            load_for_desc(this,'bill_type','pat_mast/get_entry?action=get_billtype_list');
+        }
+
+        function load_for_desc(selobj,id,url){
+
+            let storage_name = 'fastload_bio_'+id;
+            let storage_obj = localStorage.getItem(storage_name);
+
+
+            if(!storage_obj){
+
+                $.get( url, function( data ) {
+                        
+                },'json').done(function(data) {
+                    if(!$.isEmptyObject(data)){
+
+                        selobj[id].data = data.data;
+
+                        let desc = data.data;
+                        let now = moment();
+
+                        var json = JSON.stringify({
+                            'description':desc,
+                            'timestamp': now
+                        });
+
+                        localStorage.setItem(storage_name,json);
+                    }
+                });
+
+            }else{
+
+                let obj_stored = {
+                    'json':JSON.parse(storage_obj),
+                }
+
+                selobj[id].data = obj_stored.json.description
+
+                //remove storage after 7 days
+                let moment_stored = obj_stored.json.timestamp;
+                if(moment().diff(moment(moment_stored),'days') > 7){
+                    localStorage.removeItem(storage_name);
+                }
+
+            }
+        }
+
+        this.write_desc = function(){
+            self=this;
+            obj.forEach(function(elem){
+                if($(elem.code).val().trim() != ""){
+                    $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id));
+                }
+            });
+        }
+
+        this.get_desc = function(search_code,id){
+            let code_ = this[id].code;
+            let desc_ = this[id].desc;
+            let retdata="N/A";
+
+            retdata = this[id].data.find(function(obj){
+                return obj[code_] == search_code;
+            });
+
+            return (retdata == undefined)? "N/A" : retdata[desc_];
         }
     }
 

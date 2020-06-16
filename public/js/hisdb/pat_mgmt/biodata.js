@@ -137,10 +137,6 @@
     $("#biodata_but").click(function() {
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","add");
-        var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
-        $('#first_visit_date').val(first_visit_val);
-        var last_visit_val =moment(new Date()).format('DD/MM/YYYY');
-        $('#last_visit_date').val(last_visit_val);
         $('#episno').val('1');
     });
 
@@ -273,7 +269,7 @@
         },
     });
 
-    var desc_show = new loading_desc([
+    var desc_show = new loading_desc_bio([
         {code:'#hid_pat_citizen',desc:'#txt_pat_citizen',id:'citizencode'},
         {code:'#hid_pat_area',desc:'#txt_pat_area',id:'areacode'},
         {code:'#hid_pat_title',desc:'#txt_pat_title',id:'titlecode'},
@@ -284,7 +280,7 @@
     ]);
     desc_show.load_desc();
 
-    function loading_desc(obj){
+    function loading_desc_bio(obj){
         this.code_fields=obj;
         this.titlecode={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.citizencode={code:'code',desc:'description'};//data simpan dekat dalam ni
@@ -304,9 +300,47 @@
         }
 
         function load_for_desc(selobj,id,url){
-            $.getJSON(url,{},function(data){
-                selobj[id].data = data.data;
-            });
+
+            let storage_name = 'fastload_bio_'+id;
+            let storage_obj = localStorage.getItem(storage_name);
+
+
+            if(!storage_obj){
+
+                $.get( url, function( data ) {
+                        
+                },'json').done(function(data) {
+                    if(!$.isEmptyObject(data)){
+
+                        selobj[id].data = data.data;
+
+                        let desc = data.data;
+                        let now = moment();
+
+                        var json = JSON.stringify({
+                            'description':desc,
+                            'timestamp': now
+                        });
+
+                        localStorage.setItem(storage_name,json);
+                    }
+                });
+
+            }else{
+
+                let obj_stored = {
+                    'json':JSON.parse(storage_obj),
+                }
+
+                selobj[id].data = obj_stored.json.description
+
+                //remove storage after 7 days
+                let moment_stored = obj_stored.json.timestamp;
+                if(moment().diff(moment(moment_stored),'days') > 7){
+                    localStorage.removeItem(storage_name);
+                }
+
+            }
         }
 
         this.write_desc = function(){

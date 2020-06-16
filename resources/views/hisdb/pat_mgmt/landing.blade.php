@@ -121,6 +121,11 @@
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
     <div class="wrapper">
         <input name="epistycode" id="epistycode" type="hidden" value="{{request()->get('epistycode')}}">
+        @if (request()->get('epistycode') == 'IP')
+        <input name="epistycode2" id="epistycode2" type="hidden" value="DC">
+		@else
+        <input name="epistycode2" id="epistycode2" type="hidden" value="OTC">
+		@endif
         <input name="curpat" id="curpat" type="hidden" value="{{request()->get('curpat')}}">
         <div id="info"></div>
 
@@ -128,9 +133,32 @@
 			<button id="patientBox" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
 			&nbsp;&nbsp;
 			<button id="btn_mykad" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-credit-card" aria-hidden="true"> </span> My Kad</button>
-			<!-- &nbsp;&nbsp;
-			<button type="button" class="btn btn-success btn-md" disabled ><span class="glyphicon glyphicon-import" aria-hidden="true"> </span> Import File</button> -->
 		</div>
+
+		@if (request()->get('curpat') == 'true')
+		<div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
+	        <div class="panel-heading clearfix collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis">
+
+	        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+	        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
+	        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
+	            <h5><strong>PRE EPISODE</strong></h5>
+	        </div> 
+	        </div>
+
+	        <div id="tabpreepis" class="panel-collapse collapse">
+	        <div class="panel-body form-horizontal">
+	            <div id="jqGrid_preepis_c">
+	                <div class='col-md-12' style="padding:0 0 15px 0">
+	                    <table id="jqGrid_preepis" class="table table-striped"></table>
+	                    <div id="jqGridPager_preepis"></div>
+	                </div>
+	            </div>
+	        </div>
+            </div>
+        </div>
+        @endif
+
 		<div class="panel">
 			<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
                 <thead>
@@ -187,7 +215,9 @@
 	
 	<script type="text/javascript" src="js/myjs/utility.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
+	@if (request()->get('epistycode') == 'IP')
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
+	@endif
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 
 	</div>

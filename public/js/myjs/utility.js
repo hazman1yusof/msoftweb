@@ -1472,6 +1472,12 @@ function faster_detail_load(){
 				});
 
 				localStorage.setItem(storage_name,json);
+
+				//remove storage after 7 days
+                let moment_stored = obj_stored.json.timestamp;
+                if(moment().diff(moment(moment_stored),'days') > 7){
+                    localStorage.removeItem(storage_name);
+                }
 			}
 
 			

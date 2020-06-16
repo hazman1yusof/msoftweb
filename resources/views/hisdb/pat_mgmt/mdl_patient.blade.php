@@ -1,7 +1,6 @@
 <!-- Large modal -->
 <div id="mdl_patient_info" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; z-index: 100; padding-left: 0px !important;">
     <div class="modal-dialog modal-lg">
-
         <form id="frm_patient_info" class="form-horizontal">
 			<input type="hidden" name="idno" id="txt_pat_idno">
             <div class="modal-content">
@@ -39,15 +38,14 @@
                                 <div class="panel-heading clearfix" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabBio">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                                     <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
-                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
-                                        <h5>Patient Info</h5>
+                                    <div class="pull-right" style="position: absolute; padding: 5px 0 0 5px; left: 10px; top: 0px;">
+                                        <h5><strong>PATIENT INFO</strong></h5>
                                     </div> 
                                 </div>
 
                                 <div id="tabBio" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <!-- Tab content begin -->
-                                    <p><strong>Patient Info</strong></p>    
                                     <div class="form-group"> 
                                         <div class="col-md-2">
                                             <img src="{{asset('img/defaultprofile.png')}}" width="120" height="140" />
@@ -171,16 +169,6 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <small for="txt_pat_area">Area</small>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control form-mandatory" name="txt_pat_area" id="txt_pat_area" required>
-                                                <input type="hidden" name="AreaCode" id="hid_pat_area" value="" />
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info" id="btn_pat_area" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_area');"><span class="fa fa-ellipsis-h"></span> </button>
-                                                </span>
-                                            </div>
-                                        </div>
                                     </div>  
 
                                     <div class="form-group">
@@ -203,8 +191,8 @@
                                 <div class="panel-heading clearfix collapsed" id="toggle_tabAddr" data-toggle="collapse" data-target="#tabAddr">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                                     <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
-                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
-                                        <h5>Address</h5>
+                                    <div class="pull-right" style="position: absolute; padding: 5px 0 0 5px; left: 10px; top: 0px;">
+                                        <h5><strong>ADDRESS</strong></h5>
                                     </div> 
                                 </div>
 
@@ -216,16 +204,16 @@
                                             <!-- <p><strong>ADDRESS</strong></p>                                                      -->
                                             <div class="tab-v2">
                                                 <ul class="nav nav-tabs">
-                                                    <li class="active"><a href="#addr_current" data-toggle="tab">Current</a></li>
-                                                    <li><a href="#addr_office" data-toggle="tab">Office</a></li>
-                                                    <li><a href="#addr_home" data-toggle="tab">Home</a></li>
+                                                    <li class="active"><a href="#addr_current" data-toggle="tab">CURRENT</a></li>
+                                                    <li><a href="#addr_office" data-toggle="tab">OFFICE</a></li>
+                                                    <li><a href="#addr_home" data-toggle="tab">HOME</a></li>
                                                 </ul>
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="addr_current">
                                                         <!--div class="row"-->
                                                         <br />
                                                         <div class="col-md-4">
-                                                            <p>Current Address</p>
+                                                            <p>CURRENT ADDRESS</p>
                                                         </div>
                                                         <div class="col-md-8">
                                                             <p><input name="Address1" id="txt_pat_curradd1" class="form-control form-mandatory" type="text" required /></p>
@@ -246,19 +234,29 @@
                                                             <p></p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Postcode<input name="Postcode" id="txt_pat_currpostcode" class="form-control form-mandatory" type="text" required /></p>
+                                                            <p>POSTCODE<input name="Postcode" id="txt_pat_currpostcode" class="form-control form-mandatory" type="text" required /></p>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <small for="txt_pat_area">AREA</small>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control form-mandatory" name="txt_pat_area" id="txt_pat_area" required>
+                                                                <input type="hidden" name="AreaCode" id="hid_pat_area" value="" />
+                                                                <span class="input-group-btn">
+                                                                    <button type="button" class="btn btn-info" id="btn_pat_area" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_area');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <p></p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Contact No</p>
+                                                            <p>CONTACT NO</p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>House<input name="telh" id="txt_pat_telh" class="form-control form-mandatory phone-group" type="text"/></p>
+                                                            <p>HOUSE<input name="telh" id="txt_pat_telh" class="form-control form-mandatory phone-group" type="text"/></p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Mobile<input name="telhp" id="txt_pat_telhp" class="form-control form-mandatory phone-group" type="text"/></p>
+                                                            <p>MOBILE<input name="telhp" id="txt_pat_telhp" class="form-control form-mandatory phone-group" type="text"/></p>
                                                         </div>
                                                         <!--/div-->
                                                     </div>
@@ -266,7 +264,7 @@
                                                         <!--div class="row"-->
                                                         <br />
                                                         <div class="col-md-4">
-                                                            <p>Office Address</p>
+                                                            <p>OFFICE ADDRESS</p>
                                                         </div>
                                                         <div class="col-md-8">
                                                             <p><input name="Offadd1" id="txt_pat_offadd1" class="form-control" type="text" /></p>
@@ -287,19 +285,19 @@
                                                             <p></p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Postcode<input name="OffPostcode" id="txt_pat_offpostcode" class="form-control" type="text" /></p>
+                                                            <p>POSTCODE<input name="OffPostcode" id="txt_pat_offpostcode" class="form-control" type="text" /></p>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <p></p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Contact No</p>
+                                                            <p>CONTACT NO</p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Office Tel<input name="txt_pat_telo" id="txt_pat_telo" class="form-control" type="text" /></p>
+                                                            <p>OFFICE TEL<input name="txt_pat_telo" id="txt_pat_telo" class="form-control" type="text" /></p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Office Ext<input name="txt_pat_teloext" id="txt_pat_teloext" class="form-control" type="text" /></p>
+                                                            <p>OFFFICE EXT<input name="txt_pat_teloext" id="txt_pat_teloext" class="form-control" type="text" /></p>
                                                         </div>
                                                         <!--/div-->
                                                     </div>
@@ -307,7 +305,7 @@
                                                         <!--div class="row"-->
                                                         <br />
                                                         <div class="col-md-4">
-                                                            <p>Home Address</p>
+                                                            <p>HOME ADDRESS</p>
                                                         </div>
                                                         <div class="col-md-8">
                                                             <p><input name="pAdd1" id="txt_pat_padd1" class="form-control" type="text" /></p>
@@ -328,19 +326,19 @@
                                                             <p></p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Postcode<input name="pPostCode" id="txt_pat_ppostcode" class="form-control" type="text" /></p>
+                                                            <p>POSTCODE<input name="pPostCode" id="txt_pat_ppostcode" class="form-control" type="text" /></p>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <p></p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Contact No</p>
+                                                            <p>CONTACT NO</p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Home Tel<input name="txt_pat_ptel" id="txt_pat_ptel" class="form-control" type="text" /></p>
+                                                            <p>HOME TEL<input name="txt_pat_ptel" id="txt_pat_ptel" class="form-control" type="text" /></p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <p>Home Mobile<input name="txt_pat_ptelhp" id="txt_pat_ptelhp" class="form-control" type="text" /></p>
+                                                            <p>HOME MOBILE<input name="txt_pat_ptelhp" id="txt_pat_ptelhp" class="form-control" type="text" /></p>
                                                         </div>
                                                         <!--/div-->
                                                     </div>
@@ -357,8 +355,8 @@
                                 <div class="panel-heading clearfix collapsed" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabCorp">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                                     <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
-                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
-                                        <h5>Corporate Info</h5>
+                                    <div class="pull-right" style="position: absolute; padding: 5px 0 0 5px; left: 10px; top: 0px;">
+                                        <h5><strong>CORPORATE INFO</strong></h5>
                                     </div> 
                                 </div>
 

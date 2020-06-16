@@ -52,13 +52,13 @@ class PatmastController extends defaultController
 
             $sel_epistycode = $request->epistycode;
             $table = DB::table('hisdb.queue')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('deptcode','=',"ALL");
+                        ->where('compcode','=',session('compcode'))
+                        ->where('deptcode','=',"ALL");
 
             if($sel_epistycode == 'OP'){
-                    $table->whereIn('epistycode', ['OP','OTC']);
+                $table->whereIn('epistycode', ['OP','OTC']);
             }else{
-                    $table->whereIn('epistycode', ['IP','DP']);
+                $table->whereIn('epistycode', ['IP','DP']);
             }
 
             $paginate = $table->paginate($request->rows);
@@ -109,7 +109,6 @@ class PatmastController extends defaultController
                         }
                     });
                 }
-
             }
 
             $table_patm = $table_patm->where('compcode','=',session('compcode'));
@@ -251,6 +250,19 @@ class PatmastController extends defaultController
                         ->get();
                 break;
 
+            case 'get_reg_bed':
+                $data = DB::table('hisdb.bed')
+                        ->select('bednum as code','ward as description')
+                        ->where('occup','=',"VACANT")
+                        ->where('compcode','=',session('compcode'))
+                        ->get();
+
+                foreach ($data as $key => $value) {
+                    $value->description = 'BED: '.$value->code.',  WARD: '.$value->description;
+                }
+
+                break;
+
             case 'get_reg_doctor':
                 $data = DB::table('hisdb.doctor')
                         ->select('doctorcode as code','doctorname as description')
@@ -269,11 +281,17 @@ class PatmastController extends defaultController
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
                             ->whereIn('debtortype', ['PR', 'PT'])
                             ->get();
-                }else{
+                }else if($request->type == 2){
                     $data = DB::table('debtor.debtormast')
                             ->where('compcode','=',session('compcode'))  
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
-                            ->whereNotIn('debtortype', ['PR', 'PT'])
+                            ->whereIn('debtortype', ['PR', 'PT'])
+                            ->get();
+                }else{
+                    $data = DB::table('debtor.debtormast')
+                            ->select('debtorcode as code','name as description')
+                            ->where('compcode','=',session('compcode'))  
+                            // ->where('debtorcode','=',ltrim($request->mrn, '0'))
                             ->get();
                 }
                 break;
@@ -284,10 +302,15 @@ class PatmastController extends defaultController
                             ->where('compcode','=',session('compcode'))  
                             ->where('opprice','=','1')
                             ->get();
+                }else if($request->type == "IP"){
+                    $data = DB::table('hisdb.billtymst')
+                            ->where('compcode','=',session('compcode'))  
+                            ->where('opprice','=','0')
+                            ->get();
                 }else{
                     $data = DB::table('hisdb.billtymst')
-                            ->where('compcode','=',session('compcode')) 
-                            ->where('opprice','=','0')
+                            ->select('billtype as code','description as description')
+                            ->where('compcode','=',session('compcode'))
                             ->get();
                 }
                 break;
@@ -335,7 +358,14 @@ class PatmastController extends defaultController
 
         $table = DB::table('hisdb.pat_mast');
 
+        if(!empty($request->Email_official)){
+            $loginid = $request->Email_official;
+        }else{
+            $loginid = $request->Newic;
+        }
+
         $array_insert = [
+            'loginid' => $loginid,
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -382,7 +412,7 @@ class PatmastController extends defaultController
             'recstatus' => 'A'
         ];
 
-        $array_ignore = ['mrn','MRN','first_visit_date','last_visit_date'];
+        $array_ignore = ['mrn','MRN','first_visit_date','last_visit_date','Episno'];
 
         foreach ($request->field as $key => $value) {
             if(array_search($value,$array_ignore))continue;
@@ -499,20 +529,22 @@ class PatmastController extends defaultController
         $epis_ourrefno = $request->epis_ourrefno;
         $epis_preg = $request->epis_preg;
         $epis_fee = $request->epis_fee;
+        $epis_bednum = $request->epis_bed;
 
-        if ($epis_maturity == "1")
-        {
-            $epis_newcase = "1";
-            $epis_followup = "0";           
+        $epis_typeepis;
+        if ($epis_maturity == "1"){
+            if($epis_preg == "Pregnant"){
+                $epis_typeepis = "newcaseP";
+            }else{
+                $epis_typeepis = "newcaseNP";
+            }
+        }else{
+            if($epis_preg == "Pregnant"){
+                $epis_typeepis = "followupP";
+            }else{
+                $epis_typeepis = "followupNP";
+            }
         }
-        else
-        {
-            $epis_newcase = "0";
-            $epis_followup = "1";           
-        }
-
-        $epis_nc_preg = $epis_preg;
-        $epis_fu_preg = $epis_preg;
 
 
         DB::beginTransaction();
@@ -525,8 +557,6 @@ class PatmastController extends defaultController
                     "mrn" => $epis_mrn,
                     "episno" => $epis_no,
                     "epistycode" => $epis_type,
-                    "newcaseP" => $epis_newcase,
-                    "followupP" => $epis_followup,
                     "reg_date" => $epis_date,
                     "reg_time" => $epis_time,
                     "regdept" => $epis_dept,
@@ -536,14 +566,11 @@ class PatmastController extends defaultController
                     "pay_type" => $epis_fin,
                     "pyrmode" => $epis_paymode,
                     "billtype" => $epis_billtype,
-                    // "fu_preg" => $epis_fu_preg,
-                    // "nc_preg" => $epis_nc_preg,
+                    "bed" => $epis_bednum,
+                    $epis_typeepis => 1,
                     "AdminFees" => $epis_fee,
                     "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
                     "adduser" => session('username'),
-                    // "updatedate" => Carbon::now("Asia/Kuala_Lumpur"),
-                    // "updatetime" => Carbon::now("Asia/Kuala_Lumpur"),
-                    // "upduser" => session('username'),
                     "episactive" => 1,
                     "allocpayer" => 1
                 ]);
@@ -557,6 +584,8 @@ class PatmastController extends defaultController
                 //LastUser=session.user
 
             DB::table("hisdb.pat_mast")
+                ->where("compcode",'=',session('compcode'))
+                ->where("mrn",'=',$epis_mrn)
                 ->update([
                     'episno' => $epis_no,
                     'patstatus' => 1,
@@ -568,6 +597,8 @@ class PatmastController extends defaultController
 
             if($epis_no == 1){
                 DB::table("hisdb.pat_mast")
+                    ->where("compcode",'=',session('compcode'))
+                    ->where("mrn",'=',$epis_mrn)
                     ->update([
                         'first_visit_date' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
@@ -643,6 +674,7 @@ class PatmastController extends defaultController
                 // adduser
                 // adddate
                 // computerid
+
             $epispayer_obj = DB::table('hisdb.epispayer')
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$epis_mrn)
@@ -715,16 +747,41 @@ class PatmastController extends defaultController
 
             //CREATE BEDALLOC KALAU IP @ DP SHJ
                 // from page
-            if($epis_type == "IP" || $epis_type == "DP"){
-
-            }
 
             //UPDATE BED set recstatus=OCCUPIED KALAU IP @ DP SHJ
                     //mrn = episode.mrn
                     //episno = episode.episno
                     //name = patmast.name
             if($epis_type == "IP" || $epis_type == "DP"){
-                
+
+                $bed_obj = DB::table('hisdb.bed')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bednum','=',$epis_bednum);
+
+                if($bed_obj->exists()){
+                    $bed_first = $bed_obj->first();
+                    DB::table('hisdb.bedalloc')
+                        ->insert([  
+                            'mrn' => $epis_mrn,
+                            'episno' => $epis_no,
+                            'name' => $patmast_data->Name,
+                            'astatus' => "Occupied",
+                            'ward' =>  $bed_first->ward,
+                            'room' =>  $bed_first->room,
+                            'bednum' =>  $bed_first->bednum,
+                            'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'astime' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'compcode' => session('compcode'),
+                            'adduser' => strtoupper(session('username')),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+
+                    $bed_obj->update([
+                        'occup' => "OCCUPIED"
+                    ]);
+
+                }
+
             }
 
 
@@ -972,33 +1029,67 @@ class PatmastController extends defaultController
 
     }
 
-    public function save_gl(Request $request){
+    public function save_bed(Request $request){
 
         DB::beginTransaction();
 
         try {
+                $bedalloc_oldidno =  DB::table('hisdb.bedalloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno);
 
+                if($bedalloc_oldidno->exists()){
+                    $bedalloc_old = DB::table('hisdb.bedalloc')
+                        ->where('idno','=',$bedalloc_oldidno->max('idno'))
+                        ->first();
 
-                // $codeexist = DB::table('hisdb.corpstaff')
-                //     ->where('admsrccode','=',$request->adm_code);
+                    $bed_old = DB::table('hisdb.bed')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('bednum','=',$bedalloc_old->bednum)
+                                    ->update([
+                                        'occup' => "VACANT"
+                                    ]);
 
-                // if($codeexist->exists()){
-                //     throw new \Exception('Admsrccode already exists', 500);
-                // }
+                }
 
+                $bed_obj = DB::table('hisdb.bed')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bednum','=',$request->bed_bednum);
 
-                DB::table('hisdb.corpstaff')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'debtorcode'    =>  $request['debtorcode'],
-                        'staffid'  =>  $request['newgl-staffid'],    
-                        'childno'  =>  $request['newgl-childno'],
-                        'relatecode'        =>  $request['newgl-relatecode'], 
-                        'name'    =>  $request['newgl-name'],
-                        'gltype'    =>  $request['newgl-gltype'],
-                        'remark'    =>  $request['newgl-remark'],
-                        'mrn'    =>  $request['mrn']
+                if($bed_obj->exists()){
+                    $bed_first = $bed_obj->first();
+                    DB::table('hisdb.bedalloc')
+                        ->insert([  
+                            'mrn' => $request->mrn,
+                            'episno' => $request->episno,
+                            'name' => $request->name,
+                            'astatus' => $request->bed_status,
+                            'ward' =>  $request->bed_ward,
+                            'room' =>  $request->bed_room,
+                            'bednum' =>  $request->bed_bednum,
+                            'isolate' =>  $request->bed_isolate,
+                            'lodgerno' =>  $request->bed_lodger,
+                            'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'astime' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'compcode' => session('compcode'),
+                            'adduser' => strtoupper(session('username')),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+
+                    $bed_obj->update([
+                        'occup' => "OCCUPIED"
                     ]);
+
+                    DB::table("hisdb.episode")
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->update([
+                            'bed' => $request->bed_bednum
+                        ]);
+
+                }
+
 
                 DB::commit();
 
@@ -1042,6 +1133,36 @@ class PatmastController extends defaultController
             }
     }
 
+    public function save_gl(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+                DB::table('hisdb.docalloc')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn'    =>  $request->mrn,
+                        'episno'  =>  $request->episno,    
+                        'doctorcode'  =>  $request->doctorcode,
+                        'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
+                        'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'astatus'    =>  $request->status,
+                        'epistycode'    =>  $request->epistycode,
+                        'adddate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'adduser'    =>  session('username'),
+                        'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'    =>  session('username')
+                    ]);
+
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                return response($e->getMessage(), 500);
+            }
+    }
+
     public function save_nok(Request $request){
 
         DB::beginTransaction();
@@ -1052,15 +1173,16 @@ class PatmastController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn'    =>  $request->mrn,
                         'episno'  =>  $request->episno,
-                        'doctorcode'  =>  $request->doctorcode,
-                        'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
-                        'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'astatus'    =>  $request->status,
-                        'epistycode'    =>  $request->epistycode,
-                        'adddate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'adduser'    =>  session('username'),
-                        'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'lastuser'    =>  session('username')
+                        'name'  =>  $request->name,
+                        'relationshipcode' =>  $request->relationshipcode, 
+                        'address1'    =>  $request->address1,
+                        'address2'    =>  $request->address2,
+                        'address3'    =>  $request->address3,
+                        'postcode'    =>  $request->postcode,
+                        'tel_h'    =>   $request->tel_h,
+                        'tel_hp'    =>   $request->tel_hp,
+                        'tel_o'    =>  $request->tel_o,
+                        'tel_o_ext'    =>  $request->tel_o_ext
                     ]);
 
                 DB::commit();
