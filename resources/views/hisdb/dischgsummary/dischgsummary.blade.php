@@ -61,7 +61,7 @@
 
 												<label class="col-md-1 control-label" for="dischargetime">Discharge</label>  
 												<div class="col-md-4">
-													<input id="dischargetime" name="discharge" type="time" class="form-control input-sm">
+													<input id="dischargetime" name="dischargetime" type="time" class="form-control input-sm">
 												</div>
 											</div>
 

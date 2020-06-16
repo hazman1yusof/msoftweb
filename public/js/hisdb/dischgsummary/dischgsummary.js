@@ -116,11 +116,27 @@ function populate_dischgSummary(obj,rowdata){
 	$('#name_show_dischgSummary').text(obj.name);
 	$('#mrn_show_dischgSummary').text(obj.mrn);
 	button_state_dischgSummary('add');
+	autoinsert_rowdata_dischg("#formDischgSummary",rowdata);
 
 	//formDischgSummary
 	$('#mrn_dischgSummary').val(obj.mrn);
 	$("#episno_dischgSummary").val(obj.episno);
 	
+}
+
+function autoinsert_rowdata_dischg(form,rowData){
+	$.each(rowData, function( index, value ) {
+		var input=$(form+" [name='"+index+"']");
+		if(input.is("[type=radio]")){
+			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+		}else if(input.is("[type=checkbox]")){
+			if(value==1){
+				$(form+" [name='"+index+"']").prop('checked', true);
+			}
+		}else{
+			input.val(value);
+		}
+	});
 }
 
 function saveForm_dischgSummary(callback){
