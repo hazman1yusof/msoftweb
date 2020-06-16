@@ -69,6 +69,7 @@ class PatmastController extends defaultController
 
             $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
                             ->where('compcode','=',session('compcode'))
+                            ->where('Active','=','1')
                             ->whereIn('mrn', $arr_mrn);
 
             if(!empty($request->searchCol)){
@@ -111,7 +112,9 @@ class PatmastController extends defaultController
                 }
             }
 
-            $table_patm = $table_patm->where('compcode','=',session('compcode'));
+            $table_patm = $table_patm
+                        ->where('Active','=','1')
+                        ->where('compcode','=',session('compcode'));
 
             if(!empty($request->sort)){
                 foreach ($request->sort as $key => $value) {
@@ -416,7 +419,8 @@ class PatmastController extends defaultController
 
         foreach ($request->field as $key => $value) {
             if(array_search($value,$array_ignore))continue;
-            $array_update[$value] = $request[$request->field[$key]];
+            if(empty($request[$request->field[$key]]))continue;
+            $array_update[$value] = strtoupper($request[$request->field[$key]]);
         }
 
         try {

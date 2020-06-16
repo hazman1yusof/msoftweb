@@ -168,11 +168,11 @@
                     <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="30%">Name</th>
                     <th data-column-id="Newic" data-width="8%">New IC</th>
                     <th data-column-id="telhp" data-width="8%">H/P</th>
-                    <th data-column-id="DOB" data-formatter="col_dob" data-width="8%">Birth Date</th>
-                    <th data-column-id="Sex" data-width="2%">Sex</th>
+                    <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">Birth Date</th>
+                    <th data-column-id="Sex" data-width="4%">Sex</th>
 					<th data-column-id="Staffid" data-width="8%">Staff ID</th>
                     <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="5%">Age</th>
-					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="8%">#</th>
+					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="8%">Info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type</th>
 				</tr>
 				</thead>
 

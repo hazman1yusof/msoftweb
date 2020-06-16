@@ -180,23 +180,25 @@ $(document).ready(function () {
 				refreshGrid('#jqGrid_trf', urlParam2,'kosongkan');
 				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").hide();
 
-				if(rowData['mrn'] != '') {
+				if(rowData['mrn'] != '') {//kalau mrn ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').mrn;
 					refreshGrid('#jqGrid_trf', urlParam2);
 					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").show();
 					$("#jqGridPagerDelete").hide();
 					$("#jqGrid_iledit").hide();
-				}else if (rowData['mrn'] == '') {
+
+					populate_triage(selrowData("#jqGrid"));
+					populate_formWard(selrowData("#jqGrid"));
+					populate_dietOrder(selrowData("#jqGrid"));
+					populate_dischgSummary(selrowData("#jqGrid"));
+					populate_form_trf(selrowData("#jqGrid"));
+					
+				}else{
 					$("#jqGridPagerDelete").show();
 					$("#jqGrid_iledit").show();
 				}
 			}
 
-			populate_triage(selrowData("#jqGrid"));
-			populate_formWard(selrowData("#jqGrid"));
-			populate_dietOrder(selrowData("#jqGrid"));
-			populate_dischgSummary(selrowData("#jqGrid"));
-			populate_form_trf(selrowData("#jqGrid"));
 
 		},
 		loadComplete: function(){

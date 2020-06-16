@@ -40,6 +40,9 @@ class WardPanelController extends defaultController
                         return 'error happen..';
                 }
 
+            case 'get_table_ward':
+                return $this->get_table_ward($request);
+
             default:
                 return 'error happen..';
         }
@@ -331,6 +334,46 @@ class WardPanelController extends defaultController
 
             return response('Error DB rollback!'.$e, 500);
         }
+    }
+
+    public function get_table_ward(Request $request){
+        $nusing_obj = DB::table('nursing.nursassessment')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('location','=','WARD')
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
+        $nusing_gen_obj = DB::table('nursing.nursassessgen')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('location','=','WARD')
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
+        $nusing_exm_obj = DB::table('nursing.nurassesexam')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('location','=','WARD')
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
+        $responce = new stdClass();
+
+        if($nusing_obj->exists()){
+            $nusing_obj = $nusing_obj->first();
+            $responce->nurse = $nusing_obj;
+        }
+
+        if($nusing_gen_obj->exists()){
+            $nusing_gen_obj = $nusing_gen_obj->first();
+            $responce->nurse_gen = $nusing_gen_obj;
+        }
+
+        if($nusing_exm_obj->exists()){
+            $nusing_exm_obj = $nusing_exm_obj->get()->toArray();
+            $responce->nurse_exm = $nusing_exm_obj;
+        }
+
+        return json_encode($responce);
+
     }
 
 }
