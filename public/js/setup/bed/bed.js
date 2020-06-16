@@ -112,8 +112,8 @@ $(document).ready(function () {
 			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
 			{ label: 'Status', name: 'occup', width: 35, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
-						{  custom_element:occupCustomEdit,
-						custom_value:galGridCustomValue 	
+						{ 	custom_element:occupCustomEdit,
+							custom_value:galGridCustomValue 	
 						},
 			},
 			{ label: 'Room', name: 'room', width: 8, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -122,8 +122,8 @@ $(document).ready(function () {
 			{ label: 'Ward', name: 'ward', width: 15 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 					edittype:'custom',	editoptions:
-						{  custom_element:wardCustomEdit,
-						custom_value:galGridCustomValue 	
+						{ 	custom_element:wardCustomEdit,
+							custom_value:galGridCustomValue 	
 						},
 			},
 			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
@@ -136,15 +136,12 @@ $(document).ready(function () {
 			{ label: 'Charge Code', name: 'bedchgcode', width: 20 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 					edittype:'custom',	editoptions:
-						{  custom_element:chgcodeCustomEdit,
-						custom_value:galGridCustomValue 	
+						{ 	custom_element:chgcodeCustomEdit,
+							custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Record Status', name: 'recstatus', width: 13, classes: 'wrap', editable: true, edittype:"select",formatter:'select', hidden:true, 
-			editoptions:{
-				value:"A:ACTIVE;D:DEACTIVE"},
-				cellattr: function(rowid, cellvalue)
-						{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
+			{ label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true, edittype:"select",formatter:formatterstatus_tick,unformat:unformatstatus_tick,
+				editoptions:{value:"A:ACTIVE;D:DEACTIVE"},
 			},
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
@@ -167,7 +164,6 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			// populate_formbedm(selrowData("#jqGrid"));
 
 			if (rowid != null) {
 				rowData = $('#jqGrid').jqGrid('getRowData', rowid);
