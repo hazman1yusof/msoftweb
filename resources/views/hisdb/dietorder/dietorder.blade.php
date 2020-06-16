@@ -39,6 +39,8 @@
 
 				<form class='form-horizontal' style='width:99%' id='formDietOrder'>
 
+					<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+
 					<div class='col-md-12'>
 						<div class="panel panel-info">
 							<div class="panel-heading text-center">DIET ORDER</div>
@@ -65,19 +67,19 @@
 									<label class="col-md-3 control-label" for="feedingmode">Mode of Feeding</label>
 									<div class="col-md-6">
 										<label class="radio-inline">
-											<input type="radio" onclick="javascript:feedingOral();" name="oral" value="1">Oral
+											<input type="radio" onclick="javascript:feedingOral();" id="feedingmode" name="oral" value="1">Oral
 										</label>
 										<label class="radio-inline">
-											<input type="radio" onclick="javascript:feedingOthers();" name="nbm" value="1">Nil by Mouth
+											<input type="radio" onclick="javascript:feedingOthers();" id="feedingmode" name="nbm" value="1">Nil by Mouth
 										</label>
 										<label class="radio-inline">
-											<input type="radio" onclick="javascript:feedingOthers();" name="rtf" value="1">Ryles Tube Feeding
+											<input type="radio" onclick="javascript:feedingOthers();" id="feedingmode" name="rtf" value="1">Ryles Tube Feeding
 										</label>
 										<label class="radio-inline">
-											<input type="radio" onclick="javascript:feedingOthers();" name="rof" value="1">Restriction of Fluid
+											<input type="radio" onclick="javascript:feedingOthers();" id="feedingmode" name="rof" value="1">Restriction of Fluid
 										</label>
 										<label class="radio-inline">
-											<input type="radio" onclick="javascript:feedingOthers();" name="tpn" value="1">Total Parenteral Nutrition
+											<input type="radio" onclick="javascript:feedingOthers();" id="feedingmode" name="tpn" value="1">Total Parenteral Nutrition
 										</label>
 									</div>
 								</div>

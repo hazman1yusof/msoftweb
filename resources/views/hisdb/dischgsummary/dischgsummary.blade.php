@@ -39,6 +39,8 @@
 
 				<form class='form-horizontal' style='width:99%' id='formDischgSummary'>
 
+					<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+
 					<div class='col-md-12'>
 						<div class="panel panel-info">
 							<div class="panel-heading text-center">DISCHARGE SUMMARY</div>
@@ -54,7 +56,7 @@
 											<div class="form-group">
 												<label class="col-md-2 control-label" for="reg_time">Admission</label>  
 												<div class="col-md-4">
-													<input id="reg_time" name="reg_time" type="time" class="form-control input-sm">
+													<input id="reg_time" name="reg_time" type="time" class="form-control input-sm" rdonly>
 												</div>
 
 												<label class="col-md-1 control-label" for="dischargetime">Discharge</label>  
@@ -107,13 +109,11 @@
 														<table class="table table-bordered table-sm">
 															<thead>
 																<tr>
-																	<th scope="col">No</th>
 																	<th scope="col">Name</th>
 																</tr>
 															</thead>
 															<tbody>
 																<tr>
-																	<th scope="row">1</th>
 																	<td> </td>
 																</tr>
 															</tbody>

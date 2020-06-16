@@ -44,11 +44,11 @@ $(document).ready(function () {
 	// Mode of Feeding
 	// Radio button with different name but a single selection
 	$(document).ready(function() {
-		$("input[type=radio]").prop("checked", false);
-		$("input[type=radio]:first").prop("checked", true);
+		$("input[id=feedingmode]").prop("checked", false);
+		$("input[id=feedingmode]:first").prop("checked", true);
 	  
-		$("input[type=radio]").click(function(event) {
-			$("input[type=radio]").prop("checked", false);
+		$("input[id=feedingmode]").click(function(event) {
+			$("input[id=feedingmode]").prop("checked", false);
 			$(this).prop("checked", true);
 	  
 		  	//event.preventDefault();
@@ -149,7 +149,21 @@ function saveForm_dietOrder(callback){
 
     };
 
-    values = $("#formDietOrder").serializeArray();
+	values = $("#formDietOrder").serializeArray();
+	
+	values = values.concat(
+        $('#formDietOrder input[type=checkbox]:not(:checked)').map(
+        function() {
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formDietOrder input[type=checkbox]:checked').map(
+        function() {
+            return {"name": this.name, "value": 1}
+        }).get()
+	);
 	
 	values = values.concat(
         $('#formDietOrder input[type=radio]:checked').map(

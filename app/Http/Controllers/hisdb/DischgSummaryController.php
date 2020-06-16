@@ -51,22 +51,37 @@ class DischgSummaryController extends defaultController
 
         try {
 
+            // DB::table('hisdb.episode')
+            //         ->insert([
+            //             'compcode' => session('compcode'),
+            //             'mrn' => $request->mrn_dischgSummary,
+            //             'episno' => $request->episno_dischgSummary,
+            //             'dischargetime' => $request->dischargetime,
+            //             'diagprov' => $request->diagprov,
+            //             'diagfinal' => $request->diagfinal,
+            //             'procedure' => $request->procedure,
+            //             'treatment' => $request->treatment,
+            //             'dischargestatus' => $request->dischargestatus,            
+            //             'adduser'  => session('username'),
+            //             'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'lastuser'  => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //         ]);
+            
             DB::table('hisdb.episode')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_dischgSummary,
-                        'episno' => $request->episno_dischgSummary,
-                        'dischargetime' => $request->dischargetime,
-                        'diagprov' => $request->diagprov,
-                        'diagfinal' => $request->diagfinal,
-                        'procedure' => $request->procedure,
-                        'treatment' => $request->treatment,
-                        'dischargestatus' => $request->dischargestatus,            
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
+                ->where('mrn','=',$request->mrn_dischgSummary)
+                ->where('episno','=',$request->episno_dischgSummary)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'dischargetime' => $request->dischargetime,
+                    'diagprov' => $request->diagprov,
+                    'diagfinal' => $request->diagfinal,
+                    'procedure' => $request->procedure,
+                    'treatment' => $request->treatment,
+                    'dischargestatus' => $request->dischargestatus,
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
             
             DB::commit();
 
