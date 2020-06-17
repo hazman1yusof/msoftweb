@@ -133,7 +133,7 @@ $(document).ready(function () {
 		height: 200,
 		//rowNum: 30,
 		sord: "desc",
-		caption: caption('searchForm2','Items Supplied By the Supplier'),
+		caption: caption('searchForm2','Cheque No'),
 		pager: "#jqGridPager2",
 		onSelectRow:function(rowid, selected){
 
@@ -155,7 +155,7 @@ $(document).ready(function () {
 
 	
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#gridCheqListDetail',true,urlParam_cheqlistdtl);
+	//addParamField('#gridCheqListDetail',true,urlParam_cheqlistdtl);
 
 	populateSelect2('#gridCheqListDetail','#searchForm2');
 	searchClick2('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
