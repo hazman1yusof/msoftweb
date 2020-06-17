@@ -85,7 +85,7 @@ $(document).ready(function() {
 
         if(!$("#Scol").length){ //tambah search col kat atas utk search by field and shit
             $(".actionBar").prepend(`
-                <select id='Scol' class='search form-group form-control'>
+                <select id='Scol' class='search form-group form-control' style='width: fit-content !important;'>
                     <option value='MRN'>MRN</option>
                     <option selected='true' value='Name'>Name</option>
                     <option value='Newic'>Newic</option>
@@ -207,7 +207,7 @@ $(document).ready(function() {
     });
 
     $('#read_mykad').click(function(){
-        $.getJSON('/util/mycard_read', function(data){
+        $.getJSON('http://mycard.test/mycard_read', function(data){
             console.log(data);
             if(data.status == failed){
                 alert("Error reading Mycard");

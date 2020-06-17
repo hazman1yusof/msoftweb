@@ -21,8 +21,9 @@ class MycardController extends defaultController
 
     public function get_data(Request $request)
     {   
+        dd(app_path());
         // $process = new Process('C:\laragon\www\msoftweb\app\Http\Controllers\util\runbarcode.bat');
-        $process = new Process('C:\xampp\htdocs\msoftweb\app\Http\Controllers\util\runmycard.bat');
+        $process = new Process(app_path().'\Http\Controllers\util\runmycard.bat');
         $process->run();
 
         // executes after the command finishes

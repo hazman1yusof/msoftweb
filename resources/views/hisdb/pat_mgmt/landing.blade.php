@@ -112,6 +112,10 @@
 			float: right;
 			<!--  margin-right: 5px; -->
 		}
+
+		.search{
+			width: 40% !important;
+		}
 	</style>
 
 </head>
