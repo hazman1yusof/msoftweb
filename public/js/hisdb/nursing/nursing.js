@@ -164,6 +164,32 @@ function populate_triage(obj,rowdata){
 	$('#mrn_show_triage').text(obj.mrn);
 
 	document.getElementById('hiddentriage').style.display = 'inline';
+
+	var saveParam={
+        action:'get_table_triage',
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	mrn:obj.mrn,
+    	episno:obj.episno
+
+    };
+
+    $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).success(function(data){
+    	if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formTriageInfo",data.triage);
+			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
+			autoinsert_rowdata("#formTriageInfo",data.triage_exm);
+			button_state_ti('triage');
+        }else{
+			button_state_ti('triage');
+        }
+
+    });
 	
 }
 

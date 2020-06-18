@@ -153,6 +153,9 @@ function populate_dietOrder(obj,rowdata){
 			autoinsert_rowdata("#formDietOrder",data.dietorder);
 			autoinsert_rowdata("#formDietOrder",data.episode);
 			button_state_dietOrder('edit');
+			yesnoCheck();
+			feedingOthers();
+			feedingOral();
         }else{
 			button_state_dietOrder('add');
         }
