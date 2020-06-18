@@ -114,7 +114,7 @@
 															</thead>
 															<tbody>
 																<tr>
-																	<td> </td>
+																	<td><input name="admdoctor" type="text" style="border: none; background: transparent;" disabled="disabled" rdonly></td>
 																</tr>
 															</tbody>
 														</table>

@@ -96,29 +96,16 @@ $(document).ready(function () {
 		filterVal:[$("#bankcode").val()],
 		sort_idno: true,
 	}
-
+	
 	$("#gridCheqListDetail").jqGrid({
 		datatype: "local",
 		editurl: "/cheqlistDetail/form",
 		colModel: [
 			{ label: 'Comp Code', name: 'compcode', width: 50, hidden:true},	
 			{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true,},
-			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap', sorttype: 'number', editable: false,
-				editrules:{required: true},edittype:"text",canSearch:true,checked:true,
-				editoptions:{
-					maxlength: 11,
-						dataInit: function(element) {
-							$(element).keypress(function(e){
-								if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-								return false;
-								}
-							});
-						}
-				},
-			},
-		
+			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap', checked:true,canSearch: true},
 			{ label: 'Remarks', name: 'remarks', width: 30, hidden:false,},
-			{ label: 'Recstatus', name: 'recstatus', width: 30, hidden:false,},
+			{ label: 'Recstatus', name: 'recstatus', width: 30, hidden:false,checked:true,canSearch: true},
 			{ label: 'idno', name: 'idno', hidden: true,editable: true, key:true},
 			 
 		],
@@ -133,18 +120,21 @@ $(document).ready(function () {
 		height: 200,
 		//rowNum: 30,
 		sord: "desc",
-		caption: caption('searchForm2','Cheque No'),
+		hidegrid: false,
+		caption: caption('searchForm2','Search By'),
 		pager: "#jqGridPager2",
+		onPaging: function (pgButton) {
+		},
 		onSelectRow:function(rowid, selected){
-
+		
 		},
 		loadComplete: function(){
-		
+			
 				$("#gridCheqListDetail").setSelection($("#gridCheqListDetail").getDataIDs()[0]);
 			
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-		
+	
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
@@ -152,21 +142,21 @@ $(document).ready(function () {
 		},
 	});
 
-
 	
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	//addParamField('#gridCheqListDetail',true,urlParam_cheqlistdtl);
 
-	populateSelect2('#gridCheqListDetail','#searchForm2');
-	searchClick2('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
+	populateSelect('#gridCheqListDetail','#searchForm2');
+	searchClick('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
 
 	/////////////////Pager Hide/////////////////////////////////////////////////////////////////////////////////////////
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
 
 	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
-		$("#gridCheqListDetail").jqGrid ('setGridWidth', Math.floor($("#gridCheqListDetaill_c")[0].offsetWidth-$("#gridCheqListDetail_c")[0].offsetLeft-28));
+		$("#gridCheqListDetail").jqGrid ('setGridWidth', Math.floor($("#gridCheqListDetail_c")[0].offsetWidth-$("#gridCheqListDetail_c")[0].offsetLeft-28));
 		refreshGrid('#gridCheqListDetail',urlParam_cheqlistdtl);
 	});
 
+	
 });
