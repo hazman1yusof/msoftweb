@@ -40,6 +40,9 @@ class NursingController extends defaultController
                         return 'error happen..';
                 }
 
+            case 'get_table_triage':
+                return $this->get_table_triage($request);
+
             default:
                 return 'error happen..';
         }
@@ -97,6 +100,7 @@ class NursingController extends defaultController
                         'es_distress' => $request->es_distress,
                         'es_depressed' => $request->es_depressed,
                         'es_irritable' => $request->es_irritable,
+                        'location' => 'TRIAGE',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -155,6 +159,7 @@ class NursingController extends defaultController
                         'pa_othdiscolor' => $request->pa_othdiscolor,
                         'pa_othnil' => $request->pa_othnil,
                         'pa_notes' => $request->pa_notes,
+                        'location' => 'TRIAGE',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -202,6 +207,7 @@ class NursingController extends defaultController
                 ->where('mrn','=',$request->mrn_edit_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
+                ->where('location','=','TRIAGE')
                 ->update([
                     'admwardtime' => $request->admwardtime,
                     'triagecolor' => $request->triagecolor,
@@ -252,6 +258,7 @@ class NursingController extends defaultController
                 ->where('mrn','=',$request->mrn_edit_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
+                ->where('location','=','TRIAGE')
                 ->update([
                     'br_breathing' => $request->br_breathing,
                     'br_breathingdesc' => $request->br_breathingdesc,
@@ -359,6 +366,47 @@ class NursingController extends defaultController
 
             return response('Error DB rollback!'.$e, 500);
         }
+    }
+
+    public function get_table_triage(Request $request){
+
+        $triage_obj = DB::table('nursing.nursassessment')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('location','=','TRIAGE')
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
+        $triage_gen_obj = DB::table('nursing.nursassessgen')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('location','=','TRIAGE')
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
+        $triage_exm_obj = DB::table('nursing.nurassesexam')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('location','=','TRIAGE')
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
+        $responce = new stdClass();
+
+        if($triage_obj->exists()){
+            $triage_obj = $triage_obj->first();
+            $responce->triage = $triage_obj;
+        }
+
+        if($triage_gen_obj->exists()){
+            $triage_gen_obj = $triage_gen_obj->first();
+            $responce->triage_gen = $triage_gen_obj;
+        }
+
+        if($triage_exm_obj->exists()){
+            $triage_exm_obj = $triage_exm_obj->get()->toArray();
+            $responce->triage_exm = $triage_exm_obj;
+        }
+
+        return json_encode($responce);
+
     }
 
 }
