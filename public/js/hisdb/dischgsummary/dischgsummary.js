@@ -115,12 +115,34 @@ function populate_dischgSummary(obj,rowdata){
 	//panel header
 	$('#name_show_dischgSummary').text(obj.name);
 	$('#mrn_show_dischgSummary').text(obj.mrn);
-	button_state_dischgSummary('add');
-	autoinsert_rowdata_dischg("#formDischgSummary",rowdata);
 
 	//formDischgSummary
 	$('#mrn_dischgSummary').val(obj.mrn);
 	$("#episno_dischgSummary").val(obj.episno);
+
+	var saveParam={
+        action:'get_table_dischgSummary',
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	mrn:obj.mrn,
+    	episno:obj.episno
+
+    };
+
+    $.post( "/dischgsummary/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).success(function(data){
+    	if(!$.isEmptyObject(data)){
+			autoinsert_rowdata_dischg("#formDischgSummary",data.dischgSummary);
+			button_state_dischgSummary('edit');
+        }else{
+			button_state_dischgSummary('add');
+        }
+
+    });
 	
 }
 

@@ -40,6 +40,9 @@ class DischgSummaryController extends defaultController
                         return 'error happen..';
                 }
 
+                case 'get_table_dischgSummary':
+                    return $this->get_table_dischgSummary($request);
+
             default:
                 return 'error happen..';
         }
@@ -123,6 +126,24 @@ class DischgSummaryController extends defaultController
 
             return response('Error DB rollback!'.$e, 500);
         }
+    }
+
+    public function get_table_dischgSummary(Request $request){
+        
+        $dischgSummary_obj = DB::table('hisdb.episode')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
+        $responce = new stdClass();
+
+        if($dischgSummary_obj->exists()){
+            $dischgSummary_obj = $dischgSummary_obj->first();
+            $responce->dischgSummary = $dischgSummary_obj;
+        }
+
+        return json_encode($responce);
+
     }
 
 }
