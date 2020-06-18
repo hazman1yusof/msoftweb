@@ -209,7 +209,7 @@ $(document).ready(function() {
     $('#read_mykad').click(function(){
         $.getJSON('http://mycard.test/mycard_read', function(data){
             console.log(data);
-            if(data.status == failed){
+            if(data.status == 'failed'){
                 alert("Error reading Mycard");
             }else{
                 $("#mykad_reponse").text("");
@@ -227,7 +227,7 @@ $(document).ready(function() {
                 $("#mykad_city").val(data.city);
                 $("#mykad_state").val(data.state);
                 $("#mykad_postcode").val(data.postcode);
-                $("#mykad_photo").attr('src', 'data:image/png;base64,'+data.mykad_photo);
+                $("#mykad_photo").attr('src', data.mykad_photo);
             }
         });
     });
