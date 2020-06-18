@@ -157,10 +157,14 @@ class DietOrderController extends defaultController
 
     public function get_table_dietorder(Request $request){
         
-        $dietorder_obj = DB::table('nursing.dietorder')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno);
+        $dietorder_obj = DB::table('nursing.dietorder AS d')
+                    ->join('hisdb.episode AS e', function($join) use ($request){
+                        $join = $join->on('d.mrn','=','e.mrn');
+                        $join = $join->on('d.compcode','=','e.compcode');
+                    })
+                    ->where('d.compcode','=',session('compcode'))
+                    ->where('d.mrn','=',$request->mrn)
+                    ->where('d.episno','=',$request->episno);
 
         $responce = new stdClass();
 
