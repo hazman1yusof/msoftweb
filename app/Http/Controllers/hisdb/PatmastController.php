@@ -335,6 +335,12 @@ class PatmastController extends defaultController
 
                 break;
 
+            case 'txt_payer_company':
+//             SELECT * FROM debtortype,debtormast 
+// WHERE debtortype.compcode='9A' AND debtortycode NOT IN ('PT','PR') 
+// AND debtormast.compcode = debtortype.compcode AND debtormast.debtortype = debtortype.debtortycode
+                break;
+
             // case 'get_patient_active':
             //     return DB::table('hisdb.title')->select('code','description')->get();
 

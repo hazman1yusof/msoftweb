@@ -73,7 +73,7 @@
                                                         <option value="">- Select Sex -</option>
                                                         <option value="M">Male</option>
                                                         <option value="F">Female</option>
-                                                        <option value="U">Unisex</option>
+                                                        <option value="U">Unknwon</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -362,8 +362,7 @@
 
                                 <div id="tabCorp" class="panel-collapse collapse">
                                 <div class="panel-body">
-
-                                    <p><strong>Corporate Info</strong></p>    
+ 
                                     <div class="form-group">
                                         <div class="col-md-offset-4 col-md-6">
                                             <small for="txt_payer_company">Company Name</small>
@@ -436,12 +435,7 @@
                                             <option value="">- Select MR Folder -</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-3">
-                                        <small for="cmb_pat_patientcat">Patient Category</small>
-                                        <select id="cmb_pat_patientcat" name="cmb_pat_patientcat" class="form-control">
-                                            <option value="">- Select Patient Category -</option>
-                                        </select>
-                                    </div>
+                                    
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-3">

@@ -27,7 +27,7 @@
 			background: url('../../../../assets/img/details_close.png') no-repeat center center;
 		}
 
-		.uppercase{
+		.uppercase, .odd, .even{
 		  	text-transform:uppercase
 		}
 
