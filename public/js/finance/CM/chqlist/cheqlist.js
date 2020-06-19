@@ -43,10 +43,10 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/cheqlist/form",
 		 colModel: [
-			{ label: 'Bank Code', name: 'bankcode', width: 8,canSearch:true,checked:true},
-			{ label: 'Bank Name', name: 'bankname', width: 20, canSearch:true},
-			{ label: 'Address', name: 'address1', width: 17},
-			{ label: 'Tel No', name: 'telno', width: 10},	
+			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true,checked:true},
+			{ label: 'Bank Name', name: 'bankname', width: 8, canSearch:true},
+			{ label: 'Address', name: 'address1', width: 17, classes: 'wrap', formatter:formatterAddress, unformat: unformatAddress},
+			{ label: 'Tel No', name: 'telno', width: 5},	
 			{ label: 'idno', name: 'idno', hidden: true},
 		],
 		autowidth:true,
@@ -76,6 +76,22 @@ $(document).ready(function () {
 
 		
 	});
+
+	/////////////////formatter address///////////////////////////
+	function formatterAddress (cellvalue, options, rowObject){
+		add1 = rowObject.address1;
+		add2 = rowObject.address2;
+		add3 = rowObject.address3;
+		postcode = rowObject.postcode;
+		fulladdress =  add1 + ' ' + add2 + ' ' + add3 + ' ' + postcode;
+		return fulladdress;
+	}
+
+	function unformatAddress (cellvalue, options, rowObject){
+		return cellvalue;
+	}
+
+
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 	populateSelect('#jqGrid','#searchForm');
@@ -142,6 +158,7 @@ $(document).ready(function () {
 		},
 	});
 
+	
 	
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	//addParamField('#gridCheqListDetail',true,urlParam_cheqlistdtl);
