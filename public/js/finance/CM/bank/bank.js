@@ -196,7 +196,7 @@
 					{ label: 'compcode', name: 'compcode', width: 90,  hidden:true},					
 					{ label: 'Bank Code', name: 'bankcode', width: 50, classes: 'wrap' , checked:true, canSearch: true},					
 					{ label: 'Bank Name', name: 'bankname', width: 70 , classes: 'wrap', canSearch: true },					
-					{ label: 'Address', name: 'address1', width: 60, classes: 'wrap'  },					
+					{ label: 'Address', name: 'address1', width: 60, classes: 'wrap',  formatter:formatterAddress, unformat: unformatAddress},					
 					{ label: 'address2', name: 'address2', width: 90 , classes: 'wrap' ,  hidden:true},					
 					{ label: 'address3', name: 'address3', width: 90, classes: 'wrap' , hidden:true},					
 					{ label: 'postcode:', name: 'postcode', width: 90, classes: 'wrap' , hidden:true},					
@@ -248,21 +248,21 @@
 				
 				
 			});
-/*
-			function formatter(cellvalue, options, rowObject){
-				return parseInt(cellvalue) ? "Yes" : "No";
+
+			/////////////////formatter address///////////////////////////
+			function formatterAddress (cellvalue, options, rowObject){
+				add1 = rowObject.address1;
+				add2 = rowObject.address2;
+				add3 = rowObject.address3;
+				postcode = rowObject.postcode;
+				state = rowObject.statecode;
+				fulladdress =  add1 + '</br> ' + add2 + '</br> ' + add3 + ' </br>' + postcode + ' </br>' + state;
+				return fulladdress;
 			}
 
-			function unformat(cellvalue, options){
-				//return parseInt(cellvalue) ? "Yes" : "No";
-
-				if (cellvalue == 'Yes') {
-					return "1";
-				}
-				else {
-					return "0";
-				}
-			}*/
+			function unformatAddress (cellvalue, options, rowObject){
+				return null;
+			}
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

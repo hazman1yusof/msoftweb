@@ -46,6 +46,10 @@ $(document).ready(function () {
 			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true,checked:true},
 			{ label: 'Bank Name', name: 'bankname', width: 8, canSearch:true},
 			{ label: 'Address', name: 'address1', width: 17, classes: 'wrap', formatter:formatterAddress, unformat: unformatAddress},
+			{ label: 'address2', name: 'address2', width: 17, classes: 'wrap', hidden:true},
+			{ label: 'address3', name: 'address3', width: 17, classes: 'wrap',  hidden:true},
+			{ label: 'postcode', name: 'postcode', width: 17, classes: 'wrap',  hidden:true},
+			{ label: 'statecode', name: 'statecode', width: 17, classes: 'wrap',  hidden:true},
 			{ label: 'Tel No', name: 'telno', width: 5},	
 			{ label: 'idno', name: 'idno', hidden: true},
 		],
@@ -56,7 +60,7 @@ $(document).ready(function () {
 		sortname:'idno',
 		sortorder:'desc',
 		width: 900,
-		height: 100,
+		height: 250,
 		//rowNum: 30,
 		pager: "#jqGridPager",
 		gridComplete: function () {
@@ -77,18 +81,31 @@ $(document).ready(function () {
 		
 	});
 
+	/////////////////////////start grid pager/////////////////////////////////////////////////////////
+	$("#jqGrid").jqGrid('navGrid','#jqGridPager',
+		{	
+			edit:false,view:false,add:false,del:false,search:false,
+			beforeRefresh: function(){
+				refreshGrid("#jqGrid",urlParam);
+			},
+			
+		}	
+	);
+
+
 	/////////////////formatter address///////////////////////////
 	function formatterAddress (cellvalue, options, rowObject){
 		add1 = rowObject.address1;
 		add2 = rowObject.address2;
 		add3 = rowObject.address3;
 		postcode = rowObject.postcode;
-		fulladdress =  add1 + ' ' + add2 + ' ' + add3 + ' ' + postcode;
+		state = rowObject.statecode;
+		fulladdress =  add1 + '</br> ' + add2 + '</br> ' + add3 + ' </br>' + postcode + ' </br>' + state;
 		return fulladdress;
 	}
 
 	function unformatAddress (cellvalue, options, rowObject){
-		return cellvalue;
+		return null;
 	}
 
 
