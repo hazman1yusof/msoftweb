@@ -4,6 +4,18 @@
 
 @section('style')
 
+.panel-heading i.fa {
+		cursor: pointer;
+		float: right;
+		<!--  margin-right: 5px; -->
+	}
+
+.position i {
+	position: relative;
+	line-height: 1;
+	top: -10px;
+}	
+
 input.uppercase {
 	text-transform: uppercase;
 }
@@ -33,6 +45,22 @@ input.uppercase {
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
+						
+							<div  id="show_bedtype" style="display:none">
+								<div class='input-group'>
+									<input id="s_bedtype" name="s_bedtype" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+
+							<div  id="show_occup" style="display:none">
+								<div class='input-group'>
+									<input id="occup" name="occup" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>														
 						</div>
 
 						<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">

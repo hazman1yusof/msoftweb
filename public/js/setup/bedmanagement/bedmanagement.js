@@ -170,7 +170,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
-		height: 350, 
+		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
@@ -427,7 +427,6 @@ $(document).ready(function () {
 			alert(data);
 		}
 	};
-
 
 	$("#jqGrid").inlineNav('#jqGridPager', {
 		add: false,
@@ -729,7 +728,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#b_mrn').focus();
+					$('#mrn').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
