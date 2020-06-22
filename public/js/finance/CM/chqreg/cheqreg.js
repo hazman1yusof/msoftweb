@@ -230,6 +230,7 @@ $(document).ready(function () {
 
 		},
 		aftersavefunc: function (rowid, response, options) {
+			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
 			addmore_jqgrid.more = true;
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
