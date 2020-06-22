@@ -52,7 +52,7 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="statecode">State Code</label>  
 				  <div class="col-md-3">
-				  <input id="statecode" name="statecode" type="text" class="form-control input-sm">
+				  <input id="statecode" name="statecode" type="text" class="form-control input-sm text-uppercase">
 				  </div>
 				  
 				  <label class="col-md-2 control-label" for="postcode">Post Code</label>  

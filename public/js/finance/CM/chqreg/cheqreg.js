@@ -35,6 +35,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.bank',
 		table_id:'bankcode',
+		filterCol:['recstatus'],
+		filterVal:['A'],
 		sort_idno:true,
 	}
 	
