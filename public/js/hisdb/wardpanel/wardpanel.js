@@ -138,12 +138,10 @@ function populate_formWard(obj,rowdata){
         alert('there is an error');
     }).success(function(data){
     	if(!$.isEmptyObject(data)){
-
-			autoinsert_rowdata("#formWard",data.nurse);
-			autoinsert_rowdata("#formWard",data.nurse_gen);
+			autoinsert_rowdata("#formWard",data.ward);
+			autoinsert_rowdata("#formWard",data.ward_gen);
+			autoinsert_rowdata("#formWard",data.ward_exm);
 			button_state_ward('edit');
-
-
         }else{
 			button_state_ward('add');
         }

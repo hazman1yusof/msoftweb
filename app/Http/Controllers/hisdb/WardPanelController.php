@@ -337,19 +337,20 @@ class WardPanelController extends defaultController
     }
 
     public function get_table_ward(Request $request){
-        $nusing_obj = DB::table('nursing.nursassessment')
+
+        $ward_obj = DB::table('nursing.nursassessment')
                     ->where('compcode','=',session('compcode'))
                     ->where('location','=','WARD')
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
-        $nusing_gen_obj = DB::table('nursing.nursassessgen')
+        $ward_gen_obj = DB::table('nursing.nursassessgen')
                     ->where('compcode','=',session('compcode'))
                     ->where('location','=','WARD')
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
-        $nusing_exm_obj = DB::table('nursing.nurassesexam')
+        $ward_exm_obj = DB::table('nursing.nurassesexam')
                     ->where('compcode','=',session('compcode'))
                     ->where('location','=','WARD')
                     ->where('mrn','=',$request->mrn)
@@ -357,19 +358,19 @@ class WardPanelController extends defaultController
 
         $responce = new stdClass();
 
-        if($nusing_obj->exists()){
-            $nusing_obj = $nusing_obj->first();
-            $responce->nurse = $nusing_obj;
+        if($ward_obj->exists()){
+            $ward_obj = $ward_obj->first();
+            $responce->ward = $ward_obj;
         }
 
-        if($nusing_gen_obj->exists()){
-            $nusing_gen_obj = $nusing_gen_obj->first();
-            $responce->nurse_gen = $nusing_gen_obj;
+        if($ward_gen_obj->exists()){
+            $ward_gen_obj = $ward_gen_obj->first();
+            $responce->ward_gen = $ward_gen_obj;
         }
 
-        if($nusing_exm_obj->exists()){
-            $nusing_exm_obj = $nusing_exm_obj->get()->toArray();
-            $responce->nurse_exm = $nusing_exm_obj;
+        if($ward_exm_obj->exists()){
+            $ward_exm_obj = $ward_exm_obj->get()->toArray();
+            $responce->ward_exm = $ward_exm_obj;
         }
 
         return json_encode($responce);
