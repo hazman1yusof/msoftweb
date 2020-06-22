@@ -99,7 +99,7 @@ function button_state_ward(state){
 			$('#save_ward,#cancel_ward,#new_ward').attr('disabled',true);
 			break;
 		case 'wait':
-			// dialog_tri_col.on();
+			dialog_tri_col.on();
 			examination.on().enable();
 			$("#toggle_ward").attr('data-toggle','collapse');
 			$("#save_ward,#cancel_ward").attr('disabled',false);
@@ -117,11 +117,52 @@ function populate_formWard(obj,rowdata){
 	//panel header
 	$('#name_show_ward').text(obj.name);
 	$('#mrn_show_ward').text(obj.mrn);
-	button_state_ward('add');
 
 	//formWard
 	$('#mrn_ward').val(obj.mrn);
 	$("#episno_ward").val(obj.episno);
+
+	var saveParam={
+        action:'get_table_ward',
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	mrn:obj.mrn,
+    	episno:obj.episno
+
+    };
+
+    $.post( "/wardpanel/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).success(function(data){
+    	if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formWard",data.ward);
+			autoinsert_rowdata("#formWard",data.ward_gen);
+			autoinsert_rowdata("#formWard",data.ward_exm);
+			button_state_ward('edit');
+        }else{
+			button_state_ward('add');
+        }
+
+    });
+
+}
+
+function autoinsert_rowdata(form,rowData){
+	$.each(rowData, function( index, value ) {
+		var input=$(form+" [name='"+index+"']");
+		if(input.is("[type=radio]")){
+			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+		}else if(input.is("[type=checkbox]")){
+			if(value==1){
+				$(form+" [name='"+index+"']").prop('checked', true);
+			}
+		}else{
+			input.val(value);
+		}
+	});
 }
 
 function saveForm_ward(callback){
@@ -184,7 +225,7 @@ function saveForm_ward(callback){
 }
 
 var dialog_tri_col = new ordialog(
-	'ward_tri_col','sysdb.sysparam',"#triagecolor",errorField,
+	'ward_tri_col','sysdb.sysparam',"#formWard input[name='triagecolor']",errorField,
 	{	colModel:
 		[
 			{label:'Color',name:'colorcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -239,7 +280,7 @@ var dialog_tri_col = new ordialog(
 	            rowid = ids[i];
 	            colorcode = $(gridname).jqGrid("getCell", rowid, "description");
 
-	            $('#' + rowid).addClass(colorcode);
+	            $(gridname+' tr#' + rowid).addClass(colorcode);
 
 	        }
 		}

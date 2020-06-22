@@ -114,7 +114,7 @@
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative; min-height: 120px'>
 			<fieldset>
-				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+				<input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 

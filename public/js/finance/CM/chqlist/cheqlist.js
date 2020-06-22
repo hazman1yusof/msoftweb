@@ -34,6 +34,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.bank',
 		table_id:'bankcode',
+		filterCol:['recstatus'],
+		filterVal:['A'],
 		sort_idno:true,
 	}
 	
@@ -43,10 +45,14 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/cheqlist/form",
 		 colModel: [
-			{ label: 'Bank Code', name: 'bankcode', width: 8,canSearch:true,checked:true},
-			{ label: 'Bank Name', name: 'bankname', width: 20, canSearch:true},
-			{ label: 'Address', name: 'address1', width: 17},
-			{ label: 'Tel No', name: 'telno', width: 10},	
+			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true,checked:true},
+			{ label: 'Bank Name', name: 'bankname', width: 8, canSearch:true},
+			{ label: 'Address', name: 'address1', width: 17, classes: 'wrap', formatter:formatterAddress, unformat: unformatAddress},
+			{ label: 'address2', name: 'address2', width: 17, classes: 'wrap', hidden:true},
+			{ label: 'address3', name: 'address3', width: 17, classes: 'wrap',  hidden:true},
+			{ label: 'postcode', name: 'postcode', width: 17, classes: 'wrap',  hidden:true},
+			{ label: 'statecode', name: 'statecode', width: 17, classes: 'wrap',  hidden:true},
+			{ label: 'Tel No', name: 'telno', width: 5},	
 			{ label: 'idno', name: 'idno', hidden: true},
 		],
 		autowidth:true,
@@ -56,7 +62,7 @@ $(document).ready(function () {
 		sortname:'idno',
 		sortorder:'desc',
 		width: 900,
-		height: 100,
+		height: 250,
 		//rowNum: 30,
 		pager: "#jqGridPager",
 		gridComplete: function () {
@@ -77,6 +83,35 @@ $(document).ready(function () {
 		
 	});
 
+	/////////////////////////start grid pager/////////////////////////////////////////////////////////
+	$("#jqGrid").jqGrid('navGrid','#jqGridPager',
+		{	
+			edit:false,view:false,add:false,del:false,search:false,
+			beforeRefresh: function(){
+				refreshGrid("#jqGrid",urlParam);
+			},
+			
+		}	
+	);
+
+
+	/////////////////formatter address///////////////////////////
+	function formatterAddress (cellvalue, options, rowObject){
+		add1 = rowObject.address1;
+		add2 = rowObject.address2;
+		add3 = rowObject.address3;
+		postcode = rowObject.postcode;
+		state = rowObject.statecode;
+		fulladdress =  add1 + '</br> ' + add2 + '</br> ' + add3 + ' </br>' + postcode + ' </br>' + state;
+		return fulladdress;
+	}
+
+	function unformatAddress (cellvalue, options, rowObject){
+		return null;
+	}
+
+
+
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 	populateSelect('#jqGrid','#searchForm');
 	searchClick('#jqGrid','#searchForm',urlParam);
@@ -96,29 +131,16 @@ $(document).ready(function () {
 		filterVal:[$("#bankcode").val()],
 		sort_idno: true,
 	}
-
+	
 	$("#gridCheqListDetail").jqGrid({
 		datatype: "local",
 		editurl: "/cheqlistDetail/form",
 		colModel: [
 			{ label: 'Comp Code', name: 'compcode', width: 50, hidden:true},	
 			{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true,},
-			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap', sorttype: 'number', editable: false,
-				editrules:{required: true},edittype:"text",canSearch:true,checked:true,
-				editoptions:{
-					maxlength: 11,
-						dataInit: function(element) {
-							$(element).keypress(function(e){
-								if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-								return false;
-								}
-							});
-						}
-				},
-			},
-		
+			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap', checked:true,canSearch: true},
 			{ label: 'Remarks', name: 'remarks', width: 30, hidden:false,},
-			{ label: 'Recstatus', name: 'recstatus', width: 30, hidden:false,},
+			{ label: 'Recstatus', name: 'recstatus', width: 30, hidden:false,checked:true,canSearch: true},
 			{ label: 'idno', name: 'idno', hidden: true,editable: true, key:true},
 			 
 		],
@@ -133,18 +155,21 @@ $(document).ready(function () {
 		height: 200,
 		//rowNum: 30,
 		sord: "desc",
-		caption: caption('searchForm2','Items Supplied By the Supplier'),
+		hidegrid: false,
+		caption: caption('searchForm2','Search By'),
 		pager: "#jqGridPager2",
+		onPaging: function (pgButton) {
+		},
 		onSelectRow:function(rowid, selected){
-
+		
 		},
 		loadComplete: function(){
-		
+			
 				$("#gridCheqListDetail").setSelection($("#gridCheqListDetail").getDataIDs()[0]);
 			
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-		
+	
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
@@ -152,21 +177,22 @@ $(document).ready(function () {
 		},
 	});
 
-
+	
 	
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#gridCheqListDetail',true,urlParam_cheqlistdtl);
+	//addParamField('#gridCheqListDetail',true,urlParam_cheqlistdtl);
 
-	populateSelect2('#gridCheqListDetail','#searchForm2');
-	searchClick2('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
+	populateSelect('#gridCheqListDetail','#searchForm2');
+	searchClick('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
 
 	/////////////////Pager Hide/////////////////////////////////////////////////////////////////////////////////////////
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
 
 	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
-		$("#gridCheqListDetail").jqGrid ('setGridWidth', Math.floor($("#gridCheqListDetaill_c")[0].offsetWidth-$("#gridCheqListDetail_c")[0].offsetLeft-28));
+		$("#gridCheqListDetail").jqGrid ('setGridWidth', Math.floor($("#gridCheqListDetail_c")[0].offsetWidth-$("#gridCheqListDetail_c")[0].offsetLeft-28));
 		refreshGrid('#gridCheqListDetail',urlParam_cheqlistdtl);
 	});
 
+	
 });

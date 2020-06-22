@@ -35,6 +35,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.bank',
 		table_id:'bankcode',
+		filterCol:['recstatus'],
+		filterVal:['A'],
 		sort_idno:true,
 	}
 	
@@ -46,7 +48,11 @@ $(document).ready(function () {
 		 colModel: [
 			{ label: 'Bank Code', name: 'bankcode', width: 8,canSearch:true,checked:true},
 			{ label: 'Bank Name', name: 'bankname', width: 20, canSearch:true},
-			{ label: 'Address', name: 'address1', width: 17},
+			{ label: 'Address', name: 'address1', width: 17, classes: 'wrap', formatter:formatterAddress, unformat: unformatAddress},
+			{ label: 'address2', name: 'address2', width: 17, classes: 'wrap', hidden:true},
+			{ label: 'address3', name: 'address3', width: 17, classes: 'wrap',  hidden:true},
+			{ label: 'postcode', name: 'postcode', width: 17, classes: 'wrap',  hidden:true},
+			{ label: 'statecode', name: 'statecode', width: 17, classes: 'wrap',  hidden:true},
 			{ label: 'Tel No', name: 'telno', width: 10},	
 			{ label: 'idno', name: 'idno', hidden: true},
 		],
@@ -57,8 +63,7 @@ $(document).ready(function () {
 		sortname:'idno',
 		sortorder:'desc',
 		width: 900,
-		height: 100,
-		//rowNum: 30,
+		height: 250,
 		pager: "#jqGridPager",
 		gridComplete: function () {
 			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
@@ -77,6 +82,33 @@ $(document).ready(function () {
 
 		
 	});
+
+	/////////////////////////start grid pager/////////////////////////////////////////////////////////
+	$("#jqGrid").jqGrid('navGrid','#jqGridPager',
+		{	
+			edit:false,view:false,add:false,del:false,search:false,
+			beforeRefresh: function(){
+				refreshGrid("#jqGrid",urlParam);
+			},
+			
+		}	
+	);
+
+
+	/////////////////formatter address///////////////////////////
+	function formatterAddress (cellvalue, options, rowObject){
+		add1 = rowObject.address1;
+		add2 = rowObject.address2;
+		add3 = rowObject.address3;
+		postcode = rowObject.postcode;
+		state = rowObject.statecode;
+		fulladdress =  add1 + '</br> ' + add2 + '</br> ' + add3 + ' </br>' + postcode + ' </br>' + state;
+		return fulladdress;
+	}
+
+	function unformatAddress (cellvalue, options, rowObject){
+		return null;
+	}
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 	populateSelect('#jqGrid','#searchForm');
@@ -155,13 +187,12 @@ $(document).ready(function () {
 			let stat = selrowData("#gridCheqRegDetail").recstatus;
 			if(stat=='DEACTIVE'){
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-				//$("#jqGridPager2 td[title='View Selected Row']").click();
 			}else{
 				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 			}
 		},
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
+			if(addmore_jqgrid.more == true){$('#gridCheqRegDetail_iladd').click();}
 			else{
 				$("#gridCheqRegDetail").setSelection($("#gridCheqRegDetail").getDataIDs()[0]);
 			}
@@ -195,13 +226,11 @@ $(document).ready(function () {
 			$("#gridCheqRegDetail :input[name='endno']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 					if (code == '9')$('#gridCheqRegDetail_ilsave').click();
-					/*addmore_jqgrid.state = true;
-					$('#jqGrid_ilsave').click();*/
 			});
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
 			addmore_jqgrid.more = true;
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
@@ -226,7 +255,6 @@ $(document).ready(function () {
 				$.param({
 					bankcode: selrowData('#jqGrid').bankcode,
 					action: 'cheqregDetail_save',
-					//idno: selrowData('#gridCheqRegDetail').idno,
 				});
 			$("#gridCheqRegDetail").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -250,14 +278,11 @@ $(document).ready(function () {
 			$("#gridCheqRegDetail :input[name='endno']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 					if (code == '9')$('#gridCheqRegDetail_ilsave').click();
-					/*addmore_jqgrid.state = true;
-					$('#jqGrid_ilsave').click();*/
 			});
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-			addmore_jqgrid.more = true;
+			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
 			errorField.length=0;

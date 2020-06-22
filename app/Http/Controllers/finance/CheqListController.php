@@ -9,12 +9,12 @@ class CheqListController extends defaultController
 {   
 
     var $table;
-    var $duplicateCode;
+   // var $duplicateCode;
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "Code";
+        //$this->duplicateCode = "Code";
     }
 
     public function show(Request $request)

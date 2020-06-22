@@ -69,6 +69,7 @@ class PatmastController extends defaultController
 
             $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
                             ->where('compcode','=',session('compcode'))
+                            ->where('Active','=','1')
                             ->whereIn('mrn', $arr_mrn);
 
             if(!empty($request->searchCol)){
@@ -111,7 +112,9 @@ class PatmastController extends defaultController
                 }
             }
 
-            $table_patm = $table_patm->where('compcode','=',session('compcode'));
+            $table_patm = $table_patm
+                        ->where('Active','=','1')
+                        ->where('compcode','=',session('compcode'));
 
             if(!empty($request->sort)){
                 foreach ($request->sort as $key => $value) {
@@ -332,6 +335,12 @@ class PatmastController extends defaultController
 
                 break;
 
+            case 'txt_payer_company':
+//             SELECT * FROM debtortype,debtormast 
+// WHERE debtortype.compcode='9A' AND debtortycode NOT IN ('PT','PR') 
+// AND debtormast.compcode = debtortype.compcode AND debtormast.debtortype = debtortype.debtortycode
+                break;
+
             // case 'get_patient_active':
             //     return DB::table('hisdb.title')->select('code','description')->get();
 
@@ -416,7 +425,8 @@ class PatmastController extends defaultController
 
         foreach ($request->field as $key => $value) {
             if(array_search($value,$array_ignore))continue;
-            $array_update[$value] = $request[$request->field[$key]];
+            if(empty($request[$request->field[$key]]))continue;
+            $array_update[$value] = strtoupper($request[$request->field[$key]]);
         }
 
         try {
@@ -515,8 +525,6 @@ class PatmastController extends defaultController
         $epis_no = $request->epis_no;
         $epis_type = $request->epis_type;
         $epis_maturity = $request->epis_maturity;
-        $epis_date = $request->epis_date;
-        $epis_time = $request->epis_time;
         $epis_dept = $request->epis_dept;
         $epis_src = $request->epis_src;
         $epis_case = $request->epis_case;
@@ -557,8 +565,8 @@ class PatmastController extends defaultController
                     "mrn" => $epis_mrn,
                     "episno" => $epis_no,
                     "epistycode" => $epis_type,
-                    "reg_date" => $epis_date,
-                    "reg_time" => $epis_time,
+                    "reg_date" => Carbon::now("Asia/Kuala_Lumpur"),
+                    "reg_time" => Carbon::now("Asia/Kuala_Lumpur"),
                     "regdept" => $epis_dept,
                     "admsrccode" => $epis_src,
                     "case_code" => $epis_case,
@@ -594,6 +602,409 @@ class PatmastController extends defaultController
                     'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'LastUser' => session('username'),
                 ]);
+
+            if($epis_no == 1){
+                DB::table("hisdb.pat_mast")
+                    ->where("compcode",'=',session('compcode'))
+                    ->where("mrn",'=',$epis_mrn)
+                    ->update([
+                        'first_visit_date' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }
+
+            $patmast_data = DB::table("hisdb.pat_mast")
+                                ->where('MRN','=',$epis_mrn)
+                                ->where('compcode','=',session('compcode'))
+                                ->first();
+
+            //if pay_type = PT
+                //buat debtormaster KALAU TAK JUMPA
+                    //debtortype = pay_type
+                    //debtorcode = MRN prefix until 7 zero
+                    //debtorname = patmast.name
+                    //address1 address2 address3 address4
+                    //actdebccode //select dari debtortype where compcode=session and debtortycode=pay_type
+                    //actdebglacc //select dari debtortype where compcode=session and debtortycode=pay_type
+                    //depccode //select dari debtortype where compcode=session and debtortycode=pay_type
+                    //depglacc //select dari debtortype where compcode=session and debtortycode=pay_type
+                    //adduser
+                    //adddate
+                    //computerid
+
+            if($epis_fin == "PT"){
+                $debtortype_data = DB::table('debtor.debtortype')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('DebtorTyCode','=',$epis_fin)
+                    ->first();
+
+                $debtormast_obj = DB::table('debtor.debtormast')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('debtorcode','=',$epis_mrn);
+
+
+                if(!$debtormast_obj->exists()){
+                    //kalu xjumpa debtormast, buat baru
+                    DB::table('debtor.debtormast')
+                        ->insert([
+                            'CompCode' => session('compcode'),
+                            'DebtorCode' => $epis_mrn,
+                            'Name' => $patmast_data->Name,
+                            'Address1' => $patmast_data->Address1,
+                            'Address2' => $patmast_data->Address2,
+                            'Address3' => $patmast_data->Address3,
+                            'DebtorType' => "PR",
+                            'DepCCode'  => $debtortype_data->depccode,
+                            'DepGlAcc' => $debtortype_data->depglacc,
+                            'BillType' => $epis_type,
+                            // 'BillTypeOP' => "OP",
+                            'ActDebCCode' => $debtortype_data->actdebccode,
+                            'ActDebGlAcc' => $debtortype_data->actdebglacc,
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'RecStatus' => "A"
+                        ]);
+                }else{
+
+                    // $debtormast_data = $debtormast_obj->first();
+
+                }
+            }
+
+            //CREATE EPISPAYER
+                // mrn
+                // episno
+                // payercode
+                // lineno = 1
+                // epistycode
+                // pay_type
+                // pyrmode
+                // billtype
+                // adduser
+                // adddate
+                // computerid
+
+            $epispayer_obj = DB::table('hisdb.epispayer')
+                ->where('compcode','=',session('compcode'))
+                ->where('mrn','=',$epis_mrn)
+                ->where('Episno','=',$epis_no);
+
+            if(!$epispayer_obj->exists()){
+                //kalu xjumpa epispayer, buat baru
+                DB::table('hisdb.epispayer')
+                ->insert([
+                    'CompCode' => session('compcode'),
+                    'MRN' => $epis_mrn,
+                    'Episno' => $epis_no,
+                    'EpisTyCode' => $epis_type,
+                    'LineNo' => '1',
+                    'BillType' => $epis_billtype,
+                    'PayerCode' => $epis_payer,
+                    'Pay_Type' => $epis_fin,
+                    'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'AddUser' => session('username'),
+                    'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'LastUser' => session('username')
+                ]);
+            }
+
+            //CREATE NOK
+
+            //CREATE docalloc
+                  //compcode = episode.compcode
+                  //mrn = episode.mrn
+                  //episno = episode.episno
+                  //AllocNo
+                  //DoctorCode = episode.admdoctor
+                  //asdate = episode.epis_date
+                  //astime = episode.epis_time
+                  //aedate
+                  //aetime
+                  //aprovide
+                  //astatus
+                  //areason
+                  //servicecode
+                  //doctype = doctor.doctype
+                  //epistycode = episode.epistycode
+                  //adddate
+                  //adduser
+                  // computerid
+            $docalloc_obj=DB::table('hisdb.docalloc')
+                ->where('compcode','=',session('compcode'))
+                ->where('Mrn','=',$epis_mrn)
+                ->where('Episno','=',$epis_no);
+
+            if(!$docalloc_obj->exists()){
+                //kalu xde docalloc buat baru
+                DB::table('hisdb.docalloc')
+                    ->insert([
+                        'mrn' => $epis_mrn,
+                        'compcode' => session('compcode'),
+                        'episno' => $epis_no,
+                        'AStatus' => "ADMITTING",
+                        'Adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'AddUser' => session('username'),
+                        'Epistycode' => $epis_type,
+                        'DoctorCode' => $epis_doctor,
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'LastUser' => session('username'),
+                        'ASDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'ASTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
+                    ]);
+
+            }
+
+            //CREATE BEDALLOC KALAU IP @ DP SHJ
+                // from page
+
+            //UPDATE BED set recstatus=OCCUPIED KALAU IP @ DP SHJ
+                    //mrn = episode.mrn
+                    //episno = episode.episno
+                    //name = patmast.name
+            if($epis_type == "IP" || $epis_type == "DP"){
+
+                $bed_obj = DB::table('hisdb.bed')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bednum','=',$epis_bednum);
+
+                if($bed_obj->exists()){
+                    $bed_first = $bed_obj->first();
+                    DB::table('hisdb.bedalloc')
+                        ->insert([  
+                            'mrn' => $epis_mrn,
+                            'episno' => $epis_no,
+                            'name' => $patmast_data->Name,
+                            'astatus' => "Occupied",
+                            'ward' =>  $bed_first->ward,
+                            'room' =>  $bed_first->room,
+                            'bednum' =>  $bed_first->bednum,
+                            'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'astime' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'compcode' => session('compcode'),
+                            'adduser' => strtoupper(session('username')),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+
+                    $bed_obj->update([
+                        'occup' => "OCCUPIED"
+                    ]);
+
+                }
+
+            }
+
+
+            //QUEUE FOR ALL
+                //epistycode = IP if epis_type  = IP @ DP
+                //epistycode = OP if epis_type  = OP @ OTC
+
+            if($epis_type == "IP" || $epis_type == "DP"){
+                $epistycode_q = "IP";
+            }else{
+                $epistycode_q = "OP";
+            }
+
+            //cari queue utk source que dgn trantype epistycode
+            $queue_obj = DB::table('sysdb.sysparam')
+                ->where('source','=','QUE')
+                ->where('trantype','=',$epistycode_q);
+
+                //kalu xjumpe buat baru
+            if(!$queue_obj->exists()){
+                DB::table('sysdb.sysparam')
+                    ->insert([
+                        'compcode' => '9A',
+                        'source' => 'QUE',
+                        'trantype' => $epistycode_q,
+                        'description' => $epistycode_q.' Queue No.',
+                        'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                    ]);
+
+                $queue_obj = DB::table('sysdb.sysparam')
+                    ->where('source','=','QUE')
+                    ->where('trantype','=',$epistycode_q);
+            }
+
+            $queue_data = $queue_obj->first();
+
+                //ni start kosong balik bila hari baru
+            if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
+                $queue_obj
+                    ->update([
+                        'pvalue1' => 0,
+                        'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                    ]);
+            }
+
+                //tambah satu dkt queue sysparam
+            $current_pvalue1 = intval($queue_data->pvalue1);
+            $queue_obj
+                ->update([
+                    'pvalue1' => $current_pvalue1+1
+                ]);
+
+
+            $queueAll_obj=DB::table('hisdb.queue')
+                ->where('mrn','=',$epis_mrn)
+                ->where('episno','=',$epis_no)
+                ->where('deptcode','=','ALL');
+
+            $queueAll_data=$queueAll_obj->first();
+            if(!$queueAll_obj->exists()){
+                DB::table('hisdb.queue')
+                    ->insert([
+                        'AdmDoctor' => $epis_doctor,
+                        'AttnDoctor' => $epis_doctor,
+                        'BedType' => '',
+                        'Case_Code' => "MED",
+                        'CompCode' => session('compcode'),
+                        'Episno' => $epis_no,
+                        'EpisTyCode' => $epistycode_q,
+                        'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'Lastuser' => session('username'),
+                        'MRN' => $epis_mrn,
+                        'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
+                        'Bed' => '',
+                        'Room' => '',
+                        'QueueNo' => $current_pvalue1+1,
+                        'Deptcode' => 'ALL',
+                        'DOB' => $this->null_date($patmast_data->DOB),
+                        'NAME' => $patmast_data->Name,
+                        'Newic' => $patmast_data->Newic,
+                        'Oldic' => $patmast_data->Oldic,
+                        'Sex' => $patmast_data->Sex,
+                        'Religion' => $patmast_data->Religion,
+                        'RaceCode' => $patmast_data->RaceCode,
+                        'EpisStatus' => '',
+                        'chggroup' => $epis_billtype
+                    ]);
+            }
+
+            //QUEUE FOR SPECIALIST
+
+            $queueSPEC_obj=DB::table('hisdb.queue')
+                ->where('mrn','=',$epis_mrn)
+                ->where('episno','=',$epis_no)
+                ->where('deptcode','=','SPEC');
+
+            $queueSPEC_data=$queueSPEC_obj->first();
+
+            if(!$queueSPEC_obj->exists()){
+                DB::table('hisdb.queue')
+                    ->insert([
+                        'AdmDoctor' => $epis_doctor,
+                        'AttnDoctor' => $epis_doctor,
+                        'BedType' => '',
+                        'Case_Code' => "MED",
+                        'CompCode' => session('compcode'),
+                        'Episno' => $epis_no,
+                        'EpisTyCode' => "OP",
+                        'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'Lastuser' => session('username'),
+                        'MRN' => $epis_mrn,
+                        'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
+                        'Bed' => '',
+                        'Room' => '',
+                        'QueueNo' => $current_pvalue1+1,
+                        'Deptcode' => 'SPEC',
+                        'DOB' => $this->null_date($patmast_data->DOB),
+                        'NAME' => $patmast_data->Name,
+                        'Newic' => $patmast_data->Newic,
+                        'Oldic' => $patmast_data->Oldic,
+                        'Sex' => $patmast_data->Sex,
+                        'Religion' => $patmast_data->Religion,
+                        'RaceCode' => $patmast_data->RaceCode,
+                        'EpisStatus' => '',
+                        'chggroup' => $epis_billtype
+                    ]);
+            }
+
+            $queries = DB::getQueryLog();
+
+            dump($queries);
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+        
+    }
+
+    public function edit_episode(Request $request){
+
+        DB::enableQueryLog();
+
+        $epis_mrn = $request->epis_mrn;
+        $epis_no = $request->epis_no;
+        $epis_type = $request->epis_type;
+        $epis_maturity = $request->epis_maturity;
+        $epis_dept = $request->epis_dept;
+        $epis_src = $request->epis_src;
+        $epis_case = $request->epis_case;
+        $epis_doctor = $request->epis_doctor;
+        $epis_fin = $request->epis_fin;
+        $epis_paymode = $request->epis_pay;
+        $epis_payer = $request->epis_payer;
+        $epis_billtype = $request->epis_billtype;
+        $epis_refno = $request->epis_refno;
+        $epis_ourrefno = $request->epis_ourrefno;
+        $epis_preg = $request->epis_preg;
+        $epis_fee = $request->epis_fee;
+        $epis_bednum = $request->epis_bed;
+
+        $epis_typeepis;
+        if ($epis_maturity == "1"){
+            if($epis_preg == "Pregnant"){
+                $epis_typeepis = "newcaseP";
+            }else{
+                $epis_typeepis = "newcaseNP";
+            }
+        }else{
+            if($epis_preg == "Pregnant"){
+                $epis_typeepis = "followupP";
+            }else{
+                $epis_typeepis = "followupNP";
+            }
+        }
+
+
+        DB::beginTransaction();
+
+        try {
+
+            DB::table("hisdb.episode")
+                ->where('idno','=',$request->idno)
+                ->update([
+                    "compcode" => session('compcode'),
+                    "regdept" => $epis_dept,
+                    "admsrccode" => $epis_src,
+                    "case_code" => $epis_case,
+                    "admdoctor" => $epis_doctor,
+                    "pay_type" => $epis_fin,
+                    "pyrmode" => $epis_paymode,
+                    "billtype" => $epis_billtype,
+                    "bed" => $epis_bednum,
+                    $epis_typeepis => 1,
+                    "AdminFees" => $epis_fee,
+                    "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
+                    "adduser" => session('username'),
+                    "episactive" => 1,
+                    "allocpayer" => 1
+                ]);
+
+            //update patmast
+                //episno = episode.episno
+                //patstatus=episode.episactive
+                //last_visit_date=episode.reg_date
+                //first_visit_date=episode.reg_date when episno=1
+                //Lastupdate=today
+                //LastUser=session.user
 
             if($epis_no == 1){
                 DB::table("hisdb.pat_mast")

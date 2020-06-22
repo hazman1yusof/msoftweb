@@ -63,6 +63,16 @@ input.uppercase {
 							</div>														
 						</div>
 
+						<div class="col-md-1" style="padding-left: 0px;">
+							<div id="div_bedtype" style="padding-left: 0px;max-width: 45px;display:none">
+								<label class="control-label"></label>
+								<a class='form-control btn btn-primary' id="btn_bedtype"><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<div id="div_occup" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
+								<label class="control-label"></label>
+								<a class='form-control btn btn-primary' id="btn_occup"><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+						</div>
 						<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
 					  		<p id="p_error"></p>
 					  	</div>
