@@ -25,7 +25,7 @@ $(document).ready(function () {
 			saveForm_ward(function(){
 				$("#cancel_ward").data('oper','edit');
 				$("#cancel_ward").click();
-				$('#refresh_jqGrid').click();
+				$("#jqGridPagerRefresh").click();
 			});
 		}else{
 			enableForm('#formWard');
