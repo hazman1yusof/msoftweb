@@ -192,7 +192,7 @@ $(document).ready(function () {
 			}
 		},
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
+			if(addmore_jqgrid.more == true){$('#gridCheqRegDetail_iladd').click();}
 			else{
 				$("#gridCheqRegDetail").setSelection($("#gridCheqRegDetail").getDataIDs()[0]);
 			}
@@ -230,7 +230,7 @@ $(document).ready(function () {
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
+			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
 			addmore_jqgrid.more = true;
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
@@ -282,7 +282,7 @@ $(document).ready(function () {
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-			addmore_jqgrid.more = true;
+			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
 			errorField.length=0;
