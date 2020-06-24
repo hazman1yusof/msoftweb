@@ -125,7 +125,7 @@ function button_state_dietOrder(state){
 }
 
 function populate_dietOrder(obj,rowdata){
-
+	emptyFormdata(errorField,"#formDietOrder");
 	//panel header
 	$('#name_show_dietOrder').text(obj.name);
 	$('#mrn_show_dietOrder').text(obj.mrn);

@@ -37,6 +37,7 @@ $(document).ready(function () {
 	$("#cancel_ward").click(function(){
 		disableForm('#formWard');
 		button_state_ward($(this).data('oper'));
+		examination.empty().off();
 		// dialog_mrn_edit.off();
 
 	});
@@ -113,6 +114,7 @@ function button_state_ward(state){
 }
 
 function populate_formWard(obj,rowdata){
+	emptyFormdata(errorField,"#formWard");
 
 	//panel header
 	$('#name_show_ward').text(obj.name);
@@ -140,10 +142,17 @@ function populate_formWard(obj,rowdata){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formWard",data.ward);
 			autoinsert_rowdata("#formWard",data.ward_gen);
-			autoinsert_rowdata("#formWard",data.ward_exm);
+			// autoinsert_rowdata("#formWard",data.ward_exm);
+			if(!$.isEmptyObject(data.ward_exm)){
+				examination.empty();
+				examination.examarray = data.ward_exm;
+				examination.loadexam().disable();
+			}
+			
 			button_state_ward('edit');
         }else{
 			button_state_ward('add');
+			examination.empty();
         }
 
     });
@@ -353,7 +362,7 @@ function examination(){
 					<input type="hidden" name="examidno_`+index+`" value="`+item.idno+`">
 					<div class="col-md-2">Exam</div>
 					<div class="col-md-10">
-						<select class="form-select form-control" name="examsel_`+index+`" id="exam_`+index+`">
+						<select class="form-select form-control" name="examsel_`+index+`" id="exam_`+index+`" >
 							<option value="General">General</option>
 							<option value="Head" >Head</option>
 							<option value="Neck" >Neck</option>
@@ -378,7 +387,7 @@ function examination(){
 				<div class="form-group">
 					<div class="col-md-2">Note</div>
 					<div class="col-md-10">
-						<textarea class="form-control input-sm uppercase" rows="5"  name="examnote_`+index+`" id="examnote_`+index+`">`+item.examnote+`</textarea>
+						<textarea class="form-control input-sm uppercase" rows="5"  name="examnote_`+index+`" id="examnote_`+index+`" >`+item.examnote+`</textarea>
 					</div>
 				</div>
 			`);
