@@ -111,6 +111,8 @@ function button_state_dischgSummary(state){
 }
 
 function populate_dischgSummary(obj,rowdata){
+	
+	emptyFormdata(errorField,"#formDischgSummary");
 
 	//panel header
 	$('#name_show_dischgSummary').text(obj.name);

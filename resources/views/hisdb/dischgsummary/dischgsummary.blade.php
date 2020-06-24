@@ -129,7 +129,7 @@
 													<div class="panel-body">
 
 														<div class="form-check">
-															<input class="form-check-input" type="radio" name="dischargestatus" id="well" value="well" checked>
+															<input class="form-check-input" type="radio" name="dischargestatus" id="well" value="well">
 															<label class="form-check-label" for="well">Well</label>
 														</div>
 

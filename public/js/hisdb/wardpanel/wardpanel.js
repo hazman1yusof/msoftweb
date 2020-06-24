@@ -114,6 +114,7 @@ function button_state_ward(state){
 }
 
 function populate_formWard(obj,rowdata){
+	
 	emptyFormdata(errorField,"#formWard");
 
 	//panel header

@@ -158,6 +158,8 @@ function populate_formNursing(obj,rowdata){
 }
 
 function populate_triage(obj,rowdata){
+	
+	emptyFormdata(errorField,"#formTriageInfo");
 
 	//panel header
 	$('#name_show_triage').text(obj.name);
