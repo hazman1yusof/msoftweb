@@ -628,6 +628,7 @@ function unformatstatus(cellvalue, option, rowObject) {
 }
 
 function unformatstatus_tick(cellvalue, option, rowObject) {
+	console.log(rowObject)
 	if (cellvalue == '<span class="fa fa-2x fa-check" style="color:green"></span>') {
 		return 'A';
 	}else if (cellvalue == '<span class="fa fa-2x fa-times" style="color:red"></span>') {

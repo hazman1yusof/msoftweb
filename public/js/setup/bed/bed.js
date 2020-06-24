@@ -35,10 +35,10 @@ $(document).ready(function () {
 			case 'Bed Status':temp=$("#jqGrid input[name='occup']");break;
 			case 'Charge Code':temp=$('#bedchgcode');break;
 			case 'Statistic':temp=$("#jqGrid input[name='statistic']");break;
-			case 'Record Status':temp=$("#jqGrid input[name='recstatus']");break;
+			case ' ':temp=$("#jqGrid input[name='recstatus']");break;
 				break;
 		}
-		console.log(temp);
+
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 	}
 
@@ -89,7 +89,11 @@ $(document).ready(function () {
 	}
 
 	function recstatusCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val;
+		if(val == '<span class="fa fa-times"></span>'){
+			val = 'D';
+		}else{
+			val = 'A';
+		}
 		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="recstatus" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
@@ -165,7 +169,7 @@ $(document).ready(function () {
 			// { label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true, edittype:"select",	formatter:formatterstatus_tick,unformat:unformatstatus_tick,
 			// 	editoptions:{value:"A:ACTIVE;D:DEACTIVE"},
 			// },
-			{ label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: ' ', name: 'recstatus', width: 20, classes: 'center_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 				{ 	custom_element:recstatusCustomEdit,
 					custom_value:galGridCustomValue 	
@@ -743,7 +747,7 @@ $(document).ready(function () {
 		'recstatus','hisdb.bed',"#jqGrid input[name='recstatus']",errorField,
 		{	colModel:
 			[
-				{label:'Record Status',name:'recstatus',width:200,classes:'pointer left',canSearch:true,checked:true,or_search:true},
+				{label:'Record Status',name:'stat',width:200,classes:'pointer left',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
 			],
 			urlParam: {
@@ -753,7 +757,7 @@ $(document).ready(function () {
 				},
 			ondblClickRow:function(event){
 
-				$(dialog_recstatus.textfield).val(selrowData("#"+dialog_recstatus.gridname)['recstatus']);
+				$(dialog_recstatus.textfield).val(selrowData("#"+dialog_recstatus.gridname)['description']);
 
 			},
 			gridComplete: function(obj){
