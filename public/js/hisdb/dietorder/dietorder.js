@@ -25,7 +25,7 @@ $(document).ready(function () {
 			saveForm_dietOrder(function(){
 				$("#cancel_dietOrder").data('oper','edit');
 				$("#cancel_dietOrder").click();
-				$('#refresh_jqGrid').click();
+				$("#jqGridPagerRefresh").click();
 			});
 		}else{
 			enableForm('#formDietOrder');
@@ -125,7 +125,7 @@ function button_state_dietOrder(state){
 }
 
 function populate_dietOrder(obj,rowdata){
-
+	emptyFormdata(errorField,"#formDietOrder");
 	//panel header
 	$('#name_show_dietOrder').text(obj.name);
 	$('#mrn_show_dietOrder').text(obj.mrn);
