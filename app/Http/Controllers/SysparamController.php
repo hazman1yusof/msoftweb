@@ -81,7 +81,7 @@ class SysparamController extends Controller
         $sysparam = DB::table('sysdb.sysparam')
 			        	->where('compcode','=',session('compcode'))
 			        	->where('source','=','STAT')
-			        	->where('trantype','=','YES')
+			        	->where('trantype','=','YES') //filter where pvalue1 = A and D shj
 			        	->first();
 
 		$pvalue1 = explode(",",$sysparam->pvalue1);
@@ -118,8 +118,8 @@ class SysparamController extends Controller
 	public function sysparam_recstatus(Request $request){
         $sysparam = DB::table('sysdb.sysparam')
 			        	->where('compcode','=',session('compcode'))
-			        	->where('source','=','STAT')
-			        	->where('trantype','=','YES')
+			        	->where('source','=','BED')
+			        	->where('trantype','=','STATUS')
 			        	->first();
 
 		$pvalue1 = explode(",",$sysparam->pvalue1);
@@ -128,14 +128,14 @@ class SysparamController extends Controller
 		foreach ($pvalue1 as $key => $value){
 			$object = new stdClass();
 			switch ($value) {
-				case 'TRUE':
-					$object->stat = '<i class="fa fa-check fa-2x" aria-hidden="true"></i> '.$value;
+				case 'ACTIVE':
+					$object->bedcode = '<i class="fa fa-check fa-2x" aria-hidden="true"></i> '.$value;
 					$object->description = 'A';
 					break;
-				case 'FALSE':
-					$object->stat = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
+				case 'DEACTIVE':
+					$object->bedcode = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
 					$object->description = 'D';
-					break;
+					break;			
 				default:				
 					$object->stat = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
 					$object->description = $value;
