@@ -113,7 +113,46 @@ class SysparamController extends Controller
         $responce->rows = $rows;
 
         return json_encode($responce);
-    }
+	}
+	
+	public function sysparam_recstatus(Request $request){
+        $sysparam = DB::table('sysdb.sysparam')
+			        	->where('compcode','=',session('compcode'))
+			        	->where('source','=','BED')
+			        	->where('trantype','=','STATUS')
+			        	->first();
+
+		$pvalue1 = explode(",",$sysparam->pvalue1);
+		$rows = [];
+
+		foreach ($pvalue1 as $key => $value){
+			$object = new stdClass();
+			switch ($value) {	
+				case 'ACTIVE':
+					$object->bedcode = '<i class="fa fa-check fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
+					break;
+				case 'DEACTIVE':
+					$object->bedcode = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
+					break;			
+				default:
+					$object->bedcode = '<i class="fa fa-check" aria-hidden="true"></i> '.$value;
+					$object->description = $value;
+					break;
+			}
+			$object->description = $value;
+			$rows[$key] = $object;
+		}
+
+        $responce = new stdClass();
+        $responce->page = 1;
+        $responce->total = 1;
+        $responce->records = 4;
+        $responce->rows = $rows;
+
+        return json_encode($responce);
+	}
 
     public function sysparam_triage_color(Request $request){
         $sysparam = DB::table('sysdb.sysparam')

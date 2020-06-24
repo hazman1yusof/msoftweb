@@ -35,6 +35,7 @@ $(document).ready(function () {
 			case 'Bed Status':temp=$("#jqGrid input[name='occup']");break;
 			case 'Charge Code':temp=$('#bedchgcode');break;
 			case 'Statistic':temp=$("#jqGrid input[name='statistic']");break;
+			case 'Record Status':temp=$("#jqGrid input[name='recstatus']");break;
 				break;
 		}
 		console.log(temp);
@@ -85,6 +86,11 @@ $(document).ready(function () {
 	function chgcodeCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="bedchgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function recstatusCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val;
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="recstatus" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -149,16 +155,22 @@ $(document).ready(function () {
 			{ label: ' ', name: 'episno', width: 5},
 			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
 			// { label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
-			{ label: 'Charge Code', name: 'bedchgcode', width: 20 , classes: 'wrap', editable:true,
+			{ label: 'Charge Code', name: 'bedchgcode', width: 15 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 					edittype:'custom',	editoptions:
 						{ 	custom_element:chgcodeCustomEdit,
 							custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true, edittype:"select",	formatter:formatterstatus_tick,unformat:unformatstatus_tick,
-				editoptions:{value:"A:ACTIVE;D:DEACTIVE"},
-			},
+			// { label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true, edittype:"select",	formatter:formatterstatus_tick,unformat:unformatstatus_tick,
+			// 	editoptions:{value:"A:ACTIVE;D:DEACTIVE"},
+			// },
+			{ label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
+				edittype:'custom',	editoptions:
+				{ 	custom_element:recstatusCustomEdit,
+					custom_value:galGridCustomValue 	
+				},
+		},
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
@@ -311,6 +323,7 @@ $(document).ready(function () {
 			dialog_occup.on();
 			dialog_chargecode.on();
 			dialog_stat.on();
+			dialog_recstatus.on();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -368,6 +381,7 @@ $(document).ready(function () {
 			dialog_occup.on();
 			dialog_chargecode.on();
 			dialog_stat.on();
+			dialog_recstatus.on();
 			$("input[name='bednum']").attr('disabled','disabled');
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -725,6 +739,43 @@ $(document).ready(function () {
 	);
 	dialog_chargecode.makedialog();
 
+	var dialog_recstatus = new ordialog(
+		'recstatus','hisdb.bed',"#jqGrid input[name='recstatus']",errorField,
+		{	colModel:
+			[
+				{label:'Record Status',name:'recstatus',width:200,classes:'pointer left',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
+			],
+			urlParam: {
+				url:'./sysparam_recstatus',
+				filterCol:['recstatus','compcode'],
+				filterVal:['A', 'session.compcode']
+				},
+			ondblClickRow:function(event){
+
+				$(dialog_recstatus.textfield).val(selrowData("#"+dialog_recstatus.gridname)['recstatus']);
+
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#room').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Record Status",
+			open: function(){
+				dialog_recstatus.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_recstatus.urlParam.filterVal = ['A', 'session.compcode'];
+			},
+			width:4/10 * $(window).width()
+		},'urlParam','radio','tab'
+	);
+	dialog_recstatus.makedialog(false);
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
