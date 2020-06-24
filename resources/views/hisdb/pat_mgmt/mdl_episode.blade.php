@@ -3,6 +3,7 @@
     <div class="modal-dialog modal-lg">
         <input type="hidden" name="rowid" id="rowid">
         <input type="hidden" name="mrn_episode" id="mrn_episode">
+        <input type="hidden" name="episode_oper" id="episode_oper" value="add">
 
         <div class="modal-content">
             <div class="modal-header label-info form-horizontal"><form id="epis_header">
@@ -453,6 +454,8 @@
                                             </button>
                                         </div></div>
                                     </div>
+
+                                    <input id="nok_idno" name="nok_idno" type="hidden">
 
                                     <div class="form-group">
                                         <div class="col-md-12">

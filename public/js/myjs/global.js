@@ -5,64 +5,85 @@ var Global = function () {
 		var act = "";
 		var selecter = null;
 		var item = null;
+		var title="Item selector";
 			
 		switch (type)
 		{
 			case "LanguageCode":
 				act = "get_patient_language";
+				title = "Select Patient Language";
 				break;
 			case "Religion":
 				act = "get_patient_religioncode";
+				title = "Select Patient Religion";
 				break;
 			case "RaceCode":
 				act = "get_patient_race";
+				title = "Select Patient race";
 				break;
 			case "ID_Type":
 				act = "get_patient_idtype";
+				title = "Select Patient ID Type";
 				break;
 			case "pat_title":
 				act = "get_patient_title";
+				title = "Select Patient Title";
 				break;
 			case "pat_occupation":
 				act = "get_patient_occupation";
+				title = "Select Patient Occupation";
 				break;
 			case "pat_area":
 				act = "get_patient_areacode";
+				title = "Select Patient Area";
 				break;
 			case "pat_citizen":
 				act = "get_patient_citizen";
+				title = "Select Patient Citizen";
 				break;
 			case "payer_relation":
 				act = "get_patient_relationship";
+				title = "Select Patient Relationship";
 				break;
 			case "payer_occupation":
 				act = "get_patient_occupation";
+				title = "Select Patient Occupation";
 				break;
 			case "payer_company":
 				act = "get_all_company";
+				title = "Select Patient Company";
 				break;
 			case "grtr_relation":
 				act = "get_patient_relationship";
+				title = "Select Patient Relationship";
 				break;
 			case "epis_dept":
 				act = "get_reg_dept";
+				title = "Select Patient Register Department";
 				break;
 			case "epis_source":
 				act = "get_reg_source";
+				title = "Select Patient Register Source";
 				break;
 			case "epis_case":
 				act = "get_reg_case";
+				title = "Select Patient Case";
 				break;
 			case "epis_doctor":
 				act = "get_reg_doctor";
+				title = "Select Patient Doctor";
 				break;
 			case "epis_fin":
 				act = "get_reg_fin";
+				title = "Select Patient Finance";
 				break;
 			case "epis_bed":
 				act = "get_reg_bed";
+				title = "Select Patient Bed";
 				break;
 		}
+
+		$("#txt_item_selector").text(title);
 		
 		selecter = $('#tbl_item_select').DataTable( {
 				"ajax": "pat_mast/get_entry?action=" + act,

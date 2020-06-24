@@ -335,7 +335,14 @@ class PatmastController extends defaultController
 
                 break;
 
-            case 'txt_payer_company':
+            case 'get_all_company':
+
+                $data = DB::table('debtor.debtormast')
+                        ->select('debtormast.debtorcode as code','debtormast.name as description')
+                        ->leftJoin('debtor.debtortype', 'debtortype.debtortycode', '=', 'debtormast.debtortype')
+                        ->where('debtormast.compcode','=',session('compcode'))
+                        ->whereNotIn('debtortype.debtortycode',['PT','PR'])
+                        ->get();
 //             SELECT * FROM debtortype,debtormast 
 // WHERE debtortype.compcode='9A' AND debtortycode NOT IN ('PT','PR') 
 // AND debtormast.compcode = debtortype.compcode AND debtormast.debtortype = debtortype.debtortycode
@@ -425,7 +432,8 @@ class PatmastController extends defaultController
 
         foreach ($request->field as $key => $value) {
             if(array_search($value,$array_ignore))continue;
-            if(empty($request[$request->field[$key]]))continue;
+            if($request[$request->field[$key]] == 0){}
+            else if(empty($request[$request->field[$key]]))continue;
             $array_update[$value] = strtoupper($request[$request->field[$key]]);
         }
 
@@ -518,6 +526,22 @@ class PatmastController extends defaultController
     }
 
     public function save_episode(Request $request){
+        switch ($request->episoper) {
+            case 'add':
+                $this->add_episode($request);
+                break;
+            
+            case 'edit':
+                $this->edit_episode($request);
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+
+    public function add_episode(Request $request){
 
         DB::enableQueryLog();
 
@@ -1138,11 +1162,14 @@ class PatmastController extends defaultController
 
             if(!$docalloc_obj->exists()){
                 //kalu xde docalloc buat baru
+                // $maxallocno = $docalloc_obj->max('AllocNo');
+
                 DB::table('hisdb.docalloc')
                     ->insert([
                         'mrn' => $epis_mrn,
                         'compcode' => session('compcode'),
                         'episno' => $epis_no,
+                        'AllocNo' => 1,
                         'AStatus' => "ADMITTING",
                         'Adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'AddUser' => session('username'),
@@ -1154,6 +1181,27 @@ class PatmastController extends defaultController
                         'ASTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
                     ]);
 
+            }else{
+                $docalloc_obj
+                    ->where('AllocNo','=',1)
+                    ->delete();
+
+                DB::table('hisdb.docalloc')
+                    ->insert([
+                        'mrn' => $epis_mrn,
+                        'compcode' => session('compcode'),
+                        'episno' => $epis_no,
+                        'AllocNo' => 1,
+                        'AStatus' => "ADMITTING",
+                        'Adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'AddUser' => session('username'),
+                        'Epistycode' => $epis_type,
+                        'DoctorCode' => $epis_doctor,
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'LastUser' => session('username'),
+                        'ASDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'ASTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
+                    ]);
             }
 
             //CREATE BEDALLOC KALAU IP @ DP SHJ
@@ -1165,21 +1213,42 @@ class PatmastController extends defaultController
                     //name = patmast.name
             if($epis_type == "IP" || $epis_type == "DP"){
 
-                $bed_obj = DB::table('hisdb.bed')
+                $bedalloc_oldidno=DB::table('hisdb.bedalloc')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$epis_mrn)
+                    ->where('episno','=',$epis_no);
+
+                if($bedalloc_oldidno->exists()){
+                    $bedalloc_old = DB::table('hisdb.bedalloc')
+                        ->where('idno','=',$bedalloc_oldidno->max('idno'))
+                        ->first();
+
+                    $bed_old = DB::table('hisdb.bed')
                         ->where('compcode','=',session('compcode'))
-                        ->where('bednum','=',$epis_bednum);
+                        ->where('bednum','=',$bedalloc_old->bednum)
+                        ->update([
+                            'occup' => "VACANT"
+                        ]);
+
+                }
+
+                $bed_obj = DB::table('hisdb.bed')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('bednum','=',$request->bed_bednum);
 
                 if($bed_obj->exists()){
                     $bed_first = $bed_obj->first();
                     DB::table('hisdb.bedalloc')
                         ->insert([  
-                            'mrn' => $epis_mrn,
-                            'episno' => $epis_no,
-                            'name' => $patmast_data->Name,
-                            'astatus' => "Occupied",
-                            'ward' =>  $bed_first->ward,
-                            'room' =>  $bed_first->room,
-                            'bednum' =>  $bed_first->bednum,
+                            'mrn' => $request->mrn,
+                            'episno' => $request->episno,
+                            'name' => $request->name,
+                            'astatus' => $request->bed_status,
+                            'ward' =>  $request->bed_ward,
+                            'room' =>  $request->bed_room,
+                            'bednum' =>  $request->bed_bednum,
+                            'isolate' =>  $request->bed_isolate,
+                            'lodgerno' =>  $request->bed_lodger,
                             'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'astime' => Carbon::now("Asia/Kuala_Lumpur"),
                             'compcode' => session('compcode'),
@@ -1190,6 +1259,13 @@ class PatmastController extends defaultController
                     $bed_obj->update([
                         'occup' => "OCCUPIED"
                     ]);
+
+                    DB::table("hisdb.episode")
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->update([
+                            'bed' => $request->bed_bednum
+                        ]);
 
                 }
 
@@ -1230,20 +1306,20 @@ class PatmastController extends defaultController
             $queue_data = $queue_obj->first();
 
                 //ni start kosong balik bila hari baru
-            if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
-                $queue_obj
-                    ->update([
-                        'pvalue1' => 0,
-                        'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-                    ]);
-            }
+            // if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
+            //     $queue_obj
+            //         ->update([
+            //             'pvalue1' => 0,
+            //             'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+            //         ]);
+            // }
 
                 //tambah satu dkt queue sysparam
             $current_pvalue1 = intval($queue_data->pvalue1);
-            $queue_obj
-                ->update([
-                    'pvalue1' => $current_pvalue1+1
-                ]);
+            // $queue_obj
+            //     ->update([
+            //         'pvalue1' => $current_pvalue1+1
+            //     ]);
 
 
             $queueAll_obj=DB::table('hisdb.queue')
@@ -1282,6 +1358,13 @@ class PatmastController extends defaultController
                         'EpisStatus' => '',
                         'chggroup' => $epis_billtype
                     ]);
+            }else{
+                $queueAll_obj
+                    ->update([
+                        'AdmDoctor' => $epis_doctor,
+                        'AttnDoctor' => $epis_doctor,
+                        'chggroup' => $epis_billtype
+                    ]);
             }
 
             //QUEUE FOR SPECIALIST
@@ -1302,7 +1385,7 @@ class PatmastController extends defaultController
                         'Case_Code' => "MED",
                         'CompCode' => session('compcode'),
                         'Episno' => $epis_no,
-                        'EpisTyCode' => "OP",
+                        'EpisTyCode' => $epistycode_q,
                         'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
                         'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'Lastuser' => session('username'),
@@ -1321,6 +1404,13 @@ class PatmastController extends defaultController
                         'Religion' => $patmast_data->Religion,
                         'RaceCode' => $patmast_data->RaceCode,
                         'EpisStatus' => '',
+                        'chggroup' => $epis_billtype
+                    ]);
+            }else{
+                $queueSPEC_obj
+                    ->update([
+                        'AdmDoctor' => $epis_doctor,
+                        'AttnDoctor' => $epis_doctor,
                         'chggroup' => $epis_billtype
                     ]);
             }
@@ -1519,21 +1609,56 @@ class PatmastController extends defaultController
         DB::beginTransaction();
 
         try {
-                DB::table('hisdb.docalloc')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn'    =>  $request->mrn,
-                        'episno'  =>  $request->episno,    
-                        'doctorcode'  =>  $request->doctorcode,
-                        'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
-                        'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'astatus'    =>  $request->status,
-                        'epistycode'    =>  $request->epistycode,
-                        'adddate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'adduser'    =>  session('username'),
-                        'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'lastuser'    =>  session('username')
-                    ]);
+
+                if($request->oper == 'add'){
+                    $docalloc_obj = DB::table('hisdb.docalloc')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno);
+
+                    if($docalloc_obj->exists()){
+                        $allocno = intval($docalloc_obj->max('AllocNo')) + 1;
+                    }else{
+                        $allocno = 1;
+                    }
+
+                    DB::table('hisdb.docalloc')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'mrn'    =>  $request->mrn,
+                            'episno'  =>  $request->episno,
+                            'AllocNo' =>   $allocno,
+                            'doctorcode'  =>  $request->doctorcode,
+                            'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
+                            'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                            'astatus'    =>  $request->status,
+                            'epistycode'    =>  $request->epistycode,
+                            'adddate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                            'adduser'    =>  session('username'),
+                            'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastuser'    =>  session('username')
+                        ]);
+                }else if($request->oper == 'edit'){
+                    $docalloc_obj = DB::table('hisdb.docalloc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('allocno','=',$request->allocno);
+
+                    if($docalloc_obj->exists()){
+                        $docalloc_obj->update([
+                            'doctorcode'  =>  $request->doctorcode,
+                            'astatus'    =>  $request->status,
+                            'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
+                            'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastuser'    =>  session('username')
+                        ]);
+                    }
+                }else{
+                    throw new \Exception("Error happen");
+                }
+                
 
                 DB::commit();
 
@@ -1579,6 +1704,8 @@ class PatmastController extends defaultController
         DB::beginTransaction();
 
         try {
+
+            if($request->oper == 'add'){
                 DB::table('hisdb.nok_ec')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -1595,6 +1722,26 @@ class PatmastController extends defaultController
                         'tel_o'    =>  $request->tel_o,
                         'tel_o_ext'    =>  $request->tel_o_ext
                     ]);
+
+            }else if($request->oper == 'edit'){
+                DB::table('hisdb.nok_ec')
+                    ->update([
+                        'name'  =>  $request->name,
+                        'relationshipcode' =>  $request->relationshipcode, 
+                        'address1'    =>  $request->address1,
+                        'address2'    =>  $request->address2,
+                        'address3'    =>  $request->address3,
+                        'postcode'    =>  $request->postcode,
+                        'tel_h'    =>   $request->tel_h,
+                        'tel_hp'    =>   $request->tel_hp,
+                        'tel_o'    =>  $request->tel_o,
+                        'tel_o_ext'    =>  $request->tel_o_ext
+                    ]);
+
+            }else{
+                throw new \Exception("Error happen");
+
+            }
 
                 DB::commit();
 

@@ -53,6 +53,8 @@ $(document).ready(function () {
 		loadonce: false,
 		viewrecords: false,
 		width: 900,
+		sortname: 'da_allocno',
+		sortorder: 'asc',
 		height: 250, 
 		rowNum: 30,
 		pager: "#jqGridPager_doctor",
@@ -133,8 +135,10 @@ $(document).ready(function () {
 	search_doctor.makedialog(false);
 	
 	$("#add_doc").click(function(){
+		emptyFormdata_div('#form_doc');
 		button_state_doc('wait');
 		enableForm('#form_doc',['doc_no','doc_doctorcode','doc_doctorname','doc_discipline','doc_date','doc_time']);
+		$("#save_doc").data('oper','add');
 		search_doctor.on();
 		
 	});
@@ -142,6 +146,7 @@ $(document).ready(function () {
 	$("#edit_doc").click(function(){
 		button_state_doc('wait');
 		enableForm('#form_doc',['doc_no','doc_doctorcode','doc_doctorname','doc_discipline','doc_date','doc_time']);
+		$("#save_doc").data('oper','edit');
 		search_doctor.on();
 		
 	});
@@ -159,19 +164,17 @@ $(document).ready(function () {
 	});
 
 	function saveForm_doc(callback){
-		var saveParam={
-	        action:'save_table_ti',
-	        oper:$("#cancel_ti").data('oper')
-	    }
 
 	    let doc_status = $('#doc_status').find(":selected").text();
 
 	    var postobj={
+	        oper:$("#save_doc").data('oper'),
 	    	_token : $('#csrf_token').val(),
 	    	mrn : $("#mrn_episode").val(),
 	    	episno : $("#txt_epis_no").val(),
 	    	epistycode : $("#epistycode").val(),
 	    	doctorcode : $('#doc_doctorcode').val(),
+	    	allocno : $("#doc_no").val(),
 			status : doc_status
 	    };
 

@@ -175,6 +175,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_enq/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_enq/biodata.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_enq/episode.js"></script>
+	
 	</div>
 
 </body>

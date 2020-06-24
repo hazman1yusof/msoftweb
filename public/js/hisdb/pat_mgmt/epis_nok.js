@@ -38,7 +38,7 @@ $(document).ready(function () {
             { label: 'Name', name: 'name', width: 80 },
             { label: 'Relatecode', name: 'relationshipcode', hidden: true  },
             { label: 'address1', name: 'address1' , hidden: true },
-            { label: 'address2', name: 'address3' , hidden: true },
+            { label: 'address2', name: 'address2' , hidden: true },
             { label: 'address3', name: 'address3' , hidden: true },
             { label: 'postcode', name: 'postcode' , hidden: true },
             { label: 'tel_h', name: 'tel_h' , hidden: true },
@@ -127,6 +127,7 @@ $(document).ready(function () {
 		button_state_nok('wait');
 		enableForm('#form_nok',['nok_relate']);
 		search_relate.on();
+		$("#save_nok").data('oper','add');
 		
 	});
 
@@ -134,7 +135,7 @@ $(document).ready(function () {
 		button_state_nok('wait');
 		enableForm('#form_nok',['nok_relate']);
 		search_relate.on();
-		
+		$("#save_nok").data('oper','edit');
 	});
 
 	$("#save_nok").click(function(){
@@ -150,21 +151,19 @@ $(document).ready(function () {
 	});
 
 	function saveForm_nok(callback){
-		var saveParam={
-	        action:'save_table_ti',
-	        oper:$("#cancel_ti").data('oper')
-	    }
 
 	    let doc_status = $('#doc_status').find(":selected").text();
 
 	    var postobj={
+	        oper:$("#save_nok").data('oper'),
+	        idno:$("#nok_idno").val(),
 	    	_token : $('#csrf_token').val(),
 	    	mrn : $("#mrn_episode").val(),
 	    	episno : $("#txt_epis_no").val(),
 			name : $("#nok_name").val(),
 			relationshipcode : $("#nok_relate").val(),
 			address1 : $("#nok_addr1").val(),
-			address3 : $("#nok_addr2").val(),
+			address2 : $("#nok_addr2").val(),
 			address3 : $("#nok_addr3").val(),
 			postcode : $("#nok_postcode").val(),
 			tel_h : $("#nok_telh").val(),
@@ -217,6 +216,7 @@ $(document).ready(function () {
 	}
 
 	function populate_nok(obj){
+		$("#nok_idno").val(obj.idno);
 		$("#nok_name").val(obj.name);
 		$("#nok_relate").val(obj.relationshipcode);
 		$("#nok_addr1").val(obj.address1);

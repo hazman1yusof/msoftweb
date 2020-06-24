@@ -168,7 +168,7 @@
     function save_patient(oper,idno,mrn="nothing"){
         var saveParam={
             action:'save_patient',
-            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid'],
+            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','Active','MRFolder','bloodgrp','NewMrn'],
             oper:oper,
             table_name:'hisdb.pat_mast',
             table_id:'idno',
@@ -363,6 +363,80 @@
 
             return (retdata == undefined)? "N/A" : retdata[desc_];
         }
+    }
+
+    
+    function populate_patient (rowid) {
+
+        let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+
+        $('#hid_pat_title').val(rowdata.TitleCode);
+        var first_visit = new Date(rowdata['first_visit_date']);
+        var first_visit_val = (isNaN(first_visit.getFullYear()) ? 'n/a' : moment(first_visit).format('DD/MM/YYYY'));
+        $('#first_visit_date').val(first_visit_val);
+        var last_visit = new Date(rowdata['last_visit_date']);
+        var last_visit_val = (isNaN(last_visit.getFullYear()) ? 'n/a' : moment(last_visit).format('DD/MM/YYYY'));
+        $('#last_visit_date').val(last_visit_val);
+        $('#episno').val(rowdata.Episno); // dlm modal Patient   
+        
+        $('#txt_pat_name').val(rowdata.Name);
+        $('#txt_pat_newic').val(rowdata.Newic);
+        $('#txt_pat_oldic').val(rowdata.Oldic);
+        $('#cmb_pat_idtype').val(rowdata['ID_Type']);
+        $('#txt_pat_idno').val(rowdata.idnumber);
+
+        // $('#occupcode').val(rowdata.occupcode);
+        $('#hid_pat_occupation').val(rowdata.OccupCode);
+        
+        $('#txt_pat_mrn').val(('0000000' + rowdata.MRN).slice(-7));
+        $('#hid_LanguageCode').val(rowdata.LanguageCode);
+        $('#hid_RaceCode').val(rowdata.RaceCode);
+        $('#hid_Religion').val(rowdata.Religion);
+        $('#hid_ID_Type').val(rowdata.ID_Type);
+        $('#txt_pat_dob').val(rowdata.DOB);
+        $('#txt_pat_age').val(gettheage(rowdata.DOB));
+        $('#txt_pat_telh').val('0' +rowdata.telh);
+        $('#txt_pat_telhp').val('0' +rowdata.telhp);
+        $('#txt_pat_email').val(rowdata.Email);
+        $('#hid_pat_area').val(rowdata.AreaCode);
+        $('#cmb_pat_sex').val(rowdata.Sex); // dlm modal Patient                    
+        $('#hid_pat_citizen').val(rowdata.Citizencode);
+        $('#cmb_pat_racecode').val(rowdata.RaceCode);
+        $('#cmb_pat_religion').val(rowdata.Religion);
+        $('#maritalcode').val(rowdata.MaritalCode);
+        $('#cmb_pat_langcode').val(rowdata.LanguageCode);
+        $('#remarks').val(rowdata.Remarks);
+        $('#relatecode').val(rowdata.RelateCode);
+        $('#corpcomp').val(rowdata.CorpComp);
+        $('#email_official').val(rowdata.Email_official);
+        $('#childno').val(rowdata.Childno);
+        $('#txt_pat_curradd1').val(rowdata.Address1);
+        $('#txt_pat_curradd2').val(rowdata.Address2);
+        $('#txt_pat_curradd3').val(rowdata.Address3);
+        $('#txt_pat_offadd1').val(rowdata.Offadd1);
+        $('#txt_pat_offadd2').val(rowdata.Offadd2);
+        $('#txt_pat_offadd3').val(rowdata.Offadd3);
+        $('#txt_pat_padd1').val(rowdata.pAdd1);
+        $('#txt_pat_padd2').val(rowdata.pAdd2);
+        $('#txt_pat_padd3').val(rowdata.pAdd3);
+        $('#txt_pat_currpostcode').val(rowdata.Postcode);
+        $('#txt_pat_offpostcode').val(rowdata.OffPostcode);
+        $('#txt_pat_ppostcode').val(rowdata.pPostCode);
+        $('#active').val(rowdata.Active);
+        $('#confidential').val(rowdata.Confidential);
+        $('#mrfolder').val(rowdata.MRFolder);
+        $('#patientcat').val(rowdata.PatientCat);
+        $('#newmrn').val(rowdata.NewMrn);
+        $('#blood_grp').val(rowdata.bloodgrp);
+        $('#cmb_pat_category').val(rowdata.pat_category);
+        $('#cmb_pat_active').val(rowdata.Active);
+        $('#cmb_pat_Confidential').val(rowdata.Confidential);
+        $('#cmb_pat_MRFolder').val(rowdata.MRFolder);
+        $('#txt_bloodgroup').val(rowdata.bloodgrp);
+        $('#txt_newmrn').val(rowdata.NewMrn);
+        // $('#name').val(rowdata.name);
+
+        //populate_payer_guarantee_info(d); tgk balik nanti
     }
 
     function populate_data_from_mrn(mrn,form){

@@ -35,7 +35,7 @@
                             </ul> -->
                             <!-- Tab panes -->
                             <div class="panel panel-default" style="position: relative;">
-                                <div class="panel-heading clearfix" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabBio">
+                                <div class="panel-heading clearfix" id="toggle_tabPatinfo" data-toggle="collapse" data-target="#tabBio">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                                     <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
                                     <div class="pull-right" style="position: absolute; padding: 5px 0 0 5px; left: 10px; top: 0px;">
@@ -141,19 +141,15 @@
                                                     <button type="button" class="btn btn-info" id="btn_Religion" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('Religion');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
-                                        </div>                                          
+                                        </div>
+
                                         <div class="col-md-3">
-                                            <small for="cmb_pat_langcode">Language</small>
-                                            <!-- <select id="cmb_pat_langcode" name="LanguageCode" class="form-control">
-                                                <option value="">- Select Language -</option>
-                                            </select> -->
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" name="txt_LanguageCode" id="txt_LanguageCode">
-                                                <input type="hidden" name="LanguageCode" id="hid_LanguageCode" value="" />
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info" id="btn_LanguageCode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('LanguageCode');"><span class="fa fa-ellipsis-h"></span> </button>
-                                                </span>
-                                            </div>
+                                            <small for="cmb_pat_category">Category</small>
+                                            <select id="cmb_pat_category" name="pat_category" class="form-control form-mandatory" required="" aria-required="true">
+                                                <option value="LOCAL">LOCAL</option>
+                                                <option value="EXPATRIATE">EXPATRIATE</option>
+                                                <option value="TOURIST">TOURIST</option>
+                                            </select>
                                         </div>
 
                                     </div>
@@ -166,6 +162,20 @@
                                                 <input type="hidden" name="Citizencode" id="hid_pat_citizen" value="" />
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-info" id="btn_pat_citizen" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_citizen');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <small for="txt_pat_langcode">Language</small>
+                                            <!-- <select id="cmb_pat_langcode" name="LanguageCode" class="form-control">
+                                                <option value="">- Select Language -</option>
+                                            </select> -->
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="txt_LanguageCode" id="txt_LanguageCode">
+                                                <input type="hidden" name="LanguageCode" id="hid_LanguageCode" value="" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-info" id="btn_LanguageCode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('LanguageCode');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -352,7 +362,7 @@
                             </div>
 
                             <div class="panel panel-default" style="position: relative;">
-                                <div class="panel-heading clearfix collapsed" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabCorp">
+                                <div class="panel-heading clearfix collapsed" id="toggle_tabCorp" data-toggle="collapse" data-target="#tabCorp">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                                     <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
                                     <div class="pull-right" style="position: absolute; padding: 5px 0 0 5px; left: 10px; top: 0px;">
@@ -412,7 +422,53 @@
                             </div>
 
                             
-                            <div>
+                            <div class="panel panel-default" style="position: relative;">
+                                <div class="panel-heading clearfix collapsed" id="toggle_tabPatrec" data-toggle="collapse" data-target="#tabPatrec">
+                                    <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+                                    <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
+                                    <div class="pull-right" style="position: absolute; padding: 5px 0 0 5px; left: 10px; top: 0px;">
+                                        <h5><strong>PATIENT RECORD</strong></h5>
+                                    </div> 
+                                </div>
+
+                                <div id="tabPatrec" class="panel-collapse collapse">
+                                <div class="panel-body">
+ 
+                                    <div class="form-group">
+                                        <div class="col-md-2">
+                                            <small for="cmb_pat_active">Active</small>
+                                            <select id="cmb_pat_active" name="Active" class="form-control form-mandatory" required>
+                                                <option value="1" selected="selected">Yes</option>
+                                                <option value="0">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <small for="cmb_pat_Confidential">Confidential</small>
+                                            <select id="cmb_pat_Confidential" name="Confidential" class="form-control form-mandatory" required>
+                                                <option value="1">Yes</option>
+                                                <option value="0" selected="selected">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <small for="cmb_pat_MRFolder">MR Folder</small>
+                                            <select id="cmb_pat_MRFolder" name="MRFolder" class="form-control form-mandatory" required>
+                                                <option value="1" selected="selected">Yes</option>
+                                                <option value="0" >No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <small for="txt_bloodgroup">Blood Group</small>
+                                            <input class="form-control" name="bloodgrp" id="txt_bloodgroup" placeholder="" type="text">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <small for="txt_newmrn">New Mrn</small>
+                                            <input class="form-control" name="NewMrn" id="txt_newmrn" placeholder="" type="text">
+                                        </div>
+                                    </div>
+                                    <!-- end tabs -->
+
+                                </div>
+                                </div>
                             </div>
                             
                             <!-- <div role="tabpanel" class="tab-pane fade" id="tab12">
