@@ -157,12 +157,12 @@
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="creditlimit">Credit Limit</label>  
 				  <div class="col-md-3">
-				  <input id="creditlimit" name="creditlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation="required" >
+				  <input id="creditlimit" name="creditlimit" type="text" class="form-control input-sm" data-validation="required" >
 				  </div>
 				  
 				  <label class="col-md-2 control-label" for="creditterm">Credit Term</label>  
 				  <div class="col-md-3">
-				  <input id="creditterm" name="creditterm" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation="required">
+				  <input id="creditterm" name="creditterm" type="text" class="form-control input-sm" data-validation="required">
 				  </div>
 				</div>
 				

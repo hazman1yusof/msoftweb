@@ -26,7 +26,9 @@
 					}
 				},
 			};
+
 			//////////////////////////////////////////////////////////////
+			var mycurrency =new currencymode(['#creditlimit','#creditterm']);
 
 			////////////////////object for dialog handler//////////////////
 			var dialog_debtortype = new ordialog(
@@ -141,6 +143,8 @@
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
 				text: "Save",click: function() {
+					mycurrency.formatOff();
+					mycurrency.check0value(errorField);
 					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 					}
@@ -165,6 +169,8 @@
 				autoOpen: false,
 				open: function( event, ui ) {
 					parent_close_disabled(true);
+					mycurrency.formatOnBlur();
+					mycurrency.formatOn();
 					//toggleFormData('#jqGrid','#formdata',oper);
 					switch(oper) {
 						case state = 'add':

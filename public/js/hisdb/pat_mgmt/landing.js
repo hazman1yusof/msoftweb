@@ -196,6 +196,7 @@ $(document).ready(function() {
     }
 
     $( "#patientBox").click(function() { // register new patient
+        $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().hide();
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","add");
         $('#episno').val('1');
