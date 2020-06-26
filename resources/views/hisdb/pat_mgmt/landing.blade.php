@@ -35,6 +35,10 @@
 		  	text-transform:uppercase
 		}
 
+		.td_nowhitespace{
+			white-space: normal !important;
+		}
+
 		.modal {
 		  padding: 0 !important;
 		}
@@ -111,6 +115,10 @@
 			cursor: pointer;
 			float: right;
 			<!--  margin-right: 5px; -->
+		}
+
+		.ui-widget-overlay.ui-front{
+			z-index: 100 !important;
 		}
 
 		.search{
@@ -223,6 +231,8 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
 	@endif
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 
 	</div>
 

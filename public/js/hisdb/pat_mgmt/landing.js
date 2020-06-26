@@ -100,7 +100,8 @@ $(document).ready(function() {
         grid.find(".command-edit").on("click", function(e){
             let rowid = $(this).data("rowId");
 
-            populate_patient(rowid);
+            let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+            populate_patient(rowdata);
             $('#mdl_patient_info').modal({backdrop: "static"});
             $("#btn_register_patient").data("oper","edit");
             // console.log($("#grid-command-buttons").bootgrid("getCurrentRows")[rowid]);
@@ -251,17 +252,27 @@ $(document).ready(function() {
                     action:'get_table_default',
                     url:'/util/get_table_default',
                     field: '',
-                    table_name: 'hisdb.pre_episode',
-                    filterCol:['da.compcode'],
+                    table_name: ['hisdb.pre_episode AS pe','hisdb.pat_mast AS p'],
+                    join_type : ['LEFT JOIN'],
+                    join_onCol : ['pe.mrn'],
+                    join_onVal : ['p.mrn'],
+                    fixPost:'true',
+                    filterCol:['pe.compcode'],
                     filterVal:['session.compcode'],
                 }
 
             $("#jqGrid_preepis").jqGrid({
                 datatype: "local",
                 colModel: [
-                    { label: 'Compcode', name: 'compcode' , width: 20 },
-                    { label: 'MRN', name: 'mrn' , width: 60},
-                    { label: 'Episode No.', name: 'episno', width: 20 }
+                    { label: 'MRN', name: 'pe_mrn' , width: 5},
+                    { label: 'Name', name: 'p_Name' , width: 30},
+                    { label: 'Newic', name: 'p_Newic', width: 10 },
+                    { label: 'Handphone', name: 'p_telhp' , width: 10},
+                    { label: 'Episode No.', name: 'pe_episno', width: 10 },
+                    { label: 'Birth Date.', name: 'p_DOB', width: 10 },
+                    { label: 'Sex', name: 'p_sex', width: 5 },
+                    { label: 'Staffid', name: 'p_Staffid', width: 10 },
+                    { label: 'Info &nbsp;&nbsp;&nbsp;&nbsp; Type', name: 'action', width: 10, formatter:formataction , classes: 'td_nowhitespace'}
                 ],
                 autowidth: true,
                 multiSort: true,
@@ -274,8 +285,15 @@ $(document).ready(function() {
                 pager: "#jqGridPager_preepis",
                 onSelectRow:function(rowid, selected){
                 },
-                loadComplete: function(){
-                    
+                beforeProcessing: function(data, status, xhr){
+                    data.rows.forEach(function(e,i,a){
+                        e.action=e.pe_mrn+','+e.pe_episno;
+                    })
+                },
+                loadComplete: function(data){
+                    $("#jqGrid_preepis .preepis_bio").on('click',{data:this},preepis_bio_click);
+                    $("#jqGrid_preepis .preepis_epis").on('click',{data:this},preepis_epis_click);
+
                 },
                 ondblClickRow: function(rowid, iRow, iCol, e){
                 },
@@ -289,9 +307,117 @@ $(document).ready(function() {
                 $("#jqGrid_preepis").jqGrid ('setGridWidth', Math.floor($("#jqGrid_preepis_c")[0].offsetWidth-$("#jqGrid_preepis_c")[0].offsetLeft-0));
                 refreshGrid("#jqGrid_preepis", self.urlParam_preepis);
             });
+
+
+            function formataction(cellvalue, options, rowObject){
+                let mrn = cellvalue.split(',')[0];
+                let episno = cellvalue.split(',')[1];
+                return `
+                    <button title="Edit" type="button" class="btn btn-xs btn-warning btn-md command-edit preepis_bio" data-mrn=`+mrn+` data-episno=`+episno+`><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                    &nbsp;&nbsp;
+                    <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-episno=`+episno+`><b>IP</b></button>
+                    <button title="OTC Episode" type="button" class="btn btn-xs btn-danger btn-md command-otc-episode preepis_otc" data-mrn=`+mrn+` data-episno=`+episno+`><b>DC</b></button>
+                `;
+            }
+
+            function preepis_epis_click(event){
+                var button = $(event.currentTarget);
+                var mrn = button.data('mrn');
+                var episno = button.data('episno');
+
+                var param={
+                    action:'get_value_default',
+                    field:"*",
+                    table_name:['hisdb.pre_episode AS pe','hisdb.pat_mast AS p'],
+                    join_type : ['LEFT JOIN'],
+                    join_onCol : ['pe.mrn'],
+                    join_onVal : ['p.mrn'],
+                    // fixPost:'true',
+                    filterCol:['pe.compcode','pe.mrn','pe.episno'],
+                    filterVal:['session.compcode',mrn,episno],
+                };
+
+                $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+
+                },'json').done(function(data) {
+
+                    if(data.rows.length > 0){
+
+                        $('#editEpisode').modal({backdrop: "static"});
+
+                        var episdata = data.rows[0];
+                        // console.log(episdata);
+                        $('#mrn_episode').val(episdata.MRN);
+                        $('#txt_epis_name').text(episdata.Name);
+                        $('#txt_epis_mrn').text(('0000000' + episdata.MRN).slice(-7));
+
+                        $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
+                        $('#txt_epis_time').val(moment().format('hh:mm:ss'));
+                        $('#txt_epis_no').val(episdata.episno);
+                        $('#txt_epis_type').val($("#epistycode").val());
+                        $('#btn_epis_payer').data('mrn',episdata.MRN);
+                        if(episdata.Sex == "M"){
+                            $('#cmb_epis_pregnancy').val('Non-Pregnant');
+                            $('#cmb_epis_pregnancy').prop("disabled", true);
+                        }else{
+                            $('#cmb_epis_pregnancy').prop("disabled", false);
+                        }
+
+                        $('#hid_epis_case').val(episdata.case_code);
+                        $('#hid_epis_doctor').val(episdata.admdoctor);
+                        
+                        $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
+
+                        epis_desc_show.write_desc();
+
+                    }else{
+                        alert('MRN not found')
+                    }
+
+
+                }).error(function(data){
+
+                });
+
+            }
+
+            function preepis_bio_click(event){
+                var button = $(event.currentTarget);
+                var mrn = button.data('mrn');
+
+                var param={
+                    action:'get_value_default',
+                    field:"*",
+                    table_name:'hisdb.pat_mast',
+                    filterCol:['compcode','mrn'],filterVal:['session.compcode',mrn]
+                };
+
+                $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+
+                },'json').done(function(data) {
+
+                    if(data.rows.length > 0){
+
+                        var episdata = data.rows[0]
+
+                        populate_patient(episdata);
+                        $('#mdl_patient_info').modal({backdrop: "static"});
+                        $("#btn_register_patient").data("oper","edit");
+
+                    }else{
+                        alert('MRN not found')
+                    }
+
+
+                }).error(function(data){
+
+                });
+
+            }
+
         }
     }
 
     
 
-} );
+});

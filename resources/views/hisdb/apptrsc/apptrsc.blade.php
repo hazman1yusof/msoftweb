@@ -74,6 +74,8 @@ td.fc-event-container a.selected{
 				</button>
 			</div>
 			
+			@if(!empty($pat_info))
+			
 			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:12px" >
 				<button type="button" class="btn btn-default btn-sm" id='biodata_but_apptrsc' data-oper='edit' data-mrn_from_calander="@if(!empty($pat_info)){{$pat_info->MRN}} @endif">
 					<span class='fa fa-user fa-lg'></span> Bio
@@ -97,6 +99,8 @@ td.fc-event-container a.selected{
 			    top: 0;
 			    right: 201px;
 			"> | &nbsp;MedicalTalk </a>
+
+			@endif
 		</div>
 
 		<div class="panel panel-default">
@@ -273,10 +277,10 @@ td.fc-event-container a.selected{
         </button>
 	</div>
 
-
+<!-- 
 	@include('hisdb.pat_mgmt.mdl_patient')
 	@include('hisdb.pat_mgmt.mdl_episode')
-	@include('hisdb.pat_mgmt.itemselector')
+	@include('hisdb.pat_mgmt.itemselector') -->
 
 	@endsection
 
@@ -288,8 +292,8 @@ td.fc-event-container a.selected{
 
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
-	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
-	<script src="js/hisdb/pat_mgmt/episode.js"></script>
+	<!-- <script src="js/hisdb/pat_mgmt/biodata.js"></script>
+	<script src="js/hisdb/pat_mgmt/episode.js"></script> -->
 
 	
 	<script src="js/hisdb/apptrsc/apptrsc.js"></script>

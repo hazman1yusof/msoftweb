@@ -50,6 +50,19 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
             ],
+            urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A'],
+				join_type : ['LEFT JOIN'],
+				join_onCol : ['a.resourcecode'],
+				join_onVal : ['d.doctorcode'],
+				join_filterCol : [['a.compcode on =']],
+				join_filterVal : [['d.compcode']],
+				fixPost:'true',
+				filterCol : ['a.TYPE'],
+				filterVal : [$('#Class2').val()],
+
+			},
             onSelectRow: function () {
 				let data = selrowData('#' + dialog_name.gridname);
 
@@ -181,7 +194,12 @@ $(document).ready(function () {
 			colModel: [
 				{ label: 'Case Code', name: 'case_code', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-			]
+			],
+			urlParam: {
+				filterCol : ['grpcasetype','compcode'],
+				filterVal : ['REGISTER','9A'],
+
+			},
 		},
 		{
 			title: "Select Case",
@@ -203,6 +221,11 @@ $(document).ready(function () {
 				{	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				{	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
 			],
+			urlParam: {
+				filterCol : ['compcode'],
+				filterVal : ['9A'],
+
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_mrn.gridname);
 				$("#addForm input[name='patname']").val(data['Name']);
@@ -233,6 +256,17 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
             ],
+			urlParam: {
+				join_type : ['LEFT JOIN'],
+				join_onCol : ['a.resourcecode'],
+				join_onVal : ['d.doctorcode'],
+				join_filterCol : [['a.compcode on =']],
+				join_filterVal : [['d.compcode']],
+				fixPost:'true',
+				filterCol : ['a.TYPE'],
+				filterVal : [$('#Class2').val()]
+
+			},
             ondblClickRow: function () {
 				let data = selrowData('#' + dialog_name.gridname);
 
@@ -948,8 +982,8 @@ $(document).ready(function () {
 		}
 	}
 	//////////////// start pasal biodata//////////////////////////
-	$('#btn_register_patient').off('click',default_click_register);
-	$('#btn_reg_proceed').off('click',default_click_proceed);
+	// $('#btn_register_patient').off('click',default_click_register);
+	// $('#btn_reg_proceed').off('click',default_click_proceed);
 
 	$("#biodata_but_apptrsc").click(function(){
 

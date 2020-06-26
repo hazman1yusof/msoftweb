@@ -44,7 +44,7 @@
         disableEpisode(true);
 
         $('#mrn_episode').val(rowdata.MRN);
-        $('#rowid').val(rowid);
+        $('#epis_rowid').val(rowid);
         $('#txt_epis_name').text(rowdata.Name);
         $('#txt_epis_mrn').text(('0000000' + rowdata.MRN).slice(-7));
         $('#txt_epis_type').val($("#epistycode").val());
@@ -67,9 +67,11 @@
             $("#episode_oper").val('edit');
             $('#txt_epis_no').val(parseInt(episno_));
             populate_episode_by_mrn_episno(rowdata.MRN,rowdata.Episno);
+            $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().show();
         }else{
             $("#episode_oper").val('add');
             $('#txt_epis_no').val(parseInt(episno_) + 1);
+            $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
         }
     }
 	
@@ -129,13 +131,13 @@
             if (iregin == 'PT'){
                 $('#txt_epis_payer').prop('disabled',true);
                 $("#btn_epis_payer").off('click',epis_payer_onclick);
-                pay_mode_arr = ['Cash','Card','Open Card','Consultant Guarantee (PWD)'];
-                check_debtormast_exists($('#rowid').val());
+                pay_mode_arr = ['CASH','CARD','OPEN CARD','CONSULTANT GUARANTEE (PWD)'];
+                check_debtormast_exists($('#epis_rowid').val());
             }else if(iregin == 'PR'){
-                pay_mode_arr = ['Cash','Card','Open Card','Consultant Guarantee (PWD)'];
-                check_debtormast_exists($('#rowid').val());
+                pay_mode_arr = ['CASH','CARD','OPEN CARD','CONSULTANT GUARANTEE (PWD)'];
+                check_debtormast_exists($('#epis_rowid').val());
             }else{
-                pay_mode_arr = ['Panel', 'Guarantee letter', 'waiting GL'];
+                pay_mode_arr = ['PANEL', 'GUARANTEE LETTER', 'WAITING GL'];
             }
 
             $.each(pay_mode_arr, function(i,val)
@@ -202,7 +204,7 @@
         // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
         $('#tbl_epis_billtype').on('dblclick', 'tr', function () {
                 let billtype_item = billtype_table.row( this ).data();              
-                $('#hid_epis_bill_type').val(billtype_item["idno"]);
+                $('#hid_epis_bill_type').val(billtype_item["billtype"]);
                 $('#txt_epis_bill_type').val(billtype_item["description"]);
                 billtype_mdl_opened.modal('hide');
             } );
@@ -217,7 +219,7 @@
         $('#mdl_epis_pay_mode').modal('show');
     });
 
-    $( "#btngurantorcommit").click(add_guarantor);
+    // $( "#btngurantorcommit").click(add_guarantor);
 
 
     $( "#btn_refno_info").click(function() 
@@ -377,96 +379,23 @@
             $("#grid-command-buttons").bootgrid('reload');
         });
     }
-    
-    function add_guarantor()
-    {
-        var url = "../../../../assets/php/entry_hisdb.php?action=add_new_guarantor";
-        var data = $("#frm_guarantor").serialize();
-        
-        if (confirm('Are you sure you want to save these details?')) {  
-            $.getJSON(url, data, function (data, status) {
-                if(data.result != ''){
-                    alert(data.result.msg);
-                }else{
-                    alert('Error getting result!');
-                }
-            })
-            .success(function(data) { //if(data.result.err == ''){
-                console.log('Updated successfully');
-                //location.href = 'form_srequest.php?wrno='+data.result.id+'&ws='+$('#ws').val();
-            //} 
-            })
-            .error(function() { alert("Error getting network connection"); })
-        }
-        
-    
-        /*var epismrn = $('#mrn').val();
-
-        var episno = $("#txt_epis_no").val();
-        var epistype = $("#txt_epis_type").val();
-        var epismaturity = $("#cmb_epis_case_maturity").val();
-        var episdate = moment($("#txt_epis_date").val(), 'DD/MM/Y').format('Y-MM-DD');
-        var epistime = moment($("#txt_epis_time").val(), 'hh:mm:ss').format('hh:mm');
-        var episdept = $("#cmb_epis_dept").val();
-        var epissrc = $("#cmb_epis_source").val();
-        var episcase = $("#cmb_epis_case").val();
-        var episdoctor = $("#cmb_epis_doctor").val();
-        var episfin = $("#cmb_epis_fin").val();
-        var epispay = $("#cmb_epis_pay_mode").val();
-        var epispayer = $("#hid_epis_payer").val();
-        var episbilltype = $("#hid_epis_bill_type").val();
-        var episrefno = $("#txt_epis_refno").val();
-        var episourrefno = $("#txt_epis_our_refno").val();
-        var epispreg = $('input[name=rad_epis_pregnancy]:checked').val();
-        var episfee = $('input[name=rad_epis_fee]:checked').val();
-
-        $.post( 
-                  "../../../../assets/php/entry_hisdb.php?action=save_new_episode",
-                  { 
-                    epis_mrn: epismrn,
-                    epis_no : episno,
-                    epis_type : epistype, 
-                    epis_maturity : epismaturity,
-                    epis_date : episdate,
-                    epis_time : epistime,
-                    epis_dept : episdept,
-                    epis_src : epissrc,
-                    epis_case : episcase,
-                    epis_doctor : episdoctor,
-                    epis_fin : episfin,
-                    epis_pay : epispay,
-                    epis_payer : epispayer,
-                    epis_billtype : episbilltype,
-                    epis_refno : episrefno,
-                    epis_ourrefno : episourrefno,
-                    epis_preg : epispreg,
-                    epis_fee : episfee
-                  },
-                  function(data) 
-                  {                    
-                    //users_table.ajax.reload( null, false );                    
-                    //reset_form();
-
-                    alert("New episode has been saved!");
-                  }
-               );
-        */
-    }
 
     function populate_episode_by_mrn_episno(mrn,episno,form){
         var param={
-            action:'get_value_default',
+            action:'get_episode_by_mrn',
             field:"*",
-            table_name:'hisdb.episode',
-            filterCol:['compcode','mrn','episno'],filterVal:['session.compcode',mrn,episno]
+            mrn:mrn,
+            episno:episno
         };
 
-        $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+        $.get( "/episode/get_episode_by_mrn?"+$.param(param), function( data ) {
 
         },'json').done(function(data) {
 
-            if(data.rows.length > 0){
-                var episdata = data.rows[0]
+            if(!$.isEmptyObject(data)){
+                var episdata = data.episode;
+                var epispayer = data.epispayer;
+                var debtormast = data.debtormast;
 
                 if(episdata.newcaseP == 1){
                     $('#cmb_epis_case_maturity').val(1);
@@ -496,7 +425,7 @@
                 $("#hid_epis_bed").val(episdata.bed);
                 $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
                 $('#cmb_epis_pay_mode').val(episdata.pyrmode.toUpperCase());
-                $('#hid_epis_payer').val();
+                $('#txt_epis_payer').val(debtormast.name);
                 $('#hid_epis_bill_type').val(episdata.billtype);
                 $('#txt_epis_refno').val();
                 $('#txt_epis_our_refno').val();
@@ -513,7 +442,6 @@
         });
 
     }
-
     // populatecombo_gl();
     function populatecombo_gl(){
 
@@ -713,7 +641,7 @@
             {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
             {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
             {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
-            {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+            // {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
             {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'}
         ]);
     }else if($('#epistycode').val() == 'IP'){
@@ -724,7 +652,7 @@
             {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
             {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
             {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
-            {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+            // {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
             {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'}
         ]);
     }
@@ -748,7 +676,7 @@
             load_for_desc(this,'doctor','pat_mast/get_entry?action=get_reg_doctor');
             load_for_desc(this,'epis_bed','pat_mast/get_entry?action=get_reg_bed');
             load_for_desc(this,'epis_fin','pat_mast/get_entry?action=get_reg_fin');
-            load_for_desc(this,'epis_payer','pat_mast/get_entry?action=get_debtor_list');
+            // load_for_desc(this,'epis_payer','pat_mast/get_entry?action=get_debtor_list');
             load_for_desc(this,'bill_type','pat_mast/get_entry?action=get_billtype_list');
         }
 

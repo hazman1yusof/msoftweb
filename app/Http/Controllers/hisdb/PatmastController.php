@@ -292,7 +292,6 @@ class PatmastController extends defaultController
                             ->get();
                 }else{
                     $data = DB::table('debtor.debtormast')
-                            ->select('debtorcode as code','name as description')
                             ->where('compcode','=',session('compcode'))  
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
                             ->get();
@@ -312,7 +311,6 @@ class PatmastController extends defaultController
                             ->get();
                 }else{
                     $data = DB::table('hisdb.billtymst')
-                            ->select('billtype as code','description as description')
                             ->where('compcode','=',session('compcode'))
                             ->get();
                 }
@@ -1003,7 +1001,8 @@ class PatmastController extends defaultController
         try {
 
             DB::table("hisdb.episode")
-                ->where('idno','=',$request->idno)
+                ->where("mrn",'=',$epis_mrn)
+                ->where("episno",'=',$epis_no)
                 ->update([
                     "compcode" => session('compcode'),
                     "regdept" => $epis_dept,
@@ -1118,20 +1117,20 @@ class PatmastController extends defaultController
             if(!$epispayer_obj->exists()){
                 //kalu xjumpa epispayer, buat baru
                 DB::table('hisdb.epispayer')
-                ->insert([
-                    'CompCode' => session('compcode'),
-                    'MRN' => $epis_mrn,
-                    'Episno' => $epis_no,
-                    'EpisTyCode' => "OP",
-                    'LineNo' => '1',
-                    'BillType' => $epis_billtype,
-                    'PayerCode' => $epis_payer,
-                    'Pay_Type' => $epis_fin,
-                    'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'AddUser' => session('username'),
-                    'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'LastUser' => session('username')
-                ]);
+                    ->insert([
+                        'CompCode' => session('compcode'),
+                        'MRN' => $epis_mrn,
+                        'Episno' => $epis_no,
+                        'EpisTyCode' => "OP",
+                        'LineNo' => '1',
+                        'BillType' => $epis_billtype,
+                        'PayerCode' => $epis_payer,
+                        'Pay_Type' => $epis_fin,
+                        'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'AddUser' => session('username'),
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'LastUser' => session('username')
+                    ]);
             }
 
             //CREATE NOK
@@ -1183,7 +1182,6 @@ class PatmastController extends defaultController
 
             }else{
                 $docalloc_obj
-                    ->where('AllocNo','=',1)
                     ->delete();
 
                 DB::table('hisdb.docalloc')
@@ -1674,22 +1672,7 @@ class PatmastController extends defaultController
         DB::beginTransaction();
 
         try {
-                DB::table('hisdb.docalloc')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn'    =>  $request->mrn,
-                        'episno'  =>  $request->episno,    
-                        'doctorcode'  =>  $request->doctorcode,
-                        'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
-                        'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'astatus'    =>  $request->status,
-                        'epistycode'    =>  $request->epistycode,
-                        'adddate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'adduser'    =>  session('username'),
-                        'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'lastuser'    =>  session('username')
-                    ]);
-
+                
                 DB::commit();
 
             } catch (\Exception $e) {
@@ -1724,19 +1707,24 @@ class PatmastController extends defaultController
                     ]);
 
             }else if($request->oper == 'edit'){
-                DB::table('hisdb.nok_ec')
-                    ->update([
-                        'name'  =>  $request->name,
-                        'relationshipcode' =>  $request->relationshipcode, 
-                        'address1'    =>  $request->address1,
-                        'address2'    =>  $request->address2,
-                        'address3'    =>  $request->address3,
-                        'postcode'    =>  $request->postcode,
-                        'tel_h'    =>   $request->tel_h,
-                        'tel_hp'    =>   $request->tel_hp,
-                        'tel_o'    =>  $request->tel_o,
-                        'tel_o_ext'    =>  $request->tel_o_ext
-                    ]);
+                $nok_ec_obj = DB::table('hisdb.nok_ec')
+                        ->where('idno','=',$request->idno);
+
+                if($nok_ec_obj->exists()){
+                    $nok_ec_obj
+                        ->update([
+                            'name'  =>  $request->name,
+                            'relationshipcode' =>  $request->relationshipcode, 
+                            'address1'    =>  $request->address1,
+                            'address2'    =>  $request->address2,
+                            'address3'    =>  $request->address3,
+                            'postcode'    =>  $request->postcode,
+                            'tel_h'    =>   $request->tel_h,
+                            'tel_hp'    =>   $request->tel_hp,
+                            'tel_o'    =>  $request->tel_o,
+                            'tel_o_ext'    =>  $request->tel_o_ext
+                        ]);
+                }
 
             }else{
                 throw new \Exception("Error happen");
@@ -1750,6 +1738,83 @@ class PatmastController extends defaultController
 
                 return response($e->getMessage(), 500);
             }
+    }
+
+    public function save_emr(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            if($request->oper == 'add'){
+                DB::table('hisdb.pat_emergency')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn'    =>  $request->mrn,
+                        'name'  =>  $request->name,
+                        'relationship' =>  $request->relationshipcode, 
+                        'telh'    =>   $request->tel_h,
+                        'telhp'    =>   $request->tel_hp,
+                        'email'    =>  $request->email
+                    ]);
+
+            }else if($request->oper == 'edit'){
+                $pat_emergency_obj = DB::table('hisdb.pat_emergency')
+                        ->where('idno','=',$request->idno);
+
+                if($pat_emergency_obj->exists()){
+                    $pat_emergency_obj
+                        ->update([
+                            'compcode' => session('compcode'),
+                            'mrn'    =>  $request->mrn,
+                            'name'  =>  $request->name,
+                            'relationship' =>  $request->relationshipcode, 
+                            'telh'    =>   $request->tel_h,
+                            'telhp'    =>   $request->tel_hp,
+                            'email'    =>  $request->email
+                        ]);
+                }
+
+            }else{
+                throw new \Exception("Error happen");
+
+            }
+
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                return response($e->getMessage(), 500);
+            }
+    }
+
+    public function get_episode_by_mrn(Request $request){
+
+        $episode = DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->first();
+
+        $epispayer = DB::table('hisdb.epispayer')
+                ->where('compcode','=',session('compcode'))
+                ->where('mrn','=',$request->mrn)
+                ->where('Episno','=',$request->episno)
+                ->first();
+
+        $debtormast = DB::table('debtor.debtormast')
+                ->where('compcode','=',session('compcode'))
+                ->where('debtorcode','=',$epispayer->payercode)
+                ->where('debtortype','=',$epispayer->pay_type)
+                ->first();
+
+
+        $responce = new stdClass();
+        $responce->episode = $episode;
+        $responce->epispayer = $epispayer;
+        $responce->debtormast = $debtormast;
+
+        return json_encode($responce);
     }
 
     

@@ -366,9 +366,7 @@
     }
 
     
-    function populate_patient (rowid) {
-
-        let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+    function populate_patient(rowdata) {
 
         $('#hid_pat_title').val(rowdata.TitleCode);
         var first_visit = new Date(rowdata['first_visit_date']);
@@ -389,6 +387,8 @@
         $('#hid_pat_occupation').val(rowdata.OccupCode);
         
         $('#txt_pat_mrn').val(('0000000' + rowdata.MRN).slice(-7));
+        $('#txt_pat_episno').val(rowdata.Episno);
+        $('#pat_mrn').val(rowdata.MRN);
         $('#hid_LanguageCode').val(rowdata.LanguageCode);
         $('#hid_RaceCode').val(rowdata.RaceCode);
         $('#hid_Religion').val(rowdata.Religion);
@@ -437,6 +437,12 @@
         // $('#name').val(rowdata.name);
 
         //populate_payer_guarantee_info(d); tgk balik nanti
+
+        if(rowdata.Episno == 0 || rowdata.Episno == null){
+            $("#toggle_tabNok_pat").parent().hide();
+        }else{
+            $("#toggle_tabNok_pat").parent().show();
+        }
     }
 
     function populate_data_from_mrn(mrn,form){

@@ -1,7 +1,8 @@
 <!-- Large modal -->
 <div id="editEpisode" class="modal fade" data-backdrop="false" data-keyboard="false" role="dialog" aria-labelledby="editEpisode" aria-hidden="true" style="display: none; z-index: 100">
     <div class="modal-dialog modal-lg">
-        <input type="hidden" name="rowid" id="rowid">
+        <input type="hidden" name="rowid" id="epis_rowid">
+        <input type="hidden" name="idno" id="epis_idno">
         <input type="hidden" name="mrn_episode" id="mrn_episode">
         <input type="hidden" name="episode_oper" id="episode_oper" value="add">
 
@@ -60,7 +61,7 @@
 
                         <!-- episode -->
                         <div class="panel panel-default" style="position: relative;"> 
-                            <div class="panel-heading clearfix" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabEpisode">
+                            <div class="panel-heading clearfix" id="toggle_tabEpisode" data-toggle="collapse" data-target="#tabEpisode">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                             <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
@@ -153,7 +154,7 @@
                                         <small for="txt_epis_payer">Payer </small>
                                         <div class="input-group">
                                             <input type="text" class="form-control form-mandatory" name="txt_epis_payer" id="txt_epis_payer" required>
-                                            <input type="hidden" id="hid_epis_payer" value="PURI" name=""/>
+                                            <input type="hidden" id="hid_epis_payer" name=""/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_payer"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
@@ -163,7 +164,7 @@
                                         <small for="txt_epis_bill_type">Bill Type </small>
                                         <div class="input-group">
                                             <input type="text" class="form-control form-mandatory" name="txt_epis_bill_type" id="txt_epis_bill_type" required>
-                                            <input type="hidden" id="hid_epis_bill_type" value="STD" name=""/>
+                                            <input type="hidden" id="hid_epis_bill_type" name=""/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_bill_type_info" ><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
@@ -303,7 +304,7 @@
                         <!-- bed -->
                         @if (request()->get('epistycode') == 'IP')
                         <div class="panel panel-default" style="position: relative;">
-                            <div class="panel-heading clearfix collapsed" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabBed">
+                            <div class="panel-heading clearfix collapsed" id="toggle_tabBed" data-toggle="collapse" data-target="#tabBed">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                             <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
@@ -520,7 +521,7 @@
 
                         <!-- payer -->
                         <div class="panel panel-default" style="position: relative;">
-                            <div class="panel-heading clearfix collapsed" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabPayer">
+                            <div class="panel-heading clearfix collapsed" id="toggle_tabPayer" data-toggle="collapse" data-target="#tabPayer">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                             <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
@@ -538,7 +539,7 @@
 
                         <!-- deposit -->
                         <div class="panel panel-default" style="position: relative;">
-                            <div class="panel-heading clearfix collapsed" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabDeposit">
+                            <div class="panel-heading clearfix collapsed" id="toggle_tabDeposit" data-toggle="collapse" data-target="#tabDeposit">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                             <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >

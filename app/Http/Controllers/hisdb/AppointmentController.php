@@ -138,6 +138,22 @@ class AppointmentController extends defaultController
             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
             'type'        => 'DOC'
         ]);
+
+        $pat_mast = DB::table("hisdb.pat_mast")
+                ->where("compcode",'=',session('compcode'))
+                ->where("mrn",'=',$request->mrn)
+                ->first();
+
+        DB::table("hisdb.pre_episode")
+            ->insert([
+                "compcode" => session('compcode'),
+                "mrn" => ltrim($request->mrn, '0'),
+                "episno" => intval($pat_mast->Episno) + 1,
+                "case_code" => $request->case,
+                "admdoctor" => $request->doctor,
+                "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
+                "adduser" => session('username')
+            ]);
         
     }
 

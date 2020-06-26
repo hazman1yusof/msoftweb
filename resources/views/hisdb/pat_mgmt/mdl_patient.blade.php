@@ -9,6 +9,7 @@
                         <div class="col-sm-3">
                             <small  for="mrn">PATIENT REGISTRATION (MRN)</small>
                             <input class="form-control " name="MRN" id="txt_pat_mrn" placeholder="" type="text" readonly>
+                            <input name="pat_mrn" id="pat_mrn" type="hidden">
                         </div>
                         <div class="col-sm-3">
                             <small for="first_visit_date">FIRST VISIT</small>
@@ -33,7 +34,8 @@
                                 <li role="presentation" class=""><a href="#tab10" role="tab" data-toggle="tab" aria-expanded="false">Corporate Info</a></li>
                                 <li role="presentation" class=""><a href="#tab12" role="tab" data-toggle="tab" aria-expanded="false">Medical Info</a></li>
                             </ul> -->
-                            <!-- Tab panes -->
+                            <!-- Biodata -->
+
                             <div class="panel panel-default" style="position: relative;">
                                 <div class="panel-heading clearfix" id="toggle_tabPatinfo" data-toggle="collapse" data-target="#tabBio">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -197,6 +199,7 @@
                                 </div>
                             </div>
 
+                            <!-- Address -->
                             <div class="panel panel-default" style="position: relative;">
                                 <div class="panel-heading clearfix collapsed" id="toggle_tabAddr" data-toggle="collapse" data-target="#tabAddr">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -361,6 +364,7 @@
                                 </div>
                             </div>
 
+                            <!-- Corp info -->
                             <div class="panel panel-default" style="position: relative;">
                                 <div class="panel-heading clearfix collapsed" id="toggle_tabCorp" data-toggle="collapse" data-target="#tabCorp">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -421,7 +425,194 @@
                                 </div>
                             </div>
 
-                            
+                            <!-- Nok -->
+                            <div class="panel panel-default" style="position: relative;">
+                                <div class="panel-heading clearfix collapsed" id="toggle_tabNok_pat" data-toggle="collapse" data-target="#tabNok_pat">
+
+                                <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+                                <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
+                                <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
+                                    <h5><strong>NEXT OF KIN</strong></h5>
+                                </div> 
+                                </div>
+
+                                <div id="tabNok_pat" class="panel-collapse collapse">
+                                <div class="panel-body form-horizontal">
+                                    <div class="col-xs-6">
+                                        <div id="jqGrid_nok_pat_c">
+                                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                                <table id="jqGrid_nok_pat" class="table table-striped"></table>
+                                                <div id="jqGridPager_nok_pat"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6" id="form_nok_pat">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                            <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                            id="btn_grp_edit_nok_pat">
+                                                <button type="button" class="btn btn-default" id="add_nok_pat">
+                                                    <span class="fa fa-plus-square-o fa-lg"></span> Add
+                                                </button>
+                                                <button type="button" class="btn btn-default" id="edit_nok_pat">
+                                                    <span class="fa fa-edit fa-lg"></span> Edit
+                                                </button>
+                                                <button type="button" class="btn btn-default" id="save_nok_pat">
+                                                    <span class="fa fa-save fa-lg"></span> Save
+                                                </button>
+                                                <button type="button" class="btn btn-default" id="cancel_nok_pat" >
+                                                    <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                                </button>
+                                            </div></div>
+                                        </div>
+
+                                        <input id="nok_idno_pat" name="nok_idno_pat" type="hidden">
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <small for="nok_name_pat">Name</small>
+                                                <input id="nok_name_pat" name="nok_name_pat" type="text" class="form-control" data-validation="required">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <small for="nok_addr1_pat">Address</small>
+                                                <input id="nok_addr1_pat" name="nok_addr1_pat" type="text" class="form-control" data-validation="required" style="margin-bottom: 2px">
+                                                <input id="nok_addr2_pat" name="nok_addr2_pat" type="text" class="form-control" style="margin-bottom: 2px">
+                                                <input id="nok_addr3_pat" name="nok_addr3_pat" type="text" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <small for="nok_postcode_pat">Postcode</small>
+                                                <input id="nok_postcode_pat" name="nok_postcode_pat" type="text" class="form-control" data-validation="required">
+                                            </div>
+
+                                            <div class="col-md-offset-3 col-md-6">
+                                                <small for="nok_telh_pat">Tel (H)</small>
+                                                <input id="nok_telh_pat" name="nok_telh_pat" type="text" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-6">
+                                                <small for="nok_relate_pat">Relationship</small>
+                                                <div class='input-group'>
+                                                    <input id="nok_relate_pat" name="nok_relate_pat" type="text" class="form-control uppercase">
+                                                    <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
+                                                </div>
+                                                <span class="help-block"></span>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <small for="nok_telo_pat">Tel (O)</small>
+                                                <input id="nok_telo_pat" name="nok_telo_pat" type="text" class="form-control" data-validation="required" rdonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-6">
+                                                <small for="nok_telhp_pat">Tel (H/P)</small>
+                                                <input id="nok_telhp_pat" name="nok_telhp_pat" type="text" class="form-control" data-validation="required" rdonly>
+                                            </div>
+
+                                            <div class="col-md-offset-3 col-md-3">
+                                                <small for="nok_ext_pat">Ext</small>
+                                                <input id="nok_ext_pat" name="nok_ext_pat" type="text" class="form-control" data-validation="required" rdonly>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
+                            <!-- Emergency -->
+                            <div class="panel panel-default" style="position: relative;">
+                                <div class="panel-heading clearfix collapsed" id="toggle_tabNok_emr" data-toggle="collapse" data-target="#tabNok_emr">
+
+                                <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+                                <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
+                                <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
+                                    <h5><strong>EMERGENCY</strong></h5>
+                                </div> 
+                                </div>
+
+                                <div id="tabNok_emr" class="panel-collapse collapse">
+                                <div class="panel-body form-horizontal">
+                                    <div class="col-xs-6">
+                                        <div id="jqGrid_nok_emr_c">
+                                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                                <table id="jqGrid_nok_emr" class="table table-striped"></table>
+                                                <div id="jqGridPager_nok_emr"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6" id="form_nok_emr">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                            <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                            id="btn_grp_edit_nok_emr">
+                                                <button type="button" class="btn btn-default" id="add_nok_emr">
+                                                    <span class="fa fa-plus-square-o fa-lg"></span> Add
+                                                </button>
+                                                <button type="button" class="btn btn-default" id="edit_nok_emr">
+                                                    <span class="fa fa-edit fa-lg"></span> Edit
+                                                </button>
+                                                <button type="button" class="btn btn-default" id="save_nok_emr">
+                                                    <span class="fa fa-save fa-lg"></span> Save
+                                                </button>
+                                                <button type="button" class="btn btn-default" id="cancel_nok_emr" >
+                                                    <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                                </button>
+                                            </div></div>
+                                        </div>
+
+                                        <input id="emr_idno" name="emr_idno" type="hidden">
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <small for="emr_name">Name</small>
+                                                <input id="emr_name" name="emr_name" type="text" class="form-control" data-validation="required">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-8">
+                                                <small for="emr_relate">Relationship</small>
+                                                <div class='input-group'>
+                                                    <input id="emr_relate" name="emr_relate" type="text" class="form-control uppercase">
+                                                    <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
+                                                </div>
+                                                <span class="help-block"></span>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <small for="emr_email">E-mail</small>
+                                                <input id="emr_email" name="emr_email" type="text" class="form-control" rdonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-6">
+                                                <small for="emr_telhp">Handphone</small>
+                                                <input id="emr_telhp" name="emr_telhp" type="text" class="form-control" data-validation="required">
+                                            </div>
+
+                                            <div class="col-md-offset-3 col-md-3">
+                                                <small for="emr_telh">Telephone</small>
+                                                <input id="emr_telh" name="emr_telh" type="text" class="form-control">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
+                            <!-- pat rec -->
                             <div class="panel panel-default" style="position: relative;">
                                 <div class="panel-heading clearfix collapsed" id="toggle_tabPatrec" data-toggle="collapse" data-target="#tabPatrec">
                                     <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
