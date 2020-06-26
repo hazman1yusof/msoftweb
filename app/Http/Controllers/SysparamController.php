@@ -118,8 +118,8 @@ class SysparamController extends Controller
 	public function sysparam_recstatus(Request $request){
         $sysparam = DB::table('sysdb.sysparam')
 			        	->where('compcode','=',session('compcode'))
-			        	->where('source','=','BED')
-			        	->where('trantype','=','STATUS')
+			        	->where('source','=','STAT')
+			        	->where('trantype','=','YES')
 			        	->first();
 
 		$pvalue1 = explode(",",$sysparam->pvalue1);
@@ -128,12 +128,12 @@ class SysparamController extends Controller
 		foreach ($pvalue1 as $key => $value){
 			$object = new stdClass();
 			switch ($value) {
-				case 'ACTIVE':
-					$object->bedcode = '<i class="fa fa-check fa-2x" aria-hidden="true"></i> '.$value;
+				case 'TRUE':
+					$object->stat = '<i class="fa fa-check fa-2x" aria-hidden="true"></i> '.$value;
 					$object->description = 'A';
 					break;
-				case 'DEACTIVE':
-					$object->bedcode = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
+				case 'FALSE':
+					$object->stat = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
 					$object->description = 'D';
 					break;
 				default:
