@@ -747,7 +747,7 @@ $(document).ready(function () {
 		'recstatus','hisdb.bed',"#jqGrid input[name='recstatus']",errorField,
 		{	colModel:
 			[
-				{label:'Record Status',name:'bedcode',width:200,classes:'pointer left',canSearch:true,checked:true,or_search:true},
+				{label:'Record Status',name:'stat',width:200,classes:'pointer left',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
 			],
 			urlParam: {
