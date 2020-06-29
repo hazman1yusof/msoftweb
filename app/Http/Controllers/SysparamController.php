@@ -135,8 +135,8 @@ class SysparamController extends Controller
 				case 'FALSE':
 					$object->stat = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
 					$object->description = 'D';
-					break;			
-				default:				
+					break;
+				default:
 					$object->stat = '<i class="fa fa-times fa-2x" aria-hidden="true"></i> '.$value;
 					$object->description = $value;
 					break;

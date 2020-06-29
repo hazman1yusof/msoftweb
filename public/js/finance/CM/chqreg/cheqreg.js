@@ -369,6 +369,61 @@ $(document).ready(function () {
 				});
 			}
 		},
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2EditAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-th-list",
+		title:"Edit All Row",
+		onClickButton: function(){
+			
+			var ids = $("#gridCheqRegDetail").jqGrid('getDataIDs');
+		    for (var i = 0; i < ids.length; i++) {
+
+		        $("#gridCheqRegDetail").jqGrid('editRow',ids[i]);
+		    }
+		   // onall_editfunc();
+			hideatdialogForm(true,'saveallrow');
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2SaveAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-download-alt",
+		title:"Save All Row",
+		onClickButton: function(){
+			var ids = $("#gridCheqRegDetail").jqGrid('getDataIDs');
+
+			var gridCheqRegDetail_data = [];
+		    for (var i = 0; i < ids.length; i++) {
+
+				var data = $('#gridCheqRegDetail').jqGrid('getRowData',ids[i]);
+
+		    	var obj = 
+		    	{
+		    		'idno' : data.idno,
+		    		'bankcode' : data.bankcode,
+		    		'startno' : $("#"+ids[i]+"_startno").val(),
+		    		'endno' : $("#"+ids[i]+"_endno").val(),
+		    	}
+
+		    	gridCheqRegDetail_data.push(obj);
+		    }
+
+			var param={
+    			action: 'cheqregDetail_save',
+				_token: $("#_token").val(),
+				startno: $('#startno').val(),
+				endno:$('#endno').val(),
+    		}
+
+    		$.post( "/cheqregDetail/form?"+$.param(param),{oper:'edit_all',dataobj:gridCheqRegDetail_data}, function( data ){
+			}).fail(function(data) {
+				//////////////////errorText(dialog,data.responseText);
+			}).done(function(data){
+				// $('#amount').val(data);
+				hideatdialogForm(false);
+				refreshGrid("#gridCheqRegDetail",urlParam_cheqregdtl);
+			});
+		},
 	}).jqGrid('navButtonAdd', "#jqGridPager2", {
 		id: "jqGridPagerRefresh",
 		caption: "", cursor: "pointer", position: "last",
@@ -378,6 +433,19 @@ $(document).ready(function () {
 			refreshGrid("#gridCheqRegDetail", urlParam_cheqregdtl);
 		},
 	});
+
+	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
+	function hideatdialogForm(hide,saveallrow){
+		if(saveallrow == 'saveallrow'){
+			$("#gridCheqRegDetail_iledit,#gridCheqRegDetail_iladd,#gridCheqRegDetail_ilcancel,#gridCheqRegDetail_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll").hide();
+			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
+		}else if(hide){
+			$("#gridCheqRegDetail_iledit,#gridCheqRegDetail_iladd,#gridCheqRegDetail_ilcancel,#gridCheqRegDetail_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
+		}else{
+			$("#gridCheqRegDetail_iladd,#gridCheqRegDetail_ilcancel,#gridCheqRegDetail_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll").show();
+			$("#jqGridPager2SaveAll,#gridCheqRegDetail_iledit,#jqGridPager2CancelAll").hide();
+		}
+	}
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#gridCheqRegDetail',true,urlParam_cheqregdtl,['action','rn']);

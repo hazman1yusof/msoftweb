@@ -37,7 +37,7 @@ $(document).ready(function () {
 	$("#cancel_ward").click(function(){
 		disableForm('#formWard');
 		button_state_ward($(this).data('oper'));
-		examination.empty().off();
+		examination_ward.empty().off();
 		// dialog_mrn_edit.off();
 
 	});
@@ -101,7 +101,7 @@ function button_state_ward(state){
 			break;
 		case 'wait':
 			dialog_tri_col.on();
-			examination.on().enable();
+			examination_ward.on().enable();
 			$("#toggle_ward").attr('data-toggle','collapse');
 			$("#save_ward,#cancel_ward").attr('disabled',false);
 			$('#edit_ward,#new_ward').attr('disabled',true);
@@ -145,15 +145,15 @@ function populate_formWard(obj,rowdata){
 			autoinsert_rowdata("#formWard",data.ward_gen);
 			// autoinsert_rowdata("#formWard",data.ward_exm);
 			if(!$.isEmptyObject(data.ward_exm)){
-				examination.empty();
-				examination.examarray = data.ward_exm;
-				examination.loadexam().disable();
+				examination_ward.empty();
+				examination_ward.examarray = data.ward_exm;
+				examination_ward.loadexam().disable();
 			}
 			
 			button_state_ward('edit');
         }else{
 			button_state_ward('add');
-			examination.empty();
+			examination_ward.empty();
         }
 
     });
@@ -326,7 +326,7 @@ function tri_color_set(empty){
 					.addClass( color );
 }
 
-var examination = new examination();
+var examination_ward = new examination();
 function examination(){
 	this.examarray=[];
 	this.on=function(){

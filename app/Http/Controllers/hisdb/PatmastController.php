@@ -388,11 +388,11 @@ class PatmastController extends defaultController
             'recstatus' => 'A'
         ];
 
-        $request['first_visit_date'] = defaultController::turn_date($request->first_visit_date);
-        $request['last_visit_date'] = defaultController::turn_date($request->last_visit_date);
+        $request['first_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
+        $request['last_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
 
         foreach ($request->field as $key => $value) {
-            $array_insert[$value] = $request[$request->field[$key]];
+            $array_insert[$value] = strtoupper($request[$request->field[$key]]);
         }
 
         try {
@@ -432,8 +432,9 @@ class PatmastController extends defaultController
 
         foreach ($request->field as $key => $value) {
             if(array_search($value,$array_ignore))continue;
-            if($request[$request->field[$key]] == 0){}
-            else if(empty($request[$request->field[$key]]))continue;
+            // dump(empty($request[$request->field[$key]]));
+            if(empty($request[$request->field[$key]]))continue;
+            // dump($request[$request->field[$key]]);
             $array_update[$value] = strtoupper($request[$request->field[$key]]);
         }
 

@@ -445,6 +445,8 @@
         }else{
             $("#toggle_tabNok_pat").parent().show();
         }
+
+        $("#toggle_tabNok_emr").parent().show();
     }
 
     function populate_data_from_mrn(mrn,form){
