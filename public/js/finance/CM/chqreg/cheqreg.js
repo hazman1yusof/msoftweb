@@ -182,6 +182,8 @@ $(document).ready(function () {
 		sord: "desc",
 		pager: "#jqGridPager2",
 		onSelectRow:function(rowid, selected){
+			$("#jqGridPagerCancelAll,#jqGridPagerSaveAll").hide();
+			$("#gridCheqRegDetail_iledit").show();
 			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 
 			let stat = selrowData("#gridCheqRegDetail").recstatus;
@@ -221,7 +223,9 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+
+			//$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+			$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").hide();
 			$("#gridCheqRegDetail :input[name='startno']").focus();
 			$("#gridCheqRegDetail :input[name='endno']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -260,7 +264,7 @@ $(document).ready(function () {
 		},
 		afterrestorefunc : function( response ) {
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+			$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").show();
 		},
 		errorTextFormat: function (data) {
 			alert(data);
@@ -273,7 +277,7 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+			$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").hide();
 			$("#gridCheqRegDetail :input[name='startno']").focus();
 			$("#gridCheqRegDetail :input[name='endno']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -312,7 +316,7 @@ $(document).ready(function () {
 		},
 		afterrestorefunc : function( response ) {
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+			$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").show();
 		},
 		errorTextFormat: function (data) {
 			alert(data);
@@ -370,7 +374,7 @@ $(document).ready(function () {
 			}
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2EditAll",
+		id: "jqGridPagerEditAll",
 		caption:"",cursor: "pointer",position: "last", 
 		buttonicon:"glyphicon glyphicon-th-list",
 		title:"Edit All Row",
@@ -385,7 +389,7 @@ $(document).ready(function () {
 			hideatdialogForm(true,'saveallrow');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2SaveAll",
+		id: "jqGridPagerSaveAll",
 		caption:"",cursor: "pointer",position: "last", 
 		buttonicon:"glyphicon glyphicon-download-alt",
 		title:"Save All Row",
@@ -403,6 +407,7 @@ $(document).ready(function () {
 		    		'bankcode' : data.bankcode,
 		    		'startno' : $("#"+ids[i]+"_startno").val(),
 		    		'endno' : $("#"+ids[i]+"_endno").val(),
+		    		'cheqqty' : $("#"+ids[i]+"_cheqqty").val()
 		    	}
 
 		    	gridCheqRegDetail_data.push(obj);
@@ -411,8 +416,9 @@ $(document).ready(function () {
 			var param={
     			action: 'cheqregDetail_save',
 				_token: $("#_token").val(),
-				startno: $('#startno').val(),
+				/*startno: $('#startno').val(),
 				endno:$('#endno').val(),
+				cheqqty:$('#cheqqty').val(),*/
     		}
 
     		$.post( "/cheqregDetail/form?"+$.param(param),{oper:'edit_all',dataobj:gridCheqRegDetail_data}, function( data ){
@@ -424,6 +430,15 @@ $(document).ready(function () {
 				refreshGrid("#gridCheqRegDetail",urlParam_cheqregdtl);
 			});
 		},
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPagerCancelAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-remove-circle",
+		title:"Cancel",
+		onClickButton: function(){
+			hideatdialogForm(false);
+			refreshGrid("#gridCheqRegDetail",urlParam_cheqregdtl);
+		},	
 	}).jqGrid('navButtonAdd', "#jqGridPager2", {
 		id: "jqGridPagerRefresh",
 		caption: "", cursor: "pointer", position: "last",
@@ -434,16 +449,16 @@ $(document).ready(function () {
 		},
 	});
 
-	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
+	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////gridCheqRegDetail_iladd
 	function hideatdialogForm(hide,saveallrow){
 		if(saveallrow == 'saveallrow'){
-			$("#gridCheqRegDetail_iledit,#gridCheqRegDetail_iladd,#gridCheqRegDetail_ilcancel,#gridCheqRegDetail_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll").hide();
-			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
+			$("#gridCheqRegDetail_iledit,#gridCheqRegDetail_iladd,#gridCheqRegDetail_ilcancel,#gridCheqRegDetail_ilsave,#jqGridPagerDelete,#jqGridPagerEditAll").hide();
+			$("#jqGridPagerSaveAll,#jqGridPagerCancelAll").show();
 		}else if(hide){
-			$("#gridCheqRegDetail_iledit,#gridCheqRegDetail_iladd,#gridCheqRegDetail_ilcancel,#gridCheqRegDetail_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
+			$("#gridCheqRegDetail_iledit,#gridCheqRegDetail_iladd,#gridCheqRegDetail_ilcancel,#gridCheqRegDetail_ilsave,#jqGridPagerDelete,#jqGridPagerEditAll,#jqGridPagerSaveAll,#jqGridPagerCancelAll").hide();
 		}else{
-			$("#gridCheqRegDetail_iladd,#gridCheqRegDetail_ilcancel,#gridCheqRegDetail_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll").show();
-			$("#jqGridPager2SaveAll,#gridCheqRegDetail_iledit,#jqGridPager2CancelAll").hide();
+			$("#gridCheqRegDetail_iladd,#gridCheqRegDetail_ilcancel,#gridCheqRegDetail_ilsave,#jqGridPagerDelete,#jqGridPagerEditAll").show();
+			$("#jqGridPagerSaveAll,#gridCheqRegDetail_iledit,#jqGridPagerCancelAll").hide();
 		}
 	}
 
