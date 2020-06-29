@@ -325,7 +325,7 @@ class CheqRegController extends defaultController
                     ->update([
                         'startno' => $value['startno'],
                         'endno' => $value['endno'],
-                        'cheqqty' => $value['endno'] -$value['startno'+1],
+                        'cheqqty' => $value['endno'] -$value['startno']+1,
                         'recstatus' => 'OPEN',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -333,19 +333,19 @@ class CheqRegController extends defaultController
           
             }
 
-            //buat chqtran baru
-            for ($i=$startno; $i <= $endno; $i++) { 
-                DB::table('finance.chqtran')
-                    ->insert([  
-                        'compcode' => session('compcode'),
-                        'bankcode' => strtoupper($request->bankcode),
-                        'cheqno' => $i,
-                        'chqregidno' => $request->idno,
-                        'recstatus' => 'OPEN',
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-            }
+                //buat chqtran baru
+                for ($i=$startno; $i <= $endno; $i++) { 
+                    DB::table('finance.chqtran')
+                        ->insert([  
+                            'compcode' => session('compcode'),
+                            'bankcode' => strtoupper($request->bankcode),
+                            'cheqno' => $i,
+                            'chqregidno' => $request->idno,
+                            'recstatus' => 'OPEN',
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+                }
  
             DB::commit();
         } catch (\Exception $e) {
