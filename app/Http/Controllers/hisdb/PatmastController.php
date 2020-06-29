@@ -164,6 +164,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.title')
                         ->select('code','description')
                         ->where('compcode','=',session('compcode'))
+                        ->orderBy('idno', 'desc')
                         ->get();
                 break;
 
@@ -178,6 +179,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.areacode')
                         ->select('areacode as code','description')
                         ->where('compcode','=',session('compcode'))
+                        ->orderBy('idno', 'desc')
                         ->get();
                 break;
 
@@ -1533,70 +1535,70 @@ class PatmastController extends defaultController
         DB::beginTransaction();
 
         try {
-                $bedalloc_oldidno =  DB::table('hisdb.bedalloc')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+            $bedalloc_oldidno =  DB::table('hisdb.bedalloc')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
 
-                if($bedalloc_oldidno->exists()){
-                    $bedalloc_old = DB::table('hisdb.bedalloc')
-                        ->where('idno','=',$bedalloc_oldidno->max('idno'))
-                        ->first();
+            if($bedalloc_oldidno->exists()){
+                $bedalloc_old = DB::table('hisdb.bedalloc')
+                    ->where('idno','=',$bedalloc_oldidno->max('idno'))
+                    ->first();
 
-                    $bed_old = DB::table('hisdb.bed')
-                                    ->where('compcode','=',session('compcode'))
-                                    ->where('bednum','=',$bedalloc_old->bednum)
-                                    ->update([
-                                        'occup' => "VACANT"
-                                    ]);
+                $bed_old = DB::table('hisdb.bed')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('bednum','=',$bedalloc_old->bednum)
+                                ->update([
+                                    'occup' => "VACANT"
+                                ]);
 
-                }
+            }
 
-                $bed_obj = DB::table('hisdb.bed')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('bednum','=',$request->bed_bednum);
+            $bed_obj = DB::table('hisdb.bed')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('bednum','=',$request->bed_bednum);
 
-                if($bed_obj->exists()){
-                    $bed_first = $bed_obj->first();
-                    DB::table('hisdb.bedalloc')
-                        ->insert([  
-                            'mrn' => $request->mrn,
-                            'episno' => $request->episno,
-                            'name' => $request->name,
-                            'astatus' => $request->bed_status,
-                            'ward' =>  $request->bed_ward,
-                            'room' =>  $request->bed_room,
-                            'bednum' =>  $request->bed_bednum,
-                            'isolate' =>  $request->bed_isolate,
-                            'lodgerno' =>  $request->bed_lodger,
-                            'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'astime' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'compcode' => session('compcode'),
-                            'adduser' => strtoupper(session('username')),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
-                    $bed_obj->update([
-                        'occup' => "OCCUPIED"
+            if($bed_obj->exists()){
+                $bed_first = $bed_obj->first();
+                DB::table('hisdb.bedalloc')
+                    ->insert([  
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'name' => $request->name,
+                        'astatus' => $request->bed_status,
+                        'ward' =>  $request->bed_ward,
+                        'room' =>  $request->bed_room,
+                        'bednum' =>  $request->bed_bednum,
+                        'isolate' =>  $request->bed_isolate,
+                        'lodgerno' =>  $request->bed_lodger,
+                        'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'astime' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'compcode' => session('compcode'),
+                        'adduser' => strtoupper(session('username')),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
-                    DB::table("hisdb.episode")
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno)
-                        ->update([
-                            'bed' => $request->bed_bednum
-                        ]);
+                $bed_obj->update([
+                    'occup' => "OCCUPIED"
+                ]);
 
-                }
+                DB::table("hisdb.episode")
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno)
+                    ->update([
+                        'bed' => $request->bed_bednum
+                    ]);
 
-
-                DB::commit();
-
-            } catch (\Exception $e) {
-                DB::rollback();
-
-                return response($e->getMessage(), 500);
             }
+
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
 
         
 
@@ -1608,63 +1610,63 @@ class PatmastController extends defaultController
 
         try {
 
-                if($request->oper == 'add'){
-                    $docalloc_obj = DB::table('hisdb.docalloc')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('mrn','=',$request->mrn)
-                                ->where('episno','=',$request->episno);
-
-                    if($docalloc_obj->exists()){
-                        $allocno = intval($docalloc_obj->max('AllocNo')) + 1;
-                    }else{
-                        $allocno = 1;
-                    }
-
-                    DB::table('hisdb.docalloc')
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'mrn'    =>  $request->mrn,
-                            'episno'  =>  $request->episno,
-                            'AllocNo' =>   $allocno,
-                            'doctorcode'  =>  $request->doctorcode,
-                            'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
-                            'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                            'astatus'    =>  $request->status,
-                            'epistycode'    =>  $request->epistycode,
-                            'adddate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                            'adduser'    =>  session('username'),
-                            'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                            'lastuser'    =>  session('username')
-                        ]);
-                }else if($request->oper == 'edit'){
-                    $docalloc_obj = DB::table('hisdb.docalloc')
+            if($request->oper == 'add'){
+                $docalloc_obj = DB::table('hisdb.docalloc')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('allocno','=',$request->allocno);
+                            ->where('episno','=',$request->episno);
 
-                    if($docalloc_obj->exists()){
-                        $docalloc_obj->update([
-                            'doctorcode'  =>  $request->doctorcode,
-                            'astatus'    =>  $request->status,
-                            'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
-                            'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                            'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                            'lastuser'    =>  session('username')
-                        ]);
-                    }
+                if($docalloc_obj->exists()){
+                    $allocno = intval($docalloc_obj->max('AllocNo')) + 1;
                 }else{
-                    throw new \Exception("Error happen");
+                    $allocno = 1;
                 }
+
+                DB::table('hisdb.docalloc')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn'    =>  $request->mrn,
+                        'episno'  =>  $request->episno,
+                        'AllocNo' =>   $allocno,
+                        'doctorcode'  =>  $request->doctorcode,
+                        'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
+                        'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'astatus'    =>  $request->status,
+                        'epistycode'    =>  $request->epistycode,
+                        'adddate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'adduser'    =>  session('username'),
+                        'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'    =>  session('username')
+                    ]);
+            }else if($request->oper == 'edit'){
+                $docalloc_obj = DB::table('hisdb.docalloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('allocno','=',$request->allocno);
+
+                if($docalloc_obj->exists()){
+                    $docalloc_obj->update([
+                        'doctorcode'  =>  $request->doctorcode,
+                        'astatus'    =>  $request->status,
+                        'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
+                        'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'    =>  session('username')
+                    ]);
+                }
+            }else{
+                throw new \Exception("Error happen");
+            }
                 
 
-                DB::commit();
+            DB::commit();
 
-            } catch (\Exception $e) {
-                DB::rollback();
+        } catch (\Exception $e) {
+            DB::rollback();
 
-                return response($e->getMessage(), 500);
-            }
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function save_gl(Request $request){
@@ -1673,13 +1675,13 @@ class PatmastController extends defaultController
 
         try {
                 
-                DB::commit();
+            DB::commit();
 
-            } catch (\Exception $e) {
-                DB::rollback();
+        } catch (\Exception $e) {
+            DB::rollback();
 
-                return response($e->getMessage(), 500);
-            }
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function save_nok(Request $request){
@@ -1731,13 +1733,13 @@ class PatmastController extends defaultController
 
             }
 
-                DB::commit();
+            DB::commit();
 
-            } catch (\Exception $e) {
-                DB::rollback();
+        } catch (\Exception $e) {
+            DB::rollback();
 
-                return response($e->getMessage(), 500);
-            }
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function save_emr(Request $request){
@@ -1780,13 +1782,13 @@ class PatmastController extends defaultController
 
             }
 
-                DB::commit();
+            DB::commit();
 
-            } catch (\Exception $e) {
-                DB::rollback();
+        } catch (\Exception $e) {
+            DB::rollback();
 
-                return response($e->getMessage(), 500);
-            }
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function get_episode_by_mrn(Request $request){
@@ -1815,6 +1817,89 @@ class PatmastController extends defaultController
         $responce->debtormast = $debtormast;
 
         return json_encode($responce);
+    }
+
+    public function new_occup_form(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $idno = DB::table('hisdb.occupation')->max('idno');
+
+
+            DB::table('hisdb.occupation')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'occupcode' => intval($idno) + 1,
+                    'description' => $request->occup_desc,
+                    'recstatus' => 'A',
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function new_title_form(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $idno = DB::table('hisdb.title')->max('idno');
+
+            DB::table('hisdb.title')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'Code' => intval($idno) + 1,
+                    'description' => $request->title_desc,
+                    'recstatus' => 'A',
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function new_areacode_form(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $idno = DB::table('hisdb.areacode')->max('idno');
+
+
+            DB::table('hisdb.areacode')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'areacode' => intval($idno) + 1,
+                    'description' => $request->areacode_desc,
+                    'recstatus' => 'A',
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
     

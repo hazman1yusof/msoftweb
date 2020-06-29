@@ -6,6 +6,7 @@ var Global = function () {
 		var selecter = null;
 		var item = null;
 		var title="Item selector";
+        var mdl = "";
 			
 		switch (type)
 		{
@@ -26,17 +27,17 @@ var Global = function () {
 				title = "Select Patient ID Type";
 				break;
 			case "pat_title":
-				act = "get_patient_title";
-				title = "Select Patient Title";
-				break;
-			case "pat_occupation":
-				act = "get_patient_occupation";
-				title = "Select Patient Occupation";
-				break;
-			case "pat_area":
-				act = "get_patient_areacode";
-				title = "Select Patient Area";
-				break;
+                act = "get_patient_title";
+                mdl = "#mdl_add_new_title";
+                break;
+            case "pat_occupation":
+                act = "get_patient_occupation";
+                mdl = "#mdl_add_new_occ";
+                break;
+            case "pat_area":
+                act = "get_patient_areacode";
+                mdl = "#mdl_add_new_areacode";
+                break;
 			case "pat_citizen":
 				act = "get_patient_citizen";
 				title = "Select Patient Citizen";
@@ -61,9 +62,9 @@ var Global = function () {
 				act = "get_reg_dept";
 				title = "Select Patient Register Department";
 				break;
-			case "epis_source":
-				act = "get_reg_source";
-				title = "Select Patient Register Source";
+            case "epis_source":
+                act = "get_reg_source";
+                mdl = "#mdl_add_new_adm";
 				break;
 			case "epis_case":
 				act = "get_reg_case";
@@ -87,7 +88,7 @@ var Global = function () {
 		
 		selecter = $('#tbl_item_select').DataTable( {
 				"ajax": "pat_mast/get_entry?action=" + act,
-				"order": [[ 0, "desc" ]],
+				"ordering": false,
 				"lengthChange": false,
 				"info": false,
 				"pagingType" : "numbers",
@@ -113,7 +114,10 @@ var Global = function () {
 
 				"fnInitComplete": function(oSettings, json) {
 					
-                    if(act == "get_reg_source"){
+                    if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
+                        console.log(mdl);
+
+                        $('#add_new_adm').data('modal-target',mdl)
                         $('#add_new_adm').show();
                     }
 			    }
@@ -139,6 +143,7 @@ var Global = function () {
             //$('#tbl_item_select tbody').off('dblclick', 'tr', function () {
             $('#add_new_adm').hide();
 			$('#tbl_item_select').html('');
+			$('#add_new_adm,#adm_save,#new_occup_save,#new_title_save,#new_areacode_save').off('click');
 			selecter.destroy();
 			type = "";
 			item = "";
@@ -148,7 +153,7 @@ var Global = function () {
 		});
 
 		$('#add_new_adm').click(function(){
-            $('#mdl_add_new_adm').modal('show');
+            $($(this).data('modal-target')).modal('show');
         });
 
         $('#adm_save').click(function(){
@@ -163,6 +168,63 @@ var Global = function () {
                     $("#adm_form").trigger('reset');
                     selecter.ajax.reload()
                     $('#mdl_add_new_adm').modal('hide');
+                }).fail(function(data) {
+                    alert(data.responseText);
+                }).success(function(data){
+                });
+              }
+        });
+
+        $('#new_occup_save').click(function(){
+              if($('#new_occup_form').valid()){
+                var _token = $('#csrf_token').val();
+                let serializedForm = $( "#new_occup_form" ).serializeArray();
+                let obj = {
+                        _token: _token
+                }
+                
+                $.post( '/pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $("#new_occup_form").trigger('reset');
+                    selecter.ajax.reload()
+                    $('#mdl_add_new_occ').modal('hide');
+                }).fail(function(data) {
+                    alert(data.responseText);
+                }).success(function(data){
+                });
+              }
+        });
+
+        $('#new_title_save').click(function(){
+              if($('#new_title_form').valid()){
+                var _token = $('#csrf_token').val();
+                let serializedForm = $( "#new_title_form" ).serializeArray();
+                let obj = {
+                        _token: _token
+                }
+                
+                $.post( '/pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $("#new_title_form").trigger('reset');
+                    selecter.ajax.reload()
+                    $('#mdl_add_new_title').modal('hide');
+                }).fail(function(data) {
+                    alert(data.responseText);
+                }).success(function(data){
+                });
+              }
+        });
+
+        $('#new_areacode_save').click(function(){
+              if($('#new_areacode_form').valid()){
+                var _token = $('#csrf_token').val();
+                let serializedForm = $( "#new_areacode_form" ).serializeArray();
+                let obj = {
+                        _token: _token
+                }
+                
+                $.post( '/pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $("#new_areacode_form").trigger('reset');
+                    selecter.ajax.reload()
+                    $('#mdl_add_new_title').modal('hide');
                 }).fail(function(data) {
                     alert(data.responseText);
                 }).success(function(data){

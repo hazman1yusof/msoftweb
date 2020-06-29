@@ -132,6 +132,7 @@
             .find("input[type=checkbox], input[type=radio]")
             .prop("checked", "")
             .end(); //this for clearing input after hide modal
+        $("#tabNok_emr,#tabCorp,#tabPatrec,#tabNok_pat").collapse("hide");
     });
 
     $("#biodata_but").click(function() {
@@ -438,6 +439,7 @@
 
         //populate_payer_guarantee_info(d); tgk balik nanti
 
+        $("#toggle_tabNok_emr").parent().show();
         if(rowdata.Episno == 0 || rowdata.Episno == null){
             $("#toggle_tabNok_pat").parent().hide();
         }else{

@@ -3,13 +3,13 @@
     <div class="modal-dialog modal-lg">
         <form id="frm_patient_info" class="form-horizontal">
 			<input type="hidden" name="idno" id="txt_pat_idno">
+            <input name="pat_mrn" id="pat_mrn" type="hidden">
             <div class="modal-content">
                 <div class="modal-header label-info">
                     <div class="form-group">
                         <div class="col-sm-3">
                             <small  for="mrn">PATIENT REGISTRATION (MRN)</small>
                             <input class="form-control " name="MRN" id="txt_pat_mrn" placeholder="" type="text" readonly>
-                            <input name="pat_mrn" id="pat_mrn" type="hidden">
                         </div>
                         <div class="col-sm-3">
                             <small for="first_visit_date">FIRST VISIT</small>
