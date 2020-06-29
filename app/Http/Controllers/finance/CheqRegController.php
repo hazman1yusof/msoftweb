@@ -238,7 +238,10 @@ class CheqRegController extends defaultController
         try {
 
             foreach ($request->dataobj as $key => $value) {
-                $cheqreg = DB::table('finance.chqreg')
+                # code...
+            }
+            
+            $cheqreg = DB::table('finance.chqreg')
                 ->where('compcode', '=', session('compcode'))
                 ->where('idno', '=', $request->idno);
 
@@ -314,7 +317,8 @@ class CheqRegController extends defaultController
                 ->where('cheqno', '<=', $endno_old)
                 ->delete();
 
-            //update chqreg 
+            foreach ($request->dataobj as $key => $value) {
+              //update chqreg 
             DB::table('finance.chqreg')
                 ->where('compcode', '=', session('compcode'))
                 ->where('idno', '=', $request->idno)
@@ -326,6 +330,8 @@ class CheqRegController extends defaultController
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
+            }
+            
 
             //buat chqtran baru
             for ($i=$startno; $i <= $endno; $i++) { 
@@ -340,9 +346,6 @@ class CheqRegController extends defaultController
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
             }
-            }
-            
-           
 
             DB::commit();
         } catch (\Exception $e) {
