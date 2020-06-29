@@ -43,16 +43,14 @@ $(document).ready(function () {
 
 	// Mode of Feeding
 	// Radio button with different name but a single selection
-	$(document).ready(function() {
+	$("input[id=feedingmode]").prop("checked", false);
+	$("input[id=feedingmode]:first").prop("checked", true);
+  
+	$("input[id=feedingmode]").click(function(event) {
 		$("input[id=feedingmode]").prop("checked", false);
-		$("input[id=feedingmode]:first").prop("checked", true);
-	  
-		$("input[id=feedingmode]").click(function(event) {
-			$("input[id=feedingmode]").prop("checked", false);
-			$(this).prop("checked", true);
-	  
-		  	//event.preventDefault();
-		});
+		$(this).prop("checked", true);
+  		feedingCheck()
+	  	//event.preventDefault();
 	});
 
 });
@@ -67,12 +65,12 @@ function yesnoCheck() {
 }
 
 // hide show order list
-function feedingOthers(){
-	document.getElementById('ifOral').style.display ='none';
-}
-  
-function feedingOral(){
-	document.getElementById('ifOral').style.display = 'block';
+function feedingCheck() {
+	if (document.getElementsByName('oral')[0].checked) {
+		document.getElementById('ifOral').style.display = 'block';
+	}
+	else document.getElementById('ifOral').style.display = 'none';
+
 }
 // hide show order list ends
 
@@ -156,8 +154,7 @@ function populate_dietOrder(obj,rowdata){
 			autoinsert_rowdata("#formDietOrder",data.episode);
 			button_state_dietOrder('edit');
 			yesnoCheck();
-			feedingOthers();
-			feedingOral();
+			feedingCheck();
         }else{
 			button_state_dietOrder('add');
         }

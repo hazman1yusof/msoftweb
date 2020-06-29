@@ -102,7 +102,7 @@ function button_state_ti(state){
 			break;
 		case 'wait':
 			dialog_tri_col.on();
-			examination.on().enable();
+			examination_nursing.on().enable();
 			$("#toggle_ti").attr('data-toggle','collapse');
 			$("#save_ti,#cancel_ti").attr('disabled',false);
 			$('#edit_ti,#new_ti').attr('disabled',true);
@@ -150,10 +150,11 @@ function populate_formNursing(obj,rowdata){
 
 	if(rowdata.nurse_exm != undefined){
 		var newrowdata = $.extend(true,{}, rowdata);
-		examination.examarray = newrowdata.nurse_exm;
-		examination.loadexam().off().disable();
+		examination_nursing.empty();
+		examination_nursing.examarray = newrowdata.nurse_exm;
+		examination_nursing.loadexam().off().disable();
 	}else{
-		examination.empty().off().disable();
+		examination_nursing.empty().off().disable();
 	}
 }
 
@@ -186,9 +187,15 @@ function populate_triage(obj,rowdata){
 			autoinsert_rowdata("#formTriageInfo",data.triage);
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
 			autoinsert_rowdata("#formTriageInfo",data.triage_exm);
+			if(!$.isEmptyObject(data.triage_exm)){
+				examination_nursing.empty();
+				examination_nursing.examarray = data.triage_exm;
+				examination_nursing.loadexam().disable();
+			}
 			button_state_ti('triage');
         }else{
 			button_state_ti('triage');
+			examination_nursing.empty();
         }
 
     });
@@ -223,7 +230,7 @@ function empty_formNursing(){
 
 	disableForm('#formTriageInfo');
 	emptyFormdata(errorField,'#formTriageInfo')
-	examination.empty().off().disable();
+	examination_nursing.empty().off().disable();
 	dialog_tri_col.off();
 
 }
@@ -381,7 +388,7 @@ function tri_color_set(empty){
 }
 
 
-var examination = new examination();
+var examination_nursing = new examination();
 function examination(){
 	this.examarray=[];
 	this.on=function(){
