@@ -314,11 +314,12 @@ class CheqRegController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
             
-            $responce = new stdClass();
+            /*$responce = new stdClass();
             $responce->errormsg = $e->getMessage();
             $responce->request = $_REQUEST;
 
-            return response(json_encode($responce), 500);
+            return response(json_encode($responce), 500);*/
+            return response($e->getMessage(), 500);
         }
     }
 
