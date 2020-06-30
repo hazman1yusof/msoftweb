@@ -1,18 +1,11 @@
-
-$(document).ready(function () {
-	$("body").show();
-
-
-	$('#submit').click(function(){
-
-		$.post(  '/test/form',$( "#testform" ).serialize(), function( data ) {
-			
-		}).fail(function(data) {
-			
-		}).success(function(data){
-			
-		});
-
-	});
-
-});
+$(document).ready(function() {
+    $('#example').DataTable( {
+    	scrollY:        '50vh',
+        scrollCollapse: true,
+        paging:         false,
+        orderFixed: [[2, 'asc']],
+        rowGroup: {
+            dataSrc: 2
+        }
+    } );
+} );

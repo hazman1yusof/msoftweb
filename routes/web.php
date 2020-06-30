@@ -629,6 +629,7 @@ Route::get('/testpdf','util\TestController@pdf');
 Route::get('/testpdf2','util\TestController@pdf2');
 Route::post('/test/form','util\TestController@form'); 
 Route::get('/testcalander','util\TestController@testcalander');
+Route::get('/test_grid','util\TestController@test_grid');
 
 Route::get('/test_email','util\TestController@show_email');
 Route::post('/test_email_send','util\TestController@send_email');

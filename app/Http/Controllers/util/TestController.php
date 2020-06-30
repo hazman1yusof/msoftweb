@@ -74,6 +74,12 @@ class TestController extends defaultController
 
     }
 
+    public function test_grid(Request $request)
+    {   
+        return view('test.test_grid');
+
+    }
+
 
 
     public function pdf2(Request $request)
