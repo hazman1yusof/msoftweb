@@ -22,7 +22,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
-					<button id="add_new_adm" type="button" class="btn-u btn-u-default" style="display: none;">Add new</button>
+					<button id="add_new_adm" type="button" class="btn-u btn-u-default" style="display: none;" data-modal-target="#mdl_add_new_adm">Add new</button>
 				</div>
 			</div>
 			
@@ -30,6 +30,8 @@
 	</div>
 	<!-- end popup item selector -->
 
+
+	<!-- new adm save -->
 	<div id="mdl_add_new_adm" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
 		<div class="modal-dialog">
 		
@@ -65,7 +67,7 @@
                         <small for="input-title">E-mail</small>
                         <input class="form-control" id="adm_email" name="adm_email" placeholder="" type="text">
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-5 col-md-offset-1">
                         <small for="adm_type">Source Type</small>
                         <select id="adm_type" name="adm_type" class="form-control form-mandatory" required>
                             <option value="GP">GP</option>
@@ -77,6 +79,99 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn-u btn-u-default" id="adm_save">Save</button>
+					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<!-- new occupation save -->
+	<div id="mdl_add_new_occ" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
+		<div class="modal-dialog">
+		
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Add New Occupation</h4>
+				</div>
+				<div class="modal-body col-md-12">
+					<form id="new_occup_form">
+					<div class="col-md-3 col-md-offset-1">
+	                    <small for="occup_code">Code</small>
+	                    <input type="text" class="form-control form-mandatory" id="occup_code" name="occup_code" aria-required="true" disabled>
+	                </div>
+	                <div class="col-md-7">
+	                    <small for="occup_desc">Description</small>
+	                    <input type="text" class="form-control form-mandatory uppercase" id="occup_desc" name="occup_desc" required >
+	                </div>
+                    </form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-u btn-u-default" id="new_occup_save">Save</button>
+					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<!-- new title save -->
+	<div id="mdl_add_new_title" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
+		<div class="modal-dialog">
+		
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Add New Title</h4>
+				</div>
+				<div class="modal-body col-md-12">
+					<form id="new_title_form">
+					<div class="col-md-3 col-md-offset-1">
+	                    <small for="title_code">Code</small>
+	                    <input type="text" class="form-control form-mandatory" id="title_code" name="title_code" aria-required="true" disabled>
+	                </div>
+	                <div class="col-md-7">
+	                    <small for="title_desc">Description</small>
+	                    <input type="text" class="form-control form-mandatory uppercase" id="title_desc" name="title_desc" required >
+	                </div>
+                    </form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-u btn-u-default" id="new_title_save">Save</button>
+					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<!-- new areacode save -->
+	<div id="mdl_add_new_areacode" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
+		<div class="modal-dialog">
+		
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Add New AreaCode</h4>
+				</div>
+				<div class="modal-body col-md-12">
+					<form id="new_areacode_form">
+					<div class="col-md-3 col-md-offset-1">
+	                    <small for="areacode_code">Code</small>
+	                    <input type="text" class="form-control form-mandatory" id="areacode_code" name="areacode_code" aria-required="true" disabled>
+	                </div>
+	                <div class="col-md-7">
+	                    <small for="areacode_desc">Description</small>
+	                    <input type="text" class="form-control form-mandatory uppercase" id="areacode_desc" name="areacode_desc" required >
+	                </div>
+                    </form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-u btn-u-default" id="new_areacode_save">Save</button>
 					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>

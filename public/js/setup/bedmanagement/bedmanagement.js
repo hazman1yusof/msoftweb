@@ -159,8 +159,8 @@ $(document).ready(function () {
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5},
 			{ label: 'Patient Name', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
-			{ label: 'Doctor Code', name: 'admdoctor', width: 25, canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: ' ', name: 'recstatus', width: 15, classes: 'center_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Doctor Code', name: 'admdoctor', width: 20, canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 				{ 	custom_element:recstatusCustomEdit,
 					custom_value:galGridCustomValue 	

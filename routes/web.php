@@ -516,6 +516,9 @@ Route::post('/pat_mast/save_patient','hisdb\PatmastController@save_patient');
 Route::post('/pat_mast/save_episode','hisdb\PatmastController@save_episode');
 Route::post('/pat_mast/save_adm','hisdb\PatmastController@save_adm');
 Route::post('/pat_mast/save_gl','hisdb\PatmastController@save_gl');
+Route::post('/pat_mast/new_occup_form','hisdb\PatmastController@new_occup_form');
+Route::post('/pat_mast/new_title_form','hisdb\PatmastController@new_title_form');
+Route::post('/pat_mast/new_areacode_form','hisdb\PatmastController@new_areacode_form');
 
 
 Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');

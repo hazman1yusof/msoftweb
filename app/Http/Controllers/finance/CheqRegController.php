@@ -231,15 +231,15 @@ class CheqRegController extends defaultController
         }
     }
 
-     public function edit_all(Request $request){
+    public function edit_all(Request $request){
         
         DB::beginTransaction();
 
         try {
 
-            foreach ($request->dataobj as $key => $value) {
+          /*  foreach ($request->dataobj as $key => $value) {
                 # code...
-            }
+            }*/
             
             $cheqreg = DB::table('finance.chqreg')
                 ->where('compcode', '=', session('compcode'))
@@ -318,35 +318,35 @@ class CheqRegController extends defaultController
                 ->delete();
 
             foreach ($request->dataobj as $key => $value) {
-              //update chqreg 
-            DB::table('finance.chqreg')
-                ->where('compcode', '=', session('compcode'))
-                ->where('idno', '=', $request->idno)
-                ->update([
-                    'startno' => $startno,
-                    'endno' => $endno,
-                    'cheqqty' => $endno -$startno+1,
-                    'recstatus' => 'OPEN',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-            }
-            
-
-            //buat chqtran baru
-            for ($i=$startno; $i <= $endno; $i++) { 
-                DB::table('finance.chqtran')
-                    ->insert([  
-                        'compcode' => session('compcode'),
-                        'bankcode' => strtoupper($request->bankcode),
-                        'cheqno' => $i,
-                        'chqregidno' => $request->idno,
+                //update chqreg 
+                DB::table('finance.chqreg')
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('idno', '=', $request->idno)
+                    ->update([
+                        'startno' => $value['startno'],
+                        'endno' => $value['endno'],
+                        'cheqqty' => $value['endno'] -$value['startno']+1,
                         'recstatus' => 'OPEN',
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+          
             }
 
+                //buat chqtran baru
+                for ($i=$startno; $i <= $endno; $i++) { 
+                    DB::table('finance.chqtran')
+                        ->insert([  
+                            'compcode' => session('compcode'),
+                            'bankcode' => strtoupper($request->bankcode),
+                            'cheqno' => $i,
+                            'chqregidno' => $request->idno,
+                            'recstatus' => 'OPEN',
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+                }
+ 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();

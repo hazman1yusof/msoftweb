@@ -10,6 +10,7 @@
             .find("input[type=checkbox], input[type=radio]")
             .prop("checked", "")
             .end(); //this for clearing input after hide modal
+        $("#tabDoctor,#tabBed,#tabNok,#tabPayer,#tabDeposit").collapse("hide");
     });
 
     function check_debtormast_exists(rowid){
@@ -469,6 +470,8 @@
         var act = "";
         var selecter = null;
         var item = null;
+        var title="Item selector";
+        var mdl = "";
             
         switch (type)
         {
@@ -486,12 +489,15 @@
                 break;
             case "pat_title":
                 act = "get_patient_title";
+                mdl = "#mdl_add_new_title";
                 break;
             case "pat_occupation":
                 act = "get_patient_occupation";
+                mdl = "#mdl_add_new_occ";
                 break;
             case "pat_area":
                 act = "get_patient_areacode";
+                mdl = "#mdl_add_new_areacode";
                 break;
             case "pat_citizen":
                 act = "get_patient_citizen";
@@ -513,6 +519,7 @@
                 break;
             case "epis_source":
                 act = "get_reg_source";
+                mdl = "mdl_add_new_adm";
                 break;
             case "epis_case":
                 act = "get_reg_case";
@@ -527,6 +534,7 @@
         
         selecter = $('#tbl_item_select').DataTable( {
                 "ajax": "pat_mast/get_entry?action=" + act,
+                "ordering": false,
                 "lengthChange": false,
                 "info": true,
                 "pagingType" : "numbers",
@@ -544,8 +552,9 @@
                     "render": function ( data, type, row, meta ) {
                         if(act == "get_reg_source"){
                             return pad('000000',data,true)
+                        }else{
+                            return data;
                         }
-                        return data;
                     }
                   } ],
 
@@ -553,7 +562,9 @@
                     if(ontab==true){
                         selecter.search( text_val ).draw();
                     }
-                    if(act == "get_reg_source"){
+                    if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
+                        console.log(mdl);
+                        $('#add_new_adm').data('modal-target',mdl)
                         $('#add_new_adm').show();
                     }
                     if(selecter.page.info().recordsDisplay == 1){
@@ -592,6 +603,7 @@
             $('#add_new_adm').hide();
             $('#tbl_item_select').html('');
             selecter.destroy();
+            $('#add_new_adm,#adm_save,#new_occup_save,#new_title_save,#new_areacode_save').off('click');
             type = "";
             item = "";
                         //console.dir(selecter);
@@ -600,7 +612,8 @@
         });
 
         $('#add_new_adm').click(function(){
-            $('#mdl_add_new_adm').modal('show');
+            console.log($(this).data('modal-target'));
+            $($(this).data('modal-target')).modal('show');
         });
 
         $('#adm_save').click(function(){
@@ -615,6 +628,63 @@
                     $("#adm_form").trigger('reset');
                     selecter.ajax.reload()
                     $('#mdl_add_new_adm').modal('hide');
+                }).fail(function(data) {
+                    alert(data.responseText);
+                }).success(function(data){
+                });
+              }
+        });
+
+        $('#new_occup_save').click(function(){
+              if($('#new_occup_form').valid()){
+                var _token = $('#csrf_token').val();
+                let serializedForm = $( "#new_occup_form" ).serializeArray();
+                let obj = {
+                        _token: _token
+                }
+                
+                $.post( '/pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $("#new_occup_form").trigger('reset');
+                    selecter.ajax.reload()
+                    $('#mdl_add_new_occ').modal('hide');
+                }).fail(function(data) {
+                    alert(data.responseText);
+                }).success(function(data){
+                });
+              }
+        });
+
+        $('#new_title_save').click(function(){
+              if($('#new_title_form').valid()){
+                var _token = $('#csrf_token').val();
+                let serializedForm = $( "#new_title_form" ).serializeArray();
+                let obj = {
+                        _token: _token
+                }
+                
+                $.post( '/pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $("#new_title_form").trigger('reset');
+                    selecter.ajax.reload()
+                    $('#mdl_add_new_title').modal('hide');
+                }).fail(function(data) {
+                    alert(data.responseText);
+                }).success(function(data){
+                });
+              }
+        });
+
+        $('#new_areacode_save').click(function(){
+              if($('#new_areacode_form').valid()){
+                var _token = $('#csrf_token').val();
+                let serializedForm = $( "#new_areacode_form" ).serializeArray();
+                let obj = {
+                        _token: _token
+                }
+                
+                $.post( '/pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $("#new_areacode_form").trigger('reset');
+                    selecter.ajax.reload()
+                    $('#mdl_add_new_title').modal('hide');
                 }).fail(function(data) {
                     alert(data.responseText);
                 }).success(function(data){
