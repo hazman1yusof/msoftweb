@@ -405,9 +405,9 @@ $(document).ready(function () {
 		    	{
 		    		'idno' : ids[i],
 		    		//'bankcode' : data.bankcode,
-		    		'startno' : $("#gridCheqRegDetail input#"+ids[i]+"_startno").val(),
-		    		'endno' : $("#gridCheqRegDetail input#"+ids[i]+"_endno").val(),
-		    		'cheqqty' : $("#gridCheqRegDetail input#"+ids[i]+"_cheqqty").val()
+		    		'startno' : $("#"+ids[i]+"_startno").val(),
+		    		'endno' : $("#"+ids[i]+"_endno").val(),
+		    		'cheqqty' : $("#"+ids[i]+"_cheqqty").val()
 		    	}
 
 		    	gridCheqRegDetail_data.push(obj);
