@@ -290,7 +290,7 @@ $(document).ready(function () {
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl,'add');
 			errorField.length=0;
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+			$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll").show();
 		},
 		errorfunc: function(rowid,response){
 			//$('#p_error').text(response.responseText);
