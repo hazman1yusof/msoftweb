@@ -405,9 +405,9 @@ $(document).ready(function () {
 		    	{
 		    		'idno' : ids[i],
 		    		//'bankcode' : data.bankcode,
-		    		'startno' : $("#"+ids[i]+"_startno").val(),
-		    		'endno' : $("#"+ids[i]+"_endno").val(),
-		    		'cheqqty' : $("#"+ids[i]+"_cheqqty").val()
+		    		'startno' : $("#gridCheqRegDetail input#"+ids[i]+"_startno").val(),
+		    		'endno' : $("#gridCheqRegDetail input#"+ids[i]+"_endno").val(),
+		    		'cheqqty' : $("#gridCheqRegDetail input#"+ids[i]+"_cheqqty").val()
 		    	}
 
 		    	gridCheqRegDetail_data.push(obj);
@@ -416,7 +416,8 @@ $(document).ready(function () {
 			var param={
     			action: 'cheqregDetail_save',
 				_token: $("#_token").val(),
-				/*startno: $('#startno').val(),
+				bankcode: selrowData('#jqGrid').bankcode,
+			/*	startno: $('#startno').val(),
 				endno:$('#endno').val(),
 				cheqqty:$('#cheqqty').val(),*/
     		}
@@ -425,7 +426,6 @@ $(document).ready(function () {
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
-				// $('#amount').val(data);
 				hideatdialogForm(false);
 				refreshGrid("#gridCheqRegDetail",urlParam_cheqregdtl);
 			});
