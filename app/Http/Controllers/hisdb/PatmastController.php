@@ -443,15 +443,26 @@ class PatmastController extends defaultController
             $user = $table->first();
 
 
-            if($user->loginid != $request->loginid){
-                if($this->default_duplicate('sysdb.users','username',$request->loginid)>0){
-                    throw new \Exception("Username already exist");
-                }
-                $this->makeloginid($request);
-            }
-
+            // if($user->loginid != $request->loginid){
+            //     if($this->default_duplicate('sysdb.users','username',$request->loginid)>0){
+            //         throw new \Exception("Username already exist");
+            //     }
+            //     $this->makeloginid($request);
+            // }
 
             $table->update($array_update);
+
+            $bed_mrn = DB::table('hisdb.bed')
+                        ->where('mrn','=',$request->MRN)
+                        ->update([
+                            'name' => $request->Name
+                        ]);
+
+            $queue_mrn = DB::table('hisdb.queue')
+                        ->where('mrn','=',$request->MRN)
+                        ->update([
+                            'name' => $request->Name
+                        ]);
 
             $queries = DB::getQueryLog();
 
@@ -808,7 +819,11 @@ class PatmastController extends defaultController
                         ]);
 
                     $bed_obj->update([
-                        'occup' => "OCCUPIED"
+                        'occup' => "OCCUPIED",
+                        'mrn' => $epis_mrn,
+                        'episno' => $epis_no,
+                        'name' => $patmast_data->Name,
+                        'admdoctor' => $epis_doctor
                     ]);
 
                 }
@@ -1233,21 +1248,19 @@ class PatmastController extends defaultController
 
                 $bed_obj = DB::table('hisdb.bed')
                     ->where('compcode','=',session('compcode'))
-                    ->where('bednum','=',$request->bed_bednum);
+                    ->where('bednum','=',$epis_bednum);
 
                 if($bed_obj->exists()){
                     $bed_first = $bed_obj->first();
                     DB::table('hisdb.bedalloc')
                         ->insert([  
-                            'mrn' => $request->mrn,
-                            'episno' => $request->episno,
-                            'name' => $request->name,
-                            'astatus' => $request->bed_status,
-                            'ward' =>  $request->bed_ward,
-                            'room' =>  $request->bed_room,
-                            'bednum' =>  $request->bed_bednum,
-                            'isolate' =>  $request->bed_isolate,
-                            'lodgerno' =>  $request->bed_lodger,
+                            'mrn' => $epis_mrn,
+                            'episno' => $epis_no,
+                            'name' => $patmast_data->Name,
+                            'astatus' => "OCCUPIED",
+                            'ward' =>  $bed_obj->ward,
+                            'room' =>  $bed_obj->room,
+                            'bednum' =>  $bed_obj->bednum,
                             'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'astime' => Carbon::now("Asia/Kuala_Lumpur"),
                             'compcode' => session('compcode'),
@@ -1256,7 +1269,11 @@ class PatmastController extends defaultController
                         ]);
 
                     $bed_obj->update([
-                        'occup' => "OCCUPIED"
+                        'occup' => "OCCUPIED",
+                        'mrn' => $epis_mrn,
+                        'episno' => $epis_no,
+                        'name' => $patmast_data->Name,
+                        'admdoctor' => $epis_doctor
                     ]);
 
                     DB::table("hisdb.episode")
