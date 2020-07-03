@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -640,6 +642,3 @@ Route::post('/barcode/print','util\BarcodeController@print');
 
 Route::get('/num2words','util\num2wordsController@show');
 Route::post('/num2words/form','util\num2wordsController@form');
-
-
-
