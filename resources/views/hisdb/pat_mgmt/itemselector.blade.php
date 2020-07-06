@@ -178,3 +178,34 @@
 			
 		</div>
 	</div>
+
+	<!-- new areacode save -->
+	<div id="mdl_add_new_relationship" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
+		<div class="modal-dialog">
+		
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Add New Relationship</h4>
+				</div>
+				<div class="modal-body col-md-12">
+					<form id="new_areacode_form">
+					<div class="col-md-3 col-md-offset-1">
+	                    <small for="relationship_code">Code</small>
+	                    <input type="text" class="form-control form-mandatory" id="relationship_code" name="relationship_code" aria-required="true">
+	                </div>
+	                <div class="col-md-7">
+	                    <small for="relationship_desc">Description</small>
+	                    <input type="text" class="form-control form-mandatory uppercase" id="relationship_desc" name="relationship_desc" required >
+	                </div>
+                    </form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-u btn-u-default" id="new_areacode_save">Save</button>
+					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>

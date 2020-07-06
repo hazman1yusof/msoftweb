@@ -105,7 +105,7 @@ $(document).ready(function () {
 				// $(search_relate_emr.textfield).parent().next().html('');
 			}
 		},{
-			title: "Select Bed Type search",
+			title: "Select Relationship",
 			open: function () {
 				search_relate_emr.urlParam.filterCol=['compcode', 'recstatus'];
 				search_relate_emr.urlParam.filterVal=['session.compcode', 'A'];
@@ -116,6 +116,12 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	search_relate_emr.makedialog(false);
+
+	$("#otherdialog_search_relate_emr").append( $( "<button id='relate_emr_new'>Add New Relationship Code</button>" ) );
+
+	$("#relate_emr_new").click(function(){
+		
+	});
 	
 	$("#add_nok_emr").click(function(){
 		button_state_nok_emr('wait');
