@@ -521,6 +521,7 @@ Route::post('/pat_mast/save_gl','hisdb\PatmastController@save_gl');
 Route::post('/pat_mast/new_occup_form','hisdb\PatmastController@new_occup_form');
 Route::post('/pat_mast/new_title_form','hisdb\PatmastController@new_title_form');
 Route::post('/pat_mast/new_areacode_form','hisdb\PatmastController@new_areacode_form');
+Route::post('/pat_mast/new_relationship_form','hisdb\PatmastController@new_relationship_form');
 
 
 Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');

@@ -50,6 +50,13 @@
 			padding: 0;
 		}
 
+		.modal .modal-dialog .half {
+			width: 50% !important;
+			height: 50% !important;
+			margin: 0;
+			padding: 0;
+		}
+
 		.modal .modal-content {
 			height: auto;
 			min-height: 100%;

@@ -1923,6 +1923,34 @@ class PatmastController extends defaultController
         }
     }
 
+    public function new_relationship_form(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $idno = DB::table('hisdb.relationship')->max('idno');
+
+
+            DB::table('hisdb.relationship')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'areacode' => intval($idno) + 1,
+                    'description' => $request->relationship_desc,
+                    'recstatus' => 'A',
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
     
 
 

@@ -120,7 +120,25 @@ $(document).ready(function () {
 	$("#otherdialog_search_relate_emr").append( $( "<button id='relate_emr_new'>Add New Relationship Code</button>" ) );
 
 	$("#relate_emr_new").click(function(){
-		
+		$("#mdl_add_new_relationship").modal('show');
+		enableForm('#new_relationship_form');
+	});
+
+	$('#new_relationship_save').click(function(){
+	      if($('#new_relationship_form').valid()){
+	        var _token = $('#csrf_token').val();
+	        let serializedForm = $( "#new_relationship_form" ).serializeArray();
+	        let obj = {
+	                _token: _token
+	        }
+	        
+	        $.post( '/pat_mast/new_relationship_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+	            $('#mdl_add_new_title').modal('hide');
+	        }).fail(function(data) {
+	            alert(data.responseText);
+	        }).success(function(data){
+	        });
+	      }
 	});
 	
 	$("#add_nok_emr").click(function(){
