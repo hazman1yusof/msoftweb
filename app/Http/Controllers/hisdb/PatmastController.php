@@ -63,6 +63,7 @@ class PatmastController extends defaultController
 
             $paginate = $table->paginate($request->rows);
             $arr_mrn = [];
+
             foreach ($paginate->items() as $key => $obj) {
                 array_push($arr_mrn, $obj->mrn);
             }
@@ -392,6 +393,8 @@ class PatmastController extends defaultController
         $request['last_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
 
         foreach ($request->field as $key => $value) {
+            if(empty($request[$request->field[$key]]))continue;
+            // dump($request[$request->field[$key]]);
             $array_insert[$value] = strtoupper($request[$request->field[$key]]);
         }
 

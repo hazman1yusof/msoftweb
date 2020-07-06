@@ -188,6 +188,8 @@
         }).success(function(data){
             $('#mdl_patient_info').modal('hide');
             $('#mdl_existing_record').modal('hide');
+            $("#load_from_addupd").data('info','true');
+            $("#load_from_addupd").data('oper',oper);
             $("#grid-command-buttons").bootgrid('reload');
         });
     }

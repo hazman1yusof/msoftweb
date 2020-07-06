@@ -30,7 +30,7 @@ $(document).ready(function() {
             characters: 2
         },
         post: function ()
-        {
+        {    
             Stext = $('.search-field').val();
             Scol = $('#Scol').val();
 
@@ -44,8 +44,13 @@ $(document).ready(function() {
 
             }
 
+            let _page = $("#grid-command-buttons").bootgrid("getCurrentPage");
+            if($("#load_from_addupd").data('info') == "true" && $("#load_from_addupd").data('oper') == "add"){
+                _page = $("#grid-command-buttons").bootgrid("getTotalPageCount");
+            }
+
             return {
-                page: $("#grid-command-buttons").bootgrid("getCurrentPage"),
+                page: _page,
                 searchCol:_searchCol,
                 searchVal:_searchVal,
                 table_name:'hisdb.pat_mast',
@@ -176,7 +181,19 @@ $(document).ready(function() {
             $("#grid-command-buttons tr").removeClass( "justbc" );
             $(e.currentTarget).addClass( "justbc" );
         });
+
+        if($("#load_from_addupd").data('info') == "true"){
+            if($("#load_from_addupd").data('oper') == "add"){
+                $("#grid-command-buttons tr:nth-last-child(1)").click();
+            }else{
+                $("#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").click();
+            }
+        }
+        $("#load_from_addupd").data('info','false');
+    }).on("click.rs.jquery.bootgrid", function (e,c,r){
+        bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
     });
+    var bootgrid_last_rowid = 0;
 
     // populatecombo1();
 
@@ -210,7 +227,6 @@ $(document).ready(function() {
 
     $('#read_mykad').click(function(){
         $.getJSON('http://mycard.test/mycard_read', function(data){
-            console.log(data);
             if(data.status == 'failed'){
                 alert("Error reading Mycard");
             }else{
@@ -347,7 +363,6 @@ $(document).ready(function() {
                         $('#editEpisode').modal({backdrop: "static"});
 
                         var episdata = data.rows[0];
-                        // console.log(episdata);
                         $('#mrn_episode').val(episdata.MRN);
                         $('#txt_epis_name').text(episdata.Name);
                         $('#txt_epis_mrn').text(('0000000' + episdata.MRN).slice(-7));

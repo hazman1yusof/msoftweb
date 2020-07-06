@@ -351,7 +351,7 @@
                             {
                                 // todo: prevent multiple fast clicks (fast click detection)
                                 e.stopPropagation();
-                                that.current = 1;
+                                // that.current = 1;
                                 loadData.call(that);
                             });
                     actions.append(refresh);
@@ -1465,7 +1465,7 @@
      **/
     Grid.prototype.reload = function()
     {
-        this.current = 1; // reset
+        // this.current = 1; // reset
         loadData.call(this);
 
         return this;
