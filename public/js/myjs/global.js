@@ -115,7 +115,6 @@ var Global = function () {
 				"fnInitComplete": function(oSettings, json) {
 					
                     if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
-                        console.log(mdl);
 
                         $('#add_new_adm').data('modal-target',mdl)
                         $('#add_new_adm').show();

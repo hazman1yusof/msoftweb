@@ -32,8 +32,8 @@
 
 
 	<!-- new adm save -->
-	<div id="mdl_add_new_adm" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
-		<div class="modal-dialog">
+	<div id="mdl_add_new_adm" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+		<div class="modal-dialog smallmodal">
 		
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -87,8 +87,8 @@
 	</div>
 
 	<!-- new occupation save -->
-	<div id="mdl_add_new_occ" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
-		<div class="modal-dialog">
+	<div id="mdl_add_new_occ" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+		<div class="modal-dialog smallmodal">
 		
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -118,8 +118,8 @@
 	</div>
 
 	<!-- new title save -->
-	<div id="mdl_add_new_title" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
-		<div class="modal-dialog">
+	<div id="mdl_add_new_title" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+		<div class="modal-dialog smallmodal">
 		
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -149,8 +149,8 @@
 	</div>
 
 	<!-- new areacode save -->
-	<div id="mdl_add_new_areacode" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
-		<div class="modal-dialog">
+	<div id="mdl_add_new_areacode" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+		<div class="modal-dialog smallmodal">
 		
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -180,8 +180,8 @@
 	</div>
 
 	<!-- new relationship save -->
-	<div id="mdl_add_new_relationship" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
-		<div class="modal-dialog">
+	<div id="mdl_add_new_relationship" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+		<div class="modal-dialog smallmodal">
 		
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -206,6 +206,36 @@
 					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
-			
+		</div>
+	</div>
+
+	<!-- mdl_accomodation -->
+	<div id="mdl_accomodation" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+		<div class="modal-dialog smallmodal">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Select Accomadation</h4>
+				</div>
+				<div class="modal-body">
+					<div class="table-responsive table-no-bordered content">
+						<table id="accomodation_table" class="table-hover cell-border" width="100%">
+							<thead>
+								<tr>
+									<th>Ward</th>
+									<th>Room</th>
+									<th>Bed Number</th>
+									<th>Bed Type</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
 		</div>
 	</div>

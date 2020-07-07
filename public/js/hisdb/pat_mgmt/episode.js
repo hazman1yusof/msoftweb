@@ -36,6 +36,10 @@
                $('#txt_epis_payer').val(data.data.name);
                $('#hid_epis_payer').val(data.data.debtorcode);
                
+            }else{
+
+               $('#txt_epis_payer').val($("#txt_epis_name").val());
+               $('#hid_epis_payer').val($("#mrn_episode").val());
             }
         });
     }
@@ -816,5 +820,35 @@
         }
     }
 
+    let accomodation_table = $('#accomodation_table').DataTable( {
+        "ajax": "pat_mast/get_entry?action=accomodation_table",
+        "columns": [
+            {'data': 'ward' },
+            {'data': 'room'}, 
+            {'data': 'bednum' },
+            {'data': 'bedtype'}, 
+            {'data': 'occup' },
+        ],
+        order: [[3, 'asc'], [0, 'asc']],
+        columnDefs: [ {
+            targets: [ 3, 0 ],
+            visible: false
+        } ],
+        rowGroup: {
+            dataSrc: [ "bedtype", "ward" ]
+        },
+    } );
+
+    $('#accomodation_table tbody').on('dblclick', 'tr', function () {    
+        let item = accomodation_table.row( this ).data();
+        if(item != undefined){
+            $('#txt_epis_bed').val(item["bednum"]);
+            $('#txt_epis_ward').val(item["ward"]);
+            $('#txt_epis_room').val(item["room"]);
+            $('#txt_epis_bedtype').val(item["bedtype"]);
+                
+            $('#mdl_accomodation').modal('hide');
+        }
+    });
 
             

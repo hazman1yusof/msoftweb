@@ -19,8 +19,14 @@ class PatmastController extends defaultController
     }
 
     public function show(Request $request)
-    {   
-        return view('hisdb.pat_mgmt.landing');
+    {       
+        $user = DB::table('sysdb.users')->where('username','=',session('username'))->first();
+        $dept = DB::table('sysdb.department')->where('deptcode','=',$user->deptcode)->first();
+        return view('hisdb.pat_mgmt.landing',
+            [
+                'userdeptcode' => $dept->deptcode,
+                'userdeptdesc' => $dept->description
+            ]);
     }
 
     public function save_patient(Request $request){
@@ -333,6 +339,15 @@ class PatmastController extends defaultController
                     ->where('debtorcode','=',$request->debtorcode)
                     ->where('mrn','=',$request->mrn)
                     ->get();
+
+                break;
+
+            case 'accomodation_table':
+                $data = DB::table('hisdb.bed')
+                        ->where('occup','=',"VACANT")
+                        ->where('compcode','=',session('compcode'))
+                        ->orderBy('bedtype', 'desc')
+                        ->get();
 
                 break;
 

@@ -12,13 +12,21 @@
 	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap-theme.css">
 	<link rel="stylesheet" href="plugins/jquery-ui-1.12.1/jquery-ui.min.css">
 	<link rel="stylesheet" href="plugins/bootgrid/css/jquery.bootgrid.css">
-	<link rel="stylesheet" href="plugins/datatables/css/jquery.dataTables.css">
+	<!-- <link rel="stylesheet" href="plugins/datatables/css/jquery.dataTables.css"> -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.2/css/rowGroup.dataTables.min.css">
 	<link rel="stylesheet" href="plugins/font-awesome-4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="plugins/form-validator/theme-default.css" />
 
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
 
 	<style type="text/css" class="init">
+		.smallmodal{
+			width: 50% !important; height: 50% !important; margin: auto !important;
+		}
+		tr.dtrg-group{
+			font-size: 15px;
+		}
 		td.details-control {
 			background: url('../../../../assets/img/details_open.png') no-repeat center center;
 			cursor: pointer;
@@ -221,7 +229,9 @@
 	<script type="text/ecmascript" src="plugins/moment.js"></script>
 
 
-	<script type="text/javascript" src="plugins/datatables/js/jquery.datatables.min.js"></script>
+
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/additional-methods.min.js"></script>
 

@@ -7,7 +7,7 @@
         <input type="hidden" name="episode_oper" id="episode_oper" value="add">
 
         <div class="modal-content">
-            <div class="modal-header label-info form-horizontal"><form id="epis_header">
+            <div class="modal-header label-info form-horizontal" style="position: sticky;top: 0px;z-index: 3;"><form id="epis_header">
                 <div class="form-group ">
                     <div class="col-sm-1">
                         <small  for="txt_epis_no">EPISODE</small>
@@ -78,8 +78,8 @@
                                     <div class="col-md-offset-1 col-md-10">
                                         <small for="txt_epis_dept">Registration Department</small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" id="txt_epis_dept" required>
-                                            <input type="hidden" id="hid_epis_dept" name="regdept" />
+                                            <input value="{{$userdeptdesc}}" type="text" class="form-control form-mandatory" id="txt_epis_dept" required>
+                                            <input value="{{$userdeptcode}}" type="hidden" id="hid_epis_dept" name="regdept" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_dept" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_dept');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
@@ -116,15 +116,27 @@
                                         </div>
                                     </div>
                                     @if (request()->get('epistycode') == 'IP')
-                                    <div class="col-md-offset-1 col-md-10">
-                                        <small for="txt_epis_bed">Bed</small>
+                                    <div class="col-md-offset-1 col-md-4">
+                                        <small for="txt_epis_bed">ACCOMODATION : BED</small>
                                         <div class="input-group">
                                             <input type="text" class="form-control form-mandatory" name="txt_epis_bed" id="txt_epis_bed" required>
                                             <input type="hidden" id="hid_epis_bed" name="admbed"/>
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info" id="btn_epis_bed" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_bed');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                <button type="button" class="btn btn-info" id="btn_epis_bed" data-toggle="modal" data-target="#mdl_accomodation"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <small for="txt_epis_bed">WARD</small>
+                                        <input type="text" class="form-control form-mandatory" name="txt_epis_ward" id="txt_epis_ward" disabled="">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <small for="txt_epis_bed">ROOM</small>
+                                        <input type="text" class="form-control form-mandatory" name="txt_epis_room" id="txt_epis_room" disabled>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <small for="txt_epis_bed">BED TYPE</small>
+                                        <input type="text" class="form-control form-mandatory" name="txt_epis_bedtype" id="txt_epis_bedtype" disabled>
                                     </div>
                                     @endif
                                     <div class="col-md-offset-1 col-md-10">

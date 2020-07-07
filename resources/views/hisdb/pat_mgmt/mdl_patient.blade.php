@@ -5,7 +5,7 @@
 			<input type="hidden" name="idno" id="txt_pat_idno">
             <input name="pat_mrn" id="pat_mrn" type="hidden">
             <div class="modal-content">
-                <div class="modal-header label-info">
+                <div class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
                     <div class="form-group">
                         <div class="col-sm-3">
                             <small  for="mrn">PATIENT REGISTRATION (MRN)</small>
