@@ -1535,8 +1535,8 @@ class PatmastController extends defaultController
                         'telno'    =>  $request->adm_telno,
                         'email'    =>  $request->adm_email,
                         'type'     =>  $request->adm_type,
-                        'lastupdate'     => session('username'),
-                        'lastuser'     =>  Carbon::now("Asia/Kuala_Lumpur")
+                        'lastuser'     => session('username'),
+                        'lastupdate'     =>  Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
                 DB::commit();

@@ -33,7 +33,7 @@
 
 	<!-- new adm save -->
 	<div id="mdl_add_new_adm" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
-		<div class="modal-dialog">
+		<div class="modal-dialog" style="width: 50%; height: 50%; margin: auto;">
 		
 			<!-- Modal content-->
 			<div class="modal-content">
