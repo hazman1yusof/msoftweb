@@ -141,10 +141,16 @@
         $('#episno').val('1');
     });
 
+    $("#txt_pat_newic").blur(function(){
+        if($("#btn_register_patient").data('oper') == 'add'){
+            check_existing_patient();
+        }
+    });
+
     function default_click_register(){
         if($('#frm_patient_info').valid()){
             if($(this).data('oper') == 'add'){
-                check_existing_patient(save_patient,{action:'default',param:'add'});
+                save_patient('add');
             }else{
                 save_patient($(this).data('oper'),$(this).data('idno'));
             }
@@ -158,9 +164,11 @@
         if(checkedbox.closest("td").next().length>0){
             let mrn = checkedbox.data("mrn");
             let idno = checkedbox.data("idno");
-            save_patient('edit',idno,mrn);
+            $("#btn_register_patient").data('oper','edit');
+            $("#btn_register_patient").data('idno',idno);
+            populate_data_from_mrn(mrn,"#frm_patient_info");
         }else{
-            save_patient('add');
+            $('#mdl_existing_record').modal('hide');
         }
     }
 
@@ -188,6 +196,8 @@
         }).success(function(data){
             $('#mdl_patient_info').modal('hide');
             $('#mdl_existing_record').modal('hide');
+            $("#load_from_addupd").data('info','true');
+            $("#load_from_addupd").data('oper',oper);
             $("#grid-command-buttons").bootgrid('reload');
         });
     }
@@ -204,7 +214,7 @@
             field:['MRN as merge','MRN','Name','Newic','Oldic','idnumber','DOB','idno'],
             table_name:'hisdb.pat_mast',
             table_id:'_none',
-            filterCol:['compcode'],filterVal:['session.company'],
+            filterCol:['compcode'],filterVal:['session.compcode'],
             searchCol:['Newic'],searchVal:['%'+patnewic+'%']
         };
 
@@ -227,13 +237,13 @@
                 tbl_exist_rec.rows.add(data.rows).draw();
                 $('#mdl_existing_record').modal('show');
             }else{
-                if(obj_callback.action=='default'){
-                    callback(obj_callback.param);
-                }else if(obj_callback.action=='apptrsc'){
-                    let oper = obj_callback.param[0];
-                    let apptbook_idno = obj_callback.param[3];
-                    callback(oper,null,null,apptbook_idno);
-                }
+                // if(obj_callback.action=='default'){
+                //     callback(obj_callback.param);
+                // }else if(obj_callback.action=='apptrsc'){
+                //     let oper = obj_callback.param[0];
+                //     let apptbook_idno = obj_callback.param[3];
+                //     callback(oper,null,null,apptbook_idno);
+                // }
                 
             }
         }).error(function(data){
@@ -477,8 +487,10 @@
                 });
 
             }else{
-                alert('MRN not found')
+                alert('MRN not found');
             }
+
+            $('#mdl_existing_record').modal('hide');
 
         }).error(function(data){
 

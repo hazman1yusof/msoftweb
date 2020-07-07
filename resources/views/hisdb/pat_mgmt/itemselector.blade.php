@@ -1,9 +1,9 @@
 	<!-- popup item selector -->
-	<div id="mdl_item_selector" class="modal fade" role="dialog" title="title" style="display: none; z-index: 110">
-		<div class="modal-dialog">
+	<div id="mdl_item_selector" class="modal fade" role="dialog" title="title" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+		<div class="modal-dialog" style="width: 50%; height: 50%; margin: auto;">
 		
 			<!-- Modal content-->
-			<div class="modal-content">
+			<div class="modal-content" style="border: 3px solid darkblue;margin-top:30px">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title" id="txt_item_selector"></h4>
@@ -172,6 +172,37 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn-u btn-u-default" id="new_areacode_save">Save</button>
+					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<!-- new relationship save -->
+	<div id="mdl_add_new_relationship" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110">
+		<div class="modal-dialog">
+		
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Add New Relationship</h4>
+				</div>
+				<div class="modal-body col-md-12">
+					<form id="new_relationship_form">
+					<div class="col-md-3 col-md-offset-1">
+	                    <small for="relationship_code">Code</small>
+	                    <input type="text" class="form-control form-mandatory" id="relationship_code" name="relationship_code" aria-required="true" disabled>
+	                </div>
+	                <div class="col-md-7">
+	                    <small for="relationship_desc">Description</small>
+	                    <input type="text" class="form-control form-mandatory uppercase" id="relationship_desc" name="relationship_desc" required >
+	                </div>
+                    </form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-u btn-u-default" id="new_relationship_save">Save</button>
 					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>

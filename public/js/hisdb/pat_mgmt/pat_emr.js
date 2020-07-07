@@ -105,7 +105,7 @@ $(document).ready(function () {
 				// $(search_relate_emr.textfield).parent().next().html('');
 			}
 		},{
-			title: "Select Bed Type search",
+			title: "Select Relationship",
 			open: function () {
 				search_relate_emr.urlParam.filterCol=['compcode', 'recstatus'];
 				search_relate_emr.urlParam.filterVal=['session.compcode', 'A'];
@@ -116,6 +116,30 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	search_relate_emr.makedialog(false);
+
+	$("#otherdialog_search_relate_emr").append( $( "<button id='relate_emr_new'>Add New Relationship Code</button>" ) );
+
+	$("#relate_emr_new").click(function(){
+		$("#mdl_add_new_relationship").modal('show');
+		enableForm('#new_relationship_form');
+	});
+
+	$('#new_relationship_save').click(function(){
+	      if($('#new_relationship_form').valid()){
+	        var _token = $('#csrf_token').val();
+	        let serializedForm = $( "#new_relationship_form" ).serializeArray();
+	        let obj = {
+	                _token: _token
+	        }
+	        
+	        $.post( '/pat_mast/new_relationship_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+	            $('#mdl_add_new_title').modal('hide');
+	        }).fail(function(data) {
+	            alert(data.responseText);
+	        }).success(function(data){
+	        });
+	      }
+	});
 	
 	$("#add_nok_emr").click(function(){
 		button_state_nok_emr('wait');

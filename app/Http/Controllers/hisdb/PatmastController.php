@@ -63,6 +63,7 @@ class PatmastController extends defaultController
 
             $paginate = $table->paginate($request->rows);
             $arr_mrn = [];
+
             foreach ($paginate->items() as $key => $obj) {
                 array_push($arr_mrn, $obj->mrn);
             }
@@ -392,6 +393,8 @@ class PatmastController extends defaultController
         $request['last_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
 
         foreach ($request->field as $key => $value) {
+            if(empty($request[$request->field[$key]]))continue;
+            // dump($request[$request->field[$key]]);
             $array_insert[$value] = strtoupper($request[$request->field[$key]]);
         }
 
@@ -1906,6 +1909,34 @@ class PatmastController extends defaultController
                     'compcode' => session('compcode'),
                     'areacode' => intval($idno) + 1,
                     'description' => $request->areacode_desc,
+                    'recstatus' => 'A',
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function new_relationship_form(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $idno = DB::table('hisdb.relationship')->max('idno');
+
+
+            DB::table('hisdb.relationship')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'areacode' => intval($idno) + 1,
+                    'description' => $request->relationship_desc,
                     'recstatus' => 'A',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),

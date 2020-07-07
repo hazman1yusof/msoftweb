@@ -50,6 +50,13 @@
 			padding: 0;
 		}
 
+		.modal .modal-dialog .half {
+			width: 50% !important;
+			height: 50% !important;
+			margin: 0;
+			padding: 0;
+		}
+
 		.modal .modal-content {
 			height: auto;
 			min-height: 100%;
@@ -132,6 +139,7 @@
 <body class="header-fixed">
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
     <div class="wrapper">
+    	<input type="hidden" id="load_from_addupd" data-info="false" data-oper="edit">
         <input name="epistycode" id="epistycode" type="hidden" value="{{request()->get('epistycode')}}">
         @if (request()->get('epistycode') == 'IP')
         <input name="epistycode2" id="epistycode2" type="hidden" value="DC">

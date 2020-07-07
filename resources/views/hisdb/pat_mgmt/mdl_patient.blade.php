@@ -1,6 +1,6 @@
 <!-- Large modal -->
 <div id="mdl_patient_info" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; z-index: 100; padding-left: 0px !important;">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog half modal-lg">
         <form id="frm_patient_info" class="form-horizontal">
 			<input type="hidden" name="idno" id="txt_pat_idno">
             <input name="pat_mrn" id="pat_mrn" type="hidden">
@@ -709,8 +709,8 @@
     </div>
 </div>
 
-<div id="mdl_existing_record" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
+<div id="mdl_existing_record" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;background-color: rgba(0, 0, 0, 0.3);">
+    <div class="modal-dialog modal-lg" style="width: 70%; height: 70%; margin: auto;">
 		<div class="modal-content">
 			<div class="modal-header label-primary">
 				<p align="center"><b>EXISTING PATIENT RECORD</b></p>
