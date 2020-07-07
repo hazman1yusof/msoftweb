@@ -66,8 +66,8 @@ i.fa {
 				<b><span id="bankname"></span></b>
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
-    			<br>Cheque Detail <br><b><span id="bankname"></span></b> </div>
-    			<b><span id="bankname"></span></b>
+    			<b><span id="bankname"></span></b><br>Cheque Detail <br> </div>
+    			
     			<div style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;color: red">
 						<p id="p_error"></p>
 					</div>
