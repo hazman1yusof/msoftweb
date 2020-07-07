@@ -976,7 +976,7 @@ $(document).ready(function () {
 
 		unsaved = false;
 		$("#jqGridPager2Delete,#saveHeaderLabel").hide();
-		dialog_document.on();//start binding event on jqgrid2
+		//dialog_document.on();//start binding event on jqgrid2
 
 		$("input[name='grnno']").keydown(function(e) {//when click tab at batchno, auto save
 			var code = e.keyCode || e.which;
@@ -988,7 +988,7 @@ $(document).ready(function () {
 
 	function onall_editfunc(){
 		
-		dialog_document.on();//start binding event on jqgrid2
+		//dialog_document.on();//start binding event on jqgrid2
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		

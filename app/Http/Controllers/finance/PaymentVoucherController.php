@@ -75,9 +75,13 @@ use Carbon\Carbon;
             'source' => 'AP',
             'auditno' => $auditno,
             'trantype' => 'PV',
+            'pvno' => $request->apacthdr_pvno,
             'doctype' => $request->apacthdr_doctype,
             'suppcode' => $request->apacthdr_suppcode,
             'document' => strtoupper($request->apacthdr_document),
+            'paymode' => $request->apacthdr_paymode,
+            'bankcode' => $request->apacthdr_bankcode,
+            'cheqno' => $request->apacthdr_cheqno,
             'remarks' => strtoupper($request->apacthdr_remarks),
             'compcode' => session('compcode'),
             'adduser' => session('username'),
@@ -99,7 +103,7 @@ use Carbon\Carbon;
             $responce = new stdClass();
             $responce->auditno = $auditno;
             $responce->idno = $idno;
-            $responce->suppgroup = $suppgroup;
+          //  $responce->suppgroup = $suppgroup;
             echo json_encode($responce);
 
             // $queries = DB::getQueryLog();
