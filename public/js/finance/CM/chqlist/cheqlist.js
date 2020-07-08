@@ -140,8 +140,8 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Comp Code', name: 'compcode', width: 50, hidden:true},	
 			{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true,},
-			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap',canSearch:true},
-			{ label: 'Remarks', name: 'remarks', width: 30, hidden:false, canSearch:false},
+			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap',canSearch:true,checked:true},
+			{ label: 'Remarks', name: 'remarks', width: 30, hidden:false, canSearch:true},
 			{ label: 'Status', name: 'recstatus', width: 30, hidden:false, canSearch:true,
 				/*stype: "select",
                 searchoptions: { value: ":[ALL];OPEN:OPEN;ISSUED:ISSUED;CANCELLED:CANCELLED"}*/
@@ -158,19 +158,69 @@ $(document).ready(function () {
 		sortorder:'desc',
 		width: 900,
 		height: 200,
-		caption: caption('searchForm2','Search By'),
+		caption: caption_cheqlist('searchForm2','Search By'),
 		pager: "#jqGridPager2",
 		loadComplete: function(){
-			
 			$("#gridCheqListDetail").setSelection($("#gridCheqListDetail").getDataIDs()[0]);
-			
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
 
+			$("#searchForm2 input[type='radio'][name='dcolr']").off();
+			$("#searchForm2 input[type='radio'][name='dcolr']").on('change',function(){
+				if($(this).val() == "recstatus"){
+					$("#searchForm2 input[type='text'][name='Stext']").hide();
+					$("#searchForm2 #Ssel").show();
+				}else{
+					$("#searchForm2 input[type='text'][name='Stext']").show();
+					$("#searchForm2 #Ssel").hide();
+				}
+			});
 		},
 
 	});
+
+	function caption_cheqlist(form,caption){
+		if(caption==undefined)caption='Search';
+		return `<form id='`+form+`'>
+					<div class='input-group input-group-sm pull-left'>
+						<span class='input-group-addon'>
+							<strong>`+caption+` :</strong>
+						</span>
+							<input type='text' name='Stext' class='form-control' placeholder='Search here...'>
+							<select id="Ssel" class='form-control' style="display:none">
+								<option value="">--Select Status--</option>
+							    <option value="OPEN">OPEN</option>
+							    <option value="ISSUED">ISSUED</option>
+							    <option value="CANCELLED">CANCELLED</option>
+							</select>
+							<span class='input-group-addon' name='Scol'>
+							</span>
+					</div>
+				</form>
+				<div class='clearfix'></div>`;
+	}
+
+
+	function searchClick_cheqlist(grid,form,urlParam){
+		$(form+' #Ssel').on( "change", function() {
+			delay(function(){
+				search(grid,$(form+' #Ssel').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
+			}, 500 );
+		});
+
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
+			$(form+' #Ssel').val("")
+			search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
+		});
+	}
+
 
 	// activate the toolbar searching
      /*   $('#gridCheqListDetail').jqGrid('filterToolbar',{
@@ -183,7 +233,7 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 
 	populateSelect('#gridCheqListDetail','#searchForm2');
-	searchClick('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
+	searchClick_cheqlist('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
 
 	/////////////////Pager Hide/////////////////////////////////////////////////////////////////////////////////////////
 	$("#pg_jqGridPager2 table").hide();

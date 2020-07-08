@@ -822,6 +822,7 @@
 
     let accomodation_table = $('#accomodation_table').DataTable( {
         "ajax": "pat_mast/get_entry?action=accomodation_table",
+        "paging":         false,
         "columns": [
             {'data': 'ward' },
             {'data': 'room'}, 
