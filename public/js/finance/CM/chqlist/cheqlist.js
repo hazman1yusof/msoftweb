@@ -137,15 +137,14 @@ $(document).ready(function () {
 	$("#gridCheqListDetail").jqGrid({
 		datatype: "local",
 		editurl: "/cheqlistDetail/form",
-		 mtype: "GET",
 		colModel: [
 			{ label: 'Comp Code', name: 'compcode', width: 50, hidden:true},	
 			{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true,},
-			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap'},
-			{ label: 'Remarks', name: 'remarks', width: 30, hidden:false},
-			{ label: 'Status', name: 'recstatus', width: 30, hidden:false,
-				stype: "select",
-                searchoptions: { value: ":[ALL];OPEN:OPEN;ISSUED:ISSUED;CANCELLED:CANCELLED"}
+			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap',canSearch:true},
+			{ label: 'Remarks', name: 'remarks', width: 30, hidden:false, canSearch:false},
+			{ label: 'Status', name: 'recstatus', width: 30, hidden:false, canSearch:true,
+				/*stype: "select",
+                searchoptions: { value: ":[ALL];OPEN:OPEN;ISSUED:ISSUED;CANCELLED:CANCELLED"}*/
 			},
 			{ label: 'idno', name: 'idno', hidden: true,editable: true, key:true},
 			 
@@ -159,7 +158,7 @@ $(document).ready(function () {
 		sortorder:'desc',
 		width: 900,
 		height: 200,
-	//	caption: caption('searchForm2','Search By'),
+		caption: caption('searchForm2','Search By'),
 		pager: "#jqGridPager2",
 		loadComplete: function(){
 			
@@ -174,18 +173,18 @@ $(document).ready(function () {
 	});
 
 	// activate the toolbar searching
-        $('#gridCheqListDetail').jqGrid('filterToolbar',{
+     /*   $('#gridCheqListDetail').jqGrid('filterToolbar',{
             searchOperators: false,
             autosearch: true,
-			stringResult: false,
+			stringResult: true,
 			searchOnEnter: false,
-        });
+        });*/
 	
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 
-/*	populateSelect2('#gridCheqListDetail','#searchForm2');
-	searchClick2('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
-*/
+	populateSelect('#gridCheqListDetail','#searchForm2');
+	searchClick('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
+
 	/////////////////Pager Hide/////////////////////////////////////////////////////////////////////////////////////////
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
