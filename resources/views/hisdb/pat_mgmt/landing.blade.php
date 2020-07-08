@@ -22,7 +22,7 @@
 
 	<style type="text/css" class="init">
 		.smallmodal{
-			width: 50% !important; height: 50% !important; margin: auto !important;
+			width: 70% !important; margin: auto !important;
 		}
 		tr.dtrg-group{
 			font-size: 15px;

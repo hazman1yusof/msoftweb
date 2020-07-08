@@ -119,11 +119,6 @@ $(document).ready(function () {
 
 	$("#otherdialog_search_relate_emr").append( $( "<button id='relate_emr_new'>Add New Relationship Code</button>" ) );
 
-	$("#relate_emr_new").click(function(){
-		$("#mdl_add_new_relationship").modal('show');
-		enableForm('#new_relationship_form');
-	});
-
 	$('#new_relationship_save').click(function(){
 	      if($('#new_relationship_form').valid()){
 	        var _token = $('#csrf_token').val();

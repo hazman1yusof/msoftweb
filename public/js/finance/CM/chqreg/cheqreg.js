@@ -70,11 +70,13 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			fdl.set_array().reset();
+			empty_form();
 
 		},
 		onSelectRow:function(rowid, selected){
 			if(rowid != null) {
 				urlParam_cheqregdtl.filterVal[0]=selrowData("#jqGrid").bankcode;
+				populate_form(selrowData("#jqGrid"));
 				refreshGrid('#gridCheqRegDetail',urlParam_cheqregdtl);
 				$("#pg_jqGridPager2 table").show();
 			}
@@ -505,6 +507,19 @@ $(document).ready(function () {
 			});
 			this.error = false;
 		}
+		
+
+	}
+	
+	function populate_form(obj){
+
+		//panel header
+		$('#bankname').text(obj.bankname);	
+	}
+
+	function empty_form(){
+
+		$('#bankname_show').text('');
 		
 
 	}
