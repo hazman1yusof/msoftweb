@@ -70,11 +70,13 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			fdl.set_array().reset();
+			empty_form();
 
 		},
 		onSelectRow:function(rowid, selected){
 			if(rowid != null) {
 				urlParam_cheqlistdtl.filterVal[0]=selrowData("#jqGrid").bankcode;
+				populate_form(selrowData("#jqGrid"));
 				refreshGrid('#gridCheqListDetail',urlParam_cheqlistdtl);
 				$("#pg_jqGridPager2 table").show();
 			}
@@ -135,12 +137,16 @@ $(document).ready(function () {
 	$("#gridCheqListDetail").jqGrid({
 		datatype: "local",
 		editurl: "/cheqlistDetail/form",
+		 mtype: "GET",
 		colModel: [
 			{ label: 'Comp Code', name: 'compcode', width: 50, hidden:true},	
 			{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true,},
-			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap', checked:true,canSearch: true},
-			{ label: 'Remarks', name: 'remarks', width: 30, hidden:false,},
-			{ label: 'Recstatus', name: 'recstatus', width: 30, hidden:false,checked:true,canSearch: true},
+			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap'},
+			{ label: 'Remarks', name: 'remarks', width: 30, hidden:false},
+			{ label: 'Status', name: 'recstatus', width: 30, hidden:false,
+				stype: "select",
+                searchoptions: { value: ":[ALL];OPEN:OPEN;ISSUED:ISSUED;CANCELLED:CANCELLED"}
+			},
 			{ label: 'idno', name: 'idno', hidden: true,editable: true, key:true},
 			 
 		],
@@ -153,38 +159,33 @@ $(document).ready(function () {
 		sortorder:'desc',
 		width: 900,
 		height: 200,
-		//rowNum: 30,
-		sord: "desc",
-		hidegrid: false,
-		caption: caption('searchForm2','Search By'),
+	//	caption: caption('searchForm2','Search By'),
 		pager: "#jqGridPager2",
-		onPaging: function (pgButton) {
-		},
-		onSelectRow:function(rowid, selected){
-		
-		},
 		loadComplete: function(){
 			
-				$("#gridCheqListDetail").setSelection($("#gridCheqListDetail").getDataIDs()[0]);
+			$("#gridCheqListDetail").setSelection($("#gridCheqListDetail").getDataIDs()[0]);
 			
-		},
-		ondblClickRow: function(rowid, iRow, iCol, e){
-	
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
 
 		},
+
 	});
 
-	
+	// activate the toolbar searching
+        $('#gridCheqListDetail').jqGrid('filterToolbar',{
+            searchOperators: false,
+            autosearch: true,
+			stringResult: false,
+			searchOnEnter: false,
+        });
 	
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	//addParamField('#gridCheqListDetail',true,urlParam_cheqlistdtl);
 
-	populateSelect('#gridCheqListDetail','#searchForm2');
-	searchClick('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
-
+/*	populateSelect2('#gridCheqListDetail','#searchForm2');
+	searchClick2('#gridCheqListDetail','#searchForm2',urlParam_cheqlistdtl);
+*/
 	/////////////////Pager Hide/////////////////////////////////////////////////////////////////////////////////////////
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
@@ -194,5 +195,17 @@ $(document).ready(function () {
 		refreshGrid('#gridCheqListDetail',urlParam_cheqlistdtl);
 	});
 
+	function populate_form(obj){
+
+		//panel header
+		$('#bankname').text(obj.bankname);	
+	}
+
+	function empty_form(){
+
+		$('#bankname_show').text('');
+		
+
+	}
 	
 });

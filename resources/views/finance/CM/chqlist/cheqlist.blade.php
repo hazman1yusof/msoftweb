@@ -28,6 +28,14 @@ i.fa {
 	overflow: auto;
 }
 
+.ui-menu-item {
+    font-size: 11px;
+}
+
+.ui-autocomplete {
+   	font-size: 11px;
+}
+       
 @endsection
 
 @section('body')
@@ -66,7 +74,7 @@ i.fa {
 
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
     			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
-    			Cheque List Detail </div>
+    			<b><span id="bankname"></span></b><br>Cheque Detail <br> </div>
 				<div id="jqGrid3_panel1" class="panel-collapse collapse">
 					<div class="panel-body">
 					    <div class='col-md-12' style="padding:0 0 15px 0">
