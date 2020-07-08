@@ -141,11 +141,9 @@ $(document).ready(function () {
 			{ label: 'Comp Code', name: 'compcode', width: 50, hidden:true},	
 			{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true,},
 			{ label: 'Cheque No', name: 'cheqno', width: 20, classes: 'wrap',canSearch:true,checked:true},
-			{ label: 'Remarks', name: 'remarks', width: 30, hidden:false, canSearch:true},
-			{ label: 'Status', name: 'recstatus', width: 30, hidden:false, canSearch:true,
-				/*stype: "select",
-                searchoptions: { value: ":[ALL];OPEN:OPEN;ISSUED:ISSUED;CANCELLED:CANCELLED"}*/
-			},
+			{ label: 'Remarks', name: 'remarks', width: 30, hidden:true},
+			{ label: 'Pay To', name: 'payto', width: 30, hidden:false, canSearch:true},
+			{ label: 'Status', name: 'recstatus', width: 30, hidden:false, canSearch:true},
 			{ label: 'idno', name: 'idno', hidden: true,editable: true, key:true},
 			 
 		],
@@ -220,15 +218,6 @@ $(document).ready(function () {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
 		});
 	}
-
-
-	// activate the toolbar searching
-     /*   $('#gridCheqListDetail').jqGrid('filterToolbar',{
-            searchOperators: false,
-            autosearch: true,
-			stringResult: true,
-			searchOnEnter: false,
-        });*/
 	
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 
