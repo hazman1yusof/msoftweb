@@ -211,9 +211,9 @@
 							<div class="col-md-6" style="">
 								<p><i class="fa fa-times" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
 							</div>  
-							<!-- <div class="col-md-6" style="">
-								<p><i class="fa fa-check" aria-hidden="true"></i> ACTIVE: <span id="stat_active"></span></p>
-							</div> -->
+							<div class="col-md-6" style="">
+								<p><img src="img/bedonly.png" height="10" width="14"></img> TOTAL BED: <span id="stat_totalbed"></span></p>
+							</div>
 
 						</div>
 
