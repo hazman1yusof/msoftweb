@@ -25,8 +25,8 @@ $(document).ready(function () {
 		url:'/util/get_table_default',
 		field: '',
 		table_name: 'hisdb.bedalloc',
-		filterCol:['compcode'],
-		filterVal:['session.compcode'],
+		filterCol:['compcode','mrn','episno'],
+		filterVal:['session.compcode','',''],
 	}
 
 	$("#jqGrid_bed").jqGrid({
@@ -89,6 +89,8 @@ $(document).ready(function () {
 
 	$("#tabBed").on("shown.bs.collapse", function(){
 		$("#jqGrid_bed").jqGrid ('setGridWidth', Math.floor($("#jqGrid_bed_c")[0].offsetWidth-$("#jqGrid_bed_c")[0].offsetLeft-0));
+		urlParam_bed.filterCol = ['compcode','episno','mrn'],
+		urlParam_bed.filterVal = ['session.compcode',$("#txt_epis_no").val(),$("#mrn_episode").val()]
 		refreshGrid("#jqGrid_bed", urlParam_bed);
 	});
 

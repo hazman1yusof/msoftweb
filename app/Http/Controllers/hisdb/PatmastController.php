@@ -329,9 +329,23 @@ class PatmastController extends defaultController
                 $this->save_new_episode($request);
                 break;
 
-
             case 'check_debtormast':
                 $data = $this->check_debtormast($request);
+                break;
+
+            case 'get_bed_type':
+                $data = DB::table('hisdb.bedtype')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','=','A')
+                    ->get();
+                break;
+
+            case 'get_bed_ward':
+                $data = DB::table('sysdb.department')
+                    ->where('warddept','=','1')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','=','A')
+                    ->get();
                 break;
 
             case 'get_refno_list':
@@ -343,10 +357,14 @@ class PatmastController extends defaultController
                 break;
 
             case 'accomodation_table':
-                $data = DB::table('hisdb.bed')
-                        ->where('occup','=',"VACANT")
-                        ->where('compcode','=',session('compcode'))
-                        ->orderBy('bedtype', 'desc')
+                $data = DB::table('hisdb.bed as b')
+                        ->select('b.ward','b.room','b.bednum','b.bedtype','b.occup','bt.description as desc_bt','d.description as desc_d')
+                        ->leftJoin('hisdb.bedtype as bt', 'b.bedtype', '=', 'bt.bedtype')
+                        ->leftJoin('sysdb.department as d', 'b.ward', '=', 'd.deptcode')
+                        ->where('b.occup','=',"VACANT")
+                        ->where('b.recstatus','=','A')
+                        ->where('b.compcode','=',session('compcode'))
+                        ->orderBy('b.bedtype', 'desc')
                         ->get();
 
                 break;
@@ -1846,11 +1864,16 @@ class PatmastController extends defaultController
                 ->where('debtortype','=',$epispayer->pay_type)
                 ->first();
 
+        $bed = DB::table('hisdb.bed')
+                ->where('compcode','=',session('compcode'))
+                ->where('bednum','=',$episode->bed)
+                ->first();
 
         $responce = new stdClass();
         $responce->episode = $episode;
         $responce->epispayer = $epispayer;
         $responce->debtormast = $debtormast;
+        $responce->bed = $bed;
 
         return json_encode($responce);
     }

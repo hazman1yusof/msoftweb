@@ -348,7 +348,7 @@
         var episourrefno = $("#txt_epis_our_refno").val();
         var epispreg = $('input[name=rad_epis_pregnancy]:checked').val();
         var episfee = $('input[name=rad_epis_fee]:checked').val();
-        var episbed = $('#hid_epis_bed').val();
+        var episbed = $('#txt_epis_bed').val();
         var _token = $('#csrf_token').val();
 
         let obj =  { 
@@ -401,6 +401,7 @@
                 var episdata = data.episode;
                 var epispayer = data.epispayer;
                 var debtormast = data.debtormast;
+                var bed = data.bed;
 
                 if(episdata.newcaseP == 1){
                     $('#cmb_epis_case_maturity').val(1);
@@ -427,7 +428,10 @@
                 $('#hid_epis_case').val(episdata.case_code);
                 $('#hid_epis_doctor').val(episdata.admdoctor);
                 $('#hid_epis_fin').val(episdata.pay_type);
-                $("#hid_epis_bed").val(episdata.bed);
+                $("#txt_epis_bed").val(bed.ward);
+                $("#txt_epis_ward").val(bed.ward);
+                $("#txt_epis_room").val(bed.room);
+                $("#txt_epis_bedtype").val(episdata.bed);
                 $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
                 $('#cmb_epis_pay_mode').val(episdata.pyrmode.toUpperCase());
                 $('#txt_epis_payer').val(debtormast.name);
@@ -463,7 +467,6 @@
         var id_use = id_.substring(id_.indexOf("_")+1);
 
         if(event.key == "Tab" && textfield.val() != ""){
-
             $('#mdl_item_selector').modal('show');
             pop_item_select(id_use,true,textfield.val());
         }
@@ -727,7 +730,9 @@
             {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
             {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
             // {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
-            {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'}
+            {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+            {code:'',desc:'',id:'bed_dept'},
+            {code:'',desc:'',id:'bed_ward'}
         ]);
     }
     
@@ -743,6 +748,8 @@
         this.epis_fin={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.epis_payer={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.bill_type={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.bed_dept={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.bed_ward={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.load_desc = function(){
             load_for_desc(this,'regdept','pat_mast/get_entry?action=get_reg_dept');
             load_for_desc(this,'regsource','pat_mast/get_entry?action=get_reg_source');
@@ -752,6 +759,8 @@
             load_for_desc(this,'epis_fin','pat_mast/get_entry?action=get_reg_fin');
             // load_for_desc(this,'epis_payer','pat_mast/get_entry?action=get_debtor_list');
             load_for_desc(this,'bill_type','pat_mast/get_entry?action=get_billtype_list');
+            load_for_desc(this,'bed_dept','pat_mast/get_entry?action=get_bed_type');
+            load_for_desc(this,'bed_ward','pat_mast/get_entry?action=get_bed_ward');
         }
 
         function load_for_desc(selobj,id,url){
@@ -766,6 +775,7 @@
                         
                 },'json').done(function(data) {
                     if(!$.isEmptyObject(data)){
+                        console.log(data.data);
 
                         selobj[id].data = data.data;
 
@@ -794,7 +804,6 @@
                 if(moment().diff(moment(moment_stored),'days') > 7){
                     localStorage.removeItem(storage_name);
                 }
-
             }
         }
 
@@ -828,20 +837,64 @@
             "ajax": "pat_mast/get_entry?action=accomodation_table",
             "paging":false,
             "columns": [
-                {'data': 'bedtype'},
+                {'data': 'desc_bt'},
                 {'data': 'bednum'},
-                {'data': 'ward'},
+                {'data': 'desc_d'},
                 {'data': 'room'},
                 {'data': 'occup'},
+                {'data': 'bedtype'},
+                {'data': 'ward'},
             ],
-            order: [[0, 'asc'],[2, 'asc']],
+            order: [[5, 'asc'],[6, 'asc']],
             columnDefs: [ {
-                targets: [ 0 ],
+                targets: [0,5,6],
                 visible: false
             } ],
             rowGroup: {
-                dataSrc: [ "bedtype" ]
+                dataSrc: [ "desc_bt" ]
             },
+            "initComplete": function(settings, json) {
+                let opt_bt = opt_ward = "";
+                epis_desc_show.bed_dept.data.forEach(function(e,i){
+                    opt_bt+=`<option value="`+e.description+`">`+e.description+`</option>`;
+                });
+                epis_desc_show.bed_ward.data.forEach(function(e,i){
+                    opt_ward+=`<option value="`+e.description+`">`+e.description+`</option>`;
+                });
+                $("#accomodation_table_filter").html(`
+                    <label >Bed Type: <input type="radio" data-seltype="bt" id="search_bed_bedtype" name="search_bed" checked></label>;&nbsp;
+                    <label >Ward: <input type="radio" data-seltype="d" id="search_bed_ward" name="search_bed"></label>
+                    &nbsp;&nbsp;&nbsp;
+                    <label>
+                        <select data-dtbid="0" id="search_bed_select_bed_dept" name="search_bed_select" class="form-control">
+                          <option value="">-- Select --</option>
+                          `+opt_bt+`
+                        </select>
+
+                        <select data-dtbid="2" id="search_bed_select_ward" name="search_bed_select" class="form-control" style="display:none;">
+                          <option value="">-- Select --</option>
+                          `+opt_ward+`
+                        </select>
+                    </label>
+                    `
+                );
+
+                $('input[type="radio"][name="search_bed"]').on('click',function(){
+                    let seltype = $(this).data('seltype');
+                    if(seltype == 'bt'){
+                        $("#search_bed_select_bed_dept").show();
+                        $("#search_bed_select_ward").hide();
+                    }else{
+                        $("#search_bed_select_bed_dept").hide();
+                        $("#search_bed_select_ward").show();
+                    }
+                });
+
+                $("select[name='search_bed_select']").on('change',function(){
+                    // accomodation_table.columns( $(this).data('dtbid') ).search( this.value ).draw();
+                    accomodation_table.search( this.value ).draw();
+                });
+            }
         } );
 
         $('#accomodation_table tbody').on('dblclick', 'tr', function () {    
