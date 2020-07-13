@@ -223,10 +223,10 @@
 						<table id="accomodation_table" class="table-hover cell-border" width="100%">
 							<thead>
 								<tr>
+									<th>Bed Type</th>
+									<th>Bed Number</th>
 									<th>Ward</th>
 									<th>Room</th>
-									<th>Bed Number</th>
-									<th>Bed Type</th>
 									<th>Status</th>
 								</tr>
 							</thead>

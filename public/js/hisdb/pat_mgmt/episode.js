@@ -820,11 +820,6 @@
         }
     }
 
-    $('#accomodation_table tbody').on('show.bs.modal', function () {
-        console.log('watever')
-        var accomodation_selecter_ = new accomodation_selecter();
-    });
-
 
     function accomodation_selecter(){
         var accomodation_table = null;
@@ -833,19 +828,19 @@
             "ajax": "pat_mast/get_entry?action=accomodation_table",
             "paging":false,
             "columns": [
+                {'data': 'bedtype'},
+                {'data': 'bednum'},
                 {'data': 'ward'},
                 {'data': 'room'},
-                {'data': 'bednum'},
-                {'data': 'bedtype'},
                 {'data': 'occup'},
             ],
-            order: [[3, 'asc']],
+            order: [[0, 'asc'],[2, 'asc']],
             columnDefs: [ {
-                targets: [ 3 ],
+                targets: [ 0 ],
                 visible: false
             } ],
             rowGroup: {
-                dataSrc: [ "bedtype", "ward" ]
+                dataSrc: [ "bedtype" ]
             },
         } );
 
