@@ -436,4 +436,10 @@ $(document).ready(function() {
         }
     }
 
+
+    $('#mdl_accomodation').on('show.bs.modal', function () {
+        var accomodation_selecter_ = new accomodation_selecter();
+    });
+
+
 });
