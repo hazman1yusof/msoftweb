@@ -1148,7 +1148,8 @@ $(document).ready(function () {
 			open: function(){
 				dialog_cheqno.urlParam.filterCol=['compcode','recstatus', 'bankcode'],
 				dialog_cheqno.urlParam.filterVal=['session.compcode','OPEN', $('#apacthdr_bankcode').val()]
-			}
+			},
+			width:4/10 * $(window).width()
 		},'urlParam','radio','tab'
 	);
 	dialog_cheqno.makedialog(true);

@@ -26,6 +26,14 @@
 		top: -10px;
 	}
 
+	<!-- /* The sticky class is added to the header with JS when it reaches its scroll position */ -->
+	.sticky {
+		z-index: 100;
+		position: fixed;
+		top: 0;
+		width: 100%
+	}
+
 	.clearfix {
 		overflow: auto;
 	}
@@ -112,105 +120,107 @@
 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%; position:relative; min-height: 120px'>
-			<fieldset>
-				<input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}">
+		<div class="header" id="SearchFormHeader">
+			<form id="searchForm" class="formclass" style='width:99%; position:relative; min-height: 120px'>
+				<fieldset>
+					<input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}">
 
-				<div class='col-md-12' style="padding:0 0 15px 0;">
-					<div class="form-group"> 
-						<div class="col-md-2">
-							<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
-		              	</div>
-
-					  	<div class="col-md-4">
-					  		<label class="control-label"></label>  
-							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
-						
-							<div  id="show_bedtype" style="display:none">
-								<div class='input-group'>
-									<input id="s_bedtype" name="s_bedtype" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
+					<div class='col-md-12' style="padding:0 0 15px 0;">
+						<div class="form-group"> 
+							<div class="col-md-2">
+								<label class="control-label" for="Scol">Search By : </label>  
+								<select id='Scol' name='Scol' class="form-control input-sm"></select>
 							</div>
 
-							<!-- <div  id="show_statistic" style="display:none">
-								<div class='input-group'>
-									<input id="b_statistic" name="b_statistic" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div> -->
+							<div class="col-md-4">
+								<label class="control-label"></label>  
+								<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
 							
-							<div  id="show_occup" style="display:none">
-								<div class='input-group'>
-									<input id="occup" name="occup" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								<div  id="show_bedtype" style="display:none">
+									<div class='input-group'>
+										<input id="s_bedtype" name="s_bedtype" type="text" maxlength="12" class="form-control input-sm">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
 								</div>
-								<span class="help-block"></span>
+
+								<!-- <div  id="show_statistic" style="display:none">
+									<div class='input-group'>
+										<input id="b_statistic" name="b_statistic" type="text" maxlength="12" class="form-control input-sm">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div> -->
+								
+								<div  id="show_occup" style="display:none">
+									<div class='input-group'>
+										<input id="occup" name="occup" type="text" maxlength="12" class="form-control input-sm">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+								<div  id="show_doc" style="display:none">
+									<div class='input-group'>
+										<input id="doc" name="doc" type="text" maxlength="12" class="form-control input-sm">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div> 
 							</div>
 
-							<div  id="show_doc" style="display:none">
-								<div class='input-group'>
-									<input id="doc" name="doc" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							<div class="col-md-1" style="padding-left: 0px;">
+								<div id="div_bedtype" style="padding-left: 0px;max-width: 45px;display:none">
+									<label class="control-label"></label>
+									<a class='form-control btn btn-primary' id="btn_bedtype"><span class='fa fa-ellipsis-h'></span></a>
 								</div>
-								<span class="help-block"></span>
-							</div> 
+								<!-- <div id="div_statistic" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
+									<label class="control-label"></label>
+									<a class='form-control btn btn-primary' id="btn_statistic"><span class='fa fa-ellipsis-h'></span></a>
+								</div> -->
+								<div id="div_occup" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
+									<label class="control-label"></label>
+									<a class='form-control btn btn-primary' id="btn_occup"><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<div id="div_doc" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
+									<label class="control-label"></label>
+									<a class='form-control btn btn-primary' id="btn_doc"><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+							</div>
 						</div>
 
-						<div class="col-md-1" style="padding-left: 0px;">
-							<div id="div_bedtype" style="padding-left: 0px;max-width: 45px;display:none">
-								<label class="control-label"></label>
-								<a class='form-control btn btn-primary' id="btn_bedtype"><span class='fa fa-ellipsis-h'></span></a>
+						<div class="form-group" style="position: absolute; right: 10px;top: 8px; width: 35%">
+							<div class="col-md-6" style="">
+								<p><img src="img/bedonly.png" height="10" width="14"></img> VACANT: <span id="stat_vacant"></span></p>
 							</div>
-							<!-- <div id="div_statistic" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
-								<label class="control-label"></label>
-								<a class='form-control btn btn-primary' id="btn_statistic"><span class='fa fa-ellipsis-h'></span></a>
+							<div class="col-md-6" style="">
+								<p><i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED: <span id="stat_occupied"></span></p>
+							</div>
+							<div class="col-md-6" style="">
+								<p><i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING: <span id="stat_housekeeping"></span></p>
+							</div>
+							<div class="col-md-6" style="">
+								<p><i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE: <span id="stat_maintenance"></span></p>
+							</div>
+							<div class="col-md-6" style="">
+								<p><i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED: <span id="stat_isolated"></span></p>
+							</div>
+							<div class="col-md-6" style="">
+								<p><i class="fa fa-ban" aria-hidden="true"></i> RESERVE: <span id="stat_reserve"></span></p>
+							</div>
+							<div class="col-md-6" style="">
+								<p><i class="fa fa-times" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
+							</div>  
+							<!-- <div class="col-md-6" style="">
+								<p><i class="fa fa-check" aria-hidden="true"></i> ACTIVE: <span id="stat_active"></span></p>
 							</div> -->
-							<div id="div_occup" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
-								<label class="control-label"></label>
-								<a class='form-control btn btn-primary' id="btn_occup"><span class='fa fa-ellipsis-h'></span></a>
-							</div>
-							<div id="div_doc" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
-								<label class="control-label"></label>
-								<a class='form-control btn btn-primary' id="btn_doc"><span class='fa fa-ellipsis-h'></span></a>
-							</div>
+
 						</div>
-		            </div>
 
-		            <div class="form-group" style="position: absolute; right: 10px;top: 8px; width: 35%">
-		            	<div class="col-md-6" style="">
-							<p><img src="img/bedonly.png" height="10" width="14"></img> VACANT: <span id="stat_vacant"></span></p>
-					  	</div>
-						<div class="col-md-6" style="">
-							<p><i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED: <span id="stat_occupied"></span></p>
-					  	</div>
-						<div class="col-md-6" style="">
-							<p><i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING: <span id="stat_housekeeping"></span></p>
-					  	</div>
-						<div class="col-md-6" style="">
-							<p><i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE: <span id="stat_maintenance"></span></p>
-					  	</div>
-						<div class="col-md-6" style="">
-							<p><i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED: <span id="stat_isolated"></span></p>
-					  	</div>
-						<div class="col-md-6" style="">
-							<p><i class="fa fa-ban" aria-hidden="true"></i> RESERVE: <span id="stat_reserve"></span></p>
-					  	</div>
-						<div class="col-md-6" style="">
-							<p><i class="fa fa-times" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
-					  	</div>  
-						<!-- <div class="col-md-6" style="">
-							<p><i class="fa fa-check" aria-hidden="true"></i> ACTIVE: <span id="stat_active"></span></p>
-					  	</div> -->
-
-		            </div>
-
-				</div>
-			</fieldset> 
-		</form>
+					</div>
+				</fieldset> 
+			</form>
+		</div>
 
         <div class="panel panel-default">
 		    <div class="panel-heading">Bed Management Setup Header</div>
