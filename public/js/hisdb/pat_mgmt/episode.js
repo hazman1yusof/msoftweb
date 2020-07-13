@@ -820,36 +820,50 @@
         }
     }
 
-    let accomodation_table = $('#accomodation_table').DataTable( {
-        "ajax": "pat_mast/get_entry?action=accomodation_table",
-        "paging":         false,
-        "columns": [
-            {'data': 'ward' },
-            {'data': 'room'}, 
-            {'data': 'bednum' },
-            {'data': 'bedtype'}, 
-            {'data': 'occup' },
-        ],
-        order: [[3, 'asc'], [0, 'asc']],
-        columnDefs: [ {
-            targets: [ 3, 0 ],
-            visible: false
-        } ],
-        rowGroup: {
-            dataSrc: [ "bedtype", "ward" ]
-        },
-    } );
-
-    $('#accomodation_table tbody').on('dblclick', 'tr', function () {    
-        let item = accomodation_table.row( this ).data();
-        if(item != undefined){
-            $('#txt_epis_bed').val(item["bednum"]);
-            $('#txt_epis_ward').val(item["ward"]);
-            $('#txt_epis_room').val(item["room"]);
-            $('#txt_epis_bedtype').val(item["bedtype"]);
-                
-            $('#mdl_accomodation').modal('hide');
-        }
+    $('#accomodation_table tbody').on('show.bs.modal', function () {
+        console.log('watever')
+        var accomodation_selecter_ = new accomodation_selecter();
     });
 
-            
+
+    function accomodation_selecter(){
+        var accomodation_table = null;
+
+        accomodation_table = $('#accomodation_table').DataTable( {
+            "ajax": "pat_mast/get_entry?action=accomodation_table",
+            "paging":false,
+            "columns": [
+                {'data': 'ward'},
+                {'data': 'room'},
+                {'data': 'bednum'},
+                {'data': 'bedtype'},
+                {'data': 'occup'},
+            ],
+            order: [[3, 'asc']],
+            columnDefs: [ {
+                targets: [ 3 ],
+                visible: false
+            } ],
+            rowGroup: {
+                dataSrc: [ "bedtype", "ward" ]
+            },
+        } );
+
+        $('#accomodation_table tbody').on('dblclick', 'tr', function () {    
+            let item = accomodation_table.row( this ).data();
+            if(item != undefined){
+                $('#txt_epis_bed').val(item["bednum"]);
+                $('#txt_epis_ward').val(item["ward"]);
+                $('#txt_epis_room').val(item["room"]);
+                $('#txt_epis_bedtype').val(item["bedtype"]);
+                    
+                $('#mdl_accomodation').modal('hide');
+            }
+        });
+
+        $("#mdl_accomodation").on('hidden.bs.modal', function () {
+            accomodation_table.destroy();
+            $('#accomodation_table tbody').off('dblclick');
+        });
+    }
+
