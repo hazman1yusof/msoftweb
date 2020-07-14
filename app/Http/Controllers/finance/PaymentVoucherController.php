@@ -134,8 +134,13 @@ use Carbon\Carbon;
         $array_update = [
             'unit' => session('unit'),
             'compcode' => session('compcode'),
+            'pvno' => $request->apacthdr_pvno,
             'doctype' => $request->apacthdr_doctype,
+            'suppcode' => $request->apacthdr_suppcode,
             'document' => strtoupper($request->apacthdr_document),
+            'paymode' => $request->apacthdr_paymode,
+            'bankcode' => $request->apacthdr_bankcode,
+            'cheqno' => $request->apacthdr_cheqno,
             'remarks' => strtoupper($request->apacthdr_remarks),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
