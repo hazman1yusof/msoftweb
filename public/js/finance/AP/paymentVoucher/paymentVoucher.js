@@ -588,13 +588,12 @@ $(document).ready(function () {
 				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Amount Paid', name: 'totamount', width: 100, classes: 'wrap', hidden:true, 
+			{ label: 'Amount Paid', name: 'totamount', width: 100, classes: 'wrap', hidden:false, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
 				editrules:{required: true},edittype:"text",
 				editoptions:{
-					readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 					element.style.textAlign = 'right';
@@ -606,7 +605,7 @@ $(document).ready(function () {
 					}
 				},
 			},
-			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:true, 
+			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
@@ -686,6 +685,8 @@ $(document).ready(function () {
 
 			dialog_credcode.on();
 
+			unsaved =  false;
+
         	$("input[name='document']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
@@ -707,9 +708,9 @@ $(document).ready(function () {
         	//if(errorField.length>0)return false;
         	mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-			let editurl = "/invoiceAPDetail/form?"+
+			let editurl = "/paymentVoucherDetail/form?"+
 				$.param({
-					action: 'invoiceAPDetail_save',
+					action: 'paymentVoucherDetail_save',
 					auditno:$('#apacthdr_auditno').val(),
 					amount:data.amount,
 				});
@@ -1206,7 +1207,7 @@ $(document).ready(function () {
 								);
 							}
 						});
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+					//	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 					} else {
 
@@ -1274,7 +1275,7 @@ $(document).ready(function () {
 		'document','finance.apacthdr AS h', 'material.supplier AS s',"#jqGrid2 input[name='document']",errorField,
 		{	colModel:[
 				{label:'Creditor Code',name:'h_suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Creditor Name',name:'s_Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				//{label:'Creditor Name',name:'s_Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -1296,8 +1297,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Creditor",
 			open: function(){
-				dialog_credcode.urlParam.filterCol=['compcode', 'source', 'trantype', 'recstatus', 'recdate', 'payto', ];
-				dialog_credcode.urlParam.filterVal=['session.compcode'];
+				dialog_credcode.urlParam.filterCol=['compcode', 'source', 'trantype', 'recstatus', 'recdate', 'payto'];
+				dialog_credcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED', $('#apacthdr_recdate').val(), $('#apacthdr_suppcode').val()];
 			}
 		},'urlParam','radio','tab'
 	);
