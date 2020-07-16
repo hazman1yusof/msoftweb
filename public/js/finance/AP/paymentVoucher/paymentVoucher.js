@@ -178,8 +178,8 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['supplier.suppcode'],
 		join_onVal:['apacthdr.suppcode'],
-		filterCol: ['source'],
-		filterVal: ['AP'],
+		filterCol: ['source', 'trantype'],
+		filterVal: ['AP', 'PV'],
 	}
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -541,11 +541,8 @@ $(document).ready(function () {
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
-			{ label: 'Creditor Code', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: true,
-				editrules:{required: true,custom:true, custom_func:cust_rules},
-				edittype:'custom',	editoptions:
-					{ custom_element:documentCustomEdit,
-					custom_value:galGridCustomValue },
+			{ label: 'Creditor Code', name: 'document', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+				edittype:"text",
 			},
 	
 			{ label: 'Invoice Date', name: 'entrydate', width: 100, classes: 'wrap', editable:true,
@@ -683,8 +680,6 @@ $(document).ready(function () {
         	mycurrency2.array.length = 0;
 			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']"]);
 
-			dialog_credcode.on();
-
 			unsaved =  false;
 
         	$("input[name='document']").keydown(function(e) {//when click tab at document, auto save
@@ -723,7 +718,7 @@ $(document).ready(function () {
 
     //////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
 	$("#jqGrid2").inlineNav('#jqGridPager2',{	
-		add:true,
+		add:false,
 		edit:true,
 		cancel: true,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
@@ -995,8 +990,6 @@ $(document).ready(function () {
 
 	function onall_editfunc(){
 		
-		dialog_credcode.on();//start binding event on jqgrid2
-		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		
 	}
@@ -1162,10 +1155,10 @@ $(document).ready(function () {
 	dialog_cheqno.makedialog(true);
 
 	var dialog_suppcode = new ordialog(
-		'supplier','material.supplier','#apacthdr_suppcode',errorField,
+		'supplier','finance.apacthdr','#apacthdr_suppcode',errorField,
 		{	colModel:[
-				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Name',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+				//{label:'Name',name:'_sName',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -1173,9 +1166,17 @@ $(document).ready(function () {
 					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
-				$("#apacthdr_payto").val(data['SuppCode']);
+				$("#apacthdr_payto").val(data['suppcode']);
+				$("#jqGrid2 input[name='document']").val(data['suppcode']);
+				$("#jqGrid2 input[name='entrydate']").val(data['recdate']);
+				$("#jqGrid2 input[name='reference']").val(data['document']);
+				$("#jqGrid2 input[name='amount']").val(data['amount']);
+				$("#jqGrid2 input[name='outamount']").val(data['outamount']);
+				$("#jqGrid2 input[name='totamount']").val(data['amount']);
+				$("#jqGrid2 input[name='balance']").val(data['outamount'] -  data['amount']);
 
-				var urlParam2 = {
+
+				/*var urlParam2 = {
 					action: 'get_value_default',
 					url: '/util/get_value_default',
 					field: ['h.compcode', 'h.source', 'h.trantype', 'h.recstatus', 'h.recdate', 'h.payto', 'h.outamount', 'h.amount' ],
@@ -1194,9 +1195,8 @@ $(document).ready(function () {
 								$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
 									{
 										compcode:elem['compcode'],
-										recno:elem['recno'],
-										//lineno_:elem['lineno_'],
-										suppcode:elem['suppcode'],
+										auditno:elem['auditno'],
+										document:elem['suppcode'],
 										recdate:elem['recdate'],
 										amount:elem['amount'],
 										outamount:0,
@@ -1207,12 +1207,11 @@ $(document).ready(function () {
 								);
 							}
 						});
-					//	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 					} else {
 
 					}
-				});
+				});*/
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1231,8 +1230,8 @@ $(document).ready(function () {
 			open: function(){
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_suppcode.fixPost = "true";
-				dialog_suppcode.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_suppcode.urlParam.filterVal=['A', 'session.compcode']
+				dialog_suppcode.urlParam.filterCol=['compcode', 'source', 'trantype','recstatus'],
+				dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED']
 				}
 			},'urlParam','radio','tab'
 		);
@@ -1270,39 +1269,6 @@ $(document).ready(function () {
 			},'urlParam','radio','tab'
 		);
 	dialog_payto.makedialog(true);
-
-	var dialog_credcode = new ordialog(
-		'document','finance.apacthdr AS h', 'material.supplier AS s',"#jqGrid2 input[name='document']",errorField,
-		{	colModel:[
-				{label:'Creditor Code',name:'h_suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				//{label:'Creditor Name',name:'s_Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
-					},
-			ondblClickRow:function(){
-				//$('#delordhd_invoiceno').focus();//focus ni xjadis
-			},
-			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							//$('#delordhd_invoiceno').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
-		},{
-			title:"Select Creditor",
-			open: function(){
-				dialog_credcode.urlParam.filterCol=['compcode', 'source', 'trantype', 'recstatus', 'recdate', 'payto'];
-				dialog_credcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED', $('#apacthdr_recdate').val(), $('#apacthdr_suppcode').val()];
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_credcode.makedialog();
 
 	
 	/*var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
