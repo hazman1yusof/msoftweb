@@ -1036,7 +1036,7 @@ $(document).ready(function () {
 					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						$('#apacthdr_remarks').focus();
+						$('#apacthdr_paymode').focus();
 					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
@@ -1070,7 +1070,7 @@ $(document).ready(function () {
 					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						$('#apacthdr_remarks').focus();
+						$('#apacthdr_bankcode').focus();
 					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
@@ -1104,7 +1104,7 @@ $(document).ready(function () {
 					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						$('#apacthdr_remarks').focus();
+						$('#apacthdr_cheqno').focus();
 					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
@@ -1138,7 +1138,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#cheqdate').focus();
+					$('#apacthdr_cheqdate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1158,11 +1158,11 @@ $(document).ready(function () {
 		'supplier','finance.apacthdr','#apacthdr_suppcode',errorField,
 		{	colModel:[
 				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				//{label:'Name',name:'_sName',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterCol:['compcode', 'source', 'trantype','recstatus','payto'],
+						filterVal:['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED', $('#apacthdr_payto').val()]
 					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
@@ -1171,9 +1171,8 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='entrydate']").val(data['recdate']);
 				$("#jqGrid2 input[name='reference']").val(data['document']);
 				$("#jqGrid2 input[name='amount']").val(data['amount']);
-				$("#jqGrid2 input[name='outamount']").val(data['outamount']);
-				$("#jqGrid2 input[name='totamount']").val(data['amount']);
-				$("#jqGrid2 input[name='balance']").val(data['outamount'] -  data['amount']);
+				//$("#jqGrid2 input[name='outamount']").val(data['outamount']);
+				//$("#jqGrid2 input[name='totamount']").val(data['amount']);
 
 
 				/*var urlParam2 = {
@@ -1228,10 +1227,10 @@ $(document).ready(function () {
 		},{
 			title:"Select Supplier Code",
 			open: function(){
-				$("#jqGrid2").jqGrid("clearGridData", true);
-				dialog_suppcode.fixPost = "true";
-				dialog_suppcode.urlParam.filterCol=['compcode', 'source', 'trantype','recstatus'],
-				dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED']
+				//$("#jqGrid2").jqGrid("clearGridData", true);
+				//dialog_suppcode.fixPost = "true";
+				dialog_suppcode.urlParam.filterCol=['compcode', 'source', 'trantype','recstatus', 'payto'];
+				dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED', $('#apacthdr_payto').val()];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -1248,14 +1247,14 @@ $(document).ready(function () {
 						filterVal:['session.compcode','A']
 					},
 			ondblClickRow:function(){
-				$('#apacthdr_actdate').focus();
+				//$('#apacthdr_actdate').focus();
 			},
 			gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							$('#apacthdr_actdate').focus();
+							//$('#apacthdr_actdate').focus();
 						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}
