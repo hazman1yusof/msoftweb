@@ -997,12 +997,12 @@ $(document).ready(function () {
 		'cheqno','finance.chqtran','#cheqno',errorField,
 		{	colModel:[
 				{label:'Cheque No',name:'cheqno',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				{label:'Bank Code',name:'bankcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+				{label:'Bank Code',name:'bankcode',width:200,classes:'pointer', hidden:true},
 				
 			],
 			urlParam: {
-				filterCol:['compcode','stat'],
-				filterVal:['session.compcode','A']
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','OPEN']
 			},
 			ondblClickRow: function () {
 				$('#cheqdate').focus();
@@ -1020,9 +1020,10 @@ $(document).ready(function () {
 		},{
 			title:"Select Cheque No",
 			open: function(){
-				dialog_cheqno.urlParam.filterCol=['compcode','stat', 'bankcode'],
-				dialog_cheqno.urlParam.filterVal=['session.compcode','A', $('#bankcode').val()]
-			}
+				dialog_cheqno.urlParam.filterCol=['compcode','recstatus', 'bankcode'],
+				dialog_cheqno.urlParam.filterVal=['session.compcode','OPEN', $('#bankcode').val()]
+			},
+			width:4/10 * $(window).width()
 		},'urlParam','radio','tab'
 	);
 	dialog_cheqno.makedialog(true);
@@ -1043,12 +1044,24 @@ $(document).ready(function () {
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+
+				/*if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					//$('#cheqdate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
+				}*/
+
+				let str = $(obj.textfield).val() ? $(obj.textfield).val() : '';
+				if(str.toUpperCase() == '' && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+					obj.ontabbing = false;
+				}
+
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
 				}
 			}
 		},{

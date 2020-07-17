@@ -178,8 +178,8 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['supplier.suppcode'],
 		join_onVal:['apacthdr.suppcode'],
-		filterCol: ['source'],
-		filterVal: ['AP'],
+		filterCol: ['source', 'trantype'],
+		filterVal: ['AP', 'PV'],
 	}
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -250,6 +250,10 @@ $(document).ready(function () {
 		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:'true'},
 		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true'},
 		{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:'true'},
+		{ label: 'pvno', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true},
+		{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap', hidden:true},
+		{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap', hidden:true},
+		{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
 
 	],
 		autowidth:true,
@@ -537,14 +541,11 @@ $(document).ready(function () {
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
-			{ label: 'Creditor Code', name: 'suppcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
-				editrules:{required: true,custom:true, custom_func:cust_rules},
-				edittype:'custom',	editoptions:
-					{ custom_element:documentCustomEdit,
-					custom_value:galGridCustomValue },
+			{ label: 'Creditor Code', name: 'document', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+				edittype:"text",
 			},
 	
-			{ label: 'Invoice Date', name: 'recdate', width: 100, classes: 'wrap', editable:true,
+			{ label: 'Invoice Date', name: 'entrydate', width: 100, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
                     dataInit: function (element) {
@@ -559,7 +560,7 @@ $(document).ready(function () {
                     }
                 }
 			},
-			{ label: 'Invoice No', name: 'document', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+			{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
 				edittype:"text",
 			},
 			{ label: 'Amount', name: 'amount', width: 100, classes: 'wrap',
@@ -584,13 +585,12 @@ $(document).ready(function () {
 				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Amount Paid', name: 'totamount', width: 100, classes: 'wrap', hidden:true, 
+			{ label: 'Amount Paid', name: 'totamount', width: 100, classes: 'wrap', hidden:false, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
 				editrules:{required: true},edittype:"text",
 				editoptions:{
-					readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 					element.style.textAlign = 'right';
@@ -602,7 +602,7 @@ $(document).ready(function () {
 					}
 				},
 			},
-			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:true, 
+			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
@@ -680,6 +680,8 @@ $(document).ready(function () {
         	mycurrency2.array.length = 0;
 			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']"]);
 
+			unsaved =  false;
+
         	$("input[name='document']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
@@ -701,9 +703,9 @@ $(document).ready(function () {
         	//if(errorField.length>0)return false;
         	mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-			let editurl = "/invoiceAPDetail/form?"+
+			let editurl = "/paymentVoucherDetail/form?"+
 				$.param({
-					action: 'invoiceAPDetail_save',
+					action: 'paymentVoucherDetail_save',
 					auditno:$('#apacthdr_auditno').val(),
 					amount:data.amount,
 				});
@@ -716,7 +718,7 @@ $(document).ready(function () {
 
     //////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
 	$("#jqGrid2").inlineNav('#jqGridPager2',{	
-		add:true,
+		add:false,
 		edit:true,
 		cancel: true,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
@@ -988,8 +990,6 @@ $(document).ready(function () {
 
 	function onall_editfunc(){
 		
-		//dialog_document.on();//start binding event on jqgrid2
-		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		
 	}
@@ -1155,10 +1155,10 @@ $(document).ready(function () {
 	dialog_cheqno.makedialog(true);
 
 	var dialog_suppcode = new ordialog(
-		'supplier','material.supplier','#apacthdr_suppcode',errorField,
+		'supplier','finance.apacthdr','#apacthdr_suppcode',errorField,
 		{	colModel:[
-				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Name',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+				//{label:'Name',name:'_sName',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -1166,9 +1166,17 @@ $(document).ready(function () {
 					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
-				$("#apacthdr_payto").val(data['SuppCode']);
+				$("#apacthdr_payto").val(data['suppcode']);
+				$("#jqGrid2 input[name='document']").val(data['suppcode']);
+				$("#jqGrid2 input[name='entrydate']").val(data['recdate']);
+				$("#jqGrid2 input[name='reference']").val(data['document']);
+				$("#jqGrid2 input[name='amount']").val(data['amount']);
+				$("#jqGrid2 input[name='outamount']").val(data['outamount']);
+				$("#jqGrid2 input[name='totamount']").val(data['amount']);
+				$("#jqGrid2 input[name='balance']").val(data['outamount'] -  data['amount']);
 
-				var urlParam2 = {
+
+				/*var urlParam2 = {
 					action: 'get_value_default',
 					url: '/util/get_value_default',
 					field: ['h.compcode', 'h.source', 'h.trantype', 'h.recstatus', 'h.recdate', 'h.payto', 'h.outamount', 'h.amount' ],
@@ -1187,9 +1195,8 @@ $(document).ready(function () {
 								$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
 									{
 										compcode:elem['compcode'],
-										recno:elem['recno'],
-										//lineno_:elem['lineno_'],
-										suppcode:elem['suppcode'],
+										auditno:elem['auditno'],
+										document:elem['suppcode'],
 										recdate:elem['recdate'],
 										amount:elem['amount'],
 										outamount:0,
@@ -1200,12 +1207,11 @@ $(document).ready(function () {
 								);
 							}
 						});
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 					} else {
 
 					}
-				});
+				});*/
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1224,8 +1230,8 @@ $(document).ready(function () {
 			open: function(){
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_suppcode.fixPost = "true";
-				dialog_suppcode.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_suppcode.urlParam.filterVal=['A', 'session.compcode']
+				dialog_suppcode.urlParam.filterCol=['compcode', 'source', 'trantype','recstatus'],
+				dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED']
 				}
 			},'urlParam','radio','tab'
 		);

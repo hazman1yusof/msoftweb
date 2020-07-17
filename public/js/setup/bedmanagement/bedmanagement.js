@@ -308,6 +308,7 @@ $(document).ready(function () {
 			case 'MAINTENANCE': return '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE';break;
 			case 'ISOLATED': return '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED';break;
 			case 'RESERVE': return '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE';break;
+			case 'TOTAL BED': return '<i class="fa fa-bed" aria-hidden="true"></i> TOTAL BED';break;
 			default: return cellvalue;break;
 		}
 	}
@@ -319,7 +320,8 @@ $(document).ready(function () {
 			case '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING': return 'HOUSEKEEPING';break;
 			case '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE': return 'MAINTENANCE';break;
 			case '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED': return 'ISOLATED';break;
-			case '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE': return 'RESERVE';break;			
+			case '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE': return 'RESERVE';break;
+			case '<i class="fa fa-bed" aria-hidden="true"></i> TOTAL BED': return 'TOTAL BED';break;						
 			default: return cellvalue;break;
 		}
 	}
@@ -338,6 +340,7 @@ $(document).ready(function () {
 				$('#stat_active').text(data.active);
 				$('#stat_deactive').text(data.deactive);
 				$('#stat_reserve').text(data.reserve);
+				$('#stat_totalbed').text(data.reserve);
 			}
 		});
 
