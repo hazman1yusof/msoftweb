@@ -162,10 +162,10 @@ class DietOrderController extends defaultController
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
-        $episode_obj = DB::table('hisdb.episode')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno);
+        // $episode_obj = DB::table('hisdb.episode')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('mrn','=',$request->mrn)
+        //             ->where('episno','=',$request->episno);
 
         $responce = new stdClass();
 
@@ -174,10 +174,10 @@ class DietOrderController extends defaultController
             $responce->dietorder = $dietorder_obj;
         }
 
-        if($episode_obj->exists()){
-            $episode_obj = $episode_obj->first();
-            $responce->episode = $episode_obj;
-        }
+        // if($episode_obj->exists()){
+        //     $episode_obj = $episode_obj->first();
+        //     $responce->episode = $episode_obj;
+        // }
 
         return json_encode($responce);
 

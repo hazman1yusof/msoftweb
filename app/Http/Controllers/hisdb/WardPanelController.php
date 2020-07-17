@@ -14,19 +14,16 @@ class WardPanelController extends defaultController
     var $table;
     var $duplicateCode;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
         // $this->duplicateCode = "chgtype";
     }
 
-    public function show(Request $request)
-    {   
+    public function show(Request $request){
         return view('hisdb.wardpanel.wardpanel');
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){
         DB::enableQueryLog();
         switch($request->action){
             case 'save_table_ward':

@@ -105,22 +105,7 @@ $(document).ready(function () {
 			$('input',elem).val(value);
 		}
 	}
-
-	window.onscroll = function() 
-	{
-		freezePane()
-	};
-
-	var header = document.getElementById("SearchFormHeader");
-	var sticky = header.offsetTop;
-
-	function freezePane() {
-		if (window.pageYOffset > sticky) {
-			header.classList.add("sticky");
-		} else {
-			header.classList.remove("sticky");
-		}
-	}
+	
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table',

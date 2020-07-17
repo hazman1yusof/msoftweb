@@ -120,7 +120,7 @@
 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
-		<div class="header" id="SearchFormHeader">
+		<div class="header" id="SearchFormHeader" style="position: sticky;top: 0px;z-index: 3;">
 			<form id="searchForm" class="formclass" style='width:99%; position:relative; min-height: 120px'>
 				<fieldset>
 					<input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}">
