@@ -410,6 +410,7 @@
 			@include('hisdb.wardpanel.wardpanel')
 			@include('hisdb.dietorder.dietorder')
 			@include('hisdb.dischgsummary.dischgsummary')
+			@include('hisdb.ordercomm.ordercomm')
 			
 		</div>
     </div>
@@ -425,5 +426,6 @@
 	<script src="js/hisdb/wardpanel/wardpanel.js"></script>
 	<script src="js/hisdb/dietorder/dietorder.js"></script>
 	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>
+	<script src="js/hisdb/ordercomm/ordercomm.js"></script>
 	
 @endsection

@@ -119,7 +119,7 @@
 						</div>
 					</div>
 
-					<!-- <div class='col-md-12'>
+					<div class='col-md-12'>
 						<div class="panel panel-default">
 							<div class="panel-heading text-center panelbgcolor">ORDER COMMUNICATION PANEL</div>
 							<div class="panel-body">
@@ -129,7 +129,7 @@
 										<div class="panel-heading text-center">SELECT ORDER COMMUNICATION</div>
 										<div class="panel-body">
 
-											<div class='col-md-6'>
+											<!-- <div class='col-md-6'>
 
 												<div class='col-md-12'>
 													<div class="panel panel-info">
@@ -230,7 +230,7 @@
 
 													</div>
 												</div>
-											</div>
+											</div> -->
 
 										</div>
 									</div>
@@ -238,7 +238,7 @@
 
 							</div>
 						</div>
-					</div> -->
+					</div>
 
 				</form>
 

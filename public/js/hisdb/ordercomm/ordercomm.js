@@ -98,7 +98,9 @@ function button_state_orderComm(state){
 			$('#save_orderComm,#cancel_orderComm,#new_orderComm').attr('disabled',true);
 			break;
 		case 'wait':
-			dialog_tri_col.on();
+			dialog_description.on();
+			dialog_trxtype.on();
+			dialog_chgcode.on();
 			//examination_orderComm.on().enable();
 			$("#toggle_orderComm").attr('data-toggle','collapse');
 			$("#save_orderComm,#cancel_orderComm").attr('disabled',false);
