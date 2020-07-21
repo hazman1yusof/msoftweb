@@ -151,9 +151,7 @@ function populate_dietOrder(obj,rowdata){
     }).success(function(data){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formDietOrder",data.dietorder);
-			// autoinsert_rowdata("#formDietOrder",data.episode);
-			$('#mrn_dietOrder').val(obj.mrn);
-			$('#episno_dietOrder').val(obj.episno);
+			autoinsert_rowdata("#formDietOrder",data.episode);
 			button_state_dietOrder('edit');
 			yesnoCheck();
 			feedingCheck();

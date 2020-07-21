@@ -405,14 +405,25 @@
 		</div>
 
 		<div class='row'>
-		
 			@include('hisdb.nursing.nursing')
-			@include('hisdb.wardpanel.wardpanel')
-			@include('hisdb.dietorder.dietorder')
-			@include('hisdb.dischgsummary.dischgsummary')
-			@include('hisdb.ordercomm.ordercomm')
-			
 		</div>
+
+		<div class='row'>
+			@include('hisdb.wardpanel.wardpanel')
+		</div>
+
+		<div class='row'>
+			@include('hisdb.dietorder.dietorder')
+		</div>
+		
+		<div class='row'>
+			@include('hisdb.dischgsummary.dischgsummary')
+		</div>
+
+		<div class='row'>
+			@include('hisdb.ordercomm.ordercomm')
+		</div>
+			
     </div>
 	<!-- ***************End Search + table ********************* -->
 
