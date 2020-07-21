@@ -193,13 +193,12 @@ $(document).ready(function () {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid_trf', urlParam2,'kosongkan');
 				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").hide();
-
+				console.log(rowData['mrn']);
 				if(rowData['mrn'] != '') {//kalau mrn ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').mrn;
 					refreshGrid('#jqGrid_trf', urlParam2);
 					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").show();
-					$("#jqGridPagerDelete").hide();
-					$("#jqGrid_iledit").hide();
+					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
 
 					populate_triage(selrowData("#jqGrid"));
 					populate_formWard(selrowData("#jqGrid"));
@@ -208,8 +207,8 @@ $(document).ready(function () {
 					populate_form_trf(selrowData("#jqGrid"));
 					
 				}else{
-					$("#jqGridPagerDelete").show();
-					$("#jqGrid_iledit").show();
+					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
+					$("").show();
 				}
 			}
 
@@ -285,7 +284,7 @@ $(document).ready(function () {
 	/////////////////////////////End populate data for search By dropdown and btn////////////////////////////
 
 	function padzero(cellvalue, options, rowObject){
-		if(cellvalue == null){
+		if(cellvalue == null || cellvalue == 0 ){
 			return "";
 		}
 		let padzero = 6, str="";
@@ -369,13 +368,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -421,13 +420,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGrid',urlParam2,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -486,7 +485,7 @@ $(document).ready(function () {
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
-								refreshGrid("#jqGrid", urlParam);
+								refreshGrid("#jqGrid", urlParam,'edit');
 							});
 						}else{
 							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
@@ -501,7 +500,7 @@ $(document).ready(function () {
 		buttonicon: "glyphicon glyphicon-refresh",
 		title: "Refresh Table",
 		onClickButton: function () {
-			refreshGrid("#jqGrid", urlParam);
+			refreshGrid("#jqGrid", urlParam,'edit');
 		},
 	});
 
@@ -527,7 +526,7 @@ $(document).ready(function () {
 				urlParam.searchCol=["bedtype"];
 				urlParam.searchVal=[data];
 				refreshGrid("#jqGrid3",null,"kosongkan");
-				refreshGrid('#jqGrid', urlParam);
+				refreshGrid('#jqGrid', urlParam,'edit');
 			}
 		},{
 			title: "Select Bed Type search",
