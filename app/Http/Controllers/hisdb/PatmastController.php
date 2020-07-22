@@ -493,13 +493,13 @@ class PatmastController extends defaultController
             $bed_mrn = DB::table('hisdb.bed')
                         ->where('mrn','=',$request->MRN)
                         ->update([
-                            'name' => $request->Name
+                            'name' => strtoupper($request->Name)
                         ]);
 
             $queue_mrn = DB::table('hisdb.queue')
                         ->where('mrn','=',$request->MRN)
                         ->update([
-                            'name' => $request->Name
+                            'name' => strtoupper($request->Name)
                         ]);
 
             $queries = DB::getQueryLog();

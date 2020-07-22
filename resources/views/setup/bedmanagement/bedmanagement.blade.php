@@ -132,7 +132,7 @@
 								<select id='Scol' name='Scol' class="form-control input-sm"></select>
 							</div>
 
-							<div class="col-md-4">
+							<div class="col-md-4" style="padding-right: 0px">
 								<label class="control-label"></label>  
 								<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase">
 							
@@ -143,14 +143,6 @@
 									</div>
 									<span class="help-block"></span>
 								</div>
-
-								<!-- <div  id="show_statistic" style="display:none">
-									<div class='input-group'>
-										<input id="b_statistic" name="b_statistic" type="text" maxlength="12" class="form-control input-sm">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div> -->
 								
 								<div  id="show_occup" style="display:none">
 									<div class='input-group'>
@@ -174,10 +166,6 @@
 									<label class="control-label"></label>
 									<a class='form-control btn btn-primary' id="btn_bedtype"><span class='fa fa-ellipsis-h'></span></a>
 								</div>
-								<!-- <div id="div_statistic" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
-									<label class="control-label"></label>
-									<a class='form-control btn btn-primary' id="btn_statistic"><span class='fa fa-ellipsis-h'></span></a>
-								</div> -->
 								<div id="div_occup" style="padding-left: 0px;max-width: 45px;display:none;margin: 0px">
 									<label class="control-label"></label>
 									<a class='form-control btn btn-primary' id="btn_occup"><span class='fa fa-ellipsis-h'></span></a>

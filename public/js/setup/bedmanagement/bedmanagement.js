@@ -193,7 +193,6 @@ $(document).ready(function () {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid_trf', urlParam2,'kosongkan');
 				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").hide();
-				console.log(rowData['mrn']);
 				if(rowData['mrn'] != '') {//kalau mrn ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').mrn;
 					refreshGrid('#jqGrid_trf', urlParam2);
@@ -208,7 +207,6 @@ $(document).ready(function () {
 					
 				}else{
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
-					$("").show();
 				}
 			}
 
@@ -259,26 +257,25 @@ $(document).ready(function () {
 	function scolChange() {
 		if($('#Scol').val()=='bedtype'){
 			$("#div_statistic").hide();
-			$("#div_occup").hide();
+			$("#div_occup,#show_doc").hide();
 			$("#div_doc").hide();			
-			$("#div_bedtype").show();
+			$("#div_bedtype,#searchForm input[name='Stext']").show();
 		} else if($('#Scol').val() == 'statistic'){
 			$("#div_bedtype").hide();
-			$("#div_occup").hide();
+			$("#div_occup,#show_doc").hide();
 			$("#div_doc").hide();			
-			$("#div_statistic").show();
+			$("#div_statistic,#searchForm input[name='Stext']").show();
 		} else if($('#Scol').val() == 'occup'){
 			$("#div_bedtype").hide();
-			$("#div_statistic").hide();
+			$("#div_statistic,#show_doc").hide();
 			$("#div_doc").hide();			
-			$("#div_occup").show();	
+			$("#div_occup,#searchForm input[name='Stext']").show();	
 		} else if($('#Scol').val() == 'admdoctor'){
-			$("#div_bedtype").hide();
-			$("#div_statistic").hide();
-			$("#div_occup").hide();			
-			$("#div_doc").show();			
+			$("#div_statistic,#div_bedtype,#div_occup,#div_doc,#searchForm input[name='Stext']").hide();
+			$('#show_doc').show();
 		} else {
-			$("#div_statistic,#div_bedtype,#div_occup,#div_doc").hide();
+			$("#div_statistic,#div_bedtype,#div_occup,#div_doc,#show_doc").hide();
+			$("#searchForm input[name='Stext']").show();
 		}
 	}
 	/////////////////////////////End populate data for search By dropdown and btn////////////////////////////
@@ -339,7 +336,7 @@ $(document).ready(function () {
 				$('#stat_active').text(data.active);
 				$('#stat_deactive').text(data.deactive);
 				$('#stat_reserve').text(data.reserve);
-				$('#stat_totalbed').text(data.reserve);
+				$('#stat_totalbed').text(data.totalbed);
 			}
 		});
 
@@ -505,6 +502,7 @@ $(document).ready(function () {
 	});
 
 	//////////////////// Start Dialog for Search By btn////////////////////////////////////////////////////////////////////////////////
+
 	$('#btn_bedtype').on( "click", function() {
 		$('#s_bedtype ~ a').click();
 	});
@@ -606,6 +604,15 @@ $(document).ready(function () {
 				urlParam.searchVal=[data];
 				refreshGrid("#jqGrid3",null,"kosongkan");
 				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
 			}
 		},{
 			title: "Select MRN search",
@@ -636,15 +643,15 @@ $(document).ready(function () {
 				$('#occup').focus();
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#occup').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#occup').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Bed Type dialog",
 			open: function(){
@@ -669,15 +676,15 @@ $(document).ready(function () {
 				$('#tel_ext').focus();
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#tel_ext').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#tel_ext').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Ward Type",
 			open: function(){

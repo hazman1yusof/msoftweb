@@ -162,6 +162,7 @@ class BedManagementController extends defaultController
         $totalbed=0;
 
         foreach ($table as $key => $value) {
+            $totalbed = $totalbed +1;
             switch ($value->occup) {
                 case 'OCCUPIED':
                     $occupied = $occupied + 1;
@@ -179,7 +180,6 @@ class BedManagementController extends defaultController
                     $reserve = $reserve + 1;
                     break;
                 default :
-                    $vacant = $vacant + 1;
                     break;
             }
             switch ($value->recstatus) {
@@ -191,6 +191,8 @@ class BedManagementController extends defaultController
                     break;
             }
         }
+
+        $vacant = $totalbed - $deactive - $maintenance - $occupied - $housekeeping - $isolated ;
 
         
         $responce = new stdClass();

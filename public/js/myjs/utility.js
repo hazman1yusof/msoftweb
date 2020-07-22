@@ -615,6 +615,8 @@ function formatterstatus_tick(cellvalue, option, rowObject) {
 		return '<span class="fa fa-check" ></span>';
 	}else if (cellvalue == 'D') {
 		return '<span class="fa fa-times" ></span>';
+	}else{
+		return cellvalue;
 	}
 }
 
@@ -628,9 +630,9 @@ function unformatstatus(cellvalue, option, rowObject) {
 }
 
 function unformatstatus_tick(cellvalue, option, rowObject) {
-	if (cellvalue == '<span class="fa fa-2x fa-check" style="color:green"></span>') {
+	if (cellvalue == '<span class="fa fa-check"></span>') {
 		return 'A';
-	}else if (cellvalue == '<span class="fa fa-2x fa-times" style="color:red"></span>') {
+	}else if (cellvalue == '<span class="fa fa-times" ></span>') {
 		return 'D';
 	}
 }
@@ -1013,7 +1015,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function onTab(event){
-		console.log('tab')
 		renull_search(event.data.data);
 		var textfield = $(event.currentTarget);
 		if(event.key == "Tab" && textfield.val() != ""){
@@ -1467,7 +1468,7 @@ function faster_detail_load(){
 
 		if(!storage_obj){
 
-			if(cellvalue !== null){
+			if(cellvalue !== null && cellvalue.trim() != ''){
 				$.get( param.url+"?"+$.param(param), function( data ) {
 						
 				},'json').done(function(data) {
@@ -1496,21 +1497,21 @@ function faster_detail_load(){
 
 				localStorage.setItem(storage_name,json);
 
-				//remove storage after 7 days
-                let moment_stored = obj_stored.json.timestamp;
-                if(moment().diff(moment(moment_stored),'days') > 7){
-                    localStorage.removeItem(storage_name);
-                }
 			}
 
-			
-
 		}else{
+
 			let obj_stored = {
 				'json':JSON.parse(storage_obj),
 				'options':options
 			}
 			this.array.push(obj_stored);
+
+			//remove storage after 7 days
+            let moment_stored = obj_stored.json.timestamp;
+            if(moment().diff(moment(moment_stored),'days') > 7){
+                localStorage.removeItem(storage_name);
+            }
 		}
 	}
 	this.set_array = function(){
