@@ -1168,49 +1168,10 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#apacthdr_payto").val(data['suppcode']);
 				$("#jqGrid2 input[name='document']").val(data['suppcode']);
-				$("#jqGrid2 input[name='entrydate']").val(data['recdate']);
+				$("#jqGrid2 input[name='entrydate']").val(data['recdate']); 
 				$("#jqGrid2 input[name='reference']").val(data['document']);
 				$("#jqGrid2 input[name='amount']").val(data['amount']);
-				//$("#jqGrid2 input[name='outamount']").val(data['outamount']);
-				//$("#jqGrid2 input[name='totamount']").val(data['amount']);
-
-
-				/*var urlParam2 = {
-					action: 'get_value_default',
-					url: '/util/get_value_default',
-					field: ['h.compcode', 'h.source', 'h.trantype', 'h.recstatus', 'h.recdate', 'h.payto', 'h.outamount', 'h.amount' ],
-					table_name: ['finance.apacthdr AS h'],
-					table_id: 'idno',
-					filterCol: ['h.compcode', 'h.source', 'h.trantype', 'h.recstatus'],
-					filterVal: ['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED'],
-					sortby:['idno desc']
-				};
-
-				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
-				}, 'json').done(function (data) {
-					if (!$.isEmptyObject(data.rows)) {
-						data.rows.forEach(function(elem) {
-							if(elem['outamount'] > 0){
-								$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
-									{
-										compcode:elem['compcode'],
-										auditno:elem['auditno'],
-										document:elem['suppcode'],
-										recdate:elem['recdate'],
-										amount:elem['amount'],
-										outamount:0,
-			    						balance :elem['outamount'] - elem['totamount'],
-										unitprice:elem['unitprice'],
-										
-									}
-								);
-							}
-						});
-
-					} else {
-
-					}
-				});*/
+				
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1227,8 +1188,6 @@ $(document).ready(function () {
 		},{
 			title:"Select Supplier Code",
 			open: function(){
-				//$("#jqGrid2").jqGrid("clearGridData", true);
-				//dialog_suppcode.fixPost = "true";
 				dialog_suppcode.urlParam.filterCol=['compcode', 'source', 'trantype','recstatus', 'payto'];
 				dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED', $('#apacthdr_payto').val()];
 				}
