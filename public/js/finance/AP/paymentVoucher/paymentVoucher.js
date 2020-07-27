@@ -1155,9 +1155,10 @@ $(document).ready(function () {
 	dialog_cheqno.makedialog(true);
 
 	var dialog_suppcode = new ordialog(
-		'supplier','finance.apacthdr','#apacthdr_suppcode',errorField,
+		'supplier',['finance.apacthdr'],'#apacthdr_suppcode',errorField,
 		{	colModel:[
 				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+				//{label:'Supplier Name',name:'s_Name',width:200,classes:'pointer',canSearch:true,or_search:true},
 				
 			],
 			urlParam: {
@@ -1171,6 +1172,37 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='entrydate']").val(data['recdate']); 
 				$("#jqGrid2 input[name='reference']").val(data['document']);
 				$("#jqGrid2 input[name='amount']").val(data['amount']);
+
+				var urlParam2 = {
+					action: 'get_value_default',
+					url: '/util/get_value_default',
+					field: [],
+					table_name: ['finance.apacthdr'],
+					table_id: 'idno',
+				
+				};
+
+				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
+				}, 'json').done(function (data) {
+					if (!$.isEmptyObject(data.rows)) {
+						data.rows.forEach(function(elem) {
+							$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
+								{
+									document:elem['document'],
+									entrydate:elem['recdate'],
+									reference:elem['document'],
+									amount:elem['amount'],
+									balance:0,
+								
+								}
+							);
+						});
+						
+
+					} else {
+
+					}
+				});
 				
 			},
 			gridComplete: function(obj){
