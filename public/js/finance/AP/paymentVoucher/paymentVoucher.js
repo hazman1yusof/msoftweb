@@ -1161,8 +1161,8 @@ $(document).ready(function () {
 				
 			],
 			urlParam: {
-						filterCol:['compcode', 'source', 'trantype','recstatus','payto'],
-						filterVal:['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED', $('#apacthdr_payto').val()]
+						filterCol:['compcode', 'source', 'trantype','recstatus'],
+						filterVal:['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED']
 					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
@@ -1188,8 +1188,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Supplier Code",
 			open: function(){
-				dialog_suppcode.urlParam.filterCol=['compcode', 'source', 'trantype','recstatus', 'payto'];
-				dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED', $('#apacthdr_payto').val()];
+				dialog_suppcode.urlParam.filterCol=['compcode', 'source', 'trantype','recstatus'];
+				dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED'];
 				}
 			},'urlParam','radio','tab'
 		);
