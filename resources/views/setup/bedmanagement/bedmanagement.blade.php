@@ -401,6 +401,10 @@
 		</div>
 
 		<div class='row'>
+			@include('hisdb.doctornote.doctornote')
+		</div>
+
+		<div class='row'>
 			@include('hisdb.dietorder.dietorder')
 		</div>
 		
@@ -423,6 +427,7 @@
 	<script src="js/setup/bedmanagement/bedmanagement.js"></script>
 	<script src="js/hisdb/nursing/nursing.js"></script>
 	<script src="js/hisdb/wardpanel/wardpanel.js"></script>
+	<script src="js/hisdb/doctornote/doctornote.js"></script>
 	<script src="js/hisdb/dietorder/dietorder.js"></script>
 	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>
 	<script src="js/hisdb/ordercomm/ordercomm.js"></script>
