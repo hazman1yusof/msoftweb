@@ -160,6 +160,7 @@ $(document).ready(function () {
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5},
 			{ label: 'Notes', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
+			//{ label: 'Remarks', name: 'reservebedNote', width: 40, hidden:true},
 			{ label: 'Doctor Code', name: 'admdoctor', width: 20, canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
@@ -714,7 +715,7 @@ $(document).ready(function () {
 
 				$(dialog_occup.textfield).val(selrowData("#"+dialog_occup.gridname)['description']);
 				if (rowData['bedcode'] == 'RESERVE'){
-					dialog_reserveNote.on();						
+					dialogReserveBedForm.on();						
 				}
 			},
 			gridComplete: function(obj){
@@ -814,41 +815,41 @@ $(document).ready(function () {
 	);
 	dialog_recstatus.makedialog(false);	
 
-	////////////////////////////////////dialog reserveNote//////////////////////////////////////////
-	var dialog_reserveNote = new ordialog(
-		'reservebed','hisdb.bed',"#jqGrid input[name='reservebed']",errorField,
-		{	colModel:
-			[
-				{label:'Record Status',name:'stat',width:200,classes:'pointer left'},
-			],
-			urlParam: {
-				//url:'./sysparam_recstatus',
-				// filterCol:['recstatus','compcode'],
-				// filterVal:['A', 'session.compcode']
-				},
-			ondblClickRow:function(event){
-				$(dialog_reserveNote.textfield).val(selrowData("#"+dialog_reserveNote.gridname)['description']);
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					// $('#room').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},{
-			title:"Notes for reserve bed",
-			open: function(){
-				dialog_reserveNote.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_reserveNote.urlParam.filterVal = ['A', 'session.compcode'];
-			},
-			width:4/10 * $(window).width()
-		},'urlParam','radio','tab'
-	);
-	dialog_reserveNote.makedialog(false);	
+	// ////////////////////////////////////dialog reserveNote//////////////////////////////////////////
+	// var dialog_reserveNote = new ordialog(
+	// 	'reservebed','hisdb.bed',"#jqGrid input[name='reservebed']",errorField,
+	// 	{	colModel:
+	// 		[
+	// 			{label:'Record Status',name:'stat',width:200,classes:'pointer left'},
+	// 		],
+	// 		urlParam: {
+	// 			//url:'./sysparam_recstatus',
+	// 			// filterCol:['recstatus','compcode'],
+	// 			// filterVal:['A', 'session.compcode']
+	// 			},
+	// 		ondblClickRow:function(event){
+	// 			$(dialog_reserveNote.textfield).val(selrowData("#"+dialog_reserveNote.gridname)['description']);
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				// $('#room').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	},{
+	// 		title:"Notes for reserve bed",
+	// 		open: function(){
+	// 			dialog_reserveNote.urlParam.filterCol = ['recstatus','compcode'];
+	// 			dialog_reserveNote.urlParam.filterVal = ['A', 'session.compcode'];
+	// 		},
+	// 		width:4/10 * $(window).width()
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_reserveNote.makedialog(false);	
 	//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////

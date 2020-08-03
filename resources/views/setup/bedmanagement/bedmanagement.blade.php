@@ -417,6 +417,28 @@
 		</div>
 			
     </div>
+
+	<div id="dialogReserveBedForm" title="Add Reserve Bed Form" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">Note for reserved bed
+					<a class='pull-right pointer text-primary' id='saveNote'><span class='fa fa-floppy-o'></span> Print </a>
+					</div>
+				<div class="panel-body" style="position: relative;">
+					<form class='form-horizontal' style='width:99%' id='formdata'>
+							{{ csrf_field() }}
+							<input id="reservebedNote" name="reservebedNote" type="hidden">
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="reservebedNote">Notes</label> 
+								<div class="col-md-5"> 
+								<textarea class="form-control input-sm text-uppercase" name="reservebedNote" rows="2" cols="55" maxlength="400" id="reservebedNote" ></textarea>
+								</div>
+							
+							</div>
+					</form>
+				</div>
+			</div>			
+		</div>
 	<!-- ***************End Search + table ********************* -->
 
 @endsection
