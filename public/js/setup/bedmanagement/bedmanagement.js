@@ -159,7 +159,7 @@ $(document).ready(function () {
 			},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5},
-			{ label: 'Patient Name', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
+			{ label: 'Notes', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
 			{ label: 'Doctor Code', name: 'admdoctor', width: 20, canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
@@ -209,8 +209,6 @@ $(document).ready(function () {
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
 				}
 			}
-
-
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
@@ -299,12 +297,13 @@ $(document).ready(function () {
 	function occup(cellvalue, options, rowObject){
 		switch(cellvalue.trim()){
 			case 'OCCUPIED': return '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED';break;
+			case 'RESERVE': return '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE';break;
 			case 'VACANT': return '<img src="img/bedonly.png" height="10" width="14"></img> VACANT';break;
 			case 'HOUSEKEEPING': return '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING';break;
 			case 'MAINTENANCE': return '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE';break;
 			case 'ISOLATED': return '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED';break;
 			case 'RESERVE': return '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE';break;
-			case 'TOTAL BED': return '<i class="fa fa-bed" aria-hidden="true"></i> TOTAL BED';break;
+			//case 'TOTAL BED': return '<i class="fa fa-bed" aria-hidden="true"></i> TOTAL BED';break;
 			default: return cellvalue;break;
 		}
 	}
@@ -312,12 +311,13 @@ $(document).ready(function () {
 	function occup_unformat(cellvalue, options, rowObject){
 		switch(cellvalue){
 			case '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED': return 'OCCUPIED';break;
+			case '<i class="fa fa-ban" aria-hidden="true"></i> RESREVE': return 'RESERVE';break;
 			case '<img src="img/bedonly.png" height="10" width="14"></img> VACANT': return 'VACANT';break;
 			case '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING': return 'HOUSEKEEPING';break;
 			case '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE': return 'MAINTENANCE';break;
 			case '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED': return 'ISOLATED';break;
 			case '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE': return 'RESERVE';break;
-			case '<i class="fa fa-bed" aria-hidden="true"></i> TOTAL BED': return 'TOTAL BED';break;						
+			//case '<i class="fa fa-bed" aria-hidden="true"></i> TOTAL BED': return 'TOTAL BED';break;						
 			default: return cellvalue;break;
 		}
 	}
@@ -354,6 +354,7 @@ $(document).ready(function () {
 			dialog_occup.on();
 			dialog_stat.on();
 			dialog_recstatus.on();
+			dialog_reserveNote.on();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -405,6 +406,7 @@ $(document).ready(function () {
 			dialog_occup.on();
 			dialog_stat.on();
 			dialog_recstatus.on();
+			dialog_reserveNote.on();
 			$("input[name='bednum']").attr('disabled','disabled');
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -582,6 +584,7 @@ $(document).ready(function () {
 	search_occup.makedialog();
 	search_occup.on();
 
+
 	$('#btn_doc').on( "click", function() {
 		$('#doc ~ a').click();
 	});
@@ -710,7 +713,9 @@ $(document).ready(function () {
 			ondblClickRow:function(event){
 
 				$(dialog_occup.textfield).val(selrowData("#"+dialog_occup.gridname)['description']);
-
+				if (rowData['bedcode'] == 'RESERVE'){
+					dialog_reserveNote.on();						
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -808,6 +813,42 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_recstatus.makedialog(false);	
+
+	////////////////////////////////////dialog reserveNote//////////////////////////////////////////
+	var dialog_reserveNote = new ordialog(
+		'reservebed','hisdb.bed',"#jqGrid input[name='reservebed']",errorField,
+		{	colModel:
+			[
+				{label:'Record Status',name:'stat',width:200,classes:'pointer left'},
+			],
+			urlParam: {
+				//url:'./sysparam_recstatus',
+				// filterCol:['recstatus','compcode'],
+				// filterVal:['A', 'session.compcode']
+				},
+			ondblClickRow:function(event){
+				$(dialog_reserveNote.textfield).val(selrowData("#"+dialog_reserveNote.gridname)['description']);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#room').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Notes for reserve bed",
+			open: function(){
+				dialog_reserveNote.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_reserveNote.urlParam.filterVal = ['A', 'session.compcode'];
+			},
+			width:4/10 * $(window).width()
+		},'urlParam','radio','tab'
+	);
+	dialog_reserveNote.makedialog(false);	
 	//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
