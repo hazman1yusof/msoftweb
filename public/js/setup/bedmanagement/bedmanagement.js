@@ -355,7 +355,6 @@ $(document).ready(function () {
 			dialog_occup.on();
 			dialog_stat.on();
 			dialog_recstatus.on();
-			dialog_reserveNote.on();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -384,6 +383,7 @@ $(document).ready(function () {
 			let editurl = "/bedmanagement/form?"+
 				$.param({
 					action: 'bedmanagement_save',
+					name: $('#reservebedHide').val()
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -407,7 +407,6 @@ $(document).ready(function () {
 			dialog_occup.on();
 			dialog_stat.on();
 			dialog_recstatus.on();
-			dialog_reserveNote.on();
 			$("input[name='bednum']").attr('disabled','disabled');
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -437,6 +436,7 @@ $(document).ready(function () {
 			let editurl = "/bedmanagement/form?"+
 				$.param({
 					action: 'bedmanagement_save',
+					name: $('#reservebedHide').val()
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -565,9 +565,13 @@ $(document).ready(function () {
 					let val_use = (data.description == 'ACTIVE')? 'A':'D';
 					urlParam.searchCol=["recstatus"];
 					urlParam.searchVal=[val_use];
+					urlParam.filterCol=['b.compcode'];
+					urlParam.filterVal=['session.compcode'];
 				}else{
 					urlParam.searchCol=["occup"];
 					urlParam.searchVal=[data.description];
+					urlParam.filterCol=['b.compcode',"b.recstatus"];
+					urlParam.filterVal=['session.compcode',"A"];
 				}
 
 				refreshGrid("#jqGrid3",null,"kosongkan");
@@ -699,6 +703,30 @@ $(document).ready(function () {
 	);
 	dialog_ward.makedialog();
 
+	$("#dialogReserveBedForm").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function(event, ui){
+		},
+		close: function( event, ui ){
+		},
+		buttons :[{
+			text: "Save",click: function() {
+				var newval = $("#dialogReserveBedForm textarea[name='reservebedNote']").val();
+				var rowid = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+				$("#jqGrid").jqGrid('setRowData',rowid,{name:newval});
+				$('#reservebedHide').val(newval);
+				$(this).dialog('close');
+			}
+		},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+
 	var dialog_occup = new ordialog(
 		'occup','sysdb.department',"#jqGrid input[name='occup']",errorField,
 		{	colModel:
@@ -714,8 +742,8 @@ $(document).ready(function () {
 			ondblClickRow:function(event){
 
 				$(dialog_occup.textfield).val(selrowData("#"+dialog_occup.gridname)['description']);
-				if (rowData['bedcode'] == 'RESERVE'){
-					dialogReserveBedForm.on();						
+				if (selrowData("#"+dialog_occup.gridname)['description'] == 'RESERVE'){
+					$("#dialogReserveBedForm").dialog('open');					
 				}
 			},
 			gridComplete: function(obj){
@@ -1099,10 +1127,6 @@ $(document).ready(function () {
 		});
 	}
 
-	function saveForm_trf(){
-		
-	}
-
 	function saveForm_trf(callback){
 		var saveParam={
 	        oper:'transfer_form'
@@ -1128,4 +1152,6 @@ $(document).ready(function () {
 	        callback();
 	    });
 	}
+
+
 });

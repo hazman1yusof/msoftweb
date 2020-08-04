@@ -38,9 +38,7 @@
 				<div id="jqGridPagerTriageInfo"></div> -->
 
 				<form class='form-horizontal' style='width:99%' id='formOrderComm'>
-
-					<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-
+					
 					<div class="col-sm-10 col-sm-offset-1">
 						<div class="panel panel-info">
 							<div class="panel-heading text-center">ORDER COMMUNICATION DETAIL</div>
