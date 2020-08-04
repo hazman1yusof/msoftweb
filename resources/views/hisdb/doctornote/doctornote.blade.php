@@ -40,30 +40,227 @@
 				<form class='form-horizontal' style='width:99%' id='formDoctorNote'>
 
 					<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+                    <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
+                    <input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
 
-					<div class='col-md-12'>
-						<div class="panel panel-info">
-							<div class="panel-heading text-center">DOCTOR NOTE</div>
-							<div class="panel-body">
+                    <div class="col-md-2" style="padding:0 0 0 0">
+                        <div class="panel panel-info">
+                            <div class="panel-body">
 
-								<div class='col-md-7'>
-									<div class="panel panel-info">
-										<div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
 
-											<input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
-											<input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
+                    <div class="col-md-10" style="padding:0 0 0 5px">
+                        <div class="panel panel-info">
+                            <div class="panel-body">
 
-											
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="remark">Patient Complaint</label>
+                                    <div class="col-md-6">
+                                        <input id="remark" name="remark" type="text" class="form-control input-sm">
+                                    </div>
+                                </div>
 
-											
+                                <div class='col-md-7'>
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading text-center">CLINICAL NOTE</div>
+                                        <div class="panel-body">
 
-										</div>
-									</div>
-								</div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label class="control-label" for="clinicnote" style="padding-bottom:5px">History of Presenting Complaint</label>
+                                                        <textarea id="clinicnote" name="clinicnote" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                    </div>
+                                                </div>
 
-							</div>
-						</div>
-					</div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label class="control-label" for="pastmedical" style="padding-bottom:5px">Past Medical History</label>
+                                                        <textarea id="pastmedical" name="pastmedical" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label class="control-label" for="drug" style="padding-bottom:5px">Drug History</label>
+                                                        <textarea id="drug" name="drug" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label class="control-label" for="allergyhistory" style="padding-bottom:5px">Allergy History</label>
+                                                        <textarea id="allergyhistory" name="allergyhistory" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label class="control-label" for="social" style="padding-bottom:5px">Social History</label>
+                                                        <textarea id="social" name="social" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label class="control-label" for="fmh" style="padding-bottom:5px">Family History</label>
+                                                        <textarea id="fmh" name="fmh" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="panel panel-info">
+                                                    <div class="panel-heading text-center">FOLLOW UP</div>
+                                                    <div class="panel-body">
+
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                <label class="col-md-2 control-label" for="time">Time</label>  
+                                                                <div class="col-md-10">
+                                                                    <input id="time" name="time" type="time" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group col-md-6">
+                                                                <label class="col-md-2 control-label" for="date">Date</label>  
+                                                                <div class="col-md-10">
+                                                                    <input id="date" name="date" type="date" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                                <div class="col-md-3" style="padding:0 0 0 0">
+                                    <div class="col-md-12">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading text-center">Physical Examination</div>
+                                            <div class="panel-body">
+
+                                                <div class="form-group">
+                                                    <!-- <label class="col-md-3 control-label" for="examination">Physical Examination</label> -->
+                                                    <div class="col-md-12">
+                                                        <textarea id="examination" name="examination" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading text-center">Diagnosis</div>
+                                            <div class="panel-body">
+
+                                                <div class="form-group">
+                                                    <!-- <label class="col-md-3 control-label" for="diagfinal">Diagnosis</label> -->
+                                                    <div class="col-md-12">
+                                                        <textarea id="diagfinal" name="diagfinal" type="text" class="form-control input-sm" rows="2"></textarea>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading text-center">Plan</div>
+                                            <div class="panel-body">
+
+                                                <div class="form-group">
+                                                    <!-- <label class="col-md-3 control-label" for="plan_">Plan</label> -->
+                                                    <div class="col-md-12">
+                                                        <textarea id="plan_" name="plan_" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="panel panel-info">
+                                        <div class="panel-body">
+
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label" for="examination">Physical Examination</label>
+                                                <div class="col-md-9">
+                                                    <textarea id="examination" name="examination" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div> -->
+                                </div>
+
+                                <div class="col-md-2" style="padding:0 0 0 0">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading text-center">Vital Sign</div>
+                                        <div class="panel-body">
+
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label" for="height" style="padding-bottom:5px">Height</label>
+                                                <div class="input-group">
+                                                    <input id="height" name="height" type="number" class="form-control input-sm">
+                                                    <span class="input-group-addon">cm</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label" for="weight" style="padding-bottom:5px">Weight</label>
+                                                <div class="input-group">
+                                                    <input id="weight" name="weight" type="number" class="form-control input-sm">
+                                                    <span class="input-group-addon">kg</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label" for="bmi" style="padding-bottom:5px">BMI</label>
+                                                <input id="bmi" name="bmi" type="number" class="form-control input-sm">
+                                            </div>
+
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label" for="bp" style="padding-bottom:5px">BP</label>
+                                                <input id="bp" name="bp" type="number" class="form-control input-sm">
+                                            </div>
+
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label" for="pulse" style="padding-bottom:5px">Pulse Rate</label>
+                                                <input id="pulse" name="pulse" type="number" class="form-control input-sm">
+                                            </div>
+
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label" for="temperature" style="padding-bottom:5px">Temperature</label>
+                                                <div class="input-group">
+                                                    <input id="temperature" name="temperature" type="number" class="form-control input-sm">
+                                                    <span class="input-group-addon">°C</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label" for="respiration" style="padding-bottom:5px">Respiration</label>
+                                                <input id="respiration" name="respiration" type="number" class="form-control input-sm">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
 				</form>
 
