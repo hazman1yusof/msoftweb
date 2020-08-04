@@ -1467,8 +1467,7 @@ function faster_detail_load(){
 		let desc_name = param.field[1];
 
 		if(!storage_obj){
-
-			if(cellvalue !== null && cellvalue.trim() != ''){
+			if(cellvalue !== null && cellvalue !== undefined && cellvalue.trim() != ''){
 				$.get( param.url+"?"+$.param(param), function( data ) {
 						
 				},'json').done(function(data) {

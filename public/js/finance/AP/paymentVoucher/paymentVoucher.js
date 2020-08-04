@@ -1192,7 +1192,8 @@ $(document).ready(function () {
 									entrydate:elem['recdate'],
 									reference:elem['document'],
 									amount:elem['amount'],
-									balance:0,
+									outamount:elem['outamount'],
+									balance:elem['amount'] - elem['totamount'],
 								
 								}
 							);
