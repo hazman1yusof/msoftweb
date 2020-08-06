@@ -39,7 +39,6 @@
 
 				<form class='form-horizontal' style='width:99%' id='formDoctorNote'>
 
-					<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
                     <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
                     <input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
 
@@ -171,6 +170,15 @@
                                                     </div>
                                                 </div>
 
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label" for="icd">Primary ICD</label>
+                                            <div class="col-md-7">
+                                                <input id="icd" name="icd" type="text" class="form-control input-sm">
                                             </div>
                                         </div>
                                     </div>
