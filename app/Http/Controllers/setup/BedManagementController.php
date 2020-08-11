@@ -37,6 +37,8 @@ class BedManagementController extends defaultController
                 return $this->del($request);
             case 'transfer_form':
                 return $this->transfer_form($request);
+            case 'ordercom_form':
+                return $this->ordercom_form($request);
             default:
                 return 'error happen..';
         }
@@ -122,9 +124,10 @@ class BedManagementController extends defaultController
                     'room' => strtoupper($request->room),  
                     'ward' => strtoupper($request->ward),
                     'tel_ext' => strtoupper($request->tel_ext),
-                    'statistic' => strtoupper($request->statistic), 
+                    'statistic' => strtoupper($request->statistic),                
                     //'occup' => 0,  
                     'occup' => strtoupper($request->occup),
+                    'name' => strtoupper($request->name),
                     'admdoctor' => strtoupper($request->admdoctor),
                     // 'tel_ext' => $this->truefalse($request->tel_ext), 
                     // 'statistic' => $this->truefalse($request->b_statistic),
@@ -222,6 +225,7 @@ class BedManagementController extends defaultController
                     'room' => strtoupper($request->room),  
                     'ward' => strtoupper($request->ward),
                     'occup' => strtoupper($request->occup),
+                    'name' => strtoupper($request->name),
                     'tel_ext' => strtoupper($request->tel_ext),
                     'admdoctor' => strtoupper($request->admdoctor),
                     'tel_ext' => $request->tel_ext, 
@@ -335,4 +339,78 @@ class BedManagementController extends defaultController
         }
         
     }
+
+    public function ordercom_form(Request $request){
+        DB::beginTransaction();
+        try {
+            //1. new ordercomm
+            DB::table('hisdb.chargetrx')
+                ->insert([  
+                    'auditno' => $request->auditno,
+                    'quantity' => $request->quantity,
+                    'isudept' => $request->isudept,
+                    'remarks' => $request->remarks,
+                    'chgcode' =>  $request->chgcode,
+                    'chgtype' =>  $request->chgtype,
+                    'bednum' =>  $request->trf_bednum,
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'compcode' => session('compcode'),
+                    // 'adduser' => strtoupper(session('username')),
+                    // 'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            //2 edit ordercomm
+            DB::table('hisdb.chargetrx') //curent bed
+                ->where('compcode','=',session('compcode'))
+                ->where('chgcode','=',$request->ct_chgcode)
+                ->insert([  
+                    'auditno' => $request->auditno,
+                    'quantity' => $request->quantity,
+                    'isudept' => $request->isudept,
+                    'remarks' => $request->remarks,
+                    'chgcode' =>  $request->chgcode,
+                    'chgtype' =>  $request->chgtype,
+                    'bednum' =>  $request->trf_bednum,
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'compcode' => session('compcode'),
+                ]);
+
+            DB::table('hisdb.chargetrx') //trf bed
+                ->where('compcode','=',session('compcode'))
+                ->where('bednum','=',$request->trf_bednum)
+                ->update([  
+                    'occup' => 'OCCUPIED',
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'name' => $request->name,
+                    'admdoctor' => $request->admdoctor
+                ]);
+
+            //3. edit ordercomm
+            DB::table('hisdb.chargetrx')
+                ->where('compcode','=',$request->compcode)
+                ->where('auditno','=',$request->auditno)
+                ->insert([
+                    'auditno' => $request->auditno,
+                    'quantity' => $request->quantity,
+                    'isudept' => $request->isudept,
+                    'remarks' => $request->remarks,
+                    'chgcode' =>  $request->chgcode,
+                    'chgtype' =>  $request->chgtype,
+                    'bednum' =>  $request->trf_bednum,
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'compcode' => session('compcode'),
+                ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+        
+    }    
 }

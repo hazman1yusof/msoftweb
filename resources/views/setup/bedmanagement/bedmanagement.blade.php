@@ -124,6 +124,7 @@
 			<form id="searchForm" class="formclass" style='width:99%; position:relative; min-height: 120px'>
 				<fieldset>
 					<input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 					<div class='col-md-12' style="padding:0 0 15px 0;">
 						<div class="form-group"> 
@@ -246,7 +247,7 @@
 						<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px"></i>
 						<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px"></i>
 						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 280px; top: 15px;">
-							<h5>Bed Occupancy Detail</h5>
+							<h5>Bed Allocation Detail</h5>
 						</div>		
 				</div>
 
@@ -401,6 +402,10 @@
 		</div>
 
 		<div class='row'>
+			@include('hisdb.doctornote.doctornote')
+		</div>
+
+		<div class='row'>
 			@include('hisdb.dietorder.dietorder')
 		</div>
 		
@@ -409,10 +414,60 @@
 		</div>
 
 		<div class='row'>
-			@include('hisdb.ordercomm.ordercomm')
+			<div class="panel-group">
+				<div class="panel panel-default" style="position: relative;" id="jqGrid_ordcom_c">
+					<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+						id="btn_grp_edit_ordcom"
+						style="position: absolute;
+								padding: 0 0 0 0;
+								right: 40px;
+								top: 15px;" 
+					>
+						<button type="button" class="btn btn-default" id="edit_ordcom">
+							<span class="fa fa-edit fa-lg"></span> Edit
+						</button>
+						<button type="button" class="btn btn-default" data-oper='add' id="save_ordcom">
+							<span class="fa fa-save fa-lg"></span> Save
+						</button>
+						<button type="button" class="btn btn-default" id="cancel_ordcom" >
+							<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+						</button>
+					</div>
+					<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" data-toggle="collapse" data-target="#jqGrid_ordcom_panel">
+						<b>Name: <span id="name_show"></span></b><br>
+							Bed No: <span id="bednum_show"></span>
+							<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px"></i>
+							<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px"></i>
+							<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 280px; top: 15px;">
+								<h5>ORDER COMM DTL</h5>
+							</div>		
+					</div>
+
+					<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">
+						<div class="panel-body">
+							<div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGrid_ordcom" class="table table-striped"></table>
+								<div id="jqGridPager4"></div>
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
 		</div>
 			
     </div>
+
+	<div id="dialogReserveBedForm" title="Note for reserved bed" >
+		<div class='panel panel-info'>
+			<div class="panel-body" style="">
+				<form class='form-horizontal' style=''>
+					<small>Notes</small> 
+					<input type="hidden" name="" id="reservebedHide">
+					<textarea class="form-control input-sm text-uppercase" name="reservebedNote" rows="5" ></textarea>
+				</form>
+			</div>
+		</div>			
+	</div>
 	<!-- ***************End Search + table ********************* -->
 
 @endsection
@@ -423,8 +478,7 @@
 	<script src="js/setup/bedmanagement/bedmanagement.js"></script>
 	<script src="js/hisdb/nursing/nursing.js"></script>
 	<script src="js/hisdb/wardpanel/wardpanel.js"></script>
+	<script src="js/hisdb/doctornote/doctornote.js"></script>
 	<script src="js/hisdb/dietorder/dietorder.js"></script>
-	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>
-	<script src="js/hisdb/ordercomm/ordercomm.js"></script>
-	
+	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>	
 @endsection

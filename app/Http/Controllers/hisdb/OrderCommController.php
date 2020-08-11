@@ -40,8 +40,8 @@ class OrderCommController extends defaultController
                         return 'error happen..';
                 }
 
-            case 'get_table_chargetrx':
-                return $this->get_table_chargetrx($request);
+            case 'get_table_orderComm':
+                return $this->get_table_orderComm($request);
 
             default:
                 return 'error happen..';

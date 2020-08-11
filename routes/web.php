@@ -557,6 +557,11 @@ Route::get('/wardpanel','hisdb\WardPanelController@show');
 Route::get('/wardpanel/table','hisdb\WardPanelController@table');
 Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 
+//// Doctor Note page ///
+Route::get('/doctornote','hisdb\DoctorNoteController@show');
+Route::get('/doctornote/table','hisdb\DoctorNoteController@table');
+Route::post('/doctornote/form','hisdb\DoctorNoteController@form');
+
 //// Diet Order page ///
 Route::get('/dietorder','hisdb\DietOrderController@show');
 Route::get('/dietorder/table','hisdb\DietOrderController@table');

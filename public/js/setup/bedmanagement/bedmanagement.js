@@ -25,7 +25,7 @@ $(document).ready(function () {
 	};
 	
 	var fdl = new faster_detail_load();
-	$("#jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").hide();
+	$("#jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGridOrderComm_c").hide();
 
 	function cust_rules(value,name){
 		var temp;
@@ -88,6 +88,17 @@ $(document).ready(function () {
 		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="statistic" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
+	function chgcodeOrdcomCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function chgTypeOrdcomCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="chgtype" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+
 	function recstatusCustomEdit(val, opt) {
 		if(val == '<span class="fa fa-times"></span>'){
 			val = 'D';
@@ -118,7 +129,6 @@ $(document).ready(function () {
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
-	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		editurl: "/bedmanagement/form",
@@ -159,7 +169,8 @@ $(document).ready(function () {
 			},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5},
-			{ label: 'Patient Name', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
+			{ label: 'Notes', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
+			//{ label: 'Remarks', name: 'reservebedNote', width: 40, hidden:true},
 			{ label: 'Doctor Code', name: 'admdoctor', width: 20, canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
@@ -192,11 +203,11 @@ $(document).ready(function () {
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid_trf', urlParam2,'kosongkan');
-				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").hide();
+				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGridOrderComm_c").hide();
 				if(rowData['mrn'] != '') {//kalau mrn ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').mrn;
 					refreshGrid('#jqGrid_trf', urlParam2);
-					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c").show();
+					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGridOrderComm_c").show();
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
 
 					populate_triage(selrowData("#jqGrid"));
@@ -204,21 +215,16 @@ $(document).ready(function () {
 					populate_dietOrder(selrowData("#jqGrid"));
 					populate_dischgSummary(selrowData("#jqGrid"));
 					populate_form_trf(selrowData("#jqGrid"));
+					populate_orderCommForm(selrowData("#jqGrid"));
 					
 				}else{
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
 				}
 			}
-
-
 		},
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
-			else{
-				$('#jqGrid2').jqGrid ('setSelection', "1");
-			}
+			$('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
 
-			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 			button_state_ti('triage');
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -299,12 +305,13 @@ $(document).ready(function () {
 	function occup(cellvalue, options, rowObject){
 		switch(cellvalue.trim()){
 			case 'OCCUPIED': return '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED';break;
+			case 'RESERVE': return '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE';break;
 			case 'VACANT': return '<img src="img/bedonly.png" height="10" width="14"></img> VACANT';break;
 			case 'HOUSEKEEPING': return '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING';break;
 			case 'MAINTENANCE': return '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE';break;
 			case 'ISOLATED': return '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED';break;
 			case 'RESERVE': return '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE';break;
-			case 'TOTAL BED': return '<i class="fa fa-bed" aria-hidden="true"></i> TOTAL BED';break;
+			//case 'TOTAL BED': return '<i class="fa fa-bed" aria-hidden="true"></i> TOTAL BED';break;
 			default: return cellvalue;break;
 		}
 	}
@@ -312,12 +319,13 @@ $(document).ready(function () {
 	function occup_unformat(cellvalue, options, rowObject){
 		switch(cellvalue){
 			case '<i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED': return 'OCCUPIED';break;
+			case '<i class="fa fa-ban" aria-hidden="true"></i> RESREVE': return 'RESERVE';break;
 			case '<img src="img/bedonly.png" height="10" width="14"></img> VACANT': return 'VACANT';break;
 			case '<i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING': return 'HOUSEKEEPING';break;
 			case '<i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE': return 'MAINTENANCE';break;
 			case '<i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED': return 'ISOLATED';break;
 			case '<i class="fa fa-ban" aria-hidden="true"></i> RESERVE': return 'RESERVE';break;
-			case '<i class="fa fa-bed" aria-hidden="true"></i> TOTAL BED': return 'TOTAL BED';break;						
+			//case '<i class="fa fa-bed" aria-hidden="true"></i> TOTAL BED': return 'TOTAL BED';break;						
 			default: return cellvalue;break;
 		}
 	}
@@ -357,13 +365,10 @@ $(document).ready(function () {
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
-				/*addmore_jqgrid.state = true;
-				$('#jqGrid_ilsave').click();*/
 			});
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
@@ -382,6 +387,7 @@ $(document).ready(function () {
 			let editurl = "/bedmanagement/form?"+
 				$.param({
 					action: 'bedmanagement_save',
+					name: $('#reservebedHide').val()
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -409,14 +415,10 @@ $(document).ready(function () {
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
-				/*addmore_jqgrid.state = true;
-				$('#jqGrid_ilsave').click();*/
 			});
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
@@ -434,6 +436,7 @@ $(document).ready(function () {
 			let editurl = "/bedmanagement/form?"+
 				$.param({
 					action: 'bedmanagement_save',
+					name: $('#reservebedHide').val()
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -562,9 +565,13 @@ $(document).ready(function () {
 					let val_use = (data.description == 'ACTIVE')? 'A':'D';
 					urlParam.searchCol=["recstatus"];
 					urlParam.searchVal=[val_use];
+					urlParam.filterCol=['b.compcode'];
+					urlParam.filterVal=['session.compcode'];
 				}else{
 					urlParam.searchCol=["occup"];
 					urlParam.searchVal=[data.description];
+					urlParam.filterCol=['b.compcode',"b.recstatus"];
+					urlParam.filterVal=['session.compcode',"A"];
 				}
 
 				refreshGrid("#jqGrid3",null,"kosongkan");
@@ -581,6 +588,7 @@ $(document).ready(function () {
 	);
 	search_occup.makedialog();
 	search_occup.on();
+
 
 	$('#btn_doc').on( "click", function() {
 		$('#doc ~ a').click();
@@ -695,6 +703,30 @@ $(document).ready(function () {
 	);
 	dialog_ward.makedialog();
 
+	$("#dialogReserveBedForm").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function(event, ui){
+		},
+		close: function( event, ui ){
+		},
+		buttons :[{
+			text: "Save",click: function() {
+				var newval = $("#dialogReserveBedForm textarea[name='reservebedNote']").val();
+				var rowid = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+				$("#jqGrid").jqGrid('setRowData',rowid,{name:newval});
+				$('#reservebedHide').val(newval);
+				$(this).dialog('close');
+			}
+		},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+
 	var dialog_occup = new ordialog(
 		'occup','sysdb.department',"#jqGrid input[name='occup']",errorField,
 		{	colModel:
@@ -710,7 +742,9 @@ $(document).ready(function () {
 			ondblClickRow:function(event){
 
 				$(dialog_occup.textfield).val(selrowData("#"+dialog_occup.gridname)['description']);
-
+				if (selrowData("#"+dialog_occup.gridname)['description'] == 'RESERVE'){
+					$("#dialogReserveBedForm").dialog('open');					
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -808,9 +842,10 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_recstatus.makedialog(false);	
+
 	//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
 
-	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
+	/////////////////////////////parameter for jqgrid2 url BED ALLOCATION///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
@@ -828,7 +863,7 @@ $(document).ready(function () {
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
 
-	////////////////////////////////////////////////jqgrid_trf//////////////////////////////////////////////
+	////////////////////////////////////////////////jqgrid_trf BED ALLOCATION//////////////////////////////////////////////
 
 	$("#jqGrid_trf").jqGrid({
 		datatype: "local",
@@ -899,12 +934,16 @@ $(document).ready(function () {
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 	addParamField('#jqGrid_trf', false, urlParam2);
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
+	addParamField('#jqGrid_ordcom', false, urlParam4);
 
 	$("#jqGrid_trf_panel").on("show.bs.collapse", function(){
 		$("#jqGrid_trf").jqGrid ('setGridWidth', Math.floor($("#jqGrid_trf_c")[0].offsetWidth-$("#jqGrid_trf_c")[0].offsetLeft-28));
 	});
 
-	/////////////////////////////transer/////////////////////////
+	$("#jqGrid_ordcom_panel").on("show.bs.collapse", function(){
+		$("#jqGrid_ordcom").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+	});
+	/////////////////////////////for transer BED ALLOCATION/////////////////////////
 
 	var dialog_bed_trf = new ordialog(
 		'trf_bednum','hisdb.bed','#trf_bednum',errorField,
@@ -1057,10 +1096,6 @@ $(document).ready(function () {
 		});
 	}
 
-	function saveForm_trf(){
-		
-	}
-
 	function saveForm_trf(callback){
 		var saveParam={
 	        oper:'transfer_form'
@@ -1086,4 +1121,232 @@ $(document).ready(function () {
 	        callback();
 	    });
 	}
+	/////////////////////////////End for transer BED ALLOCATION/////////////////////////
+
+	/////////////////////////////Start for ORDERCOMM/////////////////////////
+			//////////////////////////parameter for jqgrid4 url ORDERCOMM///////////////////////////////////////////////
+	var urlParam4={
+		action:'get_table_default',
+		url:'/util/get_table_default',
+		field: '',
+		fixPost:'true',
+		table_name: ['hisdb.chargetrx AS ct','hisdb.chgmast AS cm'],
+		join_type:['LEFT JOIN'],
+		join_onCol:['cm.chgcode'],
+		join_onVal:['ct.chgcode'],
+		join_filterCol:[['cm.compcode on =']],
+		join_filterVal:[['ct.compcode']],
+		filterCol:['ct.compcode'],
+		filterVal:['session.compcode'],
+	};
+
+	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
+
+	////////////////////////////////////////////////jqgrid_ordcom ORDERCOMM//////////////////////////////////////////////
+	$("#jqGrid_ordcom").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'compcode', name: 'ct_compcode', width: 5, classes: 'wrap', hidden:true},
+			{ label: 'Data Entry', name: 'ct_auditno', width: 7},
+			{ label: 'Date', name: 'ct_trxdate', width: 5, classes: 'wrap'},
+			{ label: 'Time', name: 'ct_trxtime', width: 5, classes: 'wrap'},
+			{ label: 'Charge Code', name: 'ct_chgcode', width: 15 , classes: 'wrap', editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
+				edittype:'custom',	editoptions:
+					{ 	custom_element:chgcodeOrdcomCustomEdit,
+						custom_value:galGridCustomValue 	
+					},
+			},
+			{ label: 'Type', name: 'cm_chgtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
+				edittype:'custom',	editoptions:
+					{	custom_element:chgTypeOrdcomCustomEdit,
+						custom_value:galGridCustomValue 	
+					},
+			},
+			{ label: 'Quantity', name: 'ct_quantity', width: 10},
+			{ label: 'Issue Department', name: 'ct_isudept', width: 10},
+			{ label: 'Remarks', name: 'ct_remarks', width: 10},
+			{ label: 'idno', name: 'idno', width: 20, hidden:true},
+		],
+		autowidth: true,
+		shrinkToFit: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 1150,
+		height: 200,
+		rowNum: 30,
+		sortname: 'ct_auditno',
+		sortorder: 'desc',
+		pager: "#jqGridPager4",
+		onSelectRow:function(rowid, selected){
+			console.log(selrowData("#jqGrid_ordcom"));
+			populate_form_ordcom(selrowData("#jqGrid_ordcom"));
+		},
+		loadComplete: function(){
+			if(addmore_jqgrid2.more == true){$('#jqGrid_ordcom_iladd').click();}
+			else{
+				$('#jqGrid_ordcom').jqGrid ('setSelection', "1");
+			}
+
+			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset			
+		},
+		gridComplete: function(){
+
+			fdl.set_array().reset();
+			// if(!hide_init){
+			// 	hide_init=1;
+			// 	hideatdialogForm_jqGrid_trf(false);
+			// }
+		}
+	});
+
+			//////////////////////////////////////end grid ordcom/////////////////////////////////////////////////////////
+			//////////////////////////////////////Start setup ordcom/////////////////////////////////////////////////////////
+
+	// var dialog_bed_trf = new ordialog(
+	// 	'trf_bednum','hisdb.bed','#trf_bednum',errorField,
+	// 	{	colModel:[
+	//             { label: 'Bed No', name: 'bednum',classes:'pointer', width: 7,canSearch:true,checked:true,or_search:true},
+	//             { label: 'Ward', name: 'ward',classes:'pointer', width: 7,canSearch:true,or_search:true},
+	// 			{ label: 'Room', name: 'room',classes:'pointer', width: 10,canSearch:true,or_search:true},
+	// 			{ label: 'Bed Type', name: 'bedtype',classes:'pointer', width: 15, classes: 'wrap',canSearch:true,or_search:true},
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','recstatus','occup'],
+	// 			filterVal:['session.compcode','A','<>.OCCUPIED']
+	// 		},
+	// 		ondblClickRow:function(){
+	// 			$(dialog_bed_trf.textfield).parent().next().html('');
+	// 			let data=selrowData('#'+dialog_bed_trf.gridname);
+	// 			$('#trf_room').val(data.room);
+	// 			$('#trf_ward').val(data.ward);
+	// 			$('#trf_bedtype').val(data.bedtype);
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$('#purordhd_purdate').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	},{
+	// 		title:"Select Transaction Type",
+	// 		open: function(){
+	// 			dialog_bed_trf.urlParam.filterCol=['compcode','recstatus','occup'];
+	// 			dialog_bed_trf.urlParam.filterVal=['session.compcode','A','<>.OCCUPIED'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_bed_trf.makedialog();
+
+	button_state_ordcom('empty');
+	function button_state_ordcom(state){
+		switch(state){
+			case 'empty':
+				disableForm('#form_ordcom');
+				$("#toggle_ordcom").removeAttr('data-toggle');
+				$('#save_ordcom').data('oper','add');
+				$('#save_ordcom,#cancel_ordcom,#edit_ordcom').attr('disabled',true);
+				break;
+			case 'edit':
+				disableForm('#form_ordcom');
+				$("#toggle_ordcom").attr('data-toggle','collapse');
+				$('#save_ordcom').data('oper','edit');
+				$("#edit_ordcom").attr('disabled',false);
+				$('#save_ordcom,#cancel_ordcom').attr('disabled',true);
+				//dialog_lodger_trf.off();
+				break;
+			case 'wait':
+				//enableForm('#form_ordcom',['ba_asdate','ba_astime','ba_bednum','ba_ward','ba_room','bedtype','trf_aedate','trf_aetime','trf_room','trf_ward','trf_bedtype']);
+				$("#toggle_ordcom").attr('data-toggle','collapse');
+				$("#save_ordcom,#cancel_ordcom").attr('disabled',false);
+				$('#edit_ordcom').attr('disabled',true);
+				//dialog_lodger_trf.on();
+				break;
+		}
+	}
+
+	$("#edit_ordcom").click(function(){
+		button_state_ordcom('wait');
+	});
+
+	$("#save_ordcom").click(function(){
+		disableForm('#form_ordcom');
+		if( $('#form_ordcom').isValid({requiredFields: ''}, conf, true) ) {
+			saveForm_ordcom(function(){
+				$("#cancel_ordcom").click();
+				refreshGrid('#jqGrid_ordcom', urlParam4);
+			});
+		}else{
+			enableForm('#form_ordcom');
+		}
+	});
+
+	$("#cancel_ordcom").click(function(){
+		button_state_ordcom($('#save_ordcom').data('oper'));
+	});
+
+	function populate_form_ordcom(rowdata){
+		$('#name_show').text(selrowData("#jqGrid").name);
+		$('#bednum_show').text(selrowData("#jqGrid").bednum);	
+		//autoinsert_rowdata("#form_ordcom",rowdata);
+		$('input[name=trf_aedate]').val(moment().format('YYYY-MM-DD'));
+		$('input[name=trf_aetime]').val(moment().format('HH:mm:ss'));
+		button_state_ordcom('edit');
+	}
+
+	function empty_form_ordcom(){
+		$('#name_show').text('');
+		$('#bednum_show').text('');
+		button_state_ordcom('empty');
+	}
+
+	// function autoinsert_rowdata(form,rowData){
+	// 	$.each(rowData, function( index, value ) {
+	// 		var input=$(form+" [name='"+index+"']");
+	// 		if(input.is("[type=radio]")){
+	// 			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+	// 		}else if(input.is("[type=checkbox]")){
+	// 			if(value==1){
+	// 				$(form+" [name='"+index+"']").prop('checked', true);
+	// 			}
+	// 		}else{
+	// 			input.val(value);
+	// 		}
+	// 	});
+	// }
+
+	function saveForm_ordcom(callback){
+		var saveParam={
+	        oper:'transfer_form'
+	    }
+	    var postobj={
+	    	_token : $('#_token').val(),
+	    	name: selrowData("#jqGrid").name,
+	    	mrn : selrowData("#jqGrid").mrn,
+			episno : selrowData("#jqGrid").episno,
+			admdoctor : selrowData("#jqGrid").admdoctor,
+			idno : selrowData("#jqGrid").idno,
+	    };
+
+	    var values = $("#form_ordcom").serializeArray();
+
+
+	    $.post( "/bedmanagement/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+	        
+	    },'json').fail(function(data) {
+	        // alert('there is an error');
+	        callback();
+	    }).success(function(data){
+	        callback();
+	    });
+	}
+
+		////////////////////////////////////// End setup ordcom /////////////////////////////////////////////////////////
+
 });

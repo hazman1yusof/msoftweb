@@ -39,8 +39,6 @@
 
 				<form class='form-horizontal' style='width:99%' id='formDischgSummary'>
 
-					<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-
 					<div class='col-md-12'>
 						<div class="panel panel-info">
 							<div class="panel-heading text-center">DISCHARGE SUMMARY</div>

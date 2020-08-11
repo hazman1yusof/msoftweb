@@ -51,7 +51,6 @@ $(document).ready(function () {
 			case 'bedchgcode': field = ['chgcode', 'description']; table = "hisdb.chgmast";case_='bedchgcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
-
 		fdl.get_array('bed',options,param,case_,cellvalue);
 		
 		if(cellvalue==null)return "";
