@@ -524,7 +524,7 @@ $(document).ready(function () {
 		action:'get_table_default',
 		url:'/util/get_table_default',
 		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
-		table_name:['finance.apactdtl AS apdt'],
+		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
 		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
 		filterVal:['session.compcode', '', '<>.DELETE', 'AP']
@@ -1188,7 +1188,7 @@ $(document).ready(function () {
 						data.rows.forEach(function(elem) {
 							$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
 								{
-									document:elem['document'],
+									document:elem['suppcode'],
 									entrydate:elem['recdate'],
 									reference:elem['document'],
 									amount:elem['amount'],

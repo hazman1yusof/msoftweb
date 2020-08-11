@@ -90,11 +90,11 @@ class PaymentVoucherDetailController extends defaultController
         try {
            
             $auditno = $request->query('auditno');
-            $source = $request->source;
+          /*  $source = $request->source;
             $trantype = $request->trantype;
-
+*/
             ////1. calculate lineno_ by auditno
-            $sqlln = DB::table('finance.apactdtl')->select('lineno_')
+            $sqlln = DB::table('finance.apalloc')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('auditno','=',$auditno)
                         ->count('lineno_');
@@ -102,13 +102,13 @@ class PaymentVoucherDetailController extends defaultController
             $li=intval($sqlln)+1;
 
             ///2. insert detail
-            DB::table('finance.apactdtl')
+            DB::table('finance.apalloc')
                 ->insert([
                     'compcode' => session('compcode'),
                     'auditno' => $auditno,
                     'lineno_' => $li,
-                    'source' => $request->source,
-                    'trantype' => $request->trantype,
+                    'source' => 'AP',
+                    'trantype' => 'AL',
                     'document' => strtoupper($request->document),
                     'entrydate' => $request->entrydate,
                     'reference' => $request->reference,
