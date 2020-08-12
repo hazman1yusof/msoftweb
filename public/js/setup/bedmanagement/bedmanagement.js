@@ -203,11 +203,12 @@ $(document).ready(function () {
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid_trf', urlParam2,'kosongkan');
-				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGridOrderComm_c").hide();
+				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGrid_ordcom_c").hide();
 				if(rowData['mrn'] != '') {//kalau mrn ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').mrn;
 					refreshGrid('#jqGrid_trf', urlParam2);
-					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGridOrderComm_c").show();
+					refreshGrid('#jqGrid_ordcom', urlParam4);
+					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGrid_ordcom_c").show();
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
 
 					populate_triage(selrowData("#jqGrid"));
@@ -216,6 +217,7 @@ $(document).ready(function () {
 					populate_dischgSummary(selrowData("#jqGrid"));
 					populate_form_trf(selrowData("#jqGrid"));
 					populate_orderCommForm(selrowData("#jqGrid"));
+					populate_form_ordcom(selrowData("#jqGrid"));
 					
 				}else{
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
@@ -934,7 +936,7 @@ $(document).ready(function () {
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 	addParamField('#jqGrid_trf', false, urlParam2);
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
-	addParamField('#jqGrid_ordcom', false, urlParam4);
+	// addParamField('#jqGrid_ordcom', false, urlParam4);
 
 	$("#jqGrid_trf_panel").on("show.bs.collapse", function(){
 		$("#jqGrid_trf").jqGrid ('setGridWidth', Math.floor($("#jqGrid_trf_c")[0].offsetWidth-$("#jqGrid_trf_c")[0].offsetLeft-28));
@@ -1145,29 +1147,29 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid_ordcom ORDERCOMM//////////////////////////////////////////////
 	$("#jqGrid_ordcom").jqGrid({
 		datatype: "local",
+		editurl: "/ordcom/form",
 		colModel: [
 			{ label: 'compcode', name: 'ct_compcode', width: 5, classes: 'wrap', hidden:true},
 			{ label: 'Data Entry', name: 'ct_auditno', width: 7},
 			{ label: 'Date', name: 'ct_trxdate', width: 5, classes: 'wrap'},
 			{ label: 'Time', name: 'ct_trxtime', width: 5, classes: 'wrap'},
-			{ label: 'Charge Code', name: 'ct_chgcode', width: 15 , classes: 'wrap', editable:true,
-				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
-				edittype:'custom',	editoptions:
-					{ 	custom_element:chgcodeOrdcomCustomEdit,
-						custom_value:galGridCustomValue 	
-					},
-			},
-			{ label: 'Type', name: 'cm_chgtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
-				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
-				edittype:'custom',	editoptions:
-					{	custom_element:chgTypeOrdcomCustomEdit,
-						custom_value:galGridCustomValue 	
-					},
-			},
+			// { label: 'Charge Code', name: 'ct_chgcode', width: 15 , classes: 'wrap', editable:true,
+			// 	editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
+			// 	edittype:'custom',	editoptions:
+			// 		{ 	custom_element:chgcodeOrdcomCustomEdit,
+			// 			custom_value:galGridCustomValue 	
+			// 		},
+			// },
+			// { label: 'Type', name: 'cm_chgtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
+			// 	editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
+			// 	edittype:'custom',	editoptions:
+			// 		{	custom_element:chgTypeOrdcomCustomEdit,
+			// 			custom_value:galGridCustomValue 	
+			// 		},
+			// },
 			{ label: 'Quantity', name: 'ct_quantity', width: 10},
 			{ label: 'Issue Department', name: 'ct_isudept', width: 10},
-			{ label: 'Remarks', name: 'ct_remarks', width: 10},
-			{ label: 'idno', name: 'idno', width: 20, hidden:true},
+			//{ label: 'Remarks', name: 'ct_remarks', width: 10},
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -1183,6 +1185,9 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			console.log(selrowData("#jqGrid_ordcom"));
 			populate_form_ordcom(selrowData("#jqGrid_ordcom"));
+			
+			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
+
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid2.more == true){$('#jqGrid_ordcom_iladd').click();}
@@ -1192,18 +1197,257 @@ $(document).ready(function () {
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset			
 		},
+		ondblClickRow: function(rowid, iRow, iCol, e){			
+			$("#jqGrid_iledit").click();
+			$('#p_error').text('');   
+		},
 		gridComplete: function(){
-
 			fdl.set_array().reset();
-			// if(!hide_init){
-			// 	hide_init=1;
-			// 	hideatdialogForm_jqGrid_trf(false);
-			// }
 		}
 	});
+		//////////////////////////My edit options ORDERCOM/////////////////////////////////////////////////////////
+		var myEditOptions = {
+			keys: true,
+			extraparam:{
+				"_token": $("#_token").val()
+			},
+			oneditfunc: function (rowid) {
+	
+				//$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+				$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").hide();
+				$("#jqGrid_ordcom :input[name='ct_trxdate']").focus();
+				$("#jqGrid_ordcom :input[name='remarks']").keydown(function(e) {//when click tab at last column in header, auto save
+					var code = e.keyCode || e.which;
+						if (code == '9')$('#jqGrid_ordcom_ilsave').click();
+				});
+	
+			},
+			aftersavefunc: function (rowid, response, options) {
+				//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
+				addmore_jqgrid.more = true;
+				//state true maksudnyer ada isi, tak kosong
+				refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+				errorField.length=0;
+				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+			},
+			errorfunc: function(rowid,response){
+				var data = JSON.parse(response.responseText)
+				$('#p_error').text(data.errormsg);
+				err_reroll.old_data = data.request;
+				err_reroll.error = true;
+				err_reroll.errormsg = data.errormsg;
+				refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+			},
+			beforeSaveRow: function (options, rowid) {
+				$('#p_error').text('');
+				if(errorField.length>0)return false;
+	
+				let data = $('#jqGrid_ordcom').jqGrid ('getRowData', rowid);
+	
+				let editurl = "/ordcom/form?"+
+					$.param({
+						mrn: selrowData('#jqGrid').mrn,
+						action: 'saveForm_ordcom',
+					});
+				$("#jqGrid_ordcom").jqGrid('setGridParam', { editurl: editurl });
+			},
+			afterrestorefunc : function( response ) {
+				refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+				$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").show();
+			},
+			errorTextFormat: function (data) {
+				alert(data);
+			}
+		};
+	
+			var myEditOptions_edit = {
+			keys: true,
+			extraparam:{
+				"_token": $("#_token").val()
+			},
+			oneditfunc: function (rowid) {
+				$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").hide();
+				$("#jqGrid_ordcom :input[name='ct_trxdate']").focus();
+				$("#jqGrid_ordcom :input[name='remarks']").keydown(function(e) {//when click tab at last column in header, auto save
+					var code = e.keyCode || e.which;
+						if (code == '9')$('#jqGrid_ordcom_ilsave').click();
+				});
+	
+			},
+			aftersavefunc: function (rowid, response, options) {
+				if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
+				//state true maksudnyer ada isi, tak kosong
+				refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+				errorField.length=0;
+				$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll").show();
+			},
+			errorfunc: function(rowid,response){
+				//$('#p_error').text(response.responseText);
+				var data = JSON.parse(response.responseText)
+				$('#p_error').text(data.errormsg);
+				err_reroll.old_data = data.request;
+				err_reroll.error = true;
+				err_reroll.errormsg = data.errormsg;
+				refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+			},
+			beforeSaveRow: function (options, rowid) {
+				$('#p_error').text('');
+				if(errorField.length>0)return false;
+	
+				let data = $('#jqGrid_ordcom').jqGrid ('getRowData', rowid);
+	
+				let editurl = "/ordcom/form?"+
+					$.param({
+						mrn: selrowData('#jqGrid').mrn,
+						action: 'saveForm_ordcom',
+					});
+				$("#jqGrid_ordcom").jqGrid('setGridParam', { editurl: editurl });
+			},
+			afterrestorefunc : function( response ) {
+				refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+				$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").show();
+			},
+			errorTextFormat: function (data) {
+				alert(data);
+			}
+		};
+		//////////////////////////End My edit options ORDERCOM/////////////////////////////////////////////////////////
 
-			//////////////////////////////////////end grid ordcom/////////////////////////////////////////////////////////
-			//////////////////////////////////////Start setup ordcom/////////////////////////////////////////////////////////
+		/////////////////////////start grid pager ORDERCOM/////////////////////////////////////////////////////////
+		$("#jqGrid_ordcom").inlineNav('#jqGridPager4', {
+			add: true,
+			edit: true,
+			cancel: true,
+			//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+			restoreAfterSelect: false,
+			addParams: {
+				addRowParams: myEditOptions
+			},
+			editParams: myEditOptions_edit,
+			
+		}).jqGrid('navButtonAdd', "#jqGridPager2", {
+			id: "jqGridPagerDelete",
+			caption: "", cursor: "pointer", position: "last",
+			buttonicon: "glyphicon glyphicon-trash",
+			title: "Delete Selected Row",
+			onClickButton: function () {
+				selRowId = $("#jqGrid_ordcom").jqGrid('getGridParam', 'selrow');
+				if (!selRowId) {
+					bootbox.alert('Please select row');
+				} else {
+					bootbox.confirm({
+						message: "Are you sure you want to delete this row?",
+						buttons: {
+							confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
+						},
+						callback: function (result) {
+							if (result == true) {
+								param = {
+									_token: $("#_token").val(),
+									action: 'saveForm_ordcom',
+									// cheqno: $('#cheqno').val(),
+									// mrn: selrowData('#jqGrid_ordcom').mrn,
+								}
+								$.post( "/ordcom/form?"+$.param(param),{oper:'del_ordcom',"_token": $("#_token").val()}, function( data ){
+								}).fail(function (data) {
+									$('#p_error').text(data.responseText);
+								}).done(function (data) {
+									refreshGrid("#jqGrid_ordcom", urlParam4);
+								});
+							}else{
+								$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+							}
+						}
+					});
+				}
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager4",{
+			id: "jqGridPagerEditAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-th-list",
+			title:"Edit All Row",
+			onClickButton: function(){
+				
+				var ids = $("#jqGrid_ordcom").jqGrid('getDataIDs');
+				for (var i = 0; i < ids.length; i++) {
+
+					$("#jqGrid_ordcom").jqGrid('editRow',ids[i]);
+				}
+				hideatdialogForm(true,'saveallrow');
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPagerSaveAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-download-alt",
+			title:"Save All Row",
+			onClickButton: function(){
+
+				var ids = $("#jqGrid_ordcom").jqGrid('getDataIDs');
+
+				var jqGrid_ordcom_data = [];
+				for (var i = 0; i < ids.length; i++) {
+
+					var data = $('#jqGrid_ordcom').jqGrid('getRowData',ids[i]);
+
+					var obj = 
+					{
+						'idno' : ids[i],
+						'startno' : $("#jqGrid_ordcom input#"+ids[i]+"_startno").val(),
+						'endno' : $("#jqGrid_ordcom input#"+ids[i]+"_endno").val(),
+						'cheqqty' : $("#jqGrid_ordcom input#"+ids[i]+"_cheqqty").val()
+					}
+
+					jqGrid_ordcom_data.push(obj);
+				}
+
+				var param={
+					action: 'saveForm_ordcom',
+					_token: $("#_token").val(),
+					mrn: selrowData('#jqGrid').mrn,
+				
+				}
+
+				$.post( "/ordcom/form?"+$.param(param),{oper:'edit_all_ordcom',dataobj:jqGrid_ordcom_data}, function( data ){
+				}).fail(function(data) {
+					$('#p_error').text(data.responseText);
+					////errorText(dialog,data.responseText);
+				}).done(function(data){
+					hideatdialogForm(false);
+					refreshGrid("#jqGrid_ordcom",urlParam4);
+				});
+
+			},
+			afterrestorefunc : function( response ) {
+				refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+				//$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll").show();
+			},
+			errorTextFormat: function (data) {
+				alert(data);
+			}
+			
+		}).jqGrid('navButtonAdd',"#jqGridPager4",{
+			id: "jqGridPagerCancelAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-remove-circle",
+			title:"Cancel",
+			onClickButton: function(){
+				hideatdialogForm(false);
+				refreshGrid("#jqGrid_ordcom",urlParam4);
+			},	
+		}).jqGrid('navButtonAdd', "#jqGridPager4", {
+			id: "jqGridPagerRefresh",
+			caption: "", cursor: "pointer", position: "last",
+			buttonicon: "glyphicon glyphicon-refresh",
+			title: "Refresh Table",
+			onClickButton: function () {
+				refreshGrid("#jqGrid_ordcom", urlParam4);
+			},
+		});
+		//////////////////////////////////End grid pager ORDERCOM/////////////////////////////////////////////////////////
+	//////////////////////////////////////End grid ORDERCOM/////////////////////////////////////////////////////////
+	addParamField('#jqGrid_ordcom', false, urlParam4);
+	
+	//////////////////////////////////////Start dialog setup ordcom/////////////////////////////////////////////////////////
 
 	// var dialog_bed_trf = new ordialog(
 	// 	'trf_bednum','hisdb.bed','#trf_bednum',errorField,
@@ -1323,21 +1567,18 @@ $(document).ready(function () {
 
 	function saveForm_ordcom(callback){
 		var saveParam={
-	        oper:'transfer_form'
+	        oper:'ordercom_form'
 	    }
 	    var postobj={
 	    	_token : $('#_token').val(),
 	    	name: selrowData("#jqGrid").name,
 	    	mrn : selrowData("#jqGrid").mrn,
-			episno : selrowData("#jqGrid").episno,
-			admdoctor : selrowData("#jqGrid").admdoctor,
-			idno : selrowData("#jqGrid").idno,
 	    };
 
 	    var values = $("#form_ordcom").serializeArray();
 
 
-	    $.post( "/bedmanagement/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+	    $.post( "/ordcom/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');

@@ -39,6 +39,12 @@ class BedManagementController extends defaultController
                 return $this->transfer_form($request);
             case 'ordercom_form':
                 return $this->ordercom_form($request);
+            case 'add_ordcom':
+                return $this->add_ordcom($request);
+            case 'del_ordcom':
+                return $this->del_ordcom($request);
+            case 'edit_all_ordcom':
+                return $this->edit_all_ordcom($request);                
             default:
                 return 'error happen..';
         }
@@ -352,7 +358,6 @@ class BedManagementController extends defaultController
                     'remarks' => $request->remarks,
                     'chgcode' =>  $request->chgcode,
                     'chgtype' =>  $request->chgtype,
-                    'bednum' =>  $request->trf_bednum,
                     'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'compcode' => session('compcode'),
@@ -371,21 +376,9 @@ class BedManagementController extends defaultController
                     'remarks' => $request->remarks,
                     'chgcode' =>  $request->chgcode,
                     'chgtype' =>  $request->chgtype,
-                    'bednum' =>  $request->trf_bednum,
                     'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'compcode' => session('compcode'),
-                ]);
-
-            DB::table('hisdb.chargetrx') //trf bed
-                ->where('compcode','=',session('compcode'))
-                ->where('bednum','=',$request->trf_bednum)
-                ->update([  
-                    'occup' => 'OCCUPIED',
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'name' => $request->name,
-                    'admdoctor' => $request->admdoctor
                 ]);
 
             //3. edit ordercomm
@@ -399,7 +392,6 @@ class BedManagementController extends defaultController
                     'remarks' => $request->remarks,
                     'chgcode' =>  $request->chgcode,
                     'chgtype' =>  $request->chgtype,
-                    'bednum' =>  $request->trf_bednum,
                     'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'compcode' => session('compcode'),
@@ -412,5 +404,123 @@ class BedManagementController extends defaultController
             return response($e->getMessage(), 500);
         }
         
-    }    
+    }
+
+    public function add_ordcom(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            $auditno = DB::table('hisdb.chargetrx')
+                            ->where('auditno','=',$request->$ct_auditno);
+
+            if($auditno->exists()){
+                throw new \Exception("RECORD DUPLICATE");
+            }
+
+            DB::table('hisdb.chargetrx')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'trxtype' => $request->trxtype,
+                    'auditno' => $request->ct_auditno,
+                    'quantity' => $request->ct_quantity,
+                    'isudept' => $request->ct_isudept,
+                    'remarks' => $request->remct_remarksarks,
+                    'billcode' => $request->billcode,
+                    'doctorcode' => $request->doctorcode,
+                    'chg_class' => $request->chg_class,                    
+                    'chgcode' =>  $request->ct_chgcode,
+                    'chgtype' =>  $request->cm_chgtype,
+                    'chggroup' => $request->chggroup,
+                    'dracccode' => $request->dracccode,
+                    'cracccode' => $request->cracccode,
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+
+             DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+    
+    public function edit_all_ordcom(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->dataobj as $key => $value) {
+                ///1. update detail
+                DB::table('hisdb.chargetrx')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$value['auditno'])
+                    ->update([
+                        'trxtype' => $request->trxtype,
+                        'quantity' => $request->ct_quantity,
+                        'isudept' => $request->ct_isudept,
+                        'remarks' => $request->remct_remarksarks,
+                        'billcode' => $request->billcode,
+                        'doctorcode' => $request->doctorcode,
+                        'chg_class' => $request->chg_class,                    
+                        'chgcode' =>  $request->ct_chgcode,
+                        'chgtype' =>  $request->cm_chgtype,
+                        'chggroup' => $request->chggroup,
+                        'dracccode' => $request->dracccode,
+                        'cracccode' => $request->cracccode,
+                        'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }
+         
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+
+    }
+
+    public function del_ordcom(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            ///1. update detail
+            DB::table('hisdb.chargetrx')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$request->auditno)
+                ->update([ 
+                    'recstatus' => 'D',
+                    'deluser' => strtoupper(session('username')),
+                    'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+       
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+
+        
+    }
 }
