@@ -216,7 +216,6 @@ $(document).ready(function () {
 					populate_dietOrder(selrowData("#jqGrid"));
 					populate_dischgSummary(selrowData("#jqGrid"));
 					populate_form_trf(selrowData("#jqGrid"));
-					populate_orderCommForm(selrowData("#jqGrid"));
 					populate_form_ordcom(selrowData("#jqGrid"));
 					
 				}else{
