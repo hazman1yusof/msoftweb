@@ -35,6 +35,7 @@ $(document).ready(function () {
 			case 'Bed Status':temp=$("#jqGrid input[name='occup']");break;
 			case 'Statistic':temp=$("#jqGrid input[name='statistic']");break;
 			case ' ':temp=$("#jqGrid input[name='recstatus']");break;
+			case 'Charge Code':temp=$("#jqGrid input[name='chgcodeOrdcom']");break;
 			break;
 		}
 		console.log(temp);
@@ -49,6 +50,7 @@ $(document).ready(function () {
 			case 'ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
 			case 'admdoctor': field = ['doctorcode', 'doctorname']; table = "hisdb.doctor";case_='doccode';break;
 			case 'ba_ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ba_ward';break;
+			//case 'chgcode':field=['chgcode','description'];table="hisdb.chgmast";case_='chgcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -1152,14 +1154,14 @@ $(document).ready(function () {
 			{ label: 'Data Entry', name: 'ct_auditno', width: 7},
 			{ label: 'Date', name: 'ct_trxdate', width: 5, classes: 'wrap'},
 			{ label: 'Time', name: 'ct_trxtime', width: 5, classes: 'wrap'},
-			// { label: 'Charge Code', name: 'ct_chgcode', width: 15 , classes: 'wrap', editable:true,
-			// 	editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
-			// 	edittype:'custom',	editoptions:
-			// 		{ 	custom_element:chgcodeOrdcomCustomEdit,
-			// 			custom_value:galGridCustomValue 	
-			// 		},
-			// },
-			// { label: 'Type', name: 'cm_chgtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
+			{ label: 'Charge Code', name: 'ct_chgcode', width: 15 , classes: 'wrap', editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
+				edittype:'custom',	editoptions:
+					{ 	custom_element:chgcodeOrdcomCustomEdit,
+						custom_value:galGridCustomValue 	
+					},
+			},
+			// { label: 'Charge Type', name: 'cm_chgtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
 			// 	editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 			// 	edittype:'custom',	editoptions:
 			// 		{	custom_element:chgTypeOrdcomCustomEdit,
@@ -1168,7 +1170,7 @@ $(document).ready(function () {
 			// },
 			{ label: 'Quantity', name: 'ct_quantity', width: 10},
 			{ label: 'Issue Department', name: 'ct_isudept', width: 10},
-			//{ label: 'Remarks', name: 'ct_remarks', width: 10},
+			{ label: 'Remarks', name: 'ct_remarks', width: 10},
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -1214,6 +1216,7 @@ $(document).ready(function () {
 	
 				//$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 				$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").hide();
+				dialog_chgcode_ordcom.on();
 				$("#jqGrid_ordcom :input[name='ct_trxdate']").focus();
 				$("#jqGrid_ordcom :input[name='remarks']").keydown(function(e) {//when click tab at last column in header, auto save
 					var code = e.keyCode || e.which;
@@ -1266,6 +1269,7 @@ $(document).ready(function () {
 			},
 			oneditfunc: function (rowid) {
 				$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").hide();
+				dialog_chgcode_ordcom.on();
 				$("#jqGrid_ordcom :input[name='ct_trxdate']").focus();
 				$("#jqGrid_ordcom :input[name='remarks']").keydown(function(e) {//when click tab at last column in header, auto save
 					var code = e.keyCode || e.which;
@@ -1439,6 +1443,7 @@ $(document).ready(function () {
 			buttonicon: "glyphicon glyphicon-refresh",
 			title: "Refresh Table",
 			onClickButton: function () {
+				oper = 'add_ordcom'
 				refreshGrid("#jqGrid_ordcom", urlParam4);
 			},
 		});
@@ -1448,44 +1453,39 @@ $(document).ready(function () {
 	
 	//////////////////////////////////////Start dialog setup ordcom/////////////////////////////////////////////////////////
 
-	// var dialog_bed_trf = new ordialog(
-	// 	'trf_bednum','hisdb.bed','#trf_bednum',errorField,
-	// 	{	colModel:[
-	//             { label: 'Bed No', name: 'bednum',classes:'pointer', width: 7,canSearch:true,checked:true,or_search:true},
-	//             { label: 'Ward', name: 'ward',classes:'pointer', width: 7,canSearch:true,or_search:true},
-	// 			{ label: 'Room', name: 'room',classes:'pointer', width: 10,canSearch:true,or_search:true},
-	// 			{ label: 'Bed Type', name: 'bedtype',classes:'pointer', width: 15, classes: 'wrap',canSearch:true,or_search:true},
-	// 		],
-	// 		urlParam: {
-	// 			filterCol:['compcode','recstatus','occup'],
-	// 			filterVal:['session.compcode','A','<>.OCCUPIED']
-	// 		},
-	// 		ondblClickRow:function(){
-	// 			$(dialog_bed_trf.textfield).parent().next().html('');
-	// 			let data=selrowData('#'+dialog_bed_trf.gridname);
-	// 			$('#trf_room').val(data.room);
-	// 			$('#trf_ward').val(data.ward);
-	// 			$('#trf_bedtype').val(data.bedtype);
-	// 		},
-	// 		gridComplete: function(obj){
-	// 			var gridname = '#'+obj.gridname;
-	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-	// 				$(gridname+' tr#1').click();
-	// 				$(gridname+' tr#1').dblclick();
-	// 				$('#purordhd_purdate').focus();
-	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-	// 				$('#'+obj.dialogname).dialog('close');
-	// 			}
-	// 		}
-	// 	},{
-	// 		title:"Select Transaction Type",
-	// 		open: function(){
-	// 			dialog_bed_trf.urlParam.filterCol=['compcode','recstatus','occup'];
-	// 			dialog_bed_trf.urlParam.filterVal=['session.compcode','A','<>.OCCUPIED'];
-	// 		}
-	// 	},'urlParam','radio','tab'
-	// );
-	// dialog_bed_trf.makedialog();
+	var dialog_chgcode_ordcom = new ordialog(
+		'chgcode_ordcom','hisdb.chargetrx','#chgcodeOrdcom',errorField,
+		{	colModel:[
+	        	{ label: 'Charge Code', name: 'chgcode',classes:'pointer', width: 7,canSearch:true,or_search:true},
+	        	{ label: 'Charge Type', name: 'chgtype',classes:'pointer', width: 7,canSearch:true,checked:true,or_search:true},
+				{ label: 'Description', name: 'description',classes:'pointer', width: 10,canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','A']
+			},
+			ondblClickRow:function(){
+				$('#chgtype').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#chgtype').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Charge Code dialog",
+			open: function(){
+				dialog_chgcode_ordcom.urlParam.filterCol=['compcode','recstatus'];
+				dialog_chgcode_ordcom.urlParam.filterVal=['session.compcode','A'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_chgcode_ordcom.makedialog();
 
 	button_state_ordcom('empty');
 	function button_state_ordcom(state){
@@ -1538,8 +1538,8 @@ $(document).ready(function () {
 		$('#name_show').text(selrowData("#jqGrid").name);
 		$('#bednum_show').text(selrowData("#jqGrid").bednum);	
 		//autoinsert_rowdata("#form_ordcom",rowdata);
-		$('input[name=trf_aedate]').val(moment().format('YYYY-MM-DD'));
-		$('input[name=trf_aetime]').val(moment().format('HH:mm:ss'));
+		$('input[name=ct_trxdate]').val(moment().format('YYYY-MM-DD'));
+		$('input[name=ct_trxtime]').val(moment().format('HH:mm:ss'));
 		button_state_ordcom('edit');
 	}
 
