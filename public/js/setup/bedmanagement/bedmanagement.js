@@ -904,7 +904,6 @@ $(document).ready(function () {
 		sortorder: 'desc',
 		pager: "#jqGridPager3",
 		onSelectRow:function(rowid, selected){
-			console.log(selrowData("#jqGrid_trf"));
 			populate_form_trf(selrowData("#jqGrid_trf"));
 		},
 		loadComplete: function(){
@@ -1039,6 +1038,7 @@ $(document).ready(function () {
 				dialog_bed_trf.off();
 				break;
 			case 'wait':
+				emptyFormdata_div("#transferto_div",['#trf_aedate','#trf_aetime']);
 				enableForm('#form_trf',['ba_asdate','ba_astime','ba_bednum','ba_ward','ba_room','bedtype','trf_aedate','trf_aetime','trf_room','trf_ward','trf_bedtype']);
 				$("#toggle_trf").attr('data-toggle','collapse');
 				$("#save_trf,#cancel_trf").attr('disabled',false);
