@@ -25,7 +25,7 @@ $(document).ready(function () {
 			saveForm_dischgSummary(function(){
 				$("#cancel_dischgSummary").data('oper','edit');
 				$("#cancel_dischgSummary").click();
-				$("#jqGridPagerRefresh").click();
+				// $("#jqGridPagerRefresh").click();
 			});
 		}else{
 			enableForm('#formDischgSummary');

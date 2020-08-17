@@ -25,7 +25,7 @@ $(document).ready(function () {
 			saveForm_dietOrder(function(){
 				$("#cancel_dietOrder").data('oper','edit');
 				$("#cancel_dietOrder").click();
-				$("#jqGridPagerRefresh").click();
+				// $("#jqGridPagerRefresh").click();
 			});
 		}else{
 			enableForm('#formDietOrder');
