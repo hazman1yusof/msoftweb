@@ -25,7 +25,7 @@ $(document).ready(function () {
 	};
 	
 	var fdl = new faster_detail_load();
-	$("#jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGridOrderComm_c").hide();
+	$("#jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDoctorNote_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGridOrderComm_c").hide();
 
 	function cust_rules(value,name){
 		var temp;
@@ -205,16 +205,17 @@ $(document).ready(function () {
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid_trf', urlParam2,'kosongkan');
-				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGrid_ordcom_c").hide();
+				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDoctorNote_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGrid_ordcom_c").hide();
 				if(rowData['mrn'] != '') {//kalau mrn ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').mrn;
 					refreshGrid('#jqGrid_trf', urlParam2);
 					refreshGrid('#jqGrid_ordcom', urlParam4);
-					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGrid_ordcom_c").show();
+					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDoctorNote_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGrid_ordcom_c").show();
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
 
 					populate_triage(selrowData("#jqGrid"));
 					populate_formWard(selrowData("#jqGrid"));
+					populate_doctorNote(selrowData("#jqGrid"));
 					populate_dietOrder(selrowData("#jqGrid"));
 					populate_dischgSummary(selrowData("#jqGrid"));
 					populate_form_trf(selrowData("#jqGrid"));

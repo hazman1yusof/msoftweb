@@ -55,9 +55,9 @@
                             <div class="panel-body">
 
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label" for="remark">Patient Complaint</label>
+                                    <label class="col-md-2 control-label" for="remarks">Patient Complaint</label>
                                     <div class="col-md-6">
-                                        <input id="remark" name="remark" type="text" class="form-control input-sm">
+                                        <input id="remarks" name="remarks" type="text" class="form-control input-sm">
                                     </div>
                                 </div>
 
@@ -92,8 +92,8 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <div class="col-md-12">
-                                                        <label class="control-label" for="allergyhistory" style="padding-bottom:5px">Allergy History</label>
-                                                        <textarea id="allergyhistory" name="allergyhistory" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                        <label class="control-label" for="alllergyhistory" style="padding-bottom:5px">Allergy History</label>
+                                                        <textarea id="alllergyhistory" name="alllergyhistory" type="text" class="form-control input-sm" rows="4"></textarea>
                                                     </div>
                                                 </div>
 
