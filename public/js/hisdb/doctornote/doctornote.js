@@ -41,7 +41,50 @@ $(document).ready(function () {
 
 	});
 
+	// to format number input to two decimal places (0.00)
+	$(".floatNumberField").change(function() {
+		$(this).val(parseFloat($(this).val()).toFixed(2));
+	});
+
+	// to limit to two decimal places (onkeypress)
+	$(document).on('keydown', 'input[pattern]', function(e){
+		var input = $(this);
+		var oldVal = input.val();
+		var regex = new RegExp(input.attr('pattern'), 'g');
+	  
+		setTimeout(function(){
+			var newVal = input.val();
+			if(!regex.test(newVal)){
+				input.val(oldVal); 
+		  	}
+		}, 0);
+	});
+	
+	//bmi calculator
+	$('#height').keyup(function(event) {
+		getBMI();
+	});
+
+	$('#weight').keyup(function(event) {
+		getBMI();
+	});
+	//bmi calculator ends
+	
 });
+
+//bmi calculator
+function getBMI() {
+    var height = parseFloat($("#height").val());
+    var weight = parseFloat($("#weight").val());
+
+	var myBMI = (weight / height / height) * 10000;
+
+    var bmi = myBMI.toFixed(2);
+
+    if (isNaN(bmi)) bmi = 0;
+
+    $('#bmi').val((bmi));
+}
 
 var errorField = [];
 conf = {
@@ -124,6 +167,7 @@ function populate_doctorNote(obj,rowdata){
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
 			button_state_doctorNote('edit');
+			getBMI();
         }else{
 			button_state_doctorNote('add');
         }
