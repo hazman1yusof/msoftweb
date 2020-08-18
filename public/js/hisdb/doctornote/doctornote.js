@@ -166,6 +166,7 @@ function populate_doctorNote(obj,rowdata){
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.patexam);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
+			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
 			button_state_doctorNote('edit');
 			getBMI();
         }else{

@@ -86,10 +86,13 @@ class DoctorNoteController extends defaultController
                         'pastmedical' => $request->pastmedical,
                         'social' => $request->social,
                         'fmh' => $request->fmh,
+                        'followuptime' => $request->followuptime,
+                        'followupdate' => $request->followupdate,
                         'plan_' => $request->plan_,
                         'height' => $request->height,
                         'weight' => $request->weight,
-                        'bp' => $request->bp,
+                        'bp_sys1' => $request->bp_sys1,
+                        'bp_dias2' => $request->bp_dias2,
                         'pulse' => $request->pulse,
                         'temperature' => $request->temperature,
                         'respiration' => $request->respiration,
@@ -171,10 +174,13 @@ class DoctorNoteController extends defaultController
                         'pastmedical' => $request->pastmedical,
                         'social' => $request->social,
                         'fmh' => $request->fmh,
+                        'followuptime' => $request->followuptime,
+                        'followupdate' => $request->followupdate,
                         'plan_' => $request->plan_,
                         'height' => $request->height,
                         'weight' => $request->weight,
-                        'bp' => $request->bp,
+                        'bp_sys1' => $request->bp_sys1,
+                        'bp_dias2' => $request->bp_dias2,
                         'pulse' => $request->pulse,
                         'temperature' => $request->temperature,
                         'respiration' => $request->respiration,
@@ -213,10 +219,13 @@ class DoctorNoteController extends defaultController
                         'pastmedical' => $request->pastmedical,
                         'social' => $request->social,
                         'fmh' => $request->fmh,
+                        'followuptime' => $request->followuptime,
+                        'followupdate' => $request->followupdate,
                         'plan_' => $request->plan_,
                         'height' => $request->height,
                         'weight' => $request->weight,
-                        'bp' => $request->bp,
+                        'bp_sys1' => $request->bp_sys1,
+                        'bp_dias2' => $request->bp_dias2,
                         'pulse' => $request->pulse,
                         'temperature' => $request->temperature,
                         'respiration' => $request->respiration,
@@ -271,7 +280,11 @@ class DoctorNoteController extends defaultController
         $pathistory_obj = DB::table('hisdb.pathistory')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn);
-            
+
+        $episdiag_obj = DB::table('hisdb.episdiag')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
 
         $responce = new stdClass();
 
@@ -293,6 +306,11 @@ class DoctorNoteController extends defaultController
         if($pathistory_obj->exists()){
             $pathistory_obj = $pathistory_obj->first();
             $responce->pathistory = $pathistory_obj;
+        }
+
+        if($episdiag_obj->exists()){
+            $episdiag_obj = $episdiag_obj->first();
+            $responce->episdiag = $episdiag_obj;
         }
 
         return json_encode($responce);

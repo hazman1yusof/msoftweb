@@ -132,16 +132,16 @@
 
                                                         <div class="form-row">
                                                             <div class="form-group col-md-6">
-                                                                <label class="col-md-2 control-label" for="time">Time</label>  
+                                                                <label class="col-md-2 control-label" for="followuptime">Time</label>  
                                                                 <div class="col-md-10">
-                                                                    <input id="time" name="time" type="time" class="form-control input-sm">
+                                                                    <input id="followuptime" name="followuptime" type="time" class="form-control input-sm">
                                                                 </div>
                                                             </div>
 
                                                             <div class="form-group col-md-6">
-                                                                <label class="col-md-2 control-label" for="date">Date</label>  
+                                                                <label class="col-md-2 control-label" for="followupdate">Date</label>  
                                                                 <div class="col-md-10">
-                                                                    <input id="date" name="date" type="date" class="form-control input-sm">
+                                                                    <input id="followupdate" name="followupdate" type="date" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -189,9 +189,9 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="col-md-5 control-label" for="icd">Primary ICD</label>
+                                            <label class="col-md-5 control-label" for="icdcode">Primary ICD</label>
                                             <div class="col-md-7">
-                                                <input id="icd" name="icd" type="text" class="form-control input-sm">
+                                                <input id="icdcode" name="icdcode" type="text" class="form-control input-sm" rdonly>
                                             </div>
                                         </div>
                                     </div>
@@ -254,7 +254,11 @@
 
                                             <div class="form-group col-md-12">
                                                 <label class="control-label" for="bp" style="padding-bottom:5px">BP</label>
-                                                <input id="bp" name="bp" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                <div class="input-group">
+                                                    <input id="bp_sys1" name="bp_sys1" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                    <input id="bp_dias2" name="bp_dias2" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                    <span class="input-group-addon">mmHg</span>
+                                                </div>
                                             </div>
 
                                             <div class="form-group col-md-12">
