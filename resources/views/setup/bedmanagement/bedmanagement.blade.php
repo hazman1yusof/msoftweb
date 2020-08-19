@@ -225,11 +225,11 @@
 		<div class='row'>
 			<div class="panel panel-default" style="position: relative;" id="jqGrid_trf_c">
 				
-				<div class="panel-heading clearfix collapsed position" id="toggle_trf" data-toggle="collapse" data-target="#jqGrid_trf_panel" style="position: sticky;top: 0px;z-index: 3;">
+				<div class="panel-heading clearfix collapsed position" id="toggle_trf" style="position: sticky;top: 0px;z-index: 3;">
 					<b>Name: <span id="name_show"></span></b><br>
 						Bed No: <span id="bednum_show"></span>
-						<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px"></i>
-						<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px"></i>
+						<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px" data-toggle="collapse" data-target="#jqGrid_trf_panel"></i>
+						<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px" data-toggle="collapse" data-target="#jqGrid_trf_panel"></i>
 						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 280px; top: 15px;">
 							<h5>Bed Allocation Detail</h5>
 						</div>
@@ -334,7 +334,7 @@
 													<div class="col-md-4">
 														<div class='input-group'>
 															<input id="trf_bednum" name="trf_bednum" type="text" class="form-control input-sm uppercase">
-															<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+															<a class='input-group-addon btn btn-primary' data-toggle="modal" data-target="#mdl_accomodation" ><span class='fa fa-ellipsis-h' ></span></a>
 														</div>
 														<span class="help-block"></span>
 													</div>
@@ -468,7 +468,40 @@
 					<textarea class="form-control input-sm text-uppercase" name="reservebedNote" rows="5" ></textarea>
 				</form>
 			</div>
-		</div>			
+		</div>
+	</div>
+
+	<!-- mdl_accomodation -->
+	<div id="mdl_accomodation" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+		<div class="modal-dialog smallmodal">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Select Accomadation</h4>
+				</div>
+				<div class="modal-body">
+					<div class="table-responsive table-no-bordered content">
+						<table id="accomodation_table" class="table-hover cell-border" width="100%">
+							<thead>
+								<tr>
+									<th>desc_bt</th>
+									<th>Bed Number</th>
+									<th>Ward</th>
+									<th>Room</th>
+									<th>Status</th>
+									<th>Bed Type</th>
+									<th>Ward</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- ***************End Search + table ********************* -->
 

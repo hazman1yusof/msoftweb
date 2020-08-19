@@ -775,7 +775,6 @@
                         
                 },'json').done(function(data) {
                     if(!$.isEmptyObject(data)){
-                        console.log(data.data);
 
                         selobj[id].data = data.data;
 

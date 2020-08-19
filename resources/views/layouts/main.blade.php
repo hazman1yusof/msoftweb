@@ -24,7 +24,14 @@
 	<script type="text/ecmascript" src="plugins/velocity.min.js"></script>
 	<script type="text/ecmascript" src="plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
+
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.2/css/rowGroup.dataTables.min.css">
+
 	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap-theme.css">
 	<link rel="stylesheet" href="plugins/jquery-ui-1.12.1/jquery-ui.min.css">
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
     <link rel="stylesheet" href="plugins/form-validator/theme-default.css" />
@@ -194,6 +201,10 @@
 		}
 		.help-block{
 			margin: 0 !important;
+		}
+
+		.modal-backdrop{
+			z-index: 99 !important;
 		}
 		@yield('style')
  	</style>	

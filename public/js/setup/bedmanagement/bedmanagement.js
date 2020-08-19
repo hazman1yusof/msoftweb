@@ -899,7 +899,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce:false,
 		width: 1150,
-		height: 200,
+		height: 150,
 		rowNum: 30,
 		sortname: 'ba_idno',
 		sortorder: 'desc',
@@ -948,44 +948,44 @@ $(document).ready(function () {
 	});
 	/////////////////////////////for transer BED ALLOCATION/////////////////////////
 
-	var dialog_bed_trf = new ordialog(
-		'trf_bednum','hisdb.bed','#trf_bednum',errorField,
-		{	colModel:[
-	            { label: 'Bed No', name: 'bednum',classes:'pointer', width: 7,canSearch:true,checked:true,or_search:true},
-	            { label: 'Ward', name: 'ward',classes:'pointer', width: 7,canSearch:true,or_search:true},
-				{ label: 'Room', name: 'room',classes:'pointer', width: 10,canSearch:true,or_search:true},
-				{ label: 'Bed Type', name: 'bedtype',classes:'pointer', width: 15, classes: 'wrap',canSearch:true,or_search:true},
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus','occup'],
-				filterVal:['session.compcode','A','<>.OCCUPIED']
-			},
-			ondblClickRow:function(){
-				$(dialog_bed_trf.textfield).parent().next().html('');
-				let data=selrowData('#'+dialog_bed_trf.gridname);
-				$('#trf_room').val(data.room);
-				$('#trf_ward').val(data.ward);
-				$('#trf_bedtype').val(data.bedtype);
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#purordhd_purdate').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},{
-			title:"Select Transaction Type",
-			open: function(){
-				dialog_bed_trf.urlParam.filterCol=['compcode','recstatus','occup'];
-				dialog_bed_trf.urlParam.filterVal=['session.compcode','A','<>.OCCUPIED'];
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_bed_trf.makedialog();
+	// var dialog_bed_trf = new ordialog(
+	// 	'trf_bednum','hisdb.bed','#trf_bednum',errorField,
+	// 	{	colModel:[
+	//             { label: 'Bed No', name: 'bednum',classes:'pointer', width: 7,canSearch:true,checked:true,or_search:true},
+	//             { label: 'Ward', name: 'ward',classes:'pointer', width: 7,canSearch:true,or_search:true},
+	// 			{ label: 'Room', name: 'room',classes:'pointer', width: 10,canSearch:true,or_search:true},
+	// 			{ label: 'Bed Type', name: 'bedtype',classes:'pointer', width: 15, classes: 'wrap',canSearch:true,or_search:true},
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','recstatus','occup'],
+	// 			filterVal:['session.compcode','A','<>.OCCUPIED']
+	// 		},
+	// 		ondblClickRow:function(){
+	// 			$(dialog_bed_trf.textfield).parent().next().html('');
+	// 			let data=selrowData('#'+dialog_bed_trf.gridname);
+	// 			$('#trf_room').val(data.room);
+	// 			$('#trf_ward').val(data.ward);
+	// 			$('#trf_bedtype').val(data.bedtype);
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$('#purordhd_purdate').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	},{
+	// 		title:"Select Transaction Type",
+	// 		open: function(){
+	// 			dialog_bed_trf.urlParam.filterCol=['compcode','recstatus','occup'];
+	// 			dialog_bed_trf.urlParam.filterVal=['session.compcode','A','<>.OCCUPIED'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_bed_trf.makedialog();
 
 	var dialog_lodger_trf = new ordialog(
 		'chgcode','hisdb.chgmast',"#trf_lodger",errorField,
@@ -1019,33 +1019,39 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_lodger_trf.makedialog();
-
+	console.log($('#trf_bednum ~ a'));
 	button_state_trf('empty');
 	function button_state_trf(state){
 		switch(state){
 			case 'empty':
 				disableForm('#form_trf');
+				$('#trf_bednum ~ a').attr('disabled',true);
+				$('#trf_lodger ~ a').attr('disabled',true);
 				$("#toggle_trf").removeAttr('data-toggle');
 				$('#save_trf').data('oper','add');
 				$('#save_trf,#cancel_trf,#edit_trf').attr('disabled',true);
 				break;
 			case 'edit':
 				disableForm('#form_trf');
+				$('#trf_bednum ~ a').attr('disabled',true)
+				$('#trf_lodger ~ a').attr('disabled',true)
 				$("#toggle_trf").attr('data-toggle','collapse');
 				$('#save_trf').data('oper','edit');
 				$("#edit_trf").attr('disabled',false);
 				$('#save_trf,#cancel_trf').attr('disabled',true);
 				dialog_lodger_trf.off();
-				dialog_bed_trf.off();
+				// dialog_bed_trf.off();
 				break;
 			case 'wait':
 				emptyFormdata_div("#transferto_div",['#trf_aedate','#trf_aetime']);
-				enableForm('#form_trf',['ba_asdate','ba_astime','ba_bednum','ba_ward','ba_room','bedtype','trf_aedate','trf_aetime','trf_room','trf_ward','trf_bedtype']);
+				enableForm('#form_trf',['ba_asdate','ba_astime','ba_bednum','ba_ward','ba_room','bedtype','trf_aedate','trf_aetime','trf_room','trf_ward','trf_bedtype','trf_bednum','trf_lodger']);
+				$('#trf_bednum ~ a').attr('disabled',false);
+				$('#trf_lodger ~ a').attr('disabled',false);
 				$("#toggle_trf").attr('data-toggle','collapse');
 				$("#save_trf,#cancel_trf").attr('disabled',false);
 				$('#edit_trf').attr('disabled',true);
 				dialog_lodger_trf.on();
-				dialog_bed_trf.on();
+				// dialog_bed_trf.on();
 				break;
 		}
 	}
@@ -1060,6 +1066,7 @@ $(document).ready(function () {
 			saveForm_trf(function(){
 				$("#cancel_trf").click();
 				refreshGrid('#jqGrid_trf', urlParam2);
+				emptyFormdata_div("#transferto_div",['#trf_aedate','#trf_aetime']);
 			});
 		}else{
 			enableForm('#form_trf');
@@ -1589,5 +1596,175 @@ $(document).ready(function () {
 	}
 
 		////////////////////////////////////// End setup ordcom /////////////////////////////////////////////////////////
+
+	var epis_desc_show = new loading_desc_epis([
+        {code:'',desc:'',id:'bed_dept'},
+        {code:'',desc:'',id:'bed_ward'}
+    ]);
+    epis_desc_show.load_desc();
+
+	function loading_desc_epis(obj){
+        this.code_fields=obj;
+        this.bed_dept={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.bed_ward={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.load_desc = function(){
+            load_for_desc(this,'bed_dept','pat_mast/get_entry?action=get_bed_type');
+            load_for_desc(this,'bed_ward','pat_mast/get_entry?action=get_bed_ward');
+        }
+
+        function load_for_desc(selobj,id,url){
+
+            let storage_name = 'fastload_bedmngt_'+id;
+            let storage_obj = localStorage.getItem(storage_name);
+
+
+            if(!storage_obj){
+
+                $.get( url, function( data ) {
+                        
+                },'json').done(function(data) {
+                    if(!$.isEmptyObject(data)){
+
+                        selobj[id].data = data.data;
+
+                        let desc = data.data;
+                        let now = moment();
+
+                        var json = JSON.stringify({
+                            'description':desc,
+                            'timestamp': now
+                        });
+
+                        localStorage.setItem(storage_name,json);
+                    }
+                });
+
+            }else{
+
+                let obj_stored = {
+                    'json':JSON.parse(storage_obj),
+                }
+
+                selobj[id].data = obj_stored.json.description
+
+                //remove storage after 7 days
+                let moment_stored = obj_stored.json.timestamp;
+                if(moment().diff(moment(moment_stored),'days') > 7){
+                    localStorage.removeItem(storage_name);
+                }
+            }
+        }
+
+        this.write_desc = function(){
+            self=this;
+            obj.forEach(function(elem){
+                if($(elem.code).val().trim() != ""){
+                    $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id));
+                }
+            });
+        }
+
+        this.get_desc = function(search_code,id){
+            let code_ = this[id].code;
+            let desc_ = this[id].desc;
+            let retdata="N/A";
+
+            retdata = this[id].data.find(function(obj){
+                return obj[code_] == search_code;
+            });
+
+            return (retdata == undefined)? "N/A" : retdata[desc_];
+        }
+    }
+
+	$('#mdl_accomodation').on('show.bs.modal', function () {
+        var accomodation_selecter_ = new accomodation_selecter();
+    });
+
+    function accomodation_selecter(){
+        var accomodation_table = null;
+
+        accomodation_table = $('#accomodation_table').DataTable( {
+            "ajax": "pat_mast/get_entry?action=accomodation_table",
+            "paging":false,
+            "columns": [
+                {'data': 'desc_bt'},
+                {'data': 'bednum'},
+                {'data': 'desc_d'},
+                {'data': 'room'},
+                {'data': 'occup'},
+                {'data': 'bedtype'},
+                {'data': 'ward'},
+            ],
+            order: [[5, 'asc'],[6, 'asc']],
+            columnDefs: [ {
+                targets: [0,5,6],
+                visible: false
+            } ],
+            rowGroup: {
+                dataSrc: [ "desc_bt" ]
+            },
+            "initComplete": function(settings, json) {
+                let opt_bt = opt_ward = "";
+                epis_desc_show.bed_dept.data.forEach(function(e,i){
+                    opt_bt+=`<option value="`+e.description+`">`+e.description+`</option>`;
+                });
+                epis_desc_show.bed_ward.data.forEach(function(e,i){
+                    opt_ward+=`<option value="`+e.description+`">`+e.description+`</option>`;
+                });
+                
+                $("#accomodation_table_filter").html(`
+                    <label >Bed Type: <input type="radio" data-seltype="bt" id="search_bed_bedtype" name="search_bed" checked></label>;&nbsp;
+                    <label >Ward: <input type="radio" data-seltype="d" id="search_bed_ward" name="search_bed"></label>
+                    &nbsp;&nbsp;&nbsp;
+                    <label>
+                        <select data-dtbid="0" id="search_bed_select_bed_dept" name="search_bed_select" class="form-control">
+                          <option value="">-- Select --</option>
+                          `+opt_bt+`
+                        </select>
+
+                        <select data-dtbid="2" id="search_bed_select_ward" name="search_bed_select" class="form-control" style="display:none;">
+                          <option value="">-- Select --</option>
+                          `+opt_ward+`
+                        </select>
+                    </label>
+                    `
+                );
+
+                $('#mdl_accomodation input[type="radio"][name="search_bed"]').on('click',function(){
+                    let seltype = $(this).data('seltype');
+                    if(seltype == 'bt'){
+                        $("#search_bed_select_bed_dept").show();
+                        $("#search_bed_select_ward").hide();
+                    }else{
+                        $("#search_bed_select_bed_dept").hide();
+                        $("#search_bed_select_ward").show();
+                    }
+                });
+
+                $("#mdl_accomodation select[name='search_bed_select']").on('change',function(){
+                    // accomodation_table.columns( $(this).data('dtbid') ).search( this.value ).draw();
+                    accomodation_table.search( this.value ).draw();
+                });
+            }
+        } );
+
+        $('#accomodation_table tbody').on('dblclick', 'tr', function () {    
+            let item = accomodation_table.row( this ).data();
+            if(item != undefined){
+                $('#trf_bednum').val(item["bednum"]);
+                $('#trf_ward').val(item["ward"]);
+                $('#trf_room').val(item["room"]);
+                $('#trf_bedtype').val(item["bedtype"]);
+                    
+                $('#mdl_accomodation').modal('hide');
+            }
+        });
+
+        $("#mdl_accomodation").on('hidden.bs.modal', function () {
+            accomodation_table.destroy();
+            $('#accomodation_table tbody').off('dblclick');
+        });
+    }
 
 });
