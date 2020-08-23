@@ -334,7 +334,7 @@
 													<div class="col-md-4">
 														<div class='input-group'>
 															<input id="trf_bednum" name="trf_bednum" type="text" class="form-control input-sm uppercase">
-															<a class='input-group-addon btn btn-primary' data-toggle="modal" data-target="#mdl_accomodation" ><span class='fa fa-ellipsis-h' ></span></a>
+															<a class='input-group-addon btn btn-primary' ><span class='fa fa-ellipsis-h' ></span></a>
 														</div>
 														<span class="help-block"></span>
 													</div>

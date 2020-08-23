@@ -1677,6 +1677,12 @@ $(document).ready(function () {
         }
     }
 
+    $("#trf_bednum ~ a").click(function(){
+    	if($(this).attr('disabled') != 'disabled'){
+    		$("#mdl_accomodation").modal();
+    	}
+    });
+
 	$('#mdl_accomodation').on('show.bs.modal', function () {
         var accomodation_selecter_ = new accomodation_selecter();
     });
@@ -1704,6 +1710,9 @@ $(document).ready(function () {
             rowGroup: {
                 dataSrc: [ "desc_bt" ]
             },
+            "createdRow": function( row, data, dataIndex ) {
+		    	$(row).addClass( data['desc_bt'] );
+		    },
             "initComplete": function(settings, json) {
                 let opt_bt = opt_ward = "";
                 epis_desc_show.bed_dept.data.forEach(function(e,i){
@@ -1761,9 +1770,25 @@ $(document).ready(function () {
             }
         });
 
+        $('#accomodation_table tbody').on('click', 'tr.dtrg-group', function () {    
+            let bedtype = $(this).children().text();
+            let bedtype_ = bedtype.split(" ");
+            bedtype = bedtype_[0];
+            console.log($(this).data('_hidden'));
+            if($(this).data('_hidden') == undefined || $(this).data('_hidden') == 'show'){
+            	$("#accomodation_table tbody tr."+bedtype).hide();
+            	$(this).data('_hidden','hide');
+            }else if($(this).data('_hidden') == 'hide'){
+            	$("#accomodation_table tbody tr."+bedtype).show();
+            	$(this).data('_hidden','show');
+            }
+        });
+
         $("#mdl_accomodation").on('hidden.bs.modal', function () {
-            accomodation_table.destroy();
+            $('#accomodation_table tbody').off('hidden.bs.modal');
+            $('#accomodation_table tbody').off('click');
             $('#accomodation_table tbody').off('dblclick');
+            accomodation_table.destroy();
         });
     }
 
