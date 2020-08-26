@@ -417,6 +417,10 @@
 		</div>
 
 		<div class='row'>
+			@include('hisdb.ordcom.ordcom')
+		</div>
+
+		<!-- <div class='row'>
 			<div class="panel-group">
 				<div class="panel panel-default" style="position: relative;" id="jqGrid_ordcom_c">
 					<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
@@ -456,7 +460,7 @@
 					</div>	
 				</div>
 			</div>
-		</div>
+		</div> -->
 			
 
 	<div id="dialogReserveBedForm" title="Note for reserved bed" >
@@ -516,4 +520,5 @@
 	<script src="js/hisdb/doctornote/doctornote.js"></script>
 	<script src="js/hisdb/dietorder/dietorder.js"></script>
 	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>	
+	<script src="js/hisdb/ordcom/ordcom.js"></script>	
 @endsection
