@@ -120,7 +120,7 @@ $(document).ready(function () {
 				//url:'./sysparam_triage_color',
 				filterCol:['recstatus','compcode'],
 				filterVal:['A', 'session.compcode']
-				},
+			},
 			ondblClickRow:function(event){
 				//$('#occup').focus();
 			},
@@ -241,7 +241,7 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid4 url/////////////////////////////////////////////////
 	
-	var urlParam4={
+	var urlParam_ordcom={
 		action:'get_table_default',
 		url:'/util/get_table_default',
 		field: '',
@@ -588,7 +588,7 @@ $(document).ready(function () {
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 
 	populateSelect('#jqGrid', '#searchForm');
-	searchClick2('#jqGrid', '#searchForm', urlParam);
+	searchClick2('#jqGrid', '#searchForm', urlParam_ordcom);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid_ordcom', true, urlParam4);
