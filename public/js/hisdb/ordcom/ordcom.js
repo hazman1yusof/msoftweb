@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+	var fdl = new faster_detail_load();
 	disableForm('#form_ordcom');
 
 	$("#new_ordcom").click(function(){
@@ -106,135 +107,6 @@ $(document).ready(function () {
 	$("#cancel_ordcom").click(function(){
 		button_state_ordcom($('#save_ordcom').data('oper'));
 	});
-
-	function populate_form_ordcom(obj,rowdata){
-
-		// $('#name_show').text(selrowData("#jqGrid").name);
-		// $('#bednum_show').text(selrowData("#jqGrid").bednum);	
-		//autoinsert_rowdata("#form_ordcom",rowdata);
-		$('input[name=ct_trxdate]').val(moment().format('YYYY-MM-DD'));
-		$('input[name=ct_trxtime]').val(moment().format('HH:mm:ss'));
-		button_state_ordcom('edit');
-	
-		emptyFormdata(errorField,"#form_ordcom");
-	
-		//panel header
-		$('#name_show_ordcom').text(obj.name);
-		$('#mrn_show_ordcom').text(obj.mrn);
-	
-		//form_ordcom
-		$('#mrn_ordcom').val(obj.mrn);
-		$("#episno_ordcom").val(obj.episno);
-	
-		var saveParam={
-			action:'get_table_ordcom',
-		}
-		var postobj={
-			_token : $('#csrf_token').val(),
-			mrn:obj.mrn,
-			episno:obj.episno
-	
-		};
-	
-		$.post( "/ordcom/form?"+$.param(saveParam), $.param(postobj), function( data ) {
-			
-		},'json').fail(function(data) {
-			alert('there is an error');
-		}).success(function(data){
-			if(!$.isEmptyObject(data)){
-				autoinsert_rowdata("#form_ordcom",data.ordcom);
-				autoinsert_rowdata("#form_ordcom",data.ordcom_gen);
-				// autoinsert_rowdata("#form_ordcom",data.ordcom_exm);
-				// if(!$.isEmptyObject(data.ordcom_exm)){
-				// 	examination_ordcom.empty();
-				// 	examination_ordcom.examarray = data.ordcom_exm;
-				// 	examination_ordcom.loadexam().disable();
-				// }
-				
-				button_state_ordcom('edit');
-			}else{
-				button_state_ordcom('add');
-				examination_ordcom.empty();
-			}
-	
-		});
-	
-	}
-
-	function autoinsert_rowdata(form,rowData){
-		$.each(rowData, function( index, value ) {
-			var input=$(form+" [name='"+index+"']");
-			if(input.is("[type=radio]")){
-				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-			}else if(input.is("[type=checkbox]")){
-				if(value==1){
-					$(form+" [name='"+index+"']").prop('checked', true);
-				}
-			}else{
-				input.val(value);
-			}
-		});
-	}
-
-	function saveForm_ordcom(callback){
-		var saveParam={
-			action:'save_table_ordcom',
-			oper:$("#cancel_ordcom").data('oper')
-		}
-		var postobj={
-			_token : $('#csrf_token').val(),
-			// sex_edit : $('#sex_edit').val(),
-			// idtype_edit : $('#idtype_edit').val()
-	
-		};
-	
-		values = $("#form_ordcom").serializeArray();
-	
-		values = values.concat(
-			$('#form_ordcom input[type=checkbox]:not(:checked)').map(
-			function() {
-				return {"name": this.name, "value": 0}
-			}).get()
-		);
-	
-		values = values.concat(
-			$('#form_ordcom input[type=checkbox]:checked').map(
-			function() {
-				return {"name": this.name, "value": 1}
-			}).get()
-		);
-		
-		values = values.concat(
-			$('#form_ordcom input[type=radio]:checked').map(
-			function() {
-				return {"name": this.name, "value": this.value}
-			}).get()
-		);
-	
-		values = values.concat(
-			$('#form_ordcom select').map(
-			function() {
-				return {"name": this.name, "value": this.value}
-			}).get()
-		);
-	
-		// values = values.concat(
-		//     $('#form_ordcom input[type=radio]:checked').map(
-		//     function() {
-		//         return {"name": this.name, "value": this.value}
-		//     }).get()
-		// );
-	
-		$.post( "/ordcom/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
-			
-		},'json').fail(function(data) {
-			// alert('there is an error');
-			callback();
-		}).success(function(data){
-			callback();
-		});
-	}
-
 	
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var dialog_chgcode = new ordialog(
@@ -329,6 +201,44 @@ $(document).ready(function () {
 		},
 	});
 
+	function cust_rules(value,name){
+		var temp;
+		switch(name){
+			case ' ':temp=$("#jqGrid input[name='recstatus']");break;
+			case 'Charge Code':temp=$("#jqGrid input[name='chgcodeOrdcom']");break;
+			break;
+		}
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+	}
+
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'ct_chgcode':field=['chgcode','description'];table="hisdb.chgmast";case_='chgcode';break;
+		}
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('bedmanagement',options,param,case_,cellvalue);
+		
+		if(cellvalue==null)return "";
+		return cellvalue;
+	}
+
+	function chgcodeOrdcomCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function galGridCustomValue (elem, operation, value){
+		if(operation == 'get') {
+			return $(elem).find("input").val();
+		} 
+		else if(operation == 'set') {
+			$('input',elem).val(value);
+		}
+	}
+
+
 	/////////////////////parameter for jqgrid4 url/////////////////////////////////////////////////
 	
 	var urlParam4={
@@ -397,9 +307,8 @@ $(document).ready(function () {
 		rowNum: 30,
 		sortname: 'ct_auditno',
 		sortorder: 'desc',
-		pager: "#jqGridPager4",
+		pager: "#jqGridPager_ordcom",
 		onSelectRow:function(rowid, selected){
-			console.log(selrowData("#jqGrid_ordcom"));
 			populate_form_ordcom(selrowData("#jqGrid_ordcom"));
 			
 			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
@@ -488,7 +397,7 @@ $(document).ready(function () {
 		}
 	};
 
-		var myEditOptions_edit = {
+	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
@@ -543,7 +452,7 @@ $(document).ready(function () {
 	//////////////////////////End My edit options ORDERCOM/////////////////////////////////////////////////////////
 	
 		/////////////////////////start grid pager ORDERCOM/////////////////////////////////////////////////////////
-		$("#jqGrid_ordcom").inlineNav('#jqGridPager4', {
+		$("#jqGrid_ordcom").inlineNav('#jqGridPager_ordcom', {
 			add: true,
 			edit: true,
 			cancel: true,
@@ -590,7 +499,7 @@ $(document).ready(function () {
 					});
 				}
 			},
-		}).jqGrid('navButtonAdd',"#jqGridPager4",{
+		}).jqGrid('navButtonAdd',"#jqGridPager_ordcom",{
 			id: "jqGridPagerEditAll",
 			caption:"",cursor: "pointer",position: "last", 
 			buttonicon:"glyphicon glyphicon-th-list",
@@ -654,7 +563,7 @@ $(document).ready(function () {
 				alert(data);
 			}
 			
-		}).jqGrid('navButtonAdd',"#jqGridPager4",{
+		}).jqGrid('navButtonAdd',"#jqGridPager_ordcom",{
 			id: "jqGridPagerCancelAll",
 			caption:"",cursor: "pointer",position: "last", 
 			buttonicon:"glyphicon glyphicon-remove-circle",
@@ -663,7 +572,7 @@ $(document).ready(function () {
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid_ordcom",urlParam4);
 			},	
-		}).jqGrid('navButtonAdd', "#jqGridPager4", {
+		}).jqGrid('navButtonAdd', "#jqGridPager_ordcom", {
 			id: "jqGridPagerRefresh",
 			caption: "", cursor: "pointer", position: "last",
 			buttonicon: "glyphicon glyphicon-refresh",

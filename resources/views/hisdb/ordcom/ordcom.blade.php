@@ -33,8 +33,8 @@
 	<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">
 		<div class="panel-body">
 			<div class='col-md-12' style="padding:0 0 15px 0">
-				<!-- <table id="jqGridTriageInfo" class="table table-striped"></table>
-				<div id="jqGridPagerTriageInfo"></div> -->
+				<table id="jqGrid_ordcom" class="table table-striped"></table>
+				<div id="jqGridPager_ordcom"></div>
 
 				<form class='form-horizontal' style='width:99%' id='form_ordcom'>
 
