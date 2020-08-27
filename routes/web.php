@@ -572,6 +572,11 @@ Route::get('/dischgsummary','hisdb\DischgSummaryController@show');
 Route::get('/dischgsummary/table','hisdb\DischgSummaryController@table');
 Route::post('/dischgsummary/form','hisdb\DischgSummaryController@form');
 
+//// Order Communication page ///
+Route::get('/ordcom','hisdb\OrdcomController@show');
+Route::get('/ordcom/table','hisdb\OrdcomController@table');
+Route::post('/ordcom/form','hisdb\OrdcomController@form');
+
 ///////////////////fixed asset setup////////////////////////////////////
 
 //// Fixed Asset Location setup page ///

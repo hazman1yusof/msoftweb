@@ -271,37 +271,37 @@
 											<div class="panel-body">
 
 												<div class="form-group row">
-													<label class="col-md-2 control-label" for="date">Date</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="date">Date</label>  
+													<div class="col-md-5">
 														<input id="ba_asdate" name="ba_asdate" type="date" class="form-control input-sm uppercase">
 													</div>
 												
-													<label class="col-md-2 control-label" for="time">Time</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="time">Time</label>  
+													<div class="col-md-5">
 														<input id="ba_astime" name="ba_astime" type="time" class="form-control input-sm uppercase">
 													</div>
 												</div>
 
 												<div class="form-group row">
-													<label class="col-md-2 control-label" for="room">Room</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="room">Room</label>  
+													<div class="col-md-5">
 														<input id="ba_room" name="ba_room" type="text" class="form-control input-sm uppercase">
 													</div>
 
-													<label class="col-md-2 control-label" for="ward">Ward</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="ward">Ward</label>  
+													<div class="col-md-5">
 														<input id="ba_ward" name="ba_ward" type="text" class="form-control input-sm uppercase">
 													</div>
 												</div>
 
 												<div class="form-group row">
-													<label class="col-md-2 control-label" for="bednum">Bed No</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="bednum">Bed No</label>  
+													<div class="col-md-5">
 														<input id="ba_bednum" name="ba_bednum" type="text" class="form-control input-sm uppercase">
 													</div>
 												
-													<label class="col-md-2 control-label" for="bedtype">Bed Type</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="bedtype">Bed Type</label>  
+													<div class="col-md-5">
 														<input id="b_bedtype" name="b_bedtype" type="text" class="form-control input-sm uppercase">
 													</div>
 													<span class="help-block"></span>
@@ -318,20 +318,20 @@
 											<div class="panel-heading text-center">TRANSFER TO BED</div>
 											<div class="panel-body">
 												<div class="form-group row">
-													<label class="col-md-2 control-label" for="date">Date</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="date">Date</label>  
+													<div class="col-md-5">
 														<input id="trf_aedate" name="trf_aedate" type="date" class="form-control input-sm uppercase">
 													</div>
 
-													<label class="col-md-2 control-label" for="time">Time</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="time">Time</label>  
+													<div class="col-md-5">
 														<input id="trf_aetime" name="trf_aetime" type="time" class="form-control input-sm uppercase">
 													</div>
 												</div>
 
 												<div class="form-group row">
-													<label class="col-md-2 control-label" for="trf_bednum">Bed No</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="trf_bednum">Bed No</label>  
+													<div class="col-md-5">
 														<div class='input-group'>
 															<input id="trf_bednum" name="trf_bednum" type="text" class="form-control input-sm uppercase">
 															<a class='input-group-addon btn btn-primary' ><span class='fa fa-ellipsis-h' ></span></a>
@@ -340,37 +340,37 @@
 													</div>
 												
 
-													<label class="col-md-2 control-label" for="room">Room</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="room">Room</label>  
+													<div class="col-md-5">
 														<input id="trf_room" name="trf_room" type="text" class="form-control input-sm uppercase">
 													</div>
 												</div>
 
 
 												<div class="form-group row">
-													<label class="col-md-2 control-label" for="ward">Ward</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="ward">Ward</label>  
+													<div class="col-md-5">
 														<input id="trf_ward" name="trf_ward" type="text" class="form-control input-sm uppercase">
 													</div>
 												
-													<label class="col-md-2 control-label" for="bedtype">Bed Type</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="bedtype">Bed Type</label>  
+													<div class="col-md-5">
 														<input id="trf_bedtype" name="trf_bedtype" type="text" class="form-control input-sm uppercase">
 													</div>
 												</div>
 
 
 												<div class="form-group row">
-													<label class="col-md-2 control-label" for="occup">Bed Status</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="occup">Bed Status</label>  
+													<div class="col-md-5">
 														<select id="trf_astatus" name="trf_astatus" class="form-control input-sm uppercase">
 														  <option value="Transfer">Transfer</option>
 														  <option value="Reserved">Reserved</option>
 														</select>
 													</div>
 
-													<label class="col-md-2 control-label" for="trf_lodger">Lodger</label>  
-													<div class="col-md-4">
+													<label class="col-md-1 control-label" for="trf_lodger">Lodger</label>  
+													<div class="col-md-5">
 														<div class='input-group'>
 															<input id="trf_lodger" name="trf_lodger" type="text" class="form-control input-sm uppercase">
 															<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -417,6 +417,10 @@
 		</div>
 
 		<div class='row'>
+			@include('hisdb.ordcom.ordcom')
+		</div>
+
+		<!-- <div class='row'>
 			<div class="panel-group">
 				<div class="panel panel-default" style="position: relative;" id="jqGrid_ordcom_c">
 					<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
@@ -456,7 +460,7 @@
 					</div>	
 				</div>
 			</div>
-		</div>
+		</div> -->
 			
 
 	<div id="dialogReserveBedForm" title="Note for reserved bed" >
@@ -516,4 +520,5 @@
 	<script src="js/hisdb/doctornote/doctornote.js"></script>
 	<script src="js/hisdb/dietorder/dietorder.js"></script>
 	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>	
+	<script src="js/hisdb/ordcom/ordcom.js"></script>	
 @endsection

@@ -8,7 +8,7 @@ use stdClass;
 use DB;
 use Carbon\Carbon;
 
-class OrderCommController extends defaultController
+class OrdcomController extends defaultController
 {   
 
     var $table;
@@ -22,7 +22,7 @@ class OrderCommController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('hisdb.ordercomm.ordercomm');
+        return view('hisdb.ordcom.ordcom');
     }
 
     public function form(Request $request)
@@ -40,8 +40,8 @@ class OrderCommController extends defaultController
                         return 'error happen..';
                 }
 
-            case 'get_table_orderComm':
-                return $this->get_table_orderComm($request);
+            case 'get_table_ordcom':
+                return $this->get_table_ordcom($request);
 
             default:
                 return 'error happen..';
@@ -57,8 +57,8 @@ class OrderCommController extends defaultController
             DB::table('hisdb.chargetrx')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_orderComm,
-                        'episno' => $request->episno_orderComm,
+                        'mrn' => $request->mrn_ordcom,
+                        'episno' => $request->episno_ordcom,
                         'trxtype' => $request->trxtype,
                         'docref' => $request->docref,
                         'trxdate' => $request->trxdate,
@@ -82,8 +82,8 @@ class OrderCommController extends defaultController
             DB::table('hisdb.chargetrx')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_orderComm,
-                        'episno' => $request->episno_orderComm,
+                        'mrn' => $request->mrn_ordcom,
+                        'episno' => $request->episno_ordcom,
                         'trxtype' => $request->trxtype,
                         'docref' => $request->docref,
                         'trxdate' => $request->trxdate,
@@ -122,8 +122,8 @@ class OrderCommController extends defaultController
             DB::table('hisdb.chargetrx')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_orderComm,
-                        'episno' => $request->episno_orderComm,
+                        'mrn' => $request->mrn_ordcom,
+                        'episno' => $request->episno_ordcom,
                         'trxtype' => $request->trxtype,
                         'docref' => $request->docref,
                         'trxdate' => $request->trxdate,
@@ -147,8 +147,8 @@ class OrderCommController extends defaultController
             DB::table('hisdb.chargetrx')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_orderComm,
-                        'episno' => $request->episno_orderComm,
+                        'mrn' => $request->mrn_ordcom,
+                        'episno' => $request->episno_ordcom,
                         'trxtype' => $request->trxtype,
                         'docref' => $request->docref,
                         'trxdate' => $request->trxdate,
