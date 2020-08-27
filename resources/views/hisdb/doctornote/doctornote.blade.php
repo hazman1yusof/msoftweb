@@ -1,35 +1,37 @@
 
 <div class="panel panel-default" style="position: relative;" id="jqGridDoctorNote_c">
-	<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-		id="btn_grp_edit_doctorNote"
-		style="position: absolute;
-				padding: 0 0 0 0;
-				right: 40px;
-				top: 15px;" 
-
-	>
-		<button type="button" class="btn btn-default" id="new_doctorNote">
-			<span class="fa fa-plus-square-o"></span> New
-		</button>
-		<button type="button" class="btn btn-default" id="edit_doctorNote">
-			<span class="fa fa-edit fa-lg"></span> Edit
-		</button>
-		<button type="button" class="btn btn-default" data-oper='add' id="save_doctorNote">
-			<span class="fa fa-save fa-lg"></span> Save
-		</button>
-		<button type="button" class="btn btn-default" id="cancel_doctorNote">
-			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-		</button>
-	</div>
-	<div class="panel-heading clearfix collapsed position" id="toggle_doctorNote" data-toggle="collapse" data-target="#jqGridDoctorNote_panel">
+	
+	<div class="panel-heading clearfix collapsed position" id="toggle_doctorNote" style="position: sticky;top: 0px;z-index: 3;">
 		<b>Name: <span id="name_show_doctorNote"></span></b><br>
 		MRN: <span id="mrn_show_doctorNote"></span>
 
-		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDoctorNote_panel"></i>
+		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDoctorNote_panel"></i>
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
 			<h5>Doctor Note</h5>
-		</div>				
+		</div>
+
+        <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+            id="btn_grp_edit_doctorNote"
+            style="position: absolute;
+                    padding: 0 0 0 0;
+                    right: 40px;
+                    top: 15px;" 
+
+        >
+        <button type="button" class="btn btn-default" id="new_doctorNote">
+            <span class="fa fa-plus-square-o"></span> New
+        </button>
+        <button type="button" class="btn btn-default" id="edit_doctorNote">
+            <span class="fa fa-edit fa-lg"></span> Edit
+        </button>
+        <button type="button" class="btn btn-default" data-oper='add' id="save_doctorNote">
+            <span class="fa fa-save fa-lg"></span> Save
+        </button>
+        <button type="button" class="btn btn-default" id="cancel_doctorNote">
+            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+        </button>
+    </div>
 	</div>
 	<div id="jqGridDoctorNote_panel" class="panel-collapse collapse">
 		<div class="panel-body">

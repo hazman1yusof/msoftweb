@@ -850,7 +850,13 @@
                 visible: false
             } ],
             rowGroup: {
-                dataSrc: [ "desc_bt" ]
+                dataSrc: [ "desc_bt" ],
+                startRender: function ( rows, group ) {
+                    return group + `<i class="arrow fa fa-angle-double-down"></i>`;
+                }
+            },
+            "createdRow": function( row, data, dataIndex ) {
+                $(row).addClass( data['desc_bt'] );
             },
             "initComplete": function(settings, json) {
                 let opt_bt = opt_ward = "";
@@ -908,9 +914,24 @@
             }
         });
 
+        $('#accomodation_table tbody').on('click', 'tr.dtrg-group', function () {    
+            let bedtype = $(this).children().text();
+            let bedtype_ = bedtype.split(" ");
+            bedtype = bedtype_[0];
+            if($(this).data('_hidden') == undefined || $(this).data('_hidden') == 'show'){
+                $("#accomodation_table tbody tr."+bedtype).hide();
+                $(this).data('_hidden','hide');
+            }else if($(this).data('_hidden') == 'hide'){
+                $("#accomodation_table tbody tr."+bedtype).show();
+                $(this).data('_hidden','show');
+            }
+        });
+
         $("#mdl_accomodation").on('hidden.bs.modal', function () {
-            accomodation_table.destroy();
+            $('#accomodation_table tbody').off('hidden.bs.modal');
+            $('#accomodation_table tbody').off('click');
             $('#accomodation_table tbody').off('dblclick');
+            accomodation_table.destroy();
         });
     }
 

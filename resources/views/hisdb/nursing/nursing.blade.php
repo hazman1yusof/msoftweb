@@ -1,13 +1,33 @@
    
 <div class="panel panel-default" style="position: relative;" id="jqGridTriageInfo_c">
-	<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-		id="btn_grp_edit_ti"
-		style="position: absolute;
-				padding: 0 0 0 0;
-				right: 40px;
-				top: 15px;" 
+	
+	<div class="panel-heading clearfix collapsed position" id="toggle_ti" style="position: sticky;top: 0px;z-index: 3;">
+		<p id="hiddenti" style="display:none">
+			<b><span id="name_show_ti"></span></b><br>
+			<span id="newic_show_ti"></span>
+			<span id="sex_show_ti"></span>
+			<span id="age_show_ti"></span>
+			<span id="race_show_ti"></span>
+		</p>
+		<p id="hiddentriage" style="display:none">
+			<b>Name: <span id="name_show_triage"></span></b><br>
+			MRN: <span id="mrn_show_triage"></span>
+		</p>
 
-	>
+		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridTriageInfo_panel"></i>
+		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridTriageInfo_panel"></i>
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
+			<h5>Triage Information</h5>
+		</div>
+
+		<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+			id="btn_grp_edit_ti"
+			style="position: absolute;
+					padding: 0 0 0 0;
+					right: 40px;
+					top: 15px;" 
+
+		>
 		<button type="button" class="btn btn-default" id="new_ti">
 			<span class="fa fa-plus-square-o"></span> New
 		</button>
@@ -21,24 +41,6 @@
 			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 		</button>
 	</div>
-	<div class="panel-heading clearfix collapsed position" id="toggle_ti" data-toggle="collapse" data-target="#jqGridTriageInfo_panel">
-		<p id="hiddenti" style="display:none">
-			<b><span id="name_show_ti"></span></b><br>
-			<span id="newic_show_ti"></span>
-			<span id="sex_show_ti"></span>
-			<span id="age_show_ti"></span>
-			<span id="race_show_ti"></span>
-		</p>
-		<p id="hiddentriage" style="display:none">
-			<b>Name: <span id="name_show_triage"></span></b><br>
-			MRN: <span id="mrn_show_triage"></span>
-		</p>
-
-		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
-			<h5>Triage Information</h5>
-		</div>				
 	</div>
 	<div id="jqGridTriageInfo_panel" class="panel-collapse collapse">
 		<div class="panel-body">

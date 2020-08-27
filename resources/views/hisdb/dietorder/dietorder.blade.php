@@ -1,13 +1,23 @@
 
 <div class="panel panel-default" style="position: relative;" id="jqGridDietOrder_c">
-	<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-		id="btn_grp_edit_dietOrder"
-		style="position: absolute;
-				padding: 0 0 0 0;
-				right: 40px;
-				top: 15px;" 
+	
+	<div class="panel-heading clearfix collapsed position" id="toggle_dietOrder" style="position: sticky;top: 0px;z-index: 3;">
+		<b>Name: <span id="name_show_dietOrder"></span></b><br>
+		MRN: <span id="mrn_show_dietOrder"></span>
 
-	>
+		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDietOrder_panel"></i>
+		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDietOrder_panel"></i>
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
+			<h5>Diet Order</h5>
+		</div>
+		<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+			id="btn_grp_edit_dietOrder"
+			style="position: absolute;
+					padding: 0 0 0 0;
+					right: 40px;
+					top: 15px;" 
+
+		>
 		<button type="button" class="btn btn-default" id="new_dietOrder">
 			<span class="fa fa-plus-square-o"></span> New
 		</button>
@@ -21,15 +31,6 @@
 			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 		</button>
 	</div>
-	<div class="panel-heading clearfix collapsed position" id="toggle_dietOrder" data-toggle="collapse" data-target="#jqGridDietOrder_panel">
-		<b>Name: <span id="name_show_dietOrder"></span></b><br>
-		MRN: <span id="mrn_show_dietOrder"></span>
-
-		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
-			<h5>Diet Order</h5>
-		</div>				
 	</div>
 	<div id="jqGridDietOrder_panel" class="panel-collapse collapse">
 		<div class="panel-body">

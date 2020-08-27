@@ -1,13 +1,24 @@
 
 <div class="panel panel-default" style="position: relative;" id="jqGridDischgSummary_c">
-	<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-		id="btn_grp_edit_dischgSummary"
-		style="position: absolute;
-				padding: 0 0 0 0;
-				right: 40px;
-				top: 15px;" 
+	
+	<div class="panel-heading clearfix collapsed position" id="toggle_dischgSummary" style="position: sticky;top: 0px;z-index: 3;">
+		<b>Name: <span id="name_show_dischgSummary"></span></b><br>
+		MRN: <span id="mrn_show_dischgSummary"></span>
 
-	>
+		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDischgSummary_panel"></i>
+		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDischgSummary_panel"></i>
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
+			<h5>Discharge Summary</h5>
+		</div>	
+
+		<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+			id="btn_grp_edit_dischgSummary"
+			style="position: absolute;
+					padding: 0 0 0 0;
+					right: 40px;
+					top: 15px;" 
+
+		>
 		<button type="button" class="btn btn-default" id="new_dischgSummary">
 			<span class="fa fa-plus-square-o"></span> New
 		</button>
@@ -20,16 +31,7 @@
 		<button type="button" class="btn btn-default" id="cancel_dischgSummary">
 			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 		</button>
-	</div>
-	<div class="panel-heading clearfix collapsed position" id="toggle_dischgSummary" data-toggle="collapse" data-target="#jqGridDischgSummary_panel">
-		<b>Name: <span id="name_show_dischgSummary"></span></b><br>
-		MRN: <span id="mrn_show_dischgSummary"></span>
-
-		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
-			<h5>Discharge Summary</h5>
-		</div>				
+	</div>			
 	</div>
 	<div id="jqGridDischgSummary_panel" class="panel-collapse collapse">
 		<div class="panel-body">

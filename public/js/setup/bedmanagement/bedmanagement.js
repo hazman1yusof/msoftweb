@@ -1708,7 +1708,10 @@ $(document).ready(function () {
                 visible: false
             } ],
             rowGroup: {
-                dataSrc: [ "desc_bt" ]
+                dataSrc: [ "desc_bt" ],
+                startRender: function ( rows, group ) {
+		            return group + `<i class="arrow fa fa-angle-double-down"></i>`;
+		        }
             },
             "createdRow": function( row, data, dataIndex ) {
 		    	$(row).addClass( data['desc_bt'] );
@@ -1774,7 +1777,6 @@ $(document).ready(function () {
             let bedtype = $(this).children().text();
             let bedtype_ = bedtype.split(" ");
             bedtype = bedtype_[0];
-            console.log($(this).data('_hidden'));
             if($(this).data('_hidden') == undefined || $(this).data('_hidden') == 'show'){
             	$("#accomodation_table tbody tr."+bedtype).hide();
             	$(this).data('_hidden','hide');
