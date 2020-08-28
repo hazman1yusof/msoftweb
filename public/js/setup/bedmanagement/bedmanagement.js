@@ -218,6 +218,7 @@ $(document).ready(function () {
 					populate_dietOrder(selrowData("#jqGrid"));
 					populate_dischgSummary(selrowData("#jqGrid"));
 					populate_form_trf(selrowData("#jqGrid"));
+					populate_form_ordcom(selrowData("#jqGrid"));
 					
 				}else{
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
