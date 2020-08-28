@@ -97,7 +97,7 @@ $(document).ready(function () {
 		if( $('#form_ordcom').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_ordcom(function(){
 				$("#cancel_ordcom").click();
-				refreshGrid('#jqGrid_ordcom', urlParam4);
+				refreshGrid('#jqGrid_ordcom', urlParam_ordcom);
 			});
 		}else{
 			enableForm('#form_ordcom');
@@ -363,7 +363,7 @@ $(document).ready(function () {
 			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
 			addmore_jqgrid.more = true;
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+			refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
@@ -373,7 +373,7 @@ $(document).ready(function () {
 			err_reroll.old_data = data.request;
 			err_reroll.error = true;
 			err_reroll.errormsg = data.errormsg;
-			refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+			refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -389,7 +389,7 @@ $(document).ready(function () {
 			$("#jqGrid_ordcom").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
-			refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+			refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").show();
 		},
 		errorTextFormat: function (data) {
@@ -415,7 +415,7 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+			refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll").show();
 		},
@@ -426,7 +426,7 @@ $(document).ready(function () {
 			err_reroll.old_data = data.request;
 			err_reroll.error = true;
 			err_reroll.errormsg = data.errormsg;
-			refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+			refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -442,7 +442,7 @@ $(document).ready(function () {
 			$("#jqGrid_ordcom").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
-			refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+			refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll, #jqGridPagerSaveAll, #jqGridPagerCancelAll").show();
 		},
 		errorTextFormat: function (data) {
@@ -490,7 +490,7 @@ $(document).ready(function () {
 								}).fail(function (data) {
 									$('#p_error').text(data.responseText);
 								}).done(function (data) {
-									refreshGrid("#jqGrid_ordcom", urlParam4);
+									refreshGrid("#jqGrid_ordcom", urlParam_ordcom);
 								});
 							}else{
 								$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
@@ -551,12 +551,12 @@ $(document).ready(function () {
 					////errorText(dialog,data.responseText);
 				}).done(function(data){
 					hideatdialogForm(false);
-					refreshGrid("#jqGrid_ordcom",urlParam4);
+					refreshGrid("#jqGrid_ordcom",urlParam_ordcom);
 				});
 
 			},
 			afterrestorefunc : function( response ) {
-				refreshGrid('#jqGrid_ordcom',urlParam4,'add');
+				refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 				//$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll").show();
 			},
 			errorTextFormat: function (data) {
@@ -570,7 +570,7 @@ $(document).ready(function () {
 			title:"Cancel",
 			onClickButton: function(){
 				hideatdialogForm(false);
-				refreshGrid("#jqGrid_ordcom",urlParam4);
+				refreshGrid("#jqGrid_ordcom",urlParam_ordcom);
 			},	
 		}).jqGrid('navButtonAdd', "#jqGridPager_ordcom", {
 			id: "jqGridPagerRefresh",
@@ -579,7 +579,7 @@ $(document).ready(function () {
 			title: "Refresh Table",
 			onClickButton: function () {
 				oper = 'add_ordcom'
-				refreshGrid("#jqGrid_ordcom", urlParam4);
+				refreshGrid("#jqGrid_ordcom", urlParam_ordcom);
 			},
 		});
 		//////////////////////////////////End grid pager ORDERCOM/////////////////////////////////////////////////////////
@@ -591,6 +591,6 @@ $(document).ready(function () {
 	searchClick2('#jqGrid', '#searchForm', urlParam_ordcom);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid_ordcom', true, urlParam4);
+	addParamField('#jqGrid_ordcom', true, urlParam_ordcom);
 	
 });
