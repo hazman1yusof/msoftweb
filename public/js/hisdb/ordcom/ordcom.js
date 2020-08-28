@@ -107,54 +107,6 @@ $(document).ready(function () {
 	$("#cancel_ordcom").click(function(){
 		button_state_ordcom($('#save_ordcom').data('oper'));
 	});
-
-
-// 	function populate_form_ordcom(obj,rowdata){
-	
-// 	emptyFormdata(errorField,"#form_ordcom");
-
-// 	//panel header
-// 	$('#name_show_ordcom').text(obj.name);
-// 	$('#mrn_show_ordcom').text(obj.mrn);
-
-// 	//form_ordcom
-// 	$('#mrn_ordcom').val(obj.mrn);
-// 	$("#episno_ordcom").val(obj.episno);
-
-// 	var saveParam={
-//         action:'get_table_ordcom',
-//     }
-//     var postobj={
-//     	_token : $('#csrf_token').val(),
-//     	mrn:obj.mrn,
-//     	episno:obj.episno
-
-//     };
-
-//     $.post( "/ordcom/form?"+$.param(saveParam), $.param(postobj), function( data ) {
-        
-//     },'json').fail(function(data) {
-//         alert('there is an error');
-//     }).success(function(data){
-//     	if(!$.isEmptyObject(data)){
-//     		autoinsert_rowdata("#form_ordcom",data.ordcom);
-// 			button_state_ordcom('edit');
-//         }else{
-// 			button_state_ordcom('add');
-//         }
-
-//     });
-
-// }
-
-	function populate_form_ordcom(rowdata){
-		$('#name_show').text(selrowData("#jqGrid").name);
-		$('#bednum_show').text(selrowData("#jqGrid").bednum);	
-		//autoinsert_rowdata("#form_ordcom",rowdata);
-		$('input[name=ct_trxdate]').val(moment().format('YYYY-MM-DD'));
-		$('input[name=ct_trxtime]').val(moment().format('HH:mm:ss'));
-		button_state_ordcom('edit');
-	}
 	
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var dialog_chgcode = new ordialog(
@@ -357,7 +309,6 @@ $(document).ready(function () {
 		sortorder: 'desc',
 		pager: "#jqGridPager_ordcom",
 		onSelectRow:function(rowid, selected){
-			populate_form_ordcom(selrowData("#jqGrid_ordcom"));
 			
 			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 
