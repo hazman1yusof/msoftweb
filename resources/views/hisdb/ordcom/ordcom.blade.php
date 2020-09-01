@@ -8,16 +8,7 @@
 
 	>
 		<button type="button" class="btn btn-default" id="new_ordcom">
-			<span class="fa fa-plus-square-o"></span> New
-		</button>
-		<button type="button" class="btn btn-default" id="edit_ordcom">
-			<span class="fa fa-edit fa-lg"></span> Edit
-		</button>
-		<button type="button" class="btn btn-default" data-oper='add' id="save_ordcom">
-			<span class="fa fa-save fa-lg"></span> Save
-		</button>
-		<button type="button" class="btn btn-default" id="cancel_ordcom" >
-			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+			<span class="fa fa-plus-square-o"></span> Order
 		</button>
 	</div>
 	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" data-toggle="collapse" data-target="#jqGrid_ordcom_panel">
@@ -33,12 +24,9 @@
 	<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">
 		<div class="panel-body">
 			<div class='col-md-12' style="padding:0 0 15px 0">
+				<input id="ordcom_deptcode_hide" type="hidden" value="{{Auth::user()->deptcode}}">
 				<table id="jqGrid_ordcom" class="table table-striped"></table>
 				<div id="jqGridPager_ordcom"></div>
-
-				<form class='form-horizontal' style='width:99%' id='form_ordcom'>
-
-				</form>
 
 			</div>
 		</div>

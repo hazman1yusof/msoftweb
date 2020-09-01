@@ -54,55 +54,30 @@ class OrdcomController extends defaultController
 
         try {
             
-            DB::table('hisdb.chargetrx')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_ordcom,
-                        'episno' => $request->episno_ordcom,
-                        'trxtype' => $request->trxtype,
-                        'docref' => $request->docref,
-                        'trxdate' => $request->trxdate,
-                        'chgcode' => $request->chgcode,
-                        'billcode' => $request->billcode,
-                        'doctorcode' => $request->doctorcode,
-                        'chg_class' => $request->chg_class,
-                        'chgtype' => $request->chgtype,
-                        'trxtime' => $request->trxtime,
-                        'chggroup' => $request->chggroup,
-                        'dracccode' => $request->dracccode,
-                        'cracccode' => $request->cracccode,
+            // DB::table('hisdb.chargetrx')
+            //         ->insert([
+            //             'compcode' => session('compcode'),
+            //             'mrn' => $request->mrn_ordcom,
+            //             'episno' => $request->episno_ordcom,
+            //             'trxtype' => $request->trxtype,
+            //             'docref' => $request->docref,
+            //             'trxdate' => $request->trxdate,
+            //             'chgcode' => $request->chgcode,
+            //             'billcode' => $request->billcode,
+            //             'doctorcode' => $request->doctorcode,
+            //             'chg_class' => $request->chg_class,
+            //             'chgtype' => $request->chgtype,
+            //             'trxtime' => $request->trxtime,
+            //             'chggroup' => $request->chggroup,
+            //             'dracccode' => $request->dracccode,
+            //             'cracccode' => $request->cracccode,
                         
-                        //'location' => 'WARD',
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
-
-            DB::table('hisdb.chargetrx')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_ordcom,
-                        'episno' => $request->episno_ordcom,
-                        'trxtype' => $request->trxtype,
-                        'docref' => $request->docref,
-                        'trxdate' => $request->trxdate,
-                        'chgcode' => $request->chgcode,
-                        'billcode' => $request->billcode,
-                        'doctorcode' => $request->doctorcode,
-                        'chg_class' => $request->chg_class,
-                        'chgtype' => $request->chgtype,
-                        'trxtime' => $request->trxtime,
-                        'chggroup' => $request->chggroup,
-                        'dracccode' => $request->dracccode,
-                        'cracccode' => $request->cracccode,
-                        
-                        //'location' => 'WARD',
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
+            //             //'location' => 'WARD',
+            //             'adduser'  => session('username'),
+            //             'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'lastuser'  => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //         ]);
 
             DB::commit();
 
