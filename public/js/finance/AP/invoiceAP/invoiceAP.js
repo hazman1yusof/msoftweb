@@ -259,6 +259,7 @@ $(document).ready(function () {
 
 			refreshGrid("#jqGrid3",urlParam2);
 			populate_form(selrowData("#jqGrid"));
+			//empty_form();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -275,7 +276,11 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-			empty_form();
+
+			//urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+			//refreshGrid("#jqGrid3",urlParam2);
+			populate_form(selrowData("#jqGrid"));
+			//empty_form();
 		},
 		
 
@@ -1035,8 +1040,8 @@ $(document).ready(function () {
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
 			],
 			urlParam: {
-				filterCol:['recstatus', 'compcode', 'source', 'povalidate'],
-				filterVal:['A', 'session.compcode', 'CR', '0']
+				filterCol:['recstatus', 'compcode'],
+				filterVal:['A', 'session.compcode']
 			},
 		
 			ondblClickRow:function(){

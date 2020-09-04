@@ -62,7 +62,7 @@ $(document).ready(function () {
 						    },
 			},					
 			{label: 'Loan Account', name: 'loanacct', width: 90, hidden: true},					
-			{label: 'PO Validate', name: 'povalidate', width: 25, hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"1:YES;2:NO"}},					
+			{label: 'PO Validate', name: 'povalidate', width: 25, hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"1:YES;0:NO"}},					
 			{label: 'accrualacc', name: 'accrualacc', width: 90, hidden: true},					
 			{label: 'stktakeadjacct', name: 'stktakeadjacct', width: 90, hidden: true},					
 			{label: 'adduser', name: 'adduser', width: 90 , hidden: true},					

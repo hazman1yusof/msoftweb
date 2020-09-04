@@ -55,6 +55,8 @@ class CategoryFinController extends defaultController
             DB::table('material.category')
                 ->insert([  
                     'compcode' => session('compcode'),
+                    'source' => 'CR',
+                    'cattype' => 'OTHER',
                     'catcode' => strtoupper($request->catcode),
                     'description' => strtoupper($request->description),
                     'expacct' => strtoupper($request->expacct),
