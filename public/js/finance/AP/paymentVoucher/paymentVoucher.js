@@ -536,6 +536,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/paymentVoucherDetail/form",
 		colModel: [
+			{ label: ' ', name: 'checkbox', width: 15, formatter: 'checkbox', edittype: "checkbox", editable: true, formatoptions: {disabled : false}},
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
@@ -666,6 +667,19 @@ $(document).ready(function () {
 		return qtyoutstand;
 	}
 	
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let lineno_ = cbselect.lineno_;
+		let recstatus = cbselect.recstatus;
+		
+		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
+	}
+
 	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	
 	var myEditOptions = {
