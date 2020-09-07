@@ -27,7 +27,7 @@ $(document).ready(function () {
 
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var dialog_chgcode = new ordialog(
-		'ordcom_chgcode','hisdb.chgmast',"#jqGrid_ordcom input[name='chgcode']",errorField,
+		'ordcom_chgcode','hisdb.chgmast',"#jqGrid_ordcom input[name='ordcom_chgcode']",errorField,
 		{	colModel:
 			[
 				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true},
@@ -64,11 +64,46 @@ $(document).ready(function () {
 	);
 	dialog_chgcode.makedialog();
 
+	var dialog_isudept = new ordialog(
+		'ordcom_isudept','sysdb.department',"#jqGrid_ordcom input[name='ordcom_isudept']",errorField,
+		{	colModel:
+			[
+				{label:'Charge Code',name:'deptcode',width:200,classes:'pointer',canSearch:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true},
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode','chgdept'],
+				filterVal:['A', 'session.compcode','1'],
+			},
+			ondblClickRow:function(event){
+				//$('#occup').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#occup').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			},
+		},{
+			title:"Select ChargeCode",
+			open: function(){
+				dialog_isudept.urlParam.filterCol = ['recstatus','compcode','chgdept'];
+				dialog_isudept.urlParam.filterVal = ['A', 'session.compcode','1'];
+			},
+		},'urlParam','radio','tab','table'
+	);
+	dialog_isudept.makedialog();
+
 	function cust_rules(value,name){
 		var temp;
 		switch(name){
-			case ' ':temp=$("#jqGrid input[name='recstatus']");break;
-			case 'Charge Code':temp=$("#jqGrid input[name='chgcodeOrdcom']");break;
+			// case ' ':temp=$("#jqGrid input[name='recstatus']");break;
+			case 'Charge Code':temp=$("#jqGrid input[name='ordcom_chgcode']");break;
+			case 'Issue Department':temp=$("#jqGrid input[name='ordcom_isudept']");break;
 			break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -78,6 +113,8 @@ $(document).ready(function () {
 		var field,table,case_;
 		switch(options.colModel.name){
 			case 'ct_chgcode':field=['chgcode','description'];table="hisdb.chgmast";case_='chgcode';break;
+			case 'ct_isudept':field=['deptcode','description'];table="sysdb.department";case_='isudept';break;
+
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -89,7 +126,20 @@ $(document).ready(function () {
 
 	function chgcodeOrdcomCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function isudeptOrdcomCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_isudept" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function ct_trxtime_custom(val,opt){
+		return $('<input type="time" optid="'+opt.id+'" id="'+opt.id+'" name="ct_trxtime" class="form-control input-sm" data-validation="required" value="'+val+'">');
+	}
+
+	function ct_remarks_custom(val,opt){
+		return $('<textarea optid="'+opt.id+'" id="'+opt.id+'" name="ct_remarks" class="form-control input-sm" data-validation="required" value="'+val+'" style="width:98%" rows="5">'+val);
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -138,17 +188,30 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/ordcom/form",
 		colModel: [
-			{ label: 'auditno', name: 'ct_auditno', width: 5, classes: 'wrap', hidden:true},
-			{ label: 'compcode', name: 'ct_compcode', width: 5, classes: 'wrap', hidden:true},
-			{ label: 'Date', name: 'ct_trxdate', width: 5, classes: 'wrap',editable:true,
-				editoptions:{
-					readonly: "readonly",
-				}
+			{ label: 'auditno', name: 'ct_auditno', hidden:true},
+			{ label: 'compcode', name: 'ct_compcode', hidden:true},
+			{ label: 'Date', name: 'ct_trxdate', width: 10, classes: 'wrap',editable:true,
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+				editoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            id: 'ct_trxdate_datePicker',
+                            dateFormat: 'dd/mm/yy',
+                            minDate: 1,
+                            showOn: 'focus',
+                            changeMonth: true,
+		  					changeYear: true,
+                        });
+                    }
+                }
 			},
-			{ label: 'Time', name: 'ct_trxtime', width: 5, classes: 'wrap',editable:true,
-				editoptions:{
-					readonly: "readonly",
-				}},
+			{ label: 'Time', name: 'ct_trxtime', width: 10, classes: 'wrap',editable:true,
+				edittype:'custom',	editoptions:
+					{ 	custom_element:ct_trxtime_custom,
+						custom_value:galGridCustomValue 	
+					},
+			},
+				
 			{ label: 'Charge Code', name: 'ct_chgcode', width: 15 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
@@ -156,12 +219,20 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Quantity', name: 'ct_quantity', width: 10,editable:true},
-			{ label: 'Issue Department', name: 'ct_isudept', width: 10,editable:true,
-				editoptions:{
-					readonly: "readonly",
-				}},
-			{ label: 'Remarks', name: 'ct_remarks', width: 10},
+			{ label: 'Quantity', name: 'ct_quantity', width: 5,editable:true},
+			{ label: 'Issue Department', name: 'ct_isudept', width: 15,editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
+				edittype:'custom',	editoptions:
+					{ 	custom_element:isudeptOrdcomCustomEdit,
+						custom_value:galGridCustomValue 	
+					},
+			},
+			{ label: 'Remarks', name: 'ct_remarks', hidden:false,width:35, editable:true,
+				edittype:'custom',	editoptions:
+					{ 	custom_element:ct_remarks_custom,
+						custom_value:galGridCustomValue 	
+					},
+			},
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -215,6 +286,7 @@ $(document).ready(function () {
 
 			$("#jqGridPager_ordcomDelete,#jqGridPager_ordcomRefresh, #jqGridPager_ordcomEditAll, #jqGridPager_ordcomrSaveAll, #jqGridPager_ordcomCancelAll").hide();
 			dialog_chgcode.on();
+			dialog_isudept.on();
 			$("#jqGrid_ordcom :input[name='ct_trxdate']").focus();
 			$("#jqGrid_ordcom :input[name='remarks']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -223,7 +295,13 @@ $(document).ready(function () {
 
 			$("#jqGrid_ordcom [name='ct_trxdate']").val(moment().format('D/M/YYYY'));
 			$("#jqGrid_ordcom [name='ct_trxtime']").val(moment().format('hh:mm:ss'));
-			$("#jqGrid_ordcom [name='ct_isudept']").val($("#ordcom_deptcode_hide").val());
+			$("#jqGrid_ordcom [name='ordcom_isudept']").val($("#ordcom_deptcode_hide").val());
+
+			let selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+			let drname = $("#jqGrid tr#"+selrow).find("td[aria-describedby='jqGrid_admdoctor'] span.help-block").text();
+
+			$("#jqGrid_ordcom [name='ct_remarks']").text(drname);
+
 
 		},
 		aftersavefunc: function (rowid, response, options) {
