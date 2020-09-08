@@ -246,7 +246,7 @@ $(document).ready(function () {
 		sortorder: 'desc',
 		pager: "#jqGridPager_ordcom",
 		onSelectRow:function(rowid, selected){
-
+			populate_form_ordcom(selrowData("#jqGrid_ordcom"));
 		},
 		loadComplete: function(){
 			if(addmore_jqGrid_ordcom.more == true){$('#jqGrid_ordcom_iladd').click();}
@@ -499,3 +499,24 @@ $(document).ready(function () {
 	addParamField('#jqGrid_ordcom', true, urlParam_ordcom);
 	
 });
+
+function populate_form_ordcom(obj,rowdata){
+
+	//panel header
+	$('#name_show_ordcom').text(obj.name);
+	$('#mrn_show_ordcom').text(obj.mrn);
+
+	//formordcom
+	$('#mrn_ordcom').val(obj.mrn);
+	$("#episno_ordcom").val(obj.episno);
+
+	var saveParam={
+        action:'get_table_ordcom',
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	mrn:obj.mrn,
+    	episno:obj.episno
+
+    };
+}

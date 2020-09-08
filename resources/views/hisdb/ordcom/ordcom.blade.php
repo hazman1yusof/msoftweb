@@ -4,8 +4,8 @@
 		<b>Name: <span id="name_show_ordcom"></span></b><br>
 		MRN: <span id="mrn_show_ordcom"></span>
 
-		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel"></i>
-		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel"></i>
+		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 110px; top: 15px;">
 			<h5>Order Communication Detail</h5>
 		</div>
