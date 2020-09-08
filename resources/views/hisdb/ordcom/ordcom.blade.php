@@ -17,7 +17,7 @@
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 110px; top: 15px;">
 			<h5>Order Communication Detail</h5>
 		</div>				
 	</div>
