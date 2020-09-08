@@ -190,7 +190,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'auditno', name: 'ct_auditno', hidden:true},
 			{ label: 'compcode', name: 'ct_compcode', hidden:true},
-			{ label: 'Date', name: 'ct_trxdate', width: 10, classes: 'wrap',editable:true,
+			{ label: 'Date', name: 'ct_trxdate', width: 7, classes: 'wrap',editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
                     dataInit: function (element) {
@@ -205,14 +205,14 @@ $(document).ready(function () {
                     }
                 }
 			},
-			{ label: 'Time', name: 'ct_trxtime', width: 10, classes: 'wrap',editable:true,
+			{ label: 'Time', name: 'ct_trxtime', width: 7, classes: 'wrap',editable:true,
 				edittype:'custom',	editoptions:
 					{ 	custom_element:ct_trxtime_custom,
 						custom_value:galGridCustomValue 	
 					},
 			},
 				
-			{ label: 'Charge Code', name: 'ct_chgcode', width: 15 , classes: 'wrap', editable:true,
+			{ label: 'Charge Code', name: 'ct_chgcode', width: 10 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
 					{ 	custom_element:chgcodeOrdcomCustomEdit,
@@ -227,6 +227,7 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
+			{ label: 'GST Code', name: 'ct_taxcode', width: 5,editable:true},
 			{ label: 'Remarks', name: 'ct_remarks', hidden:false,width:35, editable:true,
 				edittype:'custom',	editoptions:
 					{ 	custom_element:ct_remarks_custom,
