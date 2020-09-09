@@ -7,9 +7,9 @@
 				top: 15px;" 
 
 	>
-		<button type="button" class="btn btn-default" id="new_ordcom">
+		<!-- <button type="button" class="btn btn-default" id="new_ordcom">
 			<span class="fa fa-plus-square-o"></span> Order
-		</button>
+		</button> -->
 	</div>
 	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" data-toggle="collapse" data-target="#jqGrid_ordcom_panel">
 		<b>Name: <span id="name_show_ordcom"></span></b><br>
@@ -17,7 +17,7 @@
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 110px; top: 15px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 15px;">
 			<h5>Order Communication Detail</h5>
 		</div>				
 	</div>

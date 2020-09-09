@@ -3,9 +3,9 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	disableForm('#form_ordcom');
 
-	$("#new_ordcom").click(function(){
-		hideatdialogForm(false);
-	});
+	// $("#new_ordcom").click(function(){
+	// 	hideatdialogForm(false);
+	// });
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
