@@ -111,7 +111,8 @@ class OrdcomController extends defaultController
                         'chggroup' => $request->chggroup,
                         'dracccode' => $request->dracccode,
                         'cracccode' => $request->cracccode,
-                        
+                        'taxcode' => $request->taxcode,
+                      
                         //'location' => 'WARD',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -136,6 +137,7 @@ class OrdcomController extends defaultController
                         'chggroup' => $request->chggroup,
                         'dracccode' => $request->dracccode,
                         'cracccode' => $request->cracccode,
+                        'taxcode' => $request->taxcode,
                         
                         //'location' => 'WARD',
                         'adduser'  => session('username'),
