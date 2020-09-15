@@ -98,12 +98,47 @@ $(document).ready(function () {
 	);
 	dialog_isudept.makedialog();
 
+	var dialog_taxcode = new ordialog(
+		'ordcom_taxcode','hisdb.chargetrx',"#jqGrid_ordcom input[name='ordcom_taxcode']",errorField,
+		{	colModel:
+			[
+				{label:'GST Code',name:'taxcode',width:200,classes:'pointer',canSearch:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true},
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode','taxcode'],
+				filterVal:['A', 'session.compcode','IP'],
+			},
+			ondblClickRow:function(event){
+				$('#remarks').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#remarks').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			},
+		},{
+			title:"Select GST Code",
+			open: function(){
+				dialog_taxcode.urlParam.filterCol = ['recstatus','compcode','taxcode'];
+				dialog_taxcode.urlParam.filterVal = ['A', 'session.compcode','IP'];
+			},
+		},'urlParam','radio','tab','table'
+	);
+	dialog_taxcode.makedialog();
+
 	function cust_rules(value,name){
 		var temp;
 		switch(name){
 			// case ' ':temp=$("#jqGrid input[name='recstatus']");break;
 			case 'Charge Code':temp=$("#jqGrid input[name='ordcom_chgcode']");break;
 			case 'Issue Department':temp=$("#jqGrid input[name='ordcom_isudept']");break;
+			case 'GST Code':temp=$("#jqGrid input[name='ordcom_taxcode']");break;
 			break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -114,6 +149,7 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'ct_chgcode':field=['chgcode','description'];table="hisdb.chgmast";case_='chgcode';break;
 			case 'ct_isudept':field=['deptcode','description'];table="sysdb.department";case_='isudept';break;
+			case 'ct_taxcode':field=['taxcode','description'];table="hisdb.chargetrx";case_='taxcode';break;
 
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
@@ -140,6 +176,11 @@ $(document).ready(function () {
 
 	function ct_remarks_custom(val,opt){
 		return $('<textarea optid="'+opt.id+'" id="'+opt.id+'" name="ct_remarks" class="form-control input-sm" data-validation="required" value="'+val+'" style="width:98%" rows="5">'+val);
+	}
+
+	function taxcodeOrdcomCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_taxcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -227,7 +268,14 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'GST Code', name: 'ct_taxcode', width: 5,editable:true},
+			{ label: 'GST Code', name: 'ct_taxcode', width: 5 , classes: 'wrap', editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
+				edittype:'custom',	editoptions:
+					{ 	custom_element:taxcodeOrdcomCustomEdit,
+						custom_value:galGridCustomValue 	
+					},
+			},
+			//{ label: 'GST Code', name: 'ct_taxcode', width: 5,editable:true},
 			{ label: 'Remarks', name: 'ct_remarks', hidden:false,width:35, editable:true,
 				edittype:'custom',	editoptions:
 					{ 	custom_element:ct_remarks_custom,
@@ -288,6 +336,7 @@ $(document).ready(function () {
 			$("#jqGridPager_ordcomDelete,#jqGridPager_ordcomRefresh, #jqGridPager_ordcomEditAll, #jqGridPager_ordcomrSaveAll, #jqGridPager_ordcomCancelAll").hide();
 			dialog_chgcode.on();
 			dialog_isudept.on();
+			dialog_taxcode.on();
 			$("#jqGrid_ordcom :input[name='ct_trxdate']").focus();
 			$("#jqGrid_ordcom :input[name='remarks']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
