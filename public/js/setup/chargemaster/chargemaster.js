@@ -430,7 +430,8 @@
 			$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 
 			},'json').fail(function (data) {
-				alert(data.responseText);
+				$(".noti").text(data.responseText);
+				// alert(data.responseText);
 			}).done(function (data) {
 				unsaved = false;
 
@@ -733,7 +734,8 @@
 		    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
 	        }, 
 	        errorfunc: function(rowid,response){
-	        	alert(response.responseText);
+				$(".noti").text(response.responseText);
+	        	// alert();
 	        	refreshGrid('#jqGrid2',urlParam2,'add');
 		    	$("#jqGridPager2Delete").show();
 	        },
@@ -1346,7 +1348,8 @@
 		    	$("#jqGridPager3EditAll,#jqGridPager3Delete,#jqGridPager3Refresh").show();
 	        }, 
 	        errorfunc: function(rowid,response){
-	        	alert(response.responseText);
+				$(".noti").text(response.responseText);
+	        	// alert(response.responseText);
 	        	refreshGrid('#jqGrid3',urlParam2,'add');
 		    	$("#jqGridPager3Delete,#jqGridPager3Refresh").show();
 	        },
