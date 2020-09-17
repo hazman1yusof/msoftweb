@@ -127,6 +127,12 @@ function button_state_doctorNote(state){
 			$("#save_doctorNote,#cancel_doctorNote").attr('disabled',false);
 			$('#edit_doctorNote,#new_doctorNote').attr('disabled',true);
 			break;
+		case 'docnote':
+			$("#toggle_doctorNote").attr('data-toggle','collapse');
+			$('#cancel_doctorNote').data('oper','add');
+			$("#new_doctorNote,#edit_doctorNote").attr('disabled',false);
+			$('#save_doctorNote,#cancel_doctorNote').attr('disabled',true);
+			break;
 	}
 
 	// if(!moment(gldatepicker_date).isSame(moment(), 'day')){
@@ -167,10 +173,10 @@ function populate_doctorNote(obj,rowdata){
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
-			button_state_doctorNote('edit');
+			button_state_doctorNote('docnote');
 			getBMI();
         }else{
-			button_state_doctorNote('add');
+			button_state_doctorNote('docnote');
         }
 
     });
