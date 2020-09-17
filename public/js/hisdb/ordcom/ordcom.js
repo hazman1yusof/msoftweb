@@ -26,6 +26,8 @@ $(document).ready(function () {
 	};
 
 	////////////////////////////////////start dialog///////////////////////////////////////
+	var mycurrency = new currencymode(['#ct_quantity']);
+
 	var dialog_chgcode = new ordialog(
 		'ordcom_chgcode','hisdb.chgmast',"#jqGrid_ordcom input[name='ordcom_chgcode']",errorField,
 		{	colModel:
@@ -260,7 +262,7 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Quantity', name: 'ct_quantity', width: 5,editable:true},
+			{ label: 'Quantity', name: 'ct_quantity', width: 5, formatter: 'currency', editable:true},	
 			{ label: 'Issue Department', name: 'ct_isudept', width: 15,editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
@@ -404,169 +406,151 @@ $(document).ready(function () {
 			addRowParams: myEditOptions
 		},
 		editParams: myEditOptions,
-		
-	}).jqGrid('navButtonAdd', "#jqGridPager_ordcom", {
-		id: "jqGridPager_ordcomDelete",
-		caption: "", cursor: "pointer", position: "last",
-		buttonicon: "glyphicon glyphicon-trash",
-		title: "Delete Selected Row",
-		onClickButton: function () {
-			selRowId = $("#jqGrid_ordcom").jqGrid('getGridParam', 'selrow');
-			if (!selRowId) {
-				bootbox.alert('Please select row');
-			} else {
-				bootbox.confirm({
-					message: "Are you sure you want to delete this row?",
-					buttons: {
-						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
-					},
-					callback: function (result) {
-						if (result == true) {
-							param = {
-								_token: $("#_token").val(),
-								action: 'saveForm_ordcom',
-								// cheqno: $('#cheqno').val(),
-								// mrn: selrowData('#jqGrid_ordcom').mrn,
-							}
-							$.post( "/ordcom/form?"+$.param(param),{oper:'del_ordcom',"_token": $("#_token").val()}, function( data ){
-							}).fail(function (data) {
-								$('#p_error').text(data.responseText);
-							}).done(function (data) {
-								refreshGrid("#jqGrid_ordcom", urlParam_ordcom);
-							});
-						}else{
-							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-						}
-					}
-				});
-			}
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager_ordcom",{
-		id: "jqGridPager_ordcomEditAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-th-list",
-		title:"Edit All Row",
-		onClickButton: function(){
 			
-			var ids = $("#jqGrid_ordcom").jqGrid('getDataIDs');
-			for (var i = 0; i < ids.length; i++) {
-
-				$("#jqGrid_ordcom").jqGrid('editRow',ids[i]);
-			}
-			hideatdialogForm(true,'saveallrow');
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager_ordcom",{
-		id: "jqGridPager_ordcomSaveAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-download-alt",
-		title:"Save All Row",
-		onClickButton: function(){
-
-			var ids = $("#jqGrid_ordcom").jqGrid('getDataIDs');
-
-			var jqGrid_ordcom_data = [];
-			for (var i = 0; i < ids.length; i++) {
-
-				var data = $('#jqGrid_ordcom').jqGrid('getRowData',ids[i]);
-
-				var obj = 
-				{
-					'idno' : ids[i],
-					'startno' : $("#jqGrid_ordcom input#"+ids[i]+"_startno").val(),
-					'endno' : $("#jqGrid_ordcom input#"+ids[i]+"_endno").val(),
-					'cheqqty' : $("#jqGrid_ordcom input#"+ids[i]+"_cheqqty").val()
-				}
-
-				jqGrid_ordcom_data.push(obj);
-			}
-
-			var param={
-				action: 'saveForm_ordcom',
-				_token: $("#_token").val(),
-				mrn: selrowData('#jqGrid').mrn,
-			
-			}
-
-			$.post( "/ordcom/form?"+$.param(param),{oper:'edit_all_ordcom',dataobj:jqGrid_ordcom_data}, function( data ){
-			}).fail(function(data) {
-				$('#p_error').text(data.responseText);
-				////errorText(dialog,data.responseText);
-			}).done(function(data){
-				hideatdialogForm(false);
-				refreshGrid("#jqGrid_ordcom",urlParam_ordcom);
-			});
-
-		},
-		afterrestorefunc : function( response ) {
-			refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
-			//$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll").show();
-		},
-		errorTextFormat: function (data) {
-			alert(data);
-		}
-		
-	}).jqGrid('navButtonAdd',"#jqGridPager_ordcom",{
-		id: "jqGridPager_ordcomCancelAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-remove-circle",
-		title:"Cancel",
-		onClickButton: function(){
-			hideatdialogForm(false);
-			refreshGrid("#jqGrid_ordcom",urlParam_ordcom);
+	}).jqGrid('navButtonAdd', "#jqGridPager_ordcom", {	
+		id: "jqGridPager_ordcomDelete",	
+		caption: "", cursor: "pointer", position: "last",	
+		buttonicon: "glyphicon glyphicon-trash",	
+		title: "Delete Selected Row",	
+		onClickButton: function () {	
+			selRowId = $("#jqGrid_ordcom").jqGrid('getGridParam', 'selrow');	
+			if (!selRowId) {	
+				bootbox.alert('Please select row');	
+			} else {	
+				bootbox.confirm({	
+					message: "Are you sure you want to delete this row?",	
+					buttons: {	
+						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }	
+					},	
+					callback: function (result) {	
+						if (result == true) {	
+							param = {	
+								_token: $("#_token").val(),	
+								action: 'saveForm_ordcom',	
+								// cheqno: $('#cheqno').val(),	
+								// mrn: selrowData('#jqGrid_ordcom').mrn,	
+							}	
+							$.post( "/ordcom/form?"+$.param(param),{oper:'del_ordcom',"_token": $("#_token").val()}, function( data ){	
+							}).fail(function (data) {	
+								$('#p_error').text(data.responseText);	
+							}).done(function (data) {	
+								refreshGrid("#jqGrid_ordcom", urlParam_ordcom);	
+							});	
+						}else{	
+							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();	
+						}	
+					}	
+				});	
+			}	
 		},	
-	}).jqGrid('navButtonAdd', "#jqGridPager_ordcom", {
-		id: "jqGridPager_ordcomRefresh",
-		caption: "", cursor: "pointer", position: "last",
-		buttonicon: "glyphicon glyphicon-refresh",
-		title: "Refresh Table",
-		onClickButton: function () {
-			oper = 'add_ordcom'
-			refreshGrid("#jqGrid_ordcom", urlParam_ordcom);
-		},
-	});
-
-	function hideatdialogForm(hide,saveallrow){
-		if(saveallrow == 'saveallrow'){
-			$("#jqGrid_ordcom_iledit,#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll,#saveDetailLabel").hide();
-			$("#jqGridPager_ordcomSaveAll,#jqGridPager_ordcomCancelAll").show();
-		}else if(hide){
-			$("#jqGrid_ordcom_iledit,#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll,#jqGridPager_ordcomSaveAll,#jqGridPager_ordcomCancelAll").hide();
-			$("#saveDetailLabel").show();
-		}else{
-			$("#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll").show();
-			$("#saveDetailLabel,#jqGridPager_ordcomSaveAll,#jqGrid_ordcom_iledit,#jqGridPager_ordcomCancelAll").hide();
-		}
-	}
-	//////////////////////////////////End grid pager ORDERCOM/////////////////////////////////////////////////////////
-	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-
-	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-
-	populateSelect('#jqGrid_ordcom', '#searchForm');
-	searchClick2('#jqGrid_ordcom', '#searchForm', urlParam_ordcom);
-
-	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid_ordcom', true, urlParam_ordcom);
-	
-});
-
-function populate_form_ordcom(obj,rowdata){
-
-	//panel header
-	$('#name_show_ordcom').text(obj.name);
-	$('#mrn_show_ordcom').text(obj.mrn);
-
-	//formordcom
-	$('#mrn_ordcom').val(obj.mrn);
-	$("#episno_ordcom").val(obj.episno);
-
-	var saveParam={
-        action:'get_table_ordcom',
-    }
-    var postobj={
-    	_token : $('#csrf_token').val(),
-    	mrn:obj.mrn,
-    	episno:obj.episno
-
-    };
+	}).jqGrid('navButtonAdd',"#jqGridPager_ordcom",{	
+		id: "jqGridPager_ordcomEditAll",	
+		caption:"",cursor: "pointer",position: "last", 	
+		buttonicon:"glyphicon glyphicon-th-list",	
+		title:"Edit All Row",	
+		onClickButton: function(){	
+				
+			var ids = $("#jqGrid_ordcom").jqGrid('getDataIDs');	
+			for (var i = 0; i < ids.length; i++) {	
+				$("#jqGrid_ordcom").jqGrid('editRow',ids[i]);	
+			}	
+			hideatdialogForm(true,'saveallrow');	
+		},	
+	}).jqGrid('navButtonAdd',"#jqGridPager_ordcom",{	
+		id: "jqGridPager_ordcomSaveAll",	
+		caption:"",cursor: "pointer",position: "last", 	
+		buttonicon:"glyphicon glyphicon-download-alt",	
+		title:"Save All Row",	
+		onClickButton: function(){	
+			var ids = $("#jqGrid_ordcom").jqGrid('getDataIDs');	
+			var jqGrid_ordcom_data = [];	
+			for (var i = 0; i < ids.length; i++) {	
+				var data = $('#jqGrid_ordcom').jqGrid('getRowData',ids[i]);	
+				var obj = 	
+				{	
+					'idno' : ids[i],	
+					'startno' : $("#jqGrid_ordcom input#"+ids[i]+"_startno").val(),	
+					'endno' : $("#jqGrid_ordcom input#"+ids[i]+"_endno").val(),	
+					'cheqqty' : $("#jqGrid_ordcom input#"+ids[i]+"_cheqqty").val()	
+				}	
+				jqGrid_ordcom_data.push(obj);	
+			}	
+			var param={	
+				action: 'saveForm_ordcom',	
+				_token: $("#_token").val(),	
+				mrn: selrowData('#jqGrid').mrn,	
+				
+			}	
+			$.post( "/ordcom/form?"+$.param(param),{oper:'edit_all_ordcom',dataobj:jqGrid_ordcom_data}, function( data ){	
+			}).fail(function(data) {	
+				$('#p_error').text(data.responseText);	
+				////errorText(dialog,data.responseText);	
+			}).done(function(data){	
+				hideatdialogForm(false);	
+				refreshGrid("#jqGrid_ordcom",urlParam_ordcom);	
+			});	
+		},	
+		afterrestorefunc : function( response ) {	
+			refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');	
+			//$("#jqGridPagerDelete,#jqGridPagerRefresh, #jqGridPagerEditAll").show();	
+		},	
+		errorTextFormat: function (data) {	
+			alert(data);	
+		}	
+			
+	}).jqGrid('navButtonAdd',"#jqGridPager_ordcom",{	
+		id: "jqGridPager_ordcomCancelAll",	
+		caption:"",cursor: "pointer",position: "last", 	
+		buttonicon:"glyphicon glyphicon-remove-circle",	
+		title:"Cancel",	
+		onClickButton: function(){	
+			hideatdialogForm(false);	
+			refreshGrid("#jqGrid_ordcom",urlParam_ordcom);	
+		},		
+	}).jqGrid('navButtonAdd', "#jqGridPager_ordcom", {	
+		id: "jqGridPager_ordcomRefresh",	
+		caption: "", cursor: "pointer", position: "last",	
+		buttonicon: "glyphicon glyphicon-refresh",	
+		title: "Refresh Table",	
+		onClickButton: function () {	
+			oper = 'add_ordcom'	
+			refreshGrid("#jqGrid_ordcom", urlParam_ordcom);	
+		},	
+	});	
+	function hideatdialogForm(hide,saveallrow){	
+		if(saveallrow == 'saveallrow'){	
+			$("#jqGrid_ordcom_iledit,#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll,#saveDetailLabel").hide();	
+			$("#jqGridPager_ordcomSaveAll,#jqGridPager_ordcomCancelAll").show();	
+		}else if(hide){	
+			$("#jqGrid_ordcom_iledit,#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll,#jqGridPager_ordcomSaveAll,#jqGridPager_ordcomCancelAll").hide();	
+			$("#saveDetailLabel").show();	
+		}else{	
+			$("#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll").show();	
+			$("#saveDetailLabel,#jqGridPager_ordcomSaveAll,#jqGrid_ordcom_iledit,#jqGridPager_ordcomCancelAll").hide();	
+		}	
+	}	
+	//////////////////////////////////End grid pager ORDERCOM/////////////////////////////////////////////////////////	
+	//////////////////////////////////////end grid/////////////////////////////////////////////////////////	
+	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////	
+	populateSelect('#jqGrid_ordcom', '#searchForm');	
+	searchClick2('#jqGrid_ordcom', '#searchForm', urlParam_ordcom);	
+	//////////add field into param, refresh grid if needed////////////////////////////////////////////////	
+	addParamField('#jqGrid_ordcom', true, urlParam_ordcom);	
+		
+});	
+function populate_form_ordcom(obj,rowdata){	
+	//panel header	
+	$('#name_show_ordcom').text(obj.name);	
+	$('#mrn_show_ordcom').text(obj.mrn);	
+	//formordcom	
+	$('#mrn_ordcom').val(obj.mrn);	
+	$("#episno_ordcom").val(obj.episno);	
+	var saveParam={	
+        action:'get_table_ordcom',	
+    }	
+    var postobj={	
+    	_token : $('#csrf_token').val(),	
+    	mrn:obj.mrn,	
+    	episno:obj.episno	
+    };	
 }
