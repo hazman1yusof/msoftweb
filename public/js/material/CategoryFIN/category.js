@@ -107,7 +107,8 @@ $(document).ready(function () {
 				}
 			},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGrid_iledit").click();
+			//$("#jqGrid_iledit").click();
+			$('#p_error').text('');   //hilangkan duplicate error msj after save
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
