@@ -48,7 +48,7 @@ class CompcodeController extends defaultController
                             ->where('compcode','=',$request->compcode);
 
             if($compcode->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('sysdb.company')
@@ -70,7 +70,11 @@ class CompcodeController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
+
+            return response(json_encode($responce), 500);
         }
     }
 

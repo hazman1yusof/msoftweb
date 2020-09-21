@@ -49,7 +49,7 @@ class BloodGroupController extends defaultController
                             ->where('bloodcode','=',$request->bloodcode);
 
             if($bloodGroup->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('hisdb.bloodgroup')
@@ -69,7 +69,11 @@ class BloodGroupController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-             return response($e->getMessage(), 500);
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
+
+            return response(json_encode($responce), 500);
         }
     }
 

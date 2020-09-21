@@ -24,6 +24,8 @@ $(document).ready(function () {
 		},
 	};
 
+	var err_reroll = new err_reroll('#jqGrid',['compcode', 'name', 'address1', 'bmppath1', 'logo1']);
+
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
@@ -69,6 +71,9 @@ $(document).ready(function () {
 		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPager",
+		onSelectRow:function(rowid, selected){
+			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
+		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 			else{
@@ -76,9 +81,13 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			if(err_reroll.error == true){
+				err_reroll.reroll();
+			}
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			$("#jqGrid_iledit").click();
+			$('#p_error').text('');   //hilangkan duplicate error msj after save
 		},
 	});
 
@@ -106,10 +115,15 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
+			var data = JSON.parse(response.responseText)
+			//$('#p_error').text(response.responseText);
+			err_reroll.old_data = data.request;
+			err_reroll.error = true;
+			err_reroll.errormsg = data.errormsg;
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
@@ -153,10 +167,11 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
 			console.log(errorField)
 			if(errorField.length>0)return false;
 
@@ -243,4 +258,25 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
 	//addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate','recstatus']);
+
+	function err_reroll(jqgridname,data_array){
+		this.jqgridname = jqgridname;
+		this.data_array = data_array;
+		this.error = false;
+		this.errormsg = 'asdsds';
+		this.old_data;
+		this.reroll=function(){
+
+			$('#p_error').text(this.errormsg);
+			var self = this;
+			$(this.jqgridname+"_iladd").click();
+
+			this.data_array.forEach(function(item,i){
+				$(self.jqgridname+' input[name="'+item+'"]').val(self.old_data[item]);
+			});
+			this.error = false;
+		}
+		
+
+	}
 });
