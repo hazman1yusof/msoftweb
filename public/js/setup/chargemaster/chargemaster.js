@@ -206,7 +206,7 @@
 				{ label: 'Description', name: 'cg_description', classes: 'wrap', width: 40},
 				{ label: 'Charge Type', name: 'cm_chgtype', classes: 'wrap', width: 30, canSearch: true},
 				{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
-				{ label: 'UOM', name: 'cm_uom', width: 30,hidden:false },
+				{ label: 'UOM', name: 'cm_uom', width: 30, formatter: showdetail, hidden:false},
 				{ label: 'Generic Name', name: 'cm_brandname', width: 60},
 				{ label: 'cm_barcode', name: 'cm_barcode', hidden:true},
 				{ label: 'cm_constype', name: 'cm_constype', hidden:true},
@@ -596,6 +596,8 @@
 				case 'iptax':field=['taxcode','description'];table="hisdb.taxmast";case_='iptax';break;
 				case 'optax': field = ['taxcode', 'description']; table = "hisdb.taxmast";case_='optax';break;
 				case 'chgcode': field = ['chgcode', 'description']; table = "hisdb.chgmast";case_='chgcode';break;
+				case 'cm_uom': field = ['uomcode', 'description']; table = "material.uom";case_='cm_uom';break;
+				case 'uom': field = ['uomcode', 'description']; table = "material.uom";case_='uom';break;
 			}
 			var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -1283,6 +1285,7 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
+				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail},
 				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
