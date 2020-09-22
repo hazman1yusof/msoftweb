@@ -278,7 +278,7 @@ input.uppercase {
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="cm_uom">UOM</label>  
 							<div class="col-md-3">
-								<input id="cm_uom" name="cm_uom" type="text" class="form-control input-sm uppercase" rdonly>
+								<input id="cm_uom" name="cm_uom" type="text" value="EA" class="form-control input-sm uppercase" rdonly>
 							</div>
 
 							<label class="col-md-2 control-label" for="cm_invflag">Inventory Item</label>
