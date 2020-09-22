@@ -26,7 +26,7 @@
 			};
 
 			var fdl = new faster_detail_load();
-			
+			var err_reroll = new err_reroll('#jqGrid',['specialitycode', 'description', 'disciplinecode', 'type']);
 
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
@@ -77,6 +77,9 @@
 				height: 350,
 				rowNum: 30,
 				pager: "#jqGridPager",
+				onSelectRow:function(rowid, selected){
+					if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
+				},
 				loadComplete: function(){
 					if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 						else{
@@ -84,12 +87,16 @@
 							}
 
 						addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+						if(err_reroll.error == true){
+							err_reroll.reroll();
+						}
 					},
 				ondblClickRow: function(rowid, iRow, iCol, e){
 					$("#jqGrid_iledit").click();
+					$('#p_error').text('');   //hilangkan duplicate error msj after save
 				},
 				gridComplete: function () {
-				fdl.set_array().reset();
+					fdl.set_array().reset();
 		},
 				
 			});
@@ -122,7 +129,11 @@
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 				},
 				errorfunc: function(rowid,response){
-					$('#p_error').text(response.responseText);
+					var data = JSON.parse(response.responseText)
+					//$('#p_error').text(response.responseText);
+					err_reroll.old_data = data.request;
+					err_reroll.error = true;
+					err_reroll.errormsg = data.errormsg;
 					refreshGrid('#jqGrid',urlParam,'add');
 				},
 				beforeSaveRow: function (options, rowid) {
@@ -220,7 +231,7 @@
 			}
 
 			function disciplinecodeCustomEdit(val, opt) {
-				val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+				val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 				return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="disciplinecode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 			}
 
@@ -336,6 +347,29 @@
 			},'urlParam', 'radio', 'tab'
 		);
 		dialog_disciplinecode.makedialog();
+
+
+		
+	function err_reroll(jqgridname,data_array){
+		this.jqgridname = jqgridname;
+		this.data_array = data_array;
+		this.error = false;
+		this.errormsg = 'asdsds';
+		this.old_data;
+		this.reroll=function(){
+
+			$('#p_error').text(this.errormsg);
+			var self = this;
+			$(this.jqgridname+"_iladd").click();
+
+			this.data_array.forEach(function(item,i){
+				$(self.jqgridname+' input[name="'+item+'"]').val(self.old_data[item]);
+			});
+			this.error = false;
+		}
+		
+
+	}
 
 });
 		

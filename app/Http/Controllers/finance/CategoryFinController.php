@@ -49,7 +49,7 @@ class CategoryFinController extends defaultController
                             ->where('catcode','=',$request->catcode);
 
             if($category->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
 
             DB::table('material.category')
@@ -73,7 +73,11 @@ class CategoryFinController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-             return response($e->getMessage(), 500);
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
+
+            return response(json_encode($responce), 500);
         }
     }
 

@@ -113,8 +113,8 @@ function button_state_doctorNote(state){
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_doctorNote').data('oper','add');
-			$("#new_doctorNote").attr('disabled',false);
-			$('#save_doctorNote,#cancel_doctorNote,#edit_doctorNote').attr('disabled',true);
+			$("#new_doctorNote,#edit_doctorNote").attr('disabled',false);
+			$('#save_doctorNote,#cancel_doctorNote').attr('disabled',true);
 			break;
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
