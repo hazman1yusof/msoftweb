@@ -89,7 +89,7 @@ class ChargeMasterController extends defaultController
                     'chgclass' => $request->cm_chgclass,
                     'chggroup' => $request->cm_chggroup,
                     'chgtype' => $request->cm_chgtype,
-                    'uom' => strtoupper($request->cm_uom),
+                    'uom' => 'EA',
                     'brandname' => strtoupper($request->cm_brandname),
                     'barcode' => strtoupper($request->cm_barcode),
                     'constype' => strtoupper($request->cm_constype),

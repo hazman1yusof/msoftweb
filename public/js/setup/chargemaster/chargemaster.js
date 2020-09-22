@@ -475,7 +475,7 @@
 		var urlParam2={
 			action:'get_table_default',
 			url:'/util/get_table_default',
-			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate','cp.chgcode','cm.chgcode','cp.idno','cp.autopull','cp.addchg','cp.pkgstatus','cp.recstatus'],
+			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate','cp.chgcode','cm.chgcode','cp.idno','cp.autopull','cp.addchg','cp.pkgstatus','cp.recstatus','cp.uom'],
 			table_name:['hisdb.chgprice AS cp', 'hisdb.chgmast AS cm'],
 			table_id:'lineno_',
 			join_type:['LEFT JOIN'],
@@ -547,6 +547,7 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
+				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail},
 				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}
 			],
@@ -637,7 +638,7 @@
 		}
 
 		function chgcodeCustomEdit(val, opt) {
-			val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+			val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 			return $('<div class="input-group"><input jqgrid="jqGrid4" optid="'+opt.id+'" id="'+opt.id+'" name="chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 		}
 
@@ -948,6 +949,7 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
+				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail},
 				{ label: 'AutoPull', name: 'autopull', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 					editoptions:{
 						value:"1:YES;0:NO"
@@ -1562,6 +1564,7 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
+				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail},
 				{ label: 'AutoPull', name: 'autopull', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 					editoptions:{
 						value:"1:YES;0:NO"
