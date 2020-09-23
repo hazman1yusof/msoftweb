@@ -283,7 +283,7 @@ input.uppercase {
 
 							<label class="col-md-2 control-label" for="cm_invflag">Inventory Item</label>
 							<div class="col-md-3">
-								<label class="radio-inline"><input type="radio" name="cm_invflag" value='1' checked dsabled>Yes</label>
+								<label class="radio-inline"><input type="radio" name="cm_invflag" value='1' dsabled>Yes</label>
 								<label class="radio-inline"><input type="radio" name="cm_invflag" value='0' dsabled>No</label>
 							</div>
 						</div>
