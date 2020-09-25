@@ -199,7 +199,8 @@ $(document).ready(function () {
 				}
 				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 
-			empty_form()
+				populate_form(selrowData("#jqGrid"));
+				//empty_form()
 		},
 			
 	});
@@ -717,16 +718,16 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function deptcodeCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input id="deptcode" name="deptcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 	}
 
 	function categoryCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input id="category" name="category" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 	}
 	function GSTCodeCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 
 		var id_optid = opt.id.substring(0,opt.id.search("_"));
 		return $(`<div class="input-group">

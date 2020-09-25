@@ -341,6 +341,7 @@ $(document).ready(function () {
 			}
 
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purordhd_recno;
+			refreshGrid("#jqGrid3",urlParam2);
 			populate_form(selrowData("#jqGrid"));
 
 			$('#ponodepan').text(selrowData("#jqGrid").purordhd_purordno);//tukar kat depan tu
@@ -367,7 +368,8 @@ $(document).ready(function () {
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			fdl.set_array().reset();
-			empty_form();
+			populate_form(selrowData("#jqGrid"));
+			//empty_form();
 
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
@@ -1354,15 +1356,15 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function itemcodeCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val;
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function uomcodeCustomEdit(val,opt){  	
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pouomCustomEdit(val, opt) {
@@ -1380,7 +1382,7 @@ $(document).ready(function () {
 			`);
 	}
 	function taxcodeCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function remarkCustomEdit(val, opt) {

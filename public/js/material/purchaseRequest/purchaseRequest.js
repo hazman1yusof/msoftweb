@@ -264,6 +264,7 @@ $(document).ready(function () {
 			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan tu
 			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
 			refreshGrid("#jqGrid3", urlParam2);
+			populate_form(selrowData("#jqGrid"));
 
 			$("#pdfgen1").attr('href','./purchaseRequest/showpdf?recno='+selrowData("#jqGrid").purreqhd_recno);
 
@@ -282,6 +283,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			populate_form(selrowData("#jqGrid"));
 			fdl.set_array().reset();
 
 			cbselect.checkbox_function_on();
@@ -1233,19 +1235,19 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function itemcodeCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function uomcodeCustomEdit(val,opt){  	
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pouomCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $(`<div class="input-group">
 					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 				</div>
@@ -1259,7 +1261,7 @@ $(document).ready(function () {
 			`);
 	}
 	function taxcodeCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function remarkCustomEdit(val, opt) {
@@ -2095,3 +2097,18 @@ $(document).ready(function () {
 	});
 
 });
+
+function populate_form(obj){
+
+	//panel header
+	$('#purreqno_show').text(obj.purreqhd_purreqno);
+	$('#suppcode_show').text(obj.supplier_name);
+	
+}
+
+function empty_form(){
+
+	$('#purreqno_show').text('');
+	$('#suppcode_show').text('');
+
+}
