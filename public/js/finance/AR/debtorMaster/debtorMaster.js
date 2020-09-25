@@ -43,7 +43,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function(){
 						var dataobj = selrowData('#'+dialog_debtortype.gridname);
@@ -67,7 +67,7 @@
 					title:"Select Financial Class",
 					open: function(){
 						dialog_debtortype.urlParam.filterCol=['compcode','recstatus'],
-						dialog_debtortype.urlParam.filterVal=['session.compcode','A']
+						dialog_debtortype.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -81,7 +81,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 				ondblClickRow: function () {
 					$('#billtypeop').focus();
@@ -101,7 +101,7 @@
 					title:"Select Bill Type IP",
 					open: function(){
 						dialog_billtype.urlParam.filterCol=['compcode','recstatus'],
-						dialog_billtype.urlParam.filterVal=['session.compcode','A']
+						dialog_billtype.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -115,7 +115,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 				ondblClickRow: function () {
 					$('#coverageip').focus();
@@ -134,7 +134,7 @@
 					title:"Select Bill Type OP",
 					open: function(){
 						dialog_billtypeop.urlParam.filterCol=['compcode','recstatus'],
-						dialog_billtypeop.urlParam.filterVal=['session.compcode','A']
+						dialog_billtypeop.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -289,7 +289,7 @@
 					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
 					{ label: 'Record Status', name: 'recstatus', width: 50, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 				],
 				autowidth:true,

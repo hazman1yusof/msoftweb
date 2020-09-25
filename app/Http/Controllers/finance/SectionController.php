@@ -107,7 +107,7 @@ class SectionController extends defaultController
         DB::table('sysdb.region')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'lastuser' => session('username'),
                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
