@@ -136,12 +136,12 @@
 				datatype: "local",
 				 colModel: [
 				 	{label: 'compcode', name: 'compcode', width: 90 , hidden: true, classes: 'wrap'},
-					{label: 'Doctor Code', name: 'doctorcode', width: 90, canSearch:true, classes: 'wrap'},
+					{label: 'Doctor Code', name: 'doctorcode', width: 40, canSearch:true, classes: 'wrap'},
 					{label: 'Doctor Name', name: 'doctorname', width: 90, canSearch:true , classes: 'wrap', checked:true},
 					{label: 'Costcenter', name: 'department', width: 90 , hidden: true, classes: 'wrap'},
-					{label: 'Discipline Code', name: 'disciplinecode', width: 90, classes: 'wrap'},
-					{label: 'Speciality Code', name: 'specialitycode', width: 90, classes: 'wrap'},
-					{label: 'Doctor Type', name: 'doctype', width: 90, classes: 'wrap'},
+					{label: 'Discipline Code', name: 'disciplinecode', width: 30, classes: 'wrap'},
+					{label: 'Speciality Code', name: 'specialitycode', width: 30, classes: 'wrap'},
+					{label: 'Doctor Type', name: 'doctype', width: 30, classes: 'wrap'},
 					{label: 'Creditor', name: 'creditorcode', width: 90 , classes: 'wrap',hidden: true},
 					{label: 'Resign Date', name: 'resigndate', width: 90 , classes: 'wrap',hidden: true},
 					{label: 'idno', name: 'idno', width: 90, classes: 'wrap',hidden: true},
@@ -160,9 +160,10 @@
 					{label: 'H/Phone', name: 'tel_hp', width: 90 , classes: 'wrap',hidden: true},
 					{label: 'Office', name: 'off_tel', width: 90 , classes: 'wrap',hidden: true},	
 					{label: 'Operation Theatre (OT)', name: 'operationtheatre', width: 90 , classes: 'wrap',hidden: true},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
-			},
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatterstatus:formatterstatus, unformatstatus:unformatstatus, 
+							cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
+					},
 					{label: 'Interval Time', name: 'intervaltime', width: 90 , classes: 'wrap',hidden: true},
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
@@ -199,21 +200,21 @@
 
 			//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
 			
-			function formatter(cellvalue, options, rowObject) {
-				if (cellvalue == 'A') {
-					return "Active";
+			function formatterstatus(cellvalue, options, rowObject) {
+				if (cellvalue == 'ACTIVE') {
+					return "ACTIVE";
 				}
-				if (cellvalue == 'D') {
-					return "Deactive";
+				if (cellvalue == 'DEACTIVE') {
+					return "DEACTIVE";
 				}
 			}
 	
-			function unformat(cellvalue, options) {
-				if (cellvalue == 'Active') {
-					return "A";
+			function unformatstatus(cellvalue, options) {
+				if (cellvalue == 'ACTIVE') {
+					return "ACTIVE";
 				}
-				if (cellvalue == 'Deactive') {
-					return "D";
+				if (cellvalue == 'DEACTIVE') {
+					return "DEACTIVE";
 				}
 			}
 

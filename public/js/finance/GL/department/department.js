@@ -37,7 +37,7 @@
 					],
 					urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#category').focus();
@@ -57,7 +57,7 @@
 					title:"Select Cost Center",
 					open: function(){
 						dialog_costcode.urlParam.filterCol=['recstatus'],
-						dialog_costcode.urlParam.filterVal=['A']
+						dialog_costcode.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam','radio','tab'
 			);
@@ -71,7 +71,7 @@
 					],
 					urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#chgdept').focus();
@@ -91,7 +91,7 @@
 					title:"Select Sector",
 					open: function(){
 						dialog_sector.urlParam.filterCol=['regioncode','recstatus'],
-						dialog_sector.urlParam.filterVal=[$("#formdata :input[name='region']").val(),'A']
+						dialog_sector.urlParam.filterVal=[$("#formdata :input[name='region']").val(),'ACTIVE']
 					}
 				},'urlParam','radio','tab'
 			);
@@ -105,7 +105,7 @@
 					],
 					urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#sector').focus();
@@ -126,7 +126,7 @@
 					title:"Select Region",
 					open: function(){
 						dialog_region.urlParam.filterCol=['recstatus'],
-						dialog_region.urlParam.filterVal=['A']
+						dialog_region.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam','radio','tab'
 			);
@@ -253,7 +253,7 @@
 					{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{label: 'idno', name: 'idno', hidden: true},
 					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
@@ -282,7 +282,7 @@
 				
 			});
 
-			
+	
 			function checkradiobutton(radiobuttons){
 				this.radiobuttons=radiobuttons;
 				this.check = function(){
