@@ -109,7 +109,7 @@ class GlmasterController extends defaultController
         DB::table('finance.glmasref')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'lastuser' => session('username'),
                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);

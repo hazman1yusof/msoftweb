@@ -62,7 +62,7 @@
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
 					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}, 
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 						cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
 					},
@@ -322,7 +322,7 @@
 				],
 				urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						let data=selrowData('#'+dialog_disciplinecode.gridname);
@@ -341,7 +341,7 @@
 				title:"Select Account Code",
 				open: function(){
 					dialog_disciplinecode.urlParam.filterCol=['compcode','recstatus'];
-					dialog_disciplinecode.urlParam.filterVal=['session.compcode','A'];
+					dialog_disciplinecode.urlParam.filterVal=['session.compcode','ACTIVE'];
 					
 				}
 			},'urlParam', 'radio', 'tab'

@@ -107,7 +107,7 @@ class BloodGroupController extends defaultController
         DB::table('hisdb.bloodgroup')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);

@@ -34,7 +34,7 @@ class DoctorController extends defaultController
                         'resourcecode' => $request->doctorcode,
                         'description' => $request->doctorname,
                         'TYPE' => 'DOC',
-                        'recstatus' => 'A',
+                        'recstatus' => 'ACTIVE',
                         'adduser' => session('username'),
                         'adddate' => now()
                     ]);
@@ -49,7 +49,7 @@ class DoctorController extends defaultController
                         'resourcecode' => $request->doctorcode,
                         'description' => $request->doctorname,
                         'TYPE' => 'DOC',
-                        'recstatus' => 'A',
+                        'recstatus' => 'ACTIVE',
                         'adduser' => session('username'),
                         'adddate' => now()
                     ]);
@@ -58,7 +58,7 @@ class DoctorController extends defaultController
                 $old_doctor = DB::table('hisdb.doctor')->where('idno','=',$request->idno)->first();
                 $apptbook = DB::table('hisdb.apptbook')
                         ->where('loccode','=',$request->doctorcode)
-                        ->where('recstatus','=',"A")
+                        ->where('recstatus','=',"ACTIVE")
                         ->where('start','>',Carbon::now('Asia/Kuala_Lumpur'))
                         ->get();
                 ///check kalau interval time dia lain, kena susnkan balik apptbook
@@ -115,7 +115,7 @@ class DoctorController extends defaultController
                         ->update([
                             'deluser' => session('username'),
                             'deldate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'recstatus' => 'D'
+                            'recstatus' => 'DEACTIVE'
                         ]);
                 }
                 return $this->defaultDel($request);

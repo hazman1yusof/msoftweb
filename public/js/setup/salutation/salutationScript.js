@@ -52,7 +52,7 @@
 				{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
 				{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 				{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-				{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"},
+				{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 				},

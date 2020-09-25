@@ -160,9 +160,9 @@
 					{label: 'H/Phone', name: 'tel_hp', width: 90 , classes: 'wrap',hidden: true},
 					{label: 'Office', name: 'off_tel', width: 90 , classes: 'wrap',hidden: true},	
 					{label: 'Operation Theatre (OT)', name: 'operationtheatre', width: 90 , classes: 'wrap',hidden: true},
-					{ label: 'Status', name:'recstatus', width:90, classes:'wrap', hidden:false,
-					formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
-					{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			},
 					{label: 'Interval Time', name: 'intervaltime', width: 90 , classes: 'wrap',hidden: true},
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
@@ -295,7 +295,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#doctorname').focus();
@@ -314,7 +314,7 @@
 					title:"Select Doctor Type",
 					open: function(){
 						dialog_doctype.urlParam.filterCol=['recstatus'],
-						dialog_doctype.urlParam.filterVal=['A']
+						dialog_doctype.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -328,7 +328,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#specialitycode').focus();
@@ -347,7 +347,7 @@
 					title:"Select Department",
 					open: function(){
 						dialog_department.urlParam.filterCol=['recstatus'],
-						dialog_department.urlParam.filterVal=['A']
+						dialog_department.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -362,7 +362,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#disciplinecode').focus();
@@ -381,7 +381,7 @@
 					title:"Select Speciality",
 					open: function(){
 						dialog_speciality.urlParam.filterCol=['recstatus'],
-						dialog_speciality.urlParam.filterVal=['A']
+						dialog_speciality.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -395,7 +395,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#creditorcode').focus();
@@ -414,7 +414,7 @@
 					title:"Select Discipline",
 					open: function(){
 						dialog_discipline.urlParam.filterCol=['recstatus'],
-						dialog_discipline.urlParam.filterVal=['A']
+						dialog_discipline.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -428,7 +428,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#classcode').focus();
@@ -447,7 +447,7 @@
 					title:"Select Transaction Department",
 					open: function(){
 						dialog_creditor.urlParam.filterCol=['recstatus'],
-						dialog_creditor.urlParam.filterVal=['A']
+						dialog_creditor.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);

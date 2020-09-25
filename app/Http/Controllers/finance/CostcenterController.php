@@ -106,7 +106,7 @@ class CostcenterController extends defaultController
         DB::table('finance.costcenter')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'lastuser' => session('username'),
                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);

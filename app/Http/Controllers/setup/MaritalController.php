@@ -106,7 +106,7 @@ class MaritalController extends defaultController
         DB::table('hisdb.marital')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);

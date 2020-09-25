@@ -51,7 +51,7 @@
 					{ label: 'Act Type', name: 'acttype', width: 80, hidden:true},
 					{ label: 'Rep Group', name: 'repgroup', width: 90, hidden:true},
 					{ label: 'Type', name: 'accgroup', width: 10, classes: 'wrap', editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ASSET;C:CAPITAL;E:EXPENSES;H:HEADER;L:LIABILITY;R:REVENUE"}},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}, 
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 						cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
