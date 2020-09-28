@@ -18,7 +18,7 @@ class AdmisSrcController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "Code";
+        $this->duplicateCode = "admsrccode";
     }
 
     public function show(Request $request)
@@ -75,7 +75,11 @@ class AdmisSrcController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
+
+            return response(json_encode($responce), 500);
         }
     }
 
@@ -115,7 +119,7 @@ class AdmisSrcController extends defaultController
         DB::table('hisdb.admissrc')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
