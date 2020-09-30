@@ -612,7 +612,7 @@
 				table_name:'finance.apactdtl',
 				table_id:'lineno_',
 				filterCol:['auditno','recstatus','source','trantype'],
-				filterVal:['', 'A','CM',''],
+				filterVal:['', 'ACTIVE','CM',''],
 			}
 
 			var saveParam2={

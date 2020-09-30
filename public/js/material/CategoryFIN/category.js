@@ -72,7 +72,7 @@ $(document).ready(function () {
 			{label: 'upddate', name: 'upddate', width: 90 , hidden: true},
 			{label: 'deluser', name: 'deluser', width: 90 , hidden: true},					
 			{label: 'deldate', name: 'deldate', width: 90 , hidden: true},					
-			{label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}, 
+			{label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 				cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
@@ -335,7 +335,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					let data=selrowData('#'+dialog_expacct.gridname);
@@ -360,7 +360,7 @@ $(document).ready(function () {
 			title:"Select Account Code",
 			open: function(){
 				dialog_expacct.urlParam.filterCol=['compcode','recstatus'];
-				dialog_expacct.urlParam.filterVal=['session.compcode','A'];
+				dialog_expacct.urlParam.filterVal=['session.compcode','ACTIVE'];
 				
 			}
 		},'urlParam', 'radio', 'tab'

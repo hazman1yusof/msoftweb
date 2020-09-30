@@ -288,7 +288,7 @@
 					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 50, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+					{ label: 'Record Status', name: 'recstatus', width: 50, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 				],

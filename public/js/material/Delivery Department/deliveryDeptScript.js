@@ -35,7 +35,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#addr1').focus();
@@ -54,7 +54,7 @@
 					title:"Select Delivery Store",
 					open: function(){
 						dialog_deptcode.urlParam.filterCol=['compcode','recstatus'],
-						dialog_deptcode.urlParam.filterVal=['session.compcode','A']
+						dialog_deptcode.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -185,8 +185,8 @@
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
 					{label: 'deluser', name: 'deluser', width: 90, hidden: true},
 					{label: 'deldate', name: 'deldate', width: 90, hidden: true},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -216,32 +216,6 @@
 				},
 				
 			});
-
-	
-
-			/*////////////////////formatter status////////////////////////////////////////
-				function formatterstatus(cellvalue, option, rowObject){
-					if (cellvalue == 'A'){
-						return 'Active';
-					}
-
-					if (cellvalue == 'D'){
-						return 'Deactive';
-					}
-
-				}
-
-			////////////////////unformatter status////////////////////////////////////////
-				function unformat(cellvalue, option, rowObject){
-					if (cellvalue == 'Active'){
-						return 'Active';
-					}
-
-					if (cellvalue == 'Active'){
-						return 'Active';
-					}
-
-				}*/
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

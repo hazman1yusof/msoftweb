@@ -145,8 +145,8 @@
 					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 				],
 				autowidth:true,
@@ -245,7 +245,7 @@
 					],
 					urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#actdebglacc').focus();
@@ -265,7 +265,7 @@
 					title:"Select Actual Cost",
 					open: function(){
 						dialog_costcode.urlParam.filterCol=['compcode','recstatus'],
-						dialog_costcode.urlParam.filterVal=['session.compcode','A']
+						dialog_costcode.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -279,7 +279,7 @@
 					],
 					urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#depccode').focus();
@@ -299,7 +299,7 @@
 					title:"Select Actual Account",
 					open: function(){
 						dialog_glaccount.urlParam.filterCol=['compcode','recstatus'],
-						dialog_glaccount.urlParam.filterVal=['session.compcode','A']
+						dialog_glaccount.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -313,7 +313,7 @@
 					],
 					urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#depglacc').focus();
@@ -332,7 +332,7 @@
 					title:"Select Deposit Cost",
 					open: function(){
 						dialog_depccode.urlParam.filterCol=['compcode','recstatus'],
-						dialog_depccode.urlParam.filterVal=['session.compcode','A']
+						dialog_depccode.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -346,7 +346,7 @@
 					],
 					urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#recstatus').focus();
@@ -365,7 +365,7 @@
 					title:"Select Deposit Account",
 					open: function(){
 						dialog_depglacc.urlParam.filterCol=['compcode','recstatus'],
-						dialog_depglacc.urlParam.filterVal=['session.compcode','A']
+						dialog_depglacc.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);

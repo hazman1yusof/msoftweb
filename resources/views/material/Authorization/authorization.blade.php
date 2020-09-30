@@ -134,8 +134,8 @@ i.fa {
 				<div class="form-group">
 				  	<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
 				  		<div class="col-md-2">
-							<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
-							<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
+							<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>Active</label>
+							<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE' >Deactive</label>
 				  		</div>
 				</div> 
 
@@ -233,8 +233,8 @@ i.fa {
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="d_cando">CanDo</label> 
 				  <div class="col-md-2">
-					<label class="radio-inline"><input type="radio" name="dtl_cando" value='A' checked>Active</label>
-					<label class="radio-inline"><input type="radio" name="dtl_cando" value='D' >Deactive</label>
+					<label class="radio-inline"><input type="radio" name="dtl_cando" value='ACTIVE' checked>Active</label>
+					<label class="radio-inline"><input type="radio" name="dtl_cando" value='DEACTIVE' >Deactive</label>
 				  </div>
 				</div> 
                 

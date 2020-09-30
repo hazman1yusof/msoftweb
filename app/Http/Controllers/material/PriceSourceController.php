@@ -107,7 +107,7 @@ class PriceSourceController extends defaultController
         DB::table('material.pricesource')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'lastuser' => session('username'),
                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);

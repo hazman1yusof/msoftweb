@@ -42,7 +42,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['groupcode', 'Class','recstatus','compcode'],
-				filterVal:[gc2, Class2,'A','session.compcode']
+				filterVal:[gc2, Class2,'ACTIVE','session.compcode']
 			},
 			sortname:'idno',
 			sortorder:'desc',
@@ -70,7 +70,7 @@ $(document).ready(function () {
 				var gc2 = $('#groupcode2').val();
 				var Class2 = $('#Class2').val();
 				dialog_itemcode.urlParam.filterCol = ['groupcode', 'Class','recstatus','compcode'];
-				dialog_itemcode.urlParam.filterVal = [ gc2, Class2,'A','session.compcode'];
+				dialog_itemcode.urlParam.filterVal = [ gc2, Class2,'ACTIVE','session.compcode'];
 
 				$('#Dcol_itemcodesearch input[type="radio"][value="productcat"]').on('click',dialog_cat_selection_event);
 				$('#Dcol_itemcodesearch input[type="radio"]:not([value="productcat"])').on('click',function(){
@@ -91,7 +91,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
-				filterVal:['A','session.compcode']
+				filterVal:['ACTIVE','session.compcode']
 			},
 			ondblClickRow:function(){
 			},
@@ -109,7 +109,7 @@ $(document).ready(function () {
 			title:"Select UOM Code",
 			open: function(){
 				dialog_uomcode.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_uomcode.urlParam.filterVal = [ 'A','session.compcode'];	
+				dialog_uomcode.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
 			}
 		},'urlParam'
 	);
@@ -123,7 +123,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
-				filterVal:['A','session.compcode']
+				filterVal:['ACTIVE','session.compcode']
 			},
 			ondblClickRow:function(){
 			},
@@ -142,7 +142,7 @@ $(document).ready(function () {
 			title:"Select Sub Category",
 			open: function(){
 				dialog_subcategory.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_subcategory.urlParam.filterVal = [ 'A','session.compcode'];	
+				dialog_subcategory.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -156,7 +156,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
-				filterVal:['A','session.compcode']
+				filterVal:['ACTIVE','session.compcode']
 			},
 			ondblClickRow:function(){
 			},
@@ -175,7 +175,7 @@ $(document).ready(function () {
 			title:"Select PO UOM",
 			open: function(){
 				dialog_pouom.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_pouom.urlParam.filterVal = [ 'A','session.compcode'];	
+				dialog_pouom.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -189,7 +189,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
-				filterVal:['A','session.compcode']
+				filterVal:['ACTIVE','session.compcode']
 			},
 			ondblClickRow:function(){
 			},
@@ -208,7 +208,7 @@ $(document).ready(function () {
 			title:"Select Supplier Code",
 			open: function(){
 				dialog_suppcode.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_suppcode.urlParam.filterVal = [ 'A','session.compcode'];	
+				dialog_suppcode.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -222,7 +222,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['mainstore','recstatus','compcode','sector'],
-				filterVal:['1','A','session.compcode','session.unit']
+				filterVal:['1','ACTIVE','session.compcode','session.unit']
 			},
 			ondblClickRow:function(){
 			},
@@ -241,7 +241,7 @@ $(document).ready(function () {
 			title:"Select Main Store",
 			open: function(){
 				dialog_mstore.urlParam.filterCol = ['mainstore','recstatus','compcode','sector'];
-				dialog_mstore.urlParam.filterVal = ['1','A','session.compcode','session.unit'];	
+				dialog_mstore.urlParam.filterVal = ['1','ACTIVE','session.compcode','session.unit'];	
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -255,7 +255,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','taxtype','compcode'],
-				filterVal:['A','Input','session.compcode']
+				filterVal:['ACTIVE','Input','session.compcode']
 			},
 			ondblClickRow:function(){
 			},
@@ -274,7 +274,7 @@ $(document).ready(function () {
 			title:"Select Tax Code",
 			open: function(){
 				dialog_taxCode.urlParam.filterCol=['recstatus','taxtype','compcode'];
-				dialog_taxCode.urlParam.filterVal=['A','Input','session.compcode'];
+				dialog_taxCode.urlParam.filterVal=['ACTIVE','Input','session.compcode'];
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -291,7 +291,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:[ 'recstatus'],
-				filterVal:[ 'A']
+				filterVal:[ 'ACTIVE']
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_product_infront_asset.gridname).assetcode;
@@ -306,7 +306,7 @@ $(document).ready(function () {
 			title:"Select Category Code",
 			open: function(){
 				dialog_product_infront_asset.urlParam.filterCol=['recstatus'];
-				dialog_product_infront_asset.urlParam.filterVal=['A'];
+				dialog_product_infront_asset.urlParam.filterVal=['ACTIVE'];
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -323,7 +323,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['cattype', 'source', 'recstatus'],
-				filterVal:['Stock', 'PO', 'A']
+				filterVal:['Stock', 'PO', 'ACTIVE']
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_product_infront_stock.gridname).catcode;
@@ -338,7 +338,7 @@ $(document).ready(function () {
 			title:"Select Category Code",
 			open: function(){
 				dialog_product_infront_stock.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-				dialog_product_infront_stock.urlParam.filterVal=['Stock', 'PO', 'A'];
+				dialog_product_infront_stock.urlParam.filterVal=['Stock', 'PO', 'ACTIVE'];
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -355,7 +355,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['cattype', 'source', 'recstatus'],
-				filterVal:['Other', 'PO', 'A']
+				filterVal:['Other', 'PO', 'ACTIVE']
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_product_infront_others.gridname).catcode;
@@ -370,7 +370,7 @@ $(document).ready(function () {
 			title:"Select Category Code",
 			open: function(){
 				dialog_product_infront_others.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-				dialog_product_infront_others.urlParam.filterVal=['Other', 'PO', 'A'];
+				dialog_product_infront_others.urlParam.filterVal=['Other', 'PO', 'ACTIVE'];
 			}
 		},'urlParam','radio','notab',false
 	);
@@ -391,7 +391,7 @@ $(document).ready(function () {
 						],
 						urlParam: {
 							filterCol:['cattype', 'source', 'recstatus'],
-							filterVal:['Stock', 'PO', 'A']
+							filterVal:['Stock', 'PO', 'ACTIVE']
 						},
 						ondblClickRow:function(){
 							let data = selrowData('#' + dialog_cat_selection.gridname);
@@ -406,7 +406,7 @@ $(document).ready(function () {
 						title:"Select Product Category",
 						open: function(){
 							dialog_cat_selection.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-							dialog_cat_selection.urlParam.filterVal=['Stock', 'PO', 'A',$('#Class2').val()];
+							dialog_cat_selection.urlParam.filterVal=['Stock', 'PO', 'ACTIVE',$('#Class2').val()];
 						}
 					},'urlParam'
 				);
@@ -422,7 +422,7 @@ $(document).ready(function () {
 						],
 						urlParam: {
 							filterCol:[ 'recstatus'],
-							filterVal:[ 'A']
+							filterVal:[ 'ACTIVE']
 						},
 						ondblClickRow:function(){
 							let data = selrowData('#' + dialog_cat_selection.gridname);
@@ -437,7 +437,7 @@ $(document).ready(function () {
 						title:"Select Product Category",
 						open: function(){
 							dialog_cat_selection.urlParam.filterCol=['recstatus'];
-							dialog_cat_selection.urlParam.filterVal=['A',];
+							dialog_cat_selection.urlParam.filterVal=['ACTIVE',];
 						}
 					},'urlParam'
 				);
@@ -453,7 +453,7 @@ $(document).ready(function () {
 						],
 						urlParam: {
 							filterCol:['cattype', 'source', 'recstatus'],
-							filterVal:['Other', 'PO', 'A']
+							filterVal:['Other', 'PO', 'ACTIVE']
 						},
 						ondblClickRow:function(){
 							let data = selrowData('#' + dialog_cat_selection.gridname);
@@ -468,7 +468,7 @@ $(document).ready(function () {
 						title:"Select Product Category",
 						open: function(){
 							dialog_cat_selection.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-							dialog_cat_selection.urlParam.filterVal=['Other', 'PO', 'A',$('#Class2').val()];
+							dialog_cat_selection.urlParam.filterVal=['Other', 'PO', 'ACTIVE',$('#Class2').val()];
 						}
 					},'urlParam'
 				);
@@ -663,8 +663,8 @@ $(document).ready(function () {
 			{ label: 'maxqty', name: 'maxqty', width: 50, hidden:true },
 			{ label: 'reordlevel', name: 'reordlevel', width: 50, hidden:true },
 			{ label: 'reordqty', name: 'reordqty', width: 50, hidden:true },
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'chgflag', name: 'chgflag', width: 50, hidden:true },
 			{ label: 'subcatcode', name: 'subcatcode', width: 50, hidden:true },
@@ -1055,7 +1055,7 @@ $(document).ready(function () {
 							],
 							urlParam: {
 								filterCol:['cattype', 'source', 'recstatus'],
-								filterVal:['Stock', 'PO', 'A']
+								filterVal:['Stock', 'PO', 'ACTIVE']
 							},
 							ondblClickRow:function(){
 							}	
@@ -1064,7 +1064,7 @@ $(document).ready(function () {
 							open: function(){
 								var gc2 = $('#groupcode2').val();
 								dialog_cat1.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-								dialog_cat1.urlParam.filterVal=['Stock', 'PO', 'A',$('#Class2').val()];
+								dialog_cat1.urlParam.filterVal=['Stock', 'PO', 'ACTIVE',$('#Class2').val()];
 							}
 						},'urlParam'
 					);
@@ -1081,7 +1081,7 @@ $(document).ready(function () {
 							],
 							urlParam: {
 								filterCol:[ 'recstatus'],
-								filterVal:[ 'A']
+								filterVal:[ 'ACTIVE']
 							},
 							ondblClickRow:function(){
 							}	
@@ -1089,7 +1089,7 @@ $(document).ready(function () {
 							title:"Select Product Category",
 							open: function(){
 								dialog_cat2.urlParam.filterCol=['recstatus'];
-								dialog_cat2.urlParam.filterVal=['A'];
+								dialog_cat2.urlParam.filterVal=['ACTIVE'];
 							}
 						},'urlParam'
 					);
@@ -1105,7 +1105,7 @@ $(document).ready(function () {
 							],
 							urlParam: {
 								filterCol:['cattype', 'source', 'recstatus'],
-								filterVal:['Other', 'PO', 'A']
+								filterVal:['Other', 'PO', 'ACTIVE']
 							},
 							ondblClickRow:function(){
 							}	
@@ -1113,7 +1113,7 @@ $(document).ready(function () {
 							title:"Select Product Category",
 							open: function(){
 								dialog_cat3.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-								dialog_cat3.urlParam.filterVal=['Other', 'PO', 'A',$('#Class2').val()];
+								dialog_cat3.urlParam.filterVal=['Other', 'PO', 'ACTIVE',$('#Class2').val()];
 							}
 						},'urlParam'
 					);

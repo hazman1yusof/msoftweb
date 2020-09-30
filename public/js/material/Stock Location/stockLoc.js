@@ -184,25 +184,6 @@ $(document).ready(function () {
 
 	});
 
-	////////////////////////////formatter//////////////////////////////////////////////////////////
-	function formatter(cellvalue, options, rowObject) {
-		if (cellvalue == 'A') {
-			return "Active";
-		}
-		if (cellvalue == 'D') {
-			return "Deactive";
-		}
-	}
-
-	function unformat(cellvalue, options) {
-		if (cellvalue == 'Active') {
-			return "A";
-		}
-		if (cellvalue == 'Deactive') {
-			return "D";
-		}
-	}
-
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('setLabel', 'qtyonhand', 'Qty On Hand', { 'text-align': 'right' });
 	/////////////////////////////////////////////////////
@@ -332,7 +313,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
@@ -355,19 +336,19 @@ $(document).ready(function () {
 				console.log($('#Class2').val());
 				if ($('#Class2').val().trim()  == 'Pharmacy') { 
 					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus','compcode','unit'];
-					dialog_itemcode.urlParam.filterVal=['Pharmacy', 'A','session.compcode','session.unit'];
+					dialog_itemcode.urlParam.filterVal=['Pharmacy', 'ACTIVE','session.compcode','session.unit'];
 				}else if ($('#Class2').val().trim()  == 'Non-Pharmacy'){
 					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus','compcode','unit'];
-					dialog_itemcode.urlParam.filterVal=['Non-Pharmacy', 'A','session.compcode','session.unit'];
+					dialog_itemcode.urlParam.filterVal=['Non-Pharmacy', 'ACTIVE','session.compcode','session.unit'];
 				}else if ($('#Class2').val().trim()  == 'Others'){
 					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus','compcode','unit'];
-					dialog_itemcode.urlParam.filterVal=['Others', 'A','session.compcode','session.unit'];
+					dialog_itemcode.urlParam.filterVal=['Others', 'ACTIVE','session.compcode','session.unit'];
 				}else if ($('#Class2').val().trim()  == 'Asset'){
 					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus','compcode','unit'];
-					dialog_itemcode.urlParam.filterVal=['Asset', 'A','session.compcode','session.unit'];
+					dialog_itemcode.urlParam.filterVal=['Asset', 'ACTIVE','session.compcode','session.unit'];
 				}else if ($('#Class2').val().trim()  == 'All'){
 					dialog_itemcode.urlParam.filterCol=['recstatus','compcode','unit'];
-					dialog_itemcode.urlParam.filterVal=['A','session.compcode','session.unit'];
+					dialog_itemcode.urlParam.filterVal=['ACTIVE','session.compcode','session.unit'];
 				}
 			}
 		},'urlParam', 'radio', 'tab'
@@ -387,7 +368,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_uomcode.gridname);
@@ -431,7 +412,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','sector'],
-				filterVal:['A','session.compcode','session.unit']
+				filterVal:['ACTIVE','session.compcode','session.unit']
 			},
 			ondblClickRow:function(){
 				$('#stocktxntype').focus();
@@ -450,7 +431,7 @@ $(document).ready(function () {
 			title:"Select Dept",
 			open: function(){
 				dialog_deptcode.urlParam.filterCol = ['recstatus','compcode','sector'];
-				dialog_deptcode.urlParam.filterVal = [ 'A','session.compcode','session.unit'];
+				dialog_deptcode.urlParam.filterVal = [ 'ACTIVE','session.compcode','session.unit'];
 			}
 		},'urlParam', 'radio', 'tab'
 	);

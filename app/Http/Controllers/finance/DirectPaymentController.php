@@ -117,7 +117,7 @@ class DirectPaymentController extends defaultController
                             'upduser' => session('username'), 
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                             'reference' => 'Pay To :'. ' ' .$apacthdr_get->payto  .' '. $apacthdr_get->remarks, 
-                            'stat' => 'A' 
+                            'recstatus' => 'ACTIVE' 
                         ]);
 
             //1st step, 2nd phase, update bank detail
@@ -204,7 +204,7 @@ class DirectPaymentController extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'actamount'.$yearperiod->period => $this->gltranAmount + $apactdtl->AmtB4GST,
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }else{
                     DB::table('finance.glmasdtl')
@@ -216,7 +216,7 @@ class DirectPaymentController extends defaultController
                             "actamount".$yearperiod->period => -$apactdtl->AmtB4GST,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }
             
@@ -256,7 +256,7 @@ class DirectPaymentController extends defaultController
                                 'upduser' => session('username'),
                                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                                 'actamount'.$yearperiod->period => $this->gltranAmount + $amountgst,
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }else{
                         DB::table('finance.glmasdtl')
@@ -268,7 +268,7 @@ class DirectPaymentController extends defaultController
                                 "actamount".$yearperiod->period => -$amountgst,
                                 'adduser' => session('username'),
                                 'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }
 
@@ -285,7 +285,7 @@ class DirectPaymentController extends defaultController
                                 'upduser' => session('username'),
                                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                                 'actamount'.$yearperiod->period => $this->gltranAmount - $amountgst,
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }else{
                         DB::table('finance.glmasdtl')
@@ -297,7 +297,7 @@ class DirectPaymentController extends defaultController
                                 "actamount".$yearperiod->period => -$amountgst,
                                 'adduser' => session('username'),
                                 'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }
                 }
@@ -315,7 +315,7 @@ class DirectPaymentController extends defaultController
                         'cheqdate' => $apacthdr_get->cheqdate,
                         'amount' => $apacthdr_get->amount,
                         'remarks' => strtoupper($apacthdr_get->remarks),
-                        'stat' => 'I',
+                        'recstatus' => 'ISSUED',
                         'auditno' => $apacthdr_get->auditno,
                         'trantype' => $apacthdr_get->trantype,
                         'source' => $apacthdr_get->source,
@@ -476,7 +476,7 @@ class DirectPaymentController extends defaultController
             DB::table('finance.apacthdr')
                     ->where('idno','=',$request->idno)
                     ->update([
-                        'recstatus' => 'D' ,
+                        'recstatus' => 'DEACTIVE' ,
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);

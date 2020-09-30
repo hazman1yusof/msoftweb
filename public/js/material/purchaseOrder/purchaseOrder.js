@@ -622,7 +622,7 @@ $(document).ready(function () {
 			title: "Select Purchase Department",
 			open: function () {
 				dialog_suppcode.urlParam.filterCol = ['recstatus'];
-				dialog_suppcode.urlParam.filterVal = ['A'];
+				dialog_suppcode.urlParam.filterVal = ['ACTIVE'];
 			}
 		}
 	);
@@ -1655,7 +1655,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus', 'compcode', 'sector'],
-				filterVal:['A', 'session.compcode', 'session.unit']
+				filterVal:['ACTIVE', 'session.compcode', 'session.unit']
 			},
 			ondblClickRow: function () {
 				$('#purordhd_purreqno').focus();
@@ -1674,7 +1674,7 @@ $(document).ready(function () {
 			title: "Select Request Department",
 			open: function(){
 				dialog_reqdept.urlParam.filterCol=['recstatus', 'compcode', 'sector'];
-				dialog_reqdept.urlParam.filterVal=['A', 'session.compcode', 'session.unit'];
+				dialog_reqdept.urlParam.filterVal=['ACTIVE', 'session.compcode', 'session.unit'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1821,7 +1821,7 @@ $(document).ready(function () {
 			title:"Select Transaction Department",
 			open: function(){
 				dialog_prdept.urlParam.filterCol=['purdept', 'recstatus', 'compcode', 'sector'];
-				dialog_prdept.urlParam.filterVal=['1', 'A','session.compcode','session.unit'];
+				dialog_prdept.urlParam.filterVal=['1', 'ACTIVE','session.compcode','session.unit'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1836,7 +1836,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['storedept', 'recstatus', 'compcode', 'sector'],
-						filterVal:['1', 'A','session.compcode','session.unit']
+						filterVal:['1', 'ACTIVE','session.compcode','session.unit']
 					},
 					ondblClickRow: function () {
 						$('#purordhd_reqdept').focus();
@@ -1855,7 +1855,7 @@ $(document).ready(function () {
 			title:"Select Receiver Department",
 			open: function(){
 				dialog_deldept.urlParam.filterCol=['storedept', 'recstatus', 'compcode', 'sector'];
-				dialog_deldept.urlParam.filterVal=['1', 'A','session.compcode','session.unit'];
+				dialog_deldept.urlParam.filterVal=['1', 'ACTIVE','session.compcode','session.unit'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1869,7 +1869,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
@@ -1891,7 +1891,7 @@ $(document).ready(function () {
 			title:"Select Transaction Type",
 			open: function(){
 				dialog_suppcode.urlParam.filterCol=['recstatus', 'compcode'];
-				dialog_suppcode.urlParam.filterVal=['A', 'session.compcode'];
+				dialog_suppcode.urlParam.filterVal=['ACTIVE', 'session.compcode'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1906,7 +1906,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#purordhd_purdate').focus();
@@ -1925,7 +1925,7 @@ $(document).ready(function () {
 			title: "Select Creditor",
 			open: function () {
 				dialog_credcode.urlParam.filterCol = ['compcode','recstatus'];
-				dialog_credcode.urlParam.filterVal = ['session.compcode','A'];
+				dialog_credcode.urlParam.filterVal = ['session.compcode','ACTIVE'];
 			}
 		}, 'urlParam','radio','tab'
 	);
@@ -1940,7 +1940,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
@@ -2055,7 +2055,7 @@ $(document).ready(function () {
 			title:"Select Price Code For Item",
 			open: function(){
 				dialog_pricecode.urlParam.filterCol=['compcode','recstatus'];
-				dialog_pricecode.urlParam.filterVal=['session.compcode','A'];
+				dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE'];
 			},
 			close: function(){
 				// $(dialog_pricecode.textfield)			//lepas close dialog focus on next textfield 
@@ -2084,7 +2084,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -2204,7 +2204,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
 
@@ -2276,7 +2276,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow: function (event) {
 				if(event.type == 'keydown'){
@@ -2313,7 +2313,7 @@ $(document).ready(function () {
 			title: "Select PO UOM Code For Item",
 			open: function () {
 				dialog_pouom.urlParam.filterCol = ['compcode', 'recstatus'];
-				dialog_pouom.urlParam.filterVal = ['session.compcode', 'A'];
+				dialog_pouom.urlParam.filterVal = ['session.compcode', 'ACTIVE'];
 
 			},
 			close: function () {
@@ -2336,7 +2336,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -2372,7 +2372,7 @@ $(document).ready(function () {
 			title:"Select Tax Code For Item",
 			open: function(){
 				dialog_taxcode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
-				dialog_taxcode.urlParam.filterVal=['session.compcode','A', 'Input'];
+				dialog_taxcode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
 			},
 			close: function(){
 				if($('#jqGridPager2SaveAll').css("display") == "none"){

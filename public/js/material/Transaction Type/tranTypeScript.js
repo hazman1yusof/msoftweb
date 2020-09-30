@@ -138,8 +138,8 @@
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 80, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					{ label: 'Record Status', name: 'recstatus', width: 80, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },

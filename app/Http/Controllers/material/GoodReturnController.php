@@ -487,7 +487,7 @@ class GoodReturnController extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'actamount'.$yearperiod->period => $value->amount + $this->gltranAmount,
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }else{
                     DB::table('finance.glmasdtl')
@@ -499,7 +499,7 @@ class GoodReturnController extends defaultController
                             'actamount'.$yearperiod->period => $value->amount,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }
 
@@ -514,7 +514,7 @@ class GoodReturnController extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'actamount'.$yearperiod->period => $this->gltranAmount - $value->amount,
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }else{
                     DB::table('finance.glmasdtl')
@@ -526,7 +526,7 @@ class GoodReturnController extends defaultController
                             'actamount'.$yearperiod->period => -$value->amount,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }
 
@@ -601,7 +601,7 @@ class GoodReturnController extends defaultController
                                 'upduser' => session('username'),
                                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                                 'actamount'.$yearperiod->period => $value->amtslstax + $this->gltranAmount,
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }else{
                         DB::table('finance.glmasdtl')
@@ -613,7 +613,7 @@ class GoodReturnController extends defaultController
                                 'actamount'.$yearperiod->period => $value->amtslstax,
                                 'adduser' => session('username'),
                                 'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }
 
@@ -628,7 +628,7 @@ class GoodReturnController extends defaultController
                                 'upduser' => session('username'),
                                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                                 'actamount'.$yearperiod->period => $this->gltranAmount - $value->amtslstax,
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }else{
                         DB::table('finance.glmasdtl')
@@ -640,7 +640,7 @@ class GoodReturnController extends defaultController
                                 'actamount'.$yearperiod->period => -$value->amtslstax,
                                 'adduser' => session('username'),
                                 'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }
                 }
@@ -752,7 +752,7 @@ class GoodReturnController extends defaultController
                 'rem_but'=>$value->rem_but,
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                'recstatus' => 'A', 
+                'recstatus' => 'ACTIVE', 
                 'remarks' => $value->remarks
             ]);
         }

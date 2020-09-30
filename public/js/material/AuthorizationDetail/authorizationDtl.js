@@ -113,7 +113,7 @@ $(document).ready(function () {
 		table_name:['material.authdtl as dtl'],
 		table_id:'idno',
 		filterCol:['compcode', 'cando'],
-		filterVal:['session.compcode', 'A']
+		filterVal:['session.compcode', 'ACTIVE']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -256,7 +256,7 @@ $(document).ready(function () {
 		],
 		urlParam: {
 			filterCol:['storedept', 'recstatus','compcode','sector'],
-			filterVal:['1', 'A', 'session.compcode', 'session.unit']
+			filterVal:['1', 'ACTIVE', 'session.compcode', 'session.unit']
 		},
 		ondblClickRow:function(){
 			
@@ -278,7 +278,7 @@ $(document).ready(function () {
 		title:"Select Department",
 		open: function(){
 			dialog_deptcode.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
-			dialog_deptcode.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
+			dialog_deptcode.urlParam.filterVal=['1', 'ACTIVE', 'session.compcode', 'session.unit'];
 		}
 		
 	},'none','radio','tab');
@@ -293,7 +293,7 @@ $(document).ready(function () {
 		],
 		urlParam: {
 			filterCol:['recstatus','compcode'],
-			filterVal:['A', 'session.compcode']
+			filterVal:['ACTIVE', 'session.compcode']
 		},
 		ondblClickRow:function(){
 			
@@ -315,7 +315,7 @@ $(document).ready(function () {
 		title:"Select Department",
 		open: function(){
 			dialog_authorid.urlParam.filterCol=['recstatus','compcode'];
-			dialog_authorid.urlParam.filterVal=['A', 'session.compcode'];
+			dialog_authorid.urlParam.filterVal=['ACTIVE', 'session.compcode'];
 		}
 	},'none','radio','tab');
 

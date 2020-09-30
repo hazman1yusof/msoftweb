@@ -306,7 +306,7 @@ class InventoryTransactionController extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'actamount'.$yearperiod->period => $value->amount + $this->gltranAmount,
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }else{
                     DB::table('finance.glmasdtl')
@@ -318,7 +318,7 @@ class InventoryTransactionController extends defaultController
                             'actamount'.$yearperiod->period => $value->amount,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }
 
@@ -333,7 +333,7 @@ class InventoryTransactionController extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'actamount'.$yearperiod->period => $this->gltranAmount - $value->amount,
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }else{
                     DB::table('finance.glmasdtl')
@@ -345,7 +345,7 @@ class InventoryTransactionController extends defaultController
                             'actamount'.$yearperiod->period => -$value->amount,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }
 

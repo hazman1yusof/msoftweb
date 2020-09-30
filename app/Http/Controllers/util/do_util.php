@@ -263,7 +263,7 @@ class do_util extends defaultController{
                     'upduser' => session('username'),
                     'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                     'actamount'.$yearperiod->period => $value->amount + $gltranAmount,
-                    'recstatus' => 'A'
+                    'recstatus' => 'ACTIVE'
                 ]);
         }else{
             DB::table('finance.glmasdtl')
@@ -275,7 +275,7 @@ class do_util extends defaultController{
                     'actamount'.$yearperiod->period => $value->amount,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                    'recstatus' => 'A'
+                    'recstatus' => 'ACTIVE'
                 ]);
         }
 
@@ -292,7 +292,7 @@ class do_util extends defaultController{
                     'upduser' => session('username'),
                     'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                     'actamount'.$yearperiod->period => $gltranAmount - $value->amount,
-                    'recstatus' => 'A'
+                    'recstatus' => 'ACTIVE'
                 ]);
         }else{
             DB::table('finance.glmasdtl')
@@ -304,7 +304,7 @@ class do_util extends defaultController{
                     'actamount'.$yearperiod->period => -$value->amount,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                    'recstatus' => 'A'
+                    'recstatus' => 'ACTIVE'
                 ]);
         }
 
@@ -386,7 +386,7 @@ class do_util extends defaultController{
                         'upduser' => session('username'),
                         'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                         'actamount'.$yearperiod->period => $value->amtslstax + $gltranAmount,
-                        'recstatus' => 'A'
+                        'recstatus' => 'ACTIVE'
                     ]);
             }else{
                 DB::table('finance.glmasdtl')
@@ -398,7 +398,7 @@ class do_util extends defaultController{
                         'actamount'.$yearperiod->period => $value->amtslstax,
                         'adduser' => session('username'),
                         'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'recstatus' => 'A'
+                        'recstatus' => 'ACTIVE'
                     ]);
             }
 
@@ -415,7 +415,7 @@ class do_util extends defaultController{
                         'upduser' => session('username'),
                         'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                         'actamount'.$yearperiod->period => $gltranAmount - $value->amtslstax,
-                        'recstatus' => 'A'
+                        'recstatus' => 'ACTIVE'
                     ]);
             }else{
                 DB::table('finance.glmasdtl')
@@ -427,7 +427,7 @@ class do_util extends defaultController{
                         'actamount'.$yearperiod->period => -$value->amtslstax,
                         'adduser' => session('username'),
                         'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'recstatus' => 'A'
+                        'recstatus' => 'ACTIVE'
                     ]);
             }
         }

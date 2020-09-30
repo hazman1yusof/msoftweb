@@ -61,7 +61,7 @@ class ProductController extends defaultController
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'recstatus' => 'A',
+                'recstatus' => 'ACTIVE',
                 'computerid' => $request->computerid,
                 'ipaddress' => $request->ipaddress,
             ];

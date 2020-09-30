@@ -501,7 +501,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus', 'source'],
-				filterVal:['session.compcode','A', 'CM']
+				filterVal:['session.compcode','ACTIVE', 'CM']
 			},
 			ondblClickRow: function () {
 				$('#bankcode').focus();
@@ -520,7 +520,7 @@ $(document).ready(function () {
 			title:"Select Payment",
 			open: function(){
 				dialog_paymode.urlParam.filterCol=['compcode','recstatus', 'source'],
-				dialog_paymode.urlParam.filterVal=['session.compcode','A', 'CM']
+				dialog_paymode.urlParam.filterVal=['session.compcode','ACTIVE', 'CM']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -534,7 +534,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				$('#cheqno').focus();
@@ -553,7 +553,7 @@ $(document).ready(function () {
 			title:"Select Bank Code",
 			open: function(){
 				dialog_bankcodefrom.urlParam.filterCol=['compcode','recstatus'],
-				dialog_bankcodefrom.urlParam.filterVal=['session.compcode','A']
+				dialog_bankcodefrom.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -567,7 +567,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				$('#remarks').focus();
@@ -586,7 +586,7 @@ $(document).ready(function () {
 			title:"Select Bank Code Pay To",
 			open: function(){
 				dialog_bankcodeto.urlParam.filterCol=['compcode','recstatus'],
-				dialog_bankcodeto.urlParam.filterVal=['session.compcode','A']
+				dialog_bankcodeto.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -600,8 +600,8 @@ $(document).ready(function () {
 				
 			],
 			urlParam: {
-				filterCol:['compcode','stat'],
-				filterVal:['session.compcode','A']
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','OPEN']
 			},
 			ondblClickRow: function () {
 				$('#cheqdate').focus();
@@ -619,8 +619,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Cheque No",
 			open: function(){
-				dialog_cheqno.urlParam.filterCol=['compcode','stat', 'bankcode'],
-				dialog_cheqno.urlParam.filterVal=['session.compcode','A', $('#bankcode').val()]
+				dialog_cheqno.urlParam.filterCol=['compcode','recstatus', 'bankcode'],
+				dialog_cheqno.urlParam.filterVal=['session.compcode','OPEN', $('#bankcode').val()]
 			}
 		},'urlParam','radio','tab'
 	);

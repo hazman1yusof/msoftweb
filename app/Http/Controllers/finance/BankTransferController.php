@@ -122,7 +122,7 @@ class BankTransferController extends defaultController
                             'upduser' => session('username') , 
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur") , 
                             'reference' => 'Transfer from :'. ' ' .$apacthdr_get->bankcode  . ' ' . 'to'. ' '. $apacthdr_get->payto , 
-                            'stat' => 'A' 
+                            'stat' => 'ACTIVE' 
                         ]);
 
             //1st step, 2nd phase, update bank detail
@@ -166,7 +166,7 @@ class BankTransferController extends defaultController
                             'upduser' => session('username') , 
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur") , 
                             'reference' => 'Transfer from :'. ' ' .$apacthdr_get->bankcode  . ' ' . 'to'. ' '. $apacthdr_get->payto , 
-                            'stat' => 'A' 
+                            'stat' => 'ACTIVE' 
                         ]);
 
             //2nd step, 2nd phase, update bank detail
@@ -211,7 +211,7 @@ class BankTransferController extends defaultController
                         'upduser' => session('username'),
                         'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                         'actamount'.$yearperiod->period => $this->gltranAmount - $apacthdr_get->amount,
-                        'recstatus' => 'A'
+                        'recstatus' => 'ACTIVE'
                     ]);
             }else{
                 DB::table('finance.glmasdtl')
@@ -223,7 +223,7 @@ class BankTransferController extends defaultController
                         "actamount".$yearperiod->period => -$apacthdr_get->amount,
                         'adduser' => session('username'),
                         'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'recstatus' => 'A'
+                        'recstatus' => 'ACTIVE'
                     ]);
             }
 
@@ -238,7 +238,7 @@ class BankTransferController extends defaultController
                         'upduser' => session('username'),
                         'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                         'actamount'.$yearperiod->period => $this->gltranAmount + $apacthdr_get->amount,
-                        'recstatus' => 'A'
+                        'recstatus' => 'ACTIVE'
                     ]);
             }else{
                 DB::table('finance.glmasdtl')
@@ -250,7 +250,7 @@ class BankTransferController extends defaultController
                         "actamount".$yearperiod->period => $apacthdr_get->amount,
                         'adduser' => session('username'),
                         'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'recstatus' => 'A'
+                        'recstatus' => 'ACTIVE'
                     ]);
             }
 

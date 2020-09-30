@@ -38,7 +38,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					let data=selrowData('#'+dialog_SuppGroup.gridname);
@@ -60,7 +60,7 @@ $(document).ready(function () {
 			title:"Select Supplier Group",
 			open: function(){
 				dialog_SuppGroup.urlParam.filterCol=['compcode','recstatus'],
-				dialog_SuppGroup.urlParam.filterVal=['session.compcode','A']
+				dialog_SuppGroup.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -75,7 +75,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#GlAccNo').focus();
@@ -94,7 +94,7 @@ $(document).ready(function () {
 			title:"Select Cost Code",
 			open: function(){
 				dialog_CostCode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_CostCode.urlParam.filterVal=['session.compcode','A']
+				dialog_CostCode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio', 'tab'
 	);
@@ -108,7 +108,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					
@@ -126,7 +126,7 @@ $(document).ready(function () {
 			title:"Select Gl Account No",
 			open: function(){
 				dialog_GlAccNo.urlParam.filterCol=['compcode','recstatus'],
-				dialog_GlAccNo.urlParam.filterVal=['session.compcode','A']
+				dialog_GlAccNo.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam', 'radio','tab'
 	);
@@ -268,8 +268,8 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{label: 'idno', name: 'idno', hidden: true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -393,7 +393,7 @@ $(document).ready(function () {
 			],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#si_itemcode').focus();
@@ -412,7 +412,7 @@ $(document).ready(function () {
 			title:"Select Price Code",
 			open: function(){
 				dialog_pricecode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_pricecode.urlParam.filterVal=['session.compcode','A']
+				dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -426,7 +426,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#si_uomcode').focus();
@@ -445,7 +445,7 @@ $(document).ready(function () {
 			title:"Select Supplier Group",
 			open: function(){
 				dialog_itemcode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_itemcode.urlParam.filterVal=['session.compcode','A']
+				dialog_itemcode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -459,7 +459,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					
@@ -479,7 +479,7 @@ $(document).ready(function () {
 			title:"Select UOM Code",
 			open: function(){
 				dialog_uomcode.urlParam.filterCol=['recstatus'],
-				dialog_uomcode.urlParam.filterVal=['A']
+				dialog_uomcode.urlParam.filterVal=['ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -625,8 +625,8 @@ $(document).ready(function () {
 			{ label: 'Percentage of Sales Tax', name: 'si_perslstax', width: 30,  hidden: true},
 			{ label: 'Expiry Date', name: 'si_expirydate', width: 30,  hidden: true},
 			{ label: "Item Code at Supplier's Site", name: 'si_sitemcode', width: 30,  hidden: true},
-			{ label: 'Record Status', name: 'si_recstatus', width: 200, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			{ label: 'Record Status', name: 'si_recstatus', width: 200, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{label: 'No', name: 'si_idno', width: 50, hidden: true},
 			{ label: 'adduser', name: 'si_adduser', width: 90, hidden:true, classes: 'wrap'},
@@ -766,7 +766,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 			},
 				ondblClickRow: function () {
 					$('#sb_bonitemcode').focus();
@@ -799,7 +799,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 			},
 				ondblClickRow: function () {
 					$('#sb_bonuomcode').focus();
@@ -818,7 +818,7 @@ $(document).ready(function () {
 			title:"Select Bonus Item Code",
 			open: function(){
 				dialog_bonitemcode.urlParam.filterCol=['recstatus'],
-				dialog_bonitemcode.urlParam.filterVal=['A']
+				dialog_bonitemcode.urlParam.filterVal=['ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -832,7 +832,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 			},
 				ondblClickRow: function () {
 					
@@ -850,7 +850,7 @@ $(document).ready(function () {
 			title:"Select Bonus UOM Code",
 			open: function(){
 				dialog_bonuomcode.urlParam.filterCol=['recstatus'],
-				dialog_bonuomcode.urlParam.filterVal=['A']
+				dialog_bonuomcode.urlParam.filterVal=['ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -981,8 +981,8 @@ $(document).ready(function () {
 			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 200, classes: 'wrap'},
 			{ label: 'Bonus Quantity', name: 'sb_bonqty', width: 200, classes: 'wrap', formatter:'currency'}, 
 			{ label: "Supplier's Item Code", name: 'sb_bonsitemcode', width: 200, classes: 'wrap'},
-			{ label: 'Record Status', name: 'sb_recstatus', width: 200, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			{ label: 'Record Status', name: 'sb_recstatus', width: 200, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{label: 'No', name: 'sb_idno', width: 50, hidden: true},
 			{ label: 'adduser', name: 'sb_adduser', width: 90, hidden:true, classes: 'wrap'},

@@ -904,7 +904,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				$('#cheqno').focus();
@@ -923,7 +923,7 @@ $(document).ready(function () {
 			title:"Select Bank Code",
 			open: function(){
 				dialog_bankcode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_bankcode.urlParam.filterVal=['session.compcode','A']
+				dialog_bankcode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -938,7 +938,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 			},
@@ -955,7 +955,7 @@ $(document).ready(function () {
 			title:"Select Department Code",
 			open: function(){
 				dialog_deptcode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_deptcode.urlParam.filterVal=['session.compcode','A']
+				dialog_deptcode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -970,7 +970,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','source', 'cattype', 'recstatus'],
-				filterVal:['session.compcode','CR', 'Other', 'A']
+				filterVal:['session.compcode','CR', 'Other', 'ACTIVE']
 			},
 			ondblClickRow: function () {
 			},
@@ -987,7 +987,7 @@ $(document).ready(function () {
 			title:"Select Category",
 			open: function(){
 				dialog_category.urlParam.filterCol=['compcode','source', 'cattype', 'recstatus'],
-				dialog_category.urlParam.filterVal=['session.compcode','CR', 'Other', 'A']
+				dialog_category.urlParam.filterVal=['session.compcode','CR', 'Other', 'ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1003,7 +1003,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1038,7 +1038,7 @@ $(document).ready(function () {
 			title:"Select Tax Code For Item",
 			open: function(){
 				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
-				dialog_GSTCode.urlParam.filterVal=['session.compcode','A', 'Input'];
+				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
 			},
 			close: function(){
 				if($('#jqGridPager2SaveAll').css("display") == "none"){

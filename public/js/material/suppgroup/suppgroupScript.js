@@ -36,7 +36,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#glaccno').focus();
@@ -55,7 +55,7 @@
 					title:"Select Cost Code",
 					open: function(){
 						dialog_costcode.urlParam.filterCol=['recstatus'],
-						dialog_costcode.urlParam.filterVal=['A']
+						dialog_costcode.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam','radio', 'tab'
 			);
@@ -69,7 +69,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#advccode').focus();
@@ -88,7 +88,7 @@
 					title:"Select GL Account No",
 					open: function(){
 						dialog_glaccno.urlParam.filterCol=['recstatus'],
-						dialog_glaccno.urlParam.filterVal=['A']
+						dialog_glaccno.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -102,7 +102,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#advglaccno').focus();
@@ -121,7 +121,7 @@
 					title:"Select Advance Cost Code",
 					open: function(){
 						dialog_advccode.urlParam.filterCol=['recstatus'],
-						dialog_advccode.urlParam.filterVal=['A']
+						dialog_advccode.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -135,7 +135,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#recstatus').focus();
@@ -154,7 +154,7 @@
 					title:"Select Advance Account No",
 					open: function(){
 						dialog_advglaccno.urlParam.filterCol=['recstatus'],
-						dialog_advglaccno.urlParam.filterVal=['A']
+						dialog_advglaccno.urlParam.filterVal=['ACTIVE']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -281,8 +281,8 @@
 					{ label: 'Del Date', name: 'deldate', width: 90,hidden:true},
 					{ label: 'Advance Cost Code', name: 'advccode', width: 80, sorttype: 'number', editable: true, classes: 'wrap'},
 					{ label: 'Advance Account No', name: 'advglaccno', width: 80, sorttype: 'number', classes: 'wrap'},
-					{ label: 'Record Status', name: 'recstatus', width: 80, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					{ label: 'Record Status', name: 'recstatus', width: 80, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -325,30 +325,6 @@
 					return "0";
 				}
 			}
-
-			/*////////////////////formatter status////////////////////////////////////////
-				function formatterstatus(cellvalue, option, rowObject){
-					if (cellvalue == 'A'){
-						return 'Active';
-					}
-
-					if (cellvalue == 'D'){
-						return 'Deactive';
-					}
-
-				}
-
-			////////////////////unformatter status////////////////////////////////////////
-				function unformat(cellvalue, option, rowObject){
-					if (cellvalue == 'Active'){
-						return 'Active';
-					}
-
-					if (cellvalue == 'Deactive'){
-						return 'Deactive';
-					}
-
-				}*/
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

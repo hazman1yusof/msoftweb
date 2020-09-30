@@ -140,7 +140,7 @@ class AuthorizationDetailController extends defaultController
                             ->where('deptcode','!=',$authdtl_get->deptcode)
                             ->where('trantype','=',$request->dtl_trantype)
                             ->where('recstatus','=',$request->dtl_recstatus)
-                            ->where('cando','=','A')
+                            ->where('cando','=','ACTIVE')
                             ->exists();
 
             }else if($authdtl_get->deptcode=='all' || $authdtl_get->deptcode=='ALL'){
@@ -240,7 +240,7 @@ class AuthorizationDetailController extends defaultController
                 ->update([ 
                     'deluser' => session('username'), 
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'cando' => 'D'
+                    'cando' => 'DEACTIVE'
                 ]);
 
        

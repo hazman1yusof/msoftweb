@@ -163,8 +163,8 @@
 					{label: 'upddate', name: 'upddate', width: 90 , hidden: true},
 					{label: 'deluser', name: 'deluser', width: 90 , hidden: true},					
 					{label: 'deldate', name: 'deldate', width: 90 , hidden: true},					
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{label: 'idno', name: 'idno', hidden:true},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -192,17 +192,6 @@
 				},
 				
 			});
-
-			/*////////////////////////////formatter//////////////////////////////////////////////////////////
-			function formatter(cellvalue, options, rowObject){
-				if(cellvalue == 'A'){
-					return "Active";
-				}
-				if(cellvalue == 'D') { 
-					return "Deactive";
-				}
-			}
-*/
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -273,7 +262,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#woffacct').focus();
@@ -292,7 +281,7 @@
 					title:"Select Stock Account",
 					open: function(){
 						dialog_stockacct.urlParam.filterCol=['recstatus', 'compcode'],
-						dialog_stockacct.urlParam.filterVal=['A','session.compcode']
+						dialog_stockacct.urlParam.filterVal=['ACTIVE','session.compcode']
 					}
 				},'urlParam','radio', 'tab'
 			);
@@ -306,7 +295,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#expacct').focus();
@@ -325,7 +314,7 @@
 					title:"Select COS Account",
 					open: function(){
 						dialog_cosacct.urlParam.filterCol=['recstatus', 'compcode'],
-						dialog_cosacct.urlParam.filterVal=['A','session.compcode']
+						dialog_cosacct.urlParam.filterVal=['ACTIVE','session.compcode']
 					}
 				},'urlParam','radio','tab'
 			);
@@ -339,7 +328,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#loanacct').focus();
@@ -358,7 +347,7 @@
 					title:"Select Adjustment Account",
 					open: function(){
 						dialog_adjacct.urlParam.filterCol=['recstatus', 'compcode'],
-						dialog_adjacct.urlParam.filterVal=['A','session.compcode']
+						dialog_adjacct.urlParam.filterVal=['ACTIVE','session.compcode']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -372,7 +361,7 @@
 						],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#cosacct').focus();
@@ -391,7 +380,7 @@
 					title:"Select Write Off Account",
 					open: function(){
 						dialog_woffacct.urlParam.filterCol=['recstatus', 'compcode'],
-						dialog_woffacct.urlParam.filterVal=['A','session.compcode']
+						dialog_woffacct.urlParam.filterVal=['ACTIVE','session.compcode']
 					}
 				},'urlParam','radio', 'tab'
 			);
@@ -405,7 +394,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#adjacct').focus();
@@ -424,7 +413,7 @@
 					title:"Select Expenses Account",
 					open: function(){
 						dialog_expacct.urlParam.filterCol=['recstatus', 'compcode'],
-						dialog_expacct.urlParam.filterVal=['A','session.compcode']
+						dialog_expacct.urlParam.filterVal=['ACTIVE','session.compcode']
 					}
 				},'urlParam', 'radio', 'tab'
 			);
@@ -438,7 +427,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#povalidate').focus();
@@ -457,7 +446,7 @@
 					title:"Select Loan Account",
 					open: function(){
 						dialog_loanacct.urlParam.filterCol=['recstatus', 'compcode'],
-						dialog_loanacct.urlParam.filterVal=['A','session.compcode']
+						dialog_loanacct.urlParam.filterVal=['ACTIVE','session.compcode']
 					}
 				},'urlParam', 'radio', 'tab'
 			);

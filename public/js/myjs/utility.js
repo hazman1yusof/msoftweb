@@ -1564,6 +1564,8 @@ function recstatusDisable(recstatus = 'recstatus'){
 	var recstatusvalue = $("#formdata [name='"+recstatus+"']:checked").val();
 	if(recstatusvalue == 'ACTIVE'){
 		$("#formdata input[name='"+recstatus+"']").prop('disabled', true);
+	}else if (recstatusvalue == 'DEACTIVE'){
+		$("#formdata input[name='"+recstatus+"']").prop('disabled', false);
 	}else{
 		$("#formdata input[name='"+recstatus+"']").prop('disabled', false);
 	}

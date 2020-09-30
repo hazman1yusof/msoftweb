@@ -150,7 +150,7 @@ class CreditDebitTransController extends defaultController
                             'upduser' => session('username'), 
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'reference' => $apacthdr_get->remarks, 
-                            'stat' => 'A' 
+                            'recstatus' => 'ACTIVE' 
                         ]);
 
             //1st step, 2nd phase, update bank detail
@@ -250,7 +250,7 @@ class CreditDebitTransController extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'actamount'.$yearperiod->period => $this->gltranAmount + $amount2,
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }else{
                     DB::table('finance.glmasdtl')
@@ -262,7 +262,7 @@ class CreditDebitTransController extends defaultController
                             "actamount".$yearperiod->period => $amount2,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }
             
@@ -303,7 +303,7 @@ class CreditDebitTransController extends defaultController
                                 'upduser' => session('username'),
                                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                                 'actamount'.$yearperiod->period => $this->gltranAmount + $amountgst,
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }else{
                         DB::table('finance.glmasdtl')
@@ -315,7 +315,7 @@ class CreditDebitTransController extends defaultController
                                 "actamount".$yearperiod->period => $amountgst,
                                 'adduser' => session('username'),
                                 'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }
 
@@ -332,7 +332,7 @@ class CreditDebitTransController extends defaultController
                                 'upduser' => session('username'),
                                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                                 'actamount'.$yearperiod->period => $this->gltranAmount + $amountused,
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }else{
                         DB::table('finance.glmasdtl')
@@ -344,7 +344,7 @@ class CreditDebitTransController extends defaultController
                                 "actamount".$yearperiod->period => -$amountgst,
                                 'adduser' => session('username'),
                                 'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }
                 }
@@ -464,7 +464,7 @@ class CreditDebitTransController extends defaultController
             DB::table('finance.apacthdr')
                     ->where('idno','=',$request->idno)
                     ->update([
-                        'recstatus' => 'D' ,
+                        'recstatus' => 'DEACTIVE' ,
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
