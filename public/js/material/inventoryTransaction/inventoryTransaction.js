@@ -272,7 +272,8 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-			empty_form();
+			populate_form(selrowData("#jqGrid"));
+			//empty_form();
 		},
 		
 	});
@@ -645,7 +646,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + supplierkatdepan.gridname).suppcode;
@@ -667,7 +668,7 @@ $(document).ready(function () {
 			title: "Select Transaction Department",
 			open: function () {
 				dialog_suppcode.urlParam.filterCol = ['recstatus'];
-				dialog_suppcode.urlParam.filterVal = ['A'];
+				dialog_suppcode.urlParam.filterVal = ['ACTIVE'];
 			}
 		}
 	);
@@ -1040,18 +1041,18 @@ $(document).ready(function () {
 	}
 
 	function uomcodetrdeptCustomEdit(val,opt){  	
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input id="uomcode" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 
 	function uomcoderecvCustomEdit(val,opt){  	
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input id="uomcoderecv" name="uomcoderecv" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function expdateCustomEdit(val,opt){
-		 val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		 return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 		
 	}
@@ -1319,7 +1320,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['storedept', 'recstatus','compcode','sector'],
-				filterVal:['1', 'A','session.compcode', 'session.unit']
+				filterVal:['1', 'ACTIVE','session.compcode', 'session.unit']
 			},
 			ondblClickRow: function () {
 				$('#trantype').focus();
@@ -1338,7 +1339,7 @@ $(document).ready(function () {
 			title:"Select Transaction Department",
 			open: function(){
 				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
-				dialog_txndept.urlParam.filterVal=['1', 'A','session.compcode', 'session.unit'];
+				dialog_txndept.urlParam.filterVal=['1', 'ACTIVE','session.compcode', 'session.unit'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1354,7 +1355,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_trantype.gridname);
@@ -1383,7 +1384,7 @@ $(document).ready(function () {
 				dialog_trantype.urlParam.whereNotInCol=['trantype'];
 				dialog_trantype.urlParam.whereNotInVal=[['DS1', 'DS']];
 				dialog_trantype.urlParam.filterCol=['recstatus'];
-				dialog_trantype.urlParam.filterVal=['A'];
+				dialog_trantype.urlParam.filterVal=['ACTIVE'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1405,7 +1406,7 @@ $(document).ready(function () {
 						filterInVal:[[$('#txndept').val()]];
 					}else {
 						filterCol:['recstatus'];
-						filterVal:['A'];
+						filterVal:['ACTIVE'];
 					}
 				}
 			},
@@ -1433,7 +1434,7 @@ $(document).ready(function () {
 					dialog_sndrcv.urlParam.filterInVal=[[$('#txndept').val()]];
 				}else {
 					dialog_sndrcv.urlParam.filterCol=['recstatus'];
-					dialog_sndrcv.urlParam.filterVal=['A'];
+					dialog_sndrcv.urlParam.filterVal=['ACTIVE'];
 				}
 			}
 		},'urlParam','radio','tab'
@@ -1559,7 +1560,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow: function (event) {
 		/*		if(event.type == 'keydown'){
@@ -1593,7 +1594,7 @@ $(document).ready(function () {
 			title: "Select PO UOM Code For Item",
 			open: function () {
 				dialog_uomcoderecv.urlParam.filterCol = ['compcode', 'recstatus'];
-				dialog_uomcoderecv.urlParam.filterVal = ['session.compcode', 'A'];
+				dialog_uomcoderecv.urlParam.filterVal = ['session.compcode', 'ACTIVE'];
 
 			},
 			close: function () {

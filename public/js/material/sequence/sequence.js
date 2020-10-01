@@ -135,8 +135,8 @@
 					{ label: 'Add Date', name: 'adddate', width: 90,hidden:true},
 					{ label: 'Upd User', name: 'upduser', width: 80,hidden:true}, 
 					{ label: 'Upd Date', name: 'upddate', width: 90,hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -241,7 +241,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow:function(){
 						$('#trantype').focus();
@@ -260,7 +260,7 @@
 					title:"Select Department",
 					open: function(){
 						dialog_dept.urlParam.filterCol = ['recstatus', 'compcode'];
-						dialog_dept.urlParam.filterVal = ['A', 'session.compcode'];
+						dialog_dept.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 					}
 				}, 'urlParam', 'radio', 'tab'
 			);
@@ -274,7 +274,7 @@
 					],
 						urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow:function(){
 						$('#description').focus();
@@ -293,7 +293,7 @@
 					title:"Select Transaction Type",
 					open: function(){
 						dialog_trantype.urlParam.filterCol = ['recstatus', 'compcode'];
-						dialog_trantype.urlParam.filterVal = ['A','session.compcode'];
+						dialog_trantype.urlParam.filterVal = ['ACTIVE','session.compcode'];
 					}
 				}, 'urlParam', 'radio', 'tab'
 			);

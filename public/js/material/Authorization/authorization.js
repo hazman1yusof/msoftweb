@@ -135,8 +135,8 @@ $(document).ready(function () {
 			{label: 'adduser', name: 'adduser', width: 90 , hidden:true,},
 			{label: 'upduser', name: 'upduser', width: 90,hidden:true},
 			{label: 'upddate', name: 'upddate', width: 90,hidden:true},
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -345,7 +345,7 @@ $("#jqGrid2").jqGrid({
 			 editable: true,
                  edittype: "select",
                  editoptions: {
-                     value: "A:Active;D:Deactive"
+                     value: "ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
                  }
 		},
 		{ label: 'Min Limit', name: 'dtl_minlimit', width: 150, align: 'right', classes: 'wrap', editable:true,
@@ -683,7 +683,7 @@ var dialog_authorid = new ordialog(
 		],
 		urlParam: {
 			filterCol:['compcode','recstatus'],
-			filterVal:['session.compcode','A']
+			filterVal:['session.compcode','ACTIVE']
 		},
 		ondblClickRow:function(){
 			let data=selrowData('#'+dialog_authorid.gridname);
@@ -706,7 +706,7 @@ var dialog_authorid = new ordialog(
 		title:"Select Author ID",
 		open: function(){
 				dialog_authorid.urlParam.filterCol=['recstatus'],
-				dialog_authorid.urlParam.filterVal=['A']
+				dialog_authorid.urlParam.filterVal=['ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -721,7 +721,7 @@ var dialog_deptcodedtl = new ordialog(
 		],
 		urlParam: {
 			filterCol:['storedept', 'recstatus','compcode','sector'],
-			filterVal:['1', 'A', 'session.compcode', 'session.unit']
+			filterVal:['1', 'ACTIVE', 'session.compcode', 'session.unit']
 		},
 		ondblClickRow:function(){
 			//$('#delordhd_credcode').focus();
@@ -745,7 +745,7 @@ var dialog_deptcodedtl = new ordialog(
 		title:"Select Department",
 		open: function(){
 			dialog_deptcodedtl.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
-			dialog_deptcodedtl.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
+			dialog_deptcodedtl.urlParam.filterVal=['1', 'ACTIVE', 'session.compcode', 'session.unit'];
 		}
 	},'none','radio','tab'
 );
@@ -771,7 +771,7 @@ var dialog_deptcodeD = new ordialog(
 		],
 		urlParam: {
 			filterCol:['storedept', 'recstatus','compcode','sector'],
-			filterVal:['1', 'A', 'session.compcode', 'session.unit']
+			filterVal:['1', 'ACTIVE', 'session.compcode', 'session.unit']
 		},
 		ondblClickRow:function(){
 			$('#dtl_recstatus').focus();
@@ -793,7 +793,7 @@ var dialog_deptcodeD = new ordialog(
 		title:"Select Department",
 		open: function(){
 			dialog_deptcodeD.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
-			dialog_deptcodeD.urlParam.filterVal=['1', 'A', 'session.compcode', 'session.unit'];
+			dialog_deptcodeD.urlParam.filterVal=['1', 'ACTIVE', 'session.compcode', 'session.unit'];
 		}
 	},'none','radio','tab'
 );
@@ -879,8 +879,8 @@ $("#Authdtl")
 
 /////////////////////parameter for jqgrid url SVC/////////////////////////////////////////////////
 
-var cando_filter = [['A','D']];
-if($("#dtl_cando").val() == 'D'){
+var cando_filter = [['ACTIVE','DEACTIVE']];
+if($("#dtl_cando").val() == 'DEACTIVE'){
 	cando_filter = [['ACTIVE','DEACTIVE']];
 	filterCol_urlParam = ['authdtl.compcode'];
 	filterVal_urlParam = ['session.compcode'];
@@ -895,7 +895,7 @@ var urlParam_authdtl={
 	table_name:['material.authdtl AS dtl'],
 	table_id:'d_lineno_',
 	filterCol:['compcode','authorid','cando'],
-	filterVal:['session.compcode','','A']
+	filterVal:['session.compcode','','ACTIVE']
 }
 
 var saveParam_authdtl={
@@ -940,7 +940,7 @@ $("#gridAuthdtl").jqGrid({
 				 editable: true,
                      edittype: "select",
                      editoptions: {
-                         value: "A:Active;D:Deactive"
+                         value: "ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
                      }
 			},
 		
@@ -1064,7 +1064,7 @@ $("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{
 
 		var recstatusvalue = selrowData('#gridAuthdtl').dtl_cando;
 
-			if(recstatusvalue == 'D'){
+			if(recstatusvalue == 'DEACTIVE'){
 				
 			}
 	}, 
@@ -1086,7 +1086,7 @@ $("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{
 			
 			var recstatusvalue = selrowData('#gridAuthdtl').dtl_cando;
 
-			if(recstatusvalue == 'D'){
+			if(recstatusvalue == 'DEACTIVE'){
 				$("#FAuthdtl [name='dtl_cando']").prop('disabled', true);
 			}else{
 				$("#FAuthdtl [name='dtl_cando']").prop('disabled', false);

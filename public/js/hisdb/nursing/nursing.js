@@ -305,7 +305,7 @@ var dialog_tri_col = new ordialog(
 		urlParam: {
 			url:'./sysparam_triage_color',
 			filterCol:['recstatus','compcode'],
-			filterVal:['A', 'session.compcode']
+			filterVal:['ACTIVE', 'session.compcode']
 			},
 		ondblClickRow:function(event){
 
@@ -359,7 +359,7 @@ var dialog_tri_col = new ordialog(
 		title:"Select Bed Status",
 		open: function(){
 			dialog_tri_col.urlParam.filterCol = ['recstatus','compcode'];
-			dialog_tri_col.urlParam.filterVal = ['A', 'session.compcode'];
+			dialog_tri_col.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 		},
 		width:5/10 * $(window).width()
 	},'urlParam','radio','tab','table'

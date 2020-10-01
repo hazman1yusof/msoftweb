@@ -21,7 +21,7 @@
 					],
 					urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#year').focus();
@@ -40,7 +40,7 @@
 					title:"Select GL Account",
 					open: function(){
 						dialog_dept.urlParam.filterCol=['compcode','recstatus'],
-						dialog_dept.urlParam.filterVal=['session.compcode','A']
+						dialog_dept.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam','radio','tab'
 			);
@@ -398,7 +398,7 @@
 									table_name:'finance.apactdtl',
 									table_id:'none_',
 									filterCol:['auditno', 'recstatus','trantype','source'],
-									filterVal:['', 'A','DP','CM'],
+									filterVal:['', 'ACTIVE','DP','CM'],
 								}
 							}
 						]
@@ -442,7 +442,7 @@
 									table_name:'finance.apactdtl',
 									table_id:'none_',
 									filterCol:['auditno', 'recstatus','trantype','source'],
-									filterVal:['', 'A','','CM'],
+									filterVal:['', 'ACTIVE','','CM'],
 								}
 							}
 						]
@@ -474,7 +474,7 @@
 									table_name:'finance.apactdtl',
 									table_id:'none_',
 									filterCol:['auditno', 'recstatus','trantype','source'],
-									filterVal:['', 'A','','CM'],
+									filterVal:['', 'ACTIVE','','CM'],
 								}
 							}
 						]

@@ -108,7 +108,7 @@ class RelationshipController extends defaultController
         DB::table('hisdb.relationship')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);

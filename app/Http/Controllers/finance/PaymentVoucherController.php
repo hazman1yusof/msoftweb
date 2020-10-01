@@ -287,7 +287,7 @@ use Carbon\Carbon;
                     'upduser' => session('username'),
                     'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                     'actamount'.$yearperiod->period => $apacthdr_obj->amount + $gltranAmount,
-                    'recstatus' => 'A'
+                    'recstatus' => 'ACTIVE'
                 ]);
         }else{
             DB::table('finance.glmasdtl')
@@ -299,7 +299,7 @@ use Carbon\Carbon;
                     'actamount'.$yearperiod->period => $apacthdr_obj->amount,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                    'recstatus' => 'A'
+                    'recstatus' => 'ACTIVE'
                 ]);
         }
 
@@ -316,7 +316,7 @@ use Carbon\Carbon;
                     'upduser' => session('username'),
                     'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                     'actamount'.$yearperiod->period => $gltranAmount - $apacthdr_obj->amount,
-                    'recstatus' => 'A'
+                    'recstatus' => 'ACTIVE'
                 ]);
         }else{
             DB::table('finance.glmasdtl')
@@ -328,7 +328,7 @@ use Carbon\Carbon;
                     'actamount'.$yearperiod->period => -$apacthdr_obj->amount,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                    'recstatus' => 'A'
+                    'recstatus' => 'ACTIVE'
                 ]);
         }
     }

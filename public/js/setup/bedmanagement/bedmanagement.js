@@ -858,7 +858,7 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['b.bednum'],
 		join_onVal:['ba.bednum'],
-		join_filterCol:[['b.compcode on =']],
+		join_filterCol:[['b.compcode on = 9A']],
 		join_filterVal:[['ba.compcode']],
 		filterCol:['ba.mrn','ba.compcode'],
 		filterVal:['','session.compcode'],
@@ -1092,109 +1092,6 @@ $(document).ready(function () {
 	    });
 	}
 	/////////////////////////////End for transer BED ALLOCATION/////////////////////////
-	
-	////////////////////ORDCOM/////////////////
-	// button_state_ordcom('empty');
-	// function button_state_ordcom(state){
-	// 	switch(state){
-	// 		case 'empty':
-	// 			disableForm('#form_ordcom');
-	// 			$("#toggle_ordcom").removeAttr('data-toggle');
-	// 			$('#save_ordcom').data('oper','add');
-	// 			$('#save_ordcom,#cancel_ordcom,#edit_ordcom').attr('disabled',true);
-	// 			break;
-	// 		case 'edit':
-	// 			disableForm('#form_ordcom');
-	// 			$("#toggle_ordcom").attr('data-toggle','collapse');
-	// 			$('#save_ordcom').data('oper','edit');
-	// 			$("#edit_ordcom").attr('disabled',false);
-	// 			$('#save_ordcom,#cancel_ordcom').attr('disabled',true);
-	// 			//dialog_lodger_trf.off();
-	// 			break;
-	// 		case 'wait':
-	// 			//enableForm('#form_ordcom',['ba_asdate','ba_astime','ba_bednum','ba_ward','ba_room','bedtype','trf_aedate','trf_aetime','trf_room','trf_ward','trf_bedtype']);
-	// 			$("#toggle_ordcom").attr('data-toggle','collapse');
-	// 			$("#save_ordcom,#cancel_ordcom").attr('disabled',false);
-	// 			$('#edit_ordcom').attr('disabled',true);
-	// 			//dialog_lodger_trf.on();
-	// 			break;
-	// 	}
-	// }
-
-	// $("#edit_ordcom").click(function(){
-	// 	button_state_ordcom('wait');
-	// });
-
-	// $("#save_ordcom").click(function(){
-	// 	disableForm('#form_ordcom');
-	// 	if( $('#form_ordcom').isValid({requiredFields: ''}, conf, true) ) {
-	// 		saveForm_ordcom(function(){
-	// 			$("#cancel_ordcom").click();
-	// 			refreshGrid('#jqGrid_ordcom', urlParam4);
-	// 		});
-	// 	}else{
-	// 		enableForm('#form_ordcom');
-	// 	}
-	// });
-
-	// $("#cancel_ordcom").click(function(){
-	// 	button_state_ordcom($('#save_ordcom').data('oper'));
-	// });
-
-	// function populate_form_ordcom(rowdata){
-	// 	$('#name_show').text(selrowData("#jqGrid").name);
-	// 	$('#bednum_show').text(selrowData("#jqGrid").bednum);	
-	// 	//autoinsert_rowdata("#form_ordcom",rowdata);
-	// 	$('input[name=ct_trxdate]').val(moment().format('YYYY-MM-DD'));
-	// 	$('input[name=ct_trxtime]').val(moment().format('HH:mm:ss'));
-	// 	button_state_ordcom('edit');
-	// }
-
-	// function empty_form_ordcom(){
-	// 	$('#name_show').text('');
-	// 	$('#bednum_show').text('');
-	// 	button_state_ordcom('empty');
-	// }
-
-	// // function autoinsert_rowdata(form,rowData){
-	// // 	$.each(rowData, function( index, value ) {
-	// // 		var input=$(form+" [name='"+index+"']");
-	// // 		if(input.is("[type=radio]")){
-	// // 			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-	// // 		}else if(input.is("[type=checkbox]")){
-	// // 			if(value==1){
-	// // 				$(form+" [name='"+index+"']").prop('checked', true);
-	// // 			}
-	// // 		}else{
-	// // 			input.val(value);
-	// // 		}
-	// // 	});
-	// // }
-
-	// function saveForm_ordcom(callback){
-	// 	var saveParam={
-	//         oper:'ordercom_form'
-	//     }
-	//     var postobj={
-	//     	_token : $('#_token').val(),
-	//     	name: selrowData("#jqGrid").name,
-	//     	mrn : selrowData("#jqGrid").mrn,
-	//     };
-
-	//     var values = $("#form_ordcom").serializeArray();
-
-
-	//     $.post( "/ordcom/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
-	        
-	//     },'json').fail(function(data) {
-	//         // alert('there is an error');
-	//         callback();
-	//     }).success(function(data){
-	//         callback();
-	//     });
-	// }
-
-		////////////////////////////////////// End setup ordcom /////////////////////////////////////////////////////////
 
 	var epis_desc_show = new loading_desc_epis([
         {code:'',desc:'',id:'bed_dept'},

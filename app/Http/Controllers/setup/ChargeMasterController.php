@@ -56,7 +56,7 @@ class ChargeMasterController extends defaultController
             }
 
             if($request->cm_chgtype == 'PKG' || $request->cm_chgtype == 'pkg'){
-                $recstatus_use = 'D';
+                $recstatus_use = 'DEACTIVE';
 
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
@@ -78,7 +78,7 @@ class ChargeMasterController extends defaultController
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
-                $recstatus_use = 'A';
+                $recstatus_use = 'ACTIVE';
             }
 
             DB::table('hisdb.chgmast')
@@ -86,13 +86,14 @@ class ChargeMasterController extends defaultController
                     'compcode' => session('compcode'),
                     'chgcode' => strtoupper($request->cm_chgcode),
                     'description' => strtoupper($request->cm_description),
+                    'barcode' => strtoupper($request->cm_barcode),
+                    'brandname' => strtoupper($request->cm_brandname),
                     'chgclass' => $request->cm_chgclass,
+                    'constype' => strtoupper($request->cm_constype),
                     'chggroup' => $request->cm_chggroup,
                     'chgtype' => $request->cm_chgtype,
-                    'uom' => strtoupper($request->cm_uom),
-                    'brandname' => strtoupper($request->cm_brandname),
-                    'barcode' => strtoupper($request->cm_barcode),
-                    'constype' => strtoupper($request->cm_constype),
+                    'recstatus' => $recstatus_use,
+                    'uom' => 'EA',
                     'invflag' => $request->cm_invflag,
                     'packqty' => $request->cm_packqty,
                     'druggrcode' => strtoupper($request->cm_druggrcode),
@@ -106,7 +107,6 @@ class ChargeMasterController extends defaultController
                     'doctorstat' => $request->cm_doctorstat, 
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => $recstatus_use,
                     'computerid' => $request->cm_computerid, 
                     'ipaddress' => $request->cm_ipaddress, 
                     'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
@@ -136,7 +136,7 @@ class ChargeMasterController extends defaultController
         try {
 
             if($request->cm_chgtype == 'PKG' || $request->cm_chgtype == 'pkg'){
-                $recstatus_use = 'D';
+                $recstatus_use = 'DEACTIVE';
 
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
@@ -158,7 +158,7 @@ class ChargeMasterController extends defaultController
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
-                $recstatus_use = 'A';
+                $recstatus_use = 'ACTIVE';
             }
 
             DB::table('hisdb.chgmast')
@@ -166,13 +166,14 @@ class ChargeMasterController extends defaultController
                 ->update([
                     'chgcode' => strtoupper($request->cm_chgcode),
                     'description' => strtoupper($request->cm_description),
+                    'barcode' => strtoupper($request->cm_barcode),
+                    'brandname' => strtoupper($request->cm_brandname),
                     'chgclass' => $request->cm_chgclass,
+                    'constype' => strtoupper($request->cm_constype),
                     'chggroup' => $request->cm_chggroup,
                     'chgtype' => $request->cm_chgtype,
+                    'recstatus' => $recstatus_use,
                     'uom' => strtoupper($request->cm_uom),
-                    'brandname' => strtoupper($request->cm_brandname),
-                    'barcode' => strtoupper($request->cm_barcode),
-                    'constype' => strtoupper($request->cm_constype),
                     'invflag' => $request->cm_invflag,
                     'packqty' => $request->cm_packqty,
                     'druggrcode' => strtoupper($request->cm_druggrcode),
@@ -183,10 +184,9 @@ class ChargeMasterController extends defaultController
                     'revcode' => $request->cm_revcode, 
                     'seqno' => $request->cm_seqno,
                     'overwrite' => $request->cm_overwrite, 
-                    'doctorstat' => $request->cm_doctorstat, 
+                    'doctorstat' => $request->cm_doctorstat,
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => $recstatus_use,
                     'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
                     'lastipaddress' => strtoupper($request->cm_lastipaddress),
                 ]);
@@ -218,7 +218,7 @@ class ChargeMasterController extends defaultController
                 ->update([
                     'deluser' => session('username'),
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'D',
+                    'recstatus' => 'DEACTIVE',
                     'lastcomputerid' => $request->cm_lastcomputerid, 
                     'lastipaddress' => $request->cm_lastipaddress, 
                 ]);
@@ -274,7 +274,7 @@ class ChargeMasterController extends defaultController
         }
 
         $table = $table
-                ->where('recstatus','=','A')
+                ->where('recstatus','=','ACTIVE')
                 ->where('compcode','=',session('compcode'));
 
         $paginate = $table->paginate($request->rows);

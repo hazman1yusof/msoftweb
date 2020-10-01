@@ -60,7 +60,7 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ACTIVE;D:DEACTIVE"}, 
+			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 				cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
@@ -314,7 +314,7 @@ $(document).ready(function () {
 			],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','DEACTIVE']
 				},
 				ondblClickRow: function () {
 				},
@@ -331,7 +331,7 @@ $(document).ready(function () {
 			title:"Select Region Code",
 			open: function(){
 				dialog_regioncode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_regioncode.urlParam.filterVal=['session.compcode','A']
+				dialog_regioncode.urlParam.filterVal=['session.compcode','DEACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);

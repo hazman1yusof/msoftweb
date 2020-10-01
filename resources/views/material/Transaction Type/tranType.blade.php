@@ -93,8 +93,8 @@
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="recstatus">Record Status</label>  
 				  <div class="col-md-3">
-					<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
-					<label class="radio-inline"><input type="radio" name="recstatus" value='D' >Deactive</label>
+					<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>Active</label>
+					<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE' >Deactive</label>
 				  </div>
 				</div>
                

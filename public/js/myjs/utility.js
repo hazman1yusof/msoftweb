@@ -604,9 +604,9 @@ function truefalseUNFormatter(cellvalue, options, rowObject){
 ////////////////////formatter status////////////////////////////////////////
 function formatterstatus(cellvalue, option, rowObject) {
 	if (cellvalue == 'A') {
-		return 'Active';
+		return 'ACTIVE';
 	}else if (cellvalue == 'D') {
-		return 'Deactive';
+		return 'DEACTIVE';
 	}
 }
 
@@ -622,9 +622,9 @@ function formatterstatus_tick(cellvalue, option, rowObject) {
 
 ////////////////////unformatter status////////////////////////////////////////
 function unformatstatus(cellvalue, option, rowObject) {
-	if (cellvalue == 'Active') {
+	if (cellvalue == 'ACTIVE') {
 		return 'A';
-	}else if (cellvalue == 'Deactive') {
+	}else if (cellvalue == 'DEACTIVE') {
 		return 'D';
 	}
 }
@@ -1562,8 +1562,10 @@ fixPositionsOfFrozenDivs = function () {
 
 function recstatusDisable(recstatus = 'recstatus'){
 	var recstatusvalue = $("#formdata [name='"+recstatus+"']:checked").val();
-	if(recstatusvalue == 'A'){
+	if(recstatusvalue == 'ACTIVE'){
 		$("#formdata input[name='"+recstatus+"']").prop('disabled', true);
+	}else if (recstatusvalue == 'DEACTIVE'){
+		$("#formdata input[name='"+recstatus+"']").prop('disabled', false);
 	}else{
 		$("#formdata input[name='"+recstatus+"']").prop('disabled', false);
 	}

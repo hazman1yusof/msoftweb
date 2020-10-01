@@ -147,8 +147,8 @@
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{ label: 'idno', name: 'idno', hidden: true},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -196,25 +196,6 @@
 				},
 				
 			});
-/*
-			////////////////////////////formatter//////////////////////////////////////////////////////////
-			function formatter(cellvalue, options, rowObject){
-				if(cellvalue == 'A'){
-					return "Active";
-				}
-				if(cellvalue == 'D') { 
-					return "Deactive";
-				}
-			}
-
-			function  unformat(cellvalue, options){
-				if(cellvalue == 'Active'){
-					return "Active";
-				}
-				if(cellvalue == 'Deactive') { 
-					return "Deactive";
-				}
-			}	*/
 
 			////////////////////////function hide radio button ////////////////////////////////////////////////
 			function hidePostClass() {
@@ -394,22 +375,22 @@
 							open: function(){
 							if($('#postGroupcode').val().trim() == 'Stock') {
 								filterCol=['cattype', 'source', 'recstatus'];
-								filterVal=['Stock', 'PO', 'A'];
+								filterVal=['Stock', 'PO', 'ACTIVE'];
 							}else if($('#postGroupcode').val().trim() == 'Others') {
 								filterCol=['cattype', 'source', 'recstatus'];
-								filterVal=['Other', 'PO', 'A'];
+								filterVal=['Other', 'PO', 'ACTIVE'];
 							}else if($('#groupcode').val().trim() == 'Stock') {
 								filterCol=['cattype', 'source', 'recstatus'];
-								filterVal=['Stock', 'PO', 'A'];
+								filterVal=['Stock', 'PO', 'ACTIVE'];
 							}else if($('#groupcode').val().trim() == 'Others') {
 								filterCol=['cattype', 'source', 'recstatus'];
-								filterVal=['Other', 'PO', 'A'];
+								filterVal=['Other', 'PO', 'ACTIVE'];
 							}else if($('#postGroupcode').val().trim() == 'Asset'){
 								table_name="finance.facode";
 								field=['assetcode as catcode', 'description'];
 							}else {
 								filterCol=['recstatus'];
-								filterVal=['A'];
+								filterVal=['ACTIVE'];
 							}
 						}
 					},
@@ -431,22 +412,22 @@
 					open: function(){
 						if($('#postGroupcode').val().trim() == 'Stock') {
 							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-							dialog_category.urlParam.filterVal=['Stock', 'PO', 'A'];
+							dialog_category.urlParam.filterVal=['Stock', 'PO', 'ACTIVE'];
 						}else if($('#postGroupcode').val().trim() == 'Others') {
 							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-							dialog_category.urlParam.filterVal=['Other', 'PO', 'A'];
+							dialog_category.urlParam.filterVal=['Other', 'PO', 'ACTIVE'];
 						}else if($('#groupcode').val().trim() == 'Stock') {
 							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-							dialog_category.urlParam.filterVal=['Stock', 'PO', 'A'];
+							dialog_category.urlParam.filterVal=['Stock', 'PO', 'ACTIVE'];
 						}else if($('#groupcode').val().trim() == 'Others') {
 							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-							dialog_category.urlParam.filterVal=['Other', 'PO', 'A'];
+							dialog_category.urlParam.filterVal=['Other', 'PO', 'ACTIVE'];
 						}else if($('#postGroupcode').val().trim() == 'Asset'){
 							dialog_category.urlParam.table_name="finance.facode";
 							dialog_category.urlParam.field=['assetcode as catcode', 'description'];
 						}else {
 							dialog_category.urlParam.filterCol=['recstatus'];
-							dialog_category.urlParam.filterVal=['A'];
+							dialog_category.urlParam.filterVal=['ACTIVE'];
 						}
 					}
 				},'urlParam', 'radio', 'tab'

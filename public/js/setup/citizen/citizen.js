@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
@@ -48,7 +47,7 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
-				value:"A:ACTIVE;D:DEACTIVE"}, 
+				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 			cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
@@ -76,7 +75,8 @@ $(document).ready(function () {
 			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
+			if(addmore_jqgrid.more == true){
+				$('#jqGrid_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
@@ -277,7 +277,5 @@ $(document).ready(function () {
 			});
 			this.error = false;
 		}
-		
-
 	}
 });

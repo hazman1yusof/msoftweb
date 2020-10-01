@@ -266,8 +266,8 @@ input.uppercase {
 
 						<label class="col-md-2 control-label" for="cm_recstatus">Record Status</label>  
 						<div class="col-md-3">
-							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='A' checked>Active</label>
-							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='D' >Deactive</label>
+							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='ACTIVE' checked>Active</label>
+							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='DEACTIVE' >Deactive</label>
 						</div>
 					</div>
 
@@ -278,12 +278,12 @@ input.uppercase {
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="cm_uom">UOM</label>  
 							<div class="col-md-3">
-								<input id="cm_uom" name="cm_uom" type="text" class="form-control input-sm uppercase" rdonly>
+								<input id="cm_uom" name="cm_uom" type="text" value="EA" class="form-control input-sm uppercase" rdonly>
 							</div>
 
 							<label class="col-md-2 control-label" for="cm_invflag">Inventory Item</label>
 							<div class="col-md-3">
-								<label class="radio-inline"><input type="radio" name="cm_invflag" value='1' checked dsabled>Yes</label>
+								<label class="radio-inline"><input type="radio" name="cm_invflag" value='1' dsabled>Yes</label>
 								<label class="radio-inline"><input type="radio" name="cm_invflag" value='0' dsabled>No</label>
 							</div>
 						</div>

@@ -36,7 +36,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#glaccno').focus();
@@ -56,7 +56,7 @@ $(document).ready(function () {
 			title:"Select Cost Code",
 			open: function(){
 				dialog_costcode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_costcode.urlParam.filterVal=['session.compcode','A']
+				dialog_costcode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam', 'radio','tab'
 	);
@@ -70,7 +70,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#drpayment').focus();
@@ -89,7 +89,7 @@ $(document).ready(function () {
 			title:"Select GL Account",
 			open: function(){
 				dialog_glaccount.urlParam.filterCol=['compcode','recstatus'],
-				dialog_glaccount.urlParam.filterVal=['session.compcode','A']
+				dialog_glaccount.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio', 'tab'
 	);
@@ -103,7 +103,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 			},
 				ondblClickRow: function () {
 				},
@@ -121,7 +121,7 @@ $(document).ready(function () {
 			title:"Select Bank",
 			open: function(){
 				dialog_cardbank.urlParam.filterCol=['compcode','recstatus'],
-				dialog_cardbank.urlParam.filterVal=['session.compcode','A']
+				dialog_cardbank.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -316,8 +316,8 @@ $(document).ready(function () {
 			{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
 			{label: 'idno', name: 'idno', width: 200, hidden: true, classes: 'wrap'}, 
-			{ label: 'Record Status', name: 'recstatus', width: 25, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+			{ label: 'Record Status', name: 'recstatus', width: 25, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 		],
 		autowidth:true,

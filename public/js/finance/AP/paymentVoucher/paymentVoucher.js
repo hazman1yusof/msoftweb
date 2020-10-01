@@ -882,7 +882,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function documentCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input id="document" name="document" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 	}
 
@@ -1040,7 +1040,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
 				$('#apacthdr_paymode').focus();
@@ -1059,7 +1059,7 @@ $(document).ready(function () {
 			title:"Select Department Code",
 			open: function(){
 				dialog_department.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_department.urlParam.filterVal=['A', 'session.compcode']
+				dialog_department.urlParam.filterVal=['ACTIVE', 'session.compcode']
 				}
 			},'urlParam','radio','tab'
 		);
@@ -1074,7 +1074,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
 				$('#apacthdr_bankcode').focus();
@@ -1094,7 +1094,7 @@ $(document).ready(function () {
 			open: function(){
 				//let data=selrowData('#'+dialog_paymode.gridname);
 				dialog_paymode.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
-				dialog_paymode.urlParam.filterVal=['A', 'session.compcode', $('#apacthdr_source').val(), '<>.Debit Note' && '<>.Credit Note']
+				dialog_paymode.urlParam.filterVal=['AACTIVE', 'session.compcode', $('#apacthdr_source').val(), '<>.Debit Note' && '<>.Credit Note']
 				}
 			},'urlParam','radio','tab'
 		);
@@ -1108,7 +1108,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
 				$('#apacthdr_cheqno').focus();
@@ -1127,7 +1127,7 @@ $(document).ready(function () {
 			title:"Select Paymode",
 			open: function(){
 				dialog_bankcode.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_bankcode.urlParam.filterVal=['A', 'session.compcode']
+				dialog_bankcode.urlParam.filterVal=['ACTIVE', 'session.compcode']
 				}
 			},'urlParam','radio','tab'
 		);
@@ -1250,7 +1250,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
 				//$('#apacthdr_actdate').focus();
@@ -1269,7 +1269,7 @@ $(document).ready(function () {
 			title:"Select Supplier Code",
 			open: function(){
 				dialog_payto.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_payto.urlParam.filterVal=['A', 'session.compcode']
+				dialog_payto.urlParam.filterVal=['ACTIVE', 'session.compcode']
 				}
 			},'urlParam','radio','tab'
 		);

@@ -109,7 +109,7 @@ class UnitController extends defaultController
         DB::table('sysdb.sector')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);

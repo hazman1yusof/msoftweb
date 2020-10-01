@@ -199,7 +199,8 @@ $(document).ready(function () {
 				}
 				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 
-			empty_form()
+				populate_form(selrowData("#jqGrid"));
+				//empty_form()
 		},
 			
 	});
@@ -717,16 +718,16 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function deptcodeCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input id="deptcode" name="deptcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 	}
 
 	function categoryCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input id="category" name="category" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 	}
 	function GSTCodeCustomEdit(val,opt){
-		val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 
 		var id_optid = opt.id.substring(0,opt.id.search("_"));
 		return $(`<div class="input-group">
@@ -902,7 +903,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus', 'source'],
-				filterVal:['session.compcode','A', 'CM']
+				filterVal:['session.compcode','ACTIVE', 'CM']
 			},
 			ondblClickRow: function () {
 				$('#bankcode').focus();
@@ -921,7 +922,7 @@ $(document).ready(function () {
 			title:"Select Payment",
 			open: function(){
 				dialog_paymode.urlParam.filterCol=['compcode','recstatus', 'source'],
-				dialog_paymode.urlParam.filterVal=['session.compcode','A', 'CM']
+				dialog_paymode.urlParam.filterVal=['session.compcode','ACTIVE', 'CM']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -935,7 +936,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				$('#cheqno').focus();
@@ -954,7 +955,7 @@ $(document).ready(function () {
 			title:"Select Bank Code",
 			open: function(){
 				dialog_bankcode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_bankcode.urlParam.filterVal=['session.compcode','A']
+				dialog_bankcode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -968,7 +969,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				//$('#remarks').focus();
@@ -987,7 +988,7 @@ $(document).ready(function () {
 			title:"Select Bank Code Pay To",
 			open: function(){
 				dialog_payto.urlParam.filterCol=['compcode','recstatus'],
-				dialog_payto.urlParam.filterVal=['session.compcode','A']
+				dialog_payto.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1037,7 +1038,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				//$('#cheqdate').focus();
@@ -1068,7 +1069,7 @@ $(document).ready(function () {
 			title:"Select Department Code",
 			open: function(){
 				dialog_deptcode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_deptcode.urlParam.filterVal=['session.compcode','A']
+				dialog_deptcode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1083,7 +1084,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','source', 'cattype', 'recstatus'],
-				filterVal:['session.compcode','CR', 'Other', 'A']
+				filterVal:['session.compcode','CR', 'Other', 'ACTIVE']
 			},
 			ondblClickRow: function () {
 				//$('#cheqdate').focus();
@@ -1102,7 +1103,7 @@ $(document).ready(function () {
 			title:"Select Category",
 			open: function(){
 				dialog_category.urlParam.filterCol=['compcode','source', 'cattype', 'recstatus'],
-				dialog_category.urlParam.filterVal=['session.compcode','CR', 'Other', 'A']
+				dialog_category.urlParam.filterVal=['session.compcode','CR', 'Other', 'ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1118,7 +1119,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1154,7 +1155,7 @@ $(document).ready(function () {
 			title:"Select Tax Code For Item",
 			open: function(){
 				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
-				dialog_GSTCode.urlParam.filterVal=['session.compcode','A', 'Input'];
+				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
 			},
 			close: function(){
 				if($('#jqGridPager2SaveAll').css("display") == "none"){

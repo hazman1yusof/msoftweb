@@ -107,7 +107,7 @@ class OccupationController extends defaultController
         DB::table('hisdb.occupation')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);

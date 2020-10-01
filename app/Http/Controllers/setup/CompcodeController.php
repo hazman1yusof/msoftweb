@@ -60,7 +60,7 @@ class CompcodeController extends defaultController
                     'logo1' => strtoupper($request->logo1),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                   // 'lastcomputerid' => strtoupper($request->lastcomputerid),
 //'lastipaddress' => strtoupper($request->lastipaddress),
                     //'lastuser' => strtoupper(session('username')),
                     //'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -110,7 +110,7 @@ class CompcodeController extends defaultController
         DB::table('sysdb.company')
             ->where('compcode','=',$request->compcode)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);

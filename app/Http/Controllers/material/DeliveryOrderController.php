@@ -949,7 +949,7 @@ class DeliveryOrderController extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'actamount'.$yearperiod->period => $this->gltranAmount - $value->amount,
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }else{
                     
@@ -966,7 +966,7 @@ class DeliveryOrderController extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'actamount'.$yearperiod->period => $this->gltranAmount + $value->amount,
-                            'recstatus' => 'A'
+                            'recstatus' => 'ACTIVE'
                         ]);
                 }else{
                    
@@ -1028,7 +1028,7 @@ class DeliveryOrderController extends defaultController
                                 'upduser' => session('username'),
                                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                                 'actamount'.$yearperiod->period => $this->gltranAmount - $value->amtslstax,
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }else{
                         
@@ -1045,7 +1045,7 @@ class DeliveryOrderController extends defaultController
                                 'upduser' => session('username'),
                                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
                                 'actamount'.$yearperiod->period => $this->gltranAmount + $value->amtslstax,
-                                'recstatus' => 'A'
+                                'recstatus' => 'ACTIVE'
                             ]);
                     }else{
                        
@@ -1181,7 +1181,7 @@ class DeliveryOrderController extends defaultController
                     'unit' => session('unit'), 
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'A', 
+                    'recstatus' => 'ACTIVE', 
                     'remarks' => $value->remarks
                 ]);
             }
@@ -1284,7 +1284,7 @@ class DeliveryOrderController extends defaultController
                         'unit' => session('unit'), 
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        'recstatus' => 'A', 
+                        'recstatus' => 'ACTIVE', 
                         'remarks' => $value->remarks
                     ]);
                 }

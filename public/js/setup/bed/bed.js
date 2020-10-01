@@ -344,7 +344,6 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			var data = JSON.parse(response.responseText)
-			$('#p_error').text(response.responseText);
 			err_reroll.old_data = data.request;
 			err_reroll.error = true;
 			err_reroll.errormsg = data.errormsg;

@@ -227,179 +227,179 @@
 		</div>
 	</div>
 
-		<div class='row'>
-			<div class="panel panel-default" style="position: relative;" id="jqGrid_trf_c">
-				
-				<div class="panel-heading clearfix collapsed position" id="toggle_trf" style="position: sticky;top: 0px;z-index: 3;">
-					<b>Name: <span id="name_show"></span></b><br>
-						Bed No: <span id="bednum_show"></span>
-						<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px" data-toggle="collapse" data-target="#jqGrid_trf_panel"></i>
-						<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px" data-toggle="collapse" data-target="#jqGrid_trf_panel"></i>
-						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 280px; top: 15px;">
-							<h5>Bed Allocation Detail</h5>
-						</div>
+	<div class='row'>
+		<div class="panel panel-default" style="position: relative;" id="jqGrid_trf_c">
+			
+			<div class="panel-heading clearfix collapsed position" id="toggle_trf" style="position: sticky;top: 0px;z-index: 3;">
+				<b>Name: <span id="name_show"></span></b><br>
+					Bed No: <span id="bednum_show"></span>
+					<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px" data-toggle="collapse" data-target="#jqGrid_trf_panel"></i>
+					<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px" data-toggle="collapse" data-target="#jqGrid_trf_panel"></i>
+					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 280px; top: 15px;">
+						<h5>Bed Allocation Detail</h5>
+					</div>
 
-						<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-							id="btn_grp_edit_trf"
-							style="position: absolute;
-									padding: 0 0 0 0;
-									right: 40px;
-									top: 15px;" 
+					<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+						id="btn_grp_edit_trf"
+						style="position: absolute;
+								padding: 0 0 0 0;
+								right: 40px;
+								top: 15px;" 
 
-						>
-							<button type="button" class="btn btn-default" id="edit_trf">
-								<span class="fa fa-edit fa-lg"></span> Transfer
-							</button>
-							<button type="button" class="btn btn-default" data-oper='add' id="save_trf">
-								<span class="fa fa-save fa-lg"></span> Save
-							</button>
-							<button type="button" class="btn btn-default" id="cancel_trf" >
-								<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-							</button>
-						</div>		
-				</div>
+					>
+						<button type="button" class="btn btn-default" id="edit_trf">
+							<span class="fa fa-edit fa-lg"></span> Transfer
+						</button>
+						<button type="button" class="btn btn-default" data-oper='add' id="save_trf">
+							<span class="fa fa-save fa-lg"></span> Save
+						</button>
+						<button type="button" class="btn btn-default" id="cancel_trf" >
+							<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+						</button>
+					</div>		
+			</div>
 
-				<div id="jqGrid_trf_panel" class="panel-collapse collapse">
-					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="jqGrid_trf" class="table table-striped"></table>
-							<div id="jqGridPager3"></div>
+			<div id="jqGrid_trf_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid_trf" class="table table-striped"></table>
+						<div id="jqGridPager3"></div>
 
-								<!-- form -->
+							<!-- form -->
 
-							<form id='form_trf' class='form-vertical' style='width:99%'>
-								<div class='col-md-12' style="padding:15px 0 15px 0">
+						<form id='form_trf' class='form-vertical' style='width:99%'>
+							<div class='col-md-12' style="padding:15px 0 15px 0">
 
-									<div class='col-md-6'>
-										<div class="panel panel-info">
-											<div class="panel-heading text-center">CURRENT BED</div>
-											<div class="panel-body">
+								<div class='col-md-6'>
+									<div class="panel panel-info">
+										<div class="panel-heading text-center">CURRENT BED</div>
+										<div class="panel-body">
 
-												<div class="form-group row">
-													<label class="col-md-1 control-label" for="date">Date</label>  
-													<div class="col-md-5">
-														<input id="ba_asdate" name="ba_asdate" type="date" class="form-control input-sm uppercase">
-													</div>
+											<div class="form-group row">
+												<label class="col-md-1 control-label" for="date">Date</label>  
+												<div class="col-md-5">
+													<input id="ba_asdate" name="ba_asdate" type="date" class="form-control input-sm uppercase">
+												</div>
+											
+												<label class="col-md-1 control-label" for="time">Time</label>  
+												<div class="col-md-5">
+													<input id="ba_astime" name="ba_astime" type="time" class="form-control input-sm uppercase">
+												</div>
+											</div>
+
+											<div class="form-group row">
+												<label class="col-md-1 control-label" for="room">Room</label>  
+												<div class="col-md-5">
+													<input id="ba_room" name="ba_room" type="text" class="form-control input-sm uppercase">
+												</div>
+
+												<label class="col-md-1 control-label" for="ward">Ward</label>  
+												<div class="col-md-5">
+													<input id="ba_ward" name="ba_ward" type="text" class="form-control input-sm uppercase">
+												</div>
+											</div>
+
+											<div class="form-group row">
+												<label class="col-md-1 control-label" for="bednum">Bed No</label>  
+												<div class="col-md-5">
+													<input id="ba_bednum" name="ba_bednum" type="text" class="form-control input-sm uppercase">
+												</div>
+											
+												<label class="col-md-1 control-label" for="bedtype">Bed Type</label>  
+												<div class="col-md-5">
+													<input id="b_bedtype" name="b_bedtype" type="text" class="form-control input-sm uppercase">
+												</div>
+												<span class="help-block"></span>
+											</div>													
+											<!-- Class form group closed -->
 												
-													<label class="col-md-1 control-label" for="time">Time</label>  
-													<div class="col-md-5">
-														<input id="ba_astime" name="ba_astime" type="time" class="form-control input-sm uppercase">
-													</div>
-												</div>
-
-												<div class="form-group row">
-													<label class="col-md-1 control-label" for="room">Room</label>  
-													<div class="col-md-5">
-														<input id="ba_room" name="ba_room" type="text" class="form-control input-sm uppercase">
-													</div>
-
-													<label class="col-md-1 control-label" for="ward">Ward</label>  
-													<div class="col-md-5">
-														<input id="ba_ward" name="ba_ward" type="text" class="form-control input-sm uppercase">
-													</div>
-												</div>
-
-												<div class="form-group row">
-													<label class="col-md-1 control-label" for="bednum">Bed No</label>  
-													<div class="col-md-5">
-														<input id="ba_bednum" name="ba_bednum" type="text" class="form-control input-sm uppercase">
-													</div>
-												
-													<label class="col-md-1 control-label" for="bedtype">Bed Type</label>  
-													<div class="col-md-5">
-														<input id="b_bedtype" name="b_bedtype" type="text" class="form-control input-sm uppercase">
-													</div>
-													<span class="help-block"></span>
-												</div>													
-												<!-- Class form group closed -->
-													
-											</div>  
-											<!-- Panel body close -->
-										</div>
-									</div>
-
-									<div class='col-md-6'>
-										<div class="panel panel-info" id="transferto_div">
-											<div class="panel-heading text-center">TRANSFER TO BED</div>
-											<div class="panel-body">
-												<div class="form-group row">
-													<label class="col-md-1 control-label" for="date">Date</label>  
-													<div class="col-md-5">
-														<input id="trf_aedate" name="trf_aedate" type="date" class="form-control input-sm uppercase">
-													</div>
-
-													<label class="col-md-1 control-label" for="time">Time</label>  
-													<div class="col-md-5">
-														<input id="trf_aetime" name="trf_aetime" type="time" class="form-control input-sm uppercase">
-													</div>
-												</div>
-
-												<div class="form-group row">
-													<label class="col-md-1 control-label" for="trf_bednum">Bed No</label>  
-													<div class="col-md-5">
-														<div class='input-group'>
-															<input id="trf_bednum" name="trf_bednum" type="text" class="form-control input-sm uppercase">
-															<a class='input-group-addon btn btn-primary' ><span class='fa fa-ellipsis-h' ></span></a>
-														</div>
-														<span class="help-block"></span>
-													</div>
-												
-
-													<label class="col-md-1 control-label" for="room">Room</label>  
-													<div class="col-md-5">
-														<input id="trf_room" name="trf_room" type="text" class="form-control input-sm uppercase">
-													</div>
-												</div>
-
-
-												<div class="form-group row">
-													<label class="col-md-1 control-label" for="ward">Ward</label>  
-													<div class="col-md-5">
-														<input id="trf_ward" name="trf_ward" type="text" class="form-control input-sm uppercase">
-													</div>
-												
-													<label class="col-md-1 control-label" for="bedtype">Bed Type</label>  
-													<div class="col-md-5">
-														<input id="trf_bedtype" name="trf_bedtype" type="text" class="form-control input-sm uppercase">
-													</div>
-												</div>
-
-
-												<div class="form-group row">
-													<label class="col-md-1 control-label" for="occup">Bed Status</label>  
-													<div class="col-md-5">
-														<select id="trf_astatus" name="trf_astatus" class="form-control input-sm uppercase">
-														  <option value="Transfer">Transfer</option>
-														  <option value="Reserved">Reserved</option>
-														</select>
-													</div>
-
-													<label class="col-md-1 control-label" for="trf_lodger">Lodger</label>  
-													<div class="col-md-5">
-														<div class='input-group'>
-															<input id="trf_lodger" name="trf_lodger" type="text" class="form-control input-sm uppercase">
-															<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-														</div>
-														<span class="help-block"></span>
-													</div>
-												</div>
-
-												</div>
-												<!-- Class form group closed -->
-												
-											</div>  
-											<!-- Panel body close -->
-										</div>
+										</div>  
+										<!-- Panel body close -->
 									</div>
 								</div>
 
-							</form>
+								<div class='col-md-6'>
+									<div class="panel panel-info" id="transferto_div">
+										<div class="panel-heading text-center">TRANSFER TO BED</div>
+										<div class="panel-body">
+											<div class="form-group row">
+												<label class="col-md-1 control-label" for="date">Date</label>  
+												<div class="col-md-5">
+													<input id="trf_aedate" name="trf_aedate" type="date" class="form-control input-sm uppercase">
+												</div>
 
+												<label class="col-md-1 control-label" for="time">Time</label>  
+												<div class="col-md-5">
+													<input id="trf_aetime" name="trf_aetime" type="time" class="form-control input-sm uppercase">
+												</div>
+											</div>
+
+											<div class="form-group row">
+												<label class="col-md-1 control-label" for="trf_bednum">Bed No</label>  
+												<div class="col-md-5">
+													<div class='input-group'>
+														<input id="trf_bednum" name="trf_bednum" type="text" class="form-control input-sm uppercase">
+														<a class='input-group-addon btn btn-primary' ><span class='fa fa-ellipsis-h' ></span></a>
+													</div>
+													<span class="help-block"></span>
+												</div>
+											
+
+												<label class="col-md-1 control-label" for="room">Room</label>  
+												<div class="col-md-5">
+													<input id="trf_room" name="trf_room" type="text" class="form-control input-sm uppercase">
+												</div>
+											</div>
+
+
+											<div class="form-group row">
+												<label class="col-md-1 control-label" for="ward">Ward</label>  
+												<div class="col-md-5">
+													<input id="trf_ward" name="trf_ward" type="text" class="form-control input-sm uppercase">
+												</div>
+											
+												<label class="col-md-1 control-label" for="bedtype">Bed Type</label>  
+												<div class="col-md-5">
+													<input id="trf_bedtype" name="trf_bedtype" type="text" class="form-control input-sm uppercase">
+												</div>
+											</div>
+
+
+											<div class="form-group row">
+												<label class="col-md-1 control-label" for="occup">Bed Status</label>  
+												<div class="col-md-5">
+													<select id="trf_astatus" name="trf_astatus" class="form-control input-sm uppercase">
+														<option value="Transfer">Transfer</option>
+														<option value="Reserved">Reserved</option>
+													</select>
+												</div>
+
+												<label class="col-md-1 control-label" for="trf_lodger">Lodger</label>  
+												<div class="col-md-5">
+													<div class='input-group'>
+														<input id="trf_lodger" name="trf_lodger" type="text" class="form-control input-sm uppercase">
+														<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+													</div>
+													<span class="help-block"></span>
+												</div>
+											</div>
+
+											</div>
+											<!-- Class form group closed -->
+											
+										</div>  
+										<!-- Panel body close -->
+									</div>
+								</div>
 							</div>
-					</div>
-				</div>	
-			</div>
+
+						</form>
+
+						</div>
+				</div>
+			</div>	
 		</div>
+	</div>
 
 		<div class='row'>
 			@include('hisdb.nursing.nursing')
@@ -425,49 +425,6 @@
 			@include('hisdb.ordcom.ordcom')
 		</div>
 
-		<!-- <div class='row'>
-			<div class="panel-group">
-				<div class="panel panel-default" style="position: relative;" id="jqGrid_ordcom_c">
-					<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-						id="btn_grp_edit_ordcom"
-						style="position: absolute;
-								padding: 0 0 0 0;
-								right: 40px;
-								top: 15px;" 
-					>
-						<button type="button" class="btn btn-default" id="edit_ordcom">
-							<span class="fa fa-edit fa-lg"></span> Edit
-						</button>
-						<button type="button" class="btn btn-default" data-oper='add' id="save_ordcom">
-							<span class="fa fa-save fa-lg"></span> Save
-						</button>
-						<button type="button" class="btn btn-default" id="cancel_ordcom" >
-							<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-						</button>
-					</div>
-					<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" data-toggle="collapse" data-target="#jqGrid_ordcom_panel">
-						<b>Name: <span id="name_show"></span></b><br>
-							Bed No: <span id="bednum_show"></span>
-							<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px"></i>
-							<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px"></i>
-							<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 280px; top: 15px;">
-								<h5>ORDER COMM DTL</h5>
-							</div>		
-					</div>
-
-					<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">
-						<div class="panel-body">
-							<div class='col-md-12' style="padding:0 0 15px 0">
-								<table id="jqGrid_ordcom" class="table table-striped"></table>
-								<div id="jqGridPager4"></div>
-							</div>
-						</div>
-					</div>	
-				</div>
-			</div>
-		</div> -->
-			
-
 	<div id="dialogReserveBedForm" title="Note for reserved bed" >
 		<div class='panel panel-info'>
 			<div class="panel-body" style="">
@@ -487,7 +444,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Select Accomadation</h4>
+					<h4 class="modal-title">Select Accomodation</h4>
 				</div>
 				<div class="modal-body">
 					<div class="table-responsive table-no-bordered content">

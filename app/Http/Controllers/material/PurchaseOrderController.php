@@ -264,7 +264,7 @@ class PurchaseOrderController extends defaultController
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PO')
-                    ->where('cando','=', 'A')
+                    ->where('cando','=', 'ACTIVE')
                     ->where('recstatus','=','SUPPORT')
                     ->where('deptcode','=',$purordhd_get->prdept)
                     ->where('maxlimit','>=',$purordhd_get->totamount);
@@ -274,7 +274,7 @@ class PurchaseOrderController extends defaultController
                     $authorise = DB::table('material.authdtl')
                         ->where('compcode','=',session('compcode'))
                         ->where('trantype','=','PO')
-                        ->where('cando','=', 'A')
+                        ->where('cando','=', 'ACTIVE')
                         ->where('recstatus','=','SUPPORT')
                         ->where('deptcode','=','ALL')
                         ->where('deptcode','=','all')
@@ -354,7 +354,7 @@ class PurchaseOrderController extends defaultController
             $authorise = DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('trantype','=','PO')
-                ->where('cando','=', 'A')
+                ->where('cando','=', 'ACTIVE')
                 ->where('recstatus','=','SUPPORT')
                 ->where('deptcode','=',$purordhd_get->prdept)
                 ->where('maxlimit','>=',$purordhd_get->totamount);
@@ -364,7 +364,7 @@ class PurchaseOrderController extends defaultController
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PO')
-                    ->where('cando','=', 'A')
+                    ->where('cando','=', 'ACTIVE')
                     ->where('recstatus','=','SUPPORT')
                     ->where('deptcode','=','ALL')
                     ->where('deptcode','=','all')
@@ -566,7 +566,7 @@ class PurchaseOrderController extends defaultController
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PO')
-                    ->where('cando','=', 'A')
+                    ->where('cando','=', 'ACTIVE')
                     ->where('recstatus','=','VERIFIED')
                     ->where('deptcode','=',$purordhd_get->prdept)
                     ->where('maxlimit','>=',$purordhd_get->totamount);
@@ -576,7 +576,7 @@ class PurchaseOrderController extends defaultController
                     $authorise = DB::table('material.authdtl')
                         ->where('compcode','=',session('compcode'))
                         ->where('trantype','=','PO')
-                        ->where('cando','=', 'A')
+                        ->where('cando','=', 'ACTIVE')
                         ->where('recstatus','=','VERIFIED')
                         ->where('deptcode','=','ALL')
                         ->where('deptcode','=','all')
@@ -651,7 +651,7 @@ class PurchaseOrderController extends defaultController
             $authorise = DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('trantype','=','PO')
-                ->where('cando','=', 'A')
+                ->where('cando','=', 'ACTIVE')
                 ->where('recstatus','=','VERIFIED')
                 ->where('deptcode','=',$purordhd_get->prdept)
                 ->where('maxlimit','>=',$purordhd_get->totamount);
@@ -661,7 +661,7 @@ class PurchaseOrderController extends defaultController
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PO')
-                    ->where('cando','=', 'A')
+                    ->where('cando','=', 'ACTIVE')
                     ->where('recstatus','=','VERIFIED')
                     ->where('deptcode','=','ALL')
                     ->where('deptcode','=','all')
@@ -734,7 +734,7 @@ class PurchaseOrderController extends defaultController
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PO')
-                    ->where('cando','=', 'A')
+                    ->where('cando','=', 'ACTIVE')
                     ->where('recstatus','=','APPROVED')
                     ->where('deptcode','=',$purordhd_get->reqdept)
                     ->where('maxlimit','>=',$purordhd_get->totamount);
@@ -744,7 +744,7 @@ class PurchaseOrderController extends defaultController
                     $authorise = DB::table('material.authdtl')
                         ->where('compcode','=',session('compcode'))
                         ->where('trantype','=','PO')
-                        ->where('cando','=', 'A')
+                        ->where('cando','=', 'ACTIVE')
                         ->where('recstatus','=','APPROVED')
                         ->where('deptcode','=','ALL')
                         ->where('deptcode','=','all')
@@ -817,7 +817,7 @@ class PurchaseOrderController extends defaultController
             $authorise = DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('trantype','=','PO')
-                ->where('cando','=', 'A')
+                ->where('cando','=', 'ACTIVE')
                 ->where('recstatus','=','APPROVED')
                 ->where('deptcode','=',$purordhd_get->reqdept)
                 ->where('maxlimit','>=',$purordhd_get->totamount);
@@ -827,7 +827,7 @@ class PurchaseOrderController extends defaultController
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('trantype','=','PO')
-                    ->where('cando','=', 'A')
+                    ->where('cando','=', 'ACTIVE')
                     ->where('recstatus','=','APPROVED')
                     ->where('deptcode','=','ALL')
                     ->where('deptcode','=','all')
@@ -1075,7 +1075,7 @@ class PurchaseOrderController extends defaultController
                 'purordno' => $purordno,
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now(), 
-                'recstatus' => 'A', 
+                'recstatus' => 'ACTIVE', 
                 'remarks' => $value->remarks
             ]);
 

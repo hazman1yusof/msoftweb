@@ -150,8 +150,8 @@
 				{ label: 'opdept', name: 'opdept', hidden:true},
 				{ label: 'invcategory', name: 'invcategory', hidden:true},
 				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
-				formatter: formatter, unformat: unformat, cellattr: function (rowid, cellvalue)
-				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+				cellattr: function (rowid, cellvalue)
+				{ return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"' : '' },},
 				{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 				{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 				{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
@@ -180,26 +180,6 @@
 				// $('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 			},
 		});
-
-		//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
-		
-		function formatter(cellvalue, options, rowObject) {
-			if (cellvalue == 'A') {
-				return "Active";
-			}
-			if (cellvalue == 'D') {
-				return "Deactive";
-			}
-		}
-
-		function unformat(cellvalue, options) {
-			if (cellvalue == 'Active') {
-				return "A";
-			}
-			if (cellvalue == 'Deactive') {
-				return "D";
-			}
-		}
 
 		/////////////////////////////populate data for dropdown search By////////////////////////////
 		searchBy();
@@ -380,7 +360,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					let data = selrowData('#' + show_chggroup.gridname).grpcode;
@@ -402,7 +382,7 @@
 				title: "Select Group Code",
 				open: function () {
 					show_chggroup.urlParam.filterCol = ['compcode','recstatus'];
-					show_chggroup.urlParam.filterVal = ['session.compcode','A'];
+					show_chggroup.urlParam.filterVal = ['session.compcode','ACTIVE'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -417,7 +397,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#ipdept').focus();
@@ -437,7 +417,7 @@
 				title:"Select Group Code",
 				open: function(){
 					dialog_chggroup.urlParam.filterCol=['compcode','recstatus'];
-					dialog_chggroup.urlParam.filterVal=['session.compcode','A'];
+					dialog_chggroup.urlParam.filterVal=['session.compcode','ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -452,7 +432,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#opdept').focus();
@@ -472,7 +452,7 @@
 				title:"Select Department Code",
 				open: function(){
 					dialog_ipdept.urlParam.filterCol=['compcode','recstatus'];
-					dialog_ipdept.urlParam.filterVal=['session.compcode','A'];
+					dialog_ipdept.urlParam.filterVal=['session.compcode','ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab',false
@@ -487,7 +467,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#ipacccode').focus();
@@ -507,7 +487,7 @@
 				title:"Select Department Code",
 				open: function(){
 					dialog_opdept.urlParam.filterCol=['compcode','recstatus'];
-					dialog_opdept.urlParam.filterVal=['session.compcode','A'];
+					dialog_opdept.urlParam.filterVal=['session.compcode','ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab',false
@@ -522,7 +502,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#opacccode').focus();
@@ -542,7 +522,7 @@
 				title:"Select Glaccno",
 				open: function(){
 					dialog_ipacccode.urlParam.filterCol=['compcode','recstatus'];
-					dialog_ipacccode.urlParam.filterVal=['session.compcode','A'];
+					dialog_ipacccode.urlParam.filterVal=['session.compcode','ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -557,7 +537,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#otcacccode').focus();
@@ -577,7 +557,7 @@
 				title:"Select Glaccno",
 				open: function(){
 					dialog_opacccode.urlParam.filterCol=['compcode','recstatus'];
-					dialog_opacccode.urlParam.filterVal=['session.compcode','A'];
+					dialog_opacccode.urlParam.filterVal=['session.compcode','ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -592,7 +572,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#invcategory').focus();
@@ -612,7 +592,7 @@
 				title:"Select Glaccno",
 				open: function(){
 					dialog_otcacccode.urlParam.filterCol=['compcode','recstatus'];
-					dialog_otcacccode.urlParam.filterVal=['session.compcode','A'];
+					dialog_otcacccode.urlParam.filterVal=['session.compcode','ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -627,7 +607,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#recstatus').focus();
@@ -647,7 +627,7 @@
 				title:"Select Category Code",
 				open: function(){
 					dialog_invcategory.urlParam.filterCol=['compcode','recstatus'];
-					dialog_invcategory.urlParam.filterVal=['session.compcode','A'];
+					dialog_invcategory.urlParam.filterVal=['session.compcode','ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab', false
