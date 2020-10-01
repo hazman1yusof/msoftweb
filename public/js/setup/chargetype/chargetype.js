@@ -151,7 +151,7 @@
 				{ label: 'invcategory', name: 'invcategory', hidden:true},
 				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
 				cellattr: function (rowid, cellvalue)
-				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+				{ return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"' : '' },},
 				{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 				{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 				{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
