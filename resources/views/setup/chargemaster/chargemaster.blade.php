@@ -266,8 +266,8 @@ input.uppercase {
 
 						<label class="col-md-2 control-label" for="cm_recstatus">Record Status</label>  
 						<div class="col-md-3">
-							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='A' checked>Active</label>
-							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='D' >Deactive</label>
+							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='ACTIVE' checked>Active</label>
+							<label class="radio-inline"><input type="radio" name="cm_recstatus" value='DEACTIVE' >Deactive</label>
 						</div>
 					</div>
 

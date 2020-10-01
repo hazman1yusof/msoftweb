@@ -224,7 +224,7 @@
 				{ label: 'Upd User', name: 'cm_upduser', width: 80,hidden:true}, 
 				{ label: 'Upd Date', name: 'cm_upddate', width: 90,hidden:true},
 				{ label: 'Status', name:'cm_recstatus', width:30, classes:'wrap', hidden:false,
-				formatter: formatterstatus, unformat: unformatstatus, cellattr: function (rowid, cellvalue)
+				cellattr: function (rowid, cellvalue)
 				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
 				{ label: 'computerid', name: 'cm_computerid', width: 90, hidden: true, classes: 'wrap' },
 				{ label: 'ipaddress', name: 'cm_ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -419,7 +419,7 @@
 		function saveHeader(form,selfoper,saveParam,obj){
 			if(obj==null){
 				if($("#cm_chgtype").val()=="PKG" || $("#cm_chgtype").val()=="pkg"){
-					obj={cm_recstatus:'D'};
+					obj={cm_recstatus:'DEACTIVE'};
 					saveParam.field.push("cm_recstatus");
 				}else{
 					obj={};
@@ -482,7 +482,7 @@
 			join_onCol:['cp.chgcode'],
 			join_onVal:['cm.chgcode'],
 			filterCol:['cp.compcode','cp.chgcode','cp.recstatus'],
-			filterVal:['session.compcode','','A']
+			filterVal:['session.compcode','','ACTIVE']
 		};
 
 		var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
@@ -1813,7 +1813,7 @@
 			table_name:['hisdb.pkgdet AS pd'],
 			table_id:'lineno_',
 			filterCol:['pd.compcode','pd.pkgcode','pd.effectdate','pd.recstatus'],
-			filterVal:['session.compcode','','','A']
+			filterVal:['session.compcode','','','ACTIVE']
 		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2181,7 +2181,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					let data = selrowData('#' + chggroup.gridname).grpcode;
@@ -2196,7 +2196,7 @@
 				title: "Select Group Code",
 				open: function () {
 					chggroup.urlParam.filterCol=['compcode', 'recstatus'];
-					chggroup.urlParam.filterVal=['session.compcode', 'A'];
+					chggroup.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2215,7 +2215,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					let data = selrowData('#' + chgtype.gridname).chgtype;
@@ -2230,7 +2230,7 @@
 				title: "Select Charge Type",
 				open: function () {
 					chgtype.urlParam.filterCol=['compcode', 'recstatus'];
-					chgtype.urlParam.filterVal=['session.compcode', 'A'];
+					chgtype.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2245,7 +2245,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					let data=selrowData('#'+dialog_chgclass.gridname);
@@ -2280,7 +2280,7 @@
 				title:"Select Class Code",
 				open: function(){
 					dialog_chgclass.urlParam.filterCol=['compcode', 'recstatus'];
-					dialog_chgclass.urlParam.filterVal=['session.compcode', 'A'];
+					dialog_chgclass.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -2330,7 +2330,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#cm_chgtype').focus();
@@ -2350,7 +2350,7 @@
 				title:"Select Group Code",
 				open: function(){
 					dialog_chggroup.urlParam.filterCol=['compcode', 'recstatus'];
-					dialog_chggroup.urlParam.filterVal=['session.compcode', 'A'];
+					dialog_chggroup.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -2365,7 +2365,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','A']
+					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#cm_invgroup').focus();
@@ -2402,7 +2402,7 @@
 				title:"Select Charge Type",
 				open: function(){
 					dialog_chgtype.urlParam.filterCol=['compcode', 'recstatus'];
-					dialog_chgtype.urlParam.filterVal=['session.compcode', 'A'];
+					dialog_chgtype.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab'
@@ -2412,11 +2412,11 @@
 		$('#cm_chgtype').blur(function(){
 			let textval = $(dialog_chgtype.textfield).val();
 			if(textval == 'pkg' || textval == 'PKG'){
-				$('#cm_recstatus').val('D');
-				$("#formdata [name='cm_recstatus'][value='D']").prop('checked', true);
+				$('#cm_recstatus').val('DEACTIVE');
+				$("#formdata [name='cm_recstatus'][value='DEACTIVE']").prop('checked', true);
 			}else{
-				$('#cm_recstatus').val('A');
-				$("#formdata [name='cm_recstatus'][value='A']").prop('checked', true);
+				$('#cm_recstatus').val('ACTIVE');
+				$("#formdata [name='cm_recstatus'][value='ACTIVE']").prop('checked', true);
 			}
 		});
 
@@ -2428,7 +2428,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode', 'recstatus'],
-					filterVal:['session.compcode', 'A']
+					filterVal:['session.compcode', 'ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#cm_revcode').focus();
@@ -2448,7 +2448,7 @@
 				title:"Select Doctor Code",
 				open: function(){
 					dialog_doctorcode.urlParam.filterCol=['compcode', 'recstatus'];
-					dialog_doctorcode.urlParam.filterVal=['session.compcode', 'A'];
+					dialog_doctorcode.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab',false
@@ -2463,7 +2463,7 @@
 				],
 				urlParam: {
 					filterCol:['compcode','chgdept', 'recstatus'],
-					filterVal:['session.compcode','1', 'A']
+					filterVal:['session.compcode','1', 'ACTIVE']
 				},
 				ondblClickRow: function () {
 					$('#cm_seqno').focus();
@@ -2483,7 +2483,7 @@
 				title:"Select Department Code",
 				open: function(){
 					dialog_deptcode.urlParam.filterCol=['compcode','chgdept', 'recstatus'];
-					dialog_deptcode.urlParam.filterVal=['session.compcode','1', 'A'];
+					dialog_deptcode.urlParam.filterVal=['session.compcode','1', 'ACTIVE'];
 					
 				}
 			},'urlParam','radio','tab',false
@@ -2500,7 +2500,7 @@
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
-					filterVal:['A', 'session.compcode','Output']
+					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
 					$('#optax').focus();
@@ -2519,7 +2519,7 @@
 				title:"Select Tax Master",
 				open: function(){
 					dialog_iptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-					dialog_iptax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+					dialog_iptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2535,7 +2535,7 @@
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
-					filterVal:['A', 'session.compcode','Output']
+					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
 					$('#delordhd_credcode').focus();
@@ -2554,7 +2554,7 @@
 				title:"Select Tax Master",
 				open: function(){
 					dialog_optax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-					dialog_optax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+					dialog_optax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2570,7 +2570,7 @@
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
-					filterVal:['A', 'session.compcode','Output']
+					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
 					$('#dtl_optax').focus();
@@ -2589,7 +2589,7 @@
 				title:"Select Tax Master",
 				open: function(){
 					dialog_dtliptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-					dialog_dtliptax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+					dialog_dtliptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2605,7 +2605,7 @@
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
-					filterVal:['A', 'session.compcode','Output']
+					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
 					$('#lastuser').focus();
@@ -2624,7 +2624,7 @@
 				title:"Select Tax Master",
 				open: function(){
 					dialog_dtloptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-					dialog_dtloptax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+					dialog_dtloptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2640,7 +2640,7 @@
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
-					filterVal:['A', 'session.compcode','Output']
+					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
 					// $('#dtl_optax').focus();
@@ -2659,7 +2659,7 @@
 				title:"Select Tax Master",
 				open: function(){
 					dialog_pkg2iptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-					dialog_pkg2iptax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+					dialog_pkg2iptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2675,7 +2675,7 @@
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
-					filterVal:['A', 'session.compcode','Output']
+					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
 					// $('#lastuser').focus();
@@ -2694,7 +2694,7 @@
 				title:"Select Tax Master",
 				open: function(){
 					dialog_pkg2optax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-					dialog_pkg2optax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+					dialog_pkg2optax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2710,7 +2710,7 @@
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
-					filterVal:['A', 'session.compcode','Output']
+					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
 					// $('#dtl_optax').focus();
@@ -2729,7 +2729,7 @@
 				title:"Select Tax Master",
 				open: function(){
 					dialog_pkg3iptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-					dialog_pkg3iptax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+					dialog_pkg3iptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2745,7 +2745,7 @@
 				],
 				urlParam: {
 					filterCol:['recstatus','compcode','taxtype'],
-					filterVal:['A', 'session.compcode','Output']
+					filterVal:['ACTIVE', 'session.compcode','Output']
 				},
 				ondblClickRow:function(){
 					// $('#lastuser').focus();
@@ -2764,7 +2764,7 @@
 				title:"Select Tax Master",
 				open: function(){
 					dialog_pkg3optax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-					dialog_pkg3optax.urlParam.filterVal = ['A', 'session.compcode','Output'];
+					dialog_pkg3optax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2782,7 +2782,7 @@
 				urlParam: {
 					url:'./chargemaster/chgpricelatest',
 					filterCol:['recstatus','compcode'],
-					filterVal:['A', 'session.compcode']
+					filterVal:['ACTIVE', 'session.compcode']
 				},
 				ondblClickRow:function(event){
 					
@@ -2826,7 +2826,7 @@
 				title:"Select Charge Code",
 				open: function(){
 					dialog_dtlchgcode.urlParam.filterCol = ['recstatus','compcode'];
-					dialog_dtlchgcode.urlParam.filterVal = ['A', 'session.compcode'];
+					dialog_dtlchgcode.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 				}
 			},'urlParam','radio','tab'
 		);

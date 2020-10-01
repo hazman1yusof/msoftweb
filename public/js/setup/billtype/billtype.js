@@ -172,7 +172,7 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', cellattr: function(rowid, cellvalue)
 			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -251,24 +251,6 @@ $(document).ready(function () {
 		return cellvalue.replace("%", "");
 	}
 
-	/*function formatterRecord(cellvalue, options, rowObject) {
-		if (cellvalue == 'A') {
-			return "Active";
-		}
-		if (cellvalue == 'D') {
-			return "Deactive";
-		}
-	}
-
-	function unformatterRecord(cellvalue, options) {
-		if (cellvalue == 'Active') {
-			return "Active";
-		}
-		if (cellvalue == 'Deactive') {
-			return "Deactive";
-		}
-	}*/
-
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -342,7 +324,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				$('#svc_price').focus();
@@ -361,7 +343,7 @@ $(document).ready(function () {
 			title:"Select Charge Group",
 			open: function(){
 				dialog_ChgGroup.urlParam.filterCol=['compcode','recstatus'],
-				dialog_ChgGroup.urlParam.filterVal=['session.compcode','A']
+				dialog_ChgGroup.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -375,7 +357,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				$('#svc_percent_').focus();
@@ -394,7 +376,7 @@ $(document).ready(function () {
 			title:"Select Charge Code",
 			open: function(){
 				dialog_discChargeCode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_discChargeCode.urlParam.filterVal=['session.compcode','A']
+				dialog_discChargeCode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab', false
 	);
@@ -571,7 +553,7 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'svc_adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'svc_upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'svc_upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Record Status', name: 'svc_recstatus', width: 30, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{ label: 'Record Status', name: 'svc_recstatus', width: 30, classes: 'wrap', cellattr: function(rowid, cellvalue)
 			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'No', name: 'svc_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'svc_computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -749,7 +731,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus','chggroup'],
-				filterVal:['session.compcode','A',$("#Fitem :input[name*='i_chggroup']").val()]
+				filterVal:['session.compcode','ACTIVE',$("#Fitem :input[name*='i_chggroup']").val()]
 			},
 			ondblClickRow: function () {
 				$('#i_price').focus();
@@ -903,7 +885,7 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'i_adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'i_upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'i_upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Record Status', name: 'i_recstatus', width: 90, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{ label: 'Record Status', name: 'i_recstatus', width: 90, classes: 'wrap', cellattr: function(rowid, cellvalue)
 			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'No', name: 'i_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'i_computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -1032,7 +1014,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus','chggroup'],
-				filterVal:['session.compcode','A',$("#Ftype :input[name*='t_chggroup']").val()]
+				filterVal:['session.compcode','ACTIVE',$("#Ftype :input[name*='t_chggroup']").val()]
 			},
 			ondblClickRow: function () {
 				$('#t_price').focus();
@@ -1187,7 +1169,7 @@ $(document).ready(function () {
 			{ label: 'All Item', name: 't_allitem', width: 50, classes: 'wrap', hidden: true},
 			{ label: 'Discount Charge Code', name: 't_discchgcode', width: 50, classes: 'wrap'},
 			{ label: 'discrate', name: 't_discrate', width: 50, hidden: true },
-			{ label: 'Record Status', name: 't_recstatus', width: 90, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+			{ label: 'Record Status', name: 't_recstatus', width: 90, classes: 'wrap', cellattr: function(rowid, cellvalue)
 			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'adduser', name: 't_adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 't_adddate', width: 90, hidden: true, classes: 'wrap' },

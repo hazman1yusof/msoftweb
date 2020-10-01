@@ -53,7 +53,7 @@
 				},
 				{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 					editoptions:{
-						value:"A:ACTIVE;D:DEACTIVE"
+						value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
 					}
 				},
 				// { label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },

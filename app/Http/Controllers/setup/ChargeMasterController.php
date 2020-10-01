@@ -56,7 +56,7 @@ class ChargeMasterController extends defaultController
             }
 
             if($request->cm_chgtype == 'PKG' || $request->cm_chgtype == 'pkg'){
-                $recstatus_use = 'D';
+                $recstatus_use = 'DEACTIVE';
 
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
@@ -78,7 +78,7 @@ class ChargeMasterController extends defaultController
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
-                $recstatus_use = 'A';
+                $recstatus_use = 'ACTIVE';
             }
 
             DB::table('hisdb.chgmast')
@@ -136,7 +136,7 @@ class ChargeMasterController extends defaultController
         try {
 
             if($request->cm_chgtype == 'PKG' || $request->cm_chgtype == 'pkg'){
-                $recstatus_use = 'D';
+                $recstatus_use = 'DEACTIVE';
 
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
@@ -158,7 +158,7 @@ class ChargeMasterController extends defaultController
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
-                $recstatus_use = 'A';
+                $recstatus_use = 'ACTIVE';
             }
 
             DB::table('hisdb.chgmast')
@@ -218,7 +218,7 @@ class ChargeMasterController extends defaultController
                 ->update([
                     'deluser' => session('username'),
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'D',
+                    'recstatus' => 'DEACTIVE',
                     'lastcomputerid' => $request->cm_lastcomputerid, 
                     'lastipaddress' => $request->cm_lastipaddress, 
                 ]);
@@ -274,7 +274,7 @@ class ChargeMasterController extends defaultController
         }
 
         $table = $table
-                ->where('recstatus','=','A')
+                ->where('recstatus','=','ACTIVE')
                 ->where('compcode','=',session('compcode'));
 
         $paginate = $table->paginate($request->rows);
