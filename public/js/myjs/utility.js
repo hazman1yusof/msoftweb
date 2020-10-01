@@ -145,17 +145,18 @@ function enableForm(formName, except){
 	}
 }
 
-function populateFormdata(grid,dialog,form,selRowId,state){
+function populateFormdata(grid,dialog,form,selRowId,state,except){
 	if(!selRowId){
 		alert('Please select row');
 		return emptyFormdata([],form);
 	}
 	rowData = $(grid).jqGrid ('getRowData', selRowId);
 	$.each(rowData, function( index, value ) {
+	console.log(except.indexOf(index));
 		var input=$(form+" [name='"+index+"']");
 		if(input.is("[type=radio]")){
 			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-		}else{
+		}else if( except.indexOf(index) === -1){
 			input.val(value);
 		}
 	});

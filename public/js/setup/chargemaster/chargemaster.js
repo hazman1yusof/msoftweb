@@ -691,7 +691,7 @@
 			onClickButton: function(){
 				oper='edit';
 				selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
-				populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+				populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit',['cm_uom']);
 				refreshGrid("#jqGrid2",urlParam2);
 				refreshGrid("#jqGridPkg2",urlParam2);
 			}, 
