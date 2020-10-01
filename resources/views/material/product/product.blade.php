@@ -63,7 +63,7 @@
 		</form>
 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Charge Master Header</div>
+		    <div class="panel-heading">Product Header</div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
 	        		<table id="jqGrid" class="table table-striped"></table>
