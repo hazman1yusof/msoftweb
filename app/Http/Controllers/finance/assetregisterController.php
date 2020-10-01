@@ -170,7 +170,7 @@ class assetregisterController extends defaultController
             //update qtytag at delorddt
 
 
-            if($fatemp->regtype == 'P'){
+            if($fatemp->regtype == 'POSTED'){
                 $delordhd = DB::table('material.delordhd')
                     ->where('compcode','=',session('compcode'))
                     ->where('delordno','=',$fatemp->delordno)
@@ -285,10 +285,6 @@ class assetregisterController extends defaultController
                             'qtytag' => $fatemp->qty
                         ]);
                 }
-               
-
-
-
             }
 
 

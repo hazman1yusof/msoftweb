@@ -135,7 +135,8 @@ $(document).ready(function () {
 			{ label: 'Period', name: 'fa_period', width: 30, hidden: false,canSearch: true },
 			{ label: 'Status', name:'fa_recstatus', width:30, classes:'wrap', hidden:false,
             formatter: formatterstatus, unformat: unformatstatus, cellattr: function (rowid, cellvalue)
-            { return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+			{ return cellvalue == 'DEACTIVE
+			' ? 'class="alert alert-danger"' : '' },},
 			{ label: 'adduser', name: 'fa_adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'fa_adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'fa_upduser', width: 90, hidden: true },

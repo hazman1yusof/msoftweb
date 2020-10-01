@@ -192,10 +192,10 @@ class BedManagementController extends defaultController
                     break;
             }
             switch ($value->recstatus) {
-                case 'A':
+                case 'ACTIVE':
                     $active = $active + 1;
                     break;
-                case 'D':
+                case 'DEACTIVE':
                     $deactive = $deactive + 1;
                     break;
             }
@@ -258,7 +258,7 @@ class BedManagementController extends defaultController
             DB::table('hisdb.bed')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'recstatus' => 'D',
+                    'recstatus' => 'DEACTIVE',
                     'deluser' => strtoupper(session('username')),
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -507,7 +507,7 @@ class BedManagementController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([ 
-                    'recstatus' => 'D',
+                    'recstatus' => 'DEACTIVE',
                     'deluser' => strtoupper(session('username')),
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);

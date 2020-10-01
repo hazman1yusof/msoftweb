@@ -133,8 +133,8 @@
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="regtype">Register Type</label>  
 					<div class="col-md-4" data-validation="required">
-						<label class="radio-inline"><input type="radio" name="regtype" value='P'>Purchase Order</label >
-						<label class="radio-inline"><input type="radio" name="regtype" value='D' checked="checked" >Direct</label>
+						<label class="radio-inline"><input type="radio" name="regtype" value='PO'>Purchase Order</label >
+						<label class="radio-inline"><input type="radio" name="regtype" value='DIRECT' checked="checked" >Direct</label>
 				  	</div>
 			</div>
 

@@ -81,12 +81,10 @@ $(document).ready(function () {
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){
-				$('#jqGrid_iladd').click();
-			}
+				$('#jqGrid2_iladd').click();}
 			else{
-				$('#jqGrid').jqGrid ('setSelection', "1");
+				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
-
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 			if(err_reroll.error == true){
 				err_reroll.reroll();

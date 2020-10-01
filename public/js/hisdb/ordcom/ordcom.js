@@ -37,7 +37,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
-				filterVal:['A', 'session.compcode'],
+				filterVal:['ACTIVE', 'session.compcode'],
 				WhereInCol:['chggroup'],
 				WhereInVal:[['10','70','35','30']]
 			},
@@ -58,7 +58,7 @@ $(document).ready(function () {
 			title:"Select ChargeCode",
 			open: function(){
 				dialog_chgcode.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_chgcode.urlParam.filterVal = ['A', 'session.compcode'];
+				dialog_chgcode.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 				dialog_chgcode.urlParam.WhereInCol = ['chggroup'];
 				dialog_chgcode.urlParam.WhereInVal = [['10','70','35','30']];
 			},
@@ -75,7 +75,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','chgdept'],
-				filterVal:['A', 'session.compcode','1'],
+				filterVal:['ACTIVE', 'session.compcode','1'],
 			},
 			ondblClickRow:function(event){
 				//$('#occup').focus();
@@ -94,7 +94,7 @@ $(document).ready(function () {
 			title:"Select ChargeCode",
 			open: function(){
 				dialog_isudept.urlParam.filterCol = ['recstatus','compcode','chgdept'];
-				dialog_isudept.urlParam.filterVal = ['A', 'session.compcode','1'];
+				dialog_isudept.urlParam.filterVal = ['ACTIVE', 'session.compcode','1'];
 			},
 		},'urlParam','radio','tab','table'
 	);
@@ -109,7 +109,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','taxcode'],
-				filterVal:['A', 'session.compcode','IP'],
+				filterVal:['ACTIVE', 'session.compcode','IP'],
 			},
 			ondblClickRow:function(event){
 				$('#remarks').focus();
@@ -128,7 +128,7 @@ $(document).ready(function () {
 			title:"Select GST Code",
 			open: function(){
 				dialog_taxcode.urlParam.filterCol = ['recstatus','compcode','taxcode'];
-				dialog_taxcode.urlParam.filterVal = ['A', 'session.compcode','IP'];
+				dialog_taxcode.urlParam.filterVal = ['ACTIVE', 'session.compcode','IP'];
 			},
 		},'urlParam','radio','tab','table'
 	);

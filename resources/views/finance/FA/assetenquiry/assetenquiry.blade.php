@@ -263,7 +263,7 @@ i.fa {
 					</div>
 				<label class="col-md-2 control-label" for="recstatus">Status</label>
 					<div class="col-md-2">
-						<label class="radio-inline"><input type="radio" name="recstatus" value='A' checked>Active</label>
+						<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>ACTIVE</label>
 					</div>
 			</div>
 

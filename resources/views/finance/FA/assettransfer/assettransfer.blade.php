@@ -48,8 +48,8 @@
 	<div id="msgBox" title="Message Box" style="display:none">
 		<p>Are you sure you want to transfer asset</p>
 		<ul>
-			<li>itemcode: <span name='itemcode' ></span></li>
-			<li>description: <span name='description' ></span></li>
+			<li>Item Code: <span name='itemcode' ></span></li>
+			<li>Description: <span name='description' ></span></li>
 		</ul>	
 
 		

@@ -227,7 +227,7 @@ $(document).ready(function () {
             //{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
 			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden:true,
 				formatter:formatter, unformat:unformat, cellattr: function(rowid, cellvalue)
-			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'nprefid', name: 'nprefid', width: 90,hidden:true},
 			{label: 'idno', name: 'idno', hidden: true},
 			{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
@@ -379,20 +379,20 @@ $(document).ready(function () {
 	
 	////////////////////////////formatter//////////////////////////////////////////////////////////
 	function formatter(cellvalue, options, rowObject){
-		if(cellvalue == 'A'){
-			return "Active";
+		if(cellvalue == 'ACTIVE'){
+			return "ACTIVE";
 		}
-		if(cellvalue == 'D') { 
-			return "Deactive";
+		if(cellvalue == 'DEACTIVE') { 
+			return "DEACTIVE";
 		}
 	}
 
 	function  unformat(cellvalue, options){
-		if(cellvalue == 'Active'){
-			return "A";
+		if(cellvalue == 'ACTIVE'){
+			return "ACTIVE";
 		}
-		if(cellvalue == 'Deactive') { 
-			return "D";
+		if(cellvalue == 'DEACTIVE') { 
+			return "DEACTIVE";
 		}
 	}
 

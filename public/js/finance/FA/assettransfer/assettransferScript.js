@@ -181,7 +181,7 @@
 				table_id:'idno',
 				sort_idno:true,
 				filterCol:['recstatus'],
-				filterVal:['A'],
+				filterVal:['ACTIVE'],
 			}
 
 			/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -296,20 +296,6 @@
 					refreshGrid("#jqGrid",urlParam);
 				},
 				
-			//}).jqGrid('navButtonAdd',"#jqGridPager",{
-			//	caption:"",cursor: "pointer",position: "first", 
-				//buttonicon:"glyphicon glyphicon-trash",
-				//title:"Delete Selected Row",
-				//onClickButton: function(){
-				//	oper='del';
-					//selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					//if(!selRowId){
-						//alert('Please select row');
-						//return emptyFormdata(errorField,'#formdata');
-					//}else{
-						//saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, null, {'':selRowId});
-					//}
-				//},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first", 
 				buttonicon:"glyphicon glyphicon-info-sign",
@@ -318,31 +304,8 @@
 					oper='view';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
-				},
-
-				
-			//}).jqGrid('navButtonAdd',"#jqGridPager",{
-				//caption:"",cursor: "pointer",position: "first",  
-				//buttonicon:"glyphicon glyphicon-edit",
-				//title:"Edit Selected Row",  
-				//onClickButton: function(){
-					//oper='edit';
-					//selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					//populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
-				//}, 
-			//}).jqGrid('navButtonAdd',"#jqGridPager",{
-			//	caption:"",cursor: "pointer",position: "first",  
-				//buttonicon:"glyphicon glyphicon-plus", 
-				//title:"Add New Row", 
-				//onClickButton: function(){
-					//oper='add';
-					//$( "#dialogForm" ).dialog( "open" );
-				//},
-
-				
+				},				
 			});
-
-  
 
 			//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
@@ -409,8 +372,7 @@
 						$(selText).focus();
 						$(selText).parent().next().html(data['desc']);
 					}
-				},
-				
+				},			
 			});
 
 			var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:''};

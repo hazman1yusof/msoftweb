@@ -29,7 +29,7 @@
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency = new currencymode(['#origcost','#currentcost', '#purprice']);
 	var fdl = new faster_detail_load();
-	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus","A");
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus","ACTIVE");
 	var radbuts = new checkradiobutton(['regtype']);
 
 	////////////////////////////////////start dialog///////////////////////////////////////
@@ -436,7 +436,7 @@
 						enableForm('#formdata');
 						frozeOnEdit("#dialogForm");
 						rdonly("#dialogForm");
-						if($("#dialogForm input[name='regtype']").val() == 'P'){
+						if($("#dialogForm input[name='regtype']").val() == 'POSTED'){
 							disableField();
 						}else{
 							enableField();
@@ -550,10 +550,9 @@
 				//accumytd
 				{ label: 'Accum YTD', name:'cuytddep', width:20, classes:'wrap', hidden:true},
 				//nbv
-				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:true,
-				formatter: formatterstatus, unformat: unformatstatus, cellattr: function (rowid, cellvalue)
+				{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:true, cellattr: function (rowid, cellvalue)
 					{ 
-						return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' 
+						return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"' : '' 
 					},
 				},
 				{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
@@ -589,18 +588,18 @@
 
 		//////////////////////////// STATUS FORMATTER /////////////////////////////////////////////////
 		function regtypeformat(cellvalue, options, rowObject) {
-			if (cellvalue == 'P') {
-				return "PO";
-			}else if (cellvalue == 'D') {
-				return "Direct";
+			if (cellvalue == 'PO') {
+				return "PURCHASE ORDER";
+			}else if (cellvalue == 'DIRECT') {
+				return "DIRECT";
 			}
 		}
 
 		function regtypeunformat(cellvalue, options) {
 			if (cellvalue == 'PO') {
-				return "P";
-			}else if (cellvalue == 'Direct') {
-				return "D";
+				return "PURCHASE ORDER";
+			}else if (cellvalue == 'DIRECT') {
+				return "DIRECT";
 			}
 		}
 
@@ -628,17 +627,17 @@
 		jqgrid_label_align_right("#jqGrid");
 
 		///////////////////////// REGISTER TYPE SELECTION/////////////////////////////////////
-		/////// if the function chosen is P, certain field will be disabled //////////////////
+		/////// if the function chosen is PO, certain field will be disabled //////////////////
 		$("input[name=regtype]:radio").on('change', function(){
 			regtype  = $("input[name=regtype]:checked").val();
-			if(regtype == 'P'){
+			if(regtype == 'PO'){
 				disableField();
-			}else if(regtype == 'D') {
+			}else if(regtype == 'DIRECT') {
 				enableField();
 			}
 		});
 
-		//////// if the function chosen is P ////////////////////////////////////  
+		//////// if the function chosen is PO ////////////////////////////////////  
 		function disableField() {
 			disable_all_event();
 			dialog_itemcode_direct.off();
@@ -671,7 +670,7 @@
 			// $("#delordno_dh").show();
 			$("#dn").show();
 		}
-		//////// if the function chosen is D ////////////////////////////////////  
+		//////// if the function chosen is DIRECT ////////////////////////////////////  
 		function enableField() {
 			disable_all_event();
 			dialog_itemcode_direct.on();

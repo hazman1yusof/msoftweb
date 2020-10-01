@@ -201,9 +201,11 @@ $(document).ready(function () {
 			{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
             { label: 'D/O No', name: 'delordno', width: 20, classes: 'wrap'},
             { label: 'DO Date', name:'delorddate', width: 20, classes:'wrap', hidden:true},
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden:true,
-				formatter:formatter, unformat:unformat, cellattr: function(rowid, cellvalue)
-			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden:true, cellattr: function(rowid, cellvalue)
+				{
+					return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''
+				}, 
+			},
 			{ label: 'nprefid', name: 'nprefid', width: 90,hidden:true},
 			{label: 'idno', name: 'idno', hidden: true},
 			{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
@@ -366,23 +368,6 @@ $(document).ready(function () {
     $('.panel-group').on('shown.bs.collapse', toggleIcon);
 	
 	////////////////////////////formatter//////////////////////////////////////////////////////////
-	function formatter(cellvalue, options, rowObject){
-		if(cellvalue == 'A'){
-			return "Active";
-		}
-		if(cellvalue == 'D') { 
-			return "Deactive";
-		}
-	}
-
-	function  unformat(cellvalue, options){
-		if(cellvalue == 'Active'){
-			return "A";
-		}
-		if(cellvalue == 'Deactive') { 
-			return "D";
-		}
-	}
 	function dateFormatter(cellvalue, options, rowObject){
 		return moment(cellvalue).format("DD-MM-YYYY");
 	}
@@ -517,51 +502,7 @@ $(document).ready(function () {
 					dialog_uomcode.check(errorField);
 					dialog_pouom.check(errorField);*/
 			 	}
-			/*}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-		        fixPositionsOfFrozenDivs.call(this);*/
 		    });
-			/*fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);*/
-
-			/*$("#jqGrid2").jqGrid('bindKeys');
-			var updwnkey_fld;
-			function updwnkey_func(event){
-				var optid = event.currentTarget.id;
-				var fieldname = optid.substring(optid.search("_"));
-				updwnkey_fld = fieldname;
-			}
-
-			$("#jqGrid2").keydown(function(e) {
-		      switch (e.which) {
-		        case 40: // down
-		          var $grid = $(this);
-		          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-				  $("#"+selectedRowId+updwnkey_fld).focus();
-
-		          e.preventDefault();
-		          break;
-
-		        case 38: // up
-		          var $grid = $(this);
-		          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-				  $("#"+selectedRowId+updwnkey_fld).focus();
-
-		          e.preventDefault();
-		          break;
-
-		        default:
-		          return;
-		      }
-		    });
-
-
-			$("#jqGrid2").jqGrid('setGroupHeaders', {
-		  	useColSpanStyle: false, 
-			  groupHeaders:[
-				{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
-				{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
-			  ]
-			})
-			*/
 
 			/////////////////////////start grid pager 1/////////////////////////////////////////////////////////
 
