@@ -48,17 +48,13 @@
                         <div class="panel panel-info">
                             <div class="panel-body">
 
-                                <table class="table table-bordered table-sm">
+                                <table id="docnote_date_tbl" class="table-hover table-bordered" style="width: 100%">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Date</th>
+                                            <th>idno</th>
+                                            <th class="scope">Date</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td> </td>
-                                        </tr>
-                                    </tbody>
                                 </table>
 
                             </div>

@@ -114,6 +114,11 @@
 		background-color: #C0C0C0 !important;
 	}
 
+	table tr.active{
+		background-color: #cae6f4 !important;
+	}
+
+
 @endsection
 
 @section('body')
