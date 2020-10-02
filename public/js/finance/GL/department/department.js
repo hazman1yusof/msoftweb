@@ -252,7 +252,7 @@
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{label: 'idno', name: 'idno', hidden: true},
@@ -339,7 +339,7 @@
 				onClickButton: function(){
 					oper='edit';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
 					recstatusDisable();
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{

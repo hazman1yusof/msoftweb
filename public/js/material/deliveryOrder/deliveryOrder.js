@@ -415,7 +415,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper='edit';
 			selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
 		}, 
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
