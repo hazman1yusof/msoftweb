@@ -572,7 +572,7 @@
 				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 			},
 			gridComplete: function(){
-				fdl.set_array().reset();
+				fdl.set_array(['uom']).reset();
 				
 			},
 			beforeSubmit: function(postdata, rowid){ 

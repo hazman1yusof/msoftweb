@@ -152,7 +152,6 @@ function populateFormdata(grid,dialog,form,selRowId,state,except){
 	}
 	rowData = $(grid).jqGrid ('getRowData', selRowId);
 	$.each(rowData, function( index, value ) {
-	console.log(except.indexOf(index));
 		var input=$(form+" [name='"+index+"']");
 		if(input.is("[type=radio]")){
 			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
@@ -846,7 +845,6 @@ function setactdate(target){
 		var index = event.data.index;
 		var value = $(actdateObj.target[index]).val();
 		var currentTarget = actdateObj.target[index];
-		console.log(index)
 		actdateObj.actdateopen.forEach(function(element){
 		 	if(moment(value).isBetween(element.from,element.to, null, '[]')) {
 				permission=true
@@ -1466,9 +1464,8 @@ function faster_detail_load(){
 		let storage_name = 'fastload_'+page+'_'+case_+'_'+cellvalue;
 		let storage_obj = localStorage.getItem(storage_name);
 		let desc_name = param.field[1];
-
 		if(!storage_obj){
-			if(cellvalue !== null && cellvalue !== undefined && cellvalue.trim() != ''){
+			if(cellvalue !== null && cellvalue !== undefined && cellvalue !== 'undefined<span class="help-block"></span>' && cellvalue.trim() != ''){
 				$.get( param.url+"?"+$.param(param), function( data ) {
 						
 				},'json').done(function(data) {
@@ -1487,7 +1484,7 @@ function faster_detail_load(){
 					}
 				});
 			}else{
-				let desc = '';
+				let desc = 'we';
 				let now = moment();
 
 				var json = JSON.stringify({
@@ -1514,12 +1511,16 @@ function faster_detail_load(){
             }
 		}
 	}
-	this.set_array = function(){
+	this.set_array = function(except){
 		this.array.forEach(function(elem,i){
 			let options = elem.options;
 			let desc = elem.json.description;
 
-			$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+desc+"</span>");
+			if(except == undefined || except.indexOf(options.colModel.name) === -1){
+				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+desc+"</span>");
+			}else{
+				console.log($("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").text(''));
+			}
 		});
 		return this;
 	}
