@@ -1518,8 +1518,10 @@ function faster_detail_load(){
 
 			if(except == undefined || except.indexOf(options.colModel.name) === -1){
 				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+desc+"</span>");
+			}else if(except != undefined && except.indexOf(options.colModel.name) !== -1){
+				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").text('');
 			}else{
-				console.log($("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").text(''));
+				console.log('asdsss123')
 			}
 		});
 		return this;

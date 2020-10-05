@@ -548,7 +548,12 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
-				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail},
+				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).attr('disabled','true');
+	                        $(element).val($('#cm_uom').val());
+	                    }
+	                }},
 				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}
 			],
@@ -572,7 +577,7 @@
 				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 			},
 			gridComplete: function(){
-				fdl.set_array(['uom']).reset();
+				fdl.set_array().reset();
 				
 			},
 			beforeSubmit: function(postdata, rowid){ 
