@@ -207,7 +207,7 @@
 				{ label: 'Description', name: 'cg_description', classes: 'wrap', width: 40},
 				{ label: 'Charge Type', name: 'cm_chgtype', classes: 'wrap', width: 30, canSearch: true},
 				{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
-				{ label: 'UOM', name: 'cm_uom', width: 30, formatter: showdetail, hidden:false},
+				{ label: 'UOM', name: 'cm_uom', width: 30, formatter: showdetail, unformat: un_showdetail, hidden:false},
 				{ label: 'Generic Name', name: 'cm_brandname', width: 60},
 				{ label: 'cm_barcode', name: 'cm_barcode', hidden:true},
 				{ label: 'cm_constype', name: 'cm_constype', hidden:true},
@@ -589,9 +589,9 @@
 		function cust_rules(value,name){
 			var temp;
 			switch(name){
-				case 'Inpatient Tax':temp=$('#iptax');break;
-				case 'Outpatient Tax':temp=$('#optax');break;
-				case 'Charge Code':temp=$('#chgcode');break;
+				case 'Inpatient Tax':temp=$("input[name='iptax']");break;
+				case 'Outpatient Tax':temp=$("input[name='optax']");break;
+				case 'Charge Code':temp=$("input[name='chgcode']");break;
 					break;
 			}
 			return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -621,6 +621,16 @@
 		function optaxCustomEdit(val, opt) {
 			val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 			return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="optax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		}
+
+		function iptax3CustomEdit(val, opt) {
+			val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+			return $('<div class="input-group"><input jqgrid="jqGrid3" optid="'+opt.id+'" id="'+opt.id+'" name="iptax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		}
+
+		function optax3CustomEdit(val, opt) {
+			val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+			return $('<div class="input-group"><input jqgrid="jqGrid3" optid="'+opt.id+'" id="'+opt.id+'" name="optax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 		}
 
 		function iptaxPkg2CustomEdit(val, opt) {
@@ -697,6 +707,7 @@
 				oper='edit';
 				selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
 				populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit',['cm_uom']);
+				$("#cm_uom").val(selrowData('#jqGrid').cm_uom);
 				refreshGrid("#jqGrid2",urlParam2);
 				refreshGrid("#jqGridPkg2",urlParam2);
 			}, 
@@ -955,7 +966,12 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
-				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail},
+				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).attr('disabled','true');
+	                        $(element).val($('#cm_uom').val());
+	                    }
+	                }},
 				{ label: 'AutoPull', name: 'autopull', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 					editoptions:{
 						value:"1:YES;0:NO"
@@ -1282,18 +1298,24 @@
 				{ label: 'Inpatient Tax', name: 'iptax', width: 150,align: 'right' , classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
-						    {  custom_element:iptaxCustomEdit,
+						    {  custom_element:iptax3CustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 				},
 				{ label: 'Outpatient Tax', name: 'optax', width: 150,align: 'right' , classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
-						    {  custom_element:optaxCustomEdit,
+						    {  custom_element:optax3CustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 				},
-				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail},
+				
+				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).attr('disabled','true');
+	                        $(element).val(selrowData('#jqGrid').cm_uom);
+	                    }
+	                }},
 				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
@@ -1570,7 +1592,13 @@
 						       custom_value:galGridCustomValue 	
 						    },
 				},
-				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail},
+				
+				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).attr('disabled','true');
+	                        $(element).val($('#cm_uom').val());
+	                    }
+	                }},
 				{ label: 'AutoPull', name: 'autopull', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 					editoptions:{
 						value:"1:YES;0:NO"
@@ -2582,15 +2610,15 @@
 					$('#dtl_optax').focus();
 				},
 				gridComplete: function(obj){
-							var gridname = '#'+obj.gridname;
-							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-								$(gridname+' tr#1').click();
-								$(gridname+' tr#1').dblclick();
-								$('#dtl_optax').focus();
-							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-								$('#'+obj.dialogname).dialog('close');
-							}
-						}
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#dtl_optax').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
 			},{
 				title:"Select Tax Master",
 				open: function(){

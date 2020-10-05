@@ -318,7 +318,8 @@ input.uppercase {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="cm_invgroup">Inv. Group</label>
 						<div class="col-md-3">
-							<select class="form-control col-md-4" id='cm_invgroup' name='cm_invgroup'>
+							<select class="form-control col-md-4" id='cm_invgroup' name='cm_invgroup' data-validation="required">
+								<option value='' selected="selected">Select one</option>
 								<option value='CC'>Charge Code</option>
 								<option value='CG'>Charge Group</option>
 								<option value='CT'>Charge Type</option>
