@@ -101,7 +101,7 @@ class ChargeMasterDetailController extends defaultController
                     'addchg' => $request->addchg,
                     'uom' => $request->uom,
                     'pkgstatus' => $pkgstatus,
-                    'recstatus' => 'A',
+                    'recstatus' => 'ACTIVE',
                     'units' => session('unit'),
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -173,7 +173,7 @@ class ChargeMasterDetailController extends defaultController
                 ->update([
                     'deluser' => session('username'),
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'D',
+                    'recstatus' => 'DEACTIVE',
                     'lastcomputerid' => $request->lastcomputerid, 
                     'lastipaddress' => $request->lastipaddress, 
                 ]);
@@ -220,7 +220,7 @@ class ChargeMasterDetailController extends defaultController
                     'actprice3' => $request->actprice3,
                     'pkgprice3' => $request->pkgprice3,
                     'totprice3' => $request->totprice3,
-                    'recstatus' => 'A',
+                    'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser' => session('username'), 
@@ -297,7 +297,7 @@ class ChargeMasterDetailController extends defaultController
                 ->update([
                     'deluser' => session('username'),
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'D',
+                    'recstatus' => 'DEACTIVE',
                     'lastcomputerid' => $request->lastcomputerid, 
                     'lastipaddress' => $request->lastipaddress, 
                 ]);
@@ -355,14 +355,14 @@ class ChargeMasterDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('chgcode','=',$request->pkgcode)
                 ->update([
-                    'recstatus' => 'A'
+                    'recstatus' => 'ACTIVE'
                 ]);
         }else{
             DB::table('hisdb.chgmast')
                 ->where('compcode','=',session('compcode'))
                 ->where('chgcode','=',$request->pkgcode)
                 ->update([
-                    'recstatus' => 'D'
+                    'recstatus' => 'DEACTIVE'
                 ]);
         }
 

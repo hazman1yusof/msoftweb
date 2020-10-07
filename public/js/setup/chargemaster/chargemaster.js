@@ -482,8 +482,8 @@
 			join_type:['LEFT JOIN'],
 			join_onCol:['cp.chgcode'],
 			join_onVal:['cm.chgcode'],
-			filterCol:['cp.compcode','cp.chgcode','cp.recstatus'],
-			filterVal:['session.compcode','','ACTIVE']
+			filterCol:['cp.compcode','cp.chgcode'],
+			filterVal:['session.compcode','']
 		};
 
 		var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
@@ -553,8 +553,13 @@
 	                        $(element).attr('disabled','true');
 	                        $(element).val($('#cm_uom').val());
 	                    }
-	                }},
-				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
+				}},
+				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).attr('disabled','true');
+	                        $(element).val("ACTIVE");
+	                    }
+				}},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}
 			],
 			autowidth: true,
@@ -970,7 +975,7 @@
 	                        $(element).attr('disabled','true');
 	                        $(element).val($('#cm_uom').val());
 	                    }
-	                }},
+				}},
 				{ label: 'AutoPull', name: 'autopull', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 					editoptions:{
 						value:"1:YES;0:NO"
@@ -981,8 +986,13 @@
 						value:"1:YES;0:NO"
 					}
 				},
+				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).attr('disabled','true');
+	                        $(element).val("ACTIVE");
+	                    }
+				}},
 				{ label: 'Package Status', name: 'pkgstatus', hidden:true, width: 60},
-				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}
 			],
 			autowidth: true,
@@ -1314,8 +1324,13 @@
 	                        $(element).attr('disabled','true');
 	                        $(element).val(selrowData('#jqGrid').cm_uom);
 	                    }
-	                }},
-				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
+				}},
+				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).attr('disabled','true');
+	                        $(element).val("ACTIVE");
+	                    }
+				}},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
 			autowidth: true,
@@ -1597,7 +1612,7 @@
 	                        $(element).attr('disabled','true');
 	                        $(element).val(selrowData('#jqGrid').cm_uom);
 	                    }
-	                }},
+				}},
 				{ label: 'AutoPull', name: 'autopull', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 					editoptions:{
 						value:"1:YES;0:NO"
@@ -1608,8 +1623,13 @@
 						value:"1:YES;0:NO"
 					}
 				},
+				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).attr('disabled','true');
+	                        $(element).val("ACTIVE");
+	                    }
+				}},
 				{ label: 'Package Status', name: 'pkgstatus', hidden:true, width: 60},
-				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
 			autowidth: true,
