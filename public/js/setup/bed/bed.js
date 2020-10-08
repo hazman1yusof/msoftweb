@@ -89,9 +89,9 @@ $(document).ready(function () {
 
 	function recstatusCustomEdit(val, opt) {
 		if(val == '<span class="fa fa-times"></span>'){
-			val = 'D';
+			val = 'DEACTIVE';
 		}else{
-			val = 'A';
+			val = 'AACTIVE';
 		}
 		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="recstatus" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
@@ -492,7 +492,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + search_bedtype.gridname).bedtype;
@@ -507,7 +507,7 @@ $(document).ready(function () {
 			title: "Select Bed Type search",
 			open: function () {
 				search_bedtype.urlParam.filterCol=['compcode', 'recstatus'];
-				search_bedtype.urlParam.filterVal=['session.compcode', 'A'];
+				search_bedtype.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -528,7 +528,7 @@ $(document).ready(function () {
 			urlParam: {
 				url:'./sysparam_bed_status',
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function (event) {
 
@@ -536,7 +536,7 @@ $(document).ready(function () {
 				$("#searchForm input[name='Stext']").val(data.description);
 				console.log(data.description);
 				if(data.description == 'ACTIVE' || data.description == 'DEACTIVE'){
-					let val_use = (data.description == 'ACTIVE')? 'A':'D';
+					let val_use = (data.description == 'ACTIVE')? 'ACTIVE':'DEACTIVE';
 					urlParam.searchCol=["recstatus"];
 					urlParam.searchVal=[val_use];
 				}else{
@@ -551,7 +551,7 @@ $(document).ready(function () {
 			title: "Select Bed Status search",
 			open: function () {
 				search_occup.urlParam.filterCol=['compcode', 'recstatus'];
-				search_occup.urlParam.filterVal=['session.compcode', 'A'];
+				search_occup.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 			},
 			width:4/10 * $(window).width()
 		},'urlParam','radio','tab'
@@ -571,7 +571,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
-				filterVal:['A', 'session.compcode']
+				filterVal:['ACTIVE', 'session.compcode']
 					},
 			ondblClickRow:function(){
 				$('#occup').focus();
@@ -590,7 +590,7 @@ $(document).ready(function () {
 			title:"Select Bed Type dialog",
 			open: function(){
 				dialog_bedtype.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_bedtype.urlParam.filterVal = ['A', 'session.compcode'];
+				dialog_bedtype.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -604,7 +604,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','warddept'],
-				filterVal:['A', 'session.compcode','1']
+				filterVal:['ACTIVE', 'session.compcode','1']
 					},
 			ondblClickRow:function(){
 				$('#tel_ext').focus();
@@ -623,7 +623,7 @@ $(document).ready(function () {
 			title:"Select Ward Type",
 			open: function(){
 				dialog_ward.urlParam.filterCol = ['recstatus','compcode','warddept'];
-				dialog_ward.urlParam.filterVal = ['A', 'session.compcode','1'];
+				dialog_ward.urlParam.filterVal = ['ACTIVE', 'session.compcode','1'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -639,7 +639,7 @@ $(document).ready(function () {
 			urlParam: {
 				url:'./sysparam_bed_status',
 				filterCol:['recstatus','compcode'],
-				filterVal:['A', 'session.compcode']
+				filterVal:['ACTIVE', 'session.compcode']
 				},
 			ondblClickRow:function(event){
 
@@ -660,7 +660,7 @@ $(document).ready(function () {
 			title:"Select Bed Status",
 			open: function(){
 				dialog_occup.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_occup.urlParam.filterVal = ['A', 'session.compcode'];
+				dialog_occup.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 			},
 			width:4/10 * $(window).width()
 		},'urlParam','radio','tab'
@@ -677,7 +677,7 @@ $(document).ready(function () {
 			urlParam: {
 				url:'./sysparam_stat',
 				filterCol:['recstatus','compcode'],
-				filterVal:['A', 'session.compcode']
+				filterVal:['ACTIVE', 'session.compcode']
 				},
 			ondblClickRow:function(event){
 
@@ -698,7 +698,7 @@ $(document).ready(function () {
 			title:"Select Statistic dialog",
 			open: function(){
 				dialog_stat.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_stat.urlParam.filterVal = ['A', 'session.compcode'];
+				dialog_stat.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 			},
 			width:5/10 * $(window).width()
 		},'urlParam','radio','tab'
@@ -713,7 +713,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode'],
-				filterVal:['A', 'session.compcode']
+				filterVal:['ACTIVE', 'session.compcode']
 					},
 			ondblClickRow:function(){
 
@@ -732,7 +732,7 @@ $(document).ready(function () {
 			title:"Select Chargecode",
 			open: function(){
 				dialog_chargecode.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_chargecode.urlParam.filterVal = ['A', 'session.compcode'];
+				dialog_chargecode.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -748,7 +748,7 @@ $(document).ready(function () {
 			urlParam: {
 				url:'./sysparam_recstatus',
 				filterCol:['recstatus','compcode'],
-				filterVal:['A', 'session.compcode']
+				filterVal:['ACTIVE', 'session.compcode']
 				},
 			ondblClickRow:function(event){
 
@@ -769,7 +769,7 @@ $(document).ready(function () {
 			title:"Select Record Status",
 			open: function(){
 				dialog_recstatus.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_recstatus.urlParam.filterVal = ['A', 'session.compcode'];
+				dialog_recstatus.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 			},
 			width:4/10 * $(window).width()
 		},'urlParam','radio','tab'
