@@ -1326,6 +1326,7 @@
 				}},
 				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
 	                    dataInit: function (element) {
+	                    	if($(element).attr('id').search("jqg") != -1)$(element).val('ACTIVE');
 	                        $(element).attr('disabled','true');
 	                    }
 				}},
