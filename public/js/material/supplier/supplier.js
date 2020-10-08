@@ -345,7 +345,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper='view';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view', '');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption:"",cursor: "pointer",position: "first",  
@@ -354,7 +354,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper='edit';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
 			recstatusDisable();
 			
 		}, 
@@ -717,7 +717,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper_suppitems='view';
 			selRowId = $("#gridSuppitems").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",selRowId,'view');
+			populateFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",selRowId,'view', '');
 		}, 
 		position: "first", 
 		title:"View Selected Row", 
@@ -728,7 +728,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper_suppitems='edit';
 			selRowId = $("#gridSuppitems").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",selRowId,'edit');
+			populateFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",selRowId,'edit', '');
 			recstatusDisable();
 		}, 
 		position: "first", 
@@ -1060,7 +1060,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper_suppbonus='view';
 			selRowId = $("#gridSuppBonus").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",selRowId,'view');
+			populateFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",selRowId,'view', '');
 		}, 
 		position: "first", 
 		title:"View Selected Row", 
@@ -1071,7 +1071,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper_suppbonus='edit';
 			selRowId = $("#gridSuppBonus").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",selRowId,'edit');
+			populateFormdata("#gridSuppBonus","#Dsuppbonus","#Fsuppbonus",selRowId,'edit', '');
 			recstatusDisable();
 		}, 
 		position: "first", 

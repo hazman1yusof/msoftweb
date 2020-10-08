@@ -196,7 +196,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper='view';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view', '');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption:"",cursor: "pointer",position: "first",  
@@ -205,7 +205,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper='edit';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
 			recstatusDisable();
 		}, 
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -1060,7 +1060,7 @@ $("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{
 	onClickButton: function(){
 		oper_authdtl='view';
 		selRowId = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
-		populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId,'view');
+		populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId,'view', '');
 
 		var recstatusvalue = selrowData('#gridAuthdtl').dtl_cando;
 
@@ -1082,7 +1082,7 @@ $("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{
 			return emptyFormdata(errorField,'#FAuthdtl');
 		}else{
 			selRowId2 = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId2,'edit');
+			populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId2,'edit', '');
 			
 			var recstatusvalue = selrowData('#gridAuthdtl').dtl_cando;
 

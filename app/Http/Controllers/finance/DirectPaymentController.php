@@ -53,7 +53,7 @@ class DirectPaymentController extends defaultController
                     ->insertGetId([
                         'auditno' => $auditno,
                         'bankcode' => $request->bankcode,
-                        'payto' => $request->payto,
+                        'payto' => strtoupper($request->payto),
                         'actdate' => $request->actdate,
                         'amount' => $amount,
                         'paymode' => $request->paymode,

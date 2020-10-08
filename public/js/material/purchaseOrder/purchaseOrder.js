@@ -395,7 +395,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
+			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			refreshGrid("#jqGrid2", urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -405,7 +405,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2", urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {

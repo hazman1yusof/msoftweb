@@ -326,7 +326,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
+			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -336,7 +336,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -1094,7 +1094,7 @@ $(document).ready(function () {
 			open: function(){
 				//let data=selrowData('#'+dialog_paymode.gridname);
 				dialog_paymode.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
-				dialog_paymode.urlParam.filterVal=['AACTIVE', 'session.compcode', $('#apacthdr_source').val(), '<>.Debit Note' && '<>.Credit Note']
+				dialog_paymode.urlParam.filterVal=['ACTIVE', 'session.compcode', $('#apacthdr_source').val(), '<>.Debit Note' && '<>.Credit Note']
 				}
 			},'urlParam','radio','tab'
 		);

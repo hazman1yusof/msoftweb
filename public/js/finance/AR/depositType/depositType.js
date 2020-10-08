@@ -36,7 +36,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#depglacc').focus();
@@ -55,7 +55,7 @@
 					title:"Select Deposit Cost",
 					open: function(){
 						dialog_depccode.urlParam.filterCol=['compcode','recstatus'],
-						dialog_depccode.urlParam.filterVal=['session.compcode','A']
+						dialog_depccode.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam','radio','tab'
 			);
@@ -70,7 +70,7 @@
 					],
 					urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 					ondblClickRow: function () {
 						$('#updpayername').focus();
@@ -89,7 +89,7 @@
 					title:"Select Deposit GL Account",
 					open: function(){
 						dialog_depglacc.urlParam.filterCol=['compcode','recstatus'],
-						dialog_depglacc.urlParam.filterVal=['session.compcode','A']
+						dialog_depglacc.urlParam.filterVal=['session.compcode','ACTIVE']
 					}
 				},'urlParam','radio','tab'
 			);
@@ -213,8 +213,8 @@
 					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 35, classes: 'wrap', formatter:formatterstatus, unformat:unformatstatus, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, 
+					{ label: 'Record Status', name: 'recstatus', width: 35, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 				],
 				autowidth:true,
@@ -306,7 +306,7 @@
 				onClickButton: function(){
 					oper='view';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view','');
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  
@@ -315,7 +315,7 @@
 				onClickButton: function(){
 					oper='edit';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
 					recstatusDisable();
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{

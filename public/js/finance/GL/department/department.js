@@ -330,7 +330,7 @@
 				onClickButton: function(){
 					oper='view';
 					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view', '');
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  
