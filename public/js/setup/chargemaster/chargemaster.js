@@ -556,6 +556,7 @@
 				}},
 				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
 	                    dataInit: function (element) {
+	                    	if($(element).attr('id').search("jqg") != -1)$(element).val('ACTIVE');
 	                        $(element).attr('disabled','true');
 	                    }
 				}},
@@ -987,8 +988,8 @@
 				},
 				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
 	                    dataInit: function (element) {
+	                    	if($(element).attr('id').search("jqg") != -1)$(element).val('ACTIVE');
 	                        $(element).attr('disabled','true');
-	                        $(element).val("ACTIVE");
 	                    }
 				}},
 				{ label: 'Package Status', name: 'pkgstatus', hidden:true, width: 60},
@@ -1624,8 +1625,8 @@
 				},
 				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
 	                    dataInit: function (element) {
+	                    	if($(element).attr('id').search("jqg") != -1)$(element).val('ACTIVE');
 	                        $(element).attr('disabled','true');
-	                        $(element).val("ACTIVE");
 	                    }
 				}},
 				{ label: 'Package Status', name: 'pkgstatus', hidden:true, width: 60},
