@@ -85,8 +85,8 @@
                 <div class="form-group">
 				 	<label class="col-md-2 control-label" for="stocktxntype">Transaction Type</label>  
 				  	<div class="col-md-10">
-				    	<label class="radio-inline"><input type="radio" name="stocktxntype" value='TR'>TRANSFER</label>
-                    	<label class="radio-inline"><input type="radio" name="stocktxntype" value='IS'>ISSUE</label>				
+				    	<label class="radio-inline"><input type="radio" name="stocktxntype" value='TR'>Stock</label>
+                    	<label class="radio-inline"><input type="radio" name="stocktxntype" value='IS'>Expenses</label>				
                 	</div>
 				</div>
                   
