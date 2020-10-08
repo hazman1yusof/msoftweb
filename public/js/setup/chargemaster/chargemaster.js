@@ -226,7 +226,7 @@
 				{ label: 'Upd Date', name: 'cm_upddate', width: 90,hidden:true},
 				{ label: 'Status', name:'cm_recstatus', width:30, classes:'wrap', hidden:false,
 				cellattr: function (rowid, cellvalue)
-				{ return cellvalue == 'Deactive' ? 'class="alert alert-danger"' : '' },},
+				{ return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"' : '' },},
 				{ label: 'computerid', name: 'cm_computerid', width: 90, hidden: true, classes: 'wrap' },
 				{ label: 'ipaddress', name: 'cm_ipaddress', width: 90, hidden: true, classes: 'wrap' },
 				{ label: 'lastcomputerid', name: 'cm_lastcomputerid', width: 90, hidden: true, classes: 'wrap' },

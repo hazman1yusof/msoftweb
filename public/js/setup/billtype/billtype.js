@@ -173,7 +173,7 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', cellattr: function(rowid, cellvalue)
-			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -554,7 +554,7 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'svc_upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'svc_upddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Record Status', name: 'svc_recstatus', width: 30, classes: 'wrap', cellattr: function(rowid, cellvalue)
-			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'No', name: 'svc_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'svc_computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'svc_ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -886,7 +886,7 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'i_upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'i_upddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Record Status', name: 'i_recstatus', width: 90, classes: 'wrap', cellattr: function(rowid, cellvalue)
-			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'No', name: 'i_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'i_computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'i_ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -1170,7 +1170,7 @@ $(document).ready(function () {
 			{ label: 'Discount Charge Code', name: 't_discchgcode', width: 50, classes: 'wrap'},
 			{ label: 'discrate', name: 't_discrate', width: 50, hidden: true },
 			{ label: 'Record Status', name: 't_recstatus', width: 90, classes: 'wrap', cellattr: function(rowid, cellvalue)
-			{return cellvalue == 'Deactive' ? 'class="alert alert-danger"': ''}, },
+			{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'adduser', name: 't_adduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'adddate', name: 't_adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 't_upduser', width: 90, hidden: true, classes: 'wrap' },
