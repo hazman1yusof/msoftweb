@@ -279,7 +279,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view');
+			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -288,7 +288,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit');
+			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			recstatusDisable();
 
 		},
@@ -671,7 +671,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper_svc = 'view';
 			selRowId = $("#jqGridsvc").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", selRowId, 'view');
+			populateFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", selRowId, 'view', '');
 		},
 		position: "first",
 		title: "View Selected Row",
@@ -682,7 +682,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper_svc = 'edit';
 			selRowId = $("#jqGridsvc").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", selRowId, 'edit');
+			populateFormdata("#jqGridsvc", "#Dsvc", "#Fsvc", selRowId, 'edit', '');
 			recstatusDisable();
 		},
 		position: "first",
@@ -959,7 +959,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper_item = 'view';
 			selRowId = $("#jqGriditem").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGriditem", "#Ditem", "#Fitem", selRowId, 'view');
+			populateFormdata("#jqGriditem", "#Ditem", "#Fitem", selRowId, 'view', '');
 		},
 		position: "first",
 		title: "View Selected Row",
@@ -970,7 +970,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper_item = 'edit';
 			selRowId = $("#jqGriditem").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGriditem", "#Ditem", "#Fitem", selRowId, 'edit');
+			populateFormdata("#jqGriditem", "#Ditem", "#Fitem", selRowId, 'edit', '');
 			recstatusDisable();
 		},
 		position: "first",
@@ -1247,7 +1247,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper_type = 'view';
 			selRowId = $("#jqGridtype").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGridtype", "#Dtype", "#Ftype", selRowId, 'view');
+			populateFormdata("#jqGridtype", "#Dtype", "#Ftype", selRowId, 'view', '');
 		},
 		position: "first",
 		title: "View Selected Row",
@@ -1258,7 +1258,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper_type = 'edit';
 			selRowId = $("#jqGridtype").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGridtype", "#Dtype", "#Ftype", selRowId, 'edit');
+			populateFormdata("#jqGridtype", "#Dtype", "#Ftype", selRowId, 'edit', '');
 			// recstatusDisable();
 		},
 		position: "first",
