@@ -142,9 +142,9 @@ i.fa {
 					<input id="idno" name="idno" type="hidden">
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_ttype">Doc Type</label> 
+						<label class="col-md-2 control-label" for="apacthdr_doctype">Doc Type</label> 
 							<div class="col-md-3">
-							  	<select id="apacthdr_ttype" name=apacthdr_ttype class="form-control" data-validation="required">
+							  	<select id="apacthdr_doctype" name=apacthdr_doctype class="form-control" data-validation="required">
 							       <option value="Supplier">Supplier</option>
 							       <option value="Others">Others</option>
 							       <option value="Debit_Note">Debit Note</option>
