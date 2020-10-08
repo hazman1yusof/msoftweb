@@ -26,7 +26,9 @@ $(document).ready(function () {
 		if( $('#formDoctorNote').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_doctorNote(function(){
 				$("#cancel_doctorNote").click();
-    			docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load();
+    			docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(dataobj){
+    				console.log(dataobj);
+    			});
 			});
 		}else{
 			enableForm('#formDoctorNote');

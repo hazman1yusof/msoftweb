@@ -1484,7 +1484,7 @@ function faster_detail_load(){
 					}
 				});
 			}else{
-				let desc = 'we';
+				let desc = '';
 				let now = moment();
 
 				var json = JSON.stringify({
