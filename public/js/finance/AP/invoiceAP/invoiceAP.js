@@ -365,8 +365,8 @@ $(document).ready(function () {
 	
 	////////////////////selected///////////////
 
-	$('#apacthdr_ttype').on('change', function() {
-		let ttype1 = $("#apacthdr_ttype option:selected").val();
+	$('#apacthdr_doctype').on('change', function() {
+		let ttype1 = $("#apacthdr_doctype option:selected").val();
 	
 		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
