@@ -557,7 +557,6 @@
 				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                        $(element).attr('disabled','true');
-	                        $(element).val("ACTIVE");
 	                    }
 				}},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}
@@ -1328,7 +1327,6 @@
 				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                        $(element).attr('disabled','true');
-	                        $(element).val("ACTIVE");
 	                    }
 				}},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
