@@ -165,7 +165,7 @@ $(document).ready(function () {
 							custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: ' ', name: 'recstatus', width: 8, classes: 'left_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 				{ 	custom_element:recstatusCustomEdit,
 					custom_value:galGridCustomValue 	
