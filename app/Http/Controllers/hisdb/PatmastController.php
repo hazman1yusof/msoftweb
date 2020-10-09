@@ -362,7 +362,7 @@ class PatmastController extends defaultController
                         ->leftJoin('hisdb.bedtype as bt', 'b.bedtype', '=', 'bt.bedtype')
                         ->leftJoin('sysdb.department as d', 'b.ward', '=', 'd.deptcode')
                         ->where('b.occup','=',"VACANT")
-                        ->where('b.recstatus','=','A')
+                        ->where('b.recstatus','=','ACTIVE')
                         ->where('b.compcode','=',session('compcode'))
                         ->orderBy('b.bedtype', 'desc')
                         ->get();

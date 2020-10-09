@@ -27,7 +27,15 @@ class DoctorNoteController extends defaultController
 
     public function table(Request $request)
     {   
-        return $this->get_table_date($request);
+        switch($request->action){
+            case 'get_table_date':
+                return $this->get_table_date($request);
+            case 'get_table_doctornote':
+                return $this->get_table_doctornote($request);
+
+            default:
+                return 'error happen..';
+        }
     }
 
     public function form(Request $request)
@@ -168,7 +176,7 @@ class DoctorNoteController extends defaultController
                 DB::table('hisdb.patexam')
                     ->where('mrn','=',$request->mrn_doctorNote)
                     ->where('episno','=',$request->episno_doctorNote)
-                    ->where('mrn','=',$request->mrn_doctorNote)
+                    ->where('recorddate','=',$request->recorddate)
                     ->update([
                         'examination' => $request->examination,
                         'lastuser'  => session('username'),
@@ -201,6 +209,7 @@ class DoctorNoteController extends defaultController
                 DB::table('hisdb.pathistory')
                     ->where('mrn','=',$request->mrn_doctorNote)
                     ->where('compcode','=',session('compcode'))
+                    ->where('recorddate','=',$request->recorddate)
                     ->update([
                         'drug' => $request->drug,
                         'alllergyhistory' => $request->alllergyhistory,
@@ -270,63 +279,6 @@ class DoctorNoteController extends defaultController
         }
     }
 
-    // public function get_table_doctornote(Request $request){
-        
-    //     $episode_obj = DB::table('hisdb.episode')
-    //                 ->where('compcode','=',session('compcode'))
-    //                 ->where('mrn','=',$request->mrn)
-    //                 ->where('episno','=',$request->episno);
-                     
-    //     $patexam_obj = DB::table('hisdb.patexam')
-    //                 ->where('compcode','=',session('compcode'))
-    //                 ->where('mrn','=',$request->mrn)
-    //                 ->where('episno','=',$request->episno);
-                     
-    //     $pathealth_obj = DB::table('hisdb.pathealth')
-    //                 ->where('compcode','=',session('compcode'))
-    //                 ->where('mrn','=',$request->mrn)
-    //                 ->where('episno','=',$request->episno);
-                     
-    //     $pathistory_obj = DB::table('hisdb.pathistory')
-    //                 ->where('compcode','=',session('compcode'))
-    //                 ->where('mrn','=',$request->mrn);
-
-    //     $episdiag_obj = DB::table('hisdb.episdiag')
-    //                 ->where('compcode','=',session('compcode'))
-    //                 ->where('mrn','=',$request->mrn)
-    //                 ->where('episno','=',$request->episno);
-
-    //     $responce = new stdClass();
-
-    //     if($episode_obj->exists()){
-    //         $episode_obj = $episode_obj->first();
-    //         $responce->episode = $episode_obj;
-    //     }
-
-    //     if($patexam_obj->exists()){
-    //         $patexam_obj = $patexam_obj->first();
-    //         $responce->patexam = $patexam_obj;
-    //     }
-
-    //     if($pathealth_obj->exists()){
-    //         $pathealth_obj = $pathealth_obj->first();
-    //         $responce->pathealth = $pathealth_obj;
-    //     }
-
-    //     if($pathistory_obj->exists()){
-    //         $pathistory_obj = $pathistory_obj->first();
-    //         $responce->pathistory = $pathistory_obj;
-    //     }
-
-    //     if($episdiag_obj->exists()){
-    //         $episdiag_obj = $episdiag_obj->first();
-    //         $responce->episdiag = $episdiag_obj;
-    //     }
-
-    //     return json_encode($responce);
-
-    // }
-
     public function get_table_date(Request $request){
 
 
@@ -341,6 +293,8 @@ class DoctorNoteController extends defaultController
         if($patexam_obj->exists()){
             $patexam_obj = $patexam_obj->get();
             $responce->data = $patexam_obj;
+        }else{
+            $responce->data = [];
         }
 
         return json_encode($responce);
@@ -350,6 +304,13 @@ class DoctorNoteController extends defaultController
 
         $responce = new stdClass();
 
+
+        $episode_obj = DB::table('hisdb.episode')
+            ->select('remarks','diagfinal')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$request->mrn)
+            ->where('episno','=',$request->episno);
+
         $pathealth_obj = DB::table('hisdb.pathealth')
             ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
@@ -357,12 +318,24 @@ class DoctorNoteController extends defaultController
 
         $pathistory_obj = DB::table('hisdb.pathistory')
             ->where('compcode','=',session('compcode'))
-            ->where('mrn','=',$request->mrn);
+            ->where('mrn','=',$request->mrn)
+            ->where('recorddate','=',$request->recorddate);
+
+        $patexam_obj = DB::table('hisdb.patexam')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$request->mrn)
+            ->where('episno','=',$request->episno)
+            ->where('recorddate','=',$request->recorddate);
 
         $episdiag_obj = DB::table('hisdb.episdiag')
             ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno);
+
+        if($episode_obj->exists()){
+            $episode_obj = $episode_obj->first();
+            $responce->episode = $episode_obj;
+        }
 
         if($pathealth_obj->exists()){
             $pathealth_obj = $pathealth_obj->first();
@@ -372,6 +345,11 @@ class DoctorNoteController extends defaultController
         if($pathistory_obj->exists()){
             $pathistory_obj = $pathistory_obj->first();
             $responce->pathistory = $pathistory_obj;
+        }
+
+        if($patexam_obj->exists()){
+            $patexam_obj = $patexam_obj->first();
+            $responce->patexam = $patexam_obj;
         }
 
         if($episdiag_obj->exists()){

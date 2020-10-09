@@ -43,6 +43,8 @@
 
                     <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
                     <input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
+                    <input id="recorddate" name="recorddate" type="hidden">
+
 
                     <div class="col-md-2" style="padding:0 0 0 0">
                         <div class="panel panel-info">
@@ -68,7 +70,7 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label" for="remarks">Patient Complaint</label>
                                     <div class="col-md-6">
-                                        <input id="remarks" name="remarks" type="text" class="form-control input-sm">
+                                        <input id="remarks" name="remarks" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter Patient Complaint">
                                     </div>
                                 </div>
 

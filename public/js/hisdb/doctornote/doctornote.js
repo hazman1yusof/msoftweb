@@ -9,6 +9,7 @@ $(document).ready(function () {
 		button_state_doctorNote('wait');
 		enableForm('#formDoctorNote');
 		rdonly('#formDoctorNote');
+    	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		// dialog_mrn_edit.on();
 		
 	});
@@ -159,8 +160,8 @@ function populate_doctorNote(obj,rowdata){
     doctornote_docnote={
     	action:'get_table_doctornote',
     	mrn:obj.mrn,
-    	episno:obj.episno
-
+    	episno:obj.episno,
+    	recorddate:''
     };
 
     dateParam_docnote={
@@ -256,7 +257,9 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
 
 var ajaxurl;
 $('#jqGridDoctorNote_panel').on('show.bs.collapse', function () {
-    docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load();
+    docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+    	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
+    });
 });
 
 $('#docnote_date_tbl tbody').on('click', 'tr', function () { 
@@ -267,12 +270,18 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
     $(this).addClass('active');
 
     button_state_doctorNote('edit');
+    var data = docnote_date_tbl.row( this ).data();
+    doctornote_docnote.recorddate = data.date;
 
     $.get( "/doctornote/table?"+$.param(doctornote_docnote), function( data ) {
 			
 	},'json').done(function(data) {
 		if(!$.isEmptyObject(data)){
-			console.log(data);
+			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episode);
+			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
+			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
+			autoinsert_rowdata_doctorNote("#formDoctorNote",data.patexam);
+			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
 		}
 	});
 
