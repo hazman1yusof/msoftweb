@@ -25,10 +25,15 @@ $(document).ready(function () {
 	$("#save_doctorNote").click(function(){
 		disableForm('#formDoctorNote');
 		if( $('#formDoctorNote').isValid({requiredFields: ''}, conf, true) ) {
-			saveForm_doctorNote(function(){
+			saveForm_doctorNote(function(data){
 				$("#cancel_doctorNote").click();
-    			docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(dataobj){
-    				console.log(dataobj);
+    			docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(){
+    				docnote_date_tbl.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+					    var currow = this.data();
+					    if(currow.idno == data.idno){
+			    			$(this.node()).addClass('active');
+					    }
+					});
     			});
 			});
 		}else{
@@ -233,10 +238,9 @@ function saveForm_doctorNote(callback){
     $.post( "/doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
-        // alert('there is an error');
-        callback();
+        callback(data);
     }).success(function(data){
-        callback();
+        callback(data);
     });
 }
 
@@ -253,6 +257,13 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
         visible: false
     } ],
     order: [[0, 'desc']],
+    drawCallback: function(settings, json) {
+    	// console.log(json);
+    	// if ($(this).find('tbody tr').length<=0) {
+     //    	$(this).find('tbody tr:first').first().hide();
+    	// }
+
+	}
 });
 
 var ajaxurl;
@@ -266,6 +277,8 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
     if(disable_edit_date()){
     	return;
     }
+
+    emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
     $('#docnote_date_tbl tbody tr').removeClass('active');
     $(this).addClass('active');
 
@@ -295,6 +308,5 @@ function disable_edit_date(){
     if(newact == 'disabled' && data_oper == 'add'){
     	disabled = true;
     }
-    console.log(disabled);
     return disabled;
 }

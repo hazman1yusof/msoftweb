@@ -217,6 +217,7 @@ class DoctorNoteController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }else{
+
                 DB::table('hisdb.patexam')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -269,8 +270,24 @@ class DoctorNoteController extends defaultController
 
             $queries = DB::getQueryLog();
             // dump($queries);
-
+            
             DB::commit();
+
+            $patexam_obj = DB::table('hisdb.patexam')
+                ->select('idno','recorddate AS date')
+                ->where('mrn','=',$request->mrn_doctorNote)
+                ->where('episno','=',$request->episno_doctorNote)
+                ->where('recorddate','=',$request->recorddate)
+                ->where('compcode','=',session('compcode'))
+                ->first();
+
+
+            $responce = new stdClass();
+            $responce->idno = $patexam_obj->idno;
+            $responce->date = $patexam_obj->date;
+
+            return json_encode($responce);
+
 
         } catch (\Exception $e) {
             DB::rollback();
