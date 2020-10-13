@@ -67,7 +67,6 @@
 					<label class="col-md-2 control-label" for="dtl_recstatus">Status</label>  
 						<div class="col-md-2">
 							<select id="dtl_recstatus" name="dtl_recstatus" class="form-control input-sm">
-							    <option value="REQUEST">REQUEST</option>
 							    <option value="SUPPORT">SUPPORT</option>
 							    <option value="VERIFIED">VERIFIED</option>
 							    <option value="APPROVED">APPROVED</option>
