@@ -101,15 +101,15 @@ $(document).ready(function () {
 	dialog_isudept.makedialog();
 
 	var dialog_taxcode = new ordialog(
-		'ordcom_taxcode','hisdb.chargetrx',"#jqGrid_ordcom input[name='ordcom_taxcode']",errorField,
+		'ordcom_taxcode','hisdb.taxmast',"#jqGrid_ordcom input[name='ordcom_taxcode']",errorField,
 		{	colModel:
 			[
 				{label:'GST Code',name:'taxcode',width:200,classes:'pointer',canSearch:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true},
 			],
 			urlParam: {
-				filterCol:['recstatus','compcode','taxcode'],
-				filterVal:['ACTIVE', 'session.compcode','IP'],
+				filterCol:['recstatus','compcode','taxtype'],
+				filterVal:['ACTIVE', 'session.compcode','INPUT'],
 			},
 			ondblClickRow:function(event){
 				$('#remarks').focus();
@@ -127,8 +127,8 @@ $(document).ready(function () {
 		},{
 			title:"Select GST Code",
 			open: function(){
-				dialog_taxcode.urlParam.filterCol = ['recstatus','compcode','taxcode'];
-				dialog_taxcode.urlParam.filterVal = ['ACTIVE', 'session.compcode','IP'];
+				dialog_taxcode.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+				dialog_taxcode.urlParam.filterVal = ['ACTIVE', 'session.compcode','INPUT'];
 			},
 		},'urlParam','radio','tab','table'
 	);
@@ -138,9 +138,9 @@ $(document).ready(function () {
 		var temp;
 		switch(name){
 			// case ' ':temp=$("#jqGrid input[name='recstatus']");break;
-			case 'Charge Code':temp=$("#jqGrid input[name='ordcom_chgcode']");break;
-			case 'Issue Department':temp=$("#jqGrid input[name='ordcom_isudept']");break;
-			case 'GST Code':temp=$("#jqGrid input[name='ordcom_taxcode']");break;
+			case 'Charge Code':temp=$("#jqGrid_ordcom input[name='ordcom_chgcode']");break;
+			case 'Issue Department':temp=$("#jqGrid_ordcom input[name='ordcom_isudept']");break;
+			case 'GST Code':temp=$("#jqGrid_ordcom input[name='ordcom_taxcode']");break;
 			break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -277,13 +277,13 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			//{ label: 'GST Code', name: 'ct_taxcode', width: 5,editable:true},
-			{ label: 'Remarks', name: 'ct_remarks', hidden:false,width:35, editable:true,
-				edittype:'custom',	editoptions:
-					{ 	custom_element:ct_remarks_custom,
-						custom_value:galGridCustomValue 	
-					},
-			},
+			// //{ label: 'GST Code', name: 'ct_taxcode', width: 5,editable:true},
+			// { label: 'Remarks', name: 'ct_remarks', hidden:false,width:35, editable:true,
+			// 	edittype:'custom',	editoptions:
+			// 		{ 	custom_element:ct_remarks_custom,
+			// 			custom_value:galGridCustomValue 	
+			// 		},
+			// },
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -374,6 +374,7 @@ $(document).ready(function () {
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
+			console.log(errorField);
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid_ordcom').jqGrid ('getRowData', rowid);
