@@ -20,6 +20,31 @@ class OrdcomController extends defaultController
         // $this->duplicateCode = "chgcode";
     }
 
+    public function table(Request $request)
+    {   
+       switch($request->action){
+            case 'chgcode_table':
+                $data = DB::table('hisdb.chgmast as m')
+                            ->select('m.chgcode','m.description as desc','m.chggroup','g.grpcode','g.description','p.amt1')
+                            ->leftJoin('hisdb.chggroup as g', 'm.chggroup', '=', 'g.grpcode')
+                            ->leftJoin('hisdb.chgprice as p', 'm.chgcode', '=', 'p.chgcode')
+                            ->where('m.recstatus','=','ACTIVE')
+                            ->where('m.compcode','=',session('compcode'))
+                            ->orderBy('m.chggroup', 'desc')
+                            ->get();
+                break;
+
+            default:
+                $data = 'error happen..';
+                break;
+        }
+
+
+        $responce = new stdClass();
+        $responce->data = $data;
+        return json_encode($responce);
+    }
+
     public function show(Request $request)
     {   
         return view('hisdb.ordcom.ordcom');

@@ -28,44 +28,6 @@ $(document).ready(function () {
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var mycurrency = new currencymode(['#ct_quantity']);
 
-	var dialog_chgcode = new ordialog(
-		'ordcom_chgcode','hisdb.chgmast',"#jqGrid_ordcom input[name='ordcom_chgcode']",errorField,
-		{	colModel:
-			[
-				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true},
-			],
-			urlParam: {
-				filterCol:['recstatus','compcode'],
-				filterVal:['ACTIVE', 'session.compcode'],
-				WhereInCol:['chggroup'],
-				WhereInVal:[['10','70','35','30']]
-			},
-			ondblClickRow:function(event){
-				//$('#occup').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					//$('#occup').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			},
-		},{
-			title:"Select ChargeCode",
-			open: function(){
-				dialog_chgcode.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_chgcode.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
-				dialog_chgcode.urlParam.WhereInCol = ['chggroup'];
-				dialog_chgcode.urlParam.WhereInVal = [['10','70','35','30']];
-			},
-		},'urlParam','radio','tab','table'
-	);
-	dialog_chgcode.makedialog();
-
 	var dialog_isudept = new ordialog(
 		'ordcom_isudept','sysdb.department',"#jqGrid_ordcom input[name='ordcom_isudept']",errorField,
 		{	colModel:
@@ -137,8 +99,6 @@ $(document).ready(function () {
 	function cust_rules(value,name){
 		var temp;
 		switch(name){
-			// case ' ':temp=$("#jqGrid input[name='recstatus']");break;
-			case 'Charge Code':temp=$("#jqGrid_ordcom input[name='ordcom_chgcode']");break;
 			case 'Issue Department':temp=$("#jqGrid_ordcom input[name='ordcom_isudept']");break;
 			case 'GST Code':temp=$("#jqGrid_ordcom input[name='ordcom_taxcode']");break;
 			break;
@@ -164,12 +124,12 @@ $(document).ready(function () {
 
 	function chgcodeOrdcomCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid_ordcom" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function isudeptOrdcomCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_isudept" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid_ordcom" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_isudept" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function ct_trxtime_custom(val,opt){
@@ -182,7 +142,7 @@ $(document).ready(function () {
 
 	function taxcodeOrdcomCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_taxcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid_ordcom" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_taxcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -262,6 +222,12 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
+			{ label: 'Price', name: 'ct_price', width: 5, formatter: 'currency', editable:true,
+				editoptions: {
+                	dataInit: function (element) {
+                    $(element).attr('disabled','disabled');
+                }
+            }},	
 			{ label: 'Quantity', name: 'ct_quantity', width: 5, formatter: 'currency', editable:true},	
 			{ label: 'Issue Department', name: 'ct_isudept', width: 15,editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
@@ -277,6 +243,12 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
+			{ label: 'Amount', name: 'ct_amt', width: 5, formatter: 'currency', editable:true,
+				editoptions: {
+                    dataInit: function (element) {
+                        $(element).attr('disabled','disabled');
+                    }
+                }},	
 			// //{ label: 'GST Code', name: 'ct_taxcode', width: 5,editable:true},
 			// { label: 'Remarks', name: 'ct_remarks', hidden:false,width:35, editable:true,
 			// 	edittype:'custom',	editoptions:
@@ -336,7 +308,6 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 
 			$("#jqGridPager_ordcomDelete,#jqGridPager_ordcomRefresh, #jqGridPager_ordcomEditAll, #jqGridPager_ordcomrSaveAll, #jqGridPager_ordcomCancelAll").hide();
-			dialog_chgcode.on();
 			dialog_isudept.on();
 			dialog_taxcode.on();
 			$("#jqGrid_ordcom :input[name='ct_trxdate']").focus();
@@ -344,6 +315,8 @@ $(document).ready(function () {
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ordcom_ilsave').click();
 			});
+
+			$("#jqGrid_ordcom input[name='ct_quantity'], #jqGrid_ordcom input[name='ordcom_taxcode'], #jqGrid_ordcom input[name='amtdisc']").on('blur',onleave_input_ordcom);
 
 			$("#jqGrid_ordcom [name='ct_trxdate']").val(moment().format('D/M/YYYY'));
 			$("#jqGrid_ordcom [name='ct_trxtime']").val(moment().format('hh:mm:ss'));
@@ -354,6 +327,15 @@ $(document).ready(function () {
 
 			$("#jqGrid_ordcom [name='ct_remarks']").text(drname);
 
+			$("#jqGrid_ordcom [name='ordcom_chgcode'] ~ a").click(function(){
+				let c_optid = $(this).prev('input').first().attr('optid');
+				let c_id = $(this).prev('input').first().attr('id');
+				if($(this).attr('disabled') != 'disabled'){
+					$('#mdl_ordcom_chgcode').data('c_optid',c_optid);
+					$('#mdl_ordcom_chgcode').data('c_id',c_id);
+					$("#mdl_ordcom_chgcode").modal();
+				}
+			});
 
 		},
 		aftersavefunc: function (rowid, response, options) {
@@ -374,7 +356,6 @@ $(document).ready(function () {
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
-			console.log(errorField);
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid_ordcom').jqGrid ('getRowData', rowid);
@@ -539,6 +520,24 @@ $(document).ready(function () {
 	addParamField('#jqGrid_ordcom', true, urlParam_ordcom);	
 		
 });	
+
+function onleave_input_ordcom(event){
+	var c_optid = event.currentTarget.id;
+	var id_optid = c_optid.substring(0,c_optid.search("_"));
+
+	let qtyorder = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_ct_quantity").val());
+	let unitprice = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_ct_price").val());
+	// let gstpercent = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_gstpercent").val());
+	let gstpercent = 0;
+
+	var totamtperUnit = (unitprice*qtyorder);
+
+	var tot_gst = totamtperUnit * (gstpercent / 100);
+	var totalAmount = totamtperUnit + tot_gst;
+
+	$("#"+id_optid+"_ct_amt").val(totalAmount);
+}
+
 function populate_form_ordcom(obj,rowdata){	
 	//panel header	
 	$('#name_show_ordcom').text(obj.name);	
@@ -555,3 +554,95 @@ function populate_form_ordcom(obj,rowdata){
     	episno:obj.episno	
     };	
 }
+
+//---------------------mdl_chgcode-----------------------
+var ordcom_chgcode_selecter_;
+$('#mdl_ordcom_chgcode').on('show.bs.modal', function () {
+	if(ordcom_chgcode_selecter_ == undefined){
+	    ordcom_chgcode_selecter_ = new ordcom_chgcode_selecter(
+	    	$(this).data('c_optid'),$(this).data('c_id')
+	    );
+		ordcom_chgcode_selecter_.on();
+	}else{
+		ordcom_chgcode_selecter_.on();
+	}
+});
+
+function ordcom_chgcode_selecter(c_optid,c_id){
+	this.c_optid = c_optid;
+	this.c_id = c_id;
+
+    var chgcode_table = null;
+
+    chgcode_table = $('#chgcode_table').DataTable( {
+        "ajax": "ordcom/table?action=chgcode_table",
+        "paging":true,
+        "pageLength": 25,
+        "columns": [
+            {'data': 'chgcode'},
+            {'data': 'desc'},
+            {'data': 'chggroup'},
+            {'data': 'grpcode'},
+            {'data': 'description'},
+            {'data': 'amt1'}
+        ],
+        order: [[2, 'asc']],
+        columnDefs: [{
+                targets: [2],
+                visible: false
+        } ],
+        rowGroup: {
+            dataSrc: [ "chggroup" ],
+            startRender: function ( rows, group ) {
+	            return group + `<i class="arrow fa fa-angle-double-down"></i>`;
+	        }
+        },
+        "createdRow": function( row, data, dataIndex ) {
+	    	$(row).addClass( data['chggroup'] );
+	    },
+        "initComplete": function(settings, json) {
+        }
+    } );
+
+    function ordcom_click_tr(event){
+    	let c_optid = event.data.data.c_optid;
+    	let c_id = event.data.data.c_id;
+		var id_optid = c_optid.substring(0,c_optid.search("_"));
+
+    	let item = chgcode_table.row( this ).data();
+        if(item != undefined){
+            $('input#'+c_optid).val(item["chgcode"]);
+            $('input#'+id_optid+'_ct_price').val(item["amt1"]);
+            $('input#'+c_optid).val(item["chgcode"]);
+            if($('input#'+c_optid).parent().first().siblings('span.help-block').length == 0){
+            	$('input#'+c_optid).parent().first().after("<span class='help-block'>"+item["desc"]+"</span>")
+            }else{
+                $('input#'+c_optid).parent().first().siblings('span.help-block').first().text(item["desc"]);
+            }
+            $('#mdl_ordcom_chgcode').modal('hide');
+        }
+    }
+
+    this.on = function(){
+	    $('#chgcode_table tbody').on('click', 'tr.dtrg-group', function () {    
+	        let chggroup = $(this).children().text();
+	        if($(this).data('_hidden') == undefined || $(this).data('_hidden') == 'show'){
+	        	$("#chgcode_table tbody tr."+chggroup).hide();
+	        	$(this).data('_hidden','hide');
+	        }else if($(this).data('_hidden') == 'hide'){
+	        	$("#chgcode_table tbody tr."+chggroup).show();
+	        	$(this).data('_hidden','show');
+	        }
+	    });
+
+    	$('#chgcode_table tbody').on('dblclick', 'tr',{data:this}, ordcom_click_tr);
+
+	    $("#mdl_ordcom_chgcode").on('hidden.bs.modal', function () {
+	        $('#chgcode_table tbody').off('hidden.bs.modal');
+	        $('#chgcode_table tbody').off('click');
+	        $('#chgcode_table tbody').off('dblclick');
+	    });
+    }
+
+}
+
