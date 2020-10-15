@@ -1056,9 +1056,10 @@ $(document).ready(function () {
 			$("input[name='gstpercent']").val('0')//reset gst to 0
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			
-			$("#jqGrid2 input[name='qtydelivered'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='itemcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='qtydelivered'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			$("#jqGrid2 input[name='qtydelivered']").on('blur',calculate_conversion_factor);
+			$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
 
 			$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
 				var code = e.keyCode || e.which;
@@ -1460,6 +1461,14 @@ $(document).ready(function () {
 		}
 	}
 
+	function remove_noti(event){
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+
+		$(".noti").empty();
+
+	}
+
 	///////////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////calculate outstanding quantity/////////////////////
@@ -1491,9 +1500,10 @@ $(document).ready(function () {
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		
-		$("#jqGrid2 input[name='qtydelivered'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='itemcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='qtydelivered'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 		$("#jqGrid2 input[name='qtydelivered']").on('blur',calculate_conversion_factor);
+		$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
 		$("#jqGrid2 input[name='qtydelivered'],#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='expdate'],#jqGrid2 input[name='batchno']").on('focus',updwnkey_func);
 	}
 
