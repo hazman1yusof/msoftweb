@@ -563,7 +563,6 @@ $(document).ready(function () {
 
 				let data = selrowData('#' + search_occup.gridname);
 				$("#searchForm input[name='Stext']").val(data.description);
-				console.log(data.description);
 				if(data.description == 'ACTIVE' || data.description == 'DEACTIVE'){
 					let val_use = (data.description == 'ACTIVE')? 'ACTIVE':'DEACTIVE';
 					urlParam.searchCol=["recstatus"];
@@ -978,7 +977,6 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_lodger_trf.makedialog();
-	console.log($('#trf_bednum ~ a'));
 	button_state_trf('empty');
 	function button_state_trf(state){
 		switch(state){

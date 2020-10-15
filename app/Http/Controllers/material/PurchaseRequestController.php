@@ -277,7 +277,7 @@ class PurchaseRequestController extends defaultController
                 $data->email_to = 'hazman.yusof@gmail.com';
                 $data->whatsapp = '01123090948';
 
-                $this->sendemail($data);
+                //$this->sendemail($data);
 
             }
 
@@ -362,7 +362,7 @@ class PurchaseRequestController extends defaultController
             $data->email_to = 'hazman.yusof@gmail.com';
             $data->whatsapp = '01123090948';
 
-            $this->sendemail($data);
+            //$this->sendemail($data);
 
             DB::commit();
         
@@ -553,7 +553,7 @@ class PurchaseRequestController extends defaultController
                 $data->email_to = 'hazman.yusof@gmail.com';
                 $data->whatsapp = '01123090948';
             
-                $this->sendemail($data);
+                //$this->sendemail($data);
 
             }
 
@@ -637,7 +637,7 @@ class PurchaseRequestController extends defaultController
             $data->email_to = 'hazman.yusof@gmail.com';
             $data->whatsapp = '01123090948';
 
-            $this->sendemail($data);
+            //$this->sendemail($data);
            
             DB::commit();
         
@@ -720,7 +720,7 @@ class PurchaseRequestController extends defaultController
                 $data->email_to = 'hazman.yusof@gmail.com';
                 $data->whatsapp = '01123090948';
 
-                $this->sendemail($data);
+                //$this->sendemail($data);
 
             }
 
@@ -804,7 +804,7 @@ class PurchaseRequestController extends defaultController
             $data->email_to = 'hazman.yusof@gmail.com';
             $data->whatsapp = '01123090948';
 
-            $this->sendemail($data);
+            //$this->sendemail($data);
            
             DB::commit();
         
