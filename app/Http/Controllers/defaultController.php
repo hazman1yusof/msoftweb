@@ -119,7 +119,15 @@ abstract class defaultController extends Controller{
                                     if($pieces[1] == 'on'){
                                         $join = $join->on($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
                                     }else{
-                                        $join = $join->where($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
+
+                                        $in_pieces = explode(".", $request->join_filterVal[$key][$key2], 2);
+                                        if($in_pieces[0] == 'session'){
+                                            $join = $join->where($pieces[0],'=',session($in_pieces[1]));
+                                        }else{
+                                            $join = $join->where($pieces[0],'=',$request->join_filterVal[$key][$key2]);
+                                        }
+
+                                        // $join = $join->where($pieces[0],'=',$request->join_filterVal[$key][$key2]);
                                     }
                                 }
                             }
@@ -262,6 +270,8 @@ abstract class defaultController extends Controller{
                     $table = $table->where($request->filterCol[$key],'<',$pieces[1]);
                 }else if($pieces[0] == '<='){
                     $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
+                }else if($pieces[0] == 'on'){
+                    $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
                 }else{
                     $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
                 }
@@ -288,11 +298,23 @@ abstract class defaultController extends Controller{
 
         //////////ordering///////// ['expdate asc','idno desc']
         if(!empty($request->sortby)){
-            foreach ($request->sortby as $key => $value) {
-                $pieces = explode(" ", $request->sortby[$key]);
+
+            if(!empty($request->fixPost)){
+                $sortby_array = $this->fixPost3($request->sortby);
+            }else{
+                $sortby_array = $request->sortby;
+            }
+
+            foreach ($sortby_array as $key => $value) {
+                $pieces = explode(" ", $sortby_array[$key]);
                 $table = $table->orderBy($pieces[0], $pieces[1]);
             }
         }else if(!empty($request->sidx)){
+
+            if(!empty($request->fixPost)){
+                $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+            }
+            
             $pieces = explode(", ", $request->sidx .' '. $request->sord);
             if(count($pieces)==1){
                 $table = $table->orderBy($request->sidx, $request->sord);

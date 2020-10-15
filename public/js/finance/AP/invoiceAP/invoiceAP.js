@@ -1170,6 +1170,10 @@ $(document).ready(function () {
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
 
+	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
+		$("#gridDo").jqGrid ('setGridWidth', Math.floor($("#gridDo_c")[0].offsetWidth-$("#gridDo_c")[0].offsetLeft-28));
+	});
+
 });
 
 function populate_form(obj){

@@ -173,7 +173,7 @@ $(document).ready(function () {
 			{ label: 'Notes', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
 			//{ label: 'Remarks', name: 'reservebedNote', width: 40, hidden:true},
 			{ label: 'Doctor Code', name: 'admdoctor', width: 20, canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: ' ', name: 'recstatus', width: 8, classes: 'center_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: ' ', name: 'recstatus', width: 8, classes: 'left_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 				{ 	custom_element:recstatusCustomEdit,
 					custom_value:galGridCustomValue 	

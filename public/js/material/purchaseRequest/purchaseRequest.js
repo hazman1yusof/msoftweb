@@ -391,6 +391,7 @@ $(document).ready(function () {
 			$(this).attr('disabled',false);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
+			$(this).attr('disabled',false);
 		}).success(function(data){
 			
 		});
@@ -413,6 +414,7 @@ $(document).ready(function () {
 			cbselect.empty_sel_tbl();
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
+			$(this).attr('disabled',false);
 		}).success(function(data){
 			
 		});
@@ -991,9 +993,10 @@ $(document).ready(function () {
 			$("input[name='gstpercent']").val('0')//reset gst to 0
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			
-			$("#jqGrid2 input[name='qtyrequest'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='itemcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='qtyrequest'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			$("#jqGrid2 input[name='qtyrequest']").on('blur',calculate_conversion_factor);
+			$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
 
 			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
@@ -1002,7 +1005,7 @@ $(document).ready(function () {
 				// $('#jqGrid2_ilsave').click();
 			});
 
-        	cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
+        	// cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
 		},
 		aftersavefunc: function (rowid, response, options) {
 			$('#purreqhd_totamount').val(response.responseText);
@@ -1040,6 +1043,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 		},
 		 afterrestorefunc : function( response ) {
+			errorField.length=0;
 			delay(function(){
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			}, 500 );
@@ -1344,6 +1348,14 @@ $(document).ready(function () {
 		
 	}
 
+	function remove_noti(event){
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+
+		$(".noti").empty();
+
+	}
+
 	/////////////////////////////edit all//////////////////////////////////////////////////
 
 	function onall_editfunc(){
@@ -1361,9 +1373,10 @@ $(document).ready(function () {
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		
-		$("#jqGrid2 input[name='qtyrequest'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='itemcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='qtyrequest'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 		$("#jqGrid2 input[name='qtyrequest']").on('blur',calculate_conversion_factor);
+		$("#jqGrid2 input[name='qtyrequest']").on('blur',remove_noti);
 	}
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
@@ -1411,26 +1424,6 @@ $(document).ready(function () {
 				errorField.push( id );
 			}
 		}
-
-		// var id2="#jqGrid2 #"+id_optid+"_unitprice";
-		// var fail_msg2 = "Unitprice cannot be 0";
-		// var name2 = "unitprice";
-		// if($("input#"+id_optid+"_pricecode").val() != 'BO' && unitprice == 0 ) {
-		// 	$( id2 ).parent().removeClass( "has-success" ).addClass( "has-error" );
-		// 	$( id2 ).removeClass( "valid" ).addClass( "error" );
-		// 	if(!$('.noti').find("li[data-errorid='"+name2+"']").length)$('.noti').prepend("<li data-errorid='"+name2+"'>"+fail_msg2+"</li>");
-		// 	if($.inArray(id2,errorField)===-1){
-		// 		errorField.push( id2 );
-		// 	}
-		// } 
-		// else {
-		// 	if($.inArray(id2,errorField)!==-1){
-		// 		errorField.splice($.inArray(id2,errorField), 1);
-		// 	}
-		// 	$( id2 ).parent().removeClass( "has-error" ).addClass( "has-success" );
-		// 	$( id2 ).removeClass( "error" ).addClass( "valid" );
-		// 	$('.noti').find("li[data-errorid='"+name2+"']").detach();
-		// }
 
 		event.data.currency.formatOn();//change format to currency on each calculation
 
@@ -1604,6 +1597,7 @@ $(document).ready(function () {
 
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 				let data = selrowData('#'+dialog_pricecode.gridname);
+				$('#'+dialog_itemcode.gridname).jqGrid("clearGridData", true);
 
 				if(data.pricecode == 'MS'){
 					let newcolmodel = [
@@ -1681,12 +1675,12 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
 					dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 's.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#purreqhd_purreqdt').val()).year(), $('#purreqhd_reqdept').val(),'session.unit'];
+					dialog_itemcode.urlParam.filterVal = ['on.p.compcode', moment($('#purreqhd_purreqdt').val()).year(), $('#purreqhd_reqdept').val(),'session.unit'];
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on ='],[]];
-					dialog_itemcode.urlParam.join_filterVal = [['p.compcode','p.uomcode'],[]];
+					dialog_itemcode.urlParam.join_filterCol = [['s.uomcode on =','s.compcode =']];
+					dialog_itemcode.urlParam.join_filterVal = [['p.uomcode','session.compcode']];
 
 					dialog_uomcode.urlParam.field = getfield(newcolmodel_uom);
 					dialog_uomcode.urlParam.table_name = ['material.stockloc AS s','material.uom AS u'];
@@ -1731,7 +1725,7 @@ $(document).ready(function () {
 				{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
-				{label: 'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
+				{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 				{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },

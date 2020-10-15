@@ -1082,9 +1082,11 @@ $(document).ready(function () {
 			$("input[name='gstpercent']").val('0')//reset gst to 0
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			
-			$("#jqGrid2 input[name='qtyorder'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='itemcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='qtyorder'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			$("#jqGrid2 input[name='qtyorder']").on('blur',calculate_conversion_factor);
+			$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
+
 
 			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
@@ -1368,7 +1370,7 @@ $(document).ready(function () {
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pouomCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $(`<div class="input-group">
 					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 				</div>
@@ -1481,6 +1483,14 @@ $(document).ready(function () {
 		
 	}
 
+	function remove_noti(event){
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+
+		$(".noti").empty();
+
+	}
+
 	//////////////////////////////calculate outstanding quantity/////////////////////
 	function calculate_quantity_outstanding(grid){
 		var ids = $(grid).jqGrid('getDataIDs');
@@ -1516,9 +1526,10 @@ $(document).ready(function () {
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		
-		$("#jqGrid2 input[name='qtyorder'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='itemcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='qtyorder'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 		$("#jqGrid2 input[name='qtyorder']").on('blur',calculate_conversion_factor);
+		$("#jqGrid2 input[name='qtyorder']").on('blur',remove_noti);
 	}
 
 
@@ -2022,7 +2033,7 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
 					dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 's.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode', moment($('#purordhd_purdate').val()).year(), $('#purordhd_deldept').val(),'session.unit'];
+					dialog_itemcode.urlParam.filterVal = ['on.p.compcode', moment($('#purordhd_purdate').val()).year(), $('#purordhd_deldept').val(),'session.unit'];
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
