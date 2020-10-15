@@ -296,7 +296,7 @@ $(document).ready(function () {
 			filterVal:['ACTIVE', 'session.compcode']
 		},
 		ondblClickRow:function(){
-			
+			$('#dtl_deptcode').focus();
 		},
 		gridComplete: function(obj){
 			let str = $(obj.textfield).val() ? $(obj.textfield).val() : '';
@@ -309,6 +309,7 @@ $(document).ready(function () {
 			if($(gridname).jqGrid('getDataIDs').length == 1){
 				$(gridname+' tr#1').click();
 				$(gridname+' tr#1').dblclick();
+				$('#dtl_deptcode').focus();
 			}
 		}
 	},{
