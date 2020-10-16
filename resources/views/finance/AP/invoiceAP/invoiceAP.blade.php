@@ -112,7 +112,7 @@ i.fa {
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Invoice AP Data Entry Detail</h5>
+					<h5>Invoice Detail</h5>
 				</div>
 			</div>
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
@@ -133,7 +133,7 @@ i.fa {
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Invoice AP DO Detail</h5>
+					<h5>DO Detail</h5>
 				</div>
 			</div>
 			<div id="jqGrid3_panel1" class="panel-collapse collapse">

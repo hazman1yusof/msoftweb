@@ -53,7 +53,7 @@
 					 		<span class="help-block"></span>
 				  		</div>
 
-				  	<label class="col-md-2 control-label" for="dtl_deptcode">Dept Code</label>  
+				  	<label class="col-md-2 control-label" for="dtl_deptcode">Department</label>  
 				  		<div class="col-md-2">
 					  		<div class='input-group'>
 								<input id="dtl_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
@@ -64,7 +64,7 @@
                 </div>
             
             	<div class="form-group">
-					<label class="col-md-2 control-label" for="dtl_recstatus">Status</label>  
+					<label class="col-md-2 control-label" for="dtl_recstatus">Authorize Status</label>  
 						<div class="col-md-2">
 							<select id="dtl_recstatus" name="dtl_recstatus" class="form-control input-sm">
 							    <option value="SUPPORT">SUPPORT</option>
@@ -73,7 +73,7 @@
 							</select>
 						</div>	
 
-					<label class="col-md-2 control-label" for="dtl_trantype">Trantype</label>  
+					<label class="col-md-2 control-label" for="dtl_trantype">Type</label>  
 						<div class="col-md-2">
 							<select id="dtl_trantype" name="dtl_trantype" class="form-control input-sm">
 							    <option value="PR">Purchase Request</option>
@@ -83,7 +83,7 @@
                 </div>		
 
                 <div class="form-group">
-				  <label class="col-md-2 control-label" for="dtl_cando">CanDo</label> 
+				  <label class="col-md-2 control-label" for="dtl_cando">Recstatus</label> 
 				  <div class="col-md-2">
 					<label class="radio-inline"><input type="radio" name="dtl_cando" value='ACTIVE' checked>Active</label>
 					<label class="radio-inline"><input type="radio" name="dtl_cando" value='DEACTIVE' >Deactive</label>

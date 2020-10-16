@@ -200,7 +200,7 @@ i.fa {
 				  			<input name="dtl_authorid" type="text" maxlength="12" class="form-control input-sm" rdonly>
 				  		</div>
 
-				  	<label class="col-md-2 control-label" for="d_deptcode">Dept Code</label>  
+				  	<label class="col-md-2 control-label" for="d_deptcode">Department</label>  
 				  		<div class="col-md-2">
 					  		<div class='input-group'>
 								<input id="d_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
@@ -211,7 +211,7 @@ i.fa {
                 </div>
             
             	<div class="form-group">
-					<label class="col-md-2 control-label" for="d_recstatus">Record Status</label>  
+					<label class="col-md-2 control-label" for="d_recstatus">Authorize Status</label>  
 						<div class="col-md-2">
 							<select id="d_recstatus" name="dtl_recstatus" class="form-control input-sm">
 							    <option value="SUPPORT">SUPPORT</option>
@@ -220,7 +220,7 @@ i.fa {
 							</select>
 						</div>	
 
-					<label class="col-md-2 control-label" for="d_trantype">Trantype</label>  
+					<label class="col-md-2 control-label" for="d_trantype">Type</label>  
 						<div class="col-md-2">
 							<select id="d_trantype" name="dtl_trantype" class="form-control input-sm">
 							    <option value="PR">Purchase Request</option>
@@ -230,7 +230,7 @@ i.fa {
                 </div>		
 
                 <div class="form-group">
-				  <label class="col-md-2 control-label" for="d_cando">CanDo</label> 
+				  <label class="col-md-2 control-label" for="d_cando">Recstatus</label> 
 				  <div class="col-md-2">
 					<label class="radio-inline"><input type="radio" name="dtl_cando" value='ACTIVE' checked>Active</label>
 					<label class="radio-inline"><input type="radio" name="dtl_cando" value='DEACTIVE' >Deactive</label>
