@@ -1060,7 +1060,7 @@ $(document).ready(function () {
 		},{	
 			title:"Select Category Code",
 			open: function(){
-					if (($('#apacthdr_ttype').val()=="Supplier")) {
+					if (($('#apacthdr_doctype').val()=="Supplier")) {
 						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
 						dialog_category.urlParam.filterVal=['ACTIVE', 'session.compcode', 'CR', '1'];
 					}else {
