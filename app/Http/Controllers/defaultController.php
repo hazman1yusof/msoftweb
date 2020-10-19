@@ -343,6 +343,7 @@ abstract class defaultController extends Controller{
         $responce->rows = $paginate->items();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }
@@ -772,6 +773,11 @@ abstract class defaultController extends Controller{
             $commas = $commas - 1;
         }
         return implode(' ', $words);
+    }
+
+    public static function getQueries($builder){
+        $addSlashes = str_replace('?', "'?'", $builder->toSql());
+        return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
     }
 
 
