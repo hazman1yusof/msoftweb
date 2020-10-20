@@ -213,7 +213,7 @@
 			}
 		},
 		{
-			title:"Select Delordno",
+			title:"Select Delivery Order No",
 			open: function(){
 				dialog_delordno.urlParam.filterCol=['dohd.compcode','dohd.invoiceno','dohd.suppcode'];
 				dialog_delordno.urlParam.filterVal=['session.compcode','<>.NULL', $("#suppcode").val()];
@@ -264,17 +264,17 @@
 	// dialog_invno.makedialog();
 
 	var dialog_itemcode= new ordialog(
-		'itemcode',['material.delorddt as dodt','material.productmaster as p'],'#itemcode',errorField,
+		'itemcode',['material.delorddt as dodt','material.productmaster as p','material.delordhd as dohd'],'#itemcode',errorField,
 		{	colModel:[
 				{label:'Item Code',name:'dodt_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'p_description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'dodt_uomcode',name:'dodt_uomcode',width:100,classes:'pointer',hidden:true},
-				{label:'Dodt Remarks',name:'dodt_remarks',width:100,classes:'pointer',hidden:false},
+				{label:'DO Detail Remarks',name:'dodt_remarks',width:100,classes:'pointer',hidden:false},
 				{label:'dodt_qtydelivered',name:'dodt_qtydelivered',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_unitprice',name:'dodt_unitprice',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_amount',name:'dodt_amount',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_srcdocno',name:'dodt_srcdocno',width:100,classes:'pointer',hidden:true},
-				{label:'dodt_lineno_',name:'dodt_lineno_',width:100,classes:'pointer',hidden:true},				
+				{label:'Line No',name:'dodt_lineno_',width:100,classes:'pointer',hidden:false},			
 			],
 			urlParam: {
 				filterCol:['dodt.compcode','dodt.recno'],
