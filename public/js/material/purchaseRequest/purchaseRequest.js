@@ -380,18 +380,19 @@ $(document).ready(function () {
 	// });
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
 		$(this).attr('disabled',true);
+		var self_ = this;
 
 		var idno = selrowData('#jqGrid').purreqhd_idno;
 		var obj={};
 		obj.idno = idno;
 		obj._token = $('#_token').val();
-		obj.oper = $(this).data('oper')+'_single';
+		obj.oper = $(self_).data('oper')+'_single';
 		$.post( '/purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
-			$(this).attr('disabled',false);
+			$(self_).attr('disabled',false);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
-			$(this).attr('disabled',false);
+			$(self_).attr('disabled',false);
 		}).success(function(data){
 			
 		});
