@@ -1314,6 +1314,7 @@ $(document).ready(function () {
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('purchaseOrder',options,param,case_,cellvalue);
+		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
 

@@ -266,7 +266,7 @@ i.fa {
 		</div>
 			
 
-	<div class='panel panel-info' id="ap_parent">
+	<div class='panel panel-info' id="ap_detail">
 		<div class="panel-heading">Invoice AP  Detail</div>
 			<div class="panel-body">
 				<form id='formdata2' class='form-vertical' style='width:99%'>

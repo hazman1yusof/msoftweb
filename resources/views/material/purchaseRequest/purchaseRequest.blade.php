@@ -319,22 +319,22 @@ i.fa {
 					    	<div class="form-group data_info">
 								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_requestby">Request By</label>  
-						  			<input id="purreqhd_upduser" name="purreqhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<input id="purreqhd_requestby" name="purreqhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_supportby">Support By</label>
-						  			<input id="purreqhd_upddate" name="purreqhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<input id="purreqhd_supportby" name="purreqhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 								  <div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_verifiedby">Verified By</label>  
-						  			<input id="purreqhd_authpersonid" name="purreqhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<input id="purreqhd_verifiedby" name="purreqhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_approvedby">Approved By</label>
-						  			<input id="purreqhd_authdate" name="purreqhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<input id="purreqhd_approvedby" name="purreqhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 								  <div class="col-md-2 minuspad-15">
@@ -344,27 +344,27 @@ i.fa {
 								
 								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_upduser">Last User</label>
-						  			<input id="purreqhd_upduser" name="purreqhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<input id="purreqhd_upduser" name="purreqhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_requestdate">Request Date</label>  
-						  			<input id="purreqhd_authpersonid" name="purreqhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<input id="purreqhd_requestdate" name="purreqhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_supportdate">Support Date</label>
-						  			<input id="purreqhd_authdate" name="purreqhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<input id="purreqhd_supportdate" name="purreqhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_verifieddate">Verified Date</label>  
-						  			<input id="purreqhd_authpersonid" name="purreqhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<input id="purreqhd_verifieddate" name="purreqhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_approveddate">Approved Date</label>
-						  			<input id="purreqhd_authdate" name="purreqhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<input id="purreqhd_approveddate" name="purreqhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 								<div class="col-md-2 minuspad-15">
