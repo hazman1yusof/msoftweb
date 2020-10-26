@@ -967,13 +967,20 @@ class PurchaseRequestController extends defaultController
                     ->where('recstatus','=','APPROVED');
 
         if($authdtl->count() > 0){
-            dump('true');
             $purreqhd = DB::table("material.purreqhd")
                 ->where('idno','=',$request->idno);
 
             $purreqhd_get = $purreqhd->first();
 
             $purreqhd->update([
+                    'requestby' => session('username'),
+                    'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'supportby' => session('username'),
+                    'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'verifiedby' => session('username'),
+                    'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'approvedby' => session('username'),
+                    'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'APPROVED'
                 ]);
 

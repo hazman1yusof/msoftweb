@@ -247,7 +247,7 @@ $(document).ready(function () {
 			{ label: 'Received Date', name: 'delordhd_trandate', width: 200, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 250, classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'supplier_name', width: 250, classes: 'wrap', canSearch: true },
-			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true},
+			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Invoice No', name: 'delordhd_invoiceno', width: 200, classes: 'wrap'},
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 200, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
@@ -1533,6 +1533,8 @@ $(document).ready(function () {
 		var amount = totamtperUnit- (totamtperUnit*perdisc/100);
 		
 		var tot_gst = amount * (gstpercent / 100);
+		if(isNaN(tot_gst))tot_gst = 0;
+
 		var totalAmount = amount + tot_gst;
 
 		var netunitprice = (unitprice-amtdisc);//?

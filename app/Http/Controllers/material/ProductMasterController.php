@@ -75,6 +75,8 @@ class ProductMasterController extends defaultController
                 $this->save_prod_asset($request);
             }else if(strtoupper($request->Class) == 'OTHERS'){
                 $this->save_prod_others($request);
+            }else{
+                $this->save_prod_stock($request);
             }
 
             $queries = DB::getQueryLog();
@@ -95,10 +97,11 @@ class ProductMasterController extends defaultController
         $table = 
             DB::table('material.product')
                 ->insert([
-                    'itemcode' => $request->itemcode,
-                    'description' => $request->description,
-                    'generic' => $request->description,
+                    'itemcode' => strtoupper($request->itemcode),
+                    'description' => strtoupper($request->description),
+                    'generic' => strtoupper($request->description),
                     'uomcode' => 'EA',
+                    'Class' => strtoupper($request->Class),
                     'groupcode' => $request->groupcode,
                     'productcat' => $request->productcat,
                     'unit' => session('unit'),
@@ -117,11 +120,12 @@ class ProductMasterController extends defaultController
         $table = 
             DB::table('material.product')
                 ->insert([
-                    'itemcode' => $request->itemcode,
-                    'description' => $request->description,
-                    'generic' => $request->description,
+                    'itemcode' => strtoupper($request->itemcode),
+                    'description' => strtoupper($request->description),
+                    'generic' => strtoupper($request->description),
                     'uomcode' => 'EA',
-                    'groupcode' => $request->groupcode,
+                    'Class' => strtoupper($request->Class),
+                    'groupcode' => strtoupper($request->groupcode),
                     'productcat' => $request->productcat,
                     'reuse' => 0,
                     'rpkitem' => 0,
@@ -141,6 +145,26 @@ class ProductMasterController extends defaultController
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'ACTIVE'
+                ]);
+    }
+
+    public function save_prod_stock(Request $request){
+        $table = 
+            DB::table('material.product')
+                ->insert([
+                    'itemcode' => strtoupper($request->itemcode),
+                    'description' => strtoupper($request->description),
+                    'groupcode' => strtoupper($request->groupcode),
+                    'uomcode' => 'EA',
+                    'productcat' => $request->productcat,
+                    'Class' => $request->Class,
+                    'unit' => session('unit'),
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'ACTIVE',
+                    'computerid' => $request->computerid,
+                    'ipaddress' => $request->ipaddress,
                 ]);
     }
 }

@@ -1622,7 +1622,7 @@ $.jgrid.extend({
 });
 
 
-function seemoreFunction(dots,more,morebtn) {
+function seemoreFunction(dots,more,morebtn,callback) {
   var dots = document.getElementById(dots);
   var moreText = document.getElementById(more);
   var btnText = document.getElementById(morebtn);
@@ -1636,6 +1636,7 @@ function seemoreFunction(dots,more,morebtn) {
     btnText.innerHTML = "</br> Read less";
     moreText.style.display = "inline";
   }
+  callback();
 }
 
 

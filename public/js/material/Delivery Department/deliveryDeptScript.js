@@ -276,6 +276,6 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno', 'adduser', 'adddate', 'computerid', 'ipaddress','recstatus']);
+			addParamField('#jqGrid',false,saveParam,['idno', 'compcode', 'adduser', 'adddate', 'computerid', 'ipaddress','recstatus']);
 		});
 		

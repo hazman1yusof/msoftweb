@@ -132,7 +132,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-           	{ label: 'Author ID', name: 'dtl_authorid', width: 200, classes: 'wrap', hidden:false},
+           	{ label: 'Author ID', name: 'dtl_authorid', width: 200, classes: 'wrap', canSearch: true, hidden:false},
 			{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Type', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true},
 			{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true},
