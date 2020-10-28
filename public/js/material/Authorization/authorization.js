@@ -316,14 +316,14 @@ $("#jqGrid2").jqGrid({
 	colModel: [
 	 	{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', key: true, editable: true, hidden:true},
 	 	{ label: 'compcode', name: 'dtl_compcode', width: 20, classes: 'wrap', hidden:true},
-		{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
+		{ label: 'Type', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
 			 editable: true,
                  edittype: "select",
                  editoptions: {
                      value: "PR:Purchase Request;PO:Purchase Order"
                  }
 		},
-		{ label: 'Deptcode', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
+		{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
 			editrules:{required: false,custom:true, custom_func:cust_rules},
 			edittype:'custom',	
 			editoptions:
@@ -333,7 +333,7 @@ $("#jqGrid2").jqGrid({
 					dataInit: function (element) { $(element).css('text-transform', 'uppercase'); }
 				},
 		},
-		{ label: 'Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
+		{ label: 'Authorize Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
 			 editable: true,
                  edittype: "select",
                  editoptions: {
@@ -341,7 +341,7 @@ $("#jqGrid2").jqGrid({
                  }
 		},
 	
-		{ label: 'CanDo', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
+		{ label: 'Recstatus', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
 			 editable: true,
                  edittype: "select",
                  editoptions: {
@@ -916,27 +916,27 @@ $("#gridAuthdtl").jqGrid({
 		 	//{ label: 'compcode', name: 'd_compcode', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'dtl_authorid', name: 'dtl_authorid', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
+			{ label: 'Type', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true, editable: true,
 				 editable: true,
                      edittype: "select",
                      editoptions: {
                          value: "PR:Purchase Request;PO:Purchase Order"
                      }
 			},
-			{ label: 'Deptcode', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
+			{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ custom_element:deptcodedtlCustomEdit,
 					custom_value:galGridCustomValue },
 			},
-			{ label: 'Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
+			{ label: 'Authorize Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true,
 				 editable: true,
                      edittype: "select",
                      editoptions: {
                          value: "REQUEST:REQUEST;SUPPORT:SUPPORT;VERIFIED:VERIFIED;APPROVED:APPROVED"
                      }
 			},
-			{ label: 'CanDo', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
+			{ label: 'Recstatus', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
 				 editable: true,
                      edittype: "select",
                      editoptions: {

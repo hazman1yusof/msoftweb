@@ -238,6 +238,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			$('#save').hide();
 		let recstatus = selrowData("#jqGrid").apacthdr_recstatus;
 			if(recstatus=='OPEN'){
 				$('#but_cancel_jq,#but_post_jq').show();
@@ -379,10 +380,10 @@ $(document).ready(function () {
 		
 		if(ttype1 == 'Supplier') {
 			$('#save').hide();
-			$('#ap_parent').show();
+			$('#ap_detail').show();
 		}else {
 			$('#save').show();
-			$('#ap_parent').hide();
+			$('#ap_detail').hide();
 		}
 		
 	});
@@ -1060,7 +1061,7 @@ $(document).ready(function () {
 		},{	
 			title:"Select Category Code",
 			open: function(){
-					if (($('#apacthdr_ttype').val()=="Supplier")) {
+					if (($('#apacthdr_doctype').val()=="Supplier")) {
 						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
 						dialog_category.urlParam.filterVal=['ACTIVE', 'session.compcode', 'CR', '1'];
 					}else {
@@ -1166,6 +1167,7 @@ $(document).ready(function () {
 		}
 	}
 
+	////////////////////////////////////Pager Hide//////////////////////////////////////////////////////////////////////////
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});

@@ -237,7 +237,7 @@ class do_util extends defaultController{
                 'lineno_' => $value->lineno_,
                 'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
                 'trantype' => $delordhd_obj->trantype,
-                'reference' => $delordhd_obj->deldept .' '. $delordhd_obj->docno,
+                'reference' => $delordhd_obj->deldept .' '. str_pad($delordhd_obj->docno,7,"0",STR_PAD_LEFT),
                 'description' => $value->itemcode.'</br>'.$product_obj->description, 
                 'postdate' => $delordhd_obj->trandate,
                 'year' => $yearperiod->year,
@@ -360,7 +360,7 @@ class do_util extends defaultController{
                     'lineno_' => $value->lineno_,
                     'source' => 'IV',
                     'trantype' => 'GST',
-                    'reference' => $delordhd_obj->deldept .' '. $delordhd_obj->docno,
+                    'reference' => $delordhd_obj->deldept .' '. str_pad($delordhd_obj->docno,7,"0",STR_PAD_LEFT),
                     'description' => $delordhd_obj->suppcode,
                     'postdate' => $delordhd_obj->trandate,
                     'year' => $yearperiod->year,

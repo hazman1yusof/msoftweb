@@ -249,16 +249,107 @@ class PurchaseOrderController extends defaultController
 
             foreach ($request->idno_array as $value){
 
-                $purordhd = DB::table('material.purordhd')
-                    ->where('idno','=',$value);
-
-                $purordhd_get = $purordhd->first();
-
-                /////////////part utk authorization/////////
                 $purordhd = DB::table("material.purordhd")
                             ->where('idno','=',$value);
 
                 $purordhd_get = $purordhd->first();
+
+
+                if(!$this->skip_authorization($request,$purordhd_get->prdept,$value)){
+
+                    // 1. check authorization
+                    $authorise = DB::table('material.authdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PO')
+                        ->where('cando','=', 'ACTIVE')
+                        ->where('recstatus','=','SUPPORT')
+                        ->where('deptcode','=',$purordhd_get->prdept)
+                        ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                    if(!$authorise->exists()){
+
+                        $authorise = DB::table('material.authdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('trantype','=','PO')
+                            ->where('cando','=', 'ACTIVE')
+                            ->where('recstatus','=','SUPPORT')
+                            ->where('deptcode','=','ALL')
+                            ->where('deptcode','=','all')
+                            ->where('maxlimit','>=',$purordhd_get->totamount);
+
+                            if(!$authorise->exists()){
+                                throw new \Exception("Authorization for this Purchase Order doesnt exists");
+                            }
+
+                    }
+
+                    $authorise_use = $authorise->first();
+                    DB::table("material.queuepo")
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'recno' => $purordhd_get->recno,
+                            'AuthorisedID' => $authorise_use->authorid,
+                            'deptcode' => $purordhd_get->prdept,
+                            'recstatus' => 'REQUEST',
+                            'trantype' => 'SUPPORT',
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+
+                    // 3. change recstatus to posted
+                    $purordhd
+                        ->update([
+                            'requestby' => session('username'),
+                            'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'supportby' => $authorise_use->authorid,
+                            'recstatus' => 'REQUEST'
+                        ]);
+
+                    DB::table("material.purorddt")
+                        ->where('recno','=',$purordhd_get->recno)
+                        ->update([
+                            'recstatus' => 'REQUEST',
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+
+
+                    // 4. email and whatsapp
+                    $data = new stdClass();
+                    $data->status = 'SUPPORT';
+                    $data->deptcode = $purordhd_get->reqdept;
+                    $data->purreqno = $purordhd_get->purreqno;
+                    $data->email_to = 'hazman.yusof@gmail.com';
+                    $data->whatsapp = '01123090948';
+
+                   // $this->sendemail($data);
+
+                }
+
+            }
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage().$e, 500);
+        }
+    }       
+
+    public function posted_single(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+
+            $purordhd = DB::table("material.purordhd")
+                ->where('idno','=',$request->idno);
+
+            $purordhd_get = $purordhd->first();
+
+
+            if(!$this->skip_authorization($request,$purordhd_get->prdept,$request->idno)){
 
                 // 1. check authorization
                 $authorise = DB::table('material.authdtl')
@@ -327,97 +418,7 @@ class PurchaseOrderController extends defaultController
 
                // $this->sendemail($data);
 
-
-            }
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage().$e, 500);
-        }
-    }       
-
-    public function posted_single(Request $request){
-        DB::beginTransaction();
-
-        try{
-
-
-            $purordhd = DB::table("material.purordhd")
-                ->where('idno','=',$request->idno);
-
-            $purordhd_get = $purordhd->first();
-
-            // 1. check authorization
-            $authorise = DB::table('material.authdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('trantype','=','PO')
-                ->where('cando','=', 'ACTIVE')
-                ->where('recstatus','=','SUPPORT')
-                ->where('deptcode','=',$purordhd_get->prdept)
-                ->where('maxlimit','>=',$purordhd_get->totamount);
-
-            if(!$authorise->exists()){
-
-                $authorise = DB::table('material.authdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('trantype','=','PO')
-                    ->where('cando','=', 'ACTIVE')
-                    ->where('recstatus','=','SUPPORT')
-                    ->where('deptcode','=','ALL')
-                    ->where('deptcode','=','all')
-                    ->where('maxlimit','>=',$purordhd_get->totamount);
-
-                    if(!$authorise->exists()){
-                        throw new \Exception("Authorization for this Purchase Order doesnt exists");
-                    }
-
-            }
-
-            $authorise_use = $authorise->first();
-            DB::table("material.queuepo")
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'recno' => $purordhd_get->recno,
-                    'AuthorisedID' => $authorise_use->authorid,
-                    'deptcode' => $purordhd_get->prdept,
-                    'recstatus' => 'REQUEST',
-                    'trantype' => 'SUPPORT',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-            // 3. change recstatus to posted
-            $purordhd
-                ->update([
-                    'requestby' => session('username'),
-                    'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'supportby' => $authorise_use->authorid,
-                    'recstatus' => 'REQUEST'
-                ]);
-
-            DB::table("material.purorddt")
-                ->where('recno','=',$purordhd_get->recno)
-                ->update([
-                    'recstatus' => 'REQUEST',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-
-            // 4. email and whatsapp
-            $data = new stdClass();
-            $data->status = 'SUPPORT';
-            $data->deptcode = $purordhd_get->reqdept;
-            $data->purreqno = $purordhd_get->purreqno;
-            $data->email_to = 'hazman.yusof@gmail.com';
-            $data->whatsapp = '01123090948';
-
-           // $this->sendemail($data);
-
-
+            } 
 
             DB::commit();
         
@@ -1151,6 +1152,58 @@ class PurchaseOrderController extends defaultController
         //     $message->from('me@gmail.com', 'medicsoft');
         //     $message->to($data->email_to);
         // });
+    }
+
+    function skip_authorization(Request $request, $deptcode, $idno){
+
+        $authdtl = DB::table('material.authdtl')
+                    ->where('authorid','=',session('username'))
+                    ->where('trantype','=','PO')
+                    ->where('deptcode','=',$deptcode)
+                    ->where('recstatus','=','APPROVED');
+
+        if($authdtl->count() > 0){
+
+
+            $purordhd = DB::table("material.purordhd")
+                ->where('idno','=',$request->idno);
+
+            $purordhd_get = $purordhd->first();
+
+            $purordhd->update([
+                    'requestby' => session('username'),
+                    'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'supportby' => session('username'),
+                    'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'verifiedby' => session('username'),
+                    'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'approvedby' => session('username'),
+                    'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'APPROVED'
+                ]);
+
+            DB::table("material.purorddt")
+                ->where('recno','=',$purordhd_get->recno)
+                ->update([
+                    'recstatus' => 'APPROVED',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::table("material.queuepr")
+                ->where('recno','=',$purordhd_get->recno)
+                ->update([
+                    'recstatus' => 'APPROVED',
+                    'trantype' => 'DONE',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            return true;
+        }
+        
+        return false;   
+        
     }
 }
 

@@ -544,6 +544,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					hideOne('#formdata');
 					rdonly("#dialogForm");
+					$('#formdataSearch input[rdonly]').prop("readonly",false);
 					readonlyRTTrue();
 					whenAdd();
 					$("#Cancel").hide();
@@ -745,12 +746,12 @@ $(document).ready(function () {
 
 	function readonlyRTTrue(){
 		$('#formdata input[rdonly]').prop("readonly",true);
-		$('#formdata  input[type=radio]').prop("disabled",true);
+		$('#formdata input[type=radio]').prop("disabled",true);
 	}
 
 	function readonlyRTFalse(){
 		$('#formdata input[rdonly]').prop("readonly",false);
-		$('#formdata  input[type=radio]').prop("disabled",false);
+		$('#formdata input[type=radio]').prop("disabled",false);
 	}
 
 	function whenAdd() {

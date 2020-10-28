@@ -85,7 +85,7 @@
 						<div class="col-md-4">
 						  	<label class="control-label" for="itemcode">Item Code</label>  
 				  			<div class='input-group'>
-								<input id="itemcodesearch" name="itemcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="itemcodesearch" name="itemcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 				  			</div>
 								<span class="help-block"></span>
@@ -94,7 +94,7 @@
 						<div class="col-md-4">
 						  	<label class="control-label" for="uomcode">UOM Code</label>  
 				  				<div class='input-group' id="uomcodesearch_parent">
-									<input id="uomcodesearch" name="uomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="uomcodesearch" name="uomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 				  				</div>
 									<span class="help-block"></span>

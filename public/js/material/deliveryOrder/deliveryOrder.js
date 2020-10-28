@@ -247,7 +247,7 @@ $(document).ready(function () {
 			{ label: 'Received Date', name: 'delordhd_trandate', width: 200, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 250, classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'supplier_name', width: 250, classes: 'wrap', canSearch: true },
-			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true},
+			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Invoice No', name: 'delordhd_invoiceno', width: 200, classes: 'wrap'},
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 200, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
@@ -1315,7 +1315,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function itemcodeCustomEdit(val, opt) {
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		val = val;
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){
@@ -1538,6 +1538,8 @@ $(document).ready(function () {
 		var amount = totamtperUnit- (totamtperUnit*perdisc/100);
 		
 		var tot_gst = amount * (gstpercent / 100);
+		if(isNaN(tot_gst))tot_gst = 0;
+
 		var totalAmount = amount + tot_gst;
 
 		var netunitprice = (unitprice-amtdisc);//?
@@ -1632,6 +1634,9 @@ $(document).ready(function () {
 	$("#jqGrid3").jqGrid("setFrozenColumns");
 	jqgrid_label_align_right("#jqGrid3");
 
+	$("#jqGrid3_panel").on('show.bs.collapse', function(){
+		fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
+	});
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 	var dialog_authorise = new ordialog(
@@ -1827,7 +1832,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);

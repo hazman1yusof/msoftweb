@@ -132,12 +132,12 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-           	{ label: 'Author ID', name: 'dtl_authorid', width: 200, classes: 'wrap', hidden:false},
+           	{ label: 'Author ID', name: 'dtl_authorid', width: 200, classes: 'wrap', canSearch: true, hidden:false},
 			{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'Trantype', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true},
-			{ label: 'Deptcode', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true},
-			{ label: 'Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true},
-			{ label: 'CanDo', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: false, editable: true},
+			{ label: 'Type', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true},
+			{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true},
+			{ label: 'Authorize Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true},
+			{ label: 'Recstatus', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: false, editable: true},
 			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap',  align: 'right', editable: true},
 			{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap', align: 'right',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
 			},

@@ -380,18 +380,19 @@ $(document).ready(function () {
 	// });
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
 		$(this).attr('disabled',true);
+		var self_ = this;
 
 		var idno = selrowData('#jqGrid').purreqhd_idno;
 		var obj={};
 		obj.idno = idno;
 		obj._token = $('#_token').val();
-		obj.oper = $(this).data('oper')+'_single';
+		obj.oper = $(self_).data('oper')+'_single';
 		$.post( '/purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
-			$(this).attr('disabled',false);
+			$(self_).attr('disabled',false);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
-			$(this).attr('disabled',false);
+			$(self_).attr('disabled',false);
 		}).success(function(data){
 			
 		});
@@ -974,17 +975,17 @@ $(document).ready(function () {
 			
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
-        	if($('#purordhd_purreqno').val()!=''&& $("#jqGrid2_iladd").css('display') == 'none' ){
-        		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
+   //      	if($('#purordhd_purreqno').val()!=''&& $("#jqGrid2_iladd").css('display') == 'none' ){
+   //      		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
 
-			}else{
+			// }else{
 				dialog_pricecode.on();//start binding event on jqgrid2
 				dialog_itemcode.on()._init();
 				dialog_uomcode.on();
 				dialog_pouom.on();
 				dialog_taxcode.on();
 
-			}
+			// }
 
 			unsaved = false;
 			mycurrency2.array.length = 0;
@@ -1224,9 +1225,9 @@ $(document).ready(function () {
 	function cust_rules(value, name) {
 		var temp;
 		switch (name) {
-			case 'Item Code': temp = $('#itemcode'); break;
-			case 'UOM Code': temp = $('#uomcode'); break;
-			case 'PO UOM': temp = $('#pouom'); break;
+			case 'Item Code': temp = $("#jqGrid2 input[name='itemcode']"); break;
+			case 'UOM Code': temp = $("#jqGrid2 input[name='uomcode']"); break;
+			case 'PO UOM': temp = $("#jqGrid2 input[name='pouom']"); break;
 			case 'Price Code': temp = $('#pricecode'); break;
 			case 'Tax Code': temp = $('#taxcode'); break;
 			case 'Quantity Request': temp = $("#jqGrid2 input[name='qtyrequest']"); 
@@ -1359,17 +1360,17 @@ $(document).ready(function () {
 	/////////////////////////////edit all//////////////////////////////////////////////////
 
 	function onall_editfunc(){
-		if($('#purordhd_purreqno').val()!=''){
-    		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
+		// if($('#purordhd_purreqno').val()!=''){
+  //   		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
 
-		}else{
+		// }else{
 			dialog_pricecode.on();//start binding event on jqgrid2
 			dialog_itemcode.on()._init();
 			dialog_uomcode.on();
 			dialog_pouom.on();
 			dialog_taxcode.on();
 
-		}
+		// }
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		

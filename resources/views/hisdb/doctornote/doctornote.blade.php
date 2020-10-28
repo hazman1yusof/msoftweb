@@ -89,15 +89,15 @@
 
                                                 <div class="form-group">
                                                     <div class="col-md-12">
-                                                        <label class="control-label" for="pastmedical" style="padding-bottom:5px">Past Medical History</label>
-                                                        <textarea id="pastmedical" name="pastmedical" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                        <label class="control-label" for="pmh" style="padding-bottom:5px">Past Medical History</label>
+                                                        <textarea id="pmh" name="pmh" type="text" class="form-control input-sm" rows="4"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="col-md-12">
-                                                        <label class="control-label" for="drug" style="padding-bottom:5px">Drug History</label>
-                                                        <textarea id="drug" name="drug" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                        <label class="control-label" for="drugh" style="padding-bottom:5px">Drug History</label>
+                                                        <textarea id="drugh" name="drugh" type="text" class="form-control input-sm" rows="4"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -105,15 +105,15 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <div class="col-md-12">
-                                                        <label class="control-label" for="alllergyhistory" style="padding-bottom:5px">Allergy History</label>
-                                                        <textarea id="alllergyhistory" name="alllergyhistory" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                        <label class="control-label" for="allergyh" style="padding-bottom:5px">Allergy History</label>
+                                                        <textarea id="allergyh" name="allergyh" type="text" class="form-control input-sm" rows="4"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="col-md-12">
-                                                        <label class="control-label" for="social" style="padding-bottom:5px">Social History</label>
-                                                        <textarea id="social" name="social" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                        <label class="control-label" for="socialh" style="padding-bottom:5px">Social History</label>
+                                                        <textarea id="socialh" name="socialh" type="text" class="form-control input-sm" rows="4"></textarea>
                                                     </div>
                                                 </div>
 

@@ -116,15 +116,18 @@ class PurchaseRequestDetailController extends defaultController
         DB::beginTransaction();
 
         //check unique
-        $duplicate = DB::table('material.purreqdt')
-            ->where('compcode','=',session('compcode'))
-            ->where('itemcode','=',strtoupper($request->itemcode))
-            ->where('uomcode','=',strtoupper($request->uomcode))
-            ->where('pouom','=',strtoupper($request->pouom))
-            ->exists();
+        if($request->pricecode != 'MS'){
+            $duplicate = DB::table('material.purreqdt')
+                ->where('compcode','=',session('compcode'))
+                ->where('itemcode','=',strtoupper($request->itemcode))
+                ->where('uomcode','=',strtoupper($request->uomcode))
+                ->where('pouom','=',strtoupper($request->pouom))
+                ->exists();
+        }
+        
 
         try {
-            if($duplicate){
+            if($request->pricecode != 'MS' && $duplicate){
                 throw new \Exception("Duplicate itemcode and uom");
             }
 
