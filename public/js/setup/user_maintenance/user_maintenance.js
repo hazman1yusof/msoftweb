@@ -222,7 +222,7 @@ $("body").show();
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				$('#programmenu').focus();
@@ -241,7 +241,7 @@ $("body").show();
 			title:"Select Transaction Department",
 			open: function(){
 				dialog_txndept.urlParam.filterCol=['compcode','recstatus'],
-				dialog_txndept.urlParam.filterVal=['session.compcode','A']
+				dialog_txndept.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -255,7 +255,7 @@ $("body").show();
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 			},
@@ -272,7 +272,7 @@ $("body").show();
 			title:"Select Transaction Department",
 			open: function(){
 				dialog_deptcode.urlParam.filterCol=['recstatus'],
-				dialog_deptcode.urlParam.filterVal=['A']
+				dialog_deptcode.urlParam.filterVal=['ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);

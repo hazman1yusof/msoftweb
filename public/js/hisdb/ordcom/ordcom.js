@@ -26,7 +26,8 @@ $(document).ready(function () {
 	};
 
 	////////////////////////////////////start dialog///////////////////////////////////////
-	var mycurrency = new currencymode(['#ct_quantity']);
+
+	var mycurrency2 =new currencymode([]);
 
 	var dialog_isudept = new ordialog(
 		'ordcom_isudept','sysdb.department',"#jqGrid_ordcom input[name='ordcom_isudept']",errorField,
@@ -66,14 +67,34 @@ $(document).ready(function () {
 		'ordcom_taxcode','hisdb.taxmast',"#jqGrid_ordcom input[name='ordcom_taxcode']",errorField,
 		{	colModel:
 			[
-				{label:'GST Code',name:'taxcode',width:200,classes:'pointer',canSearch:true},
+				{label:'GST Code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true},
+				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','taxtype'],
 				filterVal:['ACTIVE', 'session.compcode','INPUT'],
 			},
 			ondblClickRow:function(event){
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
+
+
+				let data=selrowData('#'+dialog_taxcode.gridname);
+
+
+				$("table#jqGrid_ordcom input#"+id_optid+"_ct_taxcode_gstpercent").val(data['rate']);
 				$('#remarks').focus();
 			},
 			gridComplete: function(obj){
@@ -124,7 +145,7 @@ $(document).ready(function () {
 
 	function chgcodeOrdcomCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid_ordcom" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid_ordcom" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0" disabled="disabled"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function isudeptOrdcomCustomEdit(val, opt) {
@@ -142,7 +163,14 @@ $(document).ready(function () {
 
 	function taxcodeOrdcomCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid_ordcom" optid="'+opt.id+'" id="'+opt.id+'" name="ordcom_taxcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $(`<div class="input-group"><input jqgrid="jqGrid_ordcom" optid="`+opt.id+`" id="`+opt.id+`" name="ordcom_taxcode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `" style="z-index: 0">
+			<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+			</div>
+			<span class="help-block"></span>
+			<div class="input-group">
+				<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden" value="1">
+			</div>
+			`);
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -193,7 +221,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'auditno', name: 'ct_auditno', hidden:true},
 			{ label: 'compcode', name: 'ct_compcode', hidden:true},
-			{ label: 'Date', name: 'ct_trxdate', width: 7, classes: 'wrap',editable:true,
+			{ label: 'Date', name: 'ct_trxdate', width: 100, classes: 'wrap',editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
                     dataInit: function (element) {
@@ -208,57 +236,56 @@ $(document).ready(function () {
                     }
                 }
 			},
-			{ label: 'Time', name: 'ct_trxtime', width: 7, classes: 'wrap',editable:true,
+			{ label: 'Time', name: 'ct_trxtime', width: 100, classes: 'wrap',editable:true,
 				edittype:'custom',	editoptions:
 					{ 	custom_element:ct_trxtime_custom,
 						custom_value:galGridCustomValue 	
 					},
 			},
 				
-			{ label: 'Charge Code', name: 'ct_chgcode', width: 10 , classes: 'wrap', editable:true,
+			{ label: 'Charge Code', name: 'ct_chgcode', width: 150 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
 					{ 	custom_element:chgcodeOrdcomCustomEdit,
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Price', name: 'ct_price', width: 5, formatter: 'currency', editable:true,
+			{ label: 'Price', name: 'ct_price', width: 100, formatter: 'currency', editable:true,
 				editoptions: {
                 	dataInit: function (element) {
                     $(element).attr('disabled','disabled');
                 }
             }},	
-			{ label: 'Quantity', name: 'ct_quantity', width: 5, formatter: 'currency', editable:true},	
-			{ label: 'Issue Department', name: 'ct_isudept', width: 15,editable:true,
+			{ label: 'Quantity', name: 'ct_quantity', width: 100, formatter: 'currency', editable:true},	
+			{ label: 'Issue Department', name: 'ct_isudept', width: 150,editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
 					{ 	custom_element:isudeptOrdcomCustomEdit,
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'GST Code', name: 'ct_taxcode', width: 5 , classes: 'wrap', editable:true,
+			{ label: 'GST Code', name: 'ct_taxcode', width: 120 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
 					{ 	custom_element:taxcodeOrdcomCustomEdit,
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Amount', name: 'ct_amt', width: 5, formatter: 'currency', editable:true,
+			{ label: 'Amount', name: 'ct_amt', width: 100, formatter: 'currency', editable:true,
 				editoptions: {
                     dataInit: function (element) {
                         $(element).attr('disabled','disabled');
                     }
                 }},	
-			// //{ label: 'GST Code', name: 'ct_taxcode', width: 5,editable:true},
-			// { label: 'Remarks', name: 'ct_remarks', hidden:false,width:35, editable:true,
-			// 	edittype:'custom',	editoptions:
-			// 		{ 	custom_element:ct_remarks_custom,
-			// 			custom_value:galGridCustomValue 	
-			// 		},
-			// },
+			{ label: '', name: 'ct_remarks', hidden:false,width:300, editable:true,
+				edittype:'custom',	editoptions:
+					{ 	custom_element:ct_remarks_custom,
+						custom_value:galGridCustomValue 	
+					},
+			},
 		],
-		autowidth: true,
-		shrinkToFit: true,
+		autowidth: false,
+		shrinkToFit: false,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
@@ -272,6 +299,8 @@ $(document).ready(function () {
 			populate_form_ordcom(selrowData("#jqGrid_ordcom"));
 		},
 		loadComplete: function(){
+			if($('#ordcom_priceview_hide').val() != '1')$(this).jqGrid('hideCol',["ct_price"]); 
+
 			if(addmore_jqGrid_ordcom.more == true){$('#jqGrid_ordcom_iladd').click();}
 			else{
 				$('#jqGrid_ordcom').jqGrid ('setSelection', "1");
@@ -316,7 +345,12 @@ $(document).ready(function () {
 				if (code == '9')$('#jqGrid_ordcom_ilsave').click();
 			});
 
-			$("#jqGrid_ordcom input[name='ct_quantity'], #jqGrid_ordcom input[name='ordcom_taxcode'], #jqGrid_ordcom input[name='amtdisc']").on('blur',onleave_input_ordcom);
+
+			mycurrency2.array.length = 0;
+			Array.prototype.push.apply(mycurrency2.array, ["table#jqGrid_ordcom input[name='ct_price']","table#jqGrid_ordcom input[name='ct_amt']","table#jqGrid_ordcom input[name='ct_quantity']"]);
+			mycurrency2.formatOnBlur();
+
+			$("#jqGrid_ordcom input[name='ct_quantity'], #jqGrid_ordcom input[name='ordcom_taxcode'], #jqGrid_ordcom input[name='amtdisc']").on('blur',{currency: mycurrency2},onleave_input_ordcom);
 
 			$("#jqGrid_ordcom [name='ct_trxdate']").val(moment().format('D/M/YYYY'));
 			$("#jqGrid_ordcom [name='ct_trxtime']").val(moment().format('hh:mm:ss'));
@@ -358,6 +392,7 @@ $(document).ready(function () {
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
+			mycurrency2.formatOff();
 			let data = $('#jqGrid_ordcom').jqGrid ('getRowData', rowid);
 
 			let editurl = "/ordcom/form?"+
@@ -511,24 +546,24 @@ $(document).ready(function () {
 			$("#saveDetailLabel,#jqGridPager_ordcomSaveAll,#jqGrid_ordcom_iledit,#jqGridPager_ordcomCancelAll").hide();	
 		}	
 	}	
-	//////////////////////////////////End grid pager ORDERCOM/////////////////////////////////////////////////////////	
-	//////////////////////////////////////end grid/////////////////////////////////////////////////////////	
-	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////	
+	//////////////////////////////////End grid pager ORDERCOM////////////////////////	
+	//////////////////////////////////////end grid////////////////////////////////////////////	
+	//////////handle searching, its radio button and toggle //////////////////////////////////////	
 	populateSelect('#jqGrid_ordcom', '#searchForm');	
 	searchClick2('#jqGrid_ordcom', '#searchForm', urlParam_ordcom);	
-	//////////add field into param, refresh grid if needed////////////////////////////////////////////////	
+	//////////add field into param, refresh grid if needed////////////////////////////////////////	
 	addParamField('#jqGrid_ordcom', true, urlParam_ordcom);	
 		
 });	
 
 function onleave_input_ordcom(event){
+    event.data.currency.formatOff();
 	var c_optid = event.currentTarget.id;
 	var id_optid = c_optid.substring(0,c_optid.search("_"));
 
 	let qtyorder = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_ct_quantity").val());
 	let unitprice = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_ct_price").val());
-	// let gstpercent = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_gstpercent").val());
-	let gstpercent = 0;
+	let gstpercent = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_ct_taxcode_gstpercent").val());
 
 	var totamtperUnit = (unitprice*qtyorder);
 
@@ -536,6 +571,8 @@ function onleave_input_ordcom(event){
 	var totalAmount = totamtperUnit + tot_gst;
 
 	$("#"+id_optid+"_ct_amt").val(totalAmount);
+
+	event.data.currency.formatOn();//change format to currency on each calculation
 }
 
 function populate_form_ordcom(obj,rowdata){	

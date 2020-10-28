@@ -25,6 +25,7 @@
 		<div class="panel-body">
 			<div class='col-md-12' style="padding:0 0 15px 0">
 				<input id="ordcom_deptcode_hide" type="hidden" value="{{Auth::user()->deptcode}}">
+				<input id="ordcom_priceview_hide" type="hidden" value="{{Auth::user()->priceview}}">
 				<table id="jqGrid_ordcom" class="table table-striped"></table>
 				<div id="jqGridPager_ordcom"></div>
 

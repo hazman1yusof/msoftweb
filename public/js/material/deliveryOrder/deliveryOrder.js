@@ -324,19 +324,24 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
 			let scope = $("#recstatus_use").val();
 
-			$('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-			if (stat == scope || stat == "CANCELLED") {
+			$('#but_post_single_jq,#but_cancel_jq,#but_soft_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			console.log([stat,scope])
+			if (stat == scope ) {
+				$('#but_cancel_jq').show();
+			} else if ( stat == "OPEN" ){
+				$('#but_soft_cancel_jq').show();
+			} else if ( stat == "CANCELLED" ){
 				$('#but_reopen_jq').show();
 			} else {
 				if(scope.toUpperCase() == 'ALL'){
 					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
-						$('#but_cancel_jq,#but_post_single_jq').show();
+						$('#but_post_single_jq').show();
 					}else if(stat=='OPEN'){
 						$('#but_post_jq').show();
 					}
 				}else{
 					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-						$('#but_cancel_jq,#but_post_single_jq').show();
+						$('#but_post_single_jq').show();
 					}else{
 						$('#but_post_jq').show();
 					}

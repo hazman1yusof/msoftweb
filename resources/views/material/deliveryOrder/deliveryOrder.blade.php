@@ -114,7 +114,7 @@ i.fa {
 						id="but_post_jq" 
 						data-oper="{{$scope_use}}" 
 						style="display: none;">
-						@if (Request::get('scope') == 'ALL')
+						@if (Request::get('scope') == strtoupper('ALL'))
 							{{'POST ALL'}}
 						@else
 							{{Request::get('scope').' ALL'}}
@@ -122,7 +122,7 @@ i.fa {
 					</button>
 
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
-						@if (Request::get('scope') == 'all')
+						@if (Request::get('scope') == strtoupper('ALL'))
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}

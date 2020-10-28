@@ -150,6 +150,7 @@ function populateFormdata(grid,dialog,form,selRowId,state,except){
 		alert('Please select row');
 		return emptyFormdata([],form);
 	}
+	if(except == undefined)except = [];
 	rowData = $(grid).jqGrid ('getRowData', selRowId);
 	$.each(rowData, function( index, value ) {
 		var input=$(form+" [name='"+index+"']");
