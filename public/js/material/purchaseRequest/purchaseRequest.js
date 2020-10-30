@@ -997,7 +997,7 @@ $(document).ready(function () {
 			$("#jqGrid2 input[name='qtyrequest'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			$("#jqGrid2 input[name='qtyrequest']").on('blur',calculate_conversion_factor);
-			$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
+			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom']").on('focus',remove_noti);
 
 			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
@@ -1353,6 +1353,13 @@ $(document).ready(function () {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
 
+		remove_error("#jqGrid2 #"+id_optid+"_pouom");
+		remove_error("#jqGrid2 #"+id_optid+"_qtyrequest");
+		delay(function(){
+			remove_error("#jqGrid2 #"+id_optid+"_pouom");
+		}, 500 );
+
+
 		$(".noti").empty();
 
 	}
@@ -1377,7 +1384,7 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='qtyrequest'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 		$("#jqGrid2 input[name='qtyrequest']").on('blur',calculate_conversion_factor);
-		$("#jqGrid2 input[name='qtyrequest']").on('blur',remove_noti);
+		$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom']").on('focus',remove_noti);
 	}
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
@@ -1684,7 +1691,7 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.join_filterVal = [['p.uomcode','session.compcode']];
 
 					dialog_uomcode.urlParam.field = getfield(newcolmodel_uom);
-					dialog_uomcode.urlParam.table_name = ['material.stockloc AS s','material.uom AS u'];
+					dialog_uomcode.urlParam.table_name = ['material.uom AS u','material.stockloc AS s'];
 					dialog_uomcode.urlParam.fixPost="true";
 					dialog_uomcode.urlParam.table_id="none_";
 					dialog_uomcode.urlParam.filterCol=['s.compcode','s.itemcode','s.deptcode','s.year'];
@@ -1850,7 +1857,7 @@ $(document).ready(function () {
 
 
 	var dialog_uomcode = new ordialog(
-		'uom',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
+		'uom',['material.uom AS u','material.stockloc AS s'],"#jqGrid2 input[name='uomcode']",errorField,
 		{	colModel:
 			[
 				{label:'UOM code',name:'u_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -2094,16 +2101,16 @@ $(document).ready(function () {
 });
 
 function populate_form(obj){
-
 	//panel header
 	$('#purreqno_show').text(obj.purreqhd_purreqno);
 	$('#suppcode_show').text(obj.supplier_name);
-	
 }
 
 function empty_form(){
-
 	$('#purreqno_show').text('');
 	$('#suppcode_show').text('');
+}
+
+function reset_all_error(){
 
 }

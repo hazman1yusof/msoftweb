@@ -1170,17 +1170,27 @@ class PurchaseOrderController extends defaultController
 
             $purordhd_get = $purordhd->first();
 
-            $purordhd->update([
-                    'requestby' => session('username'),
-                    'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'supportby' => session('username'),
-                    'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'verifiedby' => session('username'),
-                    'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'approvedby' => session('username'),
-                    'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'APPROVED'
-                ]);
+            $array_update = [];
+            foreach ($authdtl->get() as $key => $value) {
+
+                switch ($value->recstatus) {
+                    case 'SUPPORT':
+                        $array_update['supportby'] = session('username');
+                        $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
+                        break;
+                    case 'VERIFIED':
+                        $array_update['verifiedby'] = session('username');
+                        $array_update['verifieddate'] = Carbon::now("Asia/Kuala_Lumpur");
+                        break;
+                    case 'APPROVED':
+                        $array_update['approvedby'] = session('username');
+                        $array_update['approveddate'] = Carbon::now("Asia/Kuala_Lumpur");
+                        break;
+                }
+                
+            }
+
+            $purordhd->update($array_update);
 
             DB::table("material.purorddt")
                 ->where('recno','=',$purordhd_get->recno)
@@ -1190,9 +1200,12 @@ class PurchaseOrderController extends defaultController
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-            DB::table("material.queuepr")
-                ->where('recno','=',$purordhd_get->recno)
-                ->update([
+            DB::table("material.queuepo")
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'recno' => $purordhd_get->recno,
+                    'AuthorisedID' => session('username'),
+                    'deptcode' => $purordhd_get->prdept,
                     'recstatus' => 'APPROVED',
                     'trantype' => 'DONE',
                     'adduser' => session('username'),

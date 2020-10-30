@@ -1088,7 +1088,7 @@ $(document).ready(function () {
 			$("#jqGrid2 input[name='qtyorder'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='pouom']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			$("#jqGrid2 input[name='qtyorder']").on('blur',calculate_conversion_factor);
-			$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
+			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom']").on('focus',remove_noti);
 
 
 			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
@@ -1492,6 +1492,14 @@ $(document).ready(function () {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
 
+		remove_error("#jqGrid2 #"+id_optid+"_pouom");
+		remove_error("#jqGrid2 #"+id_optid+"_qtyorder");
+		remove_error("#jqGrid2 #"+id_optid+"_unitprice");
+		delay(function(){
+			remove_error("#jqGrid2 #"+id_optid+"_pouom");
+		}, 500 );
+
+
 		$(".noti").empty();
 
 	}
@@ -1537,7 +1545,7 @@ $(document).ready(function () {
 
 
 		$("#jqGrid2 input[name='qtyorder']").on('blur',calculate_conversion_factor);
-		$("#jqGrid2 input[name='qtyorder']").on('blur',remove_noti);
+		$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom']").on('focus',remove_noti);
 	}
 
 

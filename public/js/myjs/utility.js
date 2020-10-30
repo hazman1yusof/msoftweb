@@ -1640,5 +1640,11 @@ function seemoreFunction(dots,more,morebtn,callback) {
   callback();
 }
 
+function remove_error(id){
+	$( id ).parent().parent().removeClass( "has-error" );
+	$( id ).parent().removeClass( "has-error" );
+	$( id ).removeClass( "error" );
+}
+
 
 /////////////////////////////////End utility function////////////////////////////////////////////////
