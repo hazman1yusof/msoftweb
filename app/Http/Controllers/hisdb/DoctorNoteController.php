@@ -213,7 +213,7 @@ class DoctorNoteController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        // 'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
                 DB::table('hisdb.pathistory')
@@ -241,6 +241,8 @@ class DoctorNoteController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
                 DB::table('hisdb.pathealth')
@@ -284,6 +286,8 @@ class DoctorNoteController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
 
