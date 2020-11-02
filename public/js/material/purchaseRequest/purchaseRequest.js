@@ -989,7 +989,7 @@ $(document).ready(function () {
 
 			unsaved = false;
 			mycurrency2.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']","#jqGrid2 input[name='qtyrequest']"]);
 			
 			$("input[name='gstpercent']").val('0')//reset gst to 0
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
@@ -1115,7 +1115,7 @@ $(document).ready(function () {
 
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
+		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount", "#"+ids[i]+"_qtyrequest"]);
 
 		        cari_gstpercent(ids[i]);
 		    }
@@ -1227,12 +1227,17 @@ $(document).ready(function () {
 		switch (name) {
 			case 'Item Code': temp = $("#jqGrid2 input[name='itemcode']"); break;
 			case 'UOM Code': temp = $("#jqGrid2 input[name='uomcode']"); break;
-			case 'PO UOM': temp = $("#jqGrid2 input[name='pouom']"); break;
+			case 'PO UOM': 
+				temp = $("#jqGrid2 input[name='pouom']"); 
+				var text = $( temp ).parent().siblings( ".help-block" ).text();
+				if(text == 'Invalid Code'){
+					return [false,"Please enter valid "+name+" value"];
+				}
+
+				break;
 			case 'Price Code': temp = $('#pricecode'); break;
 			case 'Tax Code': temp = $('#taxcode'); break;
-			case 'Quantity Request': temp = $("#jqGrid2 input[name='qtyrequest']"); 
-				$("#jqGrid2 input[name='qtyrequest']").hasClass("error");
-				break;
+			case 'Quantity Request': temp = $("#jqGrid2 input[name='qtyrequest']");break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 
