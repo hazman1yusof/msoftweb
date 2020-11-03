@@ -1050,6 +1050,9 @@ $(document).ready(function () {
 				$( "#dialog_remarks" ).dialog( "option", "buttons", butt1_rem);
 			}
 		},
+		close: function(){
+			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		},
 		buttons : butt2_rem
 	});
 
@@ -1350,7 +1353,14 @@ $(document).ready(function () {
 		switch (name) {
 			case 'Item Code': temp = $('#itemcode'); break;
 			case 'UOM Code': temp = $('#uomcode'); break;
-			case 'PO UOM': temp = $('#pouom'); break;
+			case 'PO UOM': 
+				temp = $("#jqGrid2 input[name='pouom']"); 
+				var text = $( temp ).parent().siblings( ".help-block" ).text();
+				if(text == 'Invalid Code'){
+					return [false,"Please enter valid "+name+" value"];
+				}
+
+				break;
 			case 'Price Code': temp = $('#pricecode'); break;
 			case 'Tax Code': temp = $('#taxcode'); break;
 			case 'Quantity Ordered': temp = $("#jqGrid2 input[name='qtyorder']"); 

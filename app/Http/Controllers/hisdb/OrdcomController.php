@@ -24,10 +24,18 @@ class OrdcomController extends defaultController
     {   
        switch($request->action){
             case 'chgcode_table':
+                $sysparam = DB::table('sysdb.sysparam')
+                                ->select('pvalue1')
+                                ->where('source','=','OE')
+                                ->where('trantype','=','NURSING')
+                                ->first();
+
                 $data = DB::table('hisdb.chgmast as m')
                             ->select('m.chgcode','m.description as desc','m.chggroup','g.grpcode','g.description','p.amt1')
                             ->leftJoin('hisdb.chggroup as g', 'm.chggroup', '=', 'g.grpcode')
                             ->leftJoin('hisdb.chgprice as p', 'm.chgcode', '=', 'p.chgcode')
+                            ->whereIn('chggroup', explode( ',', $sysparam->pvalue1 ))
+                            ->where('m.recstatus','=','ACTIVE')
                             ->where('m.recstatus','=','ACTIVE')
                             ->where('m.compcode','=',session('compcode'))
                             ->orderBy('m.chggroup', 'desc')

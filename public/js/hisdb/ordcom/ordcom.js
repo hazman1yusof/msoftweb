@@ -613,8 +613,8 @@ function ordcom_chgcode_selecter(c_optid,c_id){
 
     chgcode_table = $('#chgcode_table').DataTable( {
         "ajax": "ordcom/table?action=chgcode_table",
-        "paging":true,
-        "pageLength": 25,
+        "paging":false,
+        "pageLength": 1000,
         "columns": [
             {'data': 'chgcode'},
             {'data': 'desc'},
