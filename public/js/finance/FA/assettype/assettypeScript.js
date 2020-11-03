@@ -44,15 +44,15 @@ $(document).ready(function () {
 			colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
-			{ label: 'Asset Type', name: 'assettype', width: 15, canSearch: true, checked: true, editable: true, 
+			{ label: 'Asset Type', name: 'assettype', width: 10, canSearch: true, checked: true, editable: true, 
 					editrules: { required: true }, 
 					editoptions: {style: "text-transform: uppercase", maxlength:4 }
 				},
-			{ label: 'Description', name: 'description', width: 15, canSearch: true, checked: true, editable: true, 
+			{ label: 'Description', name: 'description', width: 30, canSearch: true, checked: true, editable: true, 
 					editrules: { required: true }, 
 					editoptions: {style: "text-transform: uppercase", maxlength:100 }
 				},
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Record Status', name: 'recstatus', width: 5, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)
