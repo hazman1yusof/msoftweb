@@ -577,7 +577,7 @@ Route::get('/ordcom','hisdb\OrdcomController@show');
 Route::get('/ordcom/table','hisdb\OrdcomController@table');
 Route::post('/ordcom/form','hisdb\OrdcomController@form');
 
-///////////////////fixed asset setup////////////////////////////////////
+///////////////////Fixed Asset setup////////////////////////////////////
 
 //// Fixed Asset Location setup page ///
 Route::get('/location','finance\LocationController@show');
@@ -594,7 +594,7 @@ Route::get('/assetcategory','finance\assetcategoryController@show');
 Route::get('/assetcategory/table','finance\assetcategoryController@table');
 Route::post('/assetcategory/form','finance\assetcategoryController@form');
 
-/// Fixed Asset Inquiry /// 
+/// Fixed Asset Enquiry /// 
 Route::get('/assetenquiry','finance\assetenquiryController@show');
 Route::get('/assetenquiry/table','finance\assetenquiryController@table');
 Route::post('/assetenquiry/form','finance\assetenquiryController@form');
