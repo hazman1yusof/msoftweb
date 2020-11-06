@@ -851,6 +851,18 @@
 												</div>
 											</div>
 
+											<div class='col-md-12'>
+												<div class="panel panel-info">
+													<div class="panel-heading text-center">EXAMINATION</div>
+													<div class="panel-body">
+														<div class='col-md-12' style="padding:0 0 15px 0">
+															<table id="jqGrid" class="table table-striped"></table>
+															<div id="jqGridPager"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+
 										</div>
 									</div>
 								</div>
