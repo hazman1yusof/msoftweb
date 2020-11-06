@@ -354,7 +354,8 @@ class DoctorNoteController extends defaultController
         $pathealth_obj = DB::table('hisdb.pathealth')
             ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
-            ->where('episno','=',$request->episno);
+            ->where('episno','=',$request->episno)
+            ->orderBy('recordtime','desc');
 
         $pathistory_obj = DB::table('hisdb.pathistory')
             ->where('compcode','=',session('compcode'))
