@@ -30,6 +30,9 @@ i.fa {
 @endsection
 
 @section('body')
+
+	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
@@ -56,6 +59,21 @@ i.fa {
 				</div>
     		</div>
 		</div>
+
+		<div class="panel panel-default" id="gridEnquirydtl_c style="position: relative;">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridEnquirydtl_panel">
+				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Asset Enquiry Detail
+			</div>
+			<div id="gridEnquirydtl_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="gridEnquirydtl" class="table table-striped"></table>
+						<div id="jqGridPager3"></div>
+					</div>
+				</div>
+    		</div>
+  		</div>
 
 		<div class="panel panel-default" id="jqGrid2_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid2_panel">
@@ -300,7 +318,6 @@ i.fa {
 @section('scripts')
 
 	<script src="js/finance/FA/assetenquiry/assetenquiryScript.js"></script>
-
 	
 @endsection
 	
