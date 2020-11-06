@@ -78,7 +78,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 
 	/////////////////////////////////// jqgrid ///////////////////////////////////////////////////
-	$("#jqGrid").jqGrid({
+	$("#jqGridExam").jqGrid({
 		datatype: "local",
 		editurl: "/wardpanel/form",
 		colModel: [
@@ -98,7 +98,7 @@ $(document).ready(function () {
 		width: 900,
 		height: 350,
 		rowNum: 30,
-		pager: "#jqGridPager",
+		pager: "#jqGridPagerExam",
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 			else{
@@ -131,26 +131,26 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGridExam',urlParam,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGridExam',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
-			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			let data = $('#jqGridExam').jqGrid ('getRowData', rowid);
 			console.log(data);
 
 			let editurl = "/wardpanel/form?"+
 				$.param({
 					action: 'wardpanel_save',
 				});
-			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+			$("#jqGridExam").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
@@ -180,26 +180,26 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGridExam',urlParam,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGridExam',urlParam2,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
-			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			let data = $('#jqGridExam').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
 			let editurl = "/wardpanel/form?"+
 				$.param({
 					action: 'wardpanel_save',
 				});
-			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+			$("#jqGridExam").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
@@ -209,8 +209,8 @@ $(document).ready(function () {
 		}
 	};
 
-	//////////////////////////////////////////jqGridPager////////////////////////////////////////////////
-	$("#jqGrid").inlineNav('#jqGridPager', {
+	//////////////////////////////////////////jqGridPagerExam////////////////////////////////////////////////
+	$("#jqGridExam").inlineNav('#jqGridPagerExam', {
 		add: true,
 		edit: true,
 		cancel: true,
@@ -220,13 +220,13 @@ $(document).ready(function () {
 			addRowParams: myEditOptions
 		},
 		editParams: myEditOptions_edit
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
+	}).jqGrid('navButtonAdd', "#jqGridPagerExam", {
 		id: "jqGridPagerDelete",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-trash",
 		title: "Delete Selected Row",
 		onClickButton: function () {
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			selRowId = $("#jqGridExam").jqGrid('getGridParam', 'selrow');
 			if (!selRowId) {
 				bootbox.alert('Please select row');
 			} else {
@@ -240,13 +240,13 @@ $(document).ready(function () {
 							param = {
 								_token: $("#_token").val(),
 								action: 'wardpanel_save',
-								idno: selrowData('#jqGrid').idno,
+								idno: selrowData('#jqGridExam').idno,
 							}
 							$.post( "/wardpanel/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
-								refreshGrid("#jqGrid", urlParam);
+								refreshGrid("#jqGridExam", urlParam);
 							});
 						}else{
 							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
@@ -255,13 +255,13 @@ $(document).ready(function () {
 				});
 			}
 		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
+	}).jqGrid('navButtonAdd', "#jqGridPagerExam", {
 		id: "jqGridPagerRefresh",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",
 		title: "Refresh Table",
 		onClickButton: function () {
-			refreshGrid("#jqGrid", urlParam);
+			refreshGrid("#jqGridExam", urlParam);
 		},
 	});
 
