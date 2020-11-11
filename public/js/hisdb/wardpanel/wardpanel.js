@@ -2,16 +2,21 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
+
+/////////////////////parameter for jqGridExam url/////////////////////////////////////////////////
 var urlParam_Exam = {
-		action: 'get_table_default',
-		url: '/util/get_table_default',
-		field: '',
-		table_name: 'nursing.nurassesexam',
-		table_id: 'idno',
-		filterCol:['mrn','episno'],
-		filterVal:['',''],
-	}
+	action: 'get_table_default',
+	url: '/util/get_table_default',
+	field: '',
+	table_name: 'nursing.nurassesexam',
+	table_id: 'idno',
+	filterCol:['mrn','episno'],
+	filterVal:['',''],
+}
+
 $(document).ready(function () {
+
+	var fdl = new faster_detail_load();
 
 	disableForm('#formWard');
 
@@ -73,9 +78,6 @@ $(document).ready(function () {
 		}, 0);
 	});
 
-	/////////////////////parameter for jqGridExam url/////////////////////////////////////////////////
-	
-
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
 
@@ -88,7 +90,13 @@ $(document).ready(function () {
 			{ label: 'mrn', name: 'mrn', hidden: true },
 			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'Exam', name: 'exam', width: 80, editable: true},
+			{ label: 'Exam', name: 'exam', width: 80,classes: 'wrap', editable:true,
+				editrules:{custom:true, custom_func:cust_rules},formatter: showdetail,
+					edittype:'custom',	editoptions:
+						{  custom_element:examCustomEdit,
+						   custom_value:galGridCustomValue 	
+						},
+			},
 			{ label: 'Note', name: 'examnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
@@ -274,6 +282,42 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+
+	///////////////////////////////////////cust_rules//////////////////////////////////////////////
+	function cust_rules(value,name){
+		var temp;
+		switch(name){
+			case 'Exam':temp=$("input[name='exam']");break;
+				break;
+		}
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+	}
+
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'exam':field=['examcode','description'];table="nursing.examination";case_='exam';break;
+		}
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('wardpanel',options,param,case_,cellvalue);
+		
+		return cellvalue;
+	}
+
+	function examCustomEdit(val, opt) {
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGridExam" optid="'+opt.id+'" id="'+opt.id+'" name="exam" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function galGridCustomValue (elem, operation, value){
+		if(operation == 'get') {
+			return $(elem).find("input").val();
+		} 
+		else if(operation == 'set') {
+			$('input',elem).val(value);
+		}
+	}
 
 });
 
