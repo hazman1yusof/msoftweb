@@ -43,6 +43,15 @@ class WardPanelController extends defaultController
             default:
                 return 'error happen..';
         }
+
+        switch($request->oper){
+            case 'add_exam':
+                return $this->add_exam($request);
+            case 'edit_exam':
+                return $this->edit_exam($request);
+            default:
+                return 'error happen..';
+        }
     }
 
     public function add(Request $request){
@@ -530,5 +539,55 @@ class WardPanelController extends defaultController
         return json_encode($responce);
 
     }
+
+    public function add_exam(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('nursing.nurassesexam')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_ward,
+                    'episno' => $request->episno_ward,
+                    'location' => 'WARD',
+                    'exam' => $request->exam,
+                    'examnote' => $request->examnote,
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'adduser'  => session('username')
+                ]);
+
+             DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function edit_exam(Request $request){
+        
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('nursing.nurassesexam')
+                ->where('idno','=',$request->idno)
+                ->update([  
+                    'exam' => $request->exam,
+                    'examnote' => $request->examnote
+                ]); 
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
 
 }

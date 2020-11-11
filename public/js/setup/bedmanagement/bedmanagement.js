@@ -943,6 +943,10 @@ $(document).ready(function () {
 	$("#jqGrid_ordcom_panel").on("show.bs.collapse", function(){
 		$("#jqGrid_ordcom").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
 	});
+
+	$("#jqGridWard_panel").on("show.bs.collapse", function(){
+		$("#jqGridExam").jqGrid ('setGridWidth', Math.floor($("#jqGridWard_c")[0].offsetWidth-$("#jqGridWard_c")[0].offsetLeft-228));
+	});
 	/////////////////////////////for transer BED ALLOCATION/////////////////////////
 
 	var dialog_lodger_trf = new ordialog(

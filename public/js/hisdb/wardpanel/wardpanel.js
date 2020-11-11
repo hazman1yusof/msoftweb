@@ -65,7 +65,7 @@ $(document).ready(function () {
 		}, 0);
 	});
 
-	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
+	/////////////////////parameter for jqGridExam url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
 		url: '/util/get_table_default',
@@ -77,7 +77,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
 
-	/////////////////////////////////// jqgrid ///////////////////////////////////////////////////
+	/////////////////////////////////// jqGridExam ///////////////////////////////////////////////////
 	$("#jqGridExam").jqGrid({
 		datatype: "local",
 		editurl: "/wardpanel/form",
@@ -85,7 +85,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'Exam', name: 'exam', width: 80, editable: true},
-			{ label: 'Note', name: 'examnote', width: 120, editable: true},
+			{ label: 'Note', name: 'examnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 		],
@@ -131,13 +131,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridExam',urlParam,'add');
+			refreshGrid('#jqGridExam',urlParam,'add_exam');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridExam',urlParam,'add');
+			refreshGrid('#jqGridExam',urlParam,'add_exam');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -180,13 +180,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridExam',urlParam,'add');
+			refreshGrid('#jqGridExam',urlParam,'add_exam');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridExam',urlParam2,'add');
+			refreshGrid('#jqGridExam',urlParam2,'add_exam');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
