@@ -37,6 +37,11 @@ class WardPanelController extends defaultController
                         return 'error happen..';
                 }
 
+            case 'wardpanel_save':
+                return $this->add_exam($request);
+            case 'wardpanel_edit':
+                return $this->edit_exam($request);
+
             case 'get_table_ward':
                 return $this->get_table_ward($request);
 
@@ -44,14 +49,11 @@ class WardPanelController extends defaultController
                 return 'error happen..';
         }
 
-        switch($request->oper){
-            case 'add_exam':
-                return $this->add_exam($request);
-            case 'edit_exam':
-                return $this->edit_exam($request);
-            default:
-                return 'error happen..';
-        }
+        // switch($request->oper){
+            
+        //     default:
+        //         return 'error happen..';
+        // }
     }
 
     public function add(Request $request){
@@ -549,8 +551,8 @@ class WardPanelController extends defaultController
             DB::table('nursing.nurassesexam')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_ward,
-                    'episno' => $request->episno_ward,
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
                     'location' => 'WARD',
                     'exam' => $request->exam,
                     'examnote' => $request->examnote,

@@ -2,7 +2,15 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
-
+var urlParam_Exam = {
+		action: 'get_table_default',
+		url: '/util/get_table_default',
+		field: '',
+		table_name: 'nursing.nurassesexam',
+		table_id: 'idno',
+		filterCol:['mrn','episno'],
+		filterVal:['',''],
+	}
 $(document).ready(function () {
 
 	disableForm('#formWard');
@@ -66,13 +74,7 @@ $(document).ready(function () {
 	});
 
 	/////////////////////parameter for jqGridExam url/////////////////////////////////////////////////
-	var urlParam = {
-		action: 'get_table_default',
-		url: '/util/get_table_default',
-		field: '',
-		table_name: 'nursing.nurassesexam',
-		table_id: 'idno',
-	}
+	
 
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
@@ -83,6 +85,8 @@ $(document).ready(function () {
 		editurl: "/wardpanel/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'Exam', name: 'exam', width: 80, editable: true},
 			{ label: 'Note', name: 'examnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
@@ -113,7 +117,7 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////////myEditOptions////////////////////////////////////////////////
-	var myEditOptions = {
+	var myEditOptions_add = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
@@ -131,13 +135,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridExam',urlParam,'add_exam');
+			refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridExam',urlParam,'add_exam');
+			refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -148,6 +152,8 @@ $(document).ready(function () {
 
 			let editurl = "/wardpanel/form?"+
 				$.param({
+					episno:$('#episno_ward').val(),
+					mrn:$('#mrn_ward').val(),
 					action: 'wardpanel_save',
 				});
 			$("#jqGridExam").jqGrid('setGridParam', { editurl: editurl });
@@ -180,7 +186,7 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridExam',urlParam,'add_exam');
+			refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
@@ -197,7 +203,9 @@ $(document).ready(function () {
 
 			let editurl = "/wardpanel/form?"+
 				$.param({
-					action: 'wardpanel_save',
+					episno:$('#episno_ward').val(),
+					mrn:$('#mrn_ward').val(),
+					action: 'wardpanel_edit',
 				});
 			$("#jqGridExam").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -217,7 +225,7 @@ $(document).ready(function () {
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
-			addRowParams: myEditOptions
+			addRowParams: myEditOptions_add
 		},
 		editParams: myEditOptions_edit
 	}).jqGrid('navButtonAdd', "#jqGridPagerExam", {
@@ -246,7 +254,7 @@ $(document).ready(function () {
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
-								refreshGrid("#jqGridExam", urlParam);
+								refreshGrid("#jqGridExam", urlParam_Exam);
 							});
 						}else{
 							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
@@ -261,7 +269,7 @@ $(document).ready(function () {
 		buttonicon: "glyphicon glyphicon-refresh",
 		title: "Refresh Table",
 		onClickButton: function () {
-			refreshGrid("#jqGridExam", urlParam);
+			refreshGrid("#jqGridExam", urlParam_Exam);
 		},
 	});
 
@@ -320,7 +328,6 @@ function button_state_ward(state){
 }
 
 function populate_formWard(obj,rowdata){
-	
 	emptyFormdata(errorField,"#formWard");
 
 	//panel header
@@ -349,17 +356,21 @@ function populate_formWard(obj,rowdata){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formWard",data.ward);
 			autoinsert_rowdata("#formWard",data.ward_gen);
+
 			// autoinsert_rowdata("#formWard",data.ward_exm);
 			if(!$.isEmptyObject(data.ward_exm)){
-				examination_ward.empty();
-				examination_ward.examarray = data.ward_exm;
-				examination_ward.loadexam().disable();
+				urlParam_Exam.filterVal[0] = obj.mrn;
+				urlParam_Exam.filterVal[1] = obj.episno;
+				refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
+				// examination_ward.empty();
+				// examination_ward.examarray = data.ward_exm;
+				// examination_ward.loadexam().disable();
 			}
 			
 			button_state_ward('edit');
         }else{
 			button_state_ward('add');
-			examination_ward.empty();
+			// examination_ward.empty();
         }
 
     });
