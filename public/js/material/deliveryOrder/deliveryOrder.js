@@ -1029,6 +1029,9 @@ $(document).ready(function () {
 				$( "#dialog_remarks" ).dialog( "option", "buttons", butt1_rem);
 			}
 		},
+		close:function(){
+			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		},
 		buttons : butt2_rem
 	});
 
@@ -1040,6 +1043,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
+			errorField.length=0;
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
         	if($('#delordhd_srcdocno').val()!='' && $("#jqGrid2_iladd").css('display') == 'none' ){
@@ -2126,6 +2130,7 @@ $(document).ready(function () {
 			},
 					},
 			ondblClickRow:function(event){
+				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
@@ -2190,6 +2195,7 @@ $(document).ready(function () {
 					.closest('td')						//utk dialog dalam jqgrid jer
 					.next()
 					.find("input[type=text]").focus();
+					console.log('asdsd')
 			}
 		},'none','radio','tab'//urlParam means check() using urlParam not check_input
 	);
