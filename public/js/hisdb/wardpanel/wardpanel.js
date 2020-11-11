@@ -132,6 +132,9 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+
+			dialog_exam.on();
+
 			$("input[name='examnote']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -182,6 +185,9 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+
+			dialog_exam.on();
+			
 			// $("input[name='grpcode']").attr('disabled','disabled');
 			$("input[name='examnote']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -318,6 +324,39 @@ $(document).ready(function () {
 			$('input',elem).val(value);
 		}
 	}
+
+	var dialog_exam = new ordialog(
+		'exam','nursing.examination',"#jqGridExam input[name='exam']",errorField,
+		{	colModel:[
+				{label:'Exam Code',name:'examcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode'],
+				filterVal:['session.compcode']
+			},
+			ondblClickRow:function(){
+				// $('#optax').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#optax').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Exam",
+			open: function(){
+				dialog_exam.urlParam.filterCol = ['compcode'];
+				dialog_exam.urlParam.filterVal = ['session.compcode'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_exam.makedialog();
 
 });
 
