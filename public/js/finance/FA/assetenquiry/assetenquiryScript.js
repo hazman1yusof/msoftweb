@@ -222,7 +222,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager td[title='View Selected Row']").click();
+			$("#jqGridPager td[title='Edit Selected Row']").click();
 		},
 		gridComplete: function(){
 			if(oper == 'add'){
@@ -233,9 +233,9 @@ $(document).ready(function () {
 		},
 
 		onSelectRow:function(rowid, selected){
-
 			urlParam2.filterVal[1]=selrowData("#jqGrid").assetno;
 			refreshGrid("#jqGrid2",urlParam2);
+			// refreshGrid("#gridEnquirydtl_panel",urlParam_authdtl);
 		}
 		
 	});
@@ -507,7 +507,7 @@ $(document).ready(function () {
 			/////////////////////////start grid pager 1/////////////////////////////////////////////////////////
 
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
-				view:false,edit:false,add:false,del:false,search:false,
+				view:false,edit:false,del:false,search:false,
 				beforeRefresh: function(){
 					refreshGrid("#jqGrid",urlParam,oper);
 				},
@@ -546,15 +546,6 @@ $(document).ready(function () {
 					refreshGrid("#jqGrid2",urlParam2);
 					recstatusDisable();
 				}, 
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first",  
-				buttonicon:"glyphicon glyphicon-plus", 
-				id: 'glyphicon-plus',
-				title:"Add New Row", 
-				onClickButton: function(){
-					oper='add';
-					$( "#dialogForm" ).dialog( "open" );
-				},
 			});
 
 			//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
