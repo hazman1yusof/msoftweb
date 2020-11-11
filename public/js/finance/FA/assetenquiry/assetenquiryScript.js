@@ -235,6 +235,8 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			urlParam2.filterVal[1]=selrowData("#jqGrid").assetno;
 			refreshGrid("#jqGrid2",urlParam2);
+
+			populateFormdata("#jqGrid","","#form_enquirydtl",rowid,'view');
 			// refreshGrid("#gridEnquirydtl_panel",urlParam_authdtl);
 		}
 		
