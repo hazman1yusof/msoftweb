@@ -49,6 +49,24 @@ $(document).ready(function () {
 		}
 	}];
 
+ 	/// BUTTON FOR ENQDTL FORM OUTSIDE ///
+	$("#save").click(function(){
+		unsaved = false;
+		mycurrency.formatOff();
+		mycurrency.check0value(errorField);
+		if( $('#formdata_dtl').isValid({requiredFields: ''}, conf, true) ) {
+			// saveHeader("#formdata", oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
+			saveFormdata("#jqGrid","","#form_enquirydtl",oper,saveParam,urlParam,{idno:selrowData("#jqGrid").idno});
+			unsaved = false;
+		}else{
+				mycurrency.formatOn();
+		}
+	},{
+		text: "Cancel",click: function() {
+			// $(this).dialog('close');
+		}
+	});
+
 	var oper;
 	$("#dialogForm")
 	  .dialog({ 
@@ -162,6 +180,17 @@ $(document).ready(function () {
         sortorder:'desc',
 		pager: "#gridhistpager",
 	});
+
+	/////////////////////parameter for saving url///////////////////////////////////////////////////////
+	var saveParam={
+		action:'assetenquiry_save',
+		url:'/assetenquiry/form',
+		field:'',
+		//fixPost:'true',
+		oper:oper,
+		table_name:'finance.faregister',
+		table_id:'idno'
+	};
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
@@ -416,7 +445,7 @@ $(document).ready(function () {
 			    }
 		    };
 
-	/////////////////////////start grid pager/////////////////////////////////////////////////////////
+	/////////////////////////start grid1 pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,
 		beforeRefresh: function(){
@@ -434,8 +463,6 @@ $(document).ready(function () {
 		},
 	
 	});
-
-
 	//////////////////////////////////////end grid1/////////////////////////////////////////////////////////
 
 
@@ -574,6 +601,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
+	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate']);
 	// addParamField('#jqGrid2',true,urlParam2);
 
 	$("#jqGrid2_panel").on("show.bs.collapse", function(){

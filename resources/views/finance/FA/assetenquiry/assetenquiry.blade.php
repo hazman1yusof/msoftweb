@@ -68,7 +68,7 @@ i.fa {
 				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Asset Enquiry Detail
 			</div>
 
-			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+			<!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
 				id="btn_grp_edit_trf"
 				style="position: absolute;
 						padding: 0 0 0 0;
@@ -85,7 +85,7 @@ i.fa {
 				<button type="button" class="btn btn-default" id="cancel_enqdtl" >
 					<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 				</button>
-			</div>
+			</div> -->
 		<div>
 
 		<div id="gridEnquirydtl_panel" class="panel-collapse collapse">
@@ -275,7 +275,9 @@ i.fa {
 										</div>
 								</div>
 							</div>
-							<hr>																					
+							<hr>
+							<button type="button" id='cancel' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Cancel</button>																					
+							<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
 								<!-- Class form group closed -->
 									
 							</div>  								
@@ -418,7 +420,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="casisno">Casis No</label>  
 							<div class="col-md-2">
-								<input id="casisno" name="casisno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="casisno" name="casisno" type="text" class="form-control input-sm text-uppercase"">
 							</div>
 						<label class="col-md-2 control-label" for="engineno">Engine No</label>  
 							<div class="col-md-2">
@@ -442,7 +444,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="statdate">Start Date</label>  
 							<div class="col-md-2">
-								<input id="statdate" name="statdate" type="text" class="form-control input-sm" 	data-validation="required" frozeOnEdit>
+								<input id="statdate" name="statdate" type="text" class="form-control input-sm"  frozeOnEdit>
 							</div>
 
 							<label class="col-md-2 control-label" for="rate">Rate (%p.a)</label>  
@@ -488,7 +490,7 @@ i.fa {
 							
 						<label class="col-md-2 control-label" for="trandate">Post Date</label>  
 							<div class="col-md-2">
-								<input id="trandate" name="trandate" type="text" class="form-control input-sm" 	data-validation="required" frozeOnEdit>
+								<input id="trandate" name="trandate" type="text" class="form-control input-sm" 	 frozeOnEdit>
 							</div>
 					</div>
 				</div>
