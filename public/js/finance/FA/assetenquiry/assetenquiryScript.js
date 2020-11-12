@@ -55,7 +55,6 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		if( $('#formdata_dtl').isValid({requiredFields: ''}, conf, true) ) {
-			// saveHeader("#formdata", oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
 			saveFormdata("#jqGrid","","#form_enquirydtl",oper,saveParam,urlParam,{idno:selrowData("#jqGrid").idno});
 			unsaved = false;
 		}else{

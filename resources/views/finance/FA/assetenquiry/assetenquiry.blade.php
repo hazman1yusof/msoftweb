@@ -45,7 +45,7 @@ i.fa {
 				</div>
 				<div class="col-md-3 col-md-offset-9" style="padding-top: 0; text-align: end;">
 					<!-- asalnya button nama 'History' tukar to 'Movement'-->
-					<button type="button" id='mvmentbut' class='btn btn-info' >Movement</button> 
+					<button type="button" id='histbut' class='btn btn-info' >Movement</button> 
 				</div>
 			</fieldset>
 		</form>
@@ -92,8 +92,8 @@ i.fa {
 			<div class="panel-body">
 				<!-------------------------------- Asset Enquiry Detail (outside) ---------------------->	
 				<form id='form_enquirydtl' title="Edit Form" class='form-vertical' style='width:99%'>
-					{{ csrf_field() }}
 					<form class='form-vertical' style='width:99%' id='formdata_dtl'>
+					{{ csrf_field() }}
 						<div class='col-md-12'>
 							<div class="panel-body">
 
@@ -313,8 +313,8 @@ i.fa {
 	<!-------------------------------- Asset Enquiry Detail (inside) ---------------------->
 	
 	<div id="dialogForm" title="Edit Form" >
-		{{ csrf_field() }}
 			<form class='form-horizontal' style='width:99%' id='formdata'>
+				{{ csrf_field() }}
               
 				<div class="prevnext btn-group pull-right"></div>
 
