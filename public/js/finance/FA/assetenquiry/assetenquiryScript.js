@@ -450,17 +450,6 @@ $(document).ready(function () {
 		beforeRefresh: function(){
 			refreshGrid("#jqGrid",urlParam);
 		},
-	
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first", 
-		buttonicon:"glyphicon glyphicon-info-sign",
-		title:"View Selected Row",  
-		onClickButton: function(){
-			oper='view';
-			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
-		},
-	
 	});
 	//////////////////////////////////////end grid1/////////////////////////////////////////////////////////
 

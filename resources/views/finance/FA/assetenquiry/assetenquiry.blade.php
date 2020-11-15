@@ -463,7 +463,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="lstytddep">Accum.(Prev Year)</label>  
 							<div class="col-md-2">
-								<input id="lstytddep" name="lstytddep" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required" frozeOnEdit>
+								<input id="lstytddep" name="lstytddep" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" frozeOnEdit>
 							</div>
 						<label class="col-md-2 control-label" for="recstatus">Status</label>
 							<div class="col-md-2">
@@ -474,7 +474,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="cuytddep">Accum.(Y-T-D)</label>  
 							<div class="col-md-2">
-								<input id="cuytddep" name="cuytddep" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required" frozeOnEdit>
+								<input id="cuytddep" name="cuytddep" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" frozeOnEdit>
 							</div>
 						<label class="col-md-2 control-label" for="trantype">Tran Type</label>
 							<div class="col-md-2">
