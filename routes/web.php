@@ -164,6 +164,11 @@ Route::post('/chargegroup/form','setup\ChargeGroupController@form');
 Route::get('/chargegroup/form','setup\ChargeGroupController@form');
 Route::post('/chargegroupDetail/form','setup\ChargeGroupDetailController@form');
 
+//// taxmast setup ///
+Route::get('/taxmast','setup\TaxMastController@show');
+Route::get('/taxmast/table','setup\TaxMastController@table');
+Route::post('/taxmast/form','setup\TaxMastController@form');
+
 //// Compcode setup page ///
 Route::get('/compcode','setup\CompcodeController@show');
 Route::get('/compcode/table','setup\CompcodeController@table');
