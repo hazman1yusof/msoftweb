@@ -28,7 +28,7 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#origcost','#purprice','#lstytddep','#cuytddep','#nbv']);
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
-		text: "Save",click: function() {
+		text: "Saveee",click: function() {
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
@@ -38,7 +38,7 @@ $(document).ready(function () {
 			}
 		}
 	},{
-		text: "Cancel",click: function() {
+		text: "Cancelee",click: function() {
 			$(this).dialog('close');
 		}
 	}];
@@ -49,22 +49,44 @@ $(document).ready(function () {
 		}
 	}];
 
- 	/// BUTTON FOR ENQDTL FORM OUTSIDE ///
-	$("#save").click(function(){
-		unsaved = false;
-		mycurrency.formatOff();
-		mycurrency.check0value(errorField);
-		if( $('#formdata_dtl').isValid({requiredFields: ''}, conf, true) ) {
-			saveFormdata("#jqGrid","","#form_enquirydtl",oper,saveParam,urlParam,{idno:selrowData("#jqGrid").idno});
-			unsaved = false;
-		}else{
+	 /// BUTTON FOR ENQDTL FORM OUTSIDE ///
+	 var btnSave=[{
+		text: "Saveee",click: function() {
+			mycurrency.formatOff();
+			mycurrency.check0value(errorField);
+			if( $('#formdata_dtl').isValid({requiredFields: ''}, conf, true) ) {
+				saveFormdata("#jqGrid","#gridEnquirydtl_panel","#formdata_dtl",oper,saveParam,urlParam,{idno:selrowData("#jqGrid").idno});
+			}else{
 				mycurrency.formatOn();
+			}
 		}
 	},{
-		text: "Cancel",click: function() {
-			// $(this).dialog('close');
+		text: "Cancelee",click: function() {
+			$(this).dialog('close');
 		}
-	});
+	}];
+
+	var btnCancel=[{
+		text: "Close",click: function() {
+			$(this).dialog('close');
+		}
+	}];
+
+	// $("#save").click(function(){
+	// 	unsaved = false;
+	// 	mycurrency.formatOff();
+	// 	mycurrency.check0value(errorField);
+	// 	if( $('#formdata_dtl').isValid({requiredFields: ''}, conf, true) ) {
+	// 		saveFormdata("#jqGrid","gridEnquirydtl_panel","#form_enquirydtl",oper,saveParam,urlParam,{idno:selrowData("#jqGrid").idno});
+	// 		unsaved = false;
+	// 	}else{
+	// 			mycurrency.formatOn();
+	// 	}
+	// },{
+	// 	text: "Cancel",click: function() {
+	// 		// $(this).dialog('close');
+	// 	}
+	// });
 
 	var oper;
 	$("#dialogForm")
@@ -74,12 +96,6 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function( event, ui ) {
 			switch(oper) {
-				case state = 'add':
-					mycurrency.formatOnBlur();
-					$( this ).dialog( "option", "title", "Add" );
-					enableForm('#formdata');
-					rdonly("#dialogForm");
-					break;
 				case state = 'edit':
 					mycurrency.formatOnBlur();
 					$( this ).dialog( "option", "title", "Edit" );
@@ -101,8 +117,6 @@ $(document).ready(function () {
 			}
 			if(oper!='view'){
 			}
-			if(oper!='add'){
-			}
 		},
 		close: function( event, ui ) {
 			parent_close_disabled(false);
@@ -115,6 +129,49 @@ $(document).ready(function () {
 		},
 		buttons :butt1,
 	  });
+
+	  ////oper for enqdtl panel outside///
+	  var oper;
+	  $("#gridEnquirydtl_panel")
+		.dialog({ 
+		  //width: 9/10 * $(window).width(),
+		  //modal: true,
+		  //autoOpen: false,
+		  open: function( event, ui ) {
+			  switch(oper) {
+				  case state = 'edit':
+					  mycurrency.formatOnBlur();
+					  $( this ).dialog( "option", "title", "Edit" );
+					  enableForm('#formdata_dtl');
+					  frozeOnEdit("#gridEnquirydtl_panel");
+					  rdonly("#gridEnquirydtl_panel");
+					  //$("#assetno").val('');
+  
+					  break;
+				  case state = 'view':
+					  mycurrency.formatOn();
+					  $( this ).dialog( "option", "title", "View" );
+					  disableForm('#formdata_dtl');
+					  $(this).dialog("option", "buttons",btnCancel);
+					  getmethod_and_res(selrowData("#jqGrid").assetcode);
+					  getRate(selrowData("#jqGrid").assetcode);
+					  getNVB();
+					  break;
+			  }
+			  if(oper!='view'){
+			  }
+		  },
+		  close: function( event, ui ) {
+			  parent_close_disabled(false);
+			  emptyFormdata(errorField,'#formdata_dtl');
+			  $('.my-alert').detach();
+			  $("#formdata_dtl a").off();
+			  if(oper=='view'){
+				  $(this).dialog("option", "buttons",btnSave);
+			  }
+		  },
+		  buttons :btnSave,
+		});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
 	$("#msgBox").dialog({
