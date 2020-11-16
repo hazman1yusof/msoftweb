@@ -41,6 +41,8 @@ class WardPanelController extends defaultController
                 return $this->add_exam($request);
             case 'wardpanel_edit':
                 return $this->edit_exam($request);
+            case 'more_exam_save':
+                return $this->add_more_exam($request);
 
             case 'get_table_ward':
                 return $this->get_table_ward($request);
@@ -583,6 +585,30 @@ class WardPanelController extends defaultController
                 ]); 
 
             DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function add_more_exam(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('nursing.examination')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'examcode' => $request->newexam,
+                    'description' => $request->newexam,
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'adduser'  => session('username')
+                ]);
+
+             DB::commit();
 
         } catch (\Exception $e) {
             DB::rollback();

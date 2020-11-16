@@ -226,6 +226,7 @@ class assetregisterController extends defaultController
                         'assettype' => $fatemp->assettype,
                         'assetno' => $assetno, // got padding
                         'description' => $fatemp->description,
+                        'lineno_' => $fatemp->lineno_,
                         'deptcode' => $fatemp->deptcode,
                         'loccode' => $fatemp->loccode,
                         'suppcode' => $fatemp->suppcode,

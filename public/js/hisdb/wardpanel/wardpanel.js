@@ -312,7 +312,8 @@ $(document).ready(function () {
 	}
 
 	function examCustomEdit(val, opt) {
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		console.log(val)
+		val = (val == "undefined") ? "" : val;
 		return $('<div class="input-group"><input jqgrid="jqGridExam" optid="'+opt.id+'" id="'+opt.id+'" name="exam" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
@@ -358,6 +359,45 @@ $(document).ready(function () {
 	);
 	dialog_exam.makedialog();
 
+	$("#dialognewexamForm")
+	  .dialog({
+		width: 4/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			
+		},
+		close: function(event,ui){
+			refreshGrid('#'+dialog_exam.gridname,dialog_exam.urlParam);
+		},
+		buttons: [{
+			text: "Save",click: function() {
+				var saveParam={
+			        action:'more_exam_save',
+			    }
+			    var postobj={
+			    	_token : $('#csrf_token').val(),
+			    	newexam : $('#newexam').val()
+			    };
+
+				$.post( '/wardpanel/form?'+$.param(saveParam), postobj , function( data ) {
+		
+				}).fail(function(data) {
+				}).success(function(data){
+					$("#dialognewexamForm").dialog('close');
+				});
+			}
+		},
+		{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+	$('#otherdialog_exam').append('<button type="button" id="exambut_add_new" class="btn btn-sm">Add New Exam</button>');
+	$("#exambut_add_new").click(function(){
+		$("#dialognewexamForm").dialog('open');
+	});
 });
 
 var errorField = [];

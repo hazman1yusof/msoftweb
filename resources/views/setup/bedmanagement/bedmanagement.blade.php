@@ -471,6 +471,18 @@
 	</div>
 	<!-- ***************End Search + table ********************* -->
 
+	<div id="dialognewexamForm" title="New exam" >
+		<div class='panel panel-info'>
+			<div class="panel-body" style="">
+				<form class='form-horizontal' style=''>
+					<small>Examination</small> 
+					<input type="text" name="newexam" id="newexam" class="form-control">
+				</form>
+			</div>
+		</div>
+	</div>
+
+
 @endsection
 
 

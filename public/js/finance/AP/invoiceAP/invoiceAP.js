@@ -99,7 +99,7 @@ $(document).ready(function () {
 				console.log($('#apacthdr_outamount').val() != $('#apacthdr_amount').val());
 
 				mycurrency.formatOff();
-				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val() && counter_save==0){
+				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val()  && $('#apacthdr_doctype').val() == "Supplier" && counter_save==0){
 					event.preventDefault();
 					bootbox.confirm({
 					    message: "Total Detail Amount is not equal with Invoice Amount. <br> Do you want to proceed?",
@@ -269,6 +269,7 @@ $(document).ready(function () {
 				$('#save').hide();
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
+			
 			}
 		},
 		gridComplete: function () {

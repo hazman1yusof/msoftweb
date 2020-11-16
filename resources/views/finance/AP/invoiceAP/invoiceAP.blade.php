@@ -125,7 +125,7 @@ i.fa {
 			</div>	
 		</div>
 
-		<div class="panel panel-default" style="position: relative;" id="gridDo_c">
+	<!-- 	<div class="panel panel-default" style="position: relative;" id="gridDo_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel1">
 				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="document_show"></span><br>
 				<b>SUPPLIER NAME: </b><span id="suppcode_show"></span>
@@ -144,7 +144,7 @@ i.fa {
 					</div>
 				</div>
 			</div>	
-		</div>
+		</div> -->
         
     </div>
 	<!-- ***************End Search + table ********************* -->

@@ -991,12 +991,17 @@ $(document).ready(function () {
 
 			unsaved = false;
 			mycurrency2.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']","#jqGrid2 input[name='qtyrequest']"]);
+			mycurrency_np.array.length = 0;
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
+			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyrequest']"]);
 			
 			$("input[name='gstpercent']").val('0')//reset gst to 0
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
+			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 			
-			$("#jqGrid2 input[name='qtyrequest'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='taxcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+
+			$("#jqGrid2 input[name='qtyrequest']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
 
 			$("#jqGrid2 input[name='qtyrequest']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom']").on('focus',remove_noti);
@@ -1028,7 +1033,8 @@ $(document).ready(function () {
 			console.log(errorField)
         	if(errorField.length>0)return false;
 			mycurrency2.formatOff();
-			console.log($('#jqGrid2 input[name="qtyrequest"]').val())
+			mycurrency_np.formatOff();
+
 			if(parseInt($('#jqGrid2 input[name="qtyrequest"]').val()) <= 0)return false;
 
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
@@ -1114,15 +1120,23 @@ $(document).ready(function () {
 		title:"Edit All Row",
 		onClickButton: function(){
 			mycurrency2.array.length = 0;
+			mycurrency_np.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 		    for (var i = 0; i < ids.length; i++) {
 
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount", "#"+ids[i]+"_qtyrequest"]);
+		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
+
+		        Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtyrequest"]);
 
 		        dialog_itemcode.id_optid = ids[i];
 		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,function(self){
+		        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+		        });
+
+		        dialog_uomcode.id_optid = ids[i];
+		        dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,function(self){
 		        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 		        });
 
@@ -1141,6 +1155,13 @@ $(document).ready(function () {
 
 			var jqgrid2_data = [];
 			mycurrency2.formatOff();
+			mycurrency_np.formatOff();
+
+			if(errorField.length>0){
+				console.log(errorField)
+				return false;
+			}
+
 		    for (var i = 0; i < ids.length; i++) {
 				if(parseInt($('#'+ids[i]+"_qtyrequest").val()) <= 0)return false;
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
@@ -1184,7 +1205,7 @@ $(document).ready(function () {
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
-				// $('#amount').val(data);
+				$('#purreqhd_subamount').val(data);
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
 			});
@@ -1394,8 +1415,11 @@ $(document).ready(function () {
 		// }
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
+		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 		
-		$("#jqGrid2 input[name='qtyrequest'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='taxcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+
+		$("#jqGrid2 input[name='qtyrequest']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
 
 		$("#jqGrid2 input[name='qtyrequest']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom']").on('focus',remove_noti);
@@ -1403,16 +1427,23 @@ $(document).ready(function () {
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
 	var mycurrency2 =new currencymode([]);
+	var mycurrency_np =new currencymode([],true);
 	function calculate_line_totgst_and_totamt(event) {
+
+		mycurrency2.formatOff();
+		mycurrency_np.formatOff();
+
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
-		mycurrency2.formatOff();
        
 		let qtyrequest = parseFloat($("#"+id_optid+"_qtyrequest").val());
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
 		let amtdisc = parseFloat($("#"+id_optid+"_amtdisc").val());
 		let perdisc = parseFloat($("#"+id_optid+"_perdisc").val());
 		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val());
+		if($("#jqGrid2 input#"+id_optid+"_taxcode").val() == ''){
+			gstpercent = 0;
+		}
 
 		var totamtperUnit = ((unitprice*qtyrequest) - (amtdisc*qtyrequest));
 		var amount = totamtperUnit- (totamtperUnit*perdisc/100);
@@ -1448,6 +1479,7 @@ $(document).ready(function () {
 		}
 
 		event.data.currency.formatOn();//change format to currency on each calculation
+		mycurrency_np.formatOn();
 
 		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
@@ -1518,7 +1550,6 @@ $(document).ready(function () {
 				$('#purreqhd_prdept').focus();
 			},
 			gridComplete: function(obj){
-				console.log('girdcomplete')
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -1972,7 +2003,7 @@ $(document).ready(function () {
 			
 		},{
 			title:"Select UOM Code For Item",
-			open:function(){
+			open:function(obj_){
 				var pricecode = $("#jqGrid2 input#"+obj_.id_optid+"_pricecode").val();
 
 				if(pricecode == 'MS'){
@@ -2151,10 +2182,14 @@ $(document).ready(function () {
 					.find("input[type=text]").focus();
 				}
 				
+			},
+			oncheck: function(obj_){
+				console.log(obj_)
 			}
 		},'urlParam', 'radio', 'tab', false
 	);
 	dialog_taxcode.makedialog(false);
+	dialog_taxcode.check_take_all_field = true;
 
 	function cari_gstpercent(id){
 		let data = $('#jqGrid2').jqGrid ('getRowData', id);

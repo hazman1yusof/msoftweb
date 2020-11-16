@@ -466,17 +466,24 @@ function setDateToNow(){
 	$('input[type=date]').val(moment().format('YYYY/M/D'));
 }
 
-function currencymode(arraycurrency){
+function currencymode(arraycurrency,nopoint=false){
 	this.array = arraycurrency;
+	this.nopoint = nopoint;
 	this.formatOn = function(){
+		var self = this;
 		$.each(this.array, function( index, value ) {
-			$(value).val(numeral($(value).val()).format('0,0.00'));
+			if(self.nopoint){
+				$(value).val(numeral($(value).val()).format('0,0'));
+			}else{
+				$(value).val(numeral($(value).val()).format('0,0.00'));
+			}
 		});
 	}
 	this.formatOnBlur = function(){
+		var self = this;
 		$.each(this.array, function( index, value ) {
-			$(value).on("blur",{value:value},currencyBlur);
-			$(value).on("keyup",{value:value},currencyChg);
+			$(value).on("blur",{value:value,np:self.nopoint},currencyBlur);
+			$(value).on("keyup",{value:value,np:self.nopoint},currencyChg);
 			// currencyBlur(value);currencyChg(value)
 		});
 	}
@@ -501,8 +508,14 @@ function currencymode(arraycurrency){
 	}
 
 	function currencyBlur(event){
-		value = event.data.value;
-		$(value).val(numeral($(value).val()).format('0,0.00'));
+		let value = event.data.value;
+		let nopoint = event.data.np;
+		if(nopoint){
+			console.log('nop2')
+			$(value).val(numeral($(value).val()).format('0,0'));
+		}else{
+			$(value).val(numeral($(value).val()).format('0,0.00'));
+		}
 	}
 
 	function currencyChg(event){
@@ -886,6 +899,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	this.field=jqgrid_.colModel;
 	this.textfield=id;
 	this.ck_desc=1;
+	this.check_take_all_field=false;
 	this.eventstat='off';
 	this.checkstat=checkstat;
 	this.ontabbing=false;
@@ -1012,7 +1026,13 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 		if(event.data.data.checkstat!='none'){
 			// renull_search(event.data.data);
-			event.data.data.check(event.data.data.errorField,idtopush,jqgrid,optid);
+			if(event.data.data.dialog_.hasOwnProperty('oncheck')){
+				event.data.data.check(event.data.data.errorField,idtopush,jqgrid,optid,function(){
+					event.data.data.dialog_.oncheck(event.data.data);
+				});
+			}else{
+				event.data.data.check(event.data.data.errorField,idtopush,jqgrid,optid);
+			}
 		}
 	}
 
@@ -1274,7 +1294,11 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 			param.action="get_value_default";
 			param.url='/util/get_value_default';
-			param.field=[code_,desc_];
+			if(this.check_take_all_field){
+				param.field=this.urlParam.field;
+			}else{
+				param.field=[code_,desc_];
+			}
 			index=jQuery.inArray(code_,param.filterCol);
 			if(index == -1){
 				param.filterCol.push(code_);
@@ -1314,7 +1338,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 			if(typeof errorField != 'string' && self.required){
 				if(!fail){
-					console.log(desc2)
 					if($.inArray(idtopush,errorField)!==-1){
 						errorField.splice($.inArray(idtopush,errorField), 1);
 					}
