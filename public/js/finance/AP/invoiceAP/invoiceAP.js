@@ -264,12 +264,37 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
+			
 			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
 				$('#save').hide();
-			}else{
+			}else if (stat == 'OPEN'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
-			
+				//$('#save').hide();
+
+				//let doctype = selrowData("#jqGrid").apacthdr_doctype;
+				//let doctype = $("#apacthdr_doctype option:selected").val();
+
+				// if(doctype == 'Debit_Note' && doctype == 'Others') {
+				// 	$('#save').show();
+				// 	$('#ap_detail').hide();
+				// }else {
+				// 	$('#save').hide();
+				// 	$('#ap_detail').show();
+				// }
+
+				
+				if (rowid != null) {
+					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+	
+					if (rowData['apacthdr_doctype'] == 'Supplier') {
+						$('#save').hide();
+						$('#ap_detail').show();
+					} else {
+						$('#save').show();
+						$('#ap_detail').hide();
+					}
+				}
 			}
 		},
 		gridComplete: function () {
@@ -313,6 +338,7 @@ $(document).ready(function () {
 		title: "Edit Selected Row",
 		onClickButton: function () {
 			oper = 'edit';
+			
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
@@ -324,7 +350,38 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'add';
 			$("#dialogForm").dialog("open");
-		},
+
+			// let doctype = $("#apacthdr_doctype option:selected").val();
+			// if(doctype == 'Supplier') {
+			// 	$('#save').hide();
+			// 	$('#ap_detail').show();
+			// 	refreshGrid("#jqGrid2",urlParam2);
+			// }else if (doctype == 'Debit_Note' || doctype == 'Others') {
+			// 	$('#save').show();
+			// 	$('#ap_detail').hide();
+			// }
+			$('#apacthdr_doctype').on('change', function() {
+				let doctype = $("#apacthdr_doctype option:selected").val();
+			
+				if(doctype == 'Supplier' || doctype == 'Others') {
+					$("#formdata :input[name='apacthdr_source']").val("AP");
+					$("#formdata :input[name='apacthdr_trantype']").val("IN");
+		
+				}else if(doctype == 'Debit_Note') {
+					$("#formdata :input[name='apacthdr_source']").val("AP");
+					$("#formdata :input[name='apacthdr_trantype']").val("DN");
+				}
+				
+				if(doctype == 'Supplier') {
+					$('#save').hide();
+					$('#ap_detail').show();
+				}else if (doctype == 'Debit_Note' || doctype == 'Others') {
+					$('#save').show();
+					$('#ap_detail').hide();
+				}
+				
+			});
+		}
 	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
@@ -368,21 +425,21 @@ $(document).ready(function () {
 	////////////////////selected///////////////
 
 	$('#apacthdr_doctype').on('change', function() {
-		let ttype1 = $("#apacthdr_doctype option:selected").val();
+		let doctype = $("#apacthdr_doctype option:selected").val();
 	
-		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
+		if(doctype == 'Supplier' || doctype == 'Others') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("IN");
 
-		}else if(ttype1 == 'Debit_Note') {
+		}else if(doctype == 'Debit_Note') {
 			$("#formdata :input[name='apacthdr_source']").val("AP");
 			$("#formdata :input[name='apacthdr_trantype']").val("DN");
 		}
 		
-		if(ttype1 == 'Supplier') {
+		if(doctype == 'Supplier') {
 			$('#save').hide();
 			$('#ap_detail').show();
-		}else {
+		}else if (doctype == 'Debit_Note' || doctype == 'Others') {
 			$('#save').show();
 			$('#ap_detail').hide();
 		}
