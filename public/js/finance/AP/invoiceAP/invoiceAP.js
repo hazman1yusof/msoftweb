@@ -82,6 +82,7 @@ $(document).ready(function () {
 					dialog_category.check(errorField);
 					dialog_department.check(errorField);
 				}
+				init_jq2();
 			},
 			beforeClose: function(event, ui){
 				if(unsaved){
@@ -360,27 +361,27 @@ $(document).ready(function () {
 			// 	$('#save').show();
 			// 	$('#ap_detail').hide();
 			// }
-			$('#apacthdr_doctype').on('change', function() {
-				let doctype = $("#apacthdr_doctype option:selected").val();
+		// 	$('#apacthdr_doctype').on('change', function() {
+		// 		let doctype = $("#apacthdr_doctype option:selected").val();
 			
-				if(doctype == 'Supplier' || doctype == 'Others') {
-					$("#formdata :input[name='apacthdr_source']").val("AP");
-					$("#formdata :input[name='apacthdr_trantype']").val("IN");
+		// 		if(doctype == 'Supplier' || doctype == 'Others') {
+		// 			$("#formdata :input[name='apacthdr_source']").val("AP");
+		// 			$("#formdata :input[name='apacthdr_trantype']").val("IN");
 		
-				}else if(doctype == 'Debit_Note') {
-					$("#formdata :input[name='apacthdr_source']").val("AP");
-					$("#formdata :input[name='apacthdr_trantype']").val("DN");
-				}
+		// 		}else if(doctype == 'Debit_Note') {
+		// 			$("#formdata :input[name='apacthdr_source']").val("AP");
+		// 			$("#formdata :input[name='apacthdr_trantype']").val("DN");
+		// 		}
 				
-				if(doctype == 'Supplier') {
-					$('#save').hide();
-					$('#ap_detail').show();
-				}else if (doctype == 'Debit_Note' || doctype == 'Others') {
-					$('#save').show();
-					$('#ap_detail').hide();
-				}
+		// 		if(doctype == 'Supplier') {
+		// 			$('#save').hide();
+		// 			$('#ap_detail').show();
+		// 		}else if (doctype == 'Debit_Note' || doctype == 'Others') {
+		// 			$('#save').show();
+		// 			$('#ap_detail').hide();
+		// 		}
 				
-			});
+		// 	});
 		}
 	});
 
@@ -1234,6 +1235,17 @@ $(document).ready(function () {
 		$("#gridDo").jqGrid ('setGridWidth', Math.floor($("#gridDo_c")[0].offsetWidth-$("#gridDo_c")[0].offsetLeft-28));
 	});
 
+
+	function init_jq2(){
+		if(oper == 'add'){
+			if($('#apacthdr_doctype').val() == 'Supplier'){
+				$('#save').hide();
+				$('#ap_detail').show();
+				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			}
+		}
+	}
+
 });
 
 function populate_form(obj){
@@ -1252,3 +1264,4 @@ function empty_form(){
 	$('#suppcode_show').text('');
 
 }
+
