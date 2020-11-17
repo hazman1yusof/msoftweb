@@ -288,7 +288,7 @@
 				$('#qty').val(data['dodt_qtydelivered']);
 				$('#currentcost').val(data['dodt_amount']);
 				$('#lineno_').val(data['dodt_lineno_']);
-				$('#description').val(data['dodt_itemcode'] + ' ' + data['dodt_remarks']);
+				$('#description').val(data['dodt_itemcode'] + '-' + data['p_description'] + '-' +data['dodt_remarks']);
 
 
 				$("#purprice,#qty").blur();

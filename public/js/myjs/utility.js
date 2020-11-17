@@ -511,7 +511,6 @@ function currencymode(arraycurrency,nopoint=false){
 		let value = event.data.value;
 		let nopoint = event.data.np;
 		if(nopoint){
-			console.log('nop2')
 			$(value).val(numeral($(value).val()).format('0,0'));
 		}else{
 			$(value).val(numeral($(value).val()).format('0,0.00'));
@@ -1020,18 +1019,19 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function onBlur(event){
+		var obj = event.data.data;
 		var idtopush = $(event.currentTarget).siblings("input[type='text']").end().attr('id');
 		var jqgrid = $(event.currentTarget).siblings("input[type='text']").end().attr('jqgrid');
-		var optid = (event.data.data.urlParam.hasOwnProperty('optid'))? event.data.data.urlParam.optid:null;
+		var optid = (obj.urlParam.hasOwnProperty('optid'))? obj.urlParam.optid:null;
 
-		if(event.data.data.checkstat!='none'){
+		if(obj.checkstat!='none'){
 			// renull_search(event.data.data);
-			if(event.data.data.dialog_.hasOwnProperty('oncheck')){
-				event.data.data.check(event.data.data.errorField,idtopush,jqgrid,optid,function(){
-					event.data.data.dialog_.oncheck(event.data.data);
+			if(obj.dialog_.hasOwnProperty('after_check')){
+				obj.check(obj.errorField,idtopush,jqgrid,optid,undefined,function(){
+					obj.dialog_.after_check(obj);
 				});
 			}else{
-				event.data.data.check(event.data.data.errorField,idtopush,jqgrid,optid);
+				obj.check(obj.errorField,idtopush,jqgrid,optid);
 			}
 		}
 	}
@@ -1247,11 +1247,11 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		return fieldReturn;
 	}
 
-	function checkInput(errorField,idtopush,jqgrid=null,optid=null,callback){
+	function checkInput(errorField,idtopush,jqgrid=null,optid=null,before_check,after_check){
 		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=this.ck_desc;
 
-		if (callback !== undefined) {
-			callback(this);
+		if (before_check !== undefined) {
+			before_check(self);
 		}
 
 		if(idtopush){ /// ni nk tgk sama ada from idtopush exist atau tak
@@ -1377,6 +1377,11 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				}
 
 			}
+
+			if (after_check !== undefined) {
+				after_check(self,data);
+			}
+
 			
 		});
 	}

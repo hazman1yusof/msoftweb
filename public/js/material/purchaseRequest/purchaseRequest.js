@@ -1140,10 +1140,18 @@ $(document).ready(function () {
 		        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 		        });
 
+				dialog_taxcode.id_optid = ids[i];
+		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,undefined,function(self,data){
+		        	if(data.rows.length > 0){
+						$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
+		        	}
+		        });
+
 		        cari_gstpercent(ids[i]);
 		    }
 		    onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
+		    $("#jqGrid2 input#1_pricecode").focus();
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "jqGridPager2SaveAll",
@@ -1205,6 +1213,7 @@ $(document).ready(function () {
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
+				$('#purreqhd_totamount').val(data);
 				$('#purreqhd_subamount').val(data);
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
@@ -2179,12 +2188,11 @@ $(document).ready(function () {
 					$(dialog_taxcode.textfield)			//lepas close dialog focus on next textfield 
 					.closest('td')						//utk dialog dalam jqgrid jer
 					.next()
-					.find("input[type=text]").focus();
+					.find("input[type=text]").first().focus();
 				}
 				
 			},
-			oncheck: function(obj_){
-				console.log(obj_)
+			after_check: function(obj_,data){
 			}
 		},'urlParam', 'radio', 'tab', false
 	);
