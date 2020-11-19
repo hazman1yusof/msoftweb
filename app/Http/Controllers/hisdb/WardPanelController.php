@@ -602,8 +602,8 @@ class WardPanelController extends defaultController
             DB::table('nursing.examination')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'examcode' => $request->newexam,
-                    'description' => $request->newexam,
+                    'examcode' => $request->examcode,
+                    'description' => $request->description,
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'adduser'  => session('username')
                 ]);
