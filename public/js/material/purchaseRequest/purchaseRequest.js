@@ -982,7 +982,7 @@ $(document).ready(function () {
 
 			// }else{
 				dialog_pricecode.on();//start binding event on jqgrid2
-				dialog_itemcode.on()._init();
+				dialog_itemcode.on();
 				dialog_uomcode.on();
 				dialog_pouom.on();
 				dialog_taxcode.on();
@@ -1416,7 +1416,7 @@ $(document).ready(function () {
 
 		// }else{
 			dialog_pricecode.on();//start binding event on jqgrid2
-			dialog_itemcode.on()._init();
+			dialog_itemcode.on();
 			dialog_uomcode.on();
 			dialog_pouom.on();
 			dialog_taxcode.on();
@@ -1846,7 +1846,7 @@ $(document).ready(function () {
 			title:"Select Item For Purchase Order",
 			open:function(obj_){
 				var pricecode = $("#jqGrid2 input#"+obj_.id_optid+"_pricecode").val();
-
+				
 				if(pricecode == 'MS'){
 					let newcolmodel = [
 							{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -1913,52 +1913,52 @@ $(document).ready(function () {
 		},'urlParam','radio','tab',true//urlParam means check() using urlParam not check_input
 	);
 	dialog_itemcode.makedialog(false);
-	dialog_itemcode._init_func(function(self){
+	// dialog_itemcode._init_func(function(self){
 
-		$(self.textfield).keyup(function(event){
+	// 	$(self.textfield).keyup(function(event){
 
-			if($(this).val().length >= 9){
-				let optid = $(this).attr("optid")
-				let id_optid = optid.substring(0,optid.search("_"));
-				let itemcode = $(this).val();
+	// 		if($(this).val().length >= 9){
+	// 			let optid = $(this).attr("optid")
+	// 			let id_optid = optid.substring(0,optid.search("_"));
+	// 			let itemcode = $(this).val();
 
-				self.urlParam.searchCol=['p_itemcode'];
-				self.urlParam.searchVal=['%'+itemcode+'%'];
+	// 			self.urlParam.searchCol=['p_itemcode'];
+	// 			self.urlParam.searchVal=['%'+itemcode+'%'];
 
-				$('#jqgrid2_itemcode_refresh').val(1);
-				$("#"+self.gridname).jqGrid('setGridParam',{ loadComplete: function(data){ 
-					if(data.records>0 && $('#jqgrid2_itemcode_refresh').val()==1){
-						var data_ = data.rows[0];
+	// 			$('#jqgrid2_itemcode_refresh').val(1);
+	// 			$("#"+self.gridname).jqGrid('setGridParam',{ loadComplete: function(data){ 
+	// 				if(data.records>0 && $('#jqgrid2_itemcode_refresh').val()==1){
+	// 					var data_ = data.rows[0];
 
-						if(data_.hasOwnProperty("p_itemcode")){
+	// 					if(data_.hasOwnProperty("p_itemcode")){
 
-							$("#jqGrid2 #"+id_optid+"_description").val(data_['p_description']);
-							$("#jqGrid2 #"+id_optid+"_uomcode").val(data_['p_uomcode']);
-							$("#jqGrid2 #"+id_optid+"_taxcode").val(data_['p_TaxCode']);
-							$("#jqGrid2 #"+id_optid+"_rate").val(data_['t_rate']);
-							$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data_['u_convfactor']);
-							$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data_['t_rate']);
+	// 						$("#jqGrid2 #"+id_optid+"_description").val(data_['p_description']);
+	// 						$("#jqGrid2 #"+id_optid+"_uomcode").val(data_['p_uomcode']);
+	// 						$("#jqGrid2 #"+id_optid+"_taxcode").val(data_['p_TaxCode']);
+	// 						$("#jqGrid2 #"+id_optid+"_rate").val(data_['t_rate']);
+	// 						$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data_['u_convfactor']);
+	// 						$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data_['t_rate']);
 
-							if($("input#"+id_optid+"_pricecode").val() != 'MS'){
-								dialog_uomcode.urlParam.filterVal[1] = data_['p_itemcode'];
-							}
+	// 						if($("input#"+id_optid+"_pricecode").val() != 'MS'){
+	// 							dialog_uomcode.urlParam.filterVal[1] = data_['p_itemcode'];
+	// 						}
 
-							$("#jqGrid2 #"+id_optid+"_qtyrequest").focus().select();
-						}
+	// 						$("#jqGrid2 #"+id_optid+"_qtyrequest").focus().select();
+	// 					}
 
-					}else if(data.records==0 && $('#jqgrid2_itemcode_refresh').val()==1){
-						alert('Incorrect itemcode inserted')
-						$(self.textfield).select();
-					}
+	// 				}else if(data.records==0 && $('#jqgrid2_itemcode_refresh').val()==1){
+	// 					alert('Incorrect itemcode inserted')
+	// 					$(self.textfield).select();
+	// 				}
 
-					$('#jqgrid2_itemcode_refresh').val(0);
-				}});
+	// 				$('#jqgrid2_itemcode_refresh').val(0);
+	// 			}});
 
-				refreshGrid("#"+self.gridname,self.urlParam);
-			}
+	// 			refreshGrid("#"+self.gridname,self.urlParam);
+	// 		}
 
-		});
-	});
+	// 	});
+	// });
 
 
 	var dialog_uomcode = new ordialog(

@@ -970,7 +970,7 @@ class PurchaseRequestController extends defaultController
 
 
             $purreqhd = DB::table("material.purreqhd")
-                ->where('idno','=',$request->idno);
+                ->where('idno','=',$idno);
 
             $purreqhd_get = $purreqhd->first();
 
