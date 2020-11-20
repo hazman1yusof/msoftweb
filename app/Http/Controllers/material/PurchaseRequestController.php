@@ -213,6 +213,7 @@ class PurchaseRequestController extends defaultController
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();
+                // dd($purreqhd_get);
 
                 if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
 
@@ -287,7 +288,7 @@ class PurchaseRequestController extends defaultController
         
         } catch (\Exception $e) {
             DB::rollback();
-
+dd($e);
             return response($e->getMessage(), 500);
         }
     }
@@ -970,7 +971,7 @@ class PurchaseRequestController extends defaultController
 
 
             $purreqhd = DB::table("material.purreqhd")
-                ->where('idno','=',$request->idno);
+                ->where('idno','=',$idno);
 
             $purreqhd_get = $purreqhd->first();
 

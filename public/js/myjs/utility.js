@@ -1687,5 +1687,13 @@ function remove_error(id){
 	$( id ).removeClass( "error" );
 }
 
+function getEditVal(val){
+	if(val == undefined || val == 'undefined' || val == null){
+		return '';
+	}else if(val.search("[<]") != -1){
+		return val.slice(0, val.search("[<]"));
+	}
+	return val
+}
 
 /////////////////////////////////End utility function////////////////////////////////////////////////

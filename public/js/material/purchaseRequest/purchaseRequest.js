@@ -25,7 +25,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency = new currencymode(['#purreqhd_amtdisc', '#purreqhd_subamount']);
+	var mycurrency = new currencymode(['#purreqhd_amtdisc', '#purreqhd_subamount','#purreqhd_totamount']);
 	var fdl = new faster_detail_load();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -41,6 +41,7 @@ $(document).ready(function () {
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
+				mycurrency.formatOn();
 				switch (oper) {
 					case state = 'add':
 						$("#jqGrid2").jqGrid("clearGridData", true);
@@ -411,13 +412,13 @@ $(document).ready(function () {
 		
 		$.post( '/purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
-			$(this).attr('disabled',false);
+			$("#but_post_jq").attr('disabled',false);
 			cbselect.empty_sel_tbl();
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
-			$(this).attr('disabled',false);
+			$("#but_post_jq").attr('disabled',false);
 		}).success(function(data){
-			
+			$("#but_post_jq").attr('disabled',false);
 		});
 	});
 
@@ -1215,6 +1216,7 @@ $(document).ready(function () {
 			}).done(function(data){
 				$('#purreqhd_totamount').val(data);
 				$('#purreqhd_subamount').val(data);
+				mycurrency.formatOn();
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
 			});
@@ -1284,7 +1286,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function itemcodeCustomEdit(val, opt) {
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		val = getEditVal(val);
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){
