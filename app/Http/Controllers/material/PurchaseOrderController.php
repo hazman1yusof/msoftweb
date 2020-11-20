@@ -1166,7 +1166,7 @@ class PurchaseOrderController extends defaultController
 
 
             $purordhd = DB::table("material.purordhd")
-                ->where('idno','=',$request->idno);
+                ->where('idno','=',$idno);
 
             $purordhd_get = $purordhd->first();
 

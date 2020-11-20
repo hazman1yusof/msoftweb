@@ -752,7 +752,7 @@
 
 												<div class='col-md-12'>
 													<div class="panel panel-info">
-														<div class="panel-body">
+														<div class="panel-body" style="height: 371px">
 
 															<div class='col-md-6'>
 																<div class="panel panel-info">
@@ -821,7 +821,7 @@
 													</div>
 												</div>
 
-												<div class='col-md-12'>
+												<!-- <div class='col-md-12'>
 													<div class="panel panel-info">
 														<div class="panel-heading text-center" style="position: relative;"> EXAMINATION 
 															<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 10px; top: 2px;">
@@ -832,7 +832,7 @@
 															
 														</div>
 													</div>
-												</div>
+												</div> -->
 
 											</div>
 

@@ -112,7 +112,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPagerExam",
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
+			if(addmore_jqgrid.more == true){$('#jqGridExam_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
@@ -120,7 +120,7 @@ $(document).ready(function () {
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGrid_iledit").click();
+			$("#jqGridExam_iledit").click();
 		},
 	});
 
@@ -137,7 +137,7 @@ $(document).ready(function () {
 
 			$("input[name='examnote']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGrid_ilsave').click();
+				if (code == '9')$('#jqGridExam_ilsave').click();
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
@@ -191,7 +191,7 @@ $(document).ready(function () {
 			// $("input[name='grpcode']").attr('disabled','disabled');
 			$("input[name='examnote']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGrid_ilsave').click();
+				if (code == '9')$('#jqGridExam_ilsave').click();
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
@@ -377,7 +377,8 @@ $(document).ready(function () {
 			    }
 			    var postobj={
 			    	_token : $('#csrf_token').val(),
-			    	newexam : $('#newexam').val()
+			    	examcode : $('#examcode').val(),
+			    	description : $('#description').val()
 			    };
 
 				$.post( '/wardpanel/form?'+$.param(saveParam), postobj , function( data ) {

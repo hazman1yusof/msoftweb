@@ -975,6 +975,13 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	function onClick(event){
 		var textfield = $(event.currentTarget).siblings("input[type='text']");
 
+		var optid = $(event.currentTarget).siblings("input[type='text']").attr("optid");
+		if(optid!=null || optid!=undefined){
+			var id_optid = optid.substring(0,optid.search("_"));
+			event.data.data.id_optid = id_optid;
+		}
+
+
 		var obj = event.data.data;
 		$("#"+obj.gridname).jqGrid('setGridParam',{ ondblClickRow: function(id){ 
 			if(!obj.jqgrid_.hasOwnProperty('ondblClickRow_off')){
@@ -1006,14 +1013,16 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 		var idtopush = $(event.currentTarget).siblings("input[type='text']").attr('id');
 		var jqgrid = $(event.currentTarget).siblings("input[type='text']").attr('jqgrid');
-		var optid = (event.data.data.urlParam.hasOwnProperty('optid'))? event.data.data.urlParam.optid:null;
+		// var optid = (event.data.data.urlParam.hasOwnProperty('optid'))? event.data.data.urlParam.optid:null;
 
-		if(optid!=null){
-			var id_optid = idtopush.substring(0,idtopush.search("_"));
-			optid.field.forEach(function(element,i){
-				obj.urlParam.filterVal[optid.id[i]] = $(optid.jq+' input#'+id_optid+element).val();
-			});
-		}
+		// if(optid!=null){
+		// 	var id_optid = idtopush.substring(0,idtopush.search("_"));
+		// 	optid.field.forEach(function(element,i){
+		// 		obj.urlParam.filterVal[optid.id[i]] = $(optid.jq+' input#'+id_optid+element).val();
+		// 	});
+		// 	event.data.data.id_optid = id_optid;
+		// }
+
 
 		refreshGrid("#"+obj.gridname,obj.urlParam);
 	}
@@ -1094,7 +1103,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 	function onChange(event){
 		let obj = event.data.data;
-		renull_search(obj);
 		let Dtext=$("#Dtext_"+obj.unique).val().trim();
 		if(obj.dcolrType == 'radio'){
 			var Dcol=$("#Dcol_"+obj.unique+" input:radio[name=dcolr]:checked").val();
@@ -1251,6 +1259,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=this.ck_desc;
 
 		if (before_check !== undefined) {
+			renull_search(this);
 			before_check(self);
 		}
 

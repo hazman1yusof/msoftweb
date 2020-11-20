@@ -475,8 +475,10 @@
 		<div class='panel panel-info'>
 			<div class="panel-body" style="">
 				<form class='form-horizontal' style=''>
-					<small>Examination</small> 
-					<input type="text" name="newexam" id="newexam" class="form-control">
+					<small>Exam Code</small> 
+					<input type="text" name="examcode" id="examcode" class="form-control">
+					<small>Description</small> 
+					<input type="text" name="description" id="description" class="form-control">
 				</form>
 			</div>
 		</div>
