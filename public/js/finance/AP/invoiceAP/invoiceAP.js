@@ -271,20 +271,7 @@ $(document).ready(function () {
 				$('#save').hide();
 			}else if (stat == 'OPEN'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
-				//$('#save').hide();
 
-				//let doctype = selrowData("#jqGrid").apacthdr_doctype;
-				//let doctype = $("#apacthdr_doctype option:selected").val();
-
-				// if(doctype == 'Debit_Note' && doctype == 'Others') {
-				// 	$('#save').show();
-				// 	$('#ap_detail').hide();
-				// }else {
-				// 	$('#save').hide();
-				// 	$('#ap_detail').show();
-				// }
-
-				
 				if (rowid != null) {
 					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 	
@@ -351,37 +338,6 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'add';
 			$("#dialogForm").dialog("open");
-
-			// let doctype = $("#apacthdr_doctype option:selected").val();
-			// if(doctype == 'Supplier') {
-			// 	$('#save').hide();
-			// 	$('#ap_detail').show();
-			// 	refreshGrid("#jqGrid2",urlParam2);
-			// }else if (doctype == 'Debit_Note' || doctype == 'Others') {
-			// 	$('#save').show();
-			// 	$('#ap_detail').hide();
-			// }
-		// 	$('#apacthdr_doctype').on('change', function() {
-		// 		let doctype = $("#apacthdr_doctype option:selected").val();
-			
-		// 		if(doctype == 'Supplier' || doctype == 'Others') {
-		// 			$("#formdata :input[name='apacthdr_source']").val("AP");
-		// 			$("#formdata :input[name='apacthdr_trantype']").val("IN");
-		
-		// 		}else if(doctype == 'Debit_Note') {
-		// 			$("#formdata :input[name='apacthdr_source']").val("AP");
-		// 			$("#formdata :input[name='apacthdr_trantype']").val("DN");
-		// 		}
-				
-		// 		if(doctype == 'Supplier') {
-		// 			$('#save').hide();
-		// 			$('#ap_detail').show();
-		// 		}else if (doctype == 'Debit_Note' || doctype == 'Others') {
-		// 			$('#save').show();
-		// 			$('#ap_detail').hide();
-		// 		}
-				
-		// 	});
 		}
 	});
 
