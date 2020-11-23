@@ -973,7 +973,6 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
 		oneditfunc: function (rowid) {
-			console.log('add')
 			errorField.length=0;
 			console.log(errorField)
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
@@ -1120,6 +1119,7 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-th-list",
 		title:"Edit All Row",
 		onClickButton: function(){
+			errorField.length=0;
 			mycurrency2.array.length = 0;
 			mycurrency_np.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
@@ -1417,11 +1417,12 @@ $(document).ready(function () {
   //   		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
 
 		// }else{
-			dialog_pricecode.on();//start binding event on jqgrid2
-			dialog_itemcode.on();
-			dialog_uomcode.on();
-			dialog_pouom.on();
-			dialog_taxcode.on();
+		errorField.length=0;
+		dialog_pricecode.on();//start binding event on jqgrid2
+		dialog_itemcode.on();
+		dialog_uomcode.on();
+		dialog_pouom.on();
+		dialog_taxcode.on();
 
 		// }
 		

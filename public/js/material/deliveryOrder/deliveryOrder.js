@@ -328,8 +328,8 @@ $(document).ready(function () {
 			console.log([stat,scope])
 			if (stat == scope ) {
 				$('#but_cancel_jq').show();
-			} else if ( stat == "OPEN" ){
-				$('#but_soft_cancel_jq').show();
+			//} else if ( stat == "OPEN" ){
+				//$('#but_soft_cancel_jq').show();
 			} else if ( stat == "CANCELLED" ){
 				$('#but_reopen_jq').show();
 			} else {
@@ -438,7 +438,7 @@ $(document).ready(function () {
 	populateSelect('#jqGrid','#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
+	addParamField('#jqGrid',false,urlParam);
 	addParamField('#jqGrid',false,saveParam,['delordhd_trantype','delordhd_recno','delordhd_docno','delordhd_adduser','delordhd_adddate','delordhd_upduser','delordhd_upddate','delordhd_deluser','delordhd_idno','supplier_name','delordhd_recstatus','delordhd_unit','Refresh', 'Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
@@ -575,6 +575,7 @@ $(document).ready(function () {
 						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
 					}
 				});
+				searchChange();
 			}
 		});
 	}
