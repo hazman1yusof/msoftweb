@@ -1200,6 +1200,14 @@ $(document).ready(function () {
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 			}
 		}
+
+		if(oper == 'view'){
+			if($('#apacthdr_doctype').val() == 'Supplier'){
+				$('#save').hide();
+				$('#ap_detail').show();
+				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			}
+		}
 	}
 
 });
