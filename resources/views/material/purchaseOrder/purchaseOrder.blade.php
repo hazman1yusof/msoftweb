@@ -442,7 +442,9 @@ i.fa {
 			</div>
 
 			<div class='panel panel-info'>
-				<div class="panel-heading">Purchase Order Detail</div>
+				<div class="panel-heading">Purchase Order Detail 
+					<a class='btn btn-sm btn-default' id='add_fr_pr' style="margin-left: 30px"><span class='fa fa-plus'></span> Add From Purchase Request </a>
+				</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							<!-- <input id="gstpercent" name="gstpercent" type="hidden">

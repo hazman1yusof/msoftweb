@@ -92,6 +92,7 @@ i.fa {
 						  	@if (Request::get('scope') == 'ALL')
 						      <option value="All" selected>ALL</option>
 						      <option value="OPEN">OPEN</option>
+						      <option value="CANCELLED">CANCELLED</option>
 						      <option value="REQUEST">REQUEST</option>
 						      <option value="SUPPORT">SUPPORT</option>
 						      <option value="VERIFIED">VERIFIED</option>
@@ -130,9 +131,9 @@ i.fa {
 				?>
 
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
-					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+					
 					<span id="error_infront" style="color: red"></span>
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
@@ -140,20 +141,20 @@ i.fa {
 						data-oper="{{$scope_use}}" 
 						style="display: none;">
 						@if (Request::get('scope') == 'ALL')
-							{{'POST ALL'}}
-						@else
-							{{Request::get('scope').' ALL'}}
-						@endif
-					</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="{{$scope_use}}" style="display: none;">
-						@if (Request::get('scope') == 'ALL')
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}
 						@endif
 					</button>
+					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="{{$scope_use}}" style="display: none;">
+						@if (Request::get('scope') == 'ALL')
+							{{'POST'}}
+						@else
+							{{Request::get('scope')}}
+						@endif
+					</button> -->
+					<button type="button" class="btn btn-default btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 

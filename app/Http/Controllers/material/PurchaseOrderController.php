@@ -57,6 +57,8 @@ class PurchaseOrderController extends defaultController
                 return $this->cancel($request);
             case 'refresh_do':
                 return $this->refresh_do($request);
+            case 'add_from_pr':
+                return $this->add_from_pr($request);
             default:
                 return 'error happen..';
         }
@@ -1221,6 +1223,27 @@ class PurchaseOrderController extends defaultController
         return false;   
         
     }
+
+    function add_from_pr($request){
+        $table = DB::table('material.purreqdt')
+                    ->where('recstatus','=','APPROVED');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+
 }
 
 

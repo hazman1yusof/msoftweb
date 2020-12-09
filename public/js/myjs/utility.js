@@ -666,13 +666,13 @@ function jqgrid_label_align_right(grid){
 }
 
 
-function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus",curr_recst = "OPEN"){
+function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 	this.idno=idno
-	this.recstatus =recstatus;
+	this.recstatus = recstatus;
 	this.checkall_ = false;
 	this.on = function(){
 		$(grid).jqGrid('setLabel',colname,`
-			<input type="checkbox" name="checkbox_all_" id="checkbox_all_check" >
+			<input type="checkbox" name="checkbox_all_" id="checkbox_all_check"  style="display:none">
 			<input type="checkbox" name="checkbox_all_" id="checkbox_all_uncheck" checked style="display:none">
 			`,
 			{'text-align':'center'});
@@ -688,7 +688,7 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus",cur
 			let rowdatas = $('#jqGrid').jqGrid ('getRowData');
 			rowdatas.forEach(function(rowdata,index){
 				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata[idno]);
-				if($.isEmptyObject(rowdata_jqgridsel) && rowdata[recstatus] == curr_recst){
+				if($.isEmptyObject(rowdata_jqgridsel)){
 					$('#jqGrid_selection').jqGrid ('addRowData', rowdata[idno],rowdata);
 					self.delete_function_on(rowdata[idno],index+1);
 				}
@@ -769,22 +769,45 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus",cur
 	this.uncheckall_ = function(){
 		self.checkall_ = false;
 		$('#checkbox_all_uncheck').hide();
-		$('#checkbox_all_check').show();
+		if($("select#Status").val()!='All')$('#checkbox_all_check').show();
 	}
 
 	this.show_hide_table = function(){
 		let reccount = $('#jqGrid_selection').jqGrid('getGridParam', 'reccount');
-
-		if($("#show_sel_tbl").is(":hidden") && reccount > 0){
-			$("#show_sel_tbl,#but_post_jq").show();
-			$("#but_post_single_jq").hide();
+		var status_ = $("select#Status").val();
+		// $("#show_sel_tbl").is(":hidden") && 
+		$("#show_sel_tbl,#but_post_jq,#but_reopen_jq,#but_cancel_jq").hide();
+		if(reccount > 0){
+			switch(status_){
+				case 'All':
+					$('#checkbox_all_uncheck,#checkbox_all_check').hide();
+					$("#show_sel_tbl,#but_post_jq,#but_reopen_jq,#but_cancel_jq").show();
+					break;
+				case 'CANCELLED':
+					$("#show_sel_tbl,#but_reopen_jq").show();
+					break;
+				case 'OPEN':
+				case 'REQUEST':
+				case 'SUPPORT':
+				case 'VERIFIED':
+				case 'APPROVED':
+					$("#show_sel_tbl,#but_post_jq,#but_cancel_jq").show();
+					break;
+			}
 		}else if(reccount == 0){
 			$('#sel_tbl_panel').hide('fast');
-			// $("#but_post_single_jq").show();
-			$("#show_sel_tbl,#but_post_jq").hide();
+			$("#show_sel_tbl,#but_post_jq,#but_reopen_jq,#but_cancel_jq").hide();
 			$("#show_sel_tbl").data('hide',true);
 			$("#show_sel_tbl").text('Show Selection Item');
 		}
+	}
+
+	this.init_allcb = function(){
+		$('#checkbox_all_check,#checkbox_all_uncheck').hide();
+		$('#checkbox_all_check').prop('checked', false);
+		$("#checkbox_all_check").show();
+		$('#checkbox_all_uncheck').prop('checked', true);
+		$("#checkbox_all_uncheck").hide();
 	}
 
 	this.refresh_seltbl = function(){
@@ -800,6 +823,8 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus",cur
 	}
 
 	this.empty_sel_tbl = function(){
+		this.uncheckall_();
+		$('#checkbox_all_uncheck').click();
 		$("#jqGrid_selection").jqGrid("clearGridData", true);
 		// this.refresh_seltbl();
 	}
@@ -959,6 +984,11 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			$(this.textfield).on('blur',{data:this,errorField:errorField},onBlur);
 			$("#Dtext_"+unique).on('keydown',{data:this},onTabSearchfield);
 		}
+	}
+
+	this.renull_search = function(){
+		obj = this;
+		obj.urlParam.searchCol2=obj.urlParam.searchVal2=obj.urlParam.searchCol=obj.urlParam.searchVal=null
 	}
 
 	function onTabSearchfield(event){
@@ -1176,7 +1206,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			close: function( event, ui ){
 				$("#Dtext_"+unique).val('');
 				obj.ontabbing = false;
-				if(obj.dialog_.hasOwnProperty('close'))obj.dialog_.close(event);
+				if(obj.dialog_.hasOwnProperty('close'))obj.dialog_.close(obj);
 			},
 		});
 	}
@@ -1257,7 +1287,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 	function checkInput(errorField,idtopush,jqgrid=null,optid=null,before_check,after_check){
 		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=this.ck_desc;
-
+		
 		if (before_check !== undefined) {
 			renull_search(this);
 			before_check(self);

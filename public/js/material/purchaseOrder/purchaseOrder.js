@@ -2589,6 +2589,82 @@ $(document).ready(function () {
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
+
+	var add_fr_pr = new add_fr_pr();
+	add_fr_pr.on();
+
+	function add_fr_pr(){
+		this.urlParam = {
+			action: 'add_from_pr',
+			oper: 'add_from_pr',
+			url:'/purchaseOrder/form'
+		}
+
+		this.dialog = `<div id="dialog_add_fr_pr" title="Add From Purchase Request">
+					  <div class="panel panel-default">
+					    <div class="panel-body">
+					    <div id='table_add_fr_pr_c' class='col-xs-12' align='center'><table id='table_add_fr_pr' class='table table-striped'></table><div id='table_add_fr_prPager'></div>
+					    </div>
+					  </div>
+					</div>`;
+
+		this.on = function(){
+			$("html").append(this.dialog);
+			var self = this;
+
+			$("#dialog_add_fr_pr").dialog({
+				autoOpen: false,
+				width: 9/10 * $(window).width(),
+				modal: true,
+				open: function(event, ui){
+					$("#table_add_fr_pr").jqGrid ('setGridWidth', Math.floor($("#table_add_fr_pr_c")[0].offsetWidth-$("#table_add_fr_pr_c")[0].offsetLeft));
+					console.log(self.urlParam)
+					refreshGrid("#table_add_fr_pr",self.urlParam);
+				},
+				close: function( event, ui ){
+				},
+			});
+
+			$("#table_add_fr_pr").jqGrid({
+				datatype: "local",
+				colModel: [
+					{ label: 'Record No', name: 'recno', width: 15, formatter: padzero, unformat: unpadzero },
+					{ label: 'Purchase No', name: 'purreqno', width: 15, formatter: padzero, unformat: unpadzero },
+					{ label: 'Request Department', name: 'reqdept', width: 15, classes: 'wrap' },
+					{ label: 'Price Code', name: 'pricecode', width: 15, classes: 'wrap' },
+					{ label: 'Item Code', name: 'itemcode', width: 30 , classes: 'wrap' },
+					{ label: 'Uom Code', name: 'uomcode', width: 10},
+					{ label: 'Quantity Request', name: 'qtyrequest', width: 15},
+					{ label: 'Amount', name: 'amount', width: 15 },
+					{ label: 'Unit Price', name: 'unitprice',align: 'right', formatter: 'currency' , width: 15},
+					{ label: 'Tax Code', name: 'taxcode', width: 15},
+					{ label: 'Tax Amount', name: 'amtslstax', width: 15},
+					{ label: 'Total Amount', name: 'totamount',align: 'right', formatter: 'currency' , width: 15 },
+					{ label: 'Remarks', name: 'remarks', width: 30 },
+				],
+				scroll: true,shrinkToFit: true,autowidth: true,viewrecords:true,loadonce:false,width:1000,height:200,rowNum:30,hoverrows:false,
+				pager: "#table_add_fr_prPager",
+				onSelectRow:function(rowid, selected){
+				},
+				ondblClickRow: function(rowid, iRow, iCol, e){
+				},
+				loadComplete: function(data) {
+			    },
+				gridComplete: function() {
+			    },
+
+			});
+
+			$("#add_fr_pr").on('click',{data:this},onClick);
+
+			return this;
+		}
+
+		function onClick(event){
+			$("#dialog_add_fr_pr").dialog('open');
+		}
+
+	}
 });
 
 function populate_form(obj){
