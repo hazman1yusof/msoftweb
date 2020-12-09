@@ -115,15 +115,14 @@ class assetenquiryDtl2Controller extends defaultController
 
             $EnquiryDtl2 = DB::table('finance.faregister')
                 ->where('idno','=',$request->idno)
-                ->where('assetcode','=',$request->assetcode)
-                ->where('mrn','=',$request->mrn_EnquiryDtl2)
-                ->where('episno','=',$request->episno_EnquiryDtl2)
+                // ->where('assetcode','=',$request->assetcode)
+                // ->where('mrn','=',$request->mrn_EnquiryDtl2)
+                // ->where('episno','=',$request->episno_EnquiryDtl2)
                 ->where('compcode','=',session('compcode'));
 
             if($EnquiryDtl2->exists()){
                 DB::table('finance.faregister')
-                    ->where('delordno','=',$request->delordno_EnquiryDtl2)
-                    ->where('assetno','=',$request->assetno_EnquiryDtl2)
+                    ->where('idno','=',$request->idno)
                     ->where('compcode','=',session('compcode'))
                     ->update([
                         'compcode' => session('compcode'),
@@ -213,15 +212,13 @@ class assetenquiryDtl2Controller extends defaultController
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
 
             
 
             $queries = DB::getQueryLog();
-            // dump($queries);
+            dump($queries);
 
             DB::commit();
 

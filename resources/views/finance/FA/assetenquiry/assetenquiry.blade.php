@@ -97,10 +97,6 @@
 			@include('finance.FA.assetenquiry.assetenquiryDtl2')
 	</div>
 
-	<!-- <div class='row'>
-			@include('finance.FA.assettransfer.assettransfer')
-	</div> -->
-
 	<div class='row'>
 		<div class="panel panel-default" id="jqGrid2_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid2_panel">
@@ -230,7 +226,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="casisno">Casis No</label>  
 							<div class="col-md-2">
-								<input id="casisno" name="casisno" type="text" class="form-control input-sm text-uppercase"">
+								<input id="casisno" name="casisno" type="text" class="form-control input-sm text-uppercase">
 							</div>
 						<label class="col-md-2 control-label" for="engineno">Engine No</label>  
 							<div class="col-md-2">
@@ -316,7 +312,6 @@
 
 	<script src="js/finance/FA/assetenquiry/assetenquiryScript.js"></script>
 	<script src="js/finance/FA/assetenquiry/assetenquiryDtl2Script.js"></script>	
-	<!-- <script src="js/finance/FA/assettransfer/assettransferScript.js"></script>	 -->
 
 @endsection
 	

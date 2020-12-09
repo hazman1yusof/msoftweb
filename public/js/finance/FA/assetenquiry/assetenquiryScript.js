@@ -271,7 +271,6 @@ $(document).ready(function () {
 		// 	populateFormdata("#jqGrid","","#form_enquirydtl",rowid,'view');
 		// },
 		onSelectRow:function(rowid, selected){
-
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
@@ -282,8 +281,9 @@ $(document).ready(function () {
 					$("#pg_jqGridPager3 table, #jqGridEnquiryDtl2_c, #jqGridAssetTransfer_c").show();
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
 
-					populateFormdata("#jqGrid","","#form_enquirydtl",rowid,'view');
-					populate_EnquiryDtl2(selrowData("#jqGrid"));
+					populateFormdata("#jqGrid","","#formEnquiryDtl2",rowid,'view');
+					// populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+					// populate_EnquiryDtl2(selrowData("#jqGrid"));
 					// populate_formWard(selrowData("#jqGrid"));
 					// populate_doctorNote(selrowData("#jqGrid"));
 					// populate_dietOrder(selrowData("#jqGrid"));

@@ -604,6 +604,11 @@ Route::get('/assetenquiry','finance\assetenquiryController@show');
 Route::get('/assetenquiry/table','finance\assetenquiryController@table');
 Route::post('/assetenquiry/form','finance\assetenquiryController@form');
 
+/// Fixed Asset Enquiry Detail/// 
+Route::get('/assetenquiryDtl2','finance\assetenquiryDtl2Controller@show');
+Route::get('/assetenquiryDtl2/table','finance\assetenquiryDtl2Controller@table');
+Route::post('/assetenquiryDtl2/form','finance\assetenquiryDtl2Controller@form');
+
 /// Asset Transfer /// 
 Route::get('/assettransfer','finance\assettransferController@show');
 Route::get('/assettransfer/table','finance\assettransferController@table');

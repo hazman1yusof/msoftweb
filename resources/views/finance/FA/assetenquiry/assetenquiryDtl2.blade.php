@@ -35,6 +35,8 @@
 	<div class="panel-body">
 		<div class='col-md-12' style="padding:0 0 15px 0">
 			<form class='form-horizontal' style='width:99%' id='formEnquiryDtl2'>
+				{{ csrf_field() }}
+				<input type="hidden" name="idno">
 				<div class='col-md-12'>
 					<div class="panel panel-info">
 						<div class="panel-heading text-center">ASSET ENQUIRY DETAIL</div>
@@ -208,7 +210,7 @@
 							<div class="form-group row">
 								<label class="col-md-1 control-label" for="nbv">N-B-V</label>
 									<div class="col-md-3">
-										<input id="nbv" type="text" name="nbv" maxlength="12" class="form-control input-sm" rdonly>
+										<input id="nbv" type="text" name="nbv" maxlength="12" class="form-control input-sm" frozeOnEdit>
 									</div>
 									
 								<label class="col-md-1 control-label" for="trandate">Post Date</label>  

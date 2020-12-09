@@ -13,7 +13,7 @@ $(document).ready(function () {
 	$("#edit_EnquiryDtl2").click(function(){
 		button_state_EnquiryDtl2('wait');
 		enableForm('#formEnquiryDtl2');
-		rdonly('#formEnquiryDtl2');
+		frozeOnEdit('#formEnquiryDtl2');
 		// dialog_mrn_edit.on();	
 	});
 
@@ -27,13 +27,13 @@ $(document).ready(function () {
 			});
 		}else{
 			enableForm('#formEnquiryDtl2');
-			rdonly('#formEnquiryDtl2');
+			frozeOnEdit('#formEnquiryDtl2');
 		}
 	});
 
 	$("#cancel_EnquiryDtl2").click(function(){
 		disableForm('#formEnquiryDtl2');
-		button_state_EnquiryDtl2($(this).data('oper'));
+		button_state_EnquiryDtl2('edit');
 		// dialog_mrn_edit.off();
 	});
 });
@@ -55,7 +55,7 @@ conf = {
 	},
 };
 
-// button_state_EnquiryDtl2('empty');
+button_state_EnquiryDtl2('edit');
 function button_state_EnquiryDtl2(state){
 	switch(state){
 		case 'empty':
@@ -145,7 +145,7 @@ function saveForm_EnquiryDtl2(callback){
         oper:$("#cancel_EnquiryDtl2").data('oper')
     }
     var postobj={
-    	_token : $('#csrf_token').val(),
+    	// _token : $('#csrf_token').val(),
     	// sex_edit : $('#sex_edit').val(),
     	// idtype_edit : $('#idtype_edit').val()
 
@@ -153,7 +153,7 @@ function saveForm_EnquiryDtl2(callback){
 
 	values = $("#formEnquiryDtl2").serializeArray();
 
-    $.post( "/EnquiryDtl2/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "/assetenquiryDtl2/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');
