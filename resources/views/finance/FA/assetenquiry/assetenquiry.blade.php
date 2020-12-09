@@ -4,29 +4,61 @@
 
 @section('style')
 
-.panel-heading.collapsed .fa-angle-double-up,
-.panel-heading .fa-angle-double-down {
-  display: none;
-}
+	.panel-heading.collapsed .fa-angle-double-up,
+	.panel-heading .fa-angle-double-down {
+	display: none;
+	}
 
-.panel-heading.collapsed .fa-angle-double-down,
-.panel-heading .fa-angle-double-up {
-  display: inline-block;
-}
+	.panel-heading.collapsed .fa-angle-double-down,
+	.panel-heading .fa-angle-double-up {
+	display: inline-block;
+	}
 
-i.fa {
-  cursor: pointer;
-  float: right;
- <!--  margin-right: 5px; -->
-}
+	.panel-heading i.fa {
+	cursor: pointer;
+	float: right;
+	<!--  margin-right: 5px; -->
+	}
 
-.collapsed ~ .panel-body {
-  padding: 0;
-}
+	.panel-heading div i {
+			position: relative;
+			line-height: 1;
+			top: -10px;
+		}
 
-.clearfix {
-	overflow: auto;
-}
+	<!-- /* The sticky class is added to the header with JS when it reaches its scroll position */ -->
+	.sticky {
+		z-index: 100;
+		position: fixed;
+		top: 0;
+		width: 100%
+	}
+
+	.clearfix {
+		overflow: auto;
+	}
+
+	input.uppercase {
+		text-transform: uppercase;
+	}
+
+	.justify {
+		text-align: -webkit-center;
+	}
+
+	row.error td { background-color: red; }
+
+	i.arrow {
+		cursor: pointer;
+		float: right;
+		<!--  margin-right: 5px; -->
+	}
+
+	.position i {
+		position: relative;
+		line-height: 1;
+		top: -10px;
+	}
 @endsection
 
 @section('body')
@@ -62,234 +94,12 @@ i.fa {
 	</div>
 
 	<div class='row'>
-		<div class="panel panel-default" style="position: relative;" id="gridEnquirydtl_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridEnquirydtl_panel">
-				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
-				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Asset Enquiry Detail
-			</div>
-
-			<!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-				id="btn_grp_edit_trf"
-				style="position: absolute;
-						padding: 0 0 0 0;
-						right: 40px;
-						top: 9px;" 
-
-			>
-				<button type="button" class="btn btn-default" id="edit_enqdtl">
-					<span class="fa fa-edit fa-lg"></span> Edit
-				</button>
-				<button type="button" class="btn btn-default" data-oper='add' id="save_enqdtl">
-					<span class="fa fa-save fa-lg"></span> Save
-				</button>
-				<button type="button" class="btn btn-default" id="cancel_enqdtl" >
-					<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-				</button>
-			</div> -->
-		<div>
-
-		<div id="gridEnquirydtl_panel" class="panel-collapse collapse">
-			<div class="panel-body">
-				<!-------------------------------- Asset Enquiry Detail (outside) ---------------------->	
-				<form id='form_enquirydtl' title="Edit Form" class='form-vertical' style='width:99%'>
-					<form class='form-vertical' style='width:99%' id='formdata_dtl'>
-					{{ csrf_field() }}
-						<div class='col-md-12'>
-							<div class="panel-body">
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="assetcode">Category</label>  
-									<div class="col-md-3">
-										<input id="assetcode" name="assetcode" type="text" class="form-control input-sm uppercase" data-validation="required"  frozeOnEdit>
-									</div>
-
-									<label class="col-md-1 control-label" for="assettype">Type</label>  
-									<div class="col-md-3">
-										<input id="assettype" name="assettype" type="text" class="form-control input-sm uppercase" data-validation="required"  frozeOnEdit>
-									</div>
-
-									<label class="col-md-1 control-label" for="assetno">NO</label>  
-									<div class="col-md-3">
-										<input id="assetno" name="assetno" type="text" class="form-control input-sm uppercase" data-validation="required"  frozeOnEdit>
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="description">Description</label>  
-										<div class="col-md-3">
-											<textarea class="form-control input-sm text-uppercase" name="description" rows="4" cols="55" maxlength="100" id="description"></textarea>
-										</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="deptcode">Department</label>
-										<div class="col-md-3">
-											<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-										</div>
-									<label class="col-md-1 control-label" for="loccode">Location</label>
-										<div class="col-md-3">
-											<input id="loccode" name="loccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-										</div>
-								</div>
-
-								<hr>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="suppcode">Supplier</label>
-										<div class="col-md-3">
-											<input id="suppcode" name="suppcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-										</div>
-									<label class="col-md-1 control-label" for="delordno">Delivery Order No.</label>
-										<div class="col-md-3">
-											<input id="delordno" name="delordno" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-										</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="invno">Invoice No.</label>
-										<div class="col-md-3">
-											<input id="invno" name="invno" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-										</div>
-									<label class="col-md-1 control-label" for="delorddate">Delivery Order Date</label>
-										<div class="col-md-3">
-											<input id="delorddate" name="delorddate" type="text" class="form-control input-sm" 	data-validation="required" frozeOnEdit>
-										</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="invdate">Invoice Date</label>  
-										<div class="col-md-3">
-											<input id="invdate" name="invdate" type="text" class="form-control input-sm" 	data-validation="required" placeholder="YYYY-MM-DD" frozeOnEdit>
-										</div>
-								</div>
-							
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="purordno">Purchase No.</label>
-										<div class="col-md-3">
-											<input id="purordno" type="text" name="purordno" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-										</div>
-									<label class="col-md-1 control-label" for="purdate">Purchase Date</label>
-										<div class="col-md-3">
-											<input id="purdate" type="text" name="purdate" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-										</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="purprice">Price</label>  
-										<div class="col-md-3">
-											<input id="purprice" name="purprice" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required" frozeOnEdit>  
-										</div>
-									<label class="col-md-1 control-label" for="qty">Quantity</label>  
-										<div class="col-md-3">
-											<input id="qty" name="qty" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required" frozeOnEdit> 
-										</div>
-								</div>
-								
-								<hr>		
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="serialno">Serial No</label>  
-										<div class="col-md-3">
-											<input id="serialno" type="text" name="serialno" maxlength="12" class="form-control input-sm text-uppercase">
-										</div>
-									<label class="col-md-1 control-label" for="lotno">Lot No</label>  
-										<div class="col-md-3">
-											<input id="lotno" type="text" name="lotno" maxlength="12" class="form-control input-sm text-uppercase">
-										</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="casisno">Casis No</label>  
-										<div class="col-md-3">
-											<input id="casisno" name="casisno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-										</div>
-									<label class="col-md-1 control-label" for="engineno">Engine No</label>  
-										<div class="col-md-3">
-											<input id="engineno" name="engineno" maxlength="12" class="form-control input-sm text-uppercase" data-sanitize="required" >  
-										</div>
-								</div>
-						
-								<hr>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="method">Method</label>  
-										<div class="col-md-3">
-											<input id="method" type="text" name="method" maxlength="12" class="form-control input-sm" rdonly frozeOnEdit>
-										</div>
-									<label class="col-md-1 control-label" for="rvalue">Residual Value</label>  
-										<div class="col-md-3">
-											<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm" rdonly frozeOnEdit>
-										</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="statdate">Start Date</label>  
-										<div class="col-md-3">
-											<input id="statdate" name="statdate" type="text" class="form-control input-sm" 	data-validation="required" frozeOnEdit>
-										</div>
-
-										<label class="col-md-1 control-label" for="rate">Rate (%p.a)</label>  
-										<div class="col-md-3">
-											<input id="rate" type="text" name="rate" maxlength="12" class="form-control input-sm" rdonly frozeOnEdit>
-										</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="origcost">Cost</label>  
-										<div class="col-md-3">
-											<input id="origcost" name="origcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" frozeOnEdit>  
-										</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="lstytddep">Accum.(Prev Year)</label>  
-										<div class="col-md-3">
-											<input id="lstytddep" name="lstytddep" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required" frozeOnEdit>
-										</div>
-									<label class="col-md-1 control-label" for="recstatus">Status</label>
-										<div class="col-md-3">
-											<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>ACTIVE</label>
-										</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="cuytddep">Accum.(Y-T-D)</label>  
-										<div class="col-md-3">
-											<input id="cuytddep" name="cuytddep" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" data-validation="required" frozeOnEdit>
-										</div>
-									<label class="col-md-1 control-label" for="trantype">Tran Type</label>
-										<div class="col-md-3">
-											<input id="trantype" type="text" name="trantype" class="form-control input-sm" value="ADDITIONAL" rdonly frozeOnEdit>
-										</div>
-								</div>
-
-								<div class="form-group row">
-									<label class="col-md-1 control-label" for="nbv">N-B-V</label>
-										<div class="col-md-3">
-											<input id="nbv" type="text" name="nbv" maxlength="12" class="form-control input-sm" rdonly>
-										</div>
-										
-									<label class="col-md-1 control-label" for="trandate">Post Date</label>  
-										<div class="col-md-3">
-											<input id="trandate" name="trandate" type="text" class="form-control input-sm" 	data-validation="required" frozeOnEdit>
-										</div>
-								</div>
-							</div>
-							<hr>
-							<button type="button" id='cancel' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Cancel</button>																					
-							<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
-								<!-- Class form group closed -->
-									
-							</div>  								
-						</div>
-					</form>			<!-- form class bclose -->
-				</form> 		<!-- form id close -->
-				<!-------------------------------- Asset Enquiry Detail (outside) ---------------------->
-
-			</div> 									<!-- Panel body close -->
-		</div>
-  		</div>
+			@include('finance.FA.assetenquiry.assetenquiryDtl2')
 	</div>
+
+	<!-- <div class='row'>
+			@include('finance.FA.assettransfer.assettransfer')
+	</div> -->
 
 	<div class='row'>
 		<div class="panel panel-default" id="jqGrid2_c">
@@ -505,6 +315,8 @@ i.fa {
 @section('scripts')
 
 	<script src="js/finance/FA/assetenquiry/assetenquiryScript.js"></script>
-	
+	<script src="js/finance/FA/assetenquiry/assetenquiryDtl2Script.js"></script>	
+	<!-- <script src="js/finance/FA/assettransfer/assettransferScript.js"></script>	 -->
+
 @endsection
 	

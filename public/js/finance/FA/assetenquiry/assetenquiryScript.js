@@ -54,17 +54,21 @@ $(document).ready(function () {
 		unsaved = false;
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
+		$("#btn_save").data("oper","add");
 		if( $('#formdata_dtl').isValid({requiredFields: ''}, conf, true) ) {
-			saveFormdata("#jqGrid","","#form_enquirydtl",oper,saveParam,urlParam,{idno:selrowData("#jqGrid").idno});
+			saveFormdata("#jqGrid","#gridEnquirydtl_panel","#form_enquirydtl",oper,saveParam,urlParam,{idno:selrowData("#jqGrid").idno});
 			unsaved = false;
 		}else{
 				mycurrency.formatOn();
 		}
 	},{
-		text: "Cancel",click: function() {
+		text: "btn_cancel",click: function() {
 			// $(this).dialog('close');
 		}
 	});
+
+	$('#btn_save').on('click');
+
 
 	var oper;
 	$("#dialogForm")
@@ -260,12 +264,38 @@ $(document).ready(function () {
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 		},
 
-		onSelectRow:function(rowid, selected){
-			urlParam2.filterVal[1]=selrowData("#jqGrid").assetno;
-			refreshGrid("#jqGrid2",urlParam2);
+		// onSelectRow:function(rowid, selected){
+		// 	urlParam2.filterVal[1]=selrowData("#jqGrid").assetno;
+		// 	refreshGrid("#jqGrid2",urlParam2);
 
-			populateFormdata("#jqGrid","","#form_enquirydtl",rowid,'view');
-			// refreshGrid("#gridEnquirydtl_panel",urlParam_authdtl);
+		// 	populateFormdata("#jqGrid","","#form_enquirydtl",rowid,'view');
+		// },
+		onSelectRow:function(rowid, selected){
+
+			if (rowid != null) {
+				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
+				$("#jqGridEnquiryDtl2_c, #jqGridAssetTransfer_c").hide();
+				if(rowData['assetno'] != '') {//kalau assetno ada
+					urlParam2.filterVal[0] = selrowData('#jqGrid').assetno;
+					refreshGrid('#jqGrid2', urlParam2);
+					$("#pg_jqGridPager3 table, #jqGridEnquiryDtl2_c, #jqGridAssetTransfer_c").show();
+					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
+
+					populateFormdata("#jqGrid","","#form_enquirydtl",rowid,'view');
+					populate_EnquiryDtl2(selrowData("#jqGrid"));
+					// populate_formWard(selrowData("#jqGrid"));
+					// populate_doctorNote(selrowData("#jqGrid"));
+					// populate_dietOrder(selrowData("#jqGrid"));
+					
+				}else{
+					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
+				}
+			}
+		},
+		loadComplete: function(){
+			$('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
+			//button_state_ti('triage');
 		}
 		
 	});
