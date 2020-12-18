@@ -196,8 +196,10 @@ $(document).ready(function() {
         document.getElementById('hiddenticurrentpt').style.display = 'inline'; //hide and show heading details dekat triage
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        console.log(rows[bootgrid_last_rowid])
 
-        populate_tiCurrentPt(selrowData("#grid-command-buttons"));
+        populate_tiCurrentPt(rows[bootgrid_last_rowid]);
     });
     var bootgrid_last_rowid = 0;
 

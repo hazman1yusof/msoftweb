@@ -62,6 +62,78 @@ $(document).ready(function () {
 		}, 0);
 	});
 
+	
+	var dialog_tri_col = new ordialog(
+		'tri_col','sysdb.sysparam',"#triagecolor",errorField,
+		{	colModel:
+			[
+				{label:'Color',name:'colorcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
+			],
+			urlParam: {
+				url:'./sysparam_triage_color',
+				filterCol:['recstatus','compcode'],
+				filterVal:['ACTIVE', 'session.compcode']
+				},
+			ondblClickRow:function(event){
+
+				$(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
+				$(dialog_tri_col.textfield)
+								.removeClass( "red" )
+								.removeClass( "yellow" )
+								.removeClass( "green" )
+								.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
+
+				$(dialog_tri_col.textfield).next()
+								.removeClass( "red" )
+								.removeClass( "yellow" )
+								.removeClass( "green" )
+								.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
+
+			},
+			onSelectRow:function(rowid, selected){
+				$('#'+dialog_tri_col.gridname+' tr#'+rowid).dblclick();
+				// $(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
+
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			},
+			loadComplete: function(data,obj){
+				$("input[type='radio'][name='colorcode_select']").click(function(){
+					let self = this;
+					delay(function(){
+							$(self).parent().click();
+					}, 100 );
+				});
+
+				var gridname = '#'+obj.gridname;
+				var ids = $(gridname).jqGrid("getDataIDs"), l = ids.length, i, rowid, status;
+		        for (i = 0; i < l; i++) {
+		            rowid = ids[i];
+		            colorcode = $(gridname).jqGrid("getCell", rowid, "description");
+
+		            $('#' + rowid).addClass(colorcode);
+
+		        }
+			}
+		},{
+			title:"Select Bed Status",
+			open: function(){
+				dialog_tri_col.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_tri_col.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
+			},
+			width:5/10 * $(window).width()
+		},'urlParam','radio','tab','table'
+	);
+	dialog_tri_col.makedialog();
+
 });
 
 var errorField = [];
@@ -207,7 +279,7 @@ function populate_triage(obj,rowdata){
 }
 
 //screen current patient//
-function populate_tiCurrentPt(obj,rowdata){
+function populate_tiCurrentPt(obj){
 	
 	emptyFormdata(errorField,"#formTriageInfo");
 
@@ -222,9 +294,8 @@ function populate_tiCurrentPt(obj,rowdata){
     }
     var postobj={
     	_token : $('#csrf_token').val(),
-    	mrn:obj.mrn,
-    	episno:obj.episno
-
+    	mrn:obj.MRN,
+    	episno:obj.Episno
     };
 
     $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
@@ -342,78 +413,6 @@ function saveForm_ti(callback){
         callback();
     });
 }
-
-
-var dialog_tri_col = new ordialog(
-	'tri_col','sysdb.sysparam',"#triagecolor",errorField,
-	{	colModel:
-		[
-			{label:'Color',name:'colorcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
-		],
-		urlParam: {
-			url:'./sysparam_triage_color',
-			filterCol:['recstatus','compcode'],
-			filterVal:['ACTIVE', 'session.compcode']
-			},
-		ondblClickRow:function(event){
-
-			$(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
-			$(dialog_tri_col.textfield)
-							.removeClass( "red" )
-							.removeClass( "yellow" )
-							.removeClass( "green" )
-							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
-
-			$(dialog_tri_col.textfield).next()
-							.removeClass( "red" )
-							.removeClass( "yellow" )
-							.removeClass( "green" )
-							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
-
-		},
-		onSelectRow:function(rowid, selected){
-			$('#'+dialog_tri_col.gridname+' tr#'+rowid).dblclick();
-			// $(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
-
-		},
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-				$('#'+obj.dialogname).dialog('close');
-			}
-		},
-		loadComplete: function(data,obj){
-			$("input[type='radio'][name='colorcode_select']").click(function(){
-				let self = this;
-				delay(function(){
-						$(self).parent().click();
-				}, 100 );
-			});
-
-			var gridname = '#'+obj.gridname;
-			var ids = $(gridname).jqGrid("getDataIDs"), l = ids.length, i, rowid, status;
-	        for (i = 0; i < l; i++) {
-	            rowid = ids[i];
-	            colorcode = $(gridname).jqGrid("getCell", rowid, "description");
-
-	            $('#' + rowid).addClass(colorcode);
-
-	        }
-		}
-	},{
-		title:"Select Bed Status",
-		open: function(){
-			dialog_tri_col.urlParam.filterCol = ['recstatus','compcode'];
-			dialog_tri_col.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
-		},
-		width:5/10 * $(window).width()
-	},'urlParam','radio','tab','table'
-);
-dialog_tri_col.makedialog();
 
 function tri_color_set(empty){
 	if(empty == 'empty'){
