@@ -610,6 +610,11 @@ Route::get('/assetenquiryDtl2/table','finance\assetenquiryDtl2Controller@table')
 Route::post('/assetenquiryDtl2/form','finance\assetenquiryDtl2Controller@form');
 
 /// Asset Transfer /// 
+Route::get('/assettransfer2','finance\assettransfer2Controller@show');
+Route::get('/assettransfer2/table','finance\assettransfer2Controller@table');
+Route::post('/assettransfer2/form','finance\assettransfer2Controller@form');
+
+/// Asset Transfer /// 
 Route::get('/assettransfer','finance\assettransferController@show');
 Route::get('/assettransfer/table','finance\assettransferController@table');
 Route::post('/assettransfer/form','finance\assettransferController@form');

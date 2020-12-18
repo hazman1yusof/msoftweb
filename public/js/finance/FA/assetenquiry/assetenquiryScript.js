@@ -274,14 +274,15 @@ $(document).ready(function () {
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
-				$("#jqGridEnquiryDtl2_c, #jqGridAssetTransfer_c").hide();
+				$("#jqGridEnquiryDtl2_c, #jqGridtransferFA_c").hide();
 				if(rowData['assetno'] != '') {//kalau assetno ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').assetno;
 					refreshGrid('#jqGrid2', urlParam2);
-					$("#pg_jqGridPager3 table, #jqGridEnquiryDtl2_c, #jqGridAssetTransfer_c").show();
+					$("#pg_jqGridPager3 table, #jqGridEnquiryDtl2_c, #jqGridtransferFA_c").show();
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
 
 					populateFormdata("#jqGrid","","#formEnquiryDtl2",rowid,'view');
+					populateFormdata("#jqGrid","","#formtransferFA",rowid,'view');
 					// populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
 					// populate_EnquiryDtl2(selrowData("#jqGrid"));
 					// populate_formWard(selrowData("#jqGrid"));
@@ -307,6 +308,14 @@ $(document).ready(function () {
 			case 'olddeptcode':field=['deptcode','description'];table="sysdb.department";break;
 			case 'loccode':field=['catcode','description'];table="material.category";break;
 			case 'suppcode':field=['taxcode','description'];table="hisdb.taxmast";break;
+			case 'itemcode':field=['itemcode','description'];table="finance.faregister";case_='itemcode';break;
+			case 'assetcode': field = ['assetcode', 'description']; table = "finance.faregister";case_='assetcode';break;
+			case 'assettype': field = ['assettype', 'assettype']; table = "finance.faregister";case_='assettype';break;
+
+			case 'trf_currdeptcode': field = ['deptcode', 'description']; table = "sysdb.department";case_='trf_currdeptcode';break;
+			case 'trf_currloccode': field = ['deptcode', 'description']; table = "sysdb.location";case_='trf_currloccode';break;
+			case 'trf_department': field = ['deptcode', 'description']; table = "sysdb.department";case_='trf_department';break;
+			case 'trf_loccode': field = ['deptcode', 'description']; table = "sysdb.location";case_='trf_loccode';break;
 			default: return cellvalue;
 		}
 		var param={action:'input_check',table:table,field:field,value:cellvalue};

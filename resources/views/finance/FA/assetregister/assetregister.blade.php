@@ -268,11 +268,11 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="method">Method</label>  
 						<div class="col-md-3">
-							<input id="method" type="text" name="method" maxlength="15" class="form-control input-sm text-uppercase">
+							<input id="method" type="text" name="method" maxlength="15" class="form-control input-sm text-uppercase" readonly>
 						</div>
 					<label class="col-md-2 control-label" for="rvalue">Residual Value</label>  
 						<div class="col-md-3">
-								<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm">
+							<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm" readonly>
 						</div>
 				</div>
 
@@ -319,7 +319,7 @@
 						</div>
 					<label class="col-md-2 control-label" for="trandate">Post Date</label>  
 						<div class="col-md-3">
-							<input id="trandate" name="trandate" type="date" class="form-control input-sm" >
+							<input id="trandate" name="trandate" type="date" class="form-control input-sm" data-validation="required">
 						</div>
 				</div>
 
