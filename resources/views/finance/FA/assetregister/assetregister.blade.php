@@ -268,11 +268,11 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="method">Method</label>  
 						<div class="col-md-3">
-							<input id="method" type="text" name="method" maxlength="15" class="form-control input-sm text-uppercase" readonly>
+							<input id="method" type="text" name="method" maxlength="15" class="form-control input-sm text-uppercase" readonly rdonly>
 						</div>
 					<label class="col-md-2 control-label" for="rvalue">Residual Value</label>  
 						<div class="col-md-3">
-							<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm" readonly>
+							<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm" readonly rdonly>
 						</div>
 				</div>
 
