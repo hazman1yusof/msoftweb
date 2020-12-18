@@ -118,6 +118,7 @@ function button_state_ti(state){
 	// }
 }
 
+// screen emergency //
 function populate_formNursing(obj,rowdata){
 
 	//panel header
@@ -133,6 +134,8 @@ function populate_formNursing(obj,rowdata){
 	$("#episno_ti").val(obj.a_Episno);
 	$("#reg_date").val(obj.reg_date);
 	tri_color_set('empty');
+
+	document.getElementById('hiddenti').style.display = 'inline'; 
 
 	if(rowdata.nurse != undefined){
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
@@ -158,6 +161,7 @@ function populate_formNursing(obj,rowdata){
 	}
 }
 
+//screen bed management//
 function populate_triage(obj,rowdata){
 	
 	emptyFormdata(errorField,"#formTriageInfo");
@@ -167,6 +171,51 @@ function populate_triage(obj,rowdata){
 	$('#mrn_show_triage').text(obj.mrn);
 
 	document.getElementById('hiddentriage').style.display = 'inline';
+
+	var saveParam={
+        action:'get_table_triage',
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	mrn:obj.mrn,
+    	episno:obj.episno
+
+    };
+
+    $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).success(function(data){
+    	if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formTriageInfo",data.triage);
+			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
+			autoinsert_rowdata("#formTriageInfo",data.triage_exm);
+			if(!$.isEmptyObject(data.triage_exm)){
+				examination_nursing.empty();
+				examination_nursing.examarray = data.triage_exm;
+				examination_nursing.loadexam().disable();
+			}
+			button_state_ti('triage');
+        }else{
+			button_state_ti('triage');
+			examination_nursing.empty();
+        }
+
+    });
+	
+}
+
+//screen current patient//
+function populate_tiCurrentPt(obj,rowdata){
+	
+	emptyFormdata(errorField,"#formTriageInfo");
+
+	//panel header
+	$('#name_show_ticurrentpt').text(obj.Name);
+	$('#mrn_show_ticurrentpt').text(obj.MRN);
+
+	document.getElementById('hiddenticurrentpt').style.display = 'inline';
 
 	var saveParam={
         action:'get_table_triage',

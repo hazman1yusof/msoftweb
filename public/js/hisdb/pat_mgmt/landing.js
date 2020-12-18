@@ -192,8 +192,12 @@ $(document).ready(function() {
             }
         }
         $("#load_from_addupd").data('info','false');
+
+        document.getElementById('hiddenticurrentpt').style.display = 'inline'; //hide and show heading details dekat triage
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+
+        populate_tiCurrentPt(selrowData("#grid-command-buttons"));
     });
     var bootgrid_last_rowid = 0;
 

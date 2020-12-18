@@ -2,6 +2,7 @@
 <div class="panel panel-default" style="position: relative;" id="jqGridTriageInfo_c">
 	
 	<div class="panel-heading clearfix collapsed position" id="toggle_ti" style="position: sticky;top: 0px;z-index: 3;">
+		<!-- screen emergency -->
 		<p id="hiddenti" style="display:none">
 			<b><span id="name_show_ti"></span></b><br>
 			<span id="newic_show_ti"></span>
@@ -9,9 +10,15 @@
 			<span id="age_show_ti"></span>
 			<span id="race_show_ti"></span>
 		</p>
+		<!-- screen bed management -->
 		<p id="hiddentriage" style="display:none">
 			<b>Name: <span id="name_show_triage"></span></b><br>
 			MRN: <span id="mrn_show_triage"></span>
+		</p>
+		<!-- screen current patient -->
+		<p id="hiddenticurrentpt" style="display:none">
+			<b>Name: <span id="name_show_ticurrentpt"></span></b><br>
+			MRN: <span id="mrn_show_ticurrentpt"></span>
 		</p>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridTriageInfo_panel"></i>

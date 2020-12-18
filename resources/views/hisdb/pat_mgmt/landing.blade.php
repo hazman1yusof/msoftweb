@@ -214,6 +214,18 @@
 		@include('hisdb.pat_mgmt.mdl_episode')
 		@include('hisdb.pat_mgmt.itemselector')
 
+		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+			@include('hisdb.nursing.nursing')
+		</div>
+
+		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+			@include('hisdb.doctornote.doctornote')
+		</div>
+
+		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+			@include('hisdb.ordcom.ordcom')
+		</div>
+
 		
 
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
@@ -241,6 +253,9 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js"></script>
+	<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+	<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+	<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
 
 	
 	<script type="text/javascript" src="js/myjs/utility.js"></script>
