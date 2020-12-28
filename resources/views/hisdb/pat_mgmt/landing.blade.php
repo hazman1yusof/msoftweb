@@ -214,6 +214,9 @@
 		@include('hisdb.pat_mgmt.mdl_episode')
 		@include('hisdb.pat_mgmt.itemselector')
 
+
+		@if (request()->get('epistycode') == 'OP')
+
 		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 			@include('hisdb.nursing.nursing')
 		</div>
@@ -221,11 +224,13 @@
 		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 			@include('hisdb.doctornote.doctornote')
 		</div>
+		@endif
 
+		@if (request()->get('epistycode') == 'IP')
 		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 			@include('hisdb.ordcom.ordcom')
 		</div>
-
+		@endif
 		
 
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
@@ -239,7 +244,7 @@
     <script type="text/ecmascript" src="plugins/trirand/jquery.jqGrid.min.js"></script>
     <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 	<script type="text/ecmascript" src="plugins/moment.js"></script>
-
+	<script type="text/javascript" src="js/myjs/utility.js"></script>
 
 
 	<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -253,16 +258,22 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js"></script>
-	<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
-	<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
-	<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
 
 	
-	<script type="text/javascript" src="js/myjs/utility.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
+
+
+	@if (request()->get('epistycode') == 'OP')
+	<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+	<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+	@endif
+
 	@if (request()->get('epistycode') == 'IP')
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
+	<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
 	@endif
+
+
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
