@@ -1243,16 +1243,16 @@ $(document).ready(function () {
 	// dialog_suppcode.makedialog(true);
 
 	var dialog_suppcode = new ordialog(
-		'supplier',['finance.apacthdr AS h', 'sysdb.sysparam AS s'],'#apacthdr_suppcode',errorField,
+		'supplier',['finance.apacthdr AS a','material.supplier AS s'],'#apacthdr_suppcode',errorField,
 		{	colModel:[
-				{label:'Supplier Code',name:'h_suppcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				//{label:'Supplier Name',name:'s_Name',width:200,classes:'pointer',canSearch:true,or_search:true},
-				
+				{label:'Supplier Code',name:'a_suppcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+				{label:'Supplier Name',name:'s_Name',width:200,classes:'pointer',canSearch:true,or_search:true},
 			],
 			urlParam: {
-						filterCol:['h.compcode', 'h.source', 'h.trantype','h.recstatus'],
-						filterVal:['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED']
-					},
+					fixPost: true,
+					filterCol:['a.compcode','a.recstatus'],
+					filterVal:['session.compcode', 'POSTED']
+				},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#apacthdr_payto").val(data['suppcode']);
@@ -1267,7 +1267,6 @@ $(document).ready(function () {
 					field: [],
 					table_name: ['finance.apacthdr'],
 					table_id: 'idno',
-				
 				};
 
 				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
@@ -1309,15 +1308,23 @@ $(document).ready(function () {
 		},{
 			title:"Select Supplier Code",
 			open: function(){
-				//dialog_suppcode.urlParam.fixPost="true";
-				//dialog.suppcode.urlParam.table_id="none_";
-				dialog_suppcode.urlParam.filterCol=['h.compcode', 'h.source', 'h.trantype','h.recstatus'];
-				dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED'];
-				dialog_suppcode.urlParam.join_type=['LEFT JOIN'];
-				dialog_suppcode.urlParam.join_onCol=['h.compcode', 'h.source', 'h.trantype'];
-				dialog_suppcode.urlParam.join_onVal=['s.compcode','s.source', 's.trantype'];
-				dialog_suppcode.urlParam.join_filterCol=[['h.compcode on =']];
-				dialog_suppcode.urlParam.join_filterVal=[['s.compcode']];
+				dialog_suppcode.urlParam.table_name = ['finance.apacthdr AS a','material.supplier AS s'];
+				dialog_suppcode.urlParam.join_type = ['LEFT JOIN'];
+				dialog_suppcode.urlParam.join_onCol = ['a.suppcode'];
+				dialog_suppcode.urlParam.join_onVal = ['s.suppcode'];
+				dialog_suppcode.urlParam.fixPost="true";
+				dialog_suppcode.urlParam.table_id="none_";
+				dialog_suppcode.urlParam.filterCol=['a.compcode','a.recstatus'];
+				dialog_suppcode.urlParam.filterVal=['session.compcode', 'POSTED'];
+				dialog_suppcode.urlParam.WhereInCol=['a.source','a.trantype'];
+        		dialog_suppcode.urlParam.WhereInVal=[['AP','DF','TX'],['IN','DN']];
+				// dialog_suppcode.urlParam.filterCol=['h.compcode', 'h.source', 'h.trantype','h.recstatus'];
+				// dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED'];
+				// dialog_suppcode.urlParam.join_type=['LEFT JOIN'];
+				// dialog_suppcode.urlParam.join_onCol=['h.compcode', 'h.source', 'h.trantype'];
+				// dialog_suppcode.urlParam.join_onVal=['s.compcode','s.source', 's.trantype'];
+				// dialog_suppcode.urlParam.join_filterCol=[['h.compcode on =']];
+				// dialog_suppcode.urlParam.join_filterVal=[['s.compcode']];
 				}
 			},'urlParam','radio','tab'
 		);
