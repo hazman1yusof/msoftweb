@@ -1168,80 +1168,6 @@ $(document).ready(function () {
 	);
 	dialog_cheqno.makedialog(true);
 
-	// var dialog_suppcode = new ordialog(
-	// 	'supplier',['finance.apacthdr'],'#apacthdr_suppcode',errorField,
-	// 	{	colModel:[
-	// 			{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-	// 			//{label:'Supplier Name',name:'s_Name',width:200,classes:'pointer',canSearch:true,or_search:true},
-				
-	// 		],
-	// 		urlParam: {
-	// 					filterCol:['compcode', 'source', 'trantype','recstatus'],
-	// 					filterVal:['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED']
-	// 				},
-	// 		ondblClickRow:function(){
-	// 			let data=selrowData('#'+dialog_suppcode.gridname);
-	// 			$("#apacthdr_payto").val(data['suppcode']);
-	// 			$("#jqGrid2 input[name='document']").val(data['suppcode']);
-	// 			$("#jqGrid2 input[name='entrydate']").val(data['recdate']); 
-	// 			$("#jqGrid2 input[name='reference']").val(data['document']);
-	// 			$("#jqGrid2 input[name='amount']").val(data['amount']);
-
-	// 			var urlParam2 = {
-	// 				action: 'get_value_default',
-	// 				url: '/util/get_value_default',
-	// 				field: [],
-	// 				table_name: ['finance.apacthdr'],
-	// 				table_id: 'idno',
-				
-	// 			};
-
-	// 			$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
-	// 			}, 'json').done(function (data) {
-	// 				if (!$.isEmptyObject(data.rows)) {
-	// 					data.rows.forEach(function(elem) {
-	// 						$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
-	// 							{
-	// 								document:elem['suppcode'],
-	// 								entrydate:elem['recdate'],
-	// 								reference:elem['document'],
-	// 								amount:elem['amount'],
-	// 								outamount:elem['outamount'],
-	// 								balance:elem['amount'] - elem['totamount'],
-								
-	// 							}
-	// 						);
-	// 					});
-						
-
-	// 				} else {
-
-	// 				}
-	// 			});
-				
-	// 		},
-	// 		gridComplete: function(obj){
-	// 			var gridname = '#'+obj.gridname;
-	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-	// 				$(gridname+' tr#1').click();
-	// 				$(gridname+' tr#1').dblclick();
-	// 				$('#apacthdr_payto').focus();
-	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-	// 				$('#'+obj.dialogname).dialog('close');
-	// 			}
-	// 		}
-
-			
-	// 	},{
-	// 		title:"Select Supplier Code",
-	// 		open: function(){
-	// 			dialog_suppcode.urlParam.filterCol=['compcode', 'source', 'trantype','recstatus'];
-	// 			dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED'];
-	// 			}
-	// 		},'urlParam','radio','tab'
-	// 	);
-	// dialog_suppcode.makedialog(true);
-
 	var dialog_suppcode = new ordialog(
 		'supplier',['finance.apacthdr AS a','material.supplier AS s'],'#apacthdr_suppcode',errorField,
 		{	colModel:[
@@ -1318,13 +1244,6 @@ $(document).ready(function () {
 				dialog_suppcode.urlParam.filterVal=['session.compcode', 'POSTED'];
 				dialog_suppcode.urlParam.WhereInCol=['a.source','a.trantype'];
         		dialog_suppcode.urlParam.WhereInVal=[['AP','DF','TX'],['IN','DN']];
-				// dialog_suppcode.urlParam.filterCol=['h.compcode', 'h.source', 'h.trantype','h.recstatus'];
-				// dialog_suppcode.urlParam.filterVal=['session.compcode', $('#apacthdr_source').val(), $('#apacthdr_trantype').val(), 'POSTED'];
-				// dialog_suppcode.urlParam.join_type=['LEFT JOIN'];
-				// dialog_suppcode.urlParam.join_onCol=['h.compcode', 'h.source', 'h.trantype'];
-				// dialog_suppcode.urlParam.join_onVal=['s.compcode','s.source', 's.trantype'];
-				// dialog_suppcode.urlParam.join_filterCol=[['h.compcode on =']];
-				// dialog_suppcode.urlParam.join_filterVal=[['s.compcode']];
 				}
 			},'urlParam','radio','tab'
 		);

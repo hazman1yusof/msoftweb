@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Payment')
+@section('title', 'Payment Voucher')
 
 @section('style')
 
