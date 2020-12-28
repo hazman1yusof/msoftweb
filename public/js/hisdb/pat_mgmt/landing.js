@@ -193,13 +193,15 @@ $(document).ready(function() {
         }
         $("#load_from_addupd").data('info','false');
 
-        document.getElementById('hiddenticurrentpt').style.display = 'inline'; //hide and show heading details dekat triage
+        document.getElementById('hiddentriage').style.display = 'inline'; //hide and show heading details dekat triage
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
         console.log(rows[bootgrid_last_rowid])
 
         populate_tiCurrentPt(rows[bootgrid_last_rowid]);
+        populate_currDoctorNote(rows[bootgrid_last_rowid]);
+        populate_ordcom_currpt(rows[bootgrid_last_rowid]);
     });
     var bootgrid_last_rowid = 0;
 

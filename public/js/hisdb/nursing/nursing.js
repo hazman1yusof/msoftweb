@@ -284,10 +284,10 @@ function populate_tiCurrentPt(obj){
 	emptyFormdata(errorField,"#formTriageInfo");
 
 	//panel header
-	$('#name_show_ticurrentpt').text(obj.Name);
-	$('#mrn_show_ticurrentpt').text(obj.MRN);
+	$('#name_show_triage').text(obj.Name);
+	$('#mrn_show_triage').text(obj.MRN);
 
-	document.getElementById('hiddenticurrentpt').style.display = 'inline';
+	document.getElementById('hiddentriage').style.display = 'inline';
 
 	var saveParam={
         action:'get_table_triage',

@@ -10,15 +10,10 @@
 			<span id="age_show_ti"></span>
 			<span id="race_show_ti"></span>
 		</p>
-		<!-- screen bed management -->
+		<!-- screen bed management and current patient -->
 		<p id="hiddentriage" style="display:none">
 			<b>Name: <span id="name_show_triage"></span></b><br>
 			MRN: <span id="mrn_show_triage"></span>
-		</p>
-		<!-- screen current patient -->
-		<p id="hiddenticurrentpt" style="display:none">
-			<b>Name: <span id="name_show_ticurrentpt"></span></b><br>
-			MRN: <span id="mrn_show_ticurrentpt"></span>
 		</p>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridTriageInfo_panel"></i>
