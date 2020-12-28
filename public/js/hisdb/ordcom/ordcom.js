@@ -592,6 +592,29 @@ function populate_form_ordcom(obj,rowdata){
     };	
 }
 
+//screen current patient//
+function populate_ordcom_currpt(obj){
+
+	//panel header	
+	$('#name_show_ordcom').text(obj.Name);	
+	$('#mrn_show_ordcom').text(obj.MRN);
+
+	//formordcom	
+	$('#mrn_ordcom').val(obj.MRN);	
+	$("#episno_ordcom").val(obj.Episno);
+
+	var saveParam={	
+        action:'get_table_ordcom',	
+	}	
+	
+    var postobj={	
+    	_token : $('#csrf_token').val(),	
+    	mrn:obj.MRN,	
+    	episno:obj.Episno	
+	};	
+	
+}
+
 //---------------------mdl_chgcode-----------------------
 var ordcom_chgcode_selecter_;
 $('#mdl_ordcom_chgcode').on('show.bs.modal', function () {

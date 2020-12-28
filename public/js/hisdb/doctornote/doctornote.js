@@ -178,6 +178,35 @@ function populate_doctorNote(obj,rowdata){
     button_state_doctorNote('add');
 }
 
+//screen current patient//
+function populate_currDoctorNote(obj){
+	
+	emptyFormdata(errorField,"#formDoctorNote");
+
+	//panel header
+	$('#name_show_doctorNote').text(obj.Name);
+	$('#mrn_show_doctorNote').text(obj.MRN);
+
+	//formDoctorNote
+	$('#mrn_doctorNote').val(obj.MRN);
+	$("#episno_doctorNote").val(obj.Episno);
+
+    doctornote_docnote={
+    	action:'get_table_doctornote',
+    	mrn:obj.MRN,
+    	episno:obj.Episno,
+    	recorddate:''
+    };
+
+    dateParam_docnote={
+        action:'get_table_date',
+    	mrn:obj.MRN,
+    	episno:obj.Episno
+    }
+
+    button_state_doctorNote('add');
+}
+
 function autoinsert_rowdata_doctorNote(form,rowData){
 	$.each(rowData, function( index, value ) {
 		var input=$(form+" [name='"+index+"']");
