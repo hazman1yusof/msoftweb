@@ -224,6 +224,10 @@
 		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 			@include('hisdb.doctornote.doctornote')
 		</div>
+
+		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+			@include('hisdb.ordcom.ordcom')
+		</div>
 		@endif
 
 		@if (request()->get('epistycode') == 'IP')
@@ -266,6 +270,7 @@
 	@if (request()->get('epistycode') == 'OP')
 	<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 	<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+	<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
 	@endif
 
 	@if (request()->get('epistycode') == 'IP')
