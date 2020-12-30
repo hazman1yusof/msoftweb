@@ -78,7 +78,7 @@ conf = {
 	},
 };
 
-// button_state_dischgSummary('empty');
+button_state_dischgSummary('empty');
 function button_state_dischgSummary(state){
 	switch(state){
 		case 'empty':

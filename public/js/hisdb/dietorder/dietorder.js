@@ -90,7 +90,7 @@ conf = {
 	},
 };
 
-// button_state_dietOrder('empty');
+button_state_dietOrder('empty');
 function button_state_dietOrder(state){
 	switch(state){
 		case 'empty':

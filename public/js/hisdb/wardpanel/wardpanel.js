@@ -417,7 +417,7 @@ conf = {
 	},
 };
 
-// button_state_ward('empty');
+button_state_ward('empty');
 function button_state_ward(state){
 	switch(state){
 		case 'empty':
