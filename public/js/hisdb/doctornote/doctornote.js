@@ -111,7 +111,7 @@ conf = {
 	},
 };
 
-// button_state_doctorNote('empty');
+button_state_doctorNote('empty');
 function button_state_doctorNote(state){
 	switch(state){
 		case 'empty':
