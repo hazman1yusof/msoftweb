@@ -270,9 +270,9 @@
 						<div class="col-md-3">
 							<input id="method" type="text" name="method" maxlength="15" class="form-control input-sm text-uppercase" readonly rdonly>
 						</div>
-					<label class="col-md-2 control-label" for="rvalue">Residual Value</label>  
+					<label class="col-md-2 control-label" for="residualvalue">Residual Value</label>  
 						<div class="col-md-3">
-							<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm" readonly rdonly>
+							<input id="residualvalue" type="text" name="residualvalue" maxlength="12" class="form-control input-sm" readonly rdonly>
 						</div>
 				</div>
 

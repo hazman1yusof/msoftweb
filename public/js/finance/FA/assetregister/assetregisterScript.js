@@ -50,7 +50,7 @@
 				let data=selrowData('#'+dialog_assetcode.gridname);
 				$('#assettype').val(data['assettype']);		
 				$('#method').val(data['method']);
-				$('#rvalue').val(data['residualvalue']);
+				$('#residualvalue').val(data['residualvalue']);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -539,8 +539,9 @@
 				{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
 				{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 				{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
-				// { label: 'method', name:'method', width:20, classes:'wrap', hidden:true},
-				// { label: 'rvalue', name:'rvalue', width:20, classes:'wrap', hidden:true},
+				{ label: 'method', name:'method', width:20, classes:'wrap', hidden:true},
+				{ label: 'residualvalue', name:'residualvalue', width:20, classes:'wrap', hidden:true},
+				{ label: 'nbv', name:'nbv', width:20, classes:'wrap', hidden:true},
 				{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 				{ label: 'Post Date', name:'trandate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 				//accumprev
@@ -806,8 +807,8 @@
 		// searchClick2('#jqGrid','#searchForm',urlParam);
 
 		//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-		addParamField('#jqGrid',true,urlParam,['Checkbox','nbv']);
-		addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','compcode','recstatus','assetreg_status','nbv','Checkbox']);
+		addParamField('#jqGrid',true,urlParam,['Checkbox']);
+		addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','compcode','recstatus','assetreg_status','Checkbox']);
 		
 		$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
 
