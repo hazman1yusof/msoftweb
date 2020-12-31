@@ -2246,7 +2246,6 @@ $(document).ready(function () {
 		sortname: 'purreqhd_idno',
 		sortorder: "desc",
 		onSelectRow: function (rowid, selected) {
-			console.log(rowid);
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
 		},
 		gridComplete: function(){

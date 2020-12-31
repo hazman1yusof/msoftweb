@@ -1240,10 +1240,10 @@ $(document).ready(function () {
 				dialog_suppcode.urlParam.join_onVal = ['s.suppcode'];
 				dialog_suppcode.urlParam.fixPost="true";
 				dialog_suppcode.urlParam.table_id="none_";
-				dialog_suppcode.urlParam.filterCol=['a.compcode','a.recstatus'];
-				dialog_suppcode.urlParam.filterVal=['session.compcode', 'POSTED'];
-				dialog_suppcode.urlParam.WhereInCol=['a.source','a.trantype', 'a.outamount'];
-        		dialog_suppcode.urlParam.WhereInVal=[['AP','DF','TX'],['IN','DN'], $('#apacthdr_outamount').val() > '0' ];
+				dialog_suppcode.urlParam.filterCol=['a.compcode','a.recstatus', 'a.outamount'];
+				dialog_suppcode.urlParam.filterVal=['session.compcode', 'POSTED', '>.0' ];
+				dialog_suppcode.urlParam.WhereInCol=['a.source','a.trantype'];
+        		dialog_suppcode.urlParam.WhereInVal=[['AP','DF','TX'],['IN','DN']];
 				}
 			},'urlParam','radio','tab'
 		);

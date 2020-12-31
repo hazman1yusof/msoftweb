@@ -1,30 +1,30 @@
-	$.jgrid.defaults.responsive = true;
-	$.jgrid.defaults.styleUI = 'Bootstrap';
-	var editedRow=0;
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
+var editedRow=0;
 
-	$(document).ready(function () {
-		$('body').show();
-		/////////////////////////validation//////////////////////////
-			$.validate({
-				modules : 'sanitize',
-				language : {
-					requiredFields: ''
-				},
-			});
-		
-			var errorField=[];
-			conf = {
-				onValidate : function($form) {
-					if(errorField.length>0){
-						console.log(errorField);
-						return {
-							element : $(errorField[0]),
-							message : ' '
-						}
+$(document).ready(function () {
+	$('body').show();
+	/////////////////////////validation//////////////////////////
+		$.validate({
+			modules : 'sanitize',
+			language : {
+				requiredFields: ''
+			},
+		});
+	
+		var errorField=[];
+		conf = {
+			onValidate : function($form) {
+				if(errorField.length>0){
+					console.log(errorField);
+					return {
+						element : $(errorField[0]),
+						message : ' '
 					}
-				},
-			};
-		//////////////////////////////////////////////////////////////
+				}
+			},
+		};
+	//////////////////////////////////////////////////////////////
 			
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency = new currencymode(['#origcost','#currentcost', '#purprice']);
@@ -579,6 +579,7 @@
 				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 				fdl.set_array().reset();
 
+				cbselect.show_hide_table();
 				cbselect.checkbox_function_on();
 				cbselect.refresh_seltbl();
 			}

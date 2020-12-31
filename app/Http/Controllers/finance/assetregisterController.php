@@ -218,13 +218,21 @@ class assetregisterController extends defaultController
 
                 $facode = DB::table('finance.facode')->select('tagnextno')
                                 ->where('compcode','=',session('compcode'))
-                                ->where('assettype', '=', $fatemp->assettype)
-                                ->where('method', '=', $facode->method)
-                                ->where('residualvalue', '=', $facode->residualvalue)
-                                ->first();
+                                ->where('assetcode', '=', $fatemp->assetcode)
+                                ->where('assettype', '=', $fatemp->assettype);
+                                // ->where('method', '=', $fatemp->method)
+                                // ->where('residualvalue', '=', $fatemp->residualvalue);
+
+                if($facode->exists()){
+                    $facode = $facode->first();
+
+                    $tagnextno_counter = intval($facode->tagnextno)+1;
+                    $assetno = str_pad($facode->tagnextno,6,"0",STR_PAD_LEFT);
+                }else{
+                    $tagnextno_counter = 2;
+                    $assetno = str_pad(1,6,"0",STR_PAD_LEFT);
+                }
                                 
-                $tagnextno_counter = intval($facode->tagnextno)+1;
-                $assetno = str_pad($facode->tagnextno,6,"0",STR_PAD_LEFT);
 
 
                 ////2. insert into faregister
@@ -258,8 +266,8 @@ class assetregisterController extends defaultController
                         'trantype' => $fatemp->trantype,
                         'nprefid' => $fatemp->nprefid,
                         'trandate' => $fatemp->trandate,
-                        'method' => $facode->method,
-                        'residualvalue' => $facode->residualvalue,
+                        'method' => $fatemp->method,
+                        'residualvalue' => $fatemp->residualvalue,
                         'nbv' => $request->nbv,
                         'compcode' => session('compcode'),
                         'adduser' => strtoupper(session('username')),

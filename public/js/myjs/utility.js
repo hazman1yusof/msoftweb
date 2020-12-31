@@ -775,12 +775,15 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 	this.show_hide_table = function(){
 		let reccount = $('#jqGrid_selection').jqGrid('getGridParam', 'reccount');
 		var status_ = $("select#Status").val();
+		if(status_ == undefined || status_ == null){
+			status_ = 'All';
+		}
 		// $("#show_sel_tbl").is(":hidden") && 
 		$("#show_sel_tbl,#but_post_jq,#but_reopen_jq,#but_cancel_jq").hide();
 		if(reccount > 0){
 			switch(status_){
 				case 'All':
-					$('#checkbox_all_uncheck,#checkbox_all_check').hide();
+					// $('#checkbox_all_uncheck,#checkbox_all_check').hide();
 					$("#show_sel_tbl,#but_post_jq,#but_reopen_jq,#but_cancel_jq").show();
 					break;
 				case 'CANCELLED':
@@ -795,6 +798,7 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 					break;
 			}
 		}else if(reccount == 0){
+			$('#checkbox_all_check').show();
 			$('#sel_tbl_panel').hide('fast');
 			$("#show_sel_tbl,#but_post_jq,#but_reopen_jq,#but_cancel_jq").hide();
 			$("#show_sel_tbl").data('hide',true);
