@@ -1,7 +1,9 @@
 <div class="panel panel-default" style="position: relative;" id="jqGridtransferFA_c">
 	<div class="panel-heading clearfix collapsed position" id="toggle_transferFA" style="position: sticky;top: 0px;z-index: 3;">
-		<b>Tagging No: <span id="assetno_show_transferFA"></span></b><br>
-		Item Code: <span id="itemcode_show_transferFA"></span>
+		<!-- Tagging No: -->
+		<b> <span id="assetno_show_transferFA"></span></b><br> 
+		<!-- Item Code: -->
+		 <span id="itemcode_show_transferFA"></span>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridtransferFA_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridtransferFA_panel"></i>
@@ -35,7 +37,7 @@
 			<form class='form-horizontal' style='width:99%' id='formtransferFA'>
 				{{ csrf_field() }}
 				<input type="hidden" name="idno">
-				<div class='col-md-8'>
+				<div class='col-md-12'>
 					<div class="panel panel-info">
 						<div class="panel-heading text-center">ASSET TRANSFER DETAIL</div>
 						<div class="panel-body">

@@ -541,8 +541,6 @@
 				{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
 				// { label: 'method', name:'method', width:20, classes:'wrap', hidden:true},
 				// { label: 'rvalue', name:'rvalue', width:20, classes:'wrap', hidden:true},
-				//method
-				//residual value
 				{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 				{ label: 'Post Date', name:'trandate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 				//accumprev

@@ -113,6 +113,8 @@ class assetregisterController extends defaultController
             $facode = DB::table('finance.facode')->select('tagnextno')
                             ->where('compcode','=',session('compcode'))
                             ->where('assettype', '=', $fatemp->assettype)
+                            ->where('method', '=', $facode->method)
+                            ->where('residualvalue', '=', $facode->residualvalue)
                             ->first();
                             
             $tagnextno_counter = intval($facode->tagnextno)+1;
@@ -150,6 +152,9 @@ class assetregisterController extends defaultController
                     'trantype' => $fatemp->trantype,
                     'nprefid' => $fatemp->nprefid,
                     'trandate' => $fatemp->trandate,
+                    'method' => $facode->method,
+                    'residualvalue' => $facode->residualvalue,
+                    'nbv' => $request->nbv,
                     'compcode' => session('compcode'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -214,6 +219,8 @@ class assetregisterController extends defaultController
                 $facode = DB::table('finance.facode')->select('tagnextno')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('assettype', '=', $fatemp->assettype)
+                                ->where('method', '=', $facode->method)
+                                ->where('residualvalue', '=', $facode->residualvalue)
                                 ->first();
                                 
                 $tagnextno_counter = intval($facode->tagnextno)+1;
@@ -251,6 +258,9 @@ class assetregisterController extends defaultController
                         'trantype' => $fatemp->trantype,
                         'nprefid' => $fatemp->nprefid,
                         'trandate' => $fatemp->trandate,
+                        'method' => $facode->method,
+                        'residualvalue' => $facode->residualvalue,
+                        'nbv' => $request->nbv,
                         'compcode' => session('compcode'),
                         'adduser' => strtoupper(session('username')),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
