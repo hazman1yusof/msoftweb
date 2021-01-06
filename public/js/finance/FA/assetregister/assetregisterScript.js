@@ -530,11 +530,7 @@ $(document).ready(function () {
 				{ label: 'Purchase Date', name:'purdate', width: 10, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter},
 				{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
 				{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
-<<<<<<< HEAD
 				{ label: 'Current Cost', name:'currentcost', width:10, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
-=======
-				{ label: 'Current Cost', name:'currentcost', width:15, classes:'wrap', hidden:false, align: 'right', formatter: 'currency'},
->>>>>>> 0942837ae88b15b2d8125b2aa4b5949ebc22737c
 				{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
 				{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 				{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
