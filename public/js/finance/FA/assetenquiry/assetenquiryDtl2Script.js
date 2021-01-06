@@ -88,12 +88,14 @@ function populate_EnquiryDtl2(obj,rowdata){
 	emptyFormdata(errorField,"#formEnquiryDtl2");
 	
 	//panel header
-	$('#assetno_show_EnquiryDtl2').text(obj.assetno);
-	$('#delordno_show_EnquiryDtl2').text(obj.delordno);
+	$('#category_show_transferFA').text(obj.assetcode);
+	$('#description_show_transferFA').text(obj.description);
+	$('#assetno_show_transferFA').text(obj.assetno);
 
 	//formEnquiryDtl2
-	$('#delordno_EnquiryDtl2').val(obj.delordno);
-	$("#assetno_EnquiryDtl2").val(obj.assetno);
+	$('#description_transferFA').val(obj.description);
+	$("#category_show_transferFA").val(obj.assetcode);
+	$("#assetno_show_transferFA").val(obj.assetno);
 
 	var saveParam={
         action:'get_table_EnquiryDtl2',

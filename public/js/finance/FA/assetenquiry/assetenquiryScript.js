@@ -283,9 +283,8 @@ $(document).ready(function () {
 
 					populateFormdata("#jqGrid","","#formEnquiryDtl2",rowid,'view');
 					populateFormdata("#jqGrid","","#formtransferFA",rowid,'view');
-					// populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
-					// populate_EnquiryDtl2(selrowData("#jqGrid"));
-					// populate_formWard(selrowData("#jqGrid"));
+					populate_EnquiryDtl2(selrowData("#jqGrid"));
+					populate_transferFA(selrowData("#jqGrid"));
 					// populate_doctorNote(selrowData("#jqGrid"));
 					// populate_dietOrder(selrowData("#jqGrid"));
 					

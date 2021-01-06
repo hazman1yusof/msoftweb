@@ -153,20 +153,25 @@ function populate_transferFA(obj,rowdata){
 	emptyFormdata(errorField,"#formtransferFA");
 	
 	//panel header
+	$('#category_show_transferFA').text(obj.assetcode);
+	$('#description_show_transferFA').text(obj.description);
 	$('#assetno_show_transferFA').text(obj.assetno);
-	$('#itemcode_show_transferFA').text(obj.itemcode);
+
+	
 
 	//formtransferFA
-	$('#itemcode_transferFA').val(obj.itemcode);
-	$("#assetno_transferFA").val(obj.assetno);
+	$('#description_transferFA').val(obj.description);
+	$("#category_show_transferFA").val(obj.assetcode);
+	$("#assetno_show_transferFA").val(obj.assetno);
 
 	var saveParam={
         action:'get_table_transferFA',
     }
     var postobj={
-    	_token : $('#csrf_token').val(),
-    	itemcode:obj.itemcode,
-    	assetno:obj.assetno
+		_token : $('#csrf_token').val(),
+		assetno:obj.assetno,
+    	description:obj.description,
+    	assetcode:obj.assetcode
 
     };
 
@@ -177,7 +182,7 @@ function populate_transferFA(obj,rowdata){
     }).success(function(data){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formtransferFA",data.transferFA);
-			autoinsert_rowdata("#formtransferFA",data.fatran);
+			autoinsert_rowdata("#formtransferFA",data.faregister);
 			button_state_transferFA('edit');
         }else{
 			button_state_transferFA('add');
