@@ -97,7 +97,7 @@
 			@include('finance.FA.assetenquiry.assetenquiryDtl2')
 	</div>
 
-	<!-- <div class='row'> -->
+	<div class='row'>
 			@include('finance.FA.assettransfer2.assettransfer2')
 	</div>
 

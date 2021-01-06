@@ -83,31 +83,31 @@ function button_state_EnquiryDtl2(state){
 	}
 }
 
-function populate_EnquiryDtl2(obj,rowdata){
+function populate_EnquiryDtl2AE(obj,rowdata){
 
 	emptyFormdata(errorField,"#formEnquiryDtl2");
 	
 	//panel header
-	$('#category_show_transferFA').text(obj.assetcode);
-	$('#description_show_transferFA').text(obj.description);
-	$('#assetno_show_transferFA').text(obj.assetno);
+	$('#category_show_enquiryAE').text(obj.assetcode);
+	$('#description_show_enquiryAE').text(obj.description);
+	$('#assetno_show_enquiryAE').text(obj.assetno);
 
 	//formEnquiryDtl2
-	$('#description_transferFA').val(obj.description);
-	$("#category_show_transferFA").val(obj.assetcode);
-	$("#assetno_show_transferFA").val(obj.assetno);
+	$('#description_show_enquiryAE').val(obj.description);
+	$("#category_show_enquiryAE").val(obj.assetcode);
+	$("#assetno_show_enquiryAE").val(obj.assetno);
 
 	var saveParam={
         action:'get_table_EnquiryDtl2',
     }
     var postobj={
-    	_token : $('#csrf_token').val(),
+    	_token : $('#_token').val(),
     	delordno:obj.delordno,
     	assetno:obj.assetno
 
     };
 
-    $.post( "/EnquiryDtl2/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "/assetenquiryDtl2/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');

@@ -283,8 +283,8 @@ $(document).ready(function () {
 
 					populateFormdata("#jqGrid","","#formEnquiryDtl2",rowid,'view');
 					populateFormdata("#jqGrid","","#formtransferFA",rowid,'view');
-					populate_EnquiryDtl2(selrowData("#jqGrid"));
-					populate_transferFA(selrowData("#jqGrid"));
+					populate_EnquiryDtl2AE(selrowData("#jqGrid"));
+					populate_transferAE(selrowData("#jqGrid"));
 					// populate_doctorNote(selrowData("#jqGrid"));
 					// populate_dietOrder(selrowData("#jqGrid"));
 					
@@ -443,44 +443,44 @@ $(document).ready(function () {
    $("#jqGrid").jqGrid('setLabel', 'origcost', 'Cost', {'text-align':'right'});
    $("#jqGrid").jqGrid('setLabel', 'qty', 'Quantity', {'text-align':'right'});
 
-   			//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
-	
-			var myEditOptions = {
-		        keys: true,
-		        extraparam:{
-				    "_token": $("#_token").val()
-		        },
-		        oneditfunc: function (rowid) {
-		        	//console.log(rowid);
-		        	/*linenotoedit = rowid;
-		        	$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
-		        	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
-		        },
-		        aftersavefunc: function (rowid, response, options) {
-		           $('#amount').val(response.responseText);
-		        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-		        	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
-		        	//linenotoedit = null;
+	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 
-		        	refreshGrid('#jqGrid2',urlParam2,'add');
-		        	$("#jqGridPager2Delete").show();
-		        }, 
-		        beforeSaveRow: function(options, rowid) {
-		        	/*if(errorField.length>0)return false;
+	var myEditOptions = {
+        keys: true,
+        extraparam:{
+		    "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid) {
+        	//console.log(rowid);
+        	/*linenotoedit = rowid;
+        	$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
+        	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
+        },
+        aftersavefunc: function (rowid, response, options) {
+           $('#amount').val(response.responseText);
+        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+        	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
+        	//linenotoedit = null;
 
-					let data = selrowData('#jqGrid2');
-					let editurl = "/inventoryTransactionDetail/form?"+
-						$.param({
-							action: 'invTranDetail_save',
-							docno:$('#docno').val(),
-							recno:$('#recno').val(),
-						});*/
-					$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
-		        },
-		        afterrestorefunc : function( response ) {
-					/*hideatdialogForm(false);*/
-			    }
-		    };
+        	refreshGrid('#jqGrid2',urlParam2,'add');
+        	$("#jqGridPager2Delete").show();
+        }, 
+        beforeSaveRow: function(options, rowid) {
+        	/*if(errorField.length>0)return false;
+
+			let data = selrowData('#jqGrid2');
+			let editurl = "/inventoryTransactionDetail/form?"+
+				$.param({
+					action: 'invTranDetail_save',
+					docno:$('#docno').val(),
+					recno:$('#recno').val(),
+				});*/
+			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
+        },
+        afterrestorefunc : function( response ) {
+			/*hideatdialogForm(false);*/
+	    }
+    };
 
 	/////////////////////////start grid1 pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -492,131 +492,131 @@ $(document).ready(function () {
 	//////////////////////////////////////end grid1/////////////////////////////////////////////////////////
 
 
-			/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
-			var urlParam2={
-				action:'get_table_default',
-				url:'/util/get_table_default',
-				field:['fr.trandate','fr.trantype','ft.amount','fr.deptcode','ft.curloccode','ft.olddeptcode','ft.oldloccode','fr.idno'],
-				table_name:['finance.fatran AS ft',' finance.faregister AS fr'],
-				table_id:'idno',
-				join_type:['LEFT JOIN'],
-				join_onCol:['ft.assetno'],
-				join_onVal:['fr.assetno'],
-				filterCol:['ft.compcode','ft.assetno'],
-				filterVal:['session.compcode','']
-			};
+	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
+	var urlParam2={
+		action:'get_table_default',
+		url:'/util/get_table_default',
+		field:['fr.trandate','fr.trantype','ft.amount','fr.deptcode','ft.curloccode','ft.olddeptcode','ft.oldloccode','fr.idno'],
+		table_name:['finance.fatran AS ft',' finance.faregister AS fr'],
+		table_id:'idno',
+		join_type:['LEFT JOIN'],
+		join_onCol:['ft.assetno'],
+		join_onVal:['fr.assetno'],
+		filterCol:['ft.compcode','ft.assetno'],
+		filterVal:['session.compcode','']
+	};
 
-			var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
-			//////////////////////////////////////////////start jqgrid2//////////////////////////////////////////////
-			$("#jqGrid2").jqGrid({
-				datatype: "local",
-				colModel: [
-					{ label: 'Tran Date', name:'trandate', width:100, classes:'wrap'},
-					{ label: 'Tran Type', name:'trantype', width:120, classes:'wrap'},
-					{ label: 'Amount', name:'amount', width:100, classes:'wrap'},
-					{ label: 'Department', name: 'deptcode', width: 120, classes: 'wrap'},
-					{ label: 'Current Location', name: 'curloccode', width: 120, classes: 'wrap'},
-					{ label: 'Prev Department', name: 'olddeptcode', width: 120, classes: 'wrap'},
-					{ label: 'Prev Location', name: 'oldloccode', width: 120, classes: 'wrap'},
-					{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
+	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
+	//////////////////////////////////////////////start jqgrid2//////////////////////////////////////////////
+	$("#jqGrid2").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'Tran Date', name:'trandate', width:100, classes:'wrap'},
+			{ label: 'Tran Type', name:'trantype', width:120, classes:'wrap'},
+			{ label: 'Amount', name:'amount', width:100, classes:'wrap'},
+			{ label: 'Department', name: 'deptcode', width: 120, classes: 'wrap'},
+			{ label: 'Current Location', name: 'curloccode', width: 120, classes: 'wrap'},
+			{ label: 'Prev Department', name: 'olddeptcode', width: 120, classes: 'wrap'},
+			{ label: 'Prev Location', name: 'oldloccode', width: 120, classes: 'wrap'},
+			{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
 
-				],
-				autowidth: true,
-				shrinkToFit: true,
-				multiSort: true,
-				viewrecords: true,
-				loadonce:false,
-				width: 1150,
-				height: 200,
-				rowNum: 30,
-				sortname: 'idno',
-				// sortorder: "fr.trandate",
-				pager: "#jqGridPager2",
-				loadComplete: function(data){
-					/*if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
-					else{
-						$('#jqGrid2').jqGrid ('setSelection', "1");
-					}
-					addmore_jqgrid2.edit = addmore_jqgrid2.more = false;*/ //reset
-					setjqgridHeight(data,'jqGrid2');
-				},
-				gridComplete: function(){
-				/*	$("#jqGrid2").find(".remarks_button").on("click", function(e){
-						$("#remarks2").data('rowid',$(this).data('rowid'));
-						$("#remarks2").data('grid',$(this).data('grid'));
-						$("#dialog_remarks").dialog( "open" );
-					});
-				/*	fdl.set_array().reset();
-					fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);*/
-				},
-				afterShowForm: function (rowid) {
-				   // $("#expdate").datepicker();
-				},
-				beforeSubmit: function(postdata, rowid){ 
-				/*	dialog_itemcode.check(errorField);
-					dialog_uomcode.check(errorField);
-					dialog_pouom.check(errorField);*/
-			 	}
-		    });
-
-			/////////////////////////start grid pager 1/////////////////////////////////////////////////////////
-
-			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
-				view:false,edit:false,del:false,search:false,
-				beforeRefresh: function(){
-					refreshGrid("#jqGrid",urlParam,oper);
-				},
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first", 
-				buttonicon:"glyphicon glyphicon-trash",
-				title:"Delete Selected Row",
-				onClickButton: function(){
-					oper='del';
-					let idno = selrowData('#jqGrid').idno;
-					if(!idno){
-						alert('Please select row');
-						return emptyFormdata(errorField,'#formdata');
-					}else{
-						saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':idno});
-					}
-				},
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer",position: "first", 
-				buttonicon:"glyphicon glyphicon-info-sign",
-				title:"View Selected Row",  
-				onClickButton: function(){
-					oper='view';
-					selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
-					refreshGrid("#jqGrid2",urlParam2);
-				},
-			}).jqGrid('navButtonAdd',"#jqGridPager",{
-				caption:"",cursor: "pointer", id:"glyphicon-edit", position: "first",  
-				buttonicon:"glyphicon glyphicon-edit",
-				title:"Edit Selected Row",  
-				onClickButton: function(){
-					oper='edit';
-					selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
-					populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
-					refreshGrid("#jqGrid2",urlParam2);
-					recstatusDisable();
-				}, 
+		],
+		autowidth: true,
+		shrinkToFit: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 1150,
+		height: 200,
+		rowNum: 30,
+		sortname: 'idno',
+		// sortorder: "fr.trandate",
+		pager: "#jqGridPager2",
+		loadComplete: function(data){
+			/*if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			addmore_jqgrid2.edit = addmore_jqgrid2.more = false;*/ //reset
+			setjqgridHeight(data,'jqGrid2');
+		},
+		gridComplete: function(){
+		/*	$("#jqGrid2").find(".remarks_button").on("click", function(e){
+				$("#remarks2").data('rowid',$(this).data('rowid'));
+				$("#remarks2").data('grid',$(this).data('grid'));
+				$("#dialog_remarks").dialog( "open" );
 			});
+		/*	fdl.set_array().reset();
+			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);*/
+		},
+		afterShowForm: function (rowid) {
+		   // $("#expdate").datepicker();
+		},
+		beforeSubmit: function(postdata, rowid){ 
+		/*	dialog_itemcode.check(errorField);
+			dialog_uomcode.check(errorField);
+			dialog_pouom.check(errorField);*/
+	 	}
+    });
 
-			//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
+	/////////////////////////start grid pager 1/////////////////////////////////////////////////////////
 
-			 //////////////////////////////////////////start pager jqgrid2/////////////////////////////////////////////
-			$("#jqGrid2").inlineNav('#jqGridPager2',{	
-				add:false,
-				edit:false,
-				cancel: false,
-				//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-				restoreAfterSelect: false,
-				addParams: { 
-					addRowParams: myEditOptions
-				},
-				editParams: myEditOptions
-			});
+	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
+		view:false,edit:false,del:false,search:false,
+		beforeRefresh: function(){
+			refreshGrid("#jqGrid",urlParam,oper);
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager",{
+		caption:"",cursor: "pointer",position: "first", 
+		buttonicon:"glyphicon glyphicon-trash",
+		title:"Delete Selected Row",
+		onClickButton: function(){
+			oper='del';
+			let idno = selrowData('#jqGrid').idno;
+			if(!idno){
+				alert('Please select row');
+				return emptyFormdata(errorField,'#formdata');
+			}else{
+				saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':idno});
+			}
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager",{
+		caption:"",cursor: "pointer",position: "first", 
+		buttonicon:"glyphicon glyphicon-info-sign",
+		title:"View Selected Row",  
+		onClickButton: function(){
+			oper='view';
+			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+			refreshGrid("#jqGrid2",urlParam2);
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager",{
+		caption:"",cursor: "pointer", id:"glyphicon-edit", position: "first",  
+		buttonicon:"glyphicon glyphicon-edit",
+		title:"Edit Selected Row",  
+		onClickButton: function(){
+			oper='edit';
+			selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
+			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit');
+			refreshGrid("#jqGrid2",urlParam2);
+			recstatusDisable();
+		}, 
+	});
+
+	//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
+
+	 //////////////////////////////////////////start pager jqgrid2/////////////////////////////////////////////
+	$("#jqGrid2").inlineNav('#jqGridPager2',{	
+		add:false,
+		edit:false,
+		cancel: false,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: { 
+			addRowParams: myEditOptions
+		},
+		editParams: myEditOptions
+	});
 
 	/////////////////////////////////// end pagergrid2 /////////////////////////////////////////////////////
 

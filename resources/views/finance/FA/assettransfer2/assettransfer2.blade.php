@@ -1,8 +1,7 @@
 <div class="panel panel-default" style="position: relative;" id="jqGridtransferFA_c">
 	<div class="panel-heading clearfix collapsed position" id="toggle_transferFA" style="position: sticky;top: 0px;z-index: 3;">
-		<b>Category: <span id="category_show_transferFA"></span></b>
-		<b> - <span id="assetno_show_transferFA"></span><br>
-		Description: <span id="description_show_transferFA"></span>
+		<b>Category: <span id="category_show_transferAE"></span></b>
+		<b> - <span id="assetno_show_transferAE"></span><br>Description: <span id="description_show_transferAE"></span></b>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridtransferFA_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridtransferFA_panel"></i>
@@ -18,91 +17,92 @@
 
 		>
 
-		<button type="button" class="btn btn-default" id="edit_transferFA">
-			<span class="fa fa-edit fa-lg"></span> Transfer
-		</button>
-		<button type="button" class="btn btn-default" data-oper='add' id="save_transferFA">
-			<span class="fa fa-save fa-lg"></span> Save
-		</button>
-		<button type="button" class="btn btn-default" id="cancel_transferFA">
-			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-		</button>
-	</div>
-</div>
-
-<div id="jqGridtransferFA_panel" class="panel-collapse collapse">
-	<div class="panel-body">
-		<div class='col-md-12' style="padding:0 0 15px 0">
-			<form class='form-horizontal' style='width:99%' id='formtransferFA'>
-				{{ csrf_field() }}
-				<input type="hidden" name="idno">
-				<div class='col-md-12'>
-					<div class="panel panel-info">
-						<div class="panel-heading text-center">ASSET TRANSFER DETAIL</div>
-						<div class="panel-body">
-
-							<div class="form-group row">
-								<label class="col-md-2 control-label" for="assetno">Tagging No</label>  
-								<div class="col-md-3">
-									<input id="assetno" name="assetno" type="text" class="form-control input-sm uppercase" data-validation="required"  frozeOnEdit>
-								</div>
-
-								<label class="col-md-2 control-label" for="description">Item Code</label>  
-								<div class="col-md-3">
-									<input id="description" name="description" type="text" class="form-control input-sm uppercase" data-validation="required"  frozeOnEdit>
-								</div>
-							</div>
-
-							<div class="form-group row">
-								<label class="col-md-2 control-label" for="assetcode">Category</label>
-									<div class="col-md-3">
-										<input id="assetcode" name="assetcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-									</div>
-								<label class="col-md-2 control-label" for="assettype">Type</label>
-									<div class="col-md-3">
-										<input id="assettype" name="assettype" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-									</div>
-							</div>
-
-							<hr>
-							<div class="form-group row">
-								<label class="col-md-2 control-label" for="deptcode">Current Department</label>
-									<div class="col-md-3">
-										<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-									</div>
-								<label class="col-md-2 control-label" for="loccode">Current Location</label>
-									<div class="col-md-3">
-										<input id="loccode" name="loccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-									</div>
-							</div>
-							
-							<hr>		
-                            <div class="form-group">
-                                <label class="col-md-2 control-label" for="trandate">Date</label>  
-                                <div class="col-md-2">
-                                    <input name="trandate" type="date" class="form-control input-sm" data-validation="required">
-                                </div>
-                            </div>
-
-							<div class="form-group row">
-								<label class="col-md-2 control-label" for="deptcode">New Department</label>  
-									<div class="col-md-3">
-										<input id="deptcode" type="text" name="deptcode" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-                                    </div>
-								<label class="col-md-2 control-label" for="loccode">New Location</label>  
-									<div class="col-md-3">
-										<input id="loccode" type="text" name="loccode" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-                                    </div>
-							</div>
-					
-							<hr>
-						</div>
-					</div>
-				</div>
-			</form>
+			<button type="button" class="btn btn-default" id="edit_transferFA">
+				<span class="fa fa-edit fa-lg"></span> Transfer
+			</button>
+			<button type="button" class="btn btn-default" data-oper='add' id="save_transferFA">
+				<span class="fa fa-save fa-lg"></span> Save
+			</button>
+			<button type="button" class="btn btn-default" id="cancel_transferFA">
+				<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+			</button>
 		</div>
 	</div>
-</div>	
+
+	<div id="jqGridtransferFA_panel" class="panel-collapse collapse">
+		<div class="panel-body">
+			<div class='col-md-12' style="padding:0 0 15px 0">
+				<form class='form-horizontal' style='width:99%' id='formtransferFA'>
+					{{ csrf_field() }}
+					<input type="hidden" name="idno">
+					<div class='col-md-12'>
+						<div class="panel panel-info">
+							<div class="panel-heading text-center">ASSET TRANSFER DETAIL</div>
+							<div class="panel-body">
+
+								<div class="form-group row">
+									<label class="col-md-2 control-label" for="assetno">Tagging No</label>  
+									<div class="col-md-3">
+										<input id="assetno" name="assetno" type="text" class="form-control input-sm uppercase" data-validation="required"  frozeOnEdit>
+									</div>
+
+									<label class="col-md-2 control-label" for="description">Item Code</label>  
+									<div class="col-md-3">
+										<input id="description" name="description" type="text" class="form-control input-sm uppercase" data-validation="required"  frozeOnEdit>
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label class="col-md-2 control-label" for="assetcode">Category</label>
+										<div class="col-md-3">
+											<input id="assetcode" name="assetcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+										</div>
+									<label class="col-md-2 control-label" for="assettype">Type</label>
+										<div class="col-md-3">
+											<input id="assettype" name="assettype" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+										</div>
+								</div>
+
+								<hr>
+								<div class="form-group row">
+									<label class="col-md-2 control-label" for="deptcode">Current Department</label>
+										<div class="col-md-3">
+											<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+										</div>
+									<label class="col-md-2 control-label" for="loccode">Current Location</label>
+										<div class="col-md-3">
+											<input id="loccode" name="loccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+										</div>
+								</div>
+								
+								<hr>		
+	                            <div class="form-group">
+	                                <label class="col-md-2 control-label" for="trandate">Date</label>  
+	                                <div class="col-md-2">
+	                                    <input name="trandate" type="date" class="form-control input-sm" data-validation="required">
+	                                </div>
+	                            </div>
+
+								<div class="form-group row">
+									<label class="col-md-2 control-label" for="newdeptcode">New Department</label>  
+										<div class="col-md-3">
+											<input id="newdeptcode" type="text" name="newdeptcode" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+	                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+	                                    </div>
+									<label class="col-md-2 control-label" for="newloccode">New Location</label>  
+										<div class="col-md-3">
+											<input id="newloccode" type="text" name="newloccode" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+	                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+	                                    </div>
+								</div>
+						
+								<hr>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>	
+</div>
 

@@ -239,7 +239,7 @@ class assettransfer2Controller extends defaultController
             $faregister_obj = $faregister_obj->first();
             $responce->faregister = $faregister_obj;
         }
-
+        
         return json_encode($responce);
 
     }

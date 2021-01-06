@@ -57,7 +57,7 @@ conf = {
 };
 
 var dialog_deptcode= new ordialog(
-	'deptcode','sysdb.department','#deptcode',errorField,
+	'deptcode','sysdb.department','#newdeptcode',errorField,
 	{	colModel:[
 			{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 			{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -88,7 +88,7 @@ var dialog_deptcode= new ordialog(
 dialog_deptcode.makedialog();
 
 var dialog_loccode= new ordialog(
-	'loccode','sysdb.location','#loccode',errorField,
+	'loccode','sysdb.location','#newloccode',errorField,
 	{	colModel:[
 			{label:'Location Code',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
 			{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -148,34 +148,33 @@ function button_state_transferFA(state){
 	}
 }
 
-function populate_transferFA(obj,rowdata){
+function populate_transferAE(obj,rowdata){
 
 	emptyFormdata(errorField,"#formtransferFA");
 	
 	//panel header
-	$('#category_show_transferFA').text(obj.assetcode);
-	$('#description_show_transferFA').text(obj.description);
-	$('#assetno_show_transferFA').text(obj.assetno);
+	$('#category_show_transferAE').text(obj.assetcode);
+	$('#description_show_transferAE').text(obj.description);
+	$('#assetno_show_transferAE').text(obj.assetno);
 
 	
 
 	//formtransferFA
-	$('#description_transferFA').val(obj.description);
-	$("#category_show_transferFA").val(obj.assetcode);
-	$("#assetno_show_transferFA").val(obj.assetno);
+	$('#description_show_transferAE').val(obj.description);
+	$("#category_show_transferAE").val(obj.assetcode);
+	$("#assetno_show_transferAE").val(obj.assetno);
 
 	var saveParam={
         action:'get_table_transferFA',
     }
     var postobj={
-		_token : $('#csrf_token').val(),
-		assetno:obj.assetno,
-    	description:obj.description,
-    	assetcode:obj.assetcode
+		_token : $('#_token').val(),
+    	delordno:obj.delordno,
+    	assetno:obj.assetno
 
     };
 
-    $.post( "/transferFA/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "/assettransfer2/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
