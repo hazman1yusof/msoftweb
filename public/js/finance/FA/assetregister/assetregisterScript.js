@@ -31,6 +31,8 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus","ACTIVE");
 	var radbuts = new checkradiobutton(['regtype']);
+	var actdateObj = new setactdate(["#trandate"]);
+	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var dialog_assetcode = new ordialog(
@@ -183,6 +185,7 @@ $(document).ready(function () {
 				{label:'dohd_recno',name:'dohd_recno',width:100,classes:'pointer',hidden:true},
 				{label:'Delivery Date',name:'dohd_deliverydate',width:100,classes:'pointer',hidden:true},
 				{label:'Document No',name:'dohd_docno',width:100,classes:'pointer',hidden:true},
+				{label:'prdept',name:'dohd_prdept',width:100,classes:'pointer',hidden:true},
 				{label:'Invoice No',name:'dohd_invoiceno',width:100,classes:'pointer',hidden:false},
 				{label:'Transaction Date',name:'dohd_trandate',width:100,classes:'pointer',hidden:false},
 				{label:'AP Actual Date',name:'ap_actdate',width:100,classes:'pointer',hidden:false},
@@ -194,7 +197,8 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_delordno.gridname);
 				$('#delorddate').val(data['dohd_deliverydate']);		
-				$('#docno').val(data['dohd_docno']);
+				$('#dorecno').val(data['dohd_recno']);		
+				$('#docno').val(data['dohd_prdept']+pad('0000000',data['dohd_docno'],true));
 				$('#purdate').val(data['dohd_trandate']);
 				$('#suppcode').val(data['dohd_suppcode']);
 				$('#invno').val(data['dohd_invoiceno']);
@@ -215,14 +219,6 @@ $(document).ready(function () {
 		{
 			title:"Select Delivery Order No",
 			open: function(){
-				dialog_delordno.urlParam.filterCol=['dohd.compcode','dohd.invoiceno','dohd.suppcode'];
-				dialog_delordno.urlParam.filterVal=['session.compcode','<>.NULL', $("#suppcode").val()];
-				dialog_delordno.urlParam.fixPost = "true";
-				dialog_delordno.urlParam.table_id = "none_";
-				dialog_delordno.urlParam.join_type = ['LEFT JOIN'];
-				dialog_delordno.urlParam.join_onCol = ['dohd.invoiceno'];
-				dialog_delordno.urlParam.join_onVal = ['ap.document'];
-				
 				dialog_delordno.urlParam.url = "/assetregister/table";
 				dialog_delordno.urlParam.suppcode = $("#suppcode").val();
 			}
@@ -288,9 +284,7 @@ $(document).ready(function () {
 				$('#qty').val(data['dodt_qtydelivered']);
 				$('#currentcost').val(data['dodt_amount']);
 				$('#lineno_').val(data['dodt_lineno_']);
-				$('#description').val(data['dodt_itemcode'] + '-' + data['p_description'] + '-' +data['dodt_remarks']);
-
-
+				$('textarea#description').val(data['dodt_itemcode']+'/n'+data['p_description']+'/n'+data['dodt_remarks']);
 				$("#purprice,#qty").blur();
 				$("#origcost,#lstytddep,#cuytddep").blur();
 			},
@@ -309,7 +303,7 @@ $(document).ready(function () {
 			title:"Select Itemcode",
 			open: function(){
 				dialog_itemcode.urlParam.filterCol=['dodt.compcode','dodt.recno'];
-				dialog_itemcode.urlParam.filterVal=['session.compcode',selrowData('#'+dialog_delordno.gridname).dohd_recno];
+				dialog_itemcode.urlParam.filterVal=['session.compcode',$('#dorecno').val()];
 				dialog_itemcode.urlParam.fixPost = "true";
 				dialog_itemcode.urlParam.table_id = "none_";
 				dialog_itemcode.urlParam.join_type = ['LEFT JOIN'];
@@ -436,7 +430,7 @@ $(document).ready(function () {
 						enableForm('#formdata');
 						frozeOnEdit("#dialogForm");
 						rdonly("#dialogForm");
-						if($("#dialogForm input[name='regtype']").val() == 'POSTED'){
+						if($("#dialogForm input[name='regtype']").val() == 'PO'){
 							disableField();
 						}else{
 							enableField();
@@ -525,6 +519,7 @@ $(document).ready(function () {
 				{ label: 'DO No', name:'delordno',width: 13, sorttype:'text', classes:'wrap'},					
 				{ label: 'Invoice No', name:'invno', width: 20,sorttype:'text', classes:'wrap', canSearch: true},
 				{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
+				{ label: 'dorecno', name: 'dorecno', hidden:true },
 				{ label: 'Item Code', name: 'itemcode', width: 11, sorttype: 'text', classes: 'wrap', canSearch: true},
 				{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
 				{ label: 'Regtype', name: 'regtype', width: 13, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat},	
@@ -596,8 +591,8 @@ $(document).ready(function () {
 		}
 
 		function regtypeunformat(cellvalue, options) {
-			if (cellvalue == 'PO') {
-				return "PURCHASE ORDER";
+			if (cellvalue == 'PURCHASE ORDER') {
+				return "PO";
 			}else if (cellvalue == 'DIRECT') {
 				return "DIRECT";
 			}

@@ -209,7 +209,11 @@ $(document).ready(function () {
 			str=str.concat("0");
 			padzero--;
 		}
-		return pad(str, cellvalue, true);
+		if(cellvalue == null){
+			return '';
+		}else{
+			return pad(str, cellvalue, true);
+		}
 	}
 
 	function unpadzero(cellvalue, options, rowObject){

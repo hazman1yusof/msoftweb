@@ -92,7 +92,6 @@
 			<input type='hidden' id='lineno_' name='lineno_'>
 			<input type='hidden' id='recno' name='recno'>
 			<input type='hidden' id='idno' name='idno'>
-			<input type='hidden' id='description' name='description'>
 
 			{{ csrf_field() }}
 			<div class="form-group">
@@ -156,6 +155,7 @@
 							</div>
 							<span id="dn" class="help-block"></span>
 						</div>
+						<input type="hidden" name="dorecno" id="dorecno">
 				</div>
 
 					<div class="form-group">
@@ -250,7 +250,6 @@
 					 	</div>
 					<label class="col-md-2 control-label" for="description">Description</label>  
 						<div class="col-md-3">
-							<!-- <input id="description" name="description" maxlength="12" class="form-control input-sm">  -->
 							<textarea class="form-control input-sm text-uppercase" name="description" rows="4" cols="55" maxlength="100" id="description"></textarea>
 						 </div>
 				</div>

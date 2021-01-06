@@ -52,6 +52,7 @@ class assetregisterController extends defaultController
                             'dohd.suppcode as dohd_suppcode',
                             'dohd.recno as dohd_recno',
                             'dohd.deliverydate as dohd_deliverydate',
+                            'dohd.prdept as dohd_prdept',
                             'dohd.docno as dohd_docno',
                             'dohd.invoiceno as dohd_invoiceno',
                             'dohd.trandate as dohd_trandate',
