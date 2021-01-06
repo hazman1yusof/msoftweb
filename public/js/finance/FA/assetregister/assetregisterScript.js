@@ -27,7 +27,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////////////////
 			
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency = new currencymode(['#origcost','#currentcost', '#purprice']);
+	var mycurrency = new currencymode(['#origcost','#currentcost', '#purprice', '#nbv']);
 	var fdl = new faster_detail_load();
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus","ACTIVE");
 	var radbuts = new checkradiobutton(['regtype']);
@@ -530,13 +530,13 @@ $(document).ready(function () {
 				{ label: 'Purchase Date', name:'purdate', width: 16, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter},
 				{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
 				{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
-				{ label: 'Current Cost', name:'currentcost', width:15, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
+				{ label: 'Current Cost', name:'currentcost', width:15, classes:'wrap', hidden:false, align: 'right', formatter: 'currency'},
 				{ label: 'Quantity', name:'qty', width:20, classes:'wrap', hidden:true},
 				{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 				{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
 				{ label: 'method', name:'method', width:20, classes:'wrap', hidden:true},
 				{ label: 'residualvalue', name:'residualvalue', width:20, classes:'wrap', hidden:true},
-				{ label: 'nbv', name:'nbv', width:20, classes:'wrap', hidden:true},
+				{ label: 'nbv', name:'nbv', width:20, classes:'wrap', hidden:true, formatter: 'currency'},
 				{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 				{ label: 'Post Date', name:'trandate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 				//accumprev
