@@ -84,16 +84,23 @@
 	                            </div>
 
 								<div class="form-group row">
-									<label class="col-md-2 control-label" for="newdeptcode">New Department</label>  
-										<div class="col-md-3">
-											<input id="newdeptcode" type="text" name="newdeptcode" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-	                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-	                                    </div>
+								<label class="col-md-2 control-label" for="newdeptcode">New Department</label>  
+									<div class="col-md-3">
+										<div class='input-group'>
+											<input id="newdeptcode" name="newdeptcode" type="text" class="form-control input-sm uppercase">
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										</div>
+										<span class="help-block"></span>
+									</div>
+
 									<label class="col-md-2 control-label" for="newloccode">New Location</label>  
-										<div class="col-md-3">
-											<input id="newloccode" type="text" name="newloccode" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-	                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-	                                    </div>
+									<div class="col-md-3">
+										<div class='input-group'>
+											<input id="newloccode" name="newloccode" type="text" class="form-control input-sm uppercase">
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										</div>
+										<span class="help-block"></span>
+									</div>
 								</div>
 						
 								<hr>
