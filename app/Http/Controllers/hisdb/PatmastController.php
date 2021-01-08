@@ -134,6 +134,20 @@ class PatmastController extends defaultController
             //////////paginate/////////
             $paginate = $table_patm->paginate($request->rowCount);
 
+            foreach ($paginate->items() as $key => $value) {
+                if($value->PatStatus==1){
+                    $queue = DB::table('hisdb.queue')
+                                ->where('mrn','=',$value->MRN)
+                                ->where('episno','=',$value->Episno)
+                                ->where('deptcode','=',"ALL");
+
+                    if($queue->exists()){
+                        $queue = $queue->first();
+                        $value->q_epistycode = $queue->epistycode;
+                    }
+                }
+            }
+
             $responce = new stdClass();
             $responce->current = $paginate->currentPage();
             $responce->lastPage = $paginate->lastPage();
