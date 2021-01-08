@@ -102,11 +102,35 @@
 	</div>
 
 	<div class='row'>
-		<div class="panel panel-default" id="jqGrid2_c">
+		<div class="panel panel-default" style="position: relative;" id="jqGrid2_c" style="position: sticky;top: 0px;z-index: 3;">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid2_panel">
-				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
-				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Asset Movement Header
+				<b>Category: <span id="category_show_movementAE"></span></b>
+				<b> - <span id="assetno_show_movementAE"></span><br>Description: <span id="description_show_movementAE"></span></b>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 10px;">
+					<h5>Asset Movement Header</h5>
+				</div>
+
+				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+						id="btn_grp_edit_movementAE"
+						style="position: absolute;
+								padding: 0 0 0 0;
+								right: 40px;
+								top: 15px;" 
+					>
+						<!-- <button type="button" class="btn btn-default" id="edit_movementAE">
+							<span class="fa fa-edit fa-lg"></span> Transfer
+						</button>  <button type="button" class="btn btn-default" data-oper='add' id="save_movementAE">
+							<span class="fa fa-save fa-lg"></span> Save
+						</button>
+						<button type="button" class="btn btn-default" id="cancel_movementAE" >
+							<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+						</button> -->
+					</div>	
 			</div>
+
 			<div id="jqGrid2_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div class='col-md-12' style="padding:0 0 15px 0">

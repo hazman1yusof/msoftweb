@@ -285,6 +285,7 @@ $(document).ready(function () {
 					populateFormdata("#jqGrid","","#formtransferFA",rowid,'view');
 					populate_EnquiryDtl2AE(selrowData("#jqGrid"));
 					populate_transferAE(selrowData("#jqGrid"));
+					populate_form_movementAE(selrowData("#jqGrid"));
 					// populate_doctorNote(selrowData("#jqGrid"));
 					// populate_dietOrder(selrowData("#jqGrid"));
 					
@@ -532,6 +533,9 @@ $(document).ready(function () {
 		sortname: 'idno',
 		// sortorder: "fr.trandate",
 		pager: "#jqGridPager2",
+		onSelectRow:function(rowid, selected){
+			populate_form_movementAE(selrowData("#jqGrid_trf"));
+		},
 		loadComplete: function(data){
 			/*if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
@@ -602,6 +606,19 @@ $(document).ready(function () {
 			recstatusDisable();
 		}, 
 	});
+
+	function populate_form_movementAE(rowdata){
+		$('#category_show_movementAE').text(selrowData("#jqGrid").category);
+		$('#assetno_show_movementAE').text(selrowData("#jqGrid").assetno);
+		$('#description_show_movementAE').text(selrowData("#jqGrid").description);
+	}
+
+	function empty_form_movementAE(){
+		$('#category_show_movementAE').text('');
+		$('#assetno_show_movementAE').text('');
+		$('#description_show_movementAE').text('');
+		button_state_movementAE('empty');
+	}
 
 	//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
 
