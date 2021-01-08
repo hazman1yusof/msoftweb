@@ -115,7 +115,7 @@ i.fa {
 						data-oper="{{$scope_use}}" 
 						style="display: none;">
 						@if (Request::get('scope') == strtoupper('ALL'))
-							{{'POST ALL'}}
+							{{'POST'}}
 						@else
 							{{Request::get('scope').' ALL'}}
 						@endif

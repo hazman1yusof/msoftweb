@@ -457,7 +457,7 @@ function formatDate(someDate){
 	return y + '-'+ mm + '-'+ dd;
 }
 
-function formatDate_mom(date,format,returnformat = 'DD-MM-YYYY'){
+function formatDate_mom(date,format = 'YYYY/M/D',returnformat = 'DD-MM-YYYY'){
 	let mom = moment(date, format);
 	return mom.format(returnformat);
 }
@@ -894,7 +894,7 @@ function setactdate(target){
 				(permission)?permission=true:permission=false;
 			}
 		});
-		if(!moment(value).isBetween(actdateObj.lowestdate,actdateObj.highestdate)){
+		if(!moment(value).isBetween(actdateObj.lowestdate,actdateObj.highestdate, null, '[]')){
 			alert('Date not in accounting period setup');
 			$(currentTarget).val('').addClass( "error" ).removeClass( "valid" );
 		}else if(!permission){

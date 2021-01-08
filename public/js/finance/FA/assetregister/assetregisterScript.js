@@ -262,15 +262,15 @@ $(document).ready(function () {
 	var dialog_itemcode= new ordialog(
 		'itemcode',['material.delorddt as dodt','material.productmaster as p','material.delordhd as dohd'],'#itemcode',errorField,
 		{	colModel:[
-				{label:'Item Code',name:'dodt_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'p_description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Item Code',name:'dodt_itemcode',width:20,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'p_description',width:20,classes:'wrap pointer',canSearch:true,checked:true,or_search:true},
 				{label:'dodt_uomcode',name:'dodt_uomcode',width:100,classes:'pointer',hidden:true},
 				{label:'DO Detail Remarks',name:'dodt_remarks',width:100,classes:'pointer',hidden:false},
 				{label:'dodt_qtydelivered',name:'dodt_qtydelivered',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_unitprice',name:'dodt_unitprice',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_amount',name:'dodt_amount',width:100,classes:'pointer',hidden:true},
 				{label:'dodt_srcdocno',name:'dodt_srcdocno',width:100,classes:'pointer',hidden:true},
-				{label:'Line No',name:'dodt_lineno_',width:100,classes:'pointer',hidden:false},			
+				{label:'Line No',name:'dodt_lineno_',width:100,classes:'pointer',hidden:true},			
 			],
 			urlParam: {
 				filterCol:['dodt.compcode','dodt.recno'],
@@ -284,7 +284,7 @@ $(document).ready(function () {
 				$('#qty').val(data['dodt_qtydelivered']);
 				$('#currentcost').val(data['dodt_amount']);
 				$('#lineno_').val(data['dodt_lineno_']);
-				$('textarea#description').val(data['dodt_itemcode']+'/n'+data['p_description']+'/n'+data['dodt_remarks']);
+				$('textarea#description').val(data['p_description']+'\n'+data['dodt_remarks']);
 				$("#purprice,#qty").blur();
 				$("#origcost,#lstytddep,#cuytddep").blur();
 			},
@@ -973,5 +973,21 @@ $(document).ready(function () {
 		jqgrid_label_align_right("#jqGrid_selection");
 		cbselect.on();//on lepas jqgrid
 
+
+		$('#purdate,#statdate,#trandate').on('blur',date_date);
+
+		function date_date(){
+			var purdate = moment($('#purdate').val(), 'YYYY/M/D');
+			var statdate = moment($('#statdate').val(), 'YYYY/M/D');
+			var trandate = moment($('#trandate').val(), 'YYYY/M/D');
+
+			if(purdate.isValid()){
+				$('#statdate').attr('min',purdate.format('YYYY-MM-DD'));
+			}
+
+			if(statdate.isValid()){
+				$('#trandate').attr('min',statdate.format('YYYY-MM-DD'));
+			}
+		}
 	
 	});

@@ -569,7 +569,7 @@ $(document).ready(function () {
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
-				editrules:{required: true},edittype:"text",
+				editrules:{required: false},edittype:"text",
 				editoptions:{
 					readonly: "readonly",
 					maxlength: 12,

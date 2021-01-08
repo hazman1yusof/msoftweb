@@ -2,8 +2,16 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
+var urlParam={
+	action:'get_table_default',
+	url: '/util/get_table_default',
+	field:'',
+	table_name:'finance.faregister',
+	table_id:'idno',
+	sort_idno:true,
+}
+
 $(document).ready(function () {
-	$("body").show();
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -196,14 +204,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
-	var urlParam={
-		action:'get_table_default',
-		url: '/util/get_table_default',
-		field:'',
-		table_name:'finance.faregister',
-		table_id:'idno',
-		sort_idno:true,
-	}
+	
 	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
@@ -295,7 +296,7 @@ $(document).ready(function () {
 			}
 		},
 		loadComplete: function(){
-			$('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
+			// $('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
 			//button_state_ti('triage');
 		}
 		

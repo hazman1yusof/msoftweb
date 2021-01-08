@@ -126,12 +126,11 @@ class assettransfer2Controller extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->update([
                         'compcode' => session('compcode'),
-                        'idno' => $request->idno,
                         'assetcode' => $request->assetcode,
                         'assettype' => $request->assettype,
                         'description' => $request->description,
-                        'deptcode' => $request->deptcode,
-                        'loccode' => $request->loccode,
+                        'deptcode' => $request->newdeptcode,
+                        'loccode' => $request->newloccode,
                         'currdeptcode' => $request->currdeptcode,
                         'currloccode' => $request->currloccode,
                         'suppcode' => $request->suppcode,
@@ -166,7 +165,6 @@ class assettransfer2Controller extends defaultController
                         'delordno' => $request->delordno_transferFA,
                         'assetno' => $request->assetno_transferFA,
                         'compcode' => session('compcode'),
-                        'idno' => $request->idno,
                         'assetcode' => $request->assetcode,
                         'assettype' => $request->assettype,
                         'description' => $request->description,

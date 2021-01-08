@@ -24,6 +24,7 @@ $(document).ready(function () {
 			saveForm_transferFA(function(){
 				$("#cancel_transferFA").data('oper','edit');
 				$("#cancel_transferFA").click();
+				refreshGrid("#jqGrid",urlParam,'edit');
 			});
 		}else{
 			enableForm('#formtransferFA');
@@ -212,7 +213,7 @@ function saveForm_transferFA(callback){
         oper:$("#cancel_transferFA").data('oper')
     }
     var postobj={
-    	// _token : $('#csrf_token').val(),
+    	// _token : $('#_token').val(),
     };
 
 	values = $("#formtransferFA").serializeArray();
