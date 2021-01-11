@@ -104,7 +104,7 @@
 	<div class='row'>
 		<div class="panel panel-default" style="position: relative;" id="jqGrid2_c" style="position: sticky;top: 0px;z-index: 3;">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid2_panel">
-				<b>Category: <span id="category_show_movementAE"></span></b>
+				<b>Asset No: <span id="category_show_movementAE"></span></b>
 				<b> - <span id="assetno_show_movementAE"></span><br>Description: <span id="description_show_movementAE"></span></b>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
