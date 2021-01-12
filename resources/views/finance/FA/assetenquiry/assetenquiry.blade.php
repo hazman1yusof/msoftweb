@@ -59,6 +59,13 @@
 		line-height: 1;
 		top: -10px;
 	}
+
+	.desc_show{
+		overflow:hidden;
+		max-height: 16px;
+		display: block;
+		max-width: 60%;
+	}
 @endsection
 
 @section('body')
@@ -105,7 +112,7 @@
 		<div class="panel panel-default" style="position: relative;" id="jqGrid2_c" style="position: sticky;top: 0px;z-index: 3;">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid2_panel">
 				<b>Asset No: <span id="category_show_movementAE"></span></b>
-				<b> - <span id="assetno_show_movementAE"></span><br>Description: <span id="description_show_movementAE"></span></b>
+				<b> - <span id="assetno_show_movementAE"></span><br><span class="desc_show" id="description_show_movementAE"></span><a id="seemore1" style="display: none" data-show='false'>see more</a></b>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -268,9 +275,9 @@
 						<div class="col-md-2">
 							<input id="method" type="text" name="method" maxlength="12" class="form-control input-sm" rdonly frozeOnEdit>
 						</div>
-					<label class="col-md-2 control-label" for="rvalue">Residual Value</label>  
+					<label class="col-md-2 control-label" for="residualvalue">Residual Value</label>  
 						<div class="col-md-2">
-							<input id="rvalue" type="text" name="rvalue" maxlength="12" class="form-control input-sm" rdonly frozeOnEdit>
+							<input id="residualvalue" type="text" name="residualvalue" maxlength="12" class="form-control input-sm" rdonly frozeOnEdit>
 						</div>
 				</div>
 

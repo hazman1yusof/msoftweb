@@ -611,7 +611,8 @@ $(document).ready(function () {
 	function populate_form_movementAE(rowdata){
 		$('#category_show_movementAE').text(selrowData("#jqGrid").category);
 		$('#assetno_show_movementAE').text(selrowData("#jqGrid").assetno);
-		$('#description_show_movementAE').text(selrowData("#jqGrid").description);
+		$('#description_show_movementAE').text('Description: '+selrowData("#jqGrid").description);
+		set_seemore();
 	}
 
 	function empty_form_movementAE(){
@@ -661,4 +662,26 @@ $(document).ready(function () {
 			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
 		}
 	}
+
+	function set_seemore(){
+		if ($('#description_show_movementAE').prop('scrollHeight') - 1 > $('#description_show_movementAE').prop('clientHeight')){
+			$('#seemore1').show();
+		}else{
+			$('#seemore1').hide();
+		}
+	}
+
+	$('#seemore1').click(function(){
+		var show = $(this).data('show');
+		console.log(show)
+		if(show == false){
+			$(this).data('show',true);
+			$(this).text('see less')
+			$('#description_show_movementAE').css('max-height','200px');
+		}else{
+			$(this).data('show',false);
+			$(this).text('see more')
+			$('#description_show_movementAE').css('max-height','16px');
+		}
+	})
 });

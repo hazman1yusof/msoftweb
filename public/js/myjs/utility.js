@@ -1739,4 +1739,13 @@ function getEditVal(val){
 	return val
 }
 
+function seemore_desc(divs){
+	var init = function(){
+		divs.forEach(function(data,index){
+			console.log(data);
+		});
+	}
+
+}
+
 /////////////////////////////////End utility function////////////////////////////////////////////////
