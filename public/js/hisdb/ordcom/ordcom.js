@@ -284,8 +284,8 @@ $(document).ready(function () {
 					},
 			},
 		],
-		autowidth: false,
-		shrinkToFit: false,
+		autowidth: true,
+		shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
@@ -615,9 +615,17 @@ function populate_ordcom_currpt(obj){
 	
 }
 
+
+$("#jqGrid_ordcom_panel").on("show.bs.collapse", function(){
+	$("#jqGrid_ordcom").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+});
+
 //---------------------mdl_chgcode-----------------------
 var ordcom_chgcode_selecter_;
 $('#mdl_ordcom_chgcode').on('show.bs.modal', function () {
+
+	$("#jqGrid_ordcom").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft));
+
 	if(ordcom_chgcode_selecter_ == undefined){
 	    ordcom_chgcode_selecter_ = new ordcom_chgcode_selecter(
 	    	$(this).data('c_optid'),$(this).data('c_id')

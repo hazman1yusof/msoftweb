@@ -11,10 +11,10 @@
 			<span id="race_show_ti"></span>
 		</p>
 		<!-- screen bed management and current patient -->
-		<p id="hiddentriage" style="display:none">
+		<!-- <p id="hiddentriage" style="display:none"> -->
 			<b>Name: <span id="name_show_triage"></span></b><br>
 			MRN: <span id="mrn_show_triage"></span>
-		</p>
+		<!-- </p> -->
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridTriageInfo_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridTriageInfo_panel"></i>
@@ -30,19 +30,19 @@
 					top: 15px;" 
 
 		>
-		<button type="button" class="btn btn-default" id="new_ti">
-			<span class="fa fa-plus-square-o"></span> New
-		</button>
-		<button type="button" class="btn btn-default" id="edit_ti">
-			<span class="fa fa-edit fa-lg"></span> Edit
-		</button>
-		<button type="button" class="btn btn-default" data-oper='add' id="save_ti">
-			<span class="fa fa-save fa-lg"></span> Save
-		</button>
-		<button type="button" class="btn btn-default" id="cancel_ti" >
-			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-		</button>
-	</div>
+			<button type="button" class="btn btn-default" id="new_ti">
+				<span class="fa fa-plus-square-o"></span> New
+			</button>
+			<button type="button" class="btn btn-default" id="edit_ti">
+				<span class="fa fa-edit fa-lg"></span> Edit
+			</button>
+			<button type="button" class="btn btn-default" data-oper='add' id="save_ti">
+				<span class="fa fa-save fa-lg"></span> Save
+			</button>
+			<button type="button" class="btn btn-default" id="cancel_ti" >
+				<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+			</button>
+		</div>
 	</div>
 	<div id="jqGridTriageInfo_panel" class="panel-collapse collapse">
 		<div class="panel-body">
