@@ -390,7 +390,7 @@ $(document).ready(function () {
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
-			if(errorField.length>0)return false;
+			if(errorField.length>0){console.log(errorField);return false;}
 
 			mycurrency2.formatOff();
 			let data = $('#jqGrid_ordcom').jqGrid ('getRowData', rowid);
@@ -616,7 +616,7 @@ function populate_ordcom_currpt(obj){
 }
 
 
-$("#jqGrid_ordcom_panel").on("show.bs.collapse", function(){
+$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
 	$("#jqGrid_ordcom").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
 });
 

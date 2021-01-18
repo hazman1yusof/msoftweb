@@ -155,15 +155,8 @@ function populate_transferAE(obj,rowdata){
 	
 	//panel header
 	$('#category_show_transferAE').text(obj.assetcode);
-	$('#description_show_transferAE').text(obj.description);
+	$('#description_show_transferAE').text('Description: '+obj.description);
 	$('#assetno_show_transferAE').text(obj.assetno);
-
-	
-
-	//formtransferFA
-	$('#description_show_transferAE').val(obj.description);
-	$("#category_show_transferAE").val(obj.assetcode);
-	$("#assetno_show_transferAE").val(obj.assetno);
 
 	var saveParam={
         action:'get_table_transferFA',

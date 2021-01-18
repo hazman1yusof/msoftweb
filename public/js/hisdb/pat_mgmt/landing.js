@@ -198,9 +198,11 @@ $(document).ready(function() {
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
 
-        populate_tiCurrentPt(rows[bootgrid_last_rowid]);
-        populate_currDoctorNote(rows[bootgrid_last_rowid]);
         populate_ordcom_currpt(rows[bootgrid_last_rowid]);
+        if($('#epistycode').val() == 'OP'){
+            populate_tiCurrentPt(rows[bootgrid_last_rowid]);
+            populate_currDoctorNote(rows[bootgrid_last_rowid]);
+        }
     });
     var bootgrid_last_rowid = 0;
 

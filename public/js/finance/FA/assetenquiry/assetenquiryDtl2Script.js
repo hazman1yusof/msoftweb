@@ -89,13 +89,8 @@ function populate_EnquiryDtl2AE(obj,rowdata){
 	
 	//panel header
 	$('#category_show_enquiryAE').text(obj.assetcode);
-	$('#description_show_enquiryAE').text(obj.description);
+	$('#description_show_enquiryAE').text('Description: '+obj.description);
 	$('#assetno_show_enquiryAE').text(obj.assetno);
-
-	//formEnquiryDtl2
-	$('#description_show_enquiryAE').val(obj.description);
-	$("#category_show_enquiryAE").val(obj.assetcode);
-	$("#assetno_show_enquiryAE").val(obj.assetno);
 
 	var saveParam={
         action:'get_table_EnquiryDtl2',
