@@ -4,6 +4,7 @@
         <form id="frm_patient_info" class="form-horizontal">
 			<input type="hidden" name="idno" id="txt_pat_idno">
             <input name="pat_mrn" id="pat_mrn" type="hidden">
+            <input name="PatClass" id="PatClass" type="hidden" value="{{request()->get('PatClass')}}">
             <div class="modal-content">
                 <div class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
                     <div class="form-group">

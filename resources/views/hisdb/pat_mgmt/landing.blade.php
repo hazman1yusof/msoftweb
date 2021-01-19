@@ -187,7 +187,14 @@
         </div>
         @endif
 
-		<div class="panel">
+		<div class="panel panel-primary" style="position: relative;margin: 0 12px 12px 12px">
+			<div  class="panel-heading clearfix">
+				<h5><strong>
+					@if (request()->get('curpat') == 'true'){{'CURRENT PATIENT'}}
+					@else {{'PATIENT LIST'}}
+					@endif
+				</strong></h5>
+			</div>
 			<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
                 <thead>
                 <tr>

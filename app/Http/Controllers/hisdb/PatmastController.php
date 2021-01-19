@@ -52,6 +52,9 @@ class PatmastController extends defaultController
 
     public function post_entry(Request $request)
     {   
+
+        $mrn_range = $this->mrn_range($request);
+
         if($request->curpat == 'true'){
 
             $request->rows = $request->rowCount;
@@ -77,6 +80,7 @@ class PatmastController extends defaultController
             $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
                             ->where('compcode','=',session('compcode'))
                             ->where('Active','=','1')
+                            ->whereBetween('MRN',$mrn_range)
                             ->whereIn('mrn', $arr_mrn);
 
             if(!empty($request->searchCol)){
@@ -121,7 +125,8 @@ class PatmastController extends defaultController
 
             $table_patm = $table_patm
                         ->where('Active','=','1')
-                        ->where('compcode','=',session('compcode'));
+                        ->where('compcode','=',session('compcode'))
+                        ->whereBetween('MRN',$mrn_range);
 
             if(!empty($request->sort)){
                 foreach ($request->sort as $key => $value) {
@@ -2000,6 +2005,26 @@ class PatmastController extends defaultController
             DB::rollback();
 
             return response($e->getMessage(), 500);
+        }
+    }
+
+    public function mrn_range(Request $request){
+        if($request->PatClass == 'HIS'){
+            $table = DB::table('sysdb.sysparam')
+                        ->where('source','=','HIS')
+                        ->where('trantype','=','MRN')
+                        ->first();
+
+            return explode(',', $table->pvalue2);
+        }else if($request->PatClass == 'OTC'){
+            $table = DB::table('sysdb.sysparam')
+                        ->where('source','=','OTC')
+                        ->where('trantype','=','MRN')
+                        ->first();
+
+            return explode(',', $table->pvalue2);
+        }else{
+            dump('wrong patclass, choose only HIS or OTC');
         }
     }
 

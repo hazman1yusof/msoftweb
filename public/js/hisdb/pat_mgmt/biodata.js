@@ -185,7 +185,7 @@
         },_token = $('#csrf_token').val();
 
         if(oper=='add'){
-            saveParam.sysparam = {source:'HIS',trantype:'MRN',useOn:'MRN'};
+            saveParam.sysparam = {source:$('#PatClass').val(),trantype:'MRN',useOn:'MRN'};
         }
         var postobj = (mrn!="nothing")?{_token:_token,idno:idno,MRN:mrn}:{_token:_token,idno:idno};//kalu ada mrn, maksudnya dia dari merging duplicate 
 
