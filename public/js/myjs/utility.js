@@ -845,7 +845,7 @@ function setactdate(target){
 	this.target=target;
 	this.param={
 		action:'get_value_default',
-		url:"/util/get_value_default",
+		url:"util/get_value_default",
 		field: ['*'],
 		table_name:'sysdb.period',
 		table_id:'idno'
@@ -1268,9 +1268,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function geturl(urlParam){
-		let returl = './util/get_table_default';
+		let returl = 'util/get_table_default';
 		if(urlParam.url === undefined){
-			returl = './util/get_table_default';
+			returl = 'util/get_table_default';
 		}else{
 			returl = urlParam.url;
 		}
@@ -1336,7 +1336,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			}
 
 			param.action="get_value_default";
-			param.url='/util/get_value_default';
+			param.url='util/get_value_default';
 			if(this.check_take_all_field){
 				param.field=this.urlParam.field;
 			}else{

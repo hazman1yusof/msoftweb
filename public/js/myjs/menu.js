@@ -128,7 +128,7 @@ var Menu = function () {
     }
 	
 	function announce(){
-		$.getJSON( "/announcement/generate", function(data){
+		$.getJSON( "announcement/generate", function(data){
             
 			$("#announcement").append(data.res);
 
