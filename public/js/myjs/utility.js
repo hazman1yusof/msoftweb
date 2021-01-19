@@ -1,4 +1,4 @@
-
+ 
 
 ///////////////////////start utility function/////////////////////////////////////////////////////////
 $('input').on('beforeValidation', function(value, lang, config) {
@@ -549,6 +549,14 @@ function currencymode(arraycurrency,nopoint=false){
 
 function currencyRealval(v){
 	return numeral().unformat($(v).val());
+}
+
+function isNumberKey(evt){
+  var charCode = (evt.which) ? evt.which : event.keyCode;
+    if (charCode < 48 || charCode > 57)
+     return false;
+
+  return true;
 }
 
 function modal(){

@@ -95,7 +95,7 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <small for="txt_pat_newic">New IC (eg 690101086649)</small>
-                                                    <input class="form-control form-mandatory ic-group" name="Newic" id="txt_pat_newic" placeholder="" type="text">
+                                                    <input class="form-control form-mandatory ic-group" name="Newic" id="txt_pat_newic" placeholder="" type="text" onkeypress="return isNumberKey(event);">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <small for="txt_pat_oldic">Old IC</small>
