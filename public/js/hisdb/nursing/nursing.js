@@ -216,7 +216,7 @@ function populate_tiCurrentPt(obj){
 	$('#name_show_triage').text(obj.Name);
 	$('#mrn_show_triage').text(obj.MRN);
 
-	document.getElementById('hiddentriage').style.display = 'inline';
+	// document.getElementById('hiddentriage').style.display = 'inline';
 
 	var saveParam={
         action:'get_table_triage',

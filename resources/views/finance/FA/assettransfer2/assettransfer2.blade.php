@@ -1,7 +1,7 @@
 <div class="panel panel-default" style="position: relative;" id="jqGridtransferFA_c">
 	<div class="panel-heading clearfix collapsed position" id="toggle_transferFA" style="position: sticky;top: 0px;z-index: 3;">
 		<b>Asset No: <span id="category_show_transferAE"></span></b>
-		<b> - <span id="assetno_show_transferAE"></span><br>Description: <span id="description_show_transferAE"></span></b>
+		<b> - <span id="assetno_show_transferAE"></span><br><span class="desc_show" id="description_show_transferAE"></span><a id="seemore_show_transferAE" style="display: none" data-show='false'>see more</a></b>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridtransferFA_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridtransferFA_panel"></i>

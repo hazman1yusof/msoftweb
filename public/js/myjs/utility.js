@@ -1,4 +1,4 @@
-
+ 
 
 ///////////////////////start utility function/////////////////////////////////////////////////////////
 $('input').on('beforeValidation', function(value, lang, config) {
@@ -549,6 +549,14 @@ function currencymode(arraycurrency,nopoint=false){
 
 function currencyRealval(v){
 	return numeral().unformat($(v).val());
+}
+
+function isNumberKey(evt){
+  var charCode = (evt.which) ? evt.which : event.keyCode;
+    if (charCode < 48 || charCode > 57)
+     return false;
+
+  return true;
 }
 
 function modal(){
@@ -1747,5 +1755,23 @@ function seemore_desc(divs){
 	}
 
 }
+
+$(document).ready(function () {
+
+	$('.panel-heading.clearfix.collapsed.position .arrow.fa').click(function(){
+		var toggle = $(this).data('toggle');
+		if(toggle != undefined || toggle != null){
+			if($(this).hasClass('fa-angle-double-up')){
+				$(this).css('display','none');
+				$(this).siblings('i.arrow.fa.fa-angle-double-down').css('display','inline-block');
+			}else if($(this).hasClass('fa-angle-double-down')){
+				$(this).css('display','none');
+				$(this).siblings('i.arrow.fa.fa-angle-double-up').css('display','inline-block');
+			}
+		}
+	});
+});
+
+
 
 /////////////////////////////////End utility function////////////////////////////////////////////////

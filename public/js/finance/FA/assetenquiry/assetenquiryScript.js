@@ -535,7 +535,7 @@ $(document).ready(function () {
 		// sortorder: "fr.trandate",
 		pager: "#jqGridPager2",
 		onSelectRow:function(rowid, selected){
-			populate_form_movementAE(selrowData("#jqGrid_trf"));
+			// populate_form_movementAE(selrowData("#jqGrid_trf"));
 		},
 		loadComplete: function(data){
 			/*if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
@@ -612,7 +612,7 @@ $(document).ready(function () {
 		$('#category_show_movementAE').text(selrowData("#jqGrid").category);
 		$('#assetno_show_movementAE').text(selrowData("#jqGrid").assetno);
 		$('#description_show_movementAE').text('Description: '+selrowData("#jqGrid").description);
-		set_seemore();
+		set_seemore.set();
 	}
 
 	function empty_form_movementAE(){
@@ -663,25 +663,37 @@ $(document).ready(function () {
 		}
 	}
 
-	function set_seemore(){
-		if ($('#description_show_movementAE').prop('scrollHeight') - 1 > $('#description_show_movementAE').prop('clientHeight')){
-			$('#seemore1').show();
-		}else{
-			$('#seemore1').hide();
+	var set_seemore = new set_seemore(['show_movementAE','show_enquiryAE','show_transferAE']);
+	function set_seemore(array){
+		this.array = array;
+
+		this.set = function(){
+			this.array.forEach(function(i,e){
+				if ($('#description_'+i).prop('scrollHeight') - 1 > $('#description_'+i).prop('clientHeight')){
+					$('#seemore_'+i).show();
+				}else{
+					$('#seemore_'+i).hide();
+				}
+
+
+				$('#seemore_'+i).unbind('click');
+				$('#seemore_'+i).click(function(){
+					var show = $(this).data('show');
+					console.log(show)
+					if(show == false){
+						$(this).data('show',true);
+						$(this).text('see less')
+						$('#description_'+i).css('max-height','200px');
+					}else{
+						$(this).data('show',false);
+						$(this).text('see more')
+						$('#description_'+i).css('max-height','16px');
+					}
+				});
+
+			});
 		}
 	}
 
-	$('#seemore1').click(function(){
-		var show = $(this).data('show');
-		console.log(show)
-		if(show == false){
-			$(this).data('show',true);
-			$(this).text('see less')
-			$('#description_show_movementAE').css('max-height','200px');
-		}else{
-			$(this).data('show',false);
-			$(this).text('see more')
-			$('#description_show_movementAE').css('max-height','16px');
-		}
-	})
+	
 });
