@@ -353,6 +353,65 @@ function saveForm_ti(callback){
     });
 }
 
+function saveForm_patmast(callback){
+	var saveParam={
+        action:'save_table_triage',
+        oper:$("#cancel_ti").data('oper')
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	// sex_edit : $('#sex_edit').val(),
+    	// idtype_edit : $('#idtype_edit').val()
+
+    };
+
+    values = $("#formTriageInfo").serializeArray();
+
+    values = values.concat(
+        $('#formTriageInfo input[type=checkbox]:not(:checked)').map(
+        function() {
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formTriageInfo input[type=checkbox]:checked').map(
+        function() {
+            return {"name": this.name, "value": 1}
+        }).get()
+	);
+	
+	values = values.concat(
+        $('#formTriageInfo input[type=radio]:checked').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formTriageInfo select').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+	);
+
+    // values = values.concat(
+    //     $('#formTriageInfo input[type=radio]:checked').map(
+    //     function() {
+    //         return {"name": this.name, "value": this.value}
+    //     }).get()
+    // );
+
+    $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
+}
+
 
 var dialog_tri_col = new ordialog(
 	'tri_col','sysdb.sysparam',"#triagecolor",errorField,
