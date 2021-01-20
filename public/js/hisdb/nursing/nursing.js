@@ -24,11 +24,22 @@ $(document).ready(function () {
 	$("#save_ti").click(function(){
 		disableForm('#formTriageInfo');
 		if( $('#formTriageInfo').isValid({requiredFields: ''}, conf, true) ) {
-			saveForm_ti(function(){
-				$("#cancel_ti").data('oper','edit');
-				$("#cancel_ti").click();
-				$('#refresh_jqGrid').click();
-			});
+			var page_screen = $('#page_screen').val();
+			
+			if(page_screen == 'patmast'){
+				saveForm_patmast(function(){
+					$("#cancel_ti").data('oper','edit');
+					$("#cancel_ti").click();
+					$('#refresh_jqGrid').click();
+				});
+			}else{
+				saveForm_ti(function(){
+					$("#cancel_ti").data('oper','edit');
+					$("#cancel_ti").click();
+					$('#refresh_jqGrid').click();
+				});
+			}
+
 		}else{
 			enableForm('#formTriageInfo');
 			rdonly('#formTriageInfo');
@@ -121,7 +132,6 @@ function button_state_ti(state){
 
 // screen emergency //
 function populate_formNursing(obj,rowdata){
-
 	//panel header
 	$('#name_show_ti').text(obj.a_pat_name);
 	$('#newic_show_ti').text(obj.newic);

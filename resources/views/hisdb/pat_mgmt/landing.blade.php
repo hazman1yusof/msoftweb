@@ -139,6 +139,18 @@
 		.search{
 			width: 40% !important;
 		}
+
+		.panel-primary {
+		    border-color: #5bc0de;
+		}
+
+		.panel-primary > .panel-heading {
+		    color: #fff;
+		    background-color: #5bc0de;
+		    border-color: #5BC0DC;
+			background-image: linear-gradient(to bottom, #5bc0de 0%, #5bc0de 100%);
+		}
+
 	</style>
 
 </head>
@@ -199,13 +211,14 @@
                 <thead>
                 <tr>
                 	<th data-column-id="mrn" data-formatter="col_add" data-width="5%">#</th>
-                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="8%">MRN No</th>
-                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="30%">Name</th>
+                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="6%">MRN No</th>
+                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="26%">Name</th>
+                    <th data-column-id="q_doctorname" data-width="8%">Doctor</th>
                     <th data-column-id="Newic" data-width="8%">New IC</th>
                     <th data-column-id="telhp" data-width="8%">H/P</th>
                     <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">Birth Date</th>
                     <th data-column-id="Sex" data-width="4%">Sex</th>
-					<th data-column-id="Staffid" data-width="8%">Staff ID</th>
+					<th data-column-id="Staffid" data-width="6%">Staff ID</th>
                     <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="5%">Age</th>
 					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="8%">Info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type</th>
 				</tr>
@@ -225,7 +238,7 @@
 		@if (request()->get('epistycode') == 'OP')
 
 		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-			@include('hisdb.nursing.nursing')
+			@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 		</div>
 
 		<div class='row' style="position: relative;margin: 0 12px 12px 12px">

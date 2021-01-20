@@ -61,13 +61,15 @@ class PatmastController extends defaultController
 
             $sel_epistycode = $request->epistycode;
             $table = DB::table('hisdb.queue')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('deptcode','=',"ALL");
+                        ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
+                        ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+                        ->where('queue.compcode','=',session('compcode'))
+                        ->where('queue.deptcode','=',"ALL");
 
             if($sel_epistycode == 'OP'){
-                $table->whereIn('epistycode', ['OP','OTC']);
+                $table->whereIn('queue.epistycode', ['OP','OTC']);
             }else{
-                $table->whereIn('epistycode', ['IP','DP']);
+                $table->whereIn('queue.epistycode', ['IP','DP']);
             }
 
             $paginate = $table->paginate($request->rows);
@@ -88,6 +90,12 @@ class PatmastController extends defaultController
             }
 
             $paginate_patm = $table_patm->paginate($request->rows);
+
+
+            foreach ($paginate_patm->items() as $key => $value) {
+                $value->q_doctorname = $paginate->items()[$key]->doctorname;
+                $value->q_epistycode = $paginate->items()[$key]->epistycode;
+            }
 
             $responce = new stdClass();
             $responce->current = $paginate->currentPage();
@@ -142,13 +150,16 @@ class PatmastController extends defaultController
             foreach ($paginate->items() as $key => $value) {
                 if($value->PatStatus==1){
                     $queue = DB::table('hisdb.queue')
-                                ->where('mrn','=',$value->MRN)
-                                ->where('episno','=',$value->Episno)
-                                ->where('deptcode','=',"ALL");
+                                ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
+                                ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+                                ->where('queue.mrn','=',$value->MRN)
+                                ->where('queue.episno','=',$value->Episno)
+                                ->where('queue.deptcode','=',"ALL");
 
                     if($queue->exists()){
                         $queue = $queue->first();
                         $value->q_epistycode = $queue->epistycode;
+                        $value->q_doctorname = $queue->doctorname;
                     }
                 }
             }

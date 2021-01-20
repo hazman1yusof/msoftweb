@@ -1,5 +1,7 @@
    
 <div class="panel panel-default" style="position: relative;" id="jqGridTriageInfo_c">
+
+	<input type="hidden" name="page_screen" id="page_screen" value="{{$page_screen ?? ''}}">
 	
 	<div class="panel-heading clearfix collapsed position" id="toggle_ti" style="position: sticky;top: 0px;z-index: 3;">
 		<!-- screen emergency -->
