@@ -2,6 +2,10 @@
 
 @section('style')
 
+	.form-inline > select{
+		margin: 2px 0px;
+	}
+
 @endsection
 
 @section('title', 'User Maintenance')
@@ -111,13 +115,39 @@
                  <label class="control-label col-md-2">Cashier</label>
 				  	<select class="form-control col-md-4" id='cashier' name='cashier'>
 				  		<option value='1'>Yes</option>
-				  		<option value='0'>No</option>
+				  		<option value='0' selected>No</option>
+				  	</select>
+
+                 <label class="control-label col-md-2">Billing</label>
+				  	<select class="form-control col-md-4" id='billing' name='billing'>
+				  		<option value='1'>Yes</option>
+				  		<option value='0' selected>No</option>
+				  	</select>
+
+                 <label class="control-label col-md-2">Nurse</label>
+				  	<select class="form-control col-md-4" id='nurse' name='nurse'>
+				  		<option value='1'>Yes</option>
+				  		<option value='0' selected>No</option>
+				  	</select>
+
+				  <div class="clearfix"></div>
+
+                 <label class="control-label col-md-2">Doctor</label>
+				  	<select class="form-control col-md-4" id='doctor' name='doctor'>
+				  		<option value='1'>Yes</option>
+				  		<option value='0' selected>No</option>
+				  	</select>
+
+                 <label class="control-label col-md-2">Register</label>
+				  	<select class="form-control col-md-4" id='register' name='register'>
+				  		<option value='1'>Yes</option>
+				  		<option value='0' selected>No</option>
 				  	</select>
 
 				  <label class="control-label col-md-2">Price View</label>
 				  	<select class="form-control col-md-4" id='priceview' name='priceview'>
 				  		<option value='1'>Yes</option>
-				  		<option value='0'>No</option>
+				  		<option value='0' selected>No</option>
 				  	</select>
 				</div>
                 

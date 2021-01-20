@@ -151,6 +151,12 @@
 			background-image: linear-gradient(to bottom, #5bc0de 0%, #5bc0de 100%);
 		}
 
+		.table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th {
+		    word-wrap: break-word;
+		    white-space: pre-line !important;
+		    vertical-align: top !important;
+		}
+
 	</style>
 
 </head>
@@ -212,13 +218,12 @@
                 <tr>
                 	<th data-column-id="mrn" data-formatter="col_add" data-width="5%">#</th>
                     <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="6%">MRN No</th>
-                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="26%">Name</th>
-                    <th data-column-id="q_doctorname" data-width="8%">Doctor</th>
+                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="20%">Name</th>
+                    <th data-column-id="q_doctorname" data-width="20%">Doctor</th>
                     <th data-column-id="Newic" data-width="8%">New IC</th>
                     <th data-column-id="telhp" data-width="8%">H/P</th>
                     <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">Birth Date</th>
                     <th data-column-id="Sex" data-width="4%">Sex</th>
-					<th data-column-id="Staffid" data-width="6%">Staff ID</th>
                     <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="5%">Age</th>
 					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="8%">Info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type</th>
 				</tr>
@@ -237,17 +242,26 @@
 
 		@if (request()->get('epistycode') == 'OP')
 
-		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-			@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
-		</div>
+			@if (Auth::user()->doctor == 1)
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+				</div>
 
-		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-			@include('hisdb.doctornote.doctornote')
-		</div>
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.doctornote.doctornote')
+				</div>
+			@elseif (Auth::user()->nurse == 1)
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+				</div>
+			@endif
 
-		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-			@include('hisdb.ordcom.ordcom')
-		</div>
+			@if (Auth::user()->billing == 1)
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.ordcom.ordcom')
+				</div>
+			@endif
+
 		@endif
 
 		@if (request()->get('epistycode') == 'IP')

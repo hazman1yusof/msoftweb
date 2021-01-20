@@ -74,7 +74,7 @@ $(document).ready(function() {
             },
             "col_dob": function (column,row) {
                 var birthday = new Date(row.DOB);
-                return (isNaN(birthday.getFullYear()) ? 'n/a' : moment(birthday).format('DD/MM/YYYY'));
+                return (isNaN(birthday.getFullYear()) ? '' : moment(birthday).format('DD/MM/YYYY'));
             },
             "col_age": function (column,row) {
                 var birthday = new Date(row.DOB);
