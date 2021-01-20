@@ -216,7 +216,7 @@ function populate_tiCurrentPt(obj){
 	$('#name_show_triage').text(obj.Name);
 	$('#mrn_show_triage').text(obj.MRN);
 
-	// document.getElementById('hiddentriage').style.display = 'inline';
+	document.getElementById('hiddentriage').style.display = 'inline';
 
 	var saveParam={
         action:'get_table_triage',
@@ -241,9 +241,9 @@ function populate_tiCurrentPt(obj){
 				examination_nursing.examarray = data.triage_exm;
 				examination_nursing.loadexam().disable();
 			}
-			button_state_ti('triage');
+			button_state_ti('edit');
         }else{
-			button_state_ti('triage');
+			button_state_ti('add');
 			examination_nursing.empty();
         }
 
