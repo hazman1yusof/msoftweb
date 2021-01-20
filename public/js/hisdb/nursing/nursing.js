@@ -25,7 +25,7 @@ $(document).ready(function () {
 		disableForm('#formTriageInfo');
 		if( $('#formTriageInfo').isValid({requiredFields: ''}, conf, true) ) {
 			var page_screen = $('#page_screen').val();
-			
+			console.log(page_screen);
 			if(page_screen == 'patmast'){
 				saveForm_patmast(function(){
 					$("#cancel_ti").data('oper','edit');
@@ -174,7 +174,7 @@ function populate_formNursing(obj,rowdata){
 
 //screen bed management//
 function populate_triage(obj,rowdata){
-	
+
 	emptyFormdata(errorField,"#formTriageInfo");
 
 	//panel header
@@ -219,12 +219,15 @@ function populate_triage(obj,rowdata){
 
 //screen current patient//
 function populate_tiCurrentPt(obj){
-	
+
 	emptyFormdata(errorField,"#formTriageInfo");
 
 	//panel header
 	$('#name_show_triage').text(obj.Name);
 	$('#mrn_show_triage').text(obj.MRN);
+
+	$("#mrn_edit_ti").val(obj.MRN);
+	$("#episno_ti").val(obj.Episno);
 
 	document.getElementById('hiddentriage').style.display = 'inline';
 

@@ -29,7 +29,7 @@ class NursingController extends defaultController
     {   
         DB::enableQueryLog();
         switch($request->action){
-            case 'save_table_ti':
+            case 'save_table_ti': //dari bed management
 
                 switch($request->oper){
                     case 'add':
@@ -40,7 +40,7 @@ class NursingController extends defaultController
                         return 'error happen..';
                 }
 
-            case 'save_table_triage':
+            case 'save_table_triage': //dari patient list OP
 
                 switch($request->oper){
                     case 'add':
@@ -384,12 +384,14 @@ class NursingController extends defaultController
         DB::beginTransaction();
 
         try {
+
+            $location = $this->get_location($request->mrn_edit_ti,$request->episno_ti);
             
             DB::table('nursing.nursassessment')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_triage,
-                        'episno' => $request->episno_triage,
+                        'mrn' => $request->mrn_edit_ti,
+                        'episno' => $request->episno_ti,
                         'admwardtime' => $request->admwardtime,
                         'triagecolor' => $request->triagecolor,
                         'admreason' => $request->admreason,
@@ -431,7 +433,7 @@ class NursingController extends defaultController
                         'es_distress' => $request->es_distress,
                         'es_depressed' => $request->es_depressed,
                         'es_irritable' => $request->es_irritable,
-                        'location' => 'TRIAGE',
+                        'location' => $location,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -490,7 +492,7 @@ class NursingController extends defaultController
                         'pa_othdiscolor' => $request->pa_othdiscolor,
                         'pa_othnil' => $request->pa_othnil,
                         'pa_notes' => $request->pa_notes,
-                        'location' => 'TRIAGE',
+                        'location' => $location,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -534,11 +536,13 @@ class NursingController extends defaultController
 
         try {
 
+            $location = $this->get_location($request->mrn_edit_ti,$request->episno_ti);
+
             DB::table('nursing.nursassessment')
-                ->where('mrn','=',$request->mrn_edit_triage)
-                ->where('episno','=',$request->episno_triage)
+                ->where('mrn','=',$request->mrn_edit_ti)
+                ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
-                ->where('location','=','TRIAGE')
+                ->where('location','=', $location)
                 ->update([
                     'admwardtime' => $request->admwardtime,
                     'triagecolor' => $request->triagecolor,
@@ -589,7 +593,7 @@ class NursingController extends defaultController
                 ->where('mrn','=',$request->mrn_edit_triage)
                 ->where('episno','=',$request->episno_triage)
                 ->where('compcode','=',session('compcode'))
-                ->where('location','=','TRIAGE')
+                ->where('location','=',$location)
                 ->update([
                     'br_breathing' => $request->br_breathing,
                     'br_breathingdesc' => $request->br_breathingdesc,
@@ -673,7 +677,7 @@ class NursingController extends defaultController
                             'compcode' => session('compcode'),
                             'mrn' => $request->mrn_edit_triage,
                             'episno' => $request->episno_triage,
-                            'location' => 'TRIAGE',
+                            'location' => $location,
                             'exam' => $examsel[$key],
                             'examnote' => $examnote[$key]
                         ]);
@@ -701,21 +705,23 @@ class NursingController extends defaultController
 
     public function get_table_triage(Request $request){
 
+        $location = $this->get_location($request->mrn,$request->episno);
+
         $triage_obj = DB::table('nursing.nursassessment')
                     ->where('compcode','=',session('compcode'))
-                    ->where('location','=','TRIAGE')
+                    ->where('location','=',$location)
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
         $triage_gen_obj = DB::table('nursing.nursassessgen')
                     ->where('compcode','=',session('compcode'))
-                    ->where('location','=','TRIAGE')
+                    ->where('location','=',$location)
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
         $triage_exm_obj = DB::table('nursing.nurassesexam')
                     ->where('compcode','=',session('compcode'))
-                    ->where('location','=','TRIAGE')
+                    ->where('location','=',$location)
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
@@ -740,4 +746,28 @@ class NursingController extends defaultController
 
     }
 
+
+    public function get_location($mrn,$episno){
+
+        $epistype = DB::table('hisdb.episode')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$mrn)
+            ->where('episno','=',$episno);
+
+        if($epistype->exists()){
+            $epistype = $epistype->first();
+            $epistype = $epistype->epistycode;
+        }
+
+        if($epistype = 'IP' || $epistype = 'DP' ){
+            $location = 'WARD';
+        }else{
+            $location = 'TRIAGE';
+        }
+
+        return $location;
+
+    }
+
+    
 }
