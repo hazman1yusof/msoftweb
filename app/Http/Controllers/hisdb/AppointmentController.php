@@ -118,88 +118,129 @@ class AppointmentController extends defaultController
 
     public function addEvent(Request $request){
 
-        $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
-        DB::table('hisdb.apptbook')->insert([
-            'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
-            'loccode'     => $request->doctor,
-            'mrn'         => $request->mrn,
-            'pat_name'    => $request->patname,
-            'start'       => $request->apptdatefr_day.' '.$request->start_time,
-            'end'         => $request->apptdatefr_day.' '.$request->end_time,
-            'telno'       => $request->telh,
-            'apptstatus'  => $request->status,
-            'telhp'       => $request->telhp,
-            'case_code'   => $request->case,
-            'remarks'     => $request->remarks,
-            'recstatus'   => 'A',
-            'adduser'     => session('username'),
-            'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
-            'lastuser'    => session('username'),
-            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
-            'type'        => 'DOC'
-        ]);
+        DB::beginTransaction();
 
-        $pat_mast = DB::table("hisdb.pat_mast")
-                ->where("compcode",'=',session('compcode'))
-                ->where("mrn",'=',$request->mrn)
-                ->first();
+        try {
 
-        DB::table("hisdb.pre_episode")
-            ->insert([
-                "compcode" => session('compcode'),
-                "mrn" => ltrim($request->mrn, '0'),
-                "episno" => intval($pat_mast->Episno) + 1,
-                "case_code" => $request->case,
-                "admdoctor" => $request->doctor,
-                "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
-                "adduser" => session('username')
-            ]);
-        
-    }
-
-    public function editEvent(Request $request){
-
-        if(!empty($request->event_drop)){
-            DB::table('hisdb.apptbook')
-            ->where('idno','=',$request->idno)
-            ->update([
-                'start'       => $request->start,
-                'end'         => $request->end
-            ]);
-            
-        }else if(!empty($request->type) && $request->type=='transfer'){
-
-            foreach ($request->arraytd as $key => $value) {
-                DB::table('hisdb.apptbook')
-                ->where('idno','=',$value['idno'])
-                ->update([
-                    'start'       => $value['new_start'],
-                    'end'         => $value['new_end']
-                ]);
-            }
-
-        }else{
             $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
-            DB::table('hisdb.apptbook')
-            ->where('idno','=',$request->idno)
-            ->update([
+            DB::table('hisdb.apptbook')->insert([
                 'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
                 'loccode'     => $request->doctor,
+                'icnum'       => $request->icnum,
                 'mrn'         => $request->mrn,
                 'pat_name'    => $request->patname,
                 'start'       => $request->apptdatefr_day.' '.$request->start_time,
                 'end'         => $request->apptdatefr_day.' '.$request->end_time,
                 'telno'       => $request->telh,
                 'apptstatus'  => $request->status,
-                'recstatus'   => 'A',
                 'telhp'       => $request->telhp,
                 'case_code'   => $request->case,
                 'remarks'     => $request->remarks,
+                'recstatus'   => 'A',
+                'adduser'     => session('username'),
+                'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
                 'lastuser'    => session('username'),
-                'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
+                'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                'type'        => 'DOC'
             ]);
 
+            if($request->mrn != ''){
+                $pat_mast = DB::table("hisdb.pat_mast")
+                        ->where("compcode",'=',session('compcode'))
+                        ->where("mrn",'=',$request->mrn)
+                        ->first();
+
+                $mrn = ltrim($request->mrn, '0');
+                $episno = intval($pat_mast->Episno) + 1;
+            }else{
+
+                $mrn = '00000';
+                $episno = 0;
+            }
+
+
+            DB::table("hisdb.pre_episode")
+                ->insert([
+                    "compcode" => session('compcode'),
+                    "mrn" => $mrn,
+                    "episno" => $episno,
+                    "case_code" => $request->case,
+                    "admdoctor" => $request->doctor,
+                    "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
+                    "adduser" => session('username')
+                ]);
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
         }
+
+        
+        
+    }
+
+    public function editEvent(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            if(!empty($request->event_drop)){
+                DB::table('hisdb.apptbook')
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'start'       => $request->start,
+                    'end'         => $request->end
+                ]);
+                
+            }else if(!empty($request->type) && $request->type=='transfer'){
+
+                foreach ($request->arraytd as $key => $value) {
+                    DB::table('hisdb.apptbook')
+                    ->where('idno','=',$value['idno'])
+                    ->update([
+                        'start'       => $value['new_start'],
+                        'end'         => $value['new_end']
+                    ]);
+                }
+
+            }else{
+                $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
+
+                DB::table('hisdb.apptbook')
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
+                        'loccode'     => $request->doctor,
+                        'mrn'         => $request->mrn,
+                        'icnum'       => $request->icnum,
+                        'pat_name'    => $request->patname,
+                        'start'       => $request->apptdatefr_day.' '.$request->start_time,
+                        'end'         => $request->apptdatefr_day.' '.$request->end_time,
+                        'telno'       => $request->telh,
+                        'apptstatus'  => $request->status,
+                        'recstatus'   => 'A',
+                        'telhp'       => $request->telhp,
+                        'case_code'   => $request->case,
+                        'remarks'     => $request->remarks,
+                        'lastuser'    => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
+        }
+
+        
     }
 
     public function delEvent(Request $request){

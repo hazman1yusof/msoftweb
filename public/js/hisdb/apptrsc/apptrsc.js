@@ -197,7 +197,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol : ['grpcasetype','compcode'],
-				filterVal : ['REGISTER','9A'],
+				filterVal : ['REGISTER','session.compcode'],
 
 			},
 		},
@@ -206,7 +206,7 @@ $(document).ready(function () {
             width: 10/10 * $(window).width(),
 			open: function () {
 				dialog_case.urlParam.filterCol = ['grpcasetype','compcode'];
-				dialog_case.urlParam.filterVal = ['REGISTER','9A'];
+				dialog_case.urlParam.filterVal = ['REGISTER','session.compcode'];
 			},
 		}, 'urlParam'
 	);
@@ -220,15 +220,17 @@ $(document).ready(function () {
 				{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
 				{	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
+				{	label: 'Newic', name: 'Newic', width: 200, classes: 'pointer',hidden:true},
 			],
 			urlParam: {
 				filterCol : ['compcode'],
-				filterVal : ['9A'],
+				filterVal : ['session.compcode'],
 
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_mrn.gridname);
 				$("#addForm input[name='patname']").val(data['Name']);
+				$("#addForm input[name='icnum']").val(data['Newic']);
 				$("#addForm input[name='telh']").val(data['telh']);
 				$("#addForm input[name='telhp']").val(data['telhp']);
 				$(dialog_mrn.textfield).parent().next().text(" ");
@@ -238,7 +240,7 @@ $(document).ready(function () {
 			title: "Select Case",
 			open: function () {
 				dialog_mrn.urlParam.filterCol = ['compcode'];
-				dialog_mrn.urlParam.filterVal = ['9A'];
+				dialog_mrn.urlParam.filterVal = ['session.compcode'];
 			},
 		}, 'urlParam'
 	);
@@ -247,6 +249,12 @@ $(document).ready(function () {
 	if ( !$("#patname").is('[readonly]') ) {
 		dialog_mrn.on();
 	}
+
+	$("#addForm input[name='patname']").blur(function(){
+		if($("#addForm input[name='mrn']").val() == ''){
+			$("#addForm input[name='icnum']").prop('readonly',false);
+		}
+	});
 
 	var dialog_doctor = new ordialog(
 		'dialog_doctor', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='transfer_doctor']", errorField,
@@ -305,6 +313,8 @@ $(document).ready(function () {
 		open: function(event,ui){
 			set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
 			session_field.clear().ready().set();
+
+			$("#addForm input[name='icnum']").prop('readonly',true);
 		},
 		close: function( event, ui ){
 			emptyFormdata(errorField,'#addForm');
@@ -534,11 +544,12 @@ $(document).ready(function () {
 					oper = 'edit';
 					$('#doctor').val(event.loccode);
 					$('#mrn').val(event.mrn);
+					$('#icnum').val(event.icnum);
 					$('#patname').val(event.pat_name);
 					$('#apptdatefr_day').val(event.start.format('YYYY-MM-DD'));
 					$('#start_time').val(event.start.format('HH:mm:ss'));
 					$('#end_time').val(event.end.format('HH:mm:ss'));
-					$('#telno').val(event.telno);
+					$('#telh').val(event.telno);
 					$('#telhp').val(event.telhp);
 					$('#case').val(event.case_code);
 					$('#remarks').val(event.remarks);

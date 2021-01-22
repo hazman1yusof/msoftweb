@@ -139,6 +139,12 @@ td.fc-event-container a.selected{
 								</div>
 							</div>
 							<div class="form-group">
+								<label for="title" class="col-md-2 control-label">I/C No.</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control input-sm" placeholder="I/C No." id="icnum" name="icnum" maxlength="12" readonly value="@if(!empty($pat_info)){{$pat_info->newic}} @endif">
+								</div>
+							</div>
+							<div class="form-group">
 								<label for="start" class="col-md-2 control-label">Appt Date</label>
 								<div class="col-md-3">
 									<input type="date" class="form-control input-sm" placeholder="Start Date" id="apptdatefr_day" name="apptdatefr_day" data-validation="required"  min="{{Carbon\Carbon::now()->format('Y-m-d')}}">	

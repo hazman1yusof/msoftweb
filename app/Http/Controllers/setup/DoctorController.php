@@ -42,8 +42,9 @@ class DoctorController extends defaultController
                 return $this->defaultAdd($request);
             case 'edit':
 
-                $got = DB::table('hisdb.apptresrc')->where('resourcecode','=',$request->doctorcode)->first();
-                if($request->appointment == '1' && $got == null){
+                $got = DB::table('hisdb.apptresrc')->where('resourcecode','=',$request->doctorcode)->exists();
+                
+                if($request->appointment == '1' && !$got){
                     DB::table('hisdb.apptresrc')->insert([
                         'compcode' => session('compcode'),
                         'resourcecode' => $request->doctorcode,
@@ -53,6 +54,15 @@ class DoctorController extends defaultController
                         'adduser' => session('username'),
                         'adddate' => now()
                     ]);
+                }else if($request->appointment == '1' && $got){
+                    DB::table('hisdb.apptresrc')
+                        ->where('resourcecode','=',$request->doctorcode)
+                            ->update([
+                            'description' => $request->doctorname,
+                            'recstatus' => 'ACTIVE',
+                            'upduser' => session('username'),
+                            'upddate' => now()
+                        ]);
                 }
 
                 $old_doctor = DB::table('hisdb.doctor')->where('idno','=',$request->idno)->first();

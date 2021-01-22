@@ -249,9 +249,8 @@
 							<input id="currentcost" name="currentcost" maxlength="12" class="form-control input-sm" value="0.00" readonly>  
 					 	</div>
 					<label class="col-md-2 control-label" for="description">Description</label>  
-						<div class="col-md-4">
-							<textarea class="form-control input-sm text-uppercase" name="description" rows="4" cols="55" maxlength="100" id="description"> <br> <a href="'.$link.'" target="_blank" class="more">...See More</a> </textarea>
-							<a href="'.$link.'" target="_blank" class="more">...See More</a>
+						<div class="col-md-3">
+							<textarea class="form-control input-sm text-uppercase" name="description" rows="4" cols="55" maxlength="300" id="description"> <br> <a  data-show='false' class="more">See More</a> </textarea>
 						</div>
 				</div>
 
