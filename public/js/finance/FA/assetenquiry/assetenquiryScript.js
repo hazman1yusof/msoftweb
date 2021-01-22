@@ -209,30 +209,30 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Type', name: 'assettype', width: 5, classes: 'wrap',canSearch: true},		
-			{ label: 'Category', name: 'assetcode', width: 7, classes: 'wrap', canSearch: true},		
-			{ label: 'Asset No', name: 'assetno', width: 8, classes: 'wrap'},
+			{ label: 'Type', name: 'assettype', width: 10, classes: 'wrap',canSearch: true},		
+			{ label: 'Category', name: 'assetcode', width: 15, classes: 'wrap', canSearch: true},		
+			{ label: 'Asset No', name: 'assetno', width: 10, classes: 'wrap'},
 			{ label: 'Item Code', name: 'itemcode', width: 20, classes: 'wrap',hidden:true},
 			{ label: 'Description', name: 'description', width: 40, classes: 'wrap', canSearch: true,checked:true},
 			{ label: 'Serial No', name: 'serialno', width: 20,classes: 'wrap',hidden:true},
 			{ label: 'Lotno', name: 'lotno', width: 20,classes: 'wrap',hidden:true},
 			{ label: 'Casisno', name: 'casisno', width: 20, classes: 'wrap',hidden:true},
 			{ label: 'Engineno', name: 'engineno', width: 20, classes: 'wrap',hidden:true},
-			{ label: 'Dept', name: 'deptcode', width: 10, classes: 'wrap'},
-            { label: 'Location', name: 'loccode', width: 10, classes: 'wrap'},
+			{ label: 'Department', name: 'deptcode', width: 20, classes: 'wrap'},
+            { label: 'Location', name: 'loccode', width: 20, classes: 'wrap'},
             { label: 'Invoice No', name: 'invno', width: 20, classes: 'wrap',hidden:true},
             { label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', hidden:true},
-            { label: 'Qty', name: 'qty', width: 5,  align: 'right',classes: 'wrap'},
+            { label: 'Quantity', name: 'qty', width: 20,  align: 'right',classes: 'wrap'},
             { label: 'Start Date', name:'statdate', width:20, classes:'wrap',  hidden:true},
 			{ label: 'Post Date', name:'trandate', width:20, classes:'wrap',  hidden:true},
             { label: 'lstytddep', name:'lstytddep', width:20, classes:'wrap', hidden:true},
             { label: 'cuytddep', name:'cuytddep', width:20, classes:'wrap', hidden:true},
-            { label: 'Cost', name: 'origcost', width: 8, classes: 'wrap', align: 'right',formatter:'currency'},
+            { label: 'Cost', name: 'origcost', width: 20, classes: 'wrap', align: 'right',formatter:'currency'},
             { label: 'SuppCode', name: 'suppcode', width: 20, classes: 'wrap'},
             { label: 'Purchase Order No', name:'purordno',width: 20, classes:'wrap', hidden:true},
             { label: 'Purchase Date', name:'purdate', width: 20, classes:'wrap', hidden:true},
 			{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
-            { label: 'D/O No', name: 'delordno', width: 10, classes: 'wrap'},
+            { label: 'D/O No', name: 'delordno', width: 20, classes: 'wrap'},
             { label: 'DO Date', name:'delorddate', width: 20, classes:'wrap', hidden:true},
 			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden:true, cellattr: function(rowid, cellvalue)
 				{
@@ -675,11 +675,9 @@ $(document).ready(function () {
 					$('#seemore_'+i).hide();
 				}
 
-
 				$('#seemore_'+i).unbind('click');
 				$('#seemore_'+i).click(function(){
 					var show = $(this).data('show');
-					console.log(show)
 					if(show == false){
 						$(this).data('show',true);
 						$(this).text('see less')
