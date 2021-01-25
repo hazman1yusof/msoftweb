@@ -33,6 +33,11 @@ td.fc-event-container a.selected{
 }
 
 
+#dialogForm input[type=text] {
+    text-transform: uppercase;
+}
+
+
 @endsection
 
 @section('title', 'Appointment')

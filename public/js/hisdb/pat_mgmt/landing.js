@@ -82,9 +82,14 @@ $(document).ready(function() {
             },
             "commands": function (column,row) {
                 let rowid = counter++;//just for specify each row
-                return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
-                       "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>" +
-                       "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button>";
+                if(row.q_epistycode != ''){
+                    return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
+                           "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+row.q_epistycode+"</b></button>";
+                }else{
+                    return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
+                           "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>" +
+                           "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button>";
+                }
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function(){
@@ -193,7 +198,11 @@ $(document).ready(function() {
         }
         $("#load_from_addupd").data('info','false');
 
-        document.getElementById('hiddentriage').style.display = 'inline'; //hide and show heading details dekat triage
+
+        if($('#epistycode').val() == 'IP'){
+            document.getElementById('hiddentriage').style.display = 'inline'; //hide and show heading details dekat triage
+        }
+
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
@@ -292,7 +301,7 @@ $(document).ready(function() {
             $("#jqGrid_preepis").jqGrid({
                 datatype: "local",
                 colModel: [
-                    { label: 'MRN', name: 'pe_mrn' , width: 5},
+                    { label: 'MRN', name: 'pe_mrn' , width: 5, formatter: padzero, unformat: unpadzero},
                     { label: 'Name', name: 'p_Name' , width: 30},
                     { label: 'Newic', name: 'p_Newic', width: 10 },
                     { label: 'Handphone', name: 'p_telhp' , width: 10},
@@ -340,12 +349,22 @@ $(document).ready(function() {
             function formataction(cellvalue, options, rowObject){
                 let mrn = cellvalue.split(',')[0];
                 let episno = cellvalue.split(',')[1];
-                return `
-                    <button title="Edit" type="button" class="btn btn-xs btn-warning btn-md command-edit preepis_bio" data-mrn=`+mrn+` data-episno=`+episno+`><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                    &nbsp;&nbsp;
-                    <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-episno=`+episno+`><b>IP</b></button>
-                    <button title="OTC Episode" type="button" class="btn btn-xs btn-danger btn-md command-otc-episode preepis_otc" data-mrn=`+mrn+` data-episno=`+episno+`><b>DC</b></button>
-                `;
+
+                if( mrn == '0000000'){
+                    return `
+                        <button title="Edit" type="button" class="btn btn-xs btn-warning btn-md command-edit preepis_bio" data-mrn=`+mrn+` data-episno=`+episno+` disabled><span class="glyphicon glyphicon-edit" aria-hidden="true" ></span></button>
+                        &nbsp;&nbsp;
+                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-episno=`+episno+`><b>IP</b></button>
+                    `;
+                }else{
+
+                    return `
+                        <button title="Edit" type="button" class="btn btn-xs btn-warning btn-md command-edit preepis_bio" data-mrn=`+mrn+` data-episno=`+episno+`><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                        &nbsp;&nbsp;
+                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-episno=`+episno+`><b>IP</b></button>
+                    `;
+                }
+                // <button title="OTC Episode" type="button" class="btn btn-xs btn-danger btn-md command-otc-episode preepis_otc" data-mrn=`+mrn+` data-episno=`+episno+`><b>DC</b></button>
             }
 
             function preepis_epis_click(event){

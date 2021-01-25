@@ -302,14 +302,21 @@
 
 
 	@if (request()->get('epistycode') == 'OP')
-	<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
-	<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
-	<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
+		@if (Auth::user()->doctor == 1)
+			<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+			<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+		@elseif (Auth::user()->nurse == 1)
+			<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+		@endif
+
+		@if (Auth::user()->billing == 1)
+			<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
+		@endif
 	@endif
 
 	@if (request()->get('epistycode') == 'IP')
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
-	<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
+		<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
+		<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
 	@endif
 
 

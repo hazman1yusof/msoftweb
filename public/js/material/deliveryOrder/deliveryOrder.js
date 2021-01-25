@@ -203,22 +203,22 @@ $(document).ready(function () {
 		table_id:'delordhd_recno',
 		checkduplicate: 'true'
 	};
-	function padzero(cellvalue, options, rowObject){
-		let padzero = 7, str="";
-		while(padzero>0){
-			str=str.concat("0");
-			padzero--;
-		}
-		if(cellvalue == null){
-			return '';
-		}else{
-			return pad(str, cellvalue, true);
-		}
-	}
+	// function padzero(cellvalue, options, rowObject){ dah ada dkt utility js
+	// 	let padzero = 7, str="";
+	// 	while(padzero>0){
+	// 		str=str.concat("0");
+	// 		padzero--;
+	// 	}
+	// 	if(cellvalue == null){
+	// 		return '';
+	// 	}else{
+	// 		return pad(str, cellvalue, true);
+	// 	}
+	// }
 
-	function unpadzero(cellvalue, options, rowObject){
-		return cellvalue.substring(cellvalue.search(/[1-9]/));
-	}
+	// function unpadzero(cellvalue, options, rowObject){
+	// 	return cellvalue.substring(cellvalue.search(/[1-9]/));
+	// }
 
 	function searchClick2(grid,form,urlParam){
 		$(form+' [name=Stext]').on( "keyup", function() {
