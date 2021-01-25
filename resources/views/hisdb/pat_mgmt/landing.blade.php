@@ -240,34 +240,38 @@
 		@include('hisdb.pat_mgmt.itemselector')
 
 
-		@if (request()->get('epistycode') == 'OP')
+		@if (request()->get('curpat') == 'true')
 
-			@if (Auth::user()->doctor == 1)
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
-				</div>
+			@if (request()->get('epistycode') == 'OP')
 
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.doctornote.doctornote')
-				</div>
-			@elseif (Auth::user()->nurse == 1)
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
-				</div>
+				@if (Auth::user()->doctor == 1)
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+					</div>
+
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.doctornote.doctornote')
+					</div>
+				@elseif (Auth::user()->nurse == 1)
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+					</div>
+				@endif
+
+				@if (Auth::user()->billing == 1)
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.ordcom.ordcom')
+					</div>
+				@endif
+
 			@endif
 
-			@if (Auth::user()->billing == 1)
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.ordcom.ordcom')
-				</div>
+			@if (request()->get('epistycode') == 'IP')
+			<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+				@include('hisdb.ordcom.ordcom')
+			</div>
 			@endif
 
-		@endif
-
-		@if (request()->get('epistycode') == 'IP')
-		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-			@include('hisdb.ordcom.ordcom')
-		</div>
 		@endif
 		
 
@@ -301,22 +305,24 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
 
 
-	@if (request()->get('epistycode') == 'OP')
-		@if (Auth::user()->doctor == 1)
-			<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
-			<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
-		@elseif (Auth::user()->nurse == 1)
-			<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+	@if (request()->get('curpat') == 'true')
+		@if (request()->get('epistycode') == 'OP')
+			@if (Auth::user()->doctor == 1)
+				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+			@elseif (Auth::user()->nurse == 1)
+				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+			@endif
+
+			@if (Auth::user()->billing == 1)
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
+			@endif
 		@endif
 
-		@if (Auth::user()->billing == 1)
+		@if (request()->get('epistycode') == 'IP')
+			<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
 			<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
 		@endif
-	@endif
-
-	@if (request()->get('epistycode') == 'IP')
-		<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
-		<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
 	@endif
 
 

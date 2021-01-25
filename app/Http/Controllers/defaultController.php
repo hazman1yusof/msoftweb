@@ -272,6 +272,8 @@ abstract class defaultController extends Controller{
                     $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
                 }else if($pieces[0] == 'on'){
                     $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
+                }else if($pieces[0] == 'raw'){
+                    $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
                 }else{
                     $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
                 }

@@ -149,17 +149,22 @@ class PatmastController extends defaultController
 
             foreach ($paginate->items() as $key => $value) {
                 if($value->PatStatus==1){
-                    $queue = DB::table('hisdb.queue')
-                                ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
-                                ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
-                                ->where('queue.mrn','=',$value->MRN)
-                                ->where('queue.episno','=',$value->Episno)
-                                ->where('queue.deptcode','=',"ALL");
+                    // $queue = DB::table('hisdb.queue')
+                    //             ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
+                    //             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+                    //             ->where('queue.mrn','=',$value->MRN)
+                    //             ->where('queue.episno','=',$value->Episno)
+                    //             ->where('queue.deptcode','=',"ALL");
+                    $episode = DB::table('hisdb.episode')
+                                ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
+                                ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
+                                ->where('episode.mrn','=',$value->MRN)
+                                ->where('episode.episno','=',$value->Episno);
 
-                    if($queue->exists()){
-                        $queue = $queue->first();
-                        $value->q_epistycode = $queue->epistycode;
-                        $value->q_doctorname = $queue->doctorname;
+                    if($episode->exists()){
+                        $episode = $episode->first();
+                        $value->q_epistycode = $episode->epistycode;
+                        $value->q_doctorname = $episode->doctorname;
                     }
                 }
             }
@@ -2037,6 +2042,30 @@ class PatmastController extends defaultController
         }else{
             dump('wrong patclass, choose only HIS or OTC');
         }
+    }
+
+
+    public function get_preepis_data(Request $request){
+
+        $preepisode = DB::table('hisdb.pre_episode')
+                        ->where('apptidno','=',$request->apptidno)
+                        ->first();
+
+        $table = array();
+        $table[0] = [
+            'MRN' => $preepisode->mrn,
+            'Name' => $preepisode->Name,
+            'Newic' => $preepisode->Newic,
+            'telhp' => $preepisode->telhp,
+            'telh' => $preepisode->telno
+        ];
+
+
+        $responce = new stdClass();
+        $responce->rows = $table;
+
+        return json_encode($responce);
+
     }
 
     

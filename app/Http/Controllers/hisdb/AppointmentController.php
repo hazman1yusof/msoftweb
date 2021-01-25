@@ -122,9 +122,14 @@ class AppointmentController extends defaultController
 
         try {
 
+            $case = DB::table('hisdb.casetype')
+                    ->where('case_code','=',$request->case)
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
             $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
-            DB::table('hisdb.apptbook')->insert([
-                'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
+            $apptidno = DB::table('hisdb.apptbook')->insertGetId([
+                'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$case->description.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
                 'loccode'     => $request->doctor,
                 'icnum'       => $request->icnum,
                 'mrn'         => $request->mrn,
@@ -135,6 +140,7 @@ class AppointmentController extends defaultController
                 'apptstatus'  => $request->status,
                 'telhp'       => $request->telhp,
                 'case_code'   => $request->case,
+                'case_desc'   => $case->description,
                 'remarks'     => $request->remarks,
                 'recstatus'   => 'A',
                 'adduser'     => session('username'),
@@ -151,24 +157,38 @@ class AppointmentController extends defaultController
                         ->first();
 
                 $mrn = ltrim($request->mrn, '0');
-                $episno = intval($pat_mast->Episno) + 1;
             }else{
-
                 $mrn = '00000';
-                $episno = 0;
             }
 
-
+            //add preepisode
             DB::table("hisdb.pre_episode")
                 ->insert([
                     "compcode" => session('compcode'),
+                    "apptidno" => $apptidno,
                     "mrn" => $mrn,
-                    "episno" => $episno,
+                    "episno" => 0,
                     "case_code" => $request->case,
                     "admdoctor" => $request->doctor,
                     "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
-                    "adduser" => session('username')
+                    "adduser" => session('username'),
+                    'Newic'    => $request->icnum,
+                    'Name'    => $request->patname,
+                    'telhp'    => $request->telhp,
+                    'telno'    => $request->telno,
+                    'apptdate' => $request->apptdatefr_day
                 ]);
+
+            //edit no telefon dkt patmast
+            if($mrn != '00000'){
+                DB::table('hisdb.pat_mast')
+                    ->where('compcode','=',session('compcode'))
+                    ->where("mrn",'=',$mrn)
+                    ->update([
+                        'telhp'    => $request->telhp,
+                        'telh'    => $request->telno,
+                    ]);
+            }
 
             DB::commit();
 
@@ -210,10 +230,15 @@ class AppointmentController extends defaultController
             }else{
                 $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
 
+                $case = DB::table('hisdb.casetype')
+                    ->where('case_code','=',$request->case)
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
                 DB::table('hisdb.apptbook')
                     ->where('idno','=',$request->idno)
                     ->update([
-                        'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$request->case.' - '.$request->remarks,
+                        'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$case->description.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
                         'loccode'     => $request->doctor,
                         'mrn'         => $request->mrn,
                         'icnum'       => $request->icnum,
@@ -225,10 +250,52 @@ class AppointmentController extends defaultController
                         'recstatus'   => 'A',
                         'telhp'       => $request->telhp,
                         'case_code'   => $request->case,
+                        'case_desc'   => $case->description,
                         'remarks'     => $request->remarks,
                         'lastuser'    => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+
+                if($request->mrn != ''){
+                    $pat_mast = DB::table("hisdb.pat_mast")
+                            ->where("compcode",'=',session('compcode'))
+                            ->where("mrn",'=',$request->mrn)
+                            ->first();
+
+                    $mrn = ltrim($request->mrn, '0');
+                    $episno = intval($pat_mast->Episno) + 1;
+                }else{
+                    $mrn = '00000';
+                    $episno = 0;
+                }
+
+                DB::table("hisdb.pre_episode")
+                    ->where("apptidno",'=',$request->idno)
+                    ->update([
+                        "compcode" => session('compcode'),
+                        "case_code" => $request->case,
+                        "admdoctor" => $request->doctor,
+                        "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
+                        "adduser" => session('username'),
+                        'Newic'    => $request->icnum,
+                        'Name'    => $request->pat_name,
+                        'telhp'    => $request->telhp,
+                        'telno'    => $request->telno,
+                        'apptdate' => $request->apptdatefr_day
+                    ]);
+
+                //edit no telefon dkt patmast
+                if($mrn != '00000'){
+                    DB::table('hisdb.pat_mast')
+                        ->where('compcode','=',session('compcode'))
+                        ->where("mrn",'=',$mrn)
+                        ->where("episno",'=',$episno)
+                        ->update([
+                            'telhp'    => $request->telhp,
+                            'telh'    => $request->telno,
+                        ]);
+                }
+
 
             }
 

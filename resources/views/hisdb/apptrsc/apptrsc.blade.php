@@ -13,7 +13,7 @@
 .fc-event {
     position: relative;
     display: block;
-    font-size: .85em;
+    font-size: 1em !important;
     line-height: 1.3;
     border-radius: 3px;
     border: 1px solid #3a87ad;
@@ -22,7 +22,7 @@
 .fc-event .selected {
     position: relative;
     display: block;
-    font-size: .85em;
+    font-size: 1em !important;
     line-height: 1.3;
     border-radius: 3px;
     border: 1px solid #3a87ad;
@@ -30,6 +30,11 @@
 
 td.fc-event-container a.selected{
 	background-color: dimgray !important;
+}
+
+.fc-time-grid-event.fc-short .fc-title {
+    font-size: 1em !important;
+    padding: 0;
 }
 
 
@@ -146,7 +151,7 @@ td.fc-event-container a.selected{
 							<div class="form-group">
 								<label for="title" class="col-md-2 control-label">I/C No.</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="I/C No." id="icnum" name="icnum" maxlength="12" readonly value="@if(!empty($pat_info)){{$pat_info->newic}} @endif">
+									<input type="text" class="form-control input-sm" placeholder="I/C No." id="icnum" name="icnum" maxlength="12" data-validation="required" readonly value="@if(!empty($pat_info)){{$pat_info->newic}} @endif">
 								</div>
 							</div>
 							<div class="form-group">

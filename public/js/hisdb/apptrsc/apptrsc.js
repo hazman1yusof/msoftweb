@@ -540,6 +540,15 @@ $(document).ready(function () {
 		},
 		eventRender: function(event, element) {
 			if(event.source.id == "apptbook"){
+				element.attr('data-toggle','tooltip')
+				element.attr('data-placement','bottom')
+				let mytitle = event.mrn+' - '
+								+event.pat_name+' - '
+								+event.case_desc+' - '
+								+event.remarks;
+				element.attr('title',mytitle)
+				element.tooltip();
+
 				element.bind('dblclick', function() {
 					oper = 'edit';
 					$('#doctor').val(event.loccode);
