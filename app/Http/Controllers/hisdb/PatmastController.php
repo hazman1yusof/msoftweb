@@ -472,6 +472,12 @@ class PatmastController extends defaultController
             $array_insert['MRN'] = $mrn;
             $lastidno = $table->insertGetId($array_insert);
 
+            if(!empty($request->func_after)){
+                if($request->func_after == 'save_preepis'){
+                    $this->save_preepis($request,$mrn);
+                }
+            }
+
             $responce = new stdClass();
             $responce->lastMrn = $mrn;
             $responce->lastidno = $lastidno;
@@ -2056,8 +2062,8 @@ class PatmastController extends defaultController
             'MRN' => $preepisode->mrn,
             'Name' => $preepisode->Name,
             'Newic' => $preepisode->Newic,
-            'telhp' => $preepisode->telhp,
-            'telh' => $preepisode->telno
+            'telhp' => (empty($preepisode->telhp))?'':$preepisode->telhp,
+            'telh' => (empty($preepisode->telno))?'':$preepisode->telno
         ];
 
 
@@ -2065,6 +2071,27 @@ class PatmastController extends defaultController
         $responce->rows = $table;
 
         return json_encode($responce);
+
+    }
+
+    public function save_preepis(Request $request,$mrn){
+        $preepisode = DB::table('hisdb.pre_episode')
+                        ->where('apptidno','=',$request->apptidno);
+
+        if($preepisode->exists()){
+            $preepisode->update([
+                'mrn' => $mrn
+            ]);
+        }
+
+        $apptbook = DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->apptidno);
+
+        if($apptbook->exists()){
+            $apptbook->update([
+                'mrn' => $mrn
+            ]);
+        }
 
     }
 

@@ -1,4 +1,4 @@
-
+var preepisode;
 $(document).ready(function() {
 
     $('#tab_patient_info a:last').hide();    // hide Medical Info tab
@@ -241,6 +241,7 @@ $(document).ready(function() {
         $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().hide();
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","add");
+        $('#PatClass').val(getUrlParameter('PatClass'));
         $('#episno').val('1');
     });
 
@@ -281,12 +282,16 @@ $(document).ready(function() {
 
 
     if($('#curpat').val() == "true"){
-        var preepisode = new preepisode_init();
+        preepisode = new preepisode_init();
         preepisode.makejqgrid();
     }
 
     function preepisode_init(){
         this.urlParam_preepis;
+
+        this.refreshGrid = function(){
+            refreshGrid("#jqGrid_preepis", this.urlParam_preepis);
+        }
 
         this.makejqgrid = function(){
 
@@ -457,8 +462,18 @@ $(document).ready(function() {
                         var episdata = data.rows[0];
 
                         populate_patient(episdata);
+                        desc_show.write_desc();
                         $('#mdl_patient_info').modal({backdrop: "static"});
-                        $("#btn_register_patient").data("oper","edit");
+
+                        if(episdata.idno){
+                            $("#btn_register_patient").data("oper","edit");
+                            $("#btn_register_patient").data('idno',episdata.idno);
+                        }else{
+                            $('#PatClass').val(getUrlParameter('PatClass'));
+                            $("#btn_register_patient").data("oper","add");
+                            $("#func_after").val('save_preepis');
+                            $("#apptidno").val(apptidno);
+                        }
 
                     }else{
                         alert('MRN not found')

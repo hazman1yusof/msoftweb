@@ -13,6 +13,18 @@ $(document).ready(function () {
             requiredFields: ''
         },
 	});
+
+	$('#addForm').validate({
+        rules: {
+            telno: {
+              require_from_group: [1, ".phone-group"]
+            },
+            telhp: {
+              require_from_group: [1, ".phone-group"]
+            }
+        },
+    });	// patient form validation
+
 	
 	var errorField=[];
 	conf = {
@@ -542,10 +554,12 @@ $(document).ready(function () {
 			if(event.source.id == "apptbook"){
 				element.attr('data-toggle','tooltip')
 				element.attr('data-placement','bottom')
-				let mytitle = event.mrn+' - '
+				let mrn_ = (event.mrn == null)?'00000':event.mrn;
+				let remarks_ = (event.remarks == null)?' ':event.remarks;
+				let mytitle = mrn_+' - '
 								+event.pat_name+' - '
 								+event.case_desc+' - '
-								+event.remarks;
+								+remarks_;
 				element.attr('title',mytitle)
 				element.tooltip();
 

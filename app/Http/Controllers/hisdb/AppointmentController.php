@@ -175,7 +175,7 @@ class AppointmentController extends defaultController
                     'Newic'    => $request->icnum,
                     'Name'    => $request->patname,
                     'telhp'    => $request->telhp,
-                    'telno'    => $request->telno,
+                    'telno'    => $request->telh,
                     'apptdate' => $request->apptdatefr_day
                 ]);
 
@@ -186,7 +186,7 @@ class AppointmentController extends defaultController
                     ->where("mrn",'=',$mrn)
                     ->update([
                         'telhp'    => $request->telhp,
-                        'telh'    => $request->telno,
+                        'telh'    => $request->telh,
                     ]);
             }
 
@@ -209,12 +209,27 @@ class AppointmentController extends defaultController
         try {
 
             if(!empty($request->event_drop)){
-                DB::table('hisdb.apptbook')
-                ->where('idno','=',$request->idno)
-                ->update([
-                    'start'       => $request->start,
-                    'end'         => $request->end
-                ]);
+                
+
+                //tgk preepisode kalau dah ada episno xperlu update
+                $pre_episode = DB::table("hisdb.pre_episode")
+                    ->where("apptidno",'=',$request->idno);
+                if($pre_episode->exists()){
+
+                    $pre_episode_obj = $pre_episode->first();
+                    if($pre_episode_obj->episno == 0){
+                        DB::table('hisdb.apptbook')
+                            ->where('idno','=',$request->idno)
+                            ->update([
+                                'start'       => $request->start,
+                                'end'         => $request->end
+                            ]);
+
+                        $pre_episode->update([
+                            'apptdate' => $request->start
+                        ]);
+                    }
+                }
                 
             }else if(!empty($request->type) && $request->type=='transfer'){
 
@@ -278,9 +293,9 @@ class AppointmentController extends defaultController
                         "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
                         "adduser" => session('username'),
                         'Newic'    => $request->icnum,
-                        'Name'    => $request->pat_name,
+                        'Name'    => $request->patname,
                         'telhp'    => $request->telhp,
-                        'telno'    => $request->telno,
+                        'telno'    => $request->telh,
                         'apptdate' => $request->apptdatefr_day
                     ]);
 
@@ -289,10 +304,9 @@ class AppointmentController extends defaultController
                     DB::table('hisdb.pat_mast')
                         ->where('compcode','=',session('compcode'))
                         ->where("mrn",'=',$mrn)
-                        ->where("episno",'=',$episno)
                         ->update([
                             'telhp'    => $request->telhp,
-                            'telh'    => $request->telno,
+                            'telh'    => $request->telh,
                         ]);
                 }
 

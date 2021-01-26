@@ -173,7 +173,7 @@ td.fc-event-container a.selected{
 							<div class="form-group">
 								<label for="telh" class="col-md-2 control-label">Tel No</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="Telephone No" id="telh" name="telh" data-validation-optional-if-answered="telhp" data-validation="required" value="@if(!empty($pat_info)){{$pat_info->telh}} @endif">	
+									<input type="text" class="form-control input-sm phone-group" placeholder="Telephone No" id="telh" name="telh" data-validation-optional-if-answered="telhp" data-validation="required" value="@if(!empty($pat_info)){{$pat_info->telh}} @endif">	
 								</div>
 								<label for="status" class="col-md-2 control-label">Status</label>
 								<div class="col-md-3">
@@ -186,7 +186,7 @@ td.fc-event-container a.selected{
 							<div class="form-group">
 								<label for="telhp" class="col-md-2 control-label">Tel Hp</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="Telephone Hp" id="telhp" name="telhp" data-validation="required" data-validation-optional-if-answered="telh" value="@if(!empty($pat_info)){{$pat_info->telhp}} @endif">	
+									<input type="text" class="form-control input-sm phone-group" placeholder="Telephone Hp" id="telhp" name="telhp" data-validation="required" data-validation-optional-if-answered="telh" value="@if(!empty($pat_info)){{$pat_info->telhp}} @endif">	
 								</div>
 								<label for="Doctor" class="col-md-2 control-label">Case</label>
 								<div class="col-md-3">

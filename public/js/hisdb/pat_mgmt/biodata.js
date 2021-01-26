@@ -187,13 +187,20 @@
         if(oper=='add'){
             saveParam.sysparam = {source:$('#PatClass').val(),trantype:'MRN',useOn:'MRN'};
         }
-        var postobj = (mrn!="nothing")?{_token:_token,idno:idno,MRN:mrn}:{_token:_token,idno:idno};//kalu ada mrn, maksudnya dia dari merging duplicate 
+        var postobj = (mrn!="nothing")?
+                    {_token:_token,func_after:$('#func_after').val(),idno:idno,MRN:mrn}:
+                    {_token:_token,func_after:$('#func_after').val(),idno:idno};
+                    //kalu ada mrn, maksudnya dia dari merging duplicate 
 
         $.post( "/pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
             
         },'json').fail(function(data) {
             alert('there is an error');
         }).success(function(data){
+            if($('#func_after').val() != ''){
+                preepisode.refreshGrid();
+            }
+
             $('#mdl_patient_info').modal('hide');
             $('#mdl_existing_record').modal('hide');
             $("#load_from_addupd").data('info','true');
