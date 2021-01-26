@@ -51,6 +51,15 @@ class NursingController extends defaultController
                         return 'error happen..';
                 }
 
+            case 'nursing_save':
+                return $this->add_exam($request);
+
+            case 'nursing_edit':
+                return $this->edit_exam($request);
+
+            case 'more_examTriage_save':
+                return $this->add_more_exam($request);
+
             case 'get_table_triage':
                 return $this->get_table_triage($request);
 
@@ -68,7 +77,7 @@ class NursingController extends defaultController
             DB::table('nursing.nursassessment')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_ti,
+                        'mrn' => $request->mrn_ti,
                         'episno' => $request->episno_ti,
                         'admwardtime' => $request->admwardtime,
                         'triagecolor' => $request->triagecolor,
@@ -121,7 +130,7 @@ class NursingController extends defaultController
             DB::table('nursing.nursassessgen')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_ti,
+                        'mrn' => $request->mrn_ti,
                         'episno' => $request->episno_ti,
                         'br_breathing' => $request->br_breathing,
                         'br_breathingdesc' => $request->br_breathingdesc,
@@ -180,7 +189,7 @@ class NursingController extends defaultController
             // DB::table('hisdb.episode')
             //         ->insert([
             //             'compcode' => session('compcode'),
-            //             'mrn' => $request->mrn_edit_ti,
+            //             'mrn' => $request->mrn_ti,
             //             'episno' => $request->episno_ti,
             //             'diagprov' => $request->diagnosis,
             //             'adduser'  => session('username'),
@@ -190,7 +199,7 @@ class NursingController extends defaultController
             //         ]);
 
             DB::table('hisdb.episode')
-                ->where('mrn','=',$request->mrn_edit_ti)
+                ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->update([
@@ -215,7 +224,7 @@ class NursingController extends defaultController
         try {
 
             DB::table('nursing.nursassessment')
-                ->where('mrn','=',$request->mrn_edit_ti)
+                ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->where('location','=','TRIAGE')
@@ -266,7 +275,7 @@ class NursingController extends defaultController
                 ]);
 
             DB::table('nursing.nursassessgen')
-                ->where('mrn','=',$request->mrn_edit_ti)
+                ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->where('location','=','TRIAGE')
@@ -323,7 +332,7 @@ class NursingController extends defaultController
                 ]);
 
             DB::table('hisdb.episode')
-                ->where('mrn','=',$request->mrn_edit_ti)
+                ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->update([
@@ -351,7 +360,7 @@ class NursingController extends defaultController
                     DB::table('nursing.nurassesexam')
                         ->insert([
                             'compcode' => session('compcode'),
-                            'mrn' => $request->mrn_edit_ti,
+                            'mrn' => $request->mrn_ti,
                             'episno' => $request->episno_ti,
                             'location' => 'TRIAGE',
                             'exam' => $examsel[$key],
@@ -385,12 +394,12 @@ class NursingController extends defaultController
 
         try {
 
-            $location = $this->get_location($request->mrn_edit_ti,$request->episno_ti);
+            $location = $this->get_location($request->mrn_ti,$request->episno_ti);
             
             DB::table('nursing.nursassessment')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_ti,
+                        'mrn' => $request->mrn_ti,
                         'episno' => $request->episno_ti,
                         'admwardtime' => $request->admwardtime,
                         'triagecolor' => $request->triagecolor,
@@ -443,8 +452,8 @@ class NursingController extends defaultController
             DB::table('nursing.nursassessgen')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_edit_triage,
-                        'episno' => $request->episno_triage,
+                        'mrn' => $request->mrn_ti,
+                        'episno' => $request->episno_ti,
                         'br_breathing' => $request->br_breathing,
                         'br_breathingdesc' => $request->br_breathingdesc,
                         'br_cough' => $request->br_cough,
@@ -502,7 +511,7 @@ class NursingController extends defaultController
             // DB::table('hisdb.episode')
             //         ->insert([
             //             'compcode' => session('compcode'),
-            //             'mrn' => $request->mrn_edit_ti,
+            //             'mrn' => $request->mrn_ti,
             //             'episno' => $request->episno_ti,
             //             'diagprov' => $request->diagnosis,
             //             'adduser'  => session('username'),
@@ -512,8 +521,8 @@ class NursingController extends defaultController
             //         ]);
 
             DB::table('hisdb.episode')
-                ->where('mrn','=',$request->mrn_edit_triage)
-                ->where('episno','=',$request->episno_triage)
+                ->where('mrn','=',$request->mrn_ti)
+                ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'diagprov' => $request->diagnosis,
@@ -536,10 +545,10 @@ class NursingController extends defaultController
 
         try {
 
-            $location = $this->get_location($request->mrn_edit_ti,$request->episno_ti);
+            $location = $this->get_location($request->mrn_ti,$request->episno_ti);
 
             DB::table('nursing.nursassessment')
-                ->where('mrn','=',$request->mrn_edit_ti)
+                ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->where('location','=', $location)
@@ -590,8 +599,8 @@ class NursingController extends defaultController
                 ]);
 
             DB::table('nursing.nursassessgen')
-                ->where('mrn','=',$request->mrn_edit_triage)
-                ->where('episno','=',$request->episno_triage)
+                ->where('mrn','=',$request->mrn_ti)
+                ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->where('location','=',$location)
                 ->update([
@@ -647,8 +656,8 @@ class NursingController extends defaultController
                 ]);
 
             DB::table('hisdb.episode')
-                ->where('mrn','=',$request->mrn_edit_triage)
-                ->where('episno','=',$request->episno_triage)
+                ->where('mrn','=',$request->mrn_ti)
+                ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'diagprov' => $request->diagnosis,
@@ -675,8 +684,8 @@ class NursingController extends defaultController
                     DB::table('nursing.nurassesexam')
                         ->insert([
                             'compcode' => session('compcode'),
-                            'mrn' => $request->mrn_edit_triage,
-                            'episno' => $request->episno_triage,
+                            'mrn' => $request->mrn_ti,
+                            'episno' => $request->episno_ti,
                             'location' => $location,
                             'exam' => $examsel[$key],
                             'examnote' => $examnote[$key]
@@ -746,6 +755,78 @@ class NursingController extends defaultController
 
     }
 
+    public function add_exam(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('nursing.nurassesexam')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'location' => 'TRIAGE',
+                    'exam' => $request->exam,
+                    'examnote' => $request->examnote,
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'adduser'  => session('username')
+                ]);
+
+             DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function edit_exam(Request $request){
+        
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('nursing.nurassesexam')
+                ->where('idno','=',$request->idno)
+                ->update([  
+                    'exam' => $request->exam,
+                    'examnote' => $request->examnote
+                ]); 
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function add_more_exam(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('nursing.examination')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'examcode' => $request->examcode,
+                    'description' => $request->description,
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'adduser'  => session('username')
+                ]);
+
+             DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
 
     public function get_location($mrn,$episno){
 
@@ -769,5 +850,4 @@ class NursingController extends defaultController
 
     }
 
-    
 }

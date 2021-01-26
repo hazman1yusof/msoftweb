@@ -59,7 +59,7 @@
 							<div class="panel-heading text-center">INFORMATION</div>
 							<div class="panel-body">
 
-								<input id="mrn_edit_ti" name="mrn_edit_ti" type="hidden">
+								<input id="mrn_ti" name="mrn_ti" type="hidden">
 								<input id="episno_ti" name="episno_ti" type="hidden">
 
 								<div class="form-group">
@@ -766,7 +766,7 @@
 
 												<div class='col-md-12'>
 													<div class="panel panel-info">
-														<div class="panel-body">
+														<div class="panel-body" style="height: 371px">
 
 															<div class='col-md-6'>
 																<div class="panel panel-info">
@@ -835,7 +835,7 @@
 													</div>
 												</div>
 
-												<div class='col-md-12'>
+												<!-- <div class='col-md-12'>
 													<div class="panel panel-info">
 														<div class="panel-heading text-center" style="position: relative;"> EXAMINATION 
 															<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 10px; top: 2px;">
@@ -846,7 +846,7 @@
 															
 														</div>
 													</div>
-												</div>
+												</div> -->
 
 											</div>
 
@@ -861,6 +861,18 @@
 															</div>
 														</div>														
 
+													</div>
+												</div>
+											</div>
+
+											<div class='col-md-12'>
+												<div class="panel panel-info" id="jqGridExamTriage_c">
+													<div class="panel-heading text-center">EXAMINATION</div>
+													<div class="panel-body">
+														<div class='col-md-12' style="padding:0 0 15px 0">
+															<table id="jqGridExamTriage" class="table table-striped"></table>
+															<div id="jqGridPagerExamTriage"></div>
+														</div>
 													</div>
 												</div>
 											</div>
