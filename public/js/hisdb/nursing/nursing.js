@@ -517,6 +517,9 @@ function populate_triage(obj,rowdata){
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);
+	urlParam_ExamTriage.filterVal[0] = obj.mrn;
+	urlParam_ExamTriage.filterVal[1] = obj.episno;
+	console.log('asdsd')
 
 	document.getElementById('hiddentriage').style.display = 'inline';
 
@@ -538,14 +541,10 @@ function populate_triage(obj,rowdata){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formTriageInfo",data.triage);
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
-			urlParam_ExamTriage.filterVal[0] = obj.mrn;
-			urlParam_ExamTriage.filterVal[1] = obj.episno;
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			button_state_ti('triage');
         }else{
 			button_state_ti('triage');
-			urlParam_ExamTriage.filterVal[0] = obj.mrn;
-			urlParam_ExamTriage.filterVal[1] = obj.episno;
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			examination_nursing.empty();
         }
@@ -557,13 +556,15 @@ function populate_triage(obj,rowdata){
 //screen current patient//
 function populate_tiCurrentPt(obj){
 	emptyFormdata(errorField,"#formTriageInfo");
-	var selfmrn = obj.MRN, selfepisno = obj.Episno;
 	//panel header
 	$('#name_show_triage').text(obj.Name);
 	$('#mrn_show_triage').text(obj.MRN);
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);
+
+	urlParam_ExamTriage.filterVal[0] = obj.MRN;
+	urlParam_ExamTriage.filterVal[1] = obj.Episno;
 
 	document.getElementById('hiddentriage').style.display = 'inline';
 
@@ -584,14 +585,10 @@ function populate_tiCurrentPt(obj){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formTriageInfo",data.triage);
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
-			urlParam_ExamTriage.filterVal[0] = selfmrn;
-			urlParam_ExamTriage.filterVal[1] = selfepisno;
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			button_state_ti('edit');
         }else{
 			button_state_ti('add');
-			urlParam_ExamTriage.filterVal[0] = selfmrn;
-			urlParam_ExamTriage.filterVal[1] = selfepisno;
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			examination_nursing.empty();
         }
