@@ -10,8 +10,8 @@ var urlParam_ExamTriage = {
 	field: '',
 	table_name: 'nursing.nurassesexam',
 	table_id: 'idno',
-	filterCol:['mrn','episno'],
-	filterVal:['',''],
+	filterCol:['mrn','episno','location'],
+	filterVal:['','','TRIAGE'],
 }
 
 $(document).ready(function () {
@@ -225,7 +225,7 @@ $(document).ready(function () {
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
-			if(errorField.length>0)return false;
+			// if(errorField.length>0){console.log(errorField);return false;}
 
 			let data = $('#jqGridExamTriage').jqGrid ('getRowData', rowid);
 			// console.log(data);
@@ -235,6 +235,7 @@ $(document).ready(function () {
 					episno:$('#episno_ti').val(),
 					mrn:$('#mrn_ti').val(),
 					action: 'nursing_edit',
+					_token: $("#_token").val()
 				});
 			$("#jqGridExamTriage").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -320,7 +321,6 @@ $(document).ready(function () {
 	}
 
 	function examTriageCustomEdit(val, opt) {
-		console.log(val)
 		val = (val == "undefined") ? "" : val;
 		return $('<div class="input-group"><input jqgrid="jqGridExam" optid="'+opt.id+'" id="'+opt.id+'" name="exam" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
@@ -479,6 +479,9 @@ function populate_formNursing(obj,rowdata){
 	$("#episno_ti").val(obj.a_Episno);
 	$("#reg_date").val(obj.reg_date);
 	tri_color_set('empty');
+	urlParam_ExamTriage.filterVal[0] = obj.a_mrn;
+	urlParam_ExamTriage.filterVal[1] = obj.a_Episno;
+	urlParam_ExamTriage.filterVal[2] = 'TRIAGE';
 
 	document.getElementById('hiddenti').style.display = 'inline'; 
 
@@ -497,12 +500,14 @@ function populate_formNursing(obj,rowdata){
 	}
 
 	if(rowdata.nurse_exm != undefined){
-		var newrowdata = $.extend(true,{}, rowdata);
-		examination_nursing.empty();
-		examination_nursing.examarray = newrowdata.nurse_exm;
-		examination_nursing.loadexam().off().disable();
+		refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+		// var newrowdata = $.extend(true,{}, rowdata);
+		// examination_nursing.empty();
+		// examination_nursing.examarray = newrowdata.nurse_exm;
+		// examination_nursing.loadexam().off().disable();
 	}else{
-		examination_nursing.empty().off().disable();
+		refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+		// examination_nursing.empty().off().disable();
 	}
 }
 
@@ -519,7 +524,7 @@ function populate_triage(obj,rowdata){
 	$("#episno_ti").val(obj.Episno);
 	urlParam_ExamTriage.filterVal[0] = obj.mrn;
 	urlParam_ExamTriage.filterVal[1] = obj.episno;
-	console.log('asdsd')
+	urlParam_ExamTriage.filterVal[2] = 'TRIAGE';
 
 	document.getElementById('hiddentriage').style.display = 'inline';
 
@@ -565,6 +570,7 @@ function populate_tiCurrentPt(obj){
 
 	urlParam_ExamTriage.filterVal[0] = obj.MRN;
 	urlParam_ExamTriage.filterVal[1] = obj.Episno;
+	urlParam_ExamTriage.filterVal[2] = 'TRIAGE';
 
 	document.getElementById('hiddentriage').style.display = 'inline';
 

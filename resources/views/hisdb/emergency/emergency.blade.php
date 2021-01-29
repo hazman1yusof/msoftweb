@@ -125,7 +125,7 @@
 
 @section('body')
 
-	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
+	<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 	<div class='row'>
 		<input id="Type" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
 		<form id="searchForm" class="formclass" style='width:99%;position: relative;'>

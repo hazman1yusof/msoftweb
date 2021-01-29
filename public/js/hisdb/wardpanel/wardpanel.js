@@ -10,8 +10,8 @@ var urlParam_Exam = {
 	field: '',
 	table_name: 'nursing.nurassesexam',
 	table_id: 'idno',
-	filterCol:['mrn','episno'],
-	filterVal:['',''],
+	filterCol:['mrn','episno','location'],
+	filterVal:['','','WARD'],
 }
 
 $(document).ready(function () {
