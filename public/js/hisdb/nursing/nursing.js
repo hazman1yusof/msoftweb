@@ -589,11 +589,14 @@ function populate_tiCurrentPt(obj){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formTriageInfo",data.triage);
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
-			autoinsert_rowdata("#formTriageInfo",data.triage_exm);
+			// autoinsert_rowdata("#formTriageInfo",data.triage_exm);
 			if(!$.isEmptyObject(data.triage_exm)){
-				examination_nursing.empty();
-				examination_nursing.examarray = data.triage_exm;
-				examination_nursing.loadexam().disable();
+				urlParam_ExamTriage.filterVal[0] = obj.mrn;
+				urlParam_ExamTriage.filterVal[1] = obj.episno;
+				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+				// examination_nursing.empty();
+				// examination_nursing.examarray = data.triage_exm;
+				// examination_nursing.loadexam().disable();
 			}
 			button_state_ti('edit');
         }else{

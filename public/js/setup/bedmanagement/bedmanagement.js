@@ -947,6 +947,10 @@ $(document).ready(function () {
 	$("#jqGridWard_panel").on("show.bs.collapse", function(){
 		$("#jqGridExam").jqGrid ('setGridWidth', Math.floor($("#jqGridWard_c")[0].offsetWidth-$("#jqGridWard_c")[0].offsetLeft-228));
 	});
+
+	$("#jqGridTriageInfo_panel").on("show.bs.collapse", function(){
+		$("#jqGridExamTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-228));
+	});
 	/////////////////////////////for transer BED ALLOCATION/////////////////////////
 
 	var dialog_lodger_trf = new ordialog(

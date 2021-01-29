@@ -355,6 +355,9 @@ $(document).ready(function() {
                 $("#jqGrid_preepis").jqGrid ('setGridWidth', Math.floor($("#jqGrid_preepis_c")[0].offsetWidth-$("#jqGrid_preepis_c")[0].offsetLeft-0));
                 refreshGrid("#jqGrid_preepis", self.urlParam_preepis);
             });
+            $("#jqGridTriageInfo_panel").on("show.bs.collapse", function(){
+                $("#jqGridExamTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-228));
+            });
 
 
             function formataction(cellvalue, options, rowObject){
