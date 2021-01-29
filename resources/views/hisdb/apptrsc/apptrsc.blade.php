@@ -37,6 +37,9 @@ td.fc-event-container a.selected{
     padding: 0;
 }
 
+.fc-day-grid-event .fc-content {
+    white-space: pre-line !important;
+}
 
 #dialogForm input[type=text] {
     text-transform: uppercase;

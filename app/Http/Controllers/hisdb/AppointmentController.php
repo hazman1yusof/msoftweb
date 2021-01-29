@@ -129,7 +129,7 @@ class AppointmentController extends defaultController
 
             $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
             $apptidno = DB::table('hisdb.apptbook')->insertGetId([
-                'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$case->description.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
+                'title'       => str_pad($mrn_, 7, "0", STR_PAD_LEFT).' - '.$request->patname.' - '.$request->telhp.' - '.$case->description.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
                 'loccode'     => $request->doctor,
                 'icnum'       => $request->icnum,
                 'mrn'         => $request->mrn,
@@ -253,7 +253,7 @@ class AppointmentController extends defaultController
                 DB::table('hisdb.apptbook')
                     ->where('idno','=',$request->idno)
                     ->update([
-                        'title'       => $mrn_.' - '.$request->patname.' - '.$request->telhp.' - '.$case->description.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
+                        'title'       => str_pad($mrn_, 7, "0", STR_PAD_LEFT).' - '.$request->patname.' - '.$request->telhp.' - '.$case->description.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
                         'loccode'     => $request->doctor,
                         'mrn'         => $request->mrn,
                         'icnum'       => $request->icnum,

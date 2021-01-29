@@ -93,12 +93,12 @@ $("body").show();
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'user_maintenance',
-		url:'/user_maintenance/table'
+		url:'user_maintenance/table'
 	}
 
 	var saveParam={
 		action:'save_table_default',
-		url:'/user_maintenance/form'
+		url:'user_maintenance/form'
 	};
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////

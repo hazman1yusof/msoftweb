@@ -554,7 +554,7 @@ $(document).ready(function () {
 			if(event.source.id == "apptbook"){
 				element.attr('data-toggle','tooltip')
 				element.attr('data-placement','bottom')
-				let mrn_ = (event.mrn == null)?'00000':event.mrn;
+				let mrn_ = (event.mrn == null)?'00000':pad('0000000',event.mrn,true);
 				let remarks_ = (event.remarks == null)?' ':event.remarks;
 				let mytitle = mrn_+' - '
 								+event.pat_name+' - '
@@ -1099,7 +1099,7 @@ $(document).ready(function () {
             var postobj = {_token:_token,idno:idno,apptbook_idno:apptbook_idno,MRN:mrn};
         }
 
-        $.post( "/apptrsc/form?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
+        $.post( "apptrsc/form?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
             
         },'json').fail(function(data) {
             alert('there is an error');

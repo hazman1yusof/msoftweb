@@ -124,11 +124,14 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPagerExamTriage",
 		loadComplete: function(){
+			if(window.location.pathname == '/bedmanagement'){
+				$('#jqGridPagerExamTriage').html('');
+			}
 			if(addmore_jqgrid.more == true){$('#jqGridExamTriage_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
-
+			$('.ui-pg-button').prop('disabled',true);
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -262,31 +265,24 @@ $(document).ready(function () {
 		onClickButton: function () {
 			selRowId = $("#jqGridExamTriage").jqGrid('getGridParam', 'selrow');
 			if (!selRowId) {
-				bootbox.alert('Please select row');
+				alert('Please select row');
 			} else {
-				bootbox.confirm({
-					message: "Are you sure you want to delete this row?",
-					buttons: {
-						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
-					},
-					callback: function (result) {
-						if (result == true) {
-							param = {
-								_token: $("#_token").val(),
-								action: 'nursing_save',
-								idno: selrowData('#jqGridExamTriage').idno,
-							}
-							$.post( "/nursing/form?"+$.param(param),{oper:'del'}, function( data ){
-							}).fail(function (data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function (data) {
-								refreshGrid("#jqGridExamTriage", urlParam_ExamTriage);
-							});
-						}else{
-							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-						}
+				var result = confirm("Are you sure you want to delete this row?");
+				if (result == true) {
+					param = {
+						_token: $("#_token").val(),
+						action: 'nursing_save',
+						idno: selrowData('#jqGridExamTriage').idno,
 					}
-				});
+					$.post( "/nursing/form?"+$.param(param),{oper:'del'}, function( data ){
+					}).fail(function (data) {
+						//////////////////errorText(dialog,data.responseText);
+					}).done(function (data) {
+						refreshGrid("#jqGridExamTriage", urlParam_ExamTriage);
+					});
+				}else{
+					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+				}
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPagerExamTriage", {
@@ -372,7 +368,7 @@ $(document).ready(function () {
 	dialog_examTriage.makedialog();
 
 	$("#dialognewexamFormTriage")
-	  .dialog({
+	  	.dialog({
 		width: 4/10 * $(window).width(),
 		modal: true,
 		autoOpen: false,
@@ -519,6 +515,9 @@ function populate_triage(obj,rowdata){
 	$('#name_show_triage').text(obj.name);
 	$('#mrn_show_triage').text(obj.mrn);
 
+	$("#mrn_ti").val(obj.MRN);
+	$("#episno_ti").val(obj.Episno);
+
 	document.getElementById('hiddentriage').style.display = 'inline';
 
 	var saveParam={
@@ -539,18 +538,15 @@ function populate_triage(obj,rowdata){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formTriageInfo",data.triage);
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
-			// autoinsert_rowdata("#formTriageInfo",data.triage_exm);
-			if(!$.isEmptyObject(data.triage_exm)){
-				urlParam_ExamTriage.filterVal[0] = obj.mrn;
-				urlParam_ExamTriage.filterVal[1] = obj.episno;
-				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
-				// examination_nursing.empty();
-				// examination_nursing.examarray = data.triage_exm;
-				// examination_nursing.loadexam().disable();
-			}
+			urlParam_ExamTriage.filterVal[0] = obj.mrn;
+			urlParam_ExamTriage.filterVal[1] = obj.episno;
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			button_state_ti('triage');
         }else{
 			button_state_ti('triage');
+			urlParam_ExamTriage.filterVal[0] = obj.mrn;
+			urlParam_ExamTriage.filterVal[1] = obj.episno;
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			examination_nursing.empty();
         }
 
@@ -560,9 +556,8 @@ function populate_triage(obj,rowdata){
 
 //screen current patient//
 function populate_tiCurrentPt(obj){
-
 	emptyFormdata(errorField,"#formTriageInfo");
-
+	var selfmrn = obj.MRN, selfepisno = obj.Episno;
 	//panel header
 	$('#name_show_triage').text(obj.Name);
 	$('#mrn_show_triage').text(obj.MRN);
@@ -589,18 +584,15 @@ function populate_tiCurrentPt(obj){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formTriageInfo",data.triage);
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
-			// autoinsert_rowdata("#formTriageInfo",data.triage_exm);
-			if(!$.isEmptyObject(data.triage_exm)){
-				urlParam_ExamTriage.filterVal[0] = obj.mrn;
-				urlParam_ExamTriage.filterVal[1] = obj.episno;
-				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
-				// examination_nursing.empty();
-				// examination_nursing.examarray = data.triage_exm;
-				// examination_nursing.loadexam().disable();
-			}
+			urlParam_ExamTriage.filterVal[0] = selfmrn;
+			urlParam_ExamTriage.filterVal[1] = selfepisno;
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			button_state_ti('edit');
         }else{
 			button_state_ti('add');
+			urlParam_ExamTriage.filterVal[0] = selfmrn;
+			urlParam_ExamTriage.filterVal[1] = selfepisno;
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			examination_nursing.empty();
         }
 
