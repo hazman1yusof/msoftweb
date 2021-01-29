@@ -206,7 +206,7 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridExam',urlParam2,'add_exam');
+			refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');

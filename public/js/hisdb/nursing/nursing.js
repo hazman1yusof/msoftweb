@@ -221,7 +221,7 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridExamTriage',urlParam2,'add_exam');
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');

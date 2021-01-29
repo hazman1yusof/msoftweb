@@ -856,7 +856,7 @@
 
 														<div class="form-group">
 															<label class="col-md-1 control-label" for="pa_notes" style="margin-bottom: 10px">Notes:</label>  
-															<div class="row">
+															<div class="row" style="padding:30px;">
 																<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm" rows="15" data-validation="required" data-validation-error-msg-required="Please enter notes."></textarea>
 															</div>
 														</div>														
