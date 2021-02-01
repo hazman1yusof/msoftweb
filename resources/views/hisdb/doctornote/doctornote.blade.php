@@ -74,58 +74,54 @@
                                     </div>
                                 </div>
 
-                                <div class='col-md-7'>
+                                <div class='col-md-9'>
                                     <div class="panel panel-info">
                                         <div class="panel-heading text-center">CLINICAL NOTE</div>
-                                        <div class="panel-body" style="height: 585px">
+                                        <div class="panel-body">
 
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <div class="col-md-12">
-                                                        <label class="control-label" for="clinicnote" style="padding-bottom:5px">History of Presenting Complaint</label>
-                                                        <textarea id="clinicnote" name="clinicnote" type="text" class="form-control input-sm" rows="6"></textarea>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <div class="col-md-12">
-                                                        <label class="control-label" for="pmh" style="padding-bottom:5px">Past Medical History</label>
-                                                        <textarea id="pmh" name="pmh" type="text" class="form-control input-sm" rows="4"></textarea>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <div class="col-md-12">
-                                                        <label class="control-label" for="drugh" style="padding-bottom:5px">Drug History</label>
-                                                        <textarea id="drugh" name="drugh" type="text" class="form-control input-sm" rows="4"></textarea>
-                                                    </div>
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label class="control-label" for="clinicnote" style="padding-bottom:5px">History of Presenting Complaint</label>
+                                                    <textarea id="clinicnote" name="clinicnote" type="text" class="form-control input-sm" rows="6"></textarea>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <div class="col-md-12">
-                                                        <label class="control-label" for="allergyh" style="padding-bottom:5px">Allergy History</label>
-                                                        <textarea id="allergyh" name="allergyh" type="text" class="form-control input-sm" rows="4"></textarea>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <div class="col-md-12">
-                                                        <label class="control-label" for="socialh" style="padding-bottom:5px">Social History</label>
-                                                        <textarea id="socialh" name="socialh" type="text" class="form-control input-sm" rows="4"></textarea>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <div class="col-md-12">
-                                                        <label class="control-label" for="fmh" style="padding-bottom:5px">Family History</label>
-                                                        <textarea id="fmh" name="fmh" type="text" class="form-control input-sm" rows="4"></textarea>
-                                                    </div>
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label class="control-label" for="pmh" style="padding-bottom:5px">Past Medical History</label>
+                                                    <textarea id="pmh" name="pmh" type="text" class="form-control input-sm" rows="6"></textarea>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label class="control-label" for="drugh" style="padding-bottom:5px">Drug History</label>
+                                                    <textarea id="drugh" name="drugh" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label class="control-label" for="allergyh" style="padding-bottom:5px">Allergy History</label>
+                                                    <textarea id="allergyh" name="allergyh" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label class="control-label" for="socialh" style="padding-bottom:5px">Social History</label>
+                                                    <textarea id="socialh" name="socialh" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label class="control-label" for="fmh" style="padding-bottom:5px">Family History</label>
+                                                    <textarea id="fmh" name="fmh" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-12" style="margin-top: 10px">
                                                 <div class="panel panel-info">
                                                     <div class="panel-heading text-center">FOLLOW UP</div>
                                                     <div class="panel-body">
@@ -152,81 +148,58 @@
                                             
                                         </div>
                                     </div>
-                                </div>
-                    
-                                <div class="col-md-3" style="padding:0 0 0 0">
-                                    <div class="col-md-12">
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading text-center">Physical Examination</div>
-                                            <div class="panel-body">
 
-                                                <div class="form-group">
-                                                    <!-- <label class="col-md-3 control-label" for="examination">Physical Examination</label> -->
-                                                    <div class="col-md-12">
-                                                        <textarea id="examination" name="examination" type="text" class="form-control input-sm" rows="6"></textarea>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading text-center">Diagnosis</div>
-                                            <div class="panel-body">
-
-                                                <div class="form-group">
-                                                    <!-- <label class="col-md-3 control-label" for="diagfinal">Diagnosis</label> -->
-                                                    <div class="col-md-12">
-                                                        <textarea id="diagfinal" name="diagfinal" type="text" class="form-control input-sm" rows="2"></textarea>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-md-5 control-label" for="icdcode">Primary ICD</label>
-                                            <div class="col-md-7">
-                                                <input id="icdcode" name="icdcode" type="text" class="form-control input-sm" rdonly>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading text-center">Plan</div>
-                                            <div class="panel-body">
-
-                                                <div class="form-group">
-                                                    <!-- <label class="col-md-3 control-label" for="plan_">Plan</label> -->
-                                                    <div class="col-md-12">
-                                                        <textarea id="plan_" name="plan_" type="text" class="form-control input-sm" rows="6"></textarea>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- <div class="panel panel-info">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading text-center">Physical Examination</div>
                                         <div class="panel-body">
 
                                             <div class="form-group">
-                                                <label class="col-md-3 control-label" for="examination">Physical Examination</label>
-                                                <div class="col-md-9">
-                                                    <textarea id="examination" name="examination" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                <!-- <label class="col-md-3 control-label" for="examination">Physical Examination</label> -->
+                                                <div class="col-md-12">
+                                                    <textarea id="examination" name="examination" type="text" class="form-control input-sm" rows="6"></textarea>
                                                 </div>
                                             </div>
 
                                         </div>
-                                    </div> -->
-                                </div>
+                                    </div>
 
-                                <div class="col-md-2" style="padding:0 0 0 0">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading text-center">Diagnosis</div>
+                                        <div class="panel-body">
+
+                                            <div class="form-group">
+                                                <!-- <label class="col-md-3 control-label" for="diagfinal">Diagnosis</label> -->
+                                                <div class="col-md-12">
+                                                    <textarea id="diagfinal" name="diagfinal" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="icdcode" style="text-align: left;">Primary ICD</label>
+                                        <div class="col-md-7">
+                                            <input id="icdcode" name="icdcode" type="text" class="form-control input-sm" rdonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading text-center">Plan</div>
+                                        <div class="panel-body">
+
+                                            <div class="form-group">
+                                                <!-- <label class="col-md-3 control-label" for="plan_">Plan</label> -->
+                                                <div class="col-md-12">
+                                                    <textarea id="plan_" name="plan_" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                                <div class="col-md-3" style="padding:0 0 0 0">
                                     <div class="panel panel-info">
                                         <div class="panel-heading text-center">Vital Sign</div>
                                         <div class="panel-body" style="height: 585px">
