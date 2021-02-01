@@ -80,7 +80,7 @@ $(document).ready(function () {
 
 				var session_param ={
 					action:"get_table_default",
-					url:'./util/get_table_default',
+					url:'util/get_table_default',
 					field:'*',
 					table_name:'hisdb.apptsession',
 					table_id:'idno',
@@ -243,8 +243,8 @@ $(document).ready(function () {
 				let data = selrowData('#' + dialog_mrn.gridname);
 				$("#addForm input[name='patname']").val(data['Name']);
 				$("#addForm input[name='icnum']").val(data['Newic']);
-				$("#addForm input[name='telh']").val(data['telh']);
-				$("#addForm input[name='telhp']").val(data['telhp']);
+				$("#addForm input[name='telh']").val(data['telh'].trim());
+				$("#addForm input[name='telhp']").val(data['telhp'].trim());
 				$(dialog_mrn.textfield).parent().next().text(" ");
 			}
 		},
@@ -292,7 +292,7 @@ $(document).ready(function () {
 
             	var session_param ={
 					action:"get_value_default",
-					url:'/util/get_table_default',
+					url:'util/get_table_default',
 					field:'*',
 					table_name:'hisdb.apptsession',
 					table_id:'idno',
@@ -485,6 +485,7 @@ $(document).ready(function () {
 	});
 	
 	$('#calendar').fullCalendar({
+		aspectRatio:  2.5,
 		header: {
 			left: 'prev,next today myCustomButton',
 			center: 'title',
@@ -604,6 +605,30 @@ $(document).ready(function () {
 			if(event.source.rendering == 'background'){
 				element.append(event.title);
 			}
+		},
+		eventAfterAllRender: function(view){
+			var events = $('#calendar').fullCalendar( 'clientEvents');
+			var date_array = [];
+			var date_obj = [];
+			events.forEach(function(e,i){
+				let got = date_array.indexOf(e.start.date());
+				if(got == -1){
+					date_array.push(e.start.date());
+					date_obj.push({
+						format_date:e.start.format("YYYY-MM-DD"),
+						date:e.start.date(),
+						count:1
+					});
+				}else{
+					date_obj[got].count = date_obj[got].count + 1;
+				}
+			});
+
+			$("table tr td.fc-day-top span.ui.mini.teal.ribbon.label").remove();
+
+			date_obj.forEach(function(e,i){
+				$("table tr td.fc-day-top[data-date='"+e.format_date+"']").append("<span class='ui mini teal ribbon label'>"+e.count+" patients </span>");
+			});
 		},
 		timeFormat: 'h(:mm)a',
 		eventDrop: function(event, delta, revertFunc) {
