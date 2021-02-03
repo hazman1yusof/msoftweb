@@ -605,6 +605,17 @@ $(document).ready(function () {
 				element.append(event.title);
 			}
 		},
+		eventAfterAllRender: function(view){
+			$('#calendar').fullCalendar( 'clientEvents', function(eventObj){
+				console.log(eventObj)
+			   	if (eventObj.start.isSame('2014-11-21')) {
+			        return true;
+			    } else {
+			        return false;
+			    }
+			}).length;
+			console.log('try')
+		},
 		timeFormat: 'h(:mm)a',
 		eventDrop: function(event, delta, revertFunc) {
 			var param={
