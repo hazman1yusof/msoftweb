@@ -41,6 +41,23 @@ td.fc-event-container a.selected{
     white-space: pre-line !important;
 }
 
+.ui.label {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: baseline;
+    margin: 0.2em;
+    background-color: #8bc34a5c;
+    background-image: none;
+    padding: .5833em .833em;
+    color: rgba(0,0,0,.6);
+    text-transform: none;
+    font-weight: 700;
+    border: 1px solid #279a2c;
+    border-radius: .28571429rem;
+    -webkit-transition: background .1s ease;
+    transition: background .1s ease;
+}
+
 #dialogForm input[type=text] {
     text-transform: uppercase;
 }

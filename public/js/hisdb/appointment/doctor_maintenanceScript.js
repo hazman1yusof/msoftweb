@@ -337,7 +337,7 @@
 			
 			var urlParam={
 				action:'get_table_default',
-				url: '/util/get_table_default',
+				url: 'util/get_table_default',
 				field:['resourcecode','description','TYPE'],
 				table_name:'hisdb.apptresrc',
 				table_id:'idno',
@@ -347,11 +347,11 @@
 			}
 
 			if(Type =='DOC'){
-				urlParam.url = "/doctor_maintenance/table";
+				urlParam.url = "doctor_maintenance/table";
 			}
             var saveParam={
 				action:'save_table_default',
-				url:"/doctor_maintenance/form",
+				url:"doctor_maintenance/form",
 				field:['resourcecode','description','TYPE'],
 				oper:oper,
 				table_name:'hisdb.apptresrc',
@@ -415,13 +415,11 @@
              
 
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',
-				{	
-					edit:false,view:false,add:false,del:false,search:false,
-					beforeRefresh: function(){
-						refreshGrid("#jqGrid",urlParam);
-					},
-			
-			// });
+			{	
+				edit:false,view:false,add:false,del:false,search:false,
+				beforeRefresh: function(){
+					refreshGrid("#jqGrid",urlParam,oper);
+				}
 
 			}).jqGrid('navButtonAdd', "#jqGridPager", {
 				caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
@@ -564,7 +562,7 @@
 		
 				}).success(function(data){
 					$("#TSBox").dialog('close');
-					refreshGrid("#jqGrid",urlParam);
+					refreshGrid("#jqGrid",urlParam,'edit');
 				});
 			});
 
@@ -785,7 +783,7 @@
 			}
 		
 
-		$("#gridph").jqGrid('navGrid', '#gridphpager', {
+			$("#gridph").jqGrid('navGrid', '#gridphpager', {
 				view: false, edit: false, add: false, del: false, search: false,
 				beforeRefresh: function () {
 					refreshGrid("#gridph", urlParamph, oper);
@@ -798,12 +796,12 @@
 					oper = 'del';
 			        selRowId = $("#gridph").jqGrid('getGridParam', 'selrow');
 			        if (!selRowId) {
-				    alert('Please select row');
-				    return emptyFormdata(errorField, '#phformdata');
-			} else {
-				    saveFormdata("#gridph", "#phdialogForm", "#phformdata", 'del', saveParamph, urlParamph, null,  { 'idno': selrowData('#gridph').idno });
-			}
-		},
+					    alert('Please select row');
+						return emptyFormdata(errorField, '#phformdata');
+					} else {
+						saveFormdata("#gridph", "#phdialogForm", "#phformdata", 'del', saveParamph, urlParamph, null,  { 'idno': selrowData('#gridph').idno });
+					}
+				},
 			}).jqGrid('navButtonAdd', "#gridphpager", {
 					caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
 					buttonicon: "glyphicon glyphicon-edit",

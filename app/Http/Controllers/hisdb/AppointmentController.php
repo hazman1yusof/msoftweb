@@ -214,6 +214,7 @@ class AppointmentController extends defaultController
                 //tgk preepisode kalau dah ada episno xperlu update
                 $pre_episode = DB::table("hisdb.pre_episode")
                     ->where("apptidno",'=',$request->idno);
+                    
                 if($pre_episode->exists()){
 
                     $pre_episode_obj = $pre_episode->first();
@@ -309,7 +310,6 @@ class AppointmentController extends defaultController
                             'telh'    => $request->telh,
                         ]);
                 }
-
 
             }
 
