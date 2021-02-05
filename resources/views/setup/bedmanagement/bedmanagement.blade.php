@@ -486,22 +486,6 @@
 	</div>
 	<!-- For panel ward ends -->
 
-	<!-- For panel triage -->
-	<div id="dialognewexamFormTriage" title="New exam" >
-		<div class='panel panel-info'>
-			<div class="panel-body" style="">
-				<form class='form-horizontal' style=''>
-					<small>Exam Code</small> 
-					<input type="text" name="examcode" id="examcode" class="form-control">
-					<small>Description</small> 
-					<input type="text" name="descriptions" id="descriptions" class="form-control">
-				</form>
-			</div>
-		</div>
-	</div>
-	<!-- For panel triage ends -->
-
-
 @endsection
 
 
