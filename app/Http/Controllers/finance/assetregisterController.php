@@ -233,47 +233,81 @@ class assetregisterController extends defaultController
                     $tagnextno_counter = 2;
                     $assetno = str_pad(1,6,"0",STR_PAD_LEFT);
                 }
-                                
 
 
-                ////2. insert into faregister
-                DB::table('finance.faregister')
-                    ->insert([
-                        'assetcode' => $fatemp->assetcode,
-                        'assettype' => $fatemp->assettype,
-                        'assetno' => $assetno, // got padding
-                        'description' => $fatemp->description,
-                        'lineno_' => $fatemp->lineno_,
-                        'deptcode' => $fatemp->deptcode,
-                        'loccode' => $fatemp->loccode,
-                        'suppcode' => $fatemp->suppcode,
-                        'purordno' => $fatemp->purordno,
-                        'delordno'  => $fatemp->delordno,
-                        'delorddate' => $fatemp->delorddate,
-                        'itemcode' => $fatemp->itemcode,
-                        'invno' => $fatemp->invno,
-                        'invdate' => $fatemp->invdate,
-                        'purdate' => $fatemp->purdate,
-                        'purprice' => $fatemp->purprice,
-                        'origcost' => $fatemp->origcost,
-                        'currentcost' => $fatemp->currentcost,
-                        'qty' => $fatemp->qty,
-                        'lstytddep' => $fatemp->lstytddep,
-                        'cuytddep' => $fatemp->cuytddep,
-                        'recstatus' => $fatemp->recstatus,
-                        'individualtag' => $fatemp->individualtag,
-                        'startdepdate' =>$fatemp->statdate,
-                        'statdate' => $fatemp->statdate,
-                        'trantype' => $fatemp->trantype,
-                        'nprefid' => $fatemp->nprefid,
-                        'trandate' => $fatemp->trandate,
-                        'method' => $fatemp->method,
-                        'residualvalue' => $fatemp->residualvalue,
-                        'nbv' => $request->nbv,
-                        'compcode' => session('compcode'),
-                        'adduser' => strtoupper(session('username')),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
+                for ($x=1; $x <= $fatemp->qty; $x++) { 
+                    if($x == 1){
+                        ////2. insert into faregister
+                        DB::table('finance.faregister')
+                            ->insert([
+                                'assetcode' => $fatemp->assetcode,
+                                'assettype' => $fatemp->assettype,
+                                'assetno' => $assetno, // got padding
+                                'description' => $fatemp->description,
+                                'dolineno' => $fatemp->lineno_,
+                                'deptcode' => $fatemp->deptcode,
+                                'loccode' => $fatemp->loccode,
+                                'suppcode' => $fatemp->suppcode,
+                                'purordno' => $fatemp->purordno,
+                                'delordno'  => $fatemp->delordno,
+                                'delorddate' => $fatemp->delorddate,
+                                'itemcode' => $fatemp->itemcode,
+                                'invno' => $fatemp->invno,
+                                'invdate' => $fatemp->invdate,
+                                'purdate' => $fatemp->purdate,
+                                'purprice' => $fatemp->purprice,
+                                'origcost' => $fatemp->origcost,
+                                'currentcost' => $fatemp->currentcost,
+                                'qty' => $fatemp->qty,
+                                'lstytddep' => $fatemp->lstytddep,
+                                'cuytddep' => $fatemp->cuytddep,
+                                'recstatus' => $fatemp->recstatus,
+                                'individualtag' => $fatemp->individualtag,
+                                'startdepdate' =>$fatemp->statdate,
+                                'statdate' => $fatemp->statdate,
+                                'trantype' => $fatemp->trantype,
+                                'nprefid' => $fatemp->nprefid,
+                                'trandate' => $fatemp->trandate,
+                                'method' => $fatemp->method,
+                                'residualvalue' => $fatemp->residualvalue,
+                                'nbv' => $request->nbv,
+                                'condition' => null,
+                                'expdate' => null,
+                                'brand' => null,
+                                'model' => null,
+                                'equipmentname' => null,
+                                'trackingno' => null,
+                                'bem_no' => null,
+                                'ppmschedule' => null,
+                                'compcode' => session('compcode'),
+                                'adduser' => strtoupper(session('username')),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+                    }else{
+                        DB::table('finance.facompnt')
+                            ->insert([
+                                'assetcode' => $fatemp->assetcode,
+                                'assettype' => $fatemp->assettype,
+                                'assetno' => $assetno, // got padding
+                                'assetlineno' => $x,
+                                'deptcode' => $fatemp->deptcode,
+                                'loccode' => $fatemp->loccode,
+                                'qty' => $fatemp->qty,
+                                'condition' => null,
+                                'expdate' => null,
+                                'brand' => null,
+                                'model' => null,
+                                'equipmentname' => null,
+                                'trackingno' => null,
+                                'bem_no' => null,
+                                'ppmschedule' => null,
+                                'compcode' => session('compcode'),
+                                'adduser' => strtoupper(session('username')),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+                    }
+                    
+                }
 
                 ////delete from fatemp
                 DB::table('finance.fatemp')
