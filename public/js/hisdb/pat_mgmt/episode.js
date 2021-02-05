@@ -350,6 +350,7 @@
         var episfee = $('input[name=rad_epis_fee]:checked').val();
         var episbed = $('#txt_epis_bed').val();
         var _token = $('#csrf_token').val();
+        var apptidno = $("#apptidno_epis").val();
 
         let obj =  { 
                     episoper: episoper,
@@ -372,6 +373,7 @@
                     epis_preg : epispreg,
                     epis_fee : episfee,
                     epis_bed : episbed,
+                    apptidno : apptidno,
                     _token: _token
                   }
 
@@ -731,8 +733,8 @@
             {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
             // {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
             {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
-            {code:'',desc:'',id:'bed_dept'},
-            {code:'',desc:'',id:'bed_ward'}
+            // {code:'',desc:'',id:'bed_dept'},
+            // {code:'',desc:'',id:'bed_ward'}
         ]);
     }
     
@@ -809,6 +811,7 @@
         this.write_desc = function(){
             self=this;
             obj.forEach(function(elem){
+                console.log(elem)
                 if($(elem.code).val().trim() != ""){
                     $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id));
                 }

@@ -368,7 +368,7 @@ $(document).ready(function() {
                 return `
                     <button title="Edit" type="button" class="btn btn-xs btn-warning btn-md command-edit preepis_bio" data-mrn=`+mrn+` data-episno=`+episno+` data-apptidno=`+apptidno+`><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                     &nbsp;&nbsp;
-                    <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-episno=`+episno+`><b>`+$("#epistycode").val()+`</b></button>
+                    <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>`+$("#epistycode").val()+`</b></button>
                 `;
                 // <button title="OTC Episode" type="button" class="btn btn-xs btn-danger btn-md command-otc-episode preepis_otc" data-mrn=`+mrn+` data-episno=`+episno+`><b>DC</b></button>
             }
@@ -377,6 +377,9 @@ $(document).ready(function() {
                 var button = $(event.currentTarget);
                 var mrn = button.data('mrn');
                 var episno = button.data('episno');
+                var apptidno = button.data('apptidno');
+                $("#apptidno_epis").val(apptidno);
+                $("#episode_oper").val('add');
 
                 var param={
                     action:'get_value_default',
@@ -468,14 +471,14 @@ $(document).ready(function() {
                         desc_show.write_desc();
                         $('#mdl_patient_info').modal({backdrop: "static"});
 
-                        if(episdata.idno){
+                        if(episdata.idno){//kalau dah ada mrn
                             $("#btn_register_patient").data("oper","edit");
                             $("#btn_register_patient").data('idno',episdata.idno);
-                        }else{
+                        }else{//kalau belum ada mrn
                             $('#PatClass').val(getUrlParameter('PatClass'));
                             $("#btn_register_patient").data("oper","add");
-                            $("#func_after").val('save_preepis');
-                            $("#apptidno").val(apptidno);
+                            $("#func_after_pat").val('save_preepis');
+                            $("#apptidno_pat").val(apptidno);
                         }
 
                     }else{

@@ -485,7 +485,7 @@ $(document).ready(function () {
 	});
 	
 	$('#calendar').fullCalendar({
-		aspectRatio:  2.5,
+		aspectRatio:  1.5,
 		header: {
 			left: 'prev,next today myCustomButton',
 			center: 'title',

@@ -651,6 +651,7 @@ class PatmastController extends defaultController
         $epis_preg = $request->epis_preg;
         $epis_fee = $request->epis_fee;
         $epis_bednum = $request->epis_bed;
+        $epis_apptidno = $request->apptidno;
 
         $epis_typeepis;
         if ($epis_maturity == "1"){
@@ -1037,6 +1038,14 @@ class PatmastController extends defaultController
                         'EpisStatus' => '',
                         'chggroup' => $epis_billtype
                     ]);
+            }
+
+            if(!empty($epis_apptidno)){
+                DB::table('hisdb.pre_episode')
+                        ->where('apptidno','=',$epis_apptidno)
+                        ->update([
+                            'episno' => $epis_no
+                        ]);
             }
 
             $queries = DB::getQueryLog();

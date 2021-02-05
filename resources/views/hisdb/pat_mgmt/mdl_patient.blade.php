@@ -5,8 +5,9 @@
 			<input type="hidden" name="idno" id="txt_pat_idno">
             <input name="pat_mrn" id="pat_mrn" type="hidden">
             <input name="PatClass" id="PatClass" type="hidden" value="{{request()->get('PatClass')}}">
-            <input name="func_after" id="func_after" type="hidden">
-            <input name="apptidno" id="apptidno" type="hidden">
+            <input name="func_after" id="func_after_pat" type="hidden">
+            <input name="apptidno" id="apptidno_pat" type="hidden">
+
             <div class="modal-content">
                 <div class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
                     <div class="form-group">

@@ -188,8 +188,8 @@
             saveParam.sysparam = {source:$('#PatClass').val(),trantype:'MRN',useOn:'MRN'};
         }
         var postobj = (mrn!="nothing")?
-                    {_token:_token,func_after:$('#func_after').val(),idno:idno,MRN:mrn}:
-                    {_token:_token,func_after:$('#func_after').val(),idno:idno};
+                    {_token:_token,func_after_pat:$('#func_after_pat').val(),idno:idno,MRN:mrn}:
+                    {_token:_token,func_after_pat:$('#func_after_pat').val(),idno:idno};
                     //kalu ada mrn, maksudnya dia dari merging duplicate 
 
         $.post( "/pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
@@ -197,7 +197,7 @@
         },'json').fail(function(data) {
             alert('there is an error');
         }).success(function(data){
-            if($('#func_after').val() != ''){
+            if($('#func_after_pat').val() != ''){
                 preepisode.refreshGrid();
             }
 
