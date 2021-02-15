@@ -761,7 +761,7 @@ $(document).ready(function () {
 		}
 	}
 
-	var set_seemore = new set_seemore(['show_movementAE','show_enquiryAE','show_transferAE']);
+	var set_seemore = new set_seemore(['show_movementAE','show_enquiryAE','show_transferAE','show_SerialAE']);
 	function set_seemore(array){
 		this.array = array;
 

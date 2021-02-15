@@ -158,7 +158,7 @@
 				<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid3_panel"></i>
 				<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid3_panel"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 10px;">
-					<h5>Asset Serial Header</h5>
+					<h5>Asset Serial List</h5>
 				</div>
 
 				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
@@ -168,7 +168,19 @@
 								right: 40px;
 								top: 15px;" 
 					>
-					</div>	
+					<button type="button" class="btn btn-default" id="new_SerialList">
+						<span class="fa fa-plus-square-o"></span> Add
+					</button>
+					<button type="button" class="btn btn-default" id="edit_SerialList">
+						<span class="fa fa-edit fa-lg"></span> Edit
+					</button>
+					<button type="button" class="btn btn-default" data-oper='add' id="save_SerialList">
+						<span class="fa fa-save fa-lg"></span> Save
+					</button>
+					<button type="button" class="btn btn-default" id="cancel_SerialList">
+						<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+					</button>
+				</div>	
 			</div>
 
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
