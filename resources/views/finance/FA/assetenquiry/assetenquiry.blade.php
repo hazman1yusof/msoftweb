@@ -168,18 +168,6 @@
 								right: 40px;
 								top: 15px;" 
 					>
-					<button type="button" class="btn btn-default" id="new_SerialList">
-						<span class="fa fa-plus-square-o"></span> Add
-					</button>
-					<button type="button" class="btn btn-default" id="edit_SerialList">
-						<span class="fa fa-edit fa-lg"></span> Edit
-					</button>
-					<button type="button" class="btn btn-default" data-oper='add' id="save_SerialList">
-						<span class="fa fa-save fa-lg"></span> Save
-					</button>
-					<button type="button" class="btn btn-default" id="cancel_SerialList">
-						<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-					</button>
 				</div>	
 			</div>
 

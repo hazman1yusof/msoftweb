@@ -27,6 +27,10 @@ class assetenquiryController extends defaultController
 
     public function form(Request $request)
     {   
+        if($request->action == 'comp_edit'){
+            return $this->comp_edit($request);
+        }
+
         switch($request->oper){
             case 'add':
                 return $this->defaultAdd($request);
@@ -54,6 +58,21 @@ class assetenquiryController extends defaultController
         $table = $this->defaultGetter($request);
 
         $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {//ini baru
+            $value->description_show = $value->description;
+            if(mb_strlen($value->description_show)>80){
+
+                $time = time() + $key;
+
+                $value->description_show = mb_substr($value->description_show,0,80).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description_show,80).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+
+                $value->callback_param = [
+                    'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+                ];
+            }
+            
+        }
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
@@ -136,6 +155,27 @@ class assetenquiryController extends defaultController
                     'recstatus' => 'DEACTIVE',
                     'deluser' => strtoupper(session('username')),
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+        
+    }
+
+    public function comp_edit(Request $request){
+        DB::beginTransaction();
+        try {
+
+            DB::table('finance.facompnt')
+                ->where('idno','=',$request->idno)
+                ->update([  
+                    'trackingno' => $request->trackingno,
+                    'bem_no' => $request->bem_no,
+                    'ppmschedule' => $request->ppmschedule
                 ]);
 
             DB::commit();

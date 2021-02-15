@@ -2,15 +2,6 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
-var urlParam={
-	action:'get_table_default',
-	url: '/util/get_table_default',
-	field:'',
-	table_name:'finance.faregister',
-	table_id:'idno',
-	sort_idno:true,
-}
-
 $(document).ready(function () {
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
@@ -193,6 +184,15 @@ $(document).ready(function () {
 	});
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
+	var urlParam={
+		action:'get_table',
+		url: '/assetenquiry/table',
+		field:'',
+		table_name:'finance.faregister',
+		table_id:'idno',
+		sort_idno:true,
+	}
+
 	var saveParam={
 		action:'assetenquiry_save',
 		url:'/assetenquiry/form',
@@ -212,7 +212,8 @@ $(document).ready(function () {
 			{ label: 'Category', name: 'assetcode', width: 6, classes: 'wrap', canSearch: true},		
 			{ label: 'Asset No', name: 'assetno', width: 6, classes: 'wrap'},
 			{ label: 'Item Code', name: 'itemcode', width: 8, classes: 'wrap',hidden:true},
-			{ label: 'Description', name: 'description', width: 40, classes: 'wrap', canSearch: true,checked:true},
+			{ label: 'Description', name: 'description_show', width: 40, classes: 'wrap'},
+			{ label: 'Description', name: 'description', canSearch: true,checked:true,hidden:true},
 			{ label: 'Serial No', name: 'serialno', width: 8,classes: 'wrap',hidden:true},
 			{ label: 'Lotno', name: 'lotno', width: 20,classes: 'wrap',hidden:true},
 			{ label: 'Casisno', name: 'casisno', width: 20, classes: 'wrap',hidden:true},
@@ -239,7 +240,7 @@ $(document).ready(function () {
 				}, 
 			},
 			{ label: 'nprefid', name: 'nprefid', width: 90,hidden:true},
-			{label: 'idno', name: 'idno', hidden: true},
+			{ label: 'idno', name: 'idno', hidden: true},
 			{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},
 			{ label: 'Add User', name:'adduser', width:20, classes:'wrap',  hidden:true},
 			{ label: 'Add Date', name:'adddate', width:20, classes:'wrap',  hidden:true},
@@ -277,7 +278,9 @@ $(document).ready(function () {
 				$("#jqGridEnquiryDtl2_c, #jqGridtransferFA_c").hide();
 				if(rowData['assetno'] != '') {//kalau assetno ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').assetno;
+					urlParam3.filterVal[1] = selrowData('#jqGrid').assetno;
 					refreshGrid('#jqGrid2', urlParam2);
+					refreshGrid('#jqGrid3', urlParam3);
 					$("#pg_jqGridPager3 table, #jqGridEnquiryDtl2_c, #jqGridtransferFA_c").show();
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
 
@@ -287,15 +290,27 @@ $(document).ready(function () {
 					populate_transferAE(selrowData("#jqGrid"));
 					populate_form_movementAE(selrowData("#jqGrid"));
 					populate_form_SerialAE(selrowData("#jqGrid"));
-					// populate_doctorNote(selrowData("#jqGrid"));
-					// populate_dietOrder(selrowData("#jqGrid"));
 					
 				}else{
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
 				}
 			}
 		},
-		loadComplete: function(){
+		loadComplete: function(data){
+			data.rows.forEach(function(element){
+				if(element.callback_param != null){
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+							element.callback_param[0],
+							element.callback_param[1],
+							element.callback_param[2],
+							function(){
+								fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+							}
+						)
+					});
+				}
+			});
 			// $('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
 			//button_state_ti('triage');
 		}
@@ -312,7 +327,6 @@ $(document).ready(function () {
 			case 'itemcode':field=['itemcode','description'];table="finance.faregister";case_='itemcode';break;
 			case 'assetcode': field = ['assetcode', 'description']; table = "finance.faregister";case_='assetcode';break;
 			case 'assettype': field = ['assettype', 'assettype']; table = "finance.faregister";case_='assettype';break;
-
 			case 'trf_currdeptcode': field = ['deptcode', 'description']; table = "sysdb.department";case_='trf_currdeptcode';break;
 			case 'trf_currloccode': field = ['deptcode', 'description']; table = "sysdb.location";case_='trf_currloccode';break;
 			case 'trf_department': field = ['deptcode', 'description']; table = "sysdb.department";case_='trf_department';break;
@@ -353,41 +367,41 @@ $(document).ready(function () {
 				total = origcost - lstytddep - cuytddep;
 				$("#nbv").val(total.toFixed(2));
 			}
-			}, 1000 );
+		}, 1000 );
 	});
 
 	$("#lstytddep").keydown(function(e) {
-			delay(function(){
-				var origcost = currencyRealval("#origcost");
-				var lstytddep = currencyRealval("#lstytddep");
-				var cuytddep = currencyRealval("#cuytddep");
+		delay(function(){
+			var origcost = currencyRealval("#origcost");
+			var lstytddep = currencyRealval("#lstytddep");
+			var cuytddep = currencyRealval("#cuytddep");
 
-				if($("#lstytddep").val() == '') {
-					total = origcost - lstytddep - cuytddep;
-					$("#nbv").val(numeral(total).format('0,0.00'));
-				}
-				else{
-					total = origcost - lstytddep - cuytddep;
-					$("#nbv").val(numeral(total).format('0,0.00'));
-				}
-			}, 1000 );
+			if($("#lstytddep").val() == '') {
+				total = origcost - lstytddep - cuytddep;
+				$("#nbv").val(numeral(total).format('0,0.00'));
+			}
+			else{
+				total = origcost - lstytddep - cuytddep;
+				$("#nbv").val(numeral(total).format('0,0.00'));
+			}
+		}, 1000 );
 	});
 
 	$("#cuytddep").keydown(function(e) {
-			delay(function(){
-				var origcost = currencyRealval("#origcost");
-				var lstytddep = currencyRealval("#lstytddep");
-				var cuytddep = currencyRealval("#cuytddep");
+		delay(function(){
+			var origcost = currencyRealval("#origcost");
+			var lstytddep = currencyRealval("#lstytddep");
+			var cuytddep = currencyRealval("#cuytddep");
 
-				if($("#cuytddep").val() == '') {
-					total = origcost - lstytddep - cuytddep;
-					$("#nbv").val(numeral(total).format('0,0.00'));
-				}
-				else{
-					total = origcost - lstytddep - cuytddep;
-					$("#nbv").val(numeral(total).format('0,0.00'));
-				}
-			}, 1000 );
+			if($("#cuytddep").val() == '') {
+				total = origcost - lstytddep - cuytddep;
+				$("#nbv").val(numeral(total).format('0,0.00'));
+			}
+			else{
+				total = origcost - lstytddep - cuytddep;
+				$("#nbv").val(numeral(total).format('0,0.00'));
+			}
+		}, 1000 );
 	});
 
 	function getmethod_and_res(assetcode){
@@ -478,6 +492,39 @@ $(document).ready(function () {
 					recno:$('#recno').val(),
 				});*/
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
+        },
+        afterrestorefunc : function( response ) {
+			/*hideatdialogForm(false);*/
+	    }
+    };
+
+    var myEditOptions_jqGrid3 = {
+        keys: true,
+        extraparam:{
+		    "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid) {
+        	/*linenotoedit = rowid;
+        	$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
+        	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
+        },
+        aftersavefunc: function (rowid, response, options) {
+           	$('#amount').val(response.responseText);
+        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+        	if(addmore_jqgrid2.edit == false)linenotoedit = null; 
+        	//linenotoedit = null;
+
+        	refreshGrid('#jqGrid2',urlParam2,'add');
+        	$("#jqGridPager2Delete").show();
+        }, 
+        beforeSaveRow: function(options, rowid) {
+			// let data = selrowData('#jqGrid2');
+			// let editurl = "/assetenquiry/form?"+
+			// 	$.param({
+			// 		oper: 'comp_edit',
+			// 		_token:$('#_token').val()
+			// 	});
+			// $("#jqGrid3").jqGrid('setGridParam',{editurl:editurl});
         },
         afterrestorefunc : function( response ) {
 			/*hideatdialogForm(false);*/
@@ -657,12 +704,14 @@ $(document).ready(function () {
 		var urlParam3={
 			action:'get_table_default',
 			url:'/util/get_table_default',
-			field:['fr.trandate','fr.trantype','fc.qty','fr.deptcode','fc.loccode','fc.deptcode','fr.idno'],
+			field:['fr.assetcode','fr.assettype','fc.assetno','fc.assetlineno','fc.qty','fr.deptcode','fc.loccode','fc.deptcode','fc.idno'],
 			table_name:['finance.facompnt AS fc',' finance.faregister AS fr'],
 			table_id:'idno',
 			join_type:['LEFT JOIN'],
 			join_onCol:['fc.assetno'],
 			join_onVal:['fr.assetno'],
+			join_filterCol:[['fc.assetcode on =','fc.assettype on =']],
+			join_filterVal:[['fr.assetcode','fr.assettype']],
 			filterCol:['fc.compcode','fc.assetno'],
 			filterVal:['session.compcode','']
 		};
@@ -672,17 +721,18 @@ $(document).ready(function () {
 		//////////////////////////////////////////////start jqgrid3 Asset Serial List//////////////////////////////////////////////
 		$("#jqGrid3").jqGrid({
 			datatype: "local",
+			editurl: "/assetenquiry/form?action=comp_edit",
 			colModel: [
-				{ label: 'Asset Code', name:'assetcode', width:100, classes:'wrap'},
-				{ label: 'Asset Type', name:'assettype', width:120, classes:'wrap'},
-				{ label: 'Asset No', name:'assetno', width:100, classes:'wrap'},
-				{ label: 'Asset Line No', name: 'assetlineno', width: 120, classes: 'wrap'},
-				{ label: 'Location Code', name: 'loccode', width: 120, classes: 'wrap'},
-				{ label: 'Department Code', name: 'deptcode', width: 120, classes: 'wrap'},
-				{ label: 'Tracking No', name: 'trackingno', width: 120, classes: 'wrap'},
-				{ label: 'BEM No', name: 'bem_no', width: 120, classes: 'wrap'},
-				{ label: 'PPM', name: 'ppmschedule', width: 120, classes: 'wrap'},
-				{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
+				{ label: 'Asset Code', name:'assetcode', width:5, classes:'wrap'},
+				{ label: 'Asset Type', name:'assettype', width:5, classes:'wrap'},
+				{ label: 'Asset No', name:'assetno', width:5, classes:'wrap'},
+				{ label: 'Line No', name: 'assetlineno', width: 3, classes: 'wrap'},
+				{ label: 'Location Code', name: 'loccode', width: 7, classes: 'wrap'},
+				{ label: 'Department Code', name: 'deptcode', width: 7, classes: 'wrap'},
+				{ label: 'Tracking No', name: 'trackingno', width: 7, classes: 'wrap', editable:true},
+				{ label: 'BEM No', name: 'bem_no', width: 7, classes: 'wrap', editable:true},
+				{ label: 'PPM', name: 'ppmschedule', width: 7, classes: 'wrap', editable:true},
+				{ label: 'idno', name: 'idno', width: 7, classes: 'wrap', hidden:true, key:true},
 	
 			],
 			autowidth: true,
@@ -694,6 +744,7 @@ $(document).ready(function () {
 			height: 200,
 			rowNum: 30,
 			sortname: 'idno',
+			// sortorder: 'assetlineno',
 			pager: "#jqGridPager3",
 			onSelectRow:function(rowid, selected){
 				// populate_form_SerialAE(selrowData("#jqGrid_trf"));
@@ -712,24 +763,26 @@ $(document).ready(function () {
 			afterShowForm: function (rowid) {
 			   // $("#expdate").datepicker();
 			},
-			beforeSubmit: function(postdata, rowid){ 
-
-			 }
+			ondblClickRow: function(rowid, iRow, iCol, e){
+				$("#jqGrid3_iledit").click();
+			},
 		});
 
 		
 	//////////////////////////////////////////start pager jqgrid3 ASSET SERIAL LIST/////////////////////////////////////////////
 	$("#jqGrid3").inlineNav('#jqGridPager3',{	
 		add:false,
-		edit:false,
-		cancel: false,
+		edit:true,
+		cancel:true,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: { 
-			addRowParams: myEditOptions
+			addRowParams: myEditOptions_jqGrid3
 		},
-		editParams: myEditOptions
+		editParams: myEditOptions_jqGrid3
 	});
+
+	
 	
 	/////////////////////////////////// end pagergrid3 /////////////////////////////////////////////////////
 	
@@ -739,9 +792,10 @@ $(document).ready(function () {
 	searchClick('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
+	addParamField('#jqGrid',true,urlParam,['description_show']);
 	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate']);
 	// addParamField('#jqGrid2',true,urlParam2);
+	// addParamField('#jqGrid3',true,urlParam3);
 
 	$("#jqGrid2_panel").on("show.bs.collapse", function(){
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));

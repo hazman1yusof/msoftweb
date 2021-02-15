@@ -1747,14 +1747,14 @@ function getEditVal(val){
 	return val
 }
 
-function seemore_desc(divs){
-	var init = function(){
-		divs.forEach(function(data,index){
-			console.log(data);
-		});
-	}
+// function seemore_desc(divs){
+// 	var init = function(){
+// 		divs.forEach(function(data,index){
+// 			console.log(data);
+// 		});
+// 	}
 
-}
+// }
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),

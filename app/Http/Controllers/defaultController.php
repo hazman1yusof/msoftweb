@@ -93,6 +93,10 @@ abstract class defaultController extends Controller{
         }
 
         //////////join//////////
+        // join_onCol : ['a.resourcecode'],
+        // join_onVal : ['d.doctorcode'],
+        // join_filterCol : [['a.compcode on =',...]],
+        // join_filterVal : [['d.compcode',...]]
         if(!empty($request->join_onCol)){
             foreach ($request->join_onCol as $key => $value) {
                 if(empty($request->join_filterCol)){ //ni nak check kalu ada AND lepas JOIN ON
