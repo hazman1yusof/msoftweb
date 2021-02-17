@@ -264,13 +264,6 @@ $(document).ready(function () {
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 		},
-
-		// onSelectRow:function(rowid, selected){
-		// 	urlParam2.filterVal[1]=selrowData("#jqGrid").assetno;
-		// 	refreshGrid("#jqGrid2",urlParam2);
-
-		// 	populateFormdata("#jqGrid","","#form_enquirydtl",rowid,'view');
-		// },
 		onSelectRow:function(rowid, selected){
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
