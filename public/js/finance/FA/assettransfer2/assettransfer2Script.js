@@ -58,7 +58,7 @@ conf = {
 };
 
 var dialog_deptcode= new ordialog(
-	'deptcode','sysdb.department','#newdeptcode',errorField,
+	'deptcode','sysdb.department','input[name="newdeptcode"]',errorField,
 	{	colModel:[
 			{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 			{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -89,7 +89,7 @@ var dialog_deptcode= new ordialog(
 dialog_deptcode.makedialog();
 
 var dialog_loccode= new ordialog(
-	'loccode','sysdb.location','#newloccode',errorField,
+	'loccode','sysdb.location','input[name="newloccode"]',errorField,
 	{	colModel:[
 			{label:'Location Code',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
 			{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},

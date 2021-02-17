@@ -700,73 +700,124 @@ $(document).ready(function () {
 
 	/////////////////////////////////// end pagergrid2 /////////////////////////////////////////////////////
 
-		/////////////////////////////parameter for jqgrid3 url Asset Serial List///////////////////////////////////////////////
-		var urlParam3={
-			action:'get_table_default',
-			url:'/util/get_table_default',
-			field:['fr.assetcode','fr.assettype','fc.assetno','fc.assetlineno','fc.qty','fr.deptcode','fc.loccode','fc.deptcode','fc.idno'],
-			table_name:['finance.facompnt AS fc',' finance.faregister AS fr'],
-			table_id:'idno',
-			join_type:['LEFT JOIN'],
-			join_onCol:['fc.assetno'],
-			join_onVal:['fr.assetno'],
-			join_filterCol:[['fc.assetcode on =','fc.assettype on =']],
-			join_filterVal:[['fr.assetcode','fr.assettype']],
-			filterCol:['fc.compcode','fc.assetno'],
-			filterVal:['session.compcode','']
-		};
-	
-		var addmore_jqgrid3={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid3, state true kalu
-		
-		//////////////////////////////////////////////start jqgrid3 Asset Serial List//////////////////////////////////////////////
-		$("#jqGrid3").jqGrid({
-			datatype: "local",
-			editurl: "/assetenquiry/form?action=comp_edit",
-			colModel: [
-				{ label: 'Asset Code', name:'assetcode', width:5, classes:'wrap'},
-				{ label: 'Asset Type', name:'assettype', width:5, classes:'wrap'},
-				{ label: 'Asset No', name:'assetno', width:5, classes:'wrap'},
-				{ label: 'Line No', name: 'assetlineno', width: 3, classes: 'wrap'},
-				{ label: 'Location Code', name: 'loccode', width: 7, classes: 'wrap'},
-				{ label: 'Department Code', name: 'deptcode', width: 7, classes: 'wrap'},
-				{ label: 'Tracking No', name: 'trackingno', width: 7, classes: 'wrap', editable:true},
-				{ label: 'BEM No', name: 'bem_no', width: 7, classes: 'wrap', editable:true},
-				{ label: 'PPM', name: 'ppmschedule', width: 7, classes: 'wrap', editable:true},
-				{ label: 'idno', name: 'idno', width: 7, classes: 'wrap', hidden:true, key:true},
-	
-			],
-			autowidth: true,
-			shrinkToFit: true,
-			multiSort: true,
-			viewrecords: true,
-			loadonce:false,
-			width: 1150,
-			height: 200,
-			rowNum: 30,
-			sortname: 'idno',
-			// sortorder: 'assetlineno',
-			pager: "#jqGridPager3",
-			onSelectRow:function(rowid, selected){
-				// populate_form_SerialAE(selrowData("#jqGrid_trf"));
-			},
-			loadComplete: function(data){
-				/*if(addmore_jqgrid3.more == true){$('#jqGrid3_iladd').click();}
-				else{
-					$('#jqGrid3').jqGrid ('setSelection', "1");
-				}
-				addmore_jqgrid3.edit = addmore_jqgrid3.more = false;*/ //reset
-				setjqgridHeight(data,'jqGrid3');
-			},
-			gridComplete: function(){
+	/////////////////////////////parameter for jqgrid3 url Asset Serial List///////////////////////////////////////////////
+	var urlParam3={
+		action:'get_table_default',
+		url:'/util/get_table_default',
+		field:['fc.assetcode','fc.assettype','fr.description','fc.assetno','fc.assetlineno','fr.deptcode','fc.loccode','fc.deptcode','fc.idno','fc.trackingno','fc.bem_no','fc.ppmschedule'],
+		table_name:['finance.facompnt AS fc',' finance.faregister AS fr'],
+		table_id:'idno',
+		join_type:['LEFT JOIN'],
+		join_onCol:['fc.assetno'],
+		join_onVal:['fr.assetno'],
+		join_filterCol:[['fc.assetcode on =','fc.assettype on =']],
+		join_filterVal:[['fr.assetcode','fr.assettype']],
+		filterCol:['fc.compcode','fc.assetno'],
+		filterVal:['session.compcode','']
+	};
 
-			},
-			afterShowForm: function (rowid) {
-			   // $("#expdate").datepicker();
-			},
-			ondblClickRow: function(rowid, iRow, iCol, e){
-				$("#jqGrid3_iledit").click();
-			},
-		});
+	var addmore_jqgrid3={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid3, state true kalu
+
+	$("#jqGridtransferFA_panel2")
+	  .dialog({ 
+		width: 9/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			dialog_deptcode.on();
+			dialog_loccode.on();
+			frozeOnEdit("#formtransferFA2");
+		},
+		close: function( event, ui ) {
+			dialog_deptcode.off();
+			dialog_loccode.off();
+		},
+		buttons :[{
+			text: "Save",click: function() {
+				if( $('#formtransferFA2').isValid({requiredFields: ''}, conf, true) ) {
+					var saveParam={
+				        action:'save_table_transferFA_compnt',
+				        oper:'transfer2'
+				    }
+				    var postobj={
+				    	idno_fr : selrowData('#jqGrid').idno,
+				    	idno_fc : selrowData('#jqGrid3').idno,
+				    	_token : $('#_token').val(),
+				    };
+
+					values = $("#formtransferFA2").serializeArray();
+
+				    $.post( "/assettransfer2/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+						refreshGrid('#jqGrid3', urlParam3);
+				    	$("#jqGridtransferFA_panel2").dialog('close');
+				        
+				    },'json').fail(function(data) {
+						refreshGrid('#jqGrid3', urlParam3);
+				    	$("#jqGridtransferFA_panel2").dialog('close');
+				        // alert('there is an error');
+				    }).success(function(data){
+						refreshGrid('#jqGrid3', urlParam3);
+				    	$("#jqGridtransferFA_panel2").dialog('close');
+				    });
+				}
+			}
+		},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}],
+	  });
+	
+	//////////////////////////////////////////////start jqgrid3 Asset Serial List//////////////////////////////////////////////
+	$("#jqGrid3").jqGrid({
+		datatype: "local",
+		editurl: "/assetenquiry/form?action=comp_edit",
+		colModel: [
+			{ label: 'Asset Code', name:'assetcode', width:5, classes:'wrap'},
+			{ label: 'Asset Type', name:'assettype', width:5, classes:'wrap'},
+			{ label: 'description', name:'description', hidden:true},
+			{ label: 'Asset No', name:'assetno', width:5, classes:'wrap'},
+			{ label: 'Line No', name: 'assetlineno', width: 3, classes: 'wrap'},
+			{ label: 'Location Code', name: 'loccode', width: 7, classes: 'wrap'},
+			{ label: 'Department Code', name: 'deptcode', width: 7, classes: 'wrap'},
+			{ label: 'Tracking No', name: 'trackingno', width: 7, classes: 'wrap', editable:true},
+			{ label: 'BEM No', name: 'bem_no', width: 7, classes: 'wrap', editable:true},
+			{ label: 'PPM', name: 'ppmschedule', width: 7, classes: 'wrap', editable:true},
+			{ label: 'idno', name: 'idno', width: 7, classes: 'wrap', hidden:true, key:true},
+
+		],
+		autowidth: true,
+		shrinkToFit: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 1150,
+		height: 200,
+		rowNum: 30,
+		sortname: 'idno',
+		// sortorder: 'assetlineno',
+		pager: "#jqGridPager3",
+		onSelectRow:function(rowid, selected){
+			// populate_form_SerialAE(selrowData("#jqGrid_trf"));
+		},
+		loadComplete: function(data){
+			/*if(addmore_jqgrid3.more == true){$('#jqGrid3_iladd').click();}
+			else{
+				$('#jqGrid3').jqGrid ('setSelection', "1");
+			}
+			addmore_jqgrid3.edit = addmore_jqgrid3.more = false;*/ //reset
+			setjqgridHeight(data,'jqGrid3');
+		},
+		gridComplete: function(){
+
+		},
+		afterShowForm: function (rowid) {
+		   // $("#expdate").datepicker();
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGrid3_iledit").click();
+		},
+	});
 
 		
 	//////////////////////////////////////////start pager jqgrid3 ASSET SERIAL LIST/////////////////////////////////////////////
@@ -780,6 +831,26 @@ $(document).ready(function () {
 			addRowParams: myEditOptions_jqGrid3
 		},
 		editParams: myEditOptions_jqGrid3
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
+		id: "jqGridPager3transfer",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-transfer",
+		title:"transfer",
+		onClickButton: function(){
+			var selRowId = $("#jqGrid3").jqGrid('getGridParam', 'selrow');
+			if (!selRowId) {
+				alert('Please select row');
+			}else{
+				var data = selrowData("#jqGrid3")
+				$("#jqGridtransferFA_panel2 input[name='assetno']").val(data.assetno);
+				$("#jqGridtransferFA_panel2 input[name='description']").val(data.description);
+				$("#jqGridtransferFA_panel2 input[name='assetcode']").val(data.assetcode);
+				$("#jqGridtransferFA_panel2 input[name='assettype']").val(data.assettype);
+				$("#jqGridtransferFA_panel2 input[name='deptcode']").val(data.deptcode);
+				$("#jqGridtransferFA_panel2 input[name='loccode']").val(data.loccode);
+				$("#jqGridtransferFA_panel2").dialog('open');
+			}
+		},			
 	});
 
 	

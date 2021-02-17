@@ -40,6 +40,9 @@ class assettransfer2Controller extends defaultController
                         return 'error happen..';
                 }
 
+            case 'save_table_transferFA_compnt':
+                return $this->transferFA_compnt($request);
+
             case 'get_table_transferFA':
                 return $this->get_table_transferFA($request);
 
@@ -240,6 +243,39 @@ class assettransfer2Controller extends defaultController
         
         return json_encode($responce);
 
+    }
+
+    public function transferFA_compnt(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $transferFA = DB::table('finance.faregister')
+                ->where('idno','=',$request->idno_fr);
+
+            if($transferFA->exists()){
+                DB::table('finance.facompnt')
+                    ->where('idno','=',$request->idno_fc)
+                    ->update([
+                        'deptcode' => $request->newdeptcode,
+                        'loccode' => $request->newloccode,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }else{
+                
+            }
+
+            $queries = DB::getQueryLog();
+            dump($queries);
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error DB rollback!'.$e, 500);
+        }
     }
 
 }

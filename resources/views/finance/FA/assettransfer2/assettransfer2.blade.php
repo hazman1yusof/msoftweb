@@ -113,3 +113,82 @@
 	</div>	
 </div>
 
+	<div id="jqGridtransferFA_panel2" class="panel-body">
+		<div class='col-md-12' style="padding:0 0 15px 0">
+			<form class='form-horizontal' style='width:99%' id='formtransferFA2'>
+				<div class='col-md-12'>
+					<div class="panel panel-info">
+						<div class="panel-heading text-center">ASSET TRANSFER DETAIL</div>
+						<div class="panel-body">
+
+							<div class="form-group row">
+								<label class="col-md-2 control-label" for="assetno">Tagging No</label>  
+								<div class="col-md-3">
+									<input id="assetno" name="assetno" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
+								</div>
+
+								<label class="col-md-2 control-label" for="description">Item Code</label>  
+								<div class="col-md-3">
+									<input id="description" name="description" type="text" class="form-control input-sm uppercase" data-validation="required"  frozeOnEdit>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-2 control-label" for="assetcode">Category</label>
+									<div class="col-md-3">
+										<input id="assetcode" name="assetcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+									</div>
+								<label class="col-md-2 control-label" for="assettype">Type</label>
+									<div class="col-md-3">
+										<input id="assettype" name="assettype" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+									</div>
+							</div>
+
+							<hr>
+							<div class="form-group row">
+								<label class="col-md-2 control-label" for="deptcode">Current Department</label>
+									<div class="col-md-3">
+										<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+									</div>
+								<label class="col-md-2 control-label" for="loccode">Current Location</label>
+									<div class="col-md-3">
+										<input id="loccode" name="loccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+									</div>
+							</div>
+							
+							<hr>		
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="trandate">Date</label>  
+                                <div class="col-md-2">
+                                    <input name="trandate" type="date" class="form-control input-sm" data-validation="required">
+                                </div>
+                            </div>
+
+							<div class="form-group row">
+							<label class="col-md-2 control-label" for="newdeptcode">New Department</label>  
+								<div class="col-md-3">
+									<div class='input-group'>
+										<input id="newdeptcode" name="newdeptcode" type="text" class="form-control input-sm uppercase">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+								<label class="col-md-2 control-label" for="newloccode">New Location</label>  
+								<div class="col-md-3">
+									<div class='input-group'>
+										<input id="newloccode" name="newloccode" type="text" class="form-control input-sm uppercase">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+							</div>
+					
+							<hr>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
