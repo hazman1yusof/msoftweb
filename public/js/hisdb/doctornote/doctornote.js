@@ -78,7 +78,12 @@ $(document).ready(function () {
 		getBMI();
 	});
 	//bmi calculator ends
-	
+
+	// change diagnosis value
+	$('#icdcode').change(function() {
+		$('#diagfinal').val($('#icdcode').val());
+	});
+
 });
 
 //bmi calculator
@@ -93,6 +98,17 @@ function getBMI() {
     if (isNaN(bmi)) bmi = 0;
 
     $('#bmi').val((bmi));
+}
+
+function change_type() {
+	var checkBox = document.getElementById("toggle_type");
+	var addnotes = document.getElementById("addnotes");
+  
+	if (checkBox.checked == true){
+		addnotes.style.display = "none";
+	} else {
+		addnotes.style.display = "block";
+	}
 }
 
 var errorField = [];
@@ -110,6 +126,40 @@ conf = {
 		}
 	},
 };
+
+var dialog_icd = new ordialog(
+	'icdcode',['hisdb.diagtab AS dt','sysdb.sysparam AS sp'],"#formDoctorNote input[name='icdcode']",errorField,
+	{	colModel:[
+			{label:'ICD Code',name:'icdcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+		],
+		urlParam: {
+			fixPost: true,
+			filterCol:['sp.compcode','dt.type'],
+			filterVal:['session.compcode', 'icd-10']
+		},
+		ondblClickRow:function(){
+			// $('#optax').focus();
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				// $('#optax').focus();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+			}
+		}
+	},{
+		title:"Select ICD",
+		open: function(){
+			dialog_icd.urlParam.filterCol = ['sp.compcode','dt.type'];
+			dialog_icd.urlParam.filterVal = ['session.compcode', 'icd-10'];
+		}
+	},'urlParam','radio','tab'
+);
+dialog_icd.makedialog();
 
 button_state_doctorNote('empty');
 function button_state_doctorNote(state){
@@ -132,6 +182,7 @@ function button_state_doctorNote(state){
 			$('#save_doctorNote,#cancel_doctorNote').attr('disabled',true);
 			break;
 		case 'wait':
+			dialog_icd.on();
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$("#save_doctorNote,#cancel_doctorNote").attr('disabled',false);
 			$('#edit_doctorNote,#new_doctorNote').attr('disabled',true);
@@ -144,9 +195,6 @@ function button_state_doctorNote(state){
 		// 	break;
 	}
 
-	// if(!moment(gldatepicker_date).isSame(moment(), 'day')){
-	// 	$('#new_doctorNote,#save_doctorNote,#cancel_doctorNote,#edit_doctorNote').attr('disabled',true);
-	// }
 }
 
 var dateParam_docnote,doctornote_docnote;
@@ -185,24 +233,39 @@ function populate_currDoctorNote(obj){
 
 	//panel header
 	$('#name_show_doctorNote').text(obj.Name);
-	$('#mrn_show_doctorNote').text(obj.MRN);
+	$('#mrn_show_doctorNote').text(("0000000" + obj.MRN).slice(-7));
 
 	//formDoctorNote
 	$('#mrn_doctorNote').val(obj.MRN);
 	$("#episno_doctorNote").val(obj.Episno);
 
-    doctornote_docnote={
-    	action:'get_table_doctornote',
-    	mrn:obj.MRN,
-    	episno:obj.Episno,
-    	recorddate:''
-    };
+	var checkBox = document.getElementById("toggle_type");
+	var addnotes = document.getElementById("addnotes");
+  
+	// checked true = current
+	if (checkBox.checked == true){
+		dateParam_docnote={
+			action:'get_table_date',
+			mrn:obj.MRN,
+			episno:obj.Episno
+		}
+		
+		addnotes.style.display = "none";
+	} else { // checked false = past history
+		dateParam_docnote={
+			action:'get_table_date_past',
+			mrn:obj.MRN,
+		}
 
-    dateParam_docnote={
-        action:'get_table_date',
-    	mrn:obj.MRN,
-    	episno:obj.Episno
-    }
+		addnotes.style.display = "block";
+	}
+
+	doctornote_docnote={
+		action:'get_table_doctornote',
+		mrn:obj.MRN,
+		episno:obj.Episno,
+		recorddate:''
+	};
 
     button_state_doctorNote('add');
 }
@@ -298,7 +361,7 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
 var ajaxurl;
 $('#jqGridDoctorNote_panel').on('show.bs.collapse', function () {
     docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
-    	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
+		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
     });
 });
 

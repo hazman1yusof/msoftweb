@@ -28,8 +28,10 @@ class DoctorNoteController extends defaultController
     public function table(Request $request)
     {   
         switch($request->action){
-            case 'get_table_date':
+            case 'get_table_date':          // for current
                 return $this->get_table_date($request);
+            case 'get_table_date_past':     // for past history
+                return $this->get_table_date_past($request);
             case 'get_table_doctornote':
                 return $this->get_table_doctornote($request);
 
@@ -328,6 +330,25 @@ class DoctorNoteController extends defaultController
             ->select('idno','recorddate AS date')
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno)
+            ->where('compcode','=',session('compcode'));
+
+        if($patexam_obj->exists()){
+            $patexam_obj = $patexam_obj->get();
+            $responce->data = $patexam_obj;
+        }else{
+            $responce->data = [];
+        }
+
+        return json_encode($responce);
+    }
+
+    public function get_table_date_past(Request $request){
+
+        $responce = new stdClass();
+
+        $patexam_obj = DB::table('hisdb.patexam')
+            ->select('idno','recorddate AS date')
+            ->where('mrn','=',$request->mrn)
             ->where('compcode','=',session('compcode'));
 
         if($patexam_obj->exists()){
