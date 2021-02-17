@@ -46,6 +46,23 @@ class assetregisterController extends defaultController
 
     public function table(Request $request){
 
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {//ini baru
+            $value->description_show = $value->description;
+            if(mb_strlen($value->description_show)>80){
+
+                $time = time() + $key;
+
+                $value->description_show = mb_substr($value->description_show,0,80).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description_show,80).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+
+                $value->callback_param = [
+                    'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+                ];
+            }
+            
+        }
+
         $delordhd = DB::table('material.delordhd as dohd')
                         ->select(
                             'dohd.delordno as dohd_delordno',

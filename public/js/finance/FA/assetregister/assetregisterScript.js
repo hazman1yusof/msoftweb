@@ -523,7 +523,9 @@ $(document).ready(function () {
 			{ label: 'Item Code', name: 'itemcode', width: 11, sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
 			{ label: 'Regtype', name: 'regtype', width: 13, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat, hidden: true},	
-			{ label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
+			// { label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
+			{ label: 'Description', name: 'description_show', width: 40, classes: 'wrap'},
+			{ label: 'Description', name: 'description', canSearch: true,checked:true,hidden:true},
 			{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 			{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 			{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
@@ -577,6 +579,24 @@ $(document).ready(function () {
 			cbselect.show_hide_table();
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
+		},
+		loadComplete: function(data){
+			data.rows.forEach(function(element){
+				if(element.callback_param != null){
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+							element.callback_param[0],
+							element.callback_param[1],
+							element.callback_param[2],
+							function(){
+								fixPositionsOfFrozenDivs.call($('#jqGrid')[0]);
+							}
+						)
+					});
+				}
+			});
+			// $('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
+			//button_state_ti('triage');
 		}
 			
 	});
@@ -804,6 +824,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam,['Checkbox']);
+	addParamField('#jqGrid',true,urlParam,['description_show']);
 	addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','compcode','recstatus','assetreg_status','Checkbox']);
 	
 	$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
