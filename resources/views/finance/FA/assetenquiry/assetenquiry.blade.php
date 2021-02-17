@@ -258,7 +258,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="purordno">Purchase No.</label>
 						<div class="col-md-2">
-							<input id="purordno" type="text" name="purordno" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+							<input id="purordno" type="text" name="purordno" class="form-control input-sm text-uppercase" frozeOnEdit>
 						</div>
 					<label class="col-md-2 control-label" for="purdate">Purchase Date</label>
 						<div class="col-md-2">

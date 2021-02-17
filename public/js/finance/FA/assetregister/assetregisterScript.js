@@ -5,25 +5,25 @@ var editedRow=0;
 $(document).ready(function () {
 	$('body').show();
 	/////////////////////////validation//////////////////////////
-		$.validate({
-			modules : 'sanitize',
-			language : {
-				requiredFields: ''
-			},
-		});
-	
-		var errorField=[];
-		conf = {
-			onValidate : function($form) {
-				if(errorField.length>0){
-					console.log(errorField);
-					return {
-						element : $(errorField[0]),
-						message : ' '
-					}
+	$.validate({
+		modules : 'sanitize',
+		language : {
+			requiredFields: ''
+		},
+	});
+
+	var errorField=[];
+	conf = {
+		onValidate : function($form) {
+			if(errorField.length>0){
+				console.log(errorField);
+				return {
+					element : $(errorField[0]),
+					message : ' '
 				}
-			},
-		};
+			}
+		},
+	};
 	//////////////////////////////////////////////////////////////
 			
 	/////////////////////////////////// currency ///////////////////////////////
@@ -491,8 +491,8 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
-		action:'get_table_default',
-		url: '/util/get_table_default',
+		action:'assetregisterController',
+		url: 'assetregister/table',
 		field:'',
 		table_name:'finance.fatemp',	
 	}
@@ -823,9 +823,8 @@ $(document).ready(function () {
 	// searchClick2('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam,['Checkbox']);
-	addParamField('#jqGrid',true,urlParam,['description_show']);
-	addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','compcode','recstatus','assetreg_status','Checkbox']);
+	addParamField('#jqGrid',true,urlParam,['Checkbox','description_show']);
+	addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','compcode','recstatus','assetreg_status','description_show','Checkbox']);
 	
 	$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
 
