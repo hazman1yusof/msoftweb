@@ -161,6 +161,9 @@ class assetenquiryDtl2Controller extends defaultController
                         'individualtag' => $request->individualtag,
                         'recstatus' => $request->recstatus,
                         'cuytddep' => $request->cuytddep,
+                        'method' => $facode->method,
+                        'residualvalue' => $facode->residualvalue,
+                        'nbv' => $request->nbv,
 
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -207,6 +210,9 @@ class assetenquiryDtl2Controller extends defaultController
                         'individualtag' => $request->individualtag,
                         'recstatus' => $request->recstatus,
                         'cuytddep' => $request->cuytddep,
+                        'method' => $facode->method,
+                        'residualvalue' => $facode->residualvalue,
+                        'nbv' => $request->nbv,
 
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),

@@ -129,6 +129,9 @@ class assetenquiryController extends defaultController
                     'lstytddep' => $request->lstytddep,
                     'lstdepdate' => $request->lstdepdate,
                     'startdepdate' => $request->startdepdate,
+                    'method' => $facode->method,
+                    'residualvalue' => $facode->residualvalue,
+                    'nbv' => $request->nbv,
 
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),    

@@ -536,9 +536,9 @@ $(document).ready(function () {
 			{ label: 'Qty', name:'qty', width:5, classes:'wrap', hidden:false},
 			{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 			{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
-			{ label: 'method', name:'method', width:20, classes:'wrap', hidden:true},
-			{ label: 'residualvalue', name:'residualvalue', width:20, classes:'wrap', hidden:true},
-			{ label: 'nbv', name:'nbv', width:20, classes:'wrap', hidden:true, formatter: 'currency'},
+			{ label: 'Method', name:'method', width:20, classes:'wrap', hidden:true},
+			{ label: 'Residual Value', name:'residualvalue', width:20, classes:'wrap', hidden:true},
+			{ label: 'NBV', name:'nbv', width:20, classes:'wrap', hidden:true, formatter: 'currency'},
 			{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 			{ label: 'Post Date', name:'trandate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 			//accumprev

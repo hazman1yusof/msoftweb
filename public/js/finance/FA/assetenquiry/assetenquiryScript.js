@@ -48,7 +48,7 @@ $(document).ready(function () {
 		}
 	}];
 
- 	/// BUTTON FOR ENQDTL FORM OUTSIDE ///
+ 	/// BUTTON FOR ENQDTL FORM HEADER OUTSIDE ///
 	$("#save").click(function(){
 		unsaved = false;
 		mycurrency.formatOff();
@@ -90,7 +90,6 @@ $(document).ready(function () {
 					frozeOnEdit("#dialogForm");
 					rdonly("#dialogForm");
 					//$("#assetno").val('');
-
 					break;
 				case state = 'view':
 					mycurrency.formatOn();
@@ -225,8 +224,11 @@ $(document).ready(function () {
             { label: 'Quantity', name: 'qty', width: 5,  align: 'right',classes: 'wrap'},
             { label: 'Start Date', name:'statdate', width:20, classes:'wrap',  hidden:true},
 			{ label: 'Post Date', name:'trandate', width:20, classes:'wrap',  hidden:true},
-            { label: 'lstytddep', name:'lstytddep', width:20, classes:'wrap', hidden:true},
-            { label: 'cuytddep', name:'cuytddep', width:20, classes:'wrap', hidden:true},
+            { label: 'Accum Prev', name:'lstytddep', width:20, classes:'wrap', hidden:true},
+            { label: 'Accum YTD', name:'cuytddep', width:20, classes:'wrap', hidden:true},
+			{ label: 'NBV', name:'nbv', width:20, classes:'wrap', hidden:true, formatter: 'currency'},
+			{ label: 'Method', name:'method', width:20, classes:'wrap', hidden:true},
+			{ label: 'Residual Value', name:'residualvalue', width:20, classes:'wrap', hidden:true},
             { label: 'Cost', name: 'origcost', width: 8, classes: 'wrap', align: 'right',formatter:'currency'},
             { label: 'SuppCode', name: 'suppcode', width: 6, classes: 'wrap'},
             { label: 'Purchase Order No', name:'purordno',width: 8, classes:'wrap', hidden:true},
@@ -879,6 +881,7 @@ $(document).ready(function () {
 		}
 	}
 
+	////////seemore untuk panel header/////////////////
 	var set_seemore = new set_seemore(['show_movementAE','show_enquiryAE','show_transferAE','show_SerialAE']);
 	function set_seemore(array){
 		this.array = array;
