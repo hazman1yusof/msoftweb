@@ -209,7 +209,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="description">Description</label>  
 						<div class="col-md-3">
-							<textarea class="form-control input-sm text-uppercase" name="description" rows="3" cols="55" maxlength="100" id="description"></textarea>
+							<textarea class="form-control input-sm text-uppercase" name="description" rows="3" cols="55" id="description"></textarea>
 						</div>
 				</div>
 
@@ -329,7 +329,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="origcost">Cost</label>  
 						<div class="col-md-2">
-							<input id="origcost" name="origcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" frozeOnEdit>  
+							<input id="origcost" name="origcost" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" frozeOnEdit>  
 						</div>
 				</div>
 

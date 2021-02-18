@@ -89,6 +89,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					frozeOnEdit("#dialogForm");
 					rdonly("#dialogForm");
+					getNVB();
 					//$("#assetno").val('');
 					break;
 				case state = 'view':
@@ -340,12 +341,13 @@ $(document).ready(function () {
 	}
 
 	function getNVB() {
-		var origcost = $("#origcost").val();
-		var lstytddep = $("#lstytddep").val();
-		var cuytddep = $("#cuytddep").val();
+		var origcost = parseFloat($("#formdata input[name='origcost']").val());
+		var lstytddep = parseFloat($("#formdata input[name='lstytddep']").val());
+		var cuytddep = parseFloat($("#formdata input[name='cuytddep']").val());
 
-		total = origcost - lstytddep - cuytddep;
-		$("#nbv").val(total.toFixed(2));
+		var total = origcost - lstytddep - cuytddep;
+		console.log(total)
+		$("#formdata input[name='nbv']").val(total.toFixed(2));
 	}
 
 	$("#origcost").keydown(function(e) {

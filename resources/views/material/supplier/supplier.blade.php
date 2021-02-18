@@ -108,32 +108,32 @@ i.fa {
                     <div class="form-group">
 				  		<label class="col-md-2 control-label" for="Name">Name</label>  
 				  			<div class="col-md-8">
-				  				<input id="Name" name="Name" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
+				  				<input id="Name" name="Name" type="text" maxlength="333" class="form-control input-sm text-uppercase" data-validation="required">
 				 			</div>
 					</div>
                     
                     <div class="form-group">
 				  		<label class="col-md-2 control-label" for="Addr1">Address</label>  
 				  			<div class="col-md-8">
-				  				<input id="Addr1" name="Addr1" type="text" maxlength="40" class="form-control input-sm text-uppercase" data-validation="required">
+				  				<input id="Addr1" name="Addr1" type="text" maxlength="333" class="form-control input-sm text-uppercase" data-validation="required">
 				  			</div>
 					</div>
 				
 					<div class="form-group">
 				  		<div class="col-md-offset-2 col-md-8">
-				  			<input id="Addr2" name="Addr2" type="text" maxlength="40" class="form-control input-sm text-uppercase">
+				  			<input id="Addr2" name="Addr2" type="text" maxlength="333" class="form-control input-sm text-uppercase">
 				  		</div>
 					</div>
 				
 					<div class="form-group">
 				  		<div class="col-md-offset-2 col-md-8">
-				  			<input id="Addr3" name="Addr3" type="text" maxlength="40" class="form-control input-sm text-uppercase">
+				  			<input id="Addr3" name="Addr3" type="text" maxlength="333" class="form-control input-sm text-uppercase">
 				  		</div>
 					</div>
                 
                 	<div class="form-group">
 				  		<div class="col-md-offset-2 col-md-8">
-				  			<input id="Addr4" name="Addr4" type="text" maxlength="40" class="form-control input-sm text-uppercase">
+				  			<input id="Addr4" name="Addr4" type="text" maxlength="333" class="form-control input-sm text-uppercase">
 				  		</div>
 					</div>
                     
@@ -239,11 +239,11 @@ i.fa {
 				  				<input id="AccNo" name="AccNo" type="text" maxlength="15" class="form-control input-sm" data-validation="required">
 				  			</div>
                             
-				   	<label class="col-md-2 control-label" for="SuppFlg">Supply Goods</label>  
+				   	<!-- <label class="col-md-2 control-label" for="SuppFlg">Supply Goods</label>  
 				  	<div class="col-md-2">
                         <label class="radio-inline"><input type="radio" name="SuppFlg" value='Yes' data-validation="">Yes</label>
                         <label class="radio-inline"><input type="radio" name="SuppFlg" value='No' data-validation="">No</label>
-					</div>
+					</div> -->
 				</div>
                 
                 <div class="form-group">

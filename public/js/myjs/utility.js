@@ -1097,6 +1097,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		}
 
 		if(event.key == "Tab" && textfield.val() != ""){
+			$("#"+event.data.data.dialogname).dialog("open");
 			event.data.data.ontabbing=true;
 			var obj = event.data.data;
 			$("#"+obj.gridname).jqGrid('setGridParam',{ ondblClickRow: function(id){ 
@@ -1137,7 +1138,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				event.data.data.urlParam.searchCol2=searchCol2;
 				event.data.data.urlParam.searchVal2=searchVal2;
 			}
-			$("#"+event.data.data.dialogname).dialog("open");
 			refreshGrid("#"+event.data.data.gridname,event.data.data.urlParam);
 			$("#Dtext_"+unique).val(text);
 		}

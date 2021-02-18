@@ -62,7 +62,7 @@
 								<div class="form-group row">
 									<label class="col-md-1 control-label" for="description">Description</label>  
 										<div class="col-md-3">
-											<textarea class="form-control input-sm text-uppercase" name="description" rows="4" cols="55" maxlength="100" id="description"></textarea>
+											<textarea class="form-control input-sm text-uppercase" name="description" rows="4" cols="55" id="description"></textarea>
 										</div>
 								</div>
 

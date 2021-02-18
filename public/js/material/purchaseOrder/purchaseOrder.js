@@ -773,7 +773,6 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'suppcode', name: 'suppcode', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Quantity Order', name: 'qtyorder', width: 100, align: 'right', classes: 'wrap', editable:true,
 				editable: true, 
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
@@ -881,6 +880,7 @@ $(document).ready(function () {
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'prdept', name: 'prdept', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'purordno', name: 'purordno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'suppcode', name: 'suppcode', width: 20, classes: 'wrap', hidden:true},
 		],
 		scroll: false,
 		autowidth: false,
@@ -1091,7 +1091,7 @@ $(document).ready(function () {
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 			
-			$("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='pouom']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='pouom'], #jqGrid2 input[name='uomcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			$("#jqGrid2 input[name='qtyorder']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
 
@@ -1226,6 +1226,32 @@ $(document).ready(function () {
 		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
 
 		        Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtyorder"]);
+
+		        dialog_itemcode.id_optid = ids[i];
+		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
+		        	function(self){
+		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(self){
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+				    }
+			    );
+
+		        dialog_uomcode.id_optid = ids[i];
+		        dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
+		        	function(self){
+			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(self){
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			        }
+			    );
+
+				dialog_taxcode.id_optid = ids[i];
+		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,undefined,function(self,data){
+		        	if(data.rows.length > 0){
+						$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
+		        	}
+					fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		        });
 
 		        cari_gstpercent(ids[i]);
 		    }
@@ -1563,7 +1589,7 @@ $(document).ready(function () {
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 
-		$("#jqGrid2 input[name='qtyorder'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='pouom']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='qtyorder'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='pouom'], #jqGrid2 input[name='uomcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 		$("#jqGrid2 input[name='qtyorder']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
 
@@ -2360,7 +2386,7 @@ $(document).ready(function () {
 			
 		},{
 			title:"Select UOM Code For Item",
-			open:function(){
+			open:function(obj_){
 				
 				var pricecode = $("#jqGrid2 input#"+obj_.id_optid+"_pricecode").val();
 
@@ -2448,7 +2474,6 @@ $(document).ready(function () {
 
 					$(event.currentTarget).parent().next().html('');
 				}
-				
 
 				let data=selrowData('#'+dialog_pouom.gridname);
 

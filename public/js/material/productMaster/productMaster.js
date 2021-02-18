@@ -9,8 +9,8 @@
 
 			hidePostClass();
 			
-			//console.log($( "#postGroupcode option:selected" ).text());
-			//console.log($( "#postGroupcode option:selected" ).val());
+			// console.log($( "#postGroupcode option:selected" ).text());
+			// console.log($( "#postGroupcode option:selected" ).val());
 			
 			/////////////////////////validation//////////////////////////
 			$.validate({
@@ -371,28 +371,30 @@
 						{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 					],
-						urlParam: {
-							open: function(){
-							if($('#postGroupcode').val().trim() == 'Stock') {
-								filterCol=['cattype', 'source', 'recstatus'];
-								filterVal=['Stock', 'PO', 'ACTIVE'];
-							}else if($('#postGroupcode').val().trim() == 'Others') {
-								filterCol=['cattype', 'source', 'recstatus'];
-								filterVal=['Other', 'PO', 'ACTIVE'];
-							}else if($('#groupcode').val().trim() == 'Stock') {
-								filterCol=['cattype', 'source', 'recstatus'];
-								filterVal=['Stock', 'PO', 'ACTIVE'];
-							}else if($('#groupcode').val().trim() == 'Others') {
-								filterCol=['cattype', 'source', 'recstatus'];
-								filterVal=['Other', 'PO', 'ACTIVE'];
-							}else if($('#postGroupcode').val().trim() == 'Asset'){
-								table_name="finance.facode";
-								field=['assetcode as catcode', 'description'];
-							}else {
-								filterCol=['recstatus'];
-								filterVal=['ACTIVE'];
-							}
-						}
+					urlParam: {
+						filterCol:['recstatus'],
+						filterVal:['ACTIVE'],
+						// open: function(){
+						// 	if($('#postGroupcode').val().trim() == 'Stock') {
+						// 		filterCol=['cattype', 'source', 'recstatus'];
+						// 		filterVal=['Stock', 'PO', 'ACTIVE'];
+						// 	}else if($('#postGroupcode').val().trim() == 'Others') {
+						// 		filterCol=['cattype', 'source', 'recstatus'];
+						// 		filterVal=['Other', 'PO', 'ACTIVE'];
+						// 	}else if($('#groupcode').val().trim() == 'Stock') {
+						// 		filterCol=['cattype', 'source', 'recstatus'];
+						// 		filterVal=['Stock', 'PO', 'ACTIVE'];
+						// 	}else if($('#groupcode').val().trim() == 'Others') {
+						// 		filterCol=['cattype', 'source', 'recstatus'];
+						// 		filterVal=['Other', 'PO', 'ACTIVE'];
+						// 	}else if($('#postGroupcode').val().trim() == 'Asset'){
+						// 		table_name="finance.facode";
+						// 		field=['assetcode as catcode', 'description'];
+						// 	}else {
+						// 		filterCol=['recstatus'];
+						// 		filterVal=['ACTIVE'];
+						// 	}
+						// }
 					},
 					ondblClickRow: function () {
 						$('#recstatus').focus();
@@ -423,8 +425,15 @@
 							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
 							dialog_category.urlParam.filterVal=['Other', 'PO', 'ACTIVE'];
 						}else if($('#postGroupcode').val().trim() == 'Asset'){
+
+							let newcolmodel = [
+								{label:'Asset Code',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+								{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+							]
+							$('#'+dialog_category.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
+
 							dialog_category.urlParam.table_name="finance.facode";
-							dialog_category.urlParam.field=['assetcode as catcode', 'description'];
+							dialog_category.urlParam.field=['assetcode', 'description'];
 						}else {
 							dialog_category.urlParam.filterCol=['recstatus'];
 							dialog_category.urlParam.filterVal=['ACTIVE'];

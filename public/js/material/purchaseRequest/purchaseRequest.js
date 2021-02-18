@@ -1119,26 +1119,35 @@ $(document).ready(function () {
 
 		        Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtyrequest"]);
 
-		        dialog_itemcode.id_optid = ids[i];
-		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,function(self){
-		        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-		        });
+		        // dialog_itemcode.id_optid = ids[i];
+		        // dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,function(self){
+		        // 	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+		        // });
 
 		        dialog_itemcode.id_optid = ids[i];
-		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,function(self){
-		        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-		        });
+		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
+		        	function(self){
+		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(self){
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+				    }
+			    );
 
 		        dialog_uomcode.id_optid = ids[i];
-		        dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,function(self){
-		        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-		        });
+		        dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
+		        	function(self){
+			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(self){
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			        }
+			    );
 
 				dialog_taxcode.id_optid = ids[i];
 		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,undefined,function(self,data){
 		        	if(data.rows.length > 0){
 						$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
 		        	}
+					fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 		        });
 
 		        cari_gstpercent(ids[i]);

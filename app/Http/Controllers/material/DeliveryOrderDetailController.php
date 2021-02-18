@@ -120,7 +120,7 @@ class DeliveryOrderDetailController extends defaultController
     public function get_draccno($itemcode,$pricecode){
         $product = DB::table('material.product')->where('itemcode','=',$itemcode)->first();
 
-        if($pricecode == 'MS' && $product->groupcode == 'Asset'){
+        if($pricecode == 'MS' && strtoupper($product->groupcode) == 'ASSET'){
             $query = DB::table('finance.facode')
                     ->select('facode.glassetccode')
                     ->join('material.product', 'facode.assetcode', '=', 'product.productcat')
@@ -129,7 +129,7 @@ class DeliveryOrderDetailController extends defaultController
             
             return $query->glassetccode;
 
-        }else if($pricecode == 'MS' && $product->groupcode == 'Others'){
+        }else if($pricecode == 'MS' && strtoupper($product->groupcode) == 'OTHERS'){
             $query = DB::table('material.category')
                     ->select('category.expacct')
                     ->join('material.product', 'category.catcode', '=', 'product.productcat')
