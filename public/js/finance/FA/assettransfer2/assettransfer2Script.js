@@ -155,6 +155,7 @@ function populate_transferAE(obj,rowdata){
 	
 	//panel header
 	$('#category_show_transferAE').text(obj.assetcode);
+	$('#itemcode_show_transferAE').text('Item Code: '+obj.itemcode);
 	$('#description_show_transferAE').text('Description: '+obj.description);
 	$('#assetno_show_transferAE').text(obj.assetno);
 

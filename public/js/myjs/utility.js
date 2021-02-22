@@ -1435,6 +1435,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 			
 		});
+		if(index == -1){
+			param.filterCol.pop();
+			param.filterVal.pop();
+		}
 	}
 
 	this.init_func = null;

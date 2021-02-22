@@ -1,7 +1,9 @@
 <div class="panel panel-default" style="position: relative;" id="jqGridEnquiryDtl2_c">
 	<div class="panel-heading clearfix collapsed position" id="toggle_EnquiryDtl2" style="position: sticky;top: 0px;z-index: 3;">
 		<b>Asset No: <span id="category_show_enquiryAE"></span></b>
-		<b> - <span id="assetno_show_enquiryAE"></span><br><span class="desc_show" id="description_show_enquiryAE"></span><a id="seemore_show_enquiryAE" style="display: none" data-show='false'>see more</a></b>
+		<b> - <span id="assetno_show_enquiryAE"></span>
+		<br><span id="itemcode_show_enquiryAE"></span>
+		<br><span class="desc_show" id="description_show_enquiryAE"></span><a id="seemore_show_enquiryAE" style="display: none" data-show='false'>see more</a></b>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridEnquiryDtl2_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridEnquiryDtl2_panel"></i>

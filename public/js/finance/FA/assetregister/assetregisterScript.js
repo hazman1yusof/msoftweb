@@ -262,8 +262,8 @@ $(document).ready(function () {
 	var dialog_itemcode= new ordialog(
 		'itemcode',['material.delorddt as dodt','material.productmaster as p','material.delordhd as dohd'],'#itemcode',errorField,
 		{	colModel:[
-				{label:'Item Code',name:'dodt_itemcode',width:20,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'p_description',width:20,classes:'wrap pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Item Code',name:'dodt_itemcode',width:16,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'p_description',width:55,classes:'wrap pointer',canSearch:true,checked:true,or_search:true},
 				{label:'dodt_uomcode',name:'dodt_uomcode',width:100,classes:'pointer',hidden:true},
 				{label:'DO Detail Remarks',name:'dodt_remarks',width:100,classes:'pointer',hidden:false},
 				{label:'dodt_qtydelivered',name:'dodt_qtydelivered',width:100,classes:'pointer',hidden:true},
@@ -284,7 +284,7 @@ $(document).ready(function () {
 				$('#qty').val(data['dodt_qtydelivered']);
 				$('#currentcost').val(data['dodt_amount']);
 				$('#lineno_').val(data['dodt_lineno_']);
-				$('textarea#description').val(data['p_description']+'\n'+data['dodt_remarks']);
+				$('textarea#description').val(data['dodt_remarks']);
 				$("#purprice,#qty").blur();
 				$("#origcost,#lstytddep,#cuytddep").blur();
 			},
@@ -515,7 +515,7 @@ $(document).ready(function () {
 			{ label: 'Category', name: 'assetcode', width: 10, sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Dept', name: 'deptcode', width: 6, sorttype: 'text', classes: 'wrap'},			
 			{ label: 'Location', name: 'loccode', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},				
-			{ label: 'Supplier', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},	
+			{ label: 'Supplier', name: 'suppcode', width: 30, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},	
 			{ label: 'DO No', name:'delordno',width: 9, sorttype:'text', classes:'wrap'},					
 			{ label: 'Invoice No', name:'invno', width: 9,sorttype:'text', classes:'wrap', canSearch: true},
 			{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
@@ -524,7 +524,7 @@ $(document).ready(function () {
 			{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
 			{ label: 'Regtype', name: 'regtype', width: 13, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat, hidden: true},	
 			// { label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
-			{ label: 'Description', name: 'description_show', width: 40, classes: 'wrap'},
+			{ label: 'Description', name: 'description_show',formatter:description_show, unformat:description_show_unformat, width: 40, classes: 'wrap'},
 			{ label: 'Description', name: 'description', canSearch: true,checked:true,hidden:true},
 			{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 			{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
@@ -533,7 +533,7 @@ $(document).ready(function () {
 			{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
 			{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
 			{ label: 'Current Cost', name:'currentcost', width:10, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
-			{ label: 'Qty', name:'qty', width:5, classes:'wrap', hidden:false},
+			{ label: 'Qty', name:'qty', width:10, classes:'wrap',align: 'right', formatter: 'currency', hidden:false},
 			{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 			{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
 			{ label: 'Method', name:'method', width:20, classes:'wrap', hidden:true},
@@ -616,6 +616,15 @@ $(document).ready(function () {
 		}else if (cellvalue == 'DIRECT') {
 			return "DIRECT";
 		}
+	}
+
+	function description_show(cellvalue, options, rowObject) {
+		let description = (rowObject.description == null)?' ':rowObject.description;
+		return rowObject.itemcode+'-'+rowObject.itemcode_desc+'\n'+description;
+	}
+
+	function description_show_unformat(cellvalue, options) {
+		return cellvalue;
 	}
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////

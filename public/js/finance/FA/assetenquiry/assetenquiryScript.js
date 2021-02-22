@@ -24,6 +24,7 @@ $(document).ready(function () {
 		},
 	};
 
+	var fdl = new faster_detail_load();
 	var mycurrency =new currencymode(['#origcost','#purprice','#lstytddep','#cuytddep','#nbv']);
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
@@ -208,21 +209,21 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Type', name: 'assettype', width: 6, classes: 'wrap',canSearch: true},		
+			{ label: 'Type', name: 'assettype', width: 5, classes: 'wrap',canSearch: true},		
 			{ label: 'Category', name: 'assetcode', width: 6, classes: 'wrap', canSearch: true},		
 			{ label: 'Asset No', name: 'assetno', width: 6, classes: 'wrap'},
 			{ label: 'Item Code', name: 'itemcode', width: 8, classes: 'wrap',hidden:true},
-			{ label: 'Description', name: 'description_show', width: 40, classes: 'wrap'},
+			{ label: 'Description', name: 'description_show', width: 30, classes: 'wrap'},
 			{ label: 'Description', name: 'description', canSearch: true,checked:true,hidden:true},
 			{ label: 'Serial No', name: 'serialno', width: 8,classes: 'wrap',hidden:true},
 			{ label: 'Lotno', name: 'lotno', width: 20,classes: 'wrap',hidden:true},
 			{ label: 'Casisno', name: 'casisno', width: 20, classes: 'wrap',hidden:true},
 			{ label: 'Engineno', name: 'engineno', width: 20, classes: 'wrap',hidden:true},
-			{ label: 'Dept', name: 'deptcode', width: 5, classes: 'wrap'},
+			{ label: 'Dept', name: 'deptcode', width: 5, classes: 'wrap',formatter: showdetail},
             { label: 'Location', name: 'loccode', width: 10, classes: 'wrap'},
             { label: 'Invoice No', name: 'invno', width: 8, classes: 'wrap',hidden:true},
             { label: 'Invoice Date', name:'invdate', width: 8, classes:'wrap', hidden:true},
-            { label: 'Quantity', name: 'qty', width: 5,  align: 'right',classes: 'wrap'},
+            { label: 'Quantity', name: 'qty', width: 6,  align: 'right',classes: 'wrap'},
             { label: 'Start Date', name:'statdate', width:20, classes:'wrap',  hidden:true},
 			{ label: 'Post Date', name:'trandate', width:20, classes:'wrap',  hidden:true},
             { label: 'Accum Prev', name:'lstytddep', width:20, classes:'wrap', hidden:true},
@@ -235,7 +236,7 @@ $(document).ready(function () {
             { label: 'Purchase Order No', name:'purordno',width: 8, classes:'wrap', hidden:true},
             { label: 'Purchase Date', name:'purdate', width: 8, classes:'wrap', hidden:true},
 			{ label: 'Purchase Price', name:'purprice', width: 8, classes:'wrap', hidden:true},
-            { label: 'D/O No', name: 'delordno', width: 8, classes: 'wrap'},
+            { label: 'D/O No', name: 'delordno', width: 15, classes: 'wrap'},
             { label: 'DO Date', name:'delorddate', width: 8, classes:'wrap', hidden:true},
 			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', hidden:true, cellattr: function(rowid, cellvalue)
 				{
@@ -253,6 +254,8 @@ $(document).ready(function () {
         multiSort: true,
 		viewrecords: true,
 		loadonce:false,
+		sortname:'idno',
+		sortorder:'desc',
 		width: 900,
 		height: 350,
 		rowNum: 30,
@@ -309,16 +312,19 @@ $(document).ready(function () {
 			});
 			// $('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
 			//button_state_ti('triage');
+			fdl.set_array().reset();
 		}
-		
 	});
 
+
 	function showdetail(cellvalue, options, rowObject){
-		var field,table;
+		var field,table,case_;
 		switch(options.colModel.name){
-			case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
-			case 'olddeptcode':field=['deptcode','description'];table="sysdb.department";break;
-			case 'loccode':field=['catcode','description'];table="material.category";break;
+			//case 'bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'olddeptcode':field=['olddeptcode','description'];table="sysdb.department";case_='olddeptcode';break;
+			case 'loccode':field=['loccode','description'];table="material.category";case_='loccode';break;
+
 			case 'suppcode':field=['taxcode','description'];table="hisdb.taxmast";break;
 			case 'itemcode':field=['itemcode','description'];table="finance.faregister";case_='itemcode';break;
 			case 'assetcode': field = ['assetcode', 'description']; table = "finance.faregister";case_='assetcode';break;
@@ -329,14 +335,11 @@ $(document).ready(function () {
 			case 'trf_loccode': field = ['deptcode', 'description']; table = "sysdb.location";case_='trf_loccode';break;
 			default: return cellvalue;
 		}
-		var param={action:'input_check',table:table,field:field,value:cellvalue};
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.row)){
-				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.row.description+"</span>");
-			}
-		});
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('assetenquiry',options,param,case_,cellvalue);
+		
+		if(cellvalue==null)return "";
 		return cellvalue;
 	}
 
@@ -668,9 +671,8 @@ $(document).ready(function () {
 				$("#remarks2").data('rowid',$(this).data('rowid'));
 				$("#remarks2").data('grid',$(this).data('grid'));
 				$("#dialog_remarks").dialog( "open" );
-			});
-		/*	fdl.set_array().reset();
-			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);*/
+			});*/
+		/*	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);*/
 		},
 		afterShowForm: function (rowid) {
 		   // $("#expdate").datepicker();

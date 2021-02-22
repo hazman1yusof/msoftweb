@@ -103,6 +103,13 @@ class assetregisterController extends defaultController
                 $paginate = $table->paginate($request->rows);
 
                 foreach ($paginate->items() as $key => $value) {//ini baru
+
+                    $product = DB::table('material.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$value->itemcode)
+                            ->first();
+
+                    $value->itemcode_desc = $product->description;
                     $value->description_show = $value->description;
                     if(mb_strlen($value->description_show)>80){
 
@@ -144,6 +151,11 @@ class assetregisterController extends defaultController
                         ->where('idno','=',$idno)
                         ->first();
 
+            $product = DB::tale('material.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$fatemp->itemcode)
+                            ->first();
+
             $facode = DB::table('finance.facode')->select('tagnextno')
                             ->where('compcode','=',session('compcode'))
                             ->where('assettype', '=', $fatemp->assettype)
@@ -163,7 +175,8 @@ class assetregisterController extends defaultController
                             'assetcode' => $fatemp->assetcode,
                             'assettype' => $fatemp->assettype,
                             'assetno' => $assetno, // got padding
-                            'description' => $fatemp->description,
+                            'itemcode' => $fatemp->itemcode,
+                            'description' => $fatemp->itemcode.'-'.$product->description.'\n'.$fatemp->description,
                             'lineno_' => $fatemp->lineno_,
                             'deptcode' => $fatemp->deptcode,
                             'loccode' => $fatemp->loccode,
@@ -171,7 +184,6 @@ class assetregisterController extends defaultController
                             'purordno' => $fatemp->purordno,
                             'delordno'  => $fatemp->delordno,
                             'delorddate' => $fatemp->delorddate,
-                            'itemcode' => $fatemp->itemcode,
                             'invno' => $fatemp->invno,
                             'invdate' => $fatemp->invdate,
                             'purdate' => $fatemp->purdate,
@@ -275,6 +287,11 @@ class assetregisterController extends defaultController
                             ->where('idno','=',$value)
                             ->first();
 
+                $product = DB::table('material.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$fatemp->itemcode)
+                            ->first();
+
                 $facode = DB::table('finance.facode')->select('tagnextno')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('assetcode', '=', $fatemp->assetcode)
@@ -301,7 +318,7 @@ class assetregisterController extends defaultController
                                 'assetcode' => $fatemp->assetcode,
                                 'assettype' => $fatemp->assettype,
                                 'assetno' => $assetno, // got padding
-                                'description' => $fatemp->description,
+                                'description' => $fatemp->itemcode.'-'.$product->description.'</br>'.$fatemp->description,
                                 'dolineno' => $fatemp->lineno_,
                                 'deptcode' => $fatemp->deptcode,
                                 'loccode' => $fatemp->loccode,

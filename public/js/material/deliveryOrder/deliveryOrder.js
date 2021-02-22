@@ -590,6 +590,7 @@ $(document).ready(function () {
 	$('#trandept').on('change', searchChange);
 
 	function whenchangetodate() {
+		supplierkatdepan.off();
 		if($('#Scol').val()=='delordhd_trandate'){
 			$("input[name='Stext']").show("fast");
 			$("#tunjukname").hide("fast");
@@ -599,6 +600,7 @@ $(document).ready(function () {
 		} else if($('#Scol').val() == 'supplier_name'){
 			$("input[name='Stext']").hide("fast");
 			$("#tunjukname").show("fast");
+			supplierkatdepan.on();
 		} else {
 			$("input[name='Stext']").show("fast");
 			$("#tunjukname").hide("fast");
@@ -627,21 +629,21 @@ $(document).ready(function () {
 				refreshGrid('#jqGrid', urlParam);
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title: "Select Purchase Department",
 			open: function () {
 				dialog_suppcode.urlParam.filterCol = ['recstatus'];
 				dialog_suppcode.urlParam.filterVal = ['ACTIVE'];
 			}
-		}
+		},'urlParam','radio','tab'
 	);
 	supplierkatdepan.makedialog();
 	
