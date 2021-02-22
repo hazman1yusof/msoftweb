@@ -36,6 +36,11 @@ i.fa {
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
+	@if (Request::get('scope') == 'ALL')
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
+	@else
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
+	@endif
 	 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
@@ -58,11 +63,11 @@ i.fa {
 		            </div>
 				</div>
 
-				<div class="col-md-2" style="padding: 10px;">
+				<!-- <div class="col-md-3" style="padding: 10px;">
 					&nbsp;
-	            </div>
+	            </div> -->
 
-				<!-- <div class="col-md-2">
+				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
 					  	<select id="Status" name="Status" class="form-control input-sm">
 					      <option value="All" selected>ALL</option>
@@ -71,15 +76,58 @@ i.fa {
 					      <option value="Posted">POSTED</option>
 					      <option value="Cancelled">CANCELLED</option>
 					    </select>
-	            </div> -->
+	            </div>
 
-				<div id="div_for_but_post" class="col-md-3 col-md-offset-7" style="text-align: end;">
+				<?php 
+					$scope_use = 'posted';
+				?>
+
+				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">
+					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+					<span id="error_infront" style="color: red"></span>
+					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					<button 
+						type="button" 
+						class="btn btn-primary btn-sm" 
+						id="but_post_jq" 
+						data-oper="{{$scope_use}}" 
+						style="display: none;">
+						@if (Request::get('scope') == strtoupper('ALL'))
+							{{'POST'}}
+						@else
+							{{Request::get('scope').' ALL'}}
+						@endif
+					</button>
+
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
+						@if (Request::get('scope') == strtoupper('ALL'))
+							{{'POST'}}
+						@else
+							{{Request::get('scope')}}
+						@endif
+					</button>
+
+					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
+				</div>
+
+				<!-- <div id="div_for_but_post" class="col-md-3 col-md-offset-7" style="text-align: end;">
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-				</div>
+				</div> -->
 
 			</fieldset> 
 		</form>
+
+		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
+    		<div class="panel-heading heading_panel_">List Of Selected Item</div>
+    		<div class="panel-body">
+    			<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
+    				<table id="jqGrid_selection" class="table table-striped"></table>
+    				<div id="jqGrid_selectionPager"></div>
+				</div>
+    		</div>
+		</div>
 		 
 		<div class="panel panel-default">
 		    <div class="panel-heading">Invoice AP Data Entry Header</div>
@@ -91,18 +139,6 @@ i.fa {
 		    	</div>
 		</div>
 
-		<!-- <div class='click_row'>
-        	<label class="control-label">Audit No</label>
-        		<span id="auditnodepan" style="display: block;">&nbsp</span>
-        </div>
-        <div class='click_row'>
-			<label class="control-label">Trantype</label>
-        	<span id="trantypedepan" style="display: block;">&nbsp</span>
-        </div>
-        <div class='click_row'>
-			<label class="control-label">Document No</label>
-        	<span id="docnodepan" style="display: block;">&nbsp</span>
-        </div> -->
 
 	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
@@ -123,30 +159,9 @@ i.fa {
 					</div>
 				</div>
 			</div>	
-		</div>
-
-	<!-- 	<div class="panel panel-default" style="position: relative;" id="gridDo_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel1">
-				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="document_show"></span><br>
-				<b>SUPPLIER NAME: </b><span id="suppcode_show"></span>
-
-				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>DO Detail</h5>
-				</div>
-			</div>
-			<div id="jqGrid3_panel1" class="panel-collapse collapse">
-				<div class="panel-body">
-					<div class='col-md-12' style="padding:0 0 15px 0">
-						<table id="jqGrid3" class="table table-striped"></table>
-						<div id="jqGridPager4"></div>
-					</div>
-				</div>
-			</div>	
-		</div> -->
-        
+		</div>       
     </div>
+	
 	<!-- ***************End Search + table ********************* -->
 
 	<div id="dialogForm" title="Add Form" >

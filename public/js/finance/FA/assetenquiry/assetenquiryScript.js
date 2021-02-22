@@ -274,6 +274,7 @@ $(document).ready(function () {
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
+				//$('textarea#description').val(data['p_description']+'\n'+data['dodt_remarks']);
 				$("#jqGridEnquiryDtl2_c, #jqGridtransferFA_c").hide();
 				if(rowData['assetno'] != '') {//kalau assetno ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').assetno;
