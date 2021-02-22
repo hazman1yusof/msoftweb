@@ -35,11 +35,10 @@ $(document).ready(function () {
 	var actdateObj = new setactdate(["#apacthdr_recdate"]);
 	actdateObj.getdata().set();
 
-	
 	////////////////////////////////////start dialog//////////////////////////////////////
-
 	var oper;
 	var unsaved = false,counter_save=0;
+
 	$("#dialogForm")
 		.dialog({
 			width: 9 / 10 * $(window).width(),
@@ -144,6 +143,15 @@ $(document).ready(function () {
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
+	var recstatus_filter = [['OPEN','POSTED']];
+		if($("#recstatus_use").val() == 'POSTED'){
+			recstatus_filter = [['OPEN','POSTED']];
+			filterCol_urlParam = ['apacthdr.compcode'];
+			filterVal_urlParam = ['session.compcode'];
+		}
+
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","apacthdr_idno","apacthdr_recstatus",recstatus_filter[0][0]);
+	
 	var urlParam={
 		action:'get_table_default',
 		url:'/util/get_table_default',
@@ -199,7 +207,6 @@ $(document).ready(function () {
 	}
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
-
 	$("#jqGrid").jqGrid({
 	datatype: "local",
 	colModel: [
@@ -215,6 +222,7 @@ $(document).ready(function () {
 		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
 		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
+		{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },	
 		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},
 		{ label: 'Doc Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', hidden:true},
 		{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
@@ -239,18 +247,49 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			$('#error_infront').text('');
 			$('#save').hide();
-		let recstatus = selrowData("#jqGrid").apacthdr_recstatus;
-			if(recstatus=='OPEN'){
-				$('#but_cancel_jq,#but_post_jq').show();
-				
-			}else if(recstatus=="POSTED"){
-				$('#but_post_jq').hide();
+			let stat = selrowData("#jqGrid").apacthdr_recstatus;
+			let scope = $("#recstatus_use").val();
+
+			if (stat == scope) {
 				$('#but_cancel_jq').show();
-			}else if (recstatus == "CANCELLED"){
-				$('#but_cancel_jq,#but_post_jq').hide();
-				
+			} else if (stat == "CANCELLED") {
+				$('#but_reopen_jq').show();
+			} else {
+				if(scope.toUpperCase() == 'ALL'){
+				}
 			}
+			// $('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			// if (stat == scope || stat == "CANCELLED") {
+			// 	$('#but_reopen_jq').show();
+			// } else if ( stat == "CANCELLED" ){
+			// 	$('#but_reopen_jq').show();
+			// } else {
+			// 	if(scope == 'ALL'){
+			// 		if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
+			// 			$('#but_cancel_jq,#but_post_single_jq').show();
+			// 		}else if(stat=='OPEN'){
+			// 			$('#but_post_jq').show();
+			// 		}
+			// 	}else{
+			// 		if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+			// 			$('#but_cancel_jq,#but_post_single_jq').show();
+			// 		}else{
+			// 			$('#but_post_jq').show();
+			// 		}
+			// 	}
+			// }
+			// if(recstatus=='OPEN'){
+			// 	$('#but_cancel_jq,#but_post_jq').show();
+				
+			// }else if(recstatus=="POSTED"){
+			// 	$('#but_post_jq').hide();
+			// 	$('#but_cancel_jq').show();
+			// }else if (recstatus == "CANCELLED"){
+			// 	$('#but_cancel_jq,#but_post_jq').hide();
+				
+			// }
 
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
 			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);
@@ -258,10 +297,11 @@ $(document).ready(function () {
 			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);
 
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
-
 			refreshGrid("#jqGrid3",urlParam2);
 			populate_form(selrowData("#jqGrid"));
 			//empty_form();
+
+			refreshGrid("#jqGrid3",urlParam2);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -286,19 +326,17 @@ $(document).ready(function () {
 			}
 		},
 		gridComplete: function () {
-			$('#but_cancel_jq,#but_post_jq').hide();
+			//$('#but_cancel_jq, #but_post_jq, #but_reopen_jq').hide();
 			if (oper == 'add' || oper == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 
-			//urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
-			//refreshGrid("#jqGrid3",urlParam2);
 			populate_form(selrowData("#jqGrid"));
-			//empty_form();
-		},
-		
 
+			cbselect.checkbox_function_on();
+			cbselect.refresh_seltbl();
+		},
 	});
 
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
@@ -326,7 +364,6 @@ $(document).ready(function () {
 		title: "Edit Selected Row",
 		onClickButton: function () {
 			oper = 'edit';
-			
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
@@ -403,23 +440,43 @@ $(document).ready(function () {
 		
 	});
 	
-	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_post_jq").click(function(){
-		saveParam.oper = $(this).data('oper');
-		let obj={
-			auditno:selrowData('#jqGrid').apacthdr_auditno,
-			_token:$('#_token').val(),
-		};
-		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
+	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+
+		var idno = selrowData('#jqGrid').apacthdr_idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = $(this).data('oper')+'_single';
+
+		$.post( '/invoiceAP/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
 		});
 	});
 
+	$("#but_post_jq").click(function(){
+		var idno_array = [];
+	
+		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		var obj={};
+		obj.idno_array = idno_array;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		
+		$.post( '/invoiceAP/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
+		});
+	});
+	
 	///////////check postdate & docdate///////////////////
 	$("#apacthdr_recdate,#apacthdr_actdate").blur(checkdate);
 
@@ -818,6 +875,20 @@ $(document).ready(function () {
 		return cellvalue;
 	}
 
+	//////////////////////////formatter checkbox//////////////////////////////////////////////////
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		
+		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
+	}
+
 	///////////////////////////////////////cust_rules//////////////////////////////////////////////
 	function cust_rules(value,name){
 		var temp;
@@ -1171,6 +1242,26 @@ $(document).ready(function () {
 
 	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();
+
+	$("#jqGrid_selection").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
+		shrinkToFit: false,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		sortname: 'apacthdr_idno',
+		sortorder: "desc",
+		onSelectRow: function (rowid, selected) {
+			console.log(rowid);
+			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
+		},
+		gridComplete: function(){
+			
+		},
+	})
+	jqgrid_label_align_right("#jqGrid_selection");
+	cbselect.on();
 
 	function setjqgridHeight(data,grid){
 		if(data.rows.length>=6){
