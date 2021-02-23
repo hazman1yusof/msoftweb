@@ -209,7 +209,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="description">Description</label>  
 						<div class="col-md-6">
-							<textarea class="form-control input-sm text-uppercase" name="description" rows="3" cols="55" id="description"></textarea>
+							<textarea class="form-control input-sm text-uppercase" name="description" rows="4" cols="55" id="description"></textarea>
 						</div>
 				</div>
 

@@ -219,8 +219,8 @@ $(document).ready(function () {
 			{ label: 'Lotno', name: 'lotno', width: 20,classes: 'wrap',hidden:true},
 			{ label: 'Casisno', name: 'casisno', width: 20, classes: 'wrap',hidden:true},
 			{ label: 'Engineno', name: 'engineno', width: 20, classes: 'wrap',hidden:true},
-			{ label: 'Dept', name: 'deptcode', width: 5, classes: 'wrap',formatter: showdetail},
-            { label: 'Location', name: 'loccode', width: 10, classes: 'wrap'},
+			{ label: 'Dept', name: 'deptcode', width: 5, classes: 'wrap', formatter: showdetail},
+            { label: 'Location', name: 'loccode', width: 10, classes: 'wrap', formatter: showdetail},
             { label: 'Invoice No', name: 'invno', width: 8, classes: 'wrap',hidden:true},
             { label: 'Invoice Date', name:'invdate', width: 8, classes:'wrap', hidden:true},
             { label: 'Quantity', name: 'qty', width: 6,  align: 'right',classes: 'wrap'},
@@ -232,7 +232,7 @@ $(document).ready(function () {
 			{ label: 'Method', name:'method', width:20, classes:'wrap', hidden:true},
 			{ label: 'Residual Value', name:'residualvalue', width:20, classes:'wrap', hidden:true},
             { label: 'Cost', name: 'origcost', width: 8, classes: 'wrap', align: 'right',formatter:'currency'},
-            { label: 'SuppCode', name: 'suppcode', width: 6, classes: 'wrap'},
+            { label: 'SuppCode', name: 'suppcode', width: 6, classes: 'wrap', formatter: showdetail},
             { label: 'Purchase Order No', name:'purordno',width: 8, classes:'wrap', hidden:true},
             { label: 'Purchase Date', name:'purdate', width: 8, classes:'wrap', hidden:true},
 			{ label: 'Purchase Price', name:'purprice', width: 8, classes:'wrap', hidden:true},
@@ -269,6 +269,7 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
 		},
 		onSelectRow:function(rowid, selected){
 			if (rowid != null) {
@@ -325,15 +326,14 @@ $(document).ready(function () {
 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 			case 'olddeptcode':field=['olddeptcode','description'];table="sysdb.department";case_='olddeptcode';break;
 			case 'loccode':field=['loccode','description'];table="material.category";case_='loccode';break;
-
-			case 'suppcode':field=['taxcode','description'];table="hisdb.taxmast";break;
+			case 'suppcode':field=['suppcode','description'];table="hisdb.taxmast";case_='suppcode';break;
 			case 'itemcode':field=['itemcode','description'];table="finance.faregister";case_='itemcode';break;
-			case 'assetcode': field = ['assetcode', 'description']; table = "finance.faregister";case_='assetcode';break;
-			case 'assettype': field = ['assettype', 'assettype']; table = "finance.faregister";case_='assettype';break;
-			case 'trf_currdeptcode': field = ['deptcode', 'description']; table = "sysdb.department";case_='trf_currdeptcode';break;
-			case 'trf_currloccode': field = ['deptcode', 'description']; table = "sysdb.location";case_='trf_currloccode';break;
-			case 'trf_department': field = ['deptcode', 'description']; table = "sysdb.department";case_='trf_department';break;
-			case 'trf_loccode': field = ['deptcode', 'description']; table = "sysdb.location";case_='trf_loccode';break;
+			case 'assetcode':field=['assetcode','description'];table="finance.faregister";case_='assetcode';break;
+			case 'assettype':field=['assettype','assettype'];table="finance.faregister";case_='assettype';break;
+			case 'trf_currdeptcode':field=['deptcode','description'];table="sysdb.department";case_='trf_currdeptcode';break;
+			case 'trf_currloccode':field=['deptcode','description'];table="sysdb.location";case_='trf_currloccode';break;
+			case 'trf_department':field=['deptcode','description'];table="sysdb.department";case_='trf_department';break;
+			case 'trf_loccode':field=['deptcode','description'];table="sysdb.location";case_='trf_loccode';break;
 			default: return cellvalue;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
