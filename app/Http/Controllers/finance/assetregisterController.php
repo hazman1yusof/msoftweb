@@ -57,6 +57,7 @@ class assetregisterController extends defaultController
                             'dohd.docno as dohd_docno',
                             'dohd.invoiceno as dohd_invoiceno',
                             'dohd.trandate as dohd_trandate',
+                            'dohd.deldept as dohd_deldept',                          
                             'ap.actdate as ap_actdate')
                         ->leftJoin('finance.apacthdr as ap','dohd.invoiceno','=','ap.document')
                         ->where('dohd.compcode','=', session('compcode'))
@@ -134,10 +135,7 @@ class assetregisterController extends defaultController
 
                 return json_encode($responce);
 
-        }
-        
-
-        
+        }      
     }
 
     public function gen_tagno_single(Request $request){
@@ -145,7 +143,6 @@ class assetregisterController extends defaultController
         DB::beginTransaction();
 
         try {
-
             ////1. select facode tagnextno
             $fatemp = DB::table('finance.fatemp')
                         ->where('idno','=',$idno)
@@ -165,7 +162,6 @@ class assetregisterController extends defaultController
                             
             $tagnextno_counter = intval($facode->tagnextno)+1;
             $assetno = str_pad($facode->tagnextno,6,"0",STR_PAD_LEFT);
-
 
             ////2. insert into faregister
             for ($x=1; $x <= $fatemp->qty; $x++) { 

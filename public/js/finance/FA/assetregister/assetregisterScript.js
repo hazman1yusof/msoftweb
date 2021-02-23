@@ -189,10 +189,12 @@ $(document).ready(function () {
 				{label:'Invoice No',name:'dohd_invoiceno',width:100,classes:'pointer',hidden:false},
 				{label:'Transaction Date',name:'dohd_trandate',width:100,classes:'pointer',hidden:false},
 				{label:'AP Actual Date',name:'ap_actdate',width:100,classes:'pointer',hidden:false},
+				{label:'Department',name:'dohd_deldept',width:100,classes:'pointer',hidden:false},
+
 			],
 			urlParam: {
-				filterCol:['dohd.compcode','dohd.invoiceno','dohd.suppcode'],
-				filterVal:['session.compcode','<>.NULL', $("#suppcode").val()]
+				filterCol:['dohd.compcode','dohd.invoiceno','dohd.suppcode','dohd.deldept'],
+				filterVal:['session.compcode','<>.NULL', $("#suppcode").val(),$("#deptcode").val()]
 			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_delordno.gridname);
@@ -203,6 +205,9 @@ $(document).ready(function () {
 				$('#suppcode').val(data['dohd_suppcode']);
 				$('#invno').val(data['dohd_invoiceno']);
 				$('#invdate').val(data['ap_actdate']);
+				$('#deptcode').val(data['dohd_deldept']);
+				//$('#loccode').val(data['dohd_loccode']);
+
 
 			},
 			gridComplete: function(obj){
@@ -210,7 +215,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#itemcode').focus();
+					$('#deptcode').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -221,6 +226,7 @@ $(document).ready(function () {
 			open: function(){
 				dialog_delordno.urlParam.url = "/assetregister/table";
 				dialog_delordno.urlParam.suppcode = $("#suppcode").val();
+				dialog_delordno.urlParam.deldept = $("#deptcode").val();
 			}
 		},'urlParam','radio','tab'
 	);
@@ -675,12 +681,15 @@ $(document).ready(function () {
 		dialog_delordno.on();
 		dialog_suppcode.on();
 		// dialog_invno.off();
-		dialog_uomcode.on();
+		dialog_uomcode.off();
+		dialog_deptcode.off();
+		dialog_loccode.on();
 
 		$("#invno").prop('readonly',true);
 		$("#suppcode").prop('readonly',false);
 		$("#delorddate").prop('readonly',true);
 		$("#uomcode").prop('readonly',true);
+		$("#deptcode").prop('readonly',true);
 		$("#invdate").prop('readonly',true);
 		$("#docno").prop('readonly',true);
 		$("#purordno").prop('readonly',true);
@@ -709,11 +718,14 @@ $(document).ready(function () {
 		dialog_suppcode.on();
 		// dialog_invno.off();
 		dialog_uomcode.on();
+		dialog_deptcode.on();
+		dialog_loccode.on();
 
 		$("#invno").prop('readonly',false);
 		$("#suppcode").prop('readonly',false);
 		$("#itemcode").prop('readonly',false);
 		$("#uomcode").prop('readonly',false);
+		$("#deptcode").prop('readonly',false);
 		$("#delorddate").prop('readonly',false);
 		$("#invdate").prop('readonly',false);
 		$("#docno").prop('readonly',false);

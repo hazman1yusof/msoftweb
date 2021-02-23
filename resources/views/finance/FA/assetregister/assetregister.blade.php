@@ -108,25 +108,6 @@
 				  		<input id="assettype" name="assettype" type="text" maxlength="100" class="form-control input-sm" rdonly>
 				  	</div>
 			</div>
-
-			<div class="form-group">
-				<label class="col-md-2 control-label" for="deptcode">Department</label>
-					<div class="col-md-3">
-						<div class='input-group'>
-							<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-						</div>
-						<span class="help-block"></span>
-					</div>
-				<label class="col-md-2 control-label" for="loccode">Location</label>
-					<div class="col-md-3">
-						<div class='input-group'>
-							<input id="loccode" name="loccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-						</div>
-						<span class="help-block"></span>
-					</div>
-			</div>
 			<hr>
 
 			<div class="form-group">
@@ -183,6 +164,25 @@
 					<label class="col-md-2 control-label" for="docno">GRN No</label>  
 						<div class="col-md-3">
 							<input id="docno" name="docno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						</div>
+				</div>
+				
+				<div class="form-group">
+				<label class="col-md-2 control-label" for="loccode">Location</label>
+						<div class="col-md-3">
+							<div class='input-group'>
+								<input id="loccode" name="loccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+					<label class="col-md-2 control-label" for="deptcode">Department</label>
+						<div class="col-md-3">
+							<div class='input-group'>
+								<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
 						</div>
 				</div>
 
