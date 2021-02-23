@@ -513,7 +513,7 @@ $(document).ready(function () {
 			{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', hidden:true, key: true}, 
 			{ label: 'Asset Type', name: 'assettype', width: 7, sorttype: 'text', classes: 'wrap'},
 			{ label: 'Category', name: 'assetcode', width: 10, sorttype: 'text', classes: 'wrap', canSearch: true},
-			{ label: 'Dept', name: 'deptcode', width: 6, sorttype: 'text', classes: 'wrap'},			
+			{ label: 'Dept', name: 'deptcode', width: 6, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},			
 			{ label: 'Location', name: 'loccode', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},				
 			{ label: 'Supplier', name: 'suppcode', width: 30, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},	
 			{ label: 'DO No', name:'delordno',width: 9, sorttype:'text', classes:'wrap'},					
@@ -632,7 +632,7 @@ $(document).ready(function () {
 		var field,table,case_;
 		switch(options.colModel.name){
 			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
-			
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
