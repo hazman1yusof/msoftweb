@@ -209,21 +209,21 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Type', name: 'assettype', width: 5, classes: 'wrap',canSearch: true},		
-			{ label: 'Category', name: 'assetcode', width: 6, classes: 'wrap', canSearch: true},		
+			{ label: 'Type', name: 'assettype', width: 10, classes: 'wrap',canSearch: true, formatter: showdetail},		
+			{ label: 'Category', name: 'assetcode', width: 10, classes: 'wrap', canSearch: true, formatter: showdetail},		
 			{ label: 'Asset No', name: 'assetno', width: 6, classes: 'wrap'},
 			{ label: 'Item Code', name: 'itemcode', width: 8, classes: 'wrap',hidden:true},
 			{ label: 'Description', name: 'description_show', width: 30, classes: 'wrap'},
 			{ label: 'Description', name: 'description', canSearch: true,checked:true,hidden:true},
-			{ label: 'Serial No', name: 'serialno', width: 8,classes: 'wrap',hidden:true},
+			{ label: 'Serial No', name: 'serialno',classes: 'wrap',hidden:true},
 			{ label: 'Lotno', name: 'lotno', width: 20,classes: 'wrap',hidden:true},
 			{ label: 'Casisno', name: 'casisno', width: 20, classes: 'wrap',hidden:true},
 			{ label: 'Engineno', name: 'engineno', width: 20, classes: 'wrap',hidden:true},
-			{ label: 'Dept', name: 'deptcode', width: 5, classes: 'wrap', formatter: showdetail},
-            { label: 'Location', name: 'loccode', width: 10, classes: 'wrap', formatter: showdetail},
+			{ label: 'Dept', name: 'deptcode', width: 12, classes: 'wrap', formatter: showdetail},
+            { label: 'Location', name: 'loccode', width: 12, classes: 'wrap', formatter: showdetail},
             { label: 'Invoice No', name: 'invno', width: 8, classes: 'wrap',hidden:true},
             { label: 'Invoice Date', name:'invdate', width: 8, classes:'wrap', hidden:true},
-            { label: 'Quantity', name: 'qty', width: 6,  align: 'right',classes: 'wrap'},
+            { label: 'Qty', name: 'qty', width: 6,  align: 'right',classes: 'wrap'},
             { label: 'Start Date', name:'statdate', width:20, classes:'wrap',  hidden:true},
 			{ label: 'Post Date', name:'trandate', width:20, classes:'wrap',  hidden:true},
             { label: 'Accum Prev', name:'lstytddep', width:20, classes:'wrap', hidden:true},
@@ -231,13 +231,13 @@ $(document).ready(function () {
 			{ label: 'NBV', name:'nbv', width:20, classes:'wrap', hidden:true, formatter: 'currency'},
 			{ label: 'Method', name:'method', width:20, classes:'wrap', hidden:true},
 			{ label: 'Residual Value', name:'residualvalue', width:20, classes:'wrap', hidden:true},
-            { label: 'Cost', name: 'origcost', width: 8, classes: 'wrap', align: 'right',formatter:'currency'},
-            { label: 'SuppCode', name: 'suppcode', width: 6, classes: 'wrap', formatter: showdetail},
+            { label: 'Cost', name: 'origcost', width: 7, classes: 'wrap', align: 'right',formatter:'currency'},
+            { label: 'SuppCode', name: 'suppcode', width: 15, classes: 'wrap', formatter: showdetail},
             { label: 'Purchase Order No', name:'purordno',width: 8, classes:'wrap', hidden:true},
             { label: 'Purchase Date', name:'purdate', width: 8, classes:'wrap', hidden:true},
 			{ label: 'Purchase Price', name:'purprice', width: 8, classes:'wrap', hidden:true},
-            { label: 'D/O No', name: 'delordno', width: 15, classes: 'wrap'},
-            { label: 'DO Date', name:'delorddate', width: 8, classes:'wrap', hidden:true},
+            { label: 'D/O No', name: 'delordno', width: 12, classes: 'wrap'},
+            { label: 'DO Date', name:'delorddate', classes:'wrap', hidden:true},
 			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', hidden:true, cellattr: function(rowid, cellvalue)
 				{
 					return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''
@@ -312,8 +312,7 @@ $(document).ready(function () {
 					});
 				}
 			});
-			// $('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
-			//button_state_ti('triage');
+			$('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
 			fdl.set_array().reset();
 		}
 	});
@@ -328,8 +327,8 @@ $(document).ready(function () {
 			case 'olddeptcode':field=['olddeptcode','description'];table="sysdb.department";case_='olddeptcode';break;
 			case 'loccode':field=['loccode','description'];table="sysdb.location";case_='loccode';break;
 			case 'itemcode':field=['itemcode','description'];table="finance.faregister";case_='itemcode';break;
-			case 'assetcode':field=['assetcode','description'];table="finance.faregister";case_='assetcode';break;
-			case 'assettype':field=['assettype','assettype'];table="finance.faregister";case_='assettype';break;
+			case 'assetcode':field=['assetcode','description'];table="finance.facode";case_='assetcode';break;
+			case 'assettype':field=['assettype','description'];table="finance.fatype";case_='assettype';break;
 			case 'trf_currdeptcode':field=['deptcode','description'];table="sysdb.department";case_='trf_currdeptcode';break;
 			case 'trf_currloccode':field=['deptcode','description'];table="sysdb.location";case_='trf_currloccode';break;
 			case 'trf_department':field=['deptcode','description'];table="sysdb.department";case_='trf_department';break;
@@ -458,7 +457,7 @@ $(document).ready(function () {
 	}
        
    $("#jqGrid").jqGrid('setLabel', 'origcost', 'Cost', {'text-align':'right'});
-   $("#jqGrid").jqGrid('setLabel', 'qty', 'Quantity', {'text-align':'right'});
+   $("#jqGrid").jqGrid('setLabel', 'qty', 'Qty', {'text-align':'right'});
 
 	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 
