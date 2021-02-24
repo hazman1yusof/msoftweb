@@ -81,6 +81,22 @@
 				</div>
 				<div class="StextClass">
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+
+					<div  id="assetcode_depan_div" style="display:none">
+						<div class='input-group'>
+							<input id="assetcode_depan" name="assetcode_depan" type="text" maxlength="12" class="form-control input-sm" placeholder="Asset Code">
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+						</div>
+						<span class="help-block"></span>
+					</div>
+					<div  id="assettype_depan_div" style="display:none">
+						<div class='input-group'>
+							<input id="assettype_depan" name="assettype_depan" type="text" maxlength="12" class="form-control input-sm" placeholder="Asset Type">
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+						</div>
+						<span class="help-block"></span>
+					</div>
+
 				</div>
 				<div class="col-md-3 col-md-offset-9" style="padding-top: 0; text-align: end;">
 					<!-- asalnya button nama 'History' tukar to 'Movement'-->

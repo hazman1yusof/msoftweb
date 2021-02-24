@@ -176,6 +176,8 @@ class assetenquiryController extends defaultController
             DB::table('finance.facompnt')
                 ->where('idno','=',$request->idno)
                 ->update([  
+                    'loccode' => $request->loccode,
+                    'deptcode' => $request->deptcode,
                     'trackingno' => $request->trackingno,
                     'bem_no' => $request->bem_no,
                     'ppmschedule' => $request->ppmschedule

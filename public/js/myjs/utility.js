@@ -346,15 +346,19 @@ function populateSelect2(grid,form){
 }
 
 function searchClick(grid,form,urlParam){
-	$(form+' [name=Stext]').on( "keyup", function() {
+	$(form+' [name=Stext]').on( "keyup", onchgscol_500);
+
+	$(form+' [name=Scol]').on( "change",onchgscol);
+
+	function onchgscol(){
+		search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
+	}
+
+	function onchgscol_500(){
 		delay(function(){
 			search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
 		}, 500 );
-	});
-
-	$(form+' [name=Scol]').on( "change", function() {
-		search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
-	});
+	}
 }
 
 function searchClick2(grid,form,urlParam){
@@ -436,6 +440,8 @@ function pad(pad, str, padLeft) {
 
 function removeValidationClass(array){
 	$.each(array,function(i,v){
+		$(v).removeClass( "valid" );
+		$(v).removeClass( "error" );
 		if ( $(v).closest("div").hasClass('has-success') ||  $(v).closest("div").hasClass('has-error') ){
 			$(v).closest("div").removeClass('has-success');
 			$(v).closest("div").removeClass('has-error');
@@ -1774,6 +1780,17 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
 };
+
+
+function galGridCustomValue (elem, operation, value){
+	if(operation == 'get') {
+		return $(elem).find("input").val();
+	} 
+	else if(operation == 'set') {
+		$('input',elem).val(value);
+	}
+}
+
 
 $(document).ready(function () {
 

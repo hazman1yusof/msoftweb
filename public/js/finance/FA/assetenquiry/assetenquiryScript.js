@@ -26,6 +26,7 @@ $(document).ready(function () {
 
 	var fdl = new faster_detail_load();
 	var mycurrency =new currencymode(['#origcost','#purprice','#lstytddep','#cuytddep','#nbv']);
+	var showeditfunc = new showeditfunc();
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
 		text: "Save",click: function() {
@@ -184,6 +185,99 @@ $(document).ready(function () {
 		pager: "#gridhistpager",
 	});
 
+	$('#searchForm [name=Scol]').on( "change",whenchangetodate);
+
+	function whenchangetodate() {
+		$(assetcode_depan.textfield+'_div,'+assettype_depan.textfield+'_div').hide();
+		$(assetcode_depan.textfield+','+assettype_depan.textfield).val(' ');
+		removeValidationClass([assetcode_depan.textfield,assettype_depan.textfield]);
+		assettype_depan.off();
+		assetcode_depan.off();
+		$("input[name='Stext']").show();
+		if($('input[type=radio][name=dcolr][value=assetcode]').is(':checked')){
+			$("input[name='Stext']").hide("fast");
+			$(assetcode_depan.textfield+'_div').show();
+			assetcode_depan.on();
+		} else if($('input[type=radio][name=dcolr][value=assettype]').is(':checked')){
+			$("input[name='Stext']").hide("fast");
+			$(assettype_depan.textfield+'_div').show();
+			assettype_depan.on();
+		} 
+	}
+
+	var assettype_depan = new ordialog(
+		'assettype_depan', 'finance.fatype', '#assettype_depan', 'errorField',
+		{
+			colModel: [
+				{ label: 'Asset Type', name: 'assettype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + assettype_depan.gridname).assettype;
+
+				urlParam.searchCol=["assettype"];
+				urlParam.searchVal=[data];
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Asset Type",
+			open: function () {
+				assettype_depan.urlParam.filterCol = ['recstatus'];
+				assettype_depan.urlParam.filterVal = ['ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	assettype_depan.makedialog();
+
+	var assetcode_depan = new ordialog(
+		'assetcode_depan', 'finance.facode', '#assetcode_depan', 'errorField',
+		{
+			colModel: [
+				{ label: 'Asset Code', name: 'assetcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + assetcode_depan.gridname).assetcode;
+				urlParam.searchCol=["assetcode"];
+				urlParam.searchVal=[data];
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Asset Code",
+			open: function () {
+				assetcode_depan.urlParam.filterCol = ['recstatus'];
+				assetcode_depan.urlParam.filterVal = ['ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	assetcode_depan.makedialog();
+
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table',
@@ -291,6 +385,12 @@ $(document).ready(function () {
 					populate_transferAE(selrowData("#jqGrid"));
 					populate_form_movementAE(selrowData("#jqGrid"));
 					populate_form_SerialAE(selrowData("#jqGrid"));
+
+					if(parseInt(selrowData('#jqGrid').qty)<=1){
+						$('#jqGrid3_c').hide();
+					}else{
+						$('#jqGrid3_c').show();
+					}
 					
 				}else{
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
@@ -321,6 +421,7 @@ $(document).ready(function () {
 
 	function showdetail(cellvalue, options, rowObject){
 		var field,table,case_;
+
 		switch(options.colModel.name){
 			//case 'bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
@@ -341,6 +442,7 @@ $(document).ready(function () {
 		fdl.get_array('assetenquiry',options,param,case_,cellvalue);
 		
 		if(cellvalue==null)return "";
+		console.log(cellvalue);
 		return cellvalue;
 	}
 
@@ -505,6 +607,9 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
+
+			dialog_loccode_jq3.on();
+			dialog_deptcode_jq3.on();
         	/*linenotoedit = rowid;
         	$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
         	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
@@ -588,28 +693,28 @@ $(document).ready(function () {
 	function populate_form_movementAE(rowdata){
 		$('#category_show_movementAE').text(selrowData("#jqGrid").category);
 		$('#assetno_show_movementAE').text(selrowData("#jqGrid").assetno);
-		$('#description_show_movementAE').text('Description: '+selrowData("#jqGrid").description);
+		$('#description_show_movementAE').html('Description: '+selrowData("#jqGrid").description);
 		set_seemore.set();
 	}
 
 	function empty_form_movementAE(){
 		$('#category_show_movementAE').text('');
 		$('#assetno_show_movementAE').text('');
-		$('#description_show_movementAE').text('');
+		$('#description_show_movementAE').html('');
 		button_state_movementAE('empty');
 	}
 
 	function populate_form_SerialAE(rowdata){
 		$('#category_show_SerialAE').text(selrowData("#jqGrid").category);
 		$('#assetno_show_SerialAE').text(selrowData("#jqGrid").assetno);
-		$('#description_show_SerialAE').text('Description: '+selrowData("#jqGrid").description);
+		$('#description_show_SerialAE').html('Description: '+selrowData("#jqGrid").description);
 		set_seemore.set();
 	}
 
 	function empty_form_SerialAE(){
 		$('#category_show_SerialAE').text('');
 		$('#assetno_show_SerialAE').text('');
-		$('#description_show_SerialAE').text('');
+		$('#description_show_SerialAE').html('');
 		button_state_SerialAE('empty');
 	}
 
@@ -769,6 +874,8 @@ $(document).ready(function () {
 	  });
 	
 	//////////////////////////////////////////////start jqgrid3 Asset Serial List//////////////////////////////////////////////
+	
+
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
 		editurl: "/assetenquiry/form?action=comp_edit",
@@ -778,12 +885,25 @@ $(document).ready(function () {
 			{ label: 'description', name:'description', hidden:true},
 			{ label: 'Asset No', name:'assetno', width:5, classes:'wrap'},
 			{ label: 'Line No', name: 'assetlineno', width: 3, classes: 'wrap'},
-			{ label: 'Location Code', name: 'loccode', width: 7, classes: 'wrap'},
-			{ label: 'Department Code', name: 'deptcode', width: 7, classes: 'wrap'},
+			{ label: 'Location Code', name: 'loccode', width: 7, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:loccodeCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+			},
+			{ label: 'Department Code', name: 'deptcode', width: 7, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:deptcodeCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+			},
 			{ label: 'Tracking No', name: 'trackingno', width: 7, classes: 'wrap', editable:true},
 			{ label: 'BEM No', name: 'bem_no', width: 7, classes: 'wrap', editable:true},
 			{ label: 'PPM', name: 'ppmschedule', width: 7, classes: 'wrap', editable:true},
 			{ label: 'idno', name: 'idno', width: 7, classes: 'wrap', hidden:true, key:true},
+			{ label: 'Edit', name: 'compcode', width: 10, formatter:show_edit},
 
 		],
 		autowidth: true,
@@ -807,18 +927,168 @@ $(document).ready(function () {
 			}
 			addmore_jqgrid3.edit = addmore_jqgrid3.more = false;*/ //reset
 			setjqgridHeight(data,'jqGrid3');
+        	showeditfunc.off().on();
 		},
 		gridComplete: function(){
-
+			fdl.set_array().reset();
 		},
 		afterShowForm: function (rowid) {
 		   // $("#expdate").datepicker();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGrid3_iledit").click();
+			// $("#jqGrid3_iledit").click();
 		},
 	});
 
+	function show_edit(cellvalue, options, rowObject){
+        let idno = rowObject.idno;
+
+		return `<button title="Edit" type="button" class="btn btn-xs btn-warning btn-md btn_edit" data-idno=`+idno+`><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>&nbsp;&nbsp;<button title="Save" type="button" class="btn btn-xs btn-success btn-md btn_save" data-idno=`+idno+` disabled><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>&nbsp;&nbsp;<button title="Cancel" type="button" class="btn btn-xs btn-danger btn-md btn_cancel" data-idno=`+idno+` disabled><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
+	}
+
+
+	function showeditfunc(){
+		this.on = function(){
+			$('#jqGrid3 .btn_edit').on('click',{data:this},onedit);
+			$('#jqGrid3 .btn_save').on('click',{data:this},onsave);
+			$('#jqGrid3 .btn_cancel').on('click',{data:this},oncancel);
+		}
+
+		this.off= function(){
+			$('#jqGrid3 .btn_edit').off('click',onedit);
+			return this;
+		}
+		this.lastsel = 0;
+
+		function onedit(event){
+			var obj = event.data.data;
+			let idno = $(this).data('idno');
+			if(obj.lastSel!=undefined){
+				oncancel(null,obj.lastSel)
+				$('#jqGrid3').restoreRow(obj.lastSel);
+			}
+			$('#jqGrid3').jqGrid ('setSelection', idno);
+			obj.lastSel = idno
+			$('#jqGrid3_iledit').click();
+			$('#jqGrid3 .btn_edit[data-idno='+idno+']').prop('disabled',true);
+			$('#jqGrid3 .btn_save[data-idno='+idno+']').prop('disabled',false);
+			$('#jqGrid3 .btn_cancel[data-idno='+idno+']').prop('disabled',false);
+		}
+
+		function onsave(event){
+			$('#jqGrid3_ilsave').click();
+			$('#jqGrid3 .btn_edit').prop('disabled',false);
+			$('#jqGrid3 .btn_save').prop('disabled',true);
+			$('#jqGrid3 .btn_cancel').prop('disabled',true);
+
+			refreshGrid("#jqGrid",urlParam);
+		}
+
+		function oncancel(event,idno_=null){
+			let idno = null;
+			if(event!=null){
+				var obj = event.data.data;
+				idno = $(this).data('idno');
+			}else{
+				idno = idno_
+			}
+			$('#jqGrid3_ilcancel').click();
+			$('#jqGrid3 .btn_edit[data-idno='+idno+']').prop('disabled',false);
+			$('#jqGrid3 .btn_save[data-idno='+idno+']').prop('disabled',true);
+			$('#jqGrid3 .btn_cancel[data-idno='+idno+']').prop('disabled',true);
+		}
+
+	}
+
+	function cust_rules(value,name){
+		var temp;
+		switch(name){
+			case 'Location Code':temp=$('#jqGrid3 input[name=loccode]');break;
+			case 'Department Code':temp=$('#jqGrid3 input[name=deptcode]');break;
+		}
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+	}
+
+	function loccodeCustomEdit(val,opt){
+		console.log(val)
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input jqgrid="jqGrid3" optid="'+opt.id+'" id="'+opt.id+'" name="loccode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function deptcodeCustomEdit(val,opt){
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input jqgrid="jqGrid3" optid="'+opt.id+'" id="'+opt.id+'" name="deptcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+
+
+	var dialog_loccode_jq3 = new ordialog(
+		'loccode3','sysdb.location',"#jqGrid3 input[name='loccode']",'errorField',
+		{	colModel:
+			[
+				{label:'Location',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow:function(event){
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
+			}
+		},{
+			title:"Select location",
+			open: function(){
+				dialog_loccode_jq3.urlParam.filterCol=['compcode','recstatus'];
+				dialog_loccode_jq3.urlParam.filterVal=['session.compcode','ACTIVE'];
+			},
+			close: function(){
+				
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_loccode_jq3.makedialog();
+
+	var dialog_deptcode_jq3 = new ordialog(
+		'deptcode3','sysdb.department',"#jqGrid3 input[name='deptcode']",'errorField',
+		{	colModel:
+			[
+				{label:'Location',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow:function(event){
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
+			}
+		},{
+			title:"Select department",
+			open: function(){
+				dialog_deptcode_jq3.urlParam.filterCol=['compcode','recstatus'];
+				dialog_deptcode_jq3.urlParam.filterVal=['session.compcode','ACTIVE'];
+			},
+			close: function(){
+				
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_deptcode_jq3.makedialog();
 		
 	//////////////////////////////////////////start pager jqgrid3 ASSET SERIAL LIST/////////////////////////////////////////////
 	$("#jqGrid3").inlineNav('#jqGridPager3',{	
@@ -831,27 +1101,28 @@ $(document).ready(function () {
 			addRowParams: myEditOptions_jqGrid3
 		},
 		editParams: myEditOptions_jqGrid3
-	}).jqGrid('navButtonAdd',"#jqGridPager3",{
-		id: "jqGridPager3transfer",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-transfer",
-		title:"transfer",
-		onClickButton: function(){
-			var selRowId = $("#jqGrid3").jqGrid('getGridParam', 'selrow');
-			if (!selRowId) {
-				alert('Please select row');
-			}else{
-				var data = selrowData("#jqGrid3")
-				$("#jqGridtransferFA_panel2 input[name='assetno']").val(data.assetno);
-				$("#jqGridtransferFA_panel2 input[name='description']").val(data.description);
-				$("#jqGridtransferFA_panel2 input[name='assetcode']").val(data.assetcode);
-				$("#jqGridtransferFA_panel2 input[name='assettype']").val(data.assettype);
-				$("#jqGridtransferFA_panel2 input[name='deptcode']").val(data.deptcode);
-				$("#jqGridtransferFA_panel2 input[name='loccode']").val(data.loccode);
-				$("#jqGridtransferFA_panel2").dialog('open');
-			}
-		},			
 	});
+	// .jqGrid('navButtonAdd',"#jqGridPager3",{
+	// 	id: "jqGridPager3transfer",
+	// 	caption:"",cursor: "pointer",position: "last", 
+	// 	buttonicon:"glyphicon glyphicon-transfer",
+	// 	title:"transfer",
+	// 	onClickButton: function(){
+	// 		var selRowId = $("#jqGrid3").jqGrid('getGridParam', 'selrow');
+	// 		if (!selRowId) {
+	// 			alert('Please select row');
+	// 		}else{
+	// 			var data = selrowData("#jqGrid3")
+	// 			$("#jqGridtransferFA_panel2 input[name='assetno']").val(data.assetno);
+	// 			$("#jqGridtransferFA_panel2 input[name='description']").val(data.description);
+	// 			$("#jqGridtransferFA_panel2 input[name='assetcode']").val(data.assetcode);
+	// 			$("#jqGridtransferFA_panel2 input[name='assettype']").val(data.assettype);
+	// 			$("#jqGridtransferFA_panel2 input[name='deptcode']").val(data.deptcode);
+	// 			$("#jqGridtransferFA_panel2 input[name='loccode']").val(data.loccode);
+	// 			$("#jqGridtransferFA_panel2").dialog('open');
+	// 		}
+	// 	},			
+	// });
 
 	
 	

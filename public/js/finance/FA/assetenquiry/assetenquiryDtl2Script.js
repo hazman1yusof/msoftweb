@@ -90,7 +90,7 @@ function populate_EnquiryDtl2AE(obj,rowdata){
 	//panel header
 	$('#category_show_enquiryAE').text(obj.assetcode);
 	$('#itemcode_show_enquiryAE').text('Item Code: '+obj.itemcode);
-	$('#description_show_enquiryAE').text('Description: '+obj.description);
+	$('#description_show_enquiryAE').html('Description: '+obj.description);
 	$('#assetno_show_enquiryAE').text(obj.assetno);
 
 	var saveParam={
