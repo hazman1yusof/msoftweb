@@ -324,9 +324,9 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			//case 'bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'suppcode':field=['SuppCode','name'];table="material.supplier";case_='suppcode';break;
 			case 'olddeptcode':field=['olddeptcode','description'];table="sysdb.department";case_='olddeptcode';break;
-			case 'loccode':field=['loccode','description'];table="material.category";case_='loccode';break;
-			case 'suppcode':field=['suppcode','description'];table="hisdb.taxmast";case_='suppcode';break;
+			case 'loccode':field=['loccode','description'];table="sysdb.location";case_='loccode';break;
 			case 'itemcode':field=['itemcode','description'];table="finance.faregister";case_='itemcode';break;
 			case 'assetcode':field=['assetcode','description'];table="finance.faregister";case_='assetcode';break;
 			case 'assettype':field=['assettype','assettype'];table="finance.faregister";case_='assettype';break;
