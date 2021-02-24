@@ -116,6 +116,7 @@
             var day = new Date();
             var dob = new Date(dob);
             var age_val =  day.getFullYear() - dob.getFullYear();
+            if(isNaN(age_val))return null;
             return age_val;
         }
         return null;
@@ -413,8 +414,8 @@
         $('#hid_ID_Type').val(rowdata.ID_Type);
         $('#txt_pat_dob').val(rowdata.DOB);
         $('#txt_pat_age').val(gettheage(rowdata.DOB));
-        $('#txt_pat_telh').val('0' +rowdata.telh);
-        $('#txt_pat_telhp').val('0' +rowdata.telhp);
+        $('#txt_pat_telh').val(rowdata.telh);
+        $('#txt_pat_telhp').val(rowdata.telhp);
         $('#txt_pat_email').val(rowdata.Email);
         $('#hid_pat_area').val(rowdata.AreaCode);
         $('#cmb_pat_sex').val(rowdata.Sex); // dlm modal Patient                    

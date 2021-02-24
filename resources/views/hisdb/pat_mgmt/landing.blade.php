@@ -158,16 +158,16 @@
 		}
 
 		/* toggle btn in doctor note */
-		.switch {
+		#toggle_doctorNote .switch {
 			position: relative;
 			display: inline-block;
 			width: 150px;
 			height: 34px;
 		}
 
-		.switch input {display:none;}
+		#toggle_doctorNote .switch input {display:none;}
 
-		.slider {
+		#toggle_doctorNote .slider {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -178,7 +178,7 @@
 			transition: .4s;
 		}
 
-		.slider:before {
+		#toggle_doctorNote .slider:before {
 			position: absolute;
 			content: "";
 			height: 26px;
@@ -190,23 +190,23 @@
 			transition: .4s;
 		}
 
-		input:checked + .slider {
+		#toggle_doctorNote input:checked + .slider {
 			background-color: #2196F3;
 		}
 
-		input:focus + .slider {
+		#toggle_doctorNote input:focus + .slider {
 			box-shadow: 0 0 1px #2196F3;
 		}
 
-		input:checked + .slider:before {
+		#toggle_doctorNote input:checked + .slider:before {
 			-webkit-transform: translateX(115px);
 			-ms-transform: translateX(115px);
 			transform: translateX(115px);
 		}
 
-		.current {display: none;}
+		#toggle_doctorNote .current {display: none;}
 
-		.current, .past {
+		#toggle_doctorNote .current, .past {
 			color: white;
 			position: absolute;
 			transform: translate(-50%,-50%);
@@ -215,9 +215,9 @@
 			font-size: 10px;
 		}
 
-		input:checked + .slider .current {display: inline;}
+		#toggle_doctorNote input:checked + .slider .current {display: inline;}
 
-		input:checked + .slider .past {display: none;}
+		#toggle_doctorNote input:checked + .slider .past {display: none;}
 		/* toggle btn in doctor note */
 
 	</style>

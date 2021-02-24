@@ -510,7 +510,7 @@ class PatmastController extends defaultController
         foreach ($request->field as $key => $value) {
             if(array_search($value,$array_ignore))continue;
             // dump(empty($request[$request->field[$key]]));
-            if(empty($request[$request->field[$key]]))continue;
+            // if(empty($request[$request->field[$key]]))continue;
             // dump($request[$request->field[$key]]);
             $array_update[$value] = strtoupper($request[$request->field[$key]]);
         }
@@ -2063,19 +2063,18 @@ class PatmastController extends defaultController
     public function get_preepis_data(Request $request){
 
         $preepisode = DB::table('hisdb.pre_episode')
-                        ->where('apptidno','=',$request->apptidno)
-                        ->first();
+                    ->where('idno','=',$request->idno)
+                    ->first();
 
         $table = array();
         $table[0] = [
             'MRN' => $preepisode->mrn,
             'Name' => $preepisode->Name,
-            'Newic' => $preepisode->Newic,
+            'Newic' => (empty($preepisode->Newic))?'':$preepisode->Newic,
             'telhp' => (empty($preepisode->telhp))?'':$preepisode->telhp,
             'telh' => (empty($preepisode->telno))?'':$preepisode->telno
         ];
-
-
+        
         $responce = new stdClass();
         $responce->rows = $table;
 

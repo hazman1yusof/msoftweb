@@ -14,7 +14,6 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
 	<link rel="stylesheet" href="plugins/font-awesome-4.4.0/css/font-awesome.min.css">
 
-
 	<link rel="stylesheet" href="plugins/jquery-ui-1.12.1/jquery-ui.min.css">
 
 	<style type="text/css" class="init">

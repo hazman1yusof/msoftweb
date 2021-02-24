@@ -136,7 +136,7 @@ var Global = function () {
 			$('#mdl_item_selector').modal('hide');
 				
 				//alert( 'You clicked on ' + item["description"] + '\'s row.' );
-			} );
+		} );
 			
 		$("#mdl_item_selector").on('hidden.bs.modal', function () {
             //$('#tbl_item_select tbody').off('dblclick', 'tr', function () {

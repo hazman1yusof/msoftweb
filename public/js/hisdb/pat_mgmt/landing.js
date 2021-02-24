@@ -222,20 +222,21 @@ $(document).ready(function() {
 
     // populatecombo1();
 
-    $("#txt_pat_dob").blur(function(){
-       $('#txt_pat_age').val(gettheage($(this).val()));
-       $("#txt_pat_dob-error").detach();
-    })
+    // $("#txt_pat_dob").blur(function(){
+    //    $('#txt_pat_age').val(gettheage($(this).val()));
+    //    $("#txt_pat_dob-error").detach();
+    // })
 
-    function gettheage(dob){
-        if(dob != ''){
-            var day = new Date();
-            var dob = new Date(dob);
-            var age_val =  day.getFullYear() - dob.getFullYear();
-            return age_val;
-        }
-        return null;
-    }
+    // function gettheage(dob){
+    //     if(dob != ''){
+    //         var day = new Date();
+    //         var dob = new Date(dob);
+    //         var age_val =  day.getFullYear() - dob.getFullYear();
+    //         if(isNaN(age_val))return null;
+    //         return age_val;
+    //     }
+    //     return null;
+    // }
 
     $( "#patientBox").click(function() { // register new patient
         $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().hide();
@@ -313,14 +314,14 @@ $(document).ready(function() {
                 colModel: [
                     { label: 'MRN', name: 'pe_mrn' , width: 5, formatter: padzero, unformat: unpadzero},
                     { label: 'Name', name: 'pe_Name' , width: 30},
-                    { label: 'Newic', name: 'pe_Newic', width: 10 },
+                    { label: 'Newic', name: 'pe_Newic', width: 15 },
                     { label: 'apptidno', name: 'pe_apptidno', hidden: true},
                     { label: 'Handphone', name: 'pe_telhp' , width: 10},
                     { label: 'Episode No.', name: 'pe_episno', width: 10 },
                     { label: 'Birth Date.', name: 'p_DOB', width: 10 },
                     { label: 'Sex', name: 'p_sex', width: 5 },
-                    { label: 'Staffid', name: 'p_Staffid', width: 10 },
-                    { label: 'Info &nbsp;&nbsp;&nbsp;&nbsp; Type', name: 'action', width: 10, formatter:formataction , classes: 'td_nowhitespace'}
+                    { label: 'Info &nbsp;&nbsp;&nbsp;&nbsp; Type', name: 'action', width: 12, formatter:formataction , classes: 'td_nowhitespace'},
+                    { label: 'idno', name: 'pe_idno', hidden:true},
                 ],
                 autowidth: true,
                 multiSort: true,
@@ -364,12 +365,40 @@ $(document).ready(function() {
                 let mrn = cellvalue.split(',')[0];
                 let episno = cellvalue.split(',')[1];
                 let apptidno = cellvalue.split(',')[2];
+                let idno = rowObject.pe_idno;
 
-                return `
-                    <button title="Edit" type="button" class="btn btn-xs btn-warning btn-md command-edit preepis_bio" data-mrn=`+mrn+` data-episno=`+episno+` data-apptidno=`+apptidno+`><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                    &nbsp;&nbsp;
-                    <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>`+$("#epistycode").val()+`</b></button>
-                `;
+                let return_val = "";
+
+                if(mrn != "00000"){
+                    return_val+=`
+                        <button title="Edit" type="button" class="btn btn-xs btn-warning btn-md command-edit preepis_bio" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                        &nbsp;&nbsp;
+                    `
+                }else{
+                    return_val+=`
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    `
+                }
+
+                if(apptidno == 'null' || apptidno == ''){
+                    return_val+=`
+                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>&nbsp;WIN&nbsp;</b></button>
+                    `;
+                }else{
+                   return_val+=`
+                        <button title="Episode" type="button" class="btn btn-xs btn-danger btn-md command-episode preepis_epis" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`><b>APPT</b></button>
+                    `; 
+                }
+
+                if(mrn == "00000"){
+                    return_val+=`
+                        &nbsp;&nbsp;<button title="Add" type="button" class="btn btn-xs btn-warning btn-md command-edit preepis_bio" data-mrn=`+mrn+` data-idno=`+idno+` data-episno=`+episno+` data-apptidno=`+apptidno+`>&nbsp;R&nbsp;</button>
+                    `;
+                }
+
+                return return_val;
+
+                
                 // <button title="OTC Episode" type="button" class="btn btn-xs btn-danger btn-md command-otc-episode preepis_otc" data-mrn=`+mrn+` data-episno=`+episno+`><b>DC</b></button>
             }
 
@@ -440,6 +469,7 @@ $(document).ready(function() {
                 var button = $(event.currentTarget);
                 var mrn = button.data('mrn');
                 var apptidno = button.data('apptidno');
+                var idno = button.data('idno');
 
                 if(mrn != '00000'){
                     var param={
@@ -453,7 +483,8 @@ $(document).ready(function() {
                     var param={
                         action:'get_preepis_data',
                         url:'/get_preepis_data',
-                        apptidno:apptidno
+                        apptidno:apptidno,
+                        idno:idno
                     };
                 }
 
