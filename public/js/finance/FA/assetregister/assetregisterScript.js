@@ -515,19 +515,19 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
-			{ label: 'Idno', name: 'idno', width: 8, sorttype: 'text', classes: 'wrap', hidden:true, key: true}, 
-			{ label: 'Asset Type', name: 'assettype', width: 7, sorttype: 'text', classes: 'wrap'},
-			{ label: 'Category', name: 'assetcode', width: 10, sorttype: 'text', classes: 'wrap', canSearch: true},
-			{ label: 'Dept', name: 'deptcode', width: 6, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},			
-			{ label: 'Location', name: 'loccode', width: 40, sorttype: 'text', classes: 'wrap', hidden:true},				
-			{ label: 'Supplier', name: 'suppcode', width: 30, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},	
-			{ label: 'DO No', name:'delordno',width: 9, sorttype:'text', classes:'wrap'},					
-			{ label: 'Invoice No', name:'invno', width: 9,sorttype:'text', classes:'wrap', canSearch: true},
+			{ label: 'compcode', name: 'compcode', hidden:true },
+			{ label: 'Idno', name: 'idno', sorttype: 'text', classes: 'wrap', hidden:true, key: true}, 
+			{ label: 'Asset Type', name: 'assettype', width: 15, sorttype: 'text', classes: 'wrap', formatter: showdetail},
+			{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true, formatter: showdetail},
+			{ label: 'Dept', name: 'deptcode', width: 15, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},			
+			{ label: 'Location', name: 'loccode', sorttype: 'text', classes: 'wrap', hidden:true},				
+			{ label: 'Supplier', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},	
+			{ label: 'DO No', name:'delordno',width: 12, sorttype:'text', classes:'wrap'},					
+			{ label: 'Invoice No', name:'invno', width: 12,sorttype:'text', classes:'wrap', canSearch: true},
 			{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 			{ label: 'dorecno', name: 'dorecno', hidden:true },
-			{ label: 'Item Code', name: 'itemcode', width: 11, sorttype: 'text', classes: 'wrap', canSearch: true},
-			{ label: 'UOM Code', name: 'uomcode', width: 15, sorttype: 'text', classes: 'wrap', hidden: true},
+			{ label: 'Item Code', name: 'itemcode', width: 13, sorttype: 'text', classes: 'wrap', canSearch: true},
+			{ label: 'UOM Code', name: 'uomcode', sorttype: 'text', classes: 'wrap', hidden: true},
 			{ label: 'Regtype', name: 'regtype', width: 13, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat, hidden: true},	
 			// { label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
 			{ label: 'Description', name: 'description_show',formatter:description_show, unformat:description_show_unformat, width: 40, classes: 'wrap'},
@@ -535,15 +535,15 @@ $(document).ready(function () {
 			{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 			{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 			{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
-			{ label: 'Purchase Date', name:'purdate', width: 10, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter},
+			{ label: 'Purchase Date', name:'purdate', width: 12, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter},
 			{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
 			{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
-			{ label: 'Current Cost', name:'currentcost', width:10, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
-			{ label: 'Qty', name:'qty', width:10, classes:'wrap',align: 'right', formatter: 'currency', hidden:false},
+			{ label: 'Current Cost', name:'currentcost', width:12, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
+			{ label: 'Qty', name:'qty', width:8, classes:'wrap',align: 'right', formatter: 'currency', hidden:false},
 			{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
 			{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
-			{ label: 'Method', name:'method', width:20, classes:'wrap', hidden:true},
-			{ label: 'Residual Value', name:'residualvalue', width:20, classes:'wrap', hidden:true},
+			{ label: 'Method', name:'method', classes:'wrap', hidden:true},
+			{ label: 'Residual Value', name:'residualvalue', classes:'wrap', hidden:true},
 			{ label: 'NBV', name:'nbv', width:20, classes:'wrap', hidden:true, formatter: 'currency'},
 			{ label: 'Start Date', name:'statdate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 			{ label: 'Post Date', name:'trandate', width:20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
@@ -639,6 +639,9 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'assetcode':field=['assetcode','description'];table="finance.facode";case_='assetcode';break;
+			case 'assettype':field=['assettype','description'];table="finance.fatype";case_='assettype';break;
+
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 

@@ -116,6 +116,39 @@
 		</div>
 	</div>
 
+		<div class='row'>
+		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
+			<div class="panel-heading clearfix collapsed position"  style="position: sticky;top: 0px;z-index: 3;">
+				<b>Asset No: <span id="category_show_SerialAE"></span></b>
+				<b> - <span id="assetno_show_SerialAE"></span><br><span class="desc_show" id="description_show_SerialAE"></span><a id="seemore_show_SerialAE" style="display: none" data-show='false'>see more</a></b>
+
+				<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid3_panel"></i>
+				<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid3_panel"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 10px;">
+					<h5>Asset Serial List</h5>
+				</div>
+
+				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+						id="btn_grp_edit_SerialAE"
+						style="position: absolute;
+								padding: 0 0 0 0;
+								right: 40px;
+								top: 15px;" 
+					>
+				</div>	
+			</div>
+
+			<div id="jqGrid3_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3" class="table table-striped"></table>
+						<div id="jqGridPager3"></div>
+					</div>
+				</div>
+    		</div>
+  		</div>
+	</div>
+
 	<div class='row'>
 			@include('finance.FA.assetenquiry.assetenquiryDtl2')
 	</div>
@@ -159,39 +192,6 @@
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid2" class="table table-striped"></table>
 						<div id="jqGridPager2"></div>
-					</div>
-				</div>
-    		</div>
-  		</div>
-	</div>
-
-	<div class='row'>
-		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-			<div class="panel-heading clearfix collapsed position"  style="position: sticky;top: 0px;z-index: 3;">
-				<b>Asset No: <span id="category_show_SerialAE"></span></b>
-				<b> - <span id="assetno_show_SerialAE"></span><br><span class="desc_show" id="description_show_SerialAE"></span><a id="seemore_show_SerialAE" style="display: none" data-show='false'>see more</a></b>
-
-				<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid3_panel"></i>
-				<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid3_panel"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 10px;">
-					<h5>Asset Serial List</h5>
-				</div>
-
-				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-						id="btn_grp_edit_SerialAE"
-						style="position: absolute;
-								padding: 0 0 0 0;
-								right: 40px;
-								top: 15px;" 
-					>
-				</div>	
-			</div>
-
-			<div id="jqGrid3_panel" class="panel-collapse collapse">
-				<div class="panel-body">
-					<div class='col-md-12' style="padding:0 0 15px 0">
-						<table id="jqGrid3" class="table table-striped"></table>
-						<div id="jqGridPager3"></div>
 					</div>
 				</div>
     		</div>
