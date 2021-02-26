@@ -157,69 +157,6 @@
 		    vertical-align: top !important;
 		}
 
-		/* toggle btn in doctor note */
-		#toggle_doctorNote .switch {
-			position: relative;
-			display: inline-block;
-			width: 150px;
-			height: 34px;
-		}
-
-		#toggle_doctorNote .switch input {display:none;}
-
-		#toggle_doctorNote .slider {
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background-color: #2196F3;
-			-webkit-transition: .4s;
-			transition: .4s;
-		}
-
-		#toggle_doctorNote .slider:before {
-			position: absolute;
-			content: "";
-			height: 26px;
-			width: 26px;
-			left: 4px;
-			bottom: 4px;
-			background-color: white;
-			-webkit-transition: .4s;
-			transition: .4s;
-		}
-
-		#toggle_doctorNote input:checked + .slider {
-			background-color: #2196F3;
-		}
-
-		#toggle_doctorNote input:focus + .slider {
-			box-shadow: 0 0 1px #2196F3;
-		}
-
-		#toggle_doctorNote input:checked + .slider:before {
-			-webkit-transform: translateX(115px);
-			-ms-transform: translateX(115px);
-			transform: translateX(115px);
-		}
-
-		#toggle_doctorNote .current {display: none;}
-
-		#toggle_doctorNote .current, .past {
-			color: white;
-			position: absolute;
-			transform: translate(-50%,-50%);
-			top: 50%;
-			left: 50%;
-			font-size: 10px;
-		}
-
-		#toggle_doctorNote input:checked + .slider .current {display: inline;}
-
-		#toggle_doctorNote input:checked + .slider .past {display: none;}
-		/* toggle btn in doctor note */
-
 	</style>
 
 </head>

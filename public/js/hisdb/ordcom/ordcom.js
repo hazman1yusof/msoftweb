@@ -597,7 +597,7 @@ function populate_ordcom_currpt(obj){
 
 	//panel header	
 	$('#name_show_ordcom').text(obj.Name);	
-	$('#mrn_show_ordcom').text(obj.MRN);
+	$('#mrn_show_ordcom').text(("0000000" + obj.MRN).slice(-7));
 
 	//formordcom	
 	$('#mrn_ordcom').val(obj.MRN);	

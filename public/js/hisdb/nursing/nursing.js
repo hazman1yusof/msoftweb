@@ -563,7 +563,7 @@ function populate_tiCurrentPt(obj){
 	emptyFormdata(errorField,"#formTriageInfo");
 	//panel header
 	$('#name_show_triage').text(obj.Name);
-	$('#mrn_show_triage').text(obj.MRN);
+	$('#mrn_show_triage').text(("0000000" + obj.MRN).slice(-7));
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);
