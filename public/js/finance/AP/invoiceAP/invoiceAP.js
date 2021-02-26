@@ -187,6 +187,7 @@ $(document).ready(function () {
 	}
 
 	function unpadzero(cellvalue, options, rowObject){
+		console.log(cellvalue.substring(cellvalue.search(/[1-9]/)))
 		return cellvalue.substring(cellvalue.search(/[1-9]/));
 	}
 
@@ -232,7 +233,7 @@ $(document).ready(function () {
 		{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:'true'},
-		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true'},
+		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true', key:true},
 		{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:'true'},
 
 	],
@@ -385,7 +386,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit']);
+	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit','Checkbox']);
 
 	$("#save").click(function(){
 		unsaved = false;
@@ -461,7 +462,12 @@ $(document).ready(function () {
 	$("#but_post_jq").click(function(){
 		var idno_array = [];
 	
-		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		for (var i = 0; i < ids.length; i++) {
+			var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
+	    	idno_array.push(data.apacthdr_auditno);
+	    }
+	    
 		var obj={};
 		obj.idno_array = idno_array;
 		obj.oper = $(this).data('oper');
@@ -1253,8 +1259,8 @@ $(document).ready(function () {
 		sortname: 'apacthdr_idno',
 		sortorder: "desc",
 		onSelectRow: function (rowid, selected) {
-			console.log(rowid);
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
+			console.log(rowdata);
 		},
 		gridComplete: function(){
 			

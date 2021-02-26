@@ -206,6 +206,10 @@
 		.modal-backdrop{
 			z-index: 99 !important;
 		}
+
+		.input-group-addon {
+    		color: #ffffff !important;
+    	}
 		@yield('style')
  	</style>	
     <title>@yield('title')</title>

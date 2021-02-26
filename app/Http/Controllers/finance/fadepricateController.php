@@ -12,6 +12,7 @@ class fadepricateController extends defaultController
 
     var $table;
     var $duplicateCode;
+    var $auditno;
 
     public function __construct()
     {
@@ -94,6 +95,26 @@ class fadepricateController extends defaultController
                             $cost = $cost - $accum_costdisp;
                             $accum_dep = $cost * $facode->rate / 100 /12;
 
+                            //kira process_date
+                            $facontrol = $facontrol_obj->first();
+                            $process_date = Carbon::createFromDate($facontrol->year,$facontrol->period,$dt->daysInMonth);
+
+                            //6. buat fatran
+                            $this->fainface(
+                                $request,
+                                $faregister,
+                                $accum_dep,
+                                $process_date
+                            );
+
+                            //6. buat fatran
+                            $this->gltran(
+                                $request,
+                                $faregister,
+                                $accum_dep,
+                                $process_date
+                            );
+
                         }
 
                     }
@@ -119,16 +140,6 @@ class fadepricateController extends defaultController
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
                     }
-
-                    //6. buat fatran
-                    $this->fainface(
-                                    $request,
-                                    $faregister->deptcode,
-                                    $accum_dep,
-                                    $faregister->assetno,
-                                    $faregister->assetcode
-                                );
-
                 }
 
             }
@@ -149,7 +160,7 @@ class fadepricateController extends defaultController
 
     }
 
-    public function fainface(Request $request,$deptcode,$amount,$assetno,$assetcode){
+    public function fainface(Request $request,$faregister,$amount,$process_date){
 
         $sysparam_obj = DB::table('sysdb.sysparam')
                             ->where('compcode','=',session('compcode'))
@@ -158,27 +169,135 @@ class fadepricateController extends defaultController
 
         if($sysparam_obj->exists()){
             $sysparam = $sysparam_obj->first();
+
+            //plus 1 sysparam
+            $this->auditno = $sysparam->pvalue1 + 1;
+
+            $sysparam_obj->update([
+                'pvalue1' => $auditno,
+                'lastuser' => session('username'),
+                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+            ]);  
+
             //create fatran
             DB::table('finance.fatran')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'assetcode' => $assetcode,
-                        'assetno' => $assetno,
+                        'auditno' => $auditno,
+                        'assetcode' => $faregister->assetcode,
+                        'assettype' =>  $faregister->assettype,
+                        'assetno' => $faregister->assetno,
                         'trantype' => "DEP",
                         'amount' => $amount,
-                        'deptcode' => $deptcode,
+                        'deptcode' => $faregister->deptcode,
+                        'reference' => "POSTING FROM ASSET DEPRECIATION",  
+                        'trandate' => $process_date,//process date
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'reference' => "POSTING FROM ASSET DEPRECIATION",
-
                     ]);
+        }
+    }
 
-            //plus 1 sysparam
-            $sysparam_obj->update([
-                'pvalue1' => $sysparam->pvalue1 + 1,
-                'lastuser' => session('username'),
-                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
-            ]);      
+    public function gltran(Request $request,$faregister,$amount,$process_date){
+
+            $yearperiod = defaultController::getyearperiod_($process_date);//<--process date
+
+            $row_dept = DB::table('sysdb.department')
+                ->select('costcode')
+                ->where('compcode','=',session('compcode'))
+                ->where('deptcode','=',$faregister->deptcode)
+                ->first();
+
+            $facode = DB::table('finance.facode')
+                ->where('compcode','=', $value->compcode)
+                ->where('assetcode','=', $product_obj->productcat)
+                ->first();
+
+            $drcostcode = $row_dept->costcode;
+            $dracc = $facode->gldep;
+            $crcostcode = $row_dept->costcode;
+            $cracc = $facode->glprovdep;
+
+            //1. buat gltran
+            DB::table('finance.gltran')
+                ->insert([
+                    'compcode' => $value->compcode,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'auditno' => $this->auditno,
+                    'lineno_' => 1,
+                    'source' => 'FA', //kalau stock 'IV', lain dari stock 'DO'
+                    'trantype' => "DEP",
+                    'reference' => "POSTING FROM ASSET DEPRECIATION",
+                    'description' => $faregister->assetno, 
+                    'postdate' => $process_date,
+                    'year' => $yearperiod->year,
+                    'period' => $yearperiod->period,
+                    'drcostcode' => $drcostcode,
+                    'dracc' => $dracc,
+                    'crcostcode' => $crcostcode,
+                    'cracc' => $cracc,
+                    'amount' => $amount,
+                ]);
+
+            //2. check glmastdtl utk debit, kalu ada update kalu xde create
+            $gltranAmount =  defaultController::isGltranExist_($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$drcostcode)
+                    ->where('glaccount','=',$dracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $amount + $gltranAmount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $drcostcode,
+                        'glaccount' => $dracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => $amount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$crcostcode)
+                    ->where('glaccount','=',$cracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount - $amount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $crcostcode,
+                        'glaccount' => $cracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => -$amount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+               
         }
     }
 }

@@ -517,30 +517,31 @@ $(document).ready(function () {
 		 colModel: [
 			{ label: 'compcode', name: 'compcode', hidden:true },
 			{ label: 'Idno', name: 'idno', sorttype: 'text', classes: 'wrap', hidden:true, key: true}, 
-			{ label: 'Asset Type', name: 'assettype', width: 15, sorttype: 'text', classes: 'wrap', formatter: showdetail},
-			{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true, formatter: showdetail},
-			{ label: 'Dept', name: 'deptcode', width: 15, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},			
+			{ label: 'Asset Type', name: 'assettype', width: 15, sorttype: 'text', classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Category', name: 'assetcode', width: 15, sorttype: 'text', classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Dept', name: 'deptcode', width: 17, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},			
 			{ label: 'Location', name: 'loccode', sorttype: 'text', classes: 'wrap', hidden:true},				
-			{ label: 'Supplier', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},	
-			{ label: 'DO No', name:'delordno',width: 12, sorttype:'text', classes:'wrap'},					
-			{ label: 'Invoice No', name:'invno', width: 12,sorttype:'text', classes:'wrap', canSearch: true},
+			{ label: 'Supplier', name: 'suppcode', width: 25, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},	
+			{ label: 'DO No', name:'delordno',width: 18, sorttype:'text', classes:'wrap'},					
+			{ label: 'Invoice No', name:'invno', width: 18,sorttype:'text', classes:'wrap', canSearch: true},
 			{ label: 'Purchase Order No', name:'purordno',width: 20, sorttype:'text', classes:'wrap', hidden:true},
 			{ label: 'dorecno', name: 'dorecno', hidden:true },
 			{ label: 'Item Code', name: 'itemcode', width: 13, sorttype: 'text', classes: 'wrap', canSearch: true},
+			{ label: 'itemcode_desc', name: 'itemcode_desc', hidden:true},
 			{ label: 'UOM Code', name: 'uomcode', sorttype: 'text', classes: 'wrap', hidden: true},
 			{ label: 'Regtype', name: 'regtype', width: 13, sorttype: 'text', classes: 'wrap', formatter:regtypeformat,unformat:regtypeunformat, hidden: true},	
 			// { label: 'Description', name: 'description', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true, selected: true},
-			{ label: 'Description', name: 'description_show',formatter:description_show, unformat:description_show_unformat, width: 40, classes: 'wrap'},
+			{ label: 'Description', name: 'description_show',formatter:description_show, unformat:description_show_unformat, width: 35, classes: 'wrap'},
 			{ label: 'Description', name: 'description', canSearch: true,checked:true,hidden:true},
-			{ label: 'DO Date', name:'delorddate', width: 20, classes:'wrap',formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
+			{ label: 'DO Date', name:'delorddate', classes:'wrap',formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 			{ label: 'Invoice Date', name:'invdate', width: 20, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter, hidden:true},
 			{ label: 'GRN No', name:'docno', width: 20, classes:'wrap',hidden:true},
 			{ label: 'Purchase Date', name:'purdate', width: 12, classes:'wrap', formatter:dateFormatter, unformat:dateUNFormatter},
-			{ label: 'Purchase Price', name:'purprice', width: 20, classes:'wrap', hidden:true},
-			{ label: 'Original Cost', name:'origcost', width: 20, classes:'wrap', hidden:true},
+			{ label: 'Purchase Price', name:'purprice', width: 10, classes:'wrap', hidden:true},
+			{ label: 'Original Cost', name:'origcost', width: 10, classes:'wrap', hidden:true},
 			{ label: 'Current Cost', name:'currentcost', width:12, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
 			{ label: 'Qty', name:'qty', width:8, classes:'wrap',align: 'right', formatter: 'currency', hidden:false},
-			{ label: 'Individual Tagging', name:'individualtag', width:20, classes:'wrap', hidden:true},
+			{ label: 'Individual Tagging', name:'individualtag', width:10, classes:'wrap', hidden:true},
 			{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
 			{ label: 'Method', name:'method', classes:'wrap', hidden:true},
 			{ label: 'Residual Value', name:'residualvalue', classes:'wrap', hidden:true},
@@ -625,8 +626,8 @@ $(document).ready(function () {
 	}
 
 	function description_show(cellvalue, options, rowObject) {
-		let description = (rowObject.description == null)?' ':rowObject.description;
-		return rowObject.itemcode+'-'+rowObject.itemcode_desc+'\n'+description;
+		let description = (rowObject.description_show == null)?' ':rowObject.description_show;
+		return rowObject.itemcode+'-'+rowObject.itemcode_desc+'\n\n'+description;
 	}
 
 	function description_show_unformat(cellvalue, options) {
@@ -847,8 +848,8 @@ $(document).ready(function () {
 	// searchClick2('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam,['Checkbox','description_show']);
-	addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','compcode','recstatus','assetreg_status','description_show','Checkbox']);
+	addParamField('#jqGrid',true,urlParam,['Checkbox','description_show','itemcode_desc']);
+	addParamField('#jqGrid',false,saveParam,['idno','adduser','adddate','upduser','upddate','compcode','recstatus','assetreg_status','description_show','Checkbox','itemcode_desc']);
 	
 	$("#delorddate,#invdate,#delorddate").blur(checkdate_asset);
 

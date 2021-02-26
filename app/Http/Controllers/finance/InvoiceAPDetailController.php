@@ -84,7 +84,7 @@ class InvoiceAPDetailController extends defaultController
         }
     }
 
-    public function add(Request $request){
+    public function add(Request $request){//invoiceAPDetail_save
         DB::beginTransaction();
 
         try {

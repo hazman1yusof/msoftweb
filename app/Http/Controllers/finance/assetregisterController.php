@@ -138,138 +138,138 @@ class assetregisterController extends defaultController
         }      
     }
 
-    public function gen_tagno_single(Request $request){
+    // public function gen_tagno_single(Request $request){
 
-        DB::beginTransaction();
+    //     DB::beginTransaction();
 
-        try {
-            ////1. select facode tagnextno
-            $fatemp = DB::table('finance.fatemp')
-                        ->where('idno','=',$idno)
-                        ->first();
+    //     try {
+    //         ////1. select facode tagnextno
+    //         $fatemp = DB::table('finance.fatemp')
+    //                     ->where('idno','=',$idno)
+    //                     ->first();
 
-            $product = DB::tale('material.product')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('itemcode','=',$fatemp->itemcode)
-                            ->first();
+    //         $product = DB::tale('material.product')
+    //                         ->where('compcode','=',session('compcode'))
+    //                         ->where('itemcode','=',$fatemp->itemcode)
+    //                         ->first();
 
-            $facode = DB::table('finance.facode')->select('tagnextno')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('assettype', '=', $fatemp->assettype)
-                            ->where('method', '=', $facode->method)
-                            ->where('residualvalue', '=', $facode->residualvalue)
-                            ->first();
+    //         $facode = DB::table('finance.facode')->select('tagnextno')
+    //                         ->where('compcode','=',session('compcode'))
+    //                         ->where('assettype', '=', $fatemp->assettype)
+    //                         ->where('method', '=', $facode->method)
+    //                         ->where('residualvalue', '=', $facode->residualvalue)
+    //                         ->first();
                             
-            $tagnextno_counter = intval($facode->tagnextno)+1;
-            $assetno = str_pad($facode->tagnextno,6,"0",STR_PAD_LEFT);
+    //         $tagnextno_counter = intval($facode->tagnextno)+1;
+    //         $assetno = str_pad($facode->tagnextno,6,"0",STR_PAD_LEFT);
 
-            ////2. insert into faregister
-            for ($x=1; $x <= $fatemp->qty; $x++) { 
-                if($x == 1){
-                    DB::table('finance.faregister')
-                        ->insert([
-                            'assetcode' => $fatemp->assetcode,
-                            'assettype' => $fatemp->assettype,
-                            'assetno' => $assetno, // got padding
-                            'itemcode' => $fatemp->itemcode,
-                            'description' => $fatemp->itemcode.'-'.$product->description.'\n'.$fatemp->description,
-                            'lineno_' => $fatemp->lineno_,
-                            'deptcode' => $fatemp->deptcode,
-                            'loccode' => $fatemp->loccode,
-                            'suppcode' => $fatemp->suppcode,
-                            'purordno' => $fatemp->purordno,
-                            'delordno'  => $fatemp->delordno,
-                            'delorddate' => $fatemp->delorddate,
-                            'invno' => $fatemp->invno,
-                            'invdate' => $fatemp->invdate,
-                            'purdate' => $fatemp->purdate,
-                            'purprice' => $fatemp->purprice,
-                            'origcost' => $fatemp->origcost,
-                            'currentcost' => $fatemp->currentcost,
-                            'qty' => $fatemp->qty,
-                            'lstytddep' => $fatemp->lstytddep,
-                            'cuytddep' => $fatemp->cuytddep,
-                            'recstatus' => $fatemp->recstatus,
-                            'individualtag' => $fatemp->individualtag,
-                            'startdepdate' =>$fatemp->statdate,
-                            'statdate' => $fatemp->statdate,
-                            'trantype' => $fatemp->trantype,
-                            'nprefid' => $fatemp->nprefid,
-                            'trandate' => $fatemp->trandate,
-                            'method' => $facode->method,
-                            'residualvalue' => $facode->residualvalue,
-                            // 'nbv' => $fatemp->nbv,
-                            'compcode' => session('compcode'),
-                            'adduser' => strtoupper(session('username')),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-                }else{
-                        DB::table('finance.facompnt')
-                            ->insert([
-                                'assetcode' => $fatemp->assetcode,
-                                'assettype' => $fatemp->assettype,
-                                'assetno' => $assetno, // got padding
-                                'assetlineno' => $x,
-                                'deptcode' => $fatemp->deptcode,
-                                'loccode' => $fatemp->loccode,
-                                'qty' => $fatemp->qty,
-                                'condition' => null,
-                                'expdate' => null,
-                                'brand' => null,
-                                'model' => null,
-                                'equipmentname' => null,
-                                'trackingno' => null,
-                                'bem_no' => null,
-                                'ppmschedule' => null,
-                                'compcode' => session('compcode'),
-                                'adduser' => strtoupper(session('username')),
-                                'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                            ]);
-                }
-            }
+    //         ////2. insert into faregister
+    //         for ($x=1; $x <= $fatemp->qty; $x++) { 
+    //             if($x == 1){
+    //                 DB::table('finance.faregister')
+    //                     ->insert([
+    //                         'assetcode' => $fatemp->assetcode,
+    //                         'assettype' => $fatemp->assettype,
+    //                         'assetno' => $assetno, // got padding
+    //                         'itemcode' => $fatemp->itemcode,
+    //                         'description' => $fatemp->itemcode.'-'.$product->description.'\n'.$fatemp->description,
+    //                         'lineno_' => $fatemp->lineno_,
+    //                         'deptcode' => $fatemp->deptcode,
+    //                         'loccode' => $fatemp->loccode,
+    //                         'suppcode' => $fatemp->suppcode,
+    //                         'purordno' => $fatemp->purordno,
+    //                         'delordno'  => $fatemp->delordno,
+    //                         'delorddate' => $fatemp->delorddate,
+    //                         'invno' => $fatemp->invno,
+    //                         'invdate' => $fatemp->invdate,
+    //                         'purdate' => $fatemp->purdate,
+    //                         'purprice' => $fatemp->purprice,
+    //                         'origcost' => $fatemp->origcost,
+    //                         'currentcost' => $fatemp->currentcost,
+    //                         'qty' => $fatemp->qty,
+    //                         'lstytddep' => $fatemp->lstytddep,
+    //                         'cuytddep' => $fatemp->cuytddep,
+    //                         'recstatus' => $fatemp->recstatus,
+    //                         'individualtag' => $fatemp->individualtag,
+    //                         'startdepdate' =>$fatemp->statdate,
+    //                         'statdate' => $fatemp->statdate,
+    //                         'trantype' => $fatemp->trantype,
+    //                         'nprefid' => $fatemp->nprefid,
+    //                         'trandate' => $fatemp->trandate,
+    //                         'method' => $facode->method,
+    //                         'residualvalue' => $facode->residualvalue,
+    //                         // 'nbv' => $fatemp->nbv,
+    //                         'compcode' => session('compcode'),
+    //                         'adduser' => strtoupper(session('username')),
+    //                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+    //                     ]);
+    //             }else{
+    //                     DB::table('finance.facompnt')
+    //                         ->insert([
+    //                             'assetcode' => $fatemp->assetcode,
+    //                             'assettype' => $fatemp->assettype,
+    //                             'assetno' => $assetno, // got padding
+    //                             'assetlineno' => $x,
+    //                             'deptcode' => $fatemp->deptcode,
+    //                             'loccode' => $fatemp->loccode,
+    //                             'qty' => $fatemp->qty,
+    //                             'condition' => null,
+    //                             'expdate' => null,
+    //                             'brand' => null,
+    //                             'model' => null,
+    //                             'equipmentname' => null,
+    //                             'trackingno' => null,
+    //                             'bem_no' => null,
+    //                             'ppmschedule' => null,
+    //                             'compcode' => session('compcode'),
+    //                             'adduser' => strtoupper(session('username')),
+    //                             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+    //                         ]);
+    //             }
+    //         }
 
-            ////delete from fatemp
-            DB::table('finance.fatemp')
-                    ->where('idno','=',$idno)
-                    ->delete();
+    //         ////delete from fatemp
+    //         DB::table('finance.fatemp')
+    //                 ->where('idno','=',$idno)
+    //                 ->delete();
 
-            ////4. update facode tagnextno
-            DB::table('finance.facode')->select('tagnextno')
-                ->where('compcode','=',session('compcode'))
-                ->where('assettype', '=', $fatemp->assettype)
-                ->update([
-                    'tagnextno' => $tagnextno_counter
-                ]);
+    //         ////4. update facode tagnextno
+    //         DB::table('finance.facode')->select('tagnextno')
+    //             ->where('compcode','=',session('compcode'))
+    //             ->where('assettype', '=', $fatemp->assettype)
+    //             ->update([
+    //                 'tagnextno' => $tagnextno_counter
+    //             ]);
 
-            //update qtytag at delorddt
+    //         //update qtytag at delorddt
 
-            if($fatemp->regtype == 'PO'){
-                $delordhd = DB::table('material.delordhd')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('delordno','=',$fatemp->delordno)
-                    ->first();
+    //         if($fatemp->regtype == 'PO'){
+    //             $delordhd = DB::table('material.delordhd')
+    //                 ->where('compcode','=',session('compcode'))
+    //                 ->where('delordno','=',$fatemp->delordno)
+    //                 ->first();
 
-                DB::table('material.delorddt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$delordhd->recno)
-                    ->where('itemcode','=',$fatemp->itemcode)
-                    ->where('lineno_','=',$fatemp->lineno_)
-                    ->update([
-                        'qtytag' => $fatemp->qty
-                    ]);
-            }
+    //             DB::table('material.delorddt')
+    //                 ->where('compcode','=',session('compcode'))
+    //                 ->where('recno','=',$delordhd->recno)
+    //                 ->where('itemcode','=',$fatemp->itemcode)
+    //                 ->where('lineno_','=',$fatemp->lineno_)
+    //                 ->update([
+    //                     'qtytag' => $fatemp->qty
+    //                 ]);
+    //         }
 
-            dump(DB::getQueryLog());
+    //         dump(DB::getQueryLog());
             
-            // DB::commit();
+    //         // DB::commit();
 
-        } catch (\Exception $e) {
-            DB::rollback();
+    //     } catch (\Exception $e) {
+    //         DB::rollback();
             
-            return response('Error'.$e, 500);
-        }
+    //         return response('Error'.$e, 500);
+    //     }
         
-    }
+    // }
 
     public function gen_tagno(Request $request){
 
@@ -297,87 +297,25 @@ class assetregisterController extends defaultController
 
                 if($facode->exists()){
                     $facode = $facode->first();
+                }else{
+                    // $tagnextno_counter = 2;
+                    // $assetno = str_pad(1,6,"0",STR_PAD_LEFT);
+                    throw new Exception("facode not exist", 1);
+                }
+
+                if($fatemp->individualtag == 'N'){
 
                     $tagnextno_counter = intval($facode->tagnextno)+1;
                     $assetno = str_pad($facode->tagnextno,6,"0",STR_PAD_LEFT);
+
+                    $this->crt_fareg_notindv($fatemp,$product,$assetno);
+                }else if($fatemp->individualtag == 'Y'){
+
+                    $tagnextno_counter = intval($facode->tagnextno)+intval($fatemp->qty);
+
+                    $this->crt_fareg_indv($fatemp,$product,$facode->tagnextno);
                 }else{
-                    $tagnextno_counter = 2;
-                    $assetno = str_pad(1,6,"0",STR_PAD_LEFT);
-                }
-
-
-                for ($x=1; $x <= $fatemp->qty; $x++) { 
-                    if($x == 1){
-                        ////2. insert into faregister
-                        DB::table('finance.faregister')
-                            ->insert([
-                                'assetcode' => $fatemp->assetcode,
-                                'assettype' => $fatemp->assettype,
-                                'assetno' => $assetno, // got padding
-                                'description' => $fatemp->itemcode.'-'.$product->description.'</br>'.$fatemp->description,
-                                'dolineno' => $fatemp->lineno_,
-                                'deptcode' => $fatemp->deptcode,
-                                'loccode' => $fatemp->loccode,
-                                'suppcode' => $fatemp->suppcode,
-                                'purordno' => $fatemp->purordno,
-                                'delordno'  => $fatemp->delordno,
-                                'delorddate' => $fatemp->delorddate,
-                                'itemcode' => $fatemp->itemcode,
-                                'invno' => $fatemp->invno,
-                                'invdate' => $fatemp->invdate,
-                                'purdate' => $fatemp->purdate,
-                                'purprice' => $fatemp->purprice,
-                                'origcost' => $fatemp->origcost,
-                                'currentcost' => $fatemp->currentcost,
-                                'qty' => $fatemp->qty,
-                                'lstytddep' => $fatemp->lstytddep,
-                                'cuytddep' => $fatemp->cuytddep,
-                                'recstatus' => $fatemp->recstatus,
-                                'individualtag' => $fatemp->individualtag,
-                                'startdepdate' =>$fatemp->statdate,
-                                'statdate' => $fatemp->statdate,
-                                'trantype' => $fatemp->trantype,
-                                'nprefid' => $fatemp->nprefid,
-                                'trandate' => $fatemp->trandate,
-                                'method' => $fatemp->method,
-                                'residualvalue' => $fatemp->residualvalue,
-                                // 'nbv' => $fatemp->nbv,
-                                'condition' => null,
-                                'expdate' => null,
-                                'brand' => null,
-                                'model' => null,
-                                'equipmentname' => null,
-                                'trackingno' => null,
-                                'bem_no' => null,
-                                'ppmschedule' => null,
-                                'compcode' => session('compcode'),
-                                'adduser' => strtoupper(session('username')),
-                                'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                            ]);
-                    }else{
-                        DB::table('finance.facompnt')
-                            ->insert([
-                                'assetcode' => $fatemp->assetcode,
-                                'assettype' => $fatemp->assettype,
-                                'assetno' => $assetno, // got padding
-                                'assetlineno' => $x,
-                                'deptcode' => $fatemp->deptcode,
-                                'loccode' => $fatemp->loccode,
-                                'qty' => $fatemp->qty,
-                                'condition' => null,
-                                'expdate' => null,
-                                'brand' => null,
-                                'model' => null,
-                                'equipmentname' => null,
-                                'trackingno' => null,
-                                'bem_no' => null,
-                                'ppmschedule' => null,
-                                'compcode' => session('compcode'),
-                                'adduser' => strtoupper(session('username')),
-                                'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                            ]);
-                    }
-                    
+                    throw new Exception("individualtag not exist", 1);
                 }
 
                 ////delete from fatemp
@@ -388,6 +326,7 @@ class assetregisterController extends defaultController
                 ////4. update facode tagnextno
                 DB::table('finance.facode')->select('tagnextno')
                     ->where('compcode','=',session('compcode'))
+                    ->where('assetcode', '=', $fatemp->assetcode)
                     ->where('assettype', '=', $fatemp->assettype)
                     ->update([
                         'tagnextno' => $tagnextno_counter
@@ -448,5 +387,136 @@ class assetregisterController extends defaultController
             return response('Error'.$e, 500);
         }
 
+    }
+
+    public function crt_fareg_notindv($fatemp,$product,$assetno){
+        for ($x=1; $x <= $fatemp->qty; $x++) { 
+            if($x == 1){
+                ////2. insert into faregister
+                DB::table('finance.faregister')
+                    ->insert([
+                        'assetcode' => $fatemp->assetcode,
+                        'assettype' => $fatemp->assettype,
+                        'assetno' => $assetno, // got padding
+                        'description' => $fatemp->itemcode.'-'.$product->description.'</br>'.$fatemp->description,
+                        'dolineno' => $fatemp->lineno_,
+                        'deptcode' => $fatemp->deptcode,
+                        'loccode' => $fatemp->loccode,
+                        'suppcode' => $fatemp->suppcode,
+                        'purordno' => $fatemp->purordno,
+                        'delordno'  => $fatemp->delordno,
+                        'delorddate' => $fatemp->delorddate,
+                        'itemcode' => $fatemp->itemcode,
+                        'invno' => $fatemp->invno,
+                        'invdate' => $fatemp->invdate,
+                        'purdate' => $fatemp->purdate,
+                        'purprice' => $fatemp->purprice,
+                        'origcost' => $fatemp->origcost,
+                        'currentcost' => $fatemp->currentcost,
+                        'qty' => $fatemp->qty,
+                        'lstytddep' => $fatemp->lstytddep,
+                        'cuytddep' => $fatemp->cuytddep,
+                        'recstatus' => $fatemp->recstatus,
+                        'individualtag' => $fatemp->individualtag,
+                        'startdepdate' =>$fatemp->statdate,
+                        'statdate' => $fatemp->statdate,
+                        'trantype' => $fatemp->trantype,
+                        'nprefid' => $fatemp->nprefid,
+                        'trandate' => $fatemp->trandate,
+                        'method' => $fatemp->method,
+                        'residualvalue' => $fatemp->residualvalue,
+                        // 'nbv' => $fatemp->nbv,
+                        'condition' => null,
+                        'expdate' => null,
+                        'brand' => null,
+                        'model' => null,
+                        'equipmentname' => null,
+                        'trackingno' => null,
+                        'bem_no' => null,
+                        'ppmschedule' => null,
+                        'compcode' => session('compcode'),
+                        'adduser' => strtoupper(session('username')),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }else{
+                DB::table('finance.facompnt')
+                    ->insert([
+                        'assetcode' => $fatemp->assetcode,
+                        'assettype' => $fatemp->assettype,
+                        'assetno' => $assetno, // got padding
+                        'assetlineno' => $x,
+                        'deptcode' => $fatemp->deptcode,
+                        'loccode' => $fatemp->loccode,
+                        'qty' => $fatemp->qty,
+                        'condition' => null,
+                        'expdate' => null,
+                        'brand' => null,
+                        'model' => null,
+                        'equipmentname' => null,
+                        'trackingno' => null,
+                        'bem_no' => null,
+                        'ppmschedule' => null,
+                        'compcode' => session('compcode'),
+                        'adduser' => strtoupper(session('username')),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
+            
+        }
+    }
+
+    public function crt_fareg_indv($fatemp,$product,$tagnextno){
+        ////2. insert into faregister
+        for ($x=0; $x < $fatemp->qty; $x++) { 
+            $assetno = str_pad(intval($tagnextno)+$x,6,"0",STR_PAD_LEFT);
+            $purprice = floatval($fatemp->purprice) / intval($fatemp->qty);
+            $origcost = floatval($fatemp->origcost) / intval($fatemp->qty);
+            $currentcost = floatval($fatemp->currentcost) / intval($fatemp->qty);
+            DB::table('finance.faregister')
+                ->insert([
+                    'assetcode' => $fatemp->assetcode,
+                    'assettype' => $fatemp->assettype,
+                    'assetno' => $assetno, // got padding
+                    'description' => $fatemp->itemcode.'-'.$product->description.'</br>'.$fatemp->description,
+                    'dolineno' => $fatemp->lineno_,
+                    'deptcode' => $fatemp->deptcode,
+                    'loccode' => $fatemp->loccode,
+                    'suppcode' => $fatemp->suppcode,
+                    'purordno' => $fatemp->purordno,
+                    'delordno'  => $fatemp->delordno,
+                    'delorddate' => $fatemp->delorddate,
+                    'itemcode' => $fatemp->itemcode,
+                    'invno' => $fatemp->invno,
+                    'invdate' => $fatemp->invdate,
+                    'purdate' => $fatemp->purdate,
+                    'purprice' => $purprice,
+                    'origcost' => $origcost,
+                    'currentcost' => $currentcost,
+                    'qty' => 1,
+                    'lstytddep' => $fatemp->lstytddep,
+                    'cuytddep' => $fatemp->cuytddep,
+                    'recstatus' => $fatemp->recstatus,
+                    'individualtag' => $fatemp->individualtag,
+                    'startdepdate' =>$fatemp->statdate,
+                    'statdate' => $fatemp->statdate,
+                    'trantype' => $fatemp->trantype,
+                    'nprefid' => $fatemp->nprefid,
+                    'trandate' => $fatemp->trandate,
+                    'method' => $fatemp->method,
+                    'residualvalue' => $fatemp->residualvalue,
+                    // 'nbv' => $fatemp->nbv,
+                    'condition' => null,
+                    'expdate' => null,
+                    'brand' => null,
+                    'model' => null,
+                    'equipmentname' => null,
+                    'trackingno' => null,
+                    'bem_no' => null,
+                    'ppmschedule' => null,
+                    'compcode' => session('compcode'),
+                    'adduser' => strtoupper(session('username')),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+        }
     }
 }

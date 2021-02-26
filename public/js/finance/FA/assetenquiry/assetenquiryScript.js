@@ -195,11 +195,11 @@ $(document).ready(function () {
 		assetcode_depan.off();
 		$("input[name='Stext']").show();
 		if($('input[type=radio][name=dcolr][value=assetcode]').is(':checked')){
-			$("input[name='Stext']").hide("fast");
+			$("input[name='Stext']").hide();
 			$(assetcode_depan.textfield+'_div').show();
 			assetcode_depan.on();
 		} else if($('input[type=radio][name=dcolr][value=assettype]').is(':checked')){
-			$("input[name='Stext']").hide("fast");
+			$("input[name='Stext']").hide();
 			$(assettype_depan.textfield+'_div').show();
 			assettype_depan.on();
 		} 
@@ -303,8 +303,8 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Type', name: 'assettype', width: 10, classes: 'wrap',canSearch: true, formatter: showdetail},		
-			{ label: 'Category', name: 'assetcode', width: 10, classes: 'wrap', canSearch: true, formatter: showdetail},		
+			{ label: 'Type', name: 'assettype', width: 10, classes: 'wrap',canSearch: true, formatter: showdetail, unformat:un_showdetail},		
+			{ label: 'Category', name: 'assetcode', width: 10, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},		
 			{ label: 'Asset No', name: 'assetno', width: 6, classes: 'wrap'},
 			{ label: 'Item Code', name: 'itemcode', width: 8, classes: 'wrap',hidden:true},
 			{ label: 'Description', name: 'description_show', width: 30, classes: 'wrap'},
@@ -313,8 +313,8 @@ $(document).ready(function () {
 			{ label: 'Lotno', name: 'lotno', width: 20,classes: 'wrap',hidden:true},
 			{ label: 'Casisno', name: 'casisno', width: 20, classes: 'wrap',hidden:true},
 			{ label: 'Engineno', name: 'engineno', width: 20, classes: 'wrap',hidden:true},
-			{ label: 'Dept', name: 'deptcode', width: 12, classes: 'wrap', formatter: showdetail},
-            { label: 'Location', name: 'loccode', width: 12, classes: 'wrap', formatter: showdetail},
+			{ label: 'Dept', name: 'deptcode', width: 12, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+            { label: 'Location', name: 'loccode', width: 12, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
             { label: 'Invoice No', name: 'invno', width: 8, classes: 'wrap',hidden:true},
             { label: 'Invoice Date', name:'invdate', width: 8, classes:'wrap', hidden:true},
             { label: 'Qty', name: 'qty', width: 6,  align: 'right',classes: 'wrap'},
@@ -326,7 +326,7 @@ $(document).ready(function () {
 			{ label: 'Method', name:'method', width:20, classes:'wrap', hidden:true},
 			{ label: 'Residual Value', name:'residualvalue', width:20, classes:'wrap', hidden:true},
             { label: 'Cost', name: 'origcost', width: 7, classes: 'wrap', align: 'right',formatter:'currency'},
-            { label: 'SuppCode', name: 'suppcode', width: 15, classes: 'wrap', formatter: showdetail},
+            { label: 'SuppCode', name: 'suppcode', width: 15, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
             { label: 'Purchase Order No', name:'purordno',width: 8, classes:'wrap', hidden:true},
             { label: 'Purchase Date', name:'purdate', width: 8, classes:'wrap', hidden:true},
 			{ label: 'Purchase Price', name:'purprice', width: 8, classes:'wrap', hidden:true},
