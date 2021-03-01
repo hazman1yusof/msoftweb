@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
@@ -881,12 +880,6 @@ $(document).ready(function () {
 		return cellvalue;
 	}
 
-	function format_qtyoutstand(cellvalue, options, rowObject){
-		var qtyoutstand = rowObject.qtyorder - rowObject.qtydelivered;
-		if(qtyoutstand<0 || isNaN(qtyoutstand)) return 0;
-		return qtyoutstand;
-	}
-
 	//////////////////////////formatter checkbox//////////////////////////////////////////////////
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
@@ -900,10 +893,6 @@ $(document).ready(function () {
 			return ' ';
 		}
 	}
-	function formatterRemarks(cellvalue, options, rowObject){
-		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'> remark</i> </button>";
-	}
-
 
 	///////////////////////////////////////cust_rules//////////////////////////////////////////////
 	function cust_rules(value,name){
@@ -918,41 +907,6 @@ $(document).ready(function () {
 	function documentCustomEdit(val,opt){
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input id="document" name="document" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
-	}
-
-	function itemcodeCustomEdit(val, opt) {
-		val = val;
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function pricecodeCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function uomcodeCustomEdit(val,opt){  	
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function pouomCustomEdit(val, opt) {
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $(`<div class="input-group">
-					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
-				</div>
-				<span class="help-block"></span>
-				<div class="input-group">
-					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
-					<input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`>
-					<input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`>
-				</div>
-
-			`);
-	}
-	function taxcodeCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function remarkCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<span class="fa fa-book">val</span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -1093,236 +1047,12 @@ $(document).ready(function () {
 
 			setjqgridHeight(data,'jqGrid3');
 		},
-		onSelectRow: function(data) {
-			$('#apactdtl_idno').val(selrowData('#gridDo').idno);
-			$('#apactdtl_grnno').val(selrowData('#gridDo').grnno);
-		},
 		gridComplete: function(){
 			
 			fdl.set_array().reset();
 		},
 	});
 	jqgrid_label_align_right("#jqGrid3");
-
-	////////////////////////////////////////////////gridDo//////////////////////////////////////////////
-	$("#gridDo").jqGrid({
-		datatype: "local",
-		colModel: $("#jqGrid4").jqGrid('getGridParam','colModel'),
-		shrinkToFit: true,
-		autowidth:true,
-		multiSort: true,
-		viewrecords: true,
-		rowNum: 30,
-		sortname: 'lineno_',
-		sortorder: "desc",
-		pager: "#jqGridPager4",
-		loadComplete: function(data){
-
-			setjqgridHeight(data,'gridDo');
-		},
-		gridComplete: function(){
-			
-			fdl.set_array().reset();
-		},
-	});
-	jqgrid_label_align_right("#gridDo");
-
-	//////////////////////////////////////////////start jqgrid4 delivery order//////////////////////////////////////////////
-	$("#gridDo").jqGrid({
-		datatype: "local",
-		editurl: "/deliveryOrderDetail/form",
-		colModel: [
-				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
-		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'No', name: 'lineno_', width: 50, frozen:true, classes: 'wrap', editable:false},
-			
-			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false},
-			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:pricecodeCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-			},
-			{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},
-						edittype:'custom',	editoptions:
-						    {  custom_element:itemcodeCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-			},
-			{ label: 'UOM Code', name: 'uomcode', width: 120, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:uomcodeCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-			},
-			{
-				label: 'PO UOM', name: 'pouom', width: 120, classes: 'wrap', editable: true,
-				editrules: { required: true, custom: true, custom_func: cust_rules },
-				formatter: showdetail,
-				edittype: 'custom', editoptions:
-				{
-					custom_element: pouomCustomEdit,
-					custom_value: galGridCustomValue
-				},
-			},
-			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap', editable:true,
-				editable: true,
-				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules:{required: true,custom:true, custom_func:cust_rules},edittype:"text",
-						editoptions:{
-						maxlength: 12,
-						dataInit: function(element) {
-							element.style.textAlign = 'right';
-							$(element).keypress(function(e){
-								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-									return false;
-								 }
-							});
-						}
-					},
-			},
-			{ label: 'O/S Quantity', name: 'qtyoutstand', width: 100, align: 'right', classes: 'wrap', editable:true,	
-				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: false},editoptions:{readonly: "readonly"},
-			},
-			{ label: 'Unit Price', name: 'unitprice', width: 90, align: 'right', classes: 'wrap', 
-				editable:true,
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-					editrules:{required: true},edittype:"text",
-						editoptions:{
-						maxlength: 12,
-						dataInit: function(element) {
-							element.style.textAlign = 'right';  
-							$(element).keypress(function(e){
-								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-									return false;
-								 }
-							});
-						}
-					},
-			},
-			{ label: 'Tax Code', name: 'taxcode', width: 130, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:taxcodeCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-			},
-			{ label: 'Percentage Discount (%)', name: 'perdisc', width: 90, align: 'right', classes: 'wrap', 
-				editable:true,
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-					editrules:{required: true},edittype:"text",
-						editoptions:{
-						maxlength: 12,
-						dataInit: function(element) {
-							element.style.textAlign = 'right';  
-							$(element).keypress(function(e){
-								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-									return false;
-								 }
-							});
-						}
-					},
-			},
-			{ label: 'Discount Per Unit', name: 'amtdisc', width: 90, align: 'right', classes: 'wrap', 
-				editable:true,
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-					editrules:{required: true},edittype:"text",
-						editoptions:{
-						maxlength: 12,
-						dataInit: function(element) {
-							element.style.textAlign = 'right';  
-							$(element).keypress(function(e){
-								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-									return false;
-								 }
-							});
-						}
-					},
-			},
-			{ label: 'Total GST Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
-				editrules:{required: true},
-				editoptions:{
-					readonly: "readonly",
-					maxlength: 12,
-					dataInit: function(element) {
-						element.style.textAlign = 'right';
-						$(element).keypress(function(e){
-							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-								return false;
-							 }
-						});
-					}
-				},
-			},
-			{ label: 'rate', name: 'rate', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'netunitprice', name: 'netunitprice', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Total Line Amount', name: 'totamount', width: 100, align: 'right', classes: 'wrap', editable:true,
-				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: true},editoptions:{readonly: "readonly"},
-			},
-			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-				editoptions: {
-                    dataInit: function (element) {
-                        $(element).datepicker({
-                            id: 'expdate_datePicker',
-                            dateFormat: 'dd/mm/yy',
-                            minDate: 1,
-                            showOn: 'focus',
-                            changeMonth: true,
-		  					changeYear: true,
-                        });
-                    }
-                }
-			},
-			{ label: 'Batch No', name: 'batchno', width: 75, classes: 'wrap', editable:true,
-					maxlength: 30,
-			},
-			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
-			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
-			{ label: 'Remarks', name: 'remarks', hidden:true},
-			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap', hidden: false },
-			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
-			{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
-			{ label: 'suppcode', name: 'suppcode', width: 20, classes: 'wrap', hidden:true},
-		 	{ label: 'trandate', name: 'trandate', width: 20, classes: 'wrap', hidden:true},
-		 	{ label: 'deldept', name: 'deldept', width: 20, classes: 'wrap', hidden:true},
-		 	{ label: 'deliverydate', name: 'deliverydate', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Quantity Order', name: 'qtyorder', editable:false, hidden:true},
-
-		],
-		autowidth: true,
-		shrinkToFit: true,
-		multiSort: true,
-		viewrecords: true,
-		loadonce:false,
-		width: 1150,
-		height: 200,
-		rowNum: 30,
-		sortname: 'idno',
-		pager: "#jqGridPager4",
-		onSelectRow:function(rowid, selected){
-		},
-		loadComplete: function(data){
-			
-			//setjqgridHeight(data,'jqGrid3');
-        	showeditfunc.off().on();
-		},
-		gridComplete: function(){
-			fdl.set_array().reset();
-		},
-		afterShowForm: function (rowid) {
-		},
-		ondblClickRow: function(rowid, iRow, iCol, e){
-			// $("#jqGrid3_iledit").click();
-		},
-	});
 
 	////////////////////object for dialog handler///////////////////
 	var dialog_supplier = new ordialog(
@@ -1553,12 +1283,9 @@ $(document).ready(function () {
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
 
-	$("#girdDo_panel").on("show.bs.collapse", function(){
+	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
 		$("#gridDo").jqGrid ('setGridWidth', Math.floor($("#gridDo_c")[0].offsetWidth-$("#gridDo_c")[0].offsetLeft-28));
 	});
-
-	
-	
 
 
 	function init_jq2(){
@@ -1597,4 +1324,3 @@ function empty_form(){
 	$('#suppcode_show').text('');
 
 }
-

@@ -101,7 +101,7 @@ i.fa {
 				<div class="form-group">
 				  		<label class="col-md-2 control-label" for="SuppCode">Supplier Code</label>  
                             <div class="col-md-2">
-                                <input id="SuppCode" name="SuppCode" type="text" maxlength="6" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+                                <input id="SuppCode" name="SuppCode" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                             </div>
 					</div>
                     
@@ -169,7 +169,7 @@ i.fa {
 				  		<label class="col-md-2 control-label" for="CostCode">Cost Code</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="CostCode" name="CostCode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="CostCode" name="CostCode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -178,7 +178,7 @@ i.fa {
 				 		<label class="col-md-2 control-label" for="GlAccNo">Gl Account No</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="GlAccNo" name="GlAccNo" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="GlAccNo" name="GlAccNo" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -236,7 +236,7 @@ i.fa {
                  	<div class="form-group">
 				  		<label class="col-md-2 control-label" for="AccNo">Company Account No</label>  
 				 			<div class="col-md-3">
-				  				<input id="AccNo" name="AccNo" type="text" maxlength="15" class="form-control input-sm" data-validation="required">
+				  				<input id="AccNo" name="AccNo" type="text" maxlength="15" class="form-control input-sm text-uppercase" data-validation="required">
 				  			</div>
                             
 				   	<!-- <label class="col-md-2 control-label" for="SuppFlg">Supply Goods</label>  

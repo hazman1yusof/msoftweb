@@ -171,6 +171,7 @@ $(document).ready(function () {
 					$( this ).dialog( "option", "title", "Add" );
 					enableForm('#formdata');
 					hideOne('#formdata');
+					$('#CostCode, #GlAccNo').prop("readonly",true);
 					rdonly('#formdata');
 					break;
 				case state = 'edit':
