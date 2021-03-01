@@ -239,6 +239,7 @@ $(document).ready(function () {
 		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
 		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
+		//{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
 		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},
 		{ label: 'Doc Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', hidden:true},
 		{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
@@ -667,18 +668,18 @@ $(document).ready(function () {
 		return qtyoutstand;
 	}
 	
-	function formatterCheckbox(cellvalue, options, rowObject){
-		let lineno_ = cbselect.lineno_;
-		let recstatus = cbselect.recstatus;
+	// function formatterCheckbox(cellvalue, options, rowObject){
+	// 	let lineno_ = cbselect.lineno_;
+	// 	let recstatus = cbselect.recstatus;
 		
-		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}else{
-			return ' ';
-		}
-	}
+	// 	if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+	// 		return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+	// 	}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+	// 		return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+	// 	}else{
+	// 		return ' ';
+	// 	}
+	// }
 
 	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	
@@ -1169,85 +1170,121 @@ $(document).ready(function () {
 	dialog_cheqno.makedialog(true);
 
 	var dialog_suppcode = new ordialog(
-		'supplier',['finance.apacthdr AS a','material.supplier AS s'],'#apacthdr_suppcode',errorField,
+		'suppcode','material.supplier','#apacthdr_suppcode',errorField,
 		{	colModel:[
-				{label:'Supplier Code',name:'a_suppcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				{label:'Supplier Name',name:'s_Name',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
-					fixPost: true,
-					filterCol:['a.compcode','a.recstatus'],
-					filterVal:['session.compcode', 'POSTED']
-				},
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#apacthdr_payto").val(data['suppcode']);
-				$("#jqGrid2 input[name='document']").val(data['suppcode']);
-				$("#jqGrid2 input[name='entrydate']").val(data['recdate']); 
-				$("#jqGrid2 input[name='reference']").val(data['document']);
-				$("#jqGrid2 input[name='amount']").val(data['amount']);
-
-				var urlParam2 = {
-					action: 'get_value_default',
-					url: '/util/get_value_default',
-					field: [],
-					table_name: ['finance.apacthdr'],
-					table_id: 'idno',
-				};
-
-				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
-				}, 'json').done(function (data) {
-					if (!$.isEmptyObject(data.rows)) {
-						data.rows.forEach(function(elem) {
-							$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
-								{
-									document:elem['suppcode'],
-									entrydate:elem['recdate'],
-									reference:elem['document'],
-									amount:elem['amount'],
-									outamount:elem['outamount'],
-									balance:elem['amount'] - elem['totamount'],
-								
-								}
-							);
-						});
-						
-
-					} else {
-
-					}
-				});
-				
+				$('#apacthdr_payto').focus();
 			},
 			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#apacthdr_payto').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-
-			
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#apacthdr_payto').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
 		},{
 			title:"Select Supplier Code",
 			open: function(){
-				dialog_suppcode.urlParam.table_name = ['finance.apacthdr AS a','material.supplier AS s'];
-				dialog_suppcode.urlParam.join_type = ['LEFT JOIN'];
-				dialog_suppcode.urlParam.join_onCol = ['a.suppcode'];
-				dialog_suppcode.urlParam.join_onVal = ['s.suppcode'];
-				dialog_suppcode.urlParam.fixPost="true";
-				dialog_suppcode.urlParam.table_id="none_";
-				dialog_suppcode.urlParam.filterCol=['a.compcode','a.recstatus', 'a.outamount'];
-				dialog_suppcode.urlParam.filterVal=['session.compcode', 'POSTED', '>.0' ];
-				dialog_suppcode.urlParam.WhereInCol=['a.source','a.trantype'];
-        		dialog_suppcode.urlParam.WhereInVal=[['AP','DF','TX'],['IN','DN']];
-				}
-			},'urlParam','radio','tab'
-		);
-	dialog_suppcode.makedialog(true);
+				dialog_suppcode.urlParam.filterCol=['recstatus','compcode'];
+				dialog_suppcode.urlParam.filterVal=['ACTIVE','session.compcode'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_suppcode.makedialog();
+
+
+	// var dialog_suppcode = new ordialog(
+	// 	'supplier',['finance.apacthdr AS a','material.supplier AS s'],'#apacthdr_suppcode',errorField,
+	// 	{	colModel:[
+	// 			{label:'Supplier Code',name:'a_suppcode',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+	// 			{label:'Supplier Name',name:'s_Name',width:200,classes:'pointer',canSearch:true,or_search:true},
+	// 		],
+	// 		urlParam: {
+	// 				fixPost: true,
+	// 				filterCol:['a.compcode','a.recstatus'],
+	// 				filterVal:['session.compcode', 'POSTED']
+	// 			},
+	// 		ondblClickRow:function(){
+	// 			let data=selrowData('#'+dialog_suppcode.gridname);
+	// 			$("#apacthdr_payto").val(data['suppcode']);
+	// 			$("#jqGrid2 input[name='document']").val(data['suppcode']);
+	// 			$("#jqGrid2 input[name='entrydate']").val(data['recdate']); 
+	// 			$("#jqGrid2 input[name='reference']").val(data['document']);
+	// 			$("#jqGrid2 input[name='amount']").val(data['amount']);
+
+	// 			var urlParam2 = {
+	// 				action: 'get_value_default',
+	// 				url: '/util/get_value_default',
+	// 				field: [],
+	// 				table_name: ['finance.apacthdr'],
+	// 				table_id: 'idno',
+	// 			};
+
+	// 			$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
+	// 			}, 'json').done(function (data) {
+	// 				if (!$.isEmptyObject(data.rows)) {
+	// 					data.rows.forEach(function(elem) {
+	// 						$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
+	// 							{
+	// 								document:elem['suppcode'],
+	// 								entrydate:elem['recdate'],
+	// 								reference:elem['document'],
+	// 								amount:elem['amount'],
+	// 								outamount:elem['outamount'],
+	// 								balance:elem['amount'] - elem['totamount'],
+								
+	// 							}
+	// 						);
+	// 					});
+						
+
+	// 				} else {
+
+	// 				}
+	// 			});
+				
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$('#apacthdr_payto').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+
+			
+	// 	},{
+	// 		title:"Select Supplier Code",
+	// 		open: function(){
+	// 			dialog_suppcode.urlParam.table_name = ['finance.apacthdr AS a','material.supplier AS s'];
+	// 			dialog_suppcode.urlParam.join_type = ['LEFT JOIN'];
+	// 			dialog_suppcode.urlParam.join_onCol = ['a.suppcode'];
+	// 			dialog_suppcode.urlParam.join_onVal = ['s.suppcode'];
+	// 			dialog_suppcode.urlParam.fixPost="true";
+	// 			dialog_suppcode.urlParam.table_id="none_";
+	// 			dialog_suppcode.urlParam.filterCol=['a.compcode','a.recstatus', 'a.outamount'];
+	// 			dialog_suppcode.urlParam.filterVal=['session.compcode', 'POSTED', '>.0' ];
+	// 			dialog_suppcode.urlParam.WhereInCol=['a.source','a.trantype'];
+    //     		dialog_suppcode.urlParam.WhereInVal=[['AP','DF','TX'],['IN','DN']];
+	// 			}
+	// 		},'urlParam','radio','tab'
+	// 	);
+	// dialog_suppcode.makedialog(true);
 
 	var dialog_payto = new ordialog(
 		'payto','material.supplier','#apacthdr_payto',errorField,
