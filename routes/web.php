@@ -415,6 +415,11 @@ Route::get('/glenquiry','finance\GlenquiryController@show');
 Route::get('/glenquiry/table','finance\GlenquiryController@table');
 Route::post('/glenquiry/form','finance\GlenquiryController@form');
 
+//// GL Enquiry by Date ///
+Route::get('/acctenq_date','finance\acctenq_dateController@show');
+Route::get('/acctenq_date/table','finance\acctenq_dateController@table');
+Route::post('/acctenq_date/form','finance\acctenq_dateController@form');
+
 //// Department setup ///
 Route::get('/department','finance\DepartmentController@show');
 Route::get('/department/table','finance\DepartmentController@table');

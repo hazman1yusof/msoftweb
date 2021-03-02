@@ -1447,7 +1447,7 @@ $(document).ready(function () {
 		dialog_srcdocno.off();
 		radbuts.check();
 		errorField.length = 0;
-		if($('#formdata').isValid({requiredFields:''},conf,true)){
+		if($('#searchform').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		}else{
