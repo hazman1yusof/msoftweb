@@ -428,7 +428,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					ToggleDisableForm();
 					rdonly("#dialogForm");
-					enableField();
+					disableField();
 					break;
 				case state = 'edit':
 					//mycurrency.formatOnBlur();
@@ -455,7 +455,6 @@ $(document).ready(function () {
 			if(oper!='view'){
 				set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 				dialog_assetcode.on();
-				dialog_deptcode.on();
 				dialog_loccode.on();
 			}
 			if(oper!='add'){

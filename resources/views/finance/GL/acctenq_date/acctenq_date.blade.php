@@ -1,0 +1,137 @@
+@extends('layouts.main')
+
+@section('title', 'GL Enquiry By Date')
+
+@section('style')
+	.num{
+		width:20px;
+	}
+	.mybtn{
+		float: right;
+		display: none;
+	}
+	.bg-primary .mybtn{
+		display:block;
+	}
+	.dataTables_scroll table{
+		background-color: rgba(221, 221, 221, 0.3);
+	}
+	#TableGlmasTran{
+		background-color: rgba(250, 252, 246, 1);
+	}
+	#TableGlmasTran tr:hover{
+		background-color: white !important;
+	}
+	#TableGlmasTran_c td:first-child,.dataTables_scrollHead th:first-child{
+		border-top-color:white !important;
+		border-top-style:solid !important;
+		border-top-width:1px !important;
+		border-left-color:white;
+		border-left-style:solid;
+		border-left-width:1px;
+		border-bottom-color:white;
+		border-bottom-style:solid;
+		border-bottom-width:1px;
+		cursor:pointer;
+		background-color: white;
+	}
+	#TableGlmasTran_c tr:hover td:first-child{
+		border-style:solid;
+		border-width:1px;
+		border-color:#ddd;
+		background-color:#ddd;
+	}
+	#TableGlmasdtl td:nth-child(2),#TableGlmasdtl th:nth-child(2){
+		text-align:right;padding-right: 15px;
+	}
+	.textalignright,#TableGlmasTran_filter { text-align:right !important; }
+	.textalignright div { padding-right: 5px; }
+	.numericCol{
+		text-align : right;
+	}
+	.bg-info{
+		background-color: white;
+	}
+
+	input.uppercase {
+  		text-transform: uppercase;
+	}
+
+@endsection
+
+@section('body')
+
+	<!-------------------------------- Search + table ---------------------->
+	<div class='row'>
+		<div class='col-md-12' style="padding:0 0 15px 0;">
+			<form id="searchform" name="searchform" class="col-md-12"> 
+			  <div class="col-md-5">
+			  	<label class="control-label" for="glaccount">GL Account</label>  
+	  			<div class='input-group'>
+					<input id="glaccount" name="glaccount" type="text" class="form-control input-sm uppercase" autocomplete="off" data-validation="required"/>
+					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+	  			</div>
+					<span class="help-block"></span>
+			  </div>
+
+			  <div class="col-md-2">
+			  	<label class="control-label" for="year">From</label>  
+				<input id="fromdate" name="fromdate" type="date" class="form-control input-sm uppercase" autocomplete="off" data-validation="required"/>
+              </div>
+
+
+			  <div class="col-md-2">
+			  	<label class="control-label" for="year">to</label>  
+				<input id="todate" name="todate" type="date" class="form-control input-sm uppercase" autocomplete="off" data-validation="required"/>
+              </div>
+
+			  <div class="col-md-1">
+				<button type="button" id="search" class="btn btn-primary" style="position:absolute;top:17px">Search</button>
+              </div>
+
+            </form>
+            <br/>
+
+			  
+		</div>
+
+		<div class='panel panel-default'>
+			<div class='panel-body'>
+				<div id='TableGlmasTran_c' class='col-xs-12 modalx'>
+					<table class="table table-hover  table-bordered" id='TableGlmasTran'>
+					<thead>
+						<tr>
+							<th> </th>
+							<th>Src</th>
+							<th>TT</th>
+							<th>No</th>
+							<th>Post Date</th>
+							<th>Description</th>
+							<th>Reference</th>
+							<th>Account Code</th>
+							<th>DR Amount</th>
+							<th>CR Amount</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+    </div>
+	<!-------------------------------- End Search + table ------------------>
+
+	<div id="dialogForm" title="Viewing Detail"></div>
+
+
+
+	@endsection
+
+
+@section('scripts')
+
+	<script src="js/finance/GL/acctenq_date/acctenq_date.js"></script>
+	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
+	
+@endsection

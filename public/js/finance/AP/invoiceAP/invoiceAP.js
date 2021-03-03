@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
@@ -861,12 +860,6 @@ $(document).ready(function () {
 		return cellvalue;
 	}
 
-	function format_qtyoutstand(cellvalue, options, rowObject){
-		var qtyoutstand = rowObject.qtyorder - rowObject.qtydelivered;
-		if(qtyoutstand<0 || isNaN(qtyoutstand)) return 0;
-		return qtyoutstand;
-	}
-
 	//////////////////////////formatter checkbox//////////////////////////////////////////////////
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
@@ -880,6 +873,7 @@ $(document).ready(function () {
 			return ' ';
 		}
 	}
+<<<<<<< HEAD
 	function formatterRemarks(cellvalue, options, rowObject){
 		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'> remark</i> </button>";
 	}
@@ -888,6 +882,8 @@ $(document).ready(function () {
 		return null;
 	}
 
+=======
+>>>>>>> 7f47832d97eb45d92181b63e2158dc4438444186
 
 	///////////////////////////////////////cust_rules//////////////////////////////////////////////
 	function cust_rules(value,name){
@@ -902,41 +898,6 @@ $(document).ready(function () {
 	function documentCustomEdit(val,opt){
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input id="document" name="document" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
-	}
-
-	function itemcodeCustomEdit(val, opt) {
-		val = val;
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function pricecodeCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function uomcodeCustomEdit(val,opt){  	
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function pouomCustomEdit(val, opt) {
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $(`<div class="input-group">
-					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
-				</div>
-				<span class="help-block"></span>
-				<div class="input-group">
-					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
-					<input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`>
-					<input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`>
-				</div>
-
-			`);
-	}
-	function taxcodeCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function remarkCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<span class="fa fa-book">val</span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -1077,10 +1038,13 @@ $(document).ready(function () {
 
 			setjqgridHeight(data,'jqGrid3');
 		},
+<<<<<<< HEAD
 		onSelectRow: function(data) {
 			// $('#apactdtl_idno').val(selrowData('#gridDo').idno);
 			// $('#apactdtl_grnno').val(selrowData('#gridDo').grnno);
 		},
+=======
+>>>>>>> 7f47832d97eb45d92181b63e2158dc4438444186
 		gridComplete: function(){
 			
 			fdl.set_array().reset();
@@ -1088,6 +1052,7 @@ $(document).ready(function () {
 	});
 	jqgrid_label_align_right("#jqGrid3");
 
+<<<<<<< HEAD
 	//////////////////////////////////////////start grid pager gridDo/////////////////////////////////////////////
 	// $("#gridDo").inlineNav('#jqGridPager4',{	
 	// 	add:false,
@@ -1312,6 +1277,8 @@ $(document).ready(function () {
 		},
 	});
 
+=======
+>>>>>>> 7f47832d97eb45d92181b63e2158dc4438444186
 	////////////////////object for dialog handler///////////////////
 	var dialog_supplier = new ordialog(
 		'supplier','material.supplier','#apacthdr_suppcode',errorField,
@@ -1544,10 +1511,18 @@ $(document).ready(function () {
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
 
+<<<<<<< HEAD
 	$("#gridDo_panel").on("show.bs.collapse", function(){
 		$("#gridDo").jqGrid ('setGridWidth', Math.floor($("#gridDo_c")[0].offsetWidth-$("#gridDo_c")[0].offsetLeft-28));
 	});
 
+=======
+	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
+		$("#gridDo").jqGrid ('setGridWidth', Math.floor($("#gridDo_c")[0].offsetWidth-$("#gridDo_c")[0].offsetLeft-28));
+	});
+
+
+>>>>>>> 7f47832d97eb45d92181b63e2158dc4438444186
 	function init_jq2(){
 		if(oper == 'add'){
 			if($('#apacthdr_doctype').val() == 'Supplier'){
@@ -1584,4 +1559,3 @@ function empty_form(){
 	$('#suppcode_show').text('');
 
 }
-
