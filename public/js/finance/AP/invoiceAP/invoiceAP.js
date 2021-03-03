@@ -261,36 +261,16 @@ $(document).ready(function () {
 				if(scope.toUpperCase() == 'ALL'){
 				}
 			}
-			// $('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-			// if (stat == scope || stat == "CANCELLED") {
-			// 	$('#but_reopen_jq').show();
-			// } else if ( stat == "CANCELLED" ){
-			// 	$('#but_reopen_jq').show();
-			// } else {
-			// 	if(scope == 'ALL'){
-			// 		if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
-			// 			$('#but_cancel_jq,#but_post_single_jq').show();
-			// 		}else if(stat=='OPEN'){
-			// 			$('#but_post_jq').show();
-			// 		}
-			// 	}else{
-			// 		if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-			// 			$('#but_cancel_jq,#but_post_single_jq').show();
-			// 		}else{
-			// 			$('#but_post_jq').show();
-			// 		}
-			// 	}
-			// }
-			// if(recstatus=='OPEN'){
-			// 	$('#but_cancel_jq,#but_post_jq').show();
-				
-			// }else if(recstatus=="POSTED"){
-			// 	$('#but_post_jq').hide();
-			// 	$('#but_cancel_jq').show();
-			// }else if (recstatus == "CANCELLED"){
-			// 	$('#but_cancel_jq,#but_post_jq').hide();
-				
-			// }
+
+			if(rowid != null) {
+				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
+				//urlParam_gridDo.filterVal[5]=selrowData("#jqGrid").document;
+				//refreshGrid('#gridDo',urlParam_gridDo);
+				//$('#gridDo').jqGrid('clearGridData');
+				// $("#pg_jqGridPager3 table").hide();
+				// $("#pg_jqGridPager2 table").show();
+			}
 
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
 			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);
@@ -904,6 +884,10 @@ $(document).ready(function () {
 		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'> remark</i> </button>";
 	}
 
+	function unformatRemarks(cellvalue, options, rowObject){
+		return null;
+	}
+
 
 	///////////////////////////////////////cust_rules//////////////////////////////////////////////
 	function cust_rules(value,name){
@@ -1094,8 +1078,8 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid3');
 		},
 		onSelectRow: function(data) {
-			$('#apactdtl_idno').val(selrowData('#gridDo').idno);
-			$('#apactdtl_grnno').val(selrowData('#gridDo').grnno);
+			// $('#apactdtl_idno').val(selrowData('#gridDo').idno);
+			// $('#apactdtl_grnno').val(selrowData('#gridDo').grnno);
 		},
 		gridComplete: function(){
 			
@@ -1104,35 +1088,39 @@ $(document).ready(function () {
 	});
 	jqgrid_label_align_right("#jqGrid3");
 
-	////////////////////////////////////////////////gridDo//////////////////////////////////////////////
-	$("#gridDo").jqGrid({
-		datatype: "local",
-		colModel: $("#jqGrid4").jqGrid('getGridParam','colModel'),
-		shrinkToFit: true,
-		autowidth:true,
-		multiSort: true,
-		viewrecords: true,
-		rowNum: 30,
-		sortname: 'lineno_',
-		sortorder: "desc",
-		pager: "#jqGridPager4",
-		loadComplete: function(data){
+	//////////////////////////////////////////start grid pager gridDo/////////////////////////////////////////////
+	// $("#gridDo").inlineNav('#jqGridPager4',{	
+	// 	add:false,
+	// 	edit:false,
+	// 	cancel: false,
+	// 	//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+	// 	restoreAfterSelect: false,
+	// 	// addParams: { 
+	// 	// 	addRowParams: myEditOptions
+	// 	// },
+	// 	// editParams: myEditOptions
+	// });
 
-			setjqgridHeight(data,'gridDo');
-		},
-		gridComplete: function(){
-			
-			fdl.set_array().reset();
-		},
-	});
-	jqgrid_label_align_right("#gridDo");
+	///////////////////////////////////parameter for grid do///////////////////////////////////////////////////////////////
+	var urlParam_gridDo={
+		action:'get_table_default',
+		url:'/deliveryOrderDetail/table',
+		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno'],
+		table_name:['material.delorddt AS dodt','material.productmaster AS p','hisdb.taxmast AS t'],
+		table_id:'lineno_',
+		join_type:['LEFT JOIN','LEFT JOIN'],
+		join_onCol:['dodt.itemcode','dodt.taxcode'],
+		join_onVal:['p.itemcode','t.taxcode'],
+		filterCol:['dodt.recno','dodt.compcode','dodt.recstatus'],
+		filterVal:['','session.compcode','<>.DELETE']
+	};
 
 	//////////////////////////////////////////////start jqgrid4 delivery order//////////////////////////////////////////////
 	$("#gridDo").jqGrid({
 		datatype: "local",
-		editurl: "/deliveryOrderDetail/form",
+		//editurl: "/deliveryOrderDetail/form",
 		colModel: [
-				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+			{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
 			{ label: 'No', name: 'lineno_', width: 50, frozen:true, classes: 'wrap', editable:false},
 			
@@ -1549,17 +1537,16 @@ $(document).ready(function () {
 	}
 
 	////////////////////////////////////Pager Hide//////////////////////////////////////////////////////////////////////////
+	$("#pg_jqGridPager2 table").hide();
+	$("#pg_jqGridPager3 table").hide();
+
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
 
-	$("#girdDo_panel").on("show.bs.collapse", function(){
+	$("#gridDo_panel").on("show.bs.collapse", function(){
 		$("#gridDo").jqGrid ('setGridWidth', Math.floor($("#gridDo_c")[0].offsetWidth-$("#gridDo_c")[0].offsetLeft-28));
 	});
-
-	
-	
-
 
 	function init_jq2(){
 		if(oper == 'add'){
