@@ -849,6 +849,10 @@ $(document).ready(function () {
 		var field, table, case_;
 		switch(options.colModel.name){
 			case 'document':field=['delordno','srcdocno'];table="material.delordhd";case_='document';break;
+			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
+			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
+			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
+			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -1076,7 +1080,7 @@ $(document).ready(function () {
 
 			if(rowid != null) {
 				var rowData = $('#gridDo').jqGrid('getRowData', rowid);
-				urlParam_gridDo.filterVal[1]=selrowData("#jqGrid3").dorecno;
+				urlParam_gridDo.filterVal[0]=selrowData("#jqGrid3").dorecno;
 
 				refreshGrid('#gridDo', urlParam_gridDo);
 				
@@ -1094,7 +1098,7 @@ $(document).ready(function () {
 
 	///////////////////////////////////parameter for grid do///////////////////////////////////////////////////////////////
 	var urlParam_gridDo={
-		action:'get_table_default',
+		action:'get_table_dtl',
 		url:'/deliveryOrderDetail/table',
 		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno'],
 		table_name:['material.delorddt AS dodt','material.productmaster AS p','hisdb.taxmast AS t'],
@@ -1263,9 +1267,9 @@ $(document).ready(function () {
 					maxlength: 30,
 			},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
-			{ label: 'Remarks', name: 'remarks_button', width: 130, formatter: formatterRemarks,unformat: unformatRemarks},
+			{ label: 'Remarks', name: 'remarks_button', width: 130, formatter: formatterRemarks,unformat: unformatRemarks,hidden:true},
 			{ label: 'Remarks', name: 'remarks', hidden:true},
-			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap', hidden: false },
+			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap'},
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'suppcode', name: 'suppcode', width: 20, classes: 'wrap', hidden:true},
@@ -1275,8 +1279,9 @@ $(document).ready(function () {
 			{ label: 'Quantity Order', name: 'qtyorder', editable:false, hidden:true},
 
 		],
-		autowidth: true,
-		shrinkToFit: true,
+		scroll: false,
+		autowidth: false,
+		shrinkToFit: false,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
@@ -1288,7 +1293,17 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 		},
 		loadComplete: function(data){
-			
+			data.rows.forEach(function(element){
+				if(element.callback_param != null){
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+							element.callback_param[0],
+							element.callback_param[1],
+							element.callback_param[2]
+						)
+					});
+				}
+			});
 			//setjqgridHeight(data,'jqGrid3');
         	//showeditfunc.off().on();
 		},
