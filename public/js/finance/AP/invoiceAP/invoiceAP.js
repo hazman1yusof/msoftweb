@@ -1070,17 +1070,18 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager3",
 		loadComplete: function(data){
-
-
 			setjqgridHeight(data,'jqGrid3');
 		},
-		onSelectRow: function(data, rowid) {
+		onSelectRow: function(data, rowid, selected) {
 
 			if(rowid != null) {
 				var rowData = $('#gridDo').jqGrid('getRowData', rowid);
+				urlParam_gridDo.filterVal[1]=selrowData("#jqGrid3").dorecno;
+
 				refreshGrid('#gridDo', urlParam_gridDo);
 				
 			}
+			
 		},
 
 		gridComplete: function(){
@@ -1088,6 +1089,7 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 		},
 	});
+
 	jqgrid_label_align_right("#jqGrid3");
 
 	///////////////////////////////////parameter for grid do///////////////////////////////////////////////////////////////
@@ -1110,10 +1112,10 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'No', name: 'lineno_', width: 50, frozen:true, classes: 'wrap', editable:false},
+			{ label: 'No', name: 'lineno_', width: 60, frozen:true, classes: 'wrap', editable:false},
 			
-			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false},
-			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
+			{ label: 'Item Description', name: 'description', frozen:true, width: 450, classes: 'wrap', editable:false},
+			{ label: 'Price Code', name: 'pricecode', width: 150, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:pricecodeCustomEdit,
@@ -1144,7 +1146,7 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 110, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 140, align: 'right', classes: 'wrap', editable:true,
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules:{required: true,custom:true, custom_func:cust_rules},edittype:"text",
@@ -1160,7 +1162,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'O/S Quantity', name: 'qtyoutstand', width: 100, align: 'right', classes: 'wrap', editable:true,	
+			{ label: 'O/S Quantity', name: 'qtyoutstand', width: 130, align: 'right', classes: 'wrap', editable:true,	
 				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
@@ -1187,7 +1189,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Percentage Discount (%)', name: 'perdisc', width: 110, align: 'right', classes: 'wrap', 
+			{ label: 'Percentage Discount (%)', name: 'perdisc', width: 160, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1203,7 +1205,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Discount Per Unit', name: 'amtdisc', width: 110, align: 'right', classes: 'wrap', 
+			{ label: 'Discount Per Unit', name: 'amtdisc', width: 130, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1219,7 +1221,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Total GST Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total GST Amount', name: 'tot_gst', width: 120, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules:{required: true},
 				editoptions:{
@@ -1237,7 +1239,7 @@ $(document).ready(function () {
 			},
 			{ label: 'rate', name: 'rate', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'netunitprice', name: 'netunitprice', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Total Line Amount', name: 'totamount', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total Line Amount', name: 'totamount', width: 120, align: 'right', classes: 'wrap', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
@@ -1257,11 +1259,11 @@ $(document).ready(function () {
                     }
                 }
 			},
-			{ label: 'Batch No', name: 'batchno', width: 75, classes: 'wrap', editable:true,
+			{ label: 'Batch No', name: 'batchno', width: 100, classes: 'wrap', editable:true,
 					maxlength: 30,
 			},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
-			{ label: 'Remarks', name: 'remarks_button', width: 110, formatter: formatterRemarks,unformat: unformatRemarks},
+			{ label: 'Remarks', name: 'remarks_button', width: 130, formatter: formatterRemarks,unformat: unformatRemarks},
 			{ label: 'Remarks', name: 'remarks', hidden:true},
 			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap', hidden: false },
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
