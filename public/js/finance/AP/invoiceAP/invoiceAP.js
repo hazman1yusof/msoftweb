@@ -264,11 +264,8 @@ $(document).ready(function () {
 			if(rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
-				//urlParam_gridDo.filterVal[5]=selrowData("#jqGrid").document;
-				//refreshGrid('#gridDo',urlParam_gridDo);
-				//$('#gridDo').jqGrid('clearGridData');
-				// $("#pg_jqGridPager3 table").hide();
-				// $("#pg_jqGridPager2 table").show();
+				$("#pg_jqGridPager3 table").hide();
+				$("#pg_jqGridPager2 table").show();
 			}
 
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
@@ -860,6 +857,12 @@ $(document).ready(function () {
 		return cellvalue;
 	}
 
+	function format_qtyoutstand(cellvalue, options, rowObject){
+		var qtyoutstand = rowObject.qtyorder - rowObject.qtydelivered;
+		if(qtyoutstand<0 || isNaN(qtyoutstand)) return 0;
+		return qtyoutstand;
+	}
+
 	//////////////////////////formatter checkbox//////////////////////////////////////////////////
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
@@ -873,7 +876,7 @@ $(document).ready(function () {
 			return ' ';
 		}
 	}
-<<<<<<< HEAD
+
 	function formatterRemarks(cellvalue, options, rowObject){
 		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'> remark</i> </button>";
 	}
@@ -881,9 +884,6 @@ $(document).ready(function () {
 	function unformatRemarks(cellvalue, options, rowObject){
 		return null;
 	}
-
-=======
->>>>>>> 7f47832d97eb45d92181b63e2158dc4438444186
 
 	///////////////////////////////////////cust_rules//////////////////////////////////////////////
 	function cust_rules(value,name){
@@ -898,6 +898,41 @@ $(document).ready(function () {
 	function documentCustomEdit(val,opt){
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $('<div class="input-group"><input id="document" name="document" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+	}
+
+	function itemcodeCustomEdit(val, opt) {
+		val = val;
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+	function pricecodeCustomEdit(val,opt){
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+	function uomcodeCustomEdit(val,opt){  	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+	function pouomCustomEdit(val, opt) {
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $(`<div class="input-group">
+					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+				</div>
+				<span class="help-block"></span>
+				<div class="input-group">
+					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
+					<input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`>
+					<input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`>
+				</div>
+
+			`);
+	}
+	function taxcodeCustomEdit(val,opt){
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+	function remarkCustomEdit(val, opt) {
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<span class="fa fa-book">val</span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -1036,35 +1071,24 @@ $(document).ready(function () {
 		pager: "#jqGridPager3",
 		loadComplete: function(data){
 
+
 			setjqgridHeight(data,'jqGrid3');
 		},
-<<<<<<< HEAD
-		onSelectRow: function(data) {
-			// $('#apactdtl_idno').val(selrowData('#gridDo').idno);
-			// $('#apactdtl_grnno').val(selrowData('#gridDo').grnno);
+		onSelectRow: function(data, rowid) {
+
+			if(rowid != null) {
+				var rowData = $('#gridDo').jqGrid('getRowData', rowid);
+				refreshGrid('#gridDo', urlParam_gridDo);
+				
+			}
 		},
-=======
->>>>>>> 7f47832d97eb45d92181b63e2158dc4438444186
+
 		gridComplete: function(){
 			
 			fdl.set_array().reset();
 		},
 	});
 	jqgrid_label_align_right("#jqGrid3");
-
-<<<<<<< HEAD
-	//////////////////////////////////////////start grid pager gridDo/////////////////////////////////////////////
-	// $("#gridDo").inlineNav('#jqGridPager4',{	
-	// 	add:false,
-	// 	edit:false,
-	// 	cancel: false,
-	// 	//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-	// 	restoreAfterSelect: false,
-	// 	// addParams: { 
-	// 	// 	addRowParams: myEditOptions
-	// 	// },
-	// 	// editParams: myEditOptions
-	// });
 
 	///////////////////////////////////parameter for grid do///////////////////////////////////////////////////////////////
 	var urlParam_gridDo={
@@ -1083,7 +1107,6 @@ $(document).ready(function () {
 	//////////////////////////////////////////////start jqgrid4 delivery order//////////////////////////////////////////////
 	$("#gridDo").jqGrid({
 		datatype: "local",
-		//editurl: "/deliveryOrderDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
@@ -1121,7 +1144,7 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 110, align: 'right', classes: 'wrap', editable:true,
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules:{required: true,custom:true, custom_func:cust_rules},edittype:"text",
@@ -1164,7 +1187,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Percentage Discount (%)', name: 'perdisc', width: 90, align: 'right', classes: 'wrap', 
+			{ label: 'Percentage Discount (%)', name: 'perdisc', width: 110, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1180,7 +1203,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Discount Per Unit', name: 'amtdisc', width: 90, align: 'right', classes: 'wrap', 
+			{ label: 'Discount Per Unit', name: 'amtdisc', width: 110, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1238,7 +1261,7 @@ $(document).ready(function () {
 					maxlength: 30,
 			},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
-			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
+			{ label: 'Remarks', name: 'remarks_button', width: 110, formatter: formatterRemarks,unformat: unformatRemarks},
 			{ label: 'Remarks', name: 'remarks', hidden:true},
 			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap', hidden: false },
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
@@ -1265,7 +1288,7 @@ $(document).ready(function () {
 		loadComplete: function(data){
 			
 			//setjqgridHeight(data,'jqGrid3');
-        	showeditfunc.off().on();
+        	//showeditfunc.off().on();
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1277,8 +1300,6 @@ $(document).ready(function () {
 		},
 	});
 
-=======
->>>>>>> 7f47832d97eb45d92181b63e2158dc4438444186
 	////////////////////object for dialog handler///////////////////
 	var dialog_supplier = new ordialog(
 		'supplier','material.supplier','#apacthdr_suppcode',errorField,
@@ -1511,18 +1532,10 @@ $(document).ready(function () {
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
 
-<<<<<<< HEAD
 	$("#gridDo_panel").on("show.bs.collapse", function(){
 		$("#gridDo").jqGrid ('setGridWidth', Math.floor($("#gridDo_c")[0].offsetWidth-$("#gridDo_c")[0].offsetLeft-28));
 	});
 
-=======
-	$("#jqGrid3_panel1").on("show.bs.collapse", function(){
-		$("#gridDo").jqGrid ('setGridWidth', Math.floor($("#gridDo_c")[0].offsetWidth-$("#gridDo_c")[0].offsetLeft-28));
-	});
-
-
->>>>>>> 7f47832d97eb45d92181b63e2158dc4438444186
 	function init_jq2(){
 		if(oper == 'add'){
 			if($('#apacthdr_doctype').val() == 'Supplier'){
