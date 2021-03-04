@@ -310,8 +310,8 @@
 
 						   	<label class="col-md-2 control-label" for="itemtype">Item Type</label>  
 						  		<div class="col-md-3">
-									<label class="radio-inline"><input type="radio" name="itemtype" value='Non-poison' data-validation="required">Non-poison</label>
-									<label class="radio-inline"><input type="radio" name="itemtype" value='Poison'>Poison</label>
+									<label class="radio-inline"><input type="radio" name="itemtype" value='NON-POISON' data-validation="required">Non-poison</label>
+									<label class="radio-inline"><input type="radio" name="itemtype" value='POISON'>Poison</label>
 						  		</div>
 						</div>
 						@endif

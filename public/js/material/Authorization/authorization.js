@@ -38,12 +38,10 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function( event, ui ) {
 			parent_close_disabled(true);
-
-			refreshGrid("#jqGrid2", urlParam2);
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 			switch(oper) {
 				case state = 'add':
-					$("#jqGrid2").jqGrid("clearGridData", false);
+					refreshGrid("#jqGrid2", urlParam2,'kosongkan');
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
@@ -51,6 +49,7 @@ $(document).ready(function () {
 					rdonly("#dialogForm");
 					break;
 				case state = 'edit':
+					refreshGrid("#jqGrid2", urlParam2);
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
@@ -59,6 +58,7 @@ $(document).ready(function () {
 					rdonly("#dialogForm");
 					break;
 				case state = 'view':
+					refreshGrid("#jqGrid2", urlParam2);
 					$( this ).dialog( "option", "title", "View" );
 					disableForm('#formdata');
 					$('#formdata :input[hideOne]').show();
@@ -252,7 +252,7 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 
 		},'json').fail(function (data) {
-			alert(data.responseText);
+			alert(data.responseJSON.message);
 		}).done(function (data) {
 			unsaved = false;
 			hideatdialogForm(false);

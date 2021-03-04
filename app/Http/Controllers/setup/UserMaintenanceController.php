@@ -117,7 +117,7 @@ class UserMaintenanceController extends defaultController
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now(),
-                'recstatus' => 'A'
+                'recstatus' => 'ACTIVE'
             ]);
 
             DB::commit();
@@ -154,7 +154,7 @@ class UserMaintenanceController extends defaultController
                 'compcode' => session('compcode'),
                 'upduser' => session('username'),
                 'upddate' => Carbon::now(),
-                'recstatus' => 'A'
+                'recstatus' => 'ACTIVE'
             ]);
 
             DB::commit();
@@ -172,7 +172,7 @@ class UserMaintenanceController extends defaultController
 
             $table = $this->table->find($request->id);
             $table->update([
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now(),
             ]);

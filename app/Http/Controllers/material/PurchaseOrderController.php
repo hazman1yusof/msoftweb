@@ -1161,7 +1161,10 @@ class PurchaseOrderController extends defaultController
         $authdtl = DB::table('material.authdtl')
                     ->where('authorid','=',session('username'))
                     ->where('trantype','=','PO')
-                    ->where('deptcode','=',$deptcode)
+                    ->where(function($q) use ($deptcode) {
+                          $q->where('deptcode', $deptcode)
+                            ->orWhere('deptcode', 'ALL');
+                      })
                     ->where('recstatus','=','APPROVED');
 
         if($authdtl->count() > 0){
@@ -1171,6 +1174,14 @@ class PurchaseOrderController extends defaultController
                 ->where('idno','=',$idno);
 
             $purordhd_get = $purordhd->first();
+
+            $authdtl = DB::table('material.authdtl')
+                    ->where('authorid','=',session('username'))
+                    ->where('trantype','=','PO')
+                    ->where(function($q) use ($deptcode) {
+                          $q->where('deptcode', $deptcode)
+                            ->orWhere('deptcode', 'ALL');
+                      });
 
             $array_update = [];
             $array_update['requestby'] = session('username');

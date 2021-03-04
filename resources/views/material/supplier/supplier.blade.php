@@ -170,7 +170,7 @@ i.fa {
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
 									<input id="CostCode" name="CostCode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
 					  			</div>
 					  			<span class="help-block"></span>
 				  			</div>
@@ -179,7 +179,7 @@ i.fa {
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
 									<input id="GlAccNo" name="GlAccNo" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
 					  			</div>
 					  			<span class="help-block"></span>
 				  			</div>

@@ -45,7 +45,7 @@ class ProductController extends defaultController
 
     public function save_productmaster(Request $request)
     {   
-        if(strtoupper($request->Class) == 'ASSET'){
+        // if(strtoupper($request->Class) == 'ASSET'){
             DB::beginTransaction();
 
             $table = DB::table('material.product');
@@ -86,6 +86,6 @@ class ProductController extends defaultController
                 DB::rollback();
                 return response('Error'.$e->errorInfo[2], 500);
             }
-        }
+        // }
     }
 }

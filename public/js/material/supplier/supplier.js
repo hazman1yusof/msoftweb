@@ -45,6 +45,8 @@ $(document).ready(function () {
 					$('#CostCode').focus();
 					$('#CostCode').val(data['costcode']);
 					$('#GlAccNo').val(data['glaccno']);
+					dialog_CostCode.check(errorField,"CostCode");
+					dialog_GlAccNo.check(errorField,"GlAccNo");
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
