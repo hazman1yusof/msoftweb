@@ -314,8 +314,8 @@ $(document).ready(function () {
 			{ label: 'Lotno', name: 'lotno', width: 20,classes: 'wrap',hidden:true},
 			{ label: 'Casisno', name: 'casisno', width: 20, classes: 'wrap',hidden:true},
 			{ label: 'Engineno', name: 'engineno', width: 20, classes: 'wrap',hidden:true},
-			{ label: 'Dept', name: 'deptcode', width: 12, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
-            { label: 'Location', name: 'loccode', width: 12, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Dept', name: 'currdeptcode', width: 12, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+            { label: 'Location', name: 'currloccode', width: 12, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
             { label: 'Invoice No', name: 'invno', width: 8, classes: 'wrap',hidden:true},
             { label: 'Invoice Date', name:'invdate', width: 8, classes:'wrap', hidden:true},
             { label: 'Qty', name: 'qty', width: 6,  align: 'right',classes: 'wrap'},
@@ -375,7 +375,7 @@ $(document).ready(function () {
 				//$('textarea#description').val(data['p_description']+'\n'+data['dodt_remarks']);
 				$("#jqGridEnquiryDtl2_c, #jqGridtransferFA_c").hide();
 				if(rowData['assetno'] != '') {//kalau assetno ada
-					urlParam2.filterVal[0] = selrowData('#jqGrid').assetno;
+					urlParam2.filterVal[1] = selrowData('#jqGrid').assetno;
 					urlParam3.filterVal[1] = selrowData('#jqGrid').assetno;
 					refreshGrid('#jqGrid2', urlParam2); //asset movement
 					refreshGrid('#jqGrid3', urlParam3); //asset serial list
@@ -425,10 +425,10 @@ $(document).ready(function () {
 
 		switch(options.colModel.name){
 			//case 'bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
-			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'currdeptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 			case 'suppcode':field=['SuppCode','name'];table="material.supplier";case_='suppcode';break;
 			case 'olddeptcode':field=['olddeptcode','description'];table="sysdb.department";case_='olddeptcode';break;
-			case 'loccode':field=['loccode','description'];table="sysdb.location";case_='loccode';break;
+			case 'currloccode':field=['loccode','description'];table="sysdb.location";case_='loccode';break;
 			case 'itemcode':field=['itemcode','description'];table="finance.faregister";case_='itemcode';break;
 			case 'assetcode':field=['assetcode','description'];table="finance.facode";case_='assetcode';break;
 			case 'assettype':field=['assettype','description'];table="finance.fatype";case_='assettype';break;
@@ -443,7 +443,6 @@ $(document).ready(function () {
 		fdl.get_array('assetenquiry',options,param,case_,cellvalue);
 		
 		if(cellvalue==null)return "";
-		console.log(cellvalue);
 		return cellvalue;
 	}
 
@@ -741,14 +740,14 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['ft.assetcode','ft.assetno','ft.trandate','fr.trantype','fr.origcost','fr.deptcode','ft.curloccode','ft.olddeptcode','ft.oldloccode','fr.idno','fr.deptcode','ft.deptcode','ft.idno',],
+		field:['ft.assetcode','ft.assettype','ft.assetno','ft.auditno','ft.trandate','fr.trantype','fr.origcost','ft.deptcode','ft.olddeptcode','ft.curloccode','ft.oldloccode','ft.idno'],
 		table_name:['finance.fatran AS ft',' finance.faregister AS fr'],
 		table_id:'idno',
 		join_type:['LEFT JOIN'],
-		join_onCol:['ft.assetno'],
-		join_onVal:['fr.assetno'],
-		join_filterCol:[['ft.assetcode on =','ft.trantype on =']],
-		join_filterVal:[['fr.assetcode','fr.trantype']],
+		join_onCol:['ft.assetcode'],
+		join_onVal:['fr.assetcode'],
+        join_filterCol : [['ft.assettype on =','ft.assetno on =']],
+        join_filterVal : [['fr.assettype','fr.assetno']],
 		filterCol:['ft.compcode','ft.assetno'],
 		filterVal:['session.compcode','']
 	};
@@ -759,13 +758,14 @@ $(document).ready(function () {
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
 		colModel: [
+			{ label: 'No.', name:'auditno', width:30, classes:'wrap'},
 			{ label: 'Tran Date', name:'trandate', width:100, classes:'wrap'},
 			{ label: 'Tran Type', name:'trantype', width:120, classes:'wrap'},
 			{ label: 'Amount', name:'origcost', width:100, classes:'wrap'},
-			{ label: 'Old Department', name: 'deptcode', width: 120, classes: 'wrap'},
-			{ label: 'Old Location', name: 'loccode', width: 120, classes: 'wrap'},
-			{ label: 'New Department', name: 'newdeptcode', width: 120, classes: 'wrap'},
-			{ label: 'New Location', name: 'newloccode', width: 120, classes: 'wrap'},
+			{ label: 'Old Department', name: 'olddeptcode', width: 120, classes: 'wrap'},
+			{ label: 'Old Location', name: 'oldloccode', width: 120, classes: 'wrap'},
+			{ label: 'New Department', name: 'deptcode', width: 120, classes: 'wrap'},
+			{ label: 'New Location', name: 'curloccode', width: 120, classes: 'wrap'},
 			{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
 
 		],
@@ -777,8 +777,8 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 30,
-		sortname: 'idno',
-		// sortorder: "fr.trandate",
+		sortname: 'auditno',
+        sortorder:'desc',
 		pager: "#jqGridPager2",
 		onSelectRow:function(rowid, selected){
 			// populate_form_movementAE(selrowData("#jqGrid_trf"));
@@ -823,7 +823,7 @@ $(document).ready(function () {
 	var urlParam3={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['fc.assetcode','fc.assettype','fr.description','fc.assetno','fc.assetlineno','fr.deptcode','fc.loccode','fc.deptcode','fc.idno','fc.trackingno','fc.bem_no','fc.ppmschedule'],
+		field:['fc.assetcode','fc.assettype','fr.description','fc.assetno','fc.assetlineno','fc.loccode','fc.deptcode','fc.idno','fc.trackingno','fc.bem_no','fc.ppmschedule'],
 		table_name:['finance.facompnt AS fc',' finance.faregister AS fr'],
 		table_id:'idno',
 		join_type:['LEFT JOIN'],

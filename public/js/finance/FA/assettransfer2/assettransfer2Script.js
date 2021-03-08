@@ -177,7 +177,7 @@ function populate_transferAE(obj,rowdata){
     }).success(function(data){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formtransferFA",data.transferFA);
-			autoinsert_rowdata("#formtransferFA",data.faregister);
+			// autoinsert_rowdata("#formtransferFA",data.faregister);
 			button_state_transferFA('edit');
         }else{
 			button_state_transferFA('add');

@@ -117,34 +117,36 @@ class assettransfer2Controller extends defaultController
         try {
 
             $transferFA = DB::table('finance.faregister')
-                ->where('idno','=',$request->idno)
+                ->where('idno','=',$request->idno);
                 // ->where('assetcode','=',$request->assetcode)
                 // ->where('mrn','=',$request->mrn_EnquiryDtl2)
                 // ->where('episno','=',$request->episno_EnquiryDtl2)
-                ->where('compcode','=',session('compcode'));
+                // ->where('compcode','=',session('compcode'));
 
             $transferFAtoFatran = DB::table('finance.fatran')
-                ->where('idno','=',$request->idno)
-                // ->where('assetcode','=',$request->assetcode)
-                // ->where('mrn','=',$request->mrn_EnquiryDtl2)
+                ->where('compcode','=',session('compcode'))
+                ->where('assetcode','=',$request->assetcode)
+                ->where('assettype','=',$request->assettype)
+                ->where('assetno','=',$request->assetno);
                 // ->where('episno','=',$request->episno_EnquiryDtl2)
-                ->where('compcode','=',session('compcode'));
 
             if($transferFA->exists()){
                 DB::table('finance.faregister')
                     ->where('idno','=',$request->idno)
                     ->where('compcode','=',session('compcode'))
                     ->update([
-                        'compcode' => session('compcode'),
+                        // 'compcode' => session('compcode'),
                         //'individualtag' => $request->individualtag,
-                        'itemcode' => $request->itemcode,
-                        'assetcode' => $request->assetcode,
-                        'assettype' => $request->assettype,
+                        // 'itemcode' => $request->itemcode,
+                        // 'assetcode' => $request->assetcode,
+                        // 'assettype' => $request->assettype,
                         //'description' => $request->description,
-                        'deptcode' => $request->deptcode,
-                        'loccode' => $request->loccode,
-                        'newdeptcode' => $request->newdeptcode,
-                        'newloccode' => $request->newloccode,
+                        // 'deptcode' => $request->newdeptcode,
+                        // 'loccode' => $request->newloccode,
+                        'currdeptcode' => $request->newdeptcode,
+                        'currloccode' => $request->newloccode,
+                        // 'newdeptcode' => $request->newdeptcode,
+                        // 'newloccode' => $request->newloccode,
                         //'assetlineno' => $request->assetlineno,
                         //'assetno' => $request->assetno,
                         //'regtype' => $request->regtype,
@@ -154,80 +156,91 @@ class assettransfer2Controller extends defaultController
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }else{
-                DB::table('finance.faregister')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        //'individualtag' => $request->individualtag,
-                        'itemcode' => $request->itemcode,
-                        'assetcode' => $request->assetcode,
-                        'assettype' => $request->assettype,
-                        //'description' => $request->description,
-                        'deptcode' => $request->deptcode,
-                        'loccode' => $request->loccode,
-                        'newdeptcode' => $request->newdeptcode,
-                        'newloccode' => $request->newloccode,
-                        //'assetlineno' => $request->assetlineno,
-                        //'assetno' => $request->assetno,
-                        //'regtype' => $request->regtype,
-                        'trandate' => $request->trandate,
-                        //'recstatus' => $request->recstatus,
+                // DB::table('finance.faregister')
+                //     ->insert([
+                //         'compcode' => session('compcode'),
+                //         //'individualtag' => $request->individualtag,
+                //         'itemcode' => $request->itemcode,
+                //         'assetcode' => $request->assetcode,
+                //         'assettype' => $request->assettype,
+                //         //'description' => $request->description,
+                //         'deptcode' => $request->deptcode,
+                //         'loccode' => $request->loccode,
+                //         'newdeptcode' => $request->newdeptcode,
+                //         'newloccode' => $request->newloccode,
+                //         //'assetlineno' => $request->assetlineno,
+                //         //'assetno' => $request->assetno,
+                //         //'regtype' => $request->regtype,
+                //         'trandate' => $request->trandate,
+                //         //'recstatus' => $request->recstatus,
                         
-                        'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
+                //         'upduser'  => session('username'),
+                //         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                //         'adduser'  => session('username'),
+                //         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                //     ]);
             }
 
             if($transferFAtoFatran->exists()){
+                $count = $transferFAtoFatran->count();
+
+                $count = intval($count) + 1;
+
                 DB::table('finance.fatran')
-                    ->where('idno','=',$request->idno)
-                    ->where('compcode','=',session('compcode'))
-                    ->update([
+                    ->insert([
                         'compcode' => session('compcode'),
                         'assetcode' => $request->assetcode,
                         'assettype' => $request->assettype,
-                        'auditno' => $request->auditno,
                         'assetno' => $request->assetno,
-                        'assetlineno' => $request->assetlineno,
-                        'deptcode' => $request->deptcode,
-                        'newdeptcode' => $request->newdeptcode,
-                        'loccode' => $request->loccode,
-                        'newloccode' => $request->newloccode,
-                        'trantype' => $request->trantype,
+                        'auditno' => $count,
+                        'deptcode' => $request->newdeptcode,
+                        'olddeptcode' => $request->currdeptcode,
+                        'curloccode' => $request->newloccode,
+                        'oldloccode' => $request->currloccode,
                         'trandate' => $request->trandate,
-                        'compntdate' => $request->compntdate,
-                        'amount' => $request->origcost,
-                        // 'qty' => $request->qty,
-                        //'currentcost' => $request->currentcost,
-                        //'individualtag' => $request->individualtag,
-                        'recstatus' => $request->recstatus,
-                        'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
+
+
+                // DB::table('finance.fatran')
+                //     ->where('idno','=',$request->idno)
+                //     ->where('compcode','=',session('compcode'))
+                //     ->update([
+                //         'compcode' => session('compcode'),
+                //         'assetcode' => $request->assetcode,
+                //         'assettype' => $request->assettype,
+                //         'auditno' => $request->auditno,
+                //         'assetno' => $request->assetno,
+                //         'assetlineno' => $request->assetlineno,
+                //         'deptcode' => $request->deptcode,
+                //         'newdeptcode' => $request->newdeptcode,
+                //         'loccode' => $request->loccode,
+                //         'newloccode' => $request->newloccode,
+                //         'trantype' => $request->trantype,
+                //         'trandate' => $request->trandate,
+                //         'compntdate' => $request->compntdate,
+                //         'amount' => $request->origcost,
+                //         // 'qty' => $request->qty,
+                //         //'currentcost' => $request->currentcost,
+                //         //'individualtag' => $request->individualtag,
+                //         'recstatus' => $request->recstatus,
+                //         'upduser'  => session('username'),
+                //         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    // ]);
             }else{
                 DB::table('finance.fatran')
                     ->insert([
                         'compcode' => session('compcode'),
                         'assetcode' => $request->assetcode,
                         'assettype' => $request->assettype,
-                        'auditno' => $request->auditno,
                         'assetno' => $request->assetno,
-                        'assetlineno' => $request->assetlineno,
-                        'deptcode' => $request->deptcode,
-                        'newdeptcode' => $request->newdeptcode,
-                        'loccode' => $request->loccode,
-                        'newloccode' => $request->newloccode,
-                        'trantype' => $request->trantype,
+                        'auditno' => 1,
+                        'deptcode' => $request->newdeptcode,
+                        'olddeptcode' => $request->deptcode,
+                        'curloccode' => $request->newloccode,
+                        'oldloccode' => $request->loccode,
                         'trandate' => $request->trandate,
-                        'compntdate' => $request->compntdate,
-                        'amount' => $request->origcost,
-                        // 'qty' => $request->qty,
-                        //'currentcost' => $request->currentcost,
-                        //'individualtag' => $request->individualtag,
-                        'recstatus' => $request->recstatus,                    
-                        'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -252,10 +265,10 @@ class assettransfer2Controller extends defaultController
                     ->where('delordno','=',$request->delordno)
                     ->where('assetno','=',$request->assetno);
 
-        $faregister_obj = DB::table('finance.faregister')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('delordno','=',$request->delordno)
-                    ->where('assetno','=',$request->assetno);
+        // $faregister_obj = DB::table('finance.faregister')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('delordno','=',$request->delordno)
+        //             ->where('assetno','=',$request->assetno);
 
         $responce = new stdClass();
 
@@ -264,10 +277,10 @@ class assettransfer2Controller extends defaultController
             $responce->transferFA = $transferFA_obj;
         }
 
-        if($faregister_obj->exists()){
-            $faregister_obj = $faregister_obj->first();
-            $responce->faregister = $faregister_obj;
-        }
+        // if($faregister_obj->exists()){
+        //     $faregister_obj = $faregister_obj->first();
+        //     $responce->faregister = $faregister_obj;
+        // }
         
         return json_encode($responce);
 

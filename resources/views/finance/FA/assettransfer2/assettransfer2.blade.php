@@ -69,13 +69,13 @@
 
 								<hr>
 								<div class="form-group row">
-									<label class="col-md-2 control-label" for="deptcode">Current Department</label>
+									<label class="col-md-2 control-label" for="currdeptcode">Current Department</label>
 										<div class="col-md-3">
-											<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+											<input id="currdeptcode" name="currdeptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 										</div>
-									<label class="col-md-2 control-label" for="loccode">Current Location</label>
+									<label class="col-md-2 control-label" for="currloccode">Current Location</label>
 										<div class="col-md-3">
-											<input id="loccode" name="loccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+											<input id="currloccode" name="currloccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 										</div>
 								</div>
 								
