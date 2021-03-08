@@ -75,7 +75,7 @@ class assettransfer2Controller extends defaultController
     //                     'purordno' => $request->purordno,
     //                     'delordno' => $request->delordno,
     //                     'delorddate' => $request->delorddate,
-    //                     'lineno_' => $request->lineno_,
+    //                     'assetlineno' => $request->assetlineno,
     //                     'itemcode' => $request->itemcode,
     //                     'invno' => $request->invno,
     //                     'invdate' => $request->invdate,
@@ -123,41 +123,33 @@ class assettransfer2Controller extends defaultController
                 // ->where('episno','=',$request->episno_EnquiryDtl2)
                 ->where('compcode','=',session('compcode'));
 
+            $transferFAtoFatran = DB::table('finance.fatran')
+                ->where('idno','=',$request->idno)
+                // ->where('assetcode','=',$request->assetcode)
+                // ->where('mrn','=',$request->mrn_EnquiryDtl2)
+                // ->where('episno','=',$request->episno_EnquiryDtl2)
+                ->where('compcode','=',session('compcode'));
+
             if($transferFA->exists()){
                 DB::table('finance.faregister')
                     ->where('idno','=',$request->idno)
                     ->where('compcode','=',session('compcode'))
                     ->update([
                         'compcode' => session('compcode'),
+                        //'individualtag' => $request->individualtag,
+                        'itemcode' => $request->itemcode,
                         'assetcode' => $request->assetcode,
                         'assettype' => $request->assettype,
-                        'description' => $request->description,
-                        'deptcode' => $request->newdeptcode,
-                        'loccode' => $request->newloccode,
-                        'currdeptcode' => $request->currdeptcode,
-                        'currloccode' => $request->currloccode,
-                        'suppcode' => $request->suppcode,
-                        'purordno' => $request->purordno,
-                        'delordno' => $request->delordno,
-                        'delorddate' => $request->delorddate,
-                        'lineno_' => $request->lineno_,
-                        'itemcode' => $request->itemcode,
-                        'assetno' => $request->assetno,
-                        'insval' => $request->insval,
-                        'qty' => $request->qty,
-                        'startdepdate' => $request->startdepdate,
-                        'currentcost' => $request->currentcost,
-                        'lstytddep' => $request->lstytddep,
-                        'regtype' => $request->regtype,
-                        'nprefid' => $request->nprefid,
-                        'lstdepdate' => $request->lstdepdate,
+                        //'description' => $request->description,
+                        'deptcode' => $request->deptcode,
+                        'loccode' => $request->loccode,
+                        'newdeptcode' => $request->newdeptcode,
+                        'newloccode' => $request->newloccode,
+                        //'assetlineno' => $request->assetlineno,
+                        //'assetno' => $request->assetno,
+                        //'regtype' => $request->regtype,
                         'trandate' => $request->trandate,
-                        'trantype' => $request->trantype,
-                        'statdate' => $request->statdate,
-                        'individualtag' => $request->individualtag,
-                        'recstatus' => $request->recstatus,
-                        'cuytddep' => $request->cuytddep,
-
+                        //'recstatus' => $request->recstatus,
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -165,36 +157,20 @@ class assettransfer2Controller extends defaultController
                 DB::table('finance.faregister')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'delordno' => $request->delordno_transferFA,
-                        'assetno' => $request->assetno_transferFA,
-                        'compcode' => session('compcode'),
+                        //'individualtag' => $request->individualtag,
+                        'itemcode' => $request->itemcode,
                         'assetcode' => $request->assetcode,
                         'assettype' => $request->assettype,
-                        'description' => $request->description,
+                        //'description' => $request->description,
                         'deptcode' => $request->deptcode,
                         'loccode' => $request->loccode,
-                        'currdeptcode' => $request->currdeptcode,
-                        'currloccode' => $request->currloccode,
-                        'suppcode' => $request->suppcode,
-                        'purordno' => $request->purordno,
-                        'delordno' => $request->delordno,
-                        'delorddate' => $request->delorddate,
-                        'lineno_' => $request->lineno_,
-                        'itemcode' => $request->itemcode,
-                        'assetno' => $request->assetno,
-                        'insval' => $request->insval,
-                        'qty' => $request->qty,
-                        'startdepdate' => $request->startdepdate,
-                        'currentcost' => $request->currentcost,
-                        'lstytddep' => $request->lstytddep,
-                        'regtype' => $request->regtype,
-                        'nprefid' => $request->nprefid,
-                        'lstdepdate' => $request->lstdepdate,
+                        'newdeptcode' => $request->newdeptcode,
+                        'newloccode' => $request->newloccode,
+                        //'assetlineno' => $request->assetlineno,
+                        //'assetno' => $request->assetno,
+                        //'regtype' => $request->regtype,
                         'trandate' => $request->trandate,
-                        'trantype' => $request->trantype,
-                        'statdate' => $request->statdate,
-                        'individualtag' => $request->individualtag,
-                        'recstatus' => $request->recstatus,
+                        //'recstatus' => $request->recstatus,
                         
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -203,8 +179,60 @@ class assettransfer2Controller extends defaultController
                     ]);
             }
 
+            if($transferFAtoFatran->exists()){
+                DB::table('finance.fatran')
+                    ->where('idno','=',$request->idno)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'compcode' => session('compcode'),
+                        'assetcode' => $request->assetcode,
+                        'assettype' => $request->assettype,
+                        'auditno' => $request->auditno,
+                        'assetno' => $request->assetno,
+                        'assetlineno' => $request->assetlineno,
+                        'deptcode' => $request->deptcode,
+                        'newdeptcode' => $request->newdeptcode,
+                        'loccode' => $request->loccode,
+                        'newloccode' => $request->newloccode,
+                        'trantype' => $request->trantype,
+                        'trandate' => $request->trandate,
+                        'compntdate' => $request->compntdate,
+                        'amount' => $request->origcost,
+                        // 'qty' => $request->qty,
+                        //'currentcost' => $request->currentcost,
+                        //'individualtag' => $request->individualtag,
+                        'recstatus' => $request->recstatus,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }else{
+                DB::table('finance.fatran')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'assetcode' => $request->assetcode,
+                        'assettype' => $request->assettype,
+                        'auditno' => $request->auditno,
+                        'assetno' => $request->assetno,
+                        'assetlineno' => $request->assetlineno,
+                        'deptcode' => $request->deptcode,
+                        'newdeptcode' => $request->newdeptcode,
+                        'loccode' => $request->loccode,
+                        'newloccode' => $request->newloccode,
+                        'trantype' => $request->trantype,
+                        'trandate' => $request->trandate,
+                        'compntdate' => $request->compntdate,
+                        'amount' => $request->origcost,
+                        // 'qty' => $request->qty,
+                        //'currentcost' => $request->currentcost,
+                        //'individualtag' => $request->individualtag,
+                        'recstatus' => $request->recstatus,                    
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }
             
-
             $queries = DB::getQueryLog();
             dump($queries);
 
@@ -245,6 +273,7 @@ class assettransfer2Controller extends defaultController
 
     }
 
+    ////ASSET SERIAL LIST/////
     public function transferFA_compnt(Request $request){
         DB::beginTransaction();
 

@@ -540,7 +540,7 @@ $(document).ready(function () {
 			{ label: 'Original Cost', name:'origcost', width: 10, classes:'wrap', hidden:true},
 			{ label: 'Current Cost', name:'currentcost', width:12, classes:'wrap', hidden:false, align: 'right', formatter: 'currency' },
 			{ label: 'Qty', name:'qty', width:8, classes:'wrap',align: 'right', formatter: 'currency', hidden:false},
-			{ label: 'Individual Tagging', name:'individualtag', width:10, classes:'wrap', hidden:true},
+			{ label: 'Individual Tagging', name:'individualtag', width:8, classes:'wrap'},
 			{ label: 'Delivery Order Line No', name:'lineno_', width:20, classes:'wrap', hidden:true},
 			{ label: 'Method', name:'method', classes:'wrap', hidden:true},
 			{ label: 'Residual Value', name:'residualvalue', classes:'wrap', hidden:true},

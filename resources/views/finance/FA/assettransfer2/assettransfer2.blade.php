@@ -42,6 +42,8 @@
 							<div class="panel-heading text-center">ASSET TRANSFER DETAIL</div>
 							<div class="panel-body">
 
+							<input id="assetlineno" name="assetlineno" type="hidden">
+
 								<div class="form-group row">
 									<label class="col-md-2 control-label" for="assetno">Tagging No</label>  
 									<div class="col-md-3">

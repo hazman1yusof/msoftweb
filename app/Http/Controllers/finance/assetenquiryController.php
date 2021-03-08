@@ -108,7 +108,7 @@ class assetenquiryController extends defaultController
                     'purordno' => $request->purordno,
                     'delordno' => $request->delordno,
                     'delorddate' => $request->delorddate,
-                    'lineno_' => $request->lineno_,
+                    'assetlineno' => $request->assetlineno,
                     'itemcode' => $request->itemcode,
                     'invno' => $request->invno,
                     'invdate' => $request->invdate,
@@ -169,6 +169,7 @@ class assetenquiryController extends defaultController
         
     }
 
+    //asset serial list @ FA COMPONENT//
     public function comp_edit(Request $request){
         DB::beginTransaction();
         try {

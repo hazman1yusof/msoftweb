@@ -162,6 +162,7 @@ $(document).ready(function () {
 		filterVal:[''],
 	}
 
+	/////histbut utk apa ? nak tukar newloccode &newdeptcode boleh tak?
     $("#gridhist").jqGrid({
 		datatype: "local",
 		colModel: [
@@ -368,14 +369,16 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				//var rowData = $('#jqGrid2').jqGrid('getRowData', rowid);
+
 				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
 				//$('textarea#description').val(data['p_description']+'\n'+data['dodt_remarks']);
 				$("#jqGridEnquiryDtl2_c, #jqGridtransferFA_c").hide();
 				if(rowData['assetno'] != '') {//kalau assetno ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').assetno;
 					urlParam3.filterVal[1] = selrowData('#jqGrid').assetno;
-					refreshGrid('#jqGrid2', urlParam2);
-					refreshGrid('#jqGrid3', urlParam3);
+					refreshGrid('#jqGrid2', urlParam2); //asset movement
+					refreshGrid('#jqGrid3', urlParam3); //asset serial list
 					$("#pg_jqGridPager3 table, #jqGridEnquiryDtl2_c, #jqGridtransferFA_c").show();
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
 
@@ -416,7 +419,6 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 		}
 	});
-
 
 	function showdetail(cellvalue, options, rowObject){
 		var field,table,case_;
@@ -561,7 +563,7 @@ $(document).ready(function () {
    $("#jqGrid").jqGrid('setLabel', 'origcost', 'Cost', {'text-align':'right'});
    $("#jqGrid").jqGrid('setLabel', 'qty', 'Qty', {'text-align':'right'});
 
-	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
+	//////////////////////////////////////////myEditOptions jqGrid1/////////////////////////////////////////////
 
 	var myEditOptions = {
         keys: true,
@@ -571,8 +573,8 @@ $(document).ready(function () {
         oneditfunc: function (rowid) {
         	//console.log(rowid);
         	/*linenotoedit = rowid;
-        	$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
-        	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
+        	$("#jqGrid2").find(".rem_but[data-assetlineno!='"+linenotoedit+"']").prop("disabled", true);
+        	$("#jqGrid2").find(".rem_but[data-assetlineno='undefined']").prop("disabled", false);*/
         },
         aftersavefunc: function (rowid, response, options) {
            $('#amount').val(response.responseText);
@@ -600,18 +602,34 @@ $(document).ready(function () {
 	    }
     };
 
+	//////////////////////////////////////////myEditOptions jqGrid2 ASSET MOVEMENT /////////////////////////////////////////////
+	var myEditOptions_jqGrid2 = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		aftersavefunc: function (rowid, response, options) {
+			//if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+			//if(addmore_jqgrid2.edit == false)linenotoedit = null; 
+			//linenotoedit = null;
+
+			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGrid2',urlParam2,'add');
+	 	},
+	};
+				
+	//////////////////////////////////////////myEditOptions jqGrid3 ASSET SERIAL LIST/////////////////////////////////////////////
     var myEditOptions_jqGrid3 = {
         keys: true,
         extraparam:{
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-
 			dialog_loccode_jq3.on();
 			dialog_deptcode_jq3.on();
         	/*linenotoedit = rowid;
-        	$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
-        	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
+        	$("#jqGrid2").find(".rem_but[data-assetlineno!='"+linenotoedit+"']").prop("disabled", true);
+        	$("#jqGrid2").find(".rem_but[data-assetlineno='undefined']").prop("disabled", false);*/
         },
         aftersavefunc: function (rowid, response, options) {
            	$('#amount').val(response.responseText);
@@ -719,16 +737,18 @@ $(document).ready(function () {
 
 	//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
 	
-	/////////////////////////////parameter for jqgrid2 url Asset Movement///////////////////////////////////////////////
+	/////////////////////////////parameter for saving jqgrid2 url Asset Movement///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['fr.trandate','fr.trantype','ft.amount','fr.deptcode','ft.curloccode','ft.olddeptcode','ft.oldloccode','fr.idno'],
+		field:['ft.assetcode','ft.assetno','ft.trandate','fr.trantype','fr.origcost','fr.deptcode','ft.curloccode','ft.olddeptcode','ft.oldloccode','fr.idno','fr.deptcode','ft.deptcode','ft.idno',],
 		table_name:['finance.fatran AS ft',' finance.faregister AS fr'],
 		table_id:'idno',
 		join_type:['LEFT JOIN'],
 		join_onCol:['ft.assetno'],
 		join_onVal:['fr.assetno'],
+		join_filterCol:[['ft.assetcode on =','ft.trantype on =']],
+		join_filterVal:[['fr.assetcode','fr.trantype']],
 		filterCol:['ft.compcode','ft.assetno'],
 		filterVal:['session.compcode','']
 	};
@@ -741,11 +761,11 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Tran Date', name:'trandate', width:100, classes:'wrap'},
 			{ label: 'Tran Type', name:'trantype', width:120, classes:'wrap'},
-			{ label: 'Amount', name:'amount', width:100, classes:'wrap'},
-			{ label: 'Department', name: 'deptcode', width: 120, classes: 'wrap'},
-			{ label: 'Current Location', name: 'curloccode', width: 120, classes: 'wrap'},
-			{ label: 'Prev Department', name: 'olddeptcode', width: 120, classes: 'wrap'},
-			{ label: 'Prev Location', name: 'oldloccode', width: 120, classes: 'wrap'},
+			{ label: 'Amount', name:'origcost', width:100, classes:'wrap'},
+			{ label: 'Old Department', name: 'deptcode', width: 120, classes: 'wrap'},
+			{ label: 'Old Location', name: 'loccode', width: 120, classes: 'wrap'},
+			{ label: 'New Department', name: 'newdeptcode', width: 120, classes: 'wrap'},
+			{ label: 'New Location', name: 'newloccode', width: 120, classes: 'wrap'},
 			{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
 
 		],
@@ -764,11 +784,6 @@ $(document).ready(function () {
 			// populate_form_movementAE(selrowData("#jqGrid_trf"));
 		},
 		loadComplete: function(data){
-			/*if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
-			else{
-				$('#jqGrid2').jqGrid ('setSelection', "1");
-			}
-			addmore_jqgrid2.edit = addmore_jqgrid2.more = false;*/ //reset
 			setjqgridHeight(data,'jqGrid2');
 		},
 		gridComplete: function(){
@@ -778,6 +793,7 @@ $(document).ready(function () {
 				$("#dialog_remarks").dialog( "open" );
 			});*/
 		/*	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);*/
+		fdl.set_array().reset();
 		},
 		afterShowForm: function (rowid) {
 		   // $("#expdate").datepicker();
@@ -789,17 +805,16 @@ $(document).ready(function () {
 	 	}
     });
 
-	//////////////////////////////////////////start pager jqgrid2/////////////////////////////////////////////
+	//////////////////////////////////////////start pager jqgrid2 ASSET MOVEMENT HEADER/////////////////////////////////////////////
 	$("#jqGrid2").inlineNav('#jqGridPager2',{	
 		add:false,
 		edit:false,
 		cancel: false,
-		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: { 
-			addRowParams: myEditOptions
+			addRowParams: myEditOptions_jqGrid2
 		},
-		editParams: myEditOptions
+		editParams: myEditOptions_jqGrid2
 	});
 
 	/////////////////////////////////// end pagergrid2 /////////////////////////////////////////////////////
@@ -884,17 +899,17 @@ $(document).ready(function () {
 			{ label: 'description', name:'description', hidden:true},
 			{ label: 'Asset No', name:'assetno', width:5, classes:'wrap'},
 			{ label: 'Line No', name: 'assetlineno', width: 3, classes: 'wrap'},
+			{ label: 'Department Code', name: 'deptcode', width: 7, classes: 'wrap', editable:true,
+			editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+				edittype:'custom',	editoptions:
+					{  custom_element:deptcodeCustomEdit,
+					   custom_value:galGridCustomValue 	
+					},
+			},
 			{ label: 'Location Code', name: 'loccode', width: 7, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:loccodeCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-			},
-			{ label: 'Department Code', name: 'deptcode', width: 7, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:deptcodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},

@@ -24,7 +24,8 @@ $(document).ready(function () {
 			saveForm_transferFA(function(){
 				$("#cancel_transferFA").data('oper','edit');
 				$("#cancel_transferFA").click();
-				refreshGrid("#jqGrid",urlParam,'edit');
+				$("#refresh_jqGrid").click();
+				// refreshGrid("#jqGrid",urlParam,'edit');
 			});
 		}else{
 			enableForm('#formtransferFA');
