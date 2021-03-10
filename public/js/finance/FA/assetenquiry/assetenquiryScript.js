@@ -327,7 +327,7 @@ $(document).ready(function () {
 			{ label: 'Method', name:'method', width:20, classes:'wrap', hidden:true},
 			{ label: 'Residual Value', name:'residualvalue', width:20, classes:'wrap', hidden:true},
             { label: 'Cost', name: 'origcost', width: 7, classes: 'wrap', align: 'right',formatter:'currency'},
-            { label: 'SuppCode', name: 'suppcode', width: 15, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+            { label: 'Supplier Code', name: 'suppcode', width: 15, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
             { label: 'Purchase Order No', name:'purordno',width: 8, classes:'wrap', hidden:true},
             { label: 'Purchase Date', name:'purdate', width: 8, classes:'wrap', hidden:true},
 			{ label: 'Purchase Price', name:'purprice', width: 8, classes:'wrap', hidden:true},
