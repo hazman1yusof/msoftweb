@@ -168,6 +168,15 @@ $(document).ready(function () {
 	
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
+	var recstatus_filter = [['OPEN','POSTED']];
+	if($("#recstatus_use").val() == 'POSTED'){
+		recstatus_filter = [['OPEN','POSTED']];
+		filterCol_urlParam = ['apacthdr.compcode'];
+		filterVal_urlParam = ['session.compcode'];
+	}
+
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","apacthdr_idno","apacthdr_recstatus",recstatus_filter[0][0]);
+
 	var urlParam={
 		action:'get_table_default',
 		url:'/util/get_table_default',
@@ -239,7 +248,7 @@ $(document).ready(function () {
 		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
 		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
-		//{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
+		{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
 		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},
 		{ label: 'Doc Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', hidden:true},
 		{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
@@ -268,17 +277,25 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-		let recstatus = selrowData("#jqGrid").apacthdr_recstatus;
-			if(recstatus=='OPEN'){
-				$('#but_cancel_jq,#but_post_jq').show();
-				
-			}else if(recstatus=="POSTED"){
-				$('#but_post_jq').hide();
-				$('#but_cancel_jq').show();
-			}else if (recstatus == "CANCELLED"){
-				$('#but_cancel_jq,#but_post_jq').hide();
-				
+		$('#error_infront').text('');
+		let stat = selrowData("#jqGrid").apacthdr_recstatus;
+		let scope = $("#recstatus_use").val();
+
+		if (stat == scope) {
+			$('#but_cancel_jq').show();
+		} else if (stat == "CANCELLED") {
+			$('#but_reopen_jq').show();
+		} else {
+			if(scope.toUpperCase() == 'ALL'){
 			}
+		}
+
+		if(rowid != null) {
+			var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+			refreshGrid('#jqGrid2', urlParam2,'kosongkan');
+			$("#pg_jqGridPager3 table").hide();
+			$("#pg_jqGridPager2 table").show();
+		}
 
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
 			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);
@@ -306,9 +323,13 @@ $(document).ready(function () {
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			empty_form();
+
+			populate_form(selrowData("#jqGrid"));
+
+			cbselect.checkbox_function_on();
+			cbselect.refresh_seltbl();
 		},
 		
-
 	});
 
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
@@ -357,20 +378,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit']);
-
-	/*$("#save").click(function(){
-		unsaved = false;
-		mycurrency.formatOff();
-		mycurrency.check0value(errorField);
-		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-			saveHeader("#formdata", oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
-			unsaved = false;
-			$("#dialogForm").dialog('close');
-		}else{
-				mycurrency.formatOn();
-		}
-	});*/
+	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
@@ -386,46 +394,46 @@ $(document).ready(function () {
 			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
 		}
 	}
-
-	
-	////////////////////selected///////////////
-
-	$('#apacthdr_ttype').on('change', function() {
-		let ttype1 = $("#apacthdr_ttype option:selected").val();
-	
-		if(ttype1 == 'Supplier' || ttype1 == 'Others') {
-			$("#formdata :input[name='apacthdr_source']").val("AP");
-			$("#formdata :input[name='apacthdr_trantype']").val("IN");
-
-		}else if(ttype1 == 'Debit_Note') {
-			$("#formdata :input[name='apacthdr_source']").val("AP");
-			$("#formdata :input[name='apacthdr_trantype']").val("DN");
-		}
-		
-		if(ttype1 == 'Supplier') {
-			$('#save').hide();
-			$('#ap_parent').show();
-		}else {
-			$('#save').show();
-			$('#ap_parent').hide();
-		}
-		
-	});
-	
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_post_jq").click(function(){
-		saveParam.oper = $(this).data('oper');
-		let obj={
-			auditno:selrowData('#jqGrid').apacthdr_auditno,
-			_token:$('#_token').val(),
-		};
-		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
+	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+
+		var idno = selrowData('#jqGrid').apacthdr_idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = $(this).data('oper')+'_single';
+
+		$.post( '/paymentVoucher/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
+		});
+	});
+
+	$("#but_post_jq").click(function(){
+		var idno_array = [];
+	
+		let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		for (var i = 0; i < ids.length; i++) {
+			var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
+	    	idno_array.push(data.apacthdr_auditno);
+	    }
+	    
+		var obj={};
+		obj.idno_array = idno_array;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		
+		$.post( '/paymentVoucher/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
 		});
 	});
 
@@ -668,18 +676,18 @@ $(document).ready(function () {
 		return qtyoutstand;
 	}
 	
-	// function formatterCheckbox(cellvalue, options, rowObject){
-	// 	let lineno_ = cbselect.lineno_;
-	// 	let recstatus = cbselect.recstatus;
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let lineno_ = cbselect.lineno_;
+		let recstatus = cbselect.recstatus;
 		
-	// 	if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-	// 		return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-	// 	}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-	// 		return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-	// 	}else{
-	// 		return ' ';
-	// 	}
-	// }
+		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
+	}
 
 	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	

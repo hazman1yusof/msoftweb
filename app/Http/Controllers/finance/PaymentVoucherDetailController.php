@@ -105,20 +105,19 @@ class PaymentVoucherDetailController extends defaultController
             DB::table('finance.apalloc')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'auditno' => $auditno,
+                    'refauditno' => $auditno,
                     'lineno_' => $li,
-                    'source' => 'AP',
-                    'trantype' => 'AL',
-                    'document' => strtoupper($request->document),
+                    'docsource' => 'AP',
+                    'doctrantype' => 'AL',
+                    'docauditno' => $request->auditno,
+                    'refsource' => $request->refsource,
+                    'reftrantype' => $request->reftrantype,
                     'entrydate' => $request->entrydate,
                     'reference' => $request->reference,
-                    'amount' => $request->amount,
-                    'outamount' => $request->outamount,
-                    'totamount' => $request->totamount,
-                    'balance' => $request->balance,
+                    'refamount' => $request->amount,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'OPEN',
+                    'allocstat' => 'OPEN',
                     'unit' => session('unit')
                 ]);
 
