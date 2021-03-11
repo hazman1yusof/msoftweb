@@ -539,7 +539,7 @@ $(document).ready(function () {
 		filterVal:['session.compcode', '', '<>.DELETE', 'AP']
 	};
 
-	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
+	var addmore_jqgrid2={more:false,state:false,edit:true} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
@@ -549,9 +549,15 @@ $(document).ready(function () {
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
-			{ label: 'Creditor Code', name: 'document', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+			{ label: 'Creditor Code', name: 'suppcode', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
 				edittype:"text",
 			},
 	
@@ -573,7 +579,7 @@ $(document).ready(function () {
 			{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
 				edittype:"text",
 			},
-			{ label: 'Amount', name: 'amount', width: 100, classes: 'wrap',
+			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
@@ -595,7 +601,7 @@ $(document).ready(function () {
 				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Amount Paid', name: 'totamount', width: 100, classes: 'wrap', hidden:false, 
+			{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', hidden:false, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
@@ -651,7 +657,8 @@ $(document).ready(function () {
 
 			setjqgridHeight(data,'jqGrid2');
 
-			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			addmore_jqgrid2.edit = true;
+			addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
 			
@@ -823,8 +830,6 @@ $(document).ready(function () {
 		    		'document' : $("#jqGrid2 input#"+ids[i]+"_document").val(),
 		    		'reference' : data.reference,
 		    		'amount' : data.amount,
-		    		'dorecno' : data.dorecno,
-		    		'grnno' : data.grnno,
                     'unit' : $("#"+ids[i]+"_unit").val()
 		    	}
 
@@ -946,11 +951,6 @@ $(document).ready(function () {
 		unsaved = false;
 		
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-		
-			/*dialog_suppcode.off();
-			dialog_payto.off();
-			dialog_category.off();
-			dialog_department.off();*/
 			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
 			errorField.length=0;
 		}else{
@@ -1190,8 +1190,46 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#apacthdr_payto").val(data['suppcode']);
-				$('#apacthdr_payto').focus();
+				$("#jqGrid2 input[name='document']").val(data['suppcode']);
+				$("#jqGrid2 input[name='entrydate']").val(data['recdate']); 
+				$("#jqGrid2 input[name='reference']").val(data['document']);
+				$("#jqGrid2 input[name='amount']").val(data['amount']);
+
+				var urlParam2 = {
+					action: 'get_value_default',
+					url: '/util/get_value_default',
+					field: [],
+					table_name: ['finance.apacthdr'],
+					filterCol: ['apacthdr.suppcode', 'apacthdr.compcode'],
+					filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode'],
+					table_id: 'idno',
+				};
+
+				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
+				}, 'json').done(function (data) {
+					if (!$.isEmptyObject(data.rows)) {
+						data.rows.forEach(function(elem) {
+							$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
+								{
+									document:elem['suppcode'],
+									entrydate:elem['recdate'],
+									reference:elem['document'],
+									amount:elem['amount'],
+									outamount:elem['outamount'],
+									balance:elem['amount'] - elem['totamount'],
+								
+								}
+							);
+						});
+						
+
+					} else {
+
+					}
+				});
+				
 			},
+		
 			gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
