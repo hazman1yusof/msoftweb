@@ -535,7 +535,7 @@ $(document).ready(function () {
 		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
+		filterCol:['apdt.compcode','apdt.auditno', 'apdt.allocstat','apdt.source'],
 		filterVal:['session.compcode', '', '<>.DELETE', 'AP']
 	};
 
@@ -1188,6 +1188,9 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
+
+				$("#jqGrid2").jqGrid("clearGridData", true);
+
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#apacthdr_payto").val(data['suppcode']);
 				$("#jqGrid2 input[name='document']").val(data['suppcode']);
@@ -1200,7 +1203,7 @@ $(document).ready(function () {
 					url: '/util/get_value_default',
 					field: [],
 					table_name: ['finance.apacthdr'],
-					filterCol: ['apacthdr.suppcode', 'apacthdr.compcode'],
+					filterCol: ['apacthdr.payto', 'apacthdr.compcode'],
 					filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode'],
 					table_id: 'idno',
 				};
@@ -1211,12 +1214,12 @@ $(document).ready(function () {
 						data.rows.forEach(function(elem) {
 							$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
 								{
-									document:elem['suppcode'],
+									suppcode:elem['suppcode'],
 									entrydate:elem['recdate'],
 									reference:elem['document'],
-									amount:elem['amount'],
+									refamount:elem['amount'],
 									outamount:elem['outamount'],
-									balance:elem['amount'] - elem['totamount'],
+									balance:elem['amount'] - elem['allocamount'],
 								
 								}
 							);
