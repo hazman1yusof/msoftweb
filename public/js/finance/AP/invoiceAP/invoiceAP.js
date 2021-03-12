@@ -511,7 +511,7 @@ $(document).ready(function () {
 				
 				$('#apacthdr_auditno,#auditno').val(data.auditno);
 				$('#idno').val(data.idno);
-				$('#apacthdr_outamount').val(data.amount);//just save idno for edit later
+				//$('#apacthdr_outamount').val(data.amount);//just save idno for edit later
 				
 				urlParam2.filterVal[1]=data.auditno;
 			}else if(selfoper=='edit'){

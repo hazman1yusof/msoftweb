@@ -694,12 +694,6 @@ $(document).ready(function () {
 			}
 		});
 	}
-
-	function format_qtyoutstand(cellvalue, options, rowObject){
-		var qtyoutstand = rowObject.qtyorder - rowObject.qtydelivered;
-		if(qtyoutstand<0 || isNaN(qtyoutstand)) return 0;
-		return qtyoutstand;
-	}
 	
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let lineno_ = cbselect.lineno_;
