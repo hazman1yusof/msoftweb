@@ -133,11 +133,12 @@ use Carbon\Carbon;
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'OPEN'
+            'recstatus' => 'OPEN',
+            'outamount' => $request->apacthdr_amount,
         ];
 
         foreach ($field as $key => $value){
-            if($key == 'remarks' || $key == 'document'){
+            if($key == 'remarks' || $key == 'document' || $value == 'outamount'){
                 continue;
             }
             $array_insert[$value] = $request[$request->field[$key]];

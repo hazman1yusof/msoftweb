@@ -545,18 +545,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/paymentVoucherDetail/form",
 		colModel: [
-			{ label: ' ', name: 'checkbox', width: 15, formatter: 'checkbox', edittype: "checkbox", editable: true, formatoptions: {disabled : false}},
-		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
+			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqg2},
 			{ label: 'Creditor Code', name: 'suppcode', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
 				edittype:"text",
 			},
@@ -598,7 +587,7 @@ $(document).ready(function () {
 				},
 			},
 			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:true,	
-				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
+				formatter: 'currency', formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', hidden:false, 
@@ -636,6 +625,17 @@ $(document).ready(function () {
 					}
 				},
 			},
+			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
+			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, 
 		
 		],
 		autowidth: true,
@@ -677,6 +677,24 @@ $(document).ready(function () {
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
+	function checkbox_jqg2(cellvalue, options, rowObject){
+		return `<input class='checkbox_jqg2' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;
+	}
+
+	function calc_amtpaid_bal(){
+		$('input.checkbox_jqg2[type="checkbox"]').on('click',function(){
+			let rowid = $(this).data('rowid');
+			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
+			if($(this).prop('checked')){
+				$("#jqGrid2").jqGrid('setCell', rowid, 'allocamount', data.outamount);
+				$("#jqGrid2").jqGrid('setCell', rowid, 'balance', 0);
+			}else{
+				$("#jqGrid2").jqGrid('setCell', rowid, 'allocamount', 0);
+				$("#jqGrid2").jqGrid('setCell', rowid, 'balance', data.outamount);
+			}
+		});
+	}
+
 	function format_qtyoutstand(cellvalue, options, rowObject){
 		var qtyoutstand = rowObject.qtyorder - rowObject.qtydelivered;
 		if(qtyoutstand<0 || isNaN(qtyoutstand)) return 0;
@@ -704,6 +722,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
+        	console.log(rowid);
 
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
@@ -1196,7 +1215,8 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='document']").val(data['suppcode']);
 				$("#jqGrid2 input[name='entrydate']").val(data['recdate']); 
 				$("#jqGrid2 input[name='reference']").val(data['document']);
-				$("#jqGrid2 input[name='amount']").val(data['amount']);
+				$("#jqGrid2 input[name='refamount']").val(data['amount']);
+				$("#jqGrid2 input[name='outamount']").val(data['outamount']);
 
 				var urlParam2 = {
 					action: 'get_value_default',
@@ -1219,11 +1239,14 @@ $(document).ready(function () {
 									reference:elem['document'],
 									refamount:elem['amount'],
 									outamount:elem['outamount'],
-									balance:elem['amount'] - elem['allocamount'],
+									allocamount: 0,
+									balance:elem['outamount'],
 								
 								}
 							);
 						});
+
+						calc_amtpaid_bal();
 						
 
 					} else {
