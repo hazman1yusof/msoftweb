@@ -492,6 +492,7 @@ $(document).ready(function () {
 				// $('#apacthdr_outamount').val(data.outamount);//just save idno for edit later
 				
 				urlParam2.filterVal[1]=data.auditno;
+				
 			}else if(selfoper=='edit'){
 				urlParam2.filterVal[1]=$('#apacthdr_auditno').val();
 				//doesnt need to do anything

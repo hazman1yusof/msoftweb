@@ -91,8 +91,8 @@ class PaymentVoucherDetailController extends defaultController
            
             $auditno = $request->query('auditno');
           /*  $source = $request->source;
-            $trantype = $request->trantype;
-*/
+            $trantype = $request->trantype;*/
+
             ////1. calculate lineno_ by auditno
             $sqlln = DB::table('finance.apalloc')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
@@ -115,6 +115,8 @@ class PaymentVoucherDetailController extends defaultController
                     'entrydate' => $request->entrydate,
                     'reference' => $request->reference,
                     'refamount' => $request->amount,
+                    'outamount' => $request->outamount,
+                    'allocamount' => $request->allocamount,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'allocstat' => 'OPEN',
@@ -122,11 +124,11 @@ class PaymentVoucherDetailController extends defaultController
                 ]);
 
             ///3. calculate total amount from detail
-            $totalAmount = DB::table('finance.apactdtl')
+            $totalAmount = DB::table('finance.apalloc')
                     ->where('compcode','=',session('compcode'))
                     ->where('auditno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
-                    ->sum('amount');
+                    ->sum('allocamount');
 
        
             ///4. then update to header
@@ -134,7 +136,7 @@ class PaymentVoucherDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$auditno)
                 ->update([
-                    'amount' => $totalAmount
+                    'allocamount' => $totalAmount
                   
                 ]);
             DB::commit();
