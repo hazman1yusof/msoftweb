@@ -470,6 +470,10 @@ $(document).ready(function () {
 		}
 		saveParam.oper=selfoper;
 
+
+		let data_detail = $('#jqGrid2').jqGrid ('getRowData');
+		obj.data_detail = data_detail;
+
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
@@ -536,8 +540,8 @@ $(document).ready(function () {
 		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno', 'apdt.allocstat','apdt.source'],
-		filterVal:['session.compcode', '', '<>.DELETE', 'AP']
+		filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype'],
+		filterVal:['session.compcode', '', 'AP','PV']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:true} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -551,7 +555,7 @@ $(document).ready(function () {
 				edittype:"text",
 			},
 	
-			{ label: 'Invoice Date', name: 'entrydate', width: 100, classes: 'wrap', editable:true,
+			{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
                     dataInit: function (element) {
@@ -637,6 +641,7 @@ $(document).ready(function () {
 			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, 
+			{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, 
 		
 		],
 		autowidth: true,
@@ -676,6 +681,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
+	addParamField('#jqGrid2',false,urlParam2,['checkbox','balance','entrydate'])
 	jqgrid_label_align_right("#jqGrid2");
 
 	function checkbox_jqg2(cellvalue, options, rowObject){
@@ -771,120 +777,121 @@ $(document).ready(function () {
 			addRowParams: myEditOptions
 		},
 		editParams: myEditOptions
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2Delete",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-trash",
-		title:"Delete Selected Row",
-		onClickButton: function(){
-			selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
-			if(!selRowId){
-				bootbox.alert('Please select row');
-			}else{
-				bootbox.confirm({
-				    message: "Are you sure you want to delete this row?",
-				    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-				    },
-				    callback: function (result) {
-				    	if(result == true){
-				    		param={
-				    			action: 'paymentVoucherDetail',
-								auditno: $('#apacthdr_auditno').val(),
-								lineno_: selrowData('#jqGrid2').lineno_,
-
-				    		}
-				    		$.post( "/paymentVoucherDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-							}).fail(function(data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function(data){
-								$('#amount').val(data);
-								refreshGrid("#jqGrid2",urlParam2);
-							});
-				    	}else{
-        					$("#jqGridPager2EditAll").show();
-				    	}
-				    }
-				});
-			}
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2EditAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-th-list",
-		title:"Edit All Row",
-		onClickButton: function(){
-			mycurrency2.array.length = 0;
-			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-		    for (var i = 0; i < ids.length; i++) {
-
-		        $("#jqGrid2").jqGrid('editRow',ids[i]);
-
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
-		    }
-		   	onall_editfunc();
-			hideatdialogForm(true,'saveallrow');
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2SaveAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-download-alt",
-		title:"Save All Row",
-		onClickButton: function(){
-			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-
-			var jqgrid2_data = [];
-			mycurrency2.formatOff();
-		    for (var i = 0; i < ids.length; i++) {
-
-				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
-
-		    	var obj = 
-		    	{
-		    		'lineno_' : ids[i],
-		    		'document' : $("#jqGrid2 input#"+ids[i]+"_document").val(),
-		    		'reference' : data.reference,
-		    		'amount' : data.amount,
-                    'unit' : $("#"+ids[i]+"_unit").val()
-		    	}
-
-		    	jqgrid2_data.push(obj);
-		    }
-
-			var param={
-    			action: 'paymentVoucherDetail_save',
-				_token: $("#_token").val(),
-				auditno: $('#apacthdr_auditno').val()
-    		}
-
-    		$.post( "/paymentVoucherDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
-			}).fail(function(data) {
-				//////////////////errorText(dialog,data.responseText);
-			}).done(function(data){
-				// $('#amount').val(data);
-				hideatdialogForm(false);
-				refreshGrid("#jqGrid2",urlParam2);
-			});
-		},	
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2CancelAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-remove-circle",
-		title:"Cancel",
-		onClickButton: function(){
-			hideatdialogForm(false);
-			refreshGrid("#jqGrid2",urlParam2);
-		},	
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "saveHeaderLabel",
-		caption:"Header",cursor: "pointer",position: "last", 
-		buttonicon:"",
-		title:"Header"
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "saveDetailLabel",
-		caption:"Detail",cursor: "pointer",position: "last", 
-		buttonicon:"",
-		title:"Detail"
 	});
+	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
+	// 	id: "jqGridPager2Delete",
+	// 	caption:"",cursor: "pointer",position: "last", 
+	// 	buttonicon:"glyphicon glyphicon-trash",
+	// 	title:"Delete Selected Row",
+	// 	onClickButton: function(){
+	// 		selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+	// 		if(!selRowId){
+	// 			bootbox.alert('Please select row');
+	// 		}else{
+	// 			bootbox.confirm({
+	// 			    message: "Are you sure you want to delete this row?",
+	// 			    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+	// 			    },
+	// 			    callback: function (result) {
+	// 			    	if(result == true){
+	// 			    		param={
+	// 			    			action: 'paymentVoucherDetail',
+	// 							auditno: $('#apacthdr_auditno').val(),
+	// 							lineno_: selrowData('#jqGrid2').lineno_,
+
+	// 			    		}
+	// 			    		$.post( "/paymentVoucherDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+	// 						}).fail(function(data) {
+	// 							//////////////////errorText(dialog,data.responseText);
+	// 						}).done(function(data){
+	// 							$('#amount').val(data);
+	// 							refreshGrid("#jqGrid2",urlParam2);
+	// 						});
+	// 			    	}else{
+ //        					$("#jqGridPager2EditAll").show();
+	// 			    	}
+	// 			    }
+	// 			});
+	// 		}
+	// 	},
+	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
+	// 	id: "jqGridPager2EditAll",
+	// 	caption:"",cursor: "pointer",position: "last", 
+	// 	buttonicon:"glyphicon glyphicon-th-list",
+	// 	title:"Edit All Row",
+	// 	onClickButton: function(){
+	// 		mycurrency2.array.length = 0;
+	// 		var ids = $("#jqGrid2").jqGrid('getDataIDs');
+	// 	    for (var i = 0; i < ids.length; i++) {
+
+	// 	        $("#jqGrid2").jqGrid('editRow',ids[i]);
+
+	// 	        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
+	// 	    }
+	// 	   	onall_editfunc();
+	// 		hideatdialogForm(true,'saveallrow');
+	// 	},
+	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
+	// 	id: "jqGridPager2SaveAll",
+	// 	caption:"",cursor: "pointer",position: "last", 
+	// 	buttonicon:"glyphicon glyphicon-download-alt",
+	// 	title:"Save All Row",
+	// 	onClickButton: function(){
+	// 		var ids = $("#jqGrid2").jqGrid('getDataIDs');
+
+	// 		var jqgrid2_data = [];
+	// 		mycurrency2.formatOff();
+	// 	    for (var i = 0; i < ids.length; i++) {
+
+	// 			var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
+
+	// 	    	var obj = 
+	// 	    	{
+	// 	    		'lineno_' : ids[i],
+	// 	    		'document' : $("#jqGrid2 input#"+ids[i]+"_document").val(),
+	// 	    		'reference' : data.reference,
+	// 	    		'amount' : data.amount,
+ //                    'unit' : $("#"+ids[i]+"_unit").val()
+	// 	    	}
+
+	// 	    	jqgrid2_data.push(obj);
+	// 	    }
+
+	// 		var param={
+ //    			action: 'paymentVoucherDetail_save',
+	// 			_token: $("#_token").val(),
+	// 			auditno: $('#apacthdr_auditno').val()
+ //    		}
+
+ //    		$.post( "/paymentVoucherDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+	// 		}).fail(function(data) {
+	// 			//////////////////errorText(dialog,data.responseText);
+	// 		}).done(function(data){
+	// 			// $('#amount').val(data);
+	// 			hideatdialogForm(false);
+	// 			refreshGrid("#jqGrid2",urlParam2);
+	// 		});
+	// 	},	
+	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
+	// 	id: "jqGridPager2CancelAll",
+	// 	caption:"",cursor: "pointer",position: "last", 
+	// 	buttonicon:"glyphicon glyphicon-remove-circle",
+	// 	title:"Cancel",
+	// 	onClickButton: function(){
+	// 		hideatdialogForm(false);
+	// 		refreshGrid("#jqGrid2",urlParam2);
+	// 	},	
+	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
+	// 	id: "saveHeaderLabel",
+	// 	caption:"Header",cursor: "pointer",position: "last", 
+	// 	buttonicon:"",
+	// 	title:"Header"
+	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
+	// 	id: "saveDetailLabel",
+	// 	caption:"Detail",cursor: "pointer",position: "last", 
+	// 	buttonicon:"",
+	// 	title:"Detail"
+	// });
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
@@ -959,11 +966,24 @@ $(document).ready(function () {
 	});
 	
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
-	$("#saveDetailLabel").click(function(){
+	// $("#saveDetailLabel").click(function(){
+	// 	mycurrency.formatOff();
+	// 	mycurrency.check0value(errorField);
+	// 	unsaved = false;
+		
+	// 	if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+	// 		saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
+	// 		errorField.length=0;
+	// 	}else{
+	// 		mycurrency.formatOn();
+	// 	}
+	// });
+
+	$('#savepv').click(function(){
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-		
+
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
 			errorField.length=0;
@@ -1220,8 +1240,8 @@ $(document).ready(function () {
 					url: '/util/get_value_default',
 					field: [],
 					table_name: ['finance.apacthdr'],
-					filterCol: ['apacthdr.payto', 'apacthdr.compcode'],
-					filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode'],
+					filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.source', 'apacthdr.trantype'],
+					filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode','AP','IN'],
 					table_id: 'idno',
 				};
 
@@ -1230,9 +1250,10 @@ $(document).ready(function () {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {
 							$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
-								{
+								{	
+									idno:elem['idno'],
 									suppcode:elem['suppcode'],
-									entrydate:elem['recdate'],
+									allocdate:elem['recdate'],
 									reference:elem['document'],
 									refamount:elem['amount'],
 									outamount:elem['outamount'],

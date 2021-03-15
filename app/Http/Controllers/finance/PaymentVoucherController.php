@@ -99,6 +99,39 @@ use Carbon\Carbon;
         try {
 
             $idno = $table->insertGetId($array_insert);
+            foreach ($request->data_detail as $key => $value) {
+                $idno = $value['idno'];
+
+                $apacthdr_IV = DB::table('finance.apacthdr')
+                                ->where('idno','=',$idno)
+                                ->first();
+
+                DB::table('finance.apalloc')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'source' => 'AP',
+                            'trantype' => 'PV',
+                            'auditno' => $auditno,
+                            'lineno_' => $key+1,
+                            'docsource' => 'AP',
+                            'doctrantype' => 'PV',
+                            'docauditno' => $auditno,
+                            'refsource' => $apacthdr_IV->source,
+                            'reftrantype' => $apacthdr_IV->trantype,
+                            'refauditno' => $apacthdr_IV->auditno,
+                            'refamount' => $apacthdr_IV->amount,
+                            'allocdate' => $this->turn_date($value['allocdate']),
+                            'reference' => $value['reference'],
+                            'allocamount' => $value['allocamount'],
+                            'outamount' => $value['outamount'],
+                            'paymode' => $request->apacthdr_paymode,
+                            'bankcode' => $request->apacthdr_bankcode,
+                            'suppcode' => $request->apacthdr_suppcode,
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+            }
+
 
             $responce = new stdClass();
             $responce->auditno = $auditno;
@@ -119,6 +152,7 @@ use Carbon\Carbon;
     }
 
     public function edit(Request $request){
+
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
             $idno = substr(strstr($request->table_id,'_'),1);
