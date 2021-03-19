@@ -5,13 +5,16 @@
 		<b>Name: <span id="name_show_doctorNote"></span></b><br>
 		MRN: <span id="mrn_show_doctorNote"></span>
 
-        <label for="toggle_type" class="switch pull-right" style="position: absolute; padding: 0 0 0 0; right: 800px; top: 15px;">
-            <input type="checkbox" id="toggle_type" onclick="change_type()" checked>
-            <div class="slider round">
-                <span class="current">Current</span>
-                <span class="past">Past History</span>
-            </div>
-        </label>
+        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 800px; top: 15px;">
+            <label class="radio-inline">
+                <input class="form-check-input" type="radio" name="toggle_type" id="current" value="current" checked>
+                <label class="form-check-label" for="current">Current</label>
+            </label>
+            <label class="radio-inline">
+                <input class="form-check-input" type="radio" name="toggle_type" id="past" value="past">
+                <label class="form-check-label" for="past">Past History</label>
+            </label>
+        </div>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDoctorNote_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDoctorNote_panel"></i>
@@ -27,19 +30,19 @@
                     top: 15px;" 
 
         >
-        <button type="button" class="btn btn-default" id="new_doctorNote">
-            <span class="fa fa-plus-square-o"></span> New
-        </button>
-        <button type="button" class="btn btn-default" id="edit_doctorNote">
-            <span class="fa fa-edit fa-lg"></span> Edit
-        </button>
-        <button type="button" class="btn btn-default" data-oper='add' id="save_doctorNote">
-            <span class="fa fa-save fa-lg"></span> Save
-        </button>
-        <button type="button" class="btn btn-default" id="cancel_doctorNote">
-            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-        </button>
-    </div>
+            <button type="button" class="btn btn-default" id="new_doctorNote">
+                <span class="fa fa-plus-square-o"></span> New
+            </button>
+            <button type="button" class="btn btn-default" id="edit_doctorNote">
+                <span class="fa fa-edit fa-lg"></span> Edit
+            </button>
+            <button type="button" class="btn btn-default" data-oper='add' id="save_doctorNote">
+                <span class="fa fa-save fa-lg"></span> Save
+            </button>
+            <button type="button" class="btn btn-default" id="cancel_doctorNote">
+                <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+            </button>
+        </div>
 	</div>
 	<div id="jqGridDoctorNote_panel" class="panel-collapse collapse">
 		<div class="panel-body">

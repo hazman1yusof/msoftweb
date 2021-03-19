@@ -34,6 +34,8 @@ class DoctorNoteController extends defaultController
                 return $this->get_table_date_past($request);
             case 'get_table_doctornote':
                 return $this->get_table_doctornote($request);
+            case 'dialog_icd':
+                return $this->dialog_icd($request);
 
             default:
                 return 'error happen..';
@@ -163,6 +165,14 @@ class DoctorNoteController extends defaultController
                     'diagfinal' => $request->diagfinal,
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+
+            DB::table('hisdb.pathealthadd')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_doctorNote,
+                    'episno' => $request->episno_doctorNote,
+                    'additionalnote' => $request->additionalnote,
                 ]);
 
             $patexam = DB::table('hisdb.patexam')
@@ -394,6 +404,11 @@ class DoctorNoteController extends defaultController
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno);
 
+        $pathealthadd_obj = DB::table('hisdb.pathealthadd')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$request->mrn)
+            ->where('episno','=',$request->episno);
+
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->first();
             $responce->episode = $episode_obj;
@@ -418,6 +433,57 @@ class DoctorNoteController extends defaultController
             $episdiag_obj = $episdiag_obj->first();
             $responce->episdiag = $episdiag_obj;
         }
+
+        if($pathealthadd_obj->exists()){
+            $pathealthadd_obj = $pathealthadd_obj->first();
+            $responce->pathealthadd = $pathealthadd_obj;
+        }
+
+        return json_encode($responce);
+    }
+
+    public function dialog_icd(Request $request){
+
+        $icdver = DB::table('sysdb.sysparam')
+                        ->select('pvalue1')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','MR')
+                        ->where('trantype','=','ICD')
+                        ->first();
+
+        $table = DB::table('hisdb.diagtab')
+                    ->where('type','=',$icdver->pvalue1)
+                    ->orderBy('idno','asc');
+
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+
+            $count = array_count_values($searchCol_array);
+            // dump($count);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+        }
+        
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
     }

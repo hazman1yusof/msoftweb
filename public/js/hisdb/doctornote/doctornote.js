@@ -84,6 +84,11 @@ $(document).ready(function () {
 		$('#diagfinal').val($('#icdcode').val());
 	});
 
+	// otherwise the radio button inside panel-heading wont work
+	$("input[name=toggle_type]").click(function(event){
+		event.stopPropagation();
+	});
+
 });
 
 //bmi calculator
@@ -100,15 +105,17 @@ function getBMI() {
     $('#bmi').val((bmi));
 }
 
-function change_type() {
-	var checkBox = document.getElementById("toggle_type");
-	var addnotes = document.getElementById("addnotes");
-  
-	if (checkBox.checked == true){
-		addnotes.style.display = "none";
-	} else {
-		addnotes.style.display = "block";
-	}
+//to disable all input fields except additional note
+function disableOtherFields() {
+	var fieldsNotToBeDisabled = new Array("additionalnote");
+
+	$("form input").filter(function(index){
+		return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
+	}).prop("disabled", true);
+
+	$("form textarea").filter(function(index){
+		return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
+	}).prop("disabled", true);
 }
 
 var errorField = [];
@@ -134,12 +141,15 @@ var dialog_icd = new ordialog(
 			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 		],
 		urlParam: {
-			fixPost: true,
-			filterCol:['sp.compcode','dt.type'],
-			filterVal:['session.compcode', 'icd-10']
+			url : "doctornote/table",
+			filterCol:['sp.compcode'],
+			filterVal:['session.compcode'],
 		},
 		ondblClickRow:function(){
-			// $('#optax').focus();
+			let data = selrowData('#'+dialog_icd.gridname);
+			$("#diagfinal").val(data['icdcode'] + " " + data['description']);
+			$('#plan_').focus();
+			// document.getElementById("diagfinal").value = document.getElementById("icdcode").value; //copy data to Diagnosis
 		},
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
@@ -154,8 +164,16 @@ var dialog_icd = new ordialog(
 	},{
 		title:"Select ICD",
 		open: function(){
-			dialog_icd.urlParam.filterCol = ['sp.compcode','dt.type'];
-			dialog_icd.urlParam.filterVal = ['session.compcode', 'icd-10'];
+			dialog_icd.urlParam.url = "doctornote/table";
+			dialog_icd.urlParam.action = "dialog_icd";
+			dialog_icd.urlParam.table_name = ['hisdb.diagtab AS dt','sysdb.sysparam AS sp'];
+			dialog_icd.urlParam.join_type = ['LEFT JOIN'];
+			dialog_icd.urlParam.join_onCol = ['dt.type'];
+			dialog_icd.urlParam.join_onVal = ['sp.pvalue1'];
+			dialog_icd.urlParam.fixPost="true";
+			dialog_icd.urlParam.table_id="none_";
+			dialog_icd.urlParam.filterCol=['sp.compcode','sp.source', 'sp.trantype'];
+			dialog_icd.urlParam.filterVal=['session.compcode', 'MR', 'ICD' ];
 		}
 	},'urlParam','radio','tab'
 );
@@ -210,18 +228,35 @@ function populate_doctorNote(obj,rowdata){
 	$('#mrn_doctorNote').val(obj.mrn);
 	$("#episno_doctorNote").val(obj.episno);
 
-    doctornote_docnote={
-    	action:'get_table_doctornote',
-    	mrn:obj.mrn,
-    	episno:obj.episno,
-    	recorddate:''
-    };
+	var addnotes = document.getElementById("addnotes");
+  
+	// check if its current
+	if (document.getElementById("current").checked){
+		dateParam_docnote={
+			action:'get_table_date',
+			mrn:obj.MRN,
+			episno:obj.Episno
+		}
+		
+		addnotes.style.display = "none";
+	} 
+	// check if its past history
+	if (document.getElementById("past").checked){
+		dateParam_docnote={
+			action:'get_table_date_past',
+			mrn:obj.MRN,
+		}
 
-    dateParam_docnote={
-        action:'get_table_date',
-    	mrn:obj.mrn,
-    	episno:obj.episno
-    }
+		addnotes.style.display = "block";
+		disableOtherFields();
+	}
+
+	doctornote_docnote={
+		action:'get_table_doctornote',
+		mrn:obj.MRN,
+		episno:obj.Episno,
+		recorddate:''
+	};
 
     button_state_doctorNote('add');
 }
@@ -239,11 +274,10 @@ function populate_currDoctorNote(obj){
 	$('#mrn_doctorNote').val(obj.MRN);
 	$("#episno_doctorNote").val(obj.Episno);
 
-	var checkBox = document.getElementById("toggle_type");
 	var addnotes = document.getElementById("addnotes");
   
-	// checked true = current
-	if (checkBox.checked == true){
+	// check if its current
+	if (document.getElementById("current").checked){
 		dateParam_docnote={
 			action:'get_table_date',
 			mrn:obj.MRN,
@@ -251,13 +285,16 @@ function populate_currDoctorNote(obj){
 		}
 		
 		addnotes.style.display = "none";
-	} else { // checked false = past history
+	} 
+	// check if its past history
+	if (document.getElementById("past").checked){
 		dateParam_docnote={
 			action:'get_table_date_past',
 			mrn:obj.MRN,
 		}
 
 		addnotes.style.display = "block";
+		disableOtherFields();
 	}
 
 	doctornote_docnote={
@@ -362,13 +399,28 @@ var ajaxurl;
 $('#jqGridDoctorNote_panel').on('show.bs.collapse', function () {
     docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
+		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
+
+		//to reload date table on radio btn click
+		$("input[name=toggle_type]").click(function(event){
+			docnote_date_tbl.ajax.reload();
+		});
     });
 });
 
 $('#docnote_date_tbl tbody').on('click', 'tr', function () { 
     if(disable_edit_date()){
     	return;
-    }
+	}
+	
+	//to highlight selected row
+	if ( $(this).hasClass('selected') ) {
+		$(this).removeClass('selected');
+	}
+	else {
+		docnote_date_tbl.$('tr.selected').removeClass('selected');
+		$(this).addClass('selected');
+	}
 
     emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
     $('#docnote_date_tbl tbody tr').removeClass('active');
@@ -387,6 +439,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.patexam);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
+			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealthadd);
 			getBMI();
 		}
 	});
