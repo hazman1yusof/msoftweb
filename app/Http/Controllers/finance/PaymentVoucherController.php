@@ -120,7 +120,7 @@ use Carbon\Carbon;
                             'reftrantype' => $apacthdr_IV->trantype,
                             'refauditno' => $apacthdr_IV->auditno,
                             'refamount' => $apacthdr_IV->amount,
-                            'allocdate' => $this->turn_date($value['allocdate']),
+                          //  'allocdate' => $this->turn_date($value['allocdate']),
                             'reference' => $value['reference'],
                             'allocamount' => $value['allocamount'],
                             'outamount' => $value['outamount'],
@@ -128,7 +128,8 @@ use Carbon\Carbon;
                             'bankcode' => $request->apacthdr_bankcode,
                             'suppcode' => $request->apacthdr_suppcode,
                             'lastuser' => session('username'),
-                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'recstatus' => 'OPEN'
                         ]);
             }
 
@@ -142,6 +143,31 @@ use Carbon\Carbon;
             // $queries = DB::getQueryLog();
             // dump($queries);
 
+            //calculate total amount from detail
+             $totalAmount = DB::table('finance.apalloc')
+             ->where('compcode','=',session('compcode'))
+             ->where('auditno','=',$auditno)
+             ->where('recstatus','!=','DELETE')
+             ->sum('allocamount');
+
+
+            //then update to header
+            DB::table('finance.apacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$auditno)
+                ->update([
+                    'amount' => $totalAmount,
+                    'outamount' => '0',
+                    'recstatus' => 'OPEN'
+                
+                ]);
+
+            DB::table('finance.apacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$auditno)
+                ->update([
+                    'outamount' => $value['outamount'] - $value['allocamount']
+                ]);    
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();

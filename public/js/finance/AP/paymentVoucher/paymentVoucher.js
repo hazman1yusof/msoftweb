@@ -27,15 +27,14 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#apacthdr_outamount']);
-	var mycurrency2 =new currencymode([]);
+	var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
+	var mycurrency2 =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 	var fdl = new faster_detail_load();
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#apacthdr_actdate"]);
 	actdateObj.getdata().set();
 
-	
 	////////////////////////////////////start dialog//////////////////////////////////////
 
 	var oper;
@@ -164,8 +163,6 @@ $(document).ready(function () {
 			});
 		}
 	}
-
-	
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var recstatus_filter = [['OPEN','POSTED']];
@@ -777,7 +774,7 @@ $(document).ready(function () {
 			addRowParams: myEditOptions
 		},
 		editParams: myEditOptions
-	});
+	//});
 	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
 	// 	id: "jqGridPager2Delete",
 	// 	caption:"",cursor: "pointer",position: "last", 
@@ -885,13 +882,13 @@ $(document).ready(function () {
 	// 	id: "saveHeaderLabel",
 	// 	caption:"Header",cursor: "pointer",position: "last", 
 	// 	buttonicon:"",
-	// 	title:"Header"
-	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
-	// 	id: "saveDetailLabel",
-	// 	caption:"Detail",cursor: "pointer",position: "last", 
-	// 	buttonicon:"",
-	// 	title:"Detail"
-	// });
+	// 	title:"Header"//
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "saveDetailLabel",
+		caption:"Save",cursor: "pointer",position: "last", 
+		buttonicon:"",
+		title:"Detail"
+	});
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
@@ -966,24 +963,11 @@ $(document).ready(function () {
 	});
 	
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
-	// $("#saveDetailLabel").click(function(){
-	// 	mycurrency.formatOff();
-	// 	mycurrency.check0value(errorField);
-	// 	unsaved = false;
-		
-	// 	if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-	// 		saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
-	// 		errorField.length=0;
-	// 	}else{
-	// 		mycurrency.formatOn();
-	// 	}
-	// });
-
-	$('#savepv').click(function(){
+	$("#saveDetailLabel").click(function(){
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-
+		
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
 			errorField.length=0;
@@ -991,6 +975,19 @@ $(document).ready(function () {
 			mycurrency.formatOn();
 		}
 	});
+
+	// $('#savepv').click(function(){
+	// 	mycurrency.formatOff();
+	// 	mycurrency.check0value(errorField);
+	// 	unsaved = false;
+
+	// 	if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+	// 		saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
+	// 		errorField.length=0;
+	// 	}else{
+	// 		mycurrency.formatOn();
+	// 	}
+	// });
 
 	// function saveDetailLabel(callback=null){
 	// 	mycurrency.formatOff();
@@ -1240,8 +1237,10 @@ $(document).ready(function () {
 					url: '/util/get_value_default',
 					field: [],
 					table_name: ['finance.apacthdr'],
-					filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.source', 'apacthdr.trantype'],
-					filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode','AP','IN'],
+					filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus',],
+					filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', ],
+					WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
+        			WhereInVal: [['AP' || 'DF' || 'CF' || 'TX'], ['IN' || 'DN']],
 					table_id: 'idno',
 				};
 

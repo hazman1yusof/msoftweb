@@ -63,9 +63,9 @@ i.fa {
 		            </div>
 				</div>
 
-				<div class="col-md-2" style="padding: 10px;">
+				<!-- <div class="col-md-2" style="padding: 10px;">
 					&nbsp;
-	            </div>
+	            </div> -->
 
 				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
@@ -281,6 +281,11 @@ i.fa {
 					</div>		  	
 
 					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_amount">Amount</label>  
+					  		<div class="col-md-3">
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" rdonly> 
+		 					</div>
+
 						<label class="col-md-2 control-label" for="apacthdr_outamount">Total Amount</label>  
 					  		<div class="col-md-3">
 								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly> 
@@ -340,10 +345,10 @@ i.fa {
 					</form>
 				</div>
 
-				<div class="panel-body">
+				<!-- <div class="panel-body">
 				<button type="button" class="btn btn-primary pull-right" id="savepv"> Save Payment Voucher</button>
 					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
-				</div>
+				</div> -->
 		</div>
 	</div>			
 			
