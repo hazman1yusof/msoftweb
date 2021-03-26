@@ -1412,6 +1412,26 @@ $(document).ready(function () {
 	/*var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();*/
 
+	$("#jqGrid_selection").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
+		shrinkToFit: false,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		sortname: 'apacthdr_idno',
+		sortorder: "desc",
+		onSelectRow: function (rowid, selected) {
+			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
+			console.log(rowdata);
+		},
+		gridComplete: function(){
+			
+		},
+	})
+	jqgrid_label_align_right("#jqGrid_selection");
+	cbselect.on();
+
 	function setjqgridHeight(data,grid){
 		if(data.rows.length>=6){
 			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(500);
