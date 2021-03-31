@@ -134,8 +134,8 @@
 											</div>
 
 											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" name="allergyenviroment" value="1">
-												<label class="form-check-label" for="allergyenviroment">Environment</label>
+												<input class="form-check-input" type="checkbox" name="allergyenvironment" value="1">
+												<label class="form-check-label" for="allergyenvironment">Environment</label>
 											</div>
 
 											<div class="form-check form-check-inline checkbox-inline">
