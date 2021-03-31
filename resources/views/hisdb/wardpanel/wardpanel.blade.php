@@ -117,51 +117,45 @@
 									<div class="panel-heading text-center">ALLERGIES</div>
 									<div class="panel-body">
 
-										<div class="form-group">
-											<div class="form-check form-check-inline checkbox-inline" style="margin-left: 50px">
-												<input class="form-check-input" type="checkbox" name="allergydrugs" value="1">
-												<label class="form-check-label" for="allergydrugs">Drugs</label>
-											</div>
-
-											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" name="allergyplaster" value="1">
-												<label class="form-check-label" for="allergyplaster">Plaster</label>
-											</div>
-
-											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" name="allergyfood" value="1">
-												<label class="form-check-label" for="allergyfood">Food</label>
-											</div>
-
-											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" name="allergyenvironment" value="1">
-												<label class="form-check-label" for="allergyenvironment">Environment</label>
-											</div>
-
-											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" name="allergynone" value="1">
-												<label class="form-check-label" for="allergynone">None</label>
-											</div>
-										</div>
-
-										<div class="form-group">
-											<div class="form-check form-check-inline checkbox-inline" style="margin-left: 50px">
-												<input class="form-check-input" type="checkbox" name="allergyunknown" value="1">
-												<label class="form-check-label" for="allergyunknown">Unknown</label>
-											</div>
-
-											<div class="form-check form-check-inline checkbox-inline">
-												<input class="form-check-input" type="checkbox" name="allergyothers" value="1">
-												<label class="form-check-label" for="allergyothers">Others</label>
-											</div>
-										</div>
-
-										<div class="form-group">
-											<label class="col-md-4 control-label" for="allergyremarks">If Others, Please specify:</label>  
-											<div class="col-md-8">
-												<textarea name="allergyremarks" type="text" class="form-control input-sm" rows="3"></textarea>
-											</div>
-										</div>
+										<table class="table table-sm table-hover">
+											<tbody>
+												<tr>
+													<td><input class="form-check-input" type="checkbox" id="allergydrugs" name="allergydrugs" value="1"></td>
+													<td><label class="form-check-label" for="allergydrugs">Drugs</label></td>
+													<td><textarea id="drugs_remarks" name="drugs_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+												</tr>
+												<tr>
+													<td><input class="form-check-input" type="checkbox" id="allergyplaster" name="allergyplaster" value="1"></td>
+													<td><label class="form-check-label" for="allergyplaster">Plaster</label></td>
+													<td><textarea id="plaster_remarks" name="plaster_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+												</tr>
+												<tr>
+													<td><input class="form-check-input" type="checkbox" id="allergyfood" name="allergyfood" value="1"></td>
+													<td><label class="form-check-label" for="allergyfood">Food</label></td>
+													<td><textarea id="food_remarks" name="food_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+												</tr>
+												<tr>
+													<td><input class="form-check-input" type="checkbox" id="allergyenvironment" name="allergyenvironment" value="1"></td>
+													<td><label class="form-check-label" for="allergyenvironment">Environment</label></td>
+													<td><textarea id="environment_remarks" name="environment_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+												</tr>
+												<tr>
+													<td><input class="form-check-input" type="checkbox" id="allergyothers" name="allergyothers" value="1"></td>
+													<td><label class="form-check-label" for="allergyothers">Others</label></td>
+													<td><textarea id="others_remarks" name="others_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+												</tr>
+												<tr>
+													<td><input class="form-check-input" type="checkbox" id="allergyunknown" name="allergyunknown" value="1"></td>
+													<td><label class="form-check-label" for="allergyunknown">Unknown</label></td>
+													<td></td>
+												</tr>
+												<tr>
+													<td><input class="form-check-input" type="checkbox" id="allergynone" name="allergynone" value="1"></td>
+													<td><label class="form-check-label" for="allergynone">None</label></td>
+													<td></td>
+												</tr>
+											</tbody>
+										</table>
 
 									</div>
 								</div>
