@@ -350,7 +350,7 @@
 	@include('hisdb.pat_mgmt.mdl_patient')
 	@include('hisdb.pat_mgmt.itemselector')
 
-	<div id="dialognewexamFormTriage" title="New exam" >
+	<!-- <div id="dialognewexamFormTriage" title="New exam" >
 		<div class='panel panel-info'>
 			<div class="panel-body" style="">
 				<form class='form-horizontal' style=''>
@@ -361,7 +361,7 @@
 				</form>
 			</div>
 		</div>
-	</div>
+	</div> -->
  
 @endsection
 
