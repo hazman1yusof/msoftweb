@@ -47,7 +47,7 @@ $(document).ready(function () {
 		disableForm('#formDoctorNote');
 		button_state_doctorNote($(this).data('oper'));
 		// dialog_mrn_edit.off();
-
+		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
 	});
 
 	// to format number input to two decimal places (0.00)
@@ -107,15 +107,22 @@ function getBMI() {
 
 //to disable all input fields except additional note
 function disableOtherFields() {
-	var fieldsNotToBeDisabled = new Array("additionalnote");
+	// var fieldsNotToBeDisabled = new Array("additionalnote");
 
-	$("form input").filter(function(index){
-		return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
-	}).prop("disabled", true);
+	// $("form input").filter(function(index){
+	// 	return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
+	// }).prop("disabled", true);
 
-	$("form textarea").filter(function(index){
-		return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
-	}).prop("disabled", true);
+	// $("form textarea").filter(function(index){
+	// 	return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
+	// }).prop("disabled", true);
+
+	$('#remarks, #clinicnote, #pmh, #drugh, #allergyh, #socialh, #fmh, #followuptime, #followupdate, #examination, #diagfinal, #icdcode, #plan_, #height, #weight, #bp_sys1, #bp_dias2, #pulse, #temperature, #respiration').prop('disabled',true);
+}
+
+//to enable fields when choose current
+function enableFields() {
+	$('#remarks, #clinicnote, #pmh, #drugh, #allergyh, #socialh, #fmh, #followuptime, #followupdate, #examination, #diagfinal, #icdcode, #plan_, #height, #weight, #bp_sys1, #bp_dias2, #pulse, #temperature, #respiration').prop('disabled',false);
 }
 
 var errorField = [];
@@ -239,6 +246,7 @@ function populate_doctorNote(obj,rowdata){
 		}
 		
 		addnotes.style.display = "none";
+		enableFields();
 	} 
 	// check if its past history
 	if (document.getElementById("past").checked){
@@ -285,6 +293,7 @@ function populate_currDoctorNote(obj){
 		}
 		
 		addnotes.style.display = "none";
+		enableFields()
 	} 
 	// check if its past history
 	if (document.getElementById("past").checked){

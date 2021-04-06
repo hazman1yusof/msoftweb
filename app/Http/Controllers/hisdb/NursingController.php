@@ -750,6 +750,12 @@ class NursingController extends defaultController
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
+        $triage_regdate_obj = DB::table('hisdb.episode')
+                    ->select('reg_date')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
         $responce = new stdClass();
 
         if($triage_obj->exists()){
@@ -765,6 +771,11 @@ class NursingController extends defaultController
         if($triage_exm_obj->exists()){
             $triage_exm_obj = $triage_exm_obj->get()->toArray();
             $responce->triage_exm = $triage_exm_obj;
+        }
+
+        if($triage_regdate_obj->exists()){
+            $triage_regdate_obj = $triage_regdate_obj->first();
+            $responce->triage_regdate = $triage_regdate_obj;
         }
 
         return json_encode($responce);
