@@ -480,6 +480,7 @@ function populate_formWard(obj,rowdata){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formWard",data.ward);
 			autoinsert_rowdata("#formWard",data.ward_gen);
+			autoinsert_rowdata("#formWard",data.ward_regdate);
 
 			// autoinsert_rowdata("#formWard",data.ward_exm);
 			if(!$.isEmptyObject(data.ward_exm)){
@@ -494,6 +495,7 @@ function populate_formWard(obj,rowdata){
 			button_state_ward('edit');
         }else{
 			button_state_ward('add');
+			autoinsert_rowdata("#formWard",data.ward_regdate);
 			// examination_ward.empty();
         }
 

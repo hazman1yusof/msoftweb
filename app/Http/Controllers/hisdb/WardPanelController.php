@@ -535,6 +535,12 @@ class WardPanelController extends defaultController
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
+        $ward_regdate_obj = DB::table('hisdb.episode')
+                    ->select('reg_date')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
         $responce = new stdClass();
 
         if($ward_obj->exists()){
@@ -550,6 +556,11 @@ class WardPanelController extends defaultController
         if($ward_exm_obj->exists()){
             $ward_exm_obj = $ward_exm_obj->get()->toArray();
             $responce->ward_exm = $ward_exm_obj;
+        }
+
+        if($ward_regdate_obj->exists()){
+            $ward_regdate_obj = $ward_regdate_obj->first();
+            $responce->ward_regdate = $ward_regdate_obj;
         }
 
         return json_encode($responce);
