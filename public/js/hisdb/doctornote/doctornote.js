@@ -222,8 +222,9 @@ function button_state_doctorNote(state){
 
 }
 
-var dateParam_docnote,doctornote_docnote;
+var dateParam_docnote,doctornote_docnote,curr_obj;
 function populate_doctorNote(obj,rowdata){
+	curr_obj=obj;
 	
 	emptyFormdata(errorField,"#formDoctorNote");
 
@@ -235,29 +236,8 @@ function populate_doctorNote(obj,rowdata){
 	$('#mrn_doctorNote').val(obj.mrn);
 	$("#episno_doctorNote").val(obj.episno);
 
-	var addnotes = document.getElementById("addnotes");
-  
 	// check if its current
-	if (document.getElementById("current").checked){
-		dateParam_docnote={
-			action:'get_table_date',
-			mrn:obj.MRN,
-			episno:obj.Episno
-		}
-		
-		addnotes.style.display = "none";
-		enableFields();
-	} 
-	// check if its past history
-	if (document.getElementById("past").checked){
-		dateParam_docnote={
-			action:'get_table_date_past',
-			mrn:obj.MRN,
-		}
-
-		addnotes.style.display = "block";
-		disableOtherFields();
-	}
+	on_toggling_curr_past(obj);
 
 	doctornote_docnote={
 		action:'get_table_doctornote',
@@ -271,6 +251,7 @@ function populate_doctorNote(obj,rowdata){
 
 //screen current patient//
 function populate_currDoctorNote(obj){
+	curr_obj=obj;
 	
 	emptyFormdata(errorField,"#formDoctorNote");
 
@@ -282,29 +263,7 @@ function populate_currDoctorNote(obj){
 	$('#mrn_doctorNote').val(obj.MRN);
 	$("#episno_doctorNote").val(obj.Episno);
 
-	var addnotes = document.getElementById("addnotes");
-  
-	// check if its current
-	if (document.getElementById("current").checked){
-		dateParam_docnote={
-			action:'get_table_date',
-			mrn:obj.MRN,
-			episno:obj.Episno
-		}
-		
-		addnotes.style.display = "none";
-		enableFields()
-	} 
-	// check if its past history
-	if (document.getElementById("past").checked){
-		dateParam_docnote={
-			action:'get_table_date_past',
-			mrn:obj.MRN,
-		}
-
-		addnotes.style.display = "block";
-		disableOtherFields();
-	}
+	on_toggling_curr_past(obj);
 
 	doctornote_docnote={
 		action:'get_table_doctornote',
@@ -314,6 +273,29 @@ function populate_currDoctorNote(obj){
 	};
 
     button_state_doctorNote('add');
+}
+
+function on_toggling_curr_past(obj = curr_obj){
+	var addnotes = document.getElementById("addnotes");
+	console.log(document.getElementById("current").checked)
+	if (document.getElementById("current").checked){
+		dateParam_docnote={
+			action:'get_table_date_curr',
+			mrn:obj.MRN,
+			episno:obj.Episno
+		}
+		
+		addnotes.style.display = "none";
+		enableFields();
+	}else if(document.getElementById("past").checked){
+		dateParam_docnote={
+			action:'get_table_date_past',
+			mrn:obj.MRN,
+		}
+
+		addnotes.style.display = "block";
+		disableOtherFields();
+	}
 }
 
 function autoinsert_rowdata_doctorNote(form,rowData){
@@ -409,11 +391,15 @@ $('#jqGridDoctorNote_panel').on('show.bs.collapse', function () {
     docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
+    });
+});
 
-		//to reload date table on radio btn click
-		$("input[name=toggle_type]").click(function(event){
-			docnote_date_tbl.ajax.reload();
-		});
+//to reload date table on radio btn click
+$("input[name=toggle_type]").on('click', function () {
+	on_toggling_curr_past();
+	docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
+		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
 });
 
@@ -423,10 +409,9 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 	}
 	
 	//to highlight selected row
-	if ( $(this).hasClass('selected') ) {
+	if($(this).hasClass('selected')) {
 		$(this).removeClass('selected');
-	}
-	else {
+	}else {
 		docnote_date_tbl.$('tr.selected').removeClass('selected');
 		$(this).addClass('selected');
 	}

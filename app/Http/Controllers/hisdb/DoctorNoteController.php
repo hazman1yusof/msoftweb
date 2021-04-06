@@ -28,8 +28,8 @@ class DoctorNoteController extends defaultController
     public function table(Request $request)
     {   
         switch($request->action){
-            case 'get_table_date':          // for current
-                return $this->get_table_date($request);
+            case 'get_table_date_curr':          // for current
+                return $this->get_table_date_curr($request);
             case 'get_table_date_past':     // for past history
                 return $this->get_table_date_past($request);
             case 'get_table_doctornote':
@@ -331,7 +331,7 @@ class DoctorNoteController extends defaultController
         }
     }
 
-    public function get_table_date(Request $request){
+    public function get_table_date_curr(Request $request){
 
 
         $responce = new stdClass();
