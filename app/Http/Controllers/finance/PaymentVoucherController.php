@@ -155,6 +155,8 @@ use Carbon\Carbon;
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$auditno)
+                ->where('source','=', 'AP')
+                ->where('trantype','=', 'PV')
                 ->update([
                     'amount' => $totalAmount,
                     'outamount' => '0',
