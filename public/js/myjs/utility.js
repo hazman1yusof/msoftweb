@@ -1620,7 +1620,9 @@ function faster_detail_load(){
 			let desc = elem.json.description;
 
 			if(except == undefined || except.indexOf(options.colModel.name) === -1){
-				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+desc+"</span>");
+				if($("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").children('span.help-block').length==0){//kalau xde help-block baru letak
+					$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+desc+"</span>");
+				}
 			}else if(except != undefined && except.indexOf(options.colModel.name) !== -1){
 				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").text('');
 			}else{

@@ -28,8 +28,8 @@ class DoctorNoteController extends defaultController
     public function table(Request $request)
     {   
         switch($request->action){
-            case 'get_table_date':          // for current
-                return $this->get_table_date($request);
+            case 'get_table_date_curr':          // for current
+                return $this->get_table_date_curr($request);
             case 'get_table_date_past':     // for past history
                 return $this->get_table_date_past($request);
             case 'get_table_doctornote':
@@ -141,6 +141,16 @@ class DoctorNoteController extends defaultController
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
+            DB::table('hisdb.episdiag')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_doctorNote,
+                        'episno' => $request->episno_doctorNote,
+                        'icdcode' => $request->icdcode,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+
             DB::commit();
 
         } catch (\Exception $e) {
@@ -178,28 +188,76 @@ class DoctorNoteController extends defaultController
             $patexam = DB::table('hisdb.patexam')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
+                ->where('recorddate','=',$request->recorddate)
                 ->where('compcode','=',session('compcode'));
 
             $pathealth = DB::table('hisdb.pathealth')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
+                ->where('recordtime','=',$request->recordtime)
                 ->where('compcode','=',session('compcode'));
 
             $pathistory = DB::table('hisdb.pathistory')
                 ->where('mrn','=',$request->mrn_doctorNote)
+                ->where('recorddate','=',$request->recorddate)
                 ->where('compcode','=',session('compcode'));
 
-            if($patexam->exists() && $pathealth->exists() && $pathistory->exists()){
-                DB::table('hisdb.patexam')
-                    ->where('mrn','=',$request->mrn_doctorNote)
-                    ->where('episno','=',$request->episno_doctorNote)
-                    ->where('recorddate','=',$request->recorddate)
-                    ->update([
+            $episdiag = DB::table('hisdb.episdiag')
+                ->where('mrn','=',$request->mrn_doctorNote)
+                ->where('episno','=',$request->episno_doctorNote)
+                ->where('compcode','=',session('compcode'));
+
+            if($patexam->exists()){
+                $patexam->update([
                         'examination' => $request->examination,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
+            }else{
+                DB::table('hisdb.patexam')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_doctorNote,
+                        'episno' => $request->episno_doctorNote,
+                        'examination' => $request->examination,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }
 
+            if($pathealth->exists()){
+                $pathealth
+                    ->update([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_doctorNote,
+                        'episno' => $request->episno_doctorNote,
+                        'clinicnote' => $request->clinicnote,
+                        'pmh' => $request->pmh,
+                        'drugh' => $request->drugh,
+                        'allergyh' => $request->allergyh,
+                        'socialh' => $request->socialh,
+                        'fmh' => $request->fmh,
+                        'followuptime' => $request->followuptime,
+                        'followupdate' => $request->followupdate,
+                        'plan_' => $request->plan_,
+                        'height' => $request->height,
+                        'weight' => $request->weight,
+                        'bp_sys1' => $request->bp_sys1,
+                        'bp_dias2' => $request->bp_dias2,
+                        'pulse' => $request->pulse,
+                        'temperature' => $request->temperature,
+                        'respiration' => $request->respiration,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }else{
                 DB::table('hisdb.pathealth')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -227,11 +285,10 @@ class DoctorNoteController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
+            }
 
-                DB::table('hisdb.pathistory')
-                    ->where('mrn','=',$request->mrn_doctorNote)
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recorddate','=',$request->recorddate)
+            if($pathistory->exists()){
+                $pathistory
                     ->update([
                         'pmh' => $request->pmh,
                         'drugh' => $request->drugh,
@@ -242,49 +299,6 @@ class DoctorNoteController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }else{
-
-                DB::table('hisdb.patexam')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_doctorNote,
-                        'episno' => $request->episno_doctorNote,
-                        'examination' => $request->examination,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                    ]);
-
-                DB::table('hisdb.pathealth')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_doctorNote,
-                        'episno' => $request->episno_doctorNote,
-                        'clinicnote' => $request->clinicnote,
-                        'pmh' => $request->pmh,
-                        'drugh' => $request->drugh,
-                        'allergyh' => $request->allergyh,
-                        'socialh' => $request->socialh,
-                        'fmh' => $request->fmh,
-                        'followuptime' => $request->followuptime,
-                        'followupdate' => $request->followupdate,
-                        'plan_' => $request->plan_,
-                        'height' => $request->height,
-                        'weight' => $request->weight,
-                        'bp_sys1' => $request->bp_sys1,
-                        'bp_dias2' => $request->bp_dias2,
-                        'pulse' => $request->pulse,
-                        'temperature' => $request->temperature,
-                        'respiration' => $request->respiration,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                    ]);
-
                 DB::table('hisdb.pathistory')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -300,6 +314,23 @@ class DoctorNoteController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }
+
+            if($episdiag->exists()){
+                $episdiag
+                    ->update([
+                        'icdcode' => $request->icdcode,
+                    ]);
+            }else{
+                DB::table('hisdb.episdiag')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_doctorNote,
+                        'episno' => $request->episno_doctorNote,
+                        'icdcode' => $request->icdcode,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
 
@@ -331,7 +362,7 @@ class DoctorNoteController extends defaultController
         }
     }
 
-    public function get_table_date(Request $request){
+    public function get_table_date_curr(Request $request){
 
 
         $responce = new stdClass();
