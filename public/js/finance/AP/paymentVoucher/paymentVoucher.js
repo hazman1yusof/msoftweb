@@ -595,6 +595,7 @@ $(document).ready(function () {
 			{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', hidden:false, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
+				cellEdit: true,
 				align: "right",
 				editrules:{required: true},edittype:"text",
 				editoptions:{
@@ -663,6 +664,7 @@ $(document).ready(function () {
 			addmore_jqgrid2.edit = true;
 			addmore_jqgrid2.more = false; //reset
 		},
+
 		gridComplete: function(){
 			
 		
@@ -691,6 +693,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			if($(this).prop('checked')){
 				$("#jqGrid2").jqGrid('setCell', rowid, 'allocamount', data.outamount);
+				//$("#jqGrid2").jqGrid('setCell', rowid, iCol, 'allocamount', 'edit-cell');
 				$("#jqGrid2").jqGrid('setCell', rowid, 'balance', 0);
 			}else{
 				$("#jqGrid2").jqGrid('setCell', rowid, 'allocamount', 0);
@@ -971,6 +974,7 @@ $(document).ready(function () {
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
 			errorField.length=0;
+			$("#dialogForm").dialog('close');
 		}else{
 			mycurrency.formatOn();
 		}
