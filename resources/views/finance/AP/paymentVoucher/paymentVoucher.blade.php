@@ -203,17 +203,6 @@ i.fa {
 								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
 				  			</div>
 
-						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>	 
-						 	<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>
-					</div>
-
-					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_paymode">Paymode</label>	 
 						 	<div class="col-md-2">
 							  	<div class='input-group'>
@@ -222,6 +211,10 @@ i.fa {
 							  	</div>
 							  	<span class="help-block"></span>
 						  	</div>
+					
+					</div>
+
+					<div class="form-group">
 
 						<label class="col-md-2 control-label" for="apacthdr_bankcode">Bank Code</label>	 
 						 	<div class="col-md-2">
@@ -230,14 +223,10 @@ i.fa {
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
-						</div>	  		
-					</div>
+						</div>	  	
 
-					<hr/>
-
-					<div class="form-group">
-				  		<label class="col-md-2 control-label" for="apacthdr_cheqno">Cheque No</label>	  
-				  			<div class="col-md-3">
+						<label class="col-md-2 control-label" for="apacthdr_cheqno">Cheque No</label>	  
+				  			<div class="col-md-2">
 							  	<div class='input-group'>
 									<input id="apacthdr_cheqno" name="apacthdr_cheqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -246,12 +235,14 @@ i.fa {
 						  	</div>
 
 						<label class="col-md-2 control-label" for="apacthdr_cheqdate">Cheque Date</label>  
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class='input-group'>
 									<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12"  class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
 								</div>
-							</div>	
+							</div>		
 					</div>
+
+					<hr/>
 
 					<div class="form-group">
 			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 

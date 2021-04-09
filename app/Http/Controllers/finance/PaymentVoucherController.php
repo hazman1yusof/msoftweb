@@ -154,7 +154,21 @@ use Carbon\Carbon;
             //then update to header
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$apacthdr_IV->auditno)
+                ->where('source','=', 'AP')
+                ->where('trantype','=', 'IN')
+                ->update([
+                    'amount' => $totalAmount,
+                    'outamount' => '0',
+                    'recstatus' => 'OPEN'
+                
+                ]);
+            
+            DB::table('finance.apacthdr')
+                ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$auditno)
+                ->where('source','=', 'AP')
+                ->where('trantype','=', 'PV')
                 ->update([
                     'amount' => $totalAmount,
                     'outamount' => '0',

@@ -71,7 +71,6 @@ $(document).ready(function () {
 				if(oper!='view'){
 					backdated.set_backdate($('#apacthdr_actdate').val());
 					dialog_bankcode.on();
-					dialog_department.on();
 					dialog_paymode.on();
 					dialog_cheqno.on();
 					dialog_suppcode.on();
@@ -80,7 +79,6 @@ $(document).ready(function () {
 				if(oper!='add'){
 					refreshGrid("#jqGrid2",urlParam2);
 					dialog_bankcode.check(errorField);
-					dialog_department.check(errorField);
 					dialog_paymode.check(errorField);
 					dialog_cheqno.check(errorField);
 					dialog_suppcode.check(errorField);
@@ -109,7 +107,6 @@ $(document).ready(function () {
 				$('.my-alert').detach();
 				$("#formdata a").off();
 				dialog_bankcode.off();
-				dialog_department.off();
 				dialog_paymode.off();
 				dialog_cheqno.off();
 				dialog_suppcode.off();
@@ -595,6 +592,7 @@ $(document).ready(function () {
 			{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', hidden:false, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
+				cellEdit: true,
 				align: "right",
 				editrules:{required: true},edittype:"text",
 				editoptions:{
@@ -663,6 +661,7 @@ $(document).ready(function () {
 			addmore_jqgrid2.edit = true;
 			addmore_jqgrid2.more = false; //reset
 		},
+
 		gridComplete: function(){
 			
 		
@@ -672,8 +671,7 @@ $(document).ready(function () {
 		beforeSubmit: function(postdata, rowid){ 
 			/*dialog_suppcode.check(errorField);
 			dialog_payto.check(errorField);
-			dialog_category.check(errorField);
-			dialog_department.check(errorField);*/
+			dialog_category.check(errorField);*/
 	 	}
 	});
 
@@ -691,6 +689,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			if($(this).prop('checked')){
 				$("#jqGrid2").jqGrid('setCell', rowid, 'allocamount', data.outamount);
+				//$("#jqGrid2").jqGrid('setCell', rowid, iCol, 'allocamount', 'edit-cell');
 				$("#jqGrid2").jqGrid('setCell', rowid, 'balance', 0);
 			}else{
 				$("#jqGrid2").jqGrid('setCell', rowid, 'allocamount', 0);
@@ -971,6 +970,7 @@ $(document).ready(function () {
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
 			errorField.length=0;
+			$("#dialogForm").dialog('close');
 		}else{
 			mycurrency.formatOn();
 		}
@@ -999,7 +999,6 @@ $(document).ready(function () {
 	// 		dialog_supplier.off();
 	// 		dialog_payto.off();
 	// 		dialog_category.off();
-	// 		dialog_department.off();
 	// 		saveHeader("#formdata",oper,saveParam);
 
 	// 		errorField.length=0;
@@ -1014,7 +1013,6 @@ $(document).ready(function () {
 		emptyFormdata(errorField,'#formdata2');
 		hideatdialogForm(true);
 		dialog_bankcode.on();
-		dialog_department.on();
 		dialog_paymode.on();
 		dialog_cheqno.on();
 		dialog_suppcode.on();
@@ -1072,38 +1070,6 @@ $(document).ready(function () {
 	jqgrid_label_align_right("#jqGrid3");
 
 	////////////////////////////////////////// object for dialog handler//////////////////////////////////////////
-	var dialog_department = new ordialog(
-		'department','sysdb.department','#apacthdr_deptcode',errorField,
-		{	colModel:[
-				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
-					},
-			ondblClickRow:function(){
-				$('#apacthdr_paymode').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#apacthdr_paymode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-			}
-		},{
-			title:"Select Department Code",
-			open: function(){
-				dialog_department.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_department.urlParam.filterVal=['ACTIVE', 'session.compcode']
-				}
-			},'urlParam','radio','tab'
-		);
-	dialog_department.makedialog(true);
 
 	var dialog_paymode = new ordialog(
 		'paymode','debtor.paymode','#apacthdr_paymode',errorField,
@@ -1237,8 +1203,8 @@ $(document).ready(function () {
 					url: '/util/get_value_default',
 					field: [],
 					table_name: ['finance.apacthdr'],
-					filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus',],
-					filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', ],
+					filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
+					filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
 					WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
         			WhereInVal: [['AP' || 'DF' || 'CF' || 'TX'], ['IN' || 'DN']],
 					table_id: 'idno',
