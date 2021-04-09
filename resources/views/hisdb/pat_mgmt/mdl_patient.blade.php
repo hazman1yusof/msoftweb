@@ -387,7 +387,7 @@
                                             <!--input class="form-control" id="corpcomp" placeholder="" type="text"-->
                                             <div class="input-group">
                                                 <input type="text" class="form-control form-mandatory" name="txt_payer_company" id="txt_payer_company">
-                                                <input type="hidden" name="hid_payer_company" id="hid_payer_company" value="" />
+                                                <input type="hidden" name="CorpComp" id="hid_payer_company" value="" />
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-info" id="btn_payer_company" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('payer_company');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
@@ -400,14 +400,13 @@
                                     <div class="form-group">
                                         <div class="col-md-offset-4 col-md-3">
                                             <small for="txt_payer_staffid">Staff ID</small>
-                                            <input class="form-control" name="txt_payer_staffid" id="txt_payer_staffid" placeholder="" type="text">
+                                            <input class="form-control" name="Staffid" id="txt_payer_staffid" placeholder="" type="text">
                                         </div>
                                          <div class="col-md-3">
                                             <small for="txt_payer_occupation">Occupation</small>
-                                            <!--input class="form-control" id="remarks" placeholder="" type="text"-->
                                             <div class="input-group">
                                                 <input type="text" class="form-control form-mandatory" name="txt_pat_occupation" id="txt_pat_occupation">
-                                                <input type="hidden" name="hid_pat_occupation" id="hid_pat_occupation" value="" />
+                                                <input type="hidden" name="OccupCode" id="hid_pat_occupation" value="" />
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-info" id="btn_pat_occupation" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_occupation');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
@@ -417,7 +416,7 @@
                                     <div class="form-group">
                                         <div class="col-md-offset-4 col-md-6">
                                             <small for="txt_payer_email_official">Company's Email</small>
-                                            <input class="form-control" name="txt_payer_email_official" id="txt_payer_email_official" placeholder="" type="email">
+                                            <input class="form-control" name="Email_official" id="txt_payer_email_official" placeholder="" type="email">
                                         </div>
                                         <div class="col-md-6">
                                             

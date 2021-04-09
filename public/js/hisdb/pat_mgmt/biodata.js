@@ -178,7 +178,7 @@
     function save_patient(oper,idno,mrn="nothing"){
         var saveParam={
             action:'save_patient',
-            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','Active','MRFolder','bloodgrp','NewMrn'],
+            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','Active','MRFolder','bloodgrp','NewMrn'],
             oper:oper,
             table_name:'hisdb.pat_mast',
             table_id:'idno',
@@ -295,7 +295,9 @@
         {code:'#hid_ID_Type',desc:'#txt_ID_Type',id:'idtype'},
         {code:'#hid_LanguageCode',desc:'#txt_LanguageCode',id:'language'},
         {code:'#hid_RaceCode',desc:'#txt_RaceCode',id:'race'},
-        {code:'#hid_Religion',desc:'#txt_Religion',id:'religioncode'}
+        {code:'#hid_Religion',desc:'#txt_Religion',id:'religioncode'},
+        {code:'#hid_pat_occupation',desc:'#txt_pat_occupation',id:'occupation'},
+        {code:'#hid_payer_company',desc:'#txt_payer_company',id:'company'}
     ]);
     desc_show.load_desc();
 
@@ -308,6 +310,8 @@
         this.language={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.race={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.religioncode={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.occupation={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.company={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.load_desc = function(){
             load_for_desc(this,'titlecode','pat_mast/get_entry?action=get_patient_title');
             load_for_desc(this,'citizencode','pat_mast/get_entry?action=get_patient_citizen');
@@ -316,6 +320,8 @@
             load_for_desc(this,'language','pat_mast/get_entry?action=get_patient_language');
             load_for_desc(this,'race','pat_mast/get_entry?action=get_patient_race');
             load_for_desc(this,'religioncode','pat_mast/get_entry?action=get_patient_religioncode');
+            load_for_desc(this,'occupation','pat_mast/get_entry?action=get_patient_occupation');
+            load_for_desc(this,'company','pat_mast/get_entry?action=get_all_company');
         }
 
         function load_for_desc(selobj,id,url){
@@ -402,8 +408,11 @@
         $('#cmb_pat_idtype').val(rowdata['ID_Type']);
         $('#txt_pat_idno').val(rowdata.idnumber);
 
-        // $('#occupcode').val(rowdata.occupcode);
+        //corporate info
+        $('#hid_payer_company').val(rowdata.CorpComp);
+        $('#txt_payer_staffid').val(rowdata.Staffid);
         $('#hid_pat_occupation').val(rowdata.OccupCode);
+        $('#txt_payer_email_official').val(rowdata.Email_official);
         
         $('#txt_pat_mrn').val(('0000000' + rowdata.MRN).slice(-7));
         $('#txt_pat_episno').val(rowdata.Episno);
@@ -424,11 +433,6 @@
         $('#cmb_pat_religion').val(rowdata.Religion);
         $('#maritalcode').val(rowdata.MaritalCode);
         $('#cmb_pat_langcode').val(rowdata.LanguageCode);
-        $('#remarks').val(rowdata.Remarks);
-        $('#relatecode').val(rowdata.RelateCode);
-        $('#corpcomp').val(rowdata.CorpComp);
-        $('#email_official').val(rowdata.Email_official);
-        $('#childno').val(rowdata.Childno);
         $('#txt_pat_curradd1').val(rowdata.Address1);
         $('#txt_pat_curradd2').val(rowdata.Address2);
         $('#txt_pat_curradd3').val(rowdata.Address3);

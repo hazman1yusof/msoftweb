@@ -213,8 +213,10 @@ $(document).ready(function() {
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        if($('#curpat').val() == 'true'){
+            populate_ordcom_currpt(rows[bootgrid_last_rowid]);
+        }
 
-        populate_ordcom_currpt(rows[bootgrid_last_rowid]);
         if($('#epistycode').val() == 'OP'){
             populate_tiCurrentPt(rows[bootgrid_last_rowid]);
             populate_currDoctorNote(rows[bootgrid_last_rowid]);

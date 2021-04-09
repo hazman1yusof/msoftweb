@@ -506,13 +506,17 @@ class PatmastController extends defaultController
         ];
 
         $array_ignore = ['mrn','MRN','first_visit_date','last_visit_date','Episno'];
+        // dd($request->field);
 
         foreach ($request->field as $key => $value) {
             if(array_search($value,$array_ignore))continue;
             // dump(empty($request[$request->field[$key]]));
-            // if(empty($request[$request->field[$key]]))continue;
+            if(empty($request[$request->field[$key]])){
+                $array_update[$value] = null;
+            }else{
+                $array_update[$value] = strtoupper($request[$request->field[$key]]);
+            }
             // dump($request[$request->field[$key]]);
-            $array_update[$value] = strtoupper($request[$request->field[$key]]);
         }
 
         try {

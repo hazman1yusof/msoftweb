@@ -210,11 +210,11 @@
 	
 
 	<!-- mdl_accomodation -->
-	<div id="mdl_accomodation" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+	<div id="mdl_accomodation" class="modal fade" role="dialog" title="title" data-backdrop="static" >
 		<div class="modal-dialog smallmodal">
 			<!-- Modal content-->
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header label-info">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">Select Accomadation</h4>
 				</div>

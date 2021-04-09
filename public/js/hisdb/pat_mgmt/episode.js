@@ -126,7 +126,6 @@
         if (iregin == '0' || iregin == '') {
             disableEpisode (true);
         } else {  
-
             disableEpisode (false);
             $('#cmb_epis_pay_mode').empty();
 
@@ -171,7 +170,7 @@
                     ]
         } );
 
-    $("#btn_epis_payer").on('click',epis_payer_onclick);
+    // $("#btn_epis_payer").on('click',epis_payer_onclick);
 
     function epis_payer_onclick(){
         let debtor_mdl_opened = $('#mdl_epis_pay_mode');
@@ -200,7 +199,6 @@
                    ]
             });
 
-    $("#btn_bill_type_info").on('click',bill_type_info_onclick);
     function bill_type_info_onclick(){
         billtype_mdl_opened = $('#mdl_bill_type');
         billtype_mdl_opened.modal('show');
@@ -217,7 +215,6 @@
 
     $( "#btngurantor").click(function() {
         $('#bs-guarantor').modal('show');
-        $('#mdl_epis_pay_mode').modal('hide');
     });
 
     $( "#btngurantorclose").click(function() {
@@ -227,8 +224,9 @@
     // $( "#btngurantorcommit").click(add_guarantor);
 
 
-    $( "#btn_refno_info").click(function() 
-    {
+    // $("#btn_refno_info").on('click',btn_refno_info_onclick);
+
+    function btn_refno_info_onclick(){
         var refno_table = null;
         var refno_table_name = null;
         var refno_mdl_opened = null;
@@ -268,7 +266,7 @@
         {
             refno_table.destroy();
         });
-    });
+    }
 
     $( "#txt_epis_our_refno2").click(function() {
         $('#glReference').modal('show');
@@ -279,12 +277,7 @@
     });
 
     $( "#btn_epis_new_gl").click(function() {
-        $('#mdl_reference').modal('hide');
         $('#mdl_new_gl').modal('show');
-    });
-
-    $( "#btnglclose").click(function() {
-        $('#mdl_reference').modal('show');
     });
 
     $( "#btnglsave").click(function() {
@@ -311,6 +304,17 @@
     });
 
     function disableEpisode(status) {
+        if(status == false){
+            $("#btn_refno_info").on('click',btn_refno_info_onclick);
+            $("#btn_epis_payer").on('click',epis_payer_onclick);
+            $("#btn_bill_type_info").on('click',bill_type_info_onclick);
+
+        }else if(status == true){
+            $("#btn_refno_info").off('click',btn_refno_info_onclick);
+            $("#btn_epis_payer").off('click',epis_payer_onclick);
+            $("#btn_bill_type_info").off('click',bill_type_info_onclick);
+
+        }
 
         $('#txt_epis_payer').prop("disabled",status);
         $('#txt_epis_bill_type').prop("disabled",status);

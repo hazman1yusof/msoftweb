@@ -21,20 +21,18 @@
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
 
 	<style type="text/css" class="init">
+		#mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl{
+			display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);
+		}
 		.smallmodal{
-			width: 70% !important; margin: auto !important;
+			width: 70% !important; margin: auto !important;margin-top:30px;margin-top: 30px !important;
+		}
+		.smallmodal > .modal-content{
+			border: 1px solid grey;
 		}
 		tr.dtrg-group{
 			font-size: 15px;
 		}
-		td.details-control {
-			background: url('../../../../assets/img/details_open.png') no-repeat center center;
-			cursor: pointer;
-		}
-		tr.details td.details-control {
-			background: url('../../../../assets/img/details_close.png') no-repeat center center;
-		}
-
 		.uppercase, .odd, .even{
 		  	text-transform:uppercase
 		}

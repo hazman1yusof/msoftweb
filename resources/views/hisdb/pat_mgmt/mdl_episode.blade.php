@@ -579,8 +579,201 @@
     </div>
 </div>
 
-<div id="mdl_new_gl" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
+<div id="mdl_epis_pay_mode" class="modal fade" role="dialog" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog smallmodal">
+        <form class="form-horizontal">
+            <div class="modal-content">
+                <div class="modal-header label-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p align="center"><b>PAYER INFORMATION</b></p>
+                </div>
+                <div class="modal-body">
+                    <table id="tbl_epis_debtor" class="table table-striped" width="100%">
+                        <thead>
+                        <tr>
+                            <th data-column-id="debtor_type" >Debtor Type</th>
+                            <th data-column-id="debtor_code" >Debtor Code</th>
+                            <th data-column-id="debtor_name" >Name</th>
+                        </tr>
+                        </thead>
+
+                    </table>
+                    <br />
+                    <button id="btngurantor" type="button" class="btn btn-primary" >Guarantor</button>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!--button type="button" class="btn btn-success">Save</button-->
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+<div id="bs-guarantor" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog smallmodal">
+        <form class="form-horizontal">
+            <div class="modal-content">
+                <div class="modal-header label-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p align="center"><b>PR - GUARANTOR</b> </p>
+                </div>
+                <form id="frm_guarantor">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small for="input-title">PERSON RESPONSIBLE DETAILS</small>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="col-md-2">
+                                            <small for="input-title">PR CODE</small>
+                                            <input class="form-control" id="txt_grtr_prcode" placeholder="" type="text">
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <small for="input-mrn">NAME</small>
+                                            <input class="form-control" id="txt_grtr_name" placeholder="" type="text">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <small for="input-title">RELATIONSHIP</small>
+                                            <!--input class="form-control" id="txt_grtr_relation" placeholder="" type="text" onclick="Global.pop_item_select('grtr_relation');">
+                                            <input type="text" id="hid_grtr_relation" /-->
+                                            <select id="cmb_grtr_relation" name="cmb_grtr_relation" class="form-control form-mandatory">
+                                                <option value="">- Select relationship -</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <small for="input-mrn">CREDIT LIMIT</small>
+                                            <input class="form-control" id="txt_grtr_credit_limit" placeholder="" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small for="input-title">HOME ADDRESS</small>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <input class="form-control" id="txt_grtr_hadd1" placeholder="" type="text"><br />
+                                        <input class="form-control" id="txt_grtr_hadd2" placeholder="" type="text"><br />
+                                        <input class="form-control" id="txt_grtr_hadd3" placeholder="" type="text"><br />
+                                        <input class="form-control" id="txt_grtr_hadd4" placeholder="" type="text"><br />
+                                        <div class="col-md-6">
+                                            <small for="input-title">TEL</small>
+                                            <input class="form-control" id="txt_grtr_htel" placeholder="" type="text">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <small for="input-title">FAX</small>
+                                            <input class="form-control" id="txt_grtr_hfax" placeholder="" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <small for="input-title">OFFICE ADDRESS</small>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <input class="form-control" id="txt_grtr_oadd1" placeholder="" type="text"><br />
+                                        <input class="form-control" id="txt_grtr_oadd2" placeholder="" type="text"><br />
+                                        <input class="form-control" id="txt_grtr_oadd3" placeholder="" type="text"><br />
+                                        <input class="form-control" id="txt_grtr_oadd4" placeholder="" type="text"><br />
+                                        <div class="col-md-6">
+                                            <small for="input-title">TEL</small>
+                                            <input class="form-control" id="txt_grtr_otel" placeholder="" type="text">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <small for="input-title">FAX</small>
+                                            <input class="form-control" id="txt_grtr_ofax" placeholder="" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="modal-footer">
+                    <button id="btngurantorclose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btngurantorcommit"  type="button" class="btn btn-success">Commit</button>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+<div id="mdl_bill_type" class="modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog smallmodal">
+        <form class="form-horizontal">
+            <div class="modal-content">
+                <div class="modal-header label-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p align="center"><b>BILL TYPE</b></p>
+                </div>
+                <div class="modal-body">                    
+                    <table id="tbl_epis_billtype" class="table table-striped" width="100%">
+                        <thead>
+                        <tr>
+                            <th data-column-id="col_bill_type" >Type</th>
+                            <th data-column-id="col_bill_desc" >Description</th>
+                        </tr>
+                        </thead>
+
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!--button type="button" class="btn btn-success">Save</button-->
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+<div id="mdl_reference" class="modal fade" role="dialog" data-backdrop="static" style="z-index: 111 !important;">
+    <div class="modal-dialog smallmodal">
+        <form class="form-horizontal">
+            <div class="modal-content">
+                <div class="modal-header label-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p align="center"><b>GL REFERENCE</b></p>
+                </div>
+                <div class="modal-body">
+                    <table id="tbl_epis_reference" class="table table-striped" width="100%">
+                        <thead>
+                        <tr>
+                            <th data-column-id="mrn" >Staff ID</th>
+                            <th data-column-id="mrn" >Debtor Code</th>
+                            <th data-column-id="mrn" >Name</th>
+                            <th data-column-id="mrn" >GL Type</th>
+                            <th data-column-id="mrn" >Debtorcode</th>
+                        </tr>
+                        </thead>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" disabled>VIEW GL</button>
+                    <button type="button" class="btn btn-info" disabled>GL DETAIL</button>
+                    <button id="btn_epis_new_gl" type="button" class="btn btn-info" >NEW GL</button>
+                    <button type="button" class="btn btn-info" disabled>OK</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="mdl_new_gl" class="modal fade" tabindex="-1" role="dialog" >
+    <div class="modal-dialog smallmodal">
         <form class="form-horizontal" id="glform">
             <div class="modal-content">
                 <div class="modal-header label-primary">
@@ -684,194 +877,5 @@
         </form>
 
 
-    </div>
-</div>
-
-<div id="bs-guarantor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <form class="form-horizontal">
-            <div class="modal-content">
-                <div class="modal-header label-primary">
-                    <p align="center"><b>PR - GUARANTOR</b> </p>
-                </div>
-                <form id="frm_guarantor">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <small for="input-title">PERSON RESPONSIBLE DETAILS</small>
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <div class="col-md-2">
-                                            <small for="input-title">PR CODE</small>
-                                            <input class="form-control" id="txt_grtr_prcode" placeholder="" type="text">
-
-                                        </div>
-                                        <div class="col-md-4">
-                                            <small for="input-mrn">NAME</small>
-                                            <input class="form-control" id="txt_grtr_name" placeholder="" type="text">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <small for="input-title">RELATIONSHIP</small>
-                                            <!--input class="form-control" id="txt_grtr_relation" placeholder="" type="text" onclick="Global.pop_item_select('grtr_relation');">
-                                            <input type="text" id="hid_grtr_relation" /-->
-                                            <select id="cmb_grtr_relation" name="cmb_grtr_relation" class="form-control form-mandatory">
-                                                <option value="">- Select relationship -</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <small for="input-mrn">CREDIT LIMIT</small>
-                                            <input class="form-control" id="txt_grtr_credit_limit" placeholder="" type="text">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <small for="input-title">HOME ADDRESS</small>
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <input class="form-control" id="txt_grtr_hadd1" placeholder="" type="text"><br />
-                                        <input class="form-control" id="txt_grtr_hadd2" placeholder="" type="text"><br />
-                                        <input class="form-control" id="txt_grtr_hadd3" placeholder="" type="text"><br />
-                                        <input class="form-control" id="txt_grtr_hadd4" placeholder="" type="text"><br />
-                                        <div class="col-md-6">
-                                            <small for="input-title">TEL</small>
-                                            <input class="form-control" id="txt_grtr_htel" placeholder="" type="text">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <small for="input-title">FAX</small>
-                                            <input class="form-control" id="txt_grtr_hfax" placeholder="" type="text">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <small for="input-title">OFFICE ADDRESS</small>
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <input class="form-control" id="txt_grtr_oadd1" placeholder="" type="text"><br />
-                                        <input class="form-control" id="txt_grtr_oadd2" placeholder="" type="text"><br />
-                                        <input class="form-control" id="txt_grtr_oadd3" placeholder="" type="text"><br />
-                                        <input class="form-control" id="txt_grtr_oadd4" placeholder="" type="text"><br />
-                                        <div class="col-md-6">
-                                            <small for="input-title">TEL</small>
-                                            <input class="form-control" id="txt_grtr_otel" placeholder="" type="text">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <small for="input-title">FAX</small>
-                                            <input class="form-control" id="txt_grtr_ofax" placeholder="" type="text">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-                <div class="modal-footer">
-                    <button id="btngurantorclose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button id="btngurantorcommit"  type="button" class="btn btn-success">Commit</button>
-                </div>
-            </div>
-        </form>
-
-
-    </div>
-</div>
-
-<div id="mdl_epis_pay_mode" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <form class="form-horizontal">
-            <div class="modal-content">
-                <div class="modal-header label-success">
-                    <p align="center"><b>PAYER INFORMATION</b></p>
-                </div>
-                <div class="modal-body">
-                    <table id="tbl_epis_debtor" class="table table-striped" width="100%">
-                        <thead>
-                        <tr>
-                            <th data-column-id="debtor_type" >Debtor Type</th>
-                            <th data-column-id="debtor_code" >Debtor Code</th>
-                            <th data-column-id="debtor_name" >Name</th>
-                        </tr>
-                        </thead>
-
-                    </table>
-                    <br />
-                    <button id="btngurantor" type="button" class="btn btn-primary" >Guarantor</button>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <!--button type="button" class="btn btn-success">Save</button-->
-                </div>
-            </div>
-        </form>
-
-
-    </div>
-</div>
-
-<div id="mdl_bill_type" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <form class="form-horizontal">
-            <div class="modal-content">
-                <div class="modal-header label-success">
-                    <p align="center"><b>BILL TYPE</b></p>
-                </div>
-                <div class="modal-body">                    
-                    <table id="tbl_epis_billtype" class="table table-striped" width="100%">
-                        <thead>
-                        <tr>
-                            <th data-column-id="col_bill_type" >Type</th>
-                            <th data-column-id="col_bill_desc" >Description</th>
-                        </tr>
-                        </thead>
-
-                    </table>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <!--button type="button" class="btn btn-success">Save</button-->
-                </div>
-            </div>
-        </form>
-
-
-    </div>
-</div>
-
-<div id="mdl_reference" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <form class="form-horizontal">
-            <div class="modal-content">
-                <div class="modal-header label-primary">
-                    <p align="center"><b>GL REFERENCE</b></p>
-                </div>
-                <div class="modal-body">
-                    <table id="tbl_epis_reference" class="table table-striped" width="100%">
-                        <thead>
-                        <tr>
-                            <th data-column-id="mrn" >Staff ID</th>
-                            <th data-column-id="mrn" >Debtor Code</th>
-                            <th data-column-id="mrn" >Name</th>
-                            <th data-column-id="mrn" >GL Type</th>
-                            <th data-column-id="mrn" >Debtorcode</th>
-                        </tr>
-                        </thead>
-
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" disabled>VIEW GL</button>
-                    <button type="button" class="btn btn-info" disabled>GL DETAIL</button>
-                    <button id="btn_epis_new_gl" type="button" class="btn btn-info" >NEW GL</button>
-                    <button type="button" class="btn btn-info" disabled>OK</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-                </div>
-            </div>
-        </form>
     </div>
 </div>
