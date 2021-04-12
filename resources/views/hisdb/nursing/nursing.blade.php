@@ -161,12 +161,12 @@
 												<tr>
 													<td><input class="form-check-input" type="checkbox" id="allergyunknown" name="allergyunknown" value="1"></td>
 													<td><label class="form-check-label" for="allergyunknown">Unknown</label></td>
-													<td></td>
+													<td><textarea id="unknown_remarks" name="unknown_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
 												</tr>
 												<tr>
 													<td><input class="form-check-input" type="checkbox" id="allergynone" name="allergynone" value="1"></td>
 													<td><label class="form-check-label" for="allergynone">None</label></td>
-													<td></td>
+													<td><textarea id="none_remarks" name="none_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
 												</tr>
 											</tbody>
 										</table>
