@@ -198,103 +198,187 @@ class PatmastController extends defaultController
             case 'get_patient_occupation':
                 $data = DB::table('hisdb.occupation')
                         ->select('occupcode as code','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
+                        ->where('compcode','=',session('compcode'));
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                        
                 break;
 
             case 'get_patient_title':
                 $data = DB::table('hisdb.title')
                         ->select('code','description')
                         ->where('compcode','=',session('compcode'))
-                        ->orderBy('idno', 'desc')
-                        ->get();
+                        ->orderBy('idno', 'desc');
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+
                 break;
 
             case 'get_patient_citizen':
                 $data = DB::table('hisdb.citizen')
                         ->select('code','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
+                        ->where('compcode','=',session('compcode'));
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+
                 break;
 
             case 'get_patient_areacode':
                 $data = DB::table('hisdb.areacode')
                         ->select('areacode as code','description')
                         ->where('compcode','=',session('compcode'))
-                        ->orderBy('idno', 'desc')
-                        ->get();
+                        ->orderBy('idno', 'desc');
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_patient_sex':
                 $data = DB::table('hisdb.sex')
                         ->select('code','description')
-                        // ->where('compcode','=',session('compcode'))
-                        ->get();
+                        ->where('compcode','=',session('compcode'));
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_patient_race':
                 $data = DB::table('hisdb.racecode')
                         ->select('code','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
+                        ->where('compcode','=',session('compcode'));
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
                 
             case 'get_patient_religioncode':
                 $data = DB::table('hisdb.religion')
                         ->select('code','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
+                        ->where('compcode','=',session('compcode'));
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_patient_urlmarital':
                 $data = DB::table('hisdb.marital')
                         ->select('code','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
+                        ->where('compcode','=',session('compcode'));
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_patient_language':
                 $data = DB::table('hisdb.languagecode')
                         ->select('code','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
+                        ->where('compcode','=',session('compcode'));
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_patient_relationship':
                 $data = DB::table('hisdb.relationship')
                         ->select('relationshipcode as code','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
+                        ->where('compcode','=',session('compcode'));
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_reg_dept':
                 $data = DB::table('sysdb.department')
                     ->select('deptcode as code','description')
                     ->where('compcode','=',session('compcode'))
-                    ->where('regdept','=','1')
-                    ->get();
+                    ->where('regdept','=','1');
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_reg_source':
                 $data = DB::table('hisdb.admissrc')
                         ->select('idno as code','description')
                         ->where('compcode','=',session('compcode'))
-                        ->orderBy('idno', 'desc')
-                        ->get();
+                        ->orderBy('idno', 'desc');
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_reg_case':
                 $data = DB::table('hisdb.casetype')
                         ->select('case_code as code','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
+                        ->where('compcode','=',session('compcode'));
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_reg_fin':
                 $data = DB::table('debtor.debtortype')
                         ->select('debtortycode as code','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
+                        ->where('compcode','=',session('compcode'));
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_reg_bed':
@@ -313,8 +397,14 @@ class PatmastController extends defaultController
             case 'get_reg_doctor':
                 $data = DB::table('hisdb.doctor')
                         ->select('doctorcode as code','doctorname as description')
-                        ->where('compcode','=',session('compcode'))     
-                        ->get();
+                        ->where('compcode','=',session('compcode'))     ;
+
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
                 break;
 
             case 'get_patient_idtype':
@@ -411,8 +501,14 @@ class PatmastController extends defaultController
                         ->select('debtormast.debtorcode as code','debtormast.name as description')
                         ->leftJoin('debtor.debtortype', 'debtortype.debtortycode', '=', 'debtormast.debtortype')
                         ->where('debtormast.compcode','=',session('compcode'))
-                        ->whereNotIn('debtortype.debtortycode',['PT','PR'])
-                        ->get();
+                        ->whereNotIn('debtortype.debtortycode',['PT','PR']);
+
+                if(!empty($request->search)){
+                    $data = $data->where('debtormast.name','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                
 //             SELECT * FROM debtortype,debtormast 
 // WHERE debtortype.compcode='9A' AND debtortycode NOT IN ('PT','PR') 
 // AND debtormast.compcode = debtortype.compcode AND debtormast.debtortype = debtortype.debtortycode

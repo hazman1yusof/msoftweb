@@ -79,7 +79,7 @@
                                     <div class="col-md-offset-1 col-md-10">
                                         <small for="txt_epis_dept">Registration Department</small>
                                         <div class="input-group">
-                                            <input value="{{$userdeptdesc ?? ''}}" type="text" class="form-control form-mandatory" id="txt_epis_dept" required>
+                                            <input value="{{$userdeptdesc ?? ''}}" type="text" class="form-control form-mandatory" id="txt_epis_dept" required tabindex=1>
                                             <input value="{{$userdeptcode ?? ''}}" type="hidden" id="hid_epis_dept" name="regdept" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_dept" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_dept');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -89,7 +89,7 @@
                                     <div class="col-md-offset-1 col-md-10">
                                         <small for="txt_epis_source">Registration Source</small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_epis_source" id="txt_epis_source" required>
+                                            <input type="text" class="form-control form-mandatory" name="txt_epis_source" id="txt_epis_source" required tabindex=2>
                                             <input type="hidden" id="hid_epis_source" name="" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_source" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_source');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -99,7 +99,7 @@
                                     <div class="col-md-offset-1 col-md-10">
                                         <small for="txt_epis_case">Case </small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_epis_case" id="txt_epis_case" required>
+                                            <input type="text" class="form-control form-mandatory" name="txt_epis_case" id="txt_epis_case" required tabindex=3>
                                             <input type="hidden" id="hid_epis_case" name="case_code"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_case" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_case');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -109,7 +109,7 @@
                                     <div class="col-md-offset-1 col-md-10">
                                         <small for="txt_epis_doctor">Doctor</small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_epis_doctor" id="txt_epis_doctor" required>
+                                            <input type="text" class="form-control form-mandatory" name="txt_epis_doctor" id="txt_epis_doctor" required tabindex=4>
                                             <input type="hidden" id="hid_epis_doctor" name="admdoctor"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_doctor" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_doctor');"><span class="fa fa-ellipsis-h"></span> </button>
