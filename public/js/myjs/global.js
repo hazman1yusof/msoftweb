@@ -82,6 +82,20 @@ var Global = function () {
 				act = "get_reg_bed";
 				title = "Select Patient Bed";
 				break;
+			case "newgl_occupcode":
+				act = "get_patient_occupation";
+				title = "Select GL Occupation";
+				break;
+			case "newgl_relatecode":
+				act = "get_patient_relationship";
+				title = "Select GL Relationship";
+				break;
+			case "newgl_corpcomp":
+				act = "get_all_company";
+				title = "Select Company";
+				break;
+
+				
 		}
 
 		$("#txt_item_selector").text(title);

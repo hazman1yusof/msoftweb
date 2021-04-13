@@ -223,84 +223,26 @@
 
     // $( "#btngurantorcommit").click(add_guarantor);
 
+    var refno_object = null;
 
     // $("#btn_refno_info").on('click',btn_refno_info_onclick);
+    
 
     function btn_refno_info_onclick(){
-        var refno_table = null;
-        var refno_table_name = null;
-        var refno_mdl_opened = null;
-        var refno_item = null;
-
-        refno_table_name = $('#tbl_epis_reference');
-        
-        refno_table = $('#tbl_epis_reference').DataTable( {
-                        "ajax": "/pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val(),
-                        "columns": [
-                                    {'data': 'staffid'}, 
-                                    {'data': 'debtorcode' },
-                                    {'data': 'name' },
-                                    {'data': 'gltype' },
-                                    {'data': 'debtorcode' },
-                                   ]
-                } );
-                
-        refno_mdl_opened = $('#mdl_reference');
-        refno_mdl_opened.modal('show');
-        
-        // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
-        refno_table_name.on('dblclick', 'tr', function () {
-                //console.dir(debtor_table_name);
-                refno_item = refno_table.row( this ).data();                
-                //console.log("type2="+type + " refno_item=" + refno_item["description"]);
-                $('#txt_epis_our_refno').val(refno_item["debtorcode"]);
-                $('#txt_epis_refno').val(refno_item["debtorcode"]);
-                
-                    
-                refno_mdl_opened.modal('hide');
-                
-                //alert( 'You clicked on ' + refno_item["description"] + '\'s row.' );
-            } );
-            
-        refno_mdl_opened.on('hidden.bs.modal', function () 
-        {
-            refno_table.destroy();
-        });
+        if(refno_object == null){
+            refno_object = new refno_class();
+            refno_object.show_mdl(true);
+        }else{
+            refno_object.show_mdl();
+        }
     }
 
-    $( "#txt_epis_our_refno2").click(function() {
+    $("#txt_epis_our_refno2").click(function() {
         $('#glReference').modal('show');
     });
     
-    $( "#btn_payer_new_gl").click(function() {
+    $("#btn_payer_new_gl").click(function() {
         $('#mdl_new_gl').modal('show');
-    });
-
-    $( "#btn_epis_new_gl").click(function() {
-        $('#mdl_new_gl').modal('show');
-    });
-
-    $( "#btnglsave").click(function() {
-        if($('#glform').valid()){
-            var _token = $('#csrf_token').val();
-            let serializedForm = $( "#glform" ).serializeArray();
-            let obj = {
-                    'debtorcode':$('#hid_epis_payer').val(),
-                    'mrn':$('#mrn_episode').val(),
-                    '_token': _token
-            }
-            
-            $.post( '/pat_mast/save_gl', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-                $("#glform").trigger('reset');
-                $('#mdl_new_gl').modal('hide');
-                $('#mdl_reference').modal('show');
-            }).fail(function(data) {
-                alert(data.responseText);
-            }).success(function(data){
-            });
-        }
-        
-
     });
 
     function disableEpisode(status) {
@@ -441,6 +383,7 @@
                 $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
                 $('#cmb_epis_pay_mode').val(episdata.pyrmode.toUpperCase());
                 $('#txt_epis_payer').val(debtormast.name);
+                $('#hid_epis_payer').val(debtormast.debtorcode);
                 $('#hid_epis_bill_type').val(episdata.billtype);
                 $('#txt_epis_refno').val();
                 $('#txt_epis_our_refno').val();
@@ -707,16 +650,6 @@
 
     }
 
-    function pad(pad, str, padLeft) {
-        if (typeof str === 'undefined') 
-            return pad;
-        if (padLeft) {
-            return (pad + str).slice(-pad.length);
-        } else {
-            return (str + pad).substring(0, pad.length);
-        }
-    }
-
     if($('#epistycode').val() == 'OP'){
         var epis_desc_show = new loading_desc_epis([
             {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
@@ -724,8 +657,10 @@
             {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
             {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
             {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
-            // {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
-            {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'}
+            {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+            {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+            {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+            {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
         ]);
     }else if($('#epistycode').val() == 'IP'){
         var epis_desc_show = new loading_desc_epis([
@@ -735,8 +670,11 @@
             {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
             {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
             {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
-            // {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+            {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
             {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+            {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+            {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'},
+            {code:'#hid_newgl_corpcomp',desc:'#txt_newgl_corpcomp',id:'newgl_corpcomp'}
             // {code:'',desc:'',id:'bed_dept'},
             // {code:'',desc:'',id:'bed_ward'}
         ]);
@@ -755,7 +693,11 @@
         this.epis_payer={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.bill_type={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.bed_dept={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.occupation={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.bed_ward={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.newgl_occupcode={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.newgl_relatecode={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.newgl_corpcomp={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.load_desc = function(){
             load_for_desc(this,'regdept','pat_mast/get_entry?action=get_reg_dept');
             load_for_desc(this,'regsource','pat_mast/get_entry?action=get_reg_source');
@@ -763,10 +705,13 @@
             load_for_desc(this,'doctor','pat_mast/get_entry?action=get_reg_doctor');
             load_for_desc(this,'epis_bed','pat_mast/get_entry?action=get_reg_bed');
             load_for_desc(this,'epis_fin','pat_mast/get_entry?action=get_reg_fin');
-            // load_for_desc(this,'epis_payer','pat_mast/get_entry?action=get_debtor_list');
+            load_for_desc(this,'epis_payer','pat_mast/get_entry?action=get_debtor_list');
             load_for_desc(this,'bill_type','pat_mast/get_entry?action=get_billtype_list');
             load_for_desc(this,'bed_dept','pat_mast/get_entry?action=get_bed_type');
             load_for_desc(this,'bed_ward','pat_mast/get_entry?action=get_bed_ward');
+            load_for_desc(this,'newgl_occupcode','pat_mast/get_entry?action=get_patient_occupation');
+            load_for_desc(this,'newgl_relatecode','pat_mast/get_entry?action=get_patient_relationship');
+            load_for_desc(this,'newgl_corpcomp','pat_mast/get_entry?action=get_debtor_list');
         }
 
         function load_for_desc(selobj,id,url){
@@ -815,7 +760,6 @@
         this.write_desc = function(){
             self=this;
             obj.forEach(function(elem){
-                console.log(elem)
                 if($(elem.code).val().trim() != ""){
                     $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id));
                 }
@@ -940,5 +884,106 @@
             $('#accomodation_table tbody').off('dblclick');
             accomodation_table.destroy();
         });
+    }
+
+    function pad(pad, str, padLeft) {
+        if (typeof str === 'undefined') 
+            return pad;
+        if (padLeft) {
+            return (pad + str).slice(-pad.length);
+        } else {
+            return (str + pad).substring(0, pad.length);
+        }
+    }
+
+    function refno_class(){
+        $("#btn_epis_new_gl").click(function() {
+            $('#mdl_new_gl').modal('show');
+
+        });
+
+        $("#btnglclose").click(function() {
+            $("#glform").trigger('reset');
+            $("#newgl_default_tab").click();
+        });
+
+        this.refno_table = $('#tbl_epis_reference').DataTable( {
+            "ajax": "./pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val(),
+            "columns": [
+                        {'data': 'childno'}, 
+                        {'data': 'debtorcode' },
+                        {'data': 'enddate' },
+                        {'data': 'episno' },
+                        {'data': 'gltype' },
+                        {'data': 'medcase' },
+                        {'data': 'mrn' },
+                        {'data': 'name' },
+                        {'data': 'ourrefno' },
+                        {'data': 'relatecode' },
+                        {'data': 'refno' },
+                        {'data': 'remark' },
+                        {'data': 'staffid' },
+                        {'data': 'startdate' },
+                ],
+                "columnDefs": [
+                {
+                    "targets": [ 'childno' ],
+                    "visible": false,
+                    "searchable": false
+                }
+            ]
+        });
+
+
+        this.show_mdl = function(first = false){
+            $('#mdl_reference').modal('show');
+            if(!first){
+                this.refno_table.ajax.reload();
+            }
+        }
+
+        let self = this;
+        $('#tbl_epis_reference').on('dblclick', 'tr', function () {
+            let refno_item = self.refno_table.row( this ).data();
+            $('#txt_epis_our_refno').val(refno_item["debtorcode"]);
+            $('#txt_epis_refno').val(refno_item["debtorcode"]);
+            
+                
+            $('#mdl_reference').modal('hide');
+        } );
+
+        $('#select_gl_tab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            let selected_tab = $(e.target).text();
+            $('#newgl-gltype').val(selected_tab);
+        });
+
+        $("#btnglsave").on('click',function(){
+            if($('#glform').valid()){
+                var _token = $('#csrf_token').val();
+                let serializedForm = $( "#glform" ).serializeArray();
+                let obj = {
+                    'debtorcode':$('#hid_epis_payer').val(),
+                    'mrn':$('#mrn_episode').val(),
+                    '_token': _token,
+                    'episno': $('#txt_epis_no').val(),
+                };
+                
+                $.post('/pat_mast/save_gl', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $("#glform").trigger('reset');
+                    $('#mdl_new_gl').modal('hide');
+                    $('#mdl_reference').modal('show');
+                }).fail(function(data) {
+                    alert(data.responseText);
+                }).success(function(data){
+                });
+            }
+        });
+
+        // $('#select_gl_tab').click(function(){
+        //     let selected_tab = $(this).find('li.active');
+        //     console.log(selected_tab);
+        //     $('#newgl-gltype').val()
+        // });
+
     }
 

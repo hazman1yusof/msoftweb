@@ -384,7 +384,7 @@ class PatmastController extends defaultController
                 break;
 
             case 'get_refno_list':
-                $data = DB::table('hisdb.corpstaff')
+                $data = DB::table('hisdb.guarantee')
                     ->where('debtorcode','=',$request->debtorcode)
                     ->where('mrn','=',$request->mrn)
                     ->get();
@@ -534,6 +534,10 @@ class PatmastController extends defaultController
             // }
 
             $table->update($array_update);
+
+            // if(!empty($request->Staffid)){
+            //     $this->saving_staffid($request);
+            // }
 
             $bed_mrn = DB::table('hisdb.bed')
                         ->where('mrn','=',$request->MRN)
@@ -1782,7 +1786,57 @@ class PatmastController extends defaultController
         DB::beginTransaction();
 
         try {
-                
+
+            $debtormast = DB::table('debtor.debtormast')
+                ->where('compcode','=', session('compcode'))
+                ->where('debtorcode','=',$request->debtorcode)
+                ->first();
+
+            $sysparam = DB::table('sysdb.sysparam')
+                ->where('source','=','GL')
+                ->where('trantype','=',$debtormast->debtortype);
+
+            if($sysparam->exists()){
+                $sysparam_get = $sysparam->first();
+                $pvalue1 = $sysparam_get->pvalue1;
+
+                $sysparam->update([
+                    'pvalue1' => intval($pvalue1+1)
+                ]);
+
+                $ourrefno = $debtormast->debtortype .intval($pvalue1+1);
+            }else{
+                DB::table('sysdb.sysparam')->insert([
+                    'compcode' => session('compcode'),
+                    'pvalue1' => 1,
+                    'source' => 'GL',
+                    'trantype' => $debtormast->debtortype,
+                ]);
+                $ourrefno = $debtormast->debtortype . strval(1);
+            }
+
+             DB::table('hisdb.guarantee')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn'    =>  $request->mrn,
+                    'debtorcode'  =>  $request->debtorcode,
+                    'episno' =>   $request->episno,
+                    'staffid' =>   $request['newgl-staffid'],
+                    'childno' =>   $request['newgl-childno'],
+                    'relatecode' =>   $request['hid_newgl_relatecode'],
+                    'gltype' =>   $request['newgl-childno'],
+                    'startdate' =>   $request['newgl-effdate'],
+                    'enddate' =>   $request['newgl-expdate'],
+                    'refno' =>   $request['newgl-refno'],
+                    'ourrefno' =>   $ourrefno,
+                    'remark' =>   $request['newgl-remark'],
+                    'medcase' =>   $request['newgl-case'],
+                    'active' =>   'ACTIVE',
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+
+
             DB::commit();
 
         } catch (\Exception $e) {
@@ -2107,7 +2161,22 @@ class PatmastController extends defaultController
 
     }
 
-    
+    public function saving_staffid(Request $request){
+
+        $corpstaff = DB::table('hisdb.corpstaff')
+            ->where('staffid','=',$request->Staffid)
+            ->where('debtorcode','=',$request->CorpComp);
+
+        if($corpstaff->exists()){
+            $corpstaff
+                ->update([
+                    'debtorcode' => strtoupper($request->CorpComp),
+
+                    'debtorcode' => strtoupper($request->CorpComp)
+                ]);
+        }
+
+    }
 
 
 }
