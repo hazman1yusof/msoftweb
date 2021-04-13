@@ -750,11 +750,20 @@
                     <table id="tbl_epis_reference" class="table table-striped" width="100%">
                         <thead>
                         <tr>
-                            <th data-column-id="mrn" >Staff ID</th>
                             <th data-column-id="mrn" >Debtor Code</th>
                             <th data-column-id="mrn" >Name</th>
                             <th data-column-id="mrn" >GL Type</th>
-                            <th data-column-id="mrn" >Debtorcode</th>
+                            <th data-column-id="mrn" >Staff ID</th>
+                            <th data-column-id="mrn" >Ref No</th>
+                            <th data-column-id="mrn" >Our Ref No</th>
+                            <th data-column-id="mrn" >childno</th>
+                            <th data-column-id="mrn" >episno</th>
+                            <th data-column-id="mrn" >medcase</th>
+                            <th data-column-id="mrn" >mrn</th>
+                            <th data-column-id="mrn" >relatecode</th>
+                            <th data-column-id="mrn" >remark</th>
+                            <th data-column-id="mrn" >startdate</th>
+                            <th data-column-id="mrn" >enddate</th>
                         </tr>
                         </thead>
 

@@ -910,20 +910,20 @@
         this.refno_table = $('#tbl_epis_reference').DataTable( {
             "ajax": "./pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val(),
             "columns": [
-                        {'data': 'childno'}, 
                         {'data': 'debtorcode' },
-                        {'data': 'enddate' },
-                        {'data': 'episno' },
+                        {'data': 'name' },
                         {'data': 'gltype' },
+                        {'data': 'staffid' },
+                        {'data': 'refno' },
+                        {'data': 'ourrefno' },
+                        {'data': 'childno'}, 
+                        {'data': 'episno' },
                         {'data': 'medcase' },
                         {'data': 'mrn' },
-                        {'data': 'name' },
-                        {'data': 'ourrefno' },
                         {'data': 'relatecode' },
-                        {'data': 'refno' },
                         {'data': 'remark' },
-                        {'data': 'staffid' },
                         {'data': 'startdate' },
+                        {'data': 'enddate' },
                 ],
                 "columnDefs": [
                 {

@@ -385,6 +385,7 @@ class PatmastController extends defaultController
 
             case 'get_refno_list':
                 $data = DB::table('hisdb.guarantee')
+                    ->select('debtorcode','name','gltype','staffid','refno','ourrefno','childno','episno','medcase','mrn','relatecode','remark','startdate','enddate')
                     ->where('debtorcode','=',$request->debtorcode)
                     ->where('mrn','=',$request->mrn)
                     ->get();
