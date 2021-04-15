@@ -810,23 +810,23 @@ $(document).ready(function () {
 	// 			});
 	// 		}
 	// 	},
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2EditAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-th-list",
-		title:"Edit All Row",
-		onClickButton: function(){
-			mycurrency2.array.length = 0;
-			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-		    for (var i = 0; i < ids.length; i++) {
+	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
+	// 	id: "jqGridPager2EditAll",
+	// 	caption:"",cursor: "pointer",position: "last", 
+	// 	buttonicon:"glyphicon glyphicon-th-list",
+	// 	title:"Edit All Row",
+	// 	onClickButton: function(){
+	// 		mycurrency2.array.length = 0;
+	// 		var ids = $("#jqGrid2").jqGrid('getDataIDs');
+	// 	    for (var i = 0; i < ids.length; i++) {
 
-		        $("#jqGrid2").jqGrid('editRow',ids[i]);
+	// 	        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
-		    }
-		   	onall_editfunc();
-			hideatdialogForm(true,'saveallrow');
-		},
+	// 	        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
+	// 	    }
+	// 	   	onall_editfunc();
+	// 		hideatdialogForm(true,'saveallrow');
+	// 	},
 	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
 	// 	id: "jqGridPager2SaveAll",
 	// 	caption:"",cursor: "pointer",position: "last", 
