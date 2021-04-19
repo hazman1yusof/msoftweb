@@ -396,6 +396,10 @@ $(document).ready(function () {
 
 	
 	////////////////////selected///////////////
+	// if ($('#apacthdr_trantype').val() == 'IN') {
+	// 	$('#apacthdr_doctype').val(Debit_Note).hide();
+	// }
+
 
 	$('#apacthdr_doctype').on('change', function() {
 		let doctype = $("#apacthdr_doctype option:selected").val();

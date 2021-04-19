@@ -196,8 +196,8 @@ i.fa {
 					
 					<input id="auditno" name="auditno" type="hidden">
 					<input id="idno" name="idno" type="hidden">
-					<input id="apacthdr_source" name="source" type="text" value="{{$_GET['source']}}">
-					<input id="apacthdr_trantype" name="trantype" type="text" value="{{$_GET['trantype']}}">
+					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="{{$_GET['source']}}">
+					<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden" value="{{$_GET['trantype']}}">
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_doctype">Doc Type</label> 

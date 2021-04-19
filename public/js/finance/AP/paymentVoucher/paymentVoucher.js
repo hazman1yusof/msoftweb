@@ -37,7 +37,7 @@ $(document).ready(function () {
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 
-	var oper;
+	var oper=null;
 	var unsaved = false,counter_save=0;
 	$("#dialogForm")
 		.dialog({
@@ -545,31 +545,15 @@ $(document).ready(function () {
 		editurl: "/paymentVoucherDetail/form",
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqg2},
-			{ label: 'Creditor Code', name: 'suppcode', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
-				edittype:"text",
-			},
+			{ label: 'Creditor Code', name: 'suppcode', width: 100, classes: 'wrap'},
 	
-			{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap', editable:true,
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-				editoptions: {
-                    dataInit: function (element) {
-                        $(element).datepicker({
-                            id: 'expdate_datePicker',
-                            dateFormat: 'dd/mm/yy',
-                            minDate: 1,
-                            showOn: 'focus',
-                            changeMonth: true,
-		  					changeYear: true,
-                        });
-                    }
-                }
+			{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap',
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
-			{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
-				edittype:"text",
-			},
+			{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap',},
 			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: true,
+				editable: false,
 				align: "right",
 				editrules:{required: true},edittype:"text",
 				editoptions:{
@@ -585,14 +569,13 @@ $(document).ready(function () {
 					}
 				},
 			},
-			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:true,	
-				formatter: 'currency', formatoptions:{thousandsSeparator: ",",},
+			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false,	
+				formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', hidden:false, 
+			{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
-				cellEdit: true,
 				align: "right",
 				editrules:{required: true},edittype:"text",
 				editoptions:{
@@ -609,7 +592,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: true,
+				editable: false,
 				align: "right",
 				editrules:{required: true},edittype:"text",
 				editoptions:{
@@ -626,16 +609,16 @@ $(document).ready(function () {
 				},
 			},
 			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, 
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
 			{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, 
 		
 		],
@@ -666,6 +649,27 @@ $(document).ready(function () {
 			
 		
 			fdl.set_array().reset();
+			if(oper == 'edit'){
+				//calc bal
+				var ids = $("#jqGrid2").jqGrid('getDataIDs');
+				for (var i = 0; i < ids.length; i++) {
+					let data = $("#jqGrid2").jqGrid ('getRowData', ids[i]);
+					let balance = parseFloat(data.outamount) - parseFloat(data.allocamount);
+					$("#jqGrid2").jqGrid('setCell', ids[i], 'balance', balance);
+				}
+
+				calc_amtpaid_bal();
+						
+				var ids = $("#jqGrid2").jqGrid('getDataIDs');
+				for (var i = 0; i < ids.length; i++) {
+					$("#jqGrid2").jqGrid('editRow',ids[i]);
+
+					$('#jqGrid2 input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+				}
+
+			}
+
+
 			
 		},
 		beforeSubmit: function(postdata, rowid){ 
@@ -688,14 +692,32 @@ $(document).ready(function () {
 			let rowid = $(this).data('rowid');
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			if($(this).prop('checked')){
-				$("#jqGrid2").jqGrid('setCell', rowid, 'allocamount', data.outamount);
-				//$("#jqGrid2").jqGrid('setCell', rowid, iCol, 'allocamount', 'edit-cell');
+				$('#jqGrid2 input#'+rowid+'_allocamount').val(data.outamount);
 				$("#jqGrid2").jqGrid('setCell', rowid, 'balance', 0);
 			}else{
-				$("#jqGrid2").jqGrid('setCell', rowid, 'allocamount', 0);
+				$('#jqGrid2 input#'+rowid+'_allocamount').val(0);
 				$("#jqGrid2").jqGrid('setCell', rowid, 'balance', data.outamount);
 			}
 		});
+	}
+
+	function calc_amtpaid(event){
+		let rowid = event.data.rowid;
+		let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
+		var val = $(this).val();
+		if(parseFloat(val) > parseFloat(data.outamount)){
+			$(this).val(data.outamount);
+			event.preventDefault();
+		}
+		if(val.match(/[^0-9\.]/)){
+			event.preventDefault();
+			$(this).val(val.slice(0,val.length-1));
+		}
+
+		var balance = parseFloat(data.outamount) - parseFloat($(this).val());
+		$("#jqGrid2").jqGrid('setCell', rowid, 'balance', balance);
+
+
 	}
 	
 	function formatterCheckbox(cellvalue, options, rowObject){
@@ -1231,6 +1253,12 @@ $(document).ready(function () {
 
 						calc_amtpaid_bal();
 						
+						var ids = $("#jqGrid2").jqGrid('getDataIDs');
+						for (var i = 0; i < ids.length; i++) {
+							$("#jqGrid2").jqGrid('editRow',ids[i]);
+
+							$('#jqGrid2 input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+						}
 
 					} else {
 
