@@ -121,7 +121,7 @@ use Carbon\Carbon;
         $table = DB::table("finance.apacthdr");
         
         $array_insert = [
-            'source' => 'AP',
+            'source' => $request->apacthdr_source,
             'auditno' => $auditno,
             'trantype' => $request->apacthdr_trantype,
             'doctype' => $request->apacthdr_doctype,

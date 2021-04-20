@@ -161,8 +161,8 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['supplier.suppcode'],
 		join_onVal:['apacthdr.suppcode'],
-		filterCol: ['source'],
-		filterVal: ['AP'],
+		filterCol: ['source', 'trantype'],
+		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
 	}
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -173,7 +173,9 @@ $(document).ready(function () {
 		fixPost:'true',
 		oper:oper,
 		table_name:'finance.apacthdr',
-		table_id:'apacthdr_auditno'
+		table_id:'apacthdr_auditno',
+		filterCol: ['source', 'trantype'],
+		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
 	};
 
 	function padzero(cellvalue, options, rowObject){
@@ -394,6 +396,10 @@ $(document).ready(function () {
 
 	
 	////////////////////selected///////////////
+	// if ($('#apacthdr_trantype').val() == 'IN') {
+	// 	$('#apacthdr_doctype').val(Debit_Note).hide();
+	// }
+
 
 	$('#apacthdr_doctype').on('change', function() {
 		let doctype = $("#apacthdr_doctype option:selected").val();
@@ -558,7 +564,7 @@ $(document).ready(function () {
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
 		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
-		filterVal:['session.compcode', '', '<>.DELETE', 'AP']
+		filterVal:['session.compcode', '', '<>.DELETE', $('#apacthdr_source').val()]
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
