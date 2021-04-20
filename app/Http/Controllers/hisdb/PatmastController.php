@@ -198,6 +198,7 @@ class PatmastController extends defaultController
             case 'get_patient_occupation':
                 $data = DB::table('hisdb.occupation')
                         ->select('occupcode as code','description')
+                        ->where('recstatus','=','ACTIVE')
                         ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
@@ -211,6 +212,7 @@ class PatmastController extends defaultController
             case 'get_patient_title':
                 $data = DB::table('hisdb.title')
                         ->select('code','description')
+                        ->where('recstatus','=','ACTIVE')
                         ->where('compcode','=',session('compcode'))
                         ->orderBy('idno', 'desc');
 
@@ -225,6 +227,7 @@ class PatmastController extends defaultController
             case 'get_patient_citizen':
                 $data = DB::table('hisdb.citizen')
                         ->select('code','description')
+                        ->where('recstatus','=','ACTIVE')
                         ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
@@ -238,6 +241,7 @@ class PatmastController extends defaultController
             case 'get_patient_areacode':
                 $data = DB::table('hisdb.areacode')
                         ->select('areacode as code','description')
+                        ->where('recstatus','=','ACTIVE')
                         ->where('compcode','=',session('compcode'))
                         ->orderBy('idno', 'desc');
 
@@ -252,6 +256,7 @@ class PatmastController extends defaultController
             case 'get_patient_sex':
                 $data = DB::table('hisdb.sex')
                         ->select('code','description')
+                        ->where('recstatus','=','ACTIVE')
                         ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
@@ -265,6 +270,7 @@ class PatmastController extends defaultController
             case 'get_patient_race':
                 $data = DB::table('hisdb.racecode')
                         ->select('code','description')
+                        ->where('recstatus','=','ACTIVE')
                         ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
@@ -278,6 +284,7 @@ class PatmastController extends defaultController
             case 'get_patient_religioncode':
                 $data = DB::table('hisdb.religion')
                         ->select('code','description')
+                        ->where('recstatus','=','ACTIVE')
                         ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
@@ -291,6 +298,7 @@ class PatmastController extends defaultController
             case 'get_patient_urlmarital':
                 $data = DB::table('hisdb.marital')
                         ->select('code','description')
+                        ->where('recstatus','=','ACTIVE')
                         ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
@@ -304,6 +312,7 @@ class PatmastController extends defaultController
             case 'get_patient_language':
                 $data = DB::table('hisdb.languagecode')
                         ->select('code','description')
+                        ->where('recstatus','=','ACTIVE')
                         ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
@@ -317,6 +326,7 @@ class PatmastController extends defaultController
             case 'get_patient_relationship':
                 $data = DB::table('hisdb.relationship')
                         ->select('relationshipcode as code','description')
+                        ->where('recstatus','=','ACTIVE')
                         ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
@@ -331,6 +341,7 @@ class PatmastController extends defaultController
                 $data = DB::table('sysdb.department')
                     ->select('deptcode as code','description')
                     ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','=','ACTIVE')
                     ->where('regdept','=','1');
 
                 if(!empty($request->search)){
@@ -343,8 +354,9 @@ class PatmastController extends defaultController
 
             case 'get_reg_source':
                 $data = DB::table('hisdb.admissrc')
-                        ->select('idno as code','description')
+                        ->select('admsrccode as code','description')
                         ->where('compcode','=',session('compcode'))
+                        ->where('recstatus','=','ACTIVE')
                         ->orderBy('idno', 'desc');
 
                 if(!empty($request->search)){
@@ -358,7 +370,8 @@ class PatmastController extends defaultController
             case 'get_reg_case':
                 $data = DB::table('hisdb.casetype')
                         ->select('case_code as code','description')
-                        ->where('compcode','=',session('compcode'));
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recstatus','=','ACTIVE');
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -371,7 +384,8 @@ class PatmastController extends defaultController
             case 'get_reg_fin':
                 $data = DB::table('debtor.debtortype')
                         ->select('debtortycode as code','description')
-                        ->where('compcode','=',session('compcode'));
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recstatus','=','ACTIVE');
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -386,6 +400,7 @@ class PatmastController extends defaultController
                         ->select('bednum as code','ward as description')
                         ->where('occup','=',"VACANT")
                         ->where('compcode','=',session('compcode'))
+                        ->where('recstatus','=','ACTIVE')
                         ->get();
 
                 foreach ($data as $key => $value) {
@@ -397,7 +412,8 @@ class PatmastController extends defaultController
             case 'get_reg_doctor':
                 $data = DB::table('hisdb.doctor')
                         ->select('doctorcode as code','doctorname as description')
-                        ->where('compcode','=',session('compcode'))     ;
+                        ->where('recstatus','=','ACTIVE')
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -413,20 +429,25 @@ class PatmastController extends defaultController
 
             case 'get_debtor_list':
                 if($request->type == 1){
-                    $data = DB::table('debtor.debtormast')
-                            ->where('compcode','=',session('compcode'))  
+                    $data = DB::table('debtor.debtormast AS dm')
+                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description')
+                            ->leftJoin('debtor.debtortype as dt', 'dt.debtortycode', '=', 'dm.debtortype')
+                            ->where('dm.compcode','=',session('compcode'))  
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
-                            ->whereIn('debtortype', ['PR', 'PT'])
+                            ->whereIn('dm.debtortype', ['PR', 'PT'])
                             ->get();
                 }else if($request->type == 2){
-                    $data = DB::table('debtor.debtormast')
-                            ->where('compcode','=',session('compcode'))  
+                    $data = DB::table('debtor.debtormast AS dm')
+                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description')
+                            ->leftJoin('debtor.debtortype AS dt', 'dt.debtortycode', '=', 'dm.debtortype')
+                            ->where('dm.compcode','=',session('compcode'))  
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
-                            ->whereIn('debtortype', ['PR', 'PT'])
+                            ->whereNotIn('dm.debtortype', ['PR', 'PT'])
                             ->get();
                 }else{
                     $data = DB::table('debtor.debtormast')
                             ->where('compcode','=',session('compcode'))  
+                            ->whereIn('debtortype', ['PR', 'PT'])
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
                             ->get();
                 }
@@ -435,20 +456,23 @@ class PatmastController extends defaultController
             case 'get_billtype_list':
                 if($request->type == "OP"){
                     $data = DB::table('hisdb.billtymst')
-                            ->select('billtype as code','description')
+                            ->select('billtype','description')
                             ->where('compcode','=',session('compcode'))  
                             ->where('opprice','=','1')
+                            ->where('recstatus','=','ACTIVE')
                             ->get();
                 }else if($request->type == "IP"){
                     $data = DB::table('hisdb.billtymst')
-                            ->select('billtype as code','description')
+                            ->select('billtype','description')
                             ->where('compcode','=',session('compcode'))  
                             ->where('opprice','=','0')
+                            ->where('recstatus','=','ACTIVE')
                             ->get();
                 }else{
                     $data = DB::table('hisdb.billtymst')
-                            ->select('billtype as code','description')
+                            ->select('billtype','description')
                             ->where('compcode','=',session('compcode'))
+                            ->where('recstatus','=','ACTIVE')
                             ->get();
                 }
                 break;
@@ -464,7 +488,7 @@ class PatmastController extends defaultController
             case 'get_bed_type':
                 $data = DB::table('hisdb.bedtype')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recstatus','=','A')
+                    ->where('recstatus','=','ACTIVE')
                     ->get();
                 break;
 
@@ -472,7 +496,7 @@ class PatmastController extends defaultController
                 $data = DB::table('sysdb.department')
                     ->where('warddept','=','1')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recstatus','=','A')
+                    ->where('recstatus','=','ACTIVE')
                     ->get();
                 break;
 

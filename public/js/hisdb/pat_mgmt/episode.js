@@ -129,8 +129,8 @@
     });
 
     $('#btn_save_episode').click(function(){
-        if($('#epis_header').valid() && $('#form_episode').valid() && $('#form_episode input.myerror').length>0){
-
+        if($('#epis_header').valid() && $('#form_episode').valid() && $('#form_episode input.myerror').length<=0){
+            console.log('add')
             add_episode();
         }
     });
@@ -196,9 +196,11 @@
         
         // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
         $('#tbl_epis_debtor').on('dblclick', 'tr', function () {
-            let debtor_item = debtor_table.row( this ).data();              
+            let debtor_item = debtor_table.row( this ).data();
             $('#hid_epis_payer').val(debtor_item["debtorcode"]);
             $('#txt_epis_payer').val(debtor_item["name"]);
+            $('#hid_epis_fin').val(debtor_item["debtortype"]);
+            $('#txt_epis_fin').val(debtor_item["debtortype"]);
             debtor_mdl_opened.modal('hide');
         } );
             
@@ -588,11 +590,7 @@
                         "targets": 0,
                         "data": "code",
                         "render": function ( data, type, row, meta ) {
-                            if(act == "get_reg_source"){
-                                return pad('000000',data,true)
-                            }else{
-                                return data;
-                            }
+                            return data;
                         }
                       } ],
 
@@ -1029,7 +1027,7 @@
 
 
 
-    $("#mdl_item_selector,#mdl_epis_pay_mode,#mdl_reference,#mdl_new_gl").on('show.bs.modal', function () {
+    $("#mdl_item_selector,#mdl_epis_pay_mode,#mdl_reference,#mdl_new_gl,#mdl_bill_type").on('show.bs.modal', function () {
         $(this).eq(0).css('z-index','120');
     });
 
