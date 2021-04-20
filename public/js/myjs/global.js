@@ -127,18 +127,26 @@ var Global = function () {
                   } ],
 
 				"fnInitComplete": function(oSettings, json) {
-					
-                    if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
-
+					if(ontab==true){
+                        selecter.search( text_val ).draw();
+                    }
+                    // if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
+                    if(mdl!=null){
                         $('#add_new_adm').data('modal-target',mdl)
                         $('#add_new_adm').show();
+                    }
+                    if(selecter.page.info().recordsDisplay == 1){
+                        $('#tbl_item_select tbody tr:eq(0)').dblclick();
                     }
 			    }
 		} );
 		
 		// dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
 		$('#tbl_item_select tbody').on('dblclick', 'tr', function () {	
-
+			$('#txt_' + type).removeClass('error myerror').addClass('valid');
+            setTimeout(function(type){
+                $('#txt_' + type).removeClass('error myerror').addClass('valid'); 
+            }, 500,type);
 			item = selecter.row( this ).data();				
 			//console.log("type2="+type + " item=" + item["description"]);
 			$('#hid_' + type).val(item["code"]);
@@ -164,6 +172,10 @@ var Global = function () {
 						//console.dir(item);
 			//		} );
 		});
+
+        $("#mdl_item_selector").on('show.bs.modal', function () {
+        	$(this).eq(0).css('z-index','120');
+        });
 
 		$('#add_new_adm').click(function(){
             $($(this).data('modal-target')).modal('show');

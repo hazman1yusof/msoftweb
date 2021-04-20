@@ -3,6 +3,7 @@
         $('#editEpisode').find("label.error").detach();
         $("#editEpisode").find('.error').removeClass("error");
         $("#editEpisode").find('.valid').removeClass("valid");
+        $("#editEpisode").find('.myerror').removeClass("myerror");
         $(this)
             .find("input,textarea,select")
             .val('')
@@ -14,19 +15,12 @@
     });
 
     function check_debtormast_exists(rowid){
-        let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
 
         //check debtormast, kalau ada sama dgn mrn, paste
         let obj_param = {
                action:'check_debtormast',
-               mrn:rowdata.MRN,
-               mrn_trailzero:('0000000' + rowdata.MRN).slice(-7),
-               name:rowdata.Name,
-               address1:rowdata.Address1,
-               address2:rowdata.Address2,
-               address3:rowdata.Address3,
-               address4:rowdata.Address4,
-               postcode:rowdata.Postcode
+               mrn:$('input[type="hidden"]#mrn_episode').val(),
+               mrn_trailzero:('0000000' + $('input[type="hidden"]#mrn_episode').val()).slice(-7),
            };
 
         $.get( "pat_mast/get_entry?"+$.param(obj_param), function( data ) {
@@ -39,7 +33,46 @@
             }else{
 
                $('#txt_epis_payer').val($("#txt_epis_name").val());
-               $('#hid_epis_payer').val($("#mrn_episode").val());
+               $('#hid_epis_payer').val($('input[type="hidden"]#mrn_episode').val());
+            }
+        });
+    }
+
+    function get_epis_other_data(mrn){
+        let obj_param = {
+               action:'get_epis_other_data',
+               mrn:mrn,
+           };
+
+        $.get( "pat_mast/get_entry?"+$.param(obj_param), function( data ) {
+            
+        },'json').done(function(data) {
+            if(!$.isEmptyObject(data)){
+               $("form#form_episode input[name='pay_type']").val(data.episode.pay_type);
+               $("form#form_episode select[name='pyrmode']").val(data.episode.pyrmode);
+               $("form#form_episode input[name='payercode']").val(data.epispayer.payercode);
+
+               epis_desc_show.write_desc();
+            }
+        });
+    }
+
+    function get_billtype_default(mrn){
+        let obj_param = {
+               action:'get_billtype_default',
+           };
+
+        $.get( "pat_mast/get_entry?"+$.param(obj_param), function( data ) {
+            
+        },'json').done(function(data) {
+            if(!$.isEmptyObject(data)){
+                if($('#txt_epis_type').val() == 'IP'){
+                    $("form#form_episode input[name='bill_type']").val(data.data.pvalue1);
+                }else{
+                    $("form#form_episode input[name='bill_type']").val(data.data.pvalue2);
+                }
+
+                epis_desc_show.write_desc();
             }
         });
     }
@@ -63,9 +96,15 @@
             $('#cmb_epis_pregnancy').prop("disabled", false);
         }
 
+        get_billtype_default(rowdata.MRN);
+
         var episno_ = parseInt(rowdata.Episno);
         if(isNaN(episno_)){
             episno_ = 0;
+        }
+
+        if(episno_ > 0){
+            get_epis_other_data(rowdata.MRN);
         }
 
         if(rowdata.PatStatus == 1){
@@ -77,6 +116,7 @@
             $("#episode_oper").val('add');
             $('#txt_epis_no').val(parseInt(episno_) + 1);
             $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
+            $('#txt_epis_dept').blur();
         }
     }
 
@@ -89,7 +129,8 @@
     });
 
     $('#btn_save_episode').click(function(){
-        if($('#epis_header').valid() && $('#form_episode').valid()){
+        if($('#epis_header').valid() && $('#form_episode').valid() && $('#form_episode input.myerror').length>0){
+
             add_episode();
         }
     });
@@ -103,11 +144,9 @@
             $('#cmb_epis_pay_mode').empty();
 
             $('#txt_epis_payer').prop('disabled',false);
-            $("#btn_epis_payer").on('click',epis_payer_onclick);
             let pay_mode_arr = [];
             if (iregin == 'PT'){
                 $('#txt_epis_payer').prop('disabled',true);
-                $("#btn_epis_payer").off('click',epis_payer_onclick);
                 pay_mode_arr = ['CASH','CARD','OPEN CARD','CONSULTANT GUARANTEE (PWD)'];
                 check_debtormast_exists($('#epis_rowid').val());
             }else if(iregin == 'PR'){
@@ -148,6 +187,7 @@
     function epis_payer_onclick(){
         let debtor_mdl_opened = $('#mdl_epis_pay_mode');
         debtor_mdl_opened.modal('show');
+
         if($('#hid_epis_fin').val() == 'PT'  || $('#hid_epis_fin').val() == 'PR'){
             debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=1' ).load();
         }else{
@@ -349,10 +389,12 @@
                 $('#hid_epis_case').val(episdata.case_code);
                 $('#hid_epis_doctor').val(episdata.admdoctor);
                 $('#hid_epis_fin').val(episdata.pay_type);
-                $("#txt_epis_bed").val(bed.ward);
-                $("#txt_epis_ward").val(bed.ward);
-                $("#txt_epis_room").val(bed.room);
-                $("#txt_epis_bedtype").val(episdata.bed);
+                if($('#epistycode').val() == 'IP'){
+                    $("#txt_epis_bed").val(bed.ward);
+                    $("#txt_epis_ward").val(bed.ward);
+                    $("#txt_epis_room").val(bed.room);
+                    $("#txt_epis_bedtype").val(episdata.bed);
+                }
                 $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
                 $('#cmb_epis_pay_mode').val(episdata.pyrmode.toUpperCase());
                 $('#txt_epis_payer').val(debtormast.name);
@@ -362,6 +404,7 @@
                 $('#txt_epis_our_refno').val();
                 $('#txt_epis_queno').val();
 
+                $('#txt_epis_fin').change();
             }else{
                 alert('MRN not found')
             }
@@ -496,7 +539,6 @@
 
         function onCheck(event){
             var obj = event.data.data;
-            console.log(obj.blurring);
             var textfield = $(event.currentTarget);
             var search = textfield.val();
             var id_ = textfield.attr('id');
@@ -508,9 +550,9 @@
                             
                 },'json').done(function(data) {
                     if(!$.isEmptyObject(data) && data.data!=null){
-                        textfield.removeClass('error').addClass('valid');
+                        textfield.removeClass('error myerror').addClass('valid');
                     }else{
-                        textfield.removeClass('valid').addClass('error');
+                        textfield.removeClass('valid').addClass('error myerror');
                     }
                 });
             }
@@ -570,8 +612,11 @@
             });
             
             // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
-            $('#tbl_item_select tbody').on('dblclick', 'tr', function () {    
-
+            $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
+                $('#txt_' + type).removeClass('error myerror').addClass('valid');
+                setTimeout(function(type){
+                    $('#txt_' + type).removeClass('error myerror').addClass('valid'); 
+                }, 1000,type);
                 item = selecter.row( this ).data();
                 
                 $('#hid_' + type).val(item["code"]);
@@ -676,40 +721,6 @@
 
     }
 
-    
-
-    if($('#epistycode').val() == 'OP'){
-        var epis_desc_show = new loading_desc_epis([
-            {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
-            {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
-            {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
-            {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
-            {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
-            {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
-            {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
-            {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
-            {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
-        ]);
-    }else if($('#epistycode').val() == 'IP'){
-        var epis_desc_show = new loading_desc_epis([
-            {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
-            {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
-            {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
-            {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
-            {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
-            {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
-            {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
-            {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
-            {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
-            {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'},
-            {code:'#hid_newgl_corpcomp',desc:'#txt_newgl_corpcomp',id:'newgl_corpcomp'}
-            // {code:'',desc:'',id:'bed_dept'},
-            // {code:'',desc:'',id:'bed_ward'}
-        ]);
-    }
-    
-    epis_desc_show.load_desc();
-
     function loading_desc_epis(obj){ //loading description dia sebab save code dia je
         this.code_fields=obj;
         this.regdept={code:'code',desc:'description'};//data simpan dekat dalam ni
@@ -740,6 +751,7 @@
             load_for_desc(this,'newgl_occupcode','pat_mast/get_entry?action=get_patient_occupation');
             load_for_desc(this,'newgl_relatecode','pat_mast/get_entry?action=get_patient_relationship');
             load_for_desc(this,'newgl_corpcomp','pat_mast/get_entry?action=get_debtor_list');
+            console.log(this.bill_type)
         }
 
         function load_for_desc(selobj,id,url){
@@ -797,13 +809,13 @@
         this.get_desc = function(search_code,id){
             let code_ = this[id].code;
             let desc_ = this[id].desc;
-            let retdata="N/A";
+            let retdata="";
 
             retdata = this[id].data.find(function(obj){
                 return obj[code_] == search_code;
             });
 
-            return (retdata == undefined)? "N/A" : retdata[desc_];
+            return (retdata == undefined)? "" : retdata[desc_];
         }
     }
 
@@ -1014,4 +1026,11 @@
         // });
 
     }
+
+
+
+    $("#mdl_item_selector,#mdl_epis_pay_mode,#mdl_reference,#mdl_new_gl").on('show.bs.modal', function () {
+        $(this).eq(0).css('z-index','120');
+    });
+
 

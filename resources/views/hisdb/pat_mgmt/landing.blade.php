@@ -22,7 +22,7 @@
 
 	<style type="text/css" class="init">
 		#mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl{
-			display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);
+			display: none; z-index: 120;background-color: rgba(0, 0, 0, 0.3);
 		}
 		.smallmodal{
 			width: 70% !important; margin: auto !important;margin-top:30px;margin-top: 30px !important;
@@ -222,6 +222,14 @@
 	        border-bottom:none;
 	    }
 
+	    input.myerror{
+	    	border-color: #b94a48 !important;
+		    background-position: right 5px center !important;
+		    background-repeat: no-repeat !important;
+		    -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%) !important;
+		    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%) !important;
+	    }
+
 	</style>
 
 </head>
@@ -362,7 +370,6 @@
 	<script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script>
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js"></script>
 
@@ -391,6 +398,7 @@
 	@endif
 
 
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>

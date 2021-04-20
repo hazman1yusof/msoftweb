@@ -62,6 +62,73 @@ td.fc-event-container a.selected{
     text-transform: uppercase;
 }
 
+#mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl{
+	display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);
+}
+.smallmodal{
+	width: 70% !important; margin: auto !important;margin-top:30px;margin-top: 30px !important;
+}
+.smallmodal > .modal-content{
+	border: 1px solid grey;
+}
+
+.modal {
+  padding: 0 !important;
+}
+
+.modal .modal-dialog {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.modal .modal-dialog .half {
+	width: 50% !important;
+	height: 50% !important;
+	margin: 0;
+	padding: 0;
+}
+
+.modal .modal-content {
+	height: auto;
+	min-height: 100%;
+	border: 0 none;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.modal-header {
+	min-height: 16.42857143px;
+	padding: 5px;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-body {
+	position: relative;
+	/*padding: 10px;*/
+}
+
+.modal-backdrop{
+	z-index: 99 !important;
+	background-color: #fff !important;
+	opacity: 1 !important;
+}
+.panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+	display: none;
+}
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+	display: inline-block;
+}
+
+i.fa {
+	cursor: pointer;
+	float: right;
+	<!--  margin-right: 5px; -->
+}
 
 @endsection
 
@@ -249,6 +316,7 @@ td.fc-event-container a.selected{
 						<div class="panel-footer">
 							<button type="button" class="btn btn-primary" id="submit">Save changes</button>
 							<button type="button" class="btn btn-danger" id="delete_but" style="display: none;">Delete Appointment</button>
+							<button type="button" class="btn btn-primary" id="new_episode" style="display: none;">New Episode</button>
 						</div>
 					</form>
 			</div>
@@ -313,10 +381,10 @@ td.fc-event-container a.selected{
         </button>
 	</div>
 
-<!-- 
+
 	@include('hisdb.pat_mgmt.mdl_patient')
 	@include('hisdb.pat_mgmt.mdl_episode')
-	@include('hisdb.pat_mgmt.itemselector') -->
+	@include('hisdb.pat_mgmt.itemselector')
 
 	@endsection
 
@@ -328,8 +396,8 @@ td.fc-event-container a.selected{
 
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
-	<!-- <script src="js/hisdb/pat_mgmt/biodata.js"></script>
-	<script src="js/hisdb/pat_mgmt/episode.js"></script> -->
+	<script src="js/hisdb/pat_mgmt/biodata.js"></script>
+	<script src="js/hisdb/pat_mgmt/episode.js"></script>
 
 	
 	<script src="js/hisdb/apptrsc/apptrsc.js"></script>

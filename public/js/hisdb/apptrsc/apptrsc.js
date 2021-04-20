@@ -330,7 +330,7 @@ $(document).ready(function () {
 		},
 		close: function( event, ui ){
 			emptyFormdata(errorField,'#addForm');
-			$('#delete_but').hide();
+			$('#delete_but,#new_episode').hide();
 		}		
 	});
 
@@ -565,6 +565,7 @@ $(document).ready(function () {
 				element.tooltip();
 
 				element.bind('dblclick', function() {
+					lastelement = element;
 					oper = 'edit';
 					$('#doctor').val(event.loccode);
 					$('#mrn').val(event.mrn);
@@ -582,7 +583,7 @@ $(document).ready(function () {
 					$('#lastuser').val(event.lastuser);
 					$('#lastupdate').val(event.lastupdate);
 
-					$('#delete_but').show();
+					$('#delete_but,#new_episode').show();
 
 					$("#dialogForm").dialog('open');
 				});
@@ -1157,4 +1158,100 @@ $(document).ready(function () {
 
 	});
 
+	$('#new_episode').click(function(){
+		populate_new_episode_by_mrn_apptrsc($('form#addForm input[name="mrn"]').val());
+		$("#dialogForm").dialog('close');
+        $('#editEpisode').modal({backdrop: "static"});
+	});
+
+	$("#editEpisode").on('hidden.bs.modal', function () {
+		lastelement.dblclick();
+		// $("#dialogForm").dialog('open');
+    });
+
+
+	//hide at the episode
+	$('#div_doctor,#div_bed,#div_nok,#div_payer,#div_deposit').hide();
+
 });
+
+var lastelement; //utk tahu last edit mrn T.T
+
+var epis_desc_show = new loading_desc_epis([
+    {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+    {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+    {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+    {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+    {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+    {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+    {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+    {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+    {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
+]);
+
+function populate_new_episode_by_mrn_apptrsc(mrn){
+	var param={
+		url:'./apptrsc/table',
+        action:'populate_new_episode_by_mrn_apptrsc',
+        mrn:mrn
+    };
+
+    $.get( param.url+"?"+$.param(param), function( data ) {
+			
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data)){
+			let pat_mast = data.pat_mast;
+			disableEpisode(true);
+
+	        $('input[type="hidden"]#mrn_episode').val(pat_mast.MRN);
+	        $('form#epis_header big#txt_epis_name').text(pat_mast.Name);
+	        $('form#epis_header big#txt_epis_mrn').text(('0000000' + pat_mast.MRN).slice(-7));
+	        $('form#epis_header input#txt_epis_type').val("OP");
+	        $('form#epis_header input#txt_epis_date').val(moment().format('DD/MM/YYYY'));
+	        $('form#epis_header input#txt_epis_time').val(moment().format('hh:mm:ss'));
+	        $('form#form_episode button#btn_epis_payer').data('mrn',pat_mast.MRN);
+	        if(pat_mast.Sex == "M"){
+	            $('form#epis_header select#cmb_epis_pregnancy').val('Non-Pregnant');
+	            $('form#epis_header select#cmb_epis_pregnancy').prop("disabled", true);
+	        }else{
+	            $('form#epis_header select#cmb_epis_pregnancy').prop("disabled", false);
+	        }
+
+	        get_billtype_default(pat_mast.MRN);
+
+	        var episno_ = 0;
+
+	        if(episno_ > 0){
+	            get_epis_other_data(rowdata.MRN);
+	        }
+
+	        if(pat_mast.PatStatus == 1){
+	            $("#episode_oper").val('edit');
+	            $('#txt_epis_no').val(parseInt(episno_));
+	            populate_episode_by_mrn_episno(rowdata.MRN,rowdata.Episno);
+	            $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().show();
+	        }else{
+	            $("#episode_oper").val('add');
+	            $('#txt_epis_no').val(parseInt(episno_) + 1);
+	            $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
+	            $('#txt_epis_dept').blur();
+	        }
+		}else{
+		}
+	});
+
+}
+
+ var epis_desc_show = new loading_desc_epis([
+    {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+    {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+    {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+    {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+    {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+    {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+    {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+    {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+    {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
+]);
+
+epis_desc_show.load_desc();

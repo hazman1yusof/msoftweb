@@ -1,5 +1,5 @@
 <!-- Large modal -->
-<div id="editEpisode" class="modal fade" data-backdrop="false" data-keyboard="false" role="dialog" aria-labelledby="editEpisode" aria-hidden="true" style="display: none; z-index: 100">
+<div id="editEpisode" class="modal fade" data-backdrop="false" data-keyboard="false" role="dialog" aria-labelledby="editEpisode" aria-hidden="true" style="display: none; z-index: 110">
     <div class="modal-dialog modal-lg">
         <input type="hidden" name="rowid" id="epis_rowid">
         <input type="hidden" name="idno" id="epis_idno">
@@ -120,7 +120,7 @@
                                     <div class="col-md-offset-1 col-md-4">
                                         <small for="txt_epis_bed">ACCOMODATION : BED</small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_epis_bed" id="txt_epis_bed" required>
+                                            <input type="text" class="form-control" name="txt_epis_bed" id="txt_epis_bed">
                                             <input type="hidden" id="hid_epis_bed" name="admbed"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_bed" data-toggle="modal" data-target="#mdl_accomodation"><span class="fa fa-ellipsis-h"></span> </button>
@@ -167,7 +167,7 @@
                                         <small for="txt_epis_payer">Payer </small>
                                         <div class="input-group">
                                             <input type="text" class="form-control form-mandatory" name="txt_epis_payer" id="txt_epis_payer" required>
-                                            <input type="hidden" id="hid_epis_payer" name=""/>
+                                            <input type="hidden" id="hid_epis_payer" name="payercode"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_payer"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
@@ -177,7 +177,7 @@
                                         <small for="txt_epis_bill_type">Bill Type </small>
                                         <div class="input-group">
                                             <input type="text" class="form-control form-mandatory" name="txt_epis_bill_type" id="txt_epis_bill_type" required>
-                                            <input type="hidden" id="hid_epis_bill_type" name=""/>
+                                            <input type="hidden" id="hid_epis_bill_type" name="bill_type"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_bill_type_info" ><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
@@ -227,7 +227,7 @@
                         </div>
 
                         <!-- doctor -->
-                        <div class="panel panel-default" style="position: relative;" id="div-doctor">
+                        <div class="panel panel-default" style="position: relative;" id="div_doctor">
                             <div class="panel-heading clearfix collapsed" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabDoctor">
                                 <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                                 <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
@@ -316,7 +316,7 @@
 
                         <!-- bed -->
                         @if (request()->get('epistycode') == 'IP')
-                        <div class="panel panel-default" style="position: relative;">
+                        <div class="panel panel-default" style="position: relative;" id="div_bed">
                             <div class="panel-heading clearfix collapsed" id="toggle_tabBed" data-toggle="collapse" data-target="#tabBed">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -429,7 +429,7 @@
                         @endif
 
                         <!-- NOK -->
-                        <div class="panel panel-default" style="position: relative;">
+                        <div class="panel panel-default" style="position: relative;" id="div_nok">
                             <div class="panel-heading clearfix collapsed" id="toggle_tabNok" data-toggle="collapse" data-target="#tabNok">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -533,7 +533,7 @@
                         </div>
 
                         <!-- payer -->
-                        <div class="panel panel-default" style="position: relative;">
+                        <div class="panel panel-default" style="position: relative;" id="div_payer">
                             <div class="panel-heading clearfix collapsed" id="toggle_tabPayer" data-toggle="collapse" data-target="#tabPayer">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -551,7 +551,7 @@
                         </div>
 
                         <!-- deposit -->
-                        <div class="panel panel-default" style="position: relative;">
+                        <div class="panel panel-default" style="position: relative;" id="div_deposit">
                             <div class="panel-heading clearfix collapsed" id="toggle_tabDeposit" data-toggle="collapse" data-target="#tabDeposit">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -579,7 +579,7 @@
     </div>
 </div>
 
-<div id="mdl_epis_pay_mode" class="modal fade" role="dialog" tabindex="-1" role="dialog" data-backdrop="static">
+<div id="mdl_epis_pay_mode" class="modal fade" role="dialog" tabindex="-1" role="dialog" data-backdrop="static" style="display: none; z-index: 130">
     <div class="modal-dialog smallmodal">
         <form class="form-horizontal">
             <div class="modal-content">

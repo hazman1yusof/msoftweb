@@ -435,16 +435,19 @@ class PatmastController extends defaultController
             case 'get_billtype_list':
                 if($request->type == "OP"){
                     $data = DB::table('hisdb.billtymst')
+                            ->select('billtype as code','description')
                             ->where('compcode','=',session('compcode'))  
                             ->where('opprice','=','1')
                             ->get();
                 }else if($request->type == "IP"){
                     $data = DB::table('hisdb.billtymst')
+                            ->select('billtype as code','description')
                             ->where('compcode','=',session('compcode'))  
                             ->where('opprice','=','0')
                             ->get();
                 }else{
                     $data = DB::table('hisdb.billtymst')
+                            ->select('billtype as code','description')
                             ->where('compcode','=',session('compcode'))
                             ->get();
                 }
@@ -508,23 +511,36 @@ class PatmastController extends defaultController
                 }else{
                     $data = $data->get();
                 }
-                
-//             SELECT * FROM debtortype,debtormast 
-// WHERE debtortype.compcode='9A' AND debtortycode NOT IN ('PT','PR') 
-// AND debtormast.compcode = debtortype.compcode AND debtormast.debtortype = debtortype.debtortycode
                 break;
 
-            // case 'get_patient_active':
-            //     return DB::table('hisdb.title')->select('code','description')->get();
+            case 'get_epis_other_data':
 
-            // case 'get_patient_urlconfidential':
-            //     return DB::table('hisdb.occupation')->select('occupcode','description')->get();
-            
-            // case 'get_patient_mrfolder':
-            //     return DB::table('hisdb.title')->select('code','description')->get();
+                $episode = DB::table('hisdb.episode')
+                            ->where('mrn','=',$request->mrn)
+                            ->orderBy('episno', 'desc')
+                            ->first();
 
-            // case 'get_patient_patientcat':
-            //     return DB::table('hisdb.occupation')->select('occupcode','description')->get();
+                $epispayer = DB::table('hisdb.epispayer')
+                            ->where('mrn','=',$request->mrn)
+                            ->orderBy('episno', 'desc')
+                            ->first();
+
+                $responce->episode = $episode;
+                $responce->epispayer = $epispayer;
+                return json_encode($responce);
+
+
+                break;
+
+            case 'get_billtype_default':
+
+                $data = DB::table('sysdb.sysparam')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=','PB')
+                            ->where('trantype','=','PRICE')
+                            ->first();
+
+                break;
             
             default:
                 $data = 'nothing';
@@ -1650,6 +1666,11 @@ class PatmastController extends defaultController
         }else{
 
             try {
+
+                $pat_mast = DB::table('hisdb.pat_mast')
+                                ->where('mrn','=',$request->mrn)
+                                ->first();
+
                 $debtortype = DB::table("debtor.debtortype")
                     ->select('actdebccode', 'actdebglacc', 'depccode', 'depglacc')
                     ->where('compcode','=',session('compcode'))
@@ -1661,12 +1682,11 @@ class PatmastController extends defaultController
                         'compcode'    =>  session('compcode'),
                         'debtortype'  =>  "PT",    
                         'debtorcode'  =>  $request->mrn_trailzero,
-                        'name'        =>  $request->name, 
-                        'address1'    =>  $request->address1,
-                        'address2'    =>  $request->address2,
-                        'address3'    =>  $request->address3,
-                        'address4'    =>  $request->address4,
-                        'postcode'    =>  $request->postcode,
+                        'name'        =>  $pat_mast->Name, 
+                        'address1'    =>  $pat_mast->Address1,
+                        'address2'    =>  $pat_mast->Address2,
+                        'address3'    =>  $pat_mast->Address3,
+                        'postcode'    =>  $pat_mast->Postcode,
                         'billtype'    =>  "IP",
                         'billtypeop'  =>  "OP",
                         'actdebccode' =>  $debtortype->actdebccode,

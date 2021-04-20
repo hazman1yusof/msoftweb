@@ -40,6 +40,17 @@ class AppointmentController extends defaultController
         return view('hisdb.apptrsc.apptrsc',compact('ALCOLOR'));
     }
 
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'populate_new_episode_by_mrn_apptrsc':
+                return $this->populate_new_episode_by_mrn_apptrsc($request);
+                
+            default:
+                return 'error happen..';
+        }
+    }
+
     public function form(Request $request)
     {   
         DB::enableQueryLog();
@@ -447,6 +458,23 @@ class AppointmentController extends defaultController
 
             return response('Error'.$e, 500);
         }
+    }
+
+    public function populate_new_episode_by_mrn_apptrsc(Request $request){
+        $episode_latest = DB::table('hisdb.episode')
+                            ->where('mrn','=',$request->mrn)
+                            ->orderBy('episno', 'desc')
+                            ->first();
+
+        $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('mrn','=',$request->mrn)
+                            ->first();
+
+
+        $responce = new stdClass();
+        $responce->episode = $episode_latest;
+        $responce->pat_mast = $pat_mast;
+        echo json_encode($responce);
     }
 
 }
