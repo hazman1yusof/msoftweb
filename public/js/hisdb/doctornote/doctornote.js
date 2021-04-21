@@ -1,5 +1,22 @@
 
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
+var editedRow=0;
+
+/////////////////////parameter for jqGridAddNotes url/////////////////////////////////////////////////
+var urlParam_AddNotes = {
+	action: 'get_table_default',
+	url: '/util/get_table_default',
+	field: '',
+	table_name: 'hisdb.pathealthadd',
+	table_id: 'idno',
+	filterCol:['mrn','episno'],
+	filterVal:['',''],
+}
+
 $(document).ready(function () {
+
+	var fdl = new faster_detail_load();
 
 	disableForm('#formDoctorNote');
 
@@ -88,6 +105,147 @@ $(document).ready(function () {
 	$("input[name=toggle_type]").click(function(event){
 		event.stopPropagation();
 	});
+
+	/////////////////////parameter for saving url/////////////////////////////////////////////////
+	var addmore_jqgrid={more:false,state:false,edit:false}
+
+	///////////////////////////////////jqGridAddNotes///////////////////////////////////////////////////
+	$("#jqGridAddNotes").jqGrid({
+		datatype: "local",
+		editurl: "/doctornote/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'mrn', name: 'mrn', hidden: true },
+			{ label: 'episno', name: 'episno', hidden: true },
+			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
+			{ label: 'Note', name: 'additionalnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
+			{ label: 'adduser', name: 'adduser', width: 90, hidden:false},
+			{ label: 'adddate', name: 'adddate', width: 90, hidden:false},
+		],
+		autowidth: true,
+		multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
+		width: 900,
+		height: 200,
+		rowNum: 30,
+		pager: "#jqGridPagerAddNotes",
+		loadComplete: function(){
+			if(addmore_jqgrid.more == true){$('#jqGridAddNotes_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
+			$('.ui-pg-button').prop('disabled',true);
+			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridAddNotes_iledit").click();
+		},
+	});
+
+	//////////////////////////////////////////myEditOptions////////////////////////////////////////////////
+	var myEditOptions_add = {
+		keys: true,
+		extraparam:{
+			"_token": $("#csrf_token").val()
+		},
+		oneditfunc: function (rowid) {
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
+
+			$("input[name='additionalnote']").keydown(function(e) {//when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAddNotes_ilsave').click();
+				/*addmore_jqgrid.state = true;
+				$('#jqGrid_ilsave').click();*/
+			});
+
+		},
+		aftersavefunc: function (rowid, response, options) {
+			addmore_jqgrid.more=true; //only addmore after save inline
+			//state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
+			errorField.length=0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorfunc: function(rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
+		},
+		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
+			if(errorField.length>0)return false;
+
+			let data = $('#jqGridAddNotes').jqGrid ('getRowData', rowid);
+			console.log(data);
+
+			let editurl = "/doctornote/form?"+
+				$.param({
+					episno:$('#episno_doctorNote').val(),
+					mrn:$('#mrn_doctorNote').val(),
+					action: 'doctornote_save',
+				});
+			$("#jqGridAddNotes").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function( response ) {
+			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
+		}
+	};
+
+	//////////////////////////////////////////jqGridPagerAddNotes////////////////////////////////////////////////
+	$("#jqGridAddNotes").inlineNav('#jqGridPagerAddNotes', {
+		add: true,
+		edit: false,
+		cancel: true,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_add
+		},
+		// editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotes", {
+		id: "jqGridPagerDelete",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-trash",
+		title: "Delete Selected Row",
+		onClickButton: function () {
+			selRowId = $("#jqGridAddNotes").jqGrid('getGridParam', 'selrow');
+			if (!selRowId) {
+				alert('Please select row');
+			} else {
+				var result = confirm("Are you sure you want to delete this row?");
+				if (result == true) {
+					param = {
+						_token: $("#csrf_token").val(),
+						action: 'doctornote_save',
+						idno: selrowData('#jqGridAddNotes').idno,
+					}
+					$.post( "/doctornote/form?"+$.param(param),{oper:'del'}, function( data ){
+					}).fail(function (data) {
+						//////////////////errorText(dialog,data.responseText);
+					}).done(function (data) {
+						refreshGrid("#jqGridAddNotes", urlParam_AddNotes);
+					});
+				}else{
+					$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+				}
+			}
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotes", {
+		id: "jqGridPagerRefresh_addnotes",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function () {
+			refreshGrid("#jqGridAddNotes", urlParam_AddNotes);
+		},
+	});
+
+	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 });
 
@@ -212,6 +370,10 @@ function button_state_doctorNote(state){
 			$("#save_doctorNote,#cancel_doctorNote").attr('disabled',false);
 			$('#edit_doctorNote,#new_doctorNote').attr('disabled',true);
 			break;
+		case 'disableAll':
+			$("#toggle_doctorNote").attr('data-toggle','collapse');
+			$('#new_doctorNote,#edit_doctorNote,#save_doctorNote,#cancel_doctorNote').attr('disabled',true);
+			break;
 		// case 'docnote':
 		// 	$("#toggle_doctorNote").attr('data-toggle','collapse');
 		// 	$('#cancel_doctorNote').data('oper','add');
@@ -239,6 +401,9 @@ function populate_doctorNote(obj,rowdata){
 	// check if its current
 	on_toggling_curr_past(obj);
 
+	urlParam_AddNotes.filterVal[0] = obj.mrn;
+	urlParam_AddNotes.filterVal[1] = obj.episno;
+
 	doctornote_docnote={
 		action:'get_table_doctornote',
 		mrn:obj.MRN,
@@ -264,6 +429,9 @@ function populate_currDoctorNote(obj){
 	$("#episno_doctorNote").val(obj.Episno);
 
 	on_toggling_curr_past(obj);
+
+	urlParam_AddNotes.filterVal[0] = obj.MRN;
+	urlParam_AddNotes.filterVal[1] = obj.Episno;
 
 	doctornote_docnote={
 		action:'get_table_doctornote',
@@ -295,6 +463,8 @@ function on_toggling_curr_past(obj = curr_obj){
 
 		addnotes.style.display = "block";
 		disableOtherFields();
+		button_state_doctorNote('disableAll'); //disable all buttons
+		$('#jqGridPagerRefresh_addnotes').click();
 	}
 }
 
@@ -434,6 +604,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.patexam);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealthadd);
+			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 			getBMI();
 		}
 	});

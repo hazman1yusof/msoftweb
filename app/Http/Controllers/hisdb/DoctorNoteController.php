@@ -60,6 +60,9 @@ class DoctorNoteController extends defaultController
             case 'get_table_doctornote':
                 return $this->get_table_doctornote($request);
 
+            case 'doctornote_save':
+                return $this->add_notes($request);
+
             default:
                 return 'error happen..';
         }
@@ -517,6 +520,32 @@ class DoctorNoteController extends defaultController
         $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
+    }
+
+    public function add_notes(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('hisdb.pathealthadd')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'additionalnote' => $request->additionalnote,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
+                    
+                ]);
+
+             DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
 }
