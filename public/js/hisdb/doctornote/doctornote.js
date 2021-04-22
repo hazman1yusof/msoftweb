@@ -119,8 +119,8 @@ $(document).ready(function () {
 			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'Note', name: 'additionalnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden:false},
-			{ label: 'adddate', name: 'adddate', width: 90, hidden:false},
+			{ label: 'Added by', name: 'adduser', width: 50, hidden:false},
+			{ label: 'Date', name: 'adddate', width: 50, hidden:false},
 		],
 		autowidth: true,
 		multiSort: true,
@@ -163,7 +163,7 @@ $(document).ready(function () {
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-			addmore_jqgrid.more=true; //only addmore after save inline
+			// addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 			errorField.length=0;
@@ -207,35 +207,37 @@ $(document).ready(function () {
 			addRowParams: myEditOptions_add
 		},
 		// editParams: myEditOptions_edit
-	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotes", {
-		id: "jqGridPagerDelete",
-		caption: "", cursor: "pointer", position: "last",
-		buttonicon: "glyphicon glyphicon-trash",
-		title: "Delete Selected Row",
-		onClickButton: function () {
-			selRowId = $("#jqGridAddNotes").jqGrid('getGridParam', 'selrow');
-			if (!selRowId) {
-				alert('Please select row');
-			} else {
-				var result = confirm("Are you sure you want to delete this row?");
-				if (result == true) {
-					param = {
-						_token: $("#csrf_token").val(),
-						action: 'doctornote_save',
-						idno: selrowData('#jqGridAddNotes').idno,
-					}
-					$.post( "/doctornote/form?"+$.param(param),{oper:'del'}, function( data ){
-					}).fail(function (data) {
-						//////////////////errorText(dialog,data.responseText);
-					}).done(function (data) {
-						refreshGrid("#jqGridAddNotes", urlParam_AddNotes);
-					});
-				}else{
-					$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
-				}
-			}
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPagerAddNotes", {
+	})
+	// .jqGrid('navButtonAdd', "#jqGridPagerAddNotes", {
+	// 	id: "jqGridPagerDelete",
+	// 	caption: "", cursor: "pointer", position: "last",
+	// 	buttonicon: "glyphicon glyphicon-trash",
+	// 	title: "Delete Selected Row",
+	// 	onClickButton: function () {
+	// 		selRowId = $("#jqGridAddNotes").jqGrid('getGridParam', 'selrow');
+	// 		if (!selRowId) {
+	// 			alert('Please select row');
+	// 		} else {
+	// 			var result = confirm("Are you sure you want to delete this row?");
+	// 			if (result == true) {
+	// 				param = {
+	// 					_token: $("#csrf_token").val(),
+	// 					action: 'doctornote_save',
+	// 					idno: selrowData('#jqGridAddNotes').idno,
+	// 				}
+	// 				$.post( "/doctornote/form?"+$.param(param),{oper:'del'}, function( data ){
+	// 				}).fail(function (data) {
+	// 					//////////////////errorText(dialog,data.responseText);
+	// 				}).done(function (data) {
+	// 					refreshGrid("#jqGridAddNotes", urlParam_AddNotes);
+	// 				});
+	// 			}else{
+	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
+	// 			}
+	// 		}
+	// 	},
+	// })
+	.jqGrid('navButtonAdd', "#jqGridPagerAddNotes", {
 		id: "jqGridPagerRefresh_addnotes",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",
