@@ -227,9 +227,9 @@ use Carbon\Carbon;
             // foreach ($request->data_detail as $key => $value) {
             //     $idno = $value['idno'];
 
-                // $apacthdr_IV = DB::table('finance.apacthdr')
-                //                 ->where('idno','=',$idno)
-                //                 ->first();
+                $apacthdr_IV = DB::table('finance.apacthdr')
+                                ->where('idno','=',$idno)
+                                ->first();
 
                 DB::table('finance.apalloc')
                         ->where('compcode','=',session('compcode'))

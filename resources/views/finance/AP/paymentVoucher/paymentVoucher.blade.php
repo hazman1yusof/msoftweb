@@ -174,7 +174,7 @@ i.fa {
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_actdate">Date</label>  
-				  			<div class="col-md-2">
+				  			<div class="col-md-2" id="apacthdr_actdate">
 								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
 				  			</div>
 

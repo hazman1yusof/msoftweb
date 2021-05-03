@@ -55,6 +55,19 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
+					if ($('#apacthdr_trantype').val() == 'DN') {
+						$('#apacthdr_doctype').val('Others').hide();
+						$('#apacthdr_doctype').val('Supplier').hide();
+						$('#apacthdr_doctype').val('Debit_Note').show();
+						$('#save').show();
+						$('#ap_detail').hide();
+					} else {
+						$('#apacthdr_doctype').val('Debit_Note').hide();
+						$('#apacthdr_doctype').val('Others').show();
+						$('#apacthdr_doctype').val('Supplier').show();
+						$('#save').hide();
+						$('#ap_detail').show();
+					}
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -248,7 +261,18 @@ $(document).ready(function () {
 		height: 200,
 		rowNum: 30,
 		pager: "#jqGridPager",
+
+		loadComplete: function(){
+			if ($('#apacthdr_trantype').val() == 'DN') {
+				$('#jqGrid3_c').hide();
+				$('#gridDo_c').hide();
+			} else {
+				$('#jqGrid3_c').show();
+				$('#gridDo_c').show();
+			}
+		},
 		onSelectRow:function(rowid, selected){
+
 			$('#error_infront').text('');
 			$('#save').hide();
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -396,22 +420,18 @@ $(document).ready(function () {
 
 	
 	////////////////////selected///////////////
-	// if ($('#apacthdr_trantype').val() == 'IN') {
-	// 	$('#apacthdr_doctype').val(Debit_Note).hide();
-	// }
-
 
 	$('#apacthdr_doctype').on('change', function() {
 		let doctype = $("#apacthdr_doctype option:selected").val();
 	
-		if(doctype == 'Supplier' || doctype == 'Others') {
-			$("#formdata :input[name='apacthdr_source']").val("AP");
-			$("#formdata :input[name='apacthdr_trantype']").val("IN");
+		// if(doctype == 'Supplier' || doctype == 'Others') {
+		// 	$("#formdata :input[name='apacthdr_source']").val("AP");
+		// 	$("#formdata :input[name='apacthdr_trantype']").val("IN");
 
-		}else if(doctype == 'Debit_Note') {
-			$("#formdata :input[name='apacthdr_source']").val("AP");
-			$("#formdata :input[name='apacthdr_trantype']").val("DN");
-		}
+		// }else if(doctype == 'Debit_Note') {
+		// 	$("#formdata :input[name='apacthdr_source']").val("AP");
+		// 	$("#formdata :input[name='apacthdr_trantype']").val("DN");
+		// }
 		
 		if(doctype == 'Supplier') {
 			$('#save').hide();
@@ -422,6 +442,7 @@ $(document).ready(function () {
 		}
 		
 	});
+
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){

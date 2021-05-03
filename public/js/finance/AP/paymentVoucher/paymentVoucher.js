@@ -56,6 +56,7 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
+					//$("#apacthdr_cheqdate").blur(data['apacthdr_actdate']);
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -432,16 +433,20 @@ $(document).ready(function () {
 	});
 
 	///////////check postdate & docdate///////////////////
-	$("#apacthdr_recdate,#apacthdr_actdate").blur(checkdate);
+	$('#apacthdr_actdate').on('changeDate', function (ev) {
+        $('#apacthdr_cheqdate').change(apacthdr_actdate);
+    });
+
+	$("#apacthdr_cheqdate,#apacthdr_actdate").blur(checkdate);
 
 	function checkdate(nkreturn=false){
-		var apacthdr_recdate = $('#apacthdr_recdate').val();
+		var apacthdr_cheqdate = $('#apacthdr_cheqdate').val();
 		var apacthdr_actdate = $('#apacthdr_actdate').val();
-
+		
 		$(".noti ol").empty();
 		var failmsg=[];
 
-		if(moment(apacthdr_recdate).isBefore(apacthdr_actdate)){
+		if(moment(apacthdr_cheqdate).isBefore(apacthdr_actdate)){
 			failmsg.push("Post Date cannot be lower than Document date");
 		}
 
@@ -1228,7 +1233,7 @@ $(document).ready(function () {
 					filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
 					filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
 					WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
-        			WhereInVal: [['AP' || 'DF' || 'CF' || 'TX'], ['IN' || 'DN']],
+        			WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
 					table_id: 'idno',
 				};
 

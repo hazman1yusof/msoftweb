@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Invoice AP')
+@section('title', 'Invoice')
 
 @section('style')
 
