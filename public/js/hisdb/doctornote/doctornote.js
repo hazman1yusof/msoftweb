@@ -101,11 +101,6 @@ $(document).ready(function () {
 		$('#diagfinal').val($('#icdcode').val());
 	});
 
-	// otherwise the radio button inside panel-heading wont work
-	$("input[name=toggle_type]").click(function(event){
-		event.stopPropagation();
-	});
-
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
 
@@ -248,7 +243,7 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-
+	
 });
 
 //bmi calculator
@@ -447,7 +442,6 @@ function populate_currDoctorNote(obj){
 
 function on_toggling_curr_past(obj = curr_obj){
 	var addnotes = document.getElementById("addnotes");
-	console.log(document.getElementById("current").checked)
 	if (document.getElementById("current").checked){
 		dateParam_docnote={
 			action:'get_table_date_curr',
@@ -559,7 +553,8 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
 });
 
 var ajaxurl;
-$('#jqGridDoctorNote_panel').on('show.bs.collapse', function () {
+$('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
+	sticky_docnotetbl(on=true);
     docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
@@ -568,11 +563,14 @@ $('#jqGridDoctorNote_panel').on('show.bs.collapse', function () {
 
 //to reload date table on radio btn click
 $("input[name=toggle_type]").on('click', function () {
+	event.stopPropagation();
 	on_toggling_curr_past();
+	console.log(Math.floor($("#jqGridAddNotes_c")[0].offsetWidth));
 	docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
+	$("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft));
 });
 
 $('#docnote_date_tbl tbody').on('click', 'tr', function () { 
@@ -622,4 +620,22 @@ function disable_edit_date(){
     	disabled = true;
     }
     return disabled;
+}
+
+function sticky_docnotetbl(on){
+	if(on){
+		var topDistance = $('#docnote_date_tbl_sticky').offset().top;
+		$(window).on('scroll', function() {
+		    var scrollTop = $(this).scrollTop();
+			var bottomDistance = $('#jqGrid_ordcom_c').offset().top;
+		    if((topDistance+10) < scrollTop && (bottomDistance-280)>scrollTop){
+		    	$('#docnote_date_tbl_sticky').addClass( "sticky_div" );
+		    }else{
+		    	$('#docnote_date_tbl_sticky').removeClass( "sticky_div" );
+		    }
+		});
+	}else{
+		$(window).off('scroll');
+	}
+	
 }

@@ -47,9 +47,6 @@
 	<div id="jqGridDoctorNote_panel" class="panel-collapse collapse">
 		<div class="panel-body">
 			<div class='col-md-12' style="padding:0 0 15px 0">
-				<!-- <table id="jqGridTriageInfo" class="table table-striped"></table>
-				<div id="jqGridPagerTriageInfo"></div> -->
-
 				<form class='form-horizontal' style='width:99%' id='formDoctorNote'>
 
                     <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
@@ -57,8 +54,8 @@
                     <input id="recorddate" name="recorddate" type="hidden">
 
 
-                    <div class="col-md-2" style="padding:0 0 0 0">
-                        <div class="panel panel-info" style="position: sticky;top: 0px;z-index: 3;">
+                    <div class="col-md-2" id="docnote_date_tbl_sticky" style="padding:0 0 0 0">
+                        <div class="panel panel-info">
                             <div class="panel-body">
 
                                 <table id="docnote_date_tbl" class="table-hover table-bordered" style="width: 100%">
@@ -74,7 +71,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-10" style="padding:0 0 0 5px">
+                    <div class="col-md-10" style="padding:0 0 0 5px; float: right;">
                         <div class="panel panel-info">
                             <div class="panel-body">
 
@@ -297,10 +294,10 @@
                                 </div>
 
                                 <div class="col-md-12" id="addnotes" style="display:none">
-                                    <div class="panel panel-info" id="jqGridAddNotes_c">
+                                    <div class="panel panel-info" >
                                         <div class="panel-heading text-center">ADDITIONAL NOTES</div>
                                         <div class="panel-body">
-                                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                            <div class='col-md-12' style="padding:0 0 15px 0" id="jqGridAddNotes_c">
                                                 <table id="jqGridAddNotes" class="table table-striped"></table>
                                                 <div id="jqGridPagerAddNotes"></div>
                                             </div>

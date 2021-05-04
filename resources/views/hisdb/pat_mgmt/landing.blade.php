@@ -230,6 +230,12 @@
 		    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%) !important;
 	    }
 
+	    .sticky_div{
+	    	position: fixed;
+	    	top: 100px;
+	    	left: 16px;
+	    }
+
 	</style>
 
 </head>
