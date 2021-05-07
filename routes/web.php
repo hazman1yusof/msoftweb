@@ -321,6 +321,14 @@ Route::post('/invoiceAP/form','finance\InvoiceAPController@form');
 Route::get('/invoiceAP/form','finance\InvoiceAPController@form');
 Route::post('/invoiceAPDetail/form','finance\InvoiceAPDetailController@form');
 
+//// Finance - SalesOrder page ///
+Route::get('/SalesOrder','finance\SalesOrderController@show');
+Route::get('/SalesOrder/table','finance\SalesOrderController@table');
+Route::post('/SalesOrder/form','finance\SalesOrderController@form');
+Route::get('/SalesOrder/form','finance\SalesOrderController@form');
+Route::post('/SalesOrderDetail/form','finance\SalesOrderDetailController@form');
+Route::get('/SalesOrderDetail/table','finance\SalesOrderDetailController@table');
+
 //// Delivery Department material setup ///
 Route::get('/deliveryDept','material\DeliveryDeptController@show');
 Route::get('/deliveryDept/table','material\DeliveryDeptController@table');
