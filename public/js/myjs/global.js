@@ -82,6 +82,20 @@ var Global = function () {
 				act = "get_reg_bed";
 				title = "Select Patient Bed";
 				break;
+			case "newgl_occupcode":
+				act = "get_patient_occupation";
+				title = "Select GL Occupation";
+				break;
+			case "newgl_relatecode":
+				act = "get_patient_relationship";
+				title = "Select GL Relationship";
+				break;
+			case "newgl_corpcomp":
+				act = "get_all_company";
+				title = "Select Company";
+				break;
+
+				
 		}
 
 		$("#txt_item_selector").text(title);
@@ -104,27 +118,31 @@ var Global = function () {
                     "targets": 0,
                     "data": "code",
                     "render": function ( data, type, row, meta ) {
-                        if(act == "get_reg_source"){
-                            return pad('000000',data,true)
-                        }else{
-                        	return data;
-                        }
+                        return data;
                     }
                   } ],
 
 				"fnInitComplete": function(oSettings, json) {
-					
-                    if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
-
+					if(ontab==true){
+                        selecter.search( text_val ).draw();
+                    }
+                    // if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
+                    if(mdl!=null){
                         $('#add_new_adm').data('modal-target',mdl)
                         $('#add_new_adm').show();
+                    }
+                    if(selecter.page.info().recordsDisplay == 1){
+                        $('#tbl_item_select tbody tr:eq(0)').dblclick();
                     }
 			    }
 		} );
 		
 		// dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
 		$('#tbl_item_select tbody').on('dblclick', 'tr', function () {	
-
+			$('#txt_' + type).removeClass('error myerror').addClass('valid');
+            setTimeout(function(type){
+                $('#txt_' + type).removeClass('error myerror').addClass('valid'); 
+            }, 500,type);
 			item = selecter.row( this ).data();				
 			//console.log("type2="+type + " item=" + item["description"]);
 			$('#hid_' + type).val(item["code"]);
@@ -150,6 +168,10 @@ var Global = function () {
 						//console.dir(item);
 			//		} );
 		});
+
+        $("#mdl_item_selector").on('show.bs.modal', function () {
+        	$(this).eq(0).css('z-index','120');
+        });
 
 		$('#add_new_adm').click(function(){
             $($(this).data('modal-target')).modal('show');

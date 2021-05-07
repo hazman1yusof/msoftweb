@@ -159,9 +159,9 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'Bill Type', name: 'billtype', width: 40, classes: 'wrap', canSearch: true},
-			{ label: 'opprice', name: 'opprice', width: 90, hidden: true },
 			{ label: 'Description', name: 'description', width: 90, classes: 'wrap', canSearch: true, checked: true},
 			{ label: 'Price', name: 'price', width: 40, classes: 'wrap' },
+			{ label: 'OP Price', name: 'opprice', width: 40 ,formatter: formatter, unformat: unformat},
 			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter: 'currency'  },
 			{ label: 'Percentage', name: 'percent_', width: 40, classes: 'wrap', formatter: formatter1, unformat: unformat1 },
 			{ label: 'All Service', name: 'service', width: 40, classes: 'wrap', formatter: formatter, unformat: unformat },

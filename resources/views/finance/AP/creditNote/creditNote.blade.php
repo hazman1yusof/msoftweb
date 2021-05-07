@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Payment Voucher')
+@section('title', 'Credit Note')
 
 @section('style')
 
@@ -126,7 +126,7 @@ i.fa {
 		</div>
 		 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Payment Voucher Header</div>
+		    <div class="panel-heading">Credit Note Header</div>
 		    	<div class="panel-body">
 		    		<div class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid" class="table table-striped"></table>
@@ -143,7 +143,7 @@ i.fa {
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Payment Voucher Detail</h5>
+					<h5>Credit Note Detail</h5>
 				</div>
 			</div>
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
@@ -161,7 +161,7 @@ i.fa {
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Payment Voucher Header
+			<div class="panel-heading">Credit Note Header
 				<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
 			</div>
 			<div class="panel-body" style="position: relative;">
@@ -174,7 +174,7 @@ i.fa {
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_actdate">Date</label>  
-				  			<div class="col-md-2" id="apacthdr_actdate">
+				  			<div class="col-md-2">
 								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
 				  			</div>
 
@@ -203,6 +203,17 @@ i.fa {
 								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
 				  			</div>
 
+						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					</div>
+
+					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_paymode">Paymode</label>	 
 						 	<div class="col-md-2">
 							  	<div class='input-group'>
@@ -210,39 +221,11 @@ i.fa {
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
-						  	</div>
-					
-					</div>
-
-					<div class="form-group">
-
-						<label class="col-md-2 control-label" for="apacthdr_bankcode">Bank Code</label>	 
-						 	<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_bankcode" name="apacthdr_bankcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						</div>	  	
-
-						<label class="col-md-2 control-label" for="apacthdr_cheqno">Cheque No</label>	  
-				  			<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_cheqno" name="apacthdr_cheqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>
-
-						<label class="col-md-2 control-label" for="apacthdr_cheqdate">Cheque Date</label>  
-							<div class="col-md-2">
-								<div class='input-group'>
-									<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12"  class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
-								</div>
-							</div>		
+						  	</div>		
 					</div>
 
 					<hr/>
+
 
 					<div class="form-group">
 			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
@@ -279,40 +262,6 @@ i.fa {
 
 					</div>
 
-					<hr/>
-
-					<input type='checkbox' name='checkbox_selection' id='checkbox_selection_'>
-					<label for="checkbox_selection">Online Banking</label>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_prov_prod">Provider Product</label>	  
-							<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_prov_prod" name="apacthdr_prov_prod" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>
-					
-						<label class="col-md-2 control-label" for="apacthdr_destination">Destination</label>	  
-							<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_destination" name="apacthdr_destination" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>
-
-						<label class="col-md-2 control-label" for="apacthdr_purp_of_trans">Purpose of Transfer</label>	  
-							<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_purp_of_trans" name="apacthdr_purp_of_trans" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>  	
-					</div>		  	
-
 				</form>
 				<div class="panel-body">
 					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
@@ -322,7 +271,7 @@ i.fa {
 			
 
 		<div class='panel panel-info' id="ap_parent">
-			<div class="panel-heading">Payment Voucher Detail</div>
+			<div class="panel-heading">Credit Note Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
 						<div id="jqGrid2_c" class='col-md-12'>
@@ -332,10 +281,6 @@ i.fa {
 					</form>
 				</div>
 
-				<!-- <div class="panel-body">
-				<button type="button" class="btn btn-primary pull-right" id="savepv"> Save Payment Voucher</button>
-					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
-				</div> -->
 		</div>
 	</div>			
 			
@@ -345,8 +290,6 @@ i.fa {
 
 @section('scripts')
 
-	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js"></script>
-	<!-- <script src="js/finance/AP/paymentVoucher/pdfgen.js"></script> -->
+	<script src="js/finance/AP/creditNote/creditNote.js"></script>
 
-	
 @endsection

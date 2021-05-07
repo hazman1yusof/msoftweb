@@ -47,9 +47,6 @@
 	<div id="jqGridDoctorNote_panel" class="panel-collapse collapse">
 		<div class="panel-body">
 			<div class='col-md-12' style="padding:0 0 15px 0">
-				<!-- <table id="jqGridTriageInfo" class="table table-striped"></table>
-				<div id="jqGridPagerTriageInfo"></div> -->
-
 				<form class='form-horizontal' style='width:99%' id='formDoctorNote'>
 
                     <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
@@ -57,7 +54,7 @@
                     <input id="recorddate" name="recorddate" type="hidden">
 
 
-                    <div class="col-md-2" style="padding:0 0 0 0">
+                    <div class="col-md-2" id="docnote_date_tbl_sticky" style="padding:0 0 0 0">
                         <div class="panel panel-info">
                             <div class="panel-body">
 
@@ -74,7 +71,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-10" style="padding:0 0 0 5px">
+                    <div class="col-md-10" style="padding:0 0 0 5px; float: right;">
                         <div class="panel panel-info">
                             <div class="panel-body">
 
@@ -218,7 +215,7 @@
                                     <div class="col-md-3" style="padding:0 0 0 0">
                                         <div class="panel panel-info">
                                             <div class="panel-heading text-center">Vital Sign</div>
-                                            <div class="panel-body" style="height: 585px">
+                                            <div class="panel-body">
 
                                                 <div class="form-group col-md-12">
                                                     <label class="control-label" for="height" style="padding-bottom:5px">Height</label>
@@ -270,43 +267,40 @@
 
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-12" id="addnotes" style="display:none">
-                                    <div class="panel panel-info">
-                                        <div class="panel-heading text-center">ADDITIONAL NOTES</div>
-                                        <div class="panel-body">
-
-                                            <div class="form-group">
-                                                <!-- <label class="col-md-3 control-label" for="additionalnote">Additional Notes</label> -->
-                                                <div class="col-md-12">
-                                                    <textarea id="additionalnote" name="additionalnote" type="text" class="form-control input-sm" rows="4"></textarea>
-                                                </div>
+                                        <!-- to add spaces between panels -->
+                                        <div class="panel panel-info" style="height: 1035px;border: 0;box-shadow: none;">
+                                            <div class="panel-body">
                                             </div>
+                                        </div>
+                                        <!-- to add spaces between panels -->
 
+                                        <div class="panel panel-info">
+                                            <div class="panel-body">
+
+                                                <div class="form-group col-md-12">
+                                                    <label class="control-label" for="adduser" style="padding-bottom:5px">Added by</label>  
+                                                    <input id="adduser" name="adduser" type="text" class="form-control input-sm" rdonly>
+                                                </div>
+
+                                                <div class="form-group col-md-12">
+                                                    <label class="control-label" for="adddate" style="padding-bottom:5px">Date</label>
+                                                    <input id="adddate" name="adddate" type="text" class="form-control input-sm" rdonly>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 pull-right">
-                                    <div class="panel panel-info">
+                                <div class="col-md-12" id="addnotes" style="display:none">
+                                    <div class="panel panel-info" >
+                                        <div class="panel-heading text-center">ADDITIONAL NOTES</div>
                                         <div class="panel-body">
-
-                                            <div class="form-group">
-                                                <label class="col-md-3 control-label" for="adduser">Added by</label>  
-                                                <div class="col-md-9">
-                                                    <input id="adduser" name="adduser" type="text" class="form-control input-sm" rdonly>
-                                                </div>
+                                            <div class='col-md-12' style="padding:0 0 15px 0" id="jqGridAddNotes_c">
+                                                <table id="jqGridAddNotes" class="table table-striped"></table>
+                                                <div id="jqGridPagerAddNotes"></div>
                                             </div>
-
-                                            <div class="form-group">
-                                                <label class="col-md-3 control-label" for="adddate">Date</label>  
-                                                <div class="col-md-9">
-                                                    <input id="adddate" name="adddate" type="text" class="form-control input-sm" rdonly>
-                                                </div>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -321,4 +315,3 @@
 		</div>
 	</div>	
 </div>
-	

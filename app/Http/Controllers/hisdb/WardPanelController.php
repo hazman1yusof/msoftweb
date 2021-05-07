@@ -78,13 +78,17 @@ class WardPanelController extends defaultController
                         'currentmedication' => $request->currentmedication,
                         'diagnosis' => $request->diagnosis,
                         'allergydrugs' => $request->allergydrugs,
+                        'drugs_remarks' => $request->drugs_remarks,
                         'allergyplaster' => $request->allergyplaster,
+                        'plaster_remarks' => $request->plaster_remarks,
                         'allergyfood' => $request->allergyfood,
-                        'allergyenviroment' => $request->allergyenviroment,
-                        'allergynone' => $request->allergynone,
-                        'allergyunknown' => $request->allergyunknown,
+                        'food_remarks' => $request->food_remarks,
+                        'allergyenvironment' => $request->allergyenvironment,
+                        'environment_remarks' => $request->environment_remarks,
                         'allergyothers' => $request->allergyothers,
-                        'allergyremarks' => $request->allergyremarks,
+                        'others_remarks' => $request->others_remarks,
+                        'allergyunknown' => $request->allergyunknown,
+                        'allergynone' => $request->allergynone,
                         'vs_temperature' => $request->vs_temperature,
                         'vs_pulse' => $request->vs_pulse,
                         'vs_respiration' => $request->vs_respiration,
@@ -247,13 +251,17 @@ class WardPanelController extends defaultController
                         'currentmedication' => $request->currentmedication,
                         'diagnosis' => $request->diagnosis,
                         'allergydrugs' => $request->allergydrugs,
+                        'drugs_remarks' => $request->drugs_remarks,
                         'allergyplaster' => $request->allergyplaster,
+                        'plaster_remarks' => $request->plaster_remarks,
                         'allergyfood' => $request->allergyfood,
-                        'allergyenviroment' => $request->allergyenviroment,
-                        'allergynone' => $request->allergynone,
-                        'allergyunknown' => $request->allergyunknown,
+                        'food_remarks' => $request->food_remarks,
+                        'allergyenvironment' => $request->allergyenvironment,
+                        'environment_remarks' => $request->environment_remarks,
                         'allergyothers' => $request->allergyothers,
-                        'allergyremarks' => $request->allergyremarks,
+                        'others_remarks' => $request->others_remarks,
+                        'allergyunknown' => $request->allergyunknown,
+                        'allergynone' => $request->allergynone,
                         'vs_temperature' => $request->vs_temperature,
                         'vs_pulse' => $request->vs_pulse,
                         'vs_respiration' => $request->vs_respiration,
@@ -297,13 +305,17 @@ class WardPanelController extends defaultController
                         'currentmedication' => $request->currentmedication,
                         'diagnosis' => $request->diagnosis,
                         'allergydrugs' => $request->allergydrugs,
+                        'drugs_remarks' => $request->drugs_remarks,
                         'allergyplaster' => $request->allergyplaster,
+                        'plaster_remarks' => $request->plaster_remarks,
                         'allergyfood' => $request->allergyfood,
-                        'allergyenviroment' => $request->allergyenviroment,
-                        'allergynone' => $request->allergynone,
-                        'allergyunknown' => $request->allergyunknown,
+                        'food_remarks' => $request->food_remarks,
+                        'allergyenvironment' => $request->allergyenvironment,
+                        'environment_remarks' => $request->environment_remarks,
                         'allergyothers' => $request->allergyothers,
-                        'allergyremarks' => $request->allergyremarks,
+                        'others_remarks' => $request->others_remarks,
+                        'allergyunknown' => $request->allergyunknown,
+                        'allergynone' => $request->allergynone,
                         'vs_temperature' => $request->vs_temperature,
                         'vs_pulse' => $request->vs_pulse,
                         'vs_respiration' => $request->vs_respiration,
@@ -523,6 +535,12 @@ class WardPanelController extends defaultController
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
+        $ward_regdate_obj = DB::table('hisdb.episode')
+                    ->select('reg_date')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
         $responce = new stdClass();
 
         if($ward_obj->exists()){
@@ -538,6 +556,11 @@ class WardPanelController extends defaultController
         if($ward_exm_obj->exists()){
             $ward_exm_obj = $ward_exm_obj->get()->toArray();
             $responce->ward_exm = $ward_exm_obj;
+        }
+
+        if($ward_regdate_obj->exists()){
+            $ward_regdate_obj = $ward_regdate_obj->first();
+            $responce->ward_regdate = $ward_regdate_obj;
         }
 
         return json_encode($responce);

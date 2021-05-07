@@ -546,12 +546,14 @@ function populate_triage(obj,rowdata){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formTriageInfo",data.triage);
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
+			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			button_state_ti('triage');
         }else{
 			button_state_ti('triage');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			examination_nursing.empty();
+			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
         }
 
     });
@@ -591,12 +593,14 @@ function populate_tiCurrentPt(obj){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formTriageInfo",data.triage);
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
+			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			button_state_ti('edit');
         }else{
 			button_state_ti('add');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			examination_nursing.empty();
+			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
         }
 
     });

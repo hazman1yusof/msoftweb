@@ -21,20 +21,18 @@
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
 
 	<style type="text/css" class="init">
+		#mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl{
+			display: none; z-index: 120;background-color: rgba(0, 0, 0, 0.3);
+		}
 		.smallmodal{
-			width: 70% !important; margin: auto !important;
+			width: 70% !important; margin: auto !important;margin-top:30px;margin-top: 30px !important;
+		}
+		.smallmodal > .modal-content{
+			border: 1px solid grey;
 		}
 		tr.dtrg-group{
 			font-size: 15px;
 		}
-		td.details-control {
-			background: url('../../../../assets/img/details_open.png') no-repeat center center;
-			cursor: pointer;
-		}
-		tr.details td.details-control {
-			background: url('../../../../assets/img/details_close.png') no-repeat center center;
-		}
-
 		.uppercase, .odd, .even{
 		  	text-transform:uppercase
 		}
@@ -81,7 +79,7 @@
 
 		.modal-body {
 			position: relative;
-			padding: 10px;
+			/*padding: 10px;*/
 		}
 
 		.modal-backdrop{
@@ -156,6 +154,87 @@
 		    white-space: pre-line !important;
 		    vertical-align: top !important;
 		}
+
+		tr.yellow{
+			background-color:yellow !important;
+		}
+
+		input.yellow{
+			color: black !important;
+			border-color:#9e9e00 !important;
+			background-color:yellow !important;
+		}
+
+		a.yellow{
+			color: #9e9e00 !important;
+		    background-color: #fdffe2 !important;
+		    border-color: #9e9e00 !important;
+		}
+
+		tr.red{
+			color:white;
+			background-color:red !important;
+		}
+
+		input.red{
+			color: white !important;
+			border-color:red !important;
+			background-color:red !important;
+		}
+
+		a.red{
+			color: red !important;
+		    background-color: #ffe5e5 !important;
+		    border-color: red !important;
+		}
+
+		tr.green{
+			color:white;
+			background-color:green !important;
+		}
+		
+		input.green{
+			color: white !important;
+			border-color:green !important;
+			background-color:green !important;
+		}
+
+		a.green{
+			color: #3c763d !important;
+		    background-color: #dff0d8 !important;
+		    border-color: #3c763d !important;
+		}
+
+		fieldset.mycss {
+		    border: 1px groove #ddd !important;
+		    padding: 0 1.4em 1.4em 1.4em !important;
+		    margin: 0 0 1.5em 0 !important;
+		    -webkit-box-shadow:  0px 0px 0px 0px #000;
+		            box-shadow:  0px 0px 0px 0px #000;
+		}
+
+	    fieldset.mycss > legend {
+	        font-size: 1.2em !important;
+	        font-weight: bold !important;
+	        text-align: left !important;
+	        width:auto;
+	        padding:0 10px;
+	        border-bottom:none;
+	    }
+
+	    input.myerror{
+	    	border-color: #b94a48 !important;
+		    background-position: right 5px center !important;
+		    background-repeat: no-repeat !important;
+		    -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%) !important;
+		    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%) !important;
+	    }
+
+	    .sticky_div{
+	    	position: fixed;
+	    	top: 100px;
+	    	left: 16px;
+	    }
 
 	</style>
 
@@ -297,7 +376,6 @@
 	<script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script>
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js"></script>
 
@@ -326,6 +404,7 @@
 	@endif
 
 
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>

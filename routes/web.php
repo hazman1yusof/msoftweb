@@ -524,7 +524,12 @@ Route::get('/paymentVoucher','finance\PaymentVoucherController@show');
 Route::get('/paymentVoucher/table','finance\PaymentVoucherController@table');
 Route::post('/paymentVoucher/form','finance\PaymentVoucherController@form');
 Route::get('/paymentVoucher/form','finance\PaymentVoucherController@form');
-Route::post('/paymentVoucherDetail/form','finance\PaymentVoucherDetailController@form');
+
+//// Credit Note ///
+Route::get('/creditNote','finance\CreditNoteController@show');
+Route::get('/creditNote/table','finance\CreditNoteController@table');
+Route::post('/creditNote/form','finance\CreditNoteController@form');
+Route::get('/creditNote/form','finance\CreditNoteController@form');
 
 ////////////////patient mgt setup/////////////////////////////////////////
 

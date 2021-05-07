@@ -82,8 +82,9 @@
 				loadComplete: function(){
 					if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 					else{
-						$('#jqGrid2').jqGrid ('setSelection', "1");
+						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 					}
+					$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 
 					addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 					if(err_reroll.error == true){

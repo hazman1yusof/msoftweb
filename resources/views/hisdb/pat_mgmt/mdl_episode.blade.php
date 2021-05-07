@@ -1,5 +1,5 @@
 <!-- Large modal -->
-<div id="editEpisode" class="modal fade" data-backdrop="false" data-keyboard="false" role="dialog" aria-labelledby="editEpisode" aria-hidden="true" style="display: none; z-index: 100">
+<div id="editEpisode" class="modal fade" data-backdrop="false" data-keyboard="false" role="dialog" aria-labelledby="editEpisode" aria-hidden="true" style="display: none; z-index: 110">
     <div class="modal-dialog modal-lg">
         <input type="hidden" name="rowid" id="epis_rowid">
         <input type="hidden" name="idno" id="epis_idno">
@@ -79,7 +79,7 @@
                                     <div class="col-md-offset-1 col-md-10">
                                         <small for="txt_epis_dept">Registration Department</small>
                                         <div class="input-group">
-                                            <input value="{{$userdeptdesc ?? ''}}" type="text" class="form-control form-mandatory" id="txt_epis_dept" required>
+                                            <input value="{{$userdeptdesc ?? ''}}" type="text" class="form-control form-mandatory" id="txt_epis_dept" required tabindex=1>
                                             <input value="{{$userdeptcode ?? ''}}" type="hidden" id="hid_epis_dept" name="regdept" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_dept" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_dept');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -89,7 +89,7 @@
                                     <div class="col-md-offset-1 col-md-10">
                                         <small for="txt_epis_source">Registration Source</small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_epis_source" id="txt_epis_source" required>
+                                            <input type="text" class="form-control form-mandatory" name="txt_epis_source" id="txt_epis_source" required tabindex=2>
                                             <input type="hidden" id="hid_epis_source" name="" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_source" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_source');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -99,7 +99,7 @@
                                     <div class="col-md-offset-1 col-md-10">
                                         <small for="txt_epis_case">Case </small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_epis_case" id="txt_epis_case" required>
+                                            <input type="text" class="form-control form-mandatory" name="txt_epis_case" id="txt_epis_case" required tabindex=3>
                                             <input type="hidden" id="hid_epis_case" name="case_code"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_case" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_case');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -109,7 +109,7 @@
                                     <div class="col-md-offset-1 col-md-10">
                                         <small for="txt_epis_doctor">Doctor</small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_epis_doctor" id="txt_epis_doctor" required>
+                                            <input type="text" class="form-control form-mandatory" name="txt_epis_doctor" id="txt_epis_doctor" required tabindex=4>
                                             <input type="hidden" id="hid_epis_doctor" name="admdoctor"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_doctor" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_doctor');"><span class="fa fa-ellipsis-h"></span> </button>
@@ -120,7 +120,7 @@
                                     <div class="col-md-offset-1 col-md-4">
                                         <small for="txt_epis_bed">ACCOMODATION : BED</small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_epis_bed" id="txt_epis_bed" required>
+                                            <input type="text" class="form-control" name="txt_epis_bed" id="txt_epis_bed">
                                             <input type="hidden" id="hid_epis_bed" name="admbed"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_bed" data-toggle="modal" data-target="#mdl_accomodation"><span class="fa fa-ellipsis-h"></span> </button>
@@ -167,7 +167,7 @@
                                         <small for="txt_epis_payer">Payer </small>
                                         <div class="input-group">
                                             <input type="text" class="form-control form-mandatory" name="txt_epis_payer" id="txt_epis_payer" required>
-                                            <input type="hidden" id="hid_epis_payer" name=""/>
+                                            <input type="hidden" id="hid_epis_payer" name="payercode"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_payer"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
@@ -177,7 +177,7 @@
                                         <small for="txt_epis_bill_type">Bill Type </small>
                                         <div class="input-group">
                                             <input type="text" class="form-control form-mandatory" name="txt_epis_bill_type" id="txt_epis_bill_type" required>
-                                            <input type="hidden" id="hid_epis_bill_type" name=""/>
+                                            <input type="hidden" id="hid_epis_bill_type" name="bill_type"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_bill_type_info" ><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
@@ -227,7 +227,7 @@
                         </div>
 
                         <!-- doctor -->
-                        <div class="panel panel-default" style="position: relative;" id="div-doctor">
+                        <div class="panel panel-default" style="position: relative;" id="div_doctor">
                             <div class="panel-heading clearfix collapsed" id="toggle_tabDoctor" data-toggle="collapse" data-target="#tabDoctor">
                                 <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                                 <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
@@ -316,7 +316,7 @@
 
                         <!-- bed -->
                         @if (request()->get('epistycode') == 'IP')
-                        <div class="panel panel-default" style="position: relative;">
+                        <div class="panel panel-default" style="position: relative;" id="div_bed">
                             <div class="panel-heading clearfix collapsed" id="toggle_tabBed" data-toggle="collapse" data-target="#tabBed">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -429,7 +429,7 @@
                         @endif
 
                         <!-- NOK -->
-                        <div class="panel panel-default" style="position: relative;">
+                        <div class="panel panel-default" style="position: relative;" id="div_nok">
                             <div class="panel-heading clearfix collapsed" id="toggle_tabNok" data-toggle="collapse" data-target="#tabNok">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -533,7 +533,7 @@
                         </div>
 
                         <!-- payer -->
-                        <div class="panel panel-default" style="position: relative;">
+                        <div class="panel panel-default" style="position: relative;" id="div_payer">
                             <div class="panel-heading clearfix collapsed" id="toggle_tabPayer" data-toggle="collapse" data-target="#tabPayer">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -551,7 +551,7 @@
                         </div>
 
                         <!-- deposit -->
-                        <div class="panel panel-default" style="position: relative;">
+                        <div class="panel panel-default" style="position: relative;" id="div_deposit">
                             <div class="panel-heading clearfix collapsed" id="toggle_tabDeposit" data-toggle="collapse" data-target="#tabDeposit">
 
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -579,106 +579,32 @@
     </div>
 </div>
 
-<div id="mdl_new_gl" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <form class="form-horizontal" id="glform">
+<div id="mdl_epis_pay_mode" class="modal fade" role="dialog" tabindex="-1" role="dialog" data-backdrop="static" style="display: none; z-index: 130">
+    <div class="modal-dialog smallmodal">
+        <form class="form-horizontal">
             <div class="modal-content">
-                <div class="modal-header label-primary">
-                    <p align="center"><b>GURANTEE LETTER ENTRY</b></p>
+                <div class="modal-header label-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p align="center"><b>PAYER INFORMATION</b></p>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <small for="newgl-staffid">STAFF ID</small>
-                                    <input class="form-control form-mandatory" id="newgl-staffid" name="newgl-staffid" placeholder="" type="text" required>
+                    <table id="tbl_epis_debtor" class="table table-striped" width="100%">
+                        <thead>
+                        <tr>
+                            <th data-column-id="debtor_type" >Debtor Type</th>
+                            <th data-column-id="debtor_code" >Debtor Code</th>
+                            <th data-column-id="debtor_name" >Name</th>
+                        </tr>
+                        </thead>
 
-                                </div>
-                                <div class="col-md-8">
-                                    <small for="newgl-corpcomp">COMPANY</small>
-                                    <input class="form-control form-mandatory" id="newgl-corpcomp" name="newgl-corpcomp" placeholder="" type="text" required>
-                                    <!-- <select id="newgl-corpcomp" name="newgl-corpcomp" class="form-control form-mandatory" required>
-                                        <option value="">- Select Company -</option>
-                                    </select> -->
-                                </div>
-
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <small for="newgl-occupcode">OCCUPATION</small>
-                                    <select id="newgl-occupcode" name="newgl-occupcode" class="form-control form-mandatory" required>
-                                        <option value="">- Select Occupation -</option>
-                                    </select>
-
-                                </div>
-                                <div class="col-md-4">
-                                    <small for="newgl-relatecode">RELATIONSHIP</small>
-                                    <select id="newgl-relatecode" name="newgl-relatecode" class="form-control form-mandatory" required>
-                                        <option value="">- Select Relationship -</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <small for="newgl-childno">CHILD NO</small>
-                                    <input name="newgl-childno" id="newgl-childno" class="form-control form-mandatory" placeholder="" type="text" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-6">
-                                    <small for="newgl-name">NAME</small>
-                                    <input class="form-control form-mandatory" id="newgl-name" name="newgl-name" placeholder="" type="text" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <small for="newgl-gltype">GL TYPE</small>
-                                    <select id="newgl-gltype" name="newgl-gltype" class="form-control form-mandatory" required>
-                                        <option value="SINGLE">SINGLE USE</option>
-                                        <option value="MULTIPLE">MULTIPLE USE</option>
-                                        <option value="OPEN">OPEN</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <small for="newgl-effdate">EFFECTIVE DATE:</small>
-                                    <input class="form-control form-mandatory" id="newgl-effdate" name="newgl-effdate" placeholder="" type="text" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <small for="newgl-expdate">EXPIRY DATE:</small>
-                                    <input class="form-control form-mandatory" id="newgl-expdate" name="newgl-expdate" placeholder="" type="text" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <small for="newgl-visitno">VISIT NO</small>
-                                    <input class="form-control" id="newgl-visitno" name="newgl-visitno" placeholder="" type="text" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-6">
-                                    <small for="newgl-case">CASE</small>
-                                    <input class="form-control form-mandatory" id="newgl-case" name="newgl-case" placeholder="" type="text" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <small for="newgl-refno">REFERENCE NO</small>
-                                    <input class="form-control" id="newgl-refno" name="newgl-refno" placeholder="" type="text">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-6">
-                                    <small for="newgl-ourrefno">OUR REFERENCE</small>
-                                    <input class="form-control" id="newgl-ourrefno" name="newgl-ourrefno" placeholder="" type="text">
-                                </div>
-                                <div class="col-md-6">
-                                    <small for="newgl-remark">REMARK</small>
-                                    <input class="form-control" id="newgl-remark" name="newgl-remark" placeholder="" type="text">
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+                    </table>
+                    <br />
+                    <button id="btngurantor" type="button" class="btn btn-primary" >Guarantor</button>
                 </div>
 
                 <div class="modal-footer">
-                    <button id="btnglclose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button id="btnglsave" type="button" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!--button type="button" class="btn btn-success">Save</button-->
                 </div>
             </div>
         </form>
@@ -687,11 +613,12 @@
     </div>
 </div>
 
-<div id="bs-guarantor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
+<div id="bs-guarantor" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog smallmodal">
         <form class="form-horizontal">
             <div class="modal-content">
-                <div class="modal-header label-primary">
+                <div class="modal-header label-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <p align="center"><b>PR - GUARANTOR</b> </p>
                 </div>
                 <form id="frm_guarantor">
@@ -780,44 +707,12 @@
     </div>
 </div>
 
-<div id="mdl_epis_pay_mode" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
+<div id="mdl_bill_type" class="modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog smallmodal">
         <form class="form-horizontal">
             <div class="modal-content">
-                <div class="modal-header label-success">
-                    <p align="center"><b>PAYER INFORMATION</b></p>
-                </div>
-                <div class="modal-body">
-                    <table id="tbl_epis_debtor" class="table table-striped" width="100%">
-                        <thead>
-                        <tr>
-                            <th data-column-id="debtor_type" >Debtor Type</th>
-                            <th data-column-id="debtor_code" >Debtor Code</th>
-                            <th data-column-id="debtor_name" >Name</th>
-                        </tr>
-                        </thead>
-
-                    </table>
-                    <br />
-                    <button id="btngurantor" type="button" class="btn btn-primary" >Guarantor</button>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <!--button type="button" class="btn btn-success">Save</button-->
-                </div>
-            </div>
-        </form>
-
-
-    </div>
-</div>
-
-<div id="mdl_bill_type" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <form class="form-horizontal">
-            <div class="modal-content">
-                <div class="modal-header label-success">
+                <div class="modal-header label-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <p align="center"><b>BILL TYPE</b></p>
                 </div>
                 <div class="modal-body">                    
@@ -843,22 +738,32 @@
     </div>
 </div>
 
-<div id="mdl_reference" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
+<div id="mdl_reference" class="modal fade" role="dialog" data-backdrop="static" style="z-index: 111 !important;">
+    <div class="modal-dialog smallmodal">
         <form class="form-horizontal">
             <div class="modal-content">
-                <div class="modal-header label-primary">
+                <div class="modal-header label-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <p align="center"><b>GL REFERENCE</b></p>
                 </div>
                 <div class="modal-body">
                     <table id="tbl_epis_reference" class="table table-striped" width="100%">
                         <thead>
                         <tr>
-                            <th data-column-id="mrn" >Staff ID</th>
                             <th data-column-id="mrn" >Debtor Code</th>
                             <th data-column-id="mrn" >Name</th>
                             <th data-column-id="mrn" >GL Type</th>
-                            <th data-column-id="mrn" >Debtorcode</th>
+                            <th data-column-id="mrn" >Staff ID</th>
+                            <th data-column-id="mrn" >Ref No</th>
+                            <th data-column-id="mrn" >Our Ref No</th>
+                            <th data-column-id="mrn" >childno</th>
+                            <th data-column-id="mrn" >episno</th>
+                            <th data-column-id="mrn" >medcase</th>
+                            <th data-column-id="mrn" >mrn</th>
+                            <th data-column-id="mrn" >relatecode</th>
+                            <th data-column-id="mrn" >remark</th>
+                            <th data-column-id="mrn" >startdate</th>
+                            <th data-column-id="mrn" >enddate</th>
                         </tr>
                         </thead>
 
@@ -873,5 +778,148 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+
+<div id="mdl_new_gl" class="modal fade" tabindex="-1" role="dialog" >
+    <div class="modal-dialog smallmodal">
+        <form class="form-horizontal" id="glform">
+            <div class="modal-content">
+                <div class="modal-header label-info">
+                    <p align="center"><b>GURANTEE LETTER ENTRY</b></p>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <fieldset class="mycss">
+                            <legend>Corporate Info:</legend>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <small for="newgl-staffid">STAFF ID</small>
+                                        <input class="form-control form-mandatory" id="newgl-staffid" name="newgl-staffid" placeholder="" type="text" required>
+
+                                    </div>
+                                    <div class="col-md-7 col-md-offset-1">
+                                        <small for="newgl-corpcomp">Name</small>
+                                        <input class="form-control form-mandatory" id="newgl-name" name="newgl-name" placeholder="" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <small for="newgl-corpcomp">Company Code</small>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control form-mandatory" name="txt_newgl_corpcomp" id="txt_newgl_corpcomp">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-info" id="btn_newgl_corpcomp" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('newgl_corpcomp');"><span class="fa fa-ellipsis-h"></span> </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 col-md-offset-1">
+                                        <small for="newgl-corpcomp">Company Name</small>
+                                        <input type="text" class="form-control form-mandatory" name="hid_newgl_corpcomp" id="hid_newgl_corpcomp" value="" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <small for="newgl-occupcode">OCCUPATION</small>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control form-mandatory" name="txt_newgl_occupcode" id="txt_newgl_occupcode">
+                                            <input type="hidden" name="hid_newgl_occupcode" id="hid_newgl_occupcode" value="" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-info" id="btn_newgl_occupcode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('newgl_occupcode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-4 col-md-offset-1">
+                                        <small for="newgl-relatecode">RELATIONSHIP</small>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control form-mandatory" name="txt_newgl_relatecode" id="txt_newgl_relatecode">
+                                            <input type="hidden" name="hid_newgl_relatecode" id="hid_newgl_relatecode" value="" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-info" id="btn_newgl_relatecode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('newgl_relatecode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-md-offset-1">
+                                        <small for="newgl-childno">CHILD NO</small>
+                                        <input name="newgl-childno" id="newgl-childno" class="form-control form-mandatory" placeholder="" type="text" required>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="mycss">
+                            <legend>GL Info:</legend>
+                                <ul class="nav nav-tabs" id="select_gl_tab" style="margin-bottom: 10px;">
+                                    <li class="active"><a href="#" data-toggle="tab" id="newgl_default_tab">Multi Volume</a></li>
+                                    <li><a href="#" data-toggle="tab">Multi Date</a></li>
+                                    <li><a href="#" data-toggle="tab">Open</a></li>
+                                    <li><a href="#" data-toggle="tab">Single Use</a></li>
+                                    <li><a href="#" data-toggle="tab">Limit Amount</a></li>
+                                    <li><a href="#" data-toggle="tab">Monthly Amount</a></li>
+                                </ul>
+
+                                <div class="form-group">
+                                    <div class="col-md-6">
+                                        <small for="newgl-gltype">GL TYPE</small>
+                                        <select id="newgl-gltype" name="newgl-gltype" class="form-control form-mandatory" readonly required>
+                                            <option value="Multi Volume">Multi Volume</option>
+                                            <option value="Multi Date">Multi Date</option>
+                                            <option value="Open">Open</option>
+                                            <option value="Single Use">Single Use</option>
+                                            <option value="Limit Amount">Limit Amount</option>
+                                            <option value="Monthly Amount">Monthly Amount</option>
+                                            <option value="Single Use">Single Use</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <small for="newgl-effdate">EFFECTIVE DATE:</small>
+                                        <input class="form-control form-mandatory" id="newgl-effdate" name="newgl-effdate" placeholder="" type="date" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small for="newgl-expdate">EXPIRY DATE:</small>
+                                        <input class="form-control form-mandatory" id="newgl-expdate" name="newgl-expdate" placeholder="" type="Date" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small for="newgl-visitno">VISIT NO</small>
+                                        <input class="form-control" id="newgl-visitno" name="newgl-visitno" placeholder="" type="text" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6">
+                                        <small for="newgl-case">CASE</small>
+                                        <input class="form-control form-mandatory" id="newgl-case" name="newgl-case" placeholder="" type="text" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small for="newgl-refno">REFERENCE NO</small>
+                                        <input class="form-control" id="newgl-refno" name="newgl-refno" placeholder="" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6">
+                                        <small for="newgl-ourrefno">OUR REFERENCE</small>
+                                        <input class="form-control" id="newgl-ourrefno" name="newgl-ourrefno" placeholder="" type="text">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small for="newgl-remark">REMARK</small>
+                                        <input class="form-control" id="newgl-remark" name="newgl-remark" placeholder="" type="text">
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="btnglclose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btnglsave" type="button" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </form>
+
+
     </div>
 </div>

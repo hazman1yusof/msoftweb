@@ -63,9 +63,9 @@ $(document).ready(function() {
             "col_add": function (column,row) {
                 var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
                 if(row.PatStatus == 1 && row.q_epistycode=='IP'){
-                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='18' title='In Patinet'></a>";
+                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='15' title='In Patinet'></a>";
                 }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
-                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='18' title='Out Patient'></a>";
+                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
                 }
                 return retval;
             },
@@ -208,12 +208,16 @@ $(document).ready(function() {
             document.getElementById('hiddentriage').style.display = 'inline'; //hide and show heading details dekat triage
         }
 
+        $("table#grid-command-buttons tr[data-row-id=0]").click();
+
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        if($('#curpat').val() == 'true'){
+            populate_ordcom_currpt(rows[bootgrid_last_rowid]);
+        }
 
-        populate_ordcom_currpt(rows[bootgrid_last_rowid]);
-        if($('#epistycode').val() == 'OP'){
+        if($('#epistycode').val() == 'OP' && $('#curpat').val() == 'true'){
             populate_tiCurrentPt(rows[bootgrid_last_rowid]);
             populate_currDoctorNote(rows[bootgrid_last_rowid]);
         }
@@ -278,9 +282,6 @@ $(document).ready(function() {
     });
 
     ////////////////habis mykad///////
-
-    $("#txt_epis_dept,#txt_epis_source,#txt_epis_case,#txt_epis_doctor,#txt_epis_fin,#txt_pat_title,#txt_ID_Type,#txt_RaceCode,#txt_Religion,#txt_LanguageCode,#txt_pat_citizen,#txt_pat_area,#txt_payer_company,#txt_pat_occupation").on('keydown',{data:this},onTab);
-
 
     if($('#curpat').val() == "true"){
         preepisode = new preepisode_init();
@@ -358,6 +359,9 @@ $(document).ready(function() {
             });
             $("#jqGridTriageInfo_panel").on("show.bs.collapse", function(){
                 $("#jqGridExamTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-228));
+            });
+            $("#jqGridDoctorNote_panel").on("show.bs.collapse", function(){
+                $("#jqGridAddNotes").jqGrid ('setGridWidth', Math.floor($("#jqGridDoctorNote_c")[0].offsetWidth-$("#jqGridDoctorNote_c")[0].offsetLeft-228));
             });
 
 
@@ -530,3 +534,35 @@ $(document).ready(function() {
 
 
 });
+
+if($('#epistycode').val() == 'OP'){
+    var epis_desc_show = new loading_desc_epis([
+        {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+        {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+        {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+        {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+        {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+        {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+        {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+        {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+        {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
+    ]);
+}else if($('#epistycode').val() == 'IP'){
+    var epis_desc_show = new loading_desc_epis([
+        {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+        {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+        {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+        {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+        {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
+        {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+        {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+        {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+        {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+        {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'},
+        {code:'#hid_newgl_corpcomp',desc:'#txt_newgl_corpcomp',id:'newgl_corpcomp'}
+        // {code:'',desc:'',id:'bed_dept'},
+        // {code:'',desc:'',id:'bed_ward'}
+    ]);
+}
+
+epis_desc_show.load_desc();
