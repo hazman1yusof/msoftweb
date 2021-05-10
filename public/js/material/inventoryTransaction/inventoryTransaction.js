@@ -920,6 +920,9 @@ $(document).ready(function () {
 					action: 'invTranDetail_save',
 					docno:$('#docno').val(),
 					recno:$('#recno').val(),
+					sndrcv:$('#sndrcv').val(),
+					txndept:$('#txndept').val(),
+					trandate:$('#trandate').val()
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
@@ -1037,23 +1040,24 @@ $(document).ready(function () {
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function itemcodeCustomEdit(val,opt){
 		// val = (val=="undefined")? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input id="itemcode" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+		val = val;
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
-	function uomcodetrdeptCustomEdit(val,opt){  	
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input id="uomcode" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	function uomcodetrdeptCustomEdit(val,opt){
+		val = (val.slice(0, val.search("[<]")) == "undefine") ? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 
-	function uomcoderecvCustomEdit(val,opt){  	
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input id="uomcoderecv" name="uomcoderecv" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	function uomcoderecvCustomEdit(val,opt){
+		val = (val.slice(0, val.search("[<]")) == "undefine") ? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcoderecv" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function expdateCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		 return $('<div class="input-group"><input id="expdate" name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+		val = (val.slice(0, val.search("[<]")) == "undefine") ? "" : val.slice(0, val.search("[<]"));
+		 return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'"  name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 		
 	}
 	function galGridCustomValue (elem, operation, value){
@@ -1563,7 +1567,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow: function (event) {
-		/*		if(event.type == 'keydown'){
+				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
@@ -1575,18 +1579,21 @@ $(document).ready(function () {
 					var id_optid = optid.substring(0,optid.search("_"));
 
 					$(event.currentTarget).parent().next().html('');
-				}*/
+				}
 
 				let data=selrowData('#'+dialog_uomcoderecv.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_convfactoruomcoderecv").val(data['convfactor']);
+				$("#jqGrid2  #"+id_optid+"_txnqty").focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					// $(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					console.log($("#jqGrid2 input[name='txnqty']"))
+					$("#jqGrid2 input[name='txnqty']").focus();
 				}
 			}
 
@@ -1668,7 +1675,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','year','deptcode', 'uomcode', 'itemcode'],
-						filterVal:['session.compcode',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val(), $("#jqGrid2 input[name='itemcode']").val()]
+						filterVal:['session.compcode',moment($('#trandate').val()).year(),$("#txndept").val(), $("#jqGrid2 input[name='uomcode']").val(), $("#jqGrid2 input[name='itemcode']").val()]
 			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_expdate.gridname);
@@ -1686,7 +1693,7 @@ $(document).ready(function () {
 			title:"Select Expiry Date",
 			open: function(){
 				dialog_expdate.urlParam.filterCol=['compcode','year','deptcode', 'uomcode', 'itemcode'];
-				dialog_expdate.urlParam.filterVal=['session.compcode',moment($('#trandate').val()).year(),$("#txndept").val(), $("#uomcode").val(), $("#jqGrid2 input[name='itemcode']").val()];
+				dialog_expdate.urlParam.filterVal=['session.compcode',moment($('#trandate').val()).year(),$("#txndept").val(), $("#jqGrid2 input[name='uomcode']").val(), $("#jqGrid2 input[name='itemcode']").val()];
 			
 			}
 		},'urlParam','radio','tab'

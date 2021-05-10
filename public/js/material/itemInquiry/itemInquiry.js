@@ -366,6 +366,7 @@ $(document).ready(function () {
 			{ data: 'trandate'},
 			{ data: 'trantype'},
 			{ data: 'description'},
+			{ data: 'dept'},
 			{ data: 'qtyin', className: "text-right"},
 			{ data: 'qtyout', className: "text-right"},
 			{ data: 'balquan', className: "text-right"},
@@ -417,7 +418,6 @@ $(document).ready(function () {
 					obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
 					
 					// obj.trantype = '-';
-					obj.description = '';
 					obj.qtyin = '-';
 					obj.qtyout = '-';
 					obj.balquan = '-';
@@ -432,7 +432,8 @@ $(document).ready(function () {
 							obj.balance = numeral(accumamt).format('0,0.00');
 							obj.amount = numeral(obj.amount).format('0,0.00');
 
-							obj.description =  obj.description+' '+obj.deptcode;
+							obj.description =  obj.description.toUpperCase();
+							obj.dept = obj.deptcode;
 							obj.qtyin = obj.txnqty;
 							obj.qtyout = '';
 						}else if (obj.crdbfl == 'Out'){
@@ -442,7 +443,8 @@ $(document).ready(function () {
 							obj.balance = numeral(accumamt).format('0,0.00');
 							obj.amount = '- '+numeral(obj.amount).format('0,0.00');
 
-							obj.description =  obj.description+' '+obj.deptcode;
+							obj.description =  obj.description.toUpperCase();
+							obj.dept = obj.sndrcv;
 							obj.qtyin = '';
 							obj.qtyout =  obj.txnqty;
 						}
@@ -456,7 +458,8 @@ $(document).ready(function () {
 							obj.balance = numeral(accumamt).format('0,0.00');
 							obj.amount = '- '+numeral(obj.amount).format('0,0.00');
 
-							obj.description =  obj.description+' '+obj.deptcode;
+							obj.description =  obj.description.toUpperCase();
+							obj.dept = obj.deptcode;
 							obj.qtyin = '';
 							obj.qtyout = obj.txnqty;
 						}else if (obj.crdbfl == 'Out'){
@@ -466,7 +469,8 @@ $(document).ready(function () {
 							obj.balance = numeral(accumamt).format('0,0.00');
 							obj.amount = numeral(obj.amount).format('0,0.00');
 
-							obj.description =  obj.description+' '+obj.deptcode;
+							obj.description =  obj.description.toUpperCase();
+							obj.dept = obj.sndrcv;
 							obj.qtyin = obj.txnqty;
 							obj.qtyout =  '';
 						}

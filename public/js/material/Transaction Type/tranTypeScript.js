@@ -34,7 +34,7 @@
 			var butt1=[{
 				text: "Save",click: function() {
 					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
+						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,null,undefined,false);
 					}
 				}
 			},{

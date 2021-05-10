@@ -44,7 +44,7 @@ class ItemEnquiryController extends defaultController
 
     public function detailMovement(Request $request){
         $det_mov_deptcode = DB::table('material.ivtxndt as d')
-                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description')
+                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.deptcode','d.sndrcv')
                 ->leftJoin('material.ivtxnhd as h', 'd.recno', '=', 'h.recno')
                 ->leftJoin('material.ivtxntype as t', 'd.trantype', '=', 't.trantype')
                 ->where('d.compcode','=',session('compcode'))
@@ -63,7 +63,7 @@ class ItemEnquiryController extends defaultController
 
 
         $det_mov_sndrcv = DB::table('material.ivtxndt as d')
-                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description')
+                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.deptcode','d.sndrcv')
                 ->leftJoin('material.ivtxnhd as h', 'd.recno', '=', 'h.recno')
                 ->leftJoin('material.ivtxntype as t', 'd.trantype', '=', 't.trantype')
                 ->where('d.compcode','=',session('compcode'))

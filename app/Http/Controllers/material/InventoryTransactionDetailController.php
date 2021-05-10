@@ -109,6 +109,21 @@ class InventoryTransactionDetailController extends defaultController
 
             $li=intval($sqlln)+1;
 
+
+            //2.1 check ada stockloc ke tak kat sndrcv
+            $stockloc_obj = DB::table('material.StockLoc')
+                    ->where('StockLoc.CompCode','=',session('compcode'))
+                    ->where('StockLoc.DeptCode','=',$request->sndrcv)
+                    ->where('StockLoc.ItemCode','=',$request->itemcode)
+                    ->where('StockLoc.Year','=', defaultController::toYear($request->trandate))
+                    ->where('StockLoc.UomCode','=',$request->uomcoderecv);
+
+
+            if(!$stockloc_obj->exists()){
+                throw new \Exception('stockloc doesnt exists');
+            }
+
+
             ///2. insert detail
             DB::table('material.ivtmpdt')
                 ->insert([
@@ -154,7 +169,7 @@ class InventoryTransactionDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -209,7 +224,7 @@ class InventoryTransactionDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -255,7 +270,7 @@ class InventoryTransactionDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
         
     }
@@ -386,7 +401,7 @@ class InventoryTransactionDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -444,7 +459,7 @@ class InventoryTransactionDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }

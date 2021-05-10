@@ -108,8 +108,8 @@ class InventoryTransactionController extends defaultController
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-
-            return response('Error'.$e, 500);
+            
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -152,7 +152,8 @@ class InventoryTransactionController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -379,7 +380,8 @@ class InventoryTransactionController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            
+            return response($e->getMessage(), 500);
         }
 
     }

@@ -204,6 +204,7 @@
 						<th>Transaction Date</th>
 						<th>Trantype</th>
 						<th>Transaction Description</th>
+						<th>Dept</th>
 						<th>Qty In</th>
 						<th>Qty Out</th>
 						<th>Balance Quantity</th>
