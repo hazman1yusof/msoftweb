@@ -435,7 +435,7 @@ $(document).ready(function () {
 	///////////check postdate & docdate///////////////////
 	$('#apacthdr_actdate').on('changeDate', function (ev) {
         $('#apacthdr_cheqdate').change(apacthdr_actdate);
-    });
+    }); 
 
 	$("#apacthdr_cheqdate,#apacthdr_actdate").blur(checkdate);
 
