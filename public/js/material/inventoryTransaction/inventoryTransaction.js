@@ -820,7 +820,7 @@ $(document).ready(function () {
                     }
                 }
 			},*/
-			{ label: 'Batch No', name: 'batchno', width: 75, classes: 'wrap', editable:true,
+			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:true,
 					maxlength: 30,
 			},
 		],
