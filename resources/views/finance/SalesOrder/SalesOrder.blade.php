@@ -177,9 +177,9 @@ i.fa {
 			</div>
 		</div>
 
-		<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
+		<!-- <div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
 			<label class="control-label" style="margin-top: 10px;">Print Label</label>
-		</div>
+		</div> -->
 
 	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 	    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
@@ -226,77 +226,86 @@ i.fa {
 									<span class="help-block"></span>
 								</div>
 
-							<label class="col-md-1 control-label" for="delordhd_docno">inv No</label>  
-							<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
-								<input id="delordhd_docno" name="delordhd_docno" type="text" class="form-control input-sm" rdonly>
+							<label class="col-md-1 control-label" for="invno">inv No</label>  
+							<div class="col-md-2">
+								<input id="invno" name="invno" type="text" class="form-control input-sm" rdonly>
 							</div>
 
-							<label class="col-md-1 control-label" for="delordhd_trandate">Doc Date</label>  
+							<label class="col-md-1 control-label" for="docdate">Doc Date</label>  
 							<div class="col-md-2">
-								<input id="delordhd_trandate" name="delordhd_trandate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+								<input id="docdate" name="docdate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
 									max="<?php echo date('Y-m-d');?>">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="delordhd_prdept">Customer</label>	 
+							<label class="col-md-2 control-label" for="customer">Customer</label>	 
 							<div class="col-md-4">
 								<div class='input-group'>
-								<input id="delordhd_prdept" name="delordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="customer" name="customer" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
 							</div>
 
-							<label class="col-md-1 control-label" for="delordhd_srcdocno">Bill Type</label>  
+							<label class="col-md-1 control-label" for="billtype">Bill Type</label>  
 							<div class="col-md-2"> 
 								<div class='input-group'>
-									<input id="delordhd_srcdocno" name="delordhd_srcdocno" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<input id="billtype" name="billtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 							</div>
 							
-							<label class="col-md-1 control-label" for="delordhd_docno">Term</label>  
-							<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
-								<input id="delordhd_docno" name="delordhd_docno" type="text" class="form-control input-sm" rdonly>
-							</div>								
+							<label class="col-md-1 control-label" for="term">Term</label>  
+							<div class="col-md-1">
+								<input id="term" name="term" type="text" class="form-control input-sm">
+							</div>
+
+							<div class="col-md-1">
+							<select class="form-control col-md-2" id='term2' name='term2' data-validation="required">
+								<option value='' selected="selected">Select one</option>
+								<option value='DAYS'>Days</option>
+								<option value='MONTH'>Month</option>
+								<option value='YEAR'>Year</option>
+							</select> 
+						</div>								
 						</div>
 
 						<div class="form-group">		
-							<label class="col-md-2 control-label" for="delordhd_delordno">Order No</label>  
+							<label class="col-md-2 control-label" for="orderno">Order No</label>  
 							<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
 								<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							</div>
 							
-							<label class="col-md-3 control-label" for="delordhd_delordno">Auto No</label>  
+							<label class="col-md-3 control-label" for="idno">Auto No</label>  
 							<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
-								<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="idno" name="idno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							</div>
 
-							<label class="col-md-1 control-label" for="delordhd_deliverydate">Posted Date</label>  
+							<label class="col-md-1 control-label" for="posteddate">Posted Date</label>  
 								<div class="col-md-2">
-								<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+								<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 							</div>
 						</div>
 
 						<hr>
 							
 						<div class="form-group">		
-							<label class="col-md-2 control-label" for="delordhd_delordno">PO No</label>  
+							<label class="col-md-2 control-label" for="ponum">PO No</label>  
 							<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
-								<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="ponum" name="ponum" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							</div>
 
-							<label class="col-md-3 control-label" for="delordhd_deliverydate">PO Date</label>  
+							<label class="col-md-3 control-label" for="podate">PO Date</label>  
 							<div class="col-md-2">
-								<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+								<input id="podate" name="podate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="purreqhd_subamount">Total Amount</label>
+							<label class="col-md-2 control-label" for="amount">Total Amount</label>
 							<div class="col-md-2">
-								<input id="purreqhd_subamount" name="purreqhd_subamount" type="text" maxlength="11" class="form-control input-sm" value="0.00">
+								<input id="amount" name="amount" type="text" maxlength="11" class="form-control input-sm" value="0.00">
 							</div>
 
 							<!-- <label class="col-md-2 control-label" for="purreqhd_totamount">Total Amount</label>  
@@ -304,19 +313,19 @@ i.fa {
 								<input id="purreqhd_totamount" name="purreqhd_totamount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" value='0.00' rdonly>
 							</div>					  			 -->
 
-							<label class="col-md-3 control-label" for="purreqhd_recstatus">Record Status</label>  
+							<label class="col-md-3 control-label" for="recstatus">Record Status</label>  
 							<div class="col-md-2">
-									<input id="purreqhd_recstatus" name="purreqhd_recstatus" maxlength="10" class="form-control input-sm" rdonly>
+									<input id="recstatus" name="recstatus" maxlength="10" class="form-control input-sm" rdonly>
 							</div>
 						</div>
 
 						<hr>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="delordhd_respersonid">Approved By</label> 
+							<label class="col-md-2 control-label" for="approvedby">Approved By</label> 
 							<div class="col-md-2">
 								<div class='input-group'>
-									<input id="delordhd_respersonid" name="delordhd_respersonid" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+									<input id="approvedby" name="approvedby" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -324,125 +333,31 @@ i.fa {
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="delordhd_remarks">Remarks</label> 
+							<label class="col-md-2 control-label" for="remarks">Remarks</label> 
 							<div class="col-md-6"> 
-							<textarea class="form-control input-sm text-uppercase" name="delordhd_remarks" rows="5" cols="55" maxlength="400" id="delordhd_remarks" ></textarea>
+							<textarea class="form-control input-sm text-uppercase" name="remarks" rows="5" cols="55" maxlength="400" id="remarks" ></textarea>
 							</div>
 						</div>
 
 						<div class="form-group data_info">
 							<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="delordhd_upduser">Last Entered By</label>  
-						  			<input id="delordhd_upduser" name="delordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="upduser">Last Entered By</label>  
+						  			<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="delordhd_upddate">Last Entered Date</label>
-						  			<input id="delordhd_upddate" name="delordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="upddate">Last Entered Date</label>
+						  			<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 					    		<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="delordhd_adduser">Check By</label>  
-						  			<input id="delordhd_adduser" name="delordhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="adduser">Check By</label>  
+						  			<input id="adduser" name="adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="delordhd_adddate">Check Date</label>
-						  			<input id="delordhd_adddate" name="delordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="adddate">Check Date</label>
+						  			<input id="adddate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>						    	
 							</div>
-
 					<hr/>
-					<hr/>
-					<hr/>
-					<hr/>
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purreqhd_reqdept">Request Department</label>
-								<div class="col-md-4">
-									<div class='input-group'>
-										<input id="purreqhd_reqdept" name="purreqhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
-
-						  		<label class="col-md-2 control-label" for="purreqhd_purreqno">Request No.</label>  
-						  			<div class="col-md-2">
-										<input id="purreqhd_purreqno" name="purreqhd_purreqno" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  			</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purreqhd_prdept">Purchase Department</label>
-								<div class="col-md-4">
-									<div class='input-group'>
-										<input id="purreqhd_prdept" name="purreqhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
-
-						  		<label class="col-md-2 control-label" for="purreqhd_recno">Record No.</label>  
-						  			<div class="col-md-2">
-										<input id="purreqhd_recno" name="purreqhd_recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
-						  			</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purreqhd_suppcode">Supplier Code</label>
-								<div class="col-md-4">
-									<div class='input-group'>
-										<input id="purreqhd_suppcode" name="purreqhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
-							</div>
-
-							<hr/>
-							<div class="form-group">
-						  		<label class="col-md-2 control-label" for="purreqhd_perdisc">Discount (%)</label>
-						  			<div class="col-md-3">
-										<input id="purreqhd_perdisc" name="purreqhd_perdisc" type="text" maxlength="11" class="form-control input-sm" value="0.00">
-						  			</div>
-
-					  			<label class="col-md-2 control-label" for="purreqhd_amtdisc">Amount Discount</label>
-					  			<div class="col-md-3">
-									<input id="purreqhd_amtdisc" name="purreqhd_amtdisc" type="text" class="form-control input-sm" value="0.00">
-					  			</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purreqhd_subamount">Subamount</label>
-						  			<div class="col-md-3">
-										<input id="purreqhd_subamount" name="purreqhd_subamount" type="text" maxlength="11" class="form-control input-sm" value="0.00">
-						  			</div>
-
-						  		<label class="col-md-2 control-label" for="purreqhd_totamount">Total Amount</label>  
-						  			<div class="col-md-3">
-										<input id="purreqhd_totamount" name="purreqhd_totamount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" value='0.00' rdonly>
-						  			</div>
-						  			
-							</div>
-
-							<div class="form-group">
-					  			<label class="col-md-2 control-label" for="purreqhd_purreqdt">Request Date</label>
-					  			<div class="col-md-3">
-									<input id="purreqhd_purreqdt" name="purreqhd_purreqdt" data-validation="required" type="date" class="form-control input-sm">
-					  			</div>
-
-								<label class="col-md-2 control-label" for="purreqhd_recstatus">Status</label>  
-								<div class="col-md-3">
-										<input id="purreqhd_recstatus" name="purreqhd_recstatus" maxlength="10" class="form-control input-sm" rdonly>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purreqhd_remarks">Remark</label>   
-						  			<div class="col-md-6">
-						  				<textarea rows="5" id='purreqhd_remarks' name='purreqhd_remarks' class="form-control input-sm text-uppercase" ></textarea>
-						  			</div>
-					    	</div>
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 					</form>
 				</div>
