@@ -118,7 +118,7 @@ class invtran_util extends defaultController{
 
 			        switch ($trantype_obj->accttype) {
 			        	case 'Adjustment':
-			        		$draccno = $category_obj->stockacct;
+			        		$draccno = $category_obj->adjacct;
 	        				$drccode = $dept_obj->costcode;
 			        	break;
 			        	case 'Expense':

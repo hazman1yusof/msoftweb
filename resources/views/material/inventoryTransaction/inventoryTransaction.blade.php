@@ -184,10 +184,14 @@ i.fa {
 									  <span class="help-block"></span>
 								  	</div>
 
-								<label class="col-md-2 control-label" for="trandate">Transaction Date</label>  
-								  	<div class="col-md-2">
-										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required">
-								  	</div>
+								<label class="col-md-2 control-label" for="sndrcv">Receiver</label>	  
+									<div class="col-md-2" id="sndrcv_parent">
+										  <div class='input-group'>
+											<input id="sndrcv" name="sndrcv" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										  </div>
+										  <span class="help-block"></span>
+									  </div>
 
 						  		<label class="col-md-2 control-label" for="srcdocno">Request No</label>  
 						  			<div class="col-md-2" id="srcdocno_parent">
@@ -209,14 +213,15 @@ i.fa {
 									    </select>
 						  			</div>
 
-								<label class="col-md-2 control-label" for="sndrcv">Receiver</label>	  
-									<div class="col-md-2" id="sndrcv_parent">
-										  <div class='input-group'>
-											<input id="sndrcv" name="sndrcv" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-										  </div>
-										  <span class="help-block"></span>
-									  </div>
+								<label class="col-md-2 control-label" for="trandate">Transaction Date</label>
+								  	<div class="col-md-2">
+										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required">
+								  	</div>
+
+								<label class="col-md-2 control-label" for="trantime">Transaction Time</label>
+						  			<div class="col-md-2">
+										<input id="trantime" name="trantime" type="time" class="form-control input-sm">
+						  			</div>
 						  	</div>
 
 						  	<div class="form-group">

@@ -52,6 +52,7 @@ $(document).ready(function () {
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
+					$('#trantime').val(moment().format('HH:mm:ss'));
 					rdonly('#formdata');
 					$("#txndept").val($("#deptcode").val());
 					break;
@@ -187,6 +188,7 @@ $(document).ready(function () {
 			{ label: 'Transaction Type', name: 'trantype', width: 25, classes: 'wrap', canSearch: true},
 			{ label: 'Document No', name: 'docno', width: 30, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Transaction Date', name: 'trandate', width: 27, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Transaction Time', name: 'trantime',hidden:true},
 			{ label: 'Sender/Receiver', name: 'sndrcv', width: 21, classes: 'wrap', canSearch: true},
 			{ label: 'SndRcvType', name: 'sndrcvtype', width: 30, classes: 'wrap', hidden:true},
 			{ label: 'Amount', name: 'amount', width: 20, align: 'right', classes: 'wrap', formatter:'currency'},

@@ -109,20 +109,24 @@ class InventoryTransactionDetailController extends defaultController
 
             $li=intval($sqlln)+1;
 
-
             //2.1 check ada stockloc ke tak kat sndrcv
-            $stockloc_obj = DB::table('material.StockLoc')
-                    ->where('StockLoc.CompCode','=',session('compcode'))
-                    ->where('StockLoc.DeptCode','=',$request->sndrcv)
-                    ->where('StockLoc.ItemCode','=',$request->itemcode)
-                    ->where('StockLoc.Year','=', defaultController::toYear($request->trandate))
-                    ->where('StockLoc.UomCode','=',$request->uomcoderecv);
+            $issuetype = DB::table('material.ivtxntype')->select('isstype')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('trantype','=',$request->trantype)
+                            ->first();
 
+            if($issuetype == 'Transfer'){
+                $stockloc_obj = DB::table('material.StockLoc')
+                        ->where('StockLoc.CompCode','=',session('compcode'))
+                        ->where('StockLoc.DeptCode','=',$request->sndrcv)
+                        ->where('StockLoc.ItemCode','=',$request->itemcode)
+                        ->where('StockLoc.Year','=', defaultController::toYear($request->trandate))
+                        ->where('StockLoc.UomCode','=',$request->uomcoderecv);
 
-            if(!$stockloc_obj->exists()){
-                throw new \Exception('stockloc doesnt exists');
+                if(!$stockloc_obj->exists()){
+                    throw new \Exception('stockloc doesnt exists');
+                }
             }
-
 
             ///2. insert detail
             DB::table('material.ivtmpdt')

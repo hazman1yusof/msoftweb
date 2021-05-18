@@ -168,6 +168,8 @@ class InventoryTransactionController extends defaultController
                         ->where('idno','=',$request->idno)
                         ->first();
 
+            $this->check_sequence_backdated($ivtmphd);
+
             DB::table("material.IvTxnHd")
                 ->insert([
                     'AddDate'  => $ivtmphd->adddate,
@@ -448,6 +450,29 @@ class InventoryTransactionController extends defaultController
             ]);
 
         return $amount;
+    }
+
+    public function check_sequence_backdated($ivtmphd){
+
+        $sequence_obj = DB::table('material.sequence')
+                ->where('trantype','=',$ivtmphd->trantype)
+                ->where('dept','=',$ivtmphd->txndept);
+
+        if(!$sequence_obj->exists()){
+            throw new \Exception("sequence doesnt exists", 500);
+        }
+
+        $sequence = $sequence_obj->first();
+
+        $date = Carbon::parse($ivtmphd->trandate);
+        $now = Carbon::now();
+
+        $diff = $date->diffInDays($now);
+
+        if($diff > intval($sequence->backday)){
+            throw new \Exception("backdated sequence exceed ".$sequence->backday.' days', 500);
+        }
+
     }
 }
 

@@ -173,7 +173,7 @@ $(document).ready(function () {
 				balance+=parseFloat(value);
 			}
 		});
-		balance = parseFloat(openbal) - parseFloat(balance)
+		// balance = parseFloat(openbal) - parseFloat(balance);
 		// $('#fd_openbal').html(numeral(openbal).format('0,0.00'));
 		$('#fd_balance').html(numeral(balance).format('0,0.00'));
 	}

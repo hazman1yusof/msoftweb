@@ -121,7 +121,7 @@ $(document).ready(function () {
 			{ label: 'Item Description', name: 'p_description', width: 80, classes: 'wrap', checked:true,canSearch: true},
 			{ label: 'UOM Code', name: 'p_uomcode', width: 20, classes: 'wrap'},
 			{ label: 'UOM Description', name: 'u_description', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Quantity on Hand', name: 'p_qtyonhand', width: 30,classes: 'wrap',align: 'right'},
+			{ label: 'Quantity on Hand', name: 'p_qtyonhand', formatter: 'currency', width: 30,classes: 'wrap',align: 'right'},
 			{ label: 'Average Cost', name: 'p_avgcost', width: 30,classes: 'wrap',align: 'right'},
 			{ label: 'Current Price', name: 'p_currprice', width: 30, classes: 'wrap',align: 'right'},
 
@@ -150,10 +150,12 @@ $(document).ready(function () {
 				refreshGrid('#detail',urlParam2);
 
 				urlParam3.filterVal[0]=selrowData("#jqGrid").p_itemcode;
-									
-				refreshGrid('#itemExpiry',urlParam3);
 			}
 		},
+		gridComplete: function () {
+			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+		},
+
 	});
 	
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',
@@ -194,9 +196,9 @@ $(document).ready(function () {
 			{ label: 'Unit', name: 's_unit', width: 30, classes: 'wrap', hidden:false},
 			{ label: 'Stock TrxType', name: 's_stocktxntype', width: 40, classes: 'wrap'},
 			{ label: 'UOM Code', name: 's_uomcode', width: 40, classes: 'wrap'},
-			{ label: 'Quantity on Hand', name: 's_qtyonhand', width: 40, classes: 'wrap',align: 'right'},
+			{ label: 'Quantity on Hand', name: 's_qtyonhand', width: 40, classes: 'wrap',align: 'right', formatter: 'currency'},
 			{ label: 'itemcode', name: 's_itemcode', width: 40, classes: 'wrap',hidden:true},
-			{ label: 'Stock Value', name: 's_rackno', width: 40, classes: 'wrap', formatter: 'number', formatoptions: {decimalSeperator: '.',devimalPlaces:2,defaultValue: '0.0000'}},
+			{ label: 'Stock Value', name: 's_rackno', width: 40, classes: 'wrap',align: 'right', formatter: 'number', formatoptions: {decimalSeperator: '.',devimalPlaces:2,defaultValue: '0.0000'}},
 			{ label: 'openbalval', name: 's_openbalval', hidden:true},
 			{ label: 'netmvval1', name: 's_netmvval1', hidden:true},
 			{ label: 'netmvval2', name: 's_netmvval2', hidden:true},
@@ -222,6 +224,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager2",
         
         gridComplete:function(rowdata){
+			$("#detail").setSelection($("#detail").getDataIDs()[0]);
         	var rowid= 1;
         	$("#detail").jqGrid('getRowData').forEach(function(element){
         		getStockvalue(rowid,element);
@@ -274,7 +277,7 @@ $(document).ready(function () {
 			{ label: 'Unit', name: 'unit', width: 30, classes: 'wrap', hidden:false},
 			{ label: 'Expiry Date', name: 'expdate', width: 40, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Batch No', name: 'batchno', width: 40, classes: 'wrap'},
-			{ label: 'Balance Quantity', name: 'balqty', width: 40, classes: 'wrap'},
+			{ label: 'Balance Quantity',align: 'right', name: 'balqty', width: 40, classes: 'wrap', formatter: 'currency'},
 			{ label: 'deptcode', name: 'deptcode', width: 30, classes: 'wrap', hidden:true},
 			{ label: 'itemcode', name: 'itemcode', width: 30, classes: 'wrap', hidden:true},
 		],
@@ -428,25 +431,30 @@ $(document).ready(function () {
 						if (obj.crdbfl == 'In'){
 							accumamt = accumamt + parseFloat(obj.amount);
 							accumqty = accumqty + parseInt(obj.txnqty);
-							obj.balquan = accumqty;
+							obj.balquan = numeral(accumqty).format('0,0');
+							obj.netprice = numeral(obj.netprice).format('0,0.00');
 							obj.balance = numeral(accumamt).format('0,0.00');
 							obj.amount = numeral(obj.amount).format('0,0.00');
 
 							obj.description =  obj.description.toUpperCase();
 							obj.dept = obj.deptcode;
-							obj.qtyin = obj.txnqty;
+							obj.qtyin = numeral(obj.txnqty).format('0,0');
 							obj.qtyout = '';
 						}else if (obj.crdbfl == 'Out'){
 							accumamt = accumamt - parseFloat(obj.amount);
 							accumqty = accumqty - parseInt(obj.txnqty);
-							obj.balquan = accumqty;
+							obj.balquan = numeral(accumqty).format('0,0');
+							obj.netprice = numeral(obj.netprice).format('0,0.00');
 							obj.balance = numeral(accumamt).format('0,0.00');
 							obj.amount = '- '+numeral(obj.amount).format('0,0.00');
 
 							obj.description =  obj.description.toUpperCase();
+							if(obj.description == 'TRANSFER'){
+								obj.description = 'TRANSFER TO'
+							}
 							obj.dept = obj.sndrcv;
 							obj.qtyin = '';
-							obj.qtyout =  obj.txnqty;
+							obj.qtyout = numeral(obj.txnqty).format('0,0');
 						}
 
 					}else{
@@ -454,24 +462,29 @@ $(document).ready(function () {
 						if (obj.crdbfl == 'In'){
 							accumamt = accumamt - parseFloat(obj.amount);
 							accumqty = accumqty - parseInt(obj.txnqty);
-							obj.balquan = accumqty;
+							obj.balquan = numeral(accumqty).format('0,0');
+							obj.netprice = numeral(obj.netprice).format('0,0.00');
 							obj.balance = numeral(accumamt).format('0,0.00');
 							obj.amount = '- '+numeral(obj.amount).format('0,0.00');
 
 							obj.description =  obj.description.toUpperCase();
 							obj.dept = obj.deptcode;
 							obj.qtyin = '';
-							obj.qtyout = obj.txnqty;
+							obj.qtyout = numeral(obj.txnqty).format('0,0');
 						}else if (obj.crdbfl == 'Out'){
 							accumamt = accumamt + parseFloat(obj.amount);
 							accumqty = accumqty + parseInt(obj.txnqty);
-							obj.balquan = accumqty;
+							obj.balquan = numeral(accumqty).format('0,0');
+							obj.netprice = numeral(obj.netprice).format('0,0.00');
 							obj.balance = numeral(accumamt).format('0,0.00');
 							obj.amount = numeral(obj.amount).format('0,0.00');
 
 							obj.description =  obj.description.toUpperCase();
-							obj.dept = obj.sndrcv;
-							obj.qtyin = obj.txnqty;
+							if(obj.description == 'TRANSFER'){
+								obj.description = 'TRANSFER FROM'
+							}
+							obj.dept = obj.deptcode;
+							obj.qtyin = numeral(obj.txnqty).format('0,0');
 							obj.qtyout =  '';
 						}
 
