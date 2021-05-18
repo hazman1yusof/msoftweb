@@ -265,6 +265,13 @@ Route::get('/bedmanagement/statistic','setup\BedManagementController@statistic')
 
 ////////////////////////////////inventory setup///////////////////////////////////////////////////////////
 
+//// inventory Request setup page ///
+Route::get('/inventoryRequest','material\InventoryRequestController@show');
+Route::get('/inventoryRequest/table','material\InventoryRequestController@table');
+Route::post('/inventoryRequest/form','material\InventoryRequestController@form');
+Route::get('/inventoryRequest/form','material\InventoryRequestController@form');
+Route::post('/inventoryRequestDetail/form','material\InventoryRequestDetailController@form');
+
 //// inventory Transaction setup page ///
 Route::get('/inventoryTransaction','material\InventoryTransactionController@show');
 Route::get('/inventoryTransaction/table','material\InventoryTransactionController@table');

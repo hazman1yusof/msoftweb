@@ -336,10 +336,10 @@ i.fa {
 									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='Non-Claimable' selected>No</label>
 								  </div>
 
-							  <label class="col-md-2 control-label" for="delordhd_recstatus">Record Status</label>  
-							  <div class="col-md-2">
-								<input id="delordhd_recstatus" name="delordhd_recstatus" type="text" class="form-control input-sm" rdonly>
-							  </div>
+								<label class="col-md-2 control-label" for="delordhd_recstatus">Record Status</label>  
+								<div class="col-md-2">
+									<input id="delordhd_recstatus" name="delordhd_recstatus" type="text" class="form-control input-sm" rdonly>
+								</div>
 							</div>	
 
 							<hr/>
