@@ -258,10 +258,10 @@ i.fa {
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="billtype">MRN</label>  
+							<label class="col-md-2 control-label" for="mrn">MRN</label>  
 							<div class="col-md-4"> 
 								<div class='input-group'>
-									<input id="billtype" name="billtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<input id="mrn" name="mrn" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 							</div>	

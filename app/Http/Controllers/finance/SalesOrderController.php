@@ -67,7 +67,7 @@ class SalesOrderController extends defaultController
 
         DB::beginTransaction();
 
-        $table = DB::table("hisdb.billdet");
+        $table = DB::table("debtor.dbacthdr");
 
         $array_insert = [
             'trantype' => 'IN', 
@@ -76,18 +76,17 @@ class SalesOrderController extends defaultController
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'OPEN',
-            'invno' => $invno,        
+            'invno' => $invno,    
+           // 'invno' => strtoupper($request->invno),    
             'units' => strtoupper($request->units),
             'customer' => strtoupper($request->customer),
             'docdate' => strtoupper($request->docdate),
             'billtype' => strtoupper($request->billtype),
-            'term' => strtoupper($request->term),
             'ordernum' => strtoupper($request->ordernum),
             'mrn' => strtoupper($request->mrn),
-            'uom' => strtoupper($request->uom),
+            'uomcode' => strtoupper($request->uomcode),
             'termdays' => strtoupper($request->termdays),
             'deptcode' => strtoupper($request->deptcode),
-            'invno' => strtoupper($request->invno),
             'ponum' => strtoupper($request->ponum),
             //'podate' => strtoupper($request->podate),
             'amount' => $request->$request->amount,
