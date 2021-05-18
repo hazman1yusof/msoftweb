@@ -165,12 +165,12 @@ $(document).ready(function () {
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	var saveParam = {
-		action: 'purReq_header_save',
+		action: 'SalesOrder_header_save',
 		url:'/SalesOrder/form',
 		field: '',
 		oper: oper,
-		table_name: 'material.purreqhd',
-		table_id: 'purreqhd_recno',
+		table_name: 'debtor.dbacthdr',
+		table_id: 'idno',
 		fixPost: true,
 		//returnVal: true,
 	};
@@ -612,7 +612,7 @@ $(document).ready(function () {
 			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false},
 			{
-				label: 'Item Code', name: 'itemcode', width: 180, classes: 'wrap', editable: true,
+				label: 'Item Code', name: 'itemcode', width: 300, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -621,9 +621,9 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
+			{ label: 'Item Description', name: 'description', width: 350, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
 			{
-				label: 'Acct Code', name: 'uomcode', width: 110, classes: 'wrap', editable: true,
+				label: 'UOM Code', name: 'uomcode', width: 300, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -633,7 +633,7 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Unit Price', name: 'unitprice', width: 150, classes: 'wrap', align: 'right',
+				label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap', align: 'right',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules: { required: true }
@@ -645,7 +645,13 @@ $(document).ready(function () {
 				editrules: { required: true },
 			},
 			{
-				label: '% Bill Type', name: 'perdisc', width: 80, align: 'right', classes: 'wrap',
+				label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap',
+				editable: true,
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+				editrules: { required: true },
+			},
+			{
+				label: '% Bill Type', name: 'percbilltype', width: 100, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules: { required: true }, edittype: "text",
@@ -662,17 +668,17 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Amount Bill Type', name: 'tot_gst', width: 150, align: 'right', classes: 'wrap', editable: true,
+				label: 'Amount Bill Type', name: 'amtbilltype', width: 100, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
 			},
 			{
-				label: 'Total Amount', name: 'totamount', width: 150, align: 'right', classes: 'wrap', editable: true,
+				label: 'Total Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true }, editoptions: { readonly: "readonly" },
 			},
 			// { label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Remarks', name: 'remarks_button', width: 80, formatter: formatterRemarks, unformat: unformatRemarks },
+			{ label: 'Remarks', name: 'remarks_button', width: 300, formatter: formatterRemarks, unformat: unformatRemarks },
 			{ label: 'Remarks', name: 'remarks', hidden: true },
 			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'wrap', hidden: false },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },

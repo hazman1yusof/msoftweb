@@ -83,8 +83,10 @@ class SalesOrderController extends defaultController
             'billtype' => strtoupper($request->billtype),
             'term' => strtoupper($request->term),
             'ordernum' => strtoupper($request->ordernum),
-            //'posteddate' => strtoupper($request->posteddate),
-
+            'mrn' => strtoupper($request->mrn),
+            'uom' => strtoupper($request->uom),
+            'termdays' => strtoupper($request->termdays),
+            'deptcode' => strtoupper($request->deptcode),
             'invno' => strtoupper($request->invno),
             'ponum' => strtoupper($request->ponum),
             //'podate' => strtoupper($request->podate),
@@ -121,6 +123,7 @@ class SalesOrderController extends defaultController
             'units' => strtoupper($request->units),
             'customer' => strtoupper($request->customer),
             'approvedby' => strtoupper($request->approvedby),
+            'uom' => strtoupper($request->uom),
 
         ];
 
@@ -153,7 +156,7 @@ class SalesOrderController extends defaultController
 
             foreach ($request->idno_array as $value){
 
-                $purreqhd = DB::table("hisdb.billder")
+                $purreqhd = DB::table("hisdb.billdet")
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();
