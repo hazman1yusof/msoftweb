@@ -54,81 +54,77 @@ class SalesOrderController extends defaultController
 
     public function add(Request $request){
 
-        if(!empty($request->fixPost)){
-            $field = $this->fixPost2($request->field);
-            $idno = substr(strstr($request->table_id,'_'),1);
-        }else{
-            $field = $request->field;
-            $idno = $request->table_id;
-        }
-
-        //$request_no = $this->request_no('PR', $request->purreqhd_reqdept);
-        $invno = $this->invno('PB','IN');
-
         DB::beginTransaction();
 
         $table = DB::table("debtor.dbacthdr");
 
-        $array_insert = [
-            'trantype' => 'IN', 
-            'idno' => $idno,
-            'compcode' => session('compcode'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'OPEN',
-            'invno' => $invno,    
-           // 'invno' => strtoupper($request->invno),    
-            'units' => strtoupper($request->units),
-            'customer' => strtoupper($request->customer),
-            'docdate' => strtoupper($request->docdate),
-            'billtype' => strtoupper($request->billtype),
-            'ordernum' => strtoupper($request->ordernum),
-            'mrn' => strtoupper($request->mrn),
-            'uomcode' => strtoupper($request->uomcode),
-            'termdays' => strtoupper($request->termdays),
-            'deptcode' => strtoupper($request->deptcode),
-            'ponum' => strtoupper($request->ponum),
-            //'podate' => strtoupper($request->podate),
-            'amount' => $request->$request->amount,
-            'approvedby' => strtoupper($request->approvedby),
-            //'payercode' => strtoupper($request->payercode),
-            'remarks' => strtoupper($request->remarks),
+        try { 
 
-        ];
+            $auditno = $this->recno('PB','IN');
+            $invno = $this->recno('PB','INV');
+
+            $array_insert = [
+                'source' => 'PB',
+                'trantype' => 'IN',
+                'auditno' => $auditno,
+                'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'OPEN',
+                'lineno_' => 1,
+                'invno' => $invno,
+                'deptcode' => strtoupper($request->db_deptcode),
+                'debtorcode' => strtoupper($request->db_debtorcode),
+                'entrydate' => strtoupper($request->db_entrydate),
+                'paytype' => strtoupper($request->db_paytype),
+                'mrn' => strtoupper($request->db_mrn),
+                'termdays' => strtoupper($request->db_termdays),
+
+                'orderno' => strtoupper($request->db_orderno),
+                'ponum' => strtoupper($request->db_ponum),
+                'podate' => strtoupper($request->db_podate),
+                'remark' => strtoupper($request->db_remark),
+            ];
+
+
+            //////////where//////////
+            $table = $table->where('idno','=',$request->idno);
+            $table->insert($array_insert);
+
+            $responce = new stdClass();
+            // $responce->totalAmount = $request->purreqhd_totamount;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function edit(Request $request){
-        if(!empty($request->fixPost)){
-            $field = $this->fixPost2($request->field);
-            $idno = substr(strstr($request->table_id,'_'),1);
-        }else{
-            $field = $request->field;
-            $idno = $request->table_id;
-        }
 
         DB::beginTransaction();
 
-        $table = DB::table("hisdb.billdet");
+        $table = DB::table("hisdb.dbacthdr");
 
         $array_update = [
-            'compcode' => session('compcode'),
-            'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'unitprice' => strtoupper($request->unitprice),
-            'qty' => strtoupper($request->qty),
-            'percent' => strtoupper($request->percent),
-            'amount' => strtoupper($request->amount),
-            'totamount' => strtoupper($request->totamount),
-            'units' => strtoupper($request->units),
-            'customer' => strtoupper($request->customer),
-            'approvedby' => strtoupper($request->approvedby),
-            'uom' => strtoupper($request->uom),
-
+            'deptcode' => strtoupper($request->db_deptcode),
+            'debtorcode' => strtoupper($request->db_debtorcode),
+            'entrydate' => strtoupper($request->db_entrydate),
+            'paytype' => strtoupper($request->db_paytype),
+            'mrn' => strtoupper($request->db_mrn),
+            'termdays' => strtoupper($request->db_termdays),
+            'orderno' => strtoupper($request->db_orderno),
+            'ponum' => strtoupper($request->db_ponum),
+            'podate' => strtoupper($request->db_podate),
+            'remark' => strtoupper($request->db_remark),
         ];
 
         try {
             //////////where//////////
-            $table = $table->where('idno','=',$request->idno);
+            $table = $table->where('idno','=',$request->db_idno);
             $table->update($array_update);
 
             $responce = new stdClass();

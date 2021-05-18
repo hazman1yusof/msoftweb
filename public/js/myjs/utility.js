@@ -1525,7 +1525,7 @@ function checkPadExist(){
 checkPadExist();//start checking..
 
 function padzero(cellvalue, options, rowObject){
-	if(cellvalue == null || cellvalue.trim() == ''){
+	if(cellvalue == null || cellvalue.toString().trim() == ''){
 		return ''
 	}
 
@@ -1538,7 +1538,7 @@ function padzero(cellvalue, options, rowObject){
 }
 
 function padzero5(cellvalue, options, rowObject){
-	if(cellvalue == null || cellvalue.trim() == ''){
+	if(cellvalue == null || cellvalue.toString().trim() == ''){
 		return ''
 	}
 

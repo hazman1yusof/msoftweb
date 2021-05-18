@@ -2,7 +2,6 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
-	$("body").show();
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
 		modules: 'sanitize',
@@ -61,13 +60,15 @@ $(document).ready(function () {
 						$("#pg_jqGridPager2 table").hide();
 						break;
 				}if (oper != 'add') {
-					dialog_unitsSO.check(errorField);
+					dialog_deptcode.check(errorField);
 					dialog_billtypeSO.check(errorField);
+					dialog_mrn.check(errorField);
 					dialog_CustomerSO.check(errorField);
 					dialog_approvedbySO.check(errorField);
 				} if (oper != 'view') {
-					dialog_unitsSO.on();
+					dialog_deptcode.on();
 					dialog_billtypeSO.on();
+					dialog_mrn.on();
 					dialog_CustomerSO.on();
 					dialog_approvedbySO.on();
 				}
@@ -92,8 +93,9 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#formdata2');
 				$('.my-alert').detach();
 				$("#formdata a").off();
-				dialog_unitsSO.off();
+				dialog_deptcode.off();
 				dialog_billtypeSO.off();
+				dialog_mrn.off();
 				dialog_CustomerSO.off();
 				dialog_approvedbySO.off();
 				$(".noti").empty();
@@ -153,18 +155,18 @@ $(document).ready(function () {
 		action: 'get_table_default',
 		url:'/util/get_table_default',
 		field:'',
-		table_name: ['debtor.dbacthdr'],
 		table_name: ['debtor.dbacthdr as db','debtor.debtormast as dm'],
 		table_id: 'idno',
 		join_type: ['LEFT JOIN'],
-		join_onCol: ['dbacthdr.debtorcode'],
-		join_onVal: ['debtormast.name'],
+		join_onCol: ['db.debtorcode'],
+		join_onVal: ['dm.debtorcode'],
 		// filterCol: filterCol_urlParam,
 		// filterVal: filterVal_urlParam,
 		// WhereInCol:['purreqhd.recstatus'],
 		// WhereInVal: recstatus_filter,
 		fixPost: true,
 	}
+
 	var saveParam = {
 		action: 'SalesOrder_header_save',
 		url:'/SalesOrder/form',
@@ -174,12 +176,11 @@ $(document).ready(function () {
 		table_id: 'idno',
 		fixPost: true,
 		//returnVal: true,
-	};
+	}
 
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
@@ -198,24 +199,28 @@ $(document).ready(function () {
 			{ label: 'outamount', name: 'db_outamount', width: 20, hidden: true },
 			{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
-			{ label: 'mrn', name: 'mrn', width: 10, hidden: true },
+			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
 			{ label: 'units', name: 'db_units', width: 10, hidden: true },
+			{ label: 'termdays', name: 'db_termdays', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_paytype', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
+			{ label: 'source', name: 'db_paytype', width: 10, hidden: true },
 			{ label: 'PO Date', name: 'db_podate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true,},
 			{ label: 'DeptCode', name: 'db_deptcode', width: 15, canSearch: true },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
 			{ label: 'upduser', name: 'db_upduser', width: 10, hidden: true },
 			{ label: 'upddate', name: 'db_upddate', width: 10, hidden: true },
+			{ label: 'remarks', name: 'db_remark', width: 10, hidden: true },
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 		],
 		autowidth: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce: false,
-		sortname:'idno',
+		sortname:'db_idno',
 		sortorder:'desc',
 		width: 900,
 		height: 200,
@@ -226,7 +231,9 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").recstatus;
 			let scope = $("#recstatus_use").val();
 
-			urlParam2.filterVal[0] = selrowData("#jqGrid").purreqhd_recno;
+			urlParam2.source = selrowData("#jqGrid").db_source;
+			urlParam2.trantype = selrowData("#jqGrid").db_trantype;
+			urlParam2.auditno = selrowData("#jqGrid").db_auditno;
 			
 			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan tu
 			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
@@ -593,14 +600,9 @@ $(document).ready(function () {
 	var urlParam2 = {
 		action: 'get_table_dtl',
 		url:'/SalesOrderDetail/table',
-		field: ['prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 't.rate'],
-		table_name: ['material.purreqdt AS prdt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
-		table_id: 'lineno_',
-		join_type: ['LEFT JOIN', 'LEFT JOIN'],
-		join_onCol: ['prdt.itemcode', 'prdt.taxcode'],
-		join_onVal: ['p.itemcode', 't.taxcode'],
-		filterCol: ['prdt.recno', 'prdt.compcode', 'prdt.recstatus'],
-		filterVal: ['', 'session.compcode', '<>.DELETE']
+		source:'',
+		trantype:'',
+		auditno:'',
 	};
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
@@ -609,8 +611,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/SalesOrderDetail/form",
 		colModel: [
-			{ label: 'compcode', name: 'compcode', width: 5, classes: 'wrap', hidden: true },
-			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', hidden: true },
+			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false},
 			{
 				label: 'Item Code', name: 'itemcode', width: 300, classes: 'wrap', editable: true,
@@ -622,9 +623,8 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Item Description', name: 'description', width: 350, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
 			{
-				label: 'UOM Code', name: 'uomcode', width: 300, classes: 'wrap', editable: true,
+				label: 'UOM Code', name: 'uomcode', width: 100, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -678,7 +678,6 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true }, editoptions: { readonly: "readonly" },
 			},
-			// { label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 300, formatter: formatterRemarks, unformat: unformatRemarks },
 			{ label: 'Remarks', name: 'remarks', hidden: true },
 			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'wrap', hidden: false },
@@ -732,8 +731,9 @@ $(document).ready(function () {
 			$("#expdate").datepicker();
 		},
 		beforeSubmit: function (postdata, rowid) {
-			dialog_unitsSO.check(errorField);
+			dialog_deptcode.check(errorField);
 			dialog_billtypeSO.check(errorField);
+			dialog_mrn.check(errorField);
 			dialog_CustomerSO.check(errorField);
 			dialog_approvedbySO.check(errorField);
 		}
@@ -869,9 +869,10 @@ $(document).ready(function () {
 
 			// }else{
 
-				dialog_unitsSO.on();//start binding event on jqgrid2
+				dialog_deptcode.on();//start binding event on jqgrid2
 				dialog_CustomerSO.on();
 				dialog_billtypeSO.on();
+				dialog_mrn.on();
 				dialog_approvedbySO.on();
 
 			// }
@@ -1246,8 +1247,9 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-		dialog_unitsSO.off();
+		dialog_deptcode.off();
 		dialog_billtypeSO.off();
+		dialog_mrn.off();
 		dialog_CustomerSO.off();
 		dialog_approvedbySO.off();
 
@@ -1258,10 +1260,11 @@ $(document).ready(function () {
 			unsaved = false;
 		} else {
 			mycurrency.formatOn();
-			dialog_unitsSO.on();
+			dialog_deptcode.on();
 			dialog_billtypeSO.on();
 			dialog_CustomerSO.on();
 			dialog_approvedbySO.on();
+			dialog_mrn.on();
 		}
 	});
 
@@ -1269,10 +1272,11 @@ $(document).ready(function () {
 	$("#saveHeaderLabel").click(function () {
 		emptyFormdata(errorField, '#formdata2');
 		hideatdialogForm(true);
-		dialog_unitsSO.on();
+		dialog_deptcode.on();
 		dialog_billtypeSO.on();
 		dialog_CustomerSO.on();
 		dialog_approvedbySO.on();
+		dialog_mrn.on();
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -1466,26 +1470,26 @@ $(document).ready(function () {
 
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
-	var dialog_unitsSO = new ordialog(
-		'units', 'sysdb.sector', '#units', errorField,
+	var dialog_deptcode = new ordialog(
+		'db_deptcode', 'sysdb.department', '#db_deptcode', errorField,
 		{
 			colModel: [
-				{ label: 'SectorCode', name: 'sectorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'SectorCode', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				filterCol:['compcode','recstatus','chgdept'],
+				filterVal:['session.compcode','ACTIVE','1']
 			},
 			ondblClickRow: function () {
-				$('#docdate').focus();
+				$('#db_docdate').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#docdate').focus();
+					$('#db_actdate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1493,15 +1497,15 @@ $(document).ready(function () {
 		}, {
 			title: "Select Units",
 			open: function(){
-				dialog_unitsSO.urlParam.filterCol=['recstatus', 'compcode'];
-				dialog_unitsSO.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+				dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode','chgdept'];
+				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode','1'];
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_unitsSO.makedialog();
+	dialog_deptcode.makedialog();
 
 	var dialog_CustomerSO = new ordialog(
-		'customer', 'debtor.debtormast', '#customer', errorField,
+		'customer', 'debtor.debtormast', '#db_debtorcode', errorField,
 		{
 			colModel: [
 				{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -1512,14 +1516,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				$('#billtype').focus();
+				$('#db_paytype').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#billtype').focus();
+					$('#db_paytype').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1535,7 +1539,7 @@ $(document).ready(function () {
 	dialog_CustomerSO.makedialog();
 
 	var dialog_billtypeSO = new ordialog(
-		'billtype', 'hisdb.billtymst', '#billtype', errorField,
+		'billtype', 'hisdb.billtymst', '#db_paytype', errorField,
 		{
 			colModel: [
 				{ label: 'Billtype', name: 'billtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -1546,14 +1550,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				$('#term').focus();
+				$('#db_mrn').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#term').focus();
+					$('#db_mrn').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1567,6 +1571,40 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_billtypeSO.makedialog();
+
+	var dialog_mrn = new ordialog(
+		'dialog_mrn', 'hisdb.pat_mast', '#db_mrn', errorField,
+		{
+			colModel: [
+				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+			],
+			urlParam: {
+				filterCol:['compcode','ACTIVE'],
+				filterVal:['session.compcode','1']
+			},
+			ondblClickRow: function () {
+				$('#db_termdays').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#db_termdays').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select MRN",
+			open: function(){
+				dialog_CustomerSO.urlParam.filterCol=['recstatus', 'ACTIVE'];
+				dialog_CustomerSO.urlParam.filterVal=['ACTIVE', '1'];
+			}
+		},'none','radio','tab'
+	);
+	dialog_mrn.makedialog();
 
 	var dialog_approvedbySO = new ordialog(
 		'approvedby',['material.authorise'],"#approvedby",errorField,
@@ -1598,7 +1636,7 @@ $(document).ready(function () {
 				dialog_approvedbySO.urlParam.filterCol=['compcode','recstatus'];
 				dialog_approvedbySO.urlParam.filterVal=['session.compcode','ACTIVE'];
 			}
-		},'urlParam','radio','tab'
+		},'none','radio','tab'
 	);
 	dialog_approvedbySO.makedialog(false);
 
@@ -1616,7 +1654,7 @@ $(document).ready(function () {
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
-		sortname: 'idno',
+		sortname: 'db_idno',
 		sortorder: "desc",
 		onSelectRow: function (rowid, selected) {
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');

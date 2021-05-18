@@ -212,69 +212,68 @@ i.fa {
 				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 						{{ csrf_field() }}
-						<input id="referral" name="referral" type="hidden">
-						<input id="idno" name="purreqhd_idno" type="hidden">
-						<input id="purreqhd_purordno" name="purreqhd_purordno" type="hidden">
+						<input id="idno" name="db_idno" type="hidden">
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="units">Sector</label>	 
+							<label class="col-md-2 control-label" for="db_deptcode">Sector</label>	 
 							<div class="col-md-4">
 								<div class='input-group'>
-								<input id="units" name="units" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_deptcode" name="db_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 									<span class="help-block"></span>
 								</div>
 
-							<label class="col-md-1 control-label" for="invno">inv No</label>  
+							<label class="col-md-1 control-label" for="db_invno">inv No</label>  
 							<div class="col-md-2">
-								<input id="invno" name="invno" type="text" class="form-control input-sm" rdonly>
+								<input id="db_invno" name="db_invno" type="text" class="form-control input-sm" rdonly>
 							</div>
 
-							<label class="col-md-1 control-label" for="docdate">Doc Date</label>  
+							<label class="col-md-1 control-label" for="db_entrydate">Doc Date</label>  
 							<div class="col-md-2">
-								<input id="docdate" name="docdate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
 									max="<?php echo date('Y-m-d');?>">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="customer">Customer</label>	 
+							<label class="col-md-2 control-label" for="db_debtorcode">Customer</label>	 
 							<div class="col-md-4">
 								<div class='input-group'>
-								<input id="customer" name="customer" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
 							</div>
 
-							<label class="col-md-1 control-label" for="billtype">Bill Type</label>  
+							<label class="col-md-1 control-label" for="db_paytype">Bill Type</label>  
 							<div class="col-md-2"> 
 								<div class='input-group'>
-									<input id="billtype" name="billtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<input id="db_paytype" name="db_paytype" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
+								<span class="help-block"></span>
 							</div>							
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="mrn">MRN</label>  
+							<label class="col-md-2 control-label" for="db_mrn">MRN</label>  
 							<div class="col-md-4"> 
 								<div class='input-group'>
-									<input id="mrn" name="mrn" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<input id="db_mrn" name="db_mrn" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
+								<span class="help-block"></span>
 							</div>	
 
-							<label class="col-md-1 control-label" for="term">Term</label>  
+							<label class="col-md-1 control-label" for="db_termdays">Term</label>  
 							<div class="col-md-1">
-								<input id="term" name="term" type="text" class="form-control input-sm">
+								<input id="db_termdays" name="db_termdays" type="text" class="form-control input-sm">
 							</div>
 
 							<div class="col-md-1">
 								<select class="form-control col-md-2" id='term2' name='term2' data-validation="required">
-									<option value='' selected="selected">Select one</option>
-									<option value='DAYS'>DAYS</option>
+									<option value='DAYS' selected>DAYS</option>
 									<option value='MONTH'>MONTH</option>
 									<option value='YEAR'>YEAR</option>
 								</select> 
@@ -282,14 +281,14 @@ i.fa {
 						</div>
 
 						<div class="form-group">		
-							<label class="col-md-2 control-label" for="orderno">Order No</label>  
+							<label class="col-md-2 control-label" for="db_orderno">Order No</label>  
 							<div class="col-md-2"> 
-								<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_orderno" name="db_orderno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							</div>
 							
-							<label class="col-md-3 control-label" for="idno">Auto No</label>  
+							<label class="col-md-3 control-label" for="db_auditno">Auto No</label>  
 							<div class="col-md-2"> 
-								<input id="idno" name="idno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
+								<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
 							</div>
 
 							<label class="col-md-1 control-label" for="posteddate">Posted Date</label>  
@@ -301,26 +300,26 @@ i.fa {
 						<hr>
 							
 						<div class="form-group">		
-							<label class="col-md-2 control-label" for="ponum">PO No</label>  
+							<label class="col-md-2 control-label" for="db_ponum">PO No</label>  
 							<div class="col-md-2"> 
-								<input id="ponum" name="ponum" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_ponum" name="db_ponum" type="text" class="form-control input-sm text-uppercase">
 							</div>
 
-							<label class="col-md-3 control-label" for="podate">PO Date</label>  
+							<label class="col-md-3 control-label" for="db_podate">PO Date</label>  
 							<div class="col-md-2">
-								<input id="podate" name="podate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+								<input id="db_podate" name="db_podate" type="date" maxlength="10" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="amount">Total Amount</label>
+							<label class="col-md-2 control-label" for="db_amount">Total Amount</label>
 							<div class="col-md-2">
-								<input id="amount" name="amount" type="text" maxlength="11" class="form-control input-sm" value="0.00">
+								<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00">
 							</div>
 
-							<label class="col-md-3 control-label" for="recstatus">Record Status</label>  
+							<label class="col-md-3 control-label" for="db_recstatus">Record Status</label>  
 							<div class="col-md-2">
-									<input id="recstatus" name="recstatus" maxlength="10" class="form-control input-sm" rdonly>
+									<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
 							</div>
 						</div>
 
@@ -338,9 +337,9 @@ i.fa {
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="remarks">Remarks</label> 
+							<label class="col-md-2 control-label" for="db_remark">Remarks</label> 
 							<div class="col-md-6"> 
-							<textarea class="form-control input-sm text-uppercase" name="remarks" rows="5" cols="55" maxlength="400" id="remarks" ></textarea>
+							<textarea class="form-control input-sm text-uppercase" name="db_remark" rows="5" cols="55" maxlength="400" id="db_remark" ></textarea>
 							</div>
 						</div>
 

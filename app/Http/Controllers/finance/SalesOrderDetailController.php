@@ -49,15 +49,17 @@ class SalesOrderDetailController extends defaultController
     }
 
     public function get_table_dtl(Request $request){
-        $table = DB::table('debtor.dbacthdr as db')
-                    ->select('db.compcode', 'db.recno', 'db.lineno_', 'db.customer', 'p.name', 'db.uomcode', 'db.mrn', 'db.billtype', 'db.invno', 'db.units', 'db.ponum', 'db.amount', 'db.termdays')
-                    ->leftJoin('debtor.debtormast AS dm', function($join) use ($request){
-                        $join = $join->on("db.debtorcode", '=', 'dm.debtorcode');    
-                    })
-                    ->where('db.recno','=',$request->filterVal[0])
-                    ->where('db.compcode','=',session('compcode'))
-                    ->where('db.recstatus','<>','DELETE')
-                    ->orderBy('db.idno','desc');
+        $table = DB::table('debtor.billsum')
+                    // ->select('db.compcode', 'db.recno', 'db.lineno_', 'db.customer', 'p.name', 'db.uomcode', 'db.mrn', 'db.billtype', 'db.invno', 'db.units', 'db.ponum', 'db.amount', 'db.termdays')
+                    // ->leftJoin('debtor.debtormast AS dm', function($join) use ($request){
+                    //     $join = $join->on("db.debtorcode", '=', 'dm.debtorcode');    
+                    // })
+                    ->where('source','=',$request->source)
+                    ->where('trantype','=',$request->trantype)
+                    ->where('auditno','=',$request->auditno)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','<>','DELETE')
+                    ->orderBy('idno','desc');
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
