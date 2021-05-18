@@ -308,11 +308,6 @@ i.fa {
 								<input id="amount" name="amount" type="text" maxlength="11" class="form-control input-sm" value="0.00">
 							</div>
 
-							<!-- <label class="col-md-2 control-label" for="purreqhd_totamount">Total Amount</label>  
-							<div class="col-md-3">
-								<input id="purreqhd_totamount" name="purreqhd_totamount" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" value='0.00' rdonly>
-							</div>					  			 -->
-
 							<label class="col-md-3 control-label" for="recstatus">Record Status</label>  
 							<div class="col-md-2">
 									<input id="recstatus" name="recstatus" maxlength="10" class="form-control input-sm" rdonly>

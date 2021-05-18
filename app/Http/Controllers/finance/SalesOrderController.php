@@ -54,18 +54,29 @@ class SalesOrderController extends defaultController
 
     public function add(Request $request){
 
+        if(!empty($request->fixPost)){
+            $field = $this->fixPost2($request->field);
+            $idno = substr(strstr($request->table_id,'_'),1);
+        }else{
+            $field = $request->field;
+            $idno = $request->table_id;
+        }
+
+        //$request_no = $this->request_no('PR', $request->purreqhd_reqdept);
+        $invno = $this->invno('PB','IN');
+
         DB::beginTransaction();
 
         $table = DB::table("hisdb.billdet");
 
         $array_insert = [
+            'trantype' => 'IN', 
             'idno' => $idno,
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'OPEN',
-            
-            //'unit' => session('units'),
+            'invno' => $invno,        
             'units' => strtoupper($request->units),
             'customer' => strtoupper($request->customer),
             'docdate' => strtoupper($request->docdate),
@@ -78,18 +89,9 @@ class SalesOrderController extends defaultController
             'ponum' => strtoupper($request->ponum),
             //'podate' => strtoupper($request->podate),
             'amount' => $request->$request->amount,
-            //'approvedby' => strtoupper($request->approvedby),
+            'approvedby' => strtoupper($request->approvedby),
             //'payercode' => strtoupper($request->payercode),
             'remarks' => strtoupper($request->remarks),
-
-            'reqdept' => strtoupper($request->purreqhd_reqdept),
-            'prdept' => strtoupper($request->purreqhd_prdept),
-            'purreqdt' => strtoupper($request->purreqhd_purreqdt),
-            'suppcode' => strtoupper($request->purreqhd_suppcode),
-            'totamount' => $request->purreqhd_totamount,
-            'perdisc' => $request->purreqhd_perdisc,
-            'amtdisc' => $request->purreqhd_amtdisc,
-            'subamount' => $request->purreqhd_subamount
 
         ];
     }
@@ -118,23 +120,13 @@ class SalesOrderController extends defaultController
             'totamount' => strtoupper($request->totamount),
             'units' => strtoupper($request->units),
             'customer' => strtoupper($request->customer),
-
-
-            'reqdept' => strtoupper($request->purreqhd_reqdept),
-            'prdept' => strtoupper($request->purreqhd_prdept),
-            'purreqdt' => strtoupper($request->purreqhd_purreqdt),
-            'suppcode' => strtoupper($request->purreqhd_suppcode),
-            'totamount' => $request->purreqhd_totamount,
-            'remarks' => strtoupper($request->purreqhd_remarks),
-            'perdisc' => $request->purreqhd_perdisc,
-            'amtdisc' => $request->purreqhd_amtdisc,
-            'subamount' => $request->purreqhd_subamount
+            'approvedby' => strtoupper($request->approvedby),
 
         ];
 
         try {
             //////////where//////////
-            $table = $table->where('idno','=',$request->purreqhd_idno);
+            $table = $table->where('idno','=',$request->idno);
             $table->update($array_update);
 
             $responce = new stdClass();
