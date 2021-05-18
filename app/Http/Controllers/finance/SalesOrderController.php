@@ -67,7 +67,7 @@ class SalesOrderController extends defaultController
 
         DB::beginTransaction();
 
-        $table = DB::table("hisdb.billdet");
+        $table = DB::table("debtor.dbacthdr");
 
         $array_insert = [
             'trantype' => 'IN', 
@@ -76,16 +76,17 @@ class SalesOrderController extends defaultController
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'OPEN',
-            'invno' => $invno,        
+            'invno' => $invno,    
+           // 'invno' => strtoupper($request->invno),    
             'units' => strtoupper($request->units),
             'customer' => strtoupper($request->customer),
             'docdate' => strtoupper($request->docdate),
             'billtype' => strtoupper($request->billtype),
-            'term' => strtoupper($request->term),
             'ordernum' => strtoupper($request->ordernum),
-            //'posteddate' => strtoupper($request->posteddate),
-
-            'invno' => strtoupper($request->invno),
+            'mrn' => strtoupper($request->mrn),
+            'uomcode' => strtoupper($request->uomcode),
+            'termdays' => strtoupper($request->termdays),
+            'deptcode' => strtoupper($request->deptcode),
             'ponum' => strtoupper($request->ponum),
             //'podate' => strtoupper($request->podate),
             'amount' => $request->$request->amount,
@@ -121,6 +122,7 @@ class SalesOrderController extends defaultController
             'units' => strtoupper($request->units),
             'customer' => strtoupper($request->customer),
             'approvedby' => strtoupper($request->approvedby),
+            'uom' => strtoupper($request->uom),
 
         ];
 
@@ -153,7 +155,7 @@ class SalesOrderController extends defaultController
 
             foreach ($request->idno_array as $value){
 
-                $purreqhd = DB::table("hisdb.billder")
+                $purreqhd = DB::table("hisdb.billdet")
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();

@@ -49,18 +49,15 @@ class SalesOrderDetailController extends defaultController
     }
 
     public function get_table_dtl(Request $request){
-        $table = DB::table('material.purreqdt as prdt')
-                    ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 't.rate')
-                    ->leftJoin('material.productmaster AS p', function($join) use ($request){
-                        $join = $join->on("prdt.itemcode", '=', 'p.itemcode');    
+        $table = DB::table('debtor.dbacthdr as db')
+                    ->select('db.compcode', 'db.recno', 'db.lineno_', 'db.customer', 'p.name', 'db.uomcode', 'db.mrn', 'db.billtype', 'db.invno', 'db.units', 'db.ponum', 'db.amount', 'db.termdays')
+                    ->leftJoin('debtor.debtormast AS dm', function($join) use ($request){
+                        $join = $join->on("db.debtorcode", '=', 'dm.debtorcode');    
                     })
-                    ->leftJoin('hisdb.taxmast AS t', function($join) use ($request){
-                        $join = $join->on("prdt.taxcode", '=', 't.taxcode');    
-                    })
-                    ->where('prdt.recno','=',$request->filterVal[0])
-                    ->where('prdt.compcode','=',session('compcode'))
-                    ->where('prdt.recstatus','<>','DELETE')
-                    ->orderBy('prdt.idno','desc');
+                    ->where('db.recno','=',$request->filterVal[0])
+                    ->where('db.compcode','=',session('compcode'))
+                    ->where('db.recstatus','<>','DELETE')
+                    ->orderBy('db.idno','desc');
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -103,7 +100,6 @@ class SalesOrderDetailController extends defaultController
     public function add(Request $request){
 
         $recno = $request->recno;
-      //  $suppcode = $request->suppcode;
         $purreqdt = $request->purreqdt;
         $reqdept = $request->reqdept;
 
@@ -219,30 +215,15 @@ class SalesOrderDetailController extends defaultController
                 ->where('idno','=',$request->idno)
                 //->where('lineno_','=',$request->lineno_)
                 ->update([
-                    'units' => strtoupper($request->units),
-                    'customer' => strtoupper($request->customer),
-                    'docdate' => strtoupper($request->docdate),
-                    'billtype' => strtoupper($request->billtype),
-                    'term' => strtoupper($request->term),
-                    'ordernum' => strtoupper($request->ordernum),
-                    'invno' => strtoupper($request->invno),
-                    'ponum' => strtoupper($request->ponum),
-                    'amount' => $request->$request->amount,
-                    'remarks' => strtoupper($request->remarks),
-
-                    'pricecode' => strtoupper($request->pricecode), 
                     'itemcode'=> strtoupper($request->itemcode), 
                     'uomcode'=> strtoupper($request->uomcode), 
-                    'pouom'=> strtoupper($request->pouom), 
-                    'qtyrequest'=> $request->qtyrequest, 
                     'unitprice'=> $request->unitprice,
-                    'taxcode'=> $request->taxcode, 
-                    'perdisc'=> $request->perdisc, 
-                    'amtdisc'=> $request->amtdisc, 
-                    'amtslstax'=> $request->tot_gst, 
-                    'netunitprice'=> $request->netunitprice, 
+                    'qtyrequest'=> $request->qtyrequest, 
+                    'qtyonhand'=> $request->qtyonhand, 
+                    'unitprice'=> $request->unitprice,
+                    'percbilltype'=> $request->percbilltype, 
+                    'amtbilltype'=> $request->amtbilltype, 
                     'amount'=> $request->amount, 
-                    'totamount'=> $request->totamount, 
                     'upduser'=> session('username'), 
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'remarks'=> strtoupper($request->remarks),

@@ -217,7 +217,7 @@ i.fa {
 						<input id="purreqhd_purordno" name="purreqhd_purordno" type="hidden">
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="units">Units</label>	 
+							<label class="col-md-2 control-label" for="units">Sector</label>	 
 							<div class="col-md-4">
 								<div class='input-group'>
 								<input id="units" name="units" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
@@ -254,32 +254,42 @@ i.fa {
 									<input id="billtype" name="billtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
-							</div>
-							
+							</div>							
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="mrn">MRN</label>  
+							<div class="col-md-4"> 
+								<div class='input-group'>
+									<input id="mrn" name="mrn" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+							</div>	
+
 							<label class="col-md-1 control-label" for="term">Term</label>  
 							<div class="col-md-1">
 								<input id="term" name="term" type="text" class="form-control input-sm">
 							</div>
 
 							<div class="col-md-1">
-							<select class="form-control col-md-2" id='term2' name='term2' data-validation="required">
-								<option value='' selected="selected">Select one</option>
-								<option value='DAYS'>Days</option>
-								<option value='MONTH'>Month</option>
-								<option value='YEAR'>Year</option>
-							</select> 
-						</div>								
+								<select class="form-control col-md-2" id='term2' name='term2' data-validation="required">
+									<option value='' selected="selected">Select one</option>
+									<option value='DAYS'>DAYS</option>
+									<option value='MONTH'>MONTH</option>
+									<option value='YEAR'>YEAR</option>
+								</select> 
+							</div>	
 						</div>
 
 						<div class="form-group">		
 							<label class="col-md-2 control-label" for="orderno">Order No</label>  
-							<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
+							<div class="col-md-2"> 
 								<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							</div>
 							
 							<label class="col-md-3 control-label" for="idno">Auto No</label>  
-							<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
-								<input id="idno" name="idno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+							<div class="col-md-2"> 
+								<input id="idno" name="idno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
 							</div>
 
 							<label class="col-md-1 control-label" for="posteddate">Posted Date</label>  
@@ -292,7 +302,7 @@ i.fa {
 							
 						<div class="form-group">		
 							<label class="col-md-2 control-label" for="ponum">PO No</label>  
-							<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
+							<div class="col-md-2"> 
 								<input id="ponum" name="ponum" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							</div>
 
