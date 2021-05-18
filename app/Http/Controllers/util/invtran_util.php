@@ -32,7 +32,7 @@ class invtran_util extends defaultController{
             ->where('department.deptcode','=',$ivtmphd->txndept)
             ->first();
 
-        if($trantype_obj->isstype == 'Transfer'){
+        if($trantype_obj->isstype == 'TRANSFER'){
 
 	        $craccno = $category_obj->stockacct;
 	        $crccode = $dept_obj->costcode;
@@ -82,27 +82,27 @@ class invtran_util extends defaultController{
 			        $drccode = $dept_obj->costcode;
 
 			        switch ($trantype_obj->accttype) {
-			        	case 'Adjustment':
+			        	case 'ADJUSTMENT':
 			        		$craccno = $category_obj->stockacct;
 	        				$crccode = $dept_obj->costcode;
 			        	break;
-			        	case 'Expense':
+			        	case 'EXPENSE':
 			        		$craccno = $category_obj->expacct;
 	        				$crccode = $dept_obj->costcode;
 			        	break;
-			        	case 'Loan':
+			        	case 'LOAN':
 			        		$craccno = $category_obj->loanacct;
 	        				$crccode = $dept_obj->costcode;
 			        	break;
-			        	case 'CostOfSale':
+			        	case 'COSTOFSALE':
 			        		$craccno = $category_obj->cosacct;
 	        				$crccode = $dept_obj->costcode;
 			        	break;
-			        	case 'Write Off':
+			        	case 'WRITE-OFF':
 			        		$craccno = $category_obj->woffacct;
 	        				$crccode = $dept_obj->costcode;
 			        	break;
-			        	case 'Others':
+			        	case 'OTHERS':
 			        		$craccno = $category_obj->OtherAcct;
 	        				$crccode = $dept_obj->costcode;
 			        	break;
@@ -117,27 +117,27 @@ class invtran_util extends defaultController{
     				$crccode = $dept_obj->costcode;
 
 			        switch ($trantype_obj->accttype) {
-			        	case 'Adjustment':
+			        	case 'ADJUSTMENT':
 			        		$draccno = $category_obj->adjacct;
 	        				$drccode = $dept_obj->costcode;
 			        	break;
-			        	case 'Expense':
+			        	case 'EXPENSE':
 			        		$draccno = $category_obj->expacct;
 	        				$drccode = $dept_obj->costcode;
 			        	break;
-			        	case 'Loan':
+			        	case 'LOAN':
 			        		$draccno = $category_obj->loanacct;
 	        				$drccode = $dept_obj->costcode;
 			        	break;
-			        	case 'CostOfSale':
+			        	case 'COSTOFSALE':
 			        		$draccno = $category_obj->cosacct;
 	        				$drccode = $dept_obj->costcode;
 			        	break;
-			        	case 'Write Off':
+			        	case 'WRITE-OFF':
 			        		$draccno = $category_obj->woffacct;
 	        				$drccode = $dept_obj->costcode;
 			        	break;
-			        	case 'Others':
+			        	case 'OTHERS':
 			        		$draccno = $category_obj->OtherAcct;
 	        				$drccode = $dept_obj->costcode;
 			        	break;

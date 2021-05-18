@@ -1525,7 +1525,24 @@ function checkPadExist(){
 checkPadExist();//start checking..
 
 function padzero(cellvalue, options, rowObject){
+	if(cellvalue == null || cellvalue.trim() == ''){
+		return ''
+	}
+
 	let padzero = localStorage.getItem('msoftweb_padzero'), str="";
+	while(padzero>0){
+		str=str.concat("0");
+		padzero--;
+	}
+	return pad(str, cellvalue, true);
+}
+
+function padzero5(cellvalue, options, rowObject){
+	if(cellvalue == null || cellvalue.trim() == ''){
+		return ''
+	}
+
+	let padzero = 5, str="";
 	while(padzero>0){
 		str=str.concat("0");
 		padzero--;

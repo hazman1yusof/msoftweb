@@ -402,7 +402,7 @@ abstract class defaultController extends Controller{
             ];
 
             foreach ($field as $key => $value) {
-                $array_insert[$value] = $request[$request->field[$key]];
+                $array_insert[$value] = strtoupper($request[$request->field[$key]]);
             }
 
             $table->insert($array_insert);
@@ -444,7 +444,7 @@ abstract class defaultController extends Controller{
         }
 
         foreach ($field as $key => $value) {
-        	$array_update[$value] = $request[$request->field[$key]];
+        	$array_update[$value] = strtoupper($request[$request->field[$key]]);
         }
 
         try {

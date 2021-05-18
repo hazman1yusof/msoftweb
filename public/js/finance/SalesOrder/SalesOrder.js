@@ -131,42 +131,20 @@ $(document).ready(function () {
 		action: 'get_table_default',
 		url:'/util/get_table_default',
 		field:'',
-		table_name: ['debtor.dbacthdr','material.purreqhd', 'material.supplier','material.queuepr'],
+		table_name: ['debtor.dbacthdr'],
+		// table_name: ['debtor.dbacthdr as db','debtor.debtormast as dm'],
 		table_id: 'idno',
-		join_type: ['LEFT JOIN','LEFT JOIN'],
-		join_onCol: ['supplier.SuppCode','queuepr.recno'],
-		join_onVal: ['purreqhd.suppcode','purreqhd.recno'],
+		// join_type: ['LEFT JOIN'],
+		// join_onCol: ['dbacthdr.SuppCode'],
+		// join_onVal: ['purreqhd.suppcode'],
 		// filterCol: filterCol_urlParam,
 		// filterVal: filterVal_urlParam,
-		WhereInCol:['purreqhd.recstatus'],
-		WhereInVal: recstatus_filter,
-		fixPost: true,
+		// WhereInCol:['purreqhd.recstatus'],
+		// WhereInVal: recstatus_filter,
+		// fixPost: true,
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
-	var saveParam = {
-		action: 'purReq_header_save',
-		url:'/SalesOrder/form',
-		field: '',
-		oper: oper,
-		table_name: 'material.purreqhd',
-		table_id: 'purreqhd_recno',
-		fixPost: true,
-		//returnVal: true,
-	};
-
-	 function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
-		while(padzero>0){
-			str=str.concat("0");
-			padzero--;
-		}
-		return pad(str, cellvalue, true);
-	}
-
-	function unpadzero(cellvalue, options, rowObject){
-		return cellvalue.substring(cellvalue.search(/[1-9]/));
-	}
-
+	
 	function searchClick2(grid,form,urlParam){
 		$(form+' [name=Stext]').on( "keyup", function() {
 			delay(function(){
@@ -186,31 +164,31 @@ $(document).ready(function () {
 	}
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
+	var saveParam = {
+		action: 'purReq_header_save',
+		url:'/SalesOrder/form',
+		field: '',
+		oper: oper,
+		table_name: 'material.purreqhd',
+		table_id: 'purreqhd_recno',
+		fixPost: true,
+		//returnVal: true,
+	};
+
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			// { label: 'compcode', name: 'compcode', width: 10, hidden: true },
-			// { label: 'Customer', name: 'purreqhd_reqdept', width: 50, canSearch: true, classes: 'wrap' },
-			// { label: 'Docdate', name: 'purreqhd_requestdate', width: 15},
-			// { label: 'Invoice No', name: 'invno', width: 15, formatter: padzero, unformat: unpadzero },
-			// { label: 'Units', name: 'purreqhd_prdept', width: 15, classes: 'wrap' },
-			// { label: 'PO No', name: 'ponum', width: 10, formatter: padzero, unformat: unpadzero },
-			// { label: 'Amount', name: 'amount', width: 15, align: 'right', formatter: 'currency' },
-			// { label: 'Status', name: 'recstatus', width: 15 },
-			// { label: 'Remark', name: 'remark', width: 20, classes: 'wrap', hidden: true },
-			// { label: 'payer Code', name: 'payercode', width: 15, canSearch: true },
 
-			{ label: 'compcode', name: 'compcode', width: 10, hidden: true },
-			{ label: 'Customer', name: 'customer', width: 50, canSearch: true, classes: 'wrap' },
-			{ label: 'Docdate', name: 'docdate', width: 15},
-			{ label: 'Invoice No', name: 'invno', width: 15, formatter: padzero, unformat: unpadzero },
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'Customer', name: 'debtorcode', width: 50, canSearch: true, classes: 'wrap' },
+			{ label: 'Docdate', name: 'entrydate', width: 15},
+			{ label: 'Invoice No', name: 'invno', width: 15, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Units', name: 'units', width: 15, classes: 'wrap' },
-			{ label: 'PO No', name: 'ponum', width: 10, formatter: padzero, unformat: unpadzero },
+			{ label: 'PO No', name: 'ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'amount', width: 15, align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'recstatus', width: 15 },
 			{ label: 'Remark', name: 'remark', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'payer Code', name: 'payercode', width: 15, canSearch: true },
-
 			{ label: 'source', name: 'source', width: 10, hidden: true },
 			{ label: 'trantype', name: 'trantype', width: 20, hidden: true },
 			{ label: 'auditno', name: 'auditno', width: 20, hidden: true },
@@ -223,9 +201,7 @@ $(document).ready(function () {
 			{ label: 'units', name: 'units', width: 10, hidden: true },
 			{ label: 'paytype', name: 'paytype', width: 10, hidden: true },
 			{ label: 'source', name: 'source', width: 10, hidden: true },
-			{ label: 'salesorderno', name: 'salesorderno', width: 10, hidden: true },
 			{ label: 'PO Date', name: 'podate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Posted Date', name: 'posteddate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'DeptCode', name: 'deptcode', width: 15, canSearch: true },
 			{ label: 'idno', name: 'idno', width: 10, hidden: true },
 			{ label: 'adduser', name: 'adduser', width: 10, hidden: true },
@@ -326,8 +302,7 @@ $(document).ready(function () {
 	populateSelect('#jqGrid', '#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', true, urlParam),['idno','customer','docdate','units','invno','ponum','amount','recstatus','payercode'];
+	addParamField('#jqGrid', true, urlParam,['Checkbox']);
 	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','queuepr_AuthorisedID']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////

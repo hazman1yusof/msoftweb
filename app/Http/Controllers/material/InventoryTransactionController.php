@@ -253,9 +253,9 @@ class InventoryTransactionController extends defaultController
                     ->where('ivtxntype.trantype','=',$ivtmphd->trantype)
                     ->first();
 
-                if($trantype_obj->isstype == 'Transfer'){
+                if($trantype_obj->isstype == 'TRANSFER'){
                     $retval = invtran_util::posting_for_transfer($value,$ivtmphd);
-                }else if($trantype_obj->isstype == 'Adjustment' || $trantype_obj->isstype == 'Loan' || $trantype_obj->isstype == 'Issue'){
+                }else if($trantype_obj->isstype == 'ADJUSTMENT' || $trantype_obj->isstype == 'LOAN' || $trantype_obj->isstype == 'ISSUE'){
                     switch ($trantype_obj->crdbfl) {
                         case 'in':
                         case 'In':

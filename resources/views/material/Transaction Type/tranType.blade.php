@@ -29,11 +29,11 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="isstype">Issue Type</label>  
 				  <div class="col-md-3">
-					<label class="radio-inline"><input type="radio" name="isstype" value='Issue' checked>Issue</label>
-					<label class="radio-inline"><input type="radio" name="isstype" value='Transfer'>Transfer</label>
-					<label class="radio-inline"><input type="radio" name="isstype" value='Adjustment'>Adjustment</label>
-					<label class="radio-inline"><input type="radio" name="isstype" value='Loan'>Loan</label>
-					<label class="radio-inline"><input type="radio" name="isstype" value='Write-Off'>Write Off</label>
+					<label class="radio-inline"><input type="radio" name="isstype" value='ISSUE' checked>Issue</label>
+					<label class="radio-inline"><input type="radio" name="isstype" value='TRANSFER'>Transfer</label>
+					<label class="radio-inline"><input type="radio" name="isstype" value='ADJUSTMENT'>Adjustment</label>
+					<label class="radio-inline"><input type="radio" name="isstype" value='LOAN'>Loan</label>
+					<label class="radio-inline"><input type="radio" name="isstype" value='WRITE-OFF'>Write Off</label>
 				  </div>
 				
 				  <label class="col-md-2 control-label" for="trbyiv">Transaction By Inventory</label>  
@@ -52,8 +52,8 @@
 				
 				  <label class="col-md-2 control-label" for="crdbfl">Credit/Debit</label>  
 				  <div class="col-md-3">
-					<label class="radio-inline"><input type="radio" name="crdbfl" value='In' checked>In</label>
-					<label class="radio-inline"><input type="radio" name="crdbfl" value='Out'>Out</label>
+					<label class="radio-inline"><input type="radio" name="crdbfl" value='IN' checked>In</label>
+					<label class="radio-inline"><input type="radio" name="crdbfl" value='OUT'>Out</label>
 				  </div>
 				</div> 
 
@@ -69,21 +69,21 @@
 				    <table>
                              	<tr>
                              
-                                <td><label class="radio-inline"><input type="radio" name="accttype" value='Adjustment' checked>Adjustment</label></td>
-                                <td><label class="radio-inline"><input type="radio" name="accttype" value='Stock'>Stock</label></td>
-                                <td><label class="radio-inline"><input type="radio" name="accttype" value='Accrual'>Accrual</label></td>
+                                <td><label class="radio-inline"><input type="radio" name="accttype" value='ADJUSTMENT' checked>Adjustment</label></td>
+                                <td><label class="radio-inline"><input type="radio" name="accttype" value='STOCK'>Stock</label></td>
+                                <td><label class="radio-inline"><input type="radio" name="accttype" value='ACCRUAL'>Accrual</label></td>
 								</tr>
 							
 				 			<tr>
-                                <td><label class="radio-inline"><input type="radio" name="accttype" value='Expense'>Expense</label></td>
-                                <td><label class="radio-inline"><input type="radio" name="accttype" value='Loan'>Loan</label></td>
-                                <td><label class="radio-inline"><input type="radio" name="accttype" value='Cost Of Sale'>Cost Of Sale</label></td>
+                                <td><label class="radio-inline"><input type="radio" name="accttype" value='EXPENSE'>Expense</label></td>
+                                <td><label class="radio-inline"><input type="radio" name="accttype" value='LOAN'>Loan</label></td>
+                                <td><label class="radio-inline"><input type="radio" name="accttype" value='COST OF SALE'>Cost Of Sale</label></td>
 							</tr>
                             
                             <tr>
 				 			
-                                <td><label class="radio-inline"><input type="radio" name="accttype" value='Write Off'>Write Off</label></td>
-                               <td> <label class="radio-inline"><input type="radio" name="accttype" value='Others'>Others</label></td>
+                                <td><label class="radio-inline"><input type="radio" name="accttype" value='WRITE OFF'>Write Off</label></td>
+                               <td> <label class="radio-inline"><input type="radio" name="accttype" value='OTHERS'>Others</label></td>
                                
                                </tr>
                                </table>				
