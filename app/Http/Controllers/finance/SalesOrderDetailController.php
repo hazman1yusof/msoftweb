@@ -10,8 +10,6 @@ use Carbon\Carbon;
 
 class SalesOrderDetailController extends defaultController
 {   
-    var $gltranAmount;
-    var $purreqno;
 
     public function __construct()
     {
@@ -24,20 +22,16 @@ class SalesOrderDetailController extends defaultController
             case 'add':
                 // dd('asd');
                 return $this->add($request);
+
             case 'edit':
                 return $this->edit($request);
 
             case 'edit_all':
+                return $this->edit_all($request);
 
-               /* if($purordhd->purordno != 0){
-                    // return 'edit all srcdocno !=0';
-                    return $this->edit_all_from_PO($request);
-                }else{
-                    // return 'edit all biasa';*/
-                    return $this->edit_all($request);
-               // }    
             case 'del':
                 return $this->del($request);
+
             default:
                 return 'error happen..';
         }
@@ -220,11 +214,22 @@ class SalesOrderDetailController extends defaultController
 
 
             ///1. update detail
-            DB::table('material.purreqdt')
+            DB::table('hisdb.billdet')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('lineno_','=',$request->lineno_)
+                ->where('idno','=',$request->idno)
+                //->where('lineno_','=',$request->lineno_)
                 ->update([
+                    'units' => strtoupper($request->units),
+                    'customer' => strtoupper($request->customer),
+                    'docdate' => strtoupper($request->docdate),
+                    'billtype' => strtoupper($request->billtype),
+                    'term' => strtoupper($request->term),
+                    'ordernum' => strtoupper($request->ordernum),
+                    'invno' => strtoupper($request->invno),
+                    'ponum' => strtoupper($request->ponum),
+                    'amount' => $request->$request->amount,
+                    'remarks' => strtoupper($request->remarks),
+
                     'pricecode' => strtoupper($request->pricecode), 
                     'itemcode'=> strtoupper($request->itemcode), 
                     'uomcode'=> strtoupper($request->uomcode), 
@@ -379,30 +384,30 @@ class SalesOrderDetailController extends defaultController
         try {
 
             ///1. update detail
-            DB::table('material.purreqdt')
+            DB::table('hisdb.billdet')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('idno','=',$request->idno)
                 ->where('lineno_','=',$request->lineno_)
                 ->delete();
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('material.purreqdt')
+            $totalAmount = DB::table('hisdb.billdet')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('idno','=',$request->idno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('totamount');
 
             //calculate tot gst from detail
-            $tot_gst = DB::table('material.purreqdt')
+            $tot_gst = DB::table('hisdb.billdet')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('idno','=',$request->idno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amtslstax');
 
             ///3. update total amount to header
-            DB::table('material.purreqhd')
+            DB::table('hisdb.billdet')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('idno','=',$request->idno)
                 ->update([
                     'totamount' => $totalAmount, 
                     'subamount'=> $totalAmount, 
