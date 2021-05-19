@@ -64,20 +64,20 @@ class SalesOrderDetailController extends defaultController
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
 
-        foreach ($paginate->items() as $key => $value) {//ini baru
-            $value->remarks_show = $value->remarks;
-            if(mb_strlen($value->remarks)>120){
+        // foreach ($paginate->items() as $key => $value) {//ini baru
+        //     $value->remarks_show = $value->remarks;
+        //     if(mb_strlen($value->remarks)>120){
 
-                $time = time() + $key;
+        //         $time = time() + $key;
 
-                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+        //         $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
 
-                $value->callback_param = [
-                    'dots_'.$time,'more_'.$time,'moreBtn_'.$time
-                ];
-            }
+        //         $value->callback_param = [
+        //             'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+        //         ];
+        //     }
             
-        }
+        // }
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
@@ -101,97 +101,56 @@ class SalesOrderDetailController extends defaultController
 
     public function add(Request $request){
 
-        $recno = $request->recno;
-        $purreqdt = $request->purreqdt;
-        $reqdept = $request->reqdept;
+        $source = $request->source;
+        $trantype = $request->trantype;
+        $auditno = $request->auditno;
 
         DB::beginTransaction();
-
-        //check unique
-        if($request->pricecode == 'MS'){
-            $duplicate = DB::table('material.purreqdt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
-                ->where('itemcode','=',strtoupper($request->itemcode))
-                ->where('uomcode','=',strtoupper($request->uomcode))
-                ->where('pouom','=',strtoupper($request->pouom))
-                ->exists();
-        }
-
-        $has_prodmaster =  DB::table('material.productmaster')
-                ->where('compcode','=',session('compcode'))
-                ->where('itemcode','=',strtoupper($request->itemcode))
-                ->exists();
         
         try {
-            if($duplicate && $request->pricecode == 'MS'){
-                throw new \Exception("Duplicate item and uom of itemcode: ".strtoupper($request->itemcode));
-            }
-
-            if(!$has_prodmaster){
-                throw new \Exception("Itemcode ".strtoupper($request->itemcode)." doesnt have productmaster");
-            }
-
-
             ////1. calculate lineno_ by recno
-            $sqlln = DB::table('material.purreqdt')->select('lineno_')
+            $sqlln = DB::table('debtor.billsum')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$recno)
+                        ->where('source','=',$source)
+                        ->where('trantype','=',$trantype)
+                        ->where('auditno','=',$auditno)
                         ->count('lineno_');
 
             $li=intval($sqlln)+1;
 
             ///2. insert detail
-            DB::table('material.purreqdt')
+            DB::table('debtor.billsum')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'purreqno' => $request->purreqno,
-                    'recno' => $recno,
-                    'lineno_' => $li,
-                    'pricecode' => strtoupper($request->pricecode),
-                    'itemcode' => strtoupper($request->itemcode),
-                    'uomcode' => strtoupper($request->uomcode),
-                    'pouom' => strtoupper($request->pouom),
-                   // 'suppcode' => $request->suppcode,
-                    'reqdept' => strtoupper($request->reqdept),
-                    'qtyrequest' => $request->qtyrequest,
+                    'source' => $source,
+                    'trantype' => $trantype,
+                    'auditno' => $li,
+                    'uom' => strtoupper($request->uomcode),
                     'unitprice' => $request->unitprice,
-                    'taxcode' => strtoupper($request->taxcode),
-                    'perdisc' => $request->perdisc,
-                    'amtdisc' => $request->amtdisc,
-                    'amtslstax' => $request->tot_gst,
-                    'netunitprice' => $request->netunitprice,
+                    'quantity' => $request->qtyrequest,
                     'amount' => $request->amount,
-                    'totamount' => $request->totamount,
-                    'adduser' => session('username'), 
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'OPEN', 
-                    'remarks' => strtoupper($request->remarks),
-                    'unit' => session('unit')
+                    'lastuser' => session('username'), 
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'OPEN'
                 ]);
 
             ///3. calculate total amount from detail
-            $totalAmount = DB::table('material.purreqdt')
+            $totalAmount = DB::table('debtor.billsum')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
-                    ->sum('totamount');
-
-            //calculate tot gst from detail
-            $tot_gst = DB::table('material.purreqdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
-                    ->where('recstatus','!=','DELETE')
-                    ->sum('amtslstax');
+                    ->sum('amount');
 
             ///4. then update to header
-            DB::table('material.purreqhd')
+            DB::table('debtor.dbacthdr')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
+                ->where('source','=',$source)
+                ->where('trantype','=',$trantype)
+                ->where('auditno','=',$auditno)
                 ->update([
-                    'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount - $tot_gst, 
-                    'TaxAmt' => $tot_gst
+                    'amount' => $totalAmount,
                 ]);
 
             echo $totalAmount;

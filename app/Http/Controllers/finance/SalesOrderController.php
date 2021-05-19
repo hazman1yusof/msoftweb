@@ -107,7 +107,7 @@ class SalesOrderController extends defaultController
 
         DB::beginTransaction();
 
-        $table = DB::table("hisdb.dbacthdr");
+        $table = DB::table("debtor.dbacthdr");
 
         $array_update = [
             'deptcode' => strtoupper($request->db_deptcode),

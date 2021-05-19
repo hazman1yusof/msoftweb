@@ -212,7 +212,9 @@ i.fa {
 				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 						{{ csrf_field() }}
-						<input id="idno" name="db_idno" type="hidden">
+						<input id="db_idno" name="db_idno" type="hidden">
+						<input id="db_source" name="db_source" type="hidden">
+						<input id="db_trantype" name="db_trantype" type="hidden">
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="db_deptcode">Sector</label>	 
