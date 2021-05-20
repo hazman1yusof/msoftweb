@@ -203,9 +203,9 @@ $(document).ready(function () {
 			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
 			{ label: 'units', name: 'db_units', width: 10, hidden: true },
 			{ label: 'termdays', name: 'db_termdays', width: 10, hidden: true },
-			{ label: 'paytype', name: 'db_paytype', width: 10, hidden: true },
+			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
+			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'source', name: 'db_paytype', width: 10, hidden: true },
 			{ label: 'PO Date', name: 'db_podate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true,},
 			{ label: 'DeptCode', name: 'db_deptcode', width: 15, canSearch: true },
@@ -625,7 +625,7 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'UOM Code', name: 'uomcode', width: 300, classes: 'wrap', editable: true,
+				label: 'UOM Code', name: 'uomcode', width: 150, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -638,7 +638,7 @@ $(document).ready(function () {
 				label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap', align: 'right',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
-				editrules: { required: true }
+				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
 			{
 				label: 'Quantity', name: 'qtyrequest', width: 100, align: 'right', classes: 'wrap',
@@ -667,9 +667,6 @@ $(document).ready(function () {
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks, unformat: unformatRemarks },
-			{ label: 'Remarks', name: 'remarks', hidden: true },
-			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'wrap', hidden: false },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 		],
 		autowidth: false,
@@ -910,6 +907,7 @@ $(document).ready(function () {
 					source: $('#db_source').val(),
 					trantype: $('#db_trantype').val(),
 					auditno: $('#db_auditno').val(),
+					discamt: $("#jqGrid2 input[name='discamt']").val(),
 				});
 			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -1174,35 +1172,9 @@ $(document).ready(function () {
 		val = getEditVal(val);
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
-	function pricecodeCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
 	function uomcodeCustomEdit(val,opt){  	
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function pouomCustomEdit(val, opt) {
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $(`<div class="input-group">
-					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
-				</div>
-				<span class="help-block"></span>
-				<div class="input-group">
-					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
-					<input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`>
-					<input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`>
-				</div>
-
-			`);
-	}
-	function taxcodeCustomEdit(val,opt){
-		val = getEditVal(val);
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function remarkCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<span class="fa fa-book">val</span>');
+		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="uomcode" type="text" class="form-control input-sm" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span><input id="`+opt.id+`_discamt" name="discamt" type="hidden">`);
 	}
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -1346,10 +1318,11 @@ $(document).ready(function () {
 		let percbilltype = parseFloat($("#"+id_optid+"_percbilltype").val());
 		let amtbilltype = parseFloat($("#"+id_optid+"_amtbilltype").val());
 
-		var totamtperUnit = ((unitprice*qtyrequest) * percbilltype / 100) + amtbilltype;
-		var amount = totamtperUnit;
+		var amount = ((unitprice*qtyrequest) * percbilltype / 100) + amtbilltype;
+		var discamt = (unitprice*qtyrequest) - amount;
 
 		$("#"+id_optid+"_amount").val(amount);
+		$("#"+id_optid+"_discamt").val(discamt);
 		
 		var id="#jqGrid2 #"+id_optid+"_qtyrequest";
 		var fail_msg = "Quantity Request must be greater than 0";
@@ -1370,7 +1343,8 @@ $(document).ready(function () {
 			}
 		}
 
-		event.data.currency.formatOn();//change format to currency on each calculation
+		// event.data.currency.formatOn();//change format to currency on each calculation
+		mycurrency.formatOn();
 		mycurrency_np.formatOn();
 
 		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
@@ -1472,14 +1446,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				$('#db_paytype').focus();
+				$('#db_hdrtype').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#db_paytype').focus();
+					$('#db_hdrtype').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1495,7 +1469,7 @@ $(document).ready(function () {
 	dialog_CustomerSO.makedialog();
 
 	var dialog_billtypeSO = new ordialog(
-		'billtype', 'hisdb.billtymst', '#db_paytype', errorField,
+		'billtype', 'hisdb.billtymst', '#db_hdrtype', errorField,
 		{
 			colModel: [
 				{ label: 'Billtype', name: 'billtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -1597,16 +1571,19 @@ $(document).ready(function () {
 	dialog_approvedbySO.makedialog(false);
 
 	var dialog_itemcode = new ordialog(
-		'itemcode',['material.stockloc AS s','material.product AS p','material.uom AS u'],"#jqGrid2 input[name='itemcode']",errorField,
+		'itemcode',['material.stockloc AS s','material.product AS p','hisdb.chgmast AS c'],"#jqGrid2 input[name='itemcode']",errorField,
 		{	colModel:
 			[
-				{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
-				{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
+				{label: 'Item Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label: 'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label: 'UOM',name:'uomcode',width:100,classes:'pointer',},
+				{label: 'Quantity On Hand',name:'qtyonhand',width:100,classes:'pointer',},
+				{label: 'Price',name:'price',width:100,classes:'pointer'},
 				
 			],
 			urlParam: {
+					url:"/SalesOrderDetail/table",
+					action: 'get_itemcode_price',
 					filterCol:['compcode','recstatus'],
 					filterVal:['session.compcode','ACTIVE']
 				},
@@ -1621,9 +1598,10 @@ $(document).ready(function () {
 
 				let data=selrowData('#'+dialog_itemcode.gridname);
 
-				$("#jqGrid2 #"+id_optid+"_itemcode").val(data['p_itemcode']);
-				$("#jqGrid2 #"+id_optid+"_qtyonhand").val(data['s_qtyonhand']);
-				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['p_uomcode']);
+				$("#jqGrid2 #"+id_optid+"_itemcode").val(data['itemcode']);
+				$("#jqGrid2 #"+id_optid+"_qtyonhand").val(data['qtyonhand']);
+				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['uomcode']);
+				$("#jqGrid2 #"+id_optid+"_unitprice").val(data['price']);
 
 			},
 			gridComplete: function(obj){
@@ -1640,13 +1618,14 @@ $(document).ready(function () {
 		},{
 			title:"Select Item For Purchase Order",
 			open:function(obj_){
-				dialog_itemcode.urlParam.fixPost = "true";
+				dialog_itemcode.urlParam.url = "/SalesOrderDetail/table";
+				dialog_itemcode.urlParam.action = 'get_itemcode_price';
 				dialog_itemcode.urlParam.table_id = "none_";
 				dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.unit'];
 				dialog_itemcode.urlParam.filterVal = ['session.compcode', 'session.unit'];
 				dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
-				dialog_itemcode.urlParam.join_onCol = ['s.itemcode','s.uomcode'];
-				dialog_itemcode.urlParam.join_onVal = ['p.itemcode','u.uomcode'];
+				dialog_itemcode.urlParam.join_onCol = ['s.itemcode','s.itemcode'];
+				dialog_itemcode.urlParam.join_onVal = ['p.itemcode','c.chgcode'];
 				dialog_itemcode.urlParam.join_filterCol = [];
 				dialog_itemcode.urlParam.join_filterVal = [];
 
@@ -1663,14 +1642,11 @@ $(document).ready(function () {
 
 
 	var dialog_uomcode = new ordialog(
-		'uom',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
+		'uom',['material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
 		{	colModel:
 			[
-				{label:'UOM code',name:'u_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer' },
-				{label:'Department code',name:'s_deptcode',width:150,classes:'pointer'},
-				{label:'Item code',name:'s_itemcode',width:150,classes:'pointer'},
+				{label:'UOM code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -1692,11 +1668,8 @@ $(document).ready(function () {
 					$(event.currentTarget).parent().next().html('');
 				}
 
-
 				let data=selrowData('#'+dialog_uomcode.gridname);
-				$("#jqGrid2 input#"+id_optid+"_uomcode").val(data.u_uomcode);
-
-				$("#jqGrid2 input#"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
+				$("#jqGrid2 input#"+id_optid+"_uomcode").val(data.uomcode);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1711,15 +1684,8 @@ $(document).ready(function () {
 			title:"Select UOM Code For Item",
 			open:function(obj_){
 
-				dialog_uomcode.urlParam.fixPost="true";
-				dialog_uomcode.urlParam.table_id="none_";
-				dialog_uomcode.urlParam.filterCol=['s.compcode','s.itemcode','s.deptcode','s.year'];
-				dialog_uomcode.urlParam.filterVal=['session.compcode',$("#jqGrid2 input[name='itemcode']").val(),$('#db_deptcode').val(),moment($('#db_entrydate').val()).year()];
-				dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
-				dialog_uomcode.urlParam.join_onCol=['s.uomcode'];
-				dialog_uomcode.urlParam.join_onVal=['u.uomcode'];
-				dialog_uomcode.urlParam.join_filterCol=[['s.compcode on =']];
-				dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
+				dialog_uomcode.urlParam.filterCol=['compcode','recstatus'];
+				dialog_uomcode.urlParam.filterVal=['session.compcode','ACTIVE'];
 			},
 			close: function(){
 				// $(dialog_uomcode.textfield)			//lepas close dialog focus on next textfield 
@@ -1810,7 +1776,7 @@ function get_billtype(){
 		url:"util/get_value_default",
 		field: ['*'],
 		filterCol:['compcode','billtype'],
-		filterVal:['session.compcode',$("#formdata input[name='db_paytype']").val()],
+		filterVal:['session.compcode',$("#formdata input[name='db_hdrtype']").val()],
 		table_name:'hisdb.billtymst',
 		table_id:'idno'
 	}

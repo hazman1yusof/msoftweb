@@ -251,10 +251,10 @@ i.fa {
 								<span class="help-block"></span>
 							</div>
 
-							<label class="col-md-1 control-label" for="db_paytype">Bill Type</label>  
+							<label class="col-md-1 control-label" for="db_hdrtype">Bill Type</label>  
 							<div class="col-md-2"> 
 								<div class='input-group'>
-									<input id="db_paytype" name="db_paytype" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<input id="db_hdrtype" name="db_hdrtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -277,7 +277,7 @@ i.fa {
 							</div>
 
 							<div class="col-md-1">
-								<select class="form-control col-md-2" id='term2' name='term2' data-validation="required">
+								<select class="form-control col-md-2" id='db_termmode' name='db_termmode' data-validation="required">
 									<option value='DAYS' selected>DAYS</option>
 									<option value='MONTH'>MONTH</option>
 									<option value='YEAR'>YEAR</option>
@@ -319,7 +319,7 @@ i.fa {
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="db_amount">Total Amount</label>
 							<div class="col-md-2">
-								<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00">
+								<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
 							</div>
 
 							<label class="col-md-3 control-label" for="db_recstatus">Record Status</label>  
