@@ -8,12 +8,7 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-use PDF;
-use Mail;
-
-
-use App\Jobs\SendEmailPR;
-// use App\Http\Controllers\util\do_util;
+use App\Http\Controllers\util\invtran_util;
 
 class InventoryRequestController extends defaultController
 {   
@@ -32,7 +27,6 @@ class InventoryRequestController extends defaultController
     public function form(Request $request)
     {   
         DB::enableQueryLog();
-        // return $this->request_no('GRN','2FL');
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -42,31 +36,11 @@ class InventoryRequestController extends defaultController
                 return $this->del($request);
             case 'posted':
                 return $this->posted($request);
-            case 'reopen':
-                return $this->reopen($request);
             case 'cancel':
                 return $this->cancel($request);
-            case 'support':
-                return $this->support($request);
-            case 'verify':
-                return $this->verify($request);
-            case 'approved':
-                return $this->approved($request);
-            case 'refresh_do':
-                return $this->refresh_do($request);
             default:
-                return 'Errors happen';
+                return 'error happen..';
         }
-    }
-
-    public function get_productcat($itemcode){
-        $query = DB::table('material.product')
-                ->select('productcat')
-                ->where('compcode','=',session('compcode'))
-                ->where('itemcode','=',$itemcode)
-                ->first();
-        
-        return $query->productcat;
     }
 
     public function add(Request $request){
@@ -79,58 +53,62 @@ class InventoryRequestController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('PR', $request->purreqhd_reqdept);
-        $recno = $this->recno('PUR','PR');
+        $request_no = $this->request_no($request->trantype, $request->reqdept);
+        $recno = $this->recno('PUR','SR');
 
         DB::beginTransaction();
 
-        $table = DB::table("material.purreqhd");
+        $table = DB::table("material.ivreqhd");
 
         $array_insert = [
-            'trantype' => 'PR', 
-            'purreqno' => $request_no,
+            'source' => 'PUR',
+            'trantype' => 'SR',
+            'ivreqno' => $request_no,
             'recno' => $recno,
             'compcode' => session('compcode'),
-            'unit' => session('unit'),
+            'unit'    => session('unit'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'OPEN',
-            'reqdept' => strtoupper($request->purreqhd_reqdept),
-            'prdept' => strtoupper($request->purreqhd_prdept),
-            'purreqdt' => strtoupper($request->purreqhd_purreqdt),
-            'suppcode' => strtoupper($request->purreqhd_suppcode),
-            'totamount' => $request->purreqhd_totamount,
-            'remarks' => strtoupper($request->purreqhd_remarks),
-            'perdisc' => $request->purreqhd_perdisc,
-            'amtdisc' => $request->purreqhd_amtdisc,
-            'subamount' => $request->purreqhd_subamount
-
+            'recstatus' => 'OPEN'
         ];
 
-        // foreach ($field as $key => $value) {
-        //     if($value =='remarks' || $value =='prdept' || $value =='suppcode' || $value =='reqdept'){
-        //         $array_insert[$value] = strtoupper($request[$request->field[$key]]);
-        //     }else{
-        //         $array_insert[$value] = $request[$request->field[$key]];
-        //     }
-        // }
-        
+        foreach ($field as $key => $value){
+            $array_insert[$value] = $request[$request->field[$key]];
+        }
+
         try {
+
             $idno = $table->insertGetId($array_insert);
-            
+
             $totalAmount = 0;
+            // if(!empty($request->referral)){
+            //     ////ni kalu dia amik dari do
+            //     ////amik detail dari do sana, save dkt do detail, amik total amount
+            //     $totalAmount = $this->save_dt_from_othr_do($request->referral,$recno);
+
+            //     $srcdocno = $request->delordhd_srcdocno;
+            //     $delordno = $request->delordhd_delordno;*/
+
+            //     ////dekat do header sana, save balik delordno dkt situ
+            //     DB::table('material.delordno')
+            //     ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
+            //     ->update(['delordno' => $ivtmphd
+            // }
 
             $responce = new stdClass();
-            $responce->docno = $request_no;
+            $responce->ivreqno = $request_no;
             $responce->recno = $recno;
             $responce->idno = $idno;
             $responce->totalAmount = $totalAmount;
             echo json_encode($responce);
 
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
         }
 
@@ -147,935 +125,354 @@ class InventoryRequestController extends defaultController
 
         DB::beginTransaction();
 
-        $table = DB::table("material.purreqhd");
+        $table = DB::table("material.ivtmphd");
 
         $array_update = [
-            'unit' => session('unit'),
-            'compcode' => session('compcode'),
             'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'reqdept' => strtoupper($request->purreqhd_reqdept),
-            'prdept' => strtoupper($request->purreqhd_prdept),
-            'purreqdt' => strtoupper($request->purreqhd_purreqdt),
-            'suppcode' => strtoupper($request->purreqhd_suppcode),
-            'totamount' => $request->purreqhd_totamount,
-            'remarks' => strtoupper($request->purreqhd_remarks),
-            'perdisc' => $request->purreqhd_perdisc,
-            'amtdisc' => $request->purreqhd_amtdisc,
-            'subamount' => $request->purreqhd_subamount
-
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
         ];
 
-        // foreach ($field as $key => $value) {
-        //     $array_update[$value] = strtoupper($request[$request->field[$key]]);
-        // }
+        foreach ($field as $key => $value) {
+            $array_update[$value] = $request[$request->field[$key]];
+        }
 
         try {
             //////////where//////////
-            $table = $table->where('idno','=',$request->purreqhd_idno);
+            $table = $table->where('idno','=',$request->idno);
             $table->update($array_update);
 
             $responce = new stdClass();
-            $responce->totalAmount = $request->purreqhd_totamount;
+           // $responce->totalAmount = $request->delordhd_totamount;
             echo json_encode($responce);
+
+            // $queries = DB::getQueryLog();
+            // dump($queries);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
+            
             return response($e->getMessage(), 500);
         }
-
-    }
-
-    public function del(Request $request){
-
     }
 
     public function posted(Request $request){
-        DB::beginTransaction();
-
-        try{
-
-            foreach ($request->idno_array as $value){
-
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
-
-                $purreqhd_get = $purreqhd->first();
-                if($purreqhd_get->recstatus != 'OPEN' || empty(floatval($purreqhd_get->subamount))){
-                    continue;
-                }
-
-                if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
-
-                    // 1. check authorization
-                    $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PR')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','SUPPORT')
-                        ->where('deptcode','=',$purreqhd_get->reqdept)
-                        ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    if(!$authorise->exists()){
-
-                        $authorise = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PR')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','SUPPORT')
-                            ->where('deptcode','=','ALL')
-                            // ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase request doesnt exists");
-                            }
-
-                    }
-
-                    $authorise_use = $authorise->first();
-                    DB::table("material.queuepr")
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'recno' => $purreqhd_get->recno,
-                            'AuthorisedID' => $authorise_use->authorid,
-                            'deptcode' => $purreqhd_get->reqdept,
-                            'recstatus' => 'REQUEST',
-                            'trantype' => 'SUPPORT',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
-                    // 3. update status to posted
-                    $purreqhd->update([
-                            'requestby' => session('username'),
-                            'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'supportby' => $authorise_use->authorid,
-                            'recstatus' => 'REQUEST'
-                        ]);
-
-                    DB::table("material.purreqdt")
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'recstatus' => 'REQUEST',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
-                    // 5. email and whatsapp
-                    $data = new stdClass();
-                    $data->status = 'SUPPORT';
-                    $data->deptcode = $purreqhd_get->reqdept;
-                    $data->purreqno = $purreqhd_get->purreqno;
-                    $data->email_to = 'hazman.yusof@gmail.com';
-                    $data->whatsapp = '01123090948';
-
-                    //$this->sendemail($data);
-                }
-            }
-
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    // public function posted_single(Request $request){
-    //     DB::beginTransaction();
-    //     try{
-
-    //         $purreqhd = DB::table("material.purreqhd")
-    //             ->where('idno','=',$request->idno);
-
-    //         $purreqhd_get = $purreqhd->first();
-
-
-    //         if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$request->idno)){
-
-    //             // 1. check authorization
-    //             $authorise = DB::table('material.authdtl')
-    //                 ->where('compcode','=',session('compcode'))
-    //                 ->where('trantype','=','PR')
-    //                 ->where('cando','=', 'ACTIVE')
-    //                 ->where('recstatus','=','SUPPORT')
-    //                 ->where('deptcode','=',$purreqhd_get->reqdept)
-    //                 ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-    //             if(!$authorise->exists()){
-
-    //                 $authorise = DB::table('material.authdtl')
-    //                     ->where('compcode','=',session('compcode'))
-    //                     ->where('trantype','=','PR')
-    //                     ->where('cando','=', 'ACTIVE')
-    //                     ->where('recstatus','=','SUPPORT')
-    //                     ->where('deptcode','=','ALL')
-    //                     ->where('deptcode','=','all')
-    //                     ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-    //                     if(!$authorise->exists()){
-    //                         throw new \Exception("Authorization for this purchase request doesnt exists");
-    //                     }
-
-    //             }
-
-    //             $authorise_use = $authorise->first();
-    //             DB::table("material.queuepr")
-    //                 ->insert([
-    //                     'compcode' => session('compcode'),
-    //                     'recno' => $purreqhd_get->recno,
-    //                     'AuthorisedID' => $authorise_use->authorid,
-    //                     'deptcode' => $purreqhd_get->reqdept,
-    //                     'recstatus' => 'REQUEST',
-    //                     'trantype' => 'SUPPORT',
-    //                     'adduser' => session('username'),
-    //                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-    //                 ]);
-
-
-
-    //             // 3. update status to posted
-    //             $purreqhd->update([
-    //                     'requestby' => session('username'),
-    //                     'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
-    //                     'supportby' => $authorise_use->authorid,
-    //                     'recstatus' => 'REQUEST'
-    //                 ]);
-
-    //             DB::table("material.purreqdt")
-    //                 ->where('recno','=',$purreqhd_get->recno)
-    //                 ->update([
-    //                     'recstatus' => 'REQUEST',
-    //                     'upduser' => session('username'),
-    //                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-    //                 ]);
-
-    //             // 4. email and whatsapp
-    //             $data = new stdClass();
-    //             $data->status = 'SUPPORT';
-    //             $data->deptcode = $purreqhd_get->reqdept;
-    //             $data->purreqno = $purreqhd_get->purreqno;
-    //             $data->email_to = 'hazman.yusof@gmail.com';
-    //             $data->whatsapp = '01123090948';
-
-    //             //$this->sendemail($data);
-    //         }
-
-    //         DB::commit();
-        
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
-
-    //         return response($e->getMessage(), 500);
-    //     }
-    // }
-
-    public function reopen(Request $request){
 
         DB::beginTransaction();
 
-        try{
+        try {
 
-            foreach ($request->idno_array as $value){
+            //-- 1. transfer from ivtmphd to ivtxnhd --//
+            $ivtmphd = DB::table('material.ivtmphd')
+                        ->where('idno','=',$request->idno)
+                        ->first();
 
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
+            $this->check_sequence_backdated($ivtmphd);
 
-                $purreqhd_get = $purreqhd->first();
-                if(!in_array($purreqhd_get->recstatus, ['CANCELLED','REQUEST','SUPPORT','VERIFIED','APPROVED'])){
-                    continue;
-                }
-
-                $purreqhd->update([
-                    'recstatus' => 'OPEN',
-                    'requestby' => null,
-                    'requestdate' => null,
-                    'supportby' => null,
-                    'supportdate' => null,
-                    'verifiedby' => null,
-                    'verifieddate' => null,
-                    'approvedby' => null,
-                    'approveddate' => null,
+            DB::table("material.IvTxnHd")
+                ->insert([
+                    'AddDate'  => $ivtmphd->adddate,
+                    'AddUser'  => $ivtmphd->adduser,
+                    'Amount'   => $ivtmphd->amount,
+                    'CompCode' => $ivtmphd->compcode,
+                    'unit'     => $ivtmphd->unit,
+                    'DateActRet'   => $ivtmphd->dateactret,
+                    'DateSupRet'   => $ivtmphd->datesupret,
+                    'DocNo'    => $ivtmphd->docno,
+                    'IvReqNo'  => $ivtmphd->ivreqno,
+                    'RecNo'    => $ivtmphd->recno,
+                    'RecStatus'    => $ivtmphd->recstatus,
+                    'Reference'    => $ivtmphd->reference,
+                    'Remarks'  => $ivtmphd->remarks,
+                    'ResPersonId'  => $ivtmphd->respersonid,
+                    'SndRcv'   => $ivtmphd->sndrcv,
+                    'SndRcvType'   => $ivtmphd->sndrcvtype,
+                    'Source'   => $ivtmphd->source,
+                    'SrcDocNo' => $ivtmphd->srcdocno,
+                    'TranDate' => $ivtmphd->trandate,
+                    'TranTime' => $ivtmphd->trantime,
+                    'TranType' => $ivtmphd->trantype,
+                    'TxnDept'  => $ivtmphd->txndept,
+                    'UpdDate'  => $ivtmphd->upddate,
+                    'UpdTime'  => $ivtmphd->updtime,
+                    'UpdUser'  => $ivtmphd->upduser
                 ]);
 
-                DB::table("material.purreqdt")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'OPEN',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //-- 2. transfer from ivtmpdt to ivtxndt --//
+            $ivtmpdt_obj = DB::table('material.ivtmpdt')
+                    ->where('ivtmpdt.compcode','=',session('compcode'))
+                    ->where('ivtmpdt.recno','=',$ivtmphd->recno)
+                    ->where('ivtmpdt.recstatus','!=','DELETE')
+                    ->get();
+
+
+            foreach ($ivtmpdt_obj as $value) {
+
+                $obj_acc = invtran_util::get_acc($value,$ivtmphd);
+
+                $craccno = $obj_acc->craccno;
+                $crccode = $obj_acc->crccode;
+                $draccno = $obj_acc->draccno;
+                $drccode = $obj_acc->drccode;
+
+                DB::table('material.ivtxndt')
+                    ->insert([
+                        'compcode' => $value->compcode, 
+                        'recno' => $value->recno, 
+                        'lineno_' => $value->lineno_, 
+                        'itemcode' => $value->itemcode, 
+                        'uomcode' => $value->uomcode,
+                        'uomcoderecv' => $value->uomcoderecv,  
+                        'txnqty' => $value->txnqty, 
+                        'netprice' => $value->netprice, 
+                        'adduser' => $value->adduser, 
+                        'adddate' => $value->adddate, 
+                        'upduser' => $value->upduser, 
+                        'upddate' => $value->upddate, 
+                        'TranType' => $ivtmphd->trantype,
+                        'deptcode'  => $ivtmphd->txndept,
+                        // 'productcat' => $productcat, 
+                        'draccno' => $draccno, 
+                        'drccode' => $drccode, 
+                        'craccno' => $craccno, 
+                        'crccode' => $crccode, 
+                        'expdate' => $value->expdate, 
+                        'qtyonhand' => $value->qtyonhand,
+                        'qtyonhandrecv' => $value->qtyonhandrecv,  
+                        'batchno' => $value->batchno, 
+                        'amount' => $value->amount, 
+                        'trandate' => $ivtmphd->trandate,
+                        'sndrcv' => $ivtmphd->sndrcv,
                     ]);
 
-                DB::table("material.queuepr")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->delete();
-
-            }
-
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    // public function soft_cancel(Request $request){
-
-    //      DB::beginTransaction();
-
-    //     try{
-
-    //         foreach ($request->idno_array as $value){
-
-    //             $purreqhd = DB::table("material.purreqhd")
-    //                 ->where('idno','=',$value);
-
-    //             $purreqhd_get = $purreqhd->first();
-
-    //             $purreqhd->update([
-    //                     'recstatus' => 'CANCELLED'
-    //                 ]);
-
-    //             DB::table("material.purreqdt")
-    //                 ->where('recno','=',$purreqhd_get->recno)
-    //                 ->update([
-    //                     'recstatus' => 'CANCELLED',
-    //                     'upduser' => session('username'),
-    //                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-    //                 ]);
-
-    //         }
-
-
-    //         DB::commit();
-        
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
-
-    //         return response($e->getMessage(), 500);
-    //     }
-    // }
-
-    public function cancel(Request $request){
-        DB::beginTransaction();
-
-        try{
-
-            foreach ($request->idno_array as $value){
-
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
-
-                $purreqhd_get = $purreqhd->first();
-                if(!in_array($purreqhd_get->recstatus, ['OPEN'])){
-                    continue;
-                }
-
-                $purreqhd->update([
-                    'recstatus' => 'CANCELLED'
-                ]);
-
-                DB::table("material.purreqdt")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-                DB::table("material.queuepr")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->delete();
-
-            }
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function support(Request $request){
-        DB::beginTransaction();
-
-        try{
-
-            foreach ($request->idno_array as $value){
-
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
-
-                $purreqhd_get = $purreqhd->first();
-
-                if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
-
-                    $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PR')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','VERIFIED')
-                        ->where('deptcode','=',$purreqhd_get->reqdept)
-                        ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    if(!$authorise->exists()){
-
-                        $authorise = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PR')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','VERIFIED')
-                            ->where('deptcode','=','ALL')
-                            ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase request doesnt exists",500);
-                            }
-                            
-                    }
-
-                    $authorise_use = $authorise->first();
-
-                    $purreqhd->update([
-                            'verifiedby' => $authorise_use->authorid,
-                            'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'SUPPORT'
-                        ]);
-
-                    DB::table("material.purreqdt")
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'recstatus' => 'SUPPORT',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
-                    DB::table("material.queuepr")
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'AuthorisedID' => $authorise_use->authorid,
-                            'recstatus' => 'SUPPORT',
-                            'trantype' => 'VERIFIED',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-                }
-
-
-                // 4. email and whatsapp
-                $data = new stdClass();
-                $data->status = 'SUPPORT';
-                $data->deptcode = $purreqhd_get->reqdept;
-                $data->purreqno = $purreqhd_get->purreqno;
-                $data->email_to = 'hazman.yusof@gmail.com';
-                $data->whatsapp = '01123090948';
-            
-                //$this->sendemail($data);
-
-            }
-
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function support_single(Request $request){
-        DB::beginTransaction();
-
-        try{
-
-
-            $purreqhd = DB::table("material.purreqhd")
-                ->where('idno','=',$request->idno);
-
-            $purreqhd_get = $purreqhd->first();
-
-            $authorise = DB::table('material.authdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('trantype','=','PR')
-                ->where('cando','=', 'ACTIVE')
-                ->where('recstatus','=','VERIFIED')
-                ->where('deptcode','=',$purreqhd_get->reqdept)
-                ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-            if(!$authorise->exists()){
-
-                $authorise = DB::table('material.authdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('trantype','=','PR')
-                    ->where('cando','=', 'ACTIVE')
-                    ->where('recstatus','=','VERIFIED')
-                    ->where('deptcode','=','ALL')
-                    ->where('deptcode','=','all')
-                    ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    if(!$authorise->exists()){
-                        throw new \Exception("Authorization for this purchase request doesnt exists",500);
-                    }
-                    
-            }
-            
-            $authorise_use = $authorise->first();
-
-            $purreqhd->update([
-                    'verifiedby' => $authorise_use->authorid,
-                    'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'SUPPORT'
-                ]);
-
-            DB::table("material.purreqdt")
-                ->where('recno','=',$purreqhd_get->recno)
-                ->update([
-                    'recstatus' => 'SUPPORT',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-            DB::table("material.queuepr")
-                ->where('recno','=',$purreqhd_get->recno)
-                ->update([
-                    'AuthorisedID' => $authorise_use->authorid,
-                    'recstatus' => 'SUPPORT',
-                    'trantype' => 'VERIFIED',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-            // 4. email and whatsapp
-            $data = new stdClass();
-            $data->status = 'VERIFIED';
-            $data->deptcode = $purreqhd_get->reqdept;
-            $data->purreqno = $purreqhd_get->purreqno;
-            $data->email_to = 'hazman.yusof@gmail.com';
-            $data->whatsapp = '01123090948';
-
-            //$this->sendemail($data);
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function verify(Request $request){
-         DB::beginTransaction();
-
-        try{
-
-            foreach ($request->idno_array as $value){
-
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
-
-                $purreqhd_get = $purreqhd->first();
-
-                if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
-
-                    $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PR')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','APPROVED')
-                        ->where('deptcode','=',$purreqhd_get->reqdept)
-                        ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    if(!$authorise->exists()){
-
-                        $authorise = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PR')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','APPROVED')
-                            ->where('deptcode','=','ALL')
-                            ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase request doesnt exists",500);
-                            }
-                            
-                    }
-
-                    $authorise_use = $authorise->first();
-
-                    $purreqhd->update([
-                            'approvedby' => $authorise_use->authorid,
-                            'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'VERIFIED'
-                        ]);
-
-                    DB::table("material.purreqdt")
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'recstatus' => 'VERIFIED',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
-                    DB::table("material.queuepr")
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'AuthorisedID' => $authorise_use->authorid,
-                            'recstatus' => 'VERIFIED',
-                            'trantype' => 'APPROVED',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
-                }
-
-
-                // 4. email and whatsapp
-                $data = new stdClass();
-                $data->status = 'APPROVED';
-                $data->deptcode = $purreqhd_get->reqdept;
-                $data->purreqno = $purreqhd_get->purreqno;
-                $data->email_to = 'hazman.yusof@gmail.com';
-                $data->whatsapp = '01123090948';
-
-                //$this->sendemail($data);
-
-            }
-
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function verify_single(Request $request){
-        DB::beginTransaction();
-
-        try{
-
-
-            $purreqhd = DB::table("material.purreqhd")
-                ->where('idno','=',$request->idno);
-
-            $purreqhd_get = $purreqhd->first();
-
-            $authorise = DB::table('material.authdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('trantype','=','PR')
-                ->where('cando','=', 'ACTIVE')
-                ->where('recstatus','=','APPROVED')
-                ->where('deptcode','=',$purreqhd_get->reqdept)
-                ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-            if(!$authorise->exists()){
-
-                $authorise = DB::table('material.authdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('trantype','=','PR')
-                    ->where('cando','=', 'ACTIVE')
-                    ->where('recstatus','=','APPROVED')
-                    ->where('deptcode','=','ALL')
-                    ->where('deptcode','=','all')
-                    ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    if(!$authorise->exists()){
-                        throw new \Exception("Authorization for this purchase request doesnt exists",500);
-                    }
-                    
-            }
-
-            $authorise_use = $authorise->first();
-
-            $purreqhd->update([
-                    'approvedby' => $authorise_use->authorid,
-                    'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'VERIFIED'
-                ]);
-
-            DB::table("material.purreqdt")
-                ->where('recno','=',$purreqhd_get->recno)
-                ->update([
-                    'recstatus' => 'VERIFIED',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-            DB::table("material.queuepr")
-                ->where('recno','=',$purreqhd_get->recno)
-                ->update([
-                    'AuthorisedID' => $authorise_use->authorid,
-                    'recstatus' => 'VERIFIED',
-                    'trantype' => 'APPROVED',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-                    
-            // 4. email and whatsapp
-            $data = new stdClass();
-            $data->status = 'APPROVED';
-            $data->deptcode = $purreqhd_get->reqdept;
-            $data->purreqno = $purreqhd_get->purreqno;
-            $data->email_to = 'hazman.yusof@gmail.com';
-            $data->whatsapp = '01123090948';
-
-            //$this->sendemail($data);
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function approved(Request $request){
-         DB::beginTransaction();
-
-        try{
-
-            foreach ($request->idno_array as $value){
-
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
-
-                $purreqhd_get = $purreqhd->first();
-
-                $purreqhd->update([
-                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'recstatus' => 'APPROVED'
-                    ]);
-
-                DB::table("material.purreqdt")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'APPROVED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-                DB::table("material.queuepr")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'APPROVED',
-                        'trantype' => 'DONE',
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-            }
-
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function approved_single(Request $request){
-         DB::beginTransaction();
-
-        try{
-
-            $purreqhd = DB::table("material.purreqhd")
-                ->where('idno','=',$request->idno);
-
-            $purreqhd_get = $purreqhd->first();
-
-            $purreqhd->update([
-                    'recstatus' => 'APPROVED'
-                ]);
-
-            DB::table("material.purreqdt")
-                ->where('recno','=',$purreqhd_get->recno)
-                ->update([
-                    'recstatus' => 'APPROVED',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-            DB::table("material.queuepr")
-                ->where('recno','=',$purreqhd_get->recno)
-                ->update([
-                    'recstatus' => 'APPROVED',
-                    'trantype' => 'DONE',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function showpdf(Request $request){
-        $recno = $request->recno;
-        if(!$recno){
-            abort(404);
-        }
-
-        $purreqhd = DB::table('material.purreqhd')
-            ->where('recno','=',$recno)
-            ->first();
-
-        $purreqdt = DB::table('material.purreqdt AS prdt', 'material.productmaster AS p', 'material.uom as u')
-            ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 'u.description as uom_desc')
-            ->leftJoin('material.productmaster as p', 'prdt.itemcode', '=', 'p.itemcode')
-            ->leftJoin('material.uom as u', 'prdt.uomcode', '=', 'u.uomcode')
-            ->where('recno','=',$recno)
-            ->get();
-
-        $company = DB::table('sysdb.company')
-                    ->where('compcode','=',session('compcode'))
+            //-- 4. posting stockloc OUT --//
+
+                $trantype_obj = DB::table('material.ivtxntype')
+                    ->where('ivtxntype.compcode','=',session('compcode'))
+                    ->where('ivtxntype.trantype','=',$ivtmphd->trantype)
                     ->first();
 
-        $totamount_expld = explode(".", (float)$purreqhd->totamount);
-
-        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
-        $totamt_bm = $totamt_bm_rm." SAHAJA";
-
-        if(count($totamount_expld) > 1){
-            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
-            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
-        }
-
-        $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company'));
-        return $pdf->stream();      
-
-        
-        return view('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company'));
-    }
-
-    function sendemail($data){
-        SendEmailPR::dispatch($data);
-        // ProcessPodcast::dispatch();
-
-        // $data_ = ['data' => $data];
-
-        // Mail::send('email.mail', $data_, function($message) use ($data) {
-        //     $message->from('me@gmail.com', 'medicsoft');
-        //     $message->to($data->email_to);
-        // });
-    }
-
-    function skip_authorization(Request $request, $deptcode, $idno){
-        $authdtl = DB::table('material.authdtl')
-                    ->where('authorid','=',session('username'))
-                    ->where('trantype','=','PR')
-                    ->where(function($q) use ($deptcode) {
-                          $q->where('deptcode', $deptcode)
-                            ->orWhere('deptcode', 'ALL');
-                      })
-                    ->where('recstatus','=','APPROVED');
-        // dd($authdtl->first());
-
-        if($authdtl->count() > 0){
-
-            $purreqhd = DB::table("material.purreqhd")
-                ->where('idno','=',$idno);
-
-            $purreqhd_get = $purreqhd->first();
-
-            $authdtl = DB::table('material.authdtl')
-                    ->where('authorid','=',session('username'))
-                    ->where('trantype','=','PR')
-                    ->where(function($q) use ($deptcode) {
-                          $q->where('deptcode', $deptcode)
-                            ->orWhere('deptcode', 'ALL');
-                      });
-
-            $array_update = [];
-            $array_update['requestby'] = session('username');
-            $array_update['requestdate'] = Carbon::now("Asia/Kuala_Lumpur");
-            $array_update['recstatus'] = 'APPROVED';
-            foreach ($authdtl->get() as $key => $value) {
-
-                switch ($value->recstatus) {
-                    case 'SUPPORT':
-                        $array_update['supportby'] = session('username');
-                        $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
-                        break;
-                    case 'VERIFIED':
-                        $array_update['verifiedby'] = session('username');
-                        $array_update['verifieddate'] = Carbon::now("Asia/Kuala_Lumpur");
-                        break;
-                    case 'APPROVED':
-                        $array_update['approvedby'] = session('username');
-                        $array_update['approveddate'] = Carbon::now("Asia/Kuala_Lumpur");
-                        break;
+                if($trantype_obj->isstype == 'TRANSFER'){
+                    $retval = invtran_util::posting_for_transfer($value,$ivtmphd);
+                }else if($trantype_obj->isstype == 'ADJUSTMENT' || $trantype_obj->isstype == 'LOAN' || $trantype_obj->isstype == 'ISSUE'){
+                    switch ($trantype_obj->crdbfl) {
+                        case 'in':
+                        case 'In':
+                            invtran_util::posting_for_adjustment_in($value,$ivtmphd,$trantype_obj->isstype);
+                            break;
+                        case 'out':
+                        case 'Out':
+                            invtran_util::posting_for_adjustment_out($value,$ivtmphd,$trantype_obj->isstype);
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
                 }
-                
+
+                //--- 7. posting GL ---//
+
+                //amik yearperiod dari delordhd
+                $yearperiod = $this->getyearperiod($ivtmphd->trandate);
+ 
+                //1. buat gltran
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => $value->compcode,
+                        'adduser' => $value->adduser,
+                        'adddate' => $value->adddate,
+                        'auditno' => $value->recno,
+                        'lineno_' => $value->lineno_,
+                        'source' => $ivtmphd->source,
+                        'trantype' => $ivtmphd->trantype,
+                        'reference' => $ivtmphd->txndept .' '. $ivtmphd->docno,
+                        'description' => $ivtmphd->sndrcv,
+                        'postdate' => $ivtmphd->trandate,
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
+                        'drcostcode' => $drccode,
+                        'dracc' => $draccno,
+                        'crcostcode' => $crccode,
+                        'cracc' => $craccno,
+                        'amount' => $value->amount,
+                        'idno' => $value->itemcode
+                    ]);
+                //2. check glmastdtl utk debit, kalu ada update kalu xde create
+                if($this->isGltranExist($drccode,$draccno,$yearperiod->year,$yearperiod->period)){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$drccode)
+                        ->where('glaccount','=',$draccno)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $value->amount + $this->gltranAmount,
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }else{
+                    DB::table('finance.glmasdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'costcode' => $drccode,
+                            'glaccount' => $draccno,
+                            'year' => $yearperiod->year,
+                            'actamount'.$yearperiod->period => $value->amount,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+
+                //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+                if($this->isGltranExist($crccode,$craccno,$yearperiod->year,$yearperiod->period)){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$crccode)
+                        ->where('glaccount','=',$craccno)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $this->gltranAmount - $value->amount,
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }else{
+                    DB::table('finance.glmasdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'costcode' => $crccode,
+                            'glaccount' => $craccno,
+                            'year' => $yearperiod->year,
+                            'actamount'.$yearperiod->period => -$value->amount,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+
             }
 
-            $purreqhd->update($array_update);
-            
+            //--- 8. change recstatus to posted ---//
 
-            DB::table("material.purreqdt")
-                ->where('recno','=',$purreqhd_get->recno)
+            DB::table('material.ivtmphd')
+                ->where('recno','=',$ivtmphd->recno)
+                ->where('compcode','=',session('compcode'))
                 ->update([
-                    'recstatus' => 'APPROVED',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'postedby' => session('username'),
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'POSTED' 
                 ]);
 
-            $queuepr = DB::table("material.queuepr")
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->where('AuthorisedID','=',session('username'))
-                        ->where('deptcode','=',$purreqhd_get->reqdept);
+            DB::table('material.ivtmpdt')
+                ->where('recno','=',$ivtmphd->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'POSTED' 
+                ]);
+            
 
-            if($queuepr->exists()){
+            /*$queries = DB::getQueryLog();
+            dump($queries);*/
 
-                $queuepr
-                    ->update([
-                        'recstatus' => 'APPROVED',
-                        'trantype' => 'DONE',
-                    ]);
-                    
-            }else{
 
-                DB::table("material.queuepr")
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'recno' => $purreqhd_get->recno,
-                        'AuthorisedID' => session('username'),
-                        'deptcode' => $purreqhd_get->reqdept,
-                        'recstatus' => 'APPROVED',
-                        'trantype' => 'DONE',
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
 
-            return true;
+            
+            return response($e->getMessage(), 500);
         }
-        
-        return false;   
+
+    }
+
+    public function cancel(Request $request){
         
     }
 
-    
+    public function save_dt_from_othr_do($refer_recno,$recno){
+        $do_dt = DB::table('material.delorddt')
+                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode','pouom',
+                    'suppcode','trandate','deldept','deliverydate','qtydelivered','unitprice', 'taxcode', 
+                    'perdisc', 'amtdisc', 'amtslstax', 'amount','expdate','batchno','rem_but','remarks')
+                ->where('recno', '=', $refer_recno)
+                ->where('compcode', '=', session('compcode'))
+                ->where('recstatus', '<>', 'DELETE')
+                ->get();
+
+        // foreach ($do_dt as $key => $ivtmphd){
+        //     ///1. insert detail we get from existing purchase order
+        //     $table = DB::table("material.delorddt");
+        //     $table->insert([
+        //         'compcode' => $ivtmphd
+        //         'recno' => $ivtmphd
+        //         'lineno_' => $ivtmphd
+        //         'pricecode' => $ivtmphd
+        //         'itemcode' => $ivtmphd
+        //         'uomcode' => $ivtmphd
+        //         'pouom' => $ivtmphd
+        //         'suppcode'=> $ivtmphd
+        //         'trandate'=> $ivtmphd
+        //         'deldept'=> $ivtmphd
+        //         'deliverydate'=> $ivtmphd
+        //         'qtydelivered' => $ivtmphd
+        //         'unitprice' => $ivtmphd
+        //         'taxcode' => $ivtmphd
+        //         'perdisc' => $ivtmphd
+        //         'amtdisc' => $ivtmphd
+        //         'amtslstax' => $ivtmphd
+        //         'amount' => $ivtmphd
+        //         'expdate'=> $ivtmphd
+        //         'batchno'=> $ivtmphd
+        //         'rem_but'=> $ivtmphd
+        //         'adduser' => $ivtmphd
+        //         'adddate' => $ivtmphd
+        //         'recstatus' => $ivtmphd
+        //         'remarks' => $ivtmphd
+        //     ]);
+        // }
+        ///2. calculate total amount from detail earlier
+        $amount = DB::table('material.delorddt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$recno)
+                    ->where('recstatus','<>','DELETE')
+                    ->sum('amount');
+
+        ///3. then update to header
+        $table = DB::table('material.delorddt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$recno);
+        $table->update([
+                'amount' => $ivtmphd
+                //'subamount' => $ivtmphd
+            ]);
+
+        return $amount;
+    }
+
+    public function check_sequence_backdated($ivtmphd){
+
+        $sequence_obj = DB::table('material.sequence')
+                ->where('trantype','=',$ivtmphd->trantype)
+                ->where('dept','=',$ivtmphd->txndept);
+
+        if(!$sequence_obj->exists()){
+            throw new \Exception("sequence doesnt exists", 500);
+        }
+
+        $sequence = $sequence_obj->first();
+
+        $date = Carbon::parse($ivtmphd->trandate);
+        $now = Carbon::now();
+
+        $diff = $date->diffInDays($now);
+
+        if($diff > intval($sequence->backday)){
+            throw new \Exception("backdated sequence exceed ".$sequence->backday.' days', 500);
+        }
+
+    }
 }
 

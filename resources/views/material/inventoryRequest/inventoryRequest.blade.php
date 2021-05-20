@@ -89,21 +89,11 @@ i.fa {
 				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
 					  	<select id="Status" name="Status" class="form-control input-sm">
-						  	@if (Request::get('scope') == 'ALL')
-						      <option value="All" selected>ALL</option>
-						      <option value="OPEN">OPEN</option>
-						      <option value="CANCELLED">CANCELLED</option>
-						      <option value="REQUEST">REQUEST</option>
-						      <option value="SUPPORT">SUPPORT</option>
-						      <option value="VERIFIED">VERIFIED</option>
-						      <option value="APPROVED">APPROVED</option>
-							@elseif (Request::get('scope') == 'SUPPORT')
-								<option value="REQUEST">REQUEST</option>
-							@elseif (Request::get('scope') == 'VERIFIED')
-								<option value="SUPPORT">SUPPORT</option>
-							@elseif (Request::get('scope') == 'APPROVED')
-								<option value="VERIFIED">VERIFIED</option>
-							@endif
+					      <option value="All" selected>ALL</option>
+					      <option value="Open">OPEN</option>
+					      <option value="Confirmed">CONFIRMED</option>
+					      <option value="Posted">POSTED</option>
+					      <option value="Cancelled">CANCELLED</option>
 					    </select>
 	            </div>
 
@@ -131,30 +121,32 @@ i.fa {
 				?>
 
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
-					
-					<span id="error_infront" style="color: red"></span>
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+					<span id="error_infront" style="color: red"></span>
+					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
 						data-oper="{{$scope_use}}" 
 						style="display: none;">
-						@if (Request::get('scope') == 'ALL')
+						@if (strtoupper(Request::get('scope')) == 'ALL')
+							{{'POST'}}
+						@else
+							{{Request::get('scope').' ALL'}}
+						@endif
+					</button>
+
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
+						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}
 						@endif
 					</button>
-					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="{{$scope_use}}" style="display: none;">
-						@if (Request::get('scope') == 'ALL')
-							{{'POST'}}
-						@else
-							{{Request::get('scope')}}
-						@endif
-					</button> -->
-					<button type="button" class="btn btn-default btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 
@@ -258,17 +250,6 @@ i.fa {
 						  			<div class="col-md-2">
 										<input id="ivreqhd_recno" name="ivreqhd_recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
 						  			</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purreqhd_suppcode">Supplier Code</label>
-								<div class="col-md-4">
-									<div class='input-group'>
-										<input id="purreqhd_suppcode" name="purreqhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class="help-block"></span>
-								</div>
 							</div>
 
 							<hr/>
