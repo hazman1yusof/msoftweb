@@ -186,7 +186,7 @@ $(document).ready(function () {
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15},
 			{ label: 'Invoice No', name: 'db_invno', width: 15, formatter: padzero5, unformat: unpadzero },
-			{ label: 'Units', name: 'db_units', width: 15, classes: 'wrap' },
+			{ label: 'Sector', name: 'db_units', width: 15, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 15 },
@@ -312,7 +312,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam,['Checkbox']);
-	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','queuepr_AuthorisedID']);
+	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'db_mrn', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','queuepr_AuthorisedID']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -625,7 +625,7 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'UOM Code', name: 'uomcode', width: 100, classes: 'wrap', editable: true,
+				label: 'UOM Code', name: 'uomcode', width: 300, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -667,7 +667,7 @@ $(document).ready(function () {
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Remarks', name: 'remarks_button', width: 300, formatter: formatterRemarks, unformat: unformatRemarks },
+			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks, unformat: unformatRemarks },
 			{ label: 'Remarks', name: 'remarks', hidden: true },
 			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'wrap', hidden: false },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
@@ -1791,13 +1791,13 @@ $(document).ready(function () {
 
 function populate_form(obj){
 	//panel header
-	$('#purreqno_show').text(obj.purreqhd_purreqno);
-	$('#suppcode_show').text(obj.supplier_name);
+	$('#MRNno_show').text(obj.db_mrn); //purreqno_show   obj.purreqhd_purreqno
+	$('#CustName_show').text(obj.dm_name);  //suppcode_show   obj.supplier_name
 }
 
 function empty_form(){
-	$('#purreqno_show').text('');
-	$('#suppcode_show').text('');
+	$('#MRNno_show').text('');
+	$('#CustName_show').text('');
 }
 
 function reset_all_error(){
