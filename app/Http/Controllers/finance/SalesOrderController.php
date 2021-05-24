@@ -63,6 +63,11 @@ class SalesOrderController extends defaultController
             $auditno = $this->recno('PB','IN');
             $invno = $this->recno('PB','INV');
 
+            $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('MRN','=',$request->db_mrn)
+                            ->first();
+
             $array_insert = [
                 'source' => 'PB',
                 'trantype' => 'IN',
@@ -80,6 +85,8 @@ class SalesOrderController extends defaultController
                 'entrydate' => strtoupper($request->db_entrydate),
                 'hdrtype' => strtoupper($request->db_hdrtype),
                 'mrn' => strtoupper($request->db_mrn),
+                'billno' => $invno,
+                'episno' => $pat_mast->episno,
                 'termdays' => strtoupper($request->db_termdays),
                 'termmode' => strtoupper($request->db_termmode),
                 'orderno' => strtoupper($request->db_orderno),

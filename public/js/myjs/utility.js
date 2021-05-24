@@ -1335,9 +1335,12 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			desc_ = this.urlParam.field[desc];
 		}
 		let index=0;
+
 		if(this.checkstat=='default'){
 			param={action:'input_check',table:table,field:field,value:value};
 
+		}else if(this.checkstat=='none' && value == ''){
+			return false;
 		}else{
 
 			param=Object.assign({},this.urlParam);

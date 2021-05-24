@@ -73,32 +73,40 @@ class SalesOrderDetailController extends defaultController
     }
    
     public function get_itemcode_price(Request $request){
-        $table = DB::table('material.stockloc AS s')
-                    ->join('material.product AS p', function($join) use ($request){
-                            $join = $join->on('s.itemcode','=','p.itemcode');
-                        })
-                    ->where('s.compcode','=',session('compcode'))
-                    ->where('s.recstatus','<>','DELETE')
-                    ->orderBy('s.idno','desc');
+        $table = DB::table('hisdb.chgmast')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','<>','DELETE')
+                    ->orderBy('idno','desc');
 
         if(!empty($request->searchCol)){
-             $table = $table->where('p.'.$request->searchCol[0],'LIKE',$request->searchVal[0]);
+            $table = $table->where($request->searchCol[0],'LIKE',$request->searchVal[0]);
         }
 
         $paginate = $table->paginate($request->rows);
         $rows = $paginate->items();
 
-
         foreach ($rows as $key => $value) {
-            $price_obj = DB::table('hisdb.chgprice')
-                        ->where('compcode', '=', session('compcode'))
-                        ->where('chgcode', '=', $value->itemcode)
-                        ->whereDate('effdate', '<=', Carbon::now('Asia/Kuala_Lumpur'))
-                        ->orderBy('effdate','desc');
+            $chgprice_obj = DB::table('hisdb.chgprice')
+                ->where('compcode', '=', session('compcode'))
+                ->where('chgcode', '=', $value->chgcode)
+                ->whereDate('effdate', '<=', Carbon::now('Asia/Kuala_Lumpur'))
+                ->orderBy('effdate','desc');
 
-            if($price_obj->exists()){
-                $price_obj = $price_obj->first();
-                $rows[$key]->price = $price_obj->amt1;
+            if($chgprice_obj->exists()){
+                $chgprice_obj = $chgprice_obj->first();
+                $rows[$key]->price = $chgprice_obj->amt1;
+            }
+
+            if($value->invflag == '1'){
+                $stockloc_obj = DB::table('material.stockloc')
+                        ->where('compcode', '=', session('compcode'))
+                        ->where('itemcode', '=', $value->chgcode)
+                        ->where('year', '=', Carbon::now('Asia/Kuala_Lumpur')->year);
+
+                if($stockloc_obj->exists()){
+                    $stockloc_obj = $stockloc_obj->first();
+                    $rows[$key]->qtyonhand = $stockloc_obj->qtyonhand;
+                }
             }
         }
 
@@ -133,6 +141,15 @@ class SalesOrderDetailController extends defaultController
         DB::beginTransaction();
         
         try {
+
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno);
+
+            $dbacthdr_obj = $dbacthdr->first();
+
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('debtor.billsum')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
@@ -150,8 +167,12 @@ class SalesOrderDetailController extends defaultController
                     'source' => $source,
                     'trantype' => $trantype,
                     'auditno' => $auditno,
+                    'chggroup' => $request->chggroup,
                     'lineno_' => $li,
-                    'uom' => strtoupper($request->uomcode),
+                    'billno' => $dbacthdr_obj->billno,
+                    'mrn' => $dbacthdr_obj->mrn,
+                    'episno' => $dbacthdr_obj->episno,
+                    'uom' => $request->uom,
                     'unitprice' => $request->unitprice,
                     'quantity' => $request->qtyrequest,
                     'amount' => $request->amount,
@@ -171,12 +192,8 @@ class SalesOrderDetailController extends defaultController
                     ->sum('amount');
 
             ///4. then update to header
-            DB::table('debtor.dbacthdr')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=',$source)
-                ->where('trantype','=',$trantype)
-                ->where('auditno','=',$auditno)
-                ->update([
+            
+            $dbacthdr->update([
                     'amount' => $totalAmount,
                 ]);
 

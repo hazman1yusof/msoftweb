@@ -438,6 +438,11 @@ function populate_currDoctorNote(obj){
 	};
 
     button_state_doctorNote('add');
+
+    docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
+		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
+    });
 }
 
 function on_toggling_curr_past(obj = curr_obj){
@@ -561,6 +566,14 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
     });
 });
 
+$('#jqGridTriageInfo_panel').on('shown.bs.collapse', function () {
+	sticky_docnotetbl(on=true);
+});
+
+$('#jqGridTriageInfo_panel').on('hidden.bs.collapse', function () {
+	sticky_docnotetbl(on=true);
+});
+
 //to reload date table on radio btn click
 $("input[name=toggle_type]").on('click', function () {
 	event.stopPropagation();
@@ -623,6 +636,7 @@ function disable_edit_date(){
 }
 
 function sticky_docnotetbl(on){
+	$(window).off('scroll');
 	if(on){
 		var topDistance = $('#docnote_date_tbl_sticky').offset().top;
 		$(window).on('scroll', function() {
