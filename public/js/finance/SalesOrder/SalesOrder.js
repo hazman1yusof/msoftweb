@@ -200,6 +200,7 @@ $(document).ready(function () {
 			{ label: 'outamount', name: 'db_outamount', width: 20, hidden: true },
 			{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
+			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
 			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
 			{ label: 'units', name: 'db_units', width: 10, hidden: true },
 			{ label: 'termdays', name: 'db_termdays', width: 10, hidden: true },
@@ -1384,7 +1385,7 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE','1']
 			},
 			ondblClickRow: function () {
-				$('#db_docdate').focus();
+				$('#db_debtorcode').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1509,7 +1510,7 @@ $(document).ready(function () {
 	dialog_mrn.makedialog();
 
 	var dialog_approvedbySO = new ordialog(
-		'approvedby',['material.authorise'],"#approvedby",errorField,
+		'approvedby',['material.authorise'],"#db_approvedby",errorField,
 		{	colModel:
 			[
 				{label:'Authorize Person',name:'authorid',width:200,classes:'pointer',canSearch:true,or_search:true},

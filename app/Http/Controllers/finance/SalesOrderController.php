@@ -86,13 +86,14 @@ class SalesOrderController extends defaultController
                 'hdrtype' => strtoupper($request->db_hdrtype),
                 'mrn' => strtoupper($request->db_mrn),
                 'billno' => $invno,
-                'episno' => $pat_mast->episno,
+                'episno' => $pat_mast->Episno,
                 'termdays' => strtoupper($request->db_termdays),
                 'termmode' => strtoupper($request->db_termmode),
                 'orderno' => strtoupper($request->db_orderno),
                 'ponum' => strtoupper($request->db_ponum),
                 'podate' => strtoupper($request->db_podate),
                 'remark' => strtoupper($request->db_remark),
+                'approvedby' => $request->db_approvedby
             ];
 
 
@@ -132,6 +133,7 @@ class SalesOrderController extends defaultController
             'ponum' => strtoupper($request->db_ponum),
             'podate' => strtoupper($request->db_podate),
             'remark' => strtoupper($request->db_remark),
+            'approvedby' => $request->approvedby
         ];
 
         try {

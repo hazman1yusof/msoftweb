@@ -174,7 +174,7 @@ class SalesOrderDetailController extends defaultController
                     'episno' => $dbacthdr_obj->episno,
                     'uom' => $request->uom,
                     'unitprice' => $request->unitprice,
-                    'quantity' => $request->qtyrequest,
+                    'quantity' => $request->quantity,
                     'amount' => $request->amount,
                     'discamt' => $request->discamt,
                     'lastuser' => session('username'), 

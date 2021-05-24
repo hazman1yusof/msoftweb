@@ -328,10 +328,10 @@ i.fa {
 						<hr>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="approvedby">Approved By</label> 
+							<label class="col-md-2 control-label" for="db_approvedby">Approved By</label> 
 							<div class="col-md-2">
 								<div class='input-group'>
-									<input id="approvedby" name="approvedby" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+									<input id="db_approvedby" name="db_approvedby" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
