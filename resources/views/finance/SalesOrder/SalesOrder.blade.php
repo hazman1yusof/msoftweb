@@ -183,11 +183,8 @@ i.fa {
 
 	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 	    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
-				<b>MRN NO: </b><span id="MRNno_show"></span><br> 
-				<!-- purreqno_show -->
-
+				<b>SALES AUTO NO: </b><span id="AutoNo_show"></span><br> 
 				<b>CUSTOMER NAME: </b><span id="CustName_show"></span>
-				<!-- suppcode_show -->
 				
 	    		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>

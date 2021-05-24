@@ -1721,12 +1721,12 @@ $(document).ready(function () {
 
 function populate_form(obj){
 	//panel header
-	$('#MRNno_show').text(obj.db_mrn); //purreqno_show   obj.purreqhd_purreqno
-	$('#CustName_show').text(obj.dm_name);  //suppcode_show   obj.supplier_name
+	$('#AutoNo_show').text(obj.db_auditno);
+	$('#CustName_show').text(obj.dm_name);
 }
 
 function empty_form(){
-	$('#MRNno_show').text('');
+	$('#AutoNo_show').text('');
 	$('#CustName_show').text('');
 }
 
