@@ -66,19 +66,19 @@
 									<label class="col-md-3 control-label" for="feedingmode">Mode of Feeding</label>
 									<div class="col-md-6">
 										<label class="radio-inline">
-											<input type="radio" name="oral" value="1">Oral
+											<input type="radio" name="oral" value="1" id="feedingmode">Oral
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="nbm" value="1">Nil by Mouth
+											<input type="radio" name="nbm" value="1" id="feedingmode">Nil by Mouth
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="rtf" value="1">Ryles Tube Feeding
+											<input type="radio" name="rtf" value="1" id="feedingmode">Ryles Tube Feeding
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="rof" value="1">Restriction of Fluid
+											<input type="radio" name="rof" value="1" id="feedingmode">Restriction of Fluid
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="tpn" value="1">Total Parenteral Nutrition
+											<input type="radio" name="tpn" value="1" id="feedingmode">Total Parenteral Nutrition
 										</label>
 									</div>
 								</div>

@@ -49,7 +49,7 @@ $(document).ready(function () {
 	$("input[id=feedingmode]").click(function(event) {
 		$("input[id=feedingmode]").prop("checked", false);
 		$(this).prop("checked", true);
-  		feedingCheck()
+		feedingCheck();
 	  	//event.preventDefault();
 	});
 
