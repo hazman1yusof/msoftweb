@@ -61,7 +61,7 @@ class SalesOrderController extends defaultController
         try { 
 
             $auditno = $this->recno('PB','IN');
-            $invno = $this->recno('PB','INV');
+            // $invno = $this->recno('PB','INV'); buat lepas posted
 
             $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('compcode','=',session('compcode'))
@@ -77,15 +77,15 @@ class SalesOrderController extends defaultController
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'OPEN',
                 'lineno_' => 1,
-                'invno' => $invno,
+                // 'invno' => $invno,
                 'deptcode' => strtoupper($request->db_deptcode),
-                'units' => strtoupper($request->db_deptcode),
+                'units' => strtoupper($request->db_deptcode),//department.sector
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
                 'entrydate' => strtoupper($request->db_entrydate),
                 'hdrtype' => strtoupper($request->db_hdrtype),
                 'mrn' => strtoupper($request->db_mrn),
-                'billno' => $invno,
+                // 'billno' => $invno,
                 'episno' => $pat_mast->Episno,
                 'termdays' => strtoupper($request->db_termdays),
                 'termmode' => strtoupper($request->db_termmode),

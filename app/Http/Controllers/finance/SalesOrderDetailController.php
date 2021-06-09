@@ -150,16 +150,6 @@ class SalesOrderDetailController extends defaultController
 
             $dbacthdr_obj = $dbacthdr->first();
 
-            ////1. calculate lineno_ by recno
-            $sqlln = DB::table('debtor.billsum')->select('lineno_')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('source','=',$source)
-                        ->where('trantype','=',$trantype)
-                        ->where('auditno','=',$auditno)
-                        ->count('lineno_');
-
-            $li=intval($sqlln)+1;
-
             ///2. insert detail
             DB::table('debtor.billsum')
                 ->insert([
@@ -168,8 +158,7 @@ class SalesOrderDetailController extends defaultController
                     'trantype' => $trantype,
                     'auditno' => $auditno,
                     'chggroup' => $request->chggroup,
-                    'lineno_' => $li,
-                    'billno' => $dbacthdr_obj->billno,
+                    'lineno_' => 1,
                     'mrn' => $dbacthdr_obj->mrn,
                     'episno' => $dbacthdr_obj->episno,
                     'uom' => $request->uom,
@@ -179,7 +168,8 @@ class SalesOrderDetailController extends defaultController
                     'discamt' => $request->discamt,
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'OPEN'
+                    'recstatus' => 'OPEN',
+                    // 'taxcode' => 'chgprice.optax'
                 ]);
 
             ///3. calculate total amount from detail
