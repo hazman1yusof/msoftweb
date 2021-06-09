@@ -107,17 +107,17 @@ i.fa {
 				<?php 
 					$scope_use = 'posted';
 
-					if(Request::get('scope') == 'ALL'){
-						$scope_use = 'posted';
-					}else if(Request::get('scope') == 'REQUEST'){
-						$scope_use = 'posted';
-					}else if(Request::get('scope') == 'SUPPORT'){
-						$scope_use = 'support';
-					}else if(Request::get('scope') == 'VERIFIED'){
-						$scope_use = 'verify';
-					}else if(Request::get('scope') == 'APPROVED'){
-						$scope_use = 'approved';
-					}
+					// if(Request::get('scope') == 'ALL'){
+					// 	$scope_use = 'posted';
+					// }else if(Request::get('scope') == 'REQUEST'){
+					// 	$scope_use = 'posted';
+					// }else if(Request::get('scope') == 'SUPPORT'){
+					// 	$scope_use = 'support';
+					// }else if(Request::get('scope') == 'VERIFIED'){
+					// 	$scope_use = 'verify';
+					// }else if(Request::get('scope') == 'APPROVED'){
+					// 	$scope_use = 'approved';
+					// }
 				?>
 
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
@@ -188,8 +188,8 @@ i.fa {
 
 	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 	    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
-				<b>PR NO: </b><span id="purreqno_show"></span><br>
-				<b>SUPPLIER NAME: </b><span id="suppcode_show"></span>
+				<!-- <b>PR NO: </b><span id="purreqno_show"></span><br>
+				<b>SUPPLIER NAME: </b><span id="suppcode_show"></span> -->
 				
 	    		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
