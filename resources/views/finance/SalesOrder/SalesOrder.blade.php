@@ -217,7 +217,7 @@ i.fa {
 						<input id="db_trantype" name="db_trantype" type="hidden">
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_deptcode">Sector</label>	 
+							<label class="col-md-2 control-label" for="db_deptcode">Store Dept</label>	 
 							<div class="col-md-4">
 								<div class='input-group'>
 								<input id="db_deptcode" name="db_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">

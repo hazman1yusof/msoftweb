@@ -614,7 +614,7 @@ $(document).ready(function () {
 		editurl: "/SalesOrderDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false},
+			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false, hidden: true },
 			{
 				label: 'Item Code', name: 'chggroup', width: 300, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
@@ -652,6 +652,12 @@ $(document).ready(function () {
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
+			},
+			{
+				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap',
+				editable: true,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				editrules: { required: true },
 			},
 			{
 				label: '% Bill Type', name: 'percbilltype', width: 100, align: 'right', classes: 'wrap',

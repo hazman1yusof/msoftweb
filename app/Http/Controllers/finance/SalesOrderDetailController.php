@@ -166,6 +166,7 @@ class SalesOrderDetailController extends defaultController
                     'quantity' => $request->quantity,
                     'amount' => $request->amount,
                     'discamt' => $request->discamt,
+                    'taxamt' => $request->taxamt,
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -203,6 +204,7 @@ class SalesOrderDetailController extends defaultController
 
         try {
 
+           // $invno = $this->recno('PB','INV'); buat lepas posted
 
             ///1. update detail
             DB::table('hisdb.billdet')
@@ -218,7 +220,8 @@ class SalesOrderDetailController extends defaultController
                     'unitprice'=> $request->unitprice,
                     'percbilltype'=> $request->percbilltype, 
                     'amtbilltype'=> $request->amtbilltype, 
-                    'amount'=> $request->amount, 
+                    'amount'=> $request->amount,
+                    'taxamt' => $request->taxamt, 
                     'upduser'=> session('username'), 
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'remarks'=> strtoupper($request->remarks),
