@@ -218,69 +218,69 @@ i.fa {
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}
 							<input id="referral" name="referral" type="hidden">
-							<input id="idno" name="ivreqhd_idno" type="hidden">
+							<input id="idno" name="idno" type="hidden">
 
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="ivreqhd_reqdept">Request Department</label>
+								<label class="col-md-2 control-label" for="reqdept">Request Department</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="ivreqhd_reqdept" name="ivreqhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="reqdept" name="reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
 								</div>
 
-						  		<label class="col-md-2 control-label" for="ivreqhd_ivreqno">Request No.</label>  
+						  		<label class="col-md-2 control-label" for="ivreqno">Request No.</label>  
 						  			<div class="col-md-2">
-										<input id="ivreqhd_ivreqno" name="ivreqhd_ivreqno" type="text" maxlength="30" class="form-control input-sm" rdonly>
+										<input id="ivreqno" name="ivreqno" type="text" maxlength="30" class="form-control input-sm" rdonly>
 						  			</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="ivreqhd_reqtodept">Req. Made To</label>
+								<label class="col-md-2 control-label" for="reqtodept">Req. Made To</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="ivreqhd_reqtodept" name="ivreqhd_reqtodept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="reqtodept" name="reqtodept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
 								</div>
 
-						  		<label class="col-md-2 control-label" for="ivreqhd_recno">Record No.</label>  
+						  		<label class="col-md-2 control-label" for="recno">Record No.</label>  
 						  			<div class="col-md-2">
-										<input id="ivreqhd_recno" name="ivreqhd_recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
+										<input id="recno" name="recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
 						  			</div>
 							</div>
 
 							<hr/>
 
 							<div class="form-group">		
-						  		<label class="col-md-2 control-label" for="ivreqhd_reqtype">Request Type</label>  
+						  		<label class="col-md-2 control-label" for="reqtype">Request Type</label>  
 						  			<div class="col-md-2">
-										<input id="ivreqhd_reqtype" name="ivreqhd_reqtype" type="text" maxlength="11" class="form-control input-sm" value= 'TRANSFER' rdonly>
+										<input id="reqtype" name="reqtype" type="text" maxlength="11" class="form-control input-sm" value= 'TRANSFER' rdonly>
 						  			</div>
 
-								<label class="col-md-2 control-label" for="ivreqhd_reqdt">Request Date</label>  
+								<label class="col-md-2 control-label" for="reqdt">Request Date</label>  
 						  			<div class="col-md-2">
-										<input id="ivreqhd_reqdt" name="ivreqhd_reqdt" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+										<input id="reqdt" name="reqdt" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 						  			</div>
 
-						  		<label class="col-md-2 control-label" for="ivreqhd_amount">Amount</label>  
+						  		<label class="col-md-2 control-label" for="amount">Amount</label>  
 						  			<div class="col-md-2">
-										<input id="ivreqhd_amount" name="ivreqhd_amount" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" rdonly>
+										<input id="amount" name="amount" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" rdonly>
 						  			</div>
 
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="ivreqhd_remarks">Remarks</label>   
+								<label class="col-md-2 control-label" for="remarks">Remarks</label>   
 						  			<div class="col-md-6">
-						  				<textarea rows="5" id='ivreqhd_remarks' name='ivreqhd_remarks' class="form-control input-sm text-uppercase" ></textarea>
+						  				<textarea rows="5" id='remarks' name='remarks' class="form-control input-sm text-uppercase" ></textarea>
 						  			</div>
 
-								<label class="col-md-2 control-label" for="ivreqhd_recstatus">Record Status</label>  
+								<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
 									<div class="col-md-2">
-										<input id="ivreqhd_recstatus" name="ivreqhd_recstatus" type="text" class="form-control input-sm" rdonly>
+										<input id="recstatus" name="recstatus" type="text" class="form-control input-sm" rdonly>
 									</div>
 					    	</div>
 

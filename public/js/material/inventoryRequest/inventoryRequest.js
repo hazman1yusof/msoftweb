@@ -24,7 +24,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency = new currencymode(['#ivreqhd_amount']);
+	var mycurrency = new currencymode(['#amount']);
 	var fdl = new faster_detail_load();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -48,7 +48,7 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
-						$("#ivreqhd_reqdept").val($("#x").val());
+						$("#reqdept").val($("#x").val());
 						break;
 					case state = 'edit':
 						$("#pg_jqGridPager2 table").show();
@@ -107,14 +107,14 @@ $(document).ready(function () {
 			filterVal_urlParam = ['session.compcode'];
 	}
 
-	var cbselect = new checkbox_selection("#jqGrid","Checkbox","ivreqhd_idno","ivreqhd_recstatus");
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus", recstatus_filter[0][0]);
 
 	var urlParam = {
 		action: 'get_table_default',
 		url:'/util/get_table_default',
 		field:'',
 		table_name: ['material.ivreqhd'],
-		table_id: 'ivreqhd_idno',
+		table_id: 'idno',
 		WhereInCol:['ivreqhd.recstatus'],
 		WhereInVal: recstatus_filter,
 		fixPost: true,
@@ -126,7 +126,7 @@ $(document).ready(function () {
 		field: '',
 		oper: oper,
 		table_name: 'material.ivreqhd',
-		table_id: 'ivreqhd_recno',
+		table_id: 'recno',
 		fixPost: true,
 		//returnVal: true,
 	};
@@ -166,47 +166,47 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'Record No', name: 'ivreqhd_recno', width: 20, canSearch: true, selected: true, formatter: padzero, unformat: unpadzero },
-			{ label: 'Request Department', name: 'ivreqhd_reqdept', width: 30, canSearch: true },
-			{ label: 'Request No', name: 'ivreqhd_ivreqno', width: 25, canSearch: true, formatter: padzero, unformat: unpadzero },
-			{ label: 'Request To Department', name: 'ivreqhd_reqtodept', width: 30, classes: 'wrap' },
-			{ label: 'Request Date', name: 'ivreqhd_reqdt', width: 20, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Amount', name: 'ivreqhd_amount', width: 20, align: 'right', formatter: 'currency' },
-			{ label: 'Recstatus', name: 'ivreqhd_recstatus', width: 20},
+			{ label: 'Record No', name: 'recno', width: 20, canSearch: true, selected: true, formatter: padzero, unformat: unpadzero },
+			{ label: 'Request Department', name: 'reqdept', width: 30, canSearch: true },
+			{ label: 'Request No', name: 'ivreqno', width: 25, canSearch: true, formatter: padzero, unformat: unpadzero },
+			{ label: 'Request To Department', name: 'reqtodept', width: 30, classes: 'wrap' },
+			{ label: 'Request Date', name: 'reqdt', width: 20, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Amount', name: 'amount', width: 20, align: 'right', formatter: 'currency' },
+			{ label: 'Recstatus', name: 'recstatus', width: 20},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
-			{ label: 'adduser', name: 'ivreqhd_adduser', width: 90, hidden: true },
-			{ label: 'Remarks', name: 'ivreqhd_remarks', width: 50, classes: 'wrap', hidden:true},
-			{ label: 'Request Type', name: 'ivreqhd_reqtype', width: 50, hidden:true},
-			{ label: 'authpersonid', name: 'ivreqhd_authpersonid', width: 90, hidden: true },
-			{ label: 'authdate', name: 'ivreqhd_authdate', width: 40, hidden: 'true' },
-			{ label: 'reqpersonid', name: 'ivreqhd_reqpersonid', width: 50, hidden: 'true' },
-			{ label: 'adddate', name: 'ivreqhd_adddate', width: 90, hidden: true },
-			{ label: 'upduser', name: 'ivreqhd_upduser', width: 90, hidden: true },
-			{ label: 'upddate', name: 'ivreqhd_upddate', width: 90, hidden: true },
-			{ label: 'idno', name: 'ivreqhd_idno', width: 90, hidden: true },
+			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
+			{ label: 'Remarks', name: 'remarks', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'Request Type', name: 'reqtype', width: 50, hidden:true},
+			{ label: 'authpersonid', name: 'authpersonid', width: 90, hidden: true },
+			{ label: 'authdate', name: 'authdate', width: 40, hidden: 'true' },
+			{ label: 'reqpersonid', name: 'reqpersonid', width: 50, hidden: 'true' },
+			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
+			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
+			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
+			{ label: 'idno', name: 'idno', width: 90, hidden: true },
 			
 
-			// { label: 'requestby', name: 'ivreqhd_requestby', width: 90, hidden: true },
-			// { label: 'requestdate', name: 'ivreqhd_requestdate', width: 90, hidden: true },
-			// { label: 'supportby', name: 'ivreqhd_supportby', width: 90, hidden: true },
-			// { label: 'supportdate', name: 'ivreqhd_supportdate', width: 40, hidden: true},
-			// { label: 'verifiedby', name: 'ivreqhd_verifiedby', width: 90, hidden: true },
-			// { label: 'verifieddate', name: 'ivreqhd_verifieddate', width: 90, hidden: true },
-			// { label: 'approvedby', name: 'pivreqhd_approvedby', width: 90, hidden: true },
-			// { label: 'approveddate', name: 'ivreqhd_approveddate', width: 40, hidden: true},
+			// { label: 'requestby', name: 'requestby', width: 90, hidden: true },
+			// { label: 'requestdate', name: 'requestdate', width: 90, hidden: true },
+			// { label: 'supportby', name: 'supportby', width: 90, hidden: true },
+			// { label: 'supportdate', name: 'supportdate', width: 40, hidden: true},
+			// { label: 'verifiedby', name: 'verifiedby', width: 90, hidden: true },
+			// { label: 'verifieddate', name: 'verifieddate', width: 90, hidden: true },
+			// { label: 'approvedby', name: 'papprovedby', width: 90, hidden: true },
+			// { label: 'approveddate', name: 'approveddate', width: 40, hidden: true},
 
-			{ label: 'reopenby', name: 'ivreqhd_reopenby', width: 40, hidden: true},
-			{ label: 'reopendate', name: 'ivreqhd_reopendate', width: 40, hidden:true},
-			{ label: 'cancelby', name: 'ivreqhd_cancelby', width: 40, hidden:true},
-			{ label: 'canceldate', name: 'ivreqhd_canceldate', width: 40, hidden:true},
-			{ label: 'unit', name: 'ivreqhd_unit', width: 40, hidden:true},
+			{ label: 'reopenby', name: 'reopenby', width: 40, hidden: true},
+			{ label: 'reopendate', name: 'reopendate', width: 40, hidden:true},
+			{ label: 'cancelby', name: 'cancelby', width: 40, hidden:true},
+			{ label: 'canceldate', name: 'canceldate', width: 40, hidden:true},
+			{ label: 'unit', name: 'unit', width: 40, hidden:true},
 			
 		],
 		autowidth: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce: false,
-		sortname:'ivreqhd_idno',
+		sortname:'idno',
 		sortorder:'desc',
 		width: 900,
 		height: 200,
@@ -214,7 +214,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
 			$('#error_infront').text('');
-			let stat = selrowData("#jqGrid").ivreqhd_recstatus;
+			let stat = selrowData("#jqGrid").recstatus;
 			let scope = $("#recstatus_use").val();
 
 			// $('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
@@ -235,18 +235,18 @@ $(document).ready(function () {
 			// 		}
 			// 	}
 			// }
-			urlParam2.filterVal[0] = selrowData("#jqGrid").ivreqhd_recno;
+			urlParam2.filterVal[0] = selrowData("#jqGrid").recno;
 			
-			$('#reqnodepan').text(selrowData("#jqGrid").ivreqhd_ivreqno);//tukar kat depan tu
-			$('#reqdeptdepan').text(selrowData("#jqGrid").ivreqhd_reqdept);
+			$('#reqnodepan').text(selrowData("#jqGrid").ivreqno);//tukar kat depan tu
+			$('#reqdeptdepan').text(selrowData("#jqGrid").reqdept);
 			refreshGrid("#jqGrid3", urlParam2);
 			populate_form(selrowData("#jqGrid"));
 
-			$("#pdfgen1").attr('href','./inventoryRequest/showpdf?recno='+selrowData("#jqGrid").ivreqhd_recno);
+			$("#pdfgen1").attr('href','./inventoryRequest/showpdf?recno='+selrowData("#jqGrid").recno);
 
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
-			let stat = selrowData("#jqGrid").ivreqhd_recstatus;
+			let stat = selrowData("#jqGrid").recstatus;
 			if(stat=='OPEN' || stat=='INCOMPLETED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			}else{
@@ -315,7 +315,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['ivreqhd_recno','ivreqhd_ivreqno','ivreqhd_adduser', 'ivreqhd_adddate', 'ivreqhd_idno', 'ivreqhd_upduser','ivreqhd_upddate','ivreqhd_deluser', 'ivreqhd_recstatus','ivreqhd_unit','Checkbox','queuepr_AuthorisedID']);
+	addParamField('#jqGrid', false, saveParam, ['recno','ivreqno','adduser', 'adddate', 'idno', 'upduser','upddate','deluser', 'recstatus','unit','Checkbox','queuepr_AuthorisedID']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -340,9 +340,9 @@ $(document).ready(function () {
 		
 	// 	saveParam.oper = $(this).data("oper");
 	// 	let obj={
-	// 		recno:selrowData('#jqGrid').ivreqhd_recno,
+	// 		recno:selrowData('#jqGrid').recno,
 	// 		_token:$('#_token').val(),
-	// 		idno:selrowData('#jqGrid').ivreqhd_idno
+	// 		idno:selrowData('#jqGrid').idno
 
 	// 	};
 	// 	$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
@@ -405,10 +405,10 @@ $(document).ready(function () {
 
 			if (selfoper == 'add') {
 				oper = 'edit';//sekali dia add terus jadi edit lepas tu
-				$('#ivreqhd_recno').val(data.recno);
-				$('#ivreqhd_ivreqno').val(data.ivreqno);
-				$('#ivreqhd_idno').val(data.idno);//just save idno for edit later
-				$('#ivreqhd_amount').val(data.amount);
+				$('#recno').val(data.recno);
+				$('#ivreqno').val(data.ivreqno);
+				$('#idno').val(data.idno);//just save idno for edit later
+				$('#amount').val(data.amount);
 
 				urlParam2.filterVal[0] = data.recno;
 			} else if (selfoper == 'edit') {
@@ -471,7 +471,7 @@ $(document).ready(function () {
 	$('#trandept').on('change', searchChange);
 
 	function whenchangetodate() {
-		if ($('#Scol').val() == 'ivreqhd_reqdt') {
+		if ($('#Scol').val() == 'reqdt') {
 			$("input[name='Stext']").show("fast");
 			$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'date');
@@ -503,7 +503,7 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data = selrowData('#' + supplierkatdepan.gridname).suppcode;
 
-				urlParam.searchCol=["ivreqhd_suppcode"];
+				urlParam.searchCol=["suppcode"];
 				urlParam.searchVal=[data];
 				refreshGrid('#jqGrid', urlParam);
 			},
@@ -936,8 +936,8 @@ $(document).ready(function () {
         	// cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
 		},
 		aftersavefunc: function (rowid, response, options) {
-			$('#ivreqhd_totamount').val(response.responseText);
-			$('#ivreqhd_subamount').val(response.responseText);
+			$('#totamount').val(response.responseText);
+			$('#subamount').val(response.responseText);
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
 	    	//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'add');
@@ -963,9 +963,9 @@ $(document).ready(function () {
 			let editurl = "/inventoryRequestDetail/form?"+
 				$.param({
 					action: 'invReqDetail_save',
-					recno: $('#ivreqhd_recno').val(),
-					reqdept: $('#ivreqhd_reqdept').val(),
-					ivreqno: $('#ivreqhd_ivreqno').val(),
+					recno: $('#recno').val(),
+					reqdept: $('#reqdept').val(),
+					ivreqno: $('#ivreqno').val(),
 					remarks:data.remarks,
 					amount:data.amount,
 					lineno_:data.lineno_,
@@ -1015,14 +1015,14 @@ $(document).ready(function () {
 							param = {
 								_token: $("#_token").val(),
 								action: 'invReqDetail_save',
-								recno: $('#ivreqhd_recno').val(),
+								recno: $('#recno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 							}
 							$.post( "/inventoryRequestDetail/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
-								$('#ivreqhd_amount').val(data);
+								$('#amount').val(data);
 								refreshGrid("#jqGrid2", urlParam2);
 							});
 						}else{
@@ -1133,19 +1133,19 @@ $(document).ready(function () {
 			var param={
     			action: 'invReqDetail_save',
 				_token: $("#_token").val(),
-				recno: $('#ivreqhd_recno').val(),
+				recno: $('#recno').val(),
 				action: 'invReqDetail_save',
-				ivreqno:$('#ivreqhd_ivreqno').val(),
-				reqdt:$('#ivreqhd_reqdt').val(),
-				reqdept:$('#ivreqhd_reqdept').val(),
+				ivreqno:$('#ivreqno').val(),
+				reqdt:$('#reqdt').val(),
+				reqdept:$('#reqdept').val(),
     		}
 
     		$.post( "/inventoryRequestDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				alert(dialog,data.responseText);
 			}).done(function(data){
-				$('#ivreqhd_totamount').val(data);
-				$('#ivreqhd_subamount').val(data);
+				$('#totamount').val(data);
+				$('#subamount').val(data);
 				mycurrency.formatOn();
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
@@ -1461,7 +1461,7 @@ $(document).ready(function () {
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 	var dialog_reqdept = new ordialog(
-		'reqdept', 'sysdb.department', '#ivreqhd_reqdept', errorField,
+		'reqdept', 'sysdb.department', '#reqdept', errorField,
 		{
 			colModel: [
 				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -1473,14 +1473,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				$('#ivreqhd_reqtodept').focus();
+				$('#reqtodept').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#ivreqhd_reqtodept').focus();
+					$('#reqtodept').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1496,7 +1496,7 @@ $(document).ready(function () {
 	dialog_reqdept.makedialog();
 
 	var dialog_reqtodept = new ordialog(
-		'reqtodept','sysdb.department','#ivreqhd_reqtodept',errorField,
+		'reqtodept','sysdb.department','#reqtodept',errorField,
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true, checked:true, or_search:true},
@@ -1507,14 +1507,14 @@ $(document).ready(function () {
 				filterVal:['1', 'ACTIVE','session.compcode','session.unit']
 			},
 			ondblClickRow: function () {
-				$('#ivreqhd_remarks').focus();
+				$('#remarks').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#ivreqhd_remarks').focus();
+					$('#remarks').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1711,7 +1711,7 @@ $(document).ready(function () {
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
-		sortname: 'ivreqhd_idno',
+		sortname: 'idno',
 		sortorder: "desc",
 		onSelectRow: function (rowid, selected) {
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
@@ -1758,7 +1758,7 @@ $(document).ready(function () {
 
 function populate_form(obj){
 	//panel header
-	$('#ivreqno_show').text(obj.ivreqhd_ivreqno);
+	$('#ivreqno_show').text(obj.ivreqno);
 	$('#suppcode_show').text(obj.supplier_name);
 }
 
