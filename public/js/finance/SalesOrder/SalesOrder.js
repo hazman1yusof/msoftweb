@@ -210,7 +210,7 @@ $(document).ready(function () {
 			{ label: 'PO Date', name: 'db_podate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true,},
 			{ label: 'Department Code', name: 'db_deptcode', width: 15, canSearch: true },
-			{ label: 'idno', name: 'db_idno', width: 10, hidden: true },
+			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
 			{ label: 'upduser', name: 'db_upduser', width: 10, hidden: true },
@@ -654,10 +654,15 @@ $(document).ready(function () {
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
 			{
+				label: 'Tax', name: 'taxcode', width: 100, align: 'right', classes: 'wrap',
+				editable: true,
+				editrules: { required: false },editoptions:{readonly: "readonly"},
+			},
+			{
 				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
-				editrules: { required: true },
+				editrules: { required: true },editoptions:{readonly: "readonly"},
 			},
 			{
 				label: '% Bill Type', name: 'percbilltype', width: 100, align: 'right', classes: 'wrap',
@@ -1180,7 +1185,8 @@ $(document).ready(function () {
 	function uomcodeCustomEdit(val,opt){  	
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="uom" type="text" class="form-control input-sm" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>
-			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>`);
+			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
+			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
 	}
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -1293,12 +1299,19 @@ $(document).ready(function () {
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
 		let percbilltype = parseFloat($("#"+id_optid+"_percbilltype").val());
 		let amtbilltype = parseFloat($("#"+id_optid+"_amtbilltype").val());
+		let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
+		console.log(rate)
+
+		let taxamt = ((unitprice*quantity) * rate / 100);
 
 		var amount = ((unitprice*quantity) * percbilltype / 100) + amtbilltype;
 		var discamt = (unitprice*quantity) - amount;
 
+		var amount = amount + taxamt;
+
+		$("#"+id_optid+"_taxamt").val(taxamt);
 		$("#"+id_optid+"_amount").val(amount);
-		$("#"+id_optid+"_discamt").val(discamt);
+		$("#"+id_optid+"_uom_discamt").val(discamt);
 		
 		var id="#jqGrid2 #"+id_optid+"_quantity";
 		var fail_msg = "Quantity Request must be greater than 0";
@@ -1558,6 +1571,8 @@ $(document).ready(function () {
 				{label: 'UOM',name:'uom',width:100,classes:'pointer',},
 				{label: 'Quantity On Hand',name:'qtyonhand',width:100,classes:'pointer',},
 				{label: 'Price',name:'price',width:100,classes:'pointer'},
+				{label: 'Tax',name:'taxcode',width:100,classes:'pointer'},
+				{label: 'rate',name:'rate',hidden:true},
 				
 			],
 			urlParam: {
@@ -1578,6 +1593,8 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_chggroup.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_chggroup").val(data['chgcode']);
+				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['taxcode']);
+				$("#jqGrid2 #"+id_optid+"_uom_rate").val(data['rate']);
 				$("#jqGrid2 #"+id_optid+"_qtyonhand").val(data['qtyonhand']);
 				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['uom']);
 				$("#jqGrid2 #"+id_optid+"_unitprice").val(data['price']);
@@ -1595,7 +1612,7 @@ $(document).ready(function () {
 
 			}
 		},{
-			title:"Select Item For Purchase Order",
+			title:"Select Item For Sales Order",
 			open:function(obj_){
 				dialog_chggroup.urlParam.url = "/SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action = 'get_itemcode_price';

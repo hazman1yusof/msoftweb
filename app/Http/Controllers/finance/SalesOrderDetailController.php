@@ -86,15 +86,19 @@ class SalesOrderDetailController extends defaultController
         $rows = $paginate->items();
 
         foreach ($rows as $key => $value) {
-            $chgprice_obj = DB::table('hisdb.chgprice')
-                ->where('compcode', '=', session('compcode'))
-                ->where('chgcode', '=', $value->chgcode)
-                ->whereDate('effdate', '<=', Carbon::now('Asia/Kuala_Lumpur'))
-                ->orderBy('effdate','desc');
+            $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                ->select('cp.amt1','cp.optax','tm.rate')
+                ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
+                ->where('cp.compcode', '=', session('compcode'))
+                ->where('cp.chgcode', '=', $value->chgcode)
+                ->whereDate('cp.effdate', '<=', Carbon::now('Asia/Kuala_Lumpur'))
+                ->orderBy('cp.effdate','desc');
 
             if($chgprice_obj->exists()){
                 $chgprice_obj = $chgprice_obj->first();
                 $rows[$key]->price = $chgprice_obj->amt1;
+                $rows[$key]->taxcode = $chgprice_obj->optax;
+                $rows[$key]->rate = $chgprice_obj->rate;
             }
 
             if($value->invflag == '1'){
@@ -170,7 +174,7 @@ class SalesOrderDetailController extends defaultController
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
-                    // 'taxcode' => 'chgprice.optax'
+                    'taxcode' => $request->taxcode
                 ]);
 
             ///3. calculate total amount from detail

@@ -61,7 +61,6 @@ class SalesOrderController extends defaultController
         try { 
 
             $auditno = $this->recno('PB','IN');
-            // $invno = $this->recno('PB','INV'); buat lepas posted
 
             $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('compcode','=',session('compcode'))
@@ -83,6 +82,7 @@ class SalesOrderController extends defaultController
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
                 'entrydate' => strtoupper($request->db_entrydate),
+                'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'hdrtype' => strtoupper($request->db_hdrtype),
                 'mrn' => strtoupper($request->db_mrn),
                 // 'billno' => $invno,
@@ -165,79 +165,132 @@ class SalesOrderController extends defaultController
 
             foreach ($request->idno_array as $value){
 
-                $purreqhd = DB::table("hisdb.billdet")
-                    ->where('idno','=',$value);
+                $invno = $this->recno('PB','INV');
 
-                $purreqhd_get = $purreqhd->first();
-                if($purreqhd_get->recstatus != 'OPEN' || empty(floatval($purreqhd_get->subamount))){
-                    continue;
-                }
+                $dbacthdr = DB::table("debtor.dbacthdr")
+                            ->where('idno','=',$value)
+                            ->first();
 
-                if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
+                $department = DB::table("sysdb.department")
+                            ->where('deptcode','=',$dbacthdr->deptcode)
+                            ->first();
 
-                    // 1. check authorization
-                    $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PR')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','SUPPORT')
-                        ->where('deptcode','=',$purreqhd_get->reqdept)
-                        ->where('maxlimit','>=',$purreqhd_get->totamount);
+                $billsum = DB::table("debtor.billsum")
+                            ->where('source','=',$dbacthdr->source)
+                            ->where('trantype','=',$dbacthdr->trantype)
+                            ->where('auditno','=',$dbacthdr->auditno)
+                            ->get();
 
-                    if(!$authorise->exists()){
 
-                        $authorise = DB::table('material.authdtl')
+                foreach ($billsum as $billsum_obj){
+
+                    $chgmast = DB::table("hisdb.chgmast")
                             ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PR')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','SUPPORT')
-                            ->where('deptcode','=','ALL')
-                            // ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purreqhd_get->totamount);
+                            ->where('chgcode','=',$billsum_obj->chggroup)
+                            ->first();
 
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase request doesnt exists");
-                            }
+                    $updinv = ($chgmast->invflag == '1')? 1 : 0;
 
-                    }
-
-                    $authorise_use = $authorise->first();
-                    DB::table("material.queuepr")
+                    DB::table("hisdb.billdet")
                         ->insert([
-                            'compcode' => session('compcode'),
-                            'recno' => $purreqhd_get->recno,
-                            'AuthorisedID' => $authorise_use->authorid,
-                            'deptcode' => $purreqhd_get->reqdept,
-                            'recstatus' => 'REQUEST',
-                            'trantype' => 'SUPPORT',
+                            'compcode'  => session('compcode'),
+                            'mrn'  => $billsum_obj->mrn,
+                            'episno'  => $billsum_obj->episno,
+                            'trxdate' => $dbacthdr->entrydate,
+                            'chgcode' => $billsum_obj->chggroup,
+                            'billflag' => 1,
+                            'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'billtype'  => $billsum_obj->billtype,
+                            'chg_class' => $chgmast->chgclass,
+                            'unitprce' => $billsum_obj->unitprice,
+                            'quantity' => $billsum_obj->quantity,
+                            'amount' => $billsum_obj->amount,
+                            'trxtime' => $dbacthdr->entrytime,
+                            'chggroup' => $chgmast->chggroup,
+                            'taxamount' => $billsum_obj->taxamt,
+                            'billno' => $invno,
+                            'uom' => $billsum_obj->uom,
+                            'billtime' => $dbacthdr->entrytime,
+                            'invgroup' => $chgmast->invgroup,
+                            'reqdept' => $dbacthdr->deptcode,
+                            'isudept' => $dbacthdr->deptcode,
+                            'invcode' => $chgmast->chggroup,
+                            // 'inventory' => $chgmast->invflag,
+                            // 'updinv' =>  $updinv,
+                            'discamt' => $billsum_obj->discamt,
+                            // 'qtyorder' => $billsum_obj->quantity,
+                            // 'qtyissue' => $billsum_obj->quantity,
+                            // 'units' => $department->sector,
+                            // 'chgtype' => $chgmast->chgtype,
                             'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            // 'qtydispense' => $billsum_obj->quantity,
+                            'taxcode' => $billsum_obj->taxcode,
+                            'recstatus' => 'POSTED',
                         ]);
 
-                    // 3. update status to posted
-                    $purreqhd->update([
-                            'requestby' => session('username'),
-                            'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'supportby' => $authorise_use->authorid,
-                            'recstatus' => 'REQUEST'
-                        ]);
-
-                    DB::table("material.purreqdt")
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'recstatus' => 'REQUEST',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    DB::table("hisdb.chargetrx")
+                        ->insert([
+                            'compcode'  => session('compcode'),
+                            'mrn'  => $billsum_obj->mrn,
+                            'episno'  => $billsum_obj->episno,
+                            'trxdate' => $dbacthdr->entrydate,
+                            'chgcode' => $billsum_obj->chggroup,
+                            'billflag' => 1,
+                            'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'billtype'  => $billsum_obj->billtype,
+                            'chg_class' => $chgmast->chgclass,
+                            'unitprce' => $billsum_obj->unitprice,
+                            'quantity' => $billsum_obj->quantity,
+                            'amount' => $billsum_obj->amount,
+                            'trxtime' => $dbacthdr->entrytime,
+                            'chggroup' => $chgmast->chggroup,
+                            'taxamount' => $billsum_obj->taxamt,
+                            'billno' => $invno,
+                            'uom' => $billsum_obj->uom,
+                            'billtime' => $dbacthdr->entrytime,
+                            'invgroup' => $chgmast->invgroup,
+                            'reqdept' => $dbacthdr->deptcode,
+                            'isudept' => $dbacthdr->deptcode,
+                            'invcode' => $chgmast->chggroup,
+                            'inventory' => $chgmast->invflag,
+                            'updinv' =>  $updinv,
+                            'discamt' => $billsum_obj->discamt,
+                            'qtyorder' => $billsum_obj->quantity,
+                            'qtyissue' => $billsum_obj->quantity,
+                            'units' => $department->sector,
+                            'chgtype' => $chgmast->chgtype,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'qtydispense' => $billsum_obj->quantity,
+                            'taxcode' => $billsum_obj->taxcode,
+                            'recstatus' => 'POSTED',
                         ]);
 
                 }
-            }
 
+
+                DB::table("debtor.dbacthdr")
+                    ->where('idno','=',$value)
+                    ->update([
+                        'invno' => $invno,
+                        'recstatus' => 'POSTED',
+                        'posteddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+
+            }
+           
             DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
-            return response($e->getMessage(), 500);
+
+            return response($e->getMessage().$e, 500);
         }
     }
 
