@@ -48,7 +48,7 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
-						$("#reqdept").val($("#x").val());
+						$("#reqdept").val($("#deptcode").val());
 						break;
 					case state = 'edit':
 						$("#pg_jqGridPager2 table").show();
@@ -115,9 +115,11 @@ $(document).ready(function () {
 		field:'',
 		table_name: ['material.ivreqhd'],
 		table_id: 'idno',
-		WhereInCol:['ivreqhd.recstatus'],
-		WhereInVal: recstatus_filter,
-		fixPost: true,
+		filterCol: ['reqtodept'],
+		filterVal: [$('#deptcode').val()],
+		// WhereInCol:['ivreqhd.recstatus'],
+		// WhereInVal: recstatus_filter,
+		//fixPost: true,
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam = {
@@ -131,13 +133,17 @@ $(document).ready(function () {
 		//returnVal: true,
 	};
 
-	 function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+	function padzero(cellvalue, options, rowObject){
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
 		}
-		return pad(str, cellvalue, true);
+		if(cellvalue == null){
+			return '';
+		}else{
+			return pad(str, cellvalue, true);
+		}
 	}
 
 	function unpadzero(cellvalue, options, rowObject){
@@ -173,7 +179,7 @@ $(document).ready(function () {
 			{ label: 'Request Date', name: 'reqdt', width: 20, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Amount', name: 'amount', width: 20, align: 'right', formatter: 'currency' },
 			{ label: 'Recstatus', name: 'recstatus', width: 20},
-			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
+			//{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'Remarks', name: 'remarks', width: 50, classes: 'wrap', hidden:true},
 			{ label: 'Request Type', name: 'reqtype', width: 50, hidden:true},
@@ -192,7 +198,7 @@ $(document).ready(function () {
 			// { label: 'supportdate', name: 'supportdate', width: 40, hidden: true},
 			// { label: 'verifiedby', name: 'verifiedby', width: 90, hidden: true },
 			// { label: 'verifieddate', name: 'verifieddate', width: 90, hidden: true },
-			// { label: 'approvedby', name: 'papprovedby', width: 90, hidden: true },
+			// { label: 'approvedby', name: 'approvedby', width: 90, hidden: true },
 			// { label: 'approveddate', name: 'approveddate', width: 40, hidden: true},
 
 			{ label: 'reopenby', name: 'reopenby', width: 40, hidden: true},
@@ -212,29 +218,34 @@ $(document).ready(function () {
 		height: 200,
 		rowNum: 30,
 		pager: "#jqGridPager",
-		onSelectRow: function (rowid, selected) {
+		onSelectRow:function(rowid, selected){
 			$('#error_infront').text('');
-			let stat = selrowData("#jqGrid").recstatus;
+			let stat = selrowData("#jqGrid").delordhd_recstatus;
 			let scope = $("#recstatus_use").val();
 
-			// $('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-			// if (stat == scope || stat == "CANCELLED") {
-			// 	$('#but_reopen_jq').show();
-			// } else {
-			// 	if(scope == 'ALL'){
-			// 		if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
-			// 			$('#but_cancel_jq,#but_post_single_jq').show();
-			// 		}else if(stat=='OPEN'){
-			// 			$('#but_post_jq').show();
-			// 		}
-			// 	}else{
-			// 		if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-			// 			$('#but_cancel_jq,#but_post_single_jq').show();
-			// 		}else{
-			// 			$('#but_post_jq').show();
-			// 		}
-			// 	}
-			// }
+			// $('#but_post_single_jq,#but_cancel_jq,#but_soft_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			if (stat == scope ) {
+				$('#but_cancel_jq').show();
+			//} else if ( stat == "OPEN" ){
+				//$('#but_soft_cancel_jq').show();
+			} else if ( stat == "CANCELLED" ){
+				$('#but_reopen_jq').show();
+			} else {
+				if(scope.toUpperCase() == 'ALL'){
+					// $('#but_post_jq').show();
+					// if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
+					// 	$('#but_post_single_jq').show();
+					// }else if(stat=='OPEN'){
+					// 	$('#but_post_jq').show();
+					// }
+				}else{
+					// if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+					// 	$('#but_post_single_jq').show();
+					// }else{
+					// 	$('#but_post_jq').show();
+					// }
+				}
+			}
 			urlParam2.filterVal[0] = selrowData("#jqGrid").recno;
 			
 			$('#reqnodepan').text(selrowData("#jqGrid").ivreqno);//tukar kat depan tu
@@ -254,7 +265,7 @@ $(document).ready(function () {
 			}
 		},
 		gridComplete: function () {
-			cbselect.show_hide_table();
+			//cbselect.show_hide_table();
 			if (oper == 'add' || oper == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
@@ -354,13 +365,52 @@ $(document).ready(function () {
 	// 		//2nd successs?
 	// 	});
 	// });
-	$('#jqGrid2_ilcancel').click(function(){
-		$(".noti").empty();
+	// $('#jqGrid2_ilcancel').click(function(){
+	// 	$(".noti").empty();
+	// });
+
+	// $("#but_post_jq,#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+	// 	$(this).attr('disabled',true);
+	// 	var self_ = this;
+	// 	var idno_array = [];
+	
+	// 	idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+	// 	var obj={};
+	// 	obj.idno_array = idno_array;
+	// 	obj.oper = $(this).data('oper');
+	// 	obj._token = $('#_token').val();
+		
+	// 	$.post( '/inventoryRequest/form', obj , function( data ) {
+	// 		refreshGrid('#jqGrid', urlParam);
+	// 		$(self_).attr('disabled',false);
+	// 		cbselect.empty_sel_tbl();
+	// 	}).fail(function(data) {
+	// 		$('#error_infront').text(data.responseText);
+	// 		$(self_).attr('disabled',false);
+	// 	}).success(function(data){
+	// 		$(self_).attr('disabled',false);
+	// 	});
+	// });
+
+	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+
+		var idno = selrowData('#jqGrid').idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = $(this).data('oper')+'_single';
+
+		$.post( '/inventoryRequest/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
+		});
 	});
 
-	$("#but_post_jq,#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
-		$(this).attr('disabled',true);
-		var self_ = this;
+
+	$("#but_post_jq").click(function(){
 		var idno_array = [];
 	
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
@@ -370,14 +420,12 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		
 		$.post( '/inventoryRequest/form', obj , function( data ) {
-			refreshGrid('#jqGrid', urlParam);
-			$(self_).attr('disabled',false);
 			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
-			$(self_).attr('disabled',false);
 		}).success(function(data){
-			$(self_).attr('disabled',false);
+			
 		});
 	});
 
@@ -841,9 +889,9 @@ $(document).ready(function () {
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
 
-		if(options.gid == "jqGrid"){
+		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid"){
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
 			return ' ';
