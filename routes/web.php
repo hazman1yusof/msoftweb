@@ -335,6 +335,7 @@ Route::post('/SalesOrder/form','finance\SalesOrderController@form');
 Route::get('/SalesOrder/form','finance\SalesOrderController@form');
 Route::post('/SalesOrderDetail/form','finance\SalesOrderDetailController@form');
 Route::get('/SalesOrderDetail/table','finance\SalesOrderDetailController@table');
+Route::get('/SalesOrder/showpdf','finance\SalesOrderController@showpdf');
 
 //// Delivery Department material setup ///
 Route::get('/deliveryDept','material\DeliveryDeptController@show');

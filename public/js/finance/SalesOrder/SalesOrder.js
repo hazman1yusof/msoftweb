@@ -242,6 +242,8 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3", urlParam2);
 			populate_form(selrowData("#jqGrid"));
 
+			$("#pdfgen1").attr('href','./SalesOrder/showpdf?recno='+selrowData("#jqGrid").purreqhd_recno);
+
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;

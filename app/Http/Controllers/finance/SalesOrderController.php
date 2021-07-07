@@ -8,6 +8,7 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use PDF;
 
 class SalesOrderController extends defaultController
 {   
@@ -612,6 +613,46 @@ class SalesOrderController extends defaultController
             return response($e->getMessage(), 500);
         }
     }
+
+    public function showpdf(Request $request){
+        $mrn = $request->mrn;
+        if(!$mrn){
+            abort(404);
+        }
+
+        $dbacthdr = DB::table('debtor.billsum')
+            ->where('mrn','=',$mrn)
+            ->first();
+
+        $billsum = DB::table('debtor.billsum AS blsm', 'material.productmaster AS p', 'material.uom as u')
+            ->select('blsm.compcode', 'blsm.idno', 'blsm.mrn', 'blsm.auditno', 'blsm.lineno_', 'blsm.chgclass', 'blsm.chggroup', 'p.description', 'blsm.uom', 'blsm.quantity', 'blsm.amount', 'blsm.outamt', 'blsm.taxamt', 'blsm.unitprice', 'blsm.taxcode', 'blsm.discamt', 'blsm.recstatus', 'u.description as uom_desc')
+            ->leftJoin('material.productmaster as p', 'blsm.description', '=', 'p.description')
+            ->leftJoin('material.uom as u', 'blsm.uom', '=', 'u.uomcode')
+            ->where('mrn','=',$mrn)
+            ->get();
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
+        $totamount_expld = explode(".", (float)$dbacthdr->amount);
+
+        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
+        $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        if(count($totamount_expld) > 1){
+            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
+            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        }
+
+        $pdf = PDF::loadView('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company'));
+        return $pdf->stream();      
+
+        
+        return view('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company'));
+    }
+
+    //function sendmeail($data) -- nak kena ada atau tak
 
     function skip_authorization(Request $request, $deptcode, $idno){
         $authdtl = DB::table('material.authdtl')
