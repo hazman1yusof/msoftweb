@@ -538,7 +538,7 @@ $(document).ready(function () {
 			    }
 			    var postobj={
 			    	_token : $('#csrf_token').val(),
-			    	examcode : $('#examcode').val(),
+			    	examcode : $('#examcodes').val(),
 			    	description : $('#descriptions').val(),
 			    };
 
