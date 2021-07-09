@@ -617,20 +617,22 @@ class SalesOrderController extends defaultController
     }
 
     public function showpdf(Request $request){
-        $recno = $request->recno;
-        if(!$recno){
+        $auditno = $request->auditno;
+        if(!$auditno){
             abort(404);
         }
 
         $dbacthdr = DB::table('debtor.billsum')
-            ->where('mrn','=',$mrn)
+            ->where('auditno','=',$auditno)
             ->first();
 
-        $billsum = DB::table('debtor.billsum AS blsm', 'material.productmaster AS p', 'material.uom as u')
+        $billsum = DB::table('debtor.billsum AS blsm', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d')
             ->select('blsm.compcode', 'blsm.idno', 'blsm.mrn', 'blsm.auditno', 'blsm.lineno_', 'blsm.chgclass', 'blsm.chggroup', 'p.description', 'blsm.uom', 'blsm.quantity', 'blsm.amount', 'blsm.outamt', 'blsm.taxamt', 'blsm.unitprice', 'blsm.taxcode', 'blsm.discamt', 'blsm.recstatus', 'u.description as uom_desc')
             ->leftJoin('material.productmaster as p', 'blsm.description', '=', 'p.description')
             ->leftJoin('material.uom as u', 'blsm.uom', '=', 'u.uomcode')
-            ->where('mrn','=',$mrn)
+            //->where('mrn','=',$mrn)
+            ->where('auditno','=',$auditno)
+
             ->get();
 
         $company = DB::table('sysdb.company')

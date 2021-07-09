@@ -23,12 +23,12 @@
 	      		<p>{{$company->address4}}</p>
 	    		
 	      </td>
-	      <td colspan="2"><b>PO Number</b></td>
-	      <td colspan="3">{{$dbacthdr->ponum}}</td>
+	      <td colspan="2"><b>invoice Number</b></td>
+	      <td colspan="3">{{$dbacthdr->invno}}</td>
 	    </tr>
 	    <tr>
-	      <td colspan="2"><b>PO Date</b></td>
-	      <td colspan="3">{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->podate)->format('d-m-Y')}}</td>
+	      <td colspan="2"><b>Quantity</b></td>
+	      <td colspan="3">{{$dbacthdr->quantity}}</td>
 	    </tr>
 	    <tr>
 		<td colspan="2"><b>MRN</b></td>

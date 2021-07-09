@@ -242,7 +242,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3", urlParam2);
 			populate_form(selrowData("#jqGrid"));
 
-			$("#pdfgen1").attr('href','./SalesOrder/showpdf?recno='+selrowData("#jqGrid").purreqhd_recno);
+			$("#pdfgen1").attr('href','./SalesOrder/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
 
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
