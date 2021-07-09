@@ -10,7 +10,7 @@
 	      	<img src="{{public_path().$company->logo1}}" height="75px">
 	      </td>
 	      <td colspan="5" style="font-size:16px;text-align: center;padding-top: 40px">
-	      		<p><h2>SALES ORDERRRR</h2></p>
+	      		<p><h2>{{$title}}</h2></p>
 	      </td>
 	    </tr>
 
@@ -23,12 +23,12 @@
 	      		<p>{{$company->address4}}</p>
 	    		
 	      </td>
-	      <td colspan="2"><b>invoice Number</b></td>
-	      <td colspan="3">{{$dbacthdr->invno}}</td>
+	      <td colspan="2"><b>Auditno Number</b></td>
+	      <td colspan="3">{{$dbacthdr->auditno}}</td>
 	    </tr>
 	    <tr>
-	      <td colspan="2"><b>Quantity</b></td>
-	      <td colspan="3">{{$dbacthdr->quantity}}</td>
+	      <td colspan="2"><b>PO Date</b></td>
+	      <td colspan="3">{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->podate)->format('d-m-Y')}}</td>
 	    </tr>
 	    <tr>
 		<td colspan="2"><b>MRN</b></td>
@@ -39,8 +39,7 @@
 	      <td colspan="3">1/1</td>
 	    </tr>
 	    <tr>
-	    	<td><b>No.</b></td>
-	    	<td colspan="4"><b>Description</b></td>
+	    	<td colspan="5"><b>Description</b></td>
 	    	<td><b>Uom</b></td>
 	    	<td><b>Quantity</b></td>
 	    	<td><b>Unit Price</b></td>
@@ -49,12 +48,7 @@
 	    </tr>
 
 	    <tr >
-	    	<!-- <td height=320>
-	    		@foreach ($billsum as $index=>$obj)
-	    			<p>{{++$index}}</p>
-	    		@endforeach
-	    	</td> -->
-	    	<td colspan="4"> <!-- description -->
+	    	<td colspan="5" height="320"> <!-- description -->
 	    		@foreach ($billsum as $obj)
 	    			<p>{{$obj->description}}</p>
 	    		@endforeach
@@ -100,11 +94,11 @@
 	    <tr>
 	    	<td colspan="5" rowspan="2">
 	    		<p><i>Please Deliver goods/services/works with original purchase order, delivery order and invoice to:</i></p>
+	    		<p><b>Name</b></p>
+	    		<p>&nbsp;</p>
 	    		<p><b>Address</b></p>
 	    		<p>&nbsp;</p>
 	    		<p>&nbsp;</p>
-	    		<p>&nbsp;</p>
-	    		<p><b>Contact Person</b></p>
 	    		<p>&nbsp;</p>
 	    		<p><b>Tel No.</b></p>
 	    		<p>&nbsp;</p>
@@ -131,7 +125,6 @@
 	    		<p>&nbsp;</p>
 	    	</td>
 	    </tr>
-
 
 	  </tbody>
 	</table>

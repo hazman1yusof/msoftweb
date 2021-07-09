@@ -668,12 +668,12 @@ $(document).ready(function () {
 			},
 			{
 				label: '% Bill Type', name: 'percbilltype', width: 100, align: 'right', classes: 'wrap',
-				editable: true,
+				editable: false,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
 			{
-				label: 'Amount Bill Type', name: 'amtbilltype', width: 100, align: 'right', classes: 'wrap', editable: true,
+				label: 'Amount Bill Type', name: 'amtbilltype', width: 100, align: 'right', classes: 'wrap', editable: false,
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},

@@ -622,14 +622,22 @@ class SalesOrderController extends defaultController
             abort(404);
         }
 
-        $dbacthdr = DB::table('debtor.billsum')
+        $dbacthdr = DB::table('debtor.dbacthdr')
             ->where('auditno','=',$auditno)
             ->first();
 
-        $billsum = DB::table('debtor.billsum AS blsm', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d')
-            ->select('blsm.compcode', 'blsm.idno', 'blsm.mrn', 'blsm.auditno', 'blsm.lineno_', 'blsm.chgclass', 'blsm.chggroup', 'p.description', 'blsm.uom', 'blsm.quantity', 'blsm.amount', 'blsm.outamt', 'blsm.taxamt', 'blsm.unitprice', 'blsm.taxcode', 'blsm.discamt', 'blsm.recstatus', 'u.description as uom_desc')
-            ->leftJoin('material.productmaster as p', 'blsm.description', '=', 'p.description')
-            ->leftJoin('material.uom as u', 'blsm.uom', '=', 'u.uomcode')
+        if ( $dbacthdr->recstatus = "POSTED") {
+            $title = "INVOICE";
+        }else {
+            $title = "DRAFT INVOICE";
+        }
+
+        $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d')
+            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'p.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'u.description as uom_desc', 'd.debtorcode','d.name')
+            ->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
+            ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
+            ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
+
             //->where('mrn','=',$mrn)
             ->where('auditno','=',$auditno)
 
@@ -649,11 +657,11 @@ class SalesOrderController extends defaultController
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
 
-        $pdf = PDF::loadView('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company'));
+        $pdf = PDF::loadView('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
         return $pdf->stream();      
 
         
-        return view('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company'));
+        return view('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
     }
 
     //function sendmeail($data) -- nak kena ada atau tak
