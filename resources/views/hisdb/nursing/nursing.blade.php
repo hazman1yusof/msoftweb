@@ -966,6 +966,18 @@
 												</div>
 											</div>
 
+											<div class='col-md-12'>
+												<div class="panel panel-info" id="jqGridAddNotesTriage_c">
+													<div class="panel-heading text-center">ADDITIONAL NOTES</div>
+													<div class="panel-body">
+														<div class='col-md-12' style="padding:0 0 15px 0">
+															<table id="jqGridAddNotesTriage" class="table table-striped"></table>
+															<div id="jqGridPagerAddNotesTriage"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+
 										</div>
 									</div>
 								</div>

@@ -114,7 +114,7 @@ $(document).ready(function () {
 			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'Note', name: 'additionalnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
-			{ label: 'Added by', name: 'adduser', width: 50, hidden:false},
+			{ label: 'Entered by', name: 'adduser', width: 50, hidden:false},
 			{ label: 'Date', name: 'adddate', width: 50, hidden:false},
 		],
 		autowidth: true,

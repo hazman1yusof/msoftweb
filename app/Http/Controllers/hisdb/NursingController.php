@@ -63,6 +63,9 @@ class NursingController extends defaultController
             case 'get_table_triage':
                 return $this->get_table_triage($request);
 
+            case 'addNotesTriage_save':
+                return $this->addNotes_triage($request);
+
             default:
                 return 'error happen..';
         }
@@ -1209,6 +1212,33 @@ class NursingController extends defaultController
 
         return $location;
 
+    }
+
+    public function addNotes_triage(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('nursing.triage_addnotes')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'location' => 'TRIAGE',
+                    'additionalnote' => $request->additionalnote,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
+                    
+                ]);
+
+             DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
 }
