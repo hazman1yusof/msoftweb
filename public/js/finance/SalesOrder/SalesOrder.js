@@ -725,6 +725,10 @@ $(document).ready(function () {
 			});
 			fdl.set_array().reset();
 			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+
+			if(oper == 'edit'){
+				get_billtype();
+			}
 			//calculate_quantity_outstanding('#jqGrid2');
 		},
 		afterShowForm: function (rowid) {
@@ -997,7 +1001,6 @@ $(document).ready(function () {
 			mycurrency2.array.length = 0;
 			mycurrency_np.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-			dialog_pricecode.renull_search();
 		    for (var i = 0; i < ids.length; i++) {
 
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
@@ -1580,8 +1583,8 @@ $(document).ready(function () {
 			urlParam: {
 					url:"/SalesOrderDetail/table",
 					action: 'get_itemcode_price',
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
+					filterCol:['compcode','recstatus','price'],
+					filterVal:['session.compcode','ACTIVE',$('#pricebilltype').val()]
 				},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1618,6 +1621,8 @@ $(document).ready(function () {
 			open:function(obj_){
 				dialog_chggroup.urlParam.url = "/SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action = 'get_itemcode_price';
+				dialog_chggroup.urlParam.filterCol = ['compcode','recstatus','price'];
+				dialog_chggroup.urlParam.filterVal = ['session.compcode','ACTIVE',$('#pricebilltype').val()];
 
 			},
 			close: function(){
@@ -1776,6 +1781,12 @@ function get_billtype(){
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
 				let data_ = data.rows[0];
+				var rowids = $('#jqGrid2').jqGrid('getDataIDs');
+				rowids.forEach(function(e,i){
+					$('#jqGrid2').jqGrid('setRowData', e, {amtbilltype:data_.percent_,percbilltype:data_.amount});
+				});
+
+				$('#pricebilltype').val(data_.price);
 				$("#jqGrid2 input[name='percbilltype']").val(data_.percent_);
 				$("#jqGrid2 input[name='amtbilltype']").val(data_.amount);
 			}

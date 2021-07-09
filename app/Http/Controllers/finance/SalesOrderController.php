@@ -63,10 +63,12 @@ class SalesOrderController extends defaultController
 
             $auditno = $this->recno('PB','IN');
 
-            $pat_mast = DB::table('hisdb.pat_mast')
+            if(!empty($request->db_mrn)){
+                $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('compcode','=',session('compcode'))
                             ->where('MRN','=',$request->db_mrn)
                             ->first();
+            }
 
             $array_insert = [
                 'source' => 'PB',
@@ -87,7 +89,7 @@ class SalesOrderController extends defaultController
                 'hdrtype' => strtoupper($request->db_hdrtype),
                 'mrn' => strtoupper($request->db_mrn),
                 // 'billno' => $invno,
-                'episno' => $pat_mast->Episno,
+                'episno' => (!empty($request->db_mrn))?$pat_mast->Episno:null,
                 'termdays' => strtoupper($request->db_termdays),
                 'termmode' => strtoupper($request->db_termmode),
                 'orderno' => strtoupper($request->db_orderno),
@@ -615,8 +617,8 @@ class SalesOrderController extends defaultController
     }
 
     public function showpdf(Request $request){
-        $mrn = $request->mrn;
-        if(!$mrn){
+        $recno = $request->recno;
+        if(!$recno){
             abort(404);
         }
 

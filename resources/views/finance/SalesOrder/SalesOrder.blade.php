@@ -211,6 +211,8 @@ i.fa {
 						<input id="db_idno" name="db_idno" type="hidden">
 						<input id="db_source" name="db_source" type="hidden">
 						<input id="db_trantype" name="db_trantype" type="hidden">
+						<input id="pricebilltype" name="pricebilltype" type="hidden">
+
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="db_deptcode">Store Dept</label>	 

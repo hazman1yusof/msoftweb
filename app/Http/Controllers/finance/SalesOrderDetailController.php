@@ -77,6 +77,20 @@ class SalesOrderDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('recstatus','<>','DELETE')
                     ->orderBy('idno','desc');
+        switch ($request->filterVal[2]) {
+            case 'PRICE1':
+                $cp_fld = 'amt1';
+                break;
+            case 'PRICE2':
+                $cp_fld = 'amt2';
+                break;
+            case 'PRICE3':
+                $cp_fld = 'amt2';
+                break;
+            default:
+                $cp_fld = 'costprice';
+                break;
+        }
 
         if(!empty($request->searchCol)){
             $table = $table->where($request->searchCol[0],'LIKE',$request->searchVal[0]);
@@ -87,16 +101,30 @@ class SalesOrderDetailController extends defaultController
 
         foreach ($rows as $key => $value) {
             $chgprice_obj = DB::table('hisdb.chgprice as cp')
-                ->select('cp.amt1','cp.optax','tm.rate')
+                ->select($cp_fld,'cp.optax','tm.rate')
                 ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
                 ->where('cp.compcode', '=', session('compcode'))
                 ->where('cp.chgcode', '=', $value->chgcode)
                 ->whereDate('cp.effdate', '<=', Carbon::now('Asia/Kuala_Lumpur'))
                 ->orderBy('cp.effdate','desc');
 
+
             if($chgprice_obj->exists()){
                 $chgprice_obj = $chgprice_obj->first();
-                $rows[$key]->price = $chgprice_obj->amt1;
+                switch ($request->filterVal[2]) {
+                    case 'PRICE1':
+                        $rows[$key]->price = $chgprice_obj->amt1;
+                        break;
+                    case 'PRICE2':
+                        $rows[$key]->price = $chgprice_obj->amt2;
+                        break;
+                    case 'PRICE3':
+                        $rows[$key]->price = $chgprice_obj->amt3;
+                        break;
+                    default:
+                        $rows[$key]->price = $chgprice_obj->costprice;
+                        break;
+                }
                 $rows[$key]->taxcode = $chgprice_obj->optax;
                 $rows[$key]->rate = $chgprice_obj->rate;
             }
@@ -163,8 +191,8 @@ class SalesOrderDetailController extends defaultController
                     'auditno' => $auditno,
                     'chggroup' => $request->chggroup,
                     'lineno_' => 1,
-                    'mrn' => $dbacthdr_obj->mrn,
-                    'episno' => $dbacthdr_obj->episno,
+                    'mrn' => (!empty($dbacthdr_obj->mrn))?$dbacthdr_obj->mrn:null,
+                    'episno' => (!empty($dbacthdr_obj->episno))?$dbacthdr_obj->episno:null,
                     'uom' => $request->uom,
                     'unitprice' => $request->unitprice,
                     'quantity' => $request->quantity,
