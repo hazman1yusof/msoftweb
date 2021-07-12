@@ -354,7 +354,7 @@ $(document).ready(function () {
 			"_token": $("#csrf_token").val()
 		},
 		oneditfunc: function (rowid) {
-			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotestriage").hide();
+			$("#jqGridPagerDelete_addnotestriage,#jqGridPagerRefresh_addnotestriage").hide();
 
 			$("input[name='additionalnote']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -369,7 +369,7 @@ $(document).ready(function () {
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			errorField.length=0;
-			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotestriage").show();
+			$("#jqGridPagerDelete_addnotestriage,#jqGridPagerRefresh_addnotestriage").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
@@ -391,7 +391,7 @@ $(document).ready(function () {
 			$("#jqGridAddNotesTriage").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
-			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotestriage").show();
+			$("#jqGridPagerDelete_addnotestriage,#jqGridPagerRefresh_addnotestriage").show();
 		},
 		errorTextFormat: function (data) {
 			alert(data);
@@ -411,7 +411,7 @@ $(document).ready(function () {
 		// editParams: myEditOptions_edit
 	})
 	// .jqGrid('navButtonAdd', "#jqGridPagerAddNotesTriage", {
-	// 	id: "jqGridPagerDelete",
+	// 	id: "jqGridPagerDelete_addnotestriage",
 	// 	caption: "", cursor: "pointer", position: "last",
 	// 	buttonicon: "glyphicon glyphicon-trash",
 	// 	title: "Delete Selected Row",
@@ -434,7 +434,7 @@ $(document).ready(function () {
 	// 					refreshGrid("#jqGridAddNotesTriage", urlParam_AddNotesTriage);
 	// 				});
 	// 			}else{
-	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotestriage").show();
+	// 				$("#jqGridPagerDelete_addnotestriage,#jqGridPagerRefresh_addnotestriage").show();
 	// 			}
 	// 		}
 	// 	},
