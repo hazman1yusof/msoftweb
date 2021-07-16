@@ -1710,7 +1710,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','POSTED']
+				filterVal:['session.compcode', ['POSTED' || 'ISSUED']]
 			},	
 			ondblClickRow:function(){
 				$('#sndrcvtype').focus();
@@ -1729,7 +1729,7 @@ $(document).ready(function () {
 			title:"Select Request RecNo",
 			open: function(){
 				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus'];
-				dialog_requestRecNo.urlParam.filterVal=['session.compcode','POSTED'];
+				dialog_requestRecNo.urlParam.filterVal=['session.compcode',['POSTED' || 'ISSUED']];
 			}
 		}, 'urlParam','radio','tab'
 	);
