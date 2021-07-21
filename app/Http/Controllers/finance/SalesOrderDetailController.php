@@ -190,6 +190,7 @@ class SalesOrderDetailController extends defaultController
                     'trantype' => $trantype,
                     'auditno' => $auditno,
                     'chggroup' => $request->chggroup,
+                    'description' => $request->description,
                     'lineno_' => 1,
                     'mrn' => (!empty($dbacthdr_obj->mrn))?$dbacthdr_obj->mrn:null,
                     'episno' => (!empty($dbacthdr_obj->episno))?$dbacthdr_obj->episno:null,
