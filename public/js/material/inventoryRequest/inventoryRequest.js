@@ -176,7 +176,7 @@ $(document).ready(function () {
 			{ label: 'Request Department', name: 'reqdept', width: 30, canSearch: true },
 			{ label: 'Request No', name: 'ivreqno', width: 25, canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Request To Department', name: 'reqtodept', width: 30, classes: 'wrap' },
-			{ label: 'Request Date', name: 'reqdt', width: 20, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Request Date', name: 'reqdt', width: 20, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 20, align: 'right', formatter: 'currency' },
 			{ label: 'Recstatus', name: 'recstatus', width: 20},
 			//{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },

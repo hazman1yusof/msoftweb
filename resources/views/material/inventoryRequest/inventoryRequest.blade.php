@@ -98,7 +98,7 @@ i.fa {
 	            </div>
 
 	            <div class="col-md-2">
-			  		<label class="control-label" for="trandept">Purchase Dept</label> 
+			  		<label class="control-label" for="trandept">Request Dept</label> 
 						<select id='trandept' class="form-control input-sm">
 				      		<option value="All" selected>ALL</option>
 						</select>
