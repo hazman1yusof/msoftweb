@@ -224,7 +224,7 @@ i.fa {
 									<span class="help-block"></span>
 								</div>
 
-							<label class="col-md-1 control-label" for="db_invno">inv No</label>  
+							<label class="col-md-1 control-label" for="db_invno">Invoice No</label>  
 							<div class="col-md-2">
 								<input id="db_invno" name="db_invno" type="text" class="form-control input-sm" rdonly>
 							</div>

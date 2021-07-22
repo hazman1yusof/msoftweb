@@ -634,7 +634,7 @@ class SalesOrderController extends defaultController
 
         $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'u.description as uom_desc', 'd.debtorcode','d.name')
-            //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
+            ->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
             ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
             ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
 

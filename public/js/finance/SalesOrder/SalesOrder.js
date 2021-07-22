@@ -185,7 +185,7 @@ $(document).ready(function () {
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15},
-			{ label: 'auditno', name: 'db_auditno', width: 5},
+			{ label: 'Audit No', name: 'db_auditno', width: 5},
 			{ label: 'Invoice No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_units', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
