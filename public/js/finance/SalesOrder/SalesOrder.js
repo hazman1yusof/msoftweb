@@ -185,6 +185,7 @@ $(document).ready(function () {
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15},
+			{ label: 'Audit No', name: 'db_auditno', width: 5},
 			{ label: 'Invoice No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_units', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
@@ -194,7 +195,6 @@ $(document).ready(function () {
 			{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'trantype', name: 'db_trantype', width: 20, hidden: true },
-			{ label: 'auditno', name: 'db_auditno', width: 20, hidden: true },
 			{ label: 'lineno_', name: 'db_lineno_', width: 20, hidden: true },
 			{ label: 'db_orderno', name: 'db_orderno', width: 10, hidden: true },
 			{ label: 'outamount', name: 'db_outamount', width: 20, hidden: true },
@@ -627,6 +627,7 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
+			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
 			{
 				label: 'UOM Code', name: 'uom', width: 150, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
