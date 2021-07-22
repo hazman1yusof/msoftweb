@@ -1538,6 +1538,10 @@ $(document).ready(function () {
 			open: function(){
 				dialog_reqdept.urlParam.filterCol=['recstatus', 'compcode', 'sector'];
 				dialog_reqdept.urlParam.filterVal=['ACTIVE', 'session.compcode', 'session.unit'];
+			},close: function(){
+			},
+			after_check: function(obj_,data){
+				$('html').removeClass("has-success");
 			}
 		},'urlParam','radio','tab'
 	);

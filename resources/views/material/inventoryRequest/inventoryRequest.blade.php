@@ -39,7 +39,7 @@ i.fa {
 @section('body')
 
 	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
-	<input id="reqdept" name="reqdept" type="hidden" value="{{Session::get('reqdept')}}">
+	<input id="reqdept_" name="reqdept_" type="hidden" value="{{Session::get('reqdept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
@@ -95,9 +95,9 @@ i.fa {
 					      <option value="Posted">POSTED</option>
 					      <option value="Cancelled">CANCELLED</option>
 					    </select>
-	            </div>
+	      </div>
 
-	            <div class="col-md-2">
+	      <div class="col-md-2">
 			  		<label class="control-label" for="trandept">Request Dept</label> 
 						<select id='trandept' class="form-control input-sm">
 				      		<option value="All" selected>ALL</option>
@@ -213,7 +213,7 @@ i.fa {
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Inventory Request Header</div>
+				<div class="panel-heading">Inventory Request Header</div>
 				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}
@@ -230,10 +230,10 @@ i.fa {
 									<span class="help-block"></span>
 								</div>
 
-						  		<label class="col-md-2 control-label" for="ivreqno">Request No.</label>  
-						  			<div class="col-md-2">
-										<input id="ivreqno" name="ivreqno" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  			</div>
+					  		<label class="col-md-2 control-label" for="ivreqno">Request No.</label>  
+				  			<div class="col-md-2">
+									<input id="ivreqno" name="ivreqno" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			</div>
 							</div>
 
 							<div class="form-group">
@@ -246,29 +246,29 @@ i.fa {
 									<span class="help-block"></span>
 								</div>
 
-						  		<label class="col-md-2 control-label" for="recno">Record No.</label>  
-						  			<div class="col-md-2">
-										<input id="recno" name="recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
-						  			</div>
+					  		<label class="col-md-2 control-label" for="recno">Record No.</label>  
+				  			<div class="col-md-2">
+									<input id="recno" name="recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
+				  			</div>
 							</div>
 
 							<hr/>
 
 							<div class="form-group">		
 						  		<label class="col-md-2 control-label" for="reqtype">Request Type</label>  
-						  			<div class="col-md-2">
+					  			<div class="col-md-2">
 										<input id="reqtype" name="reqtype" type="text" maxlength="11" class="form-control input-sm" value= 'TRANSFER' rdonly>
-						  			</div>
+					  			</div>
 
-								<label class="col-md-2 control-label" for="reqdt">Request Date</label>  
-						  			<div class="col-md-2">
+									<label class="col-md-2 control-label" for="reqdt">Request Date</label>  
+					  			<div class="col-md-2">
 										<input id="reqdt" name="reqdt" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
-						  			</div>
+					  			</div>
 
 						  		<label class="col-md-2 control-label" for="amount">Amount</label>  
-						  			<div class="col-md-2">
+					  			<div class="col-md-2">
 										<input id="amount" name="amount" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" rdonly>
-						  			</div>
+					  			</div>
 
 							</div>
 
@@ -282,12 +282,12 @@ i.fa {
 									<div class="col-md-2">
 										<input id="recstatus" name="recstatus" type="text" class="form-control input-sm" rdonly>
 									</div>
-					    	</div>
+					    </div>
 
 
 
-					    	<div class="form-group data_info">
-								<div class="col-md-2 minuspad-15">
+					    <div class="form-group data_info">
+									<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_requestby">Request By</label>  
 						  			<input id="purreqhd_requestby" name="purreqhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
@@ -312,7 +312,7 @@ i.fa {
 						  			<input id="purreqhd_adduser" name="purreqhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 								
-								<div class="col-md-2 minuspad-15">
+									<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_upduser">Last User</label>
 						  			<input id="purreqhd_upduser" name="purreqhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
@@ -337,50 +337,49 @@ i.fa {
 						  			<input id="purreqhd_approveddate" name="purreqhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
-								<div class="col-md-2 minuspad-15">
+									<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_adddate">Add Date</label>
 						  			<input id="purreqhd_adddate" name="purreqhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
-								<div class="col-md-2 minuspad-15">
+									<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_upddate">Update Date</label>
 						  			<input id="purreqhd_upddate" name="purreqhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 							</div>
 					</form>
 				</div>
-			</div>
-			
-			<div class='panel panel-info'>
-				<div class="panel-heading">Purchase Request Detail</div>
-					<div class="panel-body">
-						<form id='formdata2' class='form-vertical' style='width:99%'>
-							<!-- <input id="gstpercent" name="gstpercent" type="hidden">
-							<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
-							<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'> -->
-							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
-
-							<div id="jqGrid2_c" class='col-md-12'>
-								<table id="jqGrid2" class="table table-striped"></table>
-					            <div id="jqGridPager2"></div>
-							</div>
-						</form>
-					</div>
-
-					<div class="panel-body">
-						<div class="noti" style="color:red"></div>
-					</div>
-
-			</div>
-				
-			<div id="dialog_remarks" title="Remarks">
-			  <div class="panel panel-default">
-			    <div class="panel-body">
-			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
-			    </div>
-			  </div>
-			</div>
 		</div>
+			
+		<div class='panel panel-info'>
+			<div class="panel-heading">Purchase Request Detail</div>
+				<div class="panel-body">
+					<form id='formdata2' class='form-vertical' style='width:99%'>
+						<!-- <input id="gstpercent" name="gstpercent" type="hidden">
+						<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
+						<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'> -->
+						<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
+
+						<div id="jqGrid2_c" class='col-md-12'>
+							<table id="jqGrid2" class="table table-striped"></table>
+				            <div id="jqGridPager2"></div>
+						</div>
+					</form>
+				</div>
+
+				<div class="panel-body">
+					<div class="noti" style="color:red"></div>
+				</div>
+		</div>
+				
+		<div id="dialog_remarks" title="Remarks">
+		  <div class="panel panel-default">
+		    <div class="panel-body">
+		    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+		    </div>
+		  </div>
+		</div>
+	</div>
 @endsection
 
 

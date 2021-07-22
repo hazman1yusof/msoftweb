@@ -53,7 +53,7 @@ class InventoryRequestController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no($request->trantype, $request->reqdept);
+        $request_no = $this->request_no('SR', $request->reqdept);
         $recno = $this->recno('PUR','SR');
 
         DB::beginTransaction();

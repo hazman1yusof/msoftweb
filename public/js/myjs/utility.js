@@ -1249,6 +1249,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 					$("#"+obj.dialogname).dialog( "close" );
 					// $("#"+obj.gridname).jqGrid("clearGridData", true);
+					console.log($(obj.textfield).parent().parent());
 					$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 					$(obj.textfield).removeClass( "error" ).addClass( "valid" );
 					$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
@@ -1441,7 +1442,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			if (after_check !== undefined) {
 				after_check(self,data);
 			}
-
 			
 		});
 		if(index == -1){
