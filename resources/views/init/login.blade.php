@@ -29,7 +29,11 @@
       <select id="cmb_companies" name="cmb_companies" class="form-control">
           <option value="">- Select a Company -</option>
           @foreach($company as $company)
-            <option value="{{$company->compcode}}">{{$company->name}}</option>
+            @if ($company->compcode === '9A')
+              <option value="{{$company->compcode}}" selected>{{$company->name}}</option>
+            @else
+              <option value="{{$company->compcode}}">{{$company->name}}</option>
+            @endif
           @endforeach
       </select>
       <button class="btn btn-lg btn-primary btn-block">Sign in</button>

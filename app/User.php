@@ -11,9 +11,10 @@ class User extends Authenticatable
 
     protected $guarded = [];
     protected $hidden = [];
-    protected $table = 'users';
+    protected $table = 'sysdb.users';
 
     const CREATED_AT = 'adddate';
     const UPDATED_AT = 'upddate';
 
 }
+ 

@@ -153,7 +153,7 @@ $(document).ready(function () {
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		table_name: ['debtor.dbacthdr as db','debtor.debtormast as dm'],
 		table_id: 'idno',
@@ -185,7 +185,7 @@ $(document).ready(function () {
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15},
-			{ label: 'Audit No', name: 'db_auditno', width: 5},
+			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right'},
 			{ label: 'Invoice No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_units', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
@@ -351,7 +351,7 @@ $(document).ready(function () {
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		
-		$.post( '/SalesOrder/form', obj , function( data ) {
+		$.post( 'SalesOrder/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 			$(self_).attr('disabled',false);
 			cbselect.empty_sel_tbl();
@@ -603,7 +603,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid2 url///////////////////////////////////////////////////////
 	var urlParam2 = {
 		action: 'get_table_dtl',
-		url:'/SalesOrderDetail/table',
+		url:'SalesOrderDetail/table',
 		source:'',
 		trantype:'',
 		auditno:'',
@@ -613,7 +613,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/SalesOrderDetail/form",
+		editurl: "SalesOrderDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false, hidden: true },
@@ -1150,7 +1150,7 @@ $(document).ready(function () {
 			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
 			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('SalesOrder',options,param,case_,cellvalue);
 		

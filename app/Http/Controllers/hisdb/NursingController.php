@@ -1204,14 +1204,13 @@ class NursingController extends defaultController
             $epistype = $epistype->epistycode;
         }
 
-        if($epistype = 'IP' || $epistype = 'DP' ){
+        if($epistype == 'IP' || $epistype == 'DP' ){
             $location = 'WARD';
         }else{
             $location = 'TRIAGE';
         }
 
         return $location;
-
     }
 
     public function addNotes_triage(Request $request){

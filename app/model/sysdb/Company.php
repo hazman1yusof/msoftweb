@@ -9,7 +9,7 @@ use App\defaultModel;
 class Company extends Model
 {
     //
-    protected $table = 'company';
+    protected $table = 'sysdb.company';
     protected $guarded = [];
 
 }

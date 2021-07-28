@@ -153,7 +153,7 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////////myEditOptions////////////////////////////////////////////////
-	var myEditOptions_add = {
+	var myEditOptions_add_ExamTriage = {
 		keys: true,
 		extraparam:{
 			"_token": $("#csrf_token").val()
@@ -184,7 +184,7 @@ $(document).ready(function () {
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
-			if(errorField.length>0)return false;
+			if(errorField.length>0){console.log(errorField);return false;}
 
 			let data = $('#jqGridExamTriage').jqGrid ('getRowData', rowid);
 			console.log(data);
@@ -206,7 +206,7 @@ $(document).ready(function () {
 	};
 
 	//////////////////////////////////////////myEditOptions_edit////////////////////////////////////////////////
-	var myEditOptions_edit = {
+	var myEditOptions_edit_ExamTriage = {
 		keys: true,
 		extraparam:{
 			"_token": $("#csrf_token").val()
@@ -268,9 +268,9 @@ $(document).ready(function () {
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
-			addRowParams: myEditOptions_add
+			addRowParams: myEditOptions_add_ExamTriage
 		},
-		editParams: myEditOptions_edit
+		editParams: myEditOptions_edit_ExamTriage
 	}).jqGrid('navButtonAdd', "#jqGridPagerExamTriage", {
 		id: "jqGridPagerDelete",
 		caption: "", cursor: "pointer", position: "last",
@@ -348,7 +348,7 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////////myEditOptions_add////////////////////////////////////////////////
-	var myEditOptions_add = {
+	var myEditOptions_add_AddNotesTriage = {
 		keys: true,
 		extraparam:{
 			"_token": $("#csrf_token").val()
@@ -377,7 +377,6 @@ $(document).ready(function () {
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
-			if(errorField.length>0)return false;
 
 			let data = $('#jqGridAddNotesTriage').jqGrid ('getRowData', rowid);
 			console.log(data);
@@ -406,7 +405,7 @@ $(document).ready(function () {
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
-			addRowParams: myEditOptions_add
+			addRowParams: myEditOptions_add_AddNotesTriage
 		},
 		// editParams: myEditOptions_edit
 	})
@@ -475,7 +474,7 @@ $(document).ready(function () {
 
 	function examTriageCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val;
-		return $('<div class="input-group"><input jqgrid="jqGridExam" optid="'+opt.id+'" id="'+opt.id+'" name="exam" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGridExam" optid="'+opt.id+'" id="'+opt.id+'" name="exam" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0" readonly><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -707,7 +706,7 @@ function populate_triage(obj,rowdata){
 
     };
 
-    $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -762,7 +761,7 @@ function populate_tiCurrentPt(obj){
     	episno:obj.Episno
     };
 
-    $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -927,7 +926,7 @@ function saveForm_patmast(callback){
     //     }).get()
     // );
 
-    $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');
@@ -988,15 +987,9 @@ var dialog_tri_col = new ordialog(
 				}, 100 );
 			});
 
-			var gridname = '#'+obj.gridname;
-			var ids = $(gridname).jqGrid("getDataIDs"), l = ids.length, i, rowid, status;
-	        for (i = 0; i < l; i++) {
-	            rowid = ids[i];
-	            colorcode = $(gridname).jqGrid("getCell", rowid, "description");
-
-	            $('#' + rowid).addClass(colorcode);
-
-	        }
+			$( "table#othergrid_tri_col tr:nth-child(2)" ).addClass('red')
+			$( "table#othergrid_tri_col tr:nth-child(3)" ).addClass('yellow')
+			$( "table#othergrid_tri_col tr:nth-child(4)" ).addClass('green')
 		}
 	},{
 		title:"Select Bed Status",
