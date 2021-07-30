@@ -48,9 +48,9 @@
 	    </tr>
 
 	    <tr >
-	    	<td colspan="5" height="320"> <!-- description -->
+	    	<td colspan="5" height="320"> <!-- description of chgcode from hisdb.chgmast-->
 	    		@foreach ($billsum as $obj)
-	    			<p>{{$obj->description}}</p>
+	    			<p>{{$obj->chgmast_desc}}</p>
 	    		@endforeach
 	    	</td>
 	    	<td> <!-- uomcode -->
