@@ -40,7 +40,7 @@ i.fa {
 <div class='row'>
 	<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 		<fieldset>
-			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
@@ -124,7 +124,7 @@ i.fa {
 
 								<div class="form-group" style="position: relative">
 								  	<label class="col-md-2 control-label" for="auditno">Audit No</label>  
-								  		<div class="col-md-3"> <!--- value="<?php// echo "auditno";?>" -->
+								  		<div class="col-md-3">
 								  			<input id="auditno" name="auditno" type="text" class="form-control input-sm text-uppercase" frozeOnEdit rdonly>
 								  		</div>
 
@@ -138,7 +138,7 @@ i.fa {
 								<div class="form-group">
 								  	<label class="col-md-2 control-label" for="actdate">Payment Date</label>  
 								  		<div class="col-md-3">
-											<input id="actdate" name="actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>">
+											<input id="actdate" name="actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 								  		</div>
 
 							    

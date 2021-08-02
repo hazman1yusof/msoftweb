@@ -46,7 +46,7 @@ i.fa {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
-			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
@@ -77,10 +77,6 @@ i.fa {
 					      <option value="Cancelled">CANCELLED</option>
 					    </select>
 	            </div>
-				
-				<?php 
-					$scope_use = 'posted';
-				?>
 
 				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
@@ -90,7 +86,7 @@ i.fa {
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="{{$scope_use}}" 
+						data-oper="posted" 
 						style="display: none;">
 						POST
 					</button>
@@ -175,7 +171,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_actdate">Date</label>  
 				  			<div class="col-md-2">
-								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_pvno">PV No</label>  
@@ -184,7 +180,7 @@ i.fa {
 				  			</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
-				  			<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
+				  			<div class="col-md-2"> 
 				  				<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
 				  			</div>	
 					</div>

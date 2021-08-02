@@ -422,9 +422,9 @@ Route::post('/apptrsc/delEvent','hisdb\AppointmentController@delEvent');
 //////////////////////////////finance setup///////////////////////////////////////
 
 //// debtortype ////
-Route::get('/debtortype','finance\debtortypeController@show');
-Route::get('/debtortype/table','finance\debtortypeController@table');
-Route::post('/debtortype/form','finance\debtortypeController@form');
+Route::get('/debtortype','finance\DebtortypeController@show');
+Route::get('/debtortype/table','finance\DebtortypeController@table');
+Route::post('/debtortype/form','finance\DebtortypeController@form');
 
 //// GL Enquiry ///
 Route::get('/glenquiry','finance\GlenquiryController@show');

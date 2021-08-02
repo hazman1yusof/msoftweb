@@ -50,7 +50,7 @@ i.fa {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
-			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
@@ -82,10 +82,6 @@ i.fa {
 					    </select>
 	            </div>
 
-				<?php 
-					$scope_use = 'posted';
-				?>
-
 				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
@@ -94,7 +90,7 @@ i.fa {
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="{{$scope_use}}" 
+						data-oper="posted" 
 						style="display: none;">
 						POST
 					</button>
@@ -210,7 +206,7 @@ i.fa {
 						  	</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
-				  			<div class="col-md-3"> <!--- value="<?php// echo "auditno";?>" -->
+				  			<div class="col-md-3">
 				  				<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
 				  		</div>
 					</div>
@@ -227,7 +223,7 @@ i.fa {
 
 				  		<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
 				  			<div class="col-md-3">
-								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
+								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
 					</div>
 
@@ -243,7 +239,7 @@ i.fa {
 
 				  		<label class="col-md-2 control-label" for="apacthdr_actdate">Doc Date</label>  
 				  			<div class="col-md-3">
-								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
 					</div>
 

@@ -200,104 +200,102 @@ class fadepricateController extends defaultController
 
     public function gltran(Request $request,$faregister,$amount,$process_date){
 
-            $yearperiod = defaultController::getyearperiod_($process_date);//<--process date
+        $yearperiod = defaultController::getyearperiod_($process_date);//<--process date
 
-            $row_dept = DB::table('sysdb.department')
-                ->select('costcode')
+        $row_dept = DB::table('sysdb.department')
+            ->select('costcode')
+            ->where('compcode','=',session('compcode'))
+            ->where('deptcode','=',$faregister->deptcode)
+            ->first();
+
+        $facode = DB::table('finance.facode')
+            ->where('compcode','=', $value->compcode)
+            ->where('assetcode','=', $product_obj->productcat)
+            ->first();
+
+        $drcostcode = $row_dept->costcode;
+        $dracc = $facode->gldep;
+        $crcostcode = $row_dept->costcode;
+        $cracc = $facode->glprovdep;
+
+        //1. buat gltran
+        DB::table('finance.gltran')
+            ->insert([
+                'compcode' => $value->compcode,
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'auditno' => $this->auditno,
+                'lineno_' => 1,
+                'source' => 'FA', //kalau stock 'IV', lain dari stock 'DO'
+                'trantype' => "DEP",
+                'reference' => "POSTING FROM ASSET DEPRECIATION",
+                'description' => $faregister->assetno, 
+                'postdate' => $process_date,
+                'year' => $yearperiod->year,
+                'period' => $yearperiod->period,
+                'drcostcode' => $drcostcode,
+                'dracc' => $dracc,
+                'crcostcode' => $crcostcode,
+                'cracc' => $cracc,
+                'amount' => $amount,
+            ]);
+
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  defaultController::isGltranExist_($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('deptcode','=',$faregister->deptcode)
-                ->first();
-
-            $facode = DB::table('finance.facode')
-                ->where('compcode','=', $value->compcode)
-                ->where('assetcode','=', $product_obj->productcat)
-                ->first();
-
-            $drcostcode = $row_dept->costcode;
-            $dracc = $facode->gldep;
-            $crcostcode = $row_dept->costcode;
-            $cracc = $facode->glprovdep;
-
-            //1. buat gltran
-            DB::table('finance.gltran')
-                ->insert([
-                    'compcode' => $value->compcode,
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'auditno' => $this->auditno,
-                    'lineno_' => 1,
-                    'source' => 'FA', //kalau stock 'IV', lain dari stock 'DO'
-                    'trantype' => "DEP",
-                    'reference' => "POSTING FROM ASSET DEPRECIATION",
-                    'description' => $faregister->assetno, 
-                    'postdate' => $process_date,
-                    'year' => $yearperiod->year,
-                    'period' => $yearperiod->period,
-                    'drcostcode' => $drcostcode,
-                    'dracc' => $dracc,
-                    'crcostcode' => $crcostcode,
-                    'cracc' => $cracc,
-                    'amount' => $amount,
+                ->where('costcode','=',$drcostcode)
+                ->where('glaccount','=',$dracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $amount + $gltranAmount,
+                    'recstatus' => 'ACTIVE'
                 ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $drcostcode,
+                    'glaccount' => $dracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => $amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
 
-            //2. check glmastdtl utk debit, kalu ada update kalu xde create
-            $gltranAmount =  defaultController::isGltranExist_($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
 
-            if($gltranAmount!==false){
-                DB::table('finance.glmasdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('costcode','=',$drcostcode)
-                    ->where('glaccount','=',$dracc)
-                    ->where('year','=',$yearperiod->year)
-                    ->update([
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'actamount'.$yearperiod->period => $amount + $gltranAmount,
-                        'recstatus' => 'ACTIVE'
-                    ]);
-            }else{
-                DB::table('finance.glmasdtl')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'costcode' => $drcostcode,
-                        'glaccount' => $dracc,
-                        'year' => $yearperiod->year,
-                        'actamount'.$yearperiod->period => $amount,
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'recstatus' => 'ACTIVE'
-                    ]);
-            }
-
-            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
-            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
-
-            if($gltranAmount!==false){
-                DB::table('finance.glmasdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('costcode','=',$crcostcode)
-                    ->where('glaccount','=',$cracc)
-                    ->where('year','=',$yearperiod->year)
-                    ->update([
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'actamount'.$yearperiod->period => $gltranAmount - $amount,
-                        'recstatus' => 'ACTIVE'
-                    ]);
-            }else{
-                DB::table('finance.glmasdtl')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'costcode' => $crcostcode,
-                        'glaccount' => $cracc,
-                        'year' => $yearperiod->year,
-                        'actamount'.$yearperiod->period => -$amount,
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'recstatus' => 'ACTIVE'
-                    ]);
-            }
-               
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$crcostcode)
+                ->where('glaccount','=',$cracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - $amount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $crcostcode,
+                    'glaccount' => $cracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => -$amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
         }
     }
 }

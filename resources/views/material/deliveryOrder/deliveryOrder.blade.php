@@ -55,7 +55,7 @@ i.fa {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
-			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
@@ -99,11 +99,6 @@ i.fa {
 						</select>
 				</div>
 
-				<?php 
-					$scope_use = 'posted';
-				?>
-
-
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
@@ -112,7 +107,7 @@ i.fa {
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="{{$scope_use}}" 
+						data-oper="posted" 
 						style="display: none;">
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
@@ -223,7 +218,7 @@ i.fa {
 								  </div>
 
 						  		<label class="col-md-1 control-label" for="delordhd_docno">GRN No</label>  
-						  		<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
+						  		<div class="col-md-2">
 						  			<input id="delordhd_docno" name="delordhd_docno" type="text" class="form-control input-sm" rdonly>
 						  		</div>
 							</div>
@@ -239,12 +234,12 @@ i.fa {
 								  </div>
 
 								<label class="col-md-1 control-label" for="delordhd_delordno">DO No</label>  
-						  		<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
+						  		<div class="col-md-2">
 						  			<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 						  		</div>
 
 						  		<label class="col-md-1 control-label" for="delordhd_recno">Record No</label>  
-						  		<div class="col-md-2"> <!--- value="<?php// echo "auditno";?>" -->
+						  		<div class="col-md-2">
 						  			<input id="delordhd_recno" name="delordhd_recno" type="text" class="form-control input-sm" rdonly>
 						  		</div>
 						  	</div>
@@ -291,8 +286,8 @@ i.fa {
 						  	<div class="form-group">		
 						  		<label class="col-md-2 control-label" for="delordhd_trandate">Received Date</label>  
 						  		<div class="col-md-2">
-									<input id="delordhd_trandate" name="delordhd_trandate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
-										max="<?php echo date('Y-m-d');?>">
+									<input id="delordhd_trandate" name="delordhd_trandate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" min="{{Carbon\Carbon::now()->subDays(20)->format('Y-m-d')}}" 
+										max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 						  		</div>
 
 						  		<label class="col-md-2 control-label" for="delordhd_trantime">Received Time</label>  
@@ -302,7 +297,7 @@ i.fa {
 
 					  			<label class="col-md-2 control-label" for="delordhd_deliverydate">Delivery Date</label>  
 						  			<div class="col-md-2">
-									<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+									<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 						  		</div>
 							</div>
 
