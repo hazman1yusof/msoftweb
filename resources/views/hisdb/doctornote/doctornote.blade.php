@@ -63,6 +63,7 @@
                                         <tr>
                                             <th>idno</th>
                                             <th class="scope">Date</th>
+                                            <th>adduser</th>
                                         </tr>
                                     </thead>
                                 </table>

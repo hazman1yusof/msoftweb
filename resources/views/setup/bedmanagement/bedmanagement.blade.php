@@ -123,6 +123,7 @@
 @section('body')
 
 	<!--***************************** Search + table ******************-->
+	<input type="hidden" name="curr_user" id="curr_user" value="{{Auth::user()->username}}">
 	<div class='row'>
 		<div class="header" id="SearchFormHeader" style="position: sticky;top: 0px;z-index: 3;">
 			<form id="searchForm" class="formclass" style='width:99%; position:relative; min-height: 120px'>

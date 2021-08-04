@@ -371,7 +371,7 @@ class DoctorNoteController extends defaultController
         $responce = new stdClass();
 
         $patexam_obj = DB::table('hisdb.patexam')
-            ->select('idno','recorddate AS date')
+            ->select('idno','recorddate AS date','adduser')
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno)
             ->where('compcode','=',session('compcode'));
@@ -391,7 +391,7 @@ class DoctorNoteController extends defaultController
         $responce = new stdClass();
 
         $patexam_obj = DB::table('hisdb.patexam')
-            ->select('idno','recorddate AS date')
+            ->select('idno','recorddate AS date','adduser')
             ->where('mrn','=',$request->mrn)
             ->where('compcode','=',session('compcode'));
 

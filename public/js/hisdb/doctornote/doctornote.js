@@ -450,8 +450,8 @@ function on_toggling_curr_past(obj = curr_obj){
 	if (document.getElementById("current").checked){
 		dateParam_docnote={
 			action:'get_table_date_curr',
-			mrn:obj.MRN,
-			episno:obj.Episno
+			mrn:obj.mrn,
+			episno:obj.episno
 		}
 		
 		addnotes.style.display = "none";
@@ -459,7 +459,7 @@ function on_toggling_curr_past(obj = curr_obj){
 	}else if(document.getElementById("past").checked){
 		dateParam_docnote={
 			action:'get_table_date_past',
-			mrn:obj.MRN,
+			mrn:obj.mrn,
 		}
 
 		addnotes.style.display = "block";
@@ -542,9 +542,10 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
     "columns": [
         {'data': 'idno'},
         {'data': 'date', 'width': '100%'},
+        {'data': 'adduser'},
     ],
     columnDefs: [ {
-        targets: [0],
+        targets: [0,2],
         visible: false
     } ],
     order: [[0, 'desc']],
@@ -577,8 +578,8 @@ $('#jqGridTriageInfo_panel').on('hidden.bs.collapse', function () {
 //to reload date table on radio btn click
 $("input[name=toggle_type]").on('click', function () {
 	event.stopPropagation();
-	on_toggling_curr_past();
-	console.log(Math.floor($("#jqGridAddNotes_c")[0].offsetWidth));
+	on_toggling_curr_past(curr_obj);
+	console.log(dateParam_docnote);
 	docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
@@ -587,6 +588,7 @@ $("input[name=toggle_type]").on('click', function () {
 });
 
 $('#docnote_date_tbl tbody').on('click', 'tr', function () { 
+    var data = docnote_date_tbl.row( this ).data();
     if(disable_edit_date()){
     	return;
 	}
@@ -603,8 +605,11 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
     $('#docnote_date_tbl tbody tr').removeClass('active');
     $(this).addClass('active');
 
-    button_state_doctorNote('edit');
-    var data = docnote_date_tbl.row( this ).data();
+    if(check_same_usr_edit(data)){
+    	button_state_doctorNote('edit');
+    }else{
+    	button_state_doctorNote('add');
+    }
     doctornote_docnote.recorddate = data.date;
 
     $.get( "/doctornote/table?"+$.param(doctornote_docnote), function( data ) {
@@ -633,6 +638,17 @@ function disable_edit_date(){
     	disabled = true;
     }
     return disabled;
+}
+
+function check_same_usr_edit(data){
+	let same = true;
+    var adduser = data.adduser;
+
+    if(adduser.toUpperCase() != $('#curr_user').val().toUpperCase()){
+    	same = false;
+    }
+
+    return same;
 }
 
 function sticky_docnotetbl(on){
