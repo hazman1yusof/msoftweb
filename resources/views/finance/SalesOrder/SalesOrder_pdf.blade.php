@@ -7,7 +7,7 @@
 
 	  	<tr>
 	      <td colspan="5">
-	      	<img src="{{public_path().$company->logo1}}" height="75px">
+			<img src="{{url('/img/logo.jpg')}}" alt="Image" height="75px" />
 	      </td>
 	      <td colspan="5" style="font-size:16px;text-align: center;padding-top: 40px">
 	      		<p><h2>{{$title}}</h2></p>
