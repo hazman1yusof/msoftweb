@@ -205,9 +205,9 @@
 												<div class="form-group col-md-6" style="margin-left: 2px">
 													<label for="vs_bloodpressure">Blood Pressure</label>
 													<div class="input-group">
-														<input name="vs_bp_sys1" type="number" class="form-control input-sm floatNumberField" style="width: 90px" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-bp_sys1">
+														<input name="vs_bp_sys1" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-bp_sys1">
 														<!-- <label class="col-md-1 control-label">/</label>  -->
-														<input name="vs_bp_dias2" type="number" class="form-control input-sm floatNumberField" style="width: 90px" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-bp_dias2">
+														<input name="vs_bp_dias2" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-bp_dias2">
 														<span class="input-group-addon">/mmHg</span>
 													</div>
 													<div class="error-msg" id="error-bp_sys1"></div>
@@ -619,7 +619,7 @@
 												<div class='col-md-4'>
 													<div class="panel panel-info">
 														<div class="panel-heading text-center">MOBILITY</div>
-														<div class="panel-body" style="height: 120px; margin-left: 20px">
+														<div class="panel-body" style="height: 120px">
 														
 															<div class="form-check">
 																<input class="form-check-input" type="checkbox" value="mobilityambulan" name="mobilityambulan">
@@ -643,7 +643,7 @@
 												<div class='col-md-4'>
 													<div class="panel panel-info">
 														<div class="panel-heading text-center">PERSONAL HYGIENE</div>
-														<div class="panel-body" style="height: 120px; margin-left: 20px">
+														<div class="panel-body" style="height: 120px; width: 150px">
 
 															<div class="form-check">
 																<input class="form-check-input" type="checkbox" value="phygiene_self" name="phygiene_self">
@@ -758,7 +758,7 @@
 												<div class='col-md-4'>
 													<div class="panel panel-info">
 														<div class="panel-heading text-center">HEARING</div>
-														<div class="panel-body" style="height: 170px;margin-left: 20px">
+														<div class="panel-body" style="height: 170px">
 
 															<div class="form-check">
 																<input class="form-check-input" type="checkbox" value="chearing_normal" name="chearing_normal">
@@ -875,7 +875,7 @@
 															<div class='col-md-6'>
 																<div class="panel panel-info">
 																	<div class="panel-heading text-center">OTHERS</div>
-																	<div class="panel-body" style="height: 160px;margin-left: 40px">
+																	<div class="panel-body" style="height: 160px;margin-left: 20px">
 
 																		<div class="form-check">
 																			<input class="form-check-input" type="checkbox" value="pa_othbruises" name="pa_othbruises">
