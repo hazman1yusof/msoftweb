@@ -1,132 +1,164 @@
 @extends('layouts.pdflayout')
+
 @section('title','Sales Order')
 
+@section('style')
+
+hr {
+    color: #0000004f;
+    margin-top: 5px;
+    margin-bottom: 5px
+}
+
+.add td {
+	color: #c5c4c4;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.content {
+    font-size: 14px
+}
+@endsection
+
 @section('body')
-	<table class="table table-bordered">
-	  <tbody>
 
-	  	<tr>
-	      <td colspan="5">
-			<img src="{{url('/img/logo.jpg')}}" alt="Image" height="75px" />
-	      </td>
-	      <td colspan="5" style="font-size:16px;text-align: center;padding-top: 40px">
-	      		<p><h2>{{$title}}</h2></p>
-	      </td>
-	    </tr>
+<div class="container mt-5 mb-3">
+	<h1>{{$title}}</h1>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+				<p style="text-align:center;"><img src="{{url('/img/logo.jpg')}}" alt="Logo" height="75px"></p>
+                    <div class="d-flex flex-column"> 
+						<p style="text-align:center">{{$company->name}}</p>
+						<p style="text-align:center">{{$company->address1}}</p>
+						<p style="text-align:center">{{$company->address2}}</p>
+						<p style="text-align:center">{{$company->address3}}</p>
+						<p style="text-align:center">{{$company->address4}}</p>
+					</div>
+                </div>
+                <hr>
+                <div class="table-responsive p-2">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="add">
+                                <td colspan="3">Address To</td>
+								<td><b>Document Number</b></td>
+								<td><b>PO Date</b></td>
+								<td><b>MRN</b></td>
+								<td><b>Invoice No</b></td>
+								<td><b>Invoice Date</b></td>
+                            </tr>
+                            <tr class="content">
+                                <td colspan="3" class="font-weight-bold">
+									<p >{{$dbacthdr->debt_name}}</p>
+									<p>{{$dbacthdr->cust_address1}}</p>
+									<p>{{$dbacthdr->cust_address2}}</p>
+									<p>{{$dbacthdr->cust_address3}}</p>
+									<p>{{$dbacthdr->cust_address4}}</p>	
+								</td>
+								<td> <!-- auditno -->
+									<p>{{str_pad($dbacthdr->auditno, 7, '0', STR_PAD_LEFT)}}</td>			
+								</td>
+								<td> <!-- podate -->
+									<p>{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->podate)->format('d-m-Y')}}</p>			
+								</td>
+								<td> <!-- MRN -->
+									<p>{{$dbacthdr->mrn}}</p>			
+								</td>
+								<td> <!-- invoiceno -->
+									<p>{{str_pad($dbacthdr->invno, 7, '0', STR_PAD_LEFT)}}</td>					
+								</td>
+								<td> <!-- invoicedate -->
+									<p>{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->entrydate)->format('d-m-Y')}}</p>			
 
-	    <tr>
-	      <td colspan="5" rowspan="4" style="padding: 0">
-	      		<p><b>Address To.</b></p>
-	      		<p>{{$company->address1}}</p>
-	      		<p>{{$company->address2}}</p>
-	      		<p>{{$company->address3}}</p>
-	      		<p>{{$company->address4}}</p>
-	    		
-	      </td>
-	      <td colspan="2"><b>Auditno Number</b></td>
-	      <td colspan="3">{{$dbacthdr->auditno}}</td>
-	    </tr>
-	    <tr>
-	      <td colspan="2"><b>PO Date</b></td>
-	      <td colspan="3">{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->podate)->format('d-m-Y')}}</td>
-	    </tr>
-	    <tr>
-		<td colspan="2"><b>MRN</b></td>
-	      <td colspan="3">{{$dbacthdr->mrn}}</td>
-	    </tr>
-	    <tr>
-	      <td colspan="2"><b>Page No.</b></td>
-	      <td colspan="3">1/1</td>
-	    </tr>
-	    <tr>
-	    	<td colspan="5"><b>Description</b></td>
-	    	<td><b>Uom</b></td>
-	    	<td><b>Quantity</b></td>
-	    	<td><b>Unit Price</b></td>
-	    	<td><b>Tax Amt</b></td>
-	    	<td><b>Amount</b></td>
-	    </tr>
+								</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-	    <tr >
-	    	<td colspan="5" height="320"> <!-- description of chgcode from hisdb.chgmast-->
-	    		@foreach ($billsum as $obj)
-	    			<p>{{$obj->chgmast_desc}}</p>
-	    		@endforeach
-	    	</td>
-	    	<td> <!-- uomcode -->
-	    		@foreach ($billsum as $obj)
-	    			<p>{{$obj->uom}}</p>
-	    		@endforeach
-	    	</td>
-	    	<td> <!-- quantity -->
-	    		@foreach ($billsum as $obj)
-	    			<p>{{$obj->quantity}}</p>
-	    		@endforeach
-	    	</td>
-	    	<td> <!-- unit price -->
-	    		@foreach ($billsum as $obj)
-	    			<p>{{number_format($obj->unitprice,2)}}</p>
-	    		@endforeach
-	    	</td>
-	    	<td> <!--tax amount -->
-	    		@foreach ($billsum as $obj)
-	    			<p>{{number_format($obj->taxamt,2)}}</p>
-	    		@endforeach
-	    	</td>
-	    	<td> <!-- amount -->
-	    		@foreach ($billsum as $obj)
-	    			<p>{{number_format($obj->amount,2)}}</p>
-	    		@endforeach
-	    	</td>
-	    </tr>
+                <hr>
+                <div class="products p-2">
+                    <table class="table table-borderless">
+                        <tbody>
+							<tr>
+								<td colspan="5"><b>Description</b></td>
+								<td><b>Uom</b></td>
+								<td><b>Quantity</b></td>
+								<td><b>Unit Price</b></td>
+								<td><b>Tax Amt</b></td>
+								<td><b>Amount</b></td>
+							</tr>
+							<tr >
+								<td colspan="5" height="200"> <!-- description of chgcode from hisdb.chgmast-->
+									@foreach ($billsum as $obj)
+										<p>{{$obj->chgmast_desc}}</p>
+									@endforeach
+								</td>
+								<td> <!-- uomcode -->
+									@foreach ($billsum as $obj)
+										<p>{{$obj->uom}}</p>
+									@endforeach
+								</td>
+								<td> <!-- quantity -->
+									@foreach ($billsum as $obj)
+										<p>{{$obj->quantity}}</p>
+									@endforeach
+								</td>
+								<td> <!-- unit price -->
+									@foreach ($billsum as $obj)
+										<p>{{number_format($obj->unitprice,2)}}</p>
+									@endforeach
+								</td>
+								<td> <!--tax amount -->
+									@foreach ($billsum as $obj)
+										<p>{{number_format($obj->taxamt,2)}}</p>
+									@endforeach
+								</td>
+								<td> <!-- amount -->
+									@foreach ($billsum as $obj)
+										<p>{{number_format($obj->amount,2)}}</p>
+									@endforeach
+								</td>
+							</tr>
 
-	    <tr>
-	    	<td colspan="5">
-	    		<p><b>Ringgit Malaysia</b></p>
-	    		<p><i>{{$totamt_bm}}</i></p>
-	    	</td>
-	    	<td colspan="5">
-	    		<p><b>Total Amount</b></p>
-	    		<p>{{number_format($dbacthdr->amount,2)}}</p>
-	    	</td>
-	    </tr>
+							<tr>
+								<td colspan="5">
+									<p><b>Ringgit Malaysia</b></p>
+									<p><i>{{$totamt_bm}}</i></p>
+								</td>
+								<td colspan="5">
+									<p><b>Total Amount</b></p>
+									<p>{{number_format($dbacthdr->amount,2)}}</p>
+								</td>
+							</tr>
+                        </tbody>
+                    </table>
+                </div>
 
-	    <tr>
-	    	<td colspan="5" rowspan="2">
-	    		<p><i>Please Deliver goods/services/works with original purchase order, delivery order and invoice to:</i></p>
-	    		<p><b>Name</b></p>
-	    		<p>&nbsp;</p>
-	    		<p><b>Address</b></p>
-	    		<p>&nbsp;</p>
-	    		<p>&nbsp;</p>
-	    		<p>&nbsp;</p>
-	    		<p><b>Tel No.</b></p>
-	    		<p>&nbsp;</p>
-	    		<p><b>Email</b></p>
-	    		<p>&nbsp;</p>
-	    	</td>
-	    	<td colspan="3" height="10">
-	    		<p><b>Delivered By</b></p>
-	    		<p>&nbsp;</p>
-	    	</td>
-	    	<td colspan="2" height="10">
-	    		<p><b>Approval</b></p>
-	    		<p>&nbsp;</p>
-	    	</td>
-	    </tr>
+                <hr>
+                <div class="address p-2">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="add">
+                                <td>ATTENTION</td>
+                            </tr>
+                            <tr class="content">
+                                <td> 1. Payment of this bill can be pay to any registration counter of Hospital Serdang by stating the referral invoice number.<br>
+									 2. Payment can be made by cash. <br>
+									 3. Payment using Bank Draft/Postal Order/Money Order must be pay on behalf the Director of Hospital Serdang. <br>
+									 4. Only cross cheque for any registered company with Ministry of Health Malaysia is acceptable and be issue to Director of Hospital Serdang .<br>
+									 5. Any inquiries must be issue to : <br>
+									 &emsp;bcabvub<br>
 
-	    <tr>
-	    	<td colspan="5">
-	    		<p><b>Sign: </b></p>
-	    		<p>&nbsp;</p>
-	    		<p><b>Position: </b></p>
-	    		<p>&nbsp;</p>
-	    		<p><b>Date: </b></p>
-	    		<p>&nbsp;</p>
-	    	</td>
-	    </tr>
-
-	  </tbody>
-	</table>
-
+								</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

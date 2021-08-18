@@ -622,7 +622,11 @@ class SalesOrderController extends defaultController
             abort(404);
         }
 
-        $dbacthdr = DB::table('debtor.dbacthdr')
+        $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m')
+            ->select('h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate',
+            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4')
+            ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
+
             ->where('auditno','=',$auditno)
             ->first();
 
@@ -633,7 +637,10 @@ class SalesOrderController extends defaultController
         }
 
         $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d', 'hisdb.chgmast as m')
-            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'u.description as uom_desc', 'd.debtorcode','d.name', 'm.description as chgmast_desc')
+            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
+            'u.description as uom_desc', 
+            'd.debtorcode as debt_debtcode','d.name as debt_name', 
+            'm.description as chgmast_desc')
             ->leftJoin('hisdb.chgmast as m', 'b.chggroup', '=', 'm.chgcode')
             //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
             ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
