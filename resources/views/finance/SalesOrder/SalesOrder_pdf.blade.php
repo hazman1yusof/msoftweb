@@ -32,8 +32,7 @@ hr {
                     <div class="d-flex flex-column"> 
 						<p style="text-align:center">{{$company->name}}</p>
 						<p style="text-align:center">{{$company->address1}}</p>
-						<p style="text-align:center">{{$company->address2}}</p>
-						<p style="text-align:center">{{$company->address3}}</p>
+						<p style="text-align:center">{{$company->address2}}{{$company->address3}}</p>
 						<p style="text-align:center">{{$company->address4}}</p>
 					</div>
                 </div>
@@ -51,7 +50,7 @@ hr {
                             </tr>
                             <tr class="content">
                                 <td colspan="3" class="font-weight-bold">
-									<p >{{$dbacthdr->debt_name}}</p>
+									<p>{{$dbacthdr->debt_name}}</p>
 									<p>{{$dbacthdr->cust_address1}}</p>
 									<p>{{$dbacthdr->cust_address2}}</p>
 									<p>{{$dbacthdr->cust_address3}}</p>
@@ -71,13 +70,11 @@ hr {
 								</td>
 								<td> <!-- invoicedate -->
 									<p>{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->entrydate)->format('d-m-Y')}}</p>			
-
 								</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
                 <hr>
                 <div class="products p-2">
                     <table class="table table-borderless">
@@ -91,7 +88,7 @@ hr {
 								<td><b>Amount</b></td>
 							</tr>
 							<tr >
-								<td colspan="5" height="200"> <!-- description of chgcode from hisdb.chgmast-->
+								<td colspan="5" height="180"> <!-- description of chgcode from hisdb.chgmast-->
 									@foreach ($billsum as $obj)
 										<p>{{$obj->chgmast_desc}}</p>
 									@endforeach
@@ -145,13 +142,18 @@ hr {
                                 <td>ATTENTION</td>
                             </tr>
                             <tr class="content">
-                                <td> 1. Payment of this bill can be pay to any registration counter of Hospital Serdang by stating the referral invoice number.<br>
-									 2. Payment can be made by cash. <br>
-									 3. Payment using Bank Draft/Postal Order/Money Order must be pay on behalf the Director of Hospital Serdang. <br>
-									 4. Only cross cheque for any registered company with Ministry of Health Malaysia is acceptable and be issue to Director of Hospital Serdang .<br>
-									 5. Any inquiries must be issue to : <br>
-									 &emsp;bcabvub<br>
+                                <td>
+									<ol> 
+										<li>Payment of this bill can be pay to any registration counter of {{$company->name}} by stating the referral invoice number.</li>
+										<li>Payment can be made by cash. </li>
+										<li>Only cross cheque for any registered company with Ministry of Health Malaysia is acceptable and be issue to Director of					{{$company->name}}.</li>
+									 	<li>Any inquiries must be issue to : <br> 
+											<p style="margin-left:10%; margin-right:10%;">{{$company->name}}</p>
+											<p style="margin-left:10%; margin-right:10%;">{{$company->address1}}</p>
+											<p style="margin-left:10%; margin-right:10%;">{{$company->address2}} {{$company->address3}}</p>
+											<p style="margin-left:10%; margin-right:10%;">{{$company->address4}}</p></li>
 
+									</ol>
 								</td>
                             </tr>
                         </tbody>
