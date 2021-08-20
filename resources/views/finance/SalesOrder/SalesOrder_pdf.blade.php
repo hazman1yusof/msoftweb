@@ -41,7 +41,7 @@ hr {
                     <table class="table table-borderless">
                         <tbody>
                             <tr class="add">
-                                <td colspan="3">Address To</td>
+								<td colspan="3"><b>Address To</b></td>
 								<td><b>Document Number</b></td>
 								<td><b>PO Date</b></td>
 								<td><b>MRN</b></td>
