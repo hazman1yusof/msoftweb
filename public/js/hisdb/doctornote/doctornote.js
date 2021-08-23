@@ -403,8 +403,8 @@ function populate_doctorNote(obj,rowdata){
 
 	doctornote_docnote={
 		action:'get_table_doctornote',
-		mrn:obj.MRN,
-		episno:obj.Episno,
+		mrn:obj.mrn,
+		episno:obj.episno,
 		recorddate:''
 	};
 
@@ -641,6 +641,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
     	button_state_doctorNote('add');
     }
     doctornote_docnote.recorddate = data.date;
+    console.log(doctornote_docnote);
 
     $.get( "/doctornote/table?"+$.param(doctornote_docnote), function( data ) {
 			
