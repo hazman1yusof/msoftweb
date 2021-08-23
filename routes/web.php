@@ -539,6 +539,15 @@ Route::get('/creditNote/table','finance\CreditNoteController@table');
 Route::post('/creditNote/form','finance\CreditNoteController@form');
 Route::get('/creditNote/form','finance\CreditNoteController@form');
 
+//// Finance - Debit Note page ///
+Route::get('/DebitNote','finance\DebitNoteController@show');
+Route::get('/DebitNote/table','finance\DebitNoteController@table');
+Route::post('/DebitNote/form','finance\DebitNoteController@form');
+Route::get('/DebitNote/form','finance\DebitNoteController@form');
+Route::post('/DebitNoteDetail/form','finance\DebitNoteDetailController@form');
+Route::get('/DebitNoteDetail/table','finance\DebitNoteDetailController@table');
+Route::get('/DebitNote/showpdf','finance\DebitNoteController@showpdf');
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
