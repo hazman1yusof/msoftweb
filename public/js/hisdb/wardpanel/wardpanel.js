@@ -124,8 +124,8 @@ $(document).ready(function () {
 		},
 	});
 
-	//////////////////////////////////////////myEditOptions////////////////////////////////////////////////
-	var myEditOptions_add = {
+	//////////////////////////////////////////myEditOptions_add_examWard////////////////////////////////////////////////
+	var myEditOptions_add_examWard = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
@@ -177,8 +177,8 @@ $(document).ready(function () {
 		}
 	};
 
-	//////////////////////////////////////////myEditOptions_edit////////////////////////////////////////////////
-	var myEditOptions_edit = {
+	//////////////////////////////////////////myEditOptions_edit_examWard////////////////////////////////////////////////
+	var myEditOptions_edit_examWard = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
@@ -239,9 +239,9 @@ $(document).ready(function () {
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
-			addRowParams: myEditOptions_add
+			addRowParams: myEditOptions_add_examWard
 		},
-		editParams: myEditOptions_edit
+		editParams: myEditOptions_edit_examWard
 	}).jqGrid('navButtonAdd', "#jqGridPagerExam", {
 		id: "jqGridPagerDelete",
 		caption: "", cursor: "pointer", position: "last",

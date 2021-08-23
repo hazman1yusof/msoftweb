@@ -445,6 +445,36 @@ function populate_currDoctorNote(obj){
     });
 }
 
+//screen emergency//
+function populate_doctorNote_emergency(obj,rowdata){
+	curr_obj=obj;
+	
+	emptyFormdata(errorField,"#formDoctorNote");
+
+	//panel header
+	$('#name_show_doctorNote').text(obj.a_pat_name);
+	$('#mrn_show_doctorNote').text(obj.a_mrn);
+
+	//formDoctorNote
+	$('#mrn_doctorNote').val(obj.a_mrn);
+	$("#episno_doctorNote").val(obj.a_Episno);
+
+	// check if its current
+	on_toggling_curr_past(obj);
+
+	urlParam_AddNotes.filterVal[0] = obj.a_mrn;
+	urlParam_AddNotes.filterVal[1] = obj.a_Episno;
+
+	doctornote_docnote={
+		action:'get_table_doctornote',
+		mrn:obj.a_mrn,
+		episno:obj.a_Episno,
+		recorddate:''
+	};
+
+    button_state_doctorNote('add');
+}
+
 function on_toggling_curr_past(obj = curr_obj){
 	var addnotes = document.getElementById("addnotes");
 	if (document.getElementById("current").checked){

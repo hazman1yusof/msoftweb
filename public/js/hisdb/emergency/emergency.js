@@ -271,6 +271,7 @@ $(document).ready(function () {
 			
 			populate_registerformdata_edit(selrowData("#jqGrid"));
 			populate_formNursing(selrowData("#jqGrid"),retdata);
+			populate_doctorNote_emergency(selrowData("#jqGrid"),retdata);
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 		},

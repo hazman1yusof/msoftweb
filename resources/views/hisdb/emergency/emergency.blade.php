@@ -200,6 +200,8 @@
 
 		@include('hisdb.nursing.nursing')
 
+		@include('hisdb.doctornote.doctornote')
+
 	</div>
 
 	<div id="registerform" title="Register Form">
@@ -365,6 +367,7 @@
 	<script src="js/hisdb/emergency/emergency.js"></script>
 	<script src="js/hisdb/emergency/emergency_edit.js"></script>
 	<script src="js/hisdb/nursing/nursing.js"></script>
+	<script src="js/hisdb/doctornote/doctornote.js"></script>
 	<script type="text/javascript" src="plugins/glDatePicker/glDatePicker.min.js"></script>
 
 @endsection
