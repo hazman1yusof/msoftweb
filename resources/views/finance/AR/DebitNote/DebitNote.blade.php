@@ -86,34 +86,6 @@ i.fa {
 		             </div>
 				</div>
 
-				<!-- <div class="col-md-2">
-				  	<label class="control-label" for="Status">Status</label>  
-					  	<select id="Status" name="Status" class="form-control input-sm">
-						  	@if (Request::get('scope') == 'ALL')
-						      <option value="All" selected>ALL</option>
-						      <option value="OPEN">OPEN</option>
-						      <option value="CANCELLED">CANCELLED</option>
-						      <option value="REQUEST">REQUEST</option>
-						      <option value="SUPPORT">SUPPORT</option>
-						      <option value="VERIFIED">VERIFIED</option>
-						      <option value="APPROVED">APPROVED</option>
-							@elseif (Request::get('scope') == 'SUPPORT')
-								<option value="REQUEST">REQUEST</option>
-							@elseif (Request::get('scope') == 'VERIFIED')
-								<option value="SUPPORT">SUPPORT</option>
-							@elseif (Request::get('scope') == 'APPROVED')
-								<option value="VERIFIED">VERIFIED</option>
-							@endif
-					    </select>
-	            </div>
-
-	            <div class="col-md-2">
-			  		<label class="control-label" for="trandept">Purchase Dept</label> 
-						<select id='trandept' class="form-control input-sm">
-				      		<option value="All" selected>ALL</option>
-						</select>
-				</div> -->
-
 				<?php 
 					$scope_use = 'posted';
 
@@ -179,8 +151,8 @@ i.fa {
 
 	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 	    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
-				<b>SALES AUTO NO: </b><span id="AutoNo_show"></span><br> 
-				<b>CUSTOMER NAME: </b><span id="CustName_show"></span>
+				<b>DEBIT NO: </b><span id="AutoNo_show"></span><br> 
+				<!-- <b>CUSTOMER NAME: </b><span id="CustName_show"></span> -->
 				
 	    		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -211,33 +183,22 @@ i.fa {
 						<input id="db_idno" name="db_idno" type="hidden">
 						<input id="db_source" name="db_source" type="hidden">
 						<input id="db_trantype" name="db_trantype" type="hidden">
-						<input id="pricebilltype" name="pricebilltype" type="hidden">
 
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_deptcode">Store Dept</label>	 
-							<div class="col-md-4">
-								<div class='input-group'>
-								<input id="db_deptcode" name="db_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-									<span class="help-block"></span>
-								</div>
-
-							<label class="col-md-1 control-label" for="db_invno">Invoice No</label>  
-							<div class="col-md-2">
-								<input id="db_invno" name="db_invno" type="text" class="form-control input-sm" rdonly>
+							<label class="col-md-2 control-label" for="db_orderno">Debit No</label>  
+							<div class="col-md-2"> 
+								<input id="db_invno" name="db_invno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							</div>
 
-							<label class="col-md-1 control-label" for="db_entrydate">Doc Date</label>  
+							<label class="col-md-3 control-label" for="db_invno">Document No</label>  
 							<div class="col-md-2">
-								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
-									max="<?php echo date('Y-m-d');?>">
+								<input id="db_invno" name="db_invno" type="text" class="form-control input-sm" rdonly>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_debtorcode">Customer</label>	 
+							<label class="col-md-2 control-label" for="db_debtorcode">Debtor</label>	 
 							<div class="col-md-4">
 								<div class='input-group'>
 								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
@@ -245,72 +206,26 @@ i.fa {
 								</div>
 								<span class="help-block"></span>
 							</div>
-
-							<label class="col-md-1 control-label" for="db_hdrtype">Bill Type</label>  
-							<div class="col-md-2"> 
-								<div class='input-group'>
-									<input id="db_hdrtype" name="db_hdrtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div>							
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_mrn">MRN</label>  
-							<div class="col-md-4"> 
-								<div class='input-group'>
-									<input id="db_mrn" name="db_mrn" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div>	
-
-							<label class="col-md-1 control-label" for="db_termdays">Term</label>  
-							<div class="col-md-1">
-								<input id="db_termdays" name="db_termdays" type="text" class="form-control input-sm">
-							</div>
-
-							<div class="col-md-1">
-								<select class="form-control col-md-2" id='db_termmode' name='db_termmode' data-validation="required">
-									<option value='DAYS' selected>DAYS</option>
-									<option value='MONTH'>MONTH</option>
-									<option value='YEAR'>YEAR</option>
-								</select> 
-							</div>	
-						</div>
-
-						<div class="form-group">		
-							<label class="col-md-2 control-label" for="db_orderno">Order No</label>  
-							<div class="col-md-2"> 
-								<input id="db_orderno" name="db_orderno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-							</div>
 							
-							<label class="col-md-3 control-label" for="db_auditno">Auto No</label>  
-							<div class="col-md-2"> 
-								<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
-							</div>
-
 							<label class="col-md-1 control-label" for="posteddate">Posted Date</label>  
 								<div class="col-md-2">
 								<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 							</div>
 						</div>
 
-						<hr>
-							
-						<div class="form-group">		
-							<label class="col-md-2 control-label" for="db_ponum">PO No</label>  
+						<div class="form-group">								
+							<label class="col-md-2 control-label" for="db_auditno">Auto No</label>  
 							<div class="col-md-2"> 
-								<input id="db_ponum" name="db_ponum" type="text" class="form-control input-sm text-uppercase">
+								<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
 							</div>
-
-							<label class="col-md-3 control-label" for="db_podate">PO Date</label>  
+			
+							<label class="col-md-3 control-label" for="db_entrydate">Doc Date</label>  
 							<div class="col-md-2">
-								<input id="db_podate" name="db_podate" type="date" maxlength="10" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+									max="<?php echo date('Y-m-d');?>">
 							</div>
 						</div>
-
+							
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="db_amount">Total Amount</label>
 							<div class="col-md-2">
