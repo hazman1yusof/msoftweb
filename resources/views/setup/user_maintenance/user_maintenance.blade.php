@@ -19,7 +19,7 @@
 		
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%;' id='formdata'>
-				{{ csrf_field() }}
+			<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 				<input id="id" name="id" type="hidden">
 
 				<div class="form-group">

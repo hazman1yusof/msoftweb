@@ -98,7 +98,8 @@ $("body").show();
 
 	var saveParam={
 		action:'save_table_default',
-		url:'user_maintenance/form'
+		url:'user_maintenance/form',
+		token_:$('#csrf_token').val()
 	};
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////

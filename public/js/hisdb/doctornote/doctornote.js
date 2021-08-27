@@ -476,6 +476,7 @@ function populate_doctorNote_emergency(obj,rowdata){
 }
 
 function on_toggling_curr_past(obj = curr_obj){
+	console.log(obj)
 	var addnotes = document.getElementById("addnotes");
 	if (document.getElementById("current").checked){
 		dateParam_docnote={
@@ -619,6 +620,7 @@ $("input[name=toggle_type]").on('click', function () {
 
 $('#docnote_date_tbl tbody').on('click', 'tr', function () { 
     var data = docnote_date_tbl.row( this ).data();
+
     if(disable_edit_date()){
     	return;
 	}
