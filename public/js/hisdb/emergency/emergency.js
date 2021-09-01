@@ -292,7 +292,7 @@ $(document).ready(function () {
 				$('#'+sel_idno).click();
 			}
 
-			document.getElementById('hiddenti').style.display = 'inline'; //hide and show heading details dekat triage
+			document.getElementById('showTriage_curpt').style.display = 'inline'; //hide and show heading details dekat triage
 		}
 	});
 

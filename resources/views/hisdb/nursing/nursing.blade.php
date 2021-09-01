@@ -4,18 +4,22 @@
 	<input type="hidden" name="page_screen" id="page_screen" value="{{$page_screen ?? ''}}">
 	
 	<div class="panel-heading clearfix collapsed position" id="toggle_ti" style="position: sticky;top: 0px;z-index: 3;">
-		<!-- screen emergency -->
-		<p id="hiddenti" style="display:none">
-			<b><span id="name_show_ti"></span></b><br>
-			<span id="newic_show_ti"></span>
-			<span id="sex_show_ti"></span>
-			<span id="age_show_ti"></span>
-			<span id="race_show_ti"></span>
+		<!-- screen current patient and emergency -->
+		<p id="showTriage_curpt" style="display:none">
+			<b>Name: <span id="name_show_triage_curpt"></span></b><br>
+			MRN: <span id="mrn_show_triage_curpt"></span>
+			Sex: <span id="sex_show_triage_curpt"></span>
+			DOB/Age: <span id="age_show_triage_curpt"></span>
+			Race: <span id="race_show_triage_curpt"></span>
+			Religion: <span id="religion_show_triage_curpt"></span>
+			Occupation: <span id="occupation_show_triage_curpt"></span>
+			Cizitenship: <span id="citizenship_show_triage_curpt"></span>
+			Area: <span id="area_show_triage_curpt"></span>
 		</p>
-		<!-- screen bed management and current patient -->
-		<p id="hiddentriage" style="display:none">
-			<b>Name: <span id="name_show_triage"></span></b><br>
-			MRN: <span id="mrn_show_triage"></span>
+		<!-- screen bed management -->
+		<p id="showTriage_bedmgmt" style="display:none">
+			<b>Name: <span id="name_show_triage_bedmgmt"></span></b><br>
+			MRN: <span id="mrn_show_triage_bedmgmt"></span>
 		</p>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridTriageInfo_panel"></i>
@@ -47,7 +51,7 @@
 		</div>
 	</div>
 	<div id="jqGridTriageInfo_panel" class="panel-collapse collapse">
-		<div class="panel-body">
+		<div class="panel-body" style="overflow-y: auto;height: 550px;">
 			<div class='col-md-12' style="padding:0 0 15px 0">
 				<!-- <table id="jqGridTriageInfo" class="table table-striped"></table>
 				<div id="jqGridPagerTriageInfo"></div> -->

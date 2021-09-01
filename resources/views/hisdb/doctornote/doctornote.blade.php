@@ -4,16 +4,27 @@
 	<div class="panel-heading clearfix collapsed position" id="toggle_doctorNote" style="position: sticky;top: 0px;z-index: 3;">
 		<b>Name: <span id="name_show_doctorNote"></span></b><br>
 		MRN: <span id="mrn_show_doctorNote"></span>
+        Sex: <span id="sex_show_doctorNote"></span>
+        DOB/Age: <span id="age_show_doctorNote"></span>
+        Race: <span id="race_show_doctorNote"></span>
+        Religion: <span id="religion_show_doctorNote"></span>
+        Occupation: <span id="occupation_show_doctorNote"></span>
+        Cizitenship: <span id="citizenship_show_doctorNote"></span>
+        Area: <span id="area_show_doctorNote"></span> 
 
-        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 800px; top: 15px;">
-            <label class="radio-inline">
+        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 400px; top: 5px;">
+            <!-- <label class="radio-inline"> -->
+            <div class="form-check">
                 <input class="form-check-input" type="radio" name="toggle_type" id="current" value="current" checked>
                 <label class="form-check-label" for="current">Current</label>
-            </label>
-            <label class="radio-inline">
+            </div>
+            <!-- </label> -->
+            <!-- <label class="radio-inline"> -->
+            <div class="form-check">
                 <input class="form-check-input" type="radio" name="toggle_type" id="past" value="past">
                 <label class="form-check-label" for="past">Past History</label>
-            </label>
+            </div>
+            <!-- </label> -->
         </div>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDoctorNote_panel"></i>
@@ -45,7 +56,7 @@
         </div>
 	</div>
 	<div id="jqGridDoctorNote_panel" class="panel-collapse collapse">
-		<div class="panel-body">
+		<div class="panel-body" style="overflow-y: auto;height: 550px;">
 			<div class='col-md-12' style="padding:0 0 15px 0">
 				<form class='form-horizontal' style='width:99%' id='formDoctorNote'>
 

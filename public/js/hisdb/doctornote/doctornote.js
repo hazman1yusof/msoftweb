@@ -414,12 +414,21 @@ function populate_doctorNote(obj,rowdata){
 //screen current patient//
 function populate_currDoctorNote(obj){
 	curr_obj=obj;
+
+	console.log(obj);
 	
 	emptyFormdata(errorField,"#formDoctorNote");
 
 	//panel header
 	$('#name_show_doctorNote').text(obj.Name);
 	$('#mrn_show_doctorNote').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_doctorNote').text(obj.Sex);
+	$('#age_show_doctorNote').text(obj.DOB);
+	$('#race_show_doctorNote').text(obj.RaceCode);
+	$('#religion_show_doctorNote').text(obj.Religion);
+	$('#occupation_show_doctorNote').text(obj.OccupCode);
+	$('#citizenship_show_doctorNote').text(obj.Citizencode);
+	$('#area_show_doctorNote').text(obj.AreaCode);
 
 	//formDoctorNote
 	$('#mrn_doctorNote').val(obj.MRN);

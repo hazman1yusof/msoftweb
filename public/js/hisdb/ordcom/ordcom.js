@@ -577,11 +577,14 @@ function onleave_input_ordcom(event){
 
 function populate_form_ordcom(obj,rowdata){	
 	//panel header	
-	$('#name_show_ordcom').text(obj.name);	
-	$('#mrn_show_ordcom').text(obj.mrn);	
+	$('#name_show_ordcom_bedmgmt').text(obj.name);	
+	$('#mrn_show_ordcom_bedmgmt').text(obj.mrn);	
 	//formordcom	
 	$('#mrn_ordcom').val(obj.mrn);	
-	$("#episno_ordcom").val(obj.episno);	
+	$("#episno_ordcom").val(obj.episno);
+
+	document.getElementById('showOrdcom_bedmgmt').style.display = 'inline'; //to show hidden data
+
 	var saveParam={	
         action:'get_table_ordcom',	
     }	
@@ -596,12 +599,21 @@ function populate_form_ordcom(obj,rowdata){
 function populate_ordcom_currpt(obj){
 
 	//panel header	
-	$('#name_show_ordcom').text(obj.Name);	
-	$('#mrn_show_ordcom').text(("0000000" + obj.MRN).slice(-7));
+	$('#name_show_ordcom_curpt').text(obj.Name);	
+	$('#mrn_show_ordcom_curpt').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_ordcom_curpt').text(obj.Sex);
+	$('#age_show_ordcom_curpt').text(obj.DOB);
+	$('#race_show_ordcom_curpt').text(obj.RaceCode);
+	$('#religion_show_ordcom_curpt').text(obj.Religion);
+	$('#occupation_show_ordcom_curpt').text(obj.OccupCode);
+	$('#citizenship_show_ordcom_curpt').text(obj.Citizencode);
+	$('#area_show_ordcom_curpt').text(obj.AreaCode);
 
 	//formordcom	
 	$('#mrn_ordcom').val(obj.MRN);	
 	$("#episno_ordcom").val(obj.Episno);
+
+	document.getElementById('showOrdcom_curpt').style.display = 'inline'; //to show hidden data
 
 	var saveParam={	
         action:'get_table_ordcom',	
