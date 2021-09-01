@@ -183,31 +183,42 @@ class DebitNoteDetailController extends defaultController
             $dbacthdr_obj = $dbacthdr->first();
 
             ///2. insert detail
-            DB::table('debtor.billsum')
+            DB::table('debtor.dbactdtl')
                 ->insert([
                     'compcode' => session('compcode'),
                     'source' => $source,
                     'trantype' => $trantype,
                     'auditno' => $auditno,
-                    'chggroup' => $request->chggroup,
-                    'description' => $request->description,
                     'lineno_' => 1,
+                    'entrydate'=> $entrydate,
+                    'document'  => $document,
+                    'reference'  => $reference,
+                    'amount' => $request->amount,
+                    'stat' => $stat,
                     'mrn' => (!empty($dbacthdr_obj->mrn))?$dbacthdr_obj->mrn:null,
                     'episno' => (!empty($dbacthdr_obj->episno))?$dbacthdr_obj->episno:null,
-                    'uom' => $request->uom,
-                    'unitprice' => $request->unitprice,
-                    'quantity' => $request->quantity,
-                    'amount' => $request->amount,
-                    'discamt' => floatval($request->discamt),
-                    'taxamt' => floatval($request->taxamt),
-                    'lastuser' => session('username'), 
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'billno' => $billno,
+                    'paymode' => $paymode,
+                    'allocauditno' => $allocauditno,
+                    'alloclineno' => $alloclineno,
+                    'alloctnauditno' => $alloctnauditno,
+                    'alloctnlineno' => $alloctnlineno,
+                    'grnno' => $grnno,
+                    'dorecno' => $dorecno,
+                    'category' => $category,
+                    'deptcode' => $deptcode,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'OPEN',
-                    'taxcode' => $request->taxcode
+                    'GSTCode' => $request->GSTCode,
+                    'AmtB4GST' => floatval($request->AmtB4GST),
+                    'unit' => $request->unit,
+                    'lastuser' => session('username'), 
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur") 
                 ]);
 
             ///3. calculate total amount from detail
-            $totalAmount = DB::table('debtor.billsum')
+            $totalAmount = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=',$source)
                     ->where('trantype','=',$trantype)
@@ -240,25 +251,26 @@ class DebitNoteDetailController extends defaultController
            // $invno = $this->recno('PB','INV'); buat lepas posted
 
             ///1. update detail
-            DB::table('hisdb.billdet')
+            DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 //->where('lineno_','=',$request->lineno_)
                 ->update([
-                    'itemcode'=> strtoupper($request->itemcode), 
-                    'uomcode'=> strtoupper($request->uomcode), 
+                    'billno'=> strtoupper($request->billno), 
+                    'document'=> strtoupper($request->document), 
                     'unitprice'=> $request->unitprice,
+                    'deptcode'=> $request->deptcode,
                     'qtyrequest'=> $request->qtyrequest, 
                     'qtyonhand'=> $request->qtyonhand, 
                     'unitprice'=> $request->unitprice,
                     'percbilltype'=> $request->percbilltype, 
                     'amtbilltype'=> $request->amtbilltype, 
                     'amount'=> $request->amount,
-                    'taxamt' => $request->taxamt, 
+                    'AmtB4GST' => $request->AmtB4GST, 
                     'upduser'=> session('username'), 
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
-                    'remarks'=> strtoupper($request->remarks),
-                    'unit' => session('unit')
+                    // 'remarks'=> strtoupper($request->remarks),
+                    // 'unit' => session('unit')
                 ]);
 
             ///2. recalculate total amount
@@ -396,28 +408,28 @@ class DebitNoteDetailController extends defaultController
         try {
 
             ///1. update detail
-            DB::table('hisdb.billdet')
+            DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->where('lineno_','=',$request->lineno_)
                 ->delete();
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('hisdb.billdet')
+            $totalAmount = DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('totamount');
 
             //calculate tot gst from detail
-            $tot_gst = DB::table('hisdb.billdet')
+            $tot_gst = DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amtslstax');
 
             ///3. update total amount to header
-            DB::table('hisdb.billdet')
+            DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->update([

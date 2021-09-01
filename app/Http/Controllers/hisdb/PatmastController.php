@@ -7,6 +7,7 @@ use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 use Carbon\Carbon;
+use Auth;
 
 class PatmastController extends defaultController
 {   

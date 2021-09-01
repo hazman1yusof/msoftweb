@@ -18,7 +18,7 @@ class UserMaintenanceController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->table = new user;
+        $this->table = DB::table('sysdb.users');
         $this->duplicateCode = "username";
     }
 
@@ -97,7 +97,7 @@ class UserMaintenanceController extends defaultController
 
         try {
             
-            $this->table->insert([
+            DB::table('sysdb.users')->insert([
                 'username' => $request->username,
                 'name' => $request->name,
                 'groupid' => $request->groupid,
@@ -123,6 +123,7 @@ class UserMaintenanceController extends defaultController
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            return response('Error'.$e, 500);
         }
 
     }
@@ -133,7 +134,7 @@ class UserMaintenanceController extends defaultController
 
         try {
 
-            $table = $this->table->find($request->id);
+            $table = DB::table('sysdb.users')->where('id','=',$request->id);
             $table->update([
                 'username' => $request->username,
                 'name' => $request->name,
@@ -160,6 +161,7 @@ class UserMaintenanceController extends defaultController
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            return response('Error'.$e, 500);
         }
 
     }
@@ -170,7 +172,7 @@ class UserMaintenanceController extends defaultController
 
         try {
 
-            $table = $this->table->find($request->id);
+            $table = DB::table('sysdb.users')->where('id','=',$request->id);
             $table->update([
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
@@ -180,6 +182,7 @@ class UserMaintenanceController extends defaultController
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            return response('Error'.$e, 500);
         }
 
     }

@@ -160,8 +160,8 @@ $(document).ready(function () {
 		join_type: ['LEFT JOIN'],
 		join_onCol: ['db.debtorcode'],
 		join_onVal: ['dm.debtorcode'],
-		// filterCol: filterCol_urlParam,
-		// filterVal: filterVal_urlParam,
+		filterCol: ['source','trantype'],
+		filterVal: ['PB','DN'],
 		// WhereInCol:['purreqhd.recstatus'],
 		// WhereInVal: recstatus_filter,
 		fixPost: true,
@@ -186,7 +186,7 @@ $(document).ready(function () {
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15},
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right'},
-			{ label: 'Invoice No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
+			{ label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_units', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
@@ -209,7 +209,7 @@ $(document).ready(function () {
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'PO Date', name: 'db_podate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true,},
-			{ label: 'Department Code', name: 'db_deptcode', width: 15, canSearch: true },
+			{ label: 'Department Code', name: 'db_deptcode', width: 15, canSearch: true, hidden: true },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -587,75 +587,100 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "DebitNoteDetail/form",
+		editurl: "/DebitNoteDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false, hidden: true },
-			{
-				label: 'Item Code', name: 'chggroup', width: 300, classes: 'wrap', editable: true,
-				editrules: { required: true, custom: true, custom_func: cust_rules },
-				formatter: showdetail,
-				edittype: 'custom', editoptions:
-				{
-					custom_element: itemcodeCustomEdit,
-					custom_value: galGridCustomValue
-				},
-			},
-			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
-			{
-				label: 'UOM Code', name: 'uom', width: 150, classes: 'wrap', editable: true,
-				editrules: { required: true, custom: true, custom_func: cust_rules },
-				formatter: showdetail,
-				edittype: 'custom', editoptions:
-				{
-					custom_element: uomcodeCustomEdit,
-					custom_value: galGridCustomValue
-				},
-			},
-			{
-				label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap', align: 'right',
-				editable: true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
-				editrules: { required: true },editoptions:{readonly: "readonly"}
-			},
-			{
-				label: 'Quantity', name: 'quantity', width: 100, align: 'right', classes: 'wrap',
-				editable: true,
-				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true },
-			},
-			{
-				label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap',
-				editable: true,
-				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true },editoptions:{readonly: "readonly"}
-			},
-			{
-				label: 'Tax', name: 'taxcode', width: 100, align: 'right', classes: 'wrap',
-				editable: true,
-				editrules: { required: false },editoptions:{readonly: "readonly"},
-			},
-			{
-				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap',
-				editable: true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
-				editrules: { required: true },editoptions:{readonly: "readonly"},
-			},
-			{
-				label: '% Bill Type', name: 'percbilltype', width: 100, align: 'right', classes: 'wrap',
-				editable: false,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
-				editrules: { required: true },editoptions:{readonly: "readonly"}
-			},
-			{
-				label: 'Amount Bill Type', name: 'amtbilltype', width: 100, align: 'right', classes: 'wrap', editable: false,
-				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true },editoptions:{readonly: "readonly"}
-			},
-			{ label: 'Total Line Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap', editable:true,
-				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: true},editoptions:{readonly: "readonly"},
-			},
+            { label: 'source', name: 'source', width: 50, classes: 'wrap', hidden:true, editable:true},
+            { label: 'trantype', name: 'trantype', width: 50, classes: 'wrap', hidden:true, editable:true},
+            { label: 'Department', name: 'deptcode', width: 500, classes: 'wrap', canSearch: true, editable: true,
+                editrules:{required: true,custom:true, custom_func:cust_rules},
+                formatter: showdetail,
+                edittype:'custom',	editoptions:
+                    {  
+                        custom_element:deptcodeCustomEdit,
+                        custom_value:galGridCustomValue 	
+                    },
+            },
+            { label: 'Category', name: 'category', width: 200, edittype:'text', classes: 'wrap', editable: true,
+                editrules:{required: true,custom:true, custom_func:cust_rules},
+                formatter: showdetail,
+                edittype:'custom',	editoptions:
+                    {  
+                        custom_element:categoryCustomEdit,
+                        custom_value:galGridCustomValue 	
+                    },
+            },
+            { label: 'Document', name: 'document', width: 200, classes: 'wrap', editable: true,
+                //editrules:{required: true},
+                edittype:"text",
+            },
+            { label: 'GST Code', name: 'GSTCode', width: 200, edittype:'text', classes: 'wrap', editable: true,
+                editrules:{required: true,custom:true, custom_func:cust_rules},
+                formatter: showdetail,
+                edittype:'custom',	editoptions:
+                    {
+                        custom_element:GSTCodeCustomEdit,
+                        custom_value:galGridCustomValue 	
+                    },
+            },
+            { label: 'Amount Before GST', name: 'AmtB4GST', width: 180, classes: 'wrap',
+                formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+                editable: true,
+                align: "right",
+                editrules:{required: true},edittype:"text",
+                editoptions:{
+                    //readonly: "readonly",
+                    maxlength: 12,
+                    dataInit: function(element) {
+                        element.style.textAlign = 'right';
+                        $(element).keypress(function(e){
+                            if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+                            return false;
+                            }
+                        });
+                    }
+                },
+            },
+        
+            { label: 'Total GST Amount', name: 'tot_gst', width: 180, align: 'right', classes: 'wrap', editable:true,
+                formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+                editrules:{required: true},
+                editoptions:{
+                    readonly: "readonly",
+                    maxlength: 12,
+                    dataInit: function(element) {
+                        element.style.textAlign = 'right';
+                        $(element).keypress(function(e){
+                            if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+                                return false;
+                            }
+                        });
+                    }
+                },
+            },
+            { label: 'rate', name: 'rate', width: 120, classes: 'wrap', hidden:true
+            },
+            { label: 'Amount', name: 'amount', width: 180, classes: 'wrap', 
+                formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+                editable: true,
+                align: "right",
+                editrules:{required: true},edittype:"text",
+                editoptions:{
+                    readonly: "readonly",
+                    maxlength: 12,
+                    dataInit: function(element) {
+                        element.style.textAlign = 'right';
+                        $(element).keypress(function(e){
+                            
+                            if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+                                return false;
+                                }
+                            });
+                        }
+                    },
+
+            },
+			{ label: 'No', name: 'lineno_', width: 80, classes: 'wrap', editable: false, hidden: true },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 		],
 		autowidth: false,
@@ -857,21 +882,14 @@ $(document).ready(function () {
 			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 			
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='quantity']").on('blur',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
-			// $("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtbilltype']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
-			// $("#jqGrid2 input[name='quantity']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
-
-			// $("#jqGrid2 input[name='quantity']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='amtbilltype'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 
 			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
-				// addmore_jqgrid2.state = true;
-				// $('#jqGrid2_ilsave').click();
 			});
 
-        	// cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
 		},
 		aftersavefunc: function (rowid, response, options) {
 			$('#db_amount').val(response.responseText);
@@ -1048,6 +1066,18 @@ $(document).ready(function () {
 
 		    	var obj = 
 		    	{
+                    'lineno_' : ids[i],
+		    		'idno' : data.idno,
+		    		'deptcode' : $("#jqGrid2 input#"+ids[i]+"_deptcode").val(),
+		    		'category' : $("#jqGrid2 input#"+ids[i]+"_category").val(),
+		    		'document' : $('#'+ids[i]+"_document").val(),
+		    		'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
+		    		'AmtB4GST' : $('#'+ids[i]+"_AmtB4GST").val(),
+		    		'tot_gst' : $('#'+ids[i]+"_tot_gst").val(),
+		    		'amount' : ('#'+ids[i]+"_amount").val(),
+                    'unit' : $("#"+ids[i]+"_unit").val(),
+
+
 		    		'lineno_' : data.lineno_,
 		    		'pricecode' : $("#jqGrid2 input#"+ids[i]+"_pricecode").val(),
 		    		'chggroup' : $("#jqGrid2 input#"+ids[i]+"_itemcode").val(),
@@ -1117,6 +1147,10 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table, case_;
 		switch(options.colModel.name){
+            case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
+			case 'category':field=['catcode','description'];table="material.category";break;
+			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
+
 			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
 			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
 		}
@@ -1134,6 +1168,10 @@ $(document).ready(function () {
 	function cust_rules(value, name) {
 		var temp=null;
 		switch (name) {
+            case 'Department':temp=$('#deptcode');break;
+			case 'Category':temp=$('#category');break;
+			case 'GST Code':temp=$('#GSTCode');break;
+
 			case 'Item Code': temp = $("#jqGrid2 input[name='chggroup']"); break;
 			case 'UOM Code': temp = $("#jqGrid2 input[name='uom']"); break;
 			case 'PO UOM': 
@@ -1163,6 +1201,26 @@ $(document).ready(function () {
 		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="uom" type="text" class="form-control input-sm" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>
 			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
 			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
+	}
+	function deptcodeCustomEdit(val,opt){
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input id="deptcode" name="deptcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+	}
+    function categoryCustomEdit(val,opt){
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input id="category" name="category" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+	}
+	function GSTCodeCustomEdit(val,opt){
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+
+		var id_optid = opt.id.substring(0,opt.id.search("_"));
+		return $(`<div class="input-group">
+			<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+		</div>
+		<span class="help-block"></span>
+		<div class="input-group">
+			<input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden">
+		</div>`);
 	}
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
