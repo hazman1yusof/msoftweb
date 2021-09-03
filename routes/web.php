@@ -487,6 +487,11 @@ Route::get('/categoryfin','finance\CategoryFinController@show');
 Route::get('/categoryfin/table','finance\CategoryFinController@table');
 Route::post('/categoryfin/form','finance\CategoryFinController@form');
 
+//// Debit Note Category Mode setup ///
+Route::get('/debitnotecategory','finance\DebitNoteCategoryController@show');
+Route::get('/debitnotecategory/table','finance\DebitNoteCategoryController@table');
+Route::post('/debitnotecategory/form','finance\DebitNoteCategoryController@form');
+
 //// Bank setup ///
 Route::get('/bank','finance\BankController@show');
 Route::get('/bank/table','finance\BankController@table');

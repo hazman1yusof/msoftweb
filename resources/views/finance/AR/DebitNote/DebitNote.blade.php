@@ -151,7 +151,7 @@ i.fa {
 
 	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 	    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
-				<b>DEBIT NO: </b><span id="AutoNo_show"></span><br> 
+				<b>DEBIT NO: </b><span id="DebitNo_show"></span><br> 
 				<!-- <b>CUSTOMER NAME: </b><span id="CustName_show"></span> -->
 				
 	    		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -186,39 +186,27 @@ i.fa {
 
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_orderno">Debit No</label>  
-							<div class="col-md-2"> 
-								<input id="db_invno" name="db_invno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-							</div>
-
-							<label class="col-md-3 control-label" for="db_invno">Document No</label>  
-							<div class="col-md-2">
-								<input id="db_invno" name="db_invno" type="text" class="form-control input-sm" rdonly>
-							</div>
-						</div>
-
-						<div class="form-group">
 							<label class="col-md-2 control-label" for="db_debtorcode">Debtor</label>	 
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<div class='input-group'>
 								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
 							</div>
-							
-							<label class="col-md-1 control-label" for="posteddate">Posted Date</label>  
+
+							<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
 								<div class="col-md-2">
 								<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 							</div>
 						</div>
 
-						<div class="form-group">								
-							<label class="col-md-2 control-label" for="db_auditno">Auto No</label>  
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="db_auditno">Debit No</label>  
 							<div class="col-md-2"> 
 								<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
 							</div>
-			
+							
 							<label class="col-md-3 control-label" for="db_entrydate">Doc Date</label>  
 							<div class="col-md-2">
 								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
@@ -241,41 +229,25 @@ i.fa {
 						<hr>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_approvedby">Approved By</label> 
+							<label class="col-md-2 control-label" for="db_approvedby">Approved By</label>  
+							<div class="col-md-2"> 
+								<input id="db_approvedby" name="db_approvedby" type="text" maxlength="30" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
+							</div>
+							
+							<label class="col-md-3 control-label" for="db_approvedby">Approved Date</label>  
 							<div class="col-md-2">
-								<div class='input-group'>
-									<input id="db_approvedby" name="db_approvedby" type="text" maxlength="12" class="form-control input-sm text-uppercase">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div> 
+								<input id="db_approvedby" name="db_approvedby" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+									max="<?php echo date('Y-m-d');?>">
+							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="db_remark">Remarks</label> 
-							<div class="col-md-6"> 
+							<div class="col-md-7"> 
 							<textarea class="form-control input-sm text-uppercase" name="db_remark" rows="5" cols="55" maxlength="400" id="db_remark" ></textarea>
 							</div>
 						</div>
 
-						<div class="form-group data_info">
-							<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="upduser">Last Entered By</label>  
-						  			<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="upddate">Last Entered Date</label>
-						  			<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					    		<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="adduser">Check By</label>  
-						  			<input id="adduser" name="adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="adddate">Check Date</label>
-						  			<input id="adddate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>						    	
-							</div>
 					<hr/>
 
 					</form>
