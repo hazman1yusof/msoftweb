@@ -736,10 +736,10 @@ function populate_tiCurrentPt(obj){
 	$('#name_show_triage_curpt').text(obj.Name);
 	$('#mrn_show_triage_curpt').text(("0000000" + obj.MRN).slice(-7));
 	$('#sex_show_triage_curpt').text(obj.Sex);
-	$('#dob_show_triage_curpt').text(obj.DOB);
-	$('#age_show_triage_curpt').text(obj.age);
+	$('#dob_show_triage_curpt').text(dob_chg(obj.DOB));
+	$('#age_show_triage_curpt').text(dob_age(obj.DOB)+' (YRS)');
 	$('#race_show_triage_curpt').text(obj.raceDesc);
-	$('#religion_show_triage_curpt').text(obj.Religion);
+	$('#religion_show_triage_curpt').text(if_none(obj.religionDesc));
 	$('#occupation_show_triage_curpt').text(obj.OccupCode);
 	$('#citizenship_show_triage_curpt').text(obj.cityDesc);
 	$('#area_show_triage_curpt').text(obj.Description);
