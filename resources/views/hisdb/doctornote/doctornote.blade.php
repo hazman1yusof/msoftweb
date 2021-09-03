@@ -2,34 +2,20 @@
 <div class="panel panel-default" style="position: relative;" id="jqGridDoctorNote_c">
 	
 	<div class="panel-heading clearfix collapsed position" id="toggle_doctorNote" style="position: sticky;top: 0px;z-index: 3;">
-		<b>Name: <span id="name_show_doctorNote"></span></b><br>
+		<b>NAME: <span id="name_show_doctorNote"></span></b><br>
 		MRN: <span id="mrn_show_doctorNote"></span>
-        Sex: <span id="sex_show_doctorNote"></span>
-        DOB/Age: <span id="age_show_doctorNote"></span>
-        Race: <span id="race_show_doctorNote"></span>
-        Religion: <span id="religion_show_doctorNote"></span>
-        Occupation: <span id="occupation_show_doctorNote"></span>
-        Cizitenship: <span id="citizenship_show_doctorNote"></span>
-        Area: <span id="area_show_doctorNote"></span> 
-
-        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 400px; top: 5px;">
-            <!-- <label class="radio-inline"> -->
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="toggle_type" id="current" value="current" checked>
-                <label class="form-check-label" for="current">Current</label>
-            </div>
-            <!-- </label> -->
-            <!-- <label class="radio-inline"> -->
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="toggle_type" id="past" value="past">
-                <label class="form-check-label" for="past">Past History</label>
-            </div>
-            <!-- </label> -->
-        </div>
+        SEX: <span id="sex_show_doctorNote"></span>
+        DOB: <span id="dob_show_doctorNote"></span>
+        AGE: <span id="age_show_doctorNote"></span>
+        RACE: <span id="race_show_doctorNote"></span>
+        RELIGION: <span id="religion_show_doctorNote"></span><br>
+        OCCUPATION: <span id="occupation_show_doctorNote"></span>
+        CITIZENSHIP: <span id="citizenship_show_doctorNote"></span>
+        AREA: <span id="area_show_doctorNote"></span> 
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDoctorNote_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDoctorNote_panel"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 35px;">
 			<h5>Doctor Note</h5>
 		</div>
 
@@ -38,7 +24,7 @@
             style="position: absolute;
                     padding: 0 0 0 0;
                     right: 40px;
-                    top: 15px;" 
+                    top: 35px;" 
 
         >
             <button type="button" class="btn btn-default" id="new_doctorNote">
@@ -91,6 +77,19 @@
                                     <label class="col-md-2 control-label" for="remarks">Patient Complaint</label>
                                     <div class="col-md-6">
                                         <input id="remarks" name="remarks" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter Patient Complaint">
+                                    </div>
+
+                                    <div class="col-md-3 panel panel-info" style="margin-left:70px;">
+                                        <div class="panel-body" style="padding-top:5px;padding-bottom:5px;">
+                                            <label class="radio-inline">
+                                                <input class="form-check-input" type="radio" name="toggle_type" id="current" value="current" checked>
+                                                <label class="form-check-label" for="current">Current</label>
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input class="form-check-input" type="radio" name="toggle_type" id="past" value="past">
+                                                <label class="form-check-label" for="past">Past History</label>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
 

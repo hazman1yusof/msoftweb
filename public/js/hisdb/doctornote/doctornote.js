@@ -352,7 +352,7 @@ function button_state_doctorNote(state){
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_doctorNote').data('oper','add');
-			$("#new_doctorNote").attr('disabled',false);
+			$("#new_doctorNote,#current,#past").attr('disabled',false);
 			$('#save_doctorNote,#cancel_doctorNote,#edit_doctorNote').attr('disabled',true);
 			break;
 		case 'edit':
@@ -423,7 +423,8 @@ function populate_currDoctorNote(obj){
 	$('#name_show_doctorNote').text(obj.Name);
 	$('#mrn_show_doctorNote').text(("0000000" + obj.MRN).slice(-7));
 	$('#sex_show_doctorNote').text(obj.Sex);
-	$('#age_show_doctorNote').text(obj.DOB);
+	$('#dob_show_doctorNote').text(obj.DOB);
+	$('#age_show_doctorNote').text(obj.age);
 	$('#race_show_doctorNote').text(obj.RaceCode);
 	$('#religion_show_doctorNote').text(obj.Religion);
 	$('#occupation_show_doctorNote').text(obj.OccupCode);
@@ -496,6 +497,7 @@ function on_toggling_curr_past(obj = curr_obj){
 		
 		addnotes.style.display = "none";
 		enableFields();
+		$("#new_doctorNote").attr('disabled',false);
 	}else if(document.getElementById("past").checked){
 		dateParam_docnote={
 			action:'get_table_date_past',

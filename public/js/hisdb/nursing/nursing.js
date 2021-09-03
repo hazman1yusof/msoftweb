@@ -736,7 +736,8 @@ function populate_tiCurrentPt(obj){
 	$('#name_show_triage_curpt').text(obj.Name);
 	$('#mrn_show_triage_curpt').text(("0000000" + obj.MRN).slice(-7));
 	$('#sex_show_triage_curpt').text(obj.Sex);
-	$('#age_show_triage_curpt').text(obj.DOB);
+	$('#dob_show_triage_curpt').text(obj.DOB);
+	$('#age_show_triage_curpt').text(obj.age);
 	$('#race_show_triage_curpt').text(obj.RaceCode);
 	$('#religion_show_triage_curpt').text(obj.Religion);
 	$('#occupation_show_triage_curpt').text(obj.OccupCode);

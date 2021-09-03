@@ -19,15 +19,16 @@
 		</p>
 		<!-- screen current patient -->
 		<p id="showOrdcom_curpt" style="display:none">
-			<b>Name: <span id="name_show_ordcom_curpt"></span></b><br>
+			<b>NAME: <span id="name_show_ordcom_curpt"></span></b><br>
 			MRN: <span id="mrn_show_ordcom_curpt"></span>
-			Sex: <span id="sex_show_ordcom_curpt"></span>
-			DOB/Age: <span id="age_show_ordcom_curpt"></span>
-			Race: <span id="race_show_ordcom_curpt"></span>
-			Religion: <span id="religion_show_ordcom_curpt"></span>
-			Occupation: <span id="occupation_show_ordcom_curpt"></span>
-			Cizitenship: <span id="citizenship_show_ordcom_curpt"></span>
-			Area: <span id="area_show_ordcom_curpt"></span>
+			SEX: <span id="sex_show_ordcom_curpt"></span>
+			DOB: <span id="dob_show_ordcom_curpt"></span>
+			AGE: <span id="age_show_ordcom_curpt"></span>
+			RACE: <span id="race_show_ordcom_curpt"></span>
+			RELIGION: <span id="religion_show_ordcom_curpt"></span><br>
+			OCCUPATION: <span id="occupation_show_ordcom_curpt"></span>
+			CITIZENSHIP: <span id="citizenship_show_ordcom_curpt"></span>
+			AREA: <span id="area_show_ordcom_curpt"></span>
 		</p>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
