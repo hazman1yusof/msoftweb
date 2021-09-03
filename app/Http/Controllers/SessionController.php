@@ -58,7 +58,11 @@ class SessionController extends Controller
                 return redirect('/apptrsc?TYPE=DOC');
             }
             
-    		return redirect()->home();
+            if(request('myurl') == '192.168.0.108'){
+                return redirect()->home_ofis();
+            }else{
+                return redirect()->home();
+            }
     	}else{
     		return back();
     	}
