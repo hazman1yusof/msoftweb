@@ -9,7 +9,6 @@ use DB;
 use Auth;
 use Hash;
 use Session;
-use Request;
 
 class SessionController extends Controller
 {
@@ -58,7 +57,7 @@ class SessionController extends Controller
             if($user->groupid == 'patient'){
                 return redirect('/apptrsc?TYPE=DOC');
             }
-           
+            
     		return redirect()->home();
     	}else{
     		return back();
