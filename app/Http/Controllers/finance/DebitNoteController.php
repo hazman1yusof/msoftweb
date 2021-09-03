@@ -63,13 +63,6 @@ class DebitNoteController extends defaultController
 
             $auditno = $this->recno('PB','DN');
 
-            if(!empty($request->db_mrn)){
-                $pat_mast = DB::table('hisdb.pat_mast')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('MRN','=',$request->db_mrn)
-                            ->first();
-            }
-
             $array_insert = [
                 'source' => 'PB',
                 'trantype' => 'DN',
@@ -87,14 +80,13 @@ class DebitNoteController extends defaultController
                 'entrydate' => strtoupper($request->db_entrydate),
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'hdrtype' => strtoupper($request->db_hdrtype),
-                'mrn' => strtoupper($request->db_mrn),
+                // 'mrn' => strtoupper($request->db_mrn),
                 // 'billno' => $invno,
                 'episno' => (!empty($request->db_mrn))?$pat_mast->Episno:null,
-                'termdays' => strtoupper($request->db_termdays),
+                //'termdays' => strtoupper($request->db_termdays),
                 'termmode' => strtoupper($request->db_termmode),
                 'orderno' => strtoupper($request->db_orderno),
                 'ponum' => strtoupper($request->db_ponum),
-                'podate' => strtoupper($request->db_podate),
                 'remark' => strtoupper($request->db_remark),
                 'approvedby' => $request->db_approvedby
             ];
@@ -130,11 +122,10 @@ class DebitNoteController extends defaultController
             'entrydate' => strtoupper($request->db_entrydate),
             'hdrtype' => strtoupper($request->db_hdrtype),
             'mrn' => strtoupper($request->db_mrn),
-            'termdays' => strtoupper($request->db_termdays),
+            //'termdays' => strtoupper($request->db_termdays),
             'termmode' => strtoupper($request->db_termmode),
             'orderno' => strtoupper($request->db_orderno),
             'ponum' => strtoupper($request->db_ponum),
-            'podate' => strtoupper($request->db_podate),
             'remark' => strtoupper($request->db_remark),
             'approvedby' => $request->approvedby
         ];

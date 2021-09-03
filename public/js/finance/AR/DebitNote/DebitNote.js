@@ -62,13 +62,13 @@ $(document).ready(function () {
 				}if (oper != 'add') {
 					dialog_deptcode.check(errorField);
 					dialog_billtypeSO.check(errorField);
-					dialog_mrn.check(errorField);
+					//dialog_mrn.check(errorField);
 					dialog_CustomerSO.check(errorField);
 					dialog_approvedbySO.check(errorField);
 				} if (oper != 'view') {
 					dialog_deptcode.on();
 					dialog_billtypeSO.on();
-					dialog_mrn.on();
+					//dialog_mrn.on();
 					dialog_CustomerSO.on();
 					dialog_approvedbySO.on();
 				}
@@ -95,7 +95,7 @@ $(document).ready(function () {
 				$("#formdata a").off();
 				dialog_deptcode.off();
 				dialog_billtypeSO.off();
-				dialog_mrn.off();
+				//dialog_mrn.off();
 				dialog_CustomerSO.off();
 				dialog_approvedbySO.off();
 				$(".noti").empty();
@@ -185,8 +185,8 @@ $(document).ready(function () {
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15},
-			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right'},
-			{ label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
+			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
+			//{ label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_units', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
@@ -203,11 +203,9 @@ $(document).ready(function () {
 			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
 			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
 			{ label: 'units', name: 'db_units', width: 10, hidden: true },
-			{ label: 'termdays', name: 'db_termdays', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'PO Date', name: 'db_podate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true,},
 			{ label: 'Department Code', name: 'db_deptcode', width: 15, canSearch: true, hidden: true },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
@@ -581,6 +579,11 @@ $(document).ready(function () {
 		source:'',
 		trantype:'',
 		auditno:'',
+		field:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.lineno_','dbactdtl.deptcode','dbactdtl.category','dbactdtl.document', 'dbactdtl.AmtB4GST', 'dbactdtl.GSTCode', 'dbactdtl.amount', 'dbactdtl.dorecno', 'dbactdtl.grnno'],
+		table_name:['debtor.dbactdtl AS dbactdtl'],
+		table_id:'lineno_',
+		filterCol:['dbactdtl.compcode','dbactdtl.auditno', 'dbactdtl.recstatus','dbactdtl.source','dbactdtl.trantype'],
+		filterVal:['session.compcode', '', '<>.DELETE', 'CM', 'RC']
 	};
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
@@ -592,7 +595,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
             { label: 'source', name: 'source', width: 50, classes: 'wrap', hidden:true, editable:true},
             { label: 'trantype', name: 'trantype', width: 50, classes: 'wrap', hidden:true, editable:true},
-            { label: 'Department', name: 'deptcode', width: 500, classes: 'wrap', canSearch: true, editable: true,
+            { label: 'Department', name: 'deptcode', width: 300, classes: 'wrap', canSearch: true, editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
                 edittype:'custom',	editoptions:
@@ -623,6 +626,11 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
+			{ label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap',
+				editable: true,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				editrules: { required: true },editoptions:{readonly: "readonly"},
+			},
             { label: 'Amount Before GST', name: 'AmtB4GST', width: 180, classes: 'wrap',
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
@@ -737,7 +745,7 @@ $(document).ready(function () {
 		beforeSubmit: function (postdata, rowid) {
 			dialog_deptcode.check(errorField);
 			dialog_billtypeSO.check(errorField);
-			dialog_mrn.check(errorField);
+			//dialog_mrn.check(errorField);
 			dialog_CustomerSO.check(errorField);
 			dialog_approvedbySO.check(errorField);
 		}
@@ -1192,10 +1200,6 @@ $(document).ready(function () {
 	}
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
-	function itemcodeCustomEdit(val, opt) {
-		val = getEditVal(val);
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="chggroup" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
 	function uomcodeCustomEdit(val,opt){  	
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="uom" type="text" class="form-control input-sm" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>
@@ -1239,7 +1243,7 @@ $(document).ready(function () {
 		unsaved = false;
 		dialog_deptcode.off();
 		dialog_billtypeSO.off();
-		dialog_mrn.off();
+		//dialog_mrn.off();
 		dialog_CustomerSO.off();
 		dialog_approvedbySO.off();
 
@@ -1254,7 +1258,7 @@ $(document).ready(function () {
 			dialog_billtypeSO.on();
 			dialog_CustomerSO.on();
 			dialog_approvedbySO.on();
-			dialog_mrn.on();
+			//dialog_mrn.on();
 		}
 	});
 
@@ -1266,7 +1270,7 @@ $(document).ready(function () {
 		dialog_billtypeSO.on();
 		dialog_CustomerSO.on();
 		dialog_approvedbySO.on();
-		dialog_mrn.on();
+		//dialog_mrn.on();
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -1515,39 +1519,39 @@ $(document).ready(function () {
 	);
 	dialog_billtypeSO.makedialog();
 
-	var dialog_mrn = new ordialog(
-		'dialog_mrn', 'hisdb.pat_mast', '#db_mrn', errorField,
-		{
-			colModel: [
-				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
-				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
-			],
-			urlParam: {
-				filterCol:['compcode','ACTIVE'],
-				filterVal:['session.compcode','1']
-			},
-			ondblClickRow: function () {
-				$('#db_termdays').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#db_termdays').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		}, {
-			title: "Select MRN",
-			open: function(){
-				dialog_CustomerSO.urlParam.filterCol=['recstatus', 'ACTIVE'];
-				dialog_CustomerSO.urlParam.filterVal=['ACTIVE', '1'];
-			}
-		},'none','radio','tab'
-	);
-	dialog_mrn.makedialog();
+	// var dialog_mrn = new ordialog(
+	// 	'dialog_mrn', 'hisdb.pat_mast', '#db_mrn', errorField,
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+	// 			{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','ACTIVE'],
+	// 			filterVal:['session.compcode','1']
+	// 		},
+	// 		ondblClickRow: function () {
+	// 			$('#db_termdays').focus();
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$('#db_termdays').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	}, {
+	// 		title: "Select MRN",
+	// 		open: function(){
+	// 			dialog_CustomerSO.urlParam.filterCol=['recstatus', 'ACTIVE'];
+	// 			dialog_CustomerSO.urlParam.filterVal=['ACTIVE', '1'];
+	// 		}
+	// 	},'none','radio','tab'
+	// );
+	// dialog_mrn.makedialog();
 
 	var dialog_approvedbySO = new ordialog(
 		'approvedby',['material.authorise'],"#db_approvedby",errorField,
@@ -1762,12 +1766,12 @@ $(document).ready(function () {
 
 function populate_form(obj){
 	//panel header
-	$('#AutoNo_show').text(obj.db_auditno);
+	$('#DebitNo_show').text(obj.db_auditno);
 	$('#CustName_show').text(obj.dm_name);
 }
 
 function empty_form(){
-	$('#AutoNo_show').text('');
+	$('#DebitNo_show').text('');
 	$('#CustName_show').text('');
 }
 
