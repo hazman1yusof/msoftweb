@@ -15,7 +15,7 @@
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDoctorNote_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDoctorNote_panel"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 35px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 25px;">
 			<h5>Doctor Note</h5>
 		</div>
 
@@ -24,7 +24,7 @@
             style="position: absolute;
                     padding: 0 0 0 0;
                     right: 40px;
-                    top: 35px;" 
+                    top: 25px;" 
 
         >
             <button type="button" class="btn btn-default" id="new_doctorNote">

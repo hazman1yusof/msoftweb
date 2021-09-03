@@ -9,6 +9,7 @@ use DB;
 use Auth;
 use Hash;
 use Session;
+use Request;
 
 class SessionController extends Controller
 {
