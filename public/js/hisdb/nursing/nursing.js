@@ -619,11 +619,10 @@ function button_state_ti(state){
 // screen emergency //
 function populate_formNursing(obj,rowdata){
 	//panel header
-	$('#name_show_ti').text(obj.a_pat_name);
-	$('#newic_show_ti').text(obj.newic);
-	$('#sex_show_ti').text(obj.sex);
-	$('#age_show_ti').text(obj.age+ 'YRS');
-	$('#race_show_ti').text(obj.race);	
+	$('#name_show_triage_curpt').text(obj.a_pat_name);
+	$('#sex_show_triage_curpt').text(obj.sex);
+	$('#age_show_triage_curpt').text(obj.age+ 'YRS');
+	$('#race_show_triage_curpt').text(obj.race);	
 	button_state_ti('add');
 
 	//formTriageInfo
@@ -642,7 +641,7 @@ function populate_formNursing(obj,rowdata){
 	urlParam_AddNotesTriage.filterVal[1] = obj.a_Episno;
 	urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE';
 
-	document.getElementById('hiddenti').style.display = 'inline'; 
+	document.getElementById('showTriage_curpt').style.display = 'inline'; 
 
 	if(rowdata.nurse != undefined){
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
@@ -678,8 +677,8 @@ function populate_triage(obj,rowdata){
 	emptyFormdata(errorField,"#formTriageInfo");
 
 	//panel header
-	$('#name_show_triage').text(obj.name);
-	$('#mrn_show_triage').text(obj.mrn);
+	$('#name_show_triage_bedmgmt').text(obj.name);
+	$('#mrn_show_triage_bedmgmt').text(obj.mrn);
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);
@@ -694,7 +693,7 @@ function populate_triage(obj,rowdata){
 	urlParam_AddNotesTriage.filterVal[1] = obj.episno;
 	urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE';
 
-	document.getElementById('hiddentriage').style.display = 'inline';
+	document.getElementById('showTriage_bedmgmt').style.display = 'inline';
 
 	var saveParam={
         action:'get_table_triage',
@@ -734,8 +733,16 @@ function populate_triage(obj,rowdata){
 function populate_tiCurrentPt(obj){
 	emptyFormdata(errorField,"#formTriageInfo");
 	//panel header
-	$('#name_show_triage').text(obj.Name);
-	$('#mrn_show_triage').text(("0000000" + obj.MRN).slice(-7));
+	$('#name_show_triage_curpt').text(obj.Name);
+	$('#mrn_show_triage_curpt').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_triage_curpt').text(obj.Sex);
+	$('#dob_show_triage_curpt').text(dob_chg(obj.DOB));
+	$('#age_show_triage_curpt').text(dob_age(obj.DOB)+' (YRS)');
+	$('#race_show_triage_curpt').text(obj.raceDesc);
+	$('#religion_show_triage_curpt').text(if_none(obj.religionDesc));
+	$('#occupation_show_triage_curpt').text(obj.OccupCode);
+	$('#citizenship_show_triage_curpt').text(obj.cityDesc);
+	$('#area_show_triage_curpt').text(obj.Description);
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);
@@ -750,7 +757,7 @@ function populate_tiCurrentPt(obj){
 	urlParam_AddNotesTriage.filterVal[1] = obj.Episno;
 	urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE';
 
-	document.getElementById('hiddentriage').style.display = 'inline';
+	document.getElementById('showTriage_curpt').style.display = 'inline';
 
 	var saveParam={
         action:'get_table_triage',

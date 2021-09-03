@@ -36,6 +36,7 @@
             @endif
           @endforeach
       </select>
+      <input type="hidden" id="myurl" name="myurl" value="">
       <button class="btn btn-lg btn-primary btn-block">Sign in</button>
     </form>
 
@@ -55,6 +56,7 @@
 <!-- JS Page Level -->
 
 <script>
+  document.getElementById("myurl").value = window.location.hostname;
     // jQuery(document).ready(function() 
     // {
     //     Custom.init_cmb_companies();

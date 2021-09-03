@@ -12,8 +12,24 @@
 		</button> -->
 	</div>
 	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" data-toggle="collapse" data-target="#jqGrid_ordcom_panel">
-		<b>Name: <span id="name_show_ordcom"></span></b><br>
-		MRN: <span id="mrn_show_ordcom"></span>
+		<!-- screen bed management -->
+		<p id="showOrdcom_bedmgmt" style="display:none">
+			<b>Name: <span id="name_show_ordcom_bedmgmt"></span></b><br>
+			MRN: <span id="mrn_show_ordcom_bedmgmt"></span>
+		</p>
+		<!-- screen current patient -->
+		<p id="showOrdcom_curpt" style="display:none">
+			<b>NAME: <span id="name_show_ordcom_curpt"></span></b><br>
+			MRN: <span id="mrn_show_ordcom_curpt"></span>
+			SEX: <span id="sex_show_ordcom_curpt"></span>
+			DOB: <span id="dob_show_ordcom_curpt"></span>
+			AGE: <span id="age_show_ordcom_curpt"></span>
+			RACE: <span id="race_show_ordcom_curpt"></span>
+			RELIGION: <span id="religion_show_ordcom_curpt"></span><br>
+			OCCUPATION: <span id="occupation_show_ordcom_curpt"></span>
+			CITIZENSHIP: <span id="citizenship_show_ordcom_curpt"></span>
+			AREA: <span id="area_show_ordcom_curpt"></span>
+		</p>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>

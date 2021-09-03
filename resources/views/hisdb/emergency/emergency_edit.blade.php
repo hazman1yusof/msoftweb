@@ -20,11 +20,10 @@
 	</div>
 
 	<div class="panel-heading clearfix collapsed" id="toggle_rfde" data-toggle="collapse" data-target="#emergency_edit">
-		<b><span id="name_show"></span></b><br>
-		<span id="newic_show"></span>
-		<span id="sex_show"></span>
-		<span id="age_show"></span>
-		<span id="race_show"></span>
+		<b>Name: <span id="name_show"></span></b><br>
+		Sex: <span id="sex_show"></span>
+		Age: <span id="age_show"></span>
+		Race: <span id="race_show"></span>
 
 
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>

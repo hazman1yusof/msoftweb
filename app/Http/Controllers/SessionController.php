@@ -57,7 +57,7 @@ class SessionController extends Controller
             if($user->groupid == 'patient'){
                 return redirect('/apptrsc?TYPE=DOC');
             }
-           
+            
     		return redirect()->home();
     	}else{
     		return back();

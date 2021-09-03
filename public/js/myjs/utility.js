@@ -1813,6 +1813,19 @@ function galGridCustomValue (elem, operation, value){
 	}
 }
 
+function dob_chg(date){
+	let arrdate = date.split("-");
+	return arrdate[2]+'-'+arrdate[1]+'-'+arrdate[0];
+}
+
+function dob_age(date){
+	return moment().diff(date, 'years');
+}
+
+function if_none(str){
+	return (str)?str:'NONE';
+}
+
 
 $(document).ready(function () {
 

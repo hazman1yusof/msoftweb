@@ -126,8 +126,10 @@
 
 		i.fa {
 			cursor: pointer;
-			float: right;
-			<!--  margin-right: 5px; -->
+			/*float: right;*/
+			position: absolute;
+		    right: 12px;
+		    top: 23px;
 		}
 
 		.ui-widget-overlay.ui-front{
@@ -236,6 +238,11 @@
 	    	left: 16px;
 	    }
 
+	    .panel-heading.clearfix.collapsed.position{
+	    	padding: 4px;
+	    	border: 0px;
+	    }
+
 	</style>
 
 </head>
@@ -262,10 +269,10 @@
 
 		@if (request()->get('curpat') == 'true')
 		<div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
-	        <div class="panel-heading clearfix collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis">
+	        <div class="panel-heading clearfix collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 20px 20px;">
 
-	        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-	        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
+	        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px;top: 6px;"></i>
+	        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px;top: 6px;"></i >
 	        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
 	            <h5><strong>PRE EPISODE</strong></h5>
 	        </div> 
