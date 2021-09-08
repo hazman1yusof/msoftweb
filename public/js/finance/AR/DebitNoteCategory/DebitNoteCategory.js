@@ -44,11 +44,11 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/debitnotecategory/form",
+		editurl: "/DebitNoteCategory/form",
 		 colModel: [
 			//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
 			{label: 'Category Code', name: 'catcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{label: 'Description', name: 'description', width: 80, classes: 'wrap',checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" rdonly},					
+            {label: 'Description', name: 'description', width: 80, classes: 'wrap',checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},					
 			{label: 'Category Type', name: 'cattype', width: 90 , hidden: true},					
 			{label: 'Source', name: 'source', width: 90 , hidden: true},					
 			{label: 'Stock Account', name: 'stockacct', width: 90 ,  hidden: true},					
@@ -157,7 +157,7 @@ $(document).ready(function () {
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					console.log(data);
 
-					let editurl = "/debitnotecategory/form?"+
+					let editurl = "/DebitNoteCategory/form?"+
 						$.param({
 							action: 'debitnotecategory_save',
 						});
@@ -208,7 +208,7 @@ $(document).ready(function () {
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					// console.log(data);
 
-					let editurl = "/debitnotecategory/form?"+
+					let editurl = "/DebitNoteCategory/form?"+
 						$.param({
 							action: 'debitnotecategory_save',
 						});
@@ -239,7 +239,7 @@ $(document).ready(function () {
 				}
 				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
-				fdl.get_array('debitnotecategory',options,param,case_,cellvalue);
+				fdl.get_array('DebitNoteCategory',options,param,case_,cellvalue);
 				
 				return cellvalue;
 			}
@@ -291,7 +291,7 @@ $(document).ready(function () {
 										action: 'debitnotecategory_save',
 										idno: selrowData('#jqGrid').idno,
 									}
-									$.post( "/debitnotecategory/form?"+$.param(param),{oper:'del'}, function( data ){
+									$.post( "/DebitNoteCategory/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {
 										//////////////////errorText(dialog,data.responseText);
 									}).done(function (data) {

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'DebitNote')
+@section('title', 'Debit Note')
 
 @section('style')
 
