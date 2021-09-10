@@ -55,7 +55,7 @@ class DebitNoteCategoryController extends defaultController
             DB::table('material.category')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'source' => 'CR',
+                    'source' => 'RC',
                     'cattype' => 'OTHER',
                     'catcode' => strtoupper($request->catcode),
                     'description' => strtoupper($request->description),
