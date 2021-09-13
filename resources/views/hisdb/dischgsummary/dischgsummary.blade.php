@@ -2,12 +2,20 @@
 <div class="panel panel-default" style="position: relative;" id="jqGridDischgSummary_c">
 	
 	<div class="panel-heading clearfix collapsed position" id="toggle_dischgSummary" style="position: sticky;top: 0px;z-index: 3;">
-		<b>Name: <span id="name_show_dischgSummary"></span></b><br>
+		<b>NAME: <span id="name_show_dischgSummary"></span></b><br>
 		MRN: <span id="mrn_show_dischgSummary"></span>
+		SEX: <span id="sex_show_dischgSummary"></span>
+		DOB: <span id="dob_show_dischgSummary"></span>
+		AGE: <span id="age_show_dischgSummary"></span>
+		RACE: <span id="race_show_dischgSummary"></span>
+		RELIGION: <span id="religion_show_dischgSummary"></span><br>
+		OCCUPATION: <span id="occupation_show_dischgSummary"></span>
+		CITIZENSHIP: <span id="citizenship_show_dischgSummary"></span>
+		AREA: <span id="area_show_dischgSummary"></span>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDischgSummary_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDischgSummary_panel"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 15px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 25px;">
 			<h5>Discharge Summary</h5>
 		</div>	
 
@@ -16,7 +24,7 @@
 			style="position: absolute;
 					padding: 0 0 0 0;
 					right: 40px;
-					top: 15px;" 
+					top: 25px;" 
 
 		>
 		<button type="button" class="btn btn-default" id="new_dischgSummary">

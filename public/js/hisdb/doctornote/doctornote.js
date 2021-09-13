@@ -382,6 +382,7 @@ function button_state_doctorNote(state){
 }
 
 var dateParam_docnote,doctornote_docnote,curr_obj;
+//screen bedmanagement//
 function populate_doctorNote(obj,rowdata){
 	curr_obj=obj;
 	
@@ -389,7 +390,15 @@ function populate_doctorNote(obj,rowdata){
 
 	//panel header
 	$('#name_show_doctorNote').text(obj.name);
-	$('#mrn_show_doctorNote').text(obj.mrn);
+	$('#mrn_show_doctorNote').text(("0000000" + obj.mrn).slice(-7));
+	$('#sex_show_doctorNote').text(obj.sex);
+	$('#dob_show_doctorNote').text(dob_chg(obj.dob));
+	$('#age_show_doctorNote').text(obj.age+ ' (YRS)');
+	$('#race_show_doctorNote').text(obj.race);
+	$('#religion_show_doctorNote').text(if_none(obj.religion));
+	$('#occupation_show_doctorNote').text(if_none(obj.occupation));
+	$('#citizenship_show_doctorNote').text(obj.citizen);
+	$('#area_show_doctorNote').text(obj.area);
 
 	//formDoctorNote
 	$('#mrn_doctorNote').val(obj.mrn);
@@ -423,13 +432,13 @@ function populate_currDoctorNote(obj){
 	$('#name_show_doctorNote').text(obj.Name);
 	$('#mrn_show_doctorNote').text(("0000000" + obj.MRN).slice(-7));
 	$('#sex_show_doctorNote').text(obj.Sex);
-	$('#dob_show_doctorNote').text(obj.DOB);
-	$('#age_show_doctorNote').text(obj.age);
-	$('#race_show_doctorNote').text(obj.RaceCode);
-	$('#religion_show_doctorNote').text(obj.Religion);
-	$('#occupation_show_doctorNote').text(obj.OccupCode);
-	$('#citizenship_show_doctorNote').text(obj.Citizencode);
-	$('#area_show_doctorNote').text(obj.AreaCode);
+	$('#dob_show_doctorNote').text(dob_chg(obj.DOB));
+	$('#age_show_doctorNote').text(dob_age(obj.DOB)+' (YRS)');
+	$('#race_show_doctorNote').text(obj.raceDesc);
+	$('#religion_show_doctorNote').text(if_none(obj.religionDesc));
+	$('#occupation_show_doctorNote').text(if_none(obj.occupDesc));
+	$('#citizenship_show_doctorNote').text(obj.cityDesc);
+	$('#area_show_doctorNote').text(obj.areaDesc);
 
 	//formDoctorNote
 	$('#mrn_doctorNote').val(obj.MRN);
@@ -463,7 +472,15 @@ function populate_doctorNote_emergency(obj,rowdata){
 
 	//panel header
 	$('#name_show_doctorNote').text(obj.a_pat_name);
-	$('#mrn_show_doctorNote').text(obj.a_mrn);
+	$('#mrn_show_doctorNote').text(("0000000" + obj.a_mrn).slice(-7));
+	$('#sex_show_doctorNote').text(obj.sex);
+	$('#dob_show_doctorNote').text(dob_chg(obj.dob));
+	$('#age_show_doctorNote').text(obj.age+ ' (YRS)');
+	$('#race_show_doctorNote').text(obj.race);
+	$('#religion_show_doctorNote').text(if_none(obj.religion));
+	$('#occupation_show_doctorNote').text(if_none(obj.occupation));
+	$('#citizenship_show_doctorNote').text(obj.citizen);
+	$('#area_show_doctorNote').text(obj.area);
 
 	//formDoctorNote
 	$('#mrn_doctorNote').val(obj.a_mrn);

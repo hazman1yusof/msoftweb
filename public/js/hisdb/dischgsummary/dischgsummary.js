@@ -116,7 +116,15 @@ function populate_dischgSummary(obj,rowdata){
 
 	//panel header
 	$('#name_show_dischgSummary').text(obj.name);
-	$('#mrn_show_dischgSummary').text(obj.mrn);
+	$('#mrn_show_dischgSummary').text(("0000000" + obj.mrn).slice(-7));
+	$('#sex_show_dischgSummary').text(obj.sex);
+	$('#dob_show_dischgSummary').text(dob_chg(obj.dob));
+	$('#age_show_dischgSummary').text(obj.age+ ' (YRS)');
+	$('#race_show_dischgSummary').text(obj.race);
+	$('#religion_show_dischgSummary').text(if_none(obj.religion));
+	$('#occupation_show_dischgSummary').text(if_none(obj.occupation));
+	$('#citizenship_show_dischgSummary').text(obj.citizen);
+	$('#area_show_dischgSummary').text(obj.area);
 
 	//formDischgSummary
 	$('#mrn_dischgSummary').val(obj.mrn);

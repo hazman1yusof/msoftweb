@@ -242,6 +242,11 @@ $(document).ready(function () {
 			{ label: 'Doctor', name: 'billtype_desc', hidden: true },
 			{ label: 'Doctor', name: 'admdoctor', hidden: true },
 			{ label: 'Doctor', name: 'admdoctor_desc', hidden: true },
+
+			{ label: 'religion', name: 'religion', hidden: true },
+			{ label: 'occupation', name: 'occupation', hidden: true },
+			{ label: 'citizen', name: 'citizen', hidden: true },
+			{ label: 'area', name: 'area', hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -292,7 +297,7 @@ $(document).ready(function () {
 				$('#'+sel_idno).click();
 			}
 
-			document.getElementById('showTriage_curpt').style.display = 'inline'; //hide and show heading details dekat triage
+			// document.getElementById('showTriage_curpt').style.display = 'inline'; //hide and show heading details dekat triage
 		}
 	});
 

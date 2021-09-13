@@ -362,10 +362,15 @@ function populate_registerformdata_edit(obj){
 
 	//panel header
 	$('#name_show').text(obj.a_pat_name);
-	$('#newic_show').text(obj.newic);
+	$('#mrn_show').text(("0000000" + obj.a_mrn).slice(-7));
 	$('#sex_show').text(obj.sex);
-	$('#age_show').text(obj.age+ 'YRS');
-	$('#race_show').text(obj.race);	
+	$('#dob_show').text(dob_chg(obj.dob));
+	$('#age_show').text(obj.age+ ' (YRS)');
+	$('#race_show').text(obj.race);
+	$('#religion_show').text(if_none(obj.religion));
+	$('#occupation_show').text(if_none(obj.occupation));
+	$('#citizenship_show').text(obj.citizen);
+	$('#area_show').text(obj.area);
 	
 	//the form edit
 	$("#apptbookidno_edit").val(obj.a_idno);

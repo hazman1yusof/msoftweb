@@ -128,7 +128,15 @@ function populate_dietOrder(obj,rowdata){
 	
 	//panel header
 	$('#name_show_dietOrder').text(obj.name);
-	$('#mrn_show_dietOrder').text(obj.mrn);
+	$('#mrn_show_dietOrder').text(("0000000" + obj.mrn).slice(-7));
+	$('#sex_show_dietOrder').text(obj.sex);
+	$('#dob_show_dietOrder').text(dob_chg(obj.dob));
+	$('#age_show_dietOrder').text(obj.age+ ' (YRS)');
+	$('#race_show_dietOrder').text(obj.race);
+	$('#religion_show_dietOrder').text(if_none(obj.religion));
+	$('#occupation_show_dietOrder').text(if_none(obj.occupation));
+	$('#citizenship_show_dietOrder').text(obj.citizen);
+	$('#area_show_dietOrder').text(obj.area);
 
 	//formDietOrder
 	$('#mrn_dietOrder').val(obj.mrn);

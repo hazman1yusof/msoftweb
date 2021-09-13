@@ -4,24 +4,16 @@
 	<input type="hidden" name="page_screen" id="page_screen" value="{{$page_screen ?? ''}}">
 	
 	<div class="panel-heading clearfix collapsed position" id="toggle_ti" style="position: sticky;top: 0px;z-index: 3;">
-		<!-- screen current patient and emergency -->
-		<p id="showTriage_curpt" style="display:none">
-			<b>NAME: <span id="name_show_triage_curpt"></span></b><br>
-			MRN: <span id="mrn_show_triage_curpt"></span>
-			SEX: <span id="sex_show_triage_curpt"></span>
-			DOB: <span id="dob_show_triage_curpt"></span>
-			AGE: <span id="age_show_triage_curpt"></span>
-			RACE: <span id="race_show_triage_curpt"></span>
-			RELIGION: <span id="religion_show_triage_curpt"></span><br>
-			OCCUPATION: <span id="occupation_show_triage_curpt"></span>
-			CITIZENSHIP: <span id="citizenship_show_triage_curpt"></span>
-			AREA: <span id="area_show_triage_curpt"></span>
-		</p>
-		<!-- screen bed management -->
-		<p id="showTriage_bedmgmt" style="display:none">
-			<b>Name: <span id="name_show_triage_bedmgmt"></span></b><br>
-			MRN: <span id="mrn_show_triage_bedmgmt"></span>
-		</p>
+		<b>NAME: <span id="name_show_triage"></span></b><br>
+		MRN: <span id="mrn_show_triage"></span>
+		SEX: <span id="sex_show_triage"></span>
+		DOB: <span id="dob_show_triage"></span>
+		AGE: <span id="age_show_triage"></span>
+		RACE: <span id="race_show_triage"></span>
+		RELIGION: <span id="religion_show_triage"></span><br>
+		OCCUPATION: <span id="occupation_show_triage"></span>
+		CITIZENSHIP: <span id="citizenship_show_triage"></span>
+		AREA: <span id="area_show_triage"></span>
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridTriageInfo_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridTriageInfo_panel"></i>

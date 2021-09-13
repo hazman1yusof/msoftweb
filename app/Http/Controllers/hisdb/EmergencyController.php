@@ -71,10 +71,26 @@ class EmergencyController extends defaultController
             $apptdatefr = Carbon::createFromFormat('Y-m-d H:i:s', $value->apptdatefr, 'Asia/Kuala_Lumpur');
 
             $patmast_obj = DB::table('hisdb.pat_mast AS p')
-                        ->select(['p.Newic','p.id_type','p.oldic','p.dob','p.idnumber', 'p.racecode', 'r.description', 'p.sex', 'p.DOB'])
+                        ->select(['p.Newic','p.id_type','p.oldic','p.dob','p.idnumber', 'p.racecode', 'r.description', 'p.sex', 'p.DOB', 'religion.Description AS religionDesc', 'occupation.description AS occupDesc', 'citizen.Description AS citizenDesc', 'areacode.Description AS areaDesc'])
                         ->join('hisdb.racecode AS r', function($join) use ($request){
                             $join = $join->on('r.code','=','p.racecode');
                             $join = $join->on('r.compcode','=','p.compcode');
+                        })
+                        ->join('hisdb.religion', function($join) use ($request){
+                            $join = $join->on('religion.Code','=','p.Religion');
+                            $join = $join->on('religion.CompCode','=','p.compcode');
+                        })
+                        ->join('hisdb.occupation', function($join) use ($request){
+                            // $join = $join->on('occupation.occupcode','=','p.OccupCode');
+                            // $join = $join->on('occupation.compcode','=','p.compcode');
+                        })
+                        ->join('hisdb.citizen', function($join) use ($request){
+                            $join = $join->on('citizen.Code','=','p.Citizencode');
+                            $join = $join->on('citizen.compcode','=','p.compcode');
+                        })
+                        ->join('hisdb.areacode', function($join) use ($request){
+                            $join = $join->on('areacode.areacode','=','p.AreaCode');
+                            $join = $join->on('areacode.compcode','=','p.compcode');
                         })
                         ->where('p.mrn','=',$value->a_mrn)
                         ->where('p.compcode','=',session('compcode'))
@@ -93,6 +109,10 @@ class EmergencyController extends defaultController
             $rows[$key]->dob = $patmast_obj->dob;
             $rows[$key]->idnumber = $patmast_obj->idnumber;
             $rows[$key]->age = Carbon::parse($patmast_obj->DOB)->age;
+            $rows[$key]->religion = $patmast_obj->religionDesc;
+            $rows[$key]->occupation = $patmast_obj->occupDesc;
+            $rows[$key]->citizen = $patmast_obj->citizenDesc;
+            $rows[$key]->area = $patmast_obj->areaDesc;
 
             $episode_obj = DB::table('hisdb.episode as e')
                         ->select(['e.pay_type','dt.description as dt_desc','e.billtype','bm.description as bm_desc','e.admdoctor','doc.doctorname'])

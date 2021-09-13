@@ -188,6 +188,17 @@ $(document).ready(function () {
 			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
+
+			{ label: 'sex', name: 'sex', hidden: true },
+			{ label: 'dob', name: 'dob', hidden: true },
+			{ label: 'age', name: 'age', hidden: true },
+			{ label: 'race', name: 'race', hidden: true },
+			{ label: 'religion', name: 'religion', hidden: true },
+			{ label: 'occupation', name: 'occupation', hidden: true },
+			{ label: 'citizen', name: 'citizen', hidden: true },
+			{ label: 'area', name: 'area', hidden: true },
+			
+			
 		],
 		autowidth: true,
 		multiSort: true,

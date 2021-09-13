@@ -5,7 +5,7 @@
 		style="position: absolute;
 			    padding: 0 0 0 0;
 			    right: 40px;
-			    top: 15px;" 
+			    top: 25px;" 
 
 	>
 		<button type="button" class="btn btn-default" id="edit_rfde">
@@ -20,15 +20,20 @@
 	</div>
 
 	<div class="panel-heading clearfix collapsed" id="toggle_rfde" data-toggle="collapse" data-target="#emergency_edit">
-		<b>Name: <span id="name_show"></span></b><br>
-		Sex: <span id="sex_show"></span>
-		Age: <span id="age_show"></span>
-		Race: <span id="race_show"></span>
-
+		<b>NAME: <span id="name_show"></span></b><br>
+		MRN: <span id="mrn_show"></span>
+		SEX: <span id="sex_show"></span>
+		DOB: <span id="dob_show"></span>
+		AGE: <span id="age_show"></span>
+		RACE: <span id="race_show"></span>
+		RELIGION: <span id="religion_show"></span><br>
+		OCCUPATION: <span id="occupation_show"></span>
+		CITIZENSHIP: <span id="citizenship_show"></span>
+		AREA: <span id="area_show"></span>
 
 		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 15px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 250px; top: 25px;">
 			<h5>Episode</h5>
 		</div>
  

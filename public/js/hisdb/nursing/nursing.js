@@ -619,10 +619,17 @@ function button_state_ti(state){
 // screen emergency //
 function populate_formNursing(obj,rowdata){
 	//panel header
-	$('#name_show_triage_curpt').text(obj.a_pat_name);
-	$('#sex_show_triage_curpt').text(obj.sex);
-	$('#age_show_triage_curpt').text(obj.age+ 'YRS');
-	$('#race_show_triage_curpt').text(obj.race);	
+	$('#name_show_triage').text(obj.a_pat_name);
+	$('#mrn_show_triage').text(("0000000" + obj.a_mrn).slice(-7));
+	$('#sex_show_triage').text(obj.sex);
+	$('#dob_show_triage').text(dob_chg(obj.dob));
+	$('#age_show_triage').text(obj.age+ ' (YRS)');
+	$('#race_show_triage').text(obj.race);
+	$('#religion_show_triage').text(if_none(obj.religion));
+	$('#occupation_show_triage').text(if_none(obj.occupation));
+	$('#citizenship_show_triage').text(obj.citizen);
+	$('#area_show_triage').text(obj.area);
+	
 	button_state_ti('add');
 
 	//formTriageInfo
@@ -641,7 +648,7 @@ function populate_formNursing(obj,rowdata){
 	urlParam_AddNotesTriage.filterVal[1] = obj.a_Episno;
 	urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE';
 
-	document.getElementById('showTriage_curpt').style.display = 'inline'; 
+	// document.getElementById('showTriage_curpt').style.display = 'inline'; 
 
 	if(rowdata.nurse != undefined){
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
@@ -677,8 +684,16 @@ function populate_triage(obj,rowdata){
 	emptyFormdata(errorField,"#formTriageInfo");
 
 	//panel header
-	$('#name_show_triage_bedmgmt').text(obj.name);
-	$('#mrn_show_triage_bedmgmt').text(obj.mrn);
+	$('#name_show_triage').text(obj.name);
+	$('#mrn_show_triage').text(("0000000" + obj.mrn).slice(-7));
+	$('#sex_show_triage').text(obj.sex);
+	$('#dob_show_triage').text(dob_chg(obj.dob));
+	$('#age_show_triage').text(obj.age+ ' (YRS)');
+	$('#race_show_triage').text(obj.race);
+	$('#religion_show_triage').text(if_none(obj.religion));
+	$('#occupation_show_triage').text(if_none(obj.occupation));
+	$('#citizenship_show_triage').text(obj.citizen);
+	$('#area_show_triage').text(obj.area);
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);
@@ -693,7 +708,7 @@ function populate_triage(obj,rowdata){
 	urlParam_AddNotesTriage.filterVal[1] = obj.episno;
 	urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE';
 
-	document.getElementById('showTriage_bedmgmt').style.display = 'inline';
+	// document.getElementById('showTriage_bedmgmt').style.display = 'inline';
 
 	var saveParam={
         action:'get_table_triage',
@@ -733,16 +748,16 @@ function populate_triage(obj,rowdata){
 function populate_tiCurrentPt(obj){
 	emptyFormdata(errorField,"#formTriageInfo");
 	//panel header
-	$('#name_show_triage_curpt').text(obj.Name);
-	$('#mrn_show_triage_curpt').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_triage_curpt').text(obj.Sex);
-	$('#dob_show_triage_curpt').text(dob_chg(obj.DOB));
-	$('#age_show_triage_curpt').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_triage_curpt').text(obj.raceDesc);
-	$('#religion_show_triage_curpt').text(if_none(obj.religionDesc));
-	$('#occupation_show_triage_curpt').text(obj.OccupCode);
-	$('#citizenship_show_triage_curpt').text(obj.cityDesc);
-	$('#area_show_triage_curpt').text(obj.Description);
+	$('#name_show_triage').text(obj.Name);
+	$('#mrn_show_triage').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_triage').text(obj.Sex);
+	$('#dob_show_triage').text(dob_chg(obj.DOB));
+	$('#age_show_triage').text(dob_age(obj.DOB)+' (YRS)');
+	$('#race_show_triage').text(obj.raceDesc);
+	$('#religion_show_triage').text(if_none(obj.religionDesc));
+	$('#occupation_show_triage').text(if_none(obj.occupDesc));
+	$('#citizenship_show_triage').text(obj.cityDesc);
+	$('#area_show_triage').text(obj.areaDesc);
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);
@@ -757,7 +772,7 @@ function populate_tiCurrentPt(obj){
 	urlParam_AddNotesTriage.filterVal[1] = obj.Episno;
 	urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE';
 
-	document.getElementById('showTriage_curpt').style.display = 'inline';
+	// document.getElementById('showTriage_curpt').style.display = 'inline';
 
 	var saveParam={
         action:'get_table_triage',

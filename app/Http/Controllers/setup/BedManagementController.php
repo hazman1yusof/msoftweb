@@ -62,38 +62,86 @@ class BedManagementController extends defaultController
     }
 
     public function get_table(Request $request){
-        // $table = DB::table('hisdb.bed')
-        //             ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','tel_ext','statistic','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
-        //             ->where('compcode','=',session('compcode'));
+        $table = DB::table('hisdb.bed')
+                    ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','tel_ext','statistic','adduser','adddate','upduser','upddate','lastuser','lastupdate','lastcomputerid','lastipaddress')
+                    ->where('compcode','=',session('compcode'));
         
-        $table = $this->defaultGetter($request);
+        // $table = $this->defaultGetter($request);
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
 
-        // foreach ($paginate->items() as $key => $value) {
-        //     $episode = DB::table('hisdb.episode as e')
-        //                     ->select('e.mrn','e.episno','p.name')
-        //                     ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
-        //                         $join = $join->on("e.mrn", '=', 'p.mrn');    
-        //                         $join = $join->on('e.compcode','=','p.compcode');
-        //                     })
-        //                     ->where('e.compcode','=',session('compcode'))
-        //                     ->where('e.bed','=',$value->b_bednum)
-        //                     ->where('e.episactive','=','1')
-        //                     ->orderBy('e.idno','DESC');
+        foreach ($paginate->items() as $key => $value) {
+            $episode = DB::table('hisdb.episode as e')
+                            ->select('e.mrn','e.episno','p.name')
+                            ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
+                                $join = $join->on("e.mrn", '=', 'p.mrn');    
+                                $join = $join->on('e.compcode','=','p.compcode');
+                            })
+                            ->where('e.compcode','=',session('compcode'))
+                            ->where('e.bed','=',$value->bednum)
+                            ->where('e.episactive','=','1')
+                            ->orderBy('e.idno','DESC');
 
-        //     if($episode->exists()){
-        //         $episode_first = $episode->first();
-        //         $value->mrn = $episode_first->q_mrn;
-        //         $value->episno = $episode_first->q_episno;
-        //         $value->name = $episode_first->q_name;
-        //     }else{
-        //         $value->q_mrn = '';
-        //         $value->q_episno = '';
-        //         $value->q_name = '';
-        //     }
-        // }
+            if($episode->exists()){
+                $episode_first = $episode->first();
+                $value->mrn = $episode_first->mrn;
+                $value->episno = $episode_first->episno;
+                $value->name = $episode_first->name;
+            }else{
+                $value->mrn = '';
+                $value->episno = '';
+                $value->name = '';
+            }
+        }
+
+        foreach ($paginate->items() as $key => $value) {
+            $pat_mast_obj = DB::table('hisdb.pat_mast AS p')
+                        ->select(['p.Sex','p.DOB','racecode.Description AS raceDesc','religion.Description AS religionDesc','occupation.description AS occupDesc','citizen.Description AS citizenDesc','areacode.Description AS areaDesc'])
+                        ->join('hisdb.racecode', function($join) use ($request){
+                            $join = $join->on('racecode.Code','=','p.RaceCode');
+                            $join = $join->on('racecode.compcode','=','p.CompCode');
+                        })
+                        ->join('hisdb.religion', function($join) use ($request){
+                            $join = $join->on('religion.Code','=','p.Religion');
+                            $join = $join->on('religion.CompCode','=','p.CompCode');
+                        })
+                        ->join('hisdb.occupation', function($join) use ($request){
+                            // $join = $join->on('occupation.occupcode','=','p.OccupCode');
+                            // $join = $join->on('occupation.compcode','=','p.CompCode');
+                        })
+                        ->join('hisdb.citizen', function($join) use ($request){
+                            $join = $join->on('citizen.Code','=','p.Citizencode');
+                            $join = $join->on('citizen.compcode','=','p.CompCode');
+                        })
+                        ->join('hisdb.areacode', function($join) use ($request){
+                            $join = $join->on('areacode.areacode','=','p.AreaCode');
+                            $join = $join->on('areacode.compcode','=','p.CompCode');
+                        })
+                        ->where('p.MRN','=',$value->mrn)
+                        ->where('p.CompCode','=',session('compcode'));
+
+            if($pat_mast_obj->exists()){
+                $pat_mast_obj_first = $pat_mast_obj->first();
+                $value->sex = $pat_mast_obj_first->Sex;
+                $value->dob = $pat_mast_obj_first->DOB;
+                $value->age = Carbon::parse($pat_mast_obj_first->DOB)->age;
+                $value->race = $pat_mast_obj_first->raceDesc;
+                $value->religion = $pat_mast_obj_first->religionDesc;
+                $value->occupation = $pat_mast_obj_first->occupDesc;
+                $value->citizen = $pat_mast_obj_first->citizenDesc;
+                $value->area = $pat_mast_obj_first->areaDesc;
+            }else{
+                $value->sex = '';
+                $value->dob = '';
+                $value->age = '';
+                $value->race = '';
+                $value->religion = '';
+                $value->occupation = '';
+                $value->citizen = '';
+                $value->area = '';
+            }       
+        }
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();

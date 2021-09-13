@@ -204,9 +204,9 @@ $(document).ready(function() {
         }
         $("#load_from_addupd").data('info','false');
 
-        if($('#showTriage_curpt').length > 0){
-            document.getElementById('showTriage_curpt').style.display = 'inline'; //hide and show heading details dekat triage
-        }
+        // if($('#showTriage_curpt').length > 0){
+        //     document.getElementById('showTriage_curpt').style.display = 'inline'; //hide and show heading details dekat triage
+        // }
 
         $("table#grid-command-buttons tr[data-row-id=0]").click();
 

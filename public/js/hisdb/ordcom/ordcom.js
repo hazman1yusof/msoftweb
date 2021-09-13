@@ -575,15 +575,25 @@ function onleave_input_ordcom(event){
 	event.data.currency.formatOn();//change format to currency on each calculation
 }
 
+//screen bed management//
 function populate_form_ordcom(obj,rowdata){	
 	//panel header	
-	$('#name_show_ordcom_bedmgmt').text(obj.name);	
-	$('#mrn_show_ordcom_bedmgmt').text(obj.mrn);	
+	$('#name_show_ordcom').text(obj.name);
+	$('#mrn_show_ordcom').text(("0000000" + obj.mrn).slice(-7));
+	$('#sex_show_ordcom').text(obj.sex);
+	$('#dob_show_ordcom').text(dob_chg(obj.dob));
+	$('#age_show_ordcom').text(obj.age+ ' (YRS)');
+	$('#race_show_ordcom').text(obj.race);
+	$('#religion_show_ordcom').text(if_none(obj.religion));
+	$('#occupation_show_ordcom').text(if_none(obj.occupation));
+	$('#citizenship_show_ordcom').text(obj.citizen);
+	$('#area_show_ordcom').text(obj.area);
+
 	//formordcom	
 	$('#mrn_ordcom').val(obj.mrn);	
 	$("#episno_ordcom").val(obj.episno);
 
-	document.getElementById('showOrdcom_bedmgmt').style.display = 'inline'; //to show hidden data
+	// document.getElementById('showOrdcom_bedmgmt').style.display = 'inline'; //to show hidden data
 
 	var saveParam={	
         action:'get_table_ordcom',	
@@ -599,22 +609,22 @@ function populate_form_ordcom(obj,rowdata){
 function populate_ordcom_currpt(obj){
 
 	//panel header	
-	$('#name_show_ordcom_curpt').text(obj.Name);	
-	$('#mrn_show_ordcom_curpt').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_ordcom_curpt').text(obj.Sex);
-	$('#dob_show_ordcom_curpt').text(obj.DOB);
-	$('#age_show_ordcom_curpt').text(obj.age);
-	$('#race_show_ordcom_curpt').text(obj.RaceCode);
-	$('#religion_show_ordcom_curpt').text(obj.Religion);
-	$('#occupation_show_ordcom_curpt').text(obj.OccupCode);
-	$('#citizenship_show_ordcom_curpt').text(obj.Citizencode);
-	$('#area_show_ordcom_curpt').text(obj.AreaCode);
+	$('#name_show_ordcom').text(obj.Name);	
+	$('#mrn_show_ordcom').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_ordcom').text(obj.Sex);
+	$('#dob_show_ordcom').text(dob_chg(obj.DOB));
+	$('#age_show_ordcom').text(dob_age(obj.DOB)+' (YRS)');
+	$('#race_show_ordcom').text(obj.raceDesc);
+	$('#religion_show_ordcom').text(if_none(obj.religionDesc));
+	$('#occupation_show_ordcom').text(if_none(obj.occupDesc));
+	$('#citizenship_show_ordcom').text(obj.cityDesc);
+	$('#area_show_ordcom').text(obj.areaDesc);
 
 	//formordcom	
 	$('#mrn_ordcom').val(obj.MRN);	
 	$("#episno_ordcom").val(obj.Episno);
 
-	document.getElementById('showOrdcom_curpt').style.display = 'inline'; //to show hidden data
+	// document.getElementById('showOrdcom_curpt').style.display = 'inline'; //to show hidden data
 
 	var saveParam={	
         action:'get_table_ordcom',	
