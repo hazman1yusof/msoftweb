@@ -67,6 +67,12 @@ class PatmastController extends defaultController
                         ->where('queue.compcode','=',session('compcode'))
                         ->where('queue.deptcode','=',"ALL");
 
+            if(empty($request->searchCol) && !empty(session('isdoctor'))){
+                $table = $table->where('doctor.doctorcode','=',session('isdoctor'));
+            }else if(!empty($request->searchCol) && $request->searchCol[0]=='doctor'){
+                $table = $table->where('doctor.doctorname','like',$request->searchVal[0]);
+            }
+
             if($sel_epistycode == 'OP'){
                 $table->whereIn('queue.epistycode', ['OP','OTC']);
             }else{
@@ -94,19 +100,22 @@ class PatmastController extends defaultController
                             ->where('citizen.compcode','=',session('compcode'))
                             ->where('areacode.compcode','=',session('compcode'))
                             ->where('pat_mast.Active','=','1')
-                            ->whereBetween('pat_mast.MRN',$mrn_range)
-                            ->whereIn('pat_mast.mrn', $arr_mrn);
+                            ->whereIn('pat_mast.mrn', $arr_mrn)
+                            ->whereBetween('pat_mast.MRN',$mrn_range);
 
-            if(!empty($request->searchCol)){
+            if(!empty($request->searchCol) && $request->searchCol[0]!='doctor'){
                 $table_patm = $table_patm->where($request->searchCol[0],'like',$request->searchVal[0]);
             }
 
             $paginate_patm = $table_patm->paginate($request->rows);
 
-
             foreach ($paginate_patm->items() as $key => $value) {
-                $value->q_doctorname = $paginate->items()[$key]->doctorname;
-                $value->q_epistycode = $paginate->items()[$key]->epistycode;
+                foreach ($paginate->items() as $key2 => $value2) {
+                    if($value->MRN == $value2->mrn){
+                        $value->q_doctorname = $value2->doctorname;
+                        $value->q_epistycode = $value2->epistycode;
+                    }
+                }
             }
 
             $responce = new stdClass();

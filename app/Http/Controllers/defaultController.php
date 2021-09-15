@@ -444,7 +444,15 @@ abstract class defaultController extends Controller{
         }
 
         foreach ($field as $key => $value) {
-        	$array_update[$value] = strtoupper($request[$request->field[$key]]);
+            $field_value = strtoupper($request[$request->field[$key]]);
+
+            if(empty($field_value)){
+                $field_value = null;
+            }else{
+                 $field_value = $field_value;
+            }
+
+        	$array_update[$value] = $field_value;
         }
 
         try {

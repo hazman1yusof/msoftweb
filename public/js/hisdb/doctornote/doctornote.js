@@ -651,6 +651,8 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 
     if(disable_edit_date()){
     	return;
+	}else if(data == undefined){
+		return;
 	}
 	
 	//to highlight selected row

@@ -101,6 +101,15 @@ $(document).ready(function () {
 		}, 0);
 	});
 
+    $("#jqGridTriageInfo_panel").on("show.bs.collapse", function(){
+        $("#jqGridExamTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-248));
+        $("#jqGridAddNotesTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-248));
+    });
+
+    $("#jqGridTriageInfo_panel").on("hide.bs.collapse", function(){
+    	$("#jqGridTriageInfo_panel > div").scrollTop(0);
+    });
+
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
 

@@ -98,23 +98,23 @@ class BedManagementController extends defaultController
         foreach ($paginate->items() as $key => $value) {
             $pat_mast_obj = DB::table('hisdb.pat_mast AS p')
                         ->select(['p.Sex','p.DOB','racecode.Description AS raceDesc','religion.Description AS religionDesc','occupation.description AS occupDesc','citizen.Description AS citizenDesc','areacode.Description AS areaDesc'])
-                        ->join('hisdb.racecode', function($join) use ($request){
+                        ->leftJoin('hisdb.racecode', function($join) use ($request){
                             $join = $join->on('racecode.Code','=','p.RaceCode');
                             $join = $join->on('racecode.compcode','=','p.CompCode');
                         })
-                        ->join('hisdb.religion', function($join) use ($request){
+                        ->leftJoin('hisdb.religion', function($join) use ($request){
                             $join = $join->on('religion.Code','=','p.Religion');
                             $join = $join->on('religion.CompCode','=','p.CompCode');
                         })
-                        ->join('hisdb.occupation', function($join) use ($request){
-                            // $join = $join->on('occupation.occupcode','=','p.OccupCode');
-                            // $join = $join->on('occupation.compcode','=','p.CompCode');
+                        ->leftJoin('hisdb.occupation', function($join) use ($request){
+                            $join = $join->on('occupation.occupcode','=','p.OccupCode');
+                            $join = $join->on('occupation.compcode','=','p.CompCode');
                         })
-                        ->join('hisdb.citizen', function($join) use ($request){
+                        ->leftJoin('hisdb.citizen', function($join) use ($request){
                             $join = $join->on('citizen.Code','=','p.Citizencode');
                             $join = $join->on('citizen.compcode','=','p.CompCode');
                         })
-                        ->join('hisdb.areacode', function($join) use ($request){
+                        ->leftJoin('hisdb.areacode', function($join) use ($request){
                             $join = $join->on('areacode.areacode','=','p.AreaCode');
                             $join = $join->on('areacode.compcode','=','p.CompCode');
                         })

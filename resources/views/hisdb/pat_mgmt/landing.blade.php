@@ -267,7 +267,7 @@
 			<button id="btn_mykad" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-credit-card" aria-hidden="true"> </span> My Kad</button>
 		</div>
 
-		@if (request()->get('curpat') == 'true')
+		@if (!Session::has('isdoctor') && request()->get('curpat') == 'true')
 		<div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
 	        <div class="panel-heading clearfix collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 20px 20px;">
 
@@ -389,6 +389,10 @@
 	
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
 
+
+	<input type="hidden" id="user_billing" value="{{Auth::user()->billing}}">
+	<input type="hidden" id="user_nurse" value="{{Auth::user()->nurse}}">
+	<input type="hidden" id="user_doctor" value="{{Auth::user()->doctor}}">
 
 	@if (request()->get('curpat') == 'true')
 		@if (request()->get('epistycode') == 'OP')

@@ -98,6 +98,13 @@
                 </div>
 
                 <div class="form-group">
+					<label class="col-md-2 control-label" for="department">Login ID</label>  
+					<div class="col-md-4">
+				  		<input id="loginid" name="loginid" type="text" maxlength="200" class="form-control input-sm text-uppercase" data-validation="required">
+					</div>
+				 </div>
+
+                <div class="form-group">
 					<label class="col-md-2 control-label" for="department">Costcenter</label>  
 					<div class="col-md-4">
 					  <div class='input-group'>

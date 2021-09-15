@@ -48,17 +48,17 @@ class EmergencyController extends defaultController
         $table = $table->where('a.type','=','ED')
             ->whereBetween('a.apptdatefr', [$apptdatefr, $apptdatefr2]);
 
-        if(!empty($request->sidx)){
-            $pieces = explode(", ", $request->sidx .' '. $request->sord);
-            if(count($pieces)==1){
-                $table = $table->orderBy($request->sidx, $request->sord);
-            }else{
-                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
-                    $pieces_inside = explode(" ", $pieces[$i]);
-                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
-                }
-            }
-        }
+        // if(!empty($request->sidx)){
+        //     $pieces = explode(", ", $request->sidx .' '. $request->sord);
+        //     if(count($pieces)==1){
+        //         $table = $table->orderBy($request->sidx, $request->sord);
+        //     }else{
+        //         for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+        //             $pieces_inside = explode(" ", $pieces[$i]);
+        //             $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+        //         }
+        //     }
+        // }
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -72,23 +72,23 @@ class EmergencyController extends defaultController
 
             $patmast_obj = DB::table('hisdb.pat_mast AS p')
                         ->select(['p.Newic','p.id_type','p.oldic','p.dob','p.idnumber', 'p.racecode', 'r.description', 'p.sex', 'p.DOB', 'religion.Description AS religionDesc', 'occupation.description AS occupDesc', 'citizen.Description AS citizenDesc', 'areacode.Description AS areaDesc'])
-                        ->join('hisdb.racecode AS r', function($join) use ($request){
+                        ->leftJoin('hisdb.racecode AS r', function($join) use ($request){
                             $join = $join->on('r.code','=','p.racecode');
                             $join = $join->on('r.compcode','=','p.compcode');
                         })
-                        ->join('hisdb.religion', function($join) use ($request){
+                        ->leftJoin('hisdb.religion', function($join) use ($request){
                             $join = $join->on('religion.Code','=','p.Religion');
                             $join = $join->on('religion.CompCode','=','p.compcode');
                         })
-                        ->join('hisdb.occupation', function($join) use ($request){
-                            // $join = $join->on('occupation.occupcode','=','p.OccupCode');
-                            // $join = $join->on('occupation.compcode','=','p.compcode');
+                        ->leftJoin('hisdb.occupation', function($join) use ($request){
+                            $join = $join->on('occupation.occupcode','=','p.OccupCode');
+                            $join = $join->on('occupation.compcode','=','p.compcode');
                         })
-                        ->join('hisdb.citizen', function($join) use ($request){
+                        ->leftJoin('hisdb.citizen', function($join) use ($request){
                             $join = $join->on('citizen.Code','=','p.Citizencode');
                             $join = $join->on('citizen.compcode','=','p.compcode');
                         })
-                        ->join('hisdb.areacode', function($join) use ($request){
+                        ->leftJoin('hisdb.areacode', function($join) use ($request){
                             $join = $join->on('areacode.areacode','=','p.AreaCode');
                             $join = $join->on('areacode.compcode','=','p.compcode');
                         })

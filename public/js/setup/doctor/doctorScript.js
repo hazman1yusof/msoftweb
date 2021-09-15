@@ -138,6 +138,7 @@
 				 	{label: 'compcode', name: 'compcode', width: 90 , hidden: true, classes: 'wrap'},
 					{label: 'Doctor Code', name: 'doctorcode', width: 40, canSearch:true, classes: 'wrap'},
 					{label: 'Doctor Name', name: 'doctorname', width: 90, canSearch:true , classes: 'wrap', checked:true},
+					{label: 'Login ID', name: 'loginid', width: 30, canSearch:true, classes: 'wrap'},
 					{label: 'Costcenter', name: 'department', width: 90 , hidden: true, classes: 'wrap'},
 					{label: 'Discipline Code', name: 'disciplinecode', width: 30, classes: 'wrap'},
 					{label: 'Speciality Code', name: 'specialitycode', width: 30, classes: 'wrap'},

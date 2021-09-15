@@ -109,6 +109,7 @@ $(document).ready(function() {
                     <option value='Newic'>Newic</option>
                     <option value='Staffid'>Staffid</option>
                     <option value='telhp'>Handphone</option>
+                    <option value='doctor'>Doctor</option>
                 </select>`);
         }
 
@@ -213,7 +214,7 @@ $(document).ready(function() {
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        if($('#curpat').val() == 'true'){
+        if($('#curpat').val() == 'true' && $('#user_billing').val() == '1'){
             populate_ordcom_currpt(rows[bootgrid_last_rowid]);
         }
 
@@ -356,10 +357,6 @@ $(document).ready(function() {
             $("#tabpreepis").on("shown.bs.collapse", function(){
                 $("#jqGrid_preepis").jqGrid ('setGridWidth', Math.floor($("#jqGrid_preepis_c")[0].offsetWidth-$("#jqGrid_preepis_c")[0].offsetLeft-0));
                 refreshGrid("#jqGrid_preepis", self.urlParam_preepis);
-            });
-            $("#jqGridTriageInfo_panel").on("show.bs.collapse", function(){
-                $("#jqGridExamTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-228));
-                $("#jqGridAddNotesTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-228));
             });
             $("#jqGridDoctorNote_panel").on("show.bs.collapse", function(){
                 $("#jqGridAddNotes").jqGrid ('setGridWidth', Math.floor($("#jqGridDoctorNote_c")[0].offsetWidth-$("#jqGridDoctorNote_c")[0].offsetLeft-228));
