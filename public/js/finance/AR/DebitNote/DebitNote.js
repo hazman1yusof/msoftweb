@@ -875,6 +875,8 @@ $(document).ready(function () {
 
 			dialog_chggroup.on();
 			dialog_deptcode.on();
+			dialog_category.on();
+			dialog_GSTCode.on();
 			dialog_uomcode.on();
 
 			unsaved = false;
@@ -1291,6 +1293,8 @@ $(document).ready(function () {
 
 		errorField.length=0;
 		dialog_deptcode.on();
+		dialog_category.on();
+		dialog_GSTCode.on();
 		dialog_chggroup.on();
 		dialog_uomcode.on();
 		
@@ -1439,6 +1443,101 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_deptcode.makedialog(false);
+
+	var dialog_category = new ordialog(
+		'category','material.category',"#jqGrid2 input[name='category']",errorField,
+		{	colModel:[
+				{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+				
+			],
+			urlParam: {
+				filterCol:['compcode','source', 'cattype', 'recstatus'],
+				filterVal:['session.compcode','RC', 'Other', 'ACTIVE']
+			},
+			ondblClickRow: function () {
+				//$('#cheqdate').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#cheqdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Category",
+			open: function(){
+				dialog_category.urlParam.filterCol=['compcode','source', 'cattype', 'recstatus'],
+				dialog_category.urlParam.filterVal=['session.compcode','RC', 'Other', 'ACTIVE']
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_category.makedialog(true);
+
+	var dialog_GSTCode = new ordialog(
+		'GSTCode',['hisdb.taxmast'],"#jqGrid2 input[name='GSTCode']",errorField,
+		{	colModel:
+			[
+				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow:function(event){
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
+				console.log(optid)
+				let data=selrowData('#'+dialog_GSTCode.gridname);
+
+				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
+				$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#cheqdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Tax Code For Item",
+			open: function(){
+				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
+				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
+			},
+			close: function(){
+				if($('#jqGridPager2SaveAll').css("display") == "none"){
+					$(dialog_GSTCode.textfield)			//lepas close dialog focus on next textfield 
+					.closest('td')						//utk dialog dalam jqgrid jer
+					.next()
+					.find("input[type=text]").focus();
+				}
+				
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_GSTCode.makedialog(false);
 
 	var dialog_CustomerSO = new ordialog(
 		'customer', 'debtor.debtormast', '#db_debtorcode', errorField,

@@ -88,7 +88,8 @@ class DebitNoteController extends defaultController
                 'orderno' => strtoupper($request->db_orderno),
                 'ponum' => strtoupper($request->db_ponum),
                 'remark' => strtoupper($request->db_remark),
-                'approvedby' => $request->db_approvedby
+                'approvedby' => $request->db_approvedby,
+                'approveddate' => strtoupper($request->db_approveddate)
             ];
 
 
@@ -151,143 +152,6 @@ class DebitNoteController extends defaultController
     public function del(Request $request){
 
     }
-
-    // public function posted(Request $request){
-    //     DB::beginTransaction();
-
-    //     try{
-
-    //         foreach ($request->idno_array as $value){
-
-    //             $invno = $this->recno('PB','INV');
-
-    //             $dbacthdr = DB::table("debtor.dbacthdr")
-    //                         ->where('idno','=',$value)
-    //                         ->first();
-
-    //             $department = DB::table("sysdb.department")
-    //                         ->where('deptcode','=',$dbacthdr->deptcode)
-    //                         ->first();
-
-    //             $billsum = DB::table("debtor.billsum")
-    //                         ->where('source','=',$dbacthdr->source)
-    //                         ->where('trantype','=',$dbacthdr->trantype)
-    //                         ->where('auditno','=',$dbacthdr->auditno)
-    //                         ->get();
-
-
-    //             foreach ($billsum as $billsum_obj){
-
-    //                 $chgmast = DB::table("hisdb.chgmast")
-    //                         ->where('compcode','=',session('compcode'))
-    //                         ->where('chgcode','=',$billsum_obj->chggroup)
-    //                         ->first();
-
-    //                 $updinv = ($chgmast->invflag == '1')? 1 : 0;
-
-    //                 $insertGetId = DB::table("hisdb.chargetrx")
-    //                     ->insertGetId([
-    //                         'compcode'  => session('compcode'),
-    //                         'mrn'  => $billsum_obj->mrn,
-    //                         'episno'  => $billsum_obj->episno,
-    //                         'trxdate' => $dbacthdr->entrydate,
-    //                         'chgcode' => $billsum_obj->chggroup,
-    //                         'billflag' => 1,
-    //                         'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
-    //                         'billtype'  => $billsum_obj->billtype,
-    //                         'chg_class' => $chgmast->chgclass,
-    //                         'unitprce' => $billsum_obj->unitprice,
-    //                         'quantity' => $billsum_obj->quantity,
-    //                         'amount' => $billsum_obj->amount,
-    //                         'trxtime' => $dbacthdr->entrytime,
-    //                         'chggroup' => $chgmast->chggroup,
-    //                         'taxamount' => $billsum_obj->taxamt,
-    //                         'billno' => $invno,
-    //                         'uom' => $billsum_obj->uom,
-    //                         'billtime' => $dbacthdr->entrytime,
-    //                         'invgroup' => $chgmast->invgroup,
-    //                         'reqdept' => $dbacthdr->deptcode,
-    //                         'isudept' => $dbacthdr->deptcode,
-    //                         'invcode' => $chgmast->chggroup,
-    //                         'inventory' => $chgmast->invflag,
-    //                         'updinv' =>  $updinv,
-    //                         'discamt' => $billsum_obj->discamt,
-    //                         'qtyorder' => $billsum_obj->quantity,
-    //                         'qtyissue' => $billsum_obj->quantity,
-    //                         'units' => $department->sector,
-    //                         'chgtype' => $chgmast->chgtype,
-    //                         'adduser' => session('username'),
-    //                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-    //                         'lastuser' => session('username'),
-    //                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-    //                         'qtydispense' => $billsum_obj->quantity,
-    //                         'taxcode' => $billsum_obj->taxcode,
-    //                         'recstatus' => 'POSTED',
-    //                     ]);
-
-    //                 DB::table("hisdb.billdet")
-    //                     ->insert([
-    //                         'compcode'  => session('compcode'),
-    //                         'mrn'  => $billsum_obj->mrn,
-    //                         'episno'  => $billsum_obj->episno,
-    //                         'trxdate' => $dbacthdr->entrydate,
-    //                         'chgcode' => $billsum_obj->chggroup,
-    //                         'auditno' => $insertGetId,
-    //                         'billflag' => 1,
-    //                         'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
-    //                         'billtype'  => $billsum_obj->billtype,
-    //                         'chg_class' => $chgmast->chgclass,
-    //                         'unitprce' => $billsum_obj->unitprice,
-    //                         'quantity' => $billsum_obj->quantity,
-    //                         'amount' => $billsum_obj->amount,
-    //                         'trxtime' => $dbacthdr->entrytime,
-    //                         'chggroup' => $chgmast->chggroup,
-    //                         'taxamount' => $billsum_obj->taxamt,
-    //                         'billno' => $invno,
-    //                         'uom' => $billsum_obj->uom,
-    //                         'billtime' => $dbacthdr->entrytime,
-    //                         'invgroup' => $chgmast->invgroup,
-    //                         'reqdept' => $dbacthdr->deptcode,
-    //                         'isudept' => $dbacthdr->deptcode,
-    //                         'invcode' => $chgmast->chggroup,
-    //                         // 'inventory' => $chgmast->invflag,
-    //                         // 'updinv' =>  $updinv,
-    //                         'discamt' => $billsum_obj->discamt,
-    //                         // 'qtyorder' => $billsum_obj->quantity,
-    //                         // 'qtyissue' => $billsum_obj->quantity,
-    //                         // 'units' => $department->sector,
-    //                         // 'chgtype' => $chgmast->chgtype,
-    //                         'adduser' => session('username'),
-    //                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-    //                         'lastuser' => session('username'),
-    //                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-    //                         // 'qtydispense' => $billsum_obj->quantity,
-    //                         'taxcode' => $billsum_obj->taxcode,
-    //                         'recstatus' => 'POSTED',
-    //                     ]);
-
-    //             }
-
-
-    //             DB::table("debtor.dbacthdr")
-    //                 ->where('idno','=',$value)
-    //                 ->update([
-    //                     'invno' => $invno,
-    //                     'recstatus' => 'POSTED',
-    //                     'posteddate' => Carbon::now("Asia/Kuala_Lumpur")
-    //                 ]);
-
-
-    //         }
-           
-    //         DB::commit();
-        
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
-
-    //         return response($e->getMessage().$e, 500);
-    //     }
-    // }
 
     public function reopen(Request $request){
 
