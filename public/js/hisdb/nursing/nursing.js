@@ -729,6 +729,7 @@ function populate_triage(obj,rowdata){
 			autoinsert_rowdata("#formTriageInfo",data.triage);
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+			autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			button_state_ti('triage');
@@ -792,6 +793,7 @@ function populate_tiCurrentPt(obj){
 			autoinsert_rowdata("#formTriageInfo",data.triage);
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+			autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			button_state_ti('edit');
