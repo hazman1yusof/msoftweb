@@ -583,7 +583,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
             { label: 'source', name: 'source', width: 50, classes: 'wrap', hidden:true, editable:true},
             { label: 'trantype', name: 'trantype', width: 50, classes: 'wrap', hidden:true, editable:true},
-            { label: 'Department', name: 'deptcode', width: 300, classes: 'wrap', canSearch: true, editable: true,
+            { label: 'Department', name: 'deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
                 edittype:'custom',	editoptions:
@@ -601,7 +601,7 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-            { label: 'Document', name: 'document', width: 200, classes: 'wrap', editable: true,
+            { label: 'Document', name: 'document', width: 150, classes: 'wrap', editable: true,
                 //editrules:{required: true},
                 edittype:"text",
             },
@@ -619,7 +619,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules: { required: true },editoptions:{readonly: "readonly"},
 			},
-            { label: 'Amount Before GST', name: 'AmtB4GST', width: 180, classes: 'wrap',
+            { label: 'Amount Before GST', name: 'AmtB4GST', width: 100, classes: 'wrap',
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
@@ -638,7 +638,7 @@ $(document).ready(function () {
                 },
             },
         
-            { label: 'Total GST Amount', name: 'tot_gst', width: 180, align: 'right', classes: 'wrap', editable:true,
+            { label: 'Total GST Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:true,
                 formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
                 editrules:{required: true},
                 editoptions:{
@@ -654,9 +654,9 @@ $(document).ready(function () {
                     }
                 },
             },
-            { label: 'rate', name: 'rate', width: 120, classes: 'wrap', hidden:true
+            { label: 'rate', name: 'rate', width: 100, classes: 'wrap', hidden:true
             },
-            { label: 'Amount', name: 'amount', width: 180, classes: 'wrap', 
+            { label: 'Amount', name: 'amount', width: 100, classes: 'wrap', 
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
