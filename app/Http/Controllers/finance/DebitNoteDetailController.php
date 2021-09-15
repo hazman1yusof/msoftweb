@@ -50,7 +50,7 @@ class DebitNoteDetailController extends defaultController
     }
 
     public function get_table_dtl(Request $request){
-        $table = DB::table('debtor.billsum')
+        $table = DB::table('finance.apactdtl')
                     ->where('source','=',$request->source)
                     ->where('trantype','=',$request->trantype)
                     ->where('auditno','=',$request->auditno)
@@ -166,8 +166,8 @@ class DebitNoteDetailController extends defaultController
 
     public function add(Request $request){
 
-        $source = $request->source;
-        $trantype = $request->trantype;
+        $source = 'PB';
+        $trantype = 'DN';
         $auditno = $request->auditno;
 
         DB::beginTransaction();
@@ -182,37 +182,40 @@ class DebitNoteDetailController extends defaultController
 
             $dbacthdr_obj = $dbacthdr->first();
 
+
+            $apactdtl = DB::table('finance.apactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno);
+
+            if($apactdtl->exists()){
+                $count = $apactdtl->count();
+                $lineno_ = $count + 1;
+                $apactdtl_obj = $apactdtl->first();
+            }else{
+                $lineno_ = 1;
+            }
+
             ///2. insert detail
-            DB::table('debtor.dbactdtl')
+            DB::table('finance.apactdtl')
                 ->insert([
                     'compcode' => session('compcode'),
                     'source' => $source,
                     'trantype' => $trantype,
                     'auditno' => $auditno,
-                    'lineno_' => 1,
-                    'entrydate'=> $entrydate,
-                    'document'  => $document,
-                    'reference'  => $reference,
+                    'lineno_' => $lineno_,
+                    'document'  => $request->document,
                     'amount' => $request->amount,
-                    'stat' => $stat,
                     'mrn' => (!empty($dbacthdr_obj->mrn))?$dbacthdr_obj->mrn:null,
                     'episno' => (!empty($dbacthdr_obj->episno))?$dbacthdr_obj->episno:null,
-                    'billno' => $billno,
-                    'paymode' => $paymode,
-                    'allocauditno' => $allocauditno,
-                    'alloclineno' => $alloclineno,
-                    'alloctnauditno' => $alloctnauditno,
-                    'alloctnlineno' => $alloctnlineno,
-                    'grnno' => $grnno,
-                    'dorecno' => $dorecno,
-                    'category' => $category,
-                    'deptcode' => $deptcode,
+                    'deptcode' => $request->deptcode,
+                    'category' => $request->category,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'OPEN',
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => floatval($request->AmtB4GST),
-                    'unit' => $request->unit,
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur") 
                 ]);

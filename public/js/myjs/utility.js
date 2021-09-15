@@ -1397,6 +1397,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				}
 			}
 
+			console.log(id);
+
 			if(typeof errorField != 'string' && self.required){
 				if(!fail){
 					if($.inArray(idtopush,errorField)!==-1){
