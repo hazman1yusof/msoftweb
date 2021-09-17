@@ -632,9 +632,21 @@ $(document).ready(function () {
                     }
                 },
             },
-			{ label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap', editable: true,
+			{ label: 'Total Tax Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
-				editrules: { required: true }, editoptions:{readonly: "readonly"},
+				editrules:{required: true},
+				editoptions:{
+					readonly: "readonly",
+					maxlength: 12,
+					dataInit: function(element) {
+						element.style.textAlign = 'right';
+						$(element).keypress(function(e){
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+								return false;
+							 }
+						});
+					}
+				},
 			},
             { label: 'rate', name: 'rate', width: 120, classes: 'wrap', hidden:true
             },
@@ -829,7 +841,7 @@ $(document).ready(function () {
 			unsaved = false;
 			mycurrency2.array.length = 0;
 			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='AmtB4GST']","#jqGrid2 input[name='amount']"]);
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='AmtB4GST']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='amount']"]);
 			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyonhand']","#jqGrid2 input[name='quantity']"]);
 			
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
@@ -956,7 +968,7 @@ $(document).ready(function () {
 
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-				Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount","#"+ids[i]+"_taxamt"]);
+				Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst"]);
 
 		        Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_quantity"]);
 
@@ -1003,7 +1015,7 @@ $(document).ready(function () {
 		    		'document' : $('#'+ids[i]+"_document").val(),
 		    		'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
 		    		'AmtB4GST' : $('#'+ids[i]+"_AmtB4GST").val(),
-		    		'taxamt' : $('#'+ids[i]+"_taxamt").val(),
+		    		'tot_gst' : $('#'+ids[i]+"tot_gst").val(),
 		    		'amount' : ('#'+ids[i]+"_amount").val(),
                     'unit' : $("#"+ids[i]+"_unit").val(),
 		    	}
@@ -1200,6 +1212,11 @@ $(document).ready(function () {
 	}
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
+	function cari_gstpercent(id){
+		let data = $('#jqGrid2').jqGrid ('getRowData', id);
+		$("#jqGrid2 #"+id+"_gstpercent").val(data.rate);
+	}
+
 	var mycurrency2 =new currencymode([]);
 	var mycurrency_np =new currencymode([],true);
 	function calculate_line_totgst_and_totamt(event) {
@@ -1213,13 +1230,12 @@ $(document).ready(function () {
 		var id_optid = optid.substring(0,optid.search("_"));
 
 		let AmountB4GST = parseFloat($("#"+id_optid+"_AmtB4GST").val());
-		let taxAmount = parseFloat($("#jqGrid2 #"+id_optid+"_taxamt").val());
-		let rate =  parseFloat($("#"+id_optid+"_taxmast_rate").val());
+		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_gstpercent").val());
 
-		var taxAmount = AmountB4GST * (rate / 100);
-		var amount = AmountB4GST + taxAmount;
+		var tot_gst = AmountB4GST * (gstpercent / 100);
+		var amount = AmountB4GST + tot_gst;
 
-		$("#"+id_optid+"taxamt").val(taxAmount); //total tax
+		$("#"+id_optid+"tot_gst").val(tot_gst); //total tax
 
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount) //total amount
 
