@@ -39,6 +39,12 @@ class SessionController extends Controller
             $request->session()->put('username', request('username'));
             $request->session()->put('deptcode', $user->deptcode);
 
+            $doctor = DB::table('hisdb.doctor')->where('loginid','=',$user->username);
+
+            if($doctor->exists()){
+                $request->session()->put('isdoctor', $user->username);
+            }
+
             if($user->deptcode != ''){
                 $units = DB::table('sysdb.department')
                     ->select('sector')
