@@ -123,14 +123,14 @@ class BedManagementController extends defaultController
 
             if($pat_mast_obj->exists()){
                 $pat_mast_obj_first = $pat_mast_obj->first();
-                $value->sex = $pat_mast_obj_first->Sex;
+                $value->sex = strtoupper($pat_mast_obj_first->Sex);
                 $value->dob = $pat_mast_obj_first->DOB;
                 $value->age = Carbon::parse($pat_mast_obj_first->DOB)->age;
-                $value->race = $pat_mast_obj_first->raceDesc;
-                $value->religion = $pat_mast_obj_first->religionDesc;
-                $value->occupation = $pat_mast_obj_first->occupDesc;
-                $value->citizen = $pat_mast_obj_first->citizenDesc;
-                $value->area = $pat_mast_obj_first->areaDesc;
+                $value->race = strtoupper($pat_mast_obj_first->raceDesc);
+                $value->religion = strtoupper($pat_mast_obj_first->religionDesc);
+                $value->occupation = strtoupper($pat_mast_obj_first->occupDesc);
+                $value->citizen = strtoupper($pat_mast_obj_first->citizenDesc);
+                $value->area = strtoupper($pat_mast_obj_first->areaDesc);
             }else{
                 $value->sex = '';
                 $value->dob = '';

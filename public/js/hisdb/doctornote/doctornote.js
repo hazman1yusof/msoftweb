@@ -431,14 +431,14 @@ function populate_currDoctorNote(obj){
 	//panel header
 	$('#name_show_doctorNote').text(obj.Name);
 	$('#mrn_show_doctorNote').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_doctorNote').text(obj.Sex);
+	$('#sex_show_doctorNote').text((obj.Sex).toUpperCase());
 	$('#dob_show_doctorNote').text(dob_chg(obj.DOB));
 	$('#age_show_doctorNote').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_doctorNote').text(obj.raceDesc);
-	$('#religion_show_doctorNote').text(if_none(obj.religionDesc));
-	$('#occupation_show_doctorNote').text(if_none(obj.occupDesc));
-	$('#citizenship_show_doctorNote').text(obj.cityDesc);
-	$('#area_show_doctorNote').text(obj.areaDesc);
+	$('#race_show_doctorNote').text((obj.raceDesc).toUpperCase());
+	$('#religion_show_doctorNote').text(if_none(obj.religionDesc).toUpperCase());
+	$('#occupation_show_doctorNote').text(if_none(obj.occupDesc).toUpperCase());
+	$('#citizenship_show_doctorNote').text((obj.cityDesc).toUpperCase());
+	$('#area_show_doctorNote').text((obj.areaDesc).toUpperCase());
 
 	//formDoctorNote
 	$('#mrn_doctorNote').val(obj.MRN);

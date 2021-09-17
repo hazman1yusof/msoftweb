@@ -760,14 +760,14 @@ function populate_tiCurrentPt(obj){
 	//panel header
 	$('#name_show_triage').text(obj.Name);
 	$('#mrn_show_triage').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_triage').text(obj.Sex);
+	$('#sex_show_triage').text((obj.Sex).toUpperCase());
 	$('#dob_show_triage').text(dob_chg(obj.DOB));
 	$('#age_show_triage').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_triage').text(obj.raceDesc);
-	$('#religion_show_triage').text(if_none(obj.religionDesc));
-	$('#occupation_show_triage').text(if_none(obj.occupDesc));
-	$('#citizenship_show_triage').text(obj.cityDesc);
-	$('#area_show_triage').text(obj.areaDesc);
+	$('#race_show_triage').text((obj.raceDesc).toUpperCase());
+	$('#religion_show_triage').text(if_none(obj.religionDesc).toUpperCase());
+	$('#occupation_show_triage').text(if_none(obj.occupDesc).toUpperCase());
+	$('#citizenship_show_triage').text((obj.cityDesc).toUpperCase());
+	$('#area_show_triage').text((obj.areaDesc).toUpperCase());
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);

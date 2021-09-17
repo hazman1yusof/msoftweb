@@ -22,16 +22,12 @@ class DebitNoteDetailController extends defaultController
             case 'add':
                 // dd('asd');
                 return $this->add($request);
-
             case 'edit':
                 return $this->edit($request);
-
             case 'edit_all':
                 return $this->edit_all($request);
-
             case 'del':
                 return $this->del($request);
-
             default:
                 return 'error happen..';
         }
@@ -50,7 +46,7 @@ class DebitNoteDetailController extends defaultController
     }
 
     public function get_table_dtl(Request $request){
-        $table = DB::table('finance.apactdtl')
+        $table = DB::table('debtor.dbactdtl')
                     ->where('source','=',$request->source)
                     ->where('trantype','=',$request->trantype)
                     ->where('auditno','=',$request->auditno)
@@ -173,7 +169,6 @@ class DebitNoteDetailController extends defaultController
         DB::beginTransaction();
         
         try {
-
             $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=',$source)
@@ -182,22 +177,22 @@ class DebitNoteDetailController extends defaultController
 
             $dbacthdr_obj = $dbacthdr->first();
 
-            $apactdtl = DB::table('finance.apactdtl')
+            $dbactdtl = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=',$source)
                     ->where('trantype','=',$trantype)
                     ->where('auditno','=',$auditno);
 
-            if($apactdtl->exists()){
-                $count = $apactdtl->count();
+            if($dbactdtl->exists()){
+                $count = $dbactdtl->count();
                 $lineno_ = $count + 1;
-                $apactdtl_obj = $apactdtl->first();
+                $dbactdtl_obj = $dbactdtl->first();
             }else{
                 $lineno_ = 1;
             }
 
             ///2. insert detail
-            DB::table('finance.apactdtl')
+            DB::table('debtor.dbactdtl')
                 ->insert([
                     'compcode' => session('compcode'),
                     'source' => $source,
@@ -225,7 +220,7 @@ class DebitNoteDetailController extends defaultController
                 ]);
 
             ///3. calculate total amount from detail
-            $totalAmount = DB::table('debtor.apactdtl')
+            $totalAmount = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=',$source)
                     ->where('trantype','=',$trantype)
@@ -233,8 +228,7 @@ class DebitNoteDetailController extends defaultController
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
-            ///4. then update to header
-            
+            ///4. then update to header        
             $dbacthdr->update([
                     'amount' => $totalAmount,
                 ]);
@@ -254,68 +248,47 @@ class DebitNoteDetailController extends defaultController
         DB::beginTransaction();
 
         try {
-
-           // $invno = $this->recno('PB','INV'); buat lepas posted
-
             ///1. update detail
-            DB::table('finance.apactdtl')
+            DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                //->where('lineno_','=',$request->lineno_)
                 ->update([
                     'deptcode' => $request->deptcode,
                     'category' => $request->category,
-                    'billno'=> strtoupper($request->billno), 
-                    'document'=> strtoupper($request->document), 
-                    'unitprice'=> $request->unitprice,
+                    'document'=> strtoupper($request->document),
                     'GSTCode'=> $request->GSTCode,
-                    'qtyrequest'=> $request->qtyrequest, 
-                    'qtyonhand'=> $request->qtyonhand, 
-                    'unitprice'=> $request->unitprice,
-                    'percbilltype'=> $request->percbilltype, 
-                    'amtbilltype'=> $request->amtbilltype, 
                     'amount'=> $request->amount,
                     'AmtB4GST' => $request->AmtB4GST, 
                     'upduser'=> session('username'), 
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
-                    // 'remarks'=> strtoupper($request->remarks),
                     'unit' => session('unit')
                 ]);
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('material.purreqdt')
+            $totalAmount = DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
-                ->sum('totamount');
-
-            //calculate tot gst from detail
-            $tot_gst = DB::table('material.purreqdt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amtslstax');
+                ->sum('amount');
 
             ///3. update total amount to header
-            DB::table('material.purreqhd')
+            DB::table('debtor.dbacthdr')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->update([
-                    'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
+                    'amount' => $totalAmount
                 ]);
             
             echo $totalAmount;
 
             DB::commit();
+            return response($totalAmount,200);
 
         } catch (\Exception $e) {
             DB::rollback();
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function edit_all(Request $request){
@@ -323,89 +296,45 @@ class DebitNoteDetailController extends defaultController
         DB::beginTransaction();
 
         try {
-
             foreach ($request->dataobj as $key => $value) {
-                //check unique
-                $duplicate = DB::table('material.purreqdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
-                    ->where('lineno_','!=',$value['lineno_'])
-                    ->where('itemcode','=',strtoupper($value['itemcode']))
-                    ->where('uomcode','=',strtoupper($value['uomcode']))
-                    ->where('pouom','=',strtoupper($value['pouom']))
-                    ->exists();
-
-                $has_prodmaster =  DB::table('material.productmaster')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('itemcode','=',strtoupper($value['itemcode']))
-                    ->exists();
-
-                if($duplicate && $value['pricecode'] == 'MS'){
-                    throw new \Exception("Duplicate item and uom of itemcode: ".strtoupper($value['itemcode']));
-                }
-
-                if(!$has_prodmaster){
-                    throw new \Exception("Itemcode ".strtoupper($value['itemcode'])." doesnt have productmaster");
-                }
 
                 ///1. update detail
-                DB::table('material.purreqdt')
+                DB::table('debtor.dbactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'document' => strtoupper($value['document']),
+                        'amount' => $value['amount'],
+                        'category' => $value['category'],
+                        'deptcode' => $value['deptcode'],
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),                      
+                    ]);
+
+                ///2. recalculate total amount
+                $totalAmount = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$request->recno)
-                    ->where('lineno_','=',$value['lineno_'])
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('amount');
+                    
+
+                ///3. update total amount to header
+                DB::table('debtor.dbactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
                     ->update([
-                        'pricecode' => strtoupper($value['pricecode']), 
-                        'itemcode'=> strtoupper($value['itemcode']), 
-                        'uomcode'=> strtoupper($value['uomcode']), 
-                        'pouom'=> strtoupper($value['pouom']), 
-                        'qtyrequest'=> strtoupper($value['qtyrequest']),  
-                        'unitprice'=> $value['unitprice'],
-                        'taxcode'=> strtoupper($value['taxcode']), 
-                        'perdisc'=> $value['perdisc'], 
-                        'amtdisc'=> $value['amtdisc'], 
-                        'amtslstax'=> $value['tot_gst'], 
-                        'netunitprice'=> $value['netunitprice'], 
-                        'amount'=> $value['amount'], 
-                        'totamount'=> $value['totamount'], 
-                        'upduser'=> session('username'), 
-                        'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
-                        'remarks'=> strtoupper($value['remarks']),
-                        'unit' => session('unit')
+                        'amount' => $totalAmount, 
                     ]);
             }
-            
-            ///2. recalculate total amount
-            $totalAmount = DB::table('material.purreqdt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('totamount');
-
-            //calculate tot gst from detail
-            $tot_gst = DB::table('material.purreqdt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amtslstax');
-
-            ///3. update total amount to header
-            DB::table('material.purreqhd')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->update([
-                    'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
-                ]);
-            
-            echo $totalAmount;
 
             DB::commit();
+            return response($totalAmount,200);
 
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response('Error'.$e, 500);
         }
 
     }
@@ -417,47 +346,37 @@ class DebitNoteDetailController extends defaultController
         try {
 
             ///1. update detail
-            DB::table('finance.apactdtl')
+            DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->where('lineno_','=',$request->lineno_)
                 ->delete();
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('finance.apactdtl')
+            $totalAmount = DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('totamount');
 
-            //calculate tot gst from detail
-            $tot_gst = DB::table('finance.apactdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amtslstax');
-
             ///3. update total amount to header
-            DB::table('finance.apactdtl')
+            DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
+                    'amount' => $totalAmount
                 ]);
 
             echo $totalAmount;
 
             DB::commit();
+            return response($totalAmount,200);
 
         } catch (\Exception $e) {
             DB::rollback();
 
             return response($e->getMessage(), 500);
-        }
-        
+        }       
     }
-
 }
 
