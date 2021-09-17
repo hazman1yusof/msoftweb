@@ -102,17 +102,17 @@ class EmergencyController extends defaultController
 
             $rows[$key]->newic = $patmast_obj->Newic;
             $rows[$key]->racecode = $patmast_obj->racecode;
-            $rows[$key]->race = $patmast_obj->description;
-            $rows[$key]->sex = $patmast_obj->sex;
+            $rows[$key]->race = strtoupper($patmast_obj->description);
+            $rows[$key]->sex = strtoupper($patmast_obj->sex);
             $rows[$key]->id_type = $patmast_obj->id_type;
             $rows[$key]->oldic = $patmast_obj->oldic;
             $rows[$key]->dob = $patmast_obj->dob;
             $rows[$key]->idnumber = $patmast_obj->idnumber;
             $rows[$key]->age = Carbon::parse($patmast_obj->DOB)->age;
-            $rows[$key]->religion = $patmast_obj->religionDesc;
-            $rows[$key]->occupation = $patmast_obj->occupDesc;
-            $rows[$key]->citizen = $patmast_obj->citizenDesc;
-            $rows[$key]->area = $patmast_obj->areaDesc;
+            $rows[$key]->religion = strtoupper($patmast_obj->religionDesc);
+            $rows[$key]->occupation = strtoupper($patmast_obj->occupDesc);
+            $rows[$key]->citizen = strtoupper($patmast_obj->citizenDesc);
+            $rows[$key]->area = strtoupper($patmast_obj->areaDesc);
 
             $episode_obj = DB::table('hisdb.episode as e')
                         ->select(['e.pay_type','dt.description as dt_desc','e.billtype','bm.description as bm_desc','e.admdoctor','doc.doctorname'])
