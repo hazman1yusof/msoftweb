@@ -1703,14 +1703,14 @@ $(document).ready(function () {
 	dialog_expdate.makedialog(false);
 
 	var dialog_requestRecNo = new ordialog(
-		'srcdocno','material.purordhd','#srcdocno',errorField,
+		'srcdocno','material.ivreqhd','#srcdocno',errorField,
 		{	colModel:[
 				{label:'Request RecNo',name:'recno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				//{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode', ['POSTED' || 'ISSUED']]
+				filterVal:['session.compcode', 'POSTED']
 			},	
 			ondblClickRow:function(){
 				$('#sndrcvtype').focus();
@@ -1729,7 +1729,7 @@ $(document).ready(function () {
 			title:"Select Request RecNo",
 			open: function(){
 				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus'];
-				dialog_requestRecNo.urlParam.filterVal=['session.compcode',['POSTED' || 'ISSUED']];
+				dialog_requestRecNo.urlParam.filterVal=['session.compcode','POSTED'];
 			}
 		}, 'urlParam','radio','tab'
 	);

@@ -104,22 +104,6 @@ i.fa {
 						</select>
 				</div>
 
-				<?php 
-					$scope_use = 'posted';
-
-					// if(Request::get('scope') == 'ALL'){
-					// 	$scope_use = 'posted';
-					// }else if(Request::get('scope') == 'REQUEST'){
-					// 	$scope_use = 'posted';
-					// }else if(Request::get('scope') == 'SUPPORT'){
-					// 	$scope_use = 'support';
-					// }else if(Request::get('scope') == 'VERIFIED'){
-					// 	$scope_use = 'verify';
-					// }else if(Request::get('scope') == 'APPROVED'){
-					// 	$scope_use = 'approved';
-					// }
-				?>
-
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
@@ -128,7 +112,7 @@ i.fa {
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="{{$scope_use}}" 
+						data-oper="posted" 
 						style="display: none;">
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
@@ -148,6 +132,7 @@ i.fa {
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
+
 
 			 </fieldset> 
 		</form>
@@ -286,66 +271,24 @@ i.fa {
 
 
 
-					    <div class="form-group data_info">
-									<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_requestby">Request By</label>  
-						  			<input id="purreqhd_requestby" name="purreqhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						<div class="form-group data_info">
+							<div class="col-md-6 minuspad-13">
+									<label class="control-label" for="upduser">Last Entered By</label>  
+						  			<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
-
-					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_supportby">Support By</label>
-						  			<input id="purreqhd_supportby" name="purreqhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			<div class="col-md-6 minuspad-13">
+									<label class="control-label" for="upddate">Last Entered Date</label>
+						  			<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
-
-								  <div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_verifiedby">Verified By</label>  
-						  			<input id="purreqhd_verifiedby" name="purreqhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					    		<div class="col-md-6 minuspad-13">
+									<label class="control-label" for="adduser">Check By</label>  
+						  			<input id="adduser" name="adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
-
-					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_approvedby">Approved By</label>
-						  			<input id="purreqhd_approvedby" name="purreqhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			<div class="col-md-6 minuspad-13">
+									<label class="control-label" for="adddate">Check Date</label>
+						  			<input id="adddate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
-
-								  <div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_adduser">Add By</label>
-						  			<input id="purreqhd_adduser" name="purreqhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-								
-									<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_upduser">Last User</label>
-						  			<input id="purreqhd_upduser" name="purreqhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-
-					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_requestdate">Request Date</label>  
-						  			<input id="purreqhd_requestdate" name="purreqhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-
-					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_supportdate">Support Date</label>
-						  			<input id="purreqhd_supportdate" name="purreqhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-
-					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_verifieddate">Verified Date</label>  
-						  			<input id="purreqhd_verifieddate" name="purreqhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-
-					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_approveddate">Approved Date</label>
-						  			<input id="purreqhd_approveddate" name="purreqhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-
-									<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_adddate">Add Date</label>
-						  			<input id="purreqhd_adddate" name="purreqhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-
-									<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_upddate">Update Date</label>
-						  			<input id="purreqhd_upddate" name="purreqhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+						    	
 							</div>
 					</form>
 				</div>
