@@ -75,6 +75,7 @@ class InventoryRequestDetailController extends defaultController
             DB::table('material.ivreqdt')
                 ->insert([
                     'compcode' => session('compcode'),
+                    'reqdept' => $reqdept,
                     'recno' => $recno,
                     'lineno_' => $li,
                     'ivreqno' => $ivreqno,
@@ -92,6 +93,7 @@ class InventoryRequestDetailController extends defaultController
                     'unit' => session('unit')
                 ]);
 
+            DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();

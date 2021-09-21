@@ -115,7 +115,7 @@ $(document).ready(function () {
 		field:'',
 		table_name: ['material.ivreqhd'],
 		table_id: 'idno',
-		filterCol: ['reqtodept'],
+		filterCol: ['reqdept'],
 		filterVal: [$('#deptcode').val()],
 		// WhereInCol:['ivreqhd.recstatus'],
 		// WhereInVal: recstatus_filter,
@@ -669,7 +669,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid2 url///////////////////////////////////////////////////////
 	var urlParam2 = {
 		action: 'get_table_dtl',
-		url:'/inventoryRequestDetail/table',
+		url:'/util/get_table_default',
 		field: ['ivdt.compcode', 'ivdt.recno', 'ivdt.lineno_', 'ivdt.itemcode', 'p.description', 'ivdt.uomcode', 'ivdt.pouom',
 		's.maxqty', 's.qtyonhand', 'ivdt.qtyrequest', 'ivdt.qtytxn', 'ivdt.qohconfirm',
 		'ivdt.recstatus'],
@@ -678,8 +678,10 @@ $(document).ready(function () {
 		join_type: ['LEFT JOIN', 'LEFT JOIN'],
 		join_onCol: ['ivdt.itemcode', 'ivdt.itemcode'],
 		join_onVal: ['s.itemcode', 'p.itemcode'],
+		join_filterCol : [['ivdt.reqdept on =']],
+        join_filterVal : [['s.deptcode']],
 		filterCol: ['ivdt.recno', 'ivdt.compcode','ivdt.recstatus'],
-		filterVal: ['', 'session.company','<>.DELETE']
+		filterVal: ['', 'session.compcode','<>.DELETE']
 	};
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
@@ -689,8 +691,8 @@ $(document).ready(function () {
 		editurl: "/inventoryRequestDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden: true },
-			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', editable: true, hidden: true },
-			{ label: 'Line No', name: 'lineno_', width: 70, classes: 'wrap', editable: true, hidden: true },
+			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', editable: false, hidden: true },
+			{ label: 'Line No', name: 'lineno_', width: 70, classes: 'wrap', editable: false, hidden: true },
 			{
 				label: 'Item Code', name: 'itemcode', width: 230, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
@@ -768,7 +770,7 @@ $(document).ready(function () {
 				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
 			{
-				label: 'Type', name: 'recstatus', width: 100, classes: 'wrap', hidden: true, editable: true,
+				label: 'Type', name: 'recstatus', width: 100, classes: 'wrap', hidden: true, editable: false,
 				editoptions: { readonly: "readonly" },
 			},
 			{ label: 'Remarks', name: 'remarks_button', width: 140, formatter: formatterRemarks, unformat: unformatRemarks, hidden: true },
@@ -1508,8 +1510,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Request Made To Department",
 			open: function(){
-				dialog_reqtodept.urlParam.filterCol=['recstatus', 'compcode', 'sector'];
-				dialog_reqtodept.urlParam.filterVal=['ACTIVE','session.compcode','session.unit'];
+				dialog_reqtodept.urlParam.filterCol=['purdept','recstatus', 'compcode', 'sector'];
+				dialog_reqtodept.urlParam.filterVal=['1','ACTIVE','session.compcode','session.unit'];
 			}
 		},'urlParam','radio','tab'
 	);

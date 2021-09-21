@@ -79,9 +79,9 @@ class InventoryRequestController extends defaultController
             'recstatus' => 'OPEN'
         ];
 
-        foreach ($field as $key => $value){
-            $array_insert[$value] = $request[$request->field[$key]];
-        }
+        // foreach ($field as $key => $value){
+        //     $array_insert[$value] = $request[$request->field[$key]];
+        // }
 
         try {
 
@@ -149,9 +149,9 @@ class InventoryRequestController extends defaultController
             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
         ];
 
-        foreach ($field as $key => $value) {
-            $array_update[$value] = $request[$request->field[$key]];
-        }
+        // foreach ($field as $key => $value) {
+        //     $array_update[$value] = $request[$request->field[$key]];
+        // }
 
         try {
             //////////where//////////
