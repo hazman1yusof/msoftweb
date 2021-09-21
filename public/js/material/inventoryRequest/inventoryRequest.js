@@ -727,19 +727,19 @@ $(document).ready(function () {
 				label: 'Max Qty', name: 'maxqty', width: 80, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true }, editoptions: { readonly: "readonly" },
+				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
 			{
 				label: 'Qty on Hand at Req Dept', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true }, editoptions: { readonly: "readonly" },
+				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
 			{
 				label: 'Qty on Hand at Req To Dept', name: 'qohconfirm', width: 100, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true }, editoptions: { readonly: "readonly" },
+				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
 		
 			{
@@ -765,10 +765,10 @@ $(document).ready(function () {
 				label: 'Qty Supplied', name: 'qtytxn', width: 100, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true }, editoptions: { readonly: "readonly" },
+				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
 			{
-				label: 'Type', name: 'recstatus', width: 100, classes: 'wrap', hidden: false, editable: true,
+				label: 'Type', name: 'recstatus', width: 100, classes: 'wrap', hidden: true, editable: true,
 				editoptions: { readonly: "readonly" },
 			},
 			{ label: 'Remarks', name: 'remarks_button', width: 140, formatter: formatterRemarks, unformat: unformatRemarks, hidden: true },
@@ -823,8 +823,9 @@ $(document).ready(function () {
 			//$("#expdate").datepicker();
 		},
 		beforeSubmit: function (postdata, rowid) {
-			dialog_reqdept.check(errorField);
-			dialog_reqtodept.check(errorField);
+			dialog_itemcode.check(errorField);
+			dialog_uomcodereqdept.check(errorField);
+			dialog_uomcodereqto.check(errorField);
 		}
 
 		}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
@@ -967,11 +968,7 @@ $(document).ready(function () {
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 			
-			// $("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='taxcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
-
-			// $("#jqGrid2 input[name='qtyrequest']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
-
-			$("#jqGrid2 input[name='qtyrequest']").on('blur',calculate_conversion_factor);
+		//	$("#jqGrid2 input[name='qtyrequest']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
 
 			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
@@ -1227,7 +1224,7 @@ $(document).ready(function () {
 			case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
 			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
-			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
+		//	case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -1335,32 +1332,32 @@ $(document).ready(function () {
 	});
 
 	/////////////calculate conv fac/////////////////////////////////
-		function calculate_conversion_factor(event) {
-			var optid = event.currentTarget.id;
-			var id_optid = optid.substring(0,optid.search("_"));
+		// function calculate_conversion_factor(event) {
+		// 	var optid = event.currentTarget.id;
+		// 	var id_optid = optid.substring(0,optid.search("_"));
 
-			var id="#jqGrid2 #"+id_optid+"_qtyonhand";
-			var fail_msg = "Please Choose Suitable UOMCode & POUOMCode";
-			var name = "calculate_conversion_factor";
+		// 	var id="#jqGrid2 #"+id_optid+"_qtyonhand";
+		// 	var fail_msg = "Please Choose Suitable UOMCode & POUOMCode";
+		// 	var name = "calculate_conversion_factor";
 
-			let convfactor_bool = false;
-			let convfactor_uomcodereqdept  = parseFloat($("#jqGrid2 #"+id_optid+"_convfactoruomcodereqdept").val());
-			let convfactor_uomcodereqto = parseFloat($("#jqGrid2 #"+id_optid+"_convfactoruomcodereqto").val());
-			let qtyonhand = parseFloat($("#jqGrid2 #"+id_optid+"_qtyonhand").val());
+		// 	let convfactor_bool = false;
+		// 	let convfactor_uomcodereqdept  = parseFloat($("#jqGrid2 #"+id_optid+"_convfactoruomcodereqdept").val());
+		// 	let convfactor_uomcodereqto = parseFloat($("#jqGrid2 #"+id_optid+"_convfactoruomcodereqto").val());
+		// 	let qtyonhand = parseFloat($("#jqGrid2 #"+id_optid+"_qtyonhand").val());
 
-			var balconv = convfactor_uomcodereqdept*qtyonhand%convfactor_uomcodereqto;
-			if (balconv  == 0) {
-				if($.inArray(id,errorField)!==-1){
-					errorField.splice($.inArray(id,errorField), 1);
-				}
-				$('.noti').find("li[data-errorid='"+name+"']").detach();
-			} else {
-				$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
-				if($.inArray(id,errorField)===-1){
-					errorField.push( id );
-				}
-			}
-		}
+		// 	var balconv = convfactor_uomcodereqdept*qtyonhand%convfactor_uomcodereqto;
+		// 	if (balconv  == 0) {
+		// 		if($.inArray(id,errorField)!==-1){
+		// 			errorField.splice($.inArray(id,errorField), 1);
+		// 		}
+		// 		$('.noti').find("li[data-errorid='"+name+"']").detach();
+		// 	} else {
+		// 		$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+		// 		if($.inArray(id,errorField)===-1){
+		// 			errorField.push( id );
+		// 		}
+		// 	}
+		// }
 
 	function remove_noti(event){
 		var optid = event.currentTarget.id;
@@ -1384,82 +1381,20 @@ $(document).ready(function () {
 		errorField.length=0;
 		//start binding event on jqgrid2
 		dialog_itemcode.on();
-		dialog_uomcode.on();
-		dialog_pouom.on();
+		dialog_uomcodereqdept.on();
+		dialog_uomcodereqto.on();
 		dialog_taxcode.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
-		
-		// $("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='taxcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
-
-		// $("#jqGrid2 input[name='qtyrequest']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
-
-		$("#jqGrid2 input[name='qtyrequest']").on('blur',calculate_conversion_factor);
+	
 		$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
 	}
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
-	// var mycurrency2 =new currencymode([]);
-	// var mycurrency_np =new currencymode([],true);
-	// function calculate_line_totgst_and_totamt(event) {
-
-	// 	mycurrency2.formatOff();
-	// 	mycurrency_np.formatOff();
-
-	// 	var optid = event.currentTarget.id;
-	// 	var id_optid = optid.substring(0,optid.search("_"));
-       
-	// 	let qtyrequest = parseFloat($("#"+id_optid+"_qtyrequest").val());
-	// 	let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
-	// 	let amtdisc = parseFloat($("#"+id_optid+"_amtdisc").val());
-	// 	let perdisc = parseFloat($("#"+id_optid+"_perdisc").val());
-	// 	let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val());
-	// 	if($("#jqGrid2 input#"+id_optid+"_taxcode").val() == ''){
-	// 		gstpercent = 0;
-	// 	}
-
-	// 	var totamtperUnit = ((unitprice*qtyrequest) - (amtdisc*qtyrequest));
-	// 	var amount = totamtperUnit- (totamtperUnit*perdisc/100);
-		
-	// 	var tot_gst = amount * (gstpercent / 100);
-	// 	var totalAmount = amount + tot_gst;
-
-	// 	var netunitprice = (unitprice-amtdisc);//?
-		
-	// 	$("#"+id_optid+"_tot_gst").val(tot_gst);
-	// 	$("#"+id_optid+"_totamount").val(totalAmount);
-
-	// 	$("#jqGrid2").jqGrid('setRowData', id_optid ,{amount:amount});
-	// 	$("#jqGrid2").jqGrid('setRowData', id_optid ,{netunitprice:netunitprice});
-		
-	// 	var id="#jqGrid2 #"+id_optid+"_qtyrequest";
-	// 	var fail_msg = "Quantity Request must be greater than 0";
-	// 	var name = "quantityrequest";
-	// 	if (qtyrequest > 0) {
-	// 		if($.inArray(id,errorField)!==-1){
-	// 			errorField.splice($.inArray(id,errorField), 1);
-	// 		}
-	// 		$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-	// 		$( id ).removeClass( "error" ).addClass( "valid" );
-	// 		$('.noti').find("li[data-errorid='"+name+"']").detach();
-	// 	} else {
-	// 		$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-	// 		$( id ).removeClass( "valid" ).addClass( "error" );
-	// 		if(!$('.noti').find("li[data-errorid='"+name+"']").length)$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
-	// 		if($.inArray(id,errorField)===-1){
-	// 			errorField.push( id );
-	// 		}
-	// 	}
-
-	// 	event.data.currency.formatOn();//change format to currency on each calculation
-	// 	mycurrency_np.formatOn();
-
-	// 	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-
-	// }
-
-
+	var mycurrency2 =new currencymode([]);
+	var mycurrency_np =new currencymode([],true);
+	
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
@@ -1497,7 +1432,6 @@ $(document).ready(function () {
 			});
 			fdl.set_array().reset();
 
-			//calculate_quantity_outstanding('#jqGrid3');
 		},
 	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
         fixPositionsOfFrozenDivs.call(this);
@@ -1589,17 +1523,17 @@ $(document).ready(function () {
 				{label:'Description',name:'p_description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer'},
 				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
-				{label:'Max Quantity',name:'s_maxqty',width:100,classes:'pointer'},
+				{label:'Max Quantity',name:'s_maxqty',width:100,classes:'pointer', hidden:true},
 				{label:'Average Cost', name: 'p_avgcost', width: 100, classes: 'pointer', hidden:false },
 				{label:'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 			],
 			urlParam: {
 				filterCol:['s.compcode','s.year','s.deptcode'],
-				filterVal:['session.compcode', moment($('#reqdt').val()).year(),$('#reqdept').val()]
+				filterVal:['session.compcode', moment($('#reqdt').val()).year(),$('#reqtodept').val()]
 			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
-				//$("#jqGrid2 input[name='itemcode']").val(data['s_itemcode']);
+				$("#jqGrid2 input[name='itemcode']").val(data['s_itemcode']);
 				$("#jqGrid2 input[name='description']").val(data['p_description']);
 				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
 				$("#jqGrid2 input[name='maxqty']").val(data['s_maxqty']);
@@ -1607,8 +1541,6 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='convfactoruomcodetrdept']").val(data['u_convfactor']);
 				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
 				
-				// getQOHtxndept();
-				// checkQOH();
 				
 			},
 			gridComplete: function(obj){
@@ -1625,7 +1557,7 @@ $(document).ready(function () {
 				dialog_itemcode.urlParam.fixPost="true";
 				dialog_itemcode.urlParam.table_id="none_";
 				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode'];
-				dialog_itemcode.urlParam.filterVal=['session.compcode',moment($('#reqdt').val()).year(),$('#reqdept').val()];
+				dialog_itemcode.urlParam.filterVal=['session.compcode',moment($('#reqdt').val()).year(),$('#reqtodept').val()];
 				dialog_itemcode.urlParam.join_type=['LEFT JOIN', 'LEFT JOIN'];
 				dialog_itemcode.urlParam.join_onCol=['s.itemcode','u.uomcode'];
 				dialog_itemcode.urlParam.join_onVal=['p.itemcode', 's.uomcode'];
@@ -1651,7 +1583,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['s.compcode','s.deptcode','s.itemcode','s.year'],
-				filterVal:['session.compcode',$('#reqdept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()]
+				filterVal:['session.compcode',$('#reqtodept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()]
 			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcodereqdept.gridname);
@@ -1660,7 +1592,6 @@ $(document).ready(function () {
 				$("#convfactoruomcodereqdept").val(data['u_convfactor']);
 				$("#jqGrid2 input[name='netprice']").val(data['p_avgcost']);
 				$("#jqGrid2 input[name='uomcoderecv']").val(data['s_uomcode']);
-				// checkQOH(event);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1677,7 +1608,7 @@ $(document).ready(function () {
 				dialog_uomcodereqdept.urlParam.fixPost="true";
 				dialog_uomcodereqdept.urlParam.table_id="none_";
 				dialog_uomcodereqdept.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcodereqdept.urlParam.filterVal=['session.compcode',$('#reqdept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()];
+				dialog_uomcodereqdept.urlParam.filterVal=['session.compcode',$('#reqtodept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()];
 				dialog_uomcodereqdept.urlParam.join_type=['LEFT JOIN','LEFT JOIN'];
 				dialog_uomcodereqdept.urlParam.join_onCol=['s.itemcode','s.uomcode'];
 				dialog_uomcodereqdept.urlParam.join_onVal=['p.itemcode','u.uomcode'];
@@ -1750,11 +1681,6 @@ $(document).ready(function () {
 	dialog_uomcodereqto.makedialog(false);
 
 	/////////////////////////////end dialog handler/////////////////////////////////////////
-
-	function cari_gstpercent(id){
-		let data = $('#jqGrid2').jqGrid ('getRowData', id);
-		$("#jqGrid2 #"+id+"_pouom_gstpercent").val(data.rate);
-	}
 
 	$("#jqGrid_selection").jqGrid({
 		datatype: "local",

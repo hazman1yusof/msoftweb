@@ -22,7 +22,6 @@ class InventoryRequestDetailController extends defaultController
     {   
 
         DB::enableQueryLog();
-        // return $this->request_no('GRN','2FL');
         switch($request->oper){
             case 'add': 
                 return $this->add($request);
@@ -44,47 +43,6 @@ class InventoryRequestDetailController extends defaultController
                 return 'error happen..';
         }
     }
-    public function get_draccno($itemcode){
-        $query = DB::table('material.category')
-                ->select('category.stockacct')
-                ->join('material.product', 'category.catcode', '=', 'product.productcat')
-                ->where('product.itemcode','=',$itemcode)
-                ->first();
-        
-        return $query->stockacct;
-    }
-
-    public function get_drccode($txndept){
-        $query = DB::table('sysdb.department')
-                ->select('costcode')
-                ->where('compcode','=',session('compcode'))
-                ->where('deptcode','=',$txndept)
-                ->first();
-        
-        return $query->costcode;
-    }
-
-    public function get_craccno(){
-        $query = DB::table('sysdb.sysparam')
-                ->select('pvalue2')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=','AP')
-                ->where('trantype','=','ACC')
-                ->first();
-        
-        return $query->pvalue2;
-    }
-
-    public function get_crccode(){
-        $query = DB::table('sysdb.sysparam')
-                ->select('pvalue1')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=','AP')
-                ->where('trantype','=','ACC')
-                ->first();
-        
-        return $query->pvalue1;
-    }
 
     public function chgDate($date){
         if(!empty($date)){
@@ -96,76 +54,45 @@ class InventoryRequestDetailController extends defaultController
     }
 
     public function add(Request $request){
+
+        $recno = $request->recno;
+        $ivreqno = $request->ivreqno;
+        $reqdept = $request->reqdept;
+        
         DB::beginTransaction();
 
         try {
-            $request->expdate = $this->null_date($request->expdate);
-            $recno = $request->recno;
+            //$request->expdate = $this->null_date($request->expdate);
             ////1. calculate lineno_ by recno
-            $sqlln = DB::table('material.ivtmpdt')->select('lineno_')
+            $sqlln = DB::table('material.ivreqdt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$recno)
                         ->count('lineno_');
 
             $li=intval($sqlln)+1;
 
-
-            //2.1 check ada stockloc ke tak kat sndrcv
-            $stockloc_obj = DB::table('material.StockLoc')
-                    ->where('StockLoc.CompCode','=',session('compcode'))
-                    ->where('StockLoc.DeptCode','=',$request->sndrcv)
-                    ->where('StockLoc.ItemCode','=',$request->itemcode)
-                    ->where('StockLoc.Year','=', defaultController::toYear($request->trandate))
-                    ->where('StockLoc.UomCode','=',$request->uomcoderecv);
-
-
-            if(!$stockloc_obj->exists()){
-                throw new \Exception('stockloc doesnt exists');
-            }
-
-
             ///2. insert detail
-            DB::table('material.ivtmpdt')
+            DB::table('material.ivreqdt')
                 ->insert([
                     'compcode' => session('compcode'),
                     'recno' => $recno,
                     'lineno_' => $li,
+                    'ivreqno' => $ivreqno,
                     'itemcode' => $request->itemcode,
                     'uomcode' => $request->uomcode,
-                    'txnqty' => $request->txnqty,
-                    'netprice' => $request->netprice,
-                    'productcat' => $request->productcat,
+                    'pouom' => $request->pouom,
+                    'maxqty' => $request->maxqty,
+                    'qohconfirm' => $request->qohconfirm,
                     'qtyonhand' => $request->qtyonhand,
-                    'uomcoderecv'=> $request->uomcoderecv,
-                    'qtyonhandrecv'=> $request->qtyonhandrecv,
-                    'amount' => $request->amount,
+                    'qtytxn'=> $request->qtytxn,
+                    'qtyrequest'=> $request->qtyrequest,
                     'adduser' => session('username'), 
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $request->expdate, 
-                    'batchno' => $request->batchno, 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),  
                     'recstatus' => 'OPEN', 
-                    'remarks' => $request->remarks
+                    'unit' => session('unit')
                 ]);
 
-            ///3. calculate total amount from detail
-            $totalAmount = DB::table('material.ivtmpdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
-                    ->where('recstatus','!=','DELETE')
-                    ->sum('amount');
-
-       
-            ///4. then update to header
-            DB::table('material.ivtmphd')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
-                ->update([
-                    'amount' => $totalAmount
-                  
-                ]);
-            DB::commit();
-            return response($totalAmount,200);
-
+        
         } catch (\Exception $e) {
             DB::rollback();
 
