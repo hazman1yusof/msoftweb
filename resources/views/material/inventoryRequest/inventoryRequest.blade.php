@@ -104,22 +104,6 @@ i.fa {
 						</select>
 				</div>
 
-				<?php 
-					$scope_use = 'posted';
-
-					// if(Request::get('scope') == 'ALL'){
-					// 	$scope_use = 'posted';
-					// }else if(Request::get('scope') == 'REQUEST'){
-					// 	$scope_use = 'posted';
-					// }else if(Request::get('scope') == 'SUPPORT'){
-					// 	$scope_use = 'support';
-					// }else if(Request::get('scope') == 'VERIFIED'){
-					// 	$scope_use = 'verify';
-					// }else if(Request::get('scope') == 'APPROVED'){
-					// 	$scope_use = 'approved';
-					// }
-				?>
-
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
@@ -128,7 +112,7 @@ i.fa {
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="{{$scope_use}}" 
+						data-oper="posted" 
 						style="display: none;">
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
@@ -148,6 +132,7 @@ i.fa {
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
+
 
 			 </fieldset> 
 		</form>
