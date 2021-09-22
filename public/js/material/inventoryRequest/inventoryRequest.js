@@ -179,7 +179,7 @@ $(document).ready(function () {
 			{ label: 'Request Date', name: 'reqdt', width: 20, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 20, align: 'right', formatter: 'currency' },
 			{ label: 'Recstatus', name: 'recstatus', width: 20},
-			//{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'Remarks', name: 'remarks', width: 50, classes: 'wrap', hidden:true},
 			{ label: 'Request Type', name: 'reqtype', width: 50, hidden:true},
@@ -220,7 +220,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			$('#error_infront').text('');
-			let stat = selrowData("#jqGrid").delordhd_recstatus;
+			let stat = selrowData("#jqGrid").recstatus;
 			let scope = $("#recstatus_use").val();
 
 			// $('#but_post_single_jq,#but_cancel_jq,#but_soft_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
@@ -253,28 +253,29 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3", urlParam2);
 			populate_form(selrowData("#jqGrid"));
 
-			$("#pdfgen1").attr('href','./inventoryRequest/showpdf?recno='+selrowData("#jqGrid").recno);
+			//$("#pdfgen1").attr('href','./inventoryRequest/showpdf?recno='+selrowData("#jqGrid").recno);
 
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").recstatus;
-			if(stat=='OPEN' || stat=='INCOMPLETED'){
+			if(stat=='OPEN'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			}else{
 				$("#jqGridPager td[title='View Selected Row']").click();
 			}
 		},
 		gridComplete: function () {
-			//cbselect.show_hide_table();
+			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			if (oper == 'add' || oper == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			populate_form(selrowData("#jqGrid"));
-			fdl.set_array().reset();
-
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
+			fdl.set_array().reset();
+
+			
 		},
 
 	});
@@ -326,7 +327,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['recno','ivreqno','adduser', 'adddate', 'idno', 'upduser','upddate','deluser', 'recstatus','unit','Checkbox','queuepr_AuthorisedID']);
+	addParamField('#jqGrid', false, saveParam, ['recno','ivreqno','adduser', 'adddate', 'idno', 'upduser','upddate','deluser', 'recstatus','unit','Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -346,52 +347,7 @@ $(document).ready(function () {
 	var actdateObj = new setactdate(["#reqdt"]);
 	actdateObj.getdata().set();
 
-	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	// $("#but_cancel_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
-		
-	// 	saveParam.oper = $(this).data("oper");
-	// 	let obj={
-	// 		recno:selrowData('#jqGrid').recno,
-	// 		_token:$('#_token').val(),
-	// 		idno:selrowData('#jqGrid').idno
-
-	// 	};
-	// 	$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
-	// 		refreshGrid("#jqGrid", urlParam);
-	// 	}).fail(function (data) {
-	// 		// alert(data.responseText);
-	// 		$('#error_infront').text(data.responseText);
-	// 	}).done(function (data) {
-	// 		//2nd successs?
-	// 	});
-	// });
-	// $('#jqGrid2_ilcancel').click(function(){
-	// 	$(".noti").empty();
-	// });
-
-	// $("#but_post_jq,#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
-	// 	$(this).attr('disabled',true);
-	// 	var self_ = this;
-	// 	var idno_array = [];
-	
-	// 	idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
-	// 	var obj={};
-	// 	obj.idno_array = idno_array;
-	// 	obj.oper = $(this).data('oper');
-	// 	obj._token = $('#_token').val();
-		
-	// 	$.post( '/inventoryRequest/form', obj , function( data ) {
-	// 		refreshGrid('#jqGrid', urlParam);
-	// 		$(self_).attr('disabled',false);
-	// 		cbselect.empty_sel_tbl();
-	// 	}).fail(function(data) {
-	// 		$('#error_infront').text(data.responseText);
-	// 		$(self_).attr('disabled',false);
-	// 	}).success(function(data){
-	// 		$(self_).attr('disabled',false);
-	// 	});
-	// });
-
+	///////////////////////////////////////save POSTED,CANCEL,REOPEN////////////////////////////////////
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
 
 		var idno = selrowData('#jqGrid').idno;
@@ -580,7 +536,6 @@ $(document).ready(function () {
 
 	function searchChange() {
 
-		cbselect.empty_sel_tbl();
 		var arrtemp = ['session.compcode', $('#Status option:selected').val(), $('#trandept option:selected').val()];
 
 		var filter = arrtemp.reduce(function (a, b, c) {
@@ -1450,11 +1405,11 @@ $(document).ready(function () {
 			colModel: [
 				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
-				{ label:'Unit',name:'sector'},
+				{ label:'Unit',name:'sector', hidden:true},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				filterCol:['compcode','recstatus', 'purdept'],
+				filterVal:['session.compcode','ACTIVE','1']
 			},
 			ondblClickRow: function () {
 				$('#reqtodept').focus();
@@ -1472,8 +1427,8 @@ $(document).ready(function () {
 		}, {
 			title: "Select Request Department",
 			open: function(){
-				dialog_reqdept.urlParam.filterCol=['recstatus', 'compcode', 'sector'];
-				dialog_reqdept.urlParam.filterVal=['ACTIVE', 'session.compcode', 'session.unit'];
+				dialog_reqdept.urlParam.filterCol=['recstatus', 'compcode', 'purdept'];
+				dialog_reqdept.urlParam.filterVal=['ACTIVE', 'session.compcode', '1'];
 			},close: function(){
 			},
 			after_check: function(obj_,data){
@@ -1488,11 +1443,11 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true, checked:true, or_search:true},
-				{label:'Unit',name:'sector'},
+				{label:'Unit',name:'sector', hidden:true},
 			],
 			urlParam: {
-				filterCol:['purdept', 'recstatus', 'compcode', 'sector'],
-				filterVal:['1', 'ACTIVE','session.compcode','session.unit']
+				filterCol:['purdept', 'recstatus', 'compcode'],
+				filterVal:['1', 'ACTIVE','session.compcode']
 			},
 			ondblClickRow: function () {
 				$('#remarks').focus();
@@ -1510,8 +1465,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Request Made To Department",
 			open: function(){
-				dialog_reqtodept.urlParam.filterCol=['purdept','recstatus', 'compcode', 'sector'];
-				dialog_reqtodept.urlParam.filterVal=['1','ACTIVE','session.compcode','session.unit'];
+				dialog_reqtodept.urlParam.filterCol=['purdept','recstatus', 'compcode'];
+				dialog_reqtodept.urlParam.filterVal=['1','ACTIVE','session.compcode'];
 			}
 		},'urlParam','radio','tab'
 	);

@@ -43,8 +43,8 @@ i.fa {
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
-	@if (Request::get('scope') == 'ALL')
-		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
+	@if (Request::get('scope') == 'all')
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="POSTED">
 	@else
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
 	@endif
