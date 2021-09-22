@@ -1,5 +1,6 @@
 
 <div class="panel panel-default" style="position: relative;" id="jqGridDoctorNote_c">
+    <input type="hidden" name="curr_user" id="curr_user" value="{{ Auth::user()->username }}">
 	
 	<div class="panel-heading clearfix collapsed position" id="toggle_doctorNote" style="position: sticky;top: 0px;z-index: 3;">
 		<b>NAME: <span id="name_show_doctorNote"></span></b><br>

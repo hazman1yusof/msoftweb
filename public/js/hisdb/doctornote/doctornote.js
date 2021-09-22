@@ -508,8 +508,8 @@ function on_toggling_curr_past(obj = curr_obj){
 	if (document.getElementById("current").checked){
 		dateParam_docnote={
 			action:'get_table_date_curr',
-			mrn:obj.mrn,
-			episno:obj.episno
+			mrn:obj.MRN,
+			episno:obj.Episno
 		}
 		
 		addnotes.style.display = "none";
@@ -518,7 +518,7 @@ function on_toggling_curr_past(obj = curr_obj){
 	}else if(document.getElementById("past").checked){
 		dateParam_docnote={
 			action:'get_table_date_past',
-			mrn:obj.mrn,
+			mrn:obj.MRN,
 		}
 
 		addnotes.style.display = "block";
