@@ -40,8 +40,6 @@ class InventoryRequestController extends defaultController
                 return $this->reopen($request);
             case 'posted_single':
                 return $this->posted_single($request);
-            case 'soft_cancel':
-                return $this->soft_cancel($request);
             case 'cancel':
                 return $this->cancel($request);
             default:
