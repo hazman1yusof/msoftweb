@@ -583,7 +583,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
             { label: 'source', name: 'source', width: 50, classes: 'wrap', hidden:true, editable:true},
             { label: 'trantype', name: 'trantype', width: 50, classes: 'wrap', hidden:true, editable:true},
-            { label: 'Department', name: 'deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
+            { label: 'Department', name: 'deptcode', width: 300, classes: 'wrap', canSearch: true, editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
                 edittype:'custom',	editoptions:
@@ -601,9 +601,10 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-            { label: 'Document', name: 'document', width: 150, classes: 'wrap', editable: true,
+            { label: 'Document', name: 'document', width: 200, classes: 'wrap', editable: true,
                 //editrules:{required: true},
                 edittype:"text",
+				editoptions: {style: "text-transform: uppercase"},
             },
             { label: 'GST Code', name: 'GSTCode', width: 200, edittype:'text', classes: 'wrap', editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
@@ -614,16 +615,7 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-<<<<<<< HEAD
-			{ label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap',
-				editable: true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
-				editrules: { required: true },editoptions:{readonly: "readonly"},
-			},
-            { label: 'Amount Before GST', name: 'AmtB4GST', width: 100, classes: 'wrap',
-=======
             { label: 'Amount Before GST', name: 'AmtB4GST', width: 180, classes: 'wrap',
->>>>>>> 3257695eb7f17c181667ab7206d2ba019281a164
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
@@ -641,26 +633,6 @@ $(document).ready(function () {
                     }
                 },
             },
-<<<<<<< HEAD
-        
-            { label: 'Total GST Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:true,
-                formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
-                editrules:{required: true},
-                editoptions:{
-                    readonly: "readonly",
-                    maxlength: 12,
-                    dataInit: function(element) {
-                        element.style.textAlign = 'right';
-                        $(element).keypress(function(e){
-                            if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
-                                return false;
-                            }
-                        });
-                    }
-                },
-            },
-            { label: 'rate', name: 'rate', width: 100, classes: 'wrap', hidden:true
-=======
 			{ label: 'Total Tax Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules:{required: true},
@@ -678,9 +650,8 @@ $(document).ready(function () {
 				},
 			},
             { label: 'rate', name: 'rate', width: 120, classes: 'wrap', hidden:true
->>>>>>> 3257695eb7f17c181667ab7206d2ba019281a164
             },
-            { label: 'Amount', name: 'amount', width: 100, classes: 'wrap', 
+            { label: 'Amount', name: 'amount', width: 180, classes: 'wrap', 
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
