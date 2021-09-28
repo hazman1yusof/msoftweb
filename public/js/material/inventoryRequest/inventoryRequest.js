@@ -190,17 +190,8 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
 			{ label: 'idno', name: 'idno', width: 90, hidden: true },
-			
-
-			// { label: 'requestby', name: 'requestby', width: 90, hidden: true },
-			// { label: 'requestdate', name: 'requestdate', width: 90, hidden: true },
-			// { label: 'supportby', name: 'supportby', width: 90, hidden: true },
-			// { label: 'supportdate', name: 'supportdate', width: 40, hidden: true},
-			// { label: 'verifiedby', name: 'verifiedby', width: 90, hidden: true },
-			// { label: 'verifieddate', name: 'verifieddate', width: 90, hidden: true },
-			// { label: 'approvedby', name: 'approvedby', width: 90, hidden: true },
-			// { label: 'approveddate', name: 'approveddate', width: 40, hidden: true},
-
+			{ label: 'postedby', name: 'postedby', width: 90, hidden: true },
+			{ label: 'postdate', name: 'postdate', width: 90, hidden: true },
 			{ label: 'reopenby', name: 'reopenby', width: 40, hidden: true},
 			{ label: 'reopendate', name: 'reopendate', width: 40, hidden:true},
 			{ label: 'cancelby', name: 'cancelby', width: 40, hidden:true},
@@ -326,7 +317,7 @@ $(document).ready(function () {
 	populateSelect('#jqGrid', '#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
+	addParamField('#jqGrid', true, urlParam,['Checkbox']);
 	addParamField('#jqGrid', false, saveParam, ['recno','ivreqno','adduser', 'adddate', 'idno', 'upduser','upddate','deluser', 'recstatus','unit','Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////

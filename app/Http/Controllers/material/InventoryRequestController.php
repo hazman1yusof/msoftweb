@@ -175,7 +175,7 @@ class InventoryRequestController extends defaultController
 
                 DB::table('material.ivreqhd')
                 ->where('recno','=',$request->recno)
-                ->where('unit','=',session('unit'))
+               // ->where('unit','=',session('unit'))
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'postedby' => session('username'),
@@ -185,7 +185,7 @@ class InventoryRequestController extends defaultController
 
             DB::table('material.ivreqdt')
                 ->where('recno','=',$request->recno)
-                ->where('unit','=',session('unit'))
+               // ->where('unit','=',session('unit'))
                 ->where('compcode','=',session('compcode'))
                 ->where('recstatus','!=','DELETE')
                 ->update([
@@ -208,7 +208,7 @@ class InventoryRequestController extends defaultController
         try {
             DB::table('material.ivreqhd')
             ->where('recno','=',$request->recno)
-            ->where('unit','=',session('unit'))
+          //  ->where('unit','=',session('unit'))
             ->where('compcode','=',session('compcode'))
             ->update([
                 'postedby' => session('username'),
@@ -218,7 +218,7 @@ class InventoryRequestController extends defaultController
 
         DB::table('material.ivreqdt')
             ->where('recno','=',$request->recno)
-            ->where('unit','=',session('unit'))
+           // ->where('unit','=',session('unit'))
             ->where('compcode','=',session('compcode'))
             ->where('recstatus','!=','DELETE')
             ->update([

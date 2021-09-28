@@ -150,7 +150,7 @@ class InventoryRequestDetailController extends defaultController
         try {
 
             ///1. update detail
-            DB::table('material.ivtmpdt')
+            DB::table('material.ivreqdt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$request->lineno_)
@@ -182,7 +182,7 @@ class InventoryRequestDetailController extends defaultController
             foreach ($request->dataobj as $key => $value) {
 
                 ///1. update detail
-                DB::table('material.ivtmpdt')
+                DB::table('material.ivreqdt')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$request->recno)
                     ->where('lineno_','=',$value['lineno_'])
@@ -205,14 +205,14 @@ class InventoryRequestDetailController extends defaultController
                     ]);
 
                 ///2. recalculate total amount
-                $totalAmount = DB::table('material.ivtmpdt')
+                $totalAmount = DB::table('material.ivreqdt')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$request->recno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
                 ///3. update total amount to header
-                DB::table('material.ivtmphd')
+                DB::table('material.ivreqhd')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$request->recno)
                     ->update([
