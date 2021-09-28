@@ -215,6 +215,8 @@ class DebitNoteDetailController extends defaultController
                     'recstatus' => 'OPEN',
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => floatval($request->AmtB4GST),
+                   // 'amtslstax' => $tot_gst, 
+                    'tot_gst' => $request->tot_gst,
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur") 
                 ]);
@@ -258,7 +260,9 @@ class DebitNoteDetailController extends defaultController
                     'document'=> strtoupper($request->document),
                     'GSTCode'=> $request->GSTCode,
                     'amount'=> $request->amount,
-                    'AmtB4GST' => $request->AmtB4GST, 
+                    'AmtB4GST' => $request->AmtB4GST,
+                   // 'amtslstax' => $tot_gst, 
+                    'tot_gst' => $request->tot_gst,
                     'upduser'=> session('username'), 
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'unit' => session('unit')

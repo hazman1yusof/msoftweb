@@ -567,7 +567,7 @@ $(document).ready(function () {
 		source:'',
 		trantype:'',
 		auditno:'',
-		field:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.lineno_','dbactdtl.deptcode','dbactdtl.category','dbactdtl.document', 'dbactdtl.AmtB4GST', 'dbactdtl.GSTCode', 'dbactdtl.amount', 'dbactdtl.dorecno', 'dbactdtl.grnno'],
+		field:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.lineno_','dbactdtl.deptcode','dbactdtl.category','dbactdtl.document', 'dbactdtl.AmtB4GST', 'dbactdtl.GSTCode', 'dbactdtl.amount', 'dbactdtl.dorecno', 'dbactdtl.grnno', 'dbactdtl.amtslstax as tot_gst'],
 		table_name:['debtor.dbactdtl AS dbactdtl'],
 		table_id:'lineno_',
 		filterCol:['dbactdtl.compcode','dbactdtl.auditno', 'dbactdtl.recstatus','dbactdtl.source','dbactdtl.trantype'],
@@ -634,7 +634,7 @@ $(document).ready(function () {
                 },
             },
 			{ label: 'Total Tax Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable:true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true},
 				editoptions:{
 					readonly: "readonly",
@@ -669,7 +669,6 @@ $(document).ready(function () {
                             });
                         }
                     },
-
             },
 			{ label: 'No', name: 'lineno_', width: 80, classes: 'wrap', editable: false, hidden: true },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
@@ -849,8 +848,6 @@ $(document).ready(function () {
 			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 			
 			$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
-
-			// $("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='amtbilltype'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 
 			$("input[name='amount']").keydown(function(e) {//when click tab at amount, auto save
 				var code = e.keyCode || e.which;
@@ -1208,6 +1205,7 @@ $(document).ready(function () {
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 		
 		$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='tot_gst'],#jqGrid2 input[name='tot_gst']").on('blur',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
 
 		$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 	}
@@ -1238,6 +1236,7 @@ $(document).ready(function () {
 
 		$("#"+id_optid+"tot_gst").val(tot_gst); //total tax
 
+		$("#jqGrid2 #"+id_optid+"_tot_gst").val(tot_gst) //total gst amount
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount) //total amount
 
 		event.data.currency.forEach(function(element){
@@ -1314,6 +1313,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					$('#category').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1347,7 +1347,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					//$('#cheqdate').focus();
+					$('#document').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1399,7 +1399,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					//$('#cheqdate').focus();
+					$('#AmtB4GST').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
