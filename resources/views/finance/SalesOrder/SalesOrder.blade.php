@@ -283,7 +283,7 @@ i.fa {
 						<div class="form-group">		
 							<label class="col-md-2 control-label" for="db_orderno">Order No</label>  
 							<div class="col-md-2"> 
-								<input id="db_orderno" name="db_orderno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_orderno" name="db_orderno" type="text" class="form-control input-sm text-uppercase" >
 							</div>
 							
 							<label class="col-md-3 control-label" for="db_auditno">Auto No</label>  
