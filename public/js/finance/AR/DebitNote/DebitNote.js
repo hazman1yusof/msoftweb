@@ -1303,8 +1303,8 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus','chgdept'],
-				filterVal:['session.compcode','ACTIVE','1']
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 			},
@@ -1321,8 +1321,8 @@ $(document).ready(function () {
 		}, {
 			title: "Select Units",
 			open: function(){
-				dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode','chgdept'];
-				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode','1'];
+				dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode'];
+				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode'];
 			}
 		},'urlParam','radio','tab'
 	);

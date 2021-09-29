@@ -65,7 +65,7 @@ class SessionController extends Controller
             }
             
             if(request('myurl') == '192.168.0.108'){
-                return redirect()->home_ofis();
+                return redirect('/home');
             }else{
                 return redirect()->home();
             }
@@ -78,7 +78,7 @@ class SessionController extends Controller
     	Session::flush();
 
     	$company = company::all();
-        return redirect()->home();
+        return redirect('/home');
         // return view('init.login',compact("company"));
     }
 }

@@ -94,7 +94,7 @@ class SalesOrderController extends defaultController
                 'termmode' => strtoupper($request->db_termmode),
                 'orderno' => strtoupper($request->db_orderno),
                 'ponum' => strtoupper($request->db_ponum),
-                'podate' => strtoupper($request->db_podate),
+                'podate' => $request->db_podate,
                 'remark' => strtoupper($request->db_remark),
                 'approvedby' => $request->db_approvedby
             ];
