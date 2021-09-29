@@ -136,7 +136,7 @@ class SalesOrderController extends defaultController
             'ponum' => strtoupper($request->db_ponum),
             'podate' => strtoupper($request->db_podate),
             'remark' => strtoupper($request->db_remark),
-            'approvedby' => $request->approvedby
+            'approvedby' => strtoupper($request->db_approvedby)
         ];
 
         try {
