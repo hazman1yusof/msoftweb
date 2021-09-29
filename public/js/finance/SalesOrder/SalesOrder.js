@@ -618,7 +618,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false, hidden: true },
 			{
-				label: 'Item Code', name: 'chggroup', width: 300, classes: 'wrap', editable: true,
+				label: 'Item Code', name: 'chggroup', width: 200, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -707,7 +707,6 @@ $(document).ready(function () {
 					});
 				}
 			});
-			// console.log(addmore_jqgrid2);
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
@@ -1068,7 +1067,6 @@ $(document).ready(function () {
 				if(parseInt($('#'+ids[i]+"_quantity").val()) <= 0)return false;
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
 				let retval = check_cust_rules("#jqGrid2",data);
-				console.log(retval);
 				if(retval[0]!= true){
 					alert(retval[1]);
 					return false;
@@ -1303,10 +1301,12 @@ $(document).ready(function () {
        
 		let quantity = parseFloat($("#"+id_optid+"_quantity").val());
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
-		let percbilltype = parseFloat($("#"+id_optid+"_percbilltype").val());
-		let amtbilltype = parseFloat($("#"+id_optid+"_amtbilltype").val());
+		let percbilltype = parseFloat(selrowData('#jqGrid2').percbilltype);
+		let amtbilltype = parseFloat(selrowData('#jqGrid2').amtbilltype);
 		let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
-		console.log(rate)
+		if(isNaN(rate)){
+			rate = 0;
+		}
 
 		let taxamt = ((unitprice*quantity) * rate / 100);
 
@@ -1656,14 +1656,10 @@ $(document).ready(function () {
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
 				}else{
 
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
 				}
 
 				let data=selrowData('#'+dialog_uomcode.gridname);
@@ -1781,7 +1777,8 @@ function get_billtype(){
 				let data_ = data.rows[0];
 				var rowids = $('#jqGrid2').jqGrid('getDataIDs');
 				rowids.forEach(function(e,i){
-					$('#jqGrid2').jqGrid('setRowData', e, {amtbilltype:data_.percent_,percbilltype:data_.amount});
+					$('#jqGrid2').jqGrid('setRowData', e, {amtbilltype:data_.amount,percbilltype:data_.percent_});
+
 				});
 
 				$('#pricebilltype').val(data_.price);
