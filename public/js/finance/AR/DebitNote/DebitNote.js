@@ -581,9 +581,9 @@ $(document).ready(function () {
 		editurl: "/DebitNoteDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
-            { label: 'source', name: 'source', width: 50, classes: 'wrap', hidden:true, editable:true},
-            { label: 'trantype', name: 'trantype', width: 50, classes: 'wrap', hidden:true, editable:true},
-            { label: 'Department', name: 'deptcode', width: 300, classes: 'wrap', canSearch: true, editable: true,
+            { label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
+            { label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
+            { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
                 edittype:'custom',	editoptions:
@@ -592,7 +592,7 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-            { label: 'Category', name: 'category', width: 200, edittype:'text', classes: 'wrap', editable: true,
+            { label: 'Category', name: 'category', width: 150, edittype:'text', classes: 'wrap', editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
                 edittype:'custom',	editoptions:
@@ -601,12 +601,12 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-            { label: 'Document', name: 'document', width: 200, classes: 'wrap', editable: true,
+            { label: 'Document', name: 'document', width: 150, classes: 'wrap', editable: true,
                 //editrules:{required: true},
                 edittype:"text",
 				editoptions: {style: "text-transform: uppercase"},
             },
-            { label: 'GST Code', name: 'GSTCode', width: 200, edittype:'text', classes: 'wrap', editable: true,
+            { label: 'GST Code', name: 'GSTCode', width: 100, edittype:'text', classes: 'wrap', editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
                 edittype:'custom',	editoptions:
@@ -615,7 +615,7 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-            { label: 'Amount Before GST', name: 'AmtB4GST', width: 180, classes: 'wrap',
+            { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
@@ -633,7 +633,7 @@ $(document).ready(function () {
                     }
                 },
             },
-			{ label: 'Total Tax Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true},
 				editoptions:{
@@ -649,9 +649,9 @@ $(document).ready(function () {
 					}
 				},
 			},
-            { label: 'rate', name: 'rate', width: 120, classes: 'wrap', hidden:true
+            { label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true
             },
-            { label: 'Amount', name: 'amount', width: 180, classes: 'wrap', 
+            { label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
@@ -670,8 +670,8 @@ $(document).ready(function () {
                         }
                     },
             },
-			{ label: 'No', name: 'lineno_', width: 80, classes: 'wrap', editable: false, hidden: true },
-			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
+			{ label: 'No', name: 'lineno_', width: 10, classes: 'wrap', editable: false, hidden: true },
+			{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden: true },
 		],
 		autowidth: false,
 		shrinkToFit: false,
@@ -1340,7 +1340,7 @@ $(document).ready(function () {
 				filterVal:['session.compcode','RC', 'Other', 'ACTIVE']
 			},
 			ondblClickRow: function () {
-				//$('#cheqdate').focus();
+				$('#document').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

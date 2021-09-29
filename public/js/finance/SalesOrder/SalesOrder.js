@@ -641,7 +641,7 @@ $(document).ready(function () {
 			{
 				label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap', align: 'right',
 				editable: true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
 			{
@@ -664,13 +664,13 @@ $(document).ready(function () {
 			{
 				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap',
 				editable: true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules: { required: true },editoptions:{readonly: "readonly"},
 			},
 			{
 				label: '% Bill Type', name: 'percbilltype', width: 100, align: 'right', classes: 'wrap',
 				editable: false,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
 			{
@@ -678,7 +678,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
-			{ label: 'Total Line Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
@@ -1568,6 +1568,7 @@ $(document).ready(function () {
 	);
 	dialog_approvedbySO.makedialog(false);
 
+	///dialog for itemcode for Sales Order Detail//
 	var dialog_chggroup = new ordialog(
 		'chggroup',['material.stockloc AS s','material.product AS p','hisdb.chgmast AS c'],"#jqGrid2 input[name='chggroup']",errorField,
 		{	colModel:
@@ -1611,6 +1612,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					$('#uom').focus();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			},
@@ -1672,6 +1674,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					$('#qty').focus();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
@@ -1727,12 +1730,6 @@ $(document).ready(function () {
 			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
 		}
 	}
-
-	/*var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
-	genpdf.printEvent();*/
-
-	/*var barcode = new gen_barcode('#_token','#but_print_dtl',);
-	barcode.init();*/
 
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));

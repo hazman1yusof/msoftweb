@@ -229,14 +229,9 @@ i.fa {
 						<hr>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_approvedby">Approved By</label>  
+							<label class="col-md-2 control-label" for="db_approveddate">Approved Date</label>  
 							<div class="col-md-2"> 
-								<input id="db_approvedby" name="db_approvedby" type="text" maxlength="30" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
-							</div>
-							
-							<label class="col-md-3 control-label" for="db_approveddate">Approved Date</label>  
-							<div class="col-md-2">
-								<input id="db_approveddate" name="db_approveddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+							<input id="db_approveddate" name="db_approveddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
 									max="<?php echo date('Y-m-d');?>">
 							</div>
 						</div>
