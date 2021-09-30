@@ -947,12 +947,15 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	this.ontabbing=false;
 	this.urlParam={
 		from:unique,
+		fixPost:jqgrid_.fixPost,
 		action:'get_table_default',
 		url:geturl(jqgrid_.urlParam),
 		table_name:table,
 		field:getfield(jqgrid_.colModel),
 		table_id:getfield(jqgrid_.colModel)[0],
 		filterCol:jqgrid_.urlParam.filterCol,filterVal:jqgrid_.urlParam.filterVal,
+		join_onCol:jqgrid_.urlParam.join_onCol,join_onVal:jqgrid_.urlParam.join_onVal,
+		join_filterCol:jqgrid_.urlParam.join_filterCol,join_filterVal:jqgrid_.urlParam.join_filterVal,
 		searchCol2:null,searchCol2:null,searchCol:null,searchCol:null
 	};
 	this.id_optid=null;
@@ -1396,8 +1399,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					fail=true;code=code_;
 				}
 			}
-
-			console.log(id);
 
 			if(typeof errorField != 'string' && self.required){
 				if(!fail){

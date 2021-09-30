@@ -1230,7 +1230,7 @@ $(document).ready(function () {
 		return $(`<div class="input-group">
 					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 				</div><span class="help-block"></span>
-				<div>
+				<div style='display:none'>
 					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
 					<input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`>
 					<input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`>
@@ -1486,6 +1486,13 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='itemcode']").val(data['s_itemcode']);
 				$("#jqGrid2 input[name='description']").val(data['p_description']);
 				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
+
+				dialog_uomcodereqdept.urlParam.filterVal=['session.compcode',$('#reqtodept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()];
+				dialog_uomcodereqdept.urlParam.join_type=['LEFT JOIN','LEFT JOIN'];
+				dialog_uomcodereqdept.urlParam.fixPost="true";
+				dialog_uomcodereqdept.check(errorField);
+				console.log(dialog_uomcodereqdept)
+
 				$("#jqGrid2 input[name='maxqty']").val(data['s_maxqty']);
 				$("#jqGrid2 input[name='netprice']").val(data['p_avgcost']);
 				$("#jqGrid2 input[name='convfactoruomcodetrdept']").val(data['u_convfactor']);
@@ -1534,8 +1541,14 @@ $(document).ready(function () {
 				{label:'Quantity On Hand',name:'s_qtyonhand',width:80,classes:'pointer'},
 			],
 			urlParam: {
+				fixPost:"true",
 				filterCol:['s.compcode','s.deptcode','s.itemcode','s.year'],
-				filterVal:['session.compcode',$('#reqtodept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()]
+				filterVal:['session.compcode',$('#reqtodept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()],
+				join_type:['LEFT JOIN','LEFT JOIN'],
+				join_onCol:['s.itemcode','s.uomcode'],
+				join_onVal:['p.itemcode','u.uomcode'],
+				join_filterCol:[['s.compcode on =', 's.uomcode on =']],
+				join_filterVal:[['p.compcode','p.uomcode']],
 			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_uomcodereqdept.gridname);
