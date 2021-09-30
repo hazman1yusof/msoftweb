@@ -173,31 +173,33 @@ class InventoryRequestController extends defaultController
 
             foreach ($request->idno_array as $idno){
 
-                DB::table('material.ivreqhd')
-                ->where('recno','=',$request->recno)
-               // ->where('unit','=',session('unit'))
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'postedby' => session('username'),
-                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'POSTED' 
-                ]);
+                $ivreqhd = DB::table('material.ivreqhd')
+                                ->where('idno','=',$idno)
+                                ->first();
 
-            DB::table('material.ivreqdt')
-                ->where('recno','=',$request->recno)
-               // ->where('unit','=',session('unit'))
-                ->where('compcode','=',session('compcode'))
-                ->where('recstatus','!=','DELETE')
-                ->update([
-                    'recstatus' => 'POSTED' 
-                ]);
+                DB::table('material.ivreqhd')
+                    ->where('idno','=',$idno)
+                    ->update([
+                        'postedby' => session('username'),
+                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'POSTED' 
+                    ]);
+
+                DB::table('material.ivreqdt')
+                    ->where('recno','=',$ivreqhd->recno)
+                    ->where('unit','=',session('unit'))
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','!=','DELETE')
+                    ->update([
+                        'recstatus' => 'POSTED' 
+                    ]);
 
             }    
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();            
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -229,7 +231,7 @@ class InventoryRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -287,7 +289,7 @@ class InventoryRequestController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
