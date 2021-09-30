@@ -1706,14 +1706,67 @@ $(document).ready(function () {
 		'srcdocno','material.ivreqhd','#srcdocno',errorField,
 		{	colModel:[
 				{label:'Request RecNo',name:'recno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				//{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Remarks',name:'remarks',width:100,classes:'pointer', hidden:true},
+				{label:'Record Status',name:'recstatus',width:400,classes:'pointer', hidden:true},
 			],
+			sortname: 'recno',
+			sortorder: "desc",
 			urlParam: {
 				filterCol:['compcode','recstatus'],
 				filterVal:['session.compcode', 'POSTED']
 			},	
 			ondblClickRow:function(){
+				let data = selrowData('#' + dialog_requestRecNo.gridname);
+				
+				$("#recstatus").val(data['recstatus']);
+				$("#remarks").val(data['remarks']);
+				$('#referral').val(data['h_recno']);
 				$('#sndrcvtype').focus();
+
+				var urlParam2 = {
+					action: 'get_value_default',
+					url: '/util/get_value_default',
+					field: ['ivdt.compcode', 'ivdt.recno', 'ivdt.lineno_', 'ivdt.itemcode', 'p.description', 'ivdt.uomcode', 'ivdt.pouom',
+					's.maxqty', 's.qtyonhand', 'ivdt.qtyrequest', 'ivdt.qtytxn', 'ivdt.qohconfirm',
+					'ivdt.recstatus'],
+					table_name: ['material.ivreqdt AS ivdt ', 'material.stockloc AS s', 'material.productmaster AS p'],
+					table_id: 'lineno_',
+					join_type: ['LEFT JOIN', 'LEFT JOIN'],
+					join_onCol: ['ivdt.itemcode', 'ivdt.itemcode'],
+					join_onVal: ['s.itemcode', 'p.itemcode'],
+					filterCol: ['ivdt.recno', 'ivdt.compcode', 'ivdt.recstatus'],
+					filterVal: [data['recno'], 'session.compcode', '<>.DELETE'],
+					sortby:['lineno_ desc']
+				};
+
+				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
+				}, 'json').done(function (data) {
+					if (!$.isEmptyObject(data.rows)) {
+						data.rows.forEach(function(elem) {
+								$("#jqGrid2").jqGrid('addRowData', elem['lineno_'] ,
+									{
+										compcode:elem['compcode'],
+										recno:elem['recno'],
+										lineno_:elem['lineno_'],
+										itemcode:elem['itemcode'],
+										description:elem['description'],
+										uomcode:elem['uomcode'],
+										uomcoderecv:elem['pouom'],
+										qtyonhand:elem['qtyonhand'],
+										//qtyonhandrecv:elem[''],
+										maxqty:elem['maxqty'],
+									
+									}
+								);
+							
+						});
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+
+					} else {
+
+					}
+				});
+			
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

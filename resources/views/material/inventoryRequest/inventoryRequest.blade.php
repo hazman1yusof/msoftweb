@@ -250,10 +250,15 @@ i.fa {
 										<input id="reqdt" name="reqdt" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 					  			</div>
 
-						  		<label class="col-md-2 control-label" for="amount">Amount</label>  
+						  		<!-- <label class="col-md-2 control-label" for="amount">Amount</label>  
 					  			<div class="col-md-2">
 										<input id="amount" name="amount" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" rdonly>
-					  			</div>
+					  			</div> -->
+
+								<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+									<div class="col-md-2">
+										<input id="recstatus" name="recstatus" type="text" class="form-control input-sm" rdonly>
+								</div>
 
 							</div>
 
@@ -262,11 +267,6 @@ i.fa {
 						  			<div class="col-md-6">
 						  				<textarea rows="5" id='remarks' name='remarks' class="form-control input-sm text-uppercase" ></textarea>
 						  			</div>
-
-								<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-									<div class="col-md-2">
-										<input id="recstatus" name="recstatus" type="text" class="form-control input-sm" rdonly>
-									</div>
 					    </div>
 
 

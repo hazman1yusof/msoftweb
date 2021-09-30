@@ -38,8 +38,6 @@ class InventoryRequestController extends defaultController
                 return $this->posted($request);
             case 'reopen':
                 return $this->reopen($request);
-            case 'posted_single':
-                return $this->posted_single($request);
             case 'cancel':
                 return $this->cancel($request);
             default:
@@ -204,57 +202,29 @@ class InventoryRequestController extends defaultController
 
     }
 
-    public function posted_single(Request $request){
-        DB::beginTransaction();
-
-        try {
-            DB::table('material.ivreqhd')
-            ->where('recno','=',$request->recno)
-          //  ->where('unit','=',session('unit'))
-            ->where('compcode','=',session('compcode'))
-            ->update([
-                'postedby' => session('username'),
-                'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                'recstatus' => 'POSTED' 
-            ]);
-
-        DB::table('material.ivreqdt')
-            ->where('recno','=',$request->recno)
-           // ->where('unit','=',session('unit'))
-            ->where('compcode','=',session('compcode'))
-            ->where('recstatus','!=','DELETE')
-            ->update([
-                'recstatus' => 'POSTED' 
-            ]);
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-
-    }
-
     public function cancel(Request $request){
         DB::beginTransaction();
 
         try {
+            foreach ($request->idno_array as $idno){
+
+            $ivreqhd = DB::table('material.ivreqhd')
+            ->where('idno','=',$idno)
+            ->first();
 
             DB::table('material.ivreqhd')
-                ->where('recno','=',$request->recno)
+                ->where('idno','=',$idno)
                 ->where('compcode','=',session('compcode'))
                 ->update([
-                    'postedby' => session('username'),
-                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'CANCELLED' 
                 ]);
 
+            }    
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-
-            
             return response($e->getMessage(), 500);
         }
     }
