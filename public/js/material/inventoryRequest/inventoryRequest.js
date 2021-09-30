@@ -1229,9 +1229,8 @@ $(document).ready(function () {
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $(`<div class="input-group">
 					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
-				</div>
-				<span class="help-block"></span>
-				<div class="input-group">
+				</div><span class="help-block"></span>
+				<div>
 					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
 					<input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`>
 					<input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`>
