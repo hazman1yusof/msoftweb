@@ -1349,7 +1349,7 @@ $(document).ready(function () {
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
 		colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
-		shrinkToFit: false,
+		shrinkToFit: true,
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,

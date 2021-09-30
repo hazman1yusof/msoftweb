@@ -235,25 +235,38 @@ class InventoryRequestController extends defaultController
 
         try{
 
-            DB::table('material.ivreqhd')
-                ->where('recno','=',$request->recno)
-                ->where('unit','=',session('unit'))
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'postedby' => session('username'),
-                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'OPEN' 
-                ]);
+            $ivtxnhddept = $request->ivtxnhddept;
+            $ivtxnhddocno = $request->ivtxnhddocno;
+            $ivreqno = $request->ivreqno;
 
-            DB::table('material.ivreqdt')
-                ->where('recno','=',$request->recno)
-                ->where('unit','=',session('unit'))
-                ->where('compcode','=',session('compcode'))
-                ->where('recstatus','!=','DELETE')
-                ->update([
-                    'recstatus' => 'OPEN' 
-                ]);
+            $ivreqdt = DB::table('material.ivreqdt')
+            ->where('idno','=',$idno)
+            ->where('ivreqno','=',$ivreqno)
+            ->where('recno', '=', $recno)
+            ->first();
+           
+            if ($ivtxnhddept && $ivtxnhddocno = null ) {
+                DB::table('material.ivreqhd')
+                    ->where('recno','=',$request->recno)
+                    ->where('unit','=',session('unit'))
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'postedby' => session('username'),
+                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'OPEN' 
+                    ]);
 
+                DB::table('material.ivreqdt')
+                    ->where('recno','=',$request->recno)
+                    ->where('unit','=',session('unit'))
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','!=','DELETE')
+                    ->update([
+                        'recstatus' => 'OPEN' 
+                    ]);
+                } else {
+                    
+                }
             DB::commit();
         
         } catch (\Exception $e) {
