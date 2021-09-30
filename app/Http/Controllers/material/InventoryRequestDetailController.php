@@ -133,7 +133,7 @@ class InventoryRequestDetailController extends defaultController
                 ]);
 
             DB::commit();
-            return response($totalAmount,200);
+          //  return response($totalAmount,200);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -149,21 +149,26 @@ class InventoryRequestDetailController extends defaultController
 
         try {
 
-            ///1. update detail
             DB::table('material.ivreqdt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('lineno_','=',$request->lineno_)
-                ->update([ 
-                    'deluser' => session('username'), 
-                    'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'DELETE'
-                ]);
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$request->recno)
+            ->where('lineno_','=',$request->lineno_)
+            ->delete();
+
+            // DB::table('material.ivreqdt')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('recno','=',$request->recno)
+            //     ->where('lineno_','=',$request->lineno_)
+            //     ->update([ 
+            //         'deluser' => session('username'), 
+            //         'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //         'recstatus' => 'DELETE'
+            //     ]);
 
 
             DB::commit();
 
-            return response($totalAmount,200);
+            //return response($totalAmount,200);
 
         } catch (\Exception $e) {
             DB::rollback();

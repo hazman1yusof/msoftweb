@@ -649,9 +649,9 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Item Description', name: 'description', width: 350, classes: 'wrap', editable: true, editoptions: { readonly: "readonly" } },
+			{ label: 'Item Description', name: 'description', width: 350, classes: 'wrap', editable: true, editoptions: { readonly: "readonly" }, hidden:true},
 			{
-				label: 'Uom Code ReqDept', name: 'uomcode', width: 110, classes: 'wrap', editable: true,
+				label: 'Uom Code ReqDept', name: 'uomcode', width: 140, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -662,7 +662,7 @@ $(document).ready(function () {
 			},
 		
 			{
-				label: 'Uom Code ReqMadeTo', name: 'pouom', width: 110, classes: 'wrap', editable: true,
+				label: 'Uom Code ReqMadeTo', name: 'pouom', width: 145, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -919,7 +919,7 @@ $(document).ready(function () {
 		//	$("#jqGrid2 input[name='qtyrequest']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
 
-			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
+			$("input[name='qtyrequest']").keydown(function(e) {//when click tab at qtyrequest, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
 				// addmore_jqgrid2.state = true;
@@ -929,8 +929,8 @@ $(document).ready(function () {
         	// cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
 		},
 		aftersavefunc: function (rowid, response, options) {
-			$('#totamount').val(response.responseText);
-			$('#subamount').val(response.responseText);
+			// $('#totamount').val(response.responseText);
+			// $('#subamount').val(response.responseText);
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
 	    	//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'add');
@@ -1015,8 +1015,9 @@ $(document).ready(function () {
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
-								$('#amount').val(data);
 								refreshGrid("#jqGrid2", urlParam2);
+								$('#amount').val(data);
+								
 							});
 						}else{
         					$("#jqGridPager2EditAll").show();
@@ -1059,6 +1060,15 @@ $(document).ready(function () {
 
 		        dialog_uomcode.id_optid = ids[i];
 		        dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
+		        	function(self){
+			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(self){
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			        }
+			    );
+
+				dialog_pouom.id_optid = ids[i];
+		        dialog_pouom.check(errorField,ids[i]+"_pouom","jqGrid2",null,
 		        	function(self){
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 			        },function(self){
@@ -1137,8 +1147,8 @@ $(document).ready(function () {
 			}).fail(function(data) {
 				alert(dialog,data.responseText);
 			}).done(function(data){
-				$('#totamount').val(data);
-				$('#subamount').val(data);
+				// $('#totamount').val(data);
+				// $('#subamount').val(data);
 				mycurrency.formatOn();
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
@@ -1229,14 +1239,7 @@ $(document).ready(function () {
 
 			`);
 	}
-	function taxcodeCustomEdit(val,opt){
-		val = getEditVal(val);
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-	function remarkCustomEdit(val, opt) {
-		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<span class="fa fa-book">val</span>');
-	}
+
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
 			return $(elem).find("input").val();
@@ -1488,6 +1491,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='netprice']").val(data['p_avgcost']);
 				$("#jqGrid2 input[name='convfactoruomcodetrdept']").val(data['u_convfactor']);
 				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
+				$("#jqGrid2 input[name='pouom']").focus();
 				
 				
 			},
@@ -1496,6 +1500,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					$("#jqGrid2 input[name='pouom']").focus();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
@@ -1581,34 +1586,21 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow: function (event) {
-				if(event.type == 'keydown'){
-
-					var optid = $(event.currentTarget).get(0).getAttribute("optid");
-					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
-				}else{
-
-					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
-				}
-
+			
+				$("#jqGrid2 input[name='qtyrequest']").focus();
 				let data=selrowData('#'+dialog_uomcodereqto.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_convfactoruomcodereqto").val(data['convfactor']);
-				$("#jqGrid2  #"+id_optid+"_txnqty").focus();
+				
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					// $(obj.textfield).closest('td').next().find("input[type=text]").focus();
-					console.log($("#jqGrid2 input[name='txnqty']"))
-					$("#jqGrid2 input[name='txnqty']").focus();
-				}
+					$("#jqGrid2 input[name='qtyrequest']").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}	
 			}
 
 		}, {
