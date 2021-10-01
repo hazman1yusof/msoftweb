@@ -65,6 +65,7 @@ $(document).ready(function () {
 		button_state_doctorNote($(this).data('oper'));
 		// dialog_mrn_edit.off();
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
+		$("#current,#past").attr('disabled',false);
 	});
 
 	// to format number input to two decimal places (0.00)
@@ -514,7 +515,6 @@ function on_toggling_curr_past(obj = curr_obj){
 		
 		addnotes.style.display = "none";
 		enableFields();
-		$("#new_doctorNote").attr('disabled',false);
 	}else if(document.getElementById("past").checked){
 		dateParam_docnote={
 			action:'get_table_date_past',
@@ -668,9 +668,17 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
     $(this).addClass('active');
 
     if(check_same_usr_edit(data)){
-    	button_state_doctorNote('edit');
+		button_state_doctorNote('edit');
+		
+		if(document.getElementById("past").checked){
+			button_state_doctorNote('disableAll');
+		}
     }else{
-    	button_state_doctorNote('add');
+		button_state_doctorNote('add');
+		
+		if(document.getElementById("past").checked){
+			button_state_doctorNote('disableAll');
+		}
     }
     doctornote_docnote.recorddate = data.date;
     console.log(doctornote_docnote);
