@@ -1751,9 +1751,10 @@ $(document).ready(function () {
 										itemcode:elem['itemcode'],
 										description:elem['description'],
 										uomcode:elem['uomcode'],
-										uomcoderecv:elem['pouom'],
 										qtyonhand:elem['qtyonhand'],
-										//qtyonhandrecv:elem[''],
+										uomcoderecv:elem['pouom'],
+										qtyonhandrecv:elem['qtyonhand'],
+										txnqty:elem['qtytxn'],
 										maxqty:elem['maxqty'],
 									
 									}

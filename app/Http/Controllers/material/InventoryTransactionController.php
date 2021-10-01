@@ -81,19 +81,18 @@ class InventoryTransactionController extends defaultController
             $idno = $table->insertGetId($array_insert);
 
             $totalAmount = 0;
-            // if(!empty($request->referral)){
-            //     ////ni kalu dia amik dari do
-            //     ////amik detail dari do sana, save dkt do detail, amik total amount
-            //     $totalAmount = $this->save_dt_from_othr_do($request->referral,$recno);
+            if(!empty($request->referral)){
+                ////ni kalu dia amik dari ivreq
+                ////amik detail dari ivreq sana, save dkt ivreqdt, amik total amount
+                $totalAmount = $this->save_dt_from_othr_ivreq($request->referral,$recno);
 
-            //     $srcdocno = $request->delordhd_srcdocno;
-            //     $delordno = $request->delordhd_delordno;*/
+                $ivreqno = $request->ivreqno;
 
-            //     ////dekat do header sana, save balik delordno dkt situ
-            //     DB::table('material.delordno')
-            //     ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
-            //     ->update(['delordno' => $ivtmphd
-            // }
+                // ////dekat do header sana, save balik delordno dkt situ
+                // DB::table('material.delordno')
+                // ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
+                // ->update(['delordno' => $ivtmphd
+            }
 
             $responce = new stdClass();
             $responce->docno = $request_no;
@@ -392,64 +391,22 @@ class InventoryTransactionController extends defaultController
         
     }
 
-    public function save_dt_from_othr_do($refer_recno,$recno){
-        $do_dt = DB::table('material.delorddt')
-                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode','pouom',
-                    'suppcode','trandate','deldept','deliverydate','qtydelivered','unitprice', 'taxcode', 
-                    'perdisc', 'amtdisc', 'amtslstax', 'amount','expdate','batchno','rem_but','remarks')
-                ->where('recno', '=', $refer_recno)
-                ->where('compcode', '=', session('compcode'))
-                ->where('recstatus', '<>', 'DELETE')
-                ->get();
+    public function save_dt_from_othr_ivreq($refer_recno,$recno){
+        $ivreq_dt = DB::table('material.ivreqdt')
+        
+            ->where('recno', '=', $refer_recno)
+            ->where('compcode', '=', session('compcode'))
+            ->where('recstatus', '<>', 'DELETE')
+            ->get();
 
-        // foreach ($do_dt as $key => $ivtmphd){
-        //     ///1. insert detail we get from existing purchase order
-        //     $table = DB::table("material.delorddt");
-        //     $table->insert([
-        //         'compcode' => $ivtmphd
-        //         'recno' => $ivtmphd
-        //         'lineno_' => $ivtmphd
-        //         'pricecode' => $ivtmphd
-        //         'itemcode' => $ivtmphd
-        //         'uomcode' => $ivtmphd
-        //         'pouom' => $ivtmphd
-        //         'suppcode'=> $ivtmphd
-        //         'trandate'=> $ivtmphd
-        //         'deldept'=> $ivtmphd
-        //         'deliverydate'=> $ivtmphd
-        //         'qtydelivered' => $ivtmphd
-        //         'unitprice' => $ivtmphd
-        //         'taxcode' => $ivtmphd
-        //         'perdisc' => $ivtmphd
-        //         'amtdisc' => $ivtmphd
-        //         'amtslstax' => $ivtmphd
-        //         'amount' => $ivtmphd
-        //         'expdate'=> $ivtmphd
-        //         'batchno'=> $ivtmphd
-        //         'rem_but'=> $ivtmphd
-        //         'adduser' => $ivtmphd
-        //         'adddate' => $ivtmphd
-        //         'recstatus' => $ivtmphd
-        //         'remarks' => $ivtmphd
-        //     ]);
-        // }
-        ///2. calculate total amount from detail earlier
-        $amount = DB::table('material.delorddt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
-                    ->where('recstatus','<>','DELETE')
-                    ->sum('amount');
-
-        ///3. then update to header
-        $table = DB::table('material.delorddt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno);
-        $table->update([
-                'amount' => $ivtmphd
-                //'subamount' => $ivtmphd
+        foreach ($do_dt as $key => $value){
+            ///1. insert detail we get from existing ivreq
+            $table = DB::table("material.ivreqdt");
+            $table->insert([
+                'ivtxnhddept' => $value->txndept,
+                'ivtxnhddocno' => $value->docno,
             ]);
-
-        return $amount;
+        }
     }
 
     public function check_sequence_backdated($ivtmphd){

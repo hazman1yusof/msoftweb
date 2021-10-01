@@ -235,17 +235,6 @@ class InventoryRequestController extends defaultController
 
         try{
 
-            $ivtxnhddept = $request->ivtxnhddept;
-            $ivtxnhddocno = $request->ivtxnhddocno;
-            $ivreqno = $request->ivreqno;
-
-            $ivreqdt = DB::table('material.ivreqdt')
-            ->where('idno','=',$idno)
-            ->where('ivreqno','=',$ivreqno)
-            ->where('recno', '=', $recno)
-            ->first();
-           
-            if ($ivtxnhddept && $ivtxnhddocno = null ) {
                 DB::table('material.ivreqhd')
                     ->where('recno','=',$request->recno)
                     ->where('unit','=',session('unit'))
@@ -264,9 +253,7 @@ class InventoryRequestController extends defaultController
                     ->update([
                         'recstatus' => 'OPEN' 
                     ]);
-                } else {
-                    
-                }
+              
             DB::commit();
         
         } catch (\Exception $e) {
