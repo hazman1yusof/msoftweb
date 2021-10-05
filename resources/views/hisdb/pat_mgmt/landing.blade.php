@@ -305,6 +305,7 @@
                 	<th data-column-id="mrn" data-formatter="col_add" data-width="5%">#</th>
                     <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="6%">MRN No</th>
                     <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="20%">Name</th>
+                	<th data-column-id="pregnant" data-formatter="col_preg" data-width="5%"></th>
                     <th data-column-id="q_doctorname" data-width="20%">Doctor</th>
                     <th data-column-id="Newic" data-width="8%">New IC</th>
                     <th data-column-id="telhp" data-width="8%">H/P</th>

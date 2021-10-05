@@ -80,6 +80,15 @@ $(document).ready(function() {
                 var birthday = new Date(row.DOB);
                 return (isNaN(birthday)) ? '' : moment().diff(birthday, 'years',false);;
             },
+            "col_preg": function (column,row) {
+                var retval;
+                if(row.pregnant == 1){
+                    retval="&nbsp;<a class='btn btn-xs btn-default'><img src='img/pregnant.png' width='25' title='In Patinet'></a>";
+                }else{
+                    retval="";
+                }
+                return retval;
+            },
             "commands": function (column,row) {
                 let rowid = counter++;//just for specify each row
                 if(row.q_epistycode == '' || row.q_epistycode == undefined){

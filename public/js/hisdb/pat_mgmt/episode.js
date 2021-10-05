@@ -130,7 +130,6 @@
 
     $('#btn_save_episode').click(function(){
         if($('#epis_header').valid() && $('#form_episode').valid() && $('#form_episode input.myerror').length<=0){
-            console.log('add')
             add_episode();
         }
     });
@@ -307,7 +306,7 @@
         var episbilltype = $("#hid_epis_bill_type").val();
         var episrefno = $("#txt_epis_refno").val();
         var episourrefno = $("#txt_epis_our_refno").val();
-        var epispreg = $('input[name=rad_epis_pregnancy]:checked').val();
+        var epispreg = $('#cmb_epis_pregnancy').val();
         var episfee = $('input[name=rad_epis_fee]:checked').val();
         var episbed = $('#txt_epis_bed').val();
         var _token = $('#csrf_token').val();

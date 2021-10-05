@@ -1156,6 +1156,7 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
 			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
+			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	

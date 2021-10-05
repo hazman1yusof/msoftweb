@@ -116,6 +116,23 @@ class PatmastController extends defaultController
                         $value->q_epistycode = $value2->epistycode;
                     }
                 }
+
+                $episode = DB::table('hisdb.episode')
+                            ->select('newcaseP','newcaseNP','followupP','followupNP')
+                            ->where('mrn','=',$value->MRN)
+                            ->where('episno','=',$value->Episno);
+
+                if($episode->exists()){
+                    $episode = $episode->first();
+                    if($episode->newcaseP == 1 || $episode->followupP == 1){
+                        $value->pregnant = 1;
+                    }else{
+                        $value->pregnant = 0;
+                    }
+
+                }
+
+
             }
 
             $responce = new stdClass();
