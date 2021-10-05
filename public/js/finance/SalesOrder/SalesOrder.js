@@ -656,10 +656,20 @@ $(document).ready(function () {
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
+			// {
+			// 	label: 'Tax', name: 'taxcode', width: 100, align: 'right', classes: 'wrap',
+			// 	editable: true,
+			// 	editrules: { required: false },editoptions:{readonly: "readonly"},
+			// },
 			{
-				label: 'Tax', name: 'taxcode', width: 100, align: 'right', classes: 'wrap',
-				editable: true,
-				editrules: { required: false },editoptions:{readonly: "readonly"},
+				label: 'Tax', name: 'taxcode', width: 100, classes: 'wrap', editable: true,
+				editrules: { custom: true, custom_func: cust_rules },
+				formatter: showdetail,
+				edittype: 'custom', editoptions:
+				{
+					custom_element: taxcodeCustomEdit,
+					custom_value: galGridCustomValue
+				},
 			},
 			{
 				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap',
@@ -870,6 +880,7 @@ $(document).ready(function () {
 
 			dialog_chggroup.on();
 			dialog_uomcode.on();
+			dialog_tax.on();
 
 			unsaved = false;
 			mycurrency2.array.length = 0;
@@ -883,8 +894,6 @@ $(document).ready(function () {
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='quantity']").on('blur',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
 			// $("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtbilltype']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
-			// $("#jqGrid2 input[name='quantity']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
-
 			// $("#jqGrid2 input[name='quantity']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='amtbilltype'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 
@@ -895,7 +904,6 @@ $(document).ready(function () {
 				// $('#jqGrid2_ilsave').click();
 			});
 
-        	// cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
 		},
 		aftersavefunc: function (rowid, response, options) {
 			$('#db_amount').val(response.responseText);
@@ -1032,13 +1040,14 @@ $(document).ready(function () {
 			        }
 			    );
 
-				dialog_taxcode.id_optid = ids[i];
-		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,undefined,function(self,data){
-		        	if(data.rows.length > 0){
-						$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
-		        	}
-					fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-		        });
+		        dialog_tax.id_optid = ids[i];
+		        dialog_tax.check(errorField,ids[i]+"_taxcode","jqGrid2",null,
+		        	function(self){
+			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(self){
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			        }
+			    );
 
 		        cari_gstpercent(ids[i]);
 		    }
@@ -1192,6 +1201,12 @@ $(document).ready(function () {
 			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
 			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
 	}
+	function taxcodeCustomEdit(val,opt){  	
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="taxcode" type="text" class="form-control input-sm" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>
+			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
+			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
+	}
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
 			return $(elem).find("input").val();
@@ -1271,6 +1286,7 @@ $(document).ready(function () {
 		errorField.length=0;
 		dialog_chggroup.on();
 		dialog_uomcode.on();
+		dialog_tax.on();
 
 		// }
 		
@@ -1603,7 +1619,7 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['taxcode']);
 				$("#jqGrid2 #"+id_optid+"_uom_rate").val(data['rate']);
 				$("#jqGrid2 #"+id_optid+"_qtyonhand").val(data['qtyonhand']);
-				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['uom']);
+				$("#jqGrid2 #"+id_optid+"_uom").val(data['uom']);
 				$("#jqGrid2 #"+id_optid+"_unitprice").val(data['price']);
 
 			},
@@ -1692,6 +1708,58 @@ $(document).ready(function () {
 	);
 	dialog_uomcode.makedialog(false);
 
+	var dialog_tax = new ordialog(
+		'taxcode',['hisdb.taxmast'],"#jqGrid2 input[name='taxcode']",errorField,
+		{	colModel:
+			[
+				{label:'Tax Code', name:'taxcode', width:200, classes:'pointer', canSearch:true, or_search:true},
+				{label:'Description', name:'description', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow:function(event){
+
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}
+
+				let data=selrowData('#'+dialog_tax.gridname);
+				$("#jqGrid2 input#"+id_optid+"_taxcode").val(data.uomcode);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#taxamt').focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
+			}
+			
+		},{
+			title:"Select UOM Code For Item",
+			open:function(obj_){
+
+				dialog_tax.urlParam.filterCol=['compcode','recstatus'];
+				dialog_tax.urlParam.filterVal=['session.compcode','ACTIVE'];
+			},
+			close: function(){
+				// $(dialog_tax.textfield)			//lepas close dialog focus on next textfield 
+				// 	.closest('td')						//utk dialog dalam jqgrid jer
+				// 	.next()
+				// 	.find("input[type=text]").focus();
+			}
+		},'urlParam', 'radio', 'tab' 	
+	);
+	dialog_tax.makedialog(false);
 
 	function cari_gstpercent(id){
 		let data = $('#jqGrid2').jqGrid ('getRowData', id);
