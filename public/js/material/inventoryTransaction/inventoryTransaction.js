@@ -1325,8 +1325,8 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector', hidden:true},
 			],
 			urlParam: {
-				filterCol:['storedept', 'recstatus','compcode','sector'],
-				filterVal:['1', 'ACTIVE','session.compcode', 'session.unit']
+				filterCol:['storedept', 'recstatus','compcode'],//,'sector'
+				filterVal:['1', 'ACTIVE','session.compcode']//, 'session.unit'
 			},
 			ondblClickRow: function () {
 				$('#trantype').focus();
@@ -1344,8 +1344,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Transaction Department",
 			open: function(){
-				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
-				dialog_txndept.urlParam.filterVal=['1', 'ACTIVE','session.compcode', 'session.unit'];
+				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode'];//,'sector'
+				dialog_txndept.urlParam.filterVal=['1', 'ACTIVE','session.compcode'];//, 'session.unit'
 			}
 		},'urlParam','radio','tab'
 	);
