@@ -1708,6 +1708,7 @@ $(document).ready(function () {
 				{label:'Request RecNo',name:'recno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Remarks',name:'remarks',width:100,classes:'pointer', hidden:true},
 				{label:'Record Status',name:'recstatus',width:400,classes:'pointer', hidden:true},
+				{label:'reqtodept',name:'reqtodept', hidden:true},
 			],
 			sortname: 'recno',
 			sortorder: "desc",
@@ -1720,7 +1721,8 @@ $(document).ready(function () {
 				
 				$("#recstatus").val(data['recstatus']);
 				$("#remarks").val(data['remarks']);
-				$('#referral').val(data['h_recno']);
+				$('#referral').val(data['recno']);
+				$('#sndrcv').val(data['reqtodept']);
 				$('#sndrcvtype').focus();
 
 				var urlParam2 = {
@@ -1734,6 +1736,8 @@ $(document).ready(function () {
 					join_type: ['LEFT JOIN', 'LEFT JOIN'],
 					join_onCol: ['ivdt.itemcode', 'ivdt.itemcode'],
 					join_onVal: ['s.itemcode', 'p.itemcode'],
+					join_filterCol : [['s.deptcode =']],
+					join_filterVal : [[data['reqtodept']]],
 					filterCol: ['ivdt.recno', 'ivdt.compcode', 'ivdt.recstatus'],
 					filterVal: [data['recno'], 'session.compcode', '<>.DELETE'],
 					sortby:['lineno_ desc']
