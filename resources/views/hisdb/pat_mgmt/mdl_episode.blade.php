@@ -6,9 +6,13 @@
         <input type="hidden" name="mrn_episode" id="mrn_episode">
         <input type="hidden" name="episode_oper" id="episode_oper" value="add">
         <input  type="hidden" name="apptidno" id="apptidno_epis">
-
         <div class="modal-content">
             <div class="modal-header label-info form-horizontal" style="position: sticky;top: 0px;z-index: 3;"><form id="epis_header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="form-group ">
+                </div>
                 <div class="form-group ">
                     <div class="col-sm-1">
                         <small  for="txt_epis_no">EPISODE</small>

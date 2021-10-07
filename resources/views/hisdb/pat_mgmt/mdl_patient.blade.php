@@ -10,6 +10,11 @@
 
             <div class="modal-content">
                 <div class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="form-group ">
+                    </div>
                     <div class="form-group">
                         <div class="col-sm-3">
                             <small  for="mrn">PATIENT REGISTRATION (MRN)</small>

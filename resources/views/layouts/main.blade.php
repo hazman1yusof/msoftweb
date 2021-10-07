@@ -54,6 +54,50 @@
     		background-repeat: no-repeat !important;
     		background-attachment: fixed !important;
     	}
+    	.preloader {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            position: fixed;
+            z-index: 99999;
+            background: #fff;
+        }
+        .cssload-speeding-wheel {
+            position: absolute;
+            top: calc(50% - 3.5px);
+            left: calc(50% - 3.5px);
+            width: 31px;
+            height: 31px;
+            margin: 0 auto;
+            border: 2px solid rgba(97,100,193,0.98);
+            border-radius: 50%;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            animation: cssload-spin 425ms infinite linear;
+            -o-animation: cssload-spin 425ms infinite linear;
+            -ms-animation: cssload-spin 425ms infinite linear;
+            -webkit-animation: cssload-spin 425ms infinite linear;
+            -moz-animation: cssload-spin 425ms infinite linear;
+        }
+        @keyframes cssload-spin {
+          100%{ transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-o-keyframes cssload-spin {
+          100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-ms-keyframes cssload-spin {
+          100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-webkit-keyframes cssload-spin {
+          100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-moz-keyframes cssload-spin {
+          100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+        }
 		.formclass{
 			background-color:#f5f5f5;
 			border-radius:5px 5px 5px 5px;
@@ -214,9 +258,18 @@
  	</style>	
     <title>@yield('title')</title>
 
+	<script type="text/javascript">
+        $( document ).ready(function() {
+            $(".preloader").fadeOut();
+        });
+    </script>
+
 	@yield('js')
 </head>
 <body>
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
 
 
 	@yield('body')
