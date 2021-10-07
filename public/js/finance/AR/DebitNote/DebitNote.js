@@ -674,7 +674,7 @@ $(document).ready(function () {
 			{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden: true },
 		],
 		autowidth: false,
-		shrinkToFit: false,
+		shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce: false,
@@ -1251,7 +1251,7 @@ $(document).ready(function () {
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
 		colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
-		shrinkToFit: false,
+		shrinkToFit: true,
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
