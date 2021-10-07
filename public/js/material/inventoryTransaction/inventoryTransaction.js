@@ -1325,8 +1325,8 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector', hidden:true},
 			],
 			urlParam: {
-				filterCol:['storedept', 'recstatus','compcode','sector'],
-				filterVal:['1', 'ACTIVE','session.compcode', 'session.unit']
+				filterCol:['storedept', 'recstatus','compcode'],//,'sector'
+				filterVal:['1', 'ACTIVE','session.compcode']//, 'session.unit'
 			},
 			ondblClickRow: function () {
 				$('#trantype').focus();
@@ -1344,8 +1344,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Transaction Department",
 			open: function(){
-				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
-				dialog_txndept.urlParam.filterVal=['1', 'ACTIVE','session.compcode', 'session.unit'];
+				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode'];//,'sector'
+				dialog_txndept.urlParam.filterVal=['1', 'ACTIVE','session.compcode'];//, 'session.unit'
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1708,6 +1708,7 @@ $(document).ready(function () {
 				{label:'Request RecNo',name:'recno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Remarks',name:'remarks',width:100,classes:'pointer', hidden:true},
 				{label:'Record Status',name:'recstatus',width:400,classes:'pointer', hidden:true},
+				{label:'reqtodept',name:'reqtodept', hidden:true},
 			],
 			sortname: 'recno',
 			sortorder: "desc",
@@ -1720,7 +1721,8 @@ $(document).ready(function () {
 				
 				$("#recstatus").val(data['recstatus']);
 				$("#remarks").val(data['remarks']);
-				$('#referral').val(data['h_recno']);
+				$('#referral').val(data['recno']);
+				$('#sndrcv').val(data['reqtodept']);
 				$('#sndrcvtype').focus();
 
 				var urlParam2 = {
@@ -1734,6 +1736,8 @@ $(document).ready(function () {
 					join_type: ['LEFT JOIN', 'LEFT JOIN'],
 					join_onCol: ['ivdt.itemcode', 'ivdt.itemcode'],
 					join_onVal: ['s.itemcode', 'p.itemcode'],
+					join_filterCol : [['s.deptcode =']],
+					join_filterVal : [[data['reqtodept']]],
 					filterCol: ['ivdt.recno', 'ivdt.compcode', 'ivdt.recstatus'],
 					filterVal: [data['recno'], 'session.compcode', '<>.DELETE'],
 					sortby:['lineno_ desc']
