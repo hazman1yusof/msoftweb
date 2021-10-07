@@ -1307,8 +1307,8 @@ $(document).ready(function () {
 
 		],
 		scroll: false,
-		autowidth: false,
-		shrinkToFit: false,
+		autowidth: true,
+		shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,

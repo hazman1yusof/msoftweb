@@ -826,8 +826,8 @@ $(document).ready(function () {
 					maxlength: 30,
 			},
 		],
-		autowidth: false,
-		shrinkToFit: false,
+		autowidth: true,
+		shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
@@ -1305,7 +1305,7 @@ $(document).ready(function () {
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
 		colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
-		shrinkToFit: false,
+		shrinkToFit: true,
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
@@ -1713,8 +1713,8 @@ $(document).ready(function () {
 			sortname: 'recno',
 			sortorder: "desc",
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode', 'POSTED']
+				filterCol:['compcode','recstatus', 'reqtodept'],
+				filterVal:['session.compcode', 'POSTED', $("#sndrcv").val()], 
 			},	
 			ondblClickRow:function(){
 				let data = selrowData('#' + dialog_requestRecNo.gridname);
@@ -1786,8 +1786,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Request RecNo",
 			open: function(){
-				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus'];
-				dialog_requestRecNo.urlParam.filterVal=['session.compcode','POSTED'];
+				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus', 'reqtodept'];
+				dialog_requestRecNo.urlParam.filterVal=['session.compcode', 'POSTED', $("#sndrcv").val()];
 			}
 		}, 'urlParam','radio','tab'
 	);

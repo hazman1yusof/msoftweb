@@ -172,6 +172,7 @@ $(document).ready(function () {
 			{label: 'rn', name: 'rn', hidden: true},
 		],
 		autowidth:true,
+		shrinkToFit: true,
 		viewrecords: true,
         multiSort: true,
 		loadonce: false,
