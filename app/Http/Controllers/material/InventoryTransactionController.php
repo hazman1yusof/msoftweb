@@ -65,6 +65,7 @@ class InventoryTransactionController extends defaultController
             'trantype' => $request->trantype,
             'docno' => $request_no,
             'recno' => $recno,
+            'trantime' => $request->trantime,
             'compcode' => session('compcode'),
             'unit'    => session('unit'),
             'adduser' => session('username'),

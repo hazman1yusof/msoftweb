@@ -26,7 +26,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency /////////////////////////////////////////
-	var mycurrency =new currencymode(['#amount']);
+	var mycurrency =new currencymode(['#amount', "#jqGrid2 input[name='netprice']"]);
 
 	///////////////////////////////// trandate check date validate from period////////////
 	var actdateObj = new setactdate(["#trandate"]);
