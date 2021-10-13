@@ -175,7 +175,7 @@ $(document).ready(function () {
 			{ label: 'Docdate', name: 'db_entrydate', width: 15},
 			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
 			//{ label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
-			{ label: 'Sector', name: 'db_units', width: 15, canSearch: true, classes: 'wrap' },
+			{ label: 'Sector', name: 'db_units', width: 15, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 15 },
@@ -857,6 +857,7 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			$('#db_amount').val(response.responseText);
+			$('#db_units').val(response.responseText);
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
 	    	//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'add');
@@ -1114,26 +1115,31 @@ $(document).ready(function () {
 			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
 			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
 	}
-	function deptcodeCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid2" id="deptcode" name="deptcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+	function deptcodeCustomEdit(val, opt) {
+		val = getEditVal(val);
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="deptcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
-    function categoryCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid2" id="category" name="category" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+	function categoryCustomEdit(val, opt) {
+		val = getEditVal(val);
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="category" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
-	function GSTCodeCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+	function GSTCodeCustomEdit(val, opt) {
+	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 
-		var id_optid = opt.id.substring(0,opt.id.search("_"));
-		return $(`<div class="input-group">
-			<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
-		</div>
-		<span class="help-block"></span>
-		<div class="input-group">
-			<input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden">
-		</div>`);
+	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
+	// function GSTCodeCustomEdit(val,opt){
+	// 	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+
+	// 	var id_optid = opt.id.substring(0,opt.id.search("_"));
+	// 	return $(`<div class="input-group">
+	// 		<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+	// 	</div>
+	// 	<span class="help-block"></span>
+	// 	<div class="input-group">
+	// 		<input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden">
+	// 	</div>`);
+	// }
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
 			return $(elem).find("input").val();
@@ -1313,7 +1319,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#category').focus();
+					$("#jqGrid2 input[name='category']").focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1347,7 +1353,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#document').focus();
+					$("#jqGrid2 input[name='document']").focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1399,7 +1405,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#AmtB4GST').focus();
+					$("#jqGrid2 input[name='AmtB4GST']").focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1435,14 +1441,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				$('#db_hdrtype').focus();
+				$('#posteddate').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#db_hdrtype').focus();
+					$('#posteddate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}

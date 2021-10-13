@@ -1017,11 +1017,6 @@ $(document).ready(function () {
 
 		        Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_quantity"]);
 
-		        // dialog_chggroup.id_optid = ids[i];
-		        // dialog_chggroup.check(errorField,ids[i]+"_itemcode","jqGrid2",null,function(self){
-		        // 	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-		        // });
-
 		        dialog_chggroup.id_optid = ids[i];
 		        dialog_chggroup.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
 		        	function(self){
@@ -1606,13 +1601,13 @@ $(document).ready(function () {
 					filterVal:['session.compcode','ACTIVE',$('#pricebilltype').val()]
 				},
 			ondblClickRow:function(event){
-				if(event.type == 'keydown'){
-					var optid = $(event.currentTarget).get(0).getAttribute("optid");
-					var id_optid = optid.substring(0,optid.search("_"));
-				}else{
-					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-					var id_optid = optid.substring(0,optid.search("_"));
-				}
+				// if(event.type == 'keydown'){
+				// 	var optid = $(event.currentTarget).get(0).getAttribute("optid");
+				// 	var id_optid = optid.substring(0,optid.search("_"));
+				// }else{
+				// 	var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+				// 	var id_optid = optid.substring(0,optid.search("_"));
+				// }
 
 				let data=selrowData('#'+dialog_chggroup.gridname);
 
@@ -1629,7 +1624,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#uom').focus();
+					$("#jqGrid2 input[name='uom']").focus();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			},
@@ -1687,7 +1682,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#qty').focus();
+					$("#jqGrid2 input[name='qty']").focus();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
@@ -1740,7 +1735,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#taxamt').focus();
+					$("#jqGrid2 input[name='taxamt']").focus();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
