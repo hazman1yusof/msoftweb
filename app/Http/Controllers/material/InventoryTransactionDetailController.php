@@ -91,7 +91,7 @@ class InventoryTransactionDetailController extends defaultController
             $newstr=explode("/", $date);
             return $newstr[2].'-'.$newstr[1].'-'.$newstr[0];
         }else{
-            return '0000-00-00';
+            return null;
         }
     }
 
@@ -99,7 +99,6 @@ class InventoryTransactionDetailController extends defaultController
         DB::beginTransaction();
 
         try {
-            $request->expdate = $this->null_date($request->expdate);
             $recno = $request->recno;
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.ivtmpdt')->select('lineno_')
@@ -145,7 +144,7 @@ class InventoryTransactionDetailController extends defaultController
                     'amount' => $request->amount,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $request->expdate, 
+                    'expdate'=> $this->chgDate($request->expdate),  
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
@@ -201,7 +200,7 @@ class InventoryTransactionDetailController extends defaultController
                     'amount' => $request->amount,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $request->expdate,
+                    'expdate'=> $this->chgDate($request->expdate),  
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks

@@ -77,6 +77,7 @@ class SalesOrderDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('recstatus','<>','DELETE')
                     ->orderBy('idno','desc');
+
         switch ($request->filterVal[2]) {
             case 'PRICE1':
                 $cp_fld = 'amt1';

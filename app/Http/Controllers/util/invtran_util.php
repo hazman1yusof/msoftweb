@@ -32,7 +32,7 @@ class invtran_util extends defaultController{
             ->where('department.deptcode','=',$ivtmphd->txndept)
             ->first();
 
-        if($trantype_obj->isstype == 'TRANSFER'){
+        if(strtoupper($trantype_obj->isstype) == 'TRANSFER'){
 
 	        $craccno = $category_obj->stockacct;
 	        $crccode = $dept_obj->costcode;
@@ -76,12 +76,12 @@ class invtran_util extends defaultController{
             }
 
         }else{
-        	switch($trantype_obj->crdbfl){
+        	switch(strtoupper($trantype_obj->crdbfl)){
         		case 'IN':
 			        $draccno = $category_obj->stockacct;
 			        $drccode = $dept_obj->costcode;
 
-			        switch ($trantype_obj->accttype) {
+			        switch (strtoupper($trantype_obj->accttype)) {
 			        	case 'ADJUSTMENT':
 			        		$craccno = $category_obj->stockacct;
 	        				$crccode = $dept_obj->costcode;
@@ -116,7 +116,7 @@ class invtran_util extends defaultController{
 	        		$craccno = $category_obj->stockacct;
     				$crccode = $dept_obj->costcode;
 
-			        switch ($trantype_obj->accttype) {
+			        switch (strtoupper($trantype_obj->accttype)) {
 			        	case 'ADJUSTMENT':
 			        		$draccno = $category_obj->adjacct;
 	        				$drccode = $dept_obj->costcode;
@@ -490,7 +490,7 @@ class invtran_util extends defaultController{
             $NewAmount = $netprice * $txnqty;
 
             $newqtyonhand = $OldQtyOnHand + $txnqty;
-            if($isstype == "Adjustment"){
+            if(strtoupper($isstype) == "ADJUSTMENT"){
                 $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
             }else{
                 $newAvgCost = $Oldavgcost;
@@ -613,7 +613,7 @@ class invtran_util extends defaultController{
             $NewAmount = $netprice * $txnqty;
 
             $newqtyonhand = $OldQtyOnHand - $txnqty;
-            if($isstype == "Adjustment"){
+            if(strtoupper($isstype) == "ADJUSTMENT"){
                 $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
             }else{
                 $newAvgCost = $Oldavgcost;

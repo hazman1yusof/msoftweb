@@ -344,20 +344,20 @@ $(document).ready(function () {
 	/////////////////////////////////trantype////////////////////////////////////////////////////////////
 
 	function inputTrantypeValue(isstype,crdbfl){
-		switch(isstype){
-			case 'Transfer':
+		switch(isstype.toUpperCase()){
+			case 'TRANSFER':
 				caseTransfer();
 				break;
-			case 'Adjustment':
+			case 'ADJUSTMENT':
 				caseAdjustment(crdbfl);
 				break;
-			case 'Loan':
+			case 'LOAN':
 				caseAdjustment(crdbfl);
 				break;
-			case 'Issue':
+			case 'ISSUE':
 				caseAdjustment(crdbfl);
 				break;
-			case 'Others':
+			case 'OTHERS':
 				break;
 		}
 
@@ -406,8 +406,7 @@ $(document).ready(function () {
 				{formatter:'currency', 
 				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 				 editrules:{required:true}, editable:true, editoptions: {readonly: null}});
-
-			if(crdbfl=='In'){
+			if(crdbfl.toUpperCase()=='IN'){
 				$("#jqGrid2").jqGrid('setColProp', 'expdate', 
 					{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},edittype: 'text',editrules:{required: false,custom:false, custom_func:null},
 						editoptions: {
@@ -423,7 +422,7 @@ $(document).ready(function () {
 		                    }
 		                } 
 					});
-			}else if(crdbfl=='Out'){
+			}else if(crdbfl.toUpperCase()=='OUT'){
 				$("#jqGrid2").jqGrid('setColProp', 'expdate', 
 					{ width: 130, classes: 'wrap', editable:true,
 					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
@@ -1251,7 +1250,7 @@ $(document).ready(function () {
 		let isstype=$('#isstype').val();
 
 		let qtyonhand = parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		if(qtyonhand<=0 && isstype=='Adjustment' && crdbfl == 'In'){
+		if(qtyonhand<=0 && isstype.toUpperCase()=='ADJUSTMENT' && crdbfl.toUpperCase() == 'IN'){
 			fail=false;
 		}else if(qtyonhand<=0){
 			fail=true;
@@ -1797,7 +1796,7 @@ $(document).ready(function () {
 				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus', 'reqtodept'];
 				dialog_requestRecNo.urlParam.filterVal=['session.compcode', 'POSTED', $("#sndrcv").val()];
 			}
-		}, 'urlParam','radio','tab'
+		}, 'none','radio','tab'
 	);
 	dialog_requestRecNo.makedialog(false);
 
