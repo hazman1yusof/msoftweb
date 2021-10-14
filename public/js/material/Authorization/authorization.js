@@ -952,7 +952,7 @@ $("#gridAuthdtl").jqGrid({
 			
 	],
 	viewrecords: true,
-	//shrinkToFit: true,
+	shrinkToFit: true,
 	autowidth:true,
     multiSort: true,
 	loadonce:false,

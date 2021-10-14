@@ -205,6 +205,7 @@ class SalesOrderDetailController extends defaultController
                     'mrn' => (!empty($dbacthdr_obj->mrn))?$dbacthdr_obj->mrn:null,
                     'episno' => (!empty($dbacthdr_obj->episno))?$dbacthdr_obj->episno:null,
                     'uom' => $request->uom,
+                    'taxcode' => $request->taxcode,
                     'unitprice' => $request->unitprice,
                     'quantity' => $request->quantity,
                     'amount' => $request->amount,
@@ -257,6 +258,7 @@ class SalesOrderDetailController extends defaultController
                 ->update([
                     'itemcode'=> strtoupper($request->itemcode), 
                     'uomcode'=> strtoupper($request->uomcode), 
+                    'taxcode'=> strtoupper($request->taxcode), 
                     'unitprice'=> $request->unitprice,
                     'qtyrequest'=> $request->qtyrequest, 
                     'qtyonhand'=> $request->qtyonhand, 
