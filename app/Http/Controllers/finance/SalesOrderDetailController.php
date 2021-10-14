@@ -182,6 +182,16 @@ class SalesOrderDetailController extends defaultController
 
             $dbacthdr_obj = $dbacthdr->first();
 
+            ////1. calculate lineno_ by recno
+            $sqlln = DB::table('debtor.billsum')->select('lineno_')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$source)
+                        ->where('trantype','=',$trantype)
+                        ->where('auditno','=',$auditno)
+                        ->count('lineno_');
+
+            $li=intval($sqlln)+1;
+
             ///2. insert detail
             DB::table('debtor.billsum')
                 ->insert([
@@ -191,7 +201,7 @@ class SalesOrderDetailController extends defaultController
                     'auditno' => $auditno,
                     'chggroup' => $request->chggroup,
                     'description' => $request->description,
-                    'lineno_' => 1,
+                    'lineno_' => $li,
                     'mrn' => (!empty($dbacthdr_obj->mrn))?$dbacthdr_obj->mrn:null,
                     'episno' => (!empty($dbacthdr_obj->episno))?$dbacthdr_obj->episno:null,
                     'uom' => $request->uom,

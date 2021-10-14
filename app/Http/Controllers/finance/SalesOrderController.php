@@ -275,6 +275,43 @@ class SalesOrderController extends defaultController
                             'recstatus' => 'POSTED',
                         ]);
 
+                    //product
+                    /*update Product qtyonhand*/
+                    $product = DB::table('material.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('uomcode','=',$billsum_obj->uom)
+                            ->where('itemcode','=',$billsum_obj->chggroup);
+
+                    $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('uomcode','=',$billsum_obj->uom)
+                            ->where('itemcode','=',$billsum_obj->chggroup)
+                            ->where('deptcode','=',$dbacthdr->deptcode)
+                            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+                    if($stockloc->exists()){
+                        $stockloc = $stockloc->first();
+                    }else{
+                        throw new \Exception("Stockloc not exists",500);
+                    }
+
+                    if($product->exists()){
+                        $product = $product->first();
+                        if($product->groupcode == 'Stock'){
+
+                            $ivdspdt = DB::table('material.ivdspdt')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('recno','=',$billsum_obj->idno);
+
+                            if($ivdspdt->exists()){
+                                $this->updivdspdt($billsum_obj,$product,$dbacthdr,$stockloc,$insertGetId);
+                            }else{
+                                $this->crtivdspdt($billsum_obj,$product,$dbacthdr,$stockloc,$insertGetId);
+                            }
+
+                        }
+                    }
+
                 }
 
 
@@ -772,9 +809,153 @@ class SalesOrderController extends defaultController
         }
         
         return false;   
-        
     }
 
+    public function updivdspdt($billsum_obj,$product,$dbacthdr,$stockloc,$insertGetId){
+        $ivdspdt_arr = [
+            'compcode' => session('compcode'),
+            'recno' => $billsum_obj->idno,
+            'lineno_' => $billsum_obj->lineno_,
+            'itemcode' => $billsum_obj->chggroup,
+            'txnqty' => $billsum_obj->quantity,
+            'adduser' => session('username'),
+            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'netprice' => $billsum_obj->unitprice,
+            'productcat' => $product->productcat,
+            'reqdept' => $dbacthdr->deptcode,
+            'saleamt' => $billsum_obj->amount,
+            'trantype' => $billsum_obj->trantype,
+            'trandate' => $dbacthdr->entrydate,
+            'trxaudno' => $billsum_obj->idno,
+            'mrn' => $dbacthdr->mrn,
+            'episno' => $dbacthdr->episno,
+            'updtime' => Carbon::now("Asia/Kuala_Lumpur")
+        ];
+
+        $ivtntype = DB::table('material.ivtntype')
+                        ->where('compcode','=', session('compcode'))
+                        ->where('trantype','=', $stockloc->disptype)
+                        ->first();
+
+        if($ivtntype->updamt = 1){
+            $category = DB::table('material.category')
+                        ->where('compcode','=', session('compcode'))
+                        ->where('catcode','=', $product->productcat)
+                        ->first();
+
+            $department = DB::table('sysdb.departmet')
+                        ->where('compcode','=', session('compcode'))
+                        ->where('deptcode','=',$dbacthdr->deptcode)
+                        ->first();
+
+            $ivdspdt_arr['DrCcode'] = $department->costcode;
+            $ivdspdt_arr['DrAccNo'] = $category->cosacct;
+            $ivdspdt_arr['CrCcode'] = $department->costcode;
+            $ivdspdt_arr['CrAccNo'] = $category->stockacct;
+
+            $glinface_arr = [
+                'compcode' => session('compcode'),
+                'Source' => 'IV',
+                'TranType' => $stockloc->disptype,
+                'AuditNo' => $insertGetId,
+                'LineNo' => 1,
+                'Reference' => $dbacthdr->deptcode.' - '.$billsum_obj->chggroup,
+                'IdNo' => $dbacthdr->mrn.' - '.$dbacthdr->episno,
+                'Description' => 'Posted from Online-Dispensing',
+                'Amount' => $billsum_obj->amount,
+                'PostDate' => $dbacthdr->entrydate,
+                'OprType' => 'A',
+                'LastUser' => session('username'),
+                'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur")
+            ];
+
+            if($ivtntype->crdbfl = 'OUT'){
+                $glinface_arr['DrCcode'] = $department->costcode;
+                $glinface_arr['DrAccNo'] = $category->cosacct;
+                $glinface_arr['CrCcode'] = $department->costcode;
+                $glinface_arr['CrAccNo'] = $category->stockacct;
+            }
+
+            DB::table('finance.glinface')
+                ->insert($glinface_arr);
+        }
+
+        DB::table('material.ivdspdt')
+                ->insert($ivdspdt_arr);
+    }
+
+    public function crtivdspdt($billsum_obj,$product,$dbacthdr,$stockloc){
+        $ivdspdt_arr = [
+            'compcode' => session('compcode'),
+            'recno' => $billsum_obj->idno,
+            'lineno_' => $billsum_obj->lineno_,
+            'itemcode' => $billsum_obj->chggroup,
+            'txnqty' => $billsum_obj->quantity,
+            'adduser' => session('username'),
+            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'netprice' => $billsum_obj->unitprice,
+            'productcat' => $product->productcat,
+            'reqdept' => $dbacthdr->deptcode,
+            'saleamt' => $billsum_obj->amount,
+            'trantype' => $billsum_obj->trantype,
+            'trandate' => $dbacthdr->entrydate,
+            'trxaudno' => $billsum_obj->idno,
+            'mrn' => $dbacthdr->mrn,
+            'episno' => $dbacthdr->episno,
+            'updtime' => Carbon::now("Asia/Kuala_Lumpur")
+        ];
+
+        $ivtntype = DB::table('material.ivtntype')
+                        ->where('compcode','=', session('compcode'))
+                        ->where('trantype','=', $stockloc->disptype)
+                        ->first();
+
+        if($ivtntype->updamt = 1){
+            $category = DB::table('material.category')
+                        ->where('compcode','=', session('compcode'))
+                        ->where('catcode','=', $product->productcat)
+                        ->first();
+
+            $department = DB::table('sysdb.departmet')
+                        ->where('compcode','=', session('compcode'))
+                        ->where('deptcode','=',$dbacthdr->deptcode)
+                        ->first();
+
+            $ivdspdt_arr['DrCcode'] = $department->costcode;
+            $ivdspdt_arr['DrAccNo'] = $category->cosacct;
+            $ivdspdt_arr['CrCcode'] = $department->costcode;
+            $ivdspdt_arr['CrAccNo'] = $category->stockacct;
+
+            $glinface_arr = [
+                'compcode' => session('compcode'),
+                'Source' => 'IV',
+                'TranType' => $stockloc->disptype,
+                'AuditNo' => $insertGetId,
+                'LineNo' => 1,
+                'Reference' => $dbacthdr->deptcode.' - '.$billsum_obj->chggroup,
+                'IdNo' => $dbacthdr->mrn.' - '.$dbacthdr->episno,
+                'Description' => 'Posted from Online-Dispensing',
+                'Amount' => $billsum_obj->amount,
+                'PostDate' => $dbacthdr->entrydate,
+                'OprType' => 'A',
+                'LastUser' => session('username'),
+                'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur")
+            ];
+
+            if($ivtntype->crdbfl = 'OUT'){
+                $glinface_arr['DrCcode'] = $department->costcode;
+                $glinface_arr['DrAccNo'] = $category->cosacct;
+                $glinface_arr['CrCcode'] = $department->costcode;
+                $glinface_arr['CrAccNo'] = $category->stockacct;
+            }
+
+            DB::table('finance.glinface')
+                ->insert($glinface_arr);
+        }
+
+        DB::table('material.ivdspdt')
+                ->insert($ivdspdt_arr);
+    }
     
 }
 
