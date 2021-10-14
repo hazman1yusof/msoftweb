@@ -257,26 +257,26 @@ i.fa {
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_mrn">MRN</label>  
-							<div class="col-md-4"> 
+							<label class="col-md-2 control-label" for="db_termdays">Term</label>  
+							<div class="col-md-1">
+								<input id="db_termdays" name="db_termdays" type="text" value ="30" class="form-control input-sm">
+							</div>
+
+							<div class="col-md-1">
+								<select class="form-control col-md-3" id='db_termmode' name='db_termmode' data-validation="required">
+									<option value='DAYS' selected>DAYS</option>
+									<option value='MONTH'>MONTH</option>
+									<option value='YEAR'>YEAR</option>
+								</select> 
+							</div>
+
+							<label class="col-md-3 control-label" for="db_mrn">MRN</label>  
+							<div class="col-md-2"> 
 								<div class='input-group'>
 									<input id="db_mrn" name="db_mrn" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
-							</div>	
-
-							<label class="col-md-1 control-label" for="db_termdays">Term</label>  
-							<div class="col-md-1">
-								<input id="db_termdays" name="db_termdays" type="text" class="form-control input-sm">
-							</div>
-
-							<div class="col-md-1">
-								<select class="form-control col-md-2" id='db_termmode' name='db_termmode' data-validation="required">
-									<option value='DAYS' selected>DAYS</option>
-									<option value='MONTH'>MONTH</option>
-									<option value='YEAR'>YEAR</option>
-								</select> 
 							</div>	
 						</div>
 
