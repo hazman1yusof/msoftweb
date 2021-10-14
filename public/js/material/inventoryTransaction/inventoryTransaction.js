@@ -298,6 +298,7 @@ $(document).ready(function () {
 			oper='view';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view', '');
+			reqRecNo();
 			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -308,6 +309,7 @@ $(document).ready(function () {
 			oper='edit';
 			selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
+			reqRecNo();
 			refreshGrid("#jqGrid2",urlParam2);
 		}, 
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -1313,7 +1315,13 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager3",
+
+		onSelectRow:function(rowid, selected){
+			inputTrantypeValue();
+		},
+		
 	});
+	
 	jqgrid_label_align_right("#jqGrid3");
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
