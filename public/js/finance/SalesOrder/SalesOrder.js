@@ -183,7 +183,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
-			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
+			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right'},
 			{ label: 'Invoice No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
@@ -192,15 +192,15 @@ $(document).ready(function () {
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 15 },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
-			{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true },
+			{ label: 'Payer Code', name: 'db_payercode', width: 20, canSearch: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'trantype', name: 'db_trantype', width: 20, hidden: true },
+			{ label: 'trantype', name: 'db_trantype', hidden: true },
 			{ label: 'lineno_', name: 'db_lineno_', width: 20, hidden: true },
 			{ label: 'db_orderno', name: 'db_orderno', width: 10, hidden: true },
 			{ label: 'outamount', name: 'db_outamount', width: 20, hidden: true },
-			{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
-			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
-			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
+			{ label: 'debtortype', name: 'db_debtortype', hidden: true },
+			{ label: 'billdebtor', name: 'db_billdebtor', hidden: true },
+			{ label: 'approvedby', name: 'db_approvedby', hidden: true },
 			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
 			{ label: 'units', name: 'db_units', width: 10, hidden: true },
 			{ label: 'termdays', name: 'db_termdays', width: 10, hidden: true },
@@ -734,7 +734,7 @@ $(document).ready(function () {
 				$("#dialog_remarks").dialog( "open" );
 			});
 			fdl.set_array().reset();
-			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 			if(oper == 'edit'){
 				get_billtype();
@@ -751,11 +751,7 @@ $(document).ready(function () {
 			dialog_CustomerSO.check(errorField);
 			dialog_approvedbySO.check(errorField);
 		}
-
-		}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-        fixPositionsOfFrozenDivs.call(this);
     });
-	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 	$("#jqGrid2").jqGrid('bindKeys');
 		var updwnkey_fld;
@@ -765,37 +761,37 @@ $(document).ready(function () {
 			updwnkey_fld = fieldname;
 		}
 
-		$("#jqGrid2").keydown(function(e) {
-	      switch (e.which) {
-	        case 40: // down
-	          var $grid = $(this);
-	          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-			  $("#"+selectedRowId+updwnkey_fld).focus();
+	$("#jqGrid2").keydown(function(e) {
+      switch (e.which) {
+        case 40: // down
+          var $grid = $(this);
+          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+		  $("#"+selectedRowId+updwnkey_fld).focus();
 
-	          e.preventDefault();
-	          break;
+          e.preventDefault();
+          break;
 
-	        case 38: // up
-	          var $grid = $(this);
-	          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-			  $("#"+selectedRowId+updwnkey_fld).focus();
+        case 38: // up
+          var $grid = $(this);
+          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+		  $("#"+selectedRowId+updwnkey_fld).focus();
 
-	          e.preventDefault();
-	          break;
+          e.preventDefault();
+          break;
 
-	        default:
-	          return;
-	      }
-	    });
+        default:
+          return;
+      }
+    });
 
 
-	$("#jqGrid2").jqGrid('setGroupHeaders', {
-  	useColSpanStyle: false, 
-	  groupHeaders:[
-		{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
-		//{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
-	  ]
-	});
+	// $("#jqGrid2").jqGrid('setGroupHeaders', {
+ //  	useColSpanStyle: false, 
+	//   groupHeaders:[
+	// 	{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
+	// 	//{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
+	//   ]
+	// });
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
@@ -940,9 +936,9 @@ $(document).ready(function () {
 		},
 		 afterrestorefunc : function( response ) {
 			errorField.length=0;
-			delay(function(){
-				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-			}, 500 );
+			// delay(function(){
+			// 	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			// }, 500 );
 			hideatdialogForm(false);
 	    },
 	    errorTextFormat: function (data) {
@@ -1022,7 +1018,7 @@ $(document).ready(function () {
 		        	function(self){
 		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+						// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 				    }
 			    );
 
@@ -1031,7 +1027,7 @@ $(document).ready(function () {
 		        	function(self){
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+						// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			        }
 			    );
 
@@ -1040,7 +1036,7 @@ $(document).ready(function () {
 		        	function(self){
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+						// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			        }
 			    );
 
@@ -1357,7 +1353,7 @@ $(document).ready(function () {
 		// mycurrency.formatOn();
 		// mycurrency_np.formatOn();
 
-		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 	}
 
@@ -1401,10 +1397,8 @@ $(document).ready(function () {
 
 			//calculate_quantity_outstanding('#jqGrid3');
 		},
-	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-        fixPositionsOfFrozenDivs.call(this);
-    });
-	fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
+	});
+	// fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
 	$("#jqGrid3").jqGrid("setFrozenColumns");
 	jqgrid_label_align_right("#jqGrid3");
 
@@ -1601,13 +1595,13 @@ $(document).ready(function () {
 					filterVal:['session.compcode','ACTIVE',$('#pricebilltype').val()]
 				},
 			ondblClickRow:function(event){
-				// if(event.type == 'keydown'){
-				// 	var optid = $(event.currentTarget).get(0).getAttribute("optid");
-				// 	var id_optid = optid.substring(0,optid.search("_"));
-				// }else{
-				// 	var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				// 	var id_optid = optid.substring(0,optid.search("_"));
-				// }
+				if(event.type == 'keydown'){
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}else{
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}
 
 				let data=selrowData('#'+dialog_chggroup.gridname);
 
@@ -1726,9 +1720,8 @@ $(document).ready(function () {
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
 				}
-
 				let data=selrowData('#'+dialog_tax.gridname);
-				$("#jqGrid2 input#"+id_optid+"_taxcode").val(data.uomcode);
+				$("#jqGrid2 input#"+id_optid+"_taxcode").val(data.taxcode);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

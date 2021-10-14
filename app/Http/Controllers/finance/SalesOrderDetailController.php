@@ -93,8 +93,23 @@ class SalesOrderDetailController extends defaultController
                 break;
         }
 
-        if(!empty($request->searchCol)){
-            $table = $table->where($request->searchCol[0],'LIKE',$request->searchVal[0]);
+        if(!empty($request->searchCol2)){
+            $searchCol_array = $request->searchCol2;
+            $table = $table->where(function($table) use ($searchCol_array, $request){
+                foreach ($searchCol_array as $key => $value) {
+                    if($key>1) break;
+                    $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                }
+            });
+
+            if(count($searchCol_array)>2){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key<=1) continue;
+                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+            }
         }
 
         $paginate = $table->paginate($request->rows);

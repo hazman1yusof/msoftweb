@@ -262,7 +262,7 @@ i.fa {
 								<input id="db_termdays" name="db_termdays" type="text" value ="30" class="form-control input-sm">
 							</div>
 
-							<div class="col-md-1">
+							<div class="col-md-2">
 								<select class="form-control col-md-3" id='db_termmode' name='db_termmode' data-validation="required">
 									<option value='DAYS' selected>DAYS</option>
 									<option value='MONTH'>MONTH</option>
@@ -270,7 +270,7 @@ i.fa {
 								</select> 
 							</div>
 
-							<label class="col-md-3 control-label" for="db_mrn">MRN</label>  
+							<label class="col-md-2 control-label" for="db_mrn">MRN</label>  
 							<div class="col-md-2"> 
 								<div class='input-group'>
 									<input id="db_mrn" name="db_mrn" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
