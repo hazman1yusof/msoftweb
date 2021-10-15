@@ -678,8 +678,9 @@ $(document).ready(function () {
                         }
                     },
             },
-			{ label: 'No', name: 'lineno_', width: 10, classes: 'wrap', editable: false, hidden: true },
-			{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden: true },
+			{ label: 'idno', name: 'idno', editable: false, hidden: true },
+			{ label: 'No', name: 'lineno_', editable: false, hidden: true },
+			{ label: 'recstatus', name: 'recstatus', hidden: true },
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -944,6 +945,7 @@ $(document).ready(function () {
 								trantype: $('#db_trantype').val(),
 								auditno: $('#db_auditno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
+								idno: selrowData('#jqGrid2').idno,
 							}
 							$.post( "/DebitNoteDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, 
 							function( data ){
@@ -951,7 +953,7 @@ $(document).ready(function () {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
 								$('#db_amount').val(data);
-								$('#amount').val(data);
+								// $('#amount').val(data);
 								refreshGrid("#jqGrid2", urlParam2);
 							});
 						}else{
@@ -1215,7 +1217,6 @@ $(document).ready(function () {
 		dialog_deptcode.on();
 		dialog_category.on();
 		dialog_GSTCode.on();
-		dialog_uomcode.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
@@ -1396,15 +1397,12 @@ $(document).ready(function () {
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
 
-					$(event.currentTarget).parent().next().html('');
 				}else{
 
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
 
-					$(event.currentTarget).parent().next().html('');
 				}
-				console.log(optid)
 				let data=selrowData('#'+dialog_GSTCode.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);

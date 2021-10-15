@@ -353,20 +353,27 @@ class DebitNoteDetailController extends defaultController
             DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                ->where('lineno_','=',$request->lineno_)
                 ->delete();
 
             ///2. recalculate total amount
             $totalAmount = DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
+                ->where('source','=',$request->source)
+                ->where('trantype','=',$request->trantype)
+                ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
-                ->sum('totamount');
+                ->sum('amount');
+
+            if(empty($totalAmount)){
+                $totalAmount = 0.00;
+            }
 
             ///3. update total amount to header
-            DB::table('debtor.dbactdtl')
+            DB::table('debtor.dbacthdr')
                 ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
+                ->where('source','=',$request->source)
+                ->where('trantype','=',$request->trantype)
+                ->where('auditno','=',$request->auditno)
                 ->update([
                     'amount' => $totalAmount
                 ]);
