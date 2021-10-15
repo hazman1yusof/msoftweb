@@ -681,7 +681,7 @@ $(document).ready(function () {
 			{ label: 'No', name: 'lineno_', width: 10, classes: 'wrap', editable: false, hidden: true },
 			{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden: true },
 		],
-		autowidth: false,
+		autowidth: true,
 		shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
@@ -706,7 +706,7 @@ $(document).ready(function () {
 		gridComplete: function(){
 
 			fdl.set_array().reset();
-			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			//fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 		},
 		beforeSubmit: function (postdata, rowid) {
