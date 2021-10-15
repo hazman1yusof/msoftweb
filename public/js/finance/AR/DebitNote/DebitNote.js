@@ -606,7 +606,7 @@ $(document).ready(function () {
                 edittype:"text",
 				editoptions: {style: "text-transform: uppercase"},
             },
-            { label: 'GST Code', name: 'GSTCode', width: 100, edittype:'text', classes: 'wrap', editable: true,
+            { label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
                 edittype:'custom',	editoptions:
@@ -615,6 +615,14 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
+   //          { label: 'GST Code', name: 'GSTCode', width: 100,align: 'right' , classes: 'wrap', editable:true,
+			// 	editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+			// 	edittype:'custom',	editoptions:
+			// 		{	
+			// 			custom_element:iptaxCustomEdit,
+			// 			custom_value:galGridCustomValue 	
+			// 		},
+			// },
             { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
@@ -1066,7 +1074,7 @@ $(document).ready(function () {
 		switch(options.colModel.name){
             case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
 			case 'category':field=['catcode','description'];table="material.category";break;
-			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
+			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
 
 			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
 			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
@@ -1087,12 +1095,11 @@ $(document).ready(function () {
 		switch (name) {
             case 'Department':temp=$('#deptcode');break;
 			case 'Category':temp=$('#category');break;
-			case 'GST Code':temp=$('#GSTCode');break;
 
 			case 'Item Code': temp = $("#jqGrid2 input[name='chggroup']"); break;
 			case 'UOM Code': temp = $("#jqGrid2 input[name='uom']"); break;
-			case 'PO UOM': 
-				temp = $("#jqGrid2 input[name='pouom']"); 
+			case 'GSTCode': temp = $("#jqGrid2 input[name='GSTCode']"); break;
+			case 'PO UOM': temp = $("#jqGrid2 input[name='pouom']"); 
 				var text = $( temp ).parent().siblings( ".help-block" ).text();
 				if(text == 'Invalid Code'){
 					return [false,"Please enter valid "+name+" value"];
@@ -1124,9 +1131,12 @@ $(document).ready(function () {
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="category" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function GSTCodeCustomEdit(val, opt) {
-	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-
-	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+	function GSTCodeCustomEdit(val, opt) {
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	// function GSTCodeCustomEdit(val,opt){
 	// 	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
@@ -1428,6 +1438,58 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_GSTCode.makedialog(false);
+
+	// var dialog_GSTCode = new ordialog(
+	// 'GSTCode','hisdb.taxmast',"#jqGrid2 input[name='GSTCode']",errorField,
+	// {	colModel:[
+	// 		{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+	// 		{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+	// 		{label:'Tax Type',name:'taxtype',width:200,classes:'pointer', hidden:true},
+	// 		{label:'Rate',name:'rate',width:200,classes:'pointer'},
+	// 	],
+	// 	urlParam: {
+	// 		filterCol:['recstatus','compcode','taxtype'],
+	// 		filterVal:['ACTIVE', 'session.compcode','OUTPUT']
+	// 			},
+	// 	ondblClickRow:function(event){
+	// 		if(event.type == 'keydown'){
+
+	// 			var optid = $(event.currentTarget).get(0).getAttribute("optid");
+	// 			var id_optid = optid.substring(0,optid.search("_"));
+
+	// 			$(event.currentTarget).parent().next().html('');
+	// 		}else{
+
+	// 			var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+	// 			var id_optid = optid.substring(0,optid.search("_"));
+
+	// 			$(event.currentTarget).parent().next().html('');
+	// 		}
+	// 		console.log(optid)
+	// 		let data=selrowData('#'+dialog_GSTCode.gridname);
+
+	// 		$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
+	// 		$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
+	// 	},
+	// 	gridComplete: function(obj){
+	// 				var gridname = '#'+obj.gridname;
+	// 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 					$(gridname+' tr#1').click();
+	// 					$(gridname+' tr#1').dblclick();
+	// 					$("#jqGrid2 input[name='AmtB4GST']").focus();
+	// 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 					$('#'+obj.dialogname).dialog('close');
+	// 				}
+	// 			}
+	// 	},{
+	// 		title:"Select Tax Code For Item",
+	// 		open: function(){
+	// 			dialog_iptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+	// 			dialog_iptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','OUTPUT'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_GSTCode.makedialog();
 
 	var dialog_CustomerSO = new ordialog(
 		'customer', 'debtor.debtormast', '#db_debtorcode', errorField,
