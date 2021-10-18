@@ -312,6 +312,12 @@ class SalesOrderController extends defaultController
                         }
                     }
 
+                    if($stockloc->disptype == 'DS'){
+                        //ignore uom
+                        // $qtyonhand = $product->qtyonhand - $billsum_obj->quantity;
+                        
+                    }
+
                 }
 
 

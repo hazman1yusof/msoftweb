@@ -1412,8 +1412,8 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus','chgdept'],
-				filterVal:['session.compcode','ACTIVE','1']
+				filterCol:['compcode','recstatus','chgdept','storedept'],
+				filterVal:['session.compcode','ACTIVE','1','1']
 			},
 			ondblClickRow: function () {
 				$('#db_debtorcode').focus();
@@ -1431,8 +1431,8 @@ $(document).ready(function () {
 		}, {
 			title: "Select Units",
 			open: function(){
-				dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode','chgdept'];
-				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode','1'];
+				dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode','chgdept','storedept'];
+				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode','1','1'];
 			}
 		},'urlParam','radio','tab'
 	);

@@ -446,7 +446,7 @@ abstract class defaultController extends Controller{
         foreach ($field as $key => $value) {
             $field_value = strtoupper($request[$request->field[$key]]);
 
-            if(empty($field_value)){
+            if($field_value != 0 && empty($field_value)){
                 $field_value = null;
             }else{
                  $field_value = $field_value;

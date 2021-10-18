@@ -44,9 +44,9 @@ input.uppercase {
 
 		  	<label class="col-md-2 control-label" for="category">Category Of</label>  
 			  	<div class="col-md-3">
-					<label class="radio-inline"><input type="radio" name="category" value='Hospital' data-validation="required">Hospital</label>
-					<label class="radio-inline"><input type="radio" name="category" value='Clinic'>Clinic</label>
-					<label class="radio-inline"><input type="radio" name="category" value='Others'>Others</label>
+					<label class="radio-inline"><input type="radio" name="category" value='HOSPITAL' data-validation="required">Hospital</label>
+					<label class="radio-inline"><input type="radio" name="category" value='CLINIC'>Clinic</label>
+					<label class="radio-inline"><input type="radio" name="category" value='OTHERS'>Others</label>
 			  </div>
         </div>
 
