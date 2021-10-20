@@ -88,6 +88,9 @@ $(document).ready(function () {
 					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 					mycurrency.formatOn();
 					dialog_deptcode.on();
+					delay(function(){
+						dialog_itemcode_2.check(errorField);
+					}, 500 );
 				}
 				if (oper != 'add') {
 					dialog_deptcode.check(errorField);
@@ -127,8 +130,7 @@ $(document).ready(function () {
 		oper: oper,
 		table_name: 'material.stockloc',
 		table_id: 'idno',
-		saveip:'true',
-		checkduplicate:'true'
+		saveip:'true'
 	};
 
 	$("#jqGrid").jqGrid({
@@ -436,5 +438,29 @@ $(document).ready(function () {
 		},'urlParam', 'radio', 'tab'
 	);
 	dialog_deptcode.makedialog();
+
+	var dialog_itemcode_2 = new ordialog(
+		'itemcode','material.productmaster','#itemcode',errorField,
+		{	colModel:[
+				{label:'Item Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode'],
+				filterVal:['ACTIVE','session.compcode']
+			},
+			ondblClickRow:function(){
+			},
+			gridComplete: function(obj){
+			}	
+		},{
+			title:"Select Dept",
+			open: function(){
+				dialog_itemcode_2.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_itemcode_2.urlParam.filterVal = [ 'ACTIVE','session.compcode'];
+			}
+		},'urlParam', 'radio', 'tab'
+	);
+	dialog_itemcode_2.makedialog();
 
 });

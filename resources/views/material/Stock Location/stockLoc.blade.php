@@ -64,7 +64,6 @@
 				
 				{{ csrf_field() }}
 				<input id="idno" name="idno" type="hidden">
-				<input id="itemcode" name="itemcode" type="hidden">
 				<input id="uomcode" name="uomcode" type="hidden">
 				<input id="qtyonhand" name="qtyonhand" type="hidden" value="0.00">
 				<input id="year" name="year" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
@@ -72,6 +71,14 @@
 
 
 				<div class="form-group">
+					<label class="col-md-2 control-label" for="rackno">Itemcode</label>  
+					  <div class="col-md-3">
+					  <div>
+					  	<input id="itemcode" name="itemcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" rdonly>
+					  </div>
+					  <span class="help-block"></span>
+					  </div>
+
 				  	<label class="col-md-2 control-label" for="deptcode">Dept. Code</label>  
 				  	<div class="col-md-4">
 					  <div class='input-group'>
@@ -80,7 +87,7 @@
 					  </div>
 					  <span class="help-block"></span>
 				  </div>
-                  </div>
+                </div>
                   
                 <div class="form-group">
 				 	<label class="col-md-2 control-label" for="stocktxntype">Transaction Type</label>  

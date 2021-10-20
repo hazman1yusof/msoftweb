@@ -191,10 +191,10 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'idno', name: 's_idno', width: 40, classes: 'wrap', hidden:true},
-		 	{ label: 'Department Code', name: 's_deptcode', width: 40, classes: 'wrap'},
-		 	{ label: 'Department Code', name: 'd_description', width: 40, classes: 'wrap'},
+		 	{ label: 'Dept Code', name: 's_deptcode', width: 40, classes: 'wrap'},
+		 	{ label: 'Description', name: 'd_description', width: 43, classes: 'wrap'},
 			{ label: 'Unit', name: 's_unit', width: 30, classes: 'wrap', hidden:false},
-			{ label: 'Stock TrxType', name: 's_stocktxntype', width: 40, classes: 'wrap'},
+			{ label: 'TrxType', name: 's_stocktxntype', width: 40, classes: 'wrap'},
 			{ label: 'UOM Code', name: 's_uomcode', width: 40, classes: 'wrap'},
 			{ label: 'Quantity on Hand', name: 's_qtyonhand', width: 40, classes: 'wrap',align: 'right', formatter: 'currency'},
 			{ label: 'itemcode', name: 's_itemcode', width: 40, classes: 'wrap',hidden:true},

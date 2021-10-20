@@ -20,22 +20,40 @@ class StocklocController extends defaultController
 
     public function show(Request $request)
     {   
-        $year = DB::table('sysdb.period')->select('year')->where('compcode','=','9A')->orderBy('year','desc')->get();
+        $year = DB::table('sysdb.period')->select('year')->where('compcode','=',session('compcode'))->orderBy('year','desc')->get();
         return view('material.Stock Location.stockLoc',compact('year'));
     }
 
     public function form(Request $request)
     {  
-        $request->noduplicate='yes';
-        switch($request->oper){
-            case 'add':
-                return $this->defaultAdd($request);
-            case 'edit':
-                return $this->defaultEdit($request);
-            case 'del':
-                return $this->defaultDel($request);
-            default:
-                return 'error happen..';
+        try {
+            switch($request->oper){
+                case 'add':
+                    $duplicate = DB::table('material.stockloc')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('deptcode','=',$request->deptcode)
+                                    ->where('itemcode','=',$request->itemcode)
+                                    ->where('uomcode','=',$request->uomcode)
+                                    ->where('year','=',$request->year)
+                                    ->where('unit','=',$request->unit);
+
+                    if($duplicate->exists()){
+                        throw new \Exception("Itemcode ".$request->itemcode." with department ".$request->deptcode." duplicate");
+                    }
+
+                    return $this->defaultAdd($request);
+                case 'edit':
+                    return $this->defaultEdit($request);
+                case 'del':
+                    return $this->defaultDel($request);
+                default:
+                    return 'error happen..';
+            }
+
+        }catch (\Exception $e) {
+            
+            return response($e->getMessage(), 500);
         }
+        
     }
 }
