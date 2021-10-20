@@ -243,7 +243,7 @@ $(document).ready(function () {
 			{ label: 'Register', name: 'regdept', width: 30, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{ label: 'Charge', name: 'chgdept', width: 30, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{ label: 'Ward', name: 'warddept', width: 30, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
-			{ label: 'Admit', name: 'admdept', width: 30, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
+			{ label: 'Admission', name: 'admdept', width: 30, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{ label: 'Dispense', name: 'dispdept', width: 30, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{ label: 'Store', name: 'storedept', width: 30, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{ label: 'Category', name: 'category', width: 30, classes: 'wrap'},
