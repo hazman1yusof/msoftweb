@@ -1324,6 +1324,7 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
+				$("#jqGrid2 input[name='category']").focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
