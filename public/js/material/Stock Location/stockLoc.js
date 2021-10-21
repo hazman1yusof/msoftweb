@@ -26,6 +26,7 @@ $(document).ready(function () {
 	};
 
 	var mycurrency = new currencymode(['#minqty', '#maxqty', '#reordlevel', '#reordqty']);
+	var fdl = new faster_detail_load();
 
 
 	////////////////////////////////////start dialog///////////////////////////////////////
@@ -139,7 +140,7 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'compcode', name: 'compcode', width: 10, hidden: true },
 			{ label: 'Unit', name: 'unit', width: 50 },
-			{ label: 'Department Code', name: 'deptcode', width: 50, classes: 'wrap' },
+			{ label: 'Department Code', name: 'deptcode', width: 50, classes: 'wrap',formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Year', name: 'year', width: 50, classes: 'wrap' },
 			{ label: 'Item Code', name: 'itemcode', width: 60, classes: 'wrap', hidden: true, },
 			{ label: 'UOM Code', name: 'uomcode', width: 60, classes: 'wrap' },
@@ -182,6 +183,8 @@ $(document).ready(function () {
 			}
 
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+
+			fdl.set_array().reset();
 		},
 
 	});
@@ -244,6 +247,19 @@ $(document).ready(function () {
 		$("#itemcodeS").focus();
 		$('#jqGrid').jqGrid('setGridParam', { datatype: 'local', url: '' }).trigger('reloadGrid');
 	});
+
+	function showdetail(cellvalue, options, rowObject){
+		var field,table, case_;
+		switch(options.colModel.name){
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='chggroup';break;
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	
+		fdl.get_array('stockLoc',options,param,case_,cellvalue);
+		
+		if(cellvalue == null)cellvalue = " ";
+		return cellvalue;
+	}
 
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////

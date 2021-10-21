@@ -397,6 +397,9 @@ $(document).ready(function () {
 
 			$("#sndrcv").attr('data-validation', 'required');
 			$("#sndrcvtype").attr('data-validation', 'required');
+
+			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+			
 		}
 
 		function caseAdjustment(crdbfl){
@@ -449,6 +452,7 @@ $(document).ready(function () {
 				
 			$("#sndrcv").removeAttr('data-validation');
 			$("#sndrcvtype").removeAttr('data-validation');
+			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 		}
 	}
 
@@ -729,7 +733,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
+			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:true,hidden:true, editoptions: { readonly: "readonly" }},
 			
 			{ label: 'UOM Code Tran Dept', name: 'uomcode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
@@ -1479,6 +1483,9 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='netprice']").val(data['p_avgcost']);
 				$("#jqGrid2 input[name='convfactoruomcodetrdept']").val(data['u_convfactor']);
 				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
+
+				dialog_uomcodetrdept.urlParam.filterVal=['session.compcode',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
+				dialog_uomcodetrdept.check(errorField);
 				
 				getQOHtxndept();
 				checkQOH();
@@ -1524,6 +1531,13 @@ $(document).ready(function () {
 				{label:'Quantity On Hand',name:'s_qtyonhand',width:80,classes:'pointer'},
 			],
 			urlParam: {
+				fixPost:"true",
+				table_id:"none_",
+				join_type:['LEFT JOIN','LEFT JOIN'],
+				join_onCol:['s.itemcode','s.uomcode'],
+				join_onVal:['p.itemcode','u.uomcode'],
+				join_filterCol:[['s.compcode on =', 's.uomcode on =']],
+				join_filterVal:[['p.compcode','p.uomcode']],
 				filterCol:['s.compcode','s.deptcode','s.itemcode','s.year'],
 				filterVal:['session.compcode',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()]
 			},

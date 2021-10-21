@@ -252,8 +252,12 @@
 		}
 
 		.input-group-addon {
-    		color: #ffffff !important;
-    	}
+    	color: #ffffff !important;
+    }
+
+    table td span.help-block {
+    	color: #6aa76a;
+    }
 		@yield('style')
  	</style>	
     <title>@yield('title')</title>

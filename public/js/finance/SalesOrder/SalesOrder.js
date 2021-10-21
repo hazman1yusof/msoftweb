@@ -1612,6 +1612,8 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_uom").val(data['uom']);
 				$("#jqGrid2 #"+id_optid+"_unitprice").val(data['price']);
 
+				dialog_uomcode.check(errorField);
+
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

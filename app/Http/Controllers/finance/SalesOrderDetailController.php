@@ -73,10 +73,7 @@ class SalesOrderDetailController extends defaultController
     }
    
     public function get_itemcode_price(Request $request){
-        $table = DB::table('hisdb.chgmast')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recstatus','<>','DELETE')
-                    ->orderBy('idno','desc');
+        $table = DB::table('hisdb.chgmast');
 
         switch ($request->filterVal[2]) {
             case 'PRICE1':
@@ -91,6 +88,26 @@ class SalesOrderDetailController extends defaultController
             default:
                 $cp_fld = 'costprice';
                 break;
+        }
+
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+
+            $count = array_count_values($searchCol_array);
+            // dump($count);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
         }
 
         if(!empty($request->searchCol2)){
@@ -111,6 +128,11 @@ class SalesOrderDetailController extends defaultController
                 });
             }
         }
+
+
+        $table = $table->where('compcode','=',session('compcode'))
+                        ->where('recstatus','<>','DELETE')
+                        ->orderBy('idno','desc');
 
         $paginate = $table->paginate($request->rows);
         $rows = $paginate->items();

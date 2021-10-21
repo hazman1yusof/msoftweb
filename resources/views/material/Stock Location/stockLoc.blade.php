@@ -71,22 +71,23 @@
 
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="rackno">Itemcode</label>  
-					  <div class="col-md-3">
-					  <div>
-					  	<input id="itemcode" name="itemcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" rdonly>
-					  </div>
-					  <span class="help-block"></span>
-					  </div>
 
 				  	<label class="col-md-2 control-label" for="deptcode">Dept. Code</label>  
 				  	<div class="col-md-4">
-					  <div class='input-group'>
-						<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					  </div>
-					  <span class="help-block"></span>
-				  </div>
+						  <div class='input-group'>
+							<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+						  </div>
+						  <span class="help-block"></span>
+					</div>
+
+					<label class="col-md-2 control-label" for="rackno">Itemcode</label>  
+					<div class="col-md-3">
+						  <div>
+						  	<input id="itemcode" name="itemcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" rdonly>
+						  </div>
+						  <span class="help-block"></span>
+					</div>
                 </div>
                   
                 <div class="form-group">

@@ -947,7 +947,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	this.ontabbing=false;
 	this.urlParam={
 		from:unique,
-		fixPost:jqgrid_.fixPost,
+		fixPost:jqgrid_.urlParam.fixPost,
 		action:'get_table_default',
 		url:geturl(jqgrid_.urlParam),
 		table_name:table,
@@ -1032,7 +1032,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			event.data.data.id_optid = id_optid;
 		}
 
-
 		var obj = event.data.data;
 		$("#"+obj.gridname).jqGrid('setGridParam',{ ondblClickRow: function(id){ 
 			if(!obj.jqgrid_.hasOwnProperty('ondblClickRow_off')){
@@ -1062,8 +1061,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		renull_search(obj);
 		$("#"+obj.dialogname).dialog( "open" );
 
-		var idtopush = $(event.currentTarget).siblings("input[type='text']").attr('id');
-		var jqgrid = $(event.currentTarget).siblings("input[type='text']").attr('jqgrid');
+		// var idtopush = $(event.currentTarget).siblings("input[type='text']").attr('id');
+		// var jqgrid = $(event.currentTarget).siblings("input[type='text']").attr('jqgrid');
 		// var optid = (event.data.data.urlParam.hasOwnProperty('optid'))? event.data.data.urlParam.optid:null;
 
 		// if(optid!=null){
@@ -1074,8 +1073,23 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		// 	event.data.data.id_optid = id_optid;
 		// }
 
+		let text = textfield.val().trim();
+		if(text != ''){
+			let split = text.split(" "),searchCol2=[],searchVal2=[];
+			$.each(split, function( index, value ) {
+				getfield(event.data.data.field,true).forEach(function(element){
+					searchCol2.push(element);
+					searchVal2.push('%'+value+'%');
+				});
+			});
+			event.data.data.urlParam.searchCol2=searchCol2;
+			event.data.data.urlParam.searchVal2=searchVal2;
+		}
+		refreshGrid("#"+event.data.data.gridname,event.data.data.urlParam);
+		$("#Dtext_"+unique).val(text);
 
-		refreshGrid("#"+obj.gridname,obj.urlParam);
+
+		// refreshGrid("#"+obj.gridname,obj.urlParam);
 	}
 
 	function onBlur(event){
