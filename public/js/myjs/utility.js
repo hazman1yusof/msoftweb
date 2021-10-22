@@ -874,15 +874,21 @@ function setactdate(target){
 				self.lowestdate = data.rows[0]["datefr1"];
 				self.highestdate = data.rows[data.rows.length-1]["dateto12"];
 				data.rows.forEach(function(element){
-					$.each(element, function( index, value ) {
-						if(index.match('periodstatus') && value == 'O'){
-							self.actdateopen.push({
-								from:element["datefr"+index.match(/\d+/)[0]],
-								to:element["dateto"+index.match(/\d+/)[0]]
-							})
-						}
-					});
+					if(element.year == moment().year()){
+						$.each(element, function( index, value ) {
+							if(index.match('periodstatus') && value == 'O'){
+								self.actdateopen.push({
+									from:element["datefr"+index.match(/\d+/)[0]],
+									to:element["dateto"+index.match(/\d+/)[0]]
+								})
+							}
+						});
+					}
 				});
+
+			self.target.forEach(function(element,i){
+				$(element).attr('min',self.actdateopen[0].from);
+			});
 			}
 		});
 		return this;
@@ -908,6 +914,7 @@ function setactdate(target){
 				(permission)?permission=true:permission=false;
 			}
 		});
+
 		if(!moment(value).isBetween(actdateObj.lowestdate,actdateObj.highestdate, null, '[]')){
 			alert('Date not in accounting period setup');
 			$(currentTarget).val('').addClass( "error" ).removeClass( "valid" );
