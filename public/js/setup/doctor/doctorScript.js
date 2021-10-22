@@ -26,6 +26,8 @@
 
 			//////////////////////////////////////////////////////////////
 
+			var fdl = new faster_detail_load();
+
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
 				text: "Save",click: function() {
@@ -140,9 +142,9 @@
 					{label: 'Doctor Name', name: 'doctorname', width: 90, canSearch:true , classes: 'wrap', checked:true},
 					{label: 'Login ID', name: 'loginid', width: 30, canSearch:true, classes: 'wrap'},
 					{label: 'Costcenter', name: 'department', width: 90 , hidden: true, classes: 'wrap'},
-					{label: 'Discipline Code', name: 'disciplinecode', width: 30, classes: 'wrap'},
-					{label: 'Speciality Code', name: 'specialitycode', width: 30, classes: 'wrap'},
-					{label: 'Doctor Type', name: 'doctype', width: 30, classes: 'wrap'},
+					{label: 'Discipline Code', name: 'disciplinecode', width: 30, classes: 'wrap',  formatter: showdetail,unformat:un_showdetail},
+					{label: 'Speciality Code', name: 'specialitycode', width: 30, classes: 'wrap',  formatter: showdetail,unformat:un_showdetail},
+					{label: 'Doctor Type', name: 'doctype', width: 30, classes: 'wrap',  formatter: showdetail,unformat:un_showdetail},
 					{label: 'Creditor', name: 'creditorcode', width: 90 , classes: 'wrap',hidden: true},
 					{label: 'Resign Date', name: 'resigndate', width: 90 , classes: 'wrap',hidden: true},
 					{label: 'idno', name: 'idno', width: 90, classes: 'wrap',hidden: true},
@@ -194,6 +196,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					fdl.set_array().reset();
 				},
 				
 				
@@ -217,6 +220,21 @@
 				if (cellvalue == 'DEACTIVE') {
 					return "DEACTIVE";
 				}
+			}
+
+			function showdetail(cellvalue, options, rowObject){
+				var field,table, case_;
+				switch(options.colModel.name){
+					case 'disciplinecode':field=['code','description'];table="hisdb.discipline";case_='disciplinecode';break;
+					case 'specialitycode':field=['specialitycode','description'];table="hisdb.speciality";case_='specialitycode';break;
+					case 'doctype':field=['statuscode','description'];table="hisdb.docstatus";case_='doctype';break;
+				}
+				var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+			
+				fdl.get_array('doctorScript',options,param,case_,cellvalue);
+				
+				if(cellvalue == null)cellvalue = " ";
+				return cellvalue;
 			}
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -283,12 +301,7 @@
 
 
 			////////////////////object for dialog handler//////////////////
-			// dialog_doctype=new makeDialog('hisdb.docstatus','#doctype',['statuscode','description'],'Doctor Type');
-			// dialog_department=new makeDialog('finance.costcenter','#department',['costcode','description'], 'Department');
-			// dialog_speciality=new makeDialog('hisdb.speciality','#specialitycode',['specialitycode','description'], 'Speciality Code');
-			// dialog_discipline=new makeDialog('hisdb.discipline','#disciplinecode',['code','description'], 'Discipline Code');
-			// dialog_creditor=new makeDialog('material.supplier','#creditorcode',['SuppCode','Name'], 'Creditor');
-
+		
 			var dialog_doctype = new ordialog(
 				'docstatus','hisdb.docstatus','#doctype',errorField,
 				{	colModel:[

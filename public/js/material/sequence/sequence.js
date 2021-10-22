@@ -24,6 +24,8 @@
 					}
 				},
 			};
+
+			var fdl = new faster_detail_load();
 			
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -126,8 +128,8 @@
 				 colModel: [
 					{ label: 'idno', name: 'idno', sorttype: 'number', hidden:true },
 					{ label: 'Compcode', name: 'compcode', hidden:true},
-					{ label: 'Dept Code', name: 'dept', classes: 'wrap', width: 40, canSearch: true},
-					{ label: 'Trx Type', name: 'trantype', classes: 'wrap', width: 25},
+					{ label: 'Dept Code', name: 'dept', classes: 'wrap', width: 40, canSearch: true, formatter: showdetail,unformat:un_showdetail},
+					{ label: 'Trx Type', name: 'trantype', classes: 'wrap', width: 25, formatter: showdetail,unformat:un_showdetail},
 					{ label: 'Description', name: 'description', classes: 'wrap', width: 80,checked:true,  canSearch: true},
 					{ label: 'Sequence No', name: 'seqno', classes: 'wrap', width: 25},
 					{ label: 'Days For Backdated', name: 'backday', classes: 'wrap', width: 25},
@@ -162,10 +164,24 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					fdl.set_array().reset();
 				},
 				
 			});
 
+			function showdetail(cellvalue, options, rowObject){
+				var field,table, case_;
+				switch(options.colModel.name){
+					case 'dept':field=['deptcode','description'];table="sysdb.department";case_='dept';break;
+					case 'trantype':field=['trantype','description'];table="material.ivtxntype";case_='trantype';break;
+				}
+				var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+			
+				fdl.get_array('sequence',options,param,case_,cellvalue);
+				
+				if(cellvalue == null)cellvalue = " ";
+				return cellvalue;
+			}
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

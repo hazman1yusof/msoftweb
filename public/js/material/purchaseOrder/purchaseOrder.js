@@ -254,7 +254,7 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'Record No', name: 'purordhd_recno', width: 10, canSearch: true, selected: true },
-			{ label: 'Purchase Department', name: 'purordhd_prdept', width: 15, classes: 'wrap' },
+			{ label: 'Purchase Department', name: 'purordhd_prdept', width: 15, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Purchase Order No', name: 'purordhd_purordno', width: 10, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Req No', name: 'purordhd_purreqno', width: 20, hidden: true },
 			{ label: 'DelordNo', name: 'purordhd_delordno', width: 20, width: 10, classes: 'wrap', hidden:true},
@@ -740,7 +740,7 @@ $(document).ready(function () {
 		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
 			{ label: 'No', name: 'lineno_', width: 50, frozen:true, classes: 'wrap', editable:false},
 
-			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false},
+			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true, custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -748,8 +748,8 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Item Code', name: 'itemcode', width: 200, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:itemcodeCustomEdit,
 						       custom_value:galGridCustomValue 	
@@ -1351,10 +1351,12 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table, case_;
 		switch(options.colModel.name){
+			case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
 			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
+			case 'purordhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='purordhd_prdept';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -1410,7 +1412,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function itemcodeCustomEdit(val, opt) {
-		val = val
+		val = getEditVal(val);
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){

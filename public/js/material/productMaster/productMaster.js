@@ -33,6 +33,7 @@
 			};
 
 			var mycurrency =new currencymode(['#avgcost']);
+			var fdl = new faster_detail_load();
 			
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -140,7 +141,7 @@
 					{ label: 'Item Code', name: 'itemcode', width: 40, classes: 'wrap', canSearch: true,},
 					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', checked:true,canSearch: true},
 					{ label: 'Group Code', name: 'groupcode', width: 30, classes: 'wrap'},
-					{ label: 'Product Category', name: 'productcat', width: 30, classes: 'wrap'},
+					{ label: 'Product Category', name: 'productcat', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 					{ label: 'Class ', name: 'Class', width: 30, classes: 'wrap'},
 					{ label: 'Avg Cost ', name: 'avgcost', width: 30, classes: 'wrap'},
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true, classes: 'wrap'},
@@ -175,6 +176,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					fdl.set_array().reset();
 
 					//$("#jqGridplus").hide();
 					pg = $("#postGroupcode option:selected" ).val();
@@ -292,7 +294,18 @@
 		    	//alert($("input[name=postClass]:checked").val());
 			});
 
-
+			function showdetail(cellvalue, options, rowObject){
+				var field,table, case_;
+				switch(options.colModel.name){
+					case 'productcat':field=['assetcode','description'];table="finance.facode";case_='productcat';break;
+				}
+				var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+			
+				fdl.get_array('productMaster',options,param,case_,cellvalue);
+				
+				if(cellvalue == null)cellvalue = " ";
+				return cellvalue;
+			}
 			
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

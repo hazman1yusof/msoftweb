@@ -243,10 +243,10 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
 			{ label: 'Record No', name: 'delordhd_recno', width: 120, classes: 'wrap', canSearch: true, frozen: true},
-			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 180, classes: 'wrap', canSearch:true},
-			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 180, classes: 'wrap'},
+			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 190, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 190, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'DO No', name: 'delordhd_delordno', width: 150, classes: 'wrap', canSearch: true},
-			{ label: 'Request Department', name: 'delordhd_reqdept', width: 180, canSearch: true, classes: 'wrap' },
+			{ label: 'Request Department', name: 'delordhd_reqdept', width: 190, canSearch: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'GRN No', name: 'delordhd_docno', width: 150, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Received Date', name: 'delordhd_trandate', width: 200, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 250, classes: 'wrap', canSearch: true},
@@ -692,7 +692,7 @@ $(document).ready(function () {
 		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
 			{ label: 'No', name: 'lineno_', width: 50, frozen:true, classes: 'wrap', editable:false},
 			
-			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false},
+			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -701,7 +701,7 @@ $(document).ready(function () {
 						    },
 			},
 			{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},
+					editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:itemcodeCustomEdit,
 						       custom_value:galGridCustomValue 	
@@ -1319,16 +1319,20 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table,case_;
 		switch(options.colModel.name){
+			case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
 			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
+			case 'delordhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_prdept';break;
+			case 'delordhd_deldept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_deldept';break;
+			case 'delordhd_reqdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_reqdept';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('deliveryOrder',options,param,case_,cellvalue);
 		// faster_detail_array.push(faster_detail_load('deliveryOrder',options,param,case_,cellvalue));
-		
+		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
 

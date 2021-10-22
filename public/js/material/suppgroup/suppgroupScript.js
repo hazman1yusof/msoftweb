@@ -159,6 +159,8 @@
 				},'urlParam', 'radio', 'tab'
 			);
 			dialog_advglaccno.makedialog();
+
+			var fdl = new faster_detail_load();
 		
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -269,8 +271,8 @@
 					{ label: 'Comp Code', name: 'compcode', hidden:true},
 					{ label: 'Supplier Group', name: 'suppgroup', width: 50, sorttype: 'text', classes: 'wrap', canSearch: true},
 					{ label: 'Description', name: 'description', width: 100, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true},
-					{ label: 'Cost Code', name: 'costcode', width: 60, sorttype: 'number', classes: 'wrap'},
-					{ label: 'Gl Account No', name: 'glaccno', width: 60, sorttype: 'number', classes: 'wrap'},
+					{ label: 'Cost Code', name: 'costcode', width: 60, sorttype: 'number', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+					{ label: 'Gl Account No', name: 'glaccno', width: 60, sorttype: 'number', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 					{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
@@ -279,8 +281,8 @@
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
 					{ label: 'Del User', name: 'deluser', width: 80,hidden:true},
 					{ label: 'Del Date', name: 'deldate', width: 90,hidden:true},
-					{ label: 'Advance Cost Code', name: 'advccode', width: 80, sorttype: 'number', editable: true, classes: 'wrap'},
-					{ label: 'Advance Account No', name: 'advglaccno', width: 80, sorttype: 'number', classes: 'wrap'},
+					{ label: 'Advance Cost Code', name: 'advccode', width: 80, sorttype: 'number', editable: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+					{ label: 'Advance Account No', name: 'advglaccno', width: 80, sorttype: 'number', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 					{ label: 'Record Status', name: 'recstatus', width: 80, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
@@ -307,6 +309,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					fdl.set_array().reset();
 				},
 				
 			});
@@ -324,6 +327,22 @@
 				else {
 					return "0";
 				}
+			}
+
+			function showdetail(cellvalue, options, rowObject){
+				var field,table, case_;
+				switch(options.colModel.name){
+					case 'costcode':field=['costcode','description'];table="finance.costcenter";case_='costcode';break;
+					case 'glaccno':field=['glaccno','description'];table="finance.glmasref";case_='glaccno';break;
+					case 'advccode':field=['costcode','description'];table="finance.costcenter";case_='advccode';break;
+					case 'advglaccno':field=['glaccno','description'];table="finance.glmasref";case_='advglaccno';break;
+				}
+				var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+			
+				fdl.get_array('suppgroupScript',options,param,case_,cellvalue);
+				
+				if(cellvalue == null)cellvalue = " ";
+				return cellvalue;
 			}
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////

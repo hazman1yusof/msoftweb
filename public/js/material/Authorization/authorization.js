@@ -129,7 +129,7 @@ $(document).ready(function () {
 			{label: 'Author ID', name: 'authorid', width: 90 ,  classes: 'wrap', canSearch: true,},							
 			{label: 'Name', name: 'name', width: 90,  classes: 'wrap' , canSearch: true},	
 			{label: 'Password', name: 'password', width: 90 ,  classes: 'wrap' , hidden: true,},
-			{label: 'Department Code', name: 'deptcode', width: 90 , classes: 'wrap',},
+			{label: 'Department Code', name: 'deptcode', width: 90 , classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{label: 'Active', name: 'active', width: 90 ,hidden:true,},
 			{label: 'adddate', name: 'adddate', width: 90 , hidden:true,},
 			{label: 'adduser', name: 'adduser', width: 90 , hidden:true,},
@@ -600,6 +600,7 @@ $("#jqGrid2").inlineNav('#jqGridPager2',{
 function showdetail(cellvalue, options, rowObject){
 	var field, table, case_;
 	switch(options.colModel.name){
+		case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 		case 'dtl_deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 	}
 	var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
@@ -923,7 +924,7 @@ $("#gridAuthdtl").jqGrid({
                          value: "PR:Purchase Request;PO:Purchase Order"
                      }
 			},
-			{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
+			{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true, formatter: showdetail,unformat:un_showdetail,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ custom_element:deptcodedtlCustomEdit,
@@ -974,6 +975,7 @@ $("#gridAuthdtl").jqGrid({
 		}
 
 		$('#gridAuthdtl #'+$("#gridAuthdtl").jqGrid ('getGridParam', 'selrow')).focus();
+		fdl.set_array().reset();
 	
 
 		/////////////////////////////// reccount ////////////////////////////

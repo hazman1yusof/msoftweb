@@ -24,6 +24,8 @@ $(document).ready(function () {
 		},
 	};
 
+	var fdl = new faster_detail_load();
+
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var mycurrency =new currencymode(['#minlimit','#maxlimit']);
 
@@ -135,7 +137,7 @@ $(document).ready(function () {
            	{ label: 'Author ID', name: 'dtl_authorid', width: 200, classes: 'wrap', canSearch: true, hidden:false},
 			{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Type', name: 'dtl_trantype', width: 200, classes: 'wrap', canSearch: true},
-			{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true},
+			{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Authorize Status', name: 'dtl_recstatus', width: 150, classes: 'wrap', canSearch: true, editable: true},
 			{ label: 'Recstatus', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: false, editable: true},
 			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap',  align: 'right', editable: true},
@@ -160,6 +162,7 @@ $(document).ready(function () {
 			}
 
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
 		},
 	});
 	
@@ -172,6 +175,20 @@ $(document).ready(function () {
 			
 		}	
 	);
+
+	function showdetail(cellvalue, options, rowObject){
+		var field,table, case_;
+		switch(options.colModel.name){
+			case 'dtl_deptcode':field=['deptcode','description'];table="sysdb.department";case_='dtl_deptcode';break;
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	
+		fdl.get_array('authorizationDtl',options,param,case_,cellvalue);
+		
+		if(cellvalue == null)cellvalue = " ";
+		return cellvalue;
+	}
+
 
 	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////

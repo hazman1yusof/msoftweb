@@ -172,9 +172,9 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'Record No', name: 'recno', width: 20, canSearch: true, selected: true, formatter: padzero, unformat: unpadzero },
-			{ label: 'Request Department', name: 'reqdept', width: 30, canSearch: true },
+			{ label: 'Request Department', name: 'reqdept', width: 30, canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Request No', name: 'ivreqno', width: 25, canSearch: true, formatter: padzero, unformat: unpadzero },
-			{ label: 'Request To Department', name: 'reqtodept', width: 30, classes: 'wrap' },
+			{ label: 'Request To Department', name: 'reqtodept', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Request Date', name: 'reqdt', width: 20, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 20, align: 'right', formatter: 'currency', hidden:true},
 			{ label: 'Recstatus', name: 'recstatus', width: 20},
@@ -1181,7 +1181,8 @@ $(document).ready(function () {
 			case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
 			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
-		//	case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
+			case 'reqdept':field=['deptcode','description'];table="sysdb.department";case_='reqdept';break;
+			case 'reqtodept':field=['deptcode','description'];table="sysdb.department";case_='reqtodept';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	

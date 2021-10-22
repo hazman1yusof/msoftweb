@@ -24,6 +24,7 @@ $(document).ready(function () {
 		},
 	};
 	//var Class2 = $('#Class2').val();
+	var fdl = new faster_detail_load();
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
 		text: "Save",click: function() {
@@ -112,10 +113,10 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
             {label: 'idno', name: 's_idno', hidden: true},
-            { label: 'Department Code', name: 's_deptcode', width: 20, classes: 'wrap', canSearch: true,selected:true},
+            { label: 'Department Code', name: 's_deptcode', width: 20, classes: 'wrap', canSearch: true,selected:true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Item code', name: 's_itemcode', width: 20, classes: 'wrap', canSearch: true,selected:true},		
 			{ label: 'Description', name: 'p_description', width: 30, classes: 'wrap', checked:true,canSearch: true,selected:true},
-			{ label: 'UOM Code', name: 's_uomcode', width: 20, classes: 'wrap'},
+			{ label: 'UOM Code', name: 's_uomcode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Quantity on Hand', name: 's_qtyonhand', width: 20,classes: 'wrap',align: 'right'},
 			{ label: 'Stock TrxType', name: 's_stocktxntype', width: 20, classes: 'wrap'},
 		 	{ label: 'Min Stock Qty', name: 's_minqty', width: 15, classes: 'wrap',align: 'right'},
@@ -147,24 +148,41 @@ $(document).ready(function () {
 			}
 
 		},
+		gridComplete: function(){
+			fdl.set_array().reset();
+		},
 	});
 	
-	$("#jqGrid").jqGrid('navGrid','#jqGridPager',
-		{	
-			edit:false,view:false,add:false,del:false,search:false,
-			beforeRefresh: function(){
-				refreshGrid("#jqGrid",urlParam);
-			},
-			
-		}	
-	);
+		$("#jqGrid").jqGrid('navGrid','#jqGridPager',
+			{	
+				edit:false,view:false,add:false,del:false,search:false,
+				beforeRefresh: function(){
+					refreshGrid("#jqGrid",urlParam);
+				},
+				
+			}	
+		);
 
-     $("#jqGrid").jqGrid('setLabel', 'qtyonhand', 'Quantity on Hand', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'avgcost', 'Average Cost', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'currprice', 'Current Price', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'minqty', 'Min Stock Qty', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'maxqty', 'Max Stock Qty', {'text-align':'right'});
-     $("#jqGrid").jqGrid('setLabel', 'reordqty', 'Reorder Qty', {'text-align':'right'});
+		$("#jqGrid").jqGrid('setLabel', 'qtyonhand', 'Quantity on Hand', {'text-align':'right'});
+		$("#jqGrid").jqGrid('setLabel', 'avgcost', 'Average Cost', {'text-align':'right'});
+		$("#jqGrid").jqGrid('setLabel', 'currprice', 'Current Price', {'text-align':'right'});
+		$("#jqGrid").jqGrid('setLabel', 'minqty', 'Min Stock Qty', {'text-align':'right'});
+		$("#jqGrid").jqGrid('setLabel', 'maxqty', 'Max Stock Qty', {'text-align':'right'});
+		$("#jqGrid").jqGrid('setLabel', 'reordqty', 'Reorder Qty', {'text-align':'right'});
+
+	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table, case_;
+		switch(options.colModel.name){
+			case 's_deptcode':field=['deptcode','description'];table="sysdb.department";case_='s_deptcode';break;
+			case 's_uomcode':field=['uomcode','description'];table="material.uom";case_='s_uomcode';break;
+		}
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	
+		fdl.get_array('stocklocEnquiry',options,param,case_,cellvalue);
+		if(cellvalue == null)cellvalue = " ";
+		return cellvalue;
+	}
 
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();
