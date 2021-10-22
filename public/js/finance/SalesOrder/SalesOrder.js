@@ -1613,6 +1613,7 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_unitprice").val(data['price']);
 
 				dialog_uomcode.check(errorField);
+				dialog_tax.check(errorField);
 
 			},
 			gridComplete: function(obj){

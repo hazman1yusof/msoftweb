@@ -26,7 +26,7 @@ $(document).ready(function () {
 	};
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-
+	var fdl = new faster_detail_load();
 
 	////////////////////object for dialog handler//////////////////\
 	var dialog_costcode = new ordialog(
@@ -235,8 +235,9 @@ $(document).ready(function () {
 		 colModel: [
 			//{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
 			{ label: 'Dept', name: 'deptcode', width: 30, classes: 'wrap', canSearch: true},
-			{ label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true,checked:true,},
-			{ label: 'Cost Code', name: 'costcode', width: 30, classes: 'wrap'},
+			{ label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true,checked:true},
+			//{ label: 'Dept', name: 'deptcode', width: 30, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail, canSearch: true},
+			{ label: 'Cost Code', name: 'costcode', width: 30, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
 			{ label: 'Sector', name: 'sector', width: 40, hidden:false, classes: 'wrap'},
 
 			{ label: 'Purchase', name: 'purdept', width: 30, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
@@ -279,6 +280,7 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
 		},
 		
 	});
@@ -363,6 +365,27 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
 	addParamField('#jqGrid',false,saveParam,['idno', 'computerid', 'ipaddress','adduser','adddate','upduser','upddate','recstatus']);
+
+	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'costcode':field=['costcode','description'];table="finance.costcenter";case_='costcode';break;
+
+		}
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('department',options,param,case_,cellvalue);
+		// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
+		
+		return cellvalue;
+	}
+
+	function unformat_showdetail(cellvalue, options, rowObject){
+		return $(rowObject).attr('title');
+	}
+
 
 	function formatterstatus_tick2(cellvalue, option, rowObject) {
 		if (cellvalue == '1') {

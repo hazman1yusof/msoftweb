@@ -235,7 +235,7 @@ $(document).ready(function () {
 		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true},
 		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
 		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
-		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap'},
+		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
 		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
@@ -543,7 +543,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqg2},
 			{ label: 'Creditor Code', name: 'suppcode', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
-				edittype:"text",
+				edittype:"text", formatter: showdetail,unformat:un_showdetail
 			},
 	
 			{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap', editable:true,
@@ -780,6 +780,8 @@ $(document).ready(function () {
 		var field, table, case_;
 		switch(options.colModel.name){
 			case 'document':field=['delordno','srcdocno'];table="material.delordhd";case_='document';break;
+			case 'apacthdr_deptcode':field=['deptcode','description'];table="sysdb.department";case_='apacthdr_deptcode';break;
+			case 'suppcode':field=['suppcode','description'];table="material.supplier";case_='suppcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	

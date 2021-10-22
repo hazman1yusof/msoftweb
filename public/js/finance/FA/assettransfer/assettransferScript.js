@@ -221,11 +221,11 @@ $(document).ready(function () {
 		datatype: "local",	
 			colModel: [
 			{label: 'Tagging No', name: 'assetno', width: 10, canSearch: true, checked: true},
-			{label: 'Item Code', name:'itemcode', width: 20, },
-			{label: 'Category', name: 'assetcode', width: 20, classes: 'wrap', canSearch: true,checked:true},
-			{label: 'Type', name:'assettype', width: 20, classes: 'wrap', canSearch: true, checked:true},
-			{label: 'Department', name:'deptcode', width: 20, },
-			{label: 'Location', name:'loccode', width: 20, classes: 'wrap',},
+			{label: 'Item Code', name:'itemcode', width: 20, formatter: showdetail,unformat:un_showdetail },
+			{label: 'Category', name: 'assetcode', width: 20, classes: 'wrap', canSearch: true,checked:true, formatter: showdetail,unformat:un_showdetail},
+			{label: 'Type', name:'assettype', width: 20, classes: 'wrap', canSearch: true, checked:true, formatter: showdetail,unformat:un_showdetail},
+			{label: 'Department', name:'deptcode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
+			{label: 'Location', name:'loccode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{label: 'Description', name:'description', width: 40, classes: 'wrap'},
 			{label: 'idno', name: 'idno', hidden: true},
 			{label: 'Transfer Date', name:'trandate', formatter:dateFormatter, hidden:true},
@@ -258,6 +258,7 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
 		},
 	});
 
@@ -267,6 +268,24 @@ $(document).ready(function () {
 
 	function dateFormatter(cellvalue, options, rowObject){
 		return moment(cellvalue).format("DD-MM-YYYY");
+	}
+
+	
+	function showdetail(cellvalue, options, rowObject){
+		var field,table, case_;
+		switch(options.colModel.name){
+			case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
+			case 'assetcode':field=['assetcode','description'];table="finance.facode";case_='assetcode';break;
+			case 'assettype':field=['assettype','description'];table="finance.fatype";case_='assettype';break;
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'loccode':field=['loccode','description'];table="sysdb.location";case_='loccode';break;
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	
+		fdl.get_array('assettransferScript',options,param,case_,cellvalue);
+		
+		if(cellvalue == null)cellvalue = " ";
+		return cellvalue;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////

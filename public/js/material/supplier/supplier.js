@@ -27,6 +27,8 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////////////////////////
 
+	var fdl = new faster_detail_load();
+
 	////////////////////object for dialog handler//////////////////
 	var dialog_SuppGroup = new ordialog(
 		'SuppGroup','material.suppgroup','#SuppGroup',errorField,
@@ -248,7 +250,7 @@ $(document).ready(function () {
 		 colModel: [
 			{ label: 'Supplier Code', name: 'SuppCode', width: 35 , sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'Name', width: 100, editable: true, classes: 'wrap',checked:true, canSearch: true },
-			{ label: 'Supplier Group', name: 'SuppGroup', width: 35, editable: true, classes: 'wrap' },
+			{ label: 'Supplier Group', name: 'SuppGroup', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Cont Pers', name: 'ContPers', width: 90, hidden: true},
 			{ label: 'Addr1', name: 'Addr1', width: 30, hidden: true}, 
 			{ label: 'Addr2', name: 'Addr2', width: 90, hidden:true},
@@ -299,6 +301,7 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
 		},
 		onSelectRow:function(rowid, selected){
 			if(rowid != null) {
@@ -317,6 +320,27 @@ $(document).ready(function () {
 		},
 		
 	});
+
+	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'SuppGroup':field=['SuppGroup','description'];table="material.SuppGroup";case_='SuppGroup';break;
+			case 'si_pricecode':field=['pricecode','description'];table="material.pricesource";case_='si_pricecode';break;			
+			case 'si_uomcode':field=['uomcode','description'];table="material.uom";case_='si_uomcode';break;
+		}
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('supplier',options,param,case_,cellvalue);
+		// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
+		
+		return cellvalue;
+	}
+
+	function unformat_showdetail(cellvalue, options, rowObject){
+		return $(rowObject).attr('title');
+	}
+
 
 
 	
@@ -618,8 +642,8 @@ $(document).ready(function () {
 		 	{ label: 'no', name: 'si_lineno_', width: 50, sorttype: 'number', hidden: true,}, // 
 		 	{ label: 'Item Code', name: 'si_itemcode', width: 150, sorttype: 'text', editable: true, classes: 'wrap', canSearch: true},
 			{ label: 'Item Description', name: 'p_description', width: 400, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true},
-			{ label: 'Price Code', name: 'si_pricecode', width: 200, sorttype: 'text', editable: true, classes: 'wrap'},
-			{ label: 'Uom Code', name: 'si_uomcode', width: 100, sorttype: 'text', editable: true, classes: 'wrap'},
+			{ label: 'Price Code', name: 'si_pricecode', width: 200, sorttype: 'text', editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Uom Code', name: 'si_uomcode', width: 100, sorttype: 'text', editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Unit Price', name: 'si_unitprice', width: 200, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
 			{ label: 'Purchase Quantity', name: 'si_purqty', width: 200, sorttype: 'float', editable: true, classes: 'wrap',formatter:'currency'},
 			{ label: 'Percentage of Discount', name: 'si_perdiscount', width: 100,  hidden: true},

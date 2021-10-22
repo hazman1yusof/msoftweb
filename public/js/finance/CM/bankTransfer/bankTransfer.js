@@ -27,6 +27,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#amount']);
+	var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#actdate"]);
@@ -288,15 +289,15 @@ $(document).ready(function () {
 			{label: 'Audit No', name: 'auditno', width: 27, classes: 'wrap'},
 			{label: 'Payment No', name: 'pvno', width: 40, hidden: true, classes: 'wrap'},
 			{label: 'Transfer Date', name: 'actdate', width: 25, canSearch:true, checked:true, classes: 'wrap'},
-			{label: 'Bank Code From', name: 'bankcode', width: 35, classes: 'wrap', canSearch:true},
-			{label: 'Bank Code To', name: 'payto', width: 35, classes: 'wrap', canSearch:true},
+			{label: 'Bank Code From', name: 'bankcode', width: 35, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
+			{label: 'Bank Code To', name: 'payto', width: 35, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
 			{label: 'Cheque Date', name: 'cheqdate', width: 90, classes: 'wrap', hidden:true},
 			{label: 'Amount', name: 'amount', width: 30, classes: 'wrap', formatter:'currency'},
 			{label: 'Remarks', name: 'remarks', width: 40, classes: 'wrap'},
 			{label: 'Status', name: 'recstatus', width: 30, classes: 'wrap'},
 			{label: 'Entered By', name: 'adduser', width: 30, classes: 'wrap'},
 			{label: 'Entered Date', name: 'adddate', width: 30, classes: 'wrap'},
-			{label: 'Paymode', name: 'paymode', width: 30, classes: 'wrap', canSearch:true},
+			{label: 'Paymode', name: 'paymode', width: 30, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
 			{label: 'Cheq No', name: 'cheqno', width: 30, classes: 'wrap', formatter:formatterCheqnno, unformat:unformatterCheqnno},
 			{ label: 'unit', name: 'unit', width: 40, hidden:'true'},
 		],
@@ -321,6 +322,7 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
 		},
 		onSelectRow: function(rowid, selected) {
 			let recstatus = selrowData("#jqGrid").recstatus;
@@ -392,13 +394,10 @@ $(document).ready(function () {
 				$("#cancelBut").hide();
 
 			});
-		});*/
-	
-		
+		});*/		
 
 	////////////////////formatter status////////////////////////////////////////
 		
-
 		function formatterCheqnno  (cellValue, options, rowObject) {
 			//return rowObject[9] != "CHEQUE" ? "&nbsp;" : $.jgrid.htmlEncode(cellValue);
 			return rowObject[15] != "CHEQUE" ? "<span cheqno='"+cellValue+"'></span>" : "<span cheqno='"+cellValue+"'>"+cellValue+"</span>";
@@ -409,6 +408,21 @@ $(document).ready(function () {
 			return $(rowObject).find('span').attr('cheqno');
 		}
 
+	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table, case_;
+		switch(options.colModel.name){
+			case 'paymode':field=['paymode','description'];table="debtor.paymode";break;
+			case 'payto':field=['bankcode','bankname'];table="finance.bank";break;
+			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	
+		fdl.get_array('bankTransfer',options,param,case_,cellvalue);
+		
+		if(cellvalue == null)cellvalue = " ";
+		return cellvalue;
+	}
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

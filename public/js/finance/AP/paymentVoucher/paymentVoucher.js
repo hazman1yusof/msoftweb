@@ -320,6 +320,7 @@ $(document).ready(function () {
 			empty_form();
 
 			populate_form(selrowData("#jqGrid"));
+			fdl.set_array().reset();
 
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
@@ -330,6 +331,19 @@ $(document).ready(function () {
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
+	////////////////////// function showdetail ///////////////////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table, case_;
+		switch(options.colModel.name){
+			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	
+		fdl.get_array('paymentVoucher',options,param,case_,cellvalue);
+		
+		if(cellvalue == null)cellvalue = " ";
+		return cellvalue;
+	}
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -550,8 +564,7 @@ $(document).ready(function () {
 		editurl: "/paymentVoucherDetail/form",
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqg2},
-			{ label: 'Creditor Code', name: 'suppcode', width: 100, classes: 'wrap'},
-	
+			{ label: 'Creditor Code', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
