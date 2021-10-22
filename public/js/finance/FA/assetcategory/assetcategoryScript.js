@@ -155,10 +155,10 @@ $.jgrid.defaults.responsive = true;
 				{ label: 'idno', name: 'idno', width: 20, hidden:true },
 				{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
 				{ label: 'Category', name: 'assetcode', width: 10, sorttype: 'text', classes: 'wrap', canSearch: true},
-				{ label: 'Description', name: 'description', width: 40, sorttype: 'text',canSearch: true, classes: 'wrap', checked:true },
+				{ label: 'Description', name: 'description', width: 35, sorttype: 'text',canSearch: true, classes: 'wrap', checked:true },
 				{ label: 'Type', name: 'assettype', width: 80, sorttype: 'text', classes: 'wrap', hidden:true},
 				{ label: 'Rate (%p.a)', name: 'rate', width: 10},
-				{ label: 'Department', name: 'deptcode', width: 10, sorttype: 'text',classes: 'wrap',formatter: showdetail,unformat:un_showdetail},
+				{ label: 'Department', name: 'deptcode', width: 20, sorttype: 'text',classes: 'wrap',formatter: showdetail,unformat:un_showdetail},
 				{ label: 'Tagging Next No.', name: 'tagnextno', width: 40, sorttype: 'text', classes: 'wrap',hidden:true  },
 				{ label: 'Basis', name: 'method', width: 40, sorttype: 'text', classes: 'wrap', hidden:true  },
 				{ label: 'Residual Value', name: 'residualvalue', width: 50, hidden:true },
@@ -173,7 +173,7 @@ $.jgrid.defaults.responsive = true;
 				{ label: 'Loss Code', name: 'glrevccode', width: 50, hidden:true },
 				{ label: 'Loss', name: 'glrevaluation', width: 50, hidden:true },
 				{
-					label: 'Record Status', name: 'recstatus', width: 10, cellattr: function (rowid, cellvalue) 
+					label: 'Record Status', name: 'recstatus', width: 8, cellattr: function (rowid, cellvalue) 
 					{
 						return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"' : ''
 					},
