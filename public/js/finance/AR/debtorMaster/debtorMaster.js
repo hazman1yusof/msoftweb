@@ -320,10 +320,10 @@
 				var field,table,case_;
 				switch(options.colModel.name){
 					case 'debtortype':field=['debtortycode','description'];table="debtor.debtortype";case_='suppcode';break;
-					case 'actdebccode':field=['actdebccode','description'];table="sysdb.department";case_='actdebccode';break;
-					case 'actdebglacc':field=['actdebglacc','description'];table="finance.facode";case_='actdebglacc';break;
-					case 'depccode':field=['depccode','description'];table="finance.fatype";case_='depccode';break;
-					case 'depglacc':field=['depglacc','description'];table="finance.fatype";case_='depglacc';break;
+					case 'actdebccode':field=['costcode','description'];table="finance.costcenter";break;
+					case 'actdebglacc':field=['glaccno','description'];table="finance.glmasref";break;
+					case 'depccode':field=['costcode','description'];table="finance.costcenter";break;
+					case 'depglacc':field=['glaccno','description'];table="finance.glmasref";case_='depglacc';break;
 
 				}
 				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};

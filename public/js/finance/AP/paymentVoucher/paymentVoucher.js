@@ -235,8 +235,8 @@ $(document).ready(function () {
 		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
 		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
-		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 20, classes: 'wrap', canSearch: true},
-		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true},
+		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true, hidden: true},
 		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
 		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
 		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap', hidden:true},
@@ -336,6 +336,7 @@ $(document).ready(function () {
 		var field,table, case_;
 		switch(options.colModel.name){
 			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
+			case 'apacthdr_suppcode':field=['suppcode','name'];table="material.supplier";case_='apacthdr_suppcode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	

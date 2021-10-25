@@ -250,7 +250,7 @@ $(document).ready(function () {
 		 colModel: [
 			{ label: 'Supplier Code', name: 'SuppCode', width: 35 , sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'Name', width: 100, editable: true, classes: 'wrap',checked:true, canSearch: true },
-			{ label: 'Supplier Group', name: 'SuppGroup', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Supplier Group', name: 'SuppGroup', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Cont Pers', name: 'ContPers', width: 90, hidden: true},
 			{ label: 'Addr1', name: 'Addr1', width: 30, hidden: true}, 
 			{ label: 'Addr2', name: 'Addr2', width: 90, hidden:true},
@@ -261,8 +261,8 @@ $(document).ready(function () {
 			{ label: 'Term Others', name: 'TermOthers', width: 30, editable: true, classes: 'wrap' }, 
 			{ label: 'TermNonDisp', name: 'TermNonDisp', width: 35, editable: true, classes: 'wrap' },
 			{ label: 'Term Disp', name: 'TermDisp', width: 30, editable: true, classes: 'wrap' },
-			{ label: 'Cost Code', name: 'CostCode', width: 30, editable: true, classes: 'wrap' },
-			{ label: 'Gl Account No', name: 'GlAccNo', width: 35, editable: true, classes: 'wrap' },
+			{ label: 'Cost Code', name: 'CostCode', width: 30, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Gl Account No', name: 'GlAccNo', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'AccNo', name: 'AccNo', width: 80, hidden: true, editable: true},
 			{ label: 'DepAmt', name: 'DepAmt', width: 80, hidden: true},
 			{ label: 'MiscAmt', name: 'MiscAmt', width: 80, hidden: true},
@@ -328,6 +328,8 @@ $(document).ready(function () {
 			case 'SuppGroup':field=['SuppGroup','description'];table="material.SuppGroup";case_='SuppGroup';break;
 			case 'si_pricecode':field=['pricecode','description'];table="material.pricesource";case_='si_pricecode';break;			
 			case 'si_uomcode':field=['uomcode','description'];table="material.uom";case_='si_uomcode';break;
+			case 'CostCode':field=['costcode','description'];table="finance.costcenter";case_='CostCode';break;
+			case 'GlAccNo':field=['glaccno','description'];table="finance.glmasref";case_='GlAccNo';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 

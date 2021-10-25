@@ -183,6 +183,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
+			{ label: 'Payer Code', name: 'db_payercode', width: 20, canSearch: true },
 			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right'},
@@ -192,7 +193,6 @@ $(document).ready(function () {
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 15 },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
-			{ label: 'Payer Code', name: 'db_payercode', width: 20, canSearch: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'trantype', name: 'db_trantype', hidden: true },
 			{ label: 'lineno_', name: 'db_lineno_', width: 20, hidden: true },
