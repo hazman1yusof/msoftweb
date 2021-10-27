@@ -595,10 +595,15 @@ Route::get('/pat_enq/get_entry','hisdb\PatEnqController@get_entry');
 Route::post('/pat_enq/post_entry','hisdb\PatEnqController@post_entry');
 Route::post('/pat_enq/save_patient','hisdb\PatEnqController@save_patient');
 
-//// Nursing page ///
+//// Nursing (Triage Info) page ///
 Route::get('/nursing','hisdb\NursingController@show');
 Route::get('/nursing/table','hisdb\NursingController@table');
 Route::post('/nursing/form','hisdb\NursingController@form');
+
+//// Antenatal page ///
+Route::get('/antenatal','hisdb\AntenatalController@show');
+Route::get('/antenatal/table','hisdb\AntenatalController@table');
+Route::post('/antenatal/form','hisdb\AntenatalController@form');
 
 //// Ward Panel page ///
 Route::get('/wardpanel','hisdb\WardPanelController@show');
