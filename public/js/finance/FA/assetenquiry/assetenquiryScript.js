@@ -427,7 +427,7 @@ $(document).ready(function () {
 			//case 'bedtype':field=['bedtype','description'];table="hisdb.bedtype";case_='bedtype';break;
 			case 'currdeptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 			case 'suppcode':field=['SuppCode','name'];table="material.supplier";case_='suppcode';break;
-			case 'olddeptcode':field=['olddeptcode','description'];table="sysdb.department";case_='olddeptcode';break;
+			case 'olddeptcode':field=['deptcode','description'];table="sysdb.department";case_='olddeptcode';break;
 			case 'currloccode':field=['loccode','description'];table="sysdb.location";case_='loccode';break;
 			case 'itemcode':field=['itemcode','description'];table="finance.faregister";case_='itemcode';break;
 			case 'assetcode':field=['assetcode','description'];table="finance.facode";case_='assetcode';break;
@@ -438,7 +438,7 @@ $(document).ready(function () {
 			case 'trf_loccode':field=['deptcode','description'];table="sysdb.location";case_='trf_loccode';break;
 
 			//////asset movement header/////
-			case 'olddeptcode':field=['deptcode','description'];table="sysdb.department";case_='olddeptcode';break;
+			//case 'olddeptcode':field=['deptcode','description'];table="sysdb.department";case_='olddeptcode';break;
 			case 'oldloccode':field=['loccode','description'];table="sysdb.location";case_='oldloccode';break;
 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 			case 'curloccode':field=['loccode','description'];table="sysdb.location";case_='curloccode';break;
