@@ -64,6 +64,7 @@ class PatmastController extends defaultController
             $table = DB::table('hisdb.queue')
                         ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
                         ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+                        ->where('queue.billflag','=',0)
                         ->where('queue.compcode','=',session('compcode'))
                         ->where('queue.deptcode','=',"ALL");
 
@@ -1037,6 +1038,7 @@ class PatmastController extends defaultController
                         'mrn' => $epis_mrn,
                         'compcode' => session('compcode'),
                         'episno' => $epis_no,
+                        'AllocNo' => 1,
                         'AStatus' => "ADMITTING",
                         'Adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'AddUser' => session('username'),
@@ -1047,7 +1049,6 @@ class PatmastController extends defaultController
                         'ASDate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'ASTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
                     ]);
-
             }
 
             //CREATE BEDALLOC KALAU IP @ DP SHJ

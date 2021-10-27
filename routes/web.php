@@ -625,6 +625,11 @@ Route::get('/ordcom','hisdb\OrdcomController@show');
 Route::get('/ordcom/table','hisdb\OrdcomController@table');
 Route::post('/ordcom/form','hisdb\OrdcomController@form');
 
+//// Discharge page ///
+// Route::get('/discharge','hisdb\OrdcomController@show');
+Route::get('/discharge/table','hisdb\DischargeController@table');
+Route::post('/discharge/form','hisdb\DischargeController@form');
+
 ///////////////////Fixed Asset setup////////////////////////////////////
 
 //// Fixed Asset Location setup page ///

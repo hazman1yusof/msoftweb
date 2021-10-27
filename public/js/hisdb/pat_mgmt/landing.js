@@ -231,6 +231,10 @@ $(document).ready(function() {
             populate_tiCurrentPt(rows[bootgrid_last_rowid]);
             populate_currDoctorNote(rows[bootgrid_last_rowid]);
         }
+
+        if(rows[bootgrid_last_rowid].PatStatus == 1 && $('#curpat').val() == 'true'){
+            populate_discharge_currpt(rows[bootgrid_last_rowid]);
+        }
     });
     var bootgrid_last_rowid = 0;
 
@@ -536,6 +540,7 @@ $(document).ready(function() {
     }
 
     $('#mdl_accomodation').on('show.bs.modal', function () {
+        $(this).css('z-index',120);
         var accomodation_selecter_ = new accomodation_selecter();
     });
 

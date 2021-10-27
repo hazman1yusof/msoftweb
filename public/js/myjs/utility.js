@@ -1850,6 +1850,23 @@ function if_none(str){
 	return (str)?str:'NONE';
 }
 
+function SmoothScrollTo(id_or_Name, timelength){
+  var timelength = timelength || 500;
+  $('html, body').animate({
+      scrollTop: $(id_or_Name).offset().top-70
+  }, timelength, function(){
+
+  });
+}
+
+function SmoothScrollToTop(){
+  $("html, body").stop().animate({
+  		scrollTop:0
+  }, 500, 'swing', function() {
+
+  });
+}
+
 
 $(document).ready(function () {
 

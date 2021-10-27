@@ -125,6 +125,14 @@
 		}
 
 		i.fa {
+			/*cursor: pointer;*/
+			float: right;
+			/*position: absolute;
+		    right: 12px;
+		    top: 23px;*/
+		}
+
+		div.wrapper > div.row > div.panel.panel-default > div.panel-heading.clearfix > i.fa {
 			cursor: pointer;
 			/*float: right;*/
 			position: absolute;
@@ -243,6 +251,12 @@
 	    	border: 0px;
 	    }
 
+	    .highlight{
+	    	background-color: #dfdfdf;
+	    	margin: 20px;
+			border-radius: 10px;
+	    }
+
 	</style>
 
 </head>
@@ -351,13 +365,23 @@
 					</div>
 				@endif
 
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.discharge.discharge',['type' => "OP",'type_desc' => "Out Patient"])
+				</div>
+
 			@endif
 
 			@if (request()->get('epistycode') == 'IP')
-			<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-				@include('hisdb.ordcom.ordcom')
-			</div>
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.ordcom.ordcom')
+				</div>
+
+				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					@include('hisdb.discharge.discharge',['type' => "IP",'type_desc' => "In Patient"])
+				</div>
+				
 			@endif
+
 
 		@endif
 		
@@ -416,6 +440,7 @@
 	@endif
 
 
+	<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
