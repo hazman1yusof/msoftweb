@@ -55,14 +55,14 @@ $(document).ready(function () {
             { label: 'Place Name', name: 'pc_place_name', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
             { label: 'District', name: 'pc_district', width: 80, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
             { label: 'State', name: 'st_StateCode', width: 15, canSearch: true, checked: true, editable: true, 
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:StateCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
 			{ label: 'Country', name: 'cn_Code', width: 15, canSearch: true, checked: true, editable: true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:CountryCustomEdit,
 						       custom_value:galGridCustomValue 	
@@ -113,6 +113,9 @@ $(document).ready(function () {
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGrid_iledit").click();
 			$('#p_error').text('');   //hilangkan duplicate error msj after save
+		},
+		gridComplete: function(){
+			fdl.set_array().reset();
 		},
 	});
 

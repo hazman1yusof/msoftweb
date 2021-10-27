@@ -24,6 +24,7 @@
 				},
 			};
 
+			var fdl = new faster_detail_load();
 
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -131,20 +132,20 @@
 				 colModel: [
 				 	{label: 'idno', name: 'idno', width: 90 , hidden: true},
 				 	{label: 'compcode', name: 'compcode', width: 90 , hidden: true},
-					{label: 'Financial Class', name: 'debtortycode', width: 90, canSearch:true, checked:true},
+					{label: 'Financial Class', name: 'debtortycode', width: 25, canSearch:true, checked:true},
 					{label: 'Description', name: 'description', width: 90, canSearch:true },
-					{label: 'actdebccode', name: 'actdebccode', width: 90 , hidden: true},
-					{label: 'actdebglacc', name: 'actdebglacc', width: 90 , hidden: true},
-					{label: 'depccode', name: 'depccode', width: 90 , hidden: true},
-					{label: 'depglacc', name: 'depglacc', width: 90 , hidden: true},
-					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
-					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
-					{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
-					{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
-					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
-					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
+					{label: 'Actual Cost', name: 'actdebccode', width: 40, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+					{label: 'Actual Account', name: 'actdebglacc', width: 60, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+					{label: 'Deposit Cost', name: 'depccode', width: 40, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+					{label: 'Deposit Account', name: 'depglacc', width: 60, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+					{ label: 'adduser', name: 'adduser', width: 20, hidden:true},
+					{ label: 'adddate', name: 'adddate', width: 20, hidden:true},
+					{ label: 'upduser', name: 'upduser', width: 20, hidden:true},
+					{ label: 'upddate', name: 'upddate', width: 20, hidden:true},
+					{ label: 'lastcomputerid', name: 'lastcomputerid', hidden:true},
+					{ label: 'lastipaddress', name: 'lastipaddress', hidden:true},
+					{ label: 'computerid', name: 'computerid', hidden:true},
+					{ label: 'ipaddress', name: 'ipaddress', hidden:true},
 					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
@@ -168,6 +169,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					fdl.set_array().reset();
 				},
 				
 				
@@ -225,6 +227,21 @@
 
 			//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 			
+			//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+			function showdetail(cellvalue, options, rowObject){
+				var field, table, case_;
+				switch(options.colModel.name){
+					case 'actdebccode':field=['costcode','description'];table="finance.costcenter";break;
+					case 'actdebglacc':field=['glaccno','description'];table="finance.glmasref";break;
+					case 'depccode':field=['costcode','description'];table="finance.costcenter";break;
+					case 'depglacc':field=['glaccno','name'];table="finance.glmasref";break;
+				}
+				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+			
+				fdl.get_array('debtortype',options,param,case_,cellvalue);
+				return cellvalue;
+			}
+
 			//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 			
 			toogleSearch('#sbut1','#searchForm','on');

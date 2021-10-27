@@ -188,8 +188,8 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'Record No', name: 'purreqhd_recno', width: 10, canSearch: true, selected: true, formatter: padzero, unformat: unpadzero },
-			{ label: 'Request Department', name: 'purreqhd_reqdept', width: 15, canSearch: true, classes: 'wrap' },
-			{ label: 'Purchase Department', name: 'purreqhd_prdept', width: 15, classes: 'wrap' },
+			{ label: 'Request Department', name: 'purreqhd_reqdept', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Purchase Department', name: 'purreqhd_prdept', width: 15, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Request No', name: 'purreqhd_purreqno', width: 10, canSearch: true },
 			{ label: 'Authorise ID', name: 'queuepr_AuthorisedID', width: 10, canSearch: true , hidden: true},
 			{ label: 'PO No', name: 'purreqhd_purordno', width: 10, formatter: padzero, unformat: unpadzero },
@@ -1261,6 +1261,8 @@ $(document).ready(function () {
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
+			case 'purreqhd_reqdept':field=['deptcode','description'];table="sysdb.department";case_='purreqhd_reqdept';break;
+			case 'purreqhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='purreqhd_prdept';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	

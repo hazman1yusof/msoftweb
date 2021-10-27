@@ -171,6 +171,8 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
+			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
+			{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true},
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15},
 			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
@@ -180,7 +182,6 @@ $(document).ready(function () {
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 15 },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
-			{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'trantype', name: 'db_trantype', width: 20, hidden: true },
 			{ label: 'lineno_', name: 'db_lineno_', width: 20, hidden: true },
@@ -1080,6 +1081,8 @@ $(document).ready(function () {
 
 			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
 			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
+			//case 'db_payercode':field=['debtormast','name'];table="debtor.debtormast";case_='db_payercode';break;
+			
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -1358,7 +1361,7 @@ $(document).ready(function () {
 				filterVal:['session.compcode','RC', 'Other', 'ACTIVE']
 			},
 			ondblClickRow: function () {
-				$('#document').focus();
+				$("#jqGrid2 input[name='document']").focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

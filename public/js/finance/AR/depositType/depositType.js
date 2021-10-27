@@ -25,6 +25,7 @@
 			};
 			//////////////////////////////////////////////////////////////
 
+			var fdl = new faster_detail_load();
 
 			////////////////////object for dialog handler//////////////////
 
@@ -197,14 +198,14 @@
 					{ label: 'idno', name: 'idno', width: 20,hidden:true  },
 					{ label: 'Compcode', name: 'compcode', width: 40, hidden:true },
 					{ label: 'Source', name: 'source', width: 50, hidden:true },
-					{ label: 'Type', name: 'hdrtype', width: 25, classes: 'wrap', canSearch: true},
+					{ label: 'Type', name: 'hdrtype', width: 20, classes: 'wrap', canSearch: true},
 					{ label: 'Transaction Type', name: 'trantype', width:50, hidden:true},
 					{ label: 'Description', name: 'description', width: 80, classes: 'wrap',checked:true, canSearch: true },
-					{ label: 'Deposit Cost Code', name: 'depccode', width: 20,  classes: 'wrap' },
-					{ label: 'Deposit GL Account', name: 'depglacc', width: 35, classes: 'wrap' },
-					{ label: 'Update Payer Name', name: 'updpayername', width: 30,  classes: 'wrap',formatter:formatter, unformat:unformat },
-					{ label: 'Auto Allocation', name: 'updepisode', width: 25, classes: 'wrap' ,formatter:formatter, unformat:unformat},
-					{ label: 'Manual Allocation', name: 'manualalloc', width: 25 ,formatter:formatter, unformat:unformat},
+					{ label: 'Deposit Cost Code', name: 'depccode', width: 20,  classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail },
+					{ label: 'Deposit GL Account', name: 'depglacc', width: 35, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail },
+					{ label: 'Update Payer Name', name: 'updpayername', width: 30,  classes: 'wrap',formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },
+					{ label: 'Auto Allocation', name: 'updepisode', width: 25, classes: 'wrap' ,formatter:formatter, unformat:unformat, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },
+					{ label: 'Manual Allocation', name: 'manualalloc', width: 25 ,formatter:formatter, unformat:unformat, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 					{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
@@ -236,6 +237,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					fdl.set_array().reset();
 				},
 				
 				
@@ -255,6 +257,25 @@
 					return "0";
 				}
 			}
+		
+		//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+		function showdetail(cellvalue, options, rowObject){
+			var field,table,case_;
+			switch(options.colModel.name){
+				case 'depccode':field=['costcode','description'];table="finance.costcenter";case_='depccode';break;
+				case 'depglacc':field=['glaccno','description'];table="finance.glmasref";case_='depglacc';break;
+			}
+			var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+			fdl.get_array('assetregister',options,param,case_,cellvalue);
+			// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
+			
+			return cellvalue;
+		}
+
+		function unformat_showdetail(cellvalue, options, rowObject){
+			return $(rowObject).attr('title');
+		}
 
 		/*////////////////////formatter status////////////////////////////////////////
 				function formatterstatus(cellvalue, option, rowObject){
@@ -279,6 +300,23 @@
 					}
 
 				}*/
+				function formatterstatus_tick2(cellvalue, option, rowObject) {
+					if (cellvalue == '1') {
+						return `<span class="fa fa-check"></span>`;
+					}else{
+						return '';
+					}
+				}
+			
+			
+				function unformatstatus_tick2(cellvalue, option, rowObject) {
+					if ($(rowObject).children('span').attr('class') == 'fa fa-check') {
+						return '1';
+					}else{
+						return '0';
+					}
+				}
+
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 				view:false,edit:false,add:false,del:false,search:false,

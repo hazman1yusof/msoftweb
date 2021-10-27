@@ -27,6 +27,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////// currency /////////////////////////////////////////
 	var mycurrency =new currencymode(['#amount', "#jqGrid2 input[name='netprice']"]);
+	var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////////
 	var actdateObj = new setactdate(["#trandate"]);
@@ -184,12 +185,12 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
 			{ label: 'Record No', name: 'recno', width: 20, classes: 'wrap', canSearch: true,selected:true, formatter: padzero, unformat: unpadzero},
-			{ label: 'Transaction Department', name: 'txndept', width: 30, classes: 'wrap'},
-			{ label: 'Transaction Type', name: 'trantype', width: 25, classes: 'wrap', canSearch: true},
+			{ label: 'Transaction Department', name: 'txndept', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Transaction Type', name: 'trantype', width: 25, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Document No', name: 'docno', width: 30, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Transaction Date', name: 'trandate', width: 27, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Transaction Time', name: 'trantime',hidden:true},
-			{ label: 'Sender/Receiver', name: 'sndrcv', width: 21, classes: 'wrap', canSearch: true},
+			{ label: 'Sender/Receiver', name: 'sndrcv', width: 21, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'SndRcvType', name: 'sndrcvtype', width: 30, classes: 'wrap', hidden:true},
 			{ label: 'Amount', name: 'amount', width: 20, align: 'right', classes: 'wrap', formatter:'currency'},
 			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap',},			
@@ -274,6 +275,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
 			populate_form(selrowData("#jqGrid"));
 			//empty_form();
 		},
@@ -727,7 +729,7 @@ $(document).ready(function () {
 		 	{ label: 'recno', name: 'recno', width: 50, classes: 'wrap',editable:false, hidden:true},
 			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Item Code', name: 'itemcode', width: 200, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:itemcodeCustomEdit,
 						       custom_value:galGridCustomValue 	
@@ -997,10 +999,14 @@ $(document).ready(function () {
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
-		var field,table;
+		var field,table,  case_;
 		switch(options.colModel.name){
-			case 'uomcode':field=['uomcode','description'];table="material.uom";break;
-			case 'uomcoderecv':field=['uomcode','description'];table="material.uom";break;
+			case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
+			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
+			case 'uomcoderecv':field=['uomcode','description'];table="material.uom";case_='uomcoderecv';break;
+			case 'txndept':field=['deptcode','description'];table="sysdb.department";case_='txndept';break;
+			case 'trantype':field=['trantype','description'];table="material.ivtxntype";case_='trantype';break;
+			case 'sndrcv':field=['deptcode','description'];table="sysdb.department";case_='sndrcv';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		$.get( param.url+"?"+$.param(param), function( data ) {
@@ -1010,6 +1016,8 @@ $(document).ready(function () {
 				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0].description+"</span>");
 			}
 		});
+		fdl.get_array('inventoryTransaction',options,param,case_,cellvalue);
+		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
 

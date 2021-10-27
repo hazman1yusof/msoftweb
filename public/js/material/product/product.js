@@ -30,6 +30,7 @@ $(document).ready(function () {
 	/////////////////////////////////////////////////////////Get GROUPCODE AND Class /////////////////////////////
 	var gc2 = $('#groupcode2').val();
 	var Class2 = $('#Class2').val();
+	var fdl = new faster_detail_load();
 
 	/////////////////////////////////////////////////////////object for dialog handler//////////////////
 	var dialog_itemcode = new ordialog(
@@ -649,11 +650,11 @@ $(document).ready(function () {
 		 	{ label: 'Unit', name: 'unit', width: 20, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Item Code', name: 'itemcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Item Description', name: 'description', width: 80, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true  },
-			{ label: 'Uom Code', name: 'uomcode', width: 30, sorttype: 'text', classes: 'wrap'  },
+			{ label: 'Uom Code', name: 'uomcode', width: 30, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Group Code', name: 'groupcode', width: 30, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Class', name: 'Class', width: 40, sorttype: 'text', classes: 'wrap', hidden:true   },
-			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap' ,canSearch: true },
-			{ label: 'Supplier Code', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap'  },
+			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap' ,canSearch: true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Supplier Code', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'avgcost', name: 'avgcost', width: 50, hidden:true },
 			{ label: 'actavgcost', name: 'actavgcost', width: 50, hidden:true },
 			{ label: 'currprice', name: 'currprice', width: 40, hidden:true },
@@ -708,6 +709,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
 
 			if(searched){
 				populateFormdata("#jqGrid","#dialogForm","#formdata", idno,'view');
@@ -876,6 +878,21 @@ $(document).ready(function () {
 		dialog_itemcode.on();
 		dialog_uomcode.on();
 		textCol.check();
+	}
+
+	function showdetail(cellvalue, options, rowObject){
+		var field,table, case_;
+		switch(options.colModel.name){
+			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
+			case 'productcat':field=['assetcode','description'];table="finance.facode";case_='productcat';break;
+			case 'suppcode':field=['SuppCode','Name'];table="material.supplier";case_='suppcode';break;
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	
+		fdl.get_array('product',options,param,case_,cellvalue);
+		
+		if(cellvalue == null)cellvalue = " ";
+		return cellvalue;
 	}
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////

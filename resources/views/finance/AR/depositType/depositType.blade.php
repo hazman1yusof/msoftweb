@@ -52,21 +52,15 @@
                 
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="updpayername">Update Payer Name</label>  
-				  <div class="col-md-2">
+				  <div class="col-md-3">
 					<label class="radio-inline"><input id="updpayername" type="radio" name="updpayername" value='1' data-validation="required" checked>Yes</label>
 					<label class="radio-inline"><input type="radio" name="updpayername" value='0' data-validation="">No</label>
 				  </div>
 				  
 				  <label class="col-md-2 control-label" for="updepisode">Auto Allocation</label>  
-				  <div class="col-md-2">
+				  <div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="updepisode" value='1' data-validation="required" checked>Yes</label>
 					<label class="radio-inline"><input type="radio" name="updepisode" value='0' data-validation="">No</label>
-				  </div>
-
-				  <label class="col-md-2 control-label" for="manualalloc">Manual Allocation</label>  
-				  <div class="col-md-2">
-					<label class="radio-inline"><input type="radio" name="manualalloc" value='1' data-validation="required" checked>Yes</label>
-					<label class="radio-inline"><input type="radio" name="manualalloc" value='0' data-validation="">No</label>
 				  </div>
 				</div>
                 
@@ -75,6 +69,13 @@
 				  <div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>Active</label>
 					<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE' >Deactive</label>
+				  </div>
+
+				
+				<label class="col-md-2 control-label" for="manualalloc">Manual Allocation</label>  
+				  <div class="col-md-3">
+					<label class="radio-inline"><input type="radio" name="manualalloc" value='1' data-validation="required" checked>Yes</label>
+					<label class="radio-inline"><input type="radio" name="manualalloc" value='0' data-validation="">No</label>
 				  </div>
 				</div>
                 

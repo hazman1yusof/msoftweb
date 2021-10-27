@@ -235,8 +235,8 @@ $(document).ready(function () {
 		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
 		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
-		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 20, classes: 'wrap', canSearch: true},
-		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true},
+		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true, hidden: true},
 		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
 		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
 		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap', hidden:true},
@@ -320,6 +320,7 @@ $(document).ready(function () {
 			empty_form();
 
 			populate_form(selrowData("#jqGrid"));
+			fdl.set_array().reset();
 
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
@@ -330,6 +331,20 @@ $(document).ready(function () {
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
+	////////////////////// function showdetail ///////////////////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table, case_;
+		switch(options.colModel.name){
+			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
+			case 'apacthdr_suppcode':field=['suppcode','name'];table="material.supplier";case_='apacthdr_suppcode';break;
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	
+		fdl.get_array('paymentVoucher',options,param,case_,cellvalue);
+		
+		if(cellvalue == null)cellvalue = " ";
+		return cellvalue;
+	}
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -550,8 +565,7 @@ $(document).ready(function () {
 		editurl: "/paymentVoucherDetail/form",
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqg2},
-			{ label: 'Creditor Code', name: 'suppcode', width: 100, classes: 'wrap'},
-	
+			{ label: 'Creditor Code', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},

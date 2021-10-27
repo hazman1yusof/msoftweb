@@ -229,11 +229,11 @@ $(document).ready(function () {
 		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
 		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
-		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 20, classes: 'wrap', canSearch: true},
-		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true},
+		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 70, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true, hidden:true},
 		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
 		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
-		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap'},
+		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
 		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
@@ -336,7 +336,7 @@ $(document).ready(function () {
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 
 			populate_form(selrowData("#jqGrid"));
-
+			fdl.set_array().reset();
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
 		},
@@ -345,6 +345,8 @@ $(document).ready(function () {
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
+	$("#jqGrid").jqGrid('setLabel', 'qtyonhand', 'Qty On Hand', { 'text-align': 'right' });
+	/////////////////////////////////////////////////////
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -875,11 +877,12 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
-			case 'document':field=['delordno','srcdocno'];table="material.delordhd";case_='document';break;
+			case 'apacthdr_suppcode':field=['suppcode','name'];table="material.supplier";case_='apacthdr_suppcode';break;
 			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
+			case 'apacthdr_deptcode':field=['deptcode','description'];table="sysdb.department";case_='apacthdr_deptcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	

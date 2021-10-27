@@ -29,6 +29,7 @@
 
 			//////////////////////////////////////////////////////////////
 			var mycurrency =new currencymode(['#creditlimit','#creditterm']);
+			var fdl = new faster_detail_load();
 
 			////////////////////object for dialog handler//////////////////
 			var dialog_debtortype = new ordialog(
@@ -245,9 +246,9 @@
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
-					{label: 'Financial Class', name: 'debtortype',editable: true, width: 60}, 
-					{label: 'Debtor Code', name: 'debtorcode', width: 100, canSearch: true},
-					{label: 'Debtor Name', name: 'name', width: 200, classes: 'wrap', checked:true,canSearch: true},
+					{label: 'Financial Class', name: 'debtortype',editable: true, classes: 'wrap', width: 50, formatter: showdetail,unformat: unformat_showdetail}, 
+					{label: 'Debtor Code', name: 'debtorcode', width: 50, canSearch: true},
+					{label: 'Debtor Name', name: 'name', width: 150, classes: 'wrap', checked:true,canSearch: true},
 					{label: 'Address', name: 'address1',hidden: true},
 					{label: 'Address 2', name: 'address2', hidden: true},
 					{label: 'Address 3', name: 'address3',hidden: true},
@@ -263,12 +264,12 @@
 					{label: 'Bill Type IP', name: 'billtype', hidden: true},
 					{label: 'Bill Type OP', name: 'billtypeop', hidden: true},
 					{label: 'Outamt', name: 'outamt', hidden: true},
-					{label: 'Deposit Amount', name: 'depamt', width: 90},
+					{label: 'Deposit Amount', name: 'depamt', width: 50},
 					{label: 'Credit Limit', name: 'creditlimit', hidden: true},
-					{label: 'Debtor CCode', name: 'actdebccode', width: 90},
-					{label: 'Debtor Acct', name: 'actdebglacc', width: 90},
-					{label: 'Deposit CCode', name: 'depccode', width: 50},
-					{label: 'Deposit Acct', name: 'depglacc', width: 90},
+					{label: 'Debtor CostCode', name: 'actdebccode', width: 60, formatter: showdetail,unformat: unformat_showdetail},
+					{label: 'Debtor Acct', name: 'actdebglacc', width: 90, formatter: showdetail,unformat: unformat_showdetail},
+					{label: 'Deposit CostCode', name: 'depccode', width: 60, formatter: showdetail,unformat: unformat_showdetail},
+					{label: 'Deposit Acct', name: 'depglacc', width: 90, formatter: showdetail,unformat: unformat_showdetail},
 					{label: 'Otherccode', name: 'otherccode', hidden: true},
 					{label: 'Otheracct', name: 'otheracct', hidden: true},
 					{label: 'Debtor Group', name: 'debtorgroup', hidden: true},
@@ -309,9 +310,33 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					fdl.set_array().reset();
 				},
 				
 			});
+
+		//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+			function showdetail(cellvalue, options, rowObject){
+				var field,table,case_;
+				switch(options.colModel.name){
+					case 'debtortype':field=['debtortycode','description'];table="debtor.debtortype";case_='suppcode';break;
+					case 'actdebccode':field=['costcode','description'];table="finance.costcenter";break;
+					case 'actdebglacc':field=['glaccno','description'];table="finance.glmasref";break;
+					case 'depccode':field=['costcode','description'];table="finance.costcenter";break;
+					case 'depglacc':field=['glaccno','description'];table="finance.glmasref";case_='depglacc';break;
+
+				}
+				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+				fdl.get_array('debtorMaster',options,param,case_,cellvalue);
+				// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
+				
+				return cellvalue;
+			}
+
+			function unformat_showdetail(cellvalue, options, rowObject){
+				return $(rowObject).attr('title');
+			}
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

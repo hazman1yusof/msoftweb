@@ -24,7 +24,10 @@
       <label for="username" class="sr-only">Email address</label>
       <input type="text" id="username" name='username' class="form-control" placeholder="Username" required autofocus>
       <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" name='password' class="form-control" placeholder="Password" required>
+      <div style="position:relative">
+        <input type="password" id="inputPassword" name='password' class="form-control" placeholder="Password" required>
+        <span id="showpwd" class="glyphicon glyphicon-eye-open" style="position: absolute;right: 10px;top: 17px;cursor: pointer;z-index: 100;"></span>
+      </div>
     	<label for="comp" class="sr-only">Company</label>
       <select id="cmb_companies" name="cmb_companies" class="form-control">
           <option value="">- Select a Company -</option>
@@ -57,10 +60,20 @@
 
 <script>
   document.getElementById("myurl").value = window.location.hostname;
-    // jQuery(document).ready(function() 
-    // {
-    //     Custom.init_cmb_companies();
-    // });
+
+    $(document).ready(function() 
+    {
+        $('#showpwd').click(function(){
+          if($(this).hasClass('glyphicon-eye-open')){
+            $(this).addClass('glyphicon-eye-close').removeClass('glyphicon-eye-open');
+            $('#inputPassword').attr('type','text');
+          }else if($(this).hasClass('glyphicon-eye-close')){
+            $(this).removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+            $('#inputPassword').attr('type','password');
+          }
+        });
+
+    });
 
     // function signing_in()
     // {

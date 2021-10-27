@@ -129,7 +129,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: true, checked: true},
 			{ label: 'Trantype', name: 'trantype', width: 13},
-			{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', canSearch: true},
+			{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Reference', name: 'refsource', width: 43, classes: 'wrap',},
 			{ label: 'Post Date', name: 'actdate', width: 25, classes: 'wrap'},
 			{ label: 'Amount', name: 'amount', width: 28, classes: 'wrap', formatter:'currency'} ,//unformat:unformat2}
@@ -732,6 +732,10 @@ $(document).ready(function () {
 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
 			case 'category':field=['catcode','description'];table="material.category";break;
 			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
+
+			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
+			//case 'trantype':field=['bankcode','bankname'];table="finance.bank";case_='trantype';break;
+
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
