@@ -236,6 +236,14 @@ $(document).ready(function() {
         if(rows[bootgrid_last_rowid].PatStatus == 1 && $('#curpat').val() == 'true'){
             populate_discharge_currpt(rows[bootgrid_last_rowid]);
         }
+
+        if(rows[bootgrid_last_rowid].pregnant == 1){
+            $('#antenatal_row,#jqGridAntenatal_c').show();
+            $('#nursing_row,#jqGridTriageInfo_c').hide();
+        }else{
+            $('#nursing_row,#jqGridTriageInfo_c').show();
+            $('#antenatal_row,#jqGridAntenatal_c').hide();
+        }
     });
     var bootgrid_last_rowid = 0;
 

@@ -346,11 +346,11 @@
 			@if (request()->get('epistycode') == 'OP')
 
 				@if (Auth::user()->doctor == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
 
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
 						@include('hisdb.antenatal.antenatal')
 					</div>
 
