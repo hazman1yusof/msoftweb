@@ -221,7 +221,7 @@ $(document).ready(function () {
 		datatype: "local",	
 			colModel: [
 			{label: 'Tagging No', name: 'assetno', width: 10, canSearch: true, checked: true},
-			{label: 'Item Code', name:'itemcode', width: 20, formatter: showdetail,unformat:un_showdetail },
+			{label: 'Item Code', name:'itemcode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
 			{label: 'Category', name: 'assetcode', width: 20, classes: 'wrap', canSearch: true,checked:true, formatter: showdetail,unformat:un_showdetail},
 			{label: 'Type', name:'assettype', width: 20, classes: 'wrap', canSearch: true, checked:true, formatter: showdetail,unformat:un_showdetail},
 			{label: 'Department', name:'deptcode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },

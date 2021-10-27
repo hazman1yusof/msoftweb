@@ -436,6 +436,13 @@ $(document).ready(function () {
 			case 'trf_currloccode':field=['deptcode','description'];table="sysdb.location";case_='trf_currloccode';break;
 			case 'trf_department':field=['deptcode','description'];table="sysdb.department";case_='trf_department';break;
 			case 'trf_loccode':field=['deptcode','description'];table="sysdb.location";case_='trf_loccode';break;
+
+			//////asset movement header/////
+			case 'olddeptcode':field=['deptcode','description'];table="sysdb.department";case_='olddeptcode';break;
+			case 'oldloccode':field=['loccode','description'];table="sysdb.location";case_='oldloccode';break;
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'curloccode':field=['loccode','description'];table="sysdb.location";case_='curloccode';break;
+		
 			default: return cellvalue;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
@@ -754,18 +761,18 @@ $(document).ready(function () {
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
 	
-	//////////////////////////////////////////////start jqgrid2 Asset Movement//////////////////////////////////////////////
+	//////////////////////////////////////////////start jqgrid2 Asset Movement Header//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
 		colModel: [
 			{ label: 'No.', name:'auditno', width:30, classes:'wrap'},
-			{ label: 'Tran Date', name:'trandate', width:100, classes:'wrap'},
-			{ label: 'Tran Type', name:'trantype', width:120, classes:'wrap'},
-			{ label: 'Amount', name:'origcost', width:100, classes:'wrap'},
-			{ label: 'Old Department', name: 'olddeptcode', width: 120, classes: 'wrap'},
-			{ label: 'Old Location', name: 'oldloccode', width: 120, classes: 'wrap'},
-			{ label: 'New Department', name: 'deptcode', width: 120, classes: 'wrap'},
-			{ label: 'New Location', name: 'curloccode', width: 120, classes: 'wrap'},
+			{ label: 'Tran Date', name:'trandate', width:50, classes:'wrap'},
+			{ label: 'Tran Type', name:'trantype', width:50, classes:'wrap'},
+			{ label: 'Amount', name:'origcost', width:80, classes:'wrap'},
+			{ label: 'Old Department', name: 'olddeptcode', width: 120, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Old Location', name: 'oldloccode', width: 120, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'New Department', name: 'deptcode', width: 120, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'New Location', name: 'curloccode', width: 120, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
 
 		],
