@@ -297,13 +297,13 @@ $(document).ready(function () {
 			{label: 'compcode', name: 'compcode', width: 90 , hidden: true},
 			{label: 'source', name: 'source', width: 90, hidden: true},
 			{label: 'PayMode', name: 'paymode', width: 90, classes: 'wrap', canSearch: true,},
-			{label: 'PayType', name: 'paytype', width: 90, classes: 'wrap'},
 			{label: 'Description', name: 'description', width: 100, canSearch: true, checked:true,classes: 'wrap'}, 
+			{label: 'PayType', name: 'paytype', width: 90, classes: 'wrap'},
 			{label: 'Cost Code', name: 'ccode', width: 90, hidden: true, classes: 'wrap'}, 
-			{label: 'GL Account', name: 'glaccno', width: 90, hidden: true, classes: 'wrap'},
-			{label: 'Dr. Payment', name: 'drpayment', width: 90, hidden: true, classes: 'wrap'},
-			{label: 'Card Flag', name: 'cardflag', width: 90, hidden: true,classes: 'wrap'},
-			{label: 'ValExpDate', name: 'valexpdate', width: 90, hidden: true, classes: 'wrap'},
+			{label: 'GL Account', name: 'glaccno', width: 30, hidden: true, classes: 'wrap'},
+			{label: 'Dr. Payment', name: 'drpayment', width: 30, classes: 'wrap', formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
+			{label: 'Card Flag', name: 'cardflag', width: 30, classes: 'wrap', formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
+			{label: 'ValExpDate', name: 'valexpdate', width: 30, classes: 'wrap', formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{label: 'Card Cent', name: 'cardcent', width: 90, hidden: true, classes: 'wrap'},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
@@ -405,4 +405,20 @@ $(document).ready(function () {
 	addParamField('#jqGrid',true,urlParam);
 	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
 
+	function formatterstatus_tick2(cellvalue, option, rowObject) {
+		if (cellvalue == '1') {
+			return `<span class="fa fa-check"></span>`;
+		}else{
+			return '';
+		}
+	}
+
+
+	function unformatstatus_tick2(cellvalue, option, rowObject) {
+		if ($(rowObject).children('span').attr('class') == 'fa fa-check') {
+			return '1';
+		}else{
+			return '0';
+		}
+	}
 });

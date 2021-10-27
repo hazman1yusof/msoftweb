@@ -351,6 +351,10 @@
 					</div>
 
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.antenatal.antenatal')
+					</div>
+
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.doctornote.doctornote')
 					</div>
 				@elseif (Auth::user()->nurse == 1)
@@ -423,6 +427,7 @@
 		@if (request()->get('epistycode') == 'OP')
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>

@@ -229,6 +229,7 @@ $(document).ready(function() {
 
         if($('#epistycode').val() == 'OP' && $('#curpat').val() == 'true'){
             populate_tiCurrentPt(rows[bootgrid_last_rowid]);
+            populate_antenatal(rows[bootgrid_last_rowid]);
             populate_currDoctorNote(rows[bootgrid_last_rowid]);
         }
 

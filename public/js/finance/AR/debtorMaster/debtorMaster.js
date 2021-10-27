@@ -266,9 +266,9 @@
 					{label: 'Outamt', name: 'outamt', hidden: true},
 					{label: 'Deposit Amount', name: 'depamt', width: 50},
 					{label: 'Credit Limit', name: 'creditlimit', hidden: true},
-					{label: 'Debtor CCode', name: 'actdebccode', width: 90, formatter: showdetail,unformat: unformat_showdetail},
+					{label: 'Debtor CostCode', name: 'actdebccode', width: 60, formatter: showdetail,unformat: unformat_showdetail},
 					{label: 'Debtor Acct', name: 'actdebglacc', width: 90, formatter: showdetail,unformat: unformat_showdetail},
-					{label: 'Deposit CCode', name: 'depccode', width: 50, formatter: showdetail,unformat: unformat_showdetail},
+					{label: 'Deposit CostCode', name: 'depccode', width: 60, formatter: showdetail,unformat: unformat_showdetail},
 					{label: 'Deposit Acct', name: 'depglacc', width: 90, formatter: showdetail,unformat: unformat_showdetail},
 					{label: 'Otherccode', name: 'otherccode', hidden: true},
 					{label: 'Otheracct', name: 'otheracct', hidden: true},
@@ -320,10 +320,10 @@
 				var field,table,case_;
 				switch(options.colModel.name){
 					case 'debtortype':field=['debtortycode','description'];table="debtor.debtortype";case_='suppcode';break;
-					case 'actdebccode':field=['actdebccode','description'];table="sysdb.department";case_='actdebccode';break;
-					case 'actdebglacc':field=['actdebglacc','description'];table="finance.facode";case_='actdebglacc';break;
-					case 'depccode':field=['depccode','description'];table="finance.fatype";case_='depccode';break;
-					case 'depglacc':field=['depglacc','description'];table="finance.fatype";case_='depglacc';break;
+					case 'actdebccode':field=['costcode','description'];table="finance.costcenter";break;
+					case 'actdebglacc':field=['glaccno','description'];table="finance.glmasref";break;
+					case 'depccode':field=['costcode','description'];table="finance.costcenter";break;
+					case 'depglacc':field=['glaccno','description'];table="finance.glmasref";case_='depglacc';break;
 
 				}
 				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};

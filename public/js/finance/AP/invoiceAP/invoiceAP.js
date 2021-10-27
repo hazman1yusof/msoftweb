@@ -229,7 +229,7 @@ $(document).ready(function () {
 		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
 		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
-		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 70, classes: 'wrap', canSearch: true},
+		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 70, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true, hidden:true},
 		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
 		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
@@ -345,7 +345,6 @@ $(document).ready(function () {
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
-	////////////////////// function showdetail ////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('setLabel', 'qtyonhand', 'Qty On Hand', { 'text-align': 'right' });
 	/////////////////////////////////////////////////////
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -878,6 +877,7 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
+			case 'apacthdr_suppcode':field=['suppcode','name'];table="material.supplier";case_='apacthdr_suppcode';break;
 			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
