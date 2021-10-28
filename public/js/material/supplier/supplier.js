@@ -321,15 +321,24 @@ $(document).ready(function () {
 		
 	});
 
-	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+	//////////////////////////////////////xxformatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
 		var field,table,case_;
 		switch(options.colModel.name){
 			case 'SuppGroup':field=['SuppGroup','description'];table="material.SuppGroup";case_='SuppGroup';break;
-			case 'si_pricecode':field=['pricecode','description'];table="material.pricesource";case_='si_pricecode';break;			
-			case 'si_uomcode':field=['uomcode','description'];table="material.uom";case_='si_uomcode';break;
 			case 'CostCode':field=['costcode','description'];table="finance.costcenter";case_='CostCode';break;
 			case 'GlAccNo':field=['glaccno','description'];table="finance.glmasref";case_='GlAccNo';break;
+
+			//suppitem//
+			case 'si_pricecode':field=['pricecode','description'];table="material.pricesource";case_='si_pricecode';break;			
+			case 'si_uomcode':field=['uomcode','description'];table="material.uom";case_='si_uomcode';break;
+
+			//suppbonus//
+			case 'sb_bonuomcode':field=['uomcode','description'];table="material.uom";case_='sb_bonuomcode';break;
+			case 'sb_bonsitemcode':field=['itemcode','description'];table="material.product";case_='sb_bonsitemcode';break;
+
+			sb_bonsitemcode
+
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -1007,9 +1016,9 @@ $(document).ready(function () {
 			{ label: 'bonpricecode', name: 'sb_bonpricecode', width: 50, hidden: true},
 		 	{ label: 'Bonus Item Code', name: 'sb_bonitemcode', width: 200, classes: 'wrap', canSearch: true},
 			{ label: 'Item Description', name: 'p_description', width: 400, classes: 'wrap', checked:true,canSearch: true},
-			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 200, classes: 'wrap'},
+			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 200, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Bonus Quantity', name: 'sb_bonqty', width: 200, classes: 'wrap', formatter:'currency'}, 
-			{ label: "Supplier's Item Code", name: 'sb_bonsitemcode', width: 200, classes: 'wrap'},
+			{ label: "Supplier's Item Code", name: 'sb_bonsitemcode', width: 200, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Record Status', name: 'sb_recstatus', width: 200, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},

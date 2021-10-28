@@ -433,12 +433,11 @@ $(document).ready(function () {
 			case 'assetcode':field=['assetcode','description'];table="finance.facode";case_='assetcode';break;
 			case 'assettype':field=['assettype','description'];table="finance.fatype";case_='assettype';break;
 			case 'trf_currdeptcode':field=['deptcode','description'];table="sysdb.department";case_='trf_currdeptcode';break;
-			case 'trf_currloccode':field=['deptcode','description'];table="sysdb.location";case_='trf_currloccode';break;
+			case 'trf_currloccode':field=['loccode','description'];table="sysdb.location";case_='trf_currloccode';break;
 			case 'trf_department':field=['deptcode','description'];table="sysdb.department";case_='trf_department';break;
-			case 'trf_loccode':field=['deptcode','description'];table="sysdb.location";case_='trf_loccode';break;
+			case 'trf_loccode':field=['loccode','description'];table="sysdb.location";case_='trf_loccode';break;
 
 			//////asset movement header/////
-			//case 'olddeptcode':field=['deptcode','description'];table="sysdb.department";case_='olddeptcode';break;
 			case 'oldloccode':field=['loccode','description'];table="sysdb.location";case_='oldloccode';break;
 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 			case 'curloccode':field=['loccode','description'];table="sysdb.location";case_='curloccode';break;
