@@ -45,8 +45,8 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/cheqlist/form",
 		 colModel: [
-			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true,checked:true},
-			{ label: 'Bank Name', name: 'bankname', width: 8, canSearch:true},
+			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true,checked:true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Bank Name', name: 'bankname', width: 10, canSearch:true, hidden:true},
 			{ label: 'Address', name: 'address1', width: 17, classes: 'wrap', formatter:formatterAddress, unformat: unformatAddress},
 			{ label: 'address2', name: 'address2', width: 17, classes: 'wrap', hidden:true},
 			{ label: 'address3', name: 'address3', width: 17, classes: 'wrap',  hidden:true},
@@ -96,6 +96,19 @@ $(document).ready(function () {
 		}	
 	);
 
+	//////////////////////////////////////xxformatter checkdetail//////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
+
+		}
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('cheqlist',options,param,case_,cellvalue);
+		
+		return cellvalue;
+	}
 
 	/////////////////formatter address///////////////////////////
 	function formatterAddress (cellvalue, options, rowObject){

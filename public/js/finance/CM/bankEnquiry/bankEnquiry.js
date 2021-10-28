@@ -9,6 +9,7 @@ $(document).ready(function () {
 	var errorField=[];
 	var mymodal = new modal();
 	var detbut = new detail_button();
+	var fdl = new faster_detail_load();
 	//////////////////////////////////////////////////////////////
 
 	////////////////////object for dialog handler//////////////////
@@ -93,10 +94,10 @@ $(document).ready(function () {
 		 colModel: [
 		 	{label: 'idno', name: 'fd_idno', width: 90 , hidden: true},
 		 	{label: 'compcode', name: 'fd_compcode', width: 90 , hidden: true},
-			{label: 'Year', name: 'fd_year', width: 30 },
-			{label: 'Bank Code', name: 'fd_bankcode', width: 60, canSearch:true },
-			{label: 'Name', name: 'fb_bankname', width: 100 },
-			{label: 'Bank Account No', name: 'fb_bankaccount', width: 90 },
+			{label: 'Year', name: 'fd_year', width: 60 },
+			{label: 'Bank Code', name: 'fd_bankcode', width: 60, canSearch:true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
+			{label: 'Name', name: 'fb_bankname', width: 100, hidden: true },
+			{label: 'Bank Account No', name: 'fb_bankaccount', width: 60 },
 			{label: 'Open Balance', name: 'fd_openbal',formatter:'currency', width: 60, readonly: true, align: 'right'},
 			// {label: 'Balance', name: 'fd_balance', width: 90, readonly:true, hidden: true},
 			{label: 'actamount1', name: 'fd_actamount1', width: 90 , hidden: true},
@@ -134,6 +135,7 @@ $(document).ready(function () {
 			/*if(editedRow!=0){
 				$("#jqGrid").jqGrid('setSelection',editedRow,false);
 			}*/
+			fdl.set_array().reset();
 		},
 		
 	});
@@ -303,6 +305,19 @@ $(document).ready(function () {
 	}
 	///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
 
+	//////////////////////////////////////xxformatter checkdetail//////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'fd_bankcode':field=['bankcode','bankname'];table="finance.bank";case_='fd_bankcode';break;
+
+		}
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('bankEnquiry',options,param,case_,cellvalue);
+		
+		return cellvalue;
+	}
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,

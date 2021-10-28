@@ -25,6 +25,7 @@
 			};
 			//////////////////////////////////////////////////////////////
 
+			var fdl = new faster_detail_load();
 
 			////////////////////object for dialog handler//////////////////
 
@@ -193,9 +194,9 @@
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
-					{ label: 'compcode', name: 'compcode', width: 90,  hidden:true},					
-					{ label: 'Bank Code', name: 'bankcode', width: 50, classes: 'wrap' , checked:true, canSearch: true},					
-					{ label: 'Bank Name', name: 'bankname', width: 70 , classes: 'wrap', canSearch: true },					
+					{ label: 'compcode', name: 'compcode',  hidden:true},					
+					{ label: 'Bank Code', name: 'bankcode', width: 20, classes: 'wrap' , checked:true, canSearch: true},					
+					{ label: 'Bank Name', name: 'bankname', width: 40 , classes: 'wrap', canSearch: true },					
 					{ label: 'Address', name: 'address1', width: 60, classes: 'wrap',  formatter:formatterAddress, unformat: unformatAddress},					
 					{ label: 'address2', name: 'address2', width: 90 , classes: 'wrap' ,  hidden:true},					
 					{ label: 'address3', name: 'address3', width: 90, classes: 'wrap' , hidden:true},					
@@ -205,11 +206,11 @@
 					{ label: 'Tel No', name: 'telno', width: 30 , classes: 'wrap' },					
 					{ label: 'Fax No', name: 'faxno', width: 90, classes: 'wrap' ,  hidden:true},					
 					{ label: 'Contact Person', name: 'contact', width: 90, hidden:true,},					
-					{ label: 'Bank Account No', name: 'bankaccount', classes: 'wrap' , width: 90,  hidden:true},					
+					{ label: 'Bank Account No', name: 'bankaccount', classes: 'wrap' , width: 40},					
 					{ label: 'Clearing Days', name: 'clearday', classes: 'wrap' , width: 90, hidden:true},					
 					{ label: 'Effect Date:', name: 'effectdate', classes: 'wrap' , width: 90,  hidden:true},					
-					{ label: 'Gl Account No', name: 'glaccno', classes: 'wrap' , width: 90, hidden:true},					
-					{ label: 'Glccode', name: 'glccode', classes: 'wrap' , width: 90, hidden:true},					
+					{ label: 'Gl Account No', name: 'glaccno', classes: 'wrap' , width: 40, formatter: showdetail, unformat:un_showdetail},					
+					{ label: 'Cost Center', name: 'glccode', classes: 'wrap' , width: 30, formatter: showdetail, unformat:un_showdetail},					
 					{ label: 'Petty Cash', name: 'pctype', width: 90, hidden:true},					
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
@@ -220,7 +221,7 @@
 					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},					
 					{ label: 'Open Balance', name: 'openbal', width: 90,  hidden:true},					
-					{ label: 'Record Status', name: 'recstatus', width: 15, classes: 'wrap', cellattr: function(rowid, cellvalue)
+					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{label: 'idno', name: 'idno', hidden: true},
@@ -244,6 +245,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					fdl.set_array().reset();
 				},
 				
 				
@@ -275,6 +277,21 @@
 				let addr1 = fulladdress.slice(0, fulladdress.search("[<]"));
 				addr1 = decodeEntities(addr1);
 				return addr1;
+			}
+
+			//////////////////////////////////////xxformatter checkdetail//////////////////////////////////////////
+			function showdetail(cellvalue, options, rowObject){
+				var field,table,case_;
+				switch(options.colModel.name){
+					case 'glccode':field=['costcode','description'];table="finance.costcenter";case_='glccode';break;
+					case 'glaccno':field=['glaccno','description'];table="finance.glmasref";case_='glaccno';break;
+				}
+				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+				fdl.get_array('bank',options,param,case_,cellvalue);
+				// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
+				
+				return cellvalue;
 			}
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////

@@ -289,7 +289,7 @@ $(document).ready(function () {
 		sortname:'idno',
 		sortorder:'desc',
 		width: 900,
-		height: 100,
+		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -336,8 +336,6 @@ $(document).ready(function () {
 			//suppbonus//
 			case 'sb_bonuomcode':field=['uomcode','description'];table="material.uom";case_='sb_bonuomcode';break;
 			case 'sb_bonsitemcode':field=['itemcode','description'];table="material.product";case_='sb_bonsitemcode';break;
-
-			sb_bonsitemcode
 
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
