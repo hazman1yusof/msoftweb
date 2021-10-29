@@ -249,7 +249,7 @@ i.fa {
 							<label class="col-md-1 control-label" for="db_hdrtype">Bill Type</label>  
 							<div class="col-md-2"> 
 								<div class='input-group'>
-									<input id="db_hdrtype" name="db_hdrtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<input id="db_hdrtype" name="db_hdrtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -324,7 +324,7 @@ i.fa {
 						</div>
 
 						<hr>
-
+<!-- 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="db_approvedby">Approved By</label> 
 							<div class="col-md-2">
@@ -334,7 +334,7 @@ i.fa {
 								</div>
 								<span class="help-block"></span>
 							</div> 
-						</div>
+						</div> -->
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="db_remark">Remarks</label> 
