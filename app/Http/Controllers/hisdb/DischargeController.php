@@ -83,6 +83,8 @@ class DischargeController extends defaultController
 
             if($pat_mast->exists() && $episode->exists() && $queue->exists()){
                 $episode->update([
+                            'episstatus' => 'DISCHARGE',
+                            'episactive' => 0,
                             'dischargedate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'dischargeuser' => session('username'),
                             'dischargetime' => Carbon::now("Asia/Kuala_Lumpur"),

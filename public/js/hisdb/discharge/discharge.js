@@ -63,23 +63,28 @@ $(document).ready(function () {
 
 	$('#discharge_btn').click(function(){
 		if( $('#discharge_form').isValid({requiredFields: ''}, conf, true) ) {
-			var postobj={	
-		    	action: 'discharge_patient',
-		    	_token : $('#csrf_token').val(),	
-		    	mrn:$('#mrn_discharge').val(),	
-		    	episno:$("#episno_discharge").val(),
-		    	destination:$('#dest_discharge').val()
-			};
 
-			$.post( "./discharge/form", postobj, function( data ) {
+			var r = confirm("Do you want to discharge this Patient?");
+			if (r == true) {
+			  var postobj={	
+			    	action: 'discharge_patient',
+			    	_token : $('#csrf_token').val(),	
+			    	mrn:$('#mrn_discharge').val(),	
+			    	episno:$("#episno_discharge").val(),
+			    	destination:$('#dest_discharge').val()
+				};
+
+				$.post( "./discharge/form", postobj, function( data ) {
+				
+				}).fail(function(data) {
+
+				}).success(function(data){
+					$('#toggle_discharge').click();
+					$("#grid-command-buttons").bootgrid("reload");
+					SmoothScrollToTop();
+				});
+			}
 			
-			}).fail(function(data) {
-
-			}).success(function(data){
-				$('#toggle_discharge').click();
-				$("#grid-command-buttons").bootgrid("reload");
-				SmoothScrollToTop();
-			});
 		}else{
 			
 		}

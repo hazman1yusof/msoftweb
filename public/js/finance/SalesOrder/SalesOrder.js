@@ -637,6 +637,15 @@ $(document).ready(function () {
 					custom_element: uomcodeCustomEdit,
 					custom_value: galGridCustomValue
 				},
+			},{
+				label: 'Tax', name: 'taxcode', width: 100, classes: 'wrap', editable: true,
+				editrules: { custom: true, custom_func: cust_rules },
+				formatter: showdetail,
+				edittype: 'custom', editoptions:
+				{
+					custom_element: taxcodeCustomEdit,
+					custom_value: galGridCustomValue
+				},
 			},
 			{
 				label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap', align: 'right',
@@ -661,16 +670,6 @@ $(document).ready(function () {
 			// 	editable: true,
 			// 	editrules: { required: false },editoptions:{readonly: "readonly"},
 			// },
-			{
-				label: 'Tax', name: 'taxcode', width: 100, classes: 'wrap', editable: true,
-				editrules: { custom: true, custom_func: cust_rules },
-				formatter: showdetail,
-				edittype: 'custom', editoptions:
-				{
-					custom_element: taxcodeCustomEdit,
-					custom_value: galGridCustomValue
-				},
-			},
 			{
 				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap',
 				editable: true,
@@ -893,11 +892,15 @@ $(document).ready(function () {
 			// $("#jqGrid2 input[name='quantity']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='amtbilltype'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 
-			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
+			$("#jqGrid2 input[name='quantity']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGrid2_ilsave').click();
-				// addmore_jqgrid2.state = true;
-				// $('#jqGrid2_ilsave').click();
+				if (code == '9'){
+					delay(function(){
+						$('#jqGrid2_ilsave').click();
+						addmore_jqgrid2.state = true;
+					}, 500 );
+				}
+				
 			});
 
 		},
@@ -1298,7 +1301,6 @@ $(document).ready(function () {
 	var mycurrency_np =new currencymode([],true);
 	function calculate_line_totgst_and_totamt(event) {
 
-		console.log(event.data.currency)
 		event.data.currency.forEach(function(element){
 			element.formatOff();
 		});
@@ -1621,7 +1623,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='uom']").focus();
+					$("#jqGrid2 input[name='quantity']").focus();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			},
@@ -1638,10 +1640,7 @@ $(document).ready(function () {
 
 			},
 			close: function(){
-				$(dialog_chggroup.textfield)			//lepas close dialog focus on next textfield 
-					.closest('td')						//utk dialog dalam jqgrid jer
-					.next()
-					.find("input[type=text]").focus();
+				$("#jqGrid2 input[name='quantity']").focus();
 			}
 		},'none','radio','tab'//urlParam means check() using urlParam not check_input
 	);

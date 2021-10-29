@@ -402,6 +402,9 @@ abstract class defaultController extends Controller{
             ];
 
             foreach ($field as $key => $value) {
+                if(empty($request[$request->field[$key]])){
+                    continue;
+                }
                 $array_insert[$value] = strtoupper($request[$request->field[$key]]);
             }
 
@@ -446,8 +449,8 @@ abstract class defaultController extends Controller{
         foreach ($field as $key => $value) {
             $field_value = strtoupper($request[$request->field[$key]]);
 
-            if($field_value != 0 && empty($field_value)){
-                $field_value = null;
+            if(empty($field_value)){
+                continue;
             }else{
                  $field_value = $field_value;
             }

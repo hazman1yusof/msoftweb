@@ -1273,7 +1273,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 					$("#"+obj.dialogname).dialog( "close" );
 					// $("#"+obj.gridname).jqGrid("clearGridData", true);
-					console.log($(obj.textfield).parent().parent());
 					$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 					$(obj.textfield).removeClass( "error" ).addClass( "valid" );
 					$(obj.textfield).on('blur',{data:obj,errorField:errorField},onBlur);
@@ -1670,7 +1669,6 @@ function faster_detail_load(){
 			}else if(except != undefined && except.indexOf(options.colModel.name) !== -1){
 				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").text('');
 			}else{
-				console.log('asdsss123')
 			}
 		});
 		return this;
@@ -1802,15 +1800,6 @@ function getEditVal(val){
 	}
 	return val
 }
-
-// function seemore_desc(divs){
-// 	var init = function(){
-// 		divs.forEach(function(data,index){
-// 			console.log(data);
-// 		});
-// 	}
-
-// }
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),

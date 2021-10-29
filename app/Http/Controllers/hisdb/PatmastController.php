@@ -878,7 +878,8 @@ class PatmastController extends defaultController
                     "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
                     "adduser" => session('username'),
                     "episactive" => 1,
-                    "allocpayer" => 1
+                    "allocpayer" => 1,
+                    'episstatus' => 'CURRENT',
                 ]);
 
             //update patmast

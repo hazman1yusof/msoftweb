@@ -1,17 +1,6 @@
 <div class="panel panel-default" style="position: relative;" id="jqGrid_discharge_c">
-	<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-		id="btn_grp_edit_discharge"
-		style="position: absolute;
-				padding: 0 0 0 0;
-				right: 40px;
-				top: 25px;" 
-
-	>
-		<!-- <button type="button" class="btn btn-default" id="new_discharge">
-			<span class="fa fa-plus-square-o"></span> Order
-		</button> -->
-	</div>
-	<div class="panel-heading clearfix collapsed position" id="toggle_discharge" data-toggle="collapse" data-target="#jqGrid_discharge_panel">
+	
+	<div class="panel-heading clearfix collapsed position" id="toggle_discharge"  style="position: sticky;top: 0px;z-index: 3;">
 		<b>NAME: <span id="name_show_discharge"></span></b><br>
 		MRN: <span id="mrn_show_discharge"></span>
 		SEX: <span id="sex_show_discharge"></span>
@@ -23,11 +12,26 @@
 		CITIZENSHIP: <span id="citizenship_show_discharge"></span>
 		AREA: <span id="area_show_discharge"></span>
 		
-		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
+		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i>
+		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_discharge_panel"></i>
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 420px; top: 25px;">
 			<h5>Discharge</h5>
-		</div>				
+		</div>
+
+		<div
+			style="position: absolute;
+				    padding: 0 0 0 0;
+				    right: 40px;
+				    top: 18px;" 
+
+		>
+			<div class="btn-group">
+			  <button type="button" class="btn btn-default" id="cancel_epis_btn">Cancel Episode</button>
+			  <button type="button" class="btn btn-default" id="cancel_disc_btn">Cancel Discharge</button>
+			</div>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<button type="button" class="btn btn-success" id="discharge_btn">Discharge</button>
+		</div>			
 	</div>
 	<div id="jqGrid_discharge_panel" class="panel-collapse collapse">
 		<div class="panel-body">
@@ -36,15 +40,6 @@
 					<div class="panel panel-info">
 						<div class="panel-heading text-center">Discharge Information</div>
 						<div class="panel-body" id="discharge_form">
-
-							<div style="position: absolute;right: 50px;">
-								<div class="btn-group">
-								  <button type="button" class="btn btn-default" id="cancel_epis_btn">Cancel Episode</button>
-								  <button type="button" class="btn btn-default" id="cancel_disc_btn">Cancel Discharge</button>
-								</div>
-								&nbsp;&nbsp;&nbsp;&nbsp;
-								<button type="button" class="btn btn-success" id="discharge_btn">Discharge</button>
-							</div>
 
 							<div class="form-group row">
 								<label class="col-md-1 control-label" for="mrn_discharge">MRN</label>  
