@@ -52,7 +52,7 @@ $.jgrid.defaults.responsive = true;
 			}
 		}];
 
-		var oper;
+		var oper = 'add';
 		$("#dialogForm")
 			.dialog({ 
 			width: 9/10 * $(window).width(),
@@ -195,15 +195,21 @@ $.jgrid.defaults.responsive = true;
 			ondblClickRow: function(rowid, iRow, iCol, e){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			},
+			loadComplete: function(){
+				if(oper == 'add'){
+					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+				}
+	
+				$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+				fdl.set_array().reset();
+			},	
 			gridComplete: function(){
 				if(editedRow!=0){
 					$("#jqGrid").jqGrid('setSelection',editedRow,false);
 				}
 				
 				fdl.set_array().reset();
-
-			},
-			
+			},			
 		});
 
 		function showdetail(cellvalue, options, rowObject){

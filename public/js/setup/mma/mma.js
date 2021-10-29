@@ -81,7 +81,7 @@ $(document).ready(function () {
 			});
 			if(addmore_jqgrid.more == true){$('#jqGrid2_iladd').click();}
 			else{
-				$('#jqGrid2').jqGrid ('setSelection', "1");
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
@@ -355,7 +355,8 @@ $(document).ready(function () {
 		loadComplete: function(){
 			if(addmore_jqgrid2.more == true){$('#jqGrid3_iladd').click();}
 			else{
-				$('#jqGrid3').jqGrid ('setSelection', "1");
+				//$('#jqGrid3').jqGrid ('setSelection', "1");
+				$("#jqGrid3").setSelection($("#jqGrid3").getDataIDs()[0]);
 			}
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
