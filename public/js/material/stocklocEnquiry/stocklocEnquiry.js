@@ -44,7 +44,7 @@ $(document).ready(function () {
 		}
 	}];
 
-	var oper;
+	var oper = 'add';
 	$("#dialogForm")
 	  .dialog({ 
 		width: 9/10 * $(window).width(),
@@ -149,6 +149,11 @@ $(document).ready(function () {
 
 		},
 		gridComplete: function(){
+			if(oper == 'add'){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}
+
+			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 			fdl.set_array().reset();
 		},
 	});

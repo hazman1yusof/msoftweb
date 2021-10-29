@@ -53,7 +53,7 @@ $(document).ready(function () {
 		}
 	}];
 
-	var oper;
+	var oper = 'add';
 	$("#dialogForm")
 		.dialog({
 			width: 9 / 10 * $(window).width(),

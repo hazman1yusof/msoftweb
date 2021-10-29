@@ -30,7 +30,7 @@ $(document).ready(function () {
 	var mycurrency2 =new currencymode([]);
 	var fdl = new faster_detail_load();
 
-	var oper;
+	var oper = 'add';
 	$("#dialogForm")
 	  .dialog({ 
 		width: 9/10 * $(window).width(),

@@ -513,7 +513,7 @@ var tabform="#f_tab-cash";
 
 	$("input[name=dbacthdr_entrydate]").keydown(false);
 
-	var oper;
+	var oper = 'add';
 	$("#dialogForm")
 	  .dialog({ 
 		width: 9/10 * $(window).width(),

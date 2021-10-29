@@ -36,7 +36,7 @@ $(document).ready(function () {
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
-
+	var oper = 'add';
 	var oper=null;
 	var unsaved = false,counter_save=0;
 	$("#dialogForm")

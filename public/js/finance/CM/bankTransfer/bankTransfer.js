@@ -68,7 +68,7 @@ $(document).ready(function () {
 	}];
 
 	/////////////////////////start dialog//////////////////////////////////////////	
-	var oper;
+	var oper = 'add';
 	var unsaved = false;
 	$("#dialogForm")
 	  .dialog({ 

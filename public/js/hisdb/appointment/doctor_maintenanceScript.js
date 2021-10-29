@@ -242,7 +242,7 @@
                
 
 
-			  var oper;
+			var oper = 'add';
 			$("#aldialogForm")
 			  .dialog({ 
 				width: 8/10 * $(window).width(),

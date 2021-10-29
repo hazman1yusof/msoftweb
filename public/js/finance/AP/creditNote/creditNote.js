@@ -37,7 +37,8 @@ $(document).ready(function () {
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 
-	var oper;
+	var oper = 'add';
+	//var oper = null;
 	var unsaved = false,counter_save=0;
 	$("#dialogForm")
 		.dialog({
