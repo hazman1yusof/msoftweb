@@ -203,7 +203,7 @@
 				{ label: 'Description', name: 'cm_description', classes: 'wrap', width: 60, canSearch: true, checked:true},
 				{ label: 'Class', name: 'cm_chgclass', classes: 'wrap', width: 20},
 				{ label: 'Class Name', name: 'cc_description', classes: 'wrap', width: 30},
-				{ label: 'Group', name: 'cm_chggroup', classes: 'wrap', width: 20, canSearch: true},
+				{ label: 'Group', name: 'cm_chggroup', classes: 'wrap', width: 20, align: 'right', canSearch: true},
 				{ label: 'Description', name: 'cg_description', classes: 'wrap', width: 40},
 				{ label: 'Charge Type', name: 'cm_chgtype', classes: 'wrap', width: 30, canSearch: true},
 				{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},

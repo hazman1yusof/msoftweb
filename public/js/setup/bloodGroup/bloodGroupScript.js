@@ -77,6 +77,7 @@ $(document).ready(function () {
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 			else{
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 

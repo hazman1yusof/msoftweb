@@ -48,7 +48,7 @@ $(document).ready(function () {
 			//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
 			{label: 'Tax Code', name: 'taxcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 			{label: 'Description', name: 'description', width: 80, classes: 'wrap',checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},					
-			{label: 'Rate', name: 'rate', width: 90, editable:true},									
+			{label: 'Rate', name: 'rate', width: 90, editable:true, align:'right'},									
 			{label: 'Taxtype', name: 'taxtype', width: 25, hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"INPUT:INPUT;OUTPUT:OUTPUT"}},								
 			{label: 'adduser', name: 'adduser', width: 90 , hidden: true},					
 			{label: 'adddate', name: 'adddate', width: 90 , hidden: true},					
@@ -83,6 +83,7 @@ $(document).ready(function () {
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 				else{
 						$('#jqGrid2').jqGrid ('setSelection', "1");
+						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 					}
 
 				addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
