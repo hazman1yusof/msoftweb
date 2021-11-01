@@ -155,7 +155,7 @@ $(document).ready(function () {
 					},
 			},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
-			{ label: ' ', name: 'episno', width: 5},
+			{ label: ' ', name: 'episno', width: 5, align : 'right'},
 			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
 			// { label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
 			{ label: 'Charge Code', name: 'bedchgcode', width: 15 , classes: 'wrap', editable:true,
@@ -213,6 +213,7 @@ $(document).ready(function () {
 			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset

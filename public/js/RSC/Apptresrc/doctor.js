@@ -162,9 +162,10 @@
 					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
 				gridComplete: function(){
-					/*if(editedRow!=0){
+					if(editedRow!=0){
 						$("#jqGrid").jqGrid('setSelection',editedRow,false);
-					}*/
+						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+					}
 				},
 				
 			});
